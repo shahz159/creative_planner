@@ -1995,22 +1995,17 @@ export class DashboardComponent implements OnInit {
           link_d=this.anchoredIt(link_d);
         }
         element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
-
- 
+     
         if (this.Description_Type && this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, '').length > 0) {
           // Remove occurrences of &nbsp; and &#160; while collapsing spaces
           this.Description_Type = this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, ' ').trim();
-       }else{
+       } else if(this.Description_Type!=null ){
          this.Description_Type = this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, ' ').trim();
        }
-      
-      
-
-        console.log(this.Description_Type,'.Description_Type2');
-
+       
         var vDescription = "Description";
-        element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
-
+        element[vDescription] = this.Description_Type == undefined || this.Description_Type == '<font face="Arial"> </font>' ? "" : this.Description_Type;
+      
         var vSubtask = "Subtask";
         element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
 
@@ -2396,9 +2391,15 @@ export class DashboardComponent implements OnInit {
 
 
           element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
+
+          if (this.Description_Type && this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, '').length > 0) {
+             this.Description_Type = this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, ' ').trim();
+         } else if(this.Description_Type!=null ){
+           this.Description_Type = this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, ' ').trim();
+         }
        
           var vDescription = "Description";
-          element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
+          element[vDescription] = this.Description_Type == undefined || this.Description_Type == '<font face="Arial"> </font>' ? "" : this.Description_Type;
 
           var vSubtask = "Subtask";
           element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;

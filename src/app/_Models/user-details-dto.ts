@@ -57,4 +57,6 @@ export class UserDetailsDTO {
     cancel:any;
     cancelcount:any;
     checkedDate: any;
+
+    FileName:any;
 }

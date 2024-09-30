@@ -146,6 +146,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   requestDeadline: any;
   approvalEmpId: any;
   requestComments: any;
+  newcomments:any;
   new_deadline: any;
   newResponsible: any;
   previouscoments: boolean = false;
@@ -946,6 +947,7 @@ projecttypes : any
                }
               return actv;
           });
+          console.log('this.deadlineExtendlist:',this.deadlineExtendlist);
         }
 
       }
@@ -1082,6 +1084,11 @@ projecttypes : any
          console.log('completionOffset value:',this.completionOffset);
     }
 
+    if(this.allUsers1){
+      this.allUsers2=this.allUsers1.filter((usr:any)=>(![this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo].includes(usr.Emp_No)));
+    }
+
+
 
     });
   }
@@ -1152,12 +1159,12 @@ projecttypes : any
       const count = Math.floor(days / duration);
       if (count > 0) {
         const formattedCount = count < 10 ? `0${count}` : `${count}`;
-        return count === 1 ? `01 ${unit}` : `${formattedCount} ${unit}s`;
+        return count === 1 ? `01 ${unit} delay` : `${formattedCount} ${unit}s delay`;
       }
     }
 
     const formattedDays = days < 10 ? `0${days}` : `${days}`;
-    return `${formattedDays} day${days === 1 ? '' : 's'}`;
+    return `${formattedDays} day${days === 1 ? '' : 's'} delay`;
   }
 
 
@@ -1203,11 +1210,9 @@ projecttypes : any
             this.projectAuditor={empName:prj_auditor.RACIS, empNo:prj_auditor.Emp_No};
           }
 // If project has project auditor
-
-
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
-            const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', ')};
+            const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', '), isActive:result[0].isActive};
             console.log(this.PeopleOnProject,"sssssssss")
             if(this.Subtask_Res_List){
               const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
@@ -1231,6 +1236,12 @@ projecttypes : any
 
             return obj;
           });
+          
+// sorting people based on active or inactive     
+          const active_emp=this.PeopleOnProject.filter(item=>item.isActive);
+          const inactive_emp=this.PeopleOnProject.filter(item=>!item.isActive)
+          this.PeopleOnProject=[...active_emp,...inactive_emp];
+// sorting people based on active or inactive 
 
 
         }
@@ -1239,7 +1250,7 @@ projecttypes : any
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
 
       (data) => {
-
+ console.log('GetRACISandNonRACISEmployeesforMoredetails:',data);
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
 
         this.filteredEmployees = this.nonRacisList;
@@ -1253,8 +1264,13 @@ projecttypes : any
         }
 
 
-        this.racisNonRacis=JSON.parse(data[0]['owner_dropdown']);
-        this.allUsers1=(JSON.parse(data[0]['alluserlist']));
+        this.racisNonRacis=JSON.parse(data[0]['owner_dropdown']);      console.log('racisNonRacis list:',this.racisNonRacis);
+        this.allUsers1=(JSON.parse(data[0]['alluserlist']));           console.log('alluserlist:',this.allUsers1);
+        
+        if(this.projectInfo){
+          this.allUsers2=(JSON.parse(data[0]['alluserlist'])).filter((usr:any)=>(![this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo].includes(usr.Emp_No)));
+        }
+       
 
       });
 
@@ -1290,7 +1306,9 @@ debugger
           this.Activity_List.forEach((_actvy)=>{
                  let result='others';
                  if(_actvy.Value){
-                 const _Value=_actvy.Value.trim();
+                    
+                 const _Value=_actvy.Value.trim(); 
+                    
                        result=/New Action- ".*"/.test(_Value)?'New Action':
                               (/Timeline added .*/.test(_Value)|| _Value=='Project Timeline added')?'Timeline added':
                               /Action Complete- ".*"/.test(_Value)?'Action Complete':
@@ -1299,7 +1317,7 @@ debugger
                               /Action -".*" Deadline changed/.test(_Value)?'Action Deadline changed':
                               ['Project Name changed','Project Responsible changed','Project Owner changed','Project Description changed','Client changed','Category changed'].includes(_Value)?'Project Details changed':
                               [/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/,/Action -".*" Owner changed/,/Action -".*" Responsible changed/].some(rg=>rg.test(_Value))?'Action Details changed':
-                              ['Project Complete','Project Complete Rejected'].includes(_Value)?'Project Complete':
+                              (['Project Complete','Project Complete Rejected'].includes(_Value)||/Project Complete transferred to ".*"/.test(_Value))?'Project Complete':
                               _Value;
                  }
                  _actvy._type=result.trim();
@@ -2161,21 +2179,23 @@ multipleback(){
   multiapproval_list:any=[];
   pendingAprvls:any=[];
 
+  approvalsFetching:boolean=false;
   getapprovalStats() {
     // this.approvalEmpId = null;
-
+    this.approvalsFetching=true;   // fetching approvals or processing start.
     this.approvalObj.Project_Code = this.URL_ProjectCode;
-
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {   debugger
+      this.approvalsFetching=false;    // fetched approvals or processing end.
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
         this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
-        this.requestType = (this.requestDetails[0]['Request_type']);
+        this.requestType = (this.requestDetails[0]['Request_type']);  
 
 
         this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']));
-        console.log('multiapproval_list',this.multiapproval_list);
+        this.multiapproval_list=this.multiapproval_list.filter((_aprvl)=>_aprvl.Emp_No==this.Current_user_ID);
+        console.log('multiapproval_list my approvals:',this.multiapproval_list);
         this.pendingAprvls=[];  // must be empty before calculation.
         this.multiapproval_list.forEach((item)=>{
              const temp=this.pendingAprvls.find((item1)=>item1.request_type==item.Type);
@@ -2191,6 +2211,7 @@ multipleback(){
         this.requestDeadline = (this.requestDetails[0]['Request_deadline']);
         this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
         this.requestComments = (this.requestDetails[0]['Remarks']);
+        this.newcomments = (this.requestDetails[0]['NewRemarks']);
         this.new_deadline = (this.requestDetails[0]['new_deadline']);
         this.new_cost = (this.requestDetails[0]['new_cost']);
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
@@ -2272,7 +2293,7 @@ multipleback(){
          this.multiapproval_list=[]
          this.currentStdAprView=undefined;
          this.closeApprovalSideBar();
-         this.closeMultipleSideBar()
+         this.closeMultipleSideBar();
         // if there is no std task aprv request
       }
       this.getRequestAcessdetails();
@@ -2419,6 +2440,8 @@ currentStdAprView:number|undefined;
         this.approvalObj.Status = 'New Project Rejected';
       else if (this.requestType == 'Project Complete')
         this.approvalObj.Status = 'Project Complete Rejected';
+      else if (this.requestType == 'Project Audit')
+        this.approvalObj.Status = 'Project Audit Rejected';
       else if (this.requestType == 'Project Complete Reject Release')
         this.approvalObj.Status = 'Project Complete Rejected';
       else if (this.requestType == 'Project Complete Hold')
@@ -2554,9 +2577,8 @@ currentStdAprView:number|undefined;
 
   submitApproval() {
     console.log('passing single approvaljson:',this.singleapporval_json);
-
-
-    if (this.selectedType == '1') {
+    
+    if (this.selectedType == '1') {   
       console.log("singleapporval_json:",this.singleapporval_json);
       if (this.comments == '' || this.comments == null) {
         this.singleapporval_json.forEach(element => {
@@ -2570,7 +2592,7 @@ currentStdAprView:number|undefined;
       }
       this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
         subscribe((data) => {
-          this.notifyService.showSuccess("Project Approved successfully by - " + this._fullname, "Success");
+          this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Approved successfully by - " + this._fullname, "Success");
           this.getapprovalStats();
           this.GetApproval(1);
           this.getProjectDetails(this.URL_ProjectCode);
@@ -2579,6 +2601,7 @@ currentStdAprView:number|undefined;
       console.log(this.singleapporval_json, "accept")
     }
     else if (this.selectedType == '2') {
+
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Project_Code = this.URL_ProjectCode;
       this.approvalObj.Request_type = this.requestType;
@@ -2616,6 +2639,8 @@ currentStdAprView:number|undefined;
         });
     }
     else if (this.selectedType == '3') {
+      
+     
       if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
         this.noRejectType = true;
         this.notifyService.showError("Please select Reject Type", "Failed");
@@ -2628,7 +2653,7 @@ currentStdAprView:number|undefined;
         });
         this.approvalservice.NewUpdateSingleRejectApprovalsService(this.singleapporval_json).
           subscribe((data) => {
-            this.notifyService.showSuccess("Project Rejected successfully by - " + this._fullname, "Success");
+            this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Rejected successfully by - " + this._fullname, "Success");
             this.getapprovalStats();
             this.getProjectDetails(this.URL_ProjectCode);
             this.getRejectType();
@@ -3328,7 +3353,7 @@ currentStdAprView:number|undefined;
           this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully");
         }
         else if (data['message'] == '6') {
-          this.notifyService.showSuccess("Updated successfully"+"Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+          this.notifyService.showSuccess("Updated successfully,"+" Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
         }
         else if (data['message'] == '8') {
           this.notifyService.showError("Selected project owner cannot be updated", "Not updated");
@@ -4406,7 +4431,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
   openPDF_Standards(standardid, emp_no, cloud, repDate: Date, proofDoc, type, submitby) {
-    debugger
     repDate = new Date(repDate);
     let FileUrl: string;
     // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -4584,6 +4608,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
         this.action_assignedby = (this.requestDetails[0]['Submitted_By']);
         // alert(this.approval_Emp)
         this.requestComments = (this.requestDetails[0]['Remarks']);
+        this.newcomments = (this.requestDetails[0]['NewRemarks']);
         this.new_deadline = (this.requestDetails[0]['new_deadline']);
         this.new_cost = (this.requestDetails[0]['new_cost']);
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
@@ -8230,10 +8255,8 @@ cancelAction(index) {
   }).then((response: any) => {
     if (response.value) {
 
-      debugger
-
-    if([this.projectActionInfo[index].Project_Owner,this.projectInfo.OwnerEmpNo,this.isHierarchy].includes(this.Current_user_ID)){
-        // if user is project owner, action owner or is in heirarchy.
+    if([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo,this.projectActionInfo[index].Project_Owner,this.projectActionInfo[index].Team_Res].includes(this.Current_user_ID)||this.isHierarchy){
+        // if user is project owner, project res, action owner,action resp or is in heirarchy.
         this.approvalObj.Project_Code = this.projectActionInfo[index].Project_Code;
         this.approvalObj.Request_type = 'Project Cancel';
         this.approvalObj.Emp_no = this.Current_user_ID;
@@ -8648,7 +8671,6 @@ linkMtgsToProject(){
 updatePortfolioPage(){
   // this.bsService.updateData("new bhai data");
    localStorage.setItem('projectUpdated','1');
-
 
 }
 
@@ -9866,7 +9888,7 @@ sprtaudtr_remarks:string|undefined;   // remarks provided during removing of aud
 p_index:number=-1;                // selection info.
 processingRemove:boolean=false;
 typeUserRemove:'AUDITOR'|'SUPPORT'|undefined;
-
+sa_notProvided:boolean=false;
 
 
 emp_Auditor:string|undefined;
@@ -9927,11 +9949,11 @@ openRemoveSADialog(index:number,removalType:'SUPPORT'|'AUDITOR'){
   document.getElementById(`pOnPrj-user-row-${index}`).classList.add('pOnPrj-row-selection');
 }
 
-closeRemoveSADialog(index:number){ debugger
+closeRemoveSADialog(index:number){ 
   document.getElementById(`mark-admin-drop${index}`).classList.remove("show");
   document.getElementById(`pOnPrj-user-row-${index}`).classList.remove('pOnPrj-row-selection');
   this.sprtaudtr_remarks=undefined;
-  this.notProvided=false;
+  this.sa_notProvided=false;
   this.typeUserRemove=undefined;
   this.p_index=-1;
 }
@@ -9974,12 +9996,12 @@ onSARemoveSubmit(){
         });
    }
    else
-   this.notProvided=true;
+   this.sa_notProvided=true;
 
 }
 
 
-
+auditBtnDisabled:boolean=false;
 onPrjAuditSubmitClicked(){
 
       if(!(this.empAuditor_remarks&&this.empAuditor_remarks.trim()) || !this.emp_Auditor){
@@ -9988,17 +10010,19 @@ onPrjAuditSubmitClicked(){
       }
       else
         this.notProvided=false;
+
+     this.auditBtnDisabled=true;   //audit processing start
      const project_code:string=this.projectInfo.Project_Code;
      const empno:string=this.Current_user_ID;
      const auditor:string=this.emp_Auditor;
      const remarks:string=this.empAuditor_remarks;
      this.projectMoreDetailsService.NewUpdateProjectAuditApproval(project_code,empno,auditor,remarks).subscribe((res:any)=>{
           console.log(res);
+          this.auditBtnDisabled=false;    // audit processing end
           if(res&&res.message){
-              this.notifyService.showSuccess(res.message,'Success');
-
-              this.getProjectDetails(this.URL_ProjectCode);
-              this.getapprovalStats();
+            this.getapprovalStats();
+            this.getProjectDetails(this.URL_ProjectCode);
+            this.notifyService.showSuccess(res.message,'Success'); 
           }
           else
             this.notifyService.showError('something went wrong.','Failed');
@@ -10006,7 +10030,7 @@ onPrjAuditSubmitClicked(){
      })
 }
 
-
+transferBtnDisabled:boolean=false;
 onTransferBtnClicked(){
         if(!(this.empAuditor_remarks&&this.empAuditor_remarks.trim()) || !this.emp_Auditor){
             this.notProvided=true;
@@ -10014,11 +10038,14 @@ onTransferBtnClicked(){
         }
         else
           this.notProvided=false;
+      
+      this.transferBtnDisabled=true;    // processing start.
       const project_code:string=this.projectInfo.Project_Code;
       const empno:string=this.Current_user_ID;
       const remarks:string=this.empAuditor_remarks;
       const newowner:string=this.emp_Auditor;
       this.projectMoreDetailsService.NewUpdateTransferProjectComplete(project_code,empno,remarks,newowner).subscribe((res:any)=>{
+        this.transferBtnDisabled=false;  // processing end.
                  if(res&&res.message){
                     this.notifyService.showSuccess(res.message,'Success');
                     this.getProjectDetails(this.URL_ProjectCode);
@@ -10540,6 +10567,7 @@ iscaPortDrpDwnOpen:boolean=false;
 ispncaPortDrpDwnOpen:boolean=false;    // this is for mat drpdwn present at pending approval sidebar.
 ProjectType_json:any;   // prj types
 allUsers1:any=[];       // all emps
+allUsers2:any=[];       // all emps exclude owner and resp.
 
 sel_prjname:string|undefined;
 sel_user:any;       // selected emp

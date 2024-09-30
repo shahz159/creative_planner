@@ -555,22 +555,37 @@
         </div>
     </div>
 
-    <div class=" kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y">
+    <div class=" kt-portlet__body pb-0 pt-3 sidehf_scroll scroll-y  tm-subm-sb   ">
         <div class="timeline-radios">
             <div class="form-check">
-                <input type="radio" name="timelineOption" id="timelineRadio1" class="form-check-input" (change)="toggleTimeline('option1')" [checked]="selectedOption === 'option1'" /> Today
+                <input type="radio" name="TimelineOfDate" id="todayradio" class="form-check-input" (change)="changeTimelineDate('TODAY')" [checked]="timeline_of === 'TODAY'" /> Today
               </div>
               <div class="form-check">
-                <input type="radio" name="timelineOption" id="timelineRadio2" class="form-check-input" (change)="toggleTimeline('option2')" [checked]="selectedOption === 'option2'" /> Yesterday
+                <input type="radio" name="TimelineOfDate" id="yesterdayradio" class="form-check-input" (change)="changeTimelineDate('YESTERDAY')" [checked]="timeline_of === 'YESTERDAY'" /> Yesterday
               </div>
         </div>
-        <div id="div1" *ngIf="selectedOption === 'option1'">
+        <div id="div1">
             <div class="timeline-item-div mb-2rem">
-                <div class="timeline-item-heading">Today Timeline</div>
+                <div class="timeline-item-heading">
+                    <!-- <span *ngIf="timeline_of=='TODAY'">Today Timeline</span>
+                    <span *ngIf="timeline_of=='YESTERDAY'">Yesterday Timeline</span> -->
+                    Timeline report
+                </div>
                 <div class="">
-                    <div class="timeline-header sticky-header d-flex justify-content-between">
-                      <h4 class="header-date p-0 mb-0"> Wednesday, August 28, 2024 </h4>
+                    <div class="timeline-header sticky-header d-flex justify-content-between bg-white mt-1">
+                      <h4 class="header-date p-0 mb-0">{{current_Date|date:'EEEE, MMMM d, y'}}</h4>
+                      <span *ngIf="tmReportStatus" class="tl-status fs-7 font-weight-400"  [ngClass]="{
+                        'tl-submitted':tmReportStatus=='Accepted',
+                        'tl-notsubmitted':tmReportStatus=='Not Submitted', 
+                        'tl-underaprvl':tmReportStatus=='Under Approval',
+                        'tl-suspend':tmReportStatuss=='Suspend'
+                        }">
+                        <svg *ngIf="tmReportStatus=='Accepted'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style=" width: 20px;height: 20px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.1" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="#388e3c"></path> <path d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" stroke="#388e3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 12L10.8189 13.8189V13.8189C10.9189 13.9189 11.0811 13.9189 11.1811 13.8189V13.8189L15 10" stroke="#388e3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                        {{tmReportStatus}}
+                       </span>
                     </div>
+            <ng-container *ngIf="tmReportLoading==false; else tm_report_loading">
+                <ng-container *ngIf="(tmReportArr&&tmReportArr.length>0); else noTimelinePresent">   
                     <div>
                       <table class="time-table mb-1">
                         <thead>
@@ -585,42 +600,93 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>1</td>
+
+                          <tr *ngFor="let tm of tmReportArr; let i=index">
+                            <td>{{i+1}}</td>
                             <td>
                               <div class="d-flex">
-                                <div class="initial-box color-7 b-50 mr-2">MA </div><span
-                                  class="user--name">Md Waseem Akram</span>
+                                <div class="initial-box color-7 b-50 mr-2">{{tm.Initial}}</div><span
+                                  class="user--name">{{tm.EmpName}}</span>
                               </div>
                             </td>
-                            <td><a href="javascript:void(0)" class="pro-link">Prj completion
-                                aprv testing123</a><a href="javascript:void(0)" class="pro-link fs-6 cursor-pointer">
-                                <div class="desp-txt fs-7 actlabel-at-type">Action</div>newaction 11111
-                              </a></td>
-                            <td>testing timeline submit</td>
-                            <td>08:00</td>
-                            <td>08:15</td>
-                            <td>00:15</td>
+
+                            <td>
+                                <a class="pro-link" href="javascript:void(0)" *ngIf="tm.ProjectName && tm.Tasktype!='Lunch' && tm.Tasktype!='Personal'"(click)="newDetails(tm.project_code.trim())">{{tm.ProjectName }}</a>
+                                <a *ngIf="tm.Tasktype=='Lunch'">Lunch</a>
+                                <a *ngIf="tm.Tasktype=='Personal'">Personal</a>
+                                <a *ngIf="!tm.ProjectName && tm.Tasktype!='Lunch' && tm.Tasktype!='Personal'">{{tm.Tasktype }}</a>
+                                <a class="pro-link fs-6 cursor-pointer" href="javascript:void(0)" *ngIf="tm.ActionName && tm.ActionName!=tm.ProjectName"
+                                    (click)="newDetailsaction(tm.project_code.trim(),tm.ActionCode.trim())">
+                                    <div class="desp-txt fs-7 actlabel-at-type">Action</div>{{tm.ActionName }}
+                                </a>
+                            </td>
+                            <td>{{tm.WorkAchieved}}</td>
+                            <td>{{tm.starttime}}</td>
+                            <td>{{tm.endtime}}</td>
+                            <td>{{tm.Duration}}</td>
                           </tr>
+
                         </tbody>
                       </table>
                     </div>
                     <div class="time-totals mb-2">
                       <div class="d-flex align-items-center gap-1">
                         <ul class="time-totals-list mb-0">
-                          <li class="totals-list--item"><span><strong
-                               >Total hours: </strong></span><span>00:15:00 hrs</span></li>
+                          <li class="totals-list--item"><span><strong>Total hours: </strong></span><span>{{tmReportTotalDuration}} hrs</span></li>
                         </ul>
                       </div>
                     </div>
-                    <div class="timeline-note">
-                        <p>You have not submitted timeline</p>
-                        <button class="btn btn-sm btn-primary">Submit</button>
+                    <div *ngIf="tmReportStatus=='Not Submitted'" class="timeline-note pending">
+                        <p>
+                            <svg fill="#fcc52f" width="17px" height="16px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                stroke="#ffcd42" stroke-width="0.00032">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M30.555 25.219l-12.519-21.436c-1.044-1.044-2.738-1.044-3.782 0l-12.52 21.436c-1.044 1.043-1.044 2.736 0 3.781h28.82c1.046-1.045 1.046-2.738 0.001-3.781zM14.992 11.478c0-0.829 0.672-1.5 1.5-1.5s1.5 0.671 1.5 1.5v7c0 0.828-0.672 1.5-1.5 1.5s-1.5-0.672-1.5-1.5v-7zM16.501 24.986c-0.828 0-1.5-0.67-1.5-1.5 0-0.828 0.672-1.5 1.5-1.5s1.5 0.672 1.5 1.5c0 0.83-0.672 1.5-1.5 1.5z"></path>
+                                </g>
+                            </svg>
+                            Timeline report not submitted.
+                        </p>
+                        <button (click)="submitTL(tmSubmDate)" type="button" class="btn btn-info btn-sm btn-fw curser-pointer">Submit</button>
                     </div>
+
+                    <div *ngIf="tmReportStatus!='Not Submitted'" class="timeline-note success">
+                        <p>
+                            <svg fill="#000000" width="20px" height="20px" viewBox="0 0 24 24" id="file-done-2" data-name="Flat Color"
+                                xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path id="primary" d="M17.71,6.29l-4-4A1,1,0,0,0,13,2H4A2,2,0,0,0,2,4V20a2,2,0,0,0,2,2h8.42A5,5,0,0,1,16,15.11a5,5,0,0,1,2,0s0,0,0,0V7A1,1,0,0,0,17.71,6.29Z"style="fill: #99f59d;"></path>
+                                    <path id="secondary" d="M17,22a1,1,0,0,1-.71-.29l-2-2a1,1,0,0,1,1.42-1.42L17,19.59l3.29-3.3a1,1,0,0,1,1.42,1.42l-4,4A1,1,0,0,1,17,22Zm-6-9a1,1,0,0,0-1-1H6a1,1,0,0,0,0,2h4A1,1,0,0,0,11,13Zm4-4a1,1,0,0,0-1-1H6a1,1,0,0,0,0,2h8A1,1,0,0,0,15,9Z" style="fill: #0d7c12;"></path>
+                                </g>
+                            </svg>
+                            Timeline report submitted successfully.
+                        </p>
+                    </div>
+                </ng-container> 
+                <ng-template #noTimelinePresent>
+                    <div class="notimeline-present">
+                        <img src="./assets/images/noTimelinePresent.png" class="notimeline-present-img" />
+                        <div class="bnk-txt mt-3 d-flex justify-content-center">
+                            <h3 class="blank-txt fs-6 notimeline-present-label">No timeline found.</h3>
+                        </div>
+                    </div>
+                </ng-template>
+            </ng-container>   
+            <ng-template #tm_report_loading>
+               <div class="tm-report-spner">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
                   </div>
+               </div>
+            </ng-template>
+
+                </div>
             </div>
-            <div class="timeline-item-div">
-                <div class="timeline-item-heading">Add Timeline</div>
+            <div *ngIf="tmReportStatus=='Not Submitted'||tmReportArr.length==0"  class="timeline-item-div">
+                <div class="timeline-item-heading">Add timeline</div>
                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mt-2" >
                     <label>Type<span class="text-danger">*</span></label>
                     <ng-select required #type="ngModel" name="type" placeholder="Select Type" id="projType" [ngClass]="{'error-vd': (fieldRequired&&!project_type)}"
@@ -645,7 +711,12 @@
                         <div  class="txtm-cus mt-1 ml-1 ng-star-inserted  d-flex  align-items-center flex-wrap gap-1    " *ngIf="p_details&&master_code">
                             <span class="d-inline-flex align-items-center mr-2"><i class="fas fa-calendar-alt mr-1"></i>{{p_details.StartDate|date:'dd-MM-yyyy'}}</span>
                             <span class="d-inline-flex align-items-center mr-2"><i class="fas fa-calendar-alt mr-1"></i>{{p_details.EndDate|date:'dd-MM-yyyy'}}</span>
-                            <span class="d-inline-flex align-items-center mr-2"><i class="fas fa-star mr-1"></i>{{p_details.Status}}</span>
+                            <span class="d-inline-flex align-items-center mr-2"><i class="fas fa-star mr-1"></i>
+                                {{
+                                    p_details.Status!='Completion Under Approval'?p_details.Status: 
+                                    (p_details.AuditStatus=='Audit Pending'?'Audit Approval':'Completion Approval')
+                                }}
+                            </span>
                             <span class="d-inline-flex align-items-center mr-2"><i class="fas fa-clock mr-1"></i>Allocated hours : {{p_details.AllocatedHours}}</span>
                             <span class="d-inline-flex align-items-center mr-2">
                                 <svg width="16px" height="16px" class="mr-1" fill="#757575" viewBox="-2.16 -2.16 28.32 28.32" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" stroke="#757575"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.144"></g><g id="SVGRepo_iconCarrier"> <path d="M23.707,16.325a1,1,0,0,0-1.414,0l-5.627,5.628L13.978,19.3A1,1,0,0,0,12.543,20.7L15.287,23.4a1.876,1.876,0,0,0,1.345.6h.033A1.873,1.873,0,0,0,18,23.447l5.707-5.708a1,1,0,0,0,0-1.414Z M11.09,21.959A10,10,0,1,1,22,12c0,.307-.015.611-.041.911A1,1,0,0,0,22.866,14a.989.989,0,0,0,1.085-.907C23.983,12.73,24,12.367,24,12A12,12,0,1,0,10.91,23.951c.031,0,.061,0,.091,0a1,1,0,0,0,.089-2Z M11,7v4.586L8.293,14.293a1,1,0,1,0,1.414,1.414l3-3A1,1,0,0,0,13,12V7a1,1,0,0,0-2,0Z"></path></g></svg>
@@ -689,7 +760,7 @@
                     <textarea #tlwdes="ngModel" type="text" name="work" class="form-control h-100px" [ngClass]="{'error-border': (fieldRequired&&!workdes)}" [(ngModel)]="workdes" placeholder="Define your achievement here."></textarea>
                     <span style="color:red" *ngIf="(fieldRequired&&!workdes)" >Work description is required.</span>
                 </div>
-                <div class="form-group timeline-date d-none">
+                <!-- <div class="form-group timeline-date">
                     <label>Date<span class="text-danger">*</span></label>
                     <div class="input-group">
                         <input (dateChange)="orgValueChange($event)"  [value]="dateF.value"
@@ -701,8 +772,8 @@
                             <mat-datepicker #picker1></mat-datepicker>
                         </div>
                     </div>
-                    <!-- <span style="color:red"  *ngIf="(fieldRequired&&!dateF.value)" >date required.</span> -->
-                </div>
+                    
+                </div> -->
                 <div class="d-flex gap-1">
                     <div class="form-group w-100">
                         <label>Start time<span class="text-danger">*</span></label>
@@ -780,65 +851,11 @@
                     </div>
                   </ng-container>
                   <div class="timeline-add">
-
-                    <button class="btn btn-sm btn-primary">Add timeline</button>
+                    <button type="reset" class="btn btn-secondary btn-sm mr-2 curser-pointer" (click)="clear()">Reset</button>
+                    <button type="submit" class="btn btn-info btn-sm btn-fw curser-pointer" (click)="onTLSubmitBtnClick()">Add timeline</button>
                 </div>
             </div>
         </div>
-        <div class="timeline-item-div" id="div2" *ngIf="selectedOption === 'option2'">
-            <div class="timeline-item-heading">Yesterday Timeline</div>
-            <div class="">
-                <div class="timeline-header sticky-header d-flex justify-content-between">
-                  <h4 class="header-date p-0 mb-0"> Tuesday, August 29, 2024 </h4>
-                </div>
-                <div>
-                  <table class="time-table mb-1">
-                    <thead>
-                      <tr>
-                        <th style="width: 50px;">S.No.</th>
-                        <th style="width: 280px;">Employee</th>
-                        <th style="width: 280px;">Type</th>
-                        <th>Achievement</th>
-                        <th style="width: 80px;">Start</th>
-                        <th style="width: 80px;">End</th>
-                        <th style="width: 80px;">Time</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>
-                          <div class="d-flex">
-                            <div class="initial-box color-7 b-50 mr-2">MA </div><span
-                              class="user--name">Md Waseem Akram</span>
-                          </div>
-                        </td>
-                        <td><a href="javascript:void(0)" class="pro-link">Prj completion
-                            aprv testing123</a><a href="javascript:void(0)" class="pro-link fs-6 cursor-pointer">
-                            <div class="desp-txt fs-7 actlabel-at-type">Action</div>newaction 11111
-                          </a></td>
-                        <td>testing timeline submit</td>
-                        <td>08:00</td>
-                        <td>08:15</td>
-                        <td>00:15</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="time-totals mb-2">
-                  <div class="d-flex align-items-center gap-1">
-                    <ul class="time-totals-list mb-0">
-                      <li class="totals-list--item"><span><strong
-                           >Total hours: </strong></span><span>00:15:00 hrs</span></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="timeline-note success">
-                    <p>You have submitted timeline</p>
-                </div>
-              </div>
-        </div>
-
     </div>
 
 
@@ -849,10 +866,10 @@
         <button type="submit" class="btn btn-info btn-sm" (click)="submitDar()" *ngIf="showAction==false"
             [disabled]=" !master_code ||  !workdes  || !starttime || !endtime || endtime < starttime">
             Submit</button> -->
-
+<!-- 
             <button type="submit" class="btn btn-sm btn-info" (click)="onTLSubmitBtnClick()">Submit</button>
 
-        <button type="reset" class="btn btn-secondary btn-sm ml-2" (click)="clear()">Reset</button>
+        <button type="reset" class="btn btn-secondary btn-sm ml-2" (click)="clear()">Reset</button> -->
         <button type="submit" class="btn btn-secondary btn-sm ml-2" (click)="closedarBar()">Cancel</button>
     </div>
 

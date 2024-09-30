@@ -2134,7 +2134,13 @@
                                                                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 6V19M6 6H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                             </div>
                                                             <div class="task-add-item-group">
-                                                                <textarea class="task-add-item-textarea" id="addtitle"  placeholder="Add title"></textarea>
+                                                                <textarea class="task-add-item-textarea" id="addtitle"  [ngClass]="{
+                                                                    'error-borderbottom': ((!Title_Name||(Title_Name&&(Title_Name.trim().length<3||Title_Name.trim().length>100)))&&notProvided)
+                                                                    ||( !MinLastNameLength||Title_Name&&(Title_Name.trim().length>100) )
+                                                                    }"
+                                                                
+                                                                
+                                                                placeholder="Add title"></textarea>
                                                             </div>
                                                         </div>
                                                         <div class="task-add-item">
@@ -2236,7 +2242,7 @@
                                                             <div class="task-add-item-group">
                                                                 <div class="task-add-item-file-main">
                                                                     <div id="task-add-item-file-inner" class="task-add-item-file-inner">
-                                                                        <input accept="application/pdf" id="customFile" type="file" multiple="multiple" name="files[]" class="task-add-item-file-input">
+                                                                        <input (change)="onFileChange($event)"   accept="application/pdf"   id="customFile" type="file" multiple="multiple" name="files[]" class="task-add-item-file-input">
                                                                         <label for="customFile" class="task-add-item-file-input-label">
                                                                             <span class="task-add-item-file-input-button">
                                                                                 <span>Add attachment</span>
@@ -2245,16 +2251,16 @@
                                                                     </div>
                                                                 </div>
                                                                 <ul class="task-add-item-file-list">
-                                                                    <li>
+                                                                    <li *ngFor='let url of _lstMultipleFiales'>
                                                                         <div class="task-add-item-file-list-item">
                                                                             <div class="task-add-item-file-info">
                                                                                 <div class="task-add-item-file-svg">
                                                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19 9V17.8C19 18.9201 19 19.4802 18.782 19.908C18.5903 20.2843 18.2843 20.5903 17.908 20.782C17.4802 21 16.9201 21 15.8 21H8.2C7.07989 21 6.51984 21 6.09202 20.782C5.71569 20.5903 5.40973 20.2843 5.21799 19.908C5 19.4802 5 18.9201 5 17.8V6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.0799 3 8.2 3H13M19 9L13 3M19 9H14C13.4477 9 13 8.55228 13 8V3" stroke="#2684fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
                                                                                 </div>
-                                                                                <div class="task-add-item-file-name">rptSingle_MonthlyReport (8) (1).pdf <span class="text-muted">(72082kb)</span></div>
+                                                                                <div class="create-event-file-name">{{url.FileName}}<span class="text-muted">({{url.Size}}kb)</span></div>
                                                                             </div>
                                                                             <div class="task-add-item-file-remove">
-                                                                                <span title="remove" class="slect-close">
+                                                                                <span title="remove" class="slect-close"  (click)="RemoveSelectedFile(url.UniqueId)">
                                                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></g></svg>
                                                                                 </span>
                                                                             </div>
@@ -2265,7 +2271,7 @@
                                                         </div>
                                                         <div class="task-add-item-footer">
                                                             <button type="button" class="btn btn-taskclose" (click)="task_add_close()">Close</button>
-                                                            <button type="button" class="btn btn-taskadd">Add</button>
+                                                            <button type="button" class="btn btn-taskadd" (click)="onSubmitBtnClicked()">Add</button>
                                                         </div>
                                                     </div>
                                                 </div>

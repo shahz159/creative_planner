@@ -1,10 +1,13 @@
 import { Component, OnInit,AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import * as $ from 'jquery';
 import { AuthService } from 'src/app/_Services/auth.service';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import tippy from 'node_modules/tippy.js';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
+import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,7 +20,9 @@ export class SidebarComponent implements OnInit {
   _EmpNo: string;
   OrganizationId:any;
   _CompNo:string;
-  constructor(private router: Router,
+  _confirmBeforeSwitch:string;
+  // _activeLink:string;
+  constructor(private router: Router,private bsService: BsServiceService,
     private authService: AuthService,private notifyService: NotificationService,
     public loadingBarServce:LoadingBarService) { }
   loadingBar_state = this.loadingBarServce.useRef('http');
@@ -27,7 +32,9 @@ export class SidebarComponent implements OnInit {
     this._EmpNo = localStorage.getItem('EmpNo');
     this.OrganizationId=localStorage.getItem('OrganizationId');
     this._CompNo=sessionStorage.getItem("EmpCompNo");
-
+    // this._activeLink=this.router.url;
+    
+     
     $(document).ready(function() {
       // import('../../../assets/js/test.js');
       $('<script/>',{type:'text/javascript', src:'/assets/js/test.js'}).appendTo('head');
@@ -160,7 +167,14 @@ export class SidebarComponent implements OnInit {
       placement:'right'
     });
 
+    this.bsService.ConfirmBeforeRoute.subscribe((modalScreen:string)=>{
+      this._confirmBeforeSwitch=modalScreen;
+    })
+
+
   }
+
+  
   // AfterViewInit():void{
   //   alert('ok');
   // }
@@ -234,4 +248,44 @@ export class SidebarComponent implements OnInit {
   // ngOnDestroy(){
   //   this.logout();
   // }
+
+
+  navigateToSection(page:string){
+   if(this._confirmBeforeSwitch){
+        if(this._confirmBeforeSwitch=='AT-3RD-STEP-PC'){
+            // when moving out from the 3rd step.
+            Swal.fire({
+              title:'Project Not Submitted',
+              text:"Click 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
+              showConfirmButton:true,
+              confirmButtonText:'Keep as draft',
+              showCancelButton:true,
+              cancelButtonText:'Back',
+              // icon:'warning'
+            }).then((decision)=>{
+                if(decision.isConfirmed){
+                  this.bsService.ConfirmBeforeRoute.emit(null);
+                  // this._activeLink=page; 
+                  this.router.navigate([page]);
+                }
+            });
+        }
+        
+   }
+   else{  
+    // this._activeLink=page;
+    this.router.navigate([page]);
+   }
+  }
+  
+   getActiveLink(){
+    return this.router.url;
+   }
+
+
+
 }
+
+
+
+

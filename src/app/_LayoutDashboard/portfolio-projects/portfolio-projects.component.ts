@@ -4505,6 +4505,7 @@ all_status={
   'Completed':'#388E3C',
   'InProcess':'#64B5F6',
   'Completion Under Approval':'#81C784',
+  'Audit Approval':'#A5D6A7',
   'Forward Under Approval':'#64B5F6',
   'Under Approval': '#9C27B0',
   'Delay':'#D32F2F',
@@ -4533,12 +4534,16 @@ loadGanttChart(){
       let y=p2.Duration+(p2.Status=='Delay'?new Date(p2.DeadLine)>=new Date()?0:p2.Delaydays:0);
       return y-x;
   });
-  this.prj_statuses=_ProjectsListBy_Pid1.map(item=>item.Status);
+  this.prj_statuses=_ProjectsListBy_Pid1.map(item=>{item.Status
+       let result=item.Status=='Completion Under Approval'?(item.AuditStatus=='Audit Pending'?'Audit Approval':'Completion Under Approval'):item.Status;
+       return result;
+  });
   this.prj_statuses=Array.from(new Set(this.prj_statuses));
   const todays_date=new Date().getTime();
 
   const _series=_ProjectsListBy_Pid1.map((prj,_index)=>{
-      const color=this.all_status[prj.Status]||this.all_status['other'];
+      let p_status=prj.Status=='Completion Under Approval'?(prj.AuditStatus=='Audit Pending'?'Audit Approval':'Completion Under Approval'):prj.Status;
+      const color=this.all_status[p_status]||this.all_status['other'];
 
       let data_ar=[];
       const prj_startd=new Date(prj.DPG);
@@ -4869,7 +4874,7 @@ var options = {
  const daydiff=Math.abs(moment(_ProjectsListBy_Pid1[index].DPG,'YYYY-MM-DD').diff(moment(_ProjectsListBy_Pid1[index].DeadLine,'YYYY-MM-DD'),'days'))+1;
  const prj_totalactions=_ProjectsListBy_Pid1[index].Actioncount;
  const completed_actions=_ProjectsListBy_Pid1[index].CompletedActioncount;
- const prj_status=_ProjectsListBy_Pid1[index].Status;
+ const prj_status=_ProjectsListBy_Pid1[index].Status=='Completion Under Approval'?(_ProjectsListBy_Pid1[index].AuditStatus=='Audit Pending'?'Audit Approval':'Completion Under Approval'):_ProjectsListBy_Pid1[index].Status;
  const statusColor=this.all_status[prj_status]||this.all_status['other'];
  const delaydays_=Math.abs(_ProjectsListBy_Pid1[index].Delaydays);
  const prj_res=_ProjectsListBy_Pid1[index].Team_Res;

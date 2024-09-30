@@ -849,16 +849,21 @@ border-radius:5px;
 .timeline-item-div {
   padding: 0.65rem 1rem;
   color: #686868;
-  border: 1px solid #dcdcdc;
+  /* border: 1px solid #dcdcdc; */
   border-radius: 4px;
   margin-bottom: 1.5rem;
   position: relative;
+  background-color: #ffffff;
+  box-shadow: 0 0 3px #dcdcdc;
 }
 .timeline-item-heading{
   position: absolute;
   background-color: #f5f5f5;
   border: 1px solid #dcdcdc;
   color: #747070;
+  /* background-color: #2786fb;
+  border: 1px solid #2786fb;
+  color: white; */
   font-weight: 500;
   padding: 2px 4px;
   top: -12px;
@@ -893,9 +898,52 @@ border-radius:5px;
   background-color: #04880912;
   border-left: 4px solid #0d7c12;
   color: #09850e;
+  display:flex;
+  align-items: center;
+  column-gap:5px;
+  font-weight: 400;
 }
+
+.timeline-note.pending p {
+  background-color: #f5ff001f;
+  border-left: 4px solid #fcc52f;
+  color: #fcc52f;
+  display:flex;
+  align-items: center;
+  column-gap:5px;
+  font-weight: 400;
+}
+
+
+
 .timeline-add{
   display: flex;
   align-items: center;
   justify-content: end;
+}
+
+
+
+
+
+.tm-subm-sb{
+  background-color: #d3d3d31a;
+}
+
+.notimeline-present{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notimeline-present img{
+  width:13%;
+}
+
+
+.tm-report-spner{
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

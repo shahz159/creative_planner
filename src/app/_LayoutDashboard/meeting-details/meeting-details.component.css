@@ -8540,19 +8540,25 @@ svg.asseticn.prim-icn.memo_attachment_img {
     display: flex;
     align-items: center;
     gap: 4px;
-    color: #5d5d5d;
+    color: #c7c0c0;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.15s ease-in-out;
 }
 
 .add-s:hover {
-    text-decoration: underline;
-    font-weight: 700;
-    color: #5a5454;
+    color: #527ce2;
+}
+.add-s svg {
+    width: 18px;
+    height: 18px;
 }
 
-.add-s svg {
-    width: 20px;
-    height: 20px;
+  .details-label {
+    position: relative;
+}
+  .add-s {
+    position: absolute;
+    right: 0;
+    bottom: 0;
 }

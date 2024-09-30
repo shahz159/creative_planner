@@ -1159,13 +1159,13 @@
                                                 <div class="kt-agenda-scroll flipped">
                                                     <ul class="kt-agenda-content kt-agenda-list">
                                                         <li  [ngClass]="{'agenda-participant':Isadmin==false}" *ngFor="let item of Agendas_List;let i = index;"
-                                                            (click)="GetMeetingnotes_data()">
+                                                            (click)="showAgendaDetails(item,i);GetMeetingnotes_data()">
                                                             <div  *ngIf="item.Status==undefined  || item.Status==0" class="kt-agenda-item "
                                                                 [ngClass]="{'Active':currentAgendaView===i, 'kt-agendas-item': Isadmin ===true} ">
                                                                 <ng-container *ngIf="Meetingstatuscom==Completed">
                                                                 <label *ngIf="Isadmin==true "
                                                                     class="checkbox checkbox-outline checkbox-success mb-0 mr-2 ">
-                                                                    <input [id]="item.AgendaId+'ckbox'" type="checkbox" (click)="showAgendaDetails(item,i);completeSelectedAgenda();" name="Checkboxes15" />
+                                                                    <input [disabled]="meetingInProgress!=true" [id]="item.AgendaId+'ckbox'" type="checkbox" (click)="completeSelectedAgenda();" name="Checkboxes15" />
                                                                 <span></span>
                                                                 </label>
                                                             </ng-container>
@@ -1173,9 +1173,9 @@
                                                                     <div class="item-details">
                                                                     
                                                                         <div class="d-flex align-items-center justify-content-between">
-                                                                            <div class="agenda-count" (click)="showAgendaDetails(item,i)">Agenda {{i+1}}</div>
+                                                                            <div class="agenda-count" >Agenda {{i+1}}</div>
                                                                             <div class="agenda-details" style="gap: 5px">
-                                                                                <div class="agenda-details-item " (click)="showAgendaDetails(item,i)" [ngClass]="{'active': CurrentTaskCount[i]?.TaskCount > 0}">
+                                                                                <div class="agenda-details-item "  [ngClass]="{'active': CurrentTaskCount[i]?.TaskCount > 0}">
                                                                                     <span class="a-icon">                                
                                                                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 6L21 6.00072M11 12L21 12.0007M11 18L21 18.0007M3 11.9444L4.53846 13.5L8 10M3 5.94444L4.53846 7.5L8 4M4.5 18H4.51M5 18C5 18.2761 4.77614 18.5 4.5 18.5C4.22386 18.5 4 18.2761 4 18C4 17.7239 4.22386 17.5 4.5 17.5C4.77614 17.5 5 17.7239 5 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                                 </span>
@@ -1190,20 +1190,20 @@
                                                                                     <span  class="agenda-details-item-count">{{notescount[i].count}}</span>
                                                                                 </div>
                                                                         <div *ngIf="Isadmin==true"  class="a-v-line"></div>
-                                                                        <button  *ngIf="Isadmin==true " [id]="'edit-agendaname-btn-'+i" class="edit-agendaname-btn" title="Edit" (click)="editAgenda(i)">
+                                                                        <button  *ngIf="Isadmin==true " [id]="'edit-agendaname-btn-'+i" class="edit-agendaname-btn" title="Edit" (click)="unnecessarynotify();editAgenda(i)">
                                                                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" fill="currentColor"></path> </g></svg>
                                                                         </button>
                                                                         <button *ngIf="Isadmin==true"  [id]="'remove-agenda-btn-'+i"
                                                                             class="remove-agenda-btn" title="Delete"
-                                                                            (click)="deleteAgenda(item.AgendaId)">
+                                                                            (click)="unnecessarynotify();deleteAgenda(item.AgendaId)">
                                                                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10L7.70141 19.3578C7.87432 20.3088 8.70258 21 9.66915 21H14.3308C15.2974 21 16.1257 20.3087 16.2986 19.3578L18 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                         </button>
-                                                                        <button (click)="cancelAgendaEdit(i)" title="Cancel"
+                                                                        <button (click)="unnecessarynotify();cancelAgendaEdit(i)" title="Cancel"
                                                                             [id]="'edit-cancel-'+i" class="editing-cancel d-none">
                                                                             <svg width="64px" height="64px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>cancel</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="work-case" fill="currentColor" transform="translate(91.520000, 91.520000)"> <polygon id="Close" points="328.96 30.2933333 298.666667 1.42108547e-14 164.48 134.4 30.2933333 1.42108547e-14 1.42108547e-14 30.2933333 134.4 164.48 1.42108547e-14 298.666667 30.2933333 328.96 164.48 194.56 298.666667 328.96 328.96 298.666667 194.56 164.48"> </polygon> </g> </g> </g></svg>
                                                                         </button>
 
-                                                                        <button (click)="updateAgenda1(i)" title="Save"
+                                                                        <button (click)="unnecessarynotify();updateAgenda1(i)" title="Save"
                                                                             [id]="'editing-save-'+i" class="editing-save d-none ">
                                                                             <svg width="21px" height="25px"
                                                                                 viewBox="0 0 24.00 24.00"
@@ -1223,12 +1223,12 @@
                                                                         </div>
                                                                         <div class="agenda-title-input"  title="{{item.Agenda_Name.length>68 ? item.Agenda_Name: ''}}" >
                                                                             <label [id]="'agenda-label-'+i"
-                                                                            class="task-name"  (click)="showAgendaDetails(item,i)">{{item.Agenda_Name}}</label>
+                                                                            class="task-name"  >{{item.Agenda_Name}}</label>
                                                                             <input [id]="'agenda-text-field-'+i" type="text"
                                                                             class="task-name-editfield  d-none "
                                                                             [value]="item.Agenda_Name" />
                                                                         </div>
-                                                                            <div (click)="showAgendaDetails(item,i)" class="d-flex align-items-center justify-content-between">
+                                                                            <div  class="d-flex align-items-center justify-content-between">
                                                                                 <div  class="kt-info-lable-v"> By {{item.Created_by}} </div>
                                                                                 <!-- <div class="agenda-details" style="gap: 5px">
                                                                                     <div class="agenda-details-item">
@@ -1282,13 +1282,11 @@
                                                                                 <!-- <div class="a-v-line"></div> -->
                                                                                 <div class="agenda-details-item" [ngClass]="{'active': CurrentNotesCount[i]?.NotesCount == 1}">
                                                                                     <span class="a-icon">
-                                                                                        <svg  xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16" class="iconify iconify--mdi"><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
-                                                                                
+                                                                                        <svg  xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16" class="iconify iconify--mdi"><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>   
                                                                                 </span>
                                                                                     <span  class="agenda-details-item-count">{{item.NotesCount}}</span>
                                                                                 </div>
                                                                             </div>
-
                                                                         </div>
                                                                         <div class="agenda-title-input"  title="{{item.Agenda_Name.length>68 ? item.Agenda_Name: ''}}">
                                                                             <label [id]="'agenda-label-'+i"
@@ -1417,12 +1415,11 @@
 
                                             <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()">
                                                 <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject!=undefined">
-                                                <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                    height="29" title="View or link SMail">
+                                                <img src="./assets/images/Image (4).jfif" height="23" width="21px"  title="View or link SMail">
 
                                                 </ng-container >
                                                 <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
-                                                <img _ngcontent-dcf-c397="" width="22px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29" title="Not linked" class="black-white ng-star-inserted">
+                                                <img  src="./assets/images/Image (4).jfif" height="23" width="21px" title="Not linked" class="black-white ng-star-inserted">
                                             </ng-container>
                                             </a>
 
@@ -1702,7 +1699,7 @@
                                     </path>
                                 </svg>
                                 <span class="notif-msg" style=" color: #00a2eb;" >
-                                    The meeting hasn't started yet, Please start the meeting.</span>
+                                    The meeting hasn't started yet. Please start the meeting.</span>
                                 </div>
                             </container>
                                 <container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true">
@@ -1714,7 +1711,7 @@
                                     </path>
                                 </svg>
                                 <span class="notif-msg" style=" color: #00a2eb;" >
-                                    The meeting has not started yet, Please wait for the admin to start the meeting.</span>
+                                    The meeting has not started yet. Please wait for the admin to start the meeting.</span>
                                 </div>
                                 </container>
                         
@@ -2191,17 +2188,18 @@
                                             <div class="col-md-3 details-bg">
                                                 <div class="details-label">
                                                     <span class="label-icon"  *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined" >
-                                                        <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                            width="14px" height="16px" class="black-white">
+                                                        <img src="./assets/images/Image (4).jfif" width="14px" height="16px" class="black-white">
                                                     </span>
                                                     <span class="icon"  *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject!=undefined" >
-                                                        <img width="16"
-                                                            src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                                            height="16">
+                                                        <img width="16"src="./assets/images/Image (4).jfif" height="16" >
                                                     </span>
                                                     <span class="label-name">
                                                         SMail
                                                     </span>
+                                                    <div class="add-s" title="Link SMail" (click)="addNewDMS()">
+                                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
+                                                        <!-- <span>Add More</span> -->
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-9 details-form-control-bg">
@@ -2216,10 +2214,7 @@
 
                                                         <span class="title"> <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a></span>
                                                     </div>
-                                                    <!-- <div class="add-s">
-                                                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M13 19H5C3.89543 19 3 18.1046 3 17V7C3 5.89543 3.89543 5 5 5H19C20.1046 5 21 5.89543 21 7V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> <path d="M18.5 14V16.5M18.5 19V16.5M18.5 16.5H16M18.5 16.5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                                                        <span>Add More</span>
-                                                    </div> -->
+                                                    
                                                 </ng-container>
                                                 <ng-container  *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
                                                     <div class="dark-title">No SMail link in the meeting</div>
@@ -2236,6 +2231,10 @@
                                                     <span class="label-name">
                                                         Portfolio
                                                     </span>
+                                                    <div class="add-s" title="Link portfolio" (click)="AddPortfolio()" >
+                                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
+                                                        <!-- <span>Add More</span> -->
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-9 details-form-control-bg">
@@ -2248,6 +2247,7 @@
 
                                                         <span class="title"> <a href="javascript:void(0)" (click)="OnCardClick(pfl.numberval)">{{pfl.Portfolio_Name}}</a></span>
                                                     </div>
+                                                    
                                                 </ng-container>
                                                 <ng-container  *ngIf="portfolio_Scheduledjson&&portfolio_Scheduledjson.length==0">
                                                     <div class="dark-title">No Portfolio link in the meeting</div>
@@ -2264,6 +2264,10 @@
                                                     <span class="label-name">
                                                         Projects
                                                     </span>
+                                                    <div class="add-s" title="Link project" (click)="AddProjects()">
+                                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
+                                                        <!-- <span>Add More</span> -->
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-9 details-form-control-bg">
@@ -2279,6 +2283,7 @@
                                                         {{item.Project_Name}}
                                                         </a>
                                                     </div>
+                                                    
                                                 </ng-container>
                                                 <ng-template #NoProject_code>
                                                     <div class="dark-title">No project link in this meeting</div>
@@ -2374,6 +2379,10 @@
                                                     <span class="label-name">
                                                         Attachment
                                                     </span>
+                                                    <div class="add-s" title="Link attachment" (click)="Attachment_views()">
+                                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
+                                                        <!-- <span>Add More</span> -->
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-9 details-form-control-bg">
@@ -2427,14 +2436,10 @@
                                                        </span>
                                                         <span class="title-muted" style="margin-left: 6px;"> <a target=”_blank” class="title-muted ml-0" href="{{item.url}}"> {{item.File_Name}}</a></span>
                                                     </div>
-
+                                                    
                                                     <ng-template #NoAttachments_ary>
                                                         <span class="dark-title">No attachment link in this meeting</span>
                                                     </ng-template>
-
-
-
-
 
                                                     <!-- <div class="project">
                                                         <span class="icon">
@@ -2542,7 +2547,6 @@
                                                         </span> -->
                                                         <span class="user-name">{{item.Created_by}}</span>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -2563,6 +2567,10 @@
                                                     <span class="label-name">
                                                         Attendees
                                                     </span>
+                                                    <div class="add-s" title="Link Attendees" (click)="View_Meeting_Attendees();">
+                                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
+                                                        <!-- <span>Add More</span> -->
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-9 details-form-control-bg">
@@ -3793,12 +3801,12 @@
                         <h4 class="font-weight-600 m-0 d-flex">
                             <a class="kt-inbox__icon curser-pointer pb-3" (click)="addNewDMS()">
                                 <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject!=undefined">
-                                    <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                        height="29" title="Link SMail">
+                                    <img src="./assets/images/Image (4).jfif"
+                                        height="23" width="21px"  >
 
                                     </ng-container >
                                     <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
-                                    <img _ngcontent-dcf-c397="" width="22px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29" title="Link DMS" class="black-white ng-star-inserted">
+                                    <img  src="./assets/images/Image (4).jfif" width="21px" height="23"  class="black-white ng-star-inserted">
                                 </ng-container>
                             </a> Link SMail
                         </h4>
@@ -8719,7 +8727,7 @@
                         <div class="se-row" id="core_Dms" style="display:none">
                             <div class="se-col-1">
                                 <div class="label-icon">
-                                    <img width="19px" class="black-white" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" >
+                                    <img width="23px" height="25px" class="black-white" src="./assets/images/Image (4).jfif" >
                                 </div>
                             </div>
                             <div class="se-col-11">
@@ -9179,7 +9187,7 @@
             <div class="modal-content">
                 <div class="modal-header  gap-1">
                 <ng-container *ngIf="projectmodaltype">
-                            <img *ngIf="projectmodaltype==='SMail'" width="18px" class="black-white   mt-1 mb-1" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="25"/>
+                            <img *ngIf="projectmodaltype==='SMail'" width="21px" class="black-white   mt-1 mb-1" src="./assets/images/Image (4).jfif" height="23"/>
                             <svg *ngIf="projectmodaltype==='participant'"   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
                                 <path
                                     d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
@@ -9951,11 +9959,11 @@
                     <div id="project" class="eve-area ng-star-inserted">
                         <div class="left-icon">
                             <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject!=undefined">
-                                <img src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
-                                    height="29" title="Link SMail">
+                                <img src="./assets/images/Image (4).jfif"
+                                    height="23" width="21px" >
                                 </ng-container >
                                 <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
-                                <img _ngcontent-dcf-c397="" width="22px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="29" title="Link sm" class="black-white ng-star-inserted">
+                                <img  width="22px" src="./assets/images/Image (4).jfif" height="23" width="21px"  class="black-white ng-star-inserted">
                             </ng-container>                   
                         </div>
                         <div class="rgt-des">

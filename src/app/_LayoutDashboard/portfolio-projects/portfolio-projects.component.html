@@ -687,13 +687,13 @@
                                                           <a class="curser-pointer mr-2"
                                                               (click)="_OpenMemosInfo(item1.Project_Code,item1.Project_Name)"><img
                                                                   width="19px"
-                                                                  src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                  src="./assets/images/Image (4).jfif"
                                                                   title="Linked"></a>
 
                                                       </span>
                                                       <ng-template #not_Linked>
                                                           <a class="mr-2"><img width="19px" class="black-white"
-                                                                  src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                  src="./assets/images/Image (4).jfif"
                                                                   title="Not linked"></a>
                                                       </ng-template>
 
@@ -747,10 +747,6 @@
                                                           </ng-template></div>
                                                         </ng-container>
                                                       </td>
-
-
-
-
 
 <!-- <td *ngIf="showDeletedPrjOnly" ></td> -->
                                                     <td>
@@ -832,10 +828,6 @@
                                                     </span>
                                                   </div>
 
-
-
-
-
                                                   <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">
                                                       <span
                                                           class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>
@@ -846,7 +838,10 @@
                                                             <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                         </span>
                                                           <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
-                                                  </div>
+                                                        <span class="New_Approval_Project font-weight-400">
+                                                            {{item1.Approvedby}}
+                                                        </span>
+                                                 </div>
                                                   <div *ngIf="item1.Status=='InProcess'">
                                                       <span
                                                           class="in-process font-weight-400">{{item1.Status=='InProcess'?'In-process':item1.status}}</span>
@@ -861,8 +856,7 @@
                                                           class="Project_Complete_Rejected_color font-weight-400">{{item1.Status}}</span>
                                                   </div>
                                                   <div *ngIf="item1.Status=='Project Hold'">
-                                                      <span
-                                                          class="Hold font-weight-400">Hold</span>
+                                                      <span class="Hold font-weight-400">Hold</span>
                                                   </div>
                                                   <div *ngIf="item1.Status=='Project Holded'">
                                                       <span class="Hold_color font-weight-400"
@@ -874,7 +868,6 @@
                                                           <span class="New_Approval_Project font-weight-400">{{ (item1.Pendingapprover === 'Under Approval') ? 'New approval' : item1.Pendingapprover}}
                                                         </span>
                                                           <br>
-
                                                   </div>
                                                   <div *ngIf="item1.Status=='Not Started'">
                                                     <span
@@ -887,11 +880,9 @@
                                                       </span>
                                                   </div>
                                                   <div *ngIf="item1.Status=='Completion Under Approval'">
-
-                                                      <span
-                                                          class="font-weight-400 completion-under-approval">{{item1.Status=="Completion Under Approval" ? "Completion approval":item1.Status}}
+                                                      <span class="font-weight-400 completion-under-approval">
+                                                        {{(item1.AuditStatus=='Audit Pending')?"Audit Approval":"Completion approval"}}
                                                       </span>
-
                                                       <span class="attach-tippy">
                                                         <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
                                                      <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
@@ -901,6 +892,7 @@
                                                     <span class="New_Approval_Project font-weight-400">{{item1.Pendingapprover=="Completion Under Approval" ? "Completion approval":item1.Pendingapprover}}
                                                     </span>
                                                   </div>
+                                                  
                                                   <div *ngIf="item1.Status=='Cancellation Under Approval'">
                                                       <span
                                                           class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status =="Cancellation Under Approval" ? "Cancellation approval":item1.Status}}
@@ -1007,7 +999,7 @@
                                                     </svg>
                                                   </span>
                                                 </div>
-                                          </td>
+                                             </td>
 
 
                                                     <!-- <ng-template  *ngIf="!showDeletedPrjOnly;else deletedbys" >
@@ -1030,27 +1022,6 @@
                                                     </ng-container>
 
 
-
-
-
-
-                                                    <!-- <div *ngIf="item1.Status=='Delay'">
-                                                      <span
-
-
-                                                   *ngIf="item1.Delaydays>0"
-                                                        class=" Delay_color font-weight-400 ">
-                                                        {{item1.Delaydays}}
-                                                            days
-
-                                                     <span     class="">{{item1.Status}}
-
-                                                     </span>
-                                                      </span>
-                                                  </div> -->
-
-
-
                                         <ng-container *ngIf="showDeletedPrjOnly">
                                              <td>
 
@@ -1059,38 +1030,6 @@
                                                 <span class="">{{item1.Status}}</span>
                                                 </span>
                                              </div>
-
-  <!-- <div *ngIf="item1.Status.trim().endsWith('Delay')">
-                                                <span
-                                                    class="Delay_color font-weight-400">{{item1.Status}}
-                                                  </span>
-                                                <span *ngIf="item1.Delaydays>0"
-                                                    class=" delayDays">
-                                                    <strong>{{item1.Delaydays}}
-                                                        days Delay</strong>
-                                                      </span>
-
-                                            </div> -->
-
-<!--
-<span  *ngIf="item1.Delaydays>0&&item1.Status=='Delay'">
-                                              <span
-
-
-
-                                                class=" Delay_color font-weight-400 ">
-                                                {{item1.Delaydays}}
-                                                    days
-
-
-                                            </span>
-                                          </span>
-                                          <span *ngIf="item1.Status.trim().endsWith('Delay')">
-                                            <span     class="Delay_color font-weight-400">{{item1.Status}}
-
-                                            </span>
-</span> -->
-
 
                                             <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">
                                                 <span
@@ -1101,10 +1040,10 @@
                                                        <div style="width: max-content;">Approved by: <h6>{{item1.Approvedby}} </h6></div>
                                                         <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                     </span>
+                                                    <span class="New_Approval_Project font-weight-400">
+                                                        {{item1.Approvedby}}
+                                                    </span>
                                                     <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
-
-
-
                                             </div>
                                             <div *ngIf="item1.Status=='InProcess'">
                                                 <span
@@ -1145,7 +1084,8 @@
                                             <div *ngIf="item1.Status=='Completion Under Approval'">
                                                 <!-- <h2>Mubeen</h2> -->
                                                 <span
-                                                    class="font-weight-400 completion-under-approval">{{item1.Status=="Completion Under Approval" ? "Completion approval":item1.Status}}
+                                                    class="font-weight-400 completion-under-approval">
+                                                    {{(item1.AuditStatus=='Audit Pending')?"Audit Approval":"Completion approval"}}
                                                 </span>
 
                                             </div>
@@ -1212,105 +1152,74 @@
                                         </ng-container>
 
 
+                                    <td *ngIf="showDeletedPrjOnly" class="attach-tippy-div">
+                                        <span class="Delay_color curser-pointer">Deleted </span>
+                                            <!-- <div class="d-flex align-items-center justify-content-start">
+
+                                        <p class="kt-widget__other d-block st-line" title="Deleted by and Deleted date">
+                                        <ng-container *ngIf="item1.Deleted_by">
+                                            {{ item1.Deleted_by }} |
+                                        </ng-container>
+                                        {{ item1.Deleted_DT | date: 'dd-MM-yyyy' }} </p>
+                                                    </div> -->
+                                    <span class="attach-tippy">
+                                        <b class="fa fa-trash text-info attachment" ></b>
+                                    <span class="st-line">
+                                        <div style="width: max-content;">Deleted by: <h6>{{item1.Deleted_by}} </h6></div>
+                                        <div>on: {{item1.Deleted_DT | date: 'dd-MM-yyyy'}}</div></span>
+                                    </span>
+
+                                    </td>
+
+                                    <td *ngIf="showDeletedPrjOnly">
+                                    <div class="d-flex align-items-center " style="gap: 10px;">
+                                        <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        class="btn-v-icon" title="View">
+                                        <ng-container *ngIf="item1.availableports && item1.availableports.length > 0; else noReference">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg"  width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
+                                                <defs></defs>
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                                    <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path>
+                                                    <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor" ></path>
+                                                </g>
+                                            </svg>
+                                        </span>
+
+                                        </ng-container>
+
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant" style="cursor: pointer;" *ngIf="item1.availableports && item1.availableports.length > 0">
+                                            <div *ngFor="let availablePort of item1.availableports; let i=index"
+                                                (click)="OnCardClick(availablePort.Portfolio_ID, availablePort.Portfolio_Name, item1.CreatedName, item1.Created_DT)"
+                                                class="dropdown-item">
+                                                {{i+1}}. {{ availablePort.Portfolio_Name }}
+                                            </div>
+                                        </div>
+
+                                    </a>
+
+                                    <a class="btn-v-icon" (click)="RestorePortfolioProjects(item1.Project_ID,item1.Portfolio_ID)" title="Restore">
+                                    <span>
+                                        <svg style="
+                                        width: 21px;
+                                        height: 21px;
+                                    " width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.52185 7H7C7.55229 7 8 7.44772 8 8C8 8.55229 7.55228 9 7 9H3C1.89543 9 1 8.10457 1 7V3C1 2.44772 1.44772 2 2 2C2.55228 2 3 2.44772 3 3V5.6754C4.26953 3.8688 6.06062 2.47676 8.14852 1.69631C10.6633 0.756291 13.435 0.768419 15.9415 1.73041C18.448 2.69239 20.5161 4.53782 21.7562 6.91897C22.9963 9.30013 23.3228 12.0526 22.6741 14.6578C22.0254 17.263 20.4464 19.541 18.2345 21.0626C16.0226 22.5842 13.3306 23.2444 10.6657 22.9188C8.00083 22.5931 5.54702 21.3041 3.76664 19.2946C2.20818 17.5356 1.25993 15.3309 1.04625 13.0078C0.995657 12.4579 1.45216 12.0088 2.00445 12.0084C2.55673 12.0079 3.00351 12.4566 3.06526 13.0055C3.27138 14.8374 4.03712 16.5706 5.27027 17.9625C6.7255 19.605 8.73118 20.6586 10.9094 20.9247C13.0876 21.1909 15.288 20.6513 17.0959 19.4075C18.9039 18.1638 20.1945 16.3018 20.7247 14.1724C21.2549 12.043 20.9881 9.79319 19.9745 7.8469C18.9608 5.90061 17.2704 4.3922 15.2217 3.6059C13.173 2.8196 10.9074 2.80968 8.8519 3.57803C7.11008 4.22911 5.62099 5.40094 4.57993 6.92229C4.56156 6.94914 4.54217 6.97505 4.52185 7Z" fill="currentColor"></path> </g></svg>
+                                    </span>
+
+                                    </a>
 
 
-
-                                        <!-- <td *ngIf="showDeletedPrjOnly" class="attach-tippy-div">
-                                          <span class="Delay_color curser-pointer">abcd </span>
-
-
-
-                                      </td> -->
-
-
-
-
-
-
-
-
-
-
-                        <td *ngIf="showDeletedPrjOnly" class="attach-tippy-div">
-                            <span class="Delay_color curser-pointer">Deleted </span>
-                                <!-- <div class="d-flex align-items-center justify-content-start">
-
-                            <p class="kt-widget__other d-block st-line" title="Deleted by and Deleted date">
-                            <ng-container *ngIf="item1.Deleted_by">
-                                {{ item1.Deleted_by }} |
-                            </ng-container>
-                            {{ item1.Deleted_DT | date: 'dd-MM-yyyy' }} </p>
-                                        </div> -->
-                        <span class="attach-tippy">
-                            <b class="fa fa-trash text-info attachment" ></b>
-                        <span class="st-line">
-                            <div style="width: max-content;">Deleted by: <h6>{{item1.Deleted_by}} </h6></div>
-                            <div>on: {{item1.Deleted_DT | date: 'dd-MM-yyyy'}}</div></span>
-                        </span>
-
-                        </td>
-
-
-
-
-
-
-
-
-
-
-                                 <td *ngIf="showDeletedPrjOnly">
-                                  <div class="d-flex align-items-center " style="gap: 10px;">
-                                    <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                    class="btn-v-icon" title="View">
-                                     <ng-container *ngIf="item1.availableports && item1.availableports.length > 0; else noReference">
-                                       <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg"  width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
-                                            <defs></defs>
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24"></rect>
-                                                <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path>
-                                                <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor" ></path>
-                                            </g>
-                                        </svg>
-                                       </span>
-
-                                     </ng-container>
-
-                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant" style="cursor: pointer;" *ngIf="item1.availableports && item1.availableports.length > 0">
-                                         <div *ngFor="let availablePort of item1.availableports; let i=index"
-                                              (click)="OnCardClick(availablePort.Portfolio_ID, availablePort.Portfolio_Name, item1.CreatedName, item1.Created_DT)"
-                                              class="dropdown-item">
-                                             {{i+1}}. {{ availablePort.Portfolio_Name }}
-                                         </div>
-                                     </div>
-
-                                 </a>
-
-                                 <a class="btn-v-icon" (click)="RestorePortfolioProjects(item1.Project_ID,item1.Portfolio_ID)" title="Restore">
-                                   <span>
-                                    <svg style="
-                                    width: 21px;
-                                    height: 21px;
-                                " width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.52185 7H7C7.55229 7 8 7.44772 8 8C8 8.55229 7.55228 9 7 9H3C1.89543 9 1 8.10457 1 7V3C1 2.44772 1.44772 2 2 2C2.55228 2 3 2.44772 3 3V5.6754C4.26953 3.8688 6.06062 2.47676 8.14852 1.69631C10.6633 0.756291 13.435 0.768419 15.9415 1.73041C18.448 2.69239 20.5161 4.53782 21.7562 6.91897C22.9963 9.30013 23.3228 12.0526 22.6741 14.6578C22.0254 17.263 20.4464 19.541 18.2345 21.0626C16.0226 22.5842 13.3306 23.2444 10.6657 22.9188C8.00083 22.5931 5.54702 21.3041 3.76664 19.2946C2.20818 17.5356 1.25993 15.3309 1.04625 13.0078C0.995657 12.4579 1.45216 12.0088 2.00445 12.0084C2.55673 12.0079 3.00351 12.4566 3.06526 13.0055C3.27138 14.8374 4.03712 16.5706 5.27027 17.9625C6.7255 19.605 8.73118 20.6586 10.9094 20.9247C13.0876 21.1909 15.288 20.6513 17.0959 19.4075C18.9039 18.1638 20.1945 16.3018 20.7247 14.1724C21.2549 12.043 20.9881 9.79319 19.9745 7.8469C18.9608 5.90061 17.2704 4.3922 15.2217 3.6059C13.173 2.8196 10.9074 2.80968 8.8519 3.57803C7.11008 4.22911 5.62099 5.40094 4.57993 6.92229C4.56156 6.94914 4.54217 6.97505 4.52185 7Z" fill="currentColor"></path> </g></svg>
-                                   </span>
-
-                                 </a>
-
-
-                                 <ng-template #noReference>
-                                  <a class="btn-v-icon" style="cursor: default;" title="No References">
-                                    <span ><svg xmlns="http://www.w3.org/2000/svg" width="825" height="804" viewBox="0 0 825 804" fill="none">
-                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M401.167 152.031L286.833 266.264L249.033 228.931L318.033 159.597H158.033C147.528 159.597 137.125 161.667 127.419 165.687C117.713 169.707 108.894 175.6 101.465 183.029C94.0362 190.457 88.1434 199.277 84.1231 208.983C80.1027 218.689 78.0334 229.092 78.0334 239.597C78.0334 250.103 80.1027 260.506 84.1231 270.212C88.1434 279.918 94.0362 288.737 101.465 296.166C108.894 303.595 117.713 309.487 127.419 313.508C137.125 317.528 147.528 319.597 158.033 319.597H187.7V372.931H158.367C124.138 371.306 91.8484 356.564 68.1991 331.766C44.5497 306.967 31.3562 274.015 31.3562 239.747C31.3562 205.48 44.5497 172.528 68.1991 147.729C91.8484 122.93 124.138 108.189 158.367 106.564H318.367L249 37.664L286.833 -0.00268555L401.167 114.397V152.031ZM585 799.997H265L238.333 773.331V347.064L265 320.397H585L611.667 347.064V773.331L585 799.997ZM291.667 746.664H558.333V373.731H291.667V746.664ZM478.333 53.3973H798.333L825 80.064V506.264L798.333 532.931H665V479.597H771.667V106.664H505V266.231H451.667V80.0306L478.333 53.364V53.3973ZM505 426.264H345V479.597H505V426.264ZM345 532.931H505V586.264H345V532.931ZM505 639.597H345V692.931H505V639.597ZM558.333 159.597H718.333V212.931H558.333V159.597ZM718.333 372.931H665V426.264H718.333V372.931ZM607.067 267.064V266.264H718.333V319.597H659.6L607.067 267.064Z" fill="currentColor"/>
-                                        <path d="M22.6209 29.3627L400.423 405.52L778.224 781.678" stroke="white" stroke-width="63"/>
-                                        <path d="M23 31L778 779" stroke="currentColor" stroke-width="53"/>
-                                        </svg></span>
-                                  </a>
-                                 </ng-template></div>
-                              </td>
-
-
-
+                                    <ng-template #noReference>
+                                    <a class="btn-v-icon" style="cursor: default;" title="No References">
+                                        <span ><svg xmlns="http://www.w3.org/2000/svg" width="825" height="804" viewBox="0 0 825 804" fill="none">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M401.167 152.031L286.833 266.264L249.033 228.931L318.033 159.597H158.033C147.528 159.597 137.125 161.667 127.419 165.687C117.713 169.707 108.894 175.6 101.465 183.029C94.0362 190.457 88.1434 199.277 84.1231 208.983C80.1027 218.689 78.0334 229.092 78.0334 239.597C78.0334 250.103 80.1027 260.506 84.1231 270.212C88.1434 279.918 94.0362 288.737 101.465 296.166C108.894 303.595 117.713 309.487 127.419 313.508C137.125 317.528 147.528 319.597 158.033 319.597H187.7V372.931H158.367C124.138 371.306 91.8484 356.564 68.1991 331.766C44.5497 306.967 31.3562 274.015 31.3562 239.747C31.3562 205.48 44.5497 172.528 68.1991 147.729C91.8484 122.93 124.138 108.189 158.367 106.564H318.367L249 37.664L286.833 -0.00268555L401.167 114.397V152.031ZM585 799.997H265L238.333 773.331V347.064L265 320.397H585L611.667 347.064V773.331L585 799.997ZM291.667 746.664H558.333V373.731H291.667V746.664ZM478.333 53.3973H798.333L825 80.064V506.264L798.333 532.931H665V479.597H771.667V106.664H505V266.231H451.667V80.0306L478.333 53.364V53.3973ZM505 426.264H345V479.597H505V426.264ZM345 532.931H505V586.264H345V532.931ZM505 639.597H345V692.931H505V639.597ZM558.333 159.597H718.333V212.931H558.333V159.597ZM718.333 372.931H665V426.264H718.333V372.931ZM607.067 267.064V266.264H718.333V319.597H659.6L607.067 267.064Z" fill="currentColor"/>
+                                            <path d="M22.6209 29.3627L400.423 405.52L778.224 781.678" stroke="white" stroke-width="63"/>
+                                            <path d="M23 31L778 779" stroke="currentColor" stroke-width="53"/>
+                                            </svg></span>
+                                    </a>
+                                    </ng-template></div>
+                                    </td>
 
                                             </tr>
                                            </ng-container>
@@ -1598,7 +1507,7 @@
 
                 <div class="title-sidebar mb-0 text-white">
                     <h5 class="curser-pointer">
-                        <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked
+                        <img width="25px" src="./assets/images/Image (4).jfif"> Linked
                         Memos
                     </h5>
                     <span class="text-small text-white">{{_displayProjName}}</span>
@@ -4260,7 +4169,7 @@
 <div class="se-row" id="core_Dms" style="display:none">
 <div class="se-col-1">
   <div class="label-icon">
-      <img width="19px" class="black-white" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" >
+      <img width="19px" class="black-white" width="23px" height="25px" src="./assets/images/Image (4).jfif" >
   </div>
 </div>
 <div class="se-col-11">
@@ -4291,7 +4200,7 @@
           <div class="modal-content">
             <div class="modal-header  gap-1">
                <ng-container *ngIf="projectmodaltype">
-                        <img *ngIf="projectmodaltype==='SMail'" width="18px" class="black-white   mt-1 mb-1" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" height="25"/>
+                        <img *ngIf="projectmodaltype==='SMail'" width="21px" class="black-white   mt-1 mb-1" src="./assets/images/Image (4).jfif" height="22"/>
                         <svg *ngIf="projectmodaltype==='participant'"   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
                             <path
                                 d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">

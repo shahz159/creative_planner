@@ -1174,14 +1174,14 @@
                                                         <div *ngIf="item.Link_Status==1;else not_Linked">
                                                             <a class="curser-pointer ml-2"
                                                                 (click)="_OpenMemosInfo(item.Project_Code,item.Project_Name)"><img
-                                                                    width="19px"
-                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    width="19px" height="21px"
+                                                                    src="./assets/images/Image (4).jfif"
                                                                     title="Linked"></a>
 
                                                         </div>
                                                         <ng-template #not_Linked>
-                                                            <a  (click)="_OpenMemosInfo()"><img width="19px" class="black-white ml-2"
-                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                            <a  (click)="_OpenMemosInfo()"><img width="19px" height="21px" class="black-white ml-2"
+                                                                    src="./assets/images/Image (4).jfif"
                                                                     title="Not Linked"></a>
                                                         </ng-template>
                                                         </div>
@@ -1335,8 +1335,16 @@
                                                                 </span>
                                                             </div>
                                                             <div *ngIf="item.Status=='Completion Under Approval'">
-                                                                <span class="Completion_Under_Approval_color font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">Completion approval
+
+                                                                <span *ngIf="item.AuditStatus=='Audit Pending';else compl_aprvl_status" class="AuditUnderApproval font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                                    Audit Approval
                                                                 </span>
+                                                                <ng-template #compl_aprvl_status>
+                                                                    <span class="Completion_Under_Approval_color font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                                        Completion approval
+                                                                    </span>
+                                                                </ng-template>
+
                                                                 <span class="attach-tippy">
                                                                   <b *ngIf="item.FileUrl" class="fa fa-paperclip text-info attachment cursor-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
                                                               <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
@@ -1366,9 +1374,13 @@
                                                                     <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                                 </span>
 
+                                                                <span class="New_Approval_Project font-weight-400">
+                                                                    {{item.Approvedby}}
+                                                                </span>
+
                                                             </div>
                                                             <div *ngIf="item.Status=='Forward Under Approval'" class="attach-tippy">
-                                                              <span class=" pending_appr st-line">Pending approval</span>
+                                                                <span class=" pending_appr st-line">Pending approval</span>
                                                                 <span class="Forward_Under_Approval_color font-weight-400">Forward approval
                                                                 </span>
                                                                 <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
@@ -1558,7 +1570,7 @@
                 (click)="_CloseMemosidebar()">&times;</a>
             <div class="title-sidebar mb-0 text-white">
                 <h5 class="curser-pointer">
-                    <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked memos
+                    <img height="22px" width="22px" src="./assets/images/Image (4).jfif"> Linked memos
                 </h5>
                 <span class="text-small text-white">{{_displayProjName}}</span>
 

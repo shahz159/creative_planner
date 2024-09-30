@@ -35,9 +35,13 @@ export class BsServiceService {
   private _portId = new BehaviorSubject<any>(null);
   public _templAction = new BehaviorSubject<{name:string,description:string,assignedTo:string}>({name:'',description:'',assignedTo:''});
 
+ 
+
   ProjectCreatedEvent:EventEmitter<undefined>=new EventEmitter<undefined>();
 
-  ProjectStatusChanged:EventEmitter<undefined>=new EventEmitter<undefined>()
+  ProjectStatusChanged:EventEmitter<undefined>=new EventEmitter<undefined>();
+
+  ConfirmBeforeRoute:EventEmitter<string>=new EventEmitter<string>(null);
 
 
   private dataSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -66,6 +70,9 @@ export class BsServiceService {
   bs_SummaryType = this._SummaryType.asObservable();
   bs_SelectedPortId = this._portId.asObservable();
   bs_templAction = this._templAction.asObservable();
+
+
+
 
 
   SetNewPojectCode(NewPCode) {

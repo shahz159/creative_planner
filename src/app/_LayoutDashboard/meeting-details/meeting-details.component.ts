@@ -2160,7 +2160,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.CalenderService.NewEditsAgendas(this._calenderDto).subscribe
         (data => {
           this.meeting_details();
-          this.notifyService.showSuccess("Rename successfully ", '');
+          this.notifyService.showSuccess("Renamed successfully ", '');
         })
     } else if(newname.trim()?.length == 0){
       this.notifyService.showInfo("Please enter atleast one word","");
@@ -2236,20 +2236,25 @@ export class MeetingDetailsComponent implements OnInit {
     });
   }
 
+  unnecessnotification:boolean=true;
 
+  unnecessarynotify(){
+   this.unnecessnotification=false
+}
+  notifyRepeat:boolean;
   AgendaId: any
 
-
   showAgendaDetails(item, index) {
-    console.log('testyyy', item, index)
+   
     if (this.meetingInProgress == true || this.Meetingstatuscom == 'Completed') {
       this.AgendaId = item.AgendaId
       this.currentAgendaView = index
       this.GetAssigned_SubtaskProjects()
-    } else if (this.Meetingstatuscom != 'Completed') {
-
+    } else if (this.Meetingstatuscom != 'Completed' && this.unnecessnotification==true ) { 
       this.notifyService.showInfo("The meeting hasn't started yet", "")
     }
+    this.unnecessnotification=true;
+    this.notifyRepeat=false;
   }
 
 
@@ -2366,20 +2371,19 @@ export class MeetingDetailsComponent implements OnInit {
         // const pastedText = event.clipboardData?.getData('text/plain') || '';
         // this.Notes_Type= this.Notes_Type + pastedText ;
       }
-   
-      if(this.Notes_Type){
-        this.Notes_Type.trim();
  
-      
 
+      
+     if(this.currentAgendaView != undefined && this.currentAgendaView != null  ){
+      this.Notes_Type.trim();
       if (this.Notes_Type) {
         this.CurrentNotesCount[this.currentAgendaView].NotesCount = 1;
-      }
-    }
-    else {
+      } else {
       this.CurrentNotesCount[this.currentAgendaView].NotesCount = 0;
     }
-   
+  }
+
+
 
       this.Notes_Type = this.Notes_Type?.replace(/<p>/g, '\n').replace(/<\/p>/g, '');
       this.Schedule_ID = this.Scheduleid;
@@ -2441,6 +2445,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   GetMeetingnotes_data() {
+    console.log('1')
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
@@ -2459,22 +2464,6 @@ export class MeetingDetailsComponent implements OnInit {
         }
         this.GetAttendeesnotes();
 
-
-
-// debugger
-//          var Emp_No=this.EventScheduledjson[0].Emp_No.toString();
-//         if(Emp_No===this.Current_user_ID){
-//            this.private_User=this.EventScheduledjson[0].Created_by;
-
-//         }else{
-//           var x =this.User_Scheduledjson.filter(item=>item.stringval == this.Current_user_ID);
-//           this.private_User=x.TM_DisplayName
-//           console.log('privet',x)
-//         }
-
-
-
-
       });
 
   }
@@ -2488,17 +2477,10 @@ export class MeetingDetailsComponent implements OnInit {
     this.CalenderService.GetAgendaMeetingnotes_data(this._calenderDto).subscribe((data: any) => {
       if (data) {
         const Mtgnotes_time = JSON.parse(data['Checkdatetimejson']);
-        //  if(Mtgnotes_time&&Mtgnotes_time.length>0){
         this.completeAgenda();
-        //  }
-        //  else{
-        //   const chkbox:any=document.getElementById(data.AgendaId+'ckbox');
-        //   chkbox.checked=false;
-        //    this.notifyService.showWarning('Please provide notes for this agenda.','Notes missing.');
-        //     // selected agenda has no notes
-        //  }
       }
     });
+  
   }
 
 
