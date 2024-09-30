@@ -8868,6 +8868,9 @@ span.time-value {
 .new_pro_rej {
   color: #ba68c8 !important;
 }
+.completion{
+  color:#81C784
+}
 
 .extra-at-status {
   width: fit-content;

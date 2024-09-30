@@ -679,7 +679,7 @@
                                                         </div>
                                                         <div class="d-flex flex-column align-items-start">
                                                             <div class="kt-project-type d-flex">
-          
+
                                                                 <div *ngIf="projectInfo" class="Kt-Pd-Status attach-tippy d-flex" style="width:fit-content" [ngClass]="{
                                                                             'new-project-under':projectInfo.Status==='Under Approval',
                                                                             'Not_Started': projectInfo.Status==='Not Started',
@@ -699,7 +699,7 @@
                                                                             'Delay':projectInfo.Project_Block=='003'&&projectInfo.Status.includes('Delay'),
                                                                             'AuditUnderApproval':(projectInfo.Status==='Completion Under Approval'&&projectInfo.AuditStatus=='Audit Pending')
                                                                             }">
-                                                                            <span class="vi font-weight-400 st-line" 
+                                                                            <span class="vi font-weight-400 st-line"
                                                                                *ngIf="projectInfo?.Status === 'Delay' || projectInfo?.Status?.includes('Days')">
                                                                                {{
                                                                                   (projectInfo.Status === 'Delay' ? projectInfo.Delaydays + ' days' + ' delay ': '') ||
@@ -717,10 +717,10 @@
                                                                           projectInfo.Status=='Deadline Extend Under Approval'?"Deadline extend approval":
                                                                           projectInfo.Status=='InProcess'?'In-process': (getStandardText(projectInfo))
                                                                           }}
-          
+
                                                                 </div>
 
-                                                                
+
                                                                 <ng-container *ngIf="projectInfo.Status==='Completed'">
                                                                     <!-- deadlineExtendlist&&deadlineExtendlist.length>0)|| -->
                                                                     <div *ngIf="completionOffset>0" class="extra-at-status" style="border-color: #388e3c; color: #d32f2f;">
@@ -729,7 +729,7 @@
                                                                           <span *ngIf="completionOffset>0">{{completionOffset}} days delayed</span>
                                                                     </div>
                                                                </ng-container>
-                                                            
+
                                                                <ng-container *ngIf="(['Forward Under Approval','Project Hold'].includes(projectInfo.Status))&&(projectInfo.Delaydays>0)">
                                                                 <div class="extra-at-status" [ngStyle]="{ borderColor:projectInfo.Status=='Forward Under Approval'?'#9C27B0':'#795548'}" style="color: #d32f2f;">
                                                                    <span>{{projectInfo.Delaydays}} {{projectInfo.Delaydays>1?'days':'day'}} delayed</span>
@@ -742,8 +742,8 @@
                                                                 <span style="color: #d32f2f;">{{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} extended</span>
                                                               </div>
 
-                                                                
-                                                               
+
+
                                                             </div>
 
 
@@ -1521,13 +1521,13 @@
                                                                                 <div class="kt-info-lable-v">
                                                                                     {{action&&action.EndDate| date : 'dd-MM-yyyy'}}
                                                                                 </div>
-                                                                            </div> 
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-4 pl-2">
                                                                         <div class="kt-p-box border-l-0 text-center d-flex align-items-center justify-content-center">
                                                                             <div class="kt-p-status">
-                                                                                
+
                                                                                 <div class="kt-p-action-Status">
 
 
@@ -1540,6 +1540,7 @@
                                                                                         <span *ngSwitchCase="'Project Hold'" class="proj_hold">Hold until {{action.Holddate}}</span>
                                                                                         <span *ngSwitchCase="'Not Started'" class="Status-In-progress">Not Started</span>
                                                                                         <span *ngSwitchCase="'Forward Under Approval'" class="approve">Forward approval</span>
+                                                                                        <span *ngSwitchCase="'Completion Under Approval'" class="completion">Completion approval</span>
                                                                                         <span *ngSwitchDefault class="Status-In-progress">{{action&&action.Status}}</span>
                                                                                     </span>
                                                                                     <!-- (projectInfo.Status === 'Under Approval') ? 'New' : projectInfo.Status -->
@@ -2129,7 +2130,7 @@
                                           <path d="M240.498,209.939c0.557,51.213,25.015,81.752,57.792,81.752s57.236-30.539,57.795-81.752 c0.355-35.539-16.57-56.807-57.795-56.807C257.064,153.133,240.135,174.401,240.498,209.939z"></path>
                                           <path d="M201.348,31.93c41.489,0,78.794,23.886,96.431,60.586l-9.229,1.771c-2.341,0.449-4.266,2.112-5.046,4.365 c-0.781,2.252-0.303,4.75,1.258,6.554l27.264,31.512c1.279,1.48,3.129,2.307,5.045,2.307c0.418,0,0.839-0.038,1.258-0.119 c2.342-0.449,4.266-2.114,5.049-4.366l13.662-39.366c0.781-2.253,0.302-4.751-1.259-6.554c-1.56-1.804-3.966-2.639-6.304-2.188 l-11.475,2.203c-19.918-46.272-65.622-76.724-116.655-76.724c-5.529,0-10.011,4.48-10.011,10.01 C191.337,27.449,195.819,31.93,201.348,31.93z" style="stroke-width: 15px;"></path>
                                         </g>
-                                      </g> 
+                                      </g>
                                     </svg>
                                     <span class="notif-msg">
                                       <span>Project has been assigned to you for auditing by {{Submitted_By}}.</span>
@@ -2562,7 +2563,7 @@
                       </ng-container><b>.</b>
                   </span>
               </div>
-          
+
               <div *ngIf="totalPActns4Aprvls>0&&projectInfo.Status!='Under Approval'"  class="notification newversion-notification">
                   <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z" fill="#1692df"></path></g></svg>
                   <span class="notif-msg fs-6" style="color:#00a2eb">
@@ -2576,16 +2577,16 @@
               <div *ngIf="totalPActns4Aprvls>0&&projectInfo.Status=='Under Approval'"  class="notification newversion-notification">
                 <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z" fill="#1692df"></path></g></svg>
                 <span class="notif-msg fs-6" style="color:#00a2eb">
-                    {{totalPActns4Aprvls}} action(s) pending for approval with "main project approval", Assigned to 
+                    {{totalPActns4Aprvls}} action(s) pending for approval with "main project approval", Assigned to
                     <ng-container *ngFor="let act of pendingActns4Aprvls; let i=index;">
                         <span class="delayaction-of-emp curser-pointer" (click)="showPendingAprvlActnsOfEmp(act.empno)">{{act.name}}({{act.totalApprovals}})</span>{{i+1===pendingActns4Aprvls.length-1?' and':(i+1===pendingActns4Aprvls.length)?'':', '}}
                     </ng-container><b>.</b>
             </span>
             </div>
 
-            
-              
-         
+
+
+
               </ng-template>
 
                  </div>
@@ -2748,9 +2749,9 @@
                                                     </ng-container> -->
                                                         <h4>{{projectInfo&&projectInfo.Project_Name}}</h4>
                                                     </div>
-          
+
                                                     <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status">
-          
+
                                                       <div class="kt-project-type attach-tippy" *ngSwitchCase="'Delay'">
                                                            <span class="vi font-weight-400 st-line"> {{projectInfo.Delaydays? projectInfo.Delaydays + ' days' + ' delay ': '' }}</span>
                                                           <div class="d-flex">
@@ -2762,10 +2763,10 @@
                                                             </div>
                                                           </div>
                                                       </div>
-           
-                                                      <div class="kt-project-type d-flex" *ngSwitchCase="'Completed'"> 
+
+                                                      <div class="kt-project-type d-flex" *ngSwitchCase="'Completed'">
                                                            <div class="Kt-Pd-Status Done d-flex">
-                                                             Completed 
+                                                             Completed
                                                             </div>
                                                             <!-- deadlineExtendlist&&deadlineExtendlist.length>0)|| -->
                                                             <div *ngIf="completionOffset>0" class="extra-at-status" style="color:#d32f35; border-color: #388e3c; ">
@@ -2786,18 +2787,18 @@
                                                       <div class="kt-project-type " *ngSwitchCase="'Under Approval'">
                                                             <div class="Kt-Pd-Status new-project-under"> New approval </div>
                                                       </div>
-          
+
                                                       <div class="kt-project-type " *ngSwitchCase="'Completion Under Approval'">
-                                                        <div *ngIf="projectInfo.AuditStatus=='Audit Pending'" class="Kt-Pd-Status AuditUnderApproval d-flex align-items-center"> 
+                                                        <div *ngIf="projectInfo.AuditStatus=='Audit Pending'" class="Kt-Pd-Status AuditUnderApproval d-flex align-items-center">
                                                             Audit Approval
                                                         </div>
-                                                        <div *ngIf="projectInfo.AuditStatus!='Audit Pending'" class="Kt-Pd-Status CompletionUnderApproval d-flex align-items-center"> 
+                                                        <div *ngIf="projectInfo.AuditStatus!='Audit Pending'" class="Kt-Pd-Status CompletionUnderApproval d-flex align-items-center">
                                                             Completion approval
                                                         </div>
                                                       </div>
-          
+
                                                       <div class="kt-project-type d-flex" *ngSwitchCase="'Forward Under Approval'">
-                                                            <div class="Kt-Pd-Status ForwardUnderApproval d-flex text-nowrap"> 
+                                                            <div class="Kt-Pd-Status ForwardUnderApproval d-flex text-nowrap">
                                                                 Forward approval
                                                             </div>
                                                             <div *ngIf="projectInfo.Delaydays>0" class="extra-at-status" style="color:#d32f35; border-color:#9C27B0;  ">
@@ -2816,9 +2817,9 @@
                                                       <div class="kt-project-type" *ngSwitchCase="'Cancelled'">
                                                             <div class="Kt-Pd-Status Cancelled"> Cancelled </div>
                                                       </div>
-          
+
                                                       <div class="kt-project-type d-flex" *ngSwitchCase="'Project Hold'">
-                                                            <div class="Kt-Pd-Status Hold d-flex text-nowrap"> 
+                                                            <div class="Kt-Pd-Status Hold d-flex text-nowrap">
                                                                 Hold until {{hold_upto}}
                                                             </div>
                                                             <div *ngIf="projectInfo.Delaydays>0" class="extra-at-status"  style="color:#d32f35; border-color:#795548; ">
@@ -2837,7 +2838,7 @@
                                                       <div class="kt-project-type " *ngSwitchCase="'ToDo Completed'">
                                                           <div class="Kt-Pd-Status todo-completed"> ToDo completed</div>
                                                       </div>
-          
+
                                                       <div class="kt-project-type " *ngSwitchCase="'Not Started'">
                                                          <div class="Kt-Pd-Status not-started"> Not Started</div>
                                                       </div>
@@ -3027,20 +3028,20 @@
                                                                 <button [ngClass]="Edit_active ==true ? 'Kt-Approval-btns Btn_Edit_Accept active': 'Kt-Approval-btns Btn_Edit_Accept'"
                                                                     (click)="approvalClick('EDIT')">Edit & Accept</button>
                                                             </div> -->
-          
-                                                           
-                                                          <div title="Forward the project for auditing, then it will return to you for approval." 
+
+
+                                                          <div title="Forward the project for auditing, then it will return to you for approval."
                                                               *ngIf="!projectAuditor&&requestType=='Project Complete'"  (click)="approvalClick('AUDIT')" class="kt-detail-link " [ngClass]="Audit_active ==true ? 'kt-detail-link active ':'kt-detail-link'" >
                                                               <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.2em;height: 1.2em;vertical-align: middle;fill: #0086f1;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M296 250c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h384c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H296zM480 394H296c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8z"/><path d="M432 852H208V148h560v320c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V108c0-17.7-14.3-32-32-32H168c-17.7 0-32 14.3-32 32v784c0 17.7 14.3 32 32 32h264c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"/><path d="M872 764H728v-36.6c46.3-13.8 80-56.6 80-107.4 0-61.9-50.1-112-112-112s-112 50.1-112 112c0 50.7 33.7 93.6 80 107.4V764H520c-8.8 0-16 7.2-16 16v152c0 8.8 7.2 16 16 16h352c8.8 0 16-7.2 16-16V780c0-8.8-7.2-16-16-16zM646 620c0-27.6 22.4-50 50-50s50 22.4 50 50-22.4 50-50 50-50-22.4-50-50z m180 266H566v-60h260v60z"/></svg>
                                                             <span class="kt-detail-iconname">Audit</span>
                                                           </div>
-           
-                                                          
+
+
                                                       <ng-container *ngIf="(!projectAuditor)||(approvalEmpId!=projectAuditor.empNo)">
-                                                          <div title="Handover the project ownership, then new owner will takeover the control."  
+                                                          <div title="Handover the project ownership, then new owner will takeover the control."
                                                             *ngIf="requestType=='Project Complete'" (click)="approvalClick('TRANSFER')" class="kt-detail-link " [ngClass]="Transfer_active ==true ? 'kt-detail-link active ':'kt-detail-link'" >
-          
-          
+
+
                                                               <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="18px" viewBox="0 0 412.879 412.879" xml:space="preserve" style="fill: #0086f170; stroke: #0086f147;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g><g>
                                                                   <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673 C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
                                                                   <path d="M114.585,138.558c32.776,0,57.236-30.539,57.794-81.752C172.734,21.268,155.809,0,114.585,0 C73.359,0,56.431,21.268,56.793,56.806C57.348,108.019,81.807,138.558,114.585,138.558z"></path>
@@ -3052,9 +3053,9 @@
 
                                                               <span class="kt-detail-iconname">Transfer</span>
                                                           </div>
-          
+
                                                           <div title="Submitted project will be approved and new request created in runway for next version."
-                                                            *ngIf="requestType=='Project Complete'" 
+                                                            *ngIf="requestType=='Project Complete'"
                                                             [ngClass]=" Conditional_Active ==true ? 'kt-detail-link active' : 'kt-detail-link'"
                                                             (click)="approvalClick('CONDITIONAL');  getca_Dropdowns(); ">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.2em; height: 1.2em;vertical-align: middle;fill: #007c05;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M458.24 376.32 138.24 376.32c-15.36 0-25.6 10.24-25.6 25.6 0 15.36 10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6C483.84 389.12 471.04 376.32 458.24 376.32z"/><path d="M458.24 642.56 138.24 642.56c-15.36 0-25.6 10.24-25.6 25.6s10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6S471.04 642.56 458.24 642.56z"/><path d="M732.16 706.56c-15.36 0-25.6 10.24-25.6 25.6 0 0 0 0 0 2.56l0 0 0 99.84c0 15.36-12.8 30.72-30.72 30.72L81.92 865.28c-15.36 0-30.72-12.8-30.72-30.72L51.2 189.44c0-15.36 12.8-30.72 30.72-30.72l596.48 0c15.36 0 30.72 12.8 30.72 30.72l0 115.2c0 15.36 10.24 25.6 25.6 25.6s25.6-10.24 25.6-25.6L760.32 189.44c0-46.08-35.84-81.92-81.92-81.92L81.92 107.52C35.84 107.52 0 145.92 0 189.44l0 645.12c0 46.08 35.84 81.92 81.92 81.92l596.48 0c46.08 0 81.92-35.84 81.92-81.92l0-99.84 0 0c0 0 0 0 0-2.56C757.76 719.36 747.52 706.56 732.16 706.56z"/><path d="M1016.32 340.48c-10.24-10.24-25.6-10.24-35.84 0l-245.76 245.76-138.24-130.56c-10.24-10.24-25.6-10.24-35.84 2.56-10.24 10.24-10.24 25.6 2.56 35.84l156.16 145.92c5.12 5.12 10.24 7.68 17.92 7.68 7.68 0 12.8-2.56 17.92-7.68l261.12-263.68C1026.56 366.08 1026.56 350.72 1016.32 340.48z"/></svg>
@@ -3062,7 +3063,7 @@
                                                           </div>
                                                       </ng-container>
 
-          
+
                                                       <div title="Approve it, to appreciate project team for great work."
                                                       [ngClass]="Accept_active ==true ? 'kt-detail-link active ':'kt-detail-link'"
                                                       (click)="approvalClick('ACCEPT')">
@@ -3086,7 +3087,7 @@
                                                         </div>
 
                                                         <div class="kt-reject-form-view aprovls-sectn-forms" [hidden]="!isTextAreaVisible">
-                                                           
+
                                                             <div class="mb-2">
                                                                 <span class="text-info fw-medium" *ngIf="Audit_active">* Forward the project for auditing, then it will return to you for approval.</span>
                                                                 <span class="text-info fw-medium" *ngIf="Transfer_active">* Handover the project ownership, then new owner will takeover the control.</span>
@@ -3094,8 +3095,8 @@
                                                                 <span class="text-info fw-medium" *ngIf="Accept_active">* Approve it, to appreciate project team for great work.</span>
                                                                 <span class="text-info fw-medium" *ngIf="Reject_active">* Reject as to type of rejection, which help user to modify the project accordingly.</span>
                                                             </div>
-                                                           
-                                                           
+
+
                                                             <div class="kt-pdv mt-2">
 
 
@@ -3389,27 +3390,27 @@
 
                                                                                         primary="true"  [disabled]="!comments || !selectedType " >Submit </button>
                                                                                         <!---->
-          
+
                                                                                         <button *ngIf="Audit_active" type="button" class="btn btn-project-stv Bt-Submit text-nowrap curser-pointer"
                                                                                         [ngStyle]="{width:(auditBtnDisabled||approvalsFetching)?'fit-content':'none'}" [disabled]="auditBtnDisabled||approvalsFetching" primary="true" (click)="onPrjAuditSubmitClicked()">
                                                                                             <span *ngIf="(auditBtnDisabled||approvalsFetching)" class="d-flex align-items-center gap-1">
-                                                                                                <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span> Submitting... 
+                                                                                                <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span> Submitting...
                                                                                             </span>
                                                                                             <span *ngIf="!(auditBtnDisabled||approvalsFetching)">Submit</span>
                                                                                        </button>
-          
+
                                                                                         <button *ngIf="Transfer_active" type="button" class="btn btn-project-stv Bt-Submit text-nowrap curser-pointer"
                                                                                         [ngStyle]="{width:(transferBtnDisabled||approvalsFetching)?'fit-content':'none'}" [disabled]="transferBtnDisabled||approvalsFetching" primary="true" (click)="onTransferBtnClicked()">
-                                                                                        
+
                                                                                         <span *ngIf="(transferBtnDisabled||approvalsFetching)" class="d-flex align-items-center gap-1">
-                                                                                            <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span> Submitting... 
+                                                                                            <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span> Submitting...
                                                                                         </span>
                                                                                         <span *ngIf="!(transferBtnDisabled||approvalsFetching)">Submit</span>
-                                                                                       
+
                                                                                        </button>
-          
+
                                                                                     </span>
-                                                                               
+
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -3434,8 +3435,8 @@
                                                                 <div>
                                                                     <span>{{newcomments}}</span>
                                                                 </div>
-                                                            </div> 
-                                                            
+                                                            </div>
+
 
                                                             <div class="col-lg-12 mb-3">
                                                                 <div class="kt-info-lable-v">Remarks</div>
@@ -3885,12 +3886,12 @@
                                                     </div>
                                                 </div>
 
-                                             
+
                                                 <div class="Dividing-line"></div>
                                                 <div class="row">
-          
-          
-          
+
+
+
                                                     <div class="col-lg-6 "  id="recent-activities-section">
                                                         <div class="kt-over-pd-in bd-right-x">
                                                             <div class="kt-ct-project d-flex  justify-content-between  ">
@@ -3989,7 +3990,7 @@
                                                                                       </svg>
 
                                                                                       <!-- <ng-container *ngSwitchCase="'Project Complete'">
-                                                                     
+
                                                                                       </ng-container> -->
 
 
@@ -4004,7 +4005,7 @@
                                                                                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.89163 13.2687L9.16582 17.5427L18.7085 8" stroke="#1e9905" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="fill:transparent !important;"></path></g>
                                                                                         </svg>
                                                                                        </ng-container>
-                                                    
+
                                                                                      <ng-container *ngIf="item.Value&&item.Value.includes('Project Complete transferred to')">
                                                                                        <svg viewBox="0 -3.5 24 24" id="meteor-icon-kit__regular-forward" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 13px;height: 13px;position: absolute;top: 2px;left: 15px;">
                                                                                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
@@ -4015,13 +4016,13 @@
                                                                                         <path d="M11.25 21.904V12.4635L2.25164 7.96434C2 8.86557 2 10.0489 2 11.9415V12.0585C2 14.5833 2 15.8458 2.5974 16.8603C3.19479 17.8748 4.27063 18.4393 6.42229 19.5685L8.42229 20.618C9.71524 21.2965 10.5321 21.7252 11.25 21.904Z" style="fill:white !important;"></path></g>
                                                                                        </svg>
                                                                                     </ng-container>
-                                                    
-                                                    
+
+
                                                                                     <ng-container *ngIf="item.Value!='Project Complete'&&(!item.Value.includes('Project Complete transferred to'))">
                                                                                         <svg fill="#ff0000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 329.328 329.328" xml:space="preserve" stroke="#ff0000" style=" width: 14px; height: 20px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M164.666,0C73.871,0,0.004,73.871,0.004,164.672c0.009,90.792,73.876,164.656,164.662,164.656 c90.793,0,164.658-73.865,164.658-164.658C329.324,73.871,255.459,0,164.666,0z M164.666,30c31.734,0,60.933,11.042,83.975,29.477 L59.478,248.638c-18.431-23.04-29.471-52.237-29.474-83.967C30.004,90.413,90.413,30,164.666,30z M164.666,299.328 c-31.733,0-60.934-11.042-83.977-29.477L269.854,80.691c18.431,23.043,29.471,52.244,29.471,83.979 C299.324,238.921,238.917,299.328,164.666,299.328z"></path> </g>
                                                                                         </svg>
                                                                                     </ng-container>
-                                                    
+
                                                                                     </ng-container>
 
                                                                                       <ng-container *ngSwitchCase="'Action Complete'">
@@ -6572,7 +6573,7 @@
                                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M9.016,0.06 C4.616,0.06 1.047,3.629 1.047,8.029 C1.047,12.429 4.615,15.998 9.016,15.998 C13.418,15.998 16.985,12.429 16.985,8.029 C16.985,3.629 13.418,0.06 9.016,0.06 L9.016,0.06 Z M3.049,8.028 C3.049,4.739 5.726,2.062 9.016,2.062 C10.37,2.062 11.616,2.52 12.618,3.283 L4.271,11.631 C3.508,10.629 3.049,9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.544,13.583 5.569,12.889 L13.878,4.58 C14.571,5.555 14.982,6.743 14.982,8.028 C14.981,11.317 12.306,13.994 9.016,13.994 L9.016,13.994 Z" fill="red" class="si-glyph-fill"> </path></g></g>
                                                         </svg>
 
-                                                        
+
 
                                                         <!-- <svg *ngSwitchCase="'Project Complete Rejected'" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 329.328 329.328" xml:space="preserve" stroke="#ff0000" style=" width: 14px; height: 20px;  fill:red;  "><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M164.666,0C73.871,0,0.004,73.871,0.004,164.672c0.009,90.792,73.876,164.656,164.662,164.656 c90.793,0,164.658-73.865,164.658-164.658C329.324,73.871,255.459,0,164.666,0z M164.666,30c31.734,0,60.933,11.042,83.975,29.477 L59.478,248.638c-18.431-23.04-29.471-52.237-29.474-83.967C30.004,90.413,90.413,30,164.666,30z M164.666,299.328 c-31.733,0-60.934-11.042-83.977-29.477L269.854,80.691c18.431,23.043,29.471,52.244,29.471,83.979 C299.324,238.921,238.917,299.328,164.666,299.328z"></path> </g>
                                                         </svg> -->
@@ -10853,7 +10854,7 @@
                               </div>
                               <div class="agenda-input-field">
                                   <input class="form-control task-input" id="todo-input" name="text"
-                                  [ngClass]="{'error-borderbottom': agendaInput&&(agendaInput.trim().length>100)}" 
+                                  [ngClass]="{'error-borderbottom': agendaInput&&(agendaInput.trim().length>100)}"
                                    placeholder="Add agenda and press 'Enter'" autofocus="true"
                                   [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()" (keyup)="onKeyPress()"
                                   />
@@ -14602,24 +14603,24 @@
                                                               primary="true">Submit </button>
                                                               <!--  -->
 
-                                                              <button *ngIf="Audit_active" type="button" class="btn btn-project-stv Bt-Submit text-nowrap curser-pointer" 
+                                                              <button *ngIf="Audit_active" type="button" class="btn btn-project-stv Bt-Submit text-nowrap curser-pointer"
                                                               [ngStyle]="{width:auditBtnDisabled?'fit-content':'none'}" [disabled]="auditBtnDisabled" primary="true" (click)="onPrjAuditSubmitClicked()">
                                                                   <span *ngIf="auditBtnDisabled" class="d-flex align-items-center gap-1">
-                                                                    <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span> Submitting... 
+                                                                    <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span> Submitting...
                                                                   </span>
                                                                   <span *ngIf="!auditBtnDisabled">Submit</span>
                                                               </button>
 
-                                                              <button *ngIf="Transfer_active" type="button" class="btn btn-project-stv Bt-Submit text-nowrap curser-pointer" 
+                                                              <button *ngIf="Transfer_active" type="button" class="btn btn-project-stv Bt-Submit text-nowrap curser-pointer"
                                                               [ngStyle]="{width:transferBtnDisabled?'fit-content':'none'}" [disabled]="transferBtnDisabled" primary="true" (click)="onTransferBtnClicked()">
-                                                              
+
                                                                <span *ngIf="transferBtnDisabled" class="d-flex align-items-center gap-1">
-                                                                <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span> Submitting... 
+                                                                <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span> Submitting...
                                                                </span>
                                                                <span *ngIf="!transferBtnDisabled">Submit</span>
                                                             </button>
                                                       </span>
-                                                     
+
                                                   </div>
                                               </div>
                                           </div>
