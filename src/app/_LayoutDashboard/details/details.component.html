@@ -1522,6 +1522,7 @@
                                                                                         <span *ngSwitchCase="'Project Hold'" class="proj_hold">Hold until {{action.Holddate}}</span>
                                                                                         <span *ngSwitchCase="'Not Started'" class="Status-In-progress">Not Started</span>
                                                                                         <span *ngSwitchCase="'Forward Under Approval'" class="approve">Forward approval</span>
+                                                                                        <span *ngSwitchCase="'Completion Under Approval'" class="completion">Completion approval</span>
                                                                                         <span *ngSwitchDefault class="Status-In-progress">{{action&&action.Status}}</span>
                                                                                     </span>
                                                                                     <!-- (projectInfo.Status === 'Under Approval') ? 'New' : projectInfo.Status -->
@@ -3296,7 +3297,7 @@
                                                                                         <!---->
 
                                                                                         <button *ngIf="Audit_active"
-                                                                                        type="button"
+                                                                                         type="button"
                                                                                         class="btn btn-project-stv Bt-Submit"
                                                                                         primary="true" (click)="onPrjAuditSubmitClicked()">Submit</button>
 
@@ -10715,7 +10716,7 @@
                               </div>
                               <div class="agenda-input-field">
                                   <input class="form-control task-input" id="todo-input" name="text"
-                                  [ngClass]="{'error-borderbottom': agendaInput&&(agendaInput.trim().length>100)}" 
+                                  [ngClass]="{'error-borderbottom': agendaInput&&(agendaInput.trim().length>100)}"
                                    placeholder="Add agenda and press 'Enter'" autofocus="true"
                                   [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()" (keyup)="onKeyPress()"
                                   />
