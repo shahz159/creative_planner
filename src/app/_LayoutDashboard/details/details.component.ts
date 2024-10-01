@@ -287,9 +287,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.getResponsibleActions();
     this.GetActivityDetails();
-  //   setTimeout(()=>{
-  //     $('.user-msg-alert-body').show();
-  // },6000);
   }
 
 
@@ -1089,10 +1086,18 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.allUsers2=this.allUsers1.filter((usr:any)=>(![this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo].includes(usr.Emp_No)));
     }
 
-
-
+    setTimeout(()=>{
+      if(this.projectInfo.NewOwner==this.Current_user_ID&&this.gotIt==false){
+        $('.user-msg-alert-body').show();
+      }
+    },2000);
+    
     });
   }
+
+
+
+ gotIt:boolean=false;
 
   completionOffset:number=0;
 

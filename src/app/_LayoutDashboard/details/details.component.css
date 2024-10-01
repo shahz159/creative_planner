@@ -8972,7 +8972,7 @@ span.time-value {
   z-index: 1;
   left: 50%;
   top: 50%;
-  transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-44%) translateY(-44%);
   display: block;
   width: 6px;
   height: 6px;
