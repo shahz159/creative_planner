@@ -257,6 +257,7 @@ export class StreamCalendarComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.Current_user_ID = localStorage.getItem('EmpNo');
     this.initAutosize();
     this.initFirstclass();
     this.MinLastNameLength = true;
@@ -274,6 +275,8 @@ export class StreamCalendarComponent implements OnInit {
       inertia: true,
       placement: 'left'
     });
+
+    this.GetScheduledJson();
 
 
     this.calendarOptions = {
@@ -301,7 +304,7 @@ export class StreamCalendarComponent implements OnInit {
       allDaySlot: false
     };
 
-    this.Current_user_ID = localStorage.getItem('EmpNo');
+ 
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
    
 
@@ -2426,20 +2429,25 @@ bindCustomRecurrenceValues(){
     this.fetchDataStartTime = performance.now();
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
+       
         this.fetchDataEndTime = performance.now();
         this.fetchDataTime = this.fetchDataEndTime - this.fetchDataStartTime;
 
         this.dataBindStartTime = performance.now();
+
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
-        console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+
+        this.Scheduledjson = this.Scheduledjson
+        .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+      
+       this.getEventsForWeeks(0)
+
         this.dataBindEndTime = performance.now();
         this.dataBindTime = this.dataBindEndTime - this.dataBindStartTime;
         this.userFound = true
-        console.log(this.Scheduledjson, "Testingssd");
 
         console.log("Fetch Data Time: in milliseconds", this.fetchDataTime);
         console.log("Data Bind Time: in milliseconds", this.dataBindTime);
-
 
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
 
@@ -2473,11 +2481,49 @@ bindCustomRecurrenceValues(){
           allDaySlot: false,
           //69 datesSet: () => { this.TwinEvent = []; }
         };
-
       });
   }
 
 
+
+
+Calendarjson: any;
+currentWeekOffset = 0; // Tracks the current week offset from today
+clickHistory: number[] = []; // Stores the history of week changes
+
+getEventsForWeeks(weeksFromToday: number) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Reset today's time to midnight
+
+  // Calculate the new offset
+  const newOffset = this.currentWeekOffset + weeksFromToday;
+
+  // If the user is going back in time (weeksFromToday < 0)
+  if (weeksFromToday < 0) {
+    this.clickHistory.push(weeksFromToday); // Store the click in history
+  } else if (weeksFromToday > 0) {
+    // If the user is going forward, check if we have clicks in history
+    if (this.clickHistory.length > 0) {
+      this.clickHistory.pop(); // Remove the last backward click
+    }
+  }
+  // Update the current week offset
+  this.currentWeekOffset = newOffset;
+
+  // Determine the start and end dates for the selected week
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() + (this.currentWeekOffset * 7));
+
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 7); // End date is 7 days after the start date
+
+  // Filter events that fall within the selected week's date range
+  this.Calendarjson = this.Scheduledjson.filter(e => {
+    const eventDate = new Date(e.start.split(" ")[0]); // Only consider the date part
+    return eventDate >= startDate && eventDate < endDate;
+  });
+  console.log(this.Calendarjson, 'Calendar Json List');
+}
 
 
 

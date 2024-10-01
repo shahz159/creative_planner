@@ -4942,3 +4942,13 @@ color: #121212;
 .search-filter{
   margin: 0px 0px 0px 15px;
 }
+ .dms-span-img{
+  background-color: #fff;
+  border-radius: 4px;
+  width: 26px;
+  height: 26px;
+  display: inline-block;
+  text-align: center;
+  line-height: 1.5;
+  padding-left: 4px;
+}

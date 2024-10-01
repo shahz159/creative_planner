@@ -1216,8 +1216,8 @@
                                                       <div *ngIf="item.ForwardTo" class="d-flex align-items-center">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Arrow_Sub_Down_Right"> <path id="Vector" d="M13 11L18 16M18 16L13 21M18 16H10.1969C9.07899 16 8.5192 16 8.0918 15.7822C7.71547 15.5905 7.40973 15.2839 7.21799 14.9076C7 14.4798 7 13.9201 7 12.8V3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
                                                         <div  class="New_Approval_Project font-weight-400" style="line-height: 1;">{{item.ForwardTo}}</div>
-                                                    </div>
-                                                      </span>
+                                                      </div>
+                                                    </span>
 
 
                                                     </td>
@@ -1352,8 +1352,12 @@
                                                                  <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
                                                                   <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                               </span>
-                                                              <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
-                                                            </span>
+                                                              <!-- <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
+                                                            </span> -->
+                                                            <div class="pulsing-div">
+                                                                <span class="pulsing-dot pulsing-dot-stat"></span>
+                                                                <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                            </div>
                                                             </div>
 
                                                             <div *ngIf="item.Status=='Cancellation Under Approval'">
@@ -1571,7 +1575,9 @@
                 (click)="_CloseMemosidebar()">&times;</a>
             <div class="title-sidebar mb-0 text-white">
                 <h5 class="curser-pointer">
-                    <img height="22px" width="22px" src="./assets/images/Image (4).jfif"> Linked memos
+                    <span class="dms-span-img">
+                        <img height="22px" width="22px" src="./assets/images/smail-color.png" >
+                    </span> Linked memos
                 </h5>
                 <span class="text-small text-white">{{_displayProjName}}</span>
 

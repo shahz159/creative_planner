@@ -378,7 +378,7 @@
                             <div (click)="approvalClick('ACCEPT')" title="Approve it, to appreciate project team for great work." class="kt-detail-link" [ngClass]="{'active':Accept_active==true}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 1em; height: 1em; vertical-align: middle; fill: #028507; ;overflow: hidden;"><path d="M1002.81 144.43a64 64 0 0 0-90.38 4.76L381.56 739l-272.3-272.3a64 64 0 0 0-90.51 90.51l320 320A64 64 0 0 0 384 896h1.68a64 64 0 0 0 45.89-21.16l576-640a64 64 0 0 0-4.76-90.41z"></path></svg><span class="kt-detail-iconname">Accept</span></div>
                             <div (click)="approvalClick('REJECT')" title="Reject as to type of rejection, which help user to modify the project accordingly." class="kt-detail-link" [ngClass]="{'active':Reject_active==true}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 1em; height: 1em; vertical-align: middle; fill: #e81000; ;overflow: hidden;"><path d="M622.276923 508.061538l257.969231-257.96923c11.815385-11.815385 11.815385-29.538462 0-41.353846l-41.353846-41.353847c-11.815385-11.815385-29.538462-11.815385-41.353846 0L539.569231 425.353846c-7.876923 7.876923-19.692308 7.876923-27.569231 0L254.030769 165.415385c-11.815385-11.815385-29.538462-11.815385-41.353846 0l-41.353846 41.353846c-11.815385 11.815385-11.815385 29.538462 0 41.353846l257.969231 257.969231c7.876923 7.876923 7.876923 19.692308 0 27.56923L169.353846 793.6c-11.815385 11.815385-11.815385 29.538462 0 41.353846l41.353846 41.353846c11.815385 11.815385 29.538462 11.815385 41.353846 0L512 618.338462c7.876923-7.876923 19.692308-7.876923 27.569231 0l257.969231 257.96923c11.815385 11.815385 29.538462 11.815385 41.353846 0l41.353846-41.353846c11.815385-11.815385 11.815385-29.538462 0-41.353846L622.276923 535.630769c-5.907692-7.876923-5.907692-19.692308 0-27.569231z"></path></svg><span class="kt-detail-iconname">Reject</span></div>
                         </div>
-
+                        
 
                         <!-- <div class="col">
                     <div class="kt-info-lable-v">Approval*</div>
@@ -466,9 +466,42 @@
                     </ng-container>
                 </div> -->
                     </div>
+                    
                     <div class="clearfix"></div>
                 </div>
+                
             </div>
+            <div class="col-lg-12 mb-3 p-3" *ngIf="ProjectStatesJson[0].AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId"
+                        style="    background-color: #e4e7f9;
+                        border-radius: 14px;
+                        border: 1px solid #6388e336;
+                        color: #4f4f4f;">
+                        <div class="d-flex justify-content-between">
+                            <h6 style="text-align:left;margin:0;">Project has been assigned to you for auditing by {{AuditRequestBY}}</h6>
+                            <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
+                        </div>
+                        <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
+                        <div>
+                            <span *ngIf="ProjectStatesJson[0].Owner_remarks">{{ProjectStatesJson[0].Owner_remarks}}</span>
+                            <span *ngIf="!ProjectStatesJson[0].Owner_remarks">{{requestComments}}</span>
+                        </div>
+            </div>
+
+            <div class="col-lg-12 mb-3 p-3" *ngIf="ProjectStatesJson[0].AuditStatus=='Audit Complete' && Current_user_ID==approvalEmpId"
+                    style="    background-color: #e4e7f9;
+                    border-radius: 14px;
+                    border: 1px solid #6388e336;
+                    color: #4f4f4f;">
+                    <div class="d-flex justify-content-between">
+                        <h6 style="text-align:left;margin:0;">Project audit completed by {{projectAuditor.empName}}</h6>
+                        <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
+                    </div>
+                    <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Remarks:</h6>
+                    <div>
+                        <span>{{ProjectStatesJson[0].Auditor_acceptremarks}}</span>
+                    </div>
+            </div>
+
             <div class="kt-reject-form-view" [hidden]="!isTextAreaVisible">
 
                 <div class="mb-2">
