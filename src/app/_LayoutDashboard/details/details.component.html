@@ -560,10 +560,10 @@
                                                         <label>Owner</label>
                                                         <p>{{projectInfo&&projectInfo.Owner}}</p>
                                                     </div>
-                                                    <div class="user-msg-alert-body">
+                                                    <div class="user-msg-alert-body"  [ngStyle]="{display:isNewOwnerOk?'block':'none'}"  [ngClass]="{'user-msg-open':isNewOwnerOk}">
                                                         <p class="user-msg-alert-title">Files is 'Shared' now</p>
                                                         <p class="user-msg-alert-content">Much more than Files! See and discover all the web links and more files types from this chat.</p>
-                                                        <div class="user-msg-alert-close-btn">Got it!</div>
+                                                        <div class="user-msg-alert-close-btn" (click)="onGotItBtnClicked()">Got it!</div>
                                                     </div>
                                                 </div>
 

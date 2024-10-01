@@ -182,7 +182,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   loading: boolean = false;
   actionowner_dropdown:any;
   actionresponsible_dropdown:any;
-
+  isNewOwnerOk:boolean=false;
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
@@ -212,6 +212,15 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.objPortfolioDto = new PortfolioDTO();
     this.approvalObj = new ApprovalDTO();
   }
+
+
+
+
+
+
+
+
+
   onKeyPress() {
     // Check if the input field is empty
     if (this.agendaInput===undefined||this.agendaInput.trim() === '') {
@@ -1090,9 +1099,47 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     }
 
 
+    if(this.projectInfo.NewOwner==this.Current_user_ID){
+       const usr_ak=localStorage.getItem('userAcknowledgements');
+       if(usr_ak){
+            const arr=JSON.parse(usr_ak);
+            const r=arr.find((ob)=>ob['userNewOwner-'+this.projectInfo.Project_Code]==true);
+            this.isNewOwnerOk=r?false:true;
+       }
+       else 
+       this.isNewOwnerOk=true;    // popup visible
+    }
+    
+
 
     });
   }
+
+
+  onGotItBtnClicked(){
+      const usr_ak=localStorage.getItem('userAcknowledgements');
+      if(usr_ak){
+            const arr=JSON.parse(usr_ak);
+            const ob={};
+            ob['userNewOwner-'+this.projectInfo.Project_Code]=true;
+            arr.push(ob);
+            const r=JSON.stringify(arr);
+            localStorage.setItem('userAcknowledgements',r);
+      }
+      else{
+           const ob={};
+           ob['userNewOwner-'+this.projectInfo.Project_Code]=true;
+           const r=JSON.stringify([ob]);
+           localStorage.setItem('userAcknowledgements',r);
+      }
+      this.isNewOwnerOk=false;  // popup invisible.
+  }
+
+
+
+
+
+
 
   completionOffset:number=0;
 
