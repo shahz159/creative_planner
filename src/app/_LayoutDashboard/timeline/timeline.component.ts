@@ -147,7 +147,7 @@ export class TimelineComponent implements OnInit {
     val=this.disablePreviousDate;  
    
     this.current_Date = moment(val).format("MM/DD/YYYY");
-    this.getTimelineReportByDate(sel_date=='TODAY'?'today':'yesterday');
+    // this.getTimelineReportByDate(sel_date=='TODAY'?'today':'yesterday');
 
   }
 
@@ -598,9 +598,9 @@ submitDar() {
       this._Message = data['message'];
       this.notifyService.showSuccess(this._Message, "Success");
       
-      if(this.timeline_of){
-        this.getTimelineReportByDate(this.timeline_of=='TODAY'?'today':'yesterday');
-      }
+      // if(this.timeline_of){
+      //   this.getTimelineReportByDate(this.timeline_of=='TODAY'?'today':'yesterday');
+      // }
     
     
       // after timeline submission success then complete the action also if needed. start
@@ -645,7 +645,7 @@ submitDar() {
     });
 
   this.getDarTime();
-  this.getTimelineReportByDate(this.timeline_of=='TODAY'?'today':'yesterday');
+  // this.getTimelineReportByDate(this.timeline_of=='TODAY'?'today':'yesterday');
   // close sidebar whenever timeline is added.
   // document.getElementById("timepage").classList.remove("position-fixed");
   // document.getElementById("rightbar-overlay").style.display = "none";
@@ -968,7 +968,7 @@ submitTL(submDate:string)
                       'success'
                     );
                    this.timelineLog(this.type1);  
-                   this.getTimelineReportByDate(this.timeline_of=='TODAY'?'today':'yesterday');
+                  //  this.getTimelineReportByDate(this.timeline_of=='TODAY'?'today':'yesterday');
                     // rebind
                }
                else if(res.message=='2'||res.message!='2'){
@@ -1049,61 +1049,61 @@ formatDuration(totalDuration) {
 }
 
 
-tmReportArr:any[]=[];
-tmReportTotalDuration:any;
-tmReportStatus:any;
-tmSubmDate:any;
-tmReportLoading:boolean=false;
-getTimelineReportByDate(dateVal:'today'|'yesterday') {
-    this.tmReportArr=[];  
-    this.tmReportStatus=null; 
-    this.tmReportTotalDuration=null; 
-    this.tmSubmDate=null;
-    // erase prev data. 
+// tmReportArr:any[]=[];
+// tmReportTotalDuration:any;
+// tmReportStatus:any;
+// tmSubmDate:any;
+// tmReportLoading:boolean=false;
+// getTimelineReportByDate(dateVal:'today'|'yesterday') {
+//     this.tmReportArr=[];  
+//     this.tmReportStatus=null; 
+//     this.tmReportTotalDuration=null; 
+//     this.tmSubmDate=null;
+//     // erase prev data. 
 
-    this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
-    this.ObjSubTaskDTO.PageNumber = 1;
-    this.ObjSubTaskDTO.PageSize = 2;
-    this.ObjSubTaskDTO.sort = dateVal
-    this.ObjSubTaskDTO.Start_Date = null;
-    this.ObjSubTaskDTO.End_Date = null;
-    this.tmReportLoading=true;
-    this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-      (data => {
-        this.tmReportLoading=false;
-        console.log(data);
-        if(data&&data[0].DAR_Details_Json){
-             const dar_json=JSON.parse(data[0].DAR_Details_Json);
-             if(dar_json&&dar_json[0]){
-                this.tmReportArr=dar_json[0].Dardata;
-                this.tmReportTotalDuration=dar_json[0].TotalDuration;
-                this.tmSubmDate=dar_json[0].SubmissionDate;
+//     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+//     this.ObjSubTaskDTO.PageNumber = 1;
+//     this.ObjSubTaskDTO.PageSize = 2;
+//     this.ObjSubTaskDTO.sort = dateVal
+//     this.ObjSubTaskDTO.Start_Date = null;
+//     this.ObjSubTaskDTO.End_Date = null;
+//     this.tmReportLoading=true;
+//     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+//       (data => {
+//         this.tmReportLoading=false;
+//         console.log(data);
+//         if(data&&data[0].DAR_Details_Json){
+//              const dar_json=JSON.parse(data[0].DAR_Details_Json);
+//              if(dar_json&&dar_json[0]){
+//                 this.tmReportArr=dar_json[0].Dardata;
+//                 this.tmReportTotalDuration=dar_json[0].TotalDuration;
+//                 this.tmSubmDate=dar_json[0].SubmissionDate;
 
-                if(this.submission_json){
+//                 if(this.submission_json){
 
-                    const d1=new Date(this.tmSubmDate);
-                    d1.setHours(0,0,0,0);
-                    const tm_submitted=this.submission_json.find(item=>{
-                        const d2=new Date(item.SubmissionDate);
-                        return d1.getTime()==d2.getTime();
-                    });
+//                     const d1=new Date(this.tmSubmDate);
+//                     d1.setHours(0,0,0,0);
+//                     const tm_submitted=this.submission_json.find(item=>{
+//                         const d2=new Date(item.SubmissionDate);
+//                         return d1.getTime()==d2.getTime();
+//                     });
         
-                    if(tm_submitted)
-                      this.tmReportStatus=tm_submitted.Status; 
-                    else{
-                      this.tmReportStatus='Not Submitted';
-                      // const crtdate=new Date();
-                      // const daysDiff=Math.abs(moment(d1).diff(moment(crtdate),'days'));
-                      // tm.submitable=daysDiff<=1;
-                    }
+//                     if(tm_submitted)
+//                       this.tmReportStatus=tm_submitted.Status; 
+//                     else{
+//                       this.tmReportStatus='Not Submitted';
+//                       // const crtdate=new Date();
+//                       // const daysDiff=Math.abs(moment(d1).diff(moment(crtdate),'days'));
+//                       // tm.submitable=daysDiff<=1;
+//                     }
                 
-                }
+//                 }
 
-            }
-        }
-      });
+//             }
+//         }
+//       });
 
-}
+// }
 
 
 

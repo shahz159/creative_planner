@@ -565,10 +565,8 @@
               </div>
         </div>
         <div id="div1">
-            <div class="timeline-item-div mb-2rem">
+            <!-- <div class="timeline-item-div mb-2rem">
                 <div class="timeline-item-heading">
-                    <!-- <span *ngIf="timeline_of=='TODAY'">Today Timeline</span>
-                    <span *ngIf="timeline_of=='YESTERDAY'">Yesterday Timeline</span> -->
                     Timeline report
                 </div>
                 <div class="">
@@ -684,9 +682,11 @@
             </ng-template>
 
                 </div>
-            </div>
-            <div *ngIf="tmReportStatus=='Not Submitted'||tmReportArr.length==0"  class="timeline-item-div">
+            </div> -->
+            <!-- *ngIf="tmReportStatus=='Not Submitted'||tmReportArr.length==0"   -->
+            <div class="timeline-item-div">
                 <div class="timeline-item-heading">Add timeline</div>
+                <h4 class="header-date p-0">{{current_Date|date:'EEEE, MMMM d, y'}}</h4>
                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mt-2" >
                     <label>Type<span class="text-danger">*</span></label>
                     <ng-select required #type="ngModel" name="type" placeholder="Select Type" id="projType" [ngClass]="{'error-vd': (fieldRequired&&!project_type)}"
@@ -851,15 +851,14 @@
                     </div>
                   </ng-container>
                   <div class="timeline-add">
-                    <button type="reset" class="btn btn-secondary btn-sm mr-2 curser-pointer" (click)="clear()">Reset</button>
-                    <button type="submit" class="btn btn-info btn-sm btn-fw curser-pointer" (click)="onTLSubmitBtnClick()">Add timeline</button>
+                    
                 </div>
             </div>
         </div>
     </div>
 
 
-    <div class="kt-portlet__foot py-3">
+    <div class="kt-portlet__foot py-3 d-flex justify-content-end">
         <!-- <button type="submit" class="btn btn-sm btn-info" (click)="submitDar()" *ngIf="showAction==true"
             [disabled]="!master_code || !project_code || !workdes || !starttime || !endtime || endtime < starttime||(bothActTlSubm&&!_remarks)">
             Submit</button>
@@ -871,6 +870,8 @@
 
         <button type="reset" class="btn btn-secondary btn-sm ml-2" (click)="clear()">Reset</button> -->
         <button type="submit" class="btn btn-secondary btn-sm ml-2" (click)="closedarBar()">Cancel</button>
+        <button type="reset" class="btn btn-secondary btn-sm mr-2 ml-2 curser-pointer" (click)="clear()">Reset</button>
+        <button type="submit" class="btn btn-info btn-sm btn-fw curser-pointer ml-0" (click)="onTLSubmitBtnClick()">End day</button>
     </div>
 
 
