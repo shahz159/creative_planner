@@ -282,21 +282,18 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     });
 
 
-
-
-
-
-
   }
-
-
-
-
 
   ngAfterViewInit(): void {
     this.getResponsibleActions();
     this.GetActivityDetails();
+  //   setTimeout(()=>{
+  //     $('.user-msg-alert-body').show();
+  // },6000);
   }
+
+
+
 
   getusername() {
     this.service._GetUserName(this.Current_user_ID).subscribe(data => {
