@@ -257,6 +257,7 @@ export class StreamCalendarComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.Current_user_ID = localStorage.getItem('EmpNo');
     this.initAutosize();
     this.initFirstclass();
     this.MinLastNameLength = true;
@@ -274,6 +275,8 @@ export class StreamCalendarComponent implements OnInit {
       inertia: true,
       placement: 'left'
     });
+
+    this.GetScheduledJson();
 
 
     this.calendarOptions = {
@@ -301,7 +304,7 @@ export class StreamCalendarComponent implements OnInit {
       allDaySlot: false
     };
 
-    this.Current_user_ID = localStorage.getItem('EmpNo');
+ 
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
    
 
@@ -2426,16 +2429,26 @@ bindCustomRecurrenceValues(){
     this.fetchDataStartTime = performance.now();
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
+       
         this.fetchDataEndTime = performance.now();
         this.fetchDataTime = this.fetchDataEndTime - this.fetchDataStartTime;
 
         this.dataBindStartTime = performance.now();
+
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
-        console.log(this.Scheduledjson,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+
+        this.Scheduledjson = this.Scheduledjson
+        .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+        console.log(this.Scheduledjson,'Calendar Json List2')
+       this.getEventsForWeeks(0)
+
+      
+    
+
         this.dataBindEndTime = performance.now();
         this.dataBindTime = this.dataBindEndTime - this.dataBindStartTime;
         this.userFound = true
-        console.log(this.Scheduledjson, "Testingssd");
+  
 
         console.log("Fetch Data Time: in milliseconds", this.fetchDataTime);
         console.log("Data Bind Time: in milliseconds", this.dataBindTime);
@@ -2478,7 +2491,26 @@ bindCustomRecurrenceValues(){
   }
 
 
-
+  getEventsForWeeks(weeksFromToday: number) {
+    debugger
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset today's time to midnight
+  
+    // Determine the target date based on weeksFromToday
+    const targetDate = new Date(today);
+    targetDate.setDate(today.getDate() + (weeksFromToday === 0 ? 1 : weeksFromToday * 7)); // Include tomorrow for today
+  
+    this.Scheduledjson = this.Scheduledjson.filter(e => {
+      const eventDate = new Date(e.start.split(" ")[0]); // Only consider the date part
+      return weeksFromToday > 0 
+        ? eventDate >= today && eventDate < targetDate // Future events (including today)
+        : weeksFromToday < 0 
+        ? eventDate < today && eventDate >= new Date(today.setDate(today.getDate() + weeksFromToday * 7)) // Past events
+        : eventDate >= today && eventDate < targetDate; // Today's events (include today and tomorrow)
+    });
+  }
+  
+  
 
 
   handleEventClick(arg) {
