@@ -536,6 +536,11 @@
                             <div class="card-body pt-0">
                                 <!--begin: Datatable -->
                                 <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                  <div class="row kt-filterdetails">
+                                    <div class="search-filter">
+                                      <div *ngIf="getFilterLabel()">{{ getFilterLabel() }}</div>
+                                    </div>
+                                  </div>
                                     <div class="row">
 
                                         <div class="col-sm-12 table-scroll" *ngIf="_MessageIfNotOwner==''">
@@ -892,7 +897,7 @@
                                                     <span class="New_Approval_Project font-weight-400">{{item1.Pendingapprover=="Completion Under Approval" ? "Completion approval":item1.Pendingapprover}}
                                                     </span>
                                                   </div>
-                                                  
+
                                                   <div *ngIf="item1.Status=='Cancellation Under Approval'">
                                                       <span
                                                           class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status =="Cancellation Under Approval" ? "Cancellation approval":item1.Status}}
