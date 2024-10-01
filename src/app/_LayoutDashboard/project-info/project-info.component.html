@@ -472,7 +472,10 @@
                 
             </div>
             <div class="col-lg-12 mb-3 p-3" *ngIf="ProjectStatesJson[0].AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId"
-                        style="background-color:white;border-radius:2px;border:1px solid #6388e3;">
+                        style="    background-color: #e4e7f9;
+                        border-radius: 14px;
+                        border: 1px solid #6388e336;
+                        color: #4f4f4f;">
                         <div class="d-flex justify-content-between">
                             <h6 style="text-align:left;margin:0;">Project has been assigned to you for auditing by {{AuditRequestBY}}</h6>
                             <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
@@ -485,15 +488,18 @@
             </div>
 
             <div class="col-lg-12 mb-3 p-3" *ngIf="ProjectStatesJson[0].AuditStatus=='Audit Complete' && Current_user_ID==approvalEmpId"
-            style="background-color:white;border-radius:2px;border:1px solid #6388e3;">
-            <div class="d-flex justify-content-between">
-                <h6 style="text-align:left;margin:0;">Project audit completed by {{projectAuditor.empName}}</h6>
-                <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
-            </div>
-            <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Remarks:</h6>
-            <div>
-                <span>{{ProjectStatesJson[0].Auditor_acceptremarks}}</span>
-            </div>
+                    style="    background-color: #e4e7f9;
+                    border-radius: 14px;
+                    border: 1px solid #6388e336;
+                    color: #4f4f4f;">
+                    <div class="d-flex justify-content-between">
+                        <h6 style="text-align:left;margin:0;">Project audit completed by {{projectAuditor.empName}}</h6>
+                        <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
+                    </div>
+                    <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Remarks:</h6>
+                    <div>
+                        <span>{{ProjectStatesJson[0].Auditor_acceptremarks}}</span>
+                    </div>
             </div>
 
             <div class="kt-reject-form-view" [hidden]="!isTextAreaVisible">

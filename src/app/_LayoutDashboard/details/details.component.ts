@@ -296,9 +296,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.getResponsibleActions();
     this.GetActivityDetails();
-  //   setTimeout(()=>{
-  //     $('.user-msg-alert-body').show();
-  // },6000);
   }
 
 
@@ -1111,7 +1108,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     }
     
 
-
+ 
     });
   }
 

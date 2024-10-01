@@ -6001,7 +6001,7 @@ debugger
           this._calenderDto.flagid = 3;
         }
       }
-      //  console.log(finalarray,'finalarray of Edit')
+
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
       if (this._OldRecurranceId == this.selectedrecuvalue) {
         if (this._OldEnd_date != this._EndDate) {
@@ -6011,7 +6011,7 @@ debugger
             this._calenderDto.flagid = 2;
         }
       }
-      console.log(this._PopupConfirmedValue, "finalarray");
+
       if (this.Schedule_ID != 0) {
         this._calenderDto.Schedule_ID = this.Schedule_ID;
 
@@ -6034,8 +6034,8 @@ debugger
       frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
       frmData.append("flag_id", this._calenderDto.flagid.toString());
       this._calenderDto.attachment = this.RemovedAttach.toString();
-
-      // console.log(JSON.stringify(finalarray), "finalarray");
+       debugger
+      console.log(this._calenderDto.attachment, "finalarray");
       this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
         (data => {
           this.RemovedAttach = [];

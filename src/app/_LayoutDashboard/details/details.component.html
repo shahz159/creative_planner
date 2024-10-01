@@ -561,8 +561,8 @@
                                                         <p>{{projectInfo&&projectInfo.Owner}}</p>
                                                     </div>
                                                     <div class="user-msg-alert-body"  [ngStyle]="{display:isNewOwnerOk?'block':'none'}"  [ngClass]="{'user-msg-open':isNewOwnerOk}">
-                                                        <p class="user-msg-alert-title">Files is 'Shared' now</p>
-                                                        <p class="user-msg-alert-content">Much more than Files! See and discover all the web links and more files types from this chat.</p>
+                                                        <p class="user-msg-alert-title">You are the new Owner now!</p>
+                                                        <p class="user-msg-alert-content">You have been assigned a new role as an owner of the project.</p>
                                                         <div class="user-msg-alert-close-btn" (click)="onGotItBtnClicked()">Got it!</div>
                                                     </div>
                                                 </div>
@@ -2178,7 +2178,8 @@
                         </g>
                         </svg>
                         <span class="notif-msg">
-                             You have been assigned a new role as an owner of this project.
+                             You have been assigned a new role as an owner for this project.
+                          <span>Remarks:{{projectInfo.OldOwnerRemarks}}</span>
                         </span>
                     </div>
 
@@ -3043,6 +3044,38 @@
                                                 <!-- Request type start  -->
                                                 <ng-container *ngIf="Current_user_ID  == approvalEmpId || requestDetails&&requestDetails.length>2 ">
                                                     <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!(isApprovalSection&&projectInfo.Status!=='Cancelled'&&(multiapproval_list.length+totalStdTskApvs==1))">
+                                                       
+                                                       
+                                                        <div class="col-lg-12 mb-3 p-3" *ngIf="projectInfo.AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId"
+                                                        style="    background-color: #e4e7f9;
+                                                        border-radius: 14px;
+                                                        border: 1px solid #6388e336;
+                                                        color: #4f4f4f;">
+                                                        <div class="d-flex justify-content-between">
+                                                            <h6 style="text-align:left;margin:0;">Project has been assigned to you for auditing by {{AuditRequestBY}}</h6>
+                                                            <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
+                                                        </div>
+                                                        <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
+                                                        <div>
+                                                            <span *ngIf="projectInfo.Owner_remarks">{{projectInfo.Owner_remarks}}</span>
+                                                            <span *ngIf="!projectInfo.Owner_remarks">{{requestComments}}</span>
+                                                        </div>
+                                                    </div> 
+
+                                                    <div class="col-lg-12 mb-3 p-3" *ngIf="projectInfo.AuditStatus=='Audit Complete' && Current_user_ID==approvalEmpId"
+                                                    style="background-color:white;border-radius:2px;border:1px solid #6388e3;">
+                                                    <div class="d-flex justify-content-between">
+                                                        <h6 style="text-align:left;margin:0;">Project audit completed by {{projectAuditor.empName}}</h6>
+                                                        <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
+                                                    </div>
+                                                    <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Remarks:</h6>
+                                                    <div>
+                                                        <span *ngIf="projectInfo.Auditor_acceptremarks">{{projectInfo.Auditor_acceptremarks}}</span>
+                                                    </div>
+                                                   </div>
+                                                       
+                                                       
+                                                       
                                                         <div class="d-flex justify-content-between align-items-center">
 
                                                             <div class="kt-info-box-tittle">
@@ -3478,30 +3511,7 @@
                                                             <!-- projectInfo.AuditStatus=='Audit Complete'&&Current_user_ID==approvalEmpId -->
 
 
-                                                            <div class="col-lg-12 mb-3 p-3" *ngIf="projectInfo.AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId"
-                                                                style="background-color:white;border-radius:2px;border:1px solid #6388e3;">
-                                                                <div class="d-flex justify-content-between">
-                                                                    <h6 style="text-align:left;margin:0;">Project has been assigned to you for auditing by {{AuditRequestBY}}</h6>
-                                                                    <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
-                                                                </div>
-                                                                <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
-                                                                <div>
-                                                                    <span *ngIf="projectInfo.Owner_remarks">{{projectInfo.Owner_remarks}}</span>
-                                                                    <span *ngIf="!projectInfo.Owner_remarks">{{requestComments}}</span>
-                                                                </div>
-                                                            </div> 
-
-                                                            <div class="col-lg-12 mb-3 p-3" *ngIf="projectInfo.AuditStatus=='Audit Complete' && Current_user_ID==approvalEmpId"
-                                                            style="background-color:white;border-radius:2px;border:1px solid #6388e3;">
-                                                            <div class="d-flex justify-content-between">
-                                                                <h6 style="text-align:left;margin:0;">Project audit completed by {{projectAuditor.empName}}</h6>
-                                                                <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
-                                                            </div>
-                                                            <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Remarks:</h6>
-                                                            <div>
-                                                                <span *ngIf="projectInfo.Auditor_acceptremarks">{{projectInfo.Auditor_acceptremarks}}</span>
-                                                            </div>
-                                                           </div>
+                                                            
 
                                                             <div class="col-lg-12 mb-3">
                                                                 <div class="kt-info-lable-v">Remarks</div>
