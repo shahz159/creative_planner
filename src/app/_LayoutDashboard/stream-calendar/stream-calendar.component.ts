@@ -2439,20 +2439,15 @@ bindCustomRecurrenceValues(){
 
         this.Scheduledjson = this.Scheduledjson
         .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
-        console.log(this.Scheduledjson,'Calendar Json List2')
-       this.getEventsForWeeks(0)
-
       
-    
+       this.getEventsForWeeks(0)
 
         this.dataBindEndTime = performance.now();
         this.dataBindTime = this.dataBindEndTime - this.dataBindStartTime;
         this.userFound = true
-  
 
         console.log("Fetch Data Time: in milliseconds", this.fetchDataTime);
         console.log("Data Bind Time: in milliseconds", this.dataBindTime);
-
 
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
 
@@ -2486,31 +2481,50 @@ bindCustomRecurrenceValues(){
           allDaySlot: false,
           //69 datesSet: () => { this.TwinEvent = []; }
         };
-
       });
   }
 
 
-  getEventsForWeeks(weeksFromToday: number) {
-    debugger
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset today's time to midnight
-  
-    // Determine the target date based on weeksFromToday
-    const targetDate = new Date(today);
-    targetDate.setDate(today.getDate() + (weeksFromToday === 0 ? 1 : weeksFromToday * 7)); // Include tomorrow for today
-  
-    this.Scheduledjson = this.Scheduledjson.filter(e => {
-      const eventDate = new Date(e.start.split(" ")[0]); // Only consider the date part
-      return weeksFromToday > 0 
-        ? eventDate >= today && eventDate < targetDate // Future events (including today)
-        : weeksFromToday < 0 
-        ? eventDate < today && eventDate >= new Date(today.setDate(today.getDate() + weeksFromToday * 7)) // Past events
-        : eventDate >= today && eventDate < targetDate; // Today's events (include today and tomorrow)
-    });
+
+
+Calendarjson: any;
+currentWeekOffset = 0; // Tracks the current week offset from today
+clickHistory: number[] = []; // Stores the history of week changes
+
+getEventsForWeeks(weeksFromToday: number) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Reset today's time to midnight
+
+  // Calculate the new offset
+  const newOffset = this.currentWeekOffset + weeksFromToday;
+
+  // If the user is going back in time (weeksFromToday < 0)
+  if (weeksFromToday < 0) {
+    this.clickHistory.push(weeksFromToday); // Store the click in history
+  } else if (weeksFromToday > 0) {
+    // If the user is going forward, check if we have clicks in history
+    if (this.clickHistory.length > 0) {
+      this.clickHistory.pop(); // Remove the last backward click
+    }
   }
-  
-  
+  // Update the current week offset
+  this.currentWeekOffset = newOffset;
+
+  // Determine the start and end dates for the selected week
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() + (this.currentWeekOffset * 7));
+
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 7); // End date is 7 days after the start date
+
+  // Filter events that fall within the selected week's date range
+  this.Calendarjson = this.Scheduledjson.filter(e => {
+    const eventDate = new Date(e.start.split(" ")[0]); // Only consider the date part
+    return eventDate >= startDate && eventDate < endDate;
+  });
+  console.log(this.Calendarjson, 'Calendar Json List');
+}
+
 
 
   handleEventClick(arg) {
