@@ -156,6 +156,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   prviousCommentsList: any;
   initials1: any;
   Submitted_By: string;
+  AuditRequestBY:string;
   reject_list: any;
   comments_list: any;
   new_cost: any;
@@ -179,6 +180,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   taskDelayedby:number|undefined;
   projectAuditor:any;
   loading: boolean = false;
+  actionowner_dropdown:any;
+  actionresponsible_dropdown:any;
 
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
@@ -279,21 +282,18 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     });
 
 
-
-
-
-
-
   }
-
-
-
-
 
   ngAfterViewInit(): void {
     this.getResponsibleActions();
     this.GetActivityDetails();
+  //   setTimeout(()=>{
+  //     $('.user-msg-alert-body').show();
+  // },6000);
   }
+
+
+
 
   getusername() {
     this.service._GetUserName(this.Current_user_ID).subscribe(data => {
@@ -544,7 +544,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                  }],
                  chart: {
                    type: 'bar',
-                   height: 350
+                   height: 350,
                  },
                  plotOptions: {
                    bar: {
@@ -887,7 +887,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   // projectActionDelay:any;
   // projectDelay:any;
   errorFetchingProjectInfo:boolean=false;
-projecttypes : any
+  projecttypes : any
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
     this.errorFetchingProjectInfo=false;
@@ -922,6 +922,7 @@ projecttypes : any
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       this.Title_Name=this.projectInfo.Project_Name;
+      
       if(this.projectInfo.Project_Block=='003'&&this.projectInfo.Status.includes('Delay')){
           let regex=/[0-9]+/;
           const result=regex.exec(this.projectInfo.Status);
@@ -1447,8 +1448,15 @@ debugger
        if(this.projectActionInfo[this.currentActionView].Status=='New Project Rejected'){
          this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
        }
+       this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectActionInfo[index].Project_Code).subscribe(
+        (data) => {
+          console.log(data, "action racis");
+          this.actionowner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
+          this.actionresponsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
+        });
     }
 
+  
 
 
 
@@ -2217,6 +2225,7 @@ multipleback(){
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
         //this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
         this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
+        this.AuditRequestBY = (this.requestDetails[0]['AuditRequestBY']);   console.log('AuditRequestBY:',this.AuditRequestBY);
         const fullName = this.Submitted_By.split(' ');
         this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
         this.initials1 = this.initials1.toUpperCase();
@@ -3569,7 +3578,7 @@ currentStdAprView:number|undefined;
             this.notifyService.showError("Not updated", "Failed");
           }
           else if (data['message'] == '5') {
-            this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.responsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
+            this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
           }
           else if (data['message'] == '6') {
             this.notifyService.showSuccess("Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
@@ -3608,7 +3617,7 @@ currentStdAprView:number|undefined;
         this.notifyService.showError("Not updated", "Failed");
       }
       else if (data['message'] == '5') {
-        this.notifyService.showSuccess("Project transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
+        this.notifyService.showSuccess("Project transfer request sent to the new responsible "+ this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
       }
       else if (data['message'] == '6') {
         this.notifyService.showSuccess("Updated successfully"+"Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
