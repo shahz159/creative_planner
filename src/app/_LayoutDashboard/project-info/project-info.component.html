@@ -477,14 +477,18 @@
                         border: 1px solid #6388e336;
                         color: #4f4f4f;">
                         <div class="d-flex justify-content-between">
-                            <h6 style="text-align:left;margin:0;">Project has been assigned to you for auditing by {{AuditRequestBY}}</h6>
+                            <h6 style="text-align:left;margin:0;font-weight: bold;">Project has been assigned to you for auditing by {{AuditRequestBY}}</h6>
                             <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
                         </div>
-                        <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
                         <div>
                             <span *ngIf="ProjectStatesJson[0].Owner_remarks">{{ProjectStatesJson[0].Owner_remarks}}</span>
                             <span *ngIf="!ProjectStatesJson[0].Owner_remarks">{{requestComments}}</span>
                         </div>
+                        <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
+                        <span> 1. You have to analyze the project and give your approval acceptance or rejection as per the above remarks.
+                            <br>2. If you accept the project approval, then it will land to the project owner for the final approval.<br>
+                            3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.    
+                        </span>
             </div>
 
             <div class="col-lg-12 mb-3 p-3" *ngIf="ProjectStatesJson[0].AuditStatus=='Audit Complete' && Current_user_ID==approvalEmpId"

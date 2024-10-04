@@ -3123,19 +3123,19 @@ getChangeSubtaskDetais(Project_Code) {
               return result;
           });
           this.validStartTimearr=this.StartTimearr.slice(index);
-  
+
       // verify whether starttime and endtime are valid or not. start
       _currentdate.format('h:mm A');
-  
+
       const inputtime1=moment(this.Startts,'h:mm A');
       const inputtime2=moment(this.Endtms,'h:mm A');
       if(inputtime1<ct)
         this.Startts=this.validStartTimearr[0];
       if(inputtime2<ct)
         this.Endtms=this.validStartTimearr[1];
-  
+
      // verify whether starttime and endtime are valid or not. end
-  
+
       }
       else
       this.validStartTimearr=[...this.StartTimearr];
@@ -5872,5 +5872,34 @@ bindCustomRecurrenceValues(){
         return `${delayText.toLowerCase()}`;
       }
   // new code of portfolio meeting side bar end
+
+  getFilterLabel() {
+    if (this._PortProjStatus === '') {
+      return this.showDeletedPrjOnly ? 'Filter by:   Deleted project' : 'Filter by:   Total Project';
+    } else {
+      switch (this._PortProjStatus) {
+        case 'Forward Under Approval':
+          return 'Filter by:   Forward approval';
+        case 'Completion Under Approval':
+          return 'Filter by:   Completion approval';
+        case 'Under Approval':
+          return 'Filter by:   New approval';
+        case 'InProcess':
+          return 'Filter by:   In-Process';
+        case 'Cancellation Under Approval':
+          return 'Filter by:   Cancellation approval';
+        case 'Deadline Extended Under Approval':
+          return 'Filter by:   Deadline extend approval';
+        case 'Enactive Under Approval':
+          return 'Filter by:   Enactive approval'
+        default:
+          return `Filter by :   ${this._PortProjStatus}`;
+      }
+    }
+  }
+
+
+
+
 
 }
