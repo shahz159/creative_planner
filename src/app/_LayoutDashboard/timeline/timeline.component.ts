@@ -65,7 +65,7 @@ export class TimelineComponent implements OnInit {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
    }
-  timeline_of:'TODAY'|'YESTERDAY'; 
+  timeline_of:'TODAY'|'YESTERDAY';
   ObjSubTaskDTO: SubTaskDTO;
   Current_user_ID: any;
   timelineList:any;
@@ -144,8 +144,8 @@ export class TimelineComponent implements OnInit {
     if(this.timeline_of=='TODAY')
     val=this.todayDate;
     else if(this.timeline_of=='YESTERDAY')
-    val=this.disablePreviousDate;  
-   
+    val=this.disablePreviousDate;
+
     this.current_Date = moment(val).format("MM/DD/YYYY");
     // this.getTimelineReportByDate(sel_date=='TODAY'?'today':'yesterday');
 
@@ -597,12 +597,12 @@ submitDar() {
     .subscribe(data => {
       this._Message = data['message'];
       this.notifyService.showSuccess(this._Message, "Success");
-      
+
       // if(this.timeline_of){
       //   this.getTimelineReportByDate(this.timeline_of=='TODAY'?'today':'yesterday');
       // }
-    
-    
+
+
       // after timeline submission success then complete the action also if needed. start
         if(this.bothActTlSubm&&(!['lunch','personal'].includes(this.project_type))){
           const fd = new FormData();
@@ -810,7 +810,7 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
 
 // form validation new start.
 fieldRequired:boolean=false;
-onTLSubmitBtnClick(){  
+onTLSubmitBtnClick(){
  const isLunchOrPersonal:boolean=['lunch','personal'].includes(this.project_type);
 
        if(
@@ -967,7 +967,7 @@ submitTL(submDate:string)
                       `date : ${submDate}`,
                       'success'
                     );
-                   this.timelineLog(this.type1);  
+                   this.timelineLog(this.type1);
                   //  this.getTimelineReportByDate(this.timeline_of=='TODAY'?'today':'yesterday');
                     // rebind
                }
@@ -1039,13 +1039,20 @@ addStatusIntoDarArr(){
 }
 
 formatDuration(totalDuration) {
-  // Extract hours and minutes from the input string
+  // Check if totalDuration is a valid string and formatted correctly
+  if (typeof totalDuration !== 'string' || totalDuration.length < 5) {
+    return '00 Hrs : 00 Mins'; // or some default value
+  }
+
+  // Extract hours and minutes safely
   let hours = totalDuration.substring(0, 2);
   let minutes = totalDuration.substring(3, 5);
 
-  return `${hours > 0 ? hours : '00'} ${hours === '00' || hours === '01' ? 'Hr' : 'Hrs'} : ${minutes > 0 ? minutes : '00'} ${minutes === '00' || minutes === '01' ? 'Min' : 'Mins'}`;
+  // Convert hours and minutes to integers for comparison
+  const hoursInt = parseInt(hours, 10);
+  const minutesInt = parseInt(minutes, 10);
 
-
+  return `${hoursInt > 0 ? hours : '00'} ${hoursInt === 0 || hoursInt === 1 ? 'Hr' : 'Hrs'} : ${minutesInt > 0 ? minutes : '00'} ${minutesInt === 0 || minutesInt === 1 ? 'Min' : 'Mins'}`;
 }
 
 
@@ -1055,11 +1062,11 @@ formatDuration(totalDuration) {
 // tmSubmDate:any;
 // tmReportLoading:boolean=false;
 // getTimelineReportByDate(dateVal:'today'|'yesterday') {
-//     this.tmReportArr=[];  
-//     this.tmReportStatus=null; 
-//     this.tmReportTotalDuration=null; 
+//     this.tmReportArr=[];
+//     this.tmReportStatus=null;
+//     this.tmReportTotalDuration=null;
 //     this.tmSubmDate=null;
-//     // erase prev data. 
+//     // erase prev data.
 
 //     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
 //     this.ObjSubTaskDTO.PageNumber = 1;
@@ -1087,16 +1094,16 @@ formatDuration(totalDuration) {
 //                         const d2=new Date(item.SubmissionDate);
 //                         return d1.getTime()==d2.getTime();
 //                     });
-        
+
 //                     if(tm_submitted)
-//                       this.tmReportStatus=tm_submitted.Status; 
+//                       this.tmReportStatus=tm_submitted.Status;
 //                     else{
 //                       this.tmReportStatus='Not Submitted';
 //                       // const crtdate=new Date();
 //                       // const daysDiff=Math.abs(moment(d1).diff(moment(crtdate),'days'));
 //                       // tm.submitable=daysDiff<=1;
 //                     }
-                
+
 //                 }
 
 //             }
