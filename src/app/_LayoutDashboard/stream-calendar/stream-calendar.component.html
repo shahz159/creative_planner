@@ -19,7 +19,7 @@
                                 fill="#000000"></path>
                         </g>
                     </svg>
-                    <input type="search" autocomplete="off" name="search" placeholder="Search"
+                    <input type="search" autocomplete="off" name="search dew"  [(ngModel)]="searchMeetings" placeholder="Search"
                         class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched  border-0    " />
                 </div>
             </div>
@@ -37,7 +37,10 @@
                         <span id="day-date" style="display: none;">July 16, 2024</span>
                         <span id="week-date" style="display: none;">July 16 – July 23, 2024</span>
                         <span id="month-date" style="display: none;">July 2024</span>
-                        <span id="schedule-date" style="display: block;">July 16 – July 23, 2024</span>
+                        <span id="schedule-date" style="display: block;">{{firstDate|date :'MMM d'}} – {{lastDates | date :'MMM d y'}}</span>
+                        <div (click)="getEventsForWeeks(3)" class="custom-button-today">
+                            <span>Today</span>
+                        </div>
                     </div>
                 </div>
                 <div class="kt-date-div" id="task-cal-date" style="display: none;"><span>July 16, 2024</span></div>
@@ -118,67 +121,75 @@
                 <hr class="kt-calendar-hr">
                 <div class="kt-list-nav">
                     <div class="kt-list-label">My Calender</div>
-                    <div class="kt-list-nav-item">
-                        <span class="kt-list-nav-item-check">
-                            <input class="form-check-input" type="checkbox" value="" id="checkmycaltask">
-                        </span>
-                        <label class="kt-list-nav-item-label" for="checkmycaltask">My tasks</label>
+                    <div class="kt-list-nav-main-cal-scroll">
+                        <div class="kt-list-nav-item">
+                            <span class="kt-list-nav-item-check">
+                                <input class="form-check-input" type="checkbox" value="" id="checkmycaltask">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkmycaltask">My tasks</label>
+                        </div>
+                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(0)">
+                            <span class="kt-list-nav-item-check">
+                                <input class="form-check-input"  [checked]="user_Type === 0"  type="checkbox" value="" id="checkallmeetings">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkallmeetings">All meetings</label>
+                        </div>
+                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(1)">
+                            <span class="kt-list-nav-item-check">
+                                <input class="form-check-input"  [checked]="user_Type === 1"  type="checkbox" value="" id="checkmymeetings">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkmymeetings">My meetings</label>
+                        </div>
+                        <div class="kt-list-nav-item"  (click)="sortMeetingCalender(2)">
+                            <span class="kt-list-nav-item-check">
+                               <input class="form-check-input" [checked]="user_Type === 2" type="checkbox" value="" id="checkconmeetings">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkconmeetings">Confirm meetings</label>
+                        </div>
+                        <div class="kt-list-nav-item"  (click)="sortMeetingCalender(3)">
+                            <span class="kt-list-nav-item-check">
+                               <input class="form-check-input" [checked]="user_Type === 3" type="checkbox" value="" id="checkpenmeetings">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkpenmeetings">Pending meetings</label>
+                        </div>
+                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(4)">
+                            <span class="kt-list-nav-item-check">
+                               <input class="form-check-input" [checked]="user_Type === 4" type="checkbox" value="" id="checkrejmeetings">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkrejmeetings">Rejected meetings</label>
+                        </div>
+                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(5)">
+                            <span class="kt-list-nav-item-check">
+                               <input class="form-check-input" [checked]="user_Type === 5" type="checkbox" value="" id="checkdomeetings">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkdomeetings">Done attended</label>
+                        </div>
+                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(6)">
+                            <span class="kt-list-nav-item-check">
+                               <input class="form-check-input" [checked]="user_Type === 6" type="checkbox" value="" id="checkdomeetings">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkdomeetings">Done not attended</label>
+                        </div>
+                        
+                        <!-- <div class="kt-list-nav-item">
+                            <span class="kt-list-nav-item-check">
+                                <input class="form-check-input" type="checkbox" value="" id="checkconfirmmeetings">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkconfirmmeetings">Confirm meetings</label>
+                        </div>
+                        <div class="kt-list-nav-item">
+                            <span class="kt-list-nav-item-check">
+                                <input class="form-check-input" type="checkbox" value="" id="checkpendingmeetings">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkpendingmeetings">Pending meetings</label>
+                        </div>
+                        <div class="kt-list-nav-item">
+                            <span class="kt-list-nav-item-check">
+                                <input class="form-check-input" type="checkbox" value="" id="checkrejectedmeetings">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkrejectedmeetings">Rejected meetings</label>
+                        </div> -->
                     </div>
-                    <div class="kt-list-nav-item">
-                        <span class="kt-list-nav-item-check">
-                            <input class="form-check-input" type="checkbox" value="" id="checkallmeetings">
-                        </span>
-                        <label class="kt-list-nav-item-label" for="checkallmeetings">All meetings</label>
-                    </div>
-                    <div class="kt-list-nav-item">
-                        <span class="kt-list-nav-item-check">
-                            <input class="form-check-input" type="checkbox" value="" id="checkmymeetings">
-                        </span>
-                        <label class="kt-list-nav-item-label" for="checkmymeetings">My meetings</label>
-                    </div>
-                    <div class="kt-list-nav-item">
-                        <span class="kt-list-nav-item-check">
-                           <input class="form-check-input" type="checkbox" value="" id="checkmymeetings">
-                        </span>
-                        <label class="kt-list-nav-item-label" for="checkmymeetings">Confirm meetings</label>
-                    </div>
-                    <div class="kt-list-nav-item">
-                        <span class="kt-list-nav-item-check">
-                           <input class="form-check-input" type="checkbox" value="" id="checkmymeetings">
-                        </span>
-                        <label class="kt-list-nav-item-label" for="checkmymeetings">Pending meetings</label>
-                    </div>
-                    <div class="kt-list-nav-item">
-                        <span class="kt-list-nav-item-check">
-                           <input class="form-check-input" type="checkbox" value="" id="checkmymeetings">
-                        </span>
-                        <label class="kt-list-nav-item-label" for="checkmymeetings">Rejected meetings</label>
-                    </div>
-                    <div class="kt-list-nav-item">
-                        <span class="kt-list-nav-item-check">
-                           <input class="form-check-input" type="checkbox" value="" id="checkmymeetings">
-                        </span>
-                        <label class="kt-list-nav-item-label" for="checkmymeetings">Done</label>
-                    </div>
-                    
-                    <!-- <div class="kt-list-nav-item">
-                        <span class="kt-list-nav-item-check">
-                            <input class="form-check-input" type="checkbox" value="" id="checkconfirmmeetings">
-                        </span>
-                        <label class="kt-list-nav-item-label" for="checkconfirmmeetings">Confirm meetings</label>
-                    </div>
-                    <div class="kt-list-nav-item">
-                        <span class="kt-list-nav-item-check">
-                            <input class="form-check-input" type="checkbox" value="" id="checkpendingmeetings">
-                        </span>
-                        <label class="kt-list-nav-item-label" for="checkpendingmeetings">Pending meetings</label>
-                    </div>
-                    <div class="kt-list-nav-item">
-                        <span class="kt-list-nav-item-check">
-                            <input class="form-check-input" type="checkbox" value="" id="checkrejectedmeetings">
-                        </span>
-                        <label class="kt-list-nav-item-label" for="checkrejectedmeetings">Rejected meetings</label>
-                    </div> -->
                 </div>
             </div>
             <div class="kt-calendar-right">
@@ -484,17 +495,30 @@
                             </div>
                         </div>
                     </div>
-                    <div class="sch-evt-ul sch-evt-border">
-                        <div class="sch-evt-heading sch-evt-p sch-evt-border-bottom">
+                    <div class="sch-evt-ul sch-evt-border" *ngFor="let group of groupedMeetingsArray | filter :searchMeetings;" >
+                        <div class="sch-evt-heading sch-evt-p sch-evt-border-bottom" >
                             <div>
-                                <span class="sch-evt-date active">22</span>
-                                JUL WED, 2024
+                                <span class="sch-evt-date active"> {{group.date| date: 'd'}}</span>
+                               {{group.date| date: 'MMM EEEE, y'}}
+                               <!-- JUL WED, 2024 -->
                             </div>
                         </div>
-                        <div class="sch-evt-item  sch-evt-border-bottom" *ngFor="let meetingItem of Calendarjson"  (click)="customEventModal()">
+                        <div class="sch-evt-item  sch-evt-border-bottom" *ngFor="let meetingItem of group.events" (click)="customEventModal()">
                             <div style="display: flex;align-items: center;">
                                 <div class="sch-evt-p sch-evt-pr-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+
+                                    <svg *ngIf="meetingItem.Schedule_Type==1" width="18px" height="18px" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                    </g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path fill="#8e24aa" fill-rule="evenodd"
+                                            d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z">
+                                        </path>
+                                    </g>
+                                   </svg>
+                                    <svg *ngIf="meetingItem.Schedule_Type==2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                         width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
                                         <g id="meeting" style="color: #2786fb;">
                                             <path
@@ -515,7 +539,7 @@
                                 </div>
                             </div>
                             <div class="sch-evt-mem">
-                                <div class="sch-evt-e-c sch-evt-border-right">
+                                <div class="sch-evt-e-c" [ngClass]="{'sch-evt-border-right': meetingItem.attendees && meetingItem.link!=0}" *ngIf="meetingItem.attendees">
                                     <div class="sch-evt-svg-bg">
                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -531,9 +555,9 @@
                                             </g>
                                         </svg>
                                     </div>
-                                    +3
+                                    {{meetingItem.attendees}}
                                 </div>
-                                <div class="sch-evt-e-c">
+                                <div class="sch-evt-e-c" *ngIf="meetingItem.link!=0"  title="Link">
                                     <div class="sch-evt-svg-bg">
                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -548,7 +572,7 @@
                                             </g>
                                         </svg>
                                     </div>
-                                    2
+                                    {{meetingItem.link}}
                                 </div>
                             </div>
                         </div>
@@ -2065,30 +2089,33 @@
                 <hr class="kt-calendar-hr">
                 <div class="kt-list-nav">
                     <div class="kt-list-label">Lists</div>
-                    <div class="kt-list-nav-item">
-                        <span class="kt-list-nav-item-check">
-                            <input class="form-check-input" type="checkbox" value="" id="checkmytask" checked>
-                        </span>
-                        <label class="kt-list-nav-item-label" for="checkmytask">My tasks</label>
+                    <div class="kt-list-nav-task-cal-scroll">
+                        <div class="kt-list-nav-item">
+                            <span class="kt-list-nav-item-check">
+                                <input class="form-check-input" type="checkbox" value="" id="checkmytask" checked>
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkmytask">My tasks</label>
+                        </div>
+                        <div class="kt-list-nav-item">
+                            <span class="kt-list-nav-item-check">
+                                <input class="form-check-input" type="checkbox" value="" id="checkstreamplanner">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkstreamplanner">Stream Planner</label>
+                        </div>
+                        <div class="kt-list-nav-item">
+                            <span class="kt-list-nav-item-check">
+                                <input class="form-check-input" type="checkbox" value="" id="checkdms">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkdms">DMS</label>
+                        </div>
+                        <div class="kt-list-nav-item">
+                            <span class="kt-list-nav-item-check">
+                                <input class="form-check-input" type="checkbox" value="" id="checkcreativetime">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkcreativetime">Creative Time</label>
+                        </div>
                     </div>
-                    <div class="kt-list-nav-item">
-                        <span class="kt-list-nav-item-check">
-                            <input class="form-check-input" type="checkbox" value="" id="checkstreamplanner">
-                        </span>
-                        <label class="kt-list-nav-item-label" for="checkstreamplanner">Stream Planner</label>
-                    </div>
-                    <div class="kt-list-nav-item">
-                        <span class="kt-list-nav-item-check">
-                            <input class="form-check-input" type="checkbox" value="" id="checkdms">
-                        </span>
-                        <label class="kt-list-nav-item-label" for="checkdms">DMS</label>
-                    </div>
-                    <div class="kt-list-nav-item">
-                        <span class="kt-list-nav-item-check">
-                            <input class="form-check-input" type="checkbox" value="" id="checkcreativetime">
-                        </span>
-                        <label class="kt-list-nav-item-label" for="checkcreativetime">Creative Time</label>
-                    </div>
+
                     <div class="kt-task-nav-item" role="button" id="dropdownCreateListMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="kt-task-nav-item-logo add">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>

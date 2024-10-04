@@ -697,9 +697,14 @@ dataBindTime: number;
 userFound : boolean | undefined;
 dayArr1:any=JSON.parse(JSON.stringify(this.dayArr)); // deep copying all content
 MonthArr1:any=JSON.parse(JSON.stringify(this.MonthArr)); // deep copying all content
-
-
-
+Calendarjson: any;
+currentWeekOffset = 0; // Tracks the current week offset from today
+clickHistory: number[] = []; // Stores the history of week changes
+groupedMeetingsArray:any;
+firstDate:any;
+lastDate:any;
+lastDates:any;
+searchMeetings:any
 
 
 
@@ -1733,10 +1738,6 @@ checkAddressURL(str) {
 
 
 
-
-
-
-
   
 onRecurrenceTypeChange(val:any){
 
@@ -1985,17 +1986,6 @@ bindCustomRecurrenceValues(){
 
 
   }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2419,6 +2409,10 @@ bindCustomRecurrenceValues(){
 
 
 
+  sortMeetingCalender(user_Types){
+   this.user_Type=user_Types;
+   this.GetScheduledJson()
+  }
 
 
 
@@ -2440,14 +2434,14 @@ bindCustomRecurrenceValues(){
         this.Scheduledjson = this.Scheduledjson
         .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
       
-       this.getEventsForWeeks(0)
+        this.getEventsForWeeks(0)
 
         this.dataBindEndTime = performance.now();
         this.dataBindTime = this.dataBindEndTime - this.dataBindStartTime;
         this.userFound = true
 
-        console.log("Fetch Data Time: in milliseconds", this.fetchDataTime);
-        console.log("Data Bind Time: in milliseconds", this.dataBindTime);
+        // console.log("Fetch Data Time: in milliseconds", this.fetchDataTime);
+        // console.log("Data Bind Time: in milliseconds", this.dataBindTime);
 
         // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
 
@@ -2487,43 +2481,96 @@ bindCustomRecurrenceValues(){
 
 
 
-Calendarjson: any;
-currentWeekOffset = 0; // Tracks the current week offset from today
-clickHistory: number[] = []; // Stores the history of week changes
+
 
 getEventsForWeeks(weeksFromToday: number) {
+
+// precoius and upcoming meeting functionality 
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Reset today's time to midnight
 
-  // Calculate the new offset
-  const newOffset = this.currentWeekOffset + weeksFromToday;
+  // Check if the "Today" button is clicked (i.e., weeksFromToday is 3)
+  if (weeksFromToday === 3) {
+    // Reset control: clear clickHistory and set currentWeekOffset to 0
+    this.clickHistory = [];
+    this.currentWeekOffset = 0;
+  } else {
+    // Calculate the new offset
+    const newOffset = this.currentWeekOffset + weeksFromToday;
 
-  // If the user is going back in time (weeksFromToday < 0)
-  if (weeksFromToday < 0) {
-    this.clickHistory.push(weeksFromToday); // Store the click in history
-  } else if (weeksFromToday > 0) {
-    // If the user is going forward, check if we have clicks in history
-    if (this.clickHistory.length > 0) {
-      this.clickHistory.pop(); // Remove the last backward click
+    // Handle click history for backward/forward navigation
+    if (weeksFromToday < 0) {
+      this.clickHistory.push(weeksFromToday);
+    } else if (weeksFromToday > 0 && this.clickHistory.length > 0) {
+      this.clickHistory.pop();
     }
+
+    // Update the current week offset
+    this.currentWeekOffset = newOffset;
   }
-  // Update the current week offset
-  this.currentWeekOffset = newOffset;
 
-  // Determine the start and end dates for the selected week
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() + (this.currentWeekOffset * 7));
+  // First and last date for the 7-day range
+  this.firstDate = new Date(today);
+  this.firstDate.setDate(today.getDate() + (this.currentWeekOffset * 7));
 
-  const endDate = new Date(startDate);
-  endDate.setDate(startDate.getDate() + 7); // End date is 7 days after the start date
+  this.lastDates = new Date(this.firstDate);
+  this.lastDates.setDate(this.firstDate.getDate() + 6); // Last date is 7 days after the first date
 
-  // Filter events that fall within the selected week's date range
+  this.lastDate = new Date(this.firstDate);
+  this.lastDate.setDate(this.firstDate.getDate() + 7);
+
+  console.log(this.firstDate,this.lastDate, 'this.firstDate');
+  // Existing filtering logic remains unchanged
   this.Calendarjson = this.Scheduledjson.filter(e => {
-    const eventDate = new Date(e.start.split(" ")[0]); // Only consider the date part
-    return eventDate >= startDate && eventDate < endDate;
+    const eventDate = new Date(e.start.split(" ")[0]);
+    return eventDate >= this.firstDate && eventDate <= this.lastDate;
   });
-  console.log(this.Calendarjson, 'Calendar Json List');
+ 
+
+  
+ // grouping data as date functionality
+    this.groupedMeetingsArray = Object.entries(this.Calendarjson.reduce((acc, current) => {
+      const date = current.start.split(' ')[0]; // Extract the date portion only
+      if (!acc[date]) {
+          acc[date] = []; // Initialize an array for each unique date
+      }
+      acc[date].push(current); // Push the meeting into the respective date's group
+      return acc;
+  }, {})).map(([date, events]) => ({ date, events }));
+
+
+// getting count and link from meeting list
+      this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({
+        ...day,
+        events: day.events.map(event => {
+          const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
+          const title = parts[0]; // The title before any pipes
+      
+          const linkIndex = parts.findIndex(part => part.includes("Link"));
+          let attendees = linkIndex > 1 ? parts.slice(1, linkIndex).map(s => s.trim()) : null;
+      
+          // Modify the attendees: if a number exists after "+", increment it; if single name, return "+1"
+          attendees = attendees && attendees.length ? 
+            attendees.map(att => {
+              const match = att.match(/\+(\d+)/); // Check if the attendee contains a "+number"
+              if (match) {
+                const incremented = parseInt(match[1], 10) + 1; // Increment the number by 1
+                return `+${incremented}`; // Return incremented number
+              } 
+              return '+1'; // If it's a single name, replace with "+1"
+            }) : null;
+      
+          const link = linkIndex !== -1 ? parts[linkIndex].split(' ')[0] : null;
+          return { ...event, title, attendees, link };
+        })
+      })); 
+    
+      console.log(this.groupedMeetingsArray, 'groupedMeetingsArray');
 }
+
+
+
+
 
 
 
@@ -2536,8 +2583,6 @@ getEventsForWeeks(weeksFromToday: number) {
     // document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
   }
-
-
 
 
 
@@ -2651,14 +2696,6 @@ getEventsForWeeks(weeksFromToday: number) {
 
 
 
-
-
-
-
-
-
-
-
  Insert_indraft() {
 
   if (this.draftid != 0) {
@@ -2708,6 +2745,8 @@ getEventsForWeeks(weeksFromToday: number) {
     });
 }
 
+
+
 customrecurrencemodal() {
   // document.getElementById('drop-overlay').classList.add("show");
   // document.getElementById('customrecurrence').classList.add("show");
@@ -2729,11 +2768,6 @@ customrecurrencemodal() {
 
 }
 ///////////////////////////////////////////  Create Event and Create Task sidebar End /////////////////////////////////////////////////////////
-
-
-
- 
-
 
 
 
