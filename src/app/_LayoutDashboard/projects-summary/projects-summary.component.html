@@ -160,6 +160,7 @@
                                                        [linkedCalendars]="true"
                                                        [showClearButton]="true"
                                                        [autoApply]="false"
+                                                       (click)="closeallTab()"
                                                        (datesUpdated)="datesUpdated($event)"
                                                        [placeholder]="Dateselectionrange"
                                                        [locale]="{ format: 'DD-MM-YYYY' }"/>
@@ -171,7 +172,7 @@
                                             <div class="row">
                                                 <!-- Adding the new matdropdown for multiple filter                   -->
                                               <div  class="col-md-6">
-                                                <div class="form-group mb-0" >
+                                                <div  class="form-group mb-0" (click)="closeOnOtherClick('company')" >
                                                   <mat-form-field class="drp-dwn-field w-100"   *ngIf="CompanyCountFilter">
                                                     <mat-label>Company</mat-label>
                                                      <mat-chip-list #selected_companies>
@@ -293,11 +294,11 @@
 
 <!-- employee matdropdown start -->
                                               <div class="col-md-6">
-                                                <div class="form-group mb-0" >
+                                                <div class="form-group mb-0" (click)="closeOnOtherClick('employee')">
                                                   <mat-form-field class="drp-dwn-field w-100"   *ngIf="EmpCountInFilter||[]">
-                                                    <mat-label>Employees</mat-label>
+                                                    <mat-label >Employees</mat-label>
                                                      <mat-chip-list #selected_employee>
-                                                      <mat-chip *ngFor="let emptoshare of emplyToselect" class="Data_chip_kt" (removed)="removeSelectedemployee(emptoshare); getNewFilterResult();">
+                                                      <mat-chip *ngFor="let emptoshare of emplyToselect" class="Data_chip_kt"  (removed)="removeSelectedemployee(emptoshare); getNewFilterResult();">
                                                         {{getObjOf(EmpCountInFilter,emptoshare,'Emp_No')?.Name}}
 
                                                         -{{getObjOf(EmpCountInFilter,emptoshare,'Emp_No')?.Count}}
@@ -386,11 +387,11 @@
 
 <!-- project type matdropdown start -->
                                               <div class="col-md-6">
-                                                <div class="form-group mb-0" >
+                                                <div class="form-group mb-0" (click)="closeOnOtherClick('pro')"  >
                                                   <mat-form-field class="drp-dwn-field w-100"   *ngIf="TypeContInFilter||[]">
                                                     <mat-label>Project type</mat-label>
                                                      <mat-chip-list #selected_projecttype>
-                                                      <mat-chip *ngFor="let emptoshare of projtypeToselect" class="Data_chip_kt" (removed)="removeSelectedproject(emptoshare); getNewFilterResult();">
+                                                      <mat-chip *ngFor="let emptoshare of projtypeToselect" class="Data_chip_kt" (click)="closeAutocompleteDrpDwn('employeeDDwn');" (removed)="removeSelectedproject(emptoshare); getNewFilterResult();">
                                                         {{getObjOfpro(TypeContInFilter,emptoshare,'Block_No')?.Name}}
 
                                                         -{{getObjOf(TypeContInFilter,emptoshare,'Block_No')?.Count}}
@@ -501,7 +502,7 @@
 
 
                                                 <div class="col-md-6">
-                                                  <div class="form-group mb-0" >
+                                                  <div class="form-group mb-0" (click)="closeOnOtherClick('status')" >
                                                     <mat-form-field class="drp-dwn-field w-100"   *ngIf="StatusCountFilter||[]">
                                                       <mat-label>Status</mat-label>
                                                        <mat-chip-list #selected_status>
@@ -581,7 +582,7 @@
                                                 </button>
                                                 <button
                                                     class="btn btn-info btn-upper btn-sm btn-bold mr-2"
-                                                    data-toggle="dropdown" (click)="applyFilters();">Submit</button>
+                                                    data-toggle="dropdown" (click)="applyFilters();closeallTab()">Submit</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1360,7 +1361,7 @@
                                                             <div class="pulsing-div">
                                                                 <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
                                                                 <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
-                                                            </div>
+                                                            </div> 
                                                             </div>
 
                                                             <div *ngIf="item.Status=='Cancellation Under Approval'">

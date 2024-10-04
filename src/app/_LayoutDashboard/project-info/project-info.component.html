@@ -156,16 +156,16 @@
                                          }}
 
                                     </div>
-                                      
+
                                     <div *ngIf="item.Status==='Completed'&&completionOffset>0" class="extra-at-status" style="border-color: #388e3c; color: #d32f2f;">
                                         <span class="fs-8">{{completionOffset}} days delayed</span>
                                     </div>
-                                   
+
                                     <ng-container *ngIf="(['Project Hold'].includes(item.Status))&&(item.Delaydays>0)">
                                         <div class="extra-at-status" [ngStyle]="{ borderColor:'#795548'}" style="color: #d32f2f;">
                                            <span class="fs-8">{{item.Delaydays}} {{item.Delaydays>1?'days':'day'}} delayed</span>
                                         </div>
-                                    </ng-container> 
+                                    </ng-container>
 
 
                                     <div class="extra-at-status" *ngIf="item.Status==='Delay'&&(item.deadlineCount&&item.deadlineCount>0)" style="border-color:#d32f2f;">
@@ -247,7 +247,7 @@
                             <div *ngIf="item.Status==='Completed'&&completionOffset>0" class="extra-at-status" style="border-color: #388e3c; color: #d32f2f;">
                                 <span class="fs-8">{{completionOffset}} days delayed</span>
                             </div>
-                        
+
 
 
 
@@ -321,7 +321,7 @@
                     </div>
                     <div class="kt-project-type ">
                         <!-- <div  class="Kt-Pd-Status CompletionUnderApproval" ng-reflect-ng-class="[object Object]">Completion Under Approval</div> -->
-                        <div class="d-flex">  
+                        <div class="d-flex">
                         <div *ngFor="let item of ProjectStatesJson" class="Kt-Pd-Status" [ngClass]="{
                                                 'new-project-under-approval': item.Status=='Under Approval' || item.Status=='Not Started',
                                                 'Inprocess': item.Status=='InProcess',
@@ -378,7 +378,7 @@
                             <div (click)="approvalClick('ACCEPT')" title="Approve it, to appreciate project team for great work." class="kt-detail-link" [ngClass]="{'active':Accept_active==true}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 1em; height: 1em; vertical-align: middle; fill: #028507; ;overflow: hidden;"><path d="M1002.81 144.43a64 64 0 0 0-90.38 4.76L381.56 739l-272.3-272.3a64 64 0 0 0-90.51 90.51l320 320A64 64 0 0 0 384 896h1.68a64 64 0 0 0 45.89-21.16l576-640a64 64 0 0 0-4.76-90.41z"></path></svg><span class="kt-detail-iconname">Accept</span></div>
                             <div (click)="approvalClick('REJECT')" title="Reject as to type of rejection, which help user to modify the project accordingly." class="kt-detail-link" [ngClass]="{'active':Reject_active==true}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 1em; height: 1em; vertical-align: middle; fill: #e81000; ;overflow: hidden;"><path d="M622.276923 508.061538l257.969231-257.96923c11.815385-11.815385 11.815385-29.538462 0-41.353846l-41.353846-41.353847c-11.815385-11.815385-29.538462-11.815385-41.353846 0L539.569231 425.353846c-7.876923 7.876923-19.692308 7.876923-27.569231 0L254.030769 165.415385c-11.815385-11.815385-29.538462-11.815385-41.353846 0l-41.353846 41.353846c-11.815385 11.815385-11.815385 29.538462 0 41.353846l257.969231 257.969231c7.876923 7.876923 7.876923 19.692308 0 27.56923L169.353846 793.6c-11.815385 11.815385-11.815385 29.538462 0 41.353846l41.353846 41.353846c11.815385 11.815385 29.538462 11.815385 41.353846 0L512 618.338462c7.876923-7.876923 19.692308-7.876923 27.569231 0l257.969231 257.96923c11.815385 11.815385 29.538462 11.815385 41.353846 0l41.353846-41.353846c11.815385-11.815385 11.815385-29.538462 0-41.353846L622.276923 535.630769c-5.907692-7.876923-5.907692-19.692308 0-27.569231z"></path></svg><span class="kt-detail-iconname">Reject</span></div>
                         </div>
-                        
+
 
                         <!-- <div class="col">
                     <div class="kt-info-lable-v">Approval*</div>
@@ -466,10 +466,10 @@
                     </ng-container>
                 </div> -->
                     </div>
-                    
+
                     <div class="clearfix"></div>
                 </div>
-                
+
             </div>
             <div class="col-lg-12 mb-3 p-3" *ngIf="ProjectStatesJson[0].AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId"
                         style="    background-color: #e4e7f9;
@@ -477,14 +477,18 @@
                         border: 1px solid #6388e336;
                         color: #4f4f4f;">
                         <div class="d-flex justify-content-between">
-                            <h6 style="text-align:left;margin:0;">Project has been assigned to you for auditing by {{AuditRequestBY}}</h6>
+                            <h6 style="text-align:left;margin:0;font-weight: bold;">Project has been assigned to you for auditing by {{AuditRequestBY}}</h6>
                             <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
                         </div>
-                        <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
                         <div>
                             <span *ngIf="ProjectStatesJson[0].Owner_remarks">{{ProjectStatesJson[0].Owner_remarks}}</span>
                             <span *ngIf="!ProjectStatesJson[0].Owner_remarks">{{requestComments}}</span>
                         </div>
+                        <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
+                        <span> 1. You have to analyze the project and give your approval acceptance or rejection as per the above remarks.
+                            <br>2. If you accept the project approval, then it will land to the project owner for the final approval.<br>
+                            3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.    
+                        </span>
             </div>
 
             <div class="col-lg-12 mb-3 p-3" *ngIf="ProjectStatesJson[0].AuditStatus=='Audit Complete' && Current_user_ID==approvalEmpId"
@@ -757,10 +761,10 @@
                                             (click)="submitApproval()" [disabled]="!comments || !selectedType"
                                             primary="true">Submit</button>
 
-                                            <button *ngIf="Audit_active" type="button" class="btn btn-project-stv Bt-Submit text-nowrap curser-pointer" primary="true" 
+                                            <button *ngIf="Audit_active" type="button" class="btn btn-project-stv Bt-Submit text-nowrap curser-pointer" primary="true"
                                             [ngStyle]="{width:auditBtnDisabled?'fit-content':'none'}"  [disabled]="auditBtnDisabled" (click)="onPrjAuditSubmitClicked()">
                                                 <span *ngIf="auditBtnDisabled" class="d-flex align-items-center gap-1">
-                                                <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span> Submitting... 
+                                                <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span> Submitting...
                                             </span>
                                             <span *ngIf="!auditBtnDisabled">Submit</span>
                                             </button>
@@ -768,7 +772,7 @@
                                             <button *ngIf="Transfer_active" type="button" class="btn btn-project-stv Bt-Submit text-nowrap curser-pointer" primary="true"
                                             [ngStyle]="{width:transferBtnDisabled?'fit-content':'none'}" [disabled]="transferBtnDisabled" (click)="onTransferBtnClicked()">
                                                 <span *ngIf="transferBtnDisabled" class="d-flex align-items-center gap-1">
-                                                <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span> Submitting... 
+                                                <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span> Submitting...
                                                 </span>
                                                 <span *ngIf="!transferBtnDisabled">Submit</span>
                                             </button>
@@ -2166,9 +2170,9 @@
                   <span *ngIf="item.Status=='Delay'" class="Status-Delay">{{getFormattedDelay(item.Delaydays)}} delay</span>
                   <span *ngIf="item.Status!='Delay'" [ngClass]="{'approve': item.Status =='Under Approval'||item.Status =='Forward Under Approval',
                    'in_pro':item.Status=='InProcess','Completed' :item.Status=='Completed','Comp_appr' :item.Status=='Completion Under Approval',
-                   'proj_hold' :item.Status=='Project Hold','new_pro_rej':item.Status=='New Project Rejected'}">
-                   
-                    {{item.Status =='Under Approval'?'New action approval':item.Status=='InProcess'?'In-process':item.Status=='Completion Under Approval'?'Completion approval':item.Status=='Project Hold'?'Hold':item.Status =='Forward Under Approval'?'Forward approval':item.Status}}</span>
+                   'proj_hold' :item.Status=='Project Hold','new_pro_rej':item.Status=='New Project Rejected','cancellation':item.Status=='Cancellation Under Approval'}">
+
+                    {{item.Status =='Under Approval'?'New action approval':item.Status=='InProcess'?'In-Process':item.Status=='Completion Under Approval'?'Completion approval':item.Status=='Project Hold'?'Hold':item.Status =='Forward Under Approval'?'Forward approval':item.Status=='Cancellation Under Approval' ? "Cancellation approval":item.Status}}</span>
                 </span>
               </div>
             </div>

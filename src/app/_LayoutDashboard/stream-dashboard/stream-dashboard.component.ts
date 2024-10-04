@@ -46,6 +46,7 @@ export class StreamDashboardComponent implements OnInit {
     this.meetingDetails()
     this.portfolioSerivce()
     this.getTimeLineStatus()
+    this.GetDashboardSummary()
   }
 
 
@@ -86,12 +87,14 @@ export class StreamDashboardComponent implements OnInit {
     this.Emp_No = localStorage.getItem('EmpNo');
     this.service._GetDashboardSummaryCount(this.Emp_No)
       .subscribe((data) => {
+        console.log(data,"GetDashboardSummary()GetDashboardSummary()GetDashboardSummary()")
 
         this.DelayCount = data[0]['DelayCount'];
         sessionStorage.setItem('DelayCount', this.DelayCount);
 
         this.DelayActionCount = data[0]['DelayActionCount'];
         sessionStorage.setItem('DelayActionCount', this.DelayActionCount);
+        console.log( this.DelayActionCount," this.DelayActionCount this.DelayActionCount")
 
         this.AssignActionCount = data[0]['AssignActionCount'];
         sessionStorage.setItem('AssignActionCount', this.AssignActionCount);

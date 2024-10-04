@@ -532,8 +532,8 @@
                                                         </svg>
                                                     </div>
                                                     <div class="content">
-                                                        <div class="title">Stream Planner progress </div>
-                                                        <div class="owner">Standard task not submitted since 20 days
+                                                        <div class="title">Assigned projects</div>
+                                                        <div class="owner">Total assigned project are {{AssignedProjects}}
                                                         </div>
                                                         <div class="timing">By Md Shahil</div>
                                                     </div>
@@ -556,8 +556,8 @@
                                                         </svg>
                                                     </div>
                                                     <div class="content">
-                                                        <div class="title">Completion Approvals</div>
-                                                        <div class="owner">You have 45 project completion approvals
+                                                        <div class="title">Assigned actions</div>
+                                                        <div class="owner">You have {{AssignActionCount}} Assigned actions
                                                         </div>
                                                         <div class="timing">By Rohan, waseem, akheel, srujan, ramesh,
                                                             siva, vinod </div>
@@ -577,8 +577,8 @@
                                                         </svg>
                                                     </div>
                                                     <div class="content">
-                                                        <div class="title">DMS GAC Component </div>
-                                                        <div class="owner">Timeline not submitted from past two days
+                                                        <div class="title">Under approval</div>
+                                                        <div class="owner">Your {{CompletedCount}} project are Under approval
                                                         </div>
                                                         <div class="timing">By Akheel</div>
                                                     </div>
@@ -606,9 +606,8 @@
                                                         </svg>
                                                     </div>
                                                     <div class="content">
-                                                        <div class="title">Stream app development</div>
-                                                        <div class="owner">No projects have been updated in this
-                                                            portfolio from last one week</div>
+                                                        <div class="title">Delay projects</div>
+                                                        <div class="owner">Your {{DelayCount}} projects are delay</div>
                                                         <div class="timing">By Waseem</div>
                                                     </div>
                                                 </div>
@@ -644,8 +643,8 @@
                                                         </svg>
                                                     </div>
                                                     <div class="content">
-                                                        <div class="title">Assigned Tasks</div>
-                                                        <div class="owner">29 pending assigned task from 2 months</div>
+                                                        <div class="title">Delay in one month</div>
+                                                        <div class="owner">You have {{this.TotalExpiryInMonth}} project</div>
                                                         <div class="timing">By Rohan, waseem, akheel</div>
                                                     </div>
                                                 </div>
@@ -672,8 +671,7 @@
                                                     </div>
                                                     <div class="content">
                                                         <div class="title">Actions Delay</div>
-                                                        <div class="owner">You have 10 actions with maximum 65 days
-                                                            delay</div>
+                                                        <div class="owner">{{this.DelayActionCount}} Action are in delay</div>
                                                         <div class="timing">By waseem</div>
                                                     </div>
                                                 </div>

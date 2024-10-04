@@ -121,7 +121,7 @@
                                                     <button  id="inn" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count in-pro"> {{CountInprocess}}</span>
-                                                            <div class="fil-lbl">In Process</div>
+                                                            <div class="fil-lbl">In-Process</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     width="16" height="16"
@@ -211,7 +211,7 @@
                                                     <button id="Compl-Apprv" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count com-appr">{{CountCompletionUA}}</span>
-                                                            <div class="fil-lbl">Completion Approval</div>
+                                                            <div class="fil-lbl">Completion approval</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     width="16" height="16"
@@ -229,7 +229,7 @@
                                                     <button id="Cancel-app"class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count can-app">{{CountCancellation}}</span>
-                                                            <div class="fil-lbl">Cancellation Approval</div>
+                                                            <div class="fil-lbl">Cancellation approval</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     width="16" height="16"
@@ -247,7 +247,7 @@
                                                     <button id="Count-forward" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count for-app">{{CountForward}}</span>
-                                                            <div class="fil-lbl">Forward Approval</div>
+                                                            <div class="fil-lbl">Forward approval</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     width="16" height="16"
@@ -265,7 +265,7 @@
                                                     <button id="Count-deadline" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count dead-ext">{{CountDeadLineExtendedUA}}</span>
-                                                            <div class="fil-lbl">Deadline Extended Approval</div>
+                                                            <div class="fil-lbl">Deadline extended approval</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     width="16" height="16"
@@ -283,7 +283,7 @@
                                                     <button id="underappr" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count new-pro">{{CountAll_UA}}</span>
-                                                            <div class="fil-lbl">New Approval</div>
+                                                            <div class="fil-lbl">New approval</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     width="16" height="16"
@@ -301,7 +301,7 @@
                                                     <button id="pro-hold" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count pro-hold">{{CountProjectHold}}</span>
-                                                            <div class="fil-lbl">Project Hold</div>
+                                                            <div class="fil-lbl">Project hold</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     width="16" height="16"
@@ -337,7 +337,7 @@
                                                     <button id="todocomp" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count todo-com">{{Count_ToDoCompleted}}</span>
-                                                            <div class="fil-lbl">ToDo Completed</div>
+                                                            <div class="fil-lbl">ToDo completed</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     width="16" height="16"
@@ -355,7 +355,7 @@
                                                     <button id="todoachi" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count todo-ach">{{Count_ToDoAchieved}}</span>
-                                                            <div class="fil-lbl">ToDo Achived</div>
+                                                            <div class="fil-lbl">ToDo achived</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     width="16" height="16"
@@ -373,7 +373,7 @@
                                                     <button id="delete" class="btn btn-filtr">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count del">{{CountDeleted}}</span>
-                                                            <div class="fil-lbl">Deleted Projects</div>
+                                                            <div class="fil-lbl">Deleted projects</div>
                                                             <span class="chck-icn">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                     width="16" height="16"
@@ -536,6 +536,11 @@
                             <div class="card-body pt-0">
                                 <!--begin: Datatable -->
                                 <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                  <div class="row kt-filterdetails">
+                                    <div class="search-filter">
+                                      <div *ngIf="getFilterLabel()">{{ getFilterLabel() }}</div>
+                                    </div>
+                                  </div>
                                     <div class="row">
 
                                         <div class="col-sm-12 table-scroll" *ngIf="_MessageIfNotOwner==''">
@@ -827,6 +832,13 @@
                                                       </span>
                                                     </span>
                                                   </div>
+                                                  <div *ngIf="item1.SubmissionType && item1.Status!='InProcess' && item1.Status!='Under Approval' && item1.Status!='Forward Under Approval'"  class="attach-tippy">
+                                                    <span class="vi  st-line" style="text-transform: lowercase;"> {{item1.Status}} delay</span>
+                                                    <span class=" Delay_color font-weight-400 " style="text-transform: lowercase;">
+                                                      {{item1.Status}} delay
+                                                    </span>
+                                                  </div>
+                                                  
 
                                                   <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">
                                                       <span
@@ -894,7 +906,7 @@
                                                         <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
                                                     </div>
                                                   </div>
-                                                  
+
                                                   <div *ngIf="item1.Status=='Cancellation Under Approval'">
                                                       <span
                                                           class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status =="Cancellation Under Approval" ? "Cancellation approval":item1.Status}}

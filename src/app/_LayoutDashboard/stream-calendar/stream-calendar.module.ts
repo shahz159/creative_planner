@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [ StreamCalendarComponent ],
@@ -37,7 +38,8 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
     GooglePlaceModule,
     ShareModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    Ng2SearchPipeModule
   ],
 
   providers: [DatePipe

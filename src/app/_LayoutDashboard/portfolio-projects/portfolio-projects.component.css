@@ -4933,6 +4933,15 @@ color: #121212;
   color: #9C27B0 !important;
 
  }
+ .kt-filterdetails {
+  display: flex;
+  margin-top: 5px;
+  background-color: #f3f6f9;
+  margin: 0px 0px 9px 0px;
+}
+.search-filter{
+  margin: 0px 0px 0px 15px;
+}
  .dms-span-img{
   background-color: #fff;
   border-radius: 4px;
