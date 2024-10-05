@@ -5875,7 +5875,7 @@ bindCustomRecurrenceValues(){
 
   getFilterLabel() {
     if (this._PortProjStatus === '') {
-      return this.showDeletedPrjOnly ? 'Filter by:   Deleted project' : 'Filter by:   Total Project';
+      return this.showDeletedPrjOnly ? 'Filter by:   Deleted projects' : 'Filter by:   Total projects';
     } else {
       switch (this._PortProjStatus) {
         case 'Forward Under Approval':
