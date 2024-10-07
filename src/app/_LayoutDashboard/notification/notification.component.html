@@ -21,7 +21,6 @@
               </h3>
 
               <div class="dropdown-menu dropdown-menu-xl" id="dropd">
-
                 <div class="drop-ul">
                     <!-- <li class="dropdown-header">Filter by</li> -->
                     <span  (click)="showPrjAprv();Leaveapprovaltab(); titleapp(); viewAll(type1);onButtonClick('tot')">
@@ -62,8 +61,8 @@
                             </div>
                         </button>
                     </span>
-                  </div>
-                  </div>
+                </div>
+             </div>
               <!-- <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonPrjAprv">
                 <a [ngClass]="{ 'dropdown-item': true, 'active': (sendtype=='Req' && selectedDropdown === 'ProjectApproval') }"
                   (click)="showPrjAprv();Leaveapprovaltab(); titleapp(); viewAll(type1); selectedDropdown = 'ProjectApproval';">
@@ -86,8 +85,8 @@
               </div>
             </div>
            <!-- <button class="btn btn-outline-success btn-sm mr-2" (click)="leaveform(Current_user_ID,Leave_Code.trim())">sample</button>  -->
-
-             <div class="kt-portlet__head-label" style="display: none;">
+           <!-- style="display: none;" -->
+             <!-- <div class="kt-portlet__head-label" >
 
               <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -106,12 +105,8 @@
                   Leave Responses
                 </a>
               </div>
-            </div>
+            </div> -->
           </div>
-
-
-
-
 
           <div class="kt-portlet__head-label mr-2">
             <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
@@ -284,10 +279,13 @@
         </div>
       </div>
       <div class="not-title">
-        <h5 id="titlepro" style="display: block;">Project approval</h5>
+        <h5 id="titlepro" style="display: block;">Project approvals</h5>
         <h5 id="titleinfo" style="display: none;">Information</h5>
-        <h5 id="titlereq" style="display: none;">Leave request</h5>
-        <h5 id="titleres" style="display: none;">Leave response</h5>
+        <h5 id="titlereq" style="display: none;">
+          Leave requests
+          <span *ngIf="leave_Requests&&leave_Requests.length>0" class="text-muted fs-8 d-block">Total : {{leave_Requests.length}}</span>
+        </h5>
+        <h5 id="titleres" style="display: none;">Leave responses</h5>
       </div>
 
       <div class="kt-portlet">
@@ -724,92 +722,211 @@
                 </div>
                 <!--Project aprv list end-->
 
-                <!--Leave aprv list start-->
-                <div id="leave-aprv-list" class="table-responsive">
-                  <ng-container *ngIf="leavePanel==='REQUESTS'">
-                    <!-- <h2>leave Request</h2> -->
-                    <table class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
 
-                      <thead>
+                <!--new leave aprv list start-->
+                 <div id="leave-aprv-list" class="table-responsive">
+                       <ng-container *ngIf="leavePanel==='REQUESTS'">
+                        <table class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
+                          <thead>
+                            <tr role="row">
 
-                        <tr role="row">
+                              <!-- <th style="width: 50px;" tabindex="0" aria-controls="leave-4" class="text-center" rowspan="1" colspan="1">
+                                <input type="checkbox" id="leave-snocheck" title="Select All" class="form-check-input ps-1 btn px-0"/>
+                              </th> -->
+                              <th style="width: 100px;" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" >
+                              </th>
+                              <th data-name="Leave_Name" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
+                                Leave 
+                              </th>
+                              <th data-name="Leave_Request_type" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
+                                Request type
+                              </th>
+                              <th data-name="Leave_Request_by" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
+                                Request by
+                              </th>
+                              <th data-name="Leave_Request_on" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
+                                Request on
+                              </th>
+                              <th data-name="Leave_startdate" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
+                                Start date
+                              </th>
+                              <th data-name="Leave_enddate" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
+                                End date
+                              </th>
+                              <th data-name="Leave_Duration" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
+                                Duration
+                              </th>
+                              <th data-name="Emp_Comments" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
+                                Comments
+                              </th>
+                            
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr role="row" class="odd project-list_AC" *ngFor="let item of leave_Requests;let i=index">
+                              <!-- <td align="center">
+                                <input type="checkbox" id="singlecheck" class="form-check-input ps-1 btn px-0 mr-2">
+                              </td> -->
+                              <td align="center">
+                                <div class="d-flex align-items-center">
+                                  <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" placement="right"
+                                  (click)="open_leave_requisition(i,item.SubmittedBy,item.Leave_Code); "
+                                   href="javascript:void(0)">
+                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                    viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+                                <g>
+                                  <circle fill="currentColor" cx="10" cy="10.024" r="9.295"/>
+                                  <g>
+                                    <path fill="#FFFFFF" d="M16.674,10.017c0.008,1.031-0.763,1.823-1.778,1.825c-1.004,0.002-1.818-0.805-1.819-1.804
+                                      c-0.002-0.981,0.785-1.775,1.774-1.793C15.879,8.227,16.666,8.992,16.674,10.017z"/>
+                                    <path fill="#FFFFFF" d="M10.053,8.245c1.017-0.004,1.818,0.787,1.814,1.795c-0.003,1.006-0.809,1.806-1.815,1.802
+                                      c-0.989-0.004-1.77-0.782-1.783-1.778C8.256,9.045,9.036,8.25,10.053,8.245z"/>
+                                    <path fill="#FFFFFF" d="M3.447,10.019c0.006-1.013,0.809-1.791,1.828-1.774c0.994,0.017,1.769,0.803,1.769,1.791
+                                      c-0.001,1.004-0.809,1.81-1.812,1.806C4.224,11.838,3.44,11.038,3.447,10.019z"/>
+                                  </g>
+                                  <path fill="currentColor" d="M14.864,8.959c0.595-0.011,1.084,0.451,1.104,1.043c0.02,0.6-0.435,1.089-1.029,1.107
+                                    c-0.63,0.019-1.125-0.444-1.129-1.058C13.805,9.457,14.275,8.97,14.864,8.959z"/>
+                                  <path fill="currentColor" d="M10.085,11.109C9.477,11.117,9,10.668,8.983,10.071C8.967,9.455,9.45,8.958,10.065,8.959
+                                    c0.598,0,1.065,0.467,1.072,1.071C11.144,10.64,10.694,11.101,10.085,11.109z"/>
+                                  <path fill="currentColor" d="M5.236,11.112c-0.599-0.004-1.083-0.48-1.085-1.066C4.149,9.443,4.662,8.944,5.268,8.959
+                                    C5.851,8.973,6.34,9.48,6.326,10.056C6.312,10.657,5.838,11.117,5.236,11.112z"/>
+                                </g>
+                                </svg>
+                                  </a>
+                                </div>
+                              </td>
+                              <td>
+                                <p class="kt-widget__title1 mb-0">{{item.Leave_Type}}</p>
+                                <span class="kt-widget__other d-block st-line">{{item.Leave_Code}}</span>
+                              </td>
+                              <td>
+                                <span class="kt-widget__other">{{item.Req_Type}}</span>
+                                <!-- <span class="kt-widget__other d-block st-line" title="category">asdf</span> -->
+                              </td>
+                              <td>
+                                <p class="kt-widget__title1 mb-0">{{item.Emp_Name}}</p>
+                              </td>
+                              <td>
+                                <span class="kt-widget__other kt-leave-fixboxes">{{item.Req_Date | date: 'dd-MM-yyyy'}}</span>   
+                              </td>
+                              <td>
+                                <span class="kt-widget__other text-nowrap kt-leave-fixboxes">{{item.Start_Date | date: 'dd-MM-yyyy'}}</span>
+                              </td>
+                              <td>
+                                <span class="kt-widget__other text-nowrap vkt-leave-fixboxes">{{item.End_Date | date: 'dd-MM-yyyy'}}</span>
+                              </td>
+                              <td>
+                                <span class="kt-widget__other text-nowrap kt-leave-fixboxes">{{item.Days_Count}}</span>
+                              </td>
+                              <td class="cmmts text-ellipsis"  title="asdf asdf asdf as df as dfa sdf as df">
+                                {{item.Req_Comments}}
+                              </td>
+                          
+                            </tr>
+                          </tbody>
+                        </table>
+                       </ng-container>
 
-                          <th>View</th>
-                          <th>Leave type</th>
-                          <th>Start date</th>
-                          <th>End date</th>
-                          <th>Days applied</th>
-                          <th>Request type</th>
-                          <th>Company name</th>
-                          <th>Employee name</th>
-                          <th>Requested on</th>
-                          <th></th>
+                       <ng-container *ngIf="leavePanel==='RESPONSES'">
+                        <table class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
+                          <thead>
+                            <tr role="row">
 
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr role="row" class="" *ngFor="let item of leave_Requests;let i=index">
-                          <a (click)="open_leave_requisition(i,item.SubmittedBy,item.Leave_Code); "
-                            href="javascript:void(0)">
-                            <td class="kt-widget__title mb-0 leave">{{item.Leave_Code}}</td>
-                          </a>
-                          <td class="kt-widget__title mb-0">{{item.Leave_Type}}</td>
-                          <td class="kt-widget__title mb-0">{{item.Start_Date | date: 'dd-MM-yyyy'}}</td>
-                          <td class="kt-widget__title mb-0">{{item.End_Date | date: 'dd-MM-yyyy'}}</td>
-                          <td class="kt-widget__title mb-0">{{item.Days_Count}}</td>
-                          <td class="kt-widget__title mb-0">{{item.Req_Type}}</td>
-                          <td class="kt-widget__title mb-0">{{item.Com_Name}}</td>
-                          <td class="kt-widget__title mb-0">{{item.Emp_Name}}</td>
-                          <td class="kt-widget__title mb-0">{{item.Req_Date | date: 'dd-MM-yyyy h:mm:ss a' }}</td>
-                          <td class="kt-widget__title mb-0">{{item.Req_Comments}}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </ng-container>
+                              <!-- <th style="width: 50px;" tabindex="0" aria-controls="leave-4" class="text-center" rowspan="1" colspan="1">
+                                <input type="checkbox" id="leave-snocheck" title="Select All" class="form-check-input ps-1 btn px-0"/>
+                              </th> -->
+                              <th style="width: 100px;" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
+                              </th>
+                              <th data-name="Leave_Name" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
+                                Leave 
+                              </th>
+                              <th data-name="Leave_startdate" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
+                                Start date
+                              </th>
+                              <th data-name="Leave_enddate" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
+                                End date
+                              </th>
+                              <th data-name="Leave_Status" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
+                                Status
+                              </th>
+                              <th data-name="Response_From" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
+                                Response From
+                              </th>
+                              <th data-name="Response_Received_on" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
+                                Received on
+                              </th>
+                              <th data-name="Emp_Comments" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
+                                Comments
+                              </th>
 
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr role="row" class="odd project-list_AC"  *ngFor="let item of _newNotificationLeave;let i=index"
+                            [class.active]="item.isActive">
+                              <td align="center">
+                                <div class="d-flex align-items-center">
+                                  <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" placement="right"
+                                  (click)="viewLeaveResponseDetails(i,item.Leave_Code,item.Req_Type)"
+                                   href="javascript:void(0)">
+                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                    viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+                                <g>
+                                  <circle fill="currentColor" cx="10" cy="10.024" r="9.295"/>
+                                  <g>
+                                    <path fill="#FFFFFF" d="M16.674,10.017c0.008,1.031-0.763,1.823-1.778,1.825c-1.004,0.002-1.818-0.805-1.819-1.804
+                                      c-0.002-0.981,0.785-1.775,1.774-1.793C15.879,8.227,16.666,8.992,16.674,10.017z"/>
+                                    <path fill="#FFFFFF" d="M10.053,8.245c1.017-0.004,1.818,0.787,1.814,1.795c-0.003,1.006-0.809,1.806-1.815,1.802
+                                      c-0.989-0.004-1.77-0.782-1.783-1.778C8.256,9.045,9.036,8.25,10.053,8.245z"/>
+                                    <path fill="#FFFFFF" d="M3.447,10.019c0.006-1.013,0.809-1.791,1.828-1.774c0.994,0.017,1.769,0.803,1.769,1.791
+                                      c-0.001,1.004-0.809,1.81-1.812,1.806C4.224,11.838,3.44,11.038,3.447,10.019z"/>
+                                  </g>
+                                  <path fill="currentColor" d="M14.864,8.959c0.595-0.011,1.084,0.451,1.104,1.043c0.02,0.6-0.435,1.089-1.029,1.107
+                                    c-0.63,0.019-1.125-0.444-1.129-1.058C13.805,9.457,14.275,8.97,14.864,8.959z"/>
+                                  <path fill="currentColor" d="M10.085,11.109C9.477,11.117,9,10.668,8.983,10.071C8.967,9.455,9.45,8.958,10.065,8.959
+                                    c0.598,0,1.065,0.467,1.072,1.071C11.144,10.64,10.694,11.101,10.085,11.109z"/>
+                                  <path fill="currentColor" d="M5.236,11.112c-0.599-0.004-1.083-0.48-1.085-1.066C4.149,9.443,4.662,8.944,5.268,8.959
+                                    C5.851,8.973,6.34,9.48,6.326,10.056C6.312,10.657,5.838,11.117,5.236,11.112z"/>
+                                </g>
+                                </svg>
+                                  </a>
+                                </div>
+                              </td>
+                              <td>
+                                <p class="kt-widget__title1 mb-0">{{item.Leave_Type}}</p>
+                                <span class="kt-widget__other d-block st-line">{{item.Leave_Code}}</span>
+                              </td>
+                              <td>
+                                <span class="kt-widget__other text-nowrap kt-leave-fixboxes">{{item.Start_Date | date: 'dd-MM-yyyy'}}</span>
+                              </td>
+                              <td>
+                                <span class="kt-widget__other text-nowrap vkt-leave-fixboxes">{{item.End_Date | date: 'dd-MM-yyyy'}}</span>
+                              </td>
+                              <td>
+                                <span *ngIf="item.Req_Type" class="kt-widget__other" [ngClass]="{
+                                  'Done':item.Req_Type.trim()=='Leave Sanction',
+                                  'cancellation':item.Req_Type.trim()=='Leave Rejected',
+                                  'completion':item.Req_Type.trim()=='Approved Leave'
+                                  }">
+                                  {{item.Req_Type}}
 
-                  <ng-container *ngIf="leavePanel==='RESPONSES'">
-                    <!-- <h2>leave Response</h2> -->
-                    <table class="table table-hover dataTable no-footer dtr-inline " role="grid" style="width: 0px;">
-
-                      <thead>
-                        <tr role="row">
-                          <th>View</th>
-                          <th>Leave type</th>
-                          <th>Start date</th>
-                          <th>End date</th>
-                          <th>Status</th>
-                          <th>Name</th>
-                          <th>Received on</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr role="row" class="" *ngFor="let item of _newNotificationLeave; let i=index;"
-                          [class.active]="item.isActive">
-
-                          <!-- leaveform(i,Current_user_ID,item.Leave_Code.trim()) -->
-                          <td class="kt-widget__title mb-0 levress"
-                            (click)="viewLeaveResponseDetails(i,item.Leave_Code,item.Req_Type)">leave</td>
-
-                          <td class="kt-widget__title mb-0">{{item.Leave_Type}}</td>
-                          <td class="kt-widget__title mb-0">{{item.Start_Date | date: 'dd-MM-yyyy'}}</td>
-                          <td class="kt-widget__title mb-0">{{item.End_Date | date: 'dd-MM-yyyy'}}</td>
-                          <td class="kt-widget__title mb-0">{{item.Req_Type}}</td>
-                          <td class="kt-widget__title mb-0">{{item.Emp_Name}}</td>
-
-                          <td class="kt-widget__title mb-0">{{item.Req_Date | date: 'dd-MM-yyyy h:mm:ss a'}}</td>
-
-                          <td class="kt-widget__title mb-0">{{item.Req_Comments}}</td>
-
-                        </tr>
-                      </tbody>
-                    </table>
-                  </ng-container>
-
-                </div>
-                <!--Leave aprv list end-->
-
+                                </span>
+                              </td>
+                              <td>
+                                <p class="kt-widget__title1 mb-0">{{item.Emp_Name}}</p>
+                              </td>
+                              <td>
+                                <span class="kt-widget__other kt-leave-fixboxes">{{item.Req_Date | date: 'dd-MM-yyyy'}}</span>   
+                              </td>
+                              <td class="cmmts text-ellipsis" [title]="item.Req_Comments">
+                                {{item.Req_Comments}}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                       </ng-container>
+                 </div>
+                <!--new leave aprv list end-->
               </div>
             </div>
           </div>
@@ -982,7 +1099,50 @@
 
     <div class="d-flex gap-1 mb-3 mt-2 px-3">
 
-    <div class="card col-lg-6 pr-0 pl-0">
+      <div class="kt-project-info-body w-100">
+         <div class="d-flex justify-content-between">
+           <div class="kt-project-name">
+            <h4 class="mb-0" style="color: #181818; font-weight: 700;">{{LeaveDetail&&LeaveDetail[0].LeaveType}}</h4>
+          </div>
+         </div>
+         <div class="kt-project-desc">
+          <p style="margin: 0;color: #999999; font-weight: 400;">{{LeaveDetail&&LeaveDetail[0].Leave_Code}}</p>
+        </div>
+
+
+        <div class="kt-info-box pb-3">
+          <div class="row px-3 pt-3">
+            <div class="col text-center cnt-ovrl1">
+              <div class="kt-info-lable-v1">Request by</div>
+              <div class="kt-info-data-v1">{{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Emp_Name}}</div>
+            </div>
+            <div class="col text-center cnt-ovrl1">
+              <div class="kt-info-lable-v1 d-flex justify-content-center">TM I.D No</div>
+              <div class="kt-info-data-v1 bg-light-shade">  {{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].SubmittedBy}}</div>
+            </div>
+            <div class="col text-center cnt-ovrl1">
+              <div class="kt-info-lable-v1">Position</div>
+              <div class="kt-info-data-v1">{{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Position}}</div>
+            </div>
+            <div class="col text-center cnt-ovrl1">
+              <div class="kt-info-lable-v1">Department</div>
+              <div class="kt-info-data-v1 bg-light-shade">{{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Department}}</div>
+            </div>
+            <div class="col col-lg-3 text-center cnt-ovrl1">
+              <div class="kt-info-lable-v1">
+                <div class="kt-info-lable-v1">Company</div>
+              </div>
+              <div class="kt-info-data-v1 bg-light-shade">{{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Com_Name}}</div>
+            </div>
+          </div>
+        </div>
+        
+      
+
+      </div>
+
+
+    <!-- <div class="card col-lg-6 pr-0 pl-0 d-none">
       <div class="card-header leave-title">Team member information</div>
       <div class="grid p-0 pt-3">
         <div class="col text-center cnt-ovrl px-3 pt-2">
@@ -1027,7 +1187,7 @@
         </div>
       </div>
     </div>
-    <div class="card col-lg-6 pr-0 pl-0">
+    <div class="card col-lg-6 pr-0 pl-0 d-none">
       <div class="card-header leave-title">Leave details</div>
       <div class="grid p-0 pt-3">
         <div class="col text-center cnt-ovrl px-3 pt-2">
@@ -1080,14 +1240,11 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     </div>
 
-
-
-
-    <div class="mb-3 px-3">
+    <!-- <div class="mb-3 px-3 d-none">
 
       <div class="leave-title card card-header p-2">Remarks</div>
       <div class="card p-1">
@@ -1098,40 +1255,25 @@
         </div>
       </div>
 
-    </div>
+    </div> -->
+
 
     <div class="mb-3 action-div px-3">
       <div class="kt-info-box-tittle">
-        <div class="kt-title-icon"><span class="svg-icon"><svg width="20px" height="20px" viewBox="0 0 24 28"
-              xmlns="http://www.w3.org/2000/svg" fill="#000000">
-              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-              <g id="SVGRepo_iconCarrier">
-                <defs>
-                  <style>
-                    .cls-1 {
-                      fill: none;
-                      stroke: #ffffff;
-                      stroke-linecap: round;
-                      stroke-linejoin: round;
-                      stroke-width: 1.5px;
-                    }
-                  </style>
-                </defs>
-                <g id="ic-statistics-workflow">
-                  <circle cx="12" cy="6" r="3" class="cls-1"></circle>
-                  <rect x="2" y="16" width="8" height="5" rx="2" class="cls-1">
-                  </rect>
-                  <rect x="14" y="16" width="8" height="5" rx="2" class="cls-1">
-                  </rect>
-                  <path d="M6,16V14a2,2,0,0,1,2-2h8a2,2,0,0,1,2,2v2" class="cls-1">
-                  </path>
-                  <line x1="12" y1="9" x2="12" y2="12" class="cls-1"></line>
-                </g>
-              </g>
-            </svg></span></div> Action
+        <div class="kt-title-icon">
+          <span class="svg-icon">    
+            <svg width="22px" height="22px" fill="#fff" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 105" xml:space="preserve" style="enable-background: new 0 0 100 100;">
+              <path d="M93.7,50.1c-1.1,0-2.1,0.9-2.1,2.1c0,23.3-19,42.3-42.3,42.3S7,75.5,7,52.2C7,29.8,24.4,11.5,46.4,10  l-1.8,1.4c-0.9,0.7-1.1,2-0.4,2.9c0.4,0.5,1,0.8,1.6,0.8c0.4,0,0.9-0.1,1.2-0.4l6.8-5.2c0.5-0.4,0.8-1,0.8-1.7s-0.4-1.3-0.9-1.6  l-6.8-4.5c-0.9-0.6-2.2-0.4-2.8,0.6c-0.6,0.9-0.4,2.2,0.6,2.8L46,5.9C22,7.6,2.9,27.7,2.9,52.2c0,25.6,20.8,46.4,46.4,46.4  s46.4-20.8,46.4-46.4C95.7,51,94.8,50.1,93.7,50.1z"></path>
+              <circle cx="92.1" cy="41.4" r="2.5"></circle><circle cx="88.9" cy="32.1" r="2.5"></circle>
+              <circle cx="82.9" cy="23.4" r="2.5"></circle><circle cx="74.5" cy="15.9" r="2.5"></circle>
+              <circle cx="64.6" cy="10.6" r="2.5"></circle><path d="M72.3,69.6c-0.2-0.8-0.2-2.1-0.2-3.6c0-4.9,0.1-12.3-5.6-21.1c0,0,0,0,0,0l-3.4-5.4c-0.6-0.9-1.5-1.6-2.6-1.8  c-1.1-0.2-2.2,0-3.1,0.6c0,0,0,0-0.1,0c-0.6,0.4-1,0.8-1.3,1.4c-0.5-0.4-1-0.7-1.7-0.8c-1.1-0.2-2.3,0-3.2,0.6c0,0-0.1,0.1-0.1,0.1  c-0.7,0.5-1.3,1.2-1.6,1.9c-1.2-0.5-2.7-0.5-3.9,0.2c-0.1,0-0.1,0-0.2,0.1c-0.5,0.3-1,0.8-1.3,1.3l-5.5-8.7c-0.7-1-1.7-1.8-2.9-2  c-1.2-0.3-2.4,0-3.5,0.6c0,0,0,0,0,0c0,0,0,0-0.1,0c-1,0.7-1.8,1.7-2,2.9c-0.3,1.2-0.1,2.4,0.6,3.5l9.2,14.5  c-0.5,0.2-0.9,0.5-1.3,0.8c-0.2,0.1-0.4,0.3-0.7,0.4l0,0c-1.1,0.7-1.9,1.8-2.1,3c-0.3,1.3-0.1,2.6,0.6,3.7l3.2,5.1  c0.1,0.1,0.1,0.2,0.2,0.2c3.9,5.4,8.7,6.8,11.9,7.7c0.9,0.3,1.7,0.5,2.2,0.7c0.1,0,0.2,0.1,0.3,0.1c0,0,0,0,0,0  c1.5,0.3,1.9,1.1,2.8,2.4l0.3,0.5c0.2,0.4,0.6,0.6,1.1,0.6c0.2,0,0.5-0.1,0.7-0.2c0.6-0.4,0.8-1.1,0.4-1.7l-0.3-0.4  c-0.9-1.5-1.9-3-4.4-3.6c0,0,0,0,0,0c-0.7-0.3-1.5-0.5-2.4-0.8c-3.3-1-7.7-2.3-11.2-7.8l0,0l-2.7-4.2c-0.3-0.5-0.4-1.2-0.3-1.8  c0.1-0.6,0.5-1.1,1-1.5c0,0,0,0,0,0c0.3-0.2,0.5-0.3,0.7-0.5c0.4-0.3,1.1-0.7,1.2-0.8c0,0,0.1,0.1,0.2,0.3l3.8,5.9  c0.2,0.4,0.6,0.6,1.1,0.6c0.2,0,0.5-0.1,0.7-0.2c0.6-0.4,0.8-1.1,0.4-1.7l-3.8-5.9c0,0,0,0,0,0c0,0,0,0,0,0L32.8,38.1  c-0.3-0.5-0.4-1-0.3-1.6c0.1-0.5,0.5-1,0.9-1.3c0,0,0,0,0,0c0,0,0,0,0.1,0c0.5-0.3,1-0.4,1.6-0.3c0.5,0.1,1,0.5,1.3,0.9l7.6,12l0,0  l0,0l3.6,5.6c0.2,0.4,0.6,0.6,1.1,0.6c0.2,0,0.5-0.1,0.7-0.2c0.6-0.4,0.8-1.1,0.4-1.7l-3.6-5.6c-0.5-0.8-0.3-1.9,0.5-2.5l0,0  c0.8-0.5,1.9-0.3,2.5,0.5l3.6,5.6c0.2,0.4,0.6,0.6,1.1,0.6c0.2,0,0.5-0.1,0.7-0.2c0.6-0.4,0.8-1.1,0.4-1.7L52,44c0,0,0,0,0,0  c-0.3-0.4-0.3-0.9-0.2-1.3c0.1-0.5,0.4-0.9,0.8-1.1c0,0,0,0,0,0c0.4-0.3,0.9-0.3,1.3-0.2c0.5,0.1,0.9,0.4,1.1,0.8l1.2,1.9  c0,0,0,0,0,0c0,0,0,0,0,0l2.4,3.7c0.2,0.4,0.6,0.6,1.1,0.6c0.2,0,0.5-0.1,0.7-0.2c0.6-0.4,0.8-1.1,0.4-1.7l-2.4-3.7l0,0  c-0.2-0.4-0.3-0.8-0.2-1.2c0.1-0.4,0.4-0.8,0.7-1l0,0c0.4-0.2,0.8-0.3,1.2-0.2c0.4,0.1,0.8,0.4,1,0.7l3.4,5.4  c5.2,8.2,5.2,15.2,5.2,19.8c0,1.8,0,3.2,0.3,4.3c0.1,0.6,0.7,1,1.2,1c0.1,0,0.2,0,0.3,0C72.1,71,72.5,70.3,72.3,69.6z"></path><path _ngcontent-acg-c410="" d="M41.1,31.8c-2.2-2.8-5.9-3.8-9.1-2.8l1.2,1.8c2.3-0.5,4.7,0.3,6.3,2.2l3,4.2l1.6-1.3L41.1,31.8z"></path>
+              <path d="M29.6,40.8c-1.7-2.3-1.6-5.4,0.1-7.5l-1.1-1.9c-2.7,2.9-3,7.4-0.6,10.6l2.7,3.4l1.5-1.2L29.6,40.8z"></path>
+            </svg>
+         </span>
+        </div>
+         Approval
       </div>
-      <!-- <div class="">
+       <div class="">
        <div class="d-flex justify-content-end pr-3 mt-2">
           <div class="align-items-center justify-content-end d-flex">
 
@@ -1159,97 +1301,143 @@
 
           </div>
         </div>
-      </div> -->
+      </div> 
 
-      <div class="d-check px-3">
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" [checked]="leaveDecision=='APPROVE'"
-            (click)="onDecisionChanged('APPROVE')" />
-          <label class="form-check-label" for="flexRadioDefault1">
-            Approved
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"  [checked]="leaveDecision=='APPROVEBUT'"
-            (click)="onDecisionChanged('APPROVEBUT')" />
-          <label class="form-check-label" for="flexRadioDefault2">
-            Approved but from and before date
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" [checked]="leaveDecision=='REJECTED'"
-            (click)="onDecisionChanged('REJECTED')" />
-          <label class="form-check-label" for="flexRadioDefault3">
-            Rejected
-          </label>
-        </div>
-      </div>
+      <div class="kt-reject-form-view" *ngIf="leaveDecision">
+        <div class="mb-2">
 
-    <div *ngIf="leaveDecision=='APPROVEBUT'" class="text-muted px-3 mt-3">Accept leave approval with new dates</div>
-    <div *ngIf="leaveDecision=='APPROVEBUT'" class="row px-3 mt-1">
-          <div class="form-group col-lg-6 mb-2" id="conditional-startdate">
-            <label>From<span class="text-danger">*</span></label>
-            <div class="input-group">
-                <input [min]="this.LeaveDetail[0].VacFrom"   [ngClass]="{'error-border':!lv_startdate&&notProvided}" [(ngModel)]="lv_startdate"  matInput [matDatepicker]="leaveStartdatePicker" (click)="leaveStartdatePicker.open();"
-                    placeholder="Select Start date" class="form-control" name="leave-sdate"  (dateChange)="lv_enddate=null;"/>
-                <div class="input-group-text p-0">
-                    <mat-datepicker-toggle matSuffix [for]="leaveStartdatePicker"></mat-datepicker-toggle>
-                    <mat-datepicker #leaveStartdatePicker></mat-datepicker>
+        <div *ngIf="leaveDecision=='APPROVE'" class="px-3 text-info mb-2 d-flex flex-column">
+          <span class="text-info fw-medium">* Approve it, to appreciate project team for great work.</span>
+        </div>
+
+        <div *ngIf="leaveDecision=='APPROVEBUT'" class="px-3 text-info mb-2 d-flex flex-column">
+          <span class="text-muted fw-medium">Accept leave approval with new dates.</span>
+          <span class="text-info fw-medium">* Please confirm with Team Member before changing the dates of his vacation.</span>
+        </div>
+        
+        <div *ngIf="leaveDecision=='REJECTED'" class="px-3 text-info mb-2 d-flex flex-column">
+          <span class="text-info fw-medium">* Please provide remarks for the Team Member before rejecting his vacation.</span>
+        </div>
+        
+        </div>
+        <div class="kt-pdv">
+          <div class="mt-2 px-3">
+         
+            <div *ngIf="leaveDecision=='APPROVEBUT'" class="row mt-1">
+              <div class="form-group col-lg-6 mb-2" id="conditional-startdate">
+                <label>From<span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <input [min]="this.LeaveDetail[0].VacFrom" [ngClass]="{'error-border':!lv_startdate&&notProvided}" [(ngModel)]="lv_startdate"  matInput [matDatepicker]="leaveStartdatePicker" (click)="leaveStartdatePicker.open();"
+                        placeholder="Select Start date" class="form-control" name="leave-sdate"  (dateChange)="lv_enddate=null;"/>
+                    <div class="input-group-text p-0" style="height:39px">
+                        <mat-datepicker-toggle matSuffix [for]="leaveStartdatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #leaveStartdatePicker></mat-datepicker>
+                    </div>
                 </div>
+                <span *ngIf="!lv_startdate&&notProvided" style="color:red">Please select start date</span>
             </div>
-            <span *ngIf="!lv_startdate&&notProvided" style="color:red">Please select start date</span>
-        </div>
-        <div class="form-group col-lg-6 mb-2" id="conditional-enddate">
-          <label>To<span class="text-danger">*</span></label>
-          <div class="input-group">
-              <input [min]="lv_startdate"   [ngClass]="{'error-border':!lv_enddate&&notProvided}" [(ngModel)]="lv_enddate"  matInput [matDatepicker]="leaveEnddatePicker" (click)="leaveEnddatePicker.open();"
-                  placeholder="Select End date" class="form-control" name="leave-edate" />
-              <div class="input-group-text p-0">
-                  <mat-datepicker-toggle matSuffix [for]="leaveEnddatePicker"></mat-datepicker-toggle>
-                  <mat-datepicker #leaveEnddatePicker></mat-datepicker>
+            <div class="form-group col-lg-6 mb-2" id="conditional-enddate">
+              <label>To<span class="text-danger">*</span></label>
+              <div class="input-group">
+                  <input [min]="lv_startdate"   [ngClass]="{'error-border':!lv_enddate&&notProvided}" [(ngModel)]="lv_enddate"  matInput [matDatepicker]="leaveEnddatePicker" (click)="leaveEnddatePicker.open();"
+                      placeholder="Select End date" class="form-control" name="leave-edate"/>
+                  <div class="input-group-text p-0" style="height:39px">
+                      <mat-datepicker-toggle matSuffix [for]="leaveEnddatePicker"></mat-datepicker-toggle>
+                      <mat-datepicker #leaveEnddatePicker></mat-datepicker>
+                  </div>
               </div>
+              <span *ngIf="!lv_enddate&&notProvided" style="color:red">Please select end date</span>
+             </div>
+    
+            </div>
+
+            <div class="mb-3">
+              <label>Enter Comments<span style="color:red">*</span></label>
+              <textarea [ngClass]="{'error-border':!aprv_cmts&&notProvided}" placeholder="Enter comments here." [(ngModel)]="aprv_cmts" id="LeaveTextarea" rows="3" class="form-control kt-approval-msg"></textarea>
+              <span *ngIf="!aprv_cmts&&notProvided"  style="color:red">please enter your comments</span>
+              <div *ngIf="cmts_Loading;else prvCmtsLoaded" class="spinner-border spinner-border-sm mt-3 ml-2 d-block" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+              <ng-template #prvCmtsLoaded>
+                <div *ngIf="previousCmts&&previousCmts.length>0"  class="previous-comments">
+                  <span class="fs-9 d-block text-right pr-2 pt-1 text-muted">previous comments</span>
+                  <ul>
+                    <li *ngFor="let item of previousCmts">
+                      <a (click)="putCmts(item.Req_Comments)"  href="javascript:void(0)">{{item.Req_Comments}}</a>
+                    </li>
+                  </ul>
+                </div>
+              </ng-template>
+            </div>
           </div>
-          <span *ngIf="!lv_enddate&&notProvided" style="color:red">Please select end date</span>
         </div>
-
-    </div>
-    <div *ngIf="leaveDecision=='APPROVEBUT'" class="px-3 text-info mb-2">Please confirm with Team Member before changing the dates of his vacation.</div>
-
-
-
-      <div class="px-3 mb-3">
-        <label>Comments<span style="color:red">*</span></label>
-        <textarea [ngClass]="{'error-border':!aprv_cmts&&notProvided}" placeholder="Enter comments here." [(ngModel)]="aprv_cmts" id="LeaveTextarea" rows="3" class="form-control kt-approval-msg"></textarea>
-        <span *ngIf="!aprv_cmts&&notProvided"  style="color:red">please enter your comments</span>
-        <div *ngIf="cmts_Loading;else prvCmtsLoaded" class="spinner-border spinner-border-sm mt-3 ml-2 d-block" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-        <ng-template #prvCmtsLoaded>
-          <!-- <div *ngIf="previousCmts&&previousCmts.length>0" class="previous-comments">
-            <span class="fs-9 d-block text-right pr-2 pt-1 text-muted">previous comments</span>
-              <ul  class="d-flex gap-1 pt-1 flex-wrap">
-                <li *ngFor="let item of previousCmts" class="prvcmt-chip">
-                  <a (click)="putCmts(item.Req_Comments)" href="javascript:void(0)">{{item.Req_Comments}}</a>
-                </li>
-              </ul>
-          </div> -->
-
-          <div *ngIf="previousCmts&&previousCmts.length>0"  class="previous-comments">
-            <span class="fs-9 d-block text-right pr-2 pt-1 text-muted">previous comments</span>
-            <ul>
-              <li *ngFor="let item of previousCmts">
-                <a (click)="putCmts(item.Req_Comments)"  href="javascript:void(0)">{{item.Req_Comments}}</a>
-              </li>
-            </ul>
+        <div class="kt-info-pg-footer">
+          <div class="row mt-3 px-2">
+            <div class="col-lg-12 px-2">
+              <div class="kt-info-pg-btns d-flex justify-content-end">
+                <button (click)="closeLeaveAprvlSec()" type="button" class="btn btn-project-stv Bt-close ml-2 mr-2">Close</button>
+                <button (click)="onSubmitLRbtn()" type="button" class="btn btn-project-stv Bt-Submit text-nowrap curser-pointer">
+                  <span>Submit</span>
+                </button>
+              </div>
+            </div>
           </div>
-        </ng-template>
-
+        </div>
       </div>
+      
+      <div class="row px-3 pt-4 pb-2">
+        <div class="col text-center cnt-ovrl1">
+          <div class="kt-info-lable-v1 d-flex justify-content-start" style="color: #000000;">Remarks</div>
+          <div class="kt-info-data-v1 bg-light-shade pl-4 d-flex">{{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Req_Comments}}</div>
+        </div>
+      </div> 
+
+      <div class="row px-3 pt-4 pb-2">
+        <div class="col text-center cnt-ovrl1">
+          <div class="kt-info-lable-v1 d-flex justify-content-center" style="color: #000000;">Leave type</div>
+          <div class="kt-info-data-v1 bg-light-shade">{{LeaveDetail&&LeaveDetail[0].LeaveType}}</div>
+        </div>
+        
+        <div class="col text-center cnt-ovrl1">
+          <div class="kt-info-lable-v1 d-flex justify-content-center" style="color: #000000;">Trip type</div>
+          <div class="kt-info-data-v1 bg-light-shade">{{LeaveDetail&&LeaveDetail[0].Trip}}</div>
+        </div>
+        
+        <div class="col text-center cnt-ovrl1">
+          <div class="kt-info-lable-v1" style="color: #000000;">Travel type</div>
+          <div class="kt-info-data-v1">{{LeaveDetail&&LeaveDetail[0].Travel}}</div>
+        </div>
+        
+        <div class="col text-center cnt-ovrl1">
+          <div class="kt-info-lable-v1" style="color: #000000;">Day type</div>
+          <div class="kt-info-data-v1 bg-light-shade"> {{LeaveDetail&&LeaveDetail[0].Type}}</div>
+        </div>
+      </div> 
+      
+       <div class="row px-3 pt-4 pb-2">
+
+        <div class="col text-center cnt-ovrl1">
+          <div class="kt-info-lable-v1" style="color: #000000;">Requested on</div>
+          <div class="kt-info-data-v1">{{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Req_Date | date:'dd-MM-yyyy'}}</div>
+        </div>
+
+        <div class="col text-center cnt-ovrl1">
+          <div class="kt-info-lable-v1" style="color: #000000;">Start date</div>
+          <div class="kt-info-data-v1">{{LeaveDetail&&LeaveDetail[0].Start_Date | date:'dd-MM-yyyy'}}</div>
+        </div>
+        
+        <div class="col text-center cnt-ovrl1">
+          <div class="kt-info-lable-v1 d-flex justify-content-center" style="color: #000000;">End date</div>
+          <div class="kt-info-data-v1 bg-light-shade">{{LeaveDetail&&LeaveDetail[0].End_Date|date:'dd-MM-yyyy'}}</div>
+        </div>
+        
+        <div class="col text-center cnt-ovrl1">
+          <div class="kt-info-lable-v1" style="color: #000000;">Duration</div>
+          <div *ngIf="LeaveDetail" class="kt-info-data-v1">{{LeaveDetail[0].Days_Count}} {{LeaveDetail[0].Days_Count>1?' days':' day'}}</div>
+        </div>
+      </div> 
     </div>
-    <div class="px-3 mb-3">
-      <button type="submit" class="btn btn-primary" style="width: 15%;" (click)="onSubmitLRbtn()">Submit</button>
-      <button class="btn btn-secondary ml-2" style="width: 15%;" (click)="close_requisition_Info()">Cancel</button>
-    </div>
+
 
   </div>
 </div>
@@ -2014,5 +2202,117 @@
 <!--leave requistion form start-->
 
 <!--leave requistion form end-->
+
+
+
+
+
+
+
+<!--new leave_requisition_form_slider_bar  start-->
+
+<div id="leave_requisition_form_slider_bar101" class="leave-requisition-form-slider-bar animate-right">
+  <div class="kt-portlet--body mb-0">
+    <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
+
+
+    <div class="d-flex align-items-center">
+      <div class="kt-info-box-tittle m-0"><div class="kt-title-icon">
+        <span class="svg-icon kt-title-icon m-0">
+        <svg width="22px" height="22px" fill="#fff" xmlns:x="http://ns.adobe.com/Extensibility/1.0/" xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 105" xml:space="preserve" style="enable-background: new 0 0 100 100;"><switch ><foreignObject requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/" x="0" y="0" width="1" height="1"></foreignObject><g i:extraneous="self"><g ><path d="M68.2,44.9v-3.6c0-2.4-2-4.4-4.4-4.4h-7.2v-4.3c0-0.9-0.8-1.7-1.7-1.7h-9.9c-0.9,0-1.7,0.8-1.7,1.7v4.3h-7.2     c-2.4,0-4.4,2-4.4,4.4v3.6c0,1.5,0.7,2.8,2,3.7v11.6c0,2.4,2,4.4,4.4,4.4h23.7c2.4,0,4.4-2,4.4-4.4V48.6     C67.4,47.7,68.2,46.4,68.2,44.9z M46.8,34.3h6.5v2.6h-6.5V34.3z M35.2,41.3c0-0.6,0.5-1,1-1h27.5c0.6,0,1,0.5,1,1v3.6     c0,0.4-0.2,0.7-0.5,0.9l-5,3.1c-0.2,0.1-0.4,0.2-0.6,0.2h-3.6c-0.1-2-1.7-3.6-3.7-3.6h-3.1c-2,0-3.6,1.6-3.7,3.6h-3.6     c-0.2,0-0.4-0.1-0.6-0.2l-4.9-3.1c-0.3-0.2-0.5-0.5-0.5-0.9V41.3z M51.9,49.2v3.1c0,0.2-0.1,0.3-0.3,0.3h-3.1     c-0.2,0-0.3-0.1-0.3-0.3v-3.1c0-0.2,0.1-0.3,0.3-0.3h3.1C51.7,48.9,51.9,49,51.9,49.2z M61.8,61.2H38.2c-0.6,0-1-0.4-1-1v-9.5     l1.7,1.1c0.7,0.4,1.5,0.7,2.4,0.7h3.6c0.1,2,1.7,3.6,3.7,3.6h3.1c2,0,3.6-1.6,3.7-3.6h3.6c0.8,0,1.7-0.2,2.4-0.7l1.7-1.1v9.5     C62.8,60.8,62.4,61.2,61.8,61.2z"></path><path d="M48.3,16.5v6.8c0,0.9,0.8,1.7,1.7,1.7c0.9,0,1.7-0.8,1.7-1.7v-6.8c3.1-0.8,5.4-3.5,5.4-6.9c0-3.9-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1C42.9,12.9,45.2,15.7,48.3,16.5z M50,5.9c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7     S47.9,5.9,50,5.9z"></path><path d="M21.4,28.5c1.3,0,2.6-0.4,3.7-1.1l4.8,4.8c0.3,0.3,0.8,0.5,1.2,0.5c0.4,0,0.9-0.2,1.2-0.5c0.7-0.7,0.7-1.7,0-2.4     l-4.8-4.8c0.7-1.1,1.1-2.3,1.1-3.7c0-3.9-3.2-7.1-7.1-7.1c-3.9,0-7.1,3.2-7.1,7.1S17.5,28.5,21.4,28.5z M21.4,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7s-3.7-1.7-3.7-3.7S19.4,17.7,21.4,17.7z"></path><path d="M16.5,51.7h6.8c0.9,0,1.7-0.8,1.7-1.7s-0.8-1.7-1.7-1.7h-6.8c-0.8-3.1-3.5-5.4-6.9-5.4c-3.9,0-7.1,3.2-7.1,7.1     s3.2,7.1,7.1,7.1C12.9,57.1,15.7,54.8,16.5,51.7z M9.6,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7     S11.7,53.7,9.6,53.7z"></path><path  d="M29.9,67.7l-4.8,4.8c-1.1-0.7-2.3-1.1-3.7-1.1c-3.9,0-7.1,3.2-7.1,7.1s3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1     c0-1.3-0.4-2.6-1.1-3.7l4.8-4.8c0.7-0.7,0.7-1.7,0-2.4C31.6,67.1,30.6,67.1,29.9,67.7z M21.4,82.3c-2.1,0-3.7-1.7-3.7-3.7     s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7S23.5,82.3,21.4,82.3z"></path><path d="M51.7,83.5v-6.8c0-0.9-0.8-1.7-1.7-1.7c-0.9,0-1.7,0.8-1.7,1.7v6.8c-3.1,0.8-5.4,3.5-5.4,6.9c0,3.9,3.2,7.1,7.1,7.1     c3.9,0,7.1-3.2,7.1-7.1C57.1,87.1,54.8,84.3,51.7,83.5z M50,94.1c-2.1,0-3.7-1.7-3.7-3.7c0-2.1,1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7C53.7,92.5,52.1,94.1,50,94.1z"></path><path  d="M78.6,71.5c-1.3,0-2.6,0.4-3.7,1.1l-4.8-4.8c-0.7-0.7-1.7-0.7-2.4,0s-0.7,1.7,0,2.4l4.8,4.8c-0.7,1.1-1.1,2.3-1.1,3.7     c0,3.9,3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1S82.5,71.5,78.6,71.5z M78.6,82.3c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7S80.6,82.3,78.6,82.3z"></path><path d="M90.4,42.9c-3.3,0-6.1,2.3-6.9,5.4h-6.8c-0.9,0-1.7,0.8-1.7,1.7s0.8,1.7,1.7,1.7h6.8c0.8,3.1,3.5,5.4,6.9,5.4     c3.9,0,7.1-3.2,7.1-7.1S94.3,42.9,90.4,42.9z M90.4,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7c2.1,0,3.7,1.7,3.7,3.7     S92.5,53.7,90.4,53.7z"></path><path d="M68.9,32.8c0.4,0,0.9-0.2,1.2-0.5l4.8-4.8c1.1,0.7,2.3,1.1,3.7,1.1c3.9,0,7.1-3.2,7.1-7.1s-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1c0,1.3,0.4,2.6,1.1,3.7l-4.8,4.8c-0.7,0.7-0.7,1.7,0,2.4C68.1,32.6,68.5,32.8,68.9,32.8z M78.6,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7S76.5,17.7,78.6,17.7z"></path></g></g></switch>
+        </svg>
+      </span>
+    </div> Leave details 
+    </div>
+    </div>
+      <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+        (click)="close_requisition_form()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#ccc">
+          <path fill="none" d="M0 0h24v24H0z"></path>
+          <path
+            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+          </path>
+        </svg>
+      </a>
+    </div>
+    <div class="container req-form">
+      
+      <div class="d-flex gap-1 mb-3 mt-2 px-3">
+        <div class="kt-project-info-body w-100">
+          <div class="d-flex justify-content-between">
+            <div class="kt-project-name">
+              <h4 class="mb-0" style="color: #181818; font-weight: 700;">Casual Leave</h4>
+            </div>
+          </div>
+          <div class="kt-project-desc">
+            <p style="margin: 0; color: #999999; font-weight: 400;">400L1232  </p>
+          </div>
+          <div class="kt-info-box pb-3">
+            
+          <div class="row px-3 pt-3">
+              <div class="col text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1">Leave type</div>
+                <div class="kt-info-data-v1">Hajj leave</div>
+              </div>
+              <div class="col text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1 d-flex justify-content-center">Trip</div>
+                <div class="kt-info-data-v1 bg-light-shade">Local</div>
+              </div>
+              <div class="col text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1">Day Type</div>
+                <div class="kt-info-data-v1">Full</div>
+              </div>
+              <div class="col text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1">Travel</div>
+                <div class="kt-info-data-v1 bg-light-shade">with family</div>
+              </div>
+         </div>
+
+         <div class="row px-3 pt-3">
+              <div class="col col-lg-3 text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1">
+                  <div class="kt-info-lable-v1">Start date</div>
+                </div>
+                <div class="kt-info-data-v1 bg-light-shade">20-02-2022</div>
+              </div> 
+              <div class="col col-lg-3 text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1">
+                  <div class="kt-info-lable-v1">End date</div>
+                </div>
+                <div class="kt-info-data-v1 bg-light-shade">30-02-2022</div>
+              </div> 
+              <div class="col col-lg-3 text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1">
+                  <div class="kt-info-lable-v1">Duration</div>
+                </div>
+                <div class="kt-info-data-v1 bg-light-shade">10 days</div>
+              </div>     
+          </div>
+
+          <div class="row px-3 pt-3">
+            <div class="col col-lg-12 text-center cnt-ovrl1">
+              <div class="kt-info-lable-v1">
+                <div class="kt-info-lable-v1">Remarks</div>
+              </div>
+              <div class="kt-info-data-v1 bg-light-shade">this is remarks of the emp.</div>
+            </div> 
+          </div>
+
+                  
+                  
+         </div>
+      </div>
+   </div>
+
+
+
+
+
+    </div>
+  </div>
+</div>
+
+
+<!--new leave_requisition_form_slider_bar  end-->
 
 

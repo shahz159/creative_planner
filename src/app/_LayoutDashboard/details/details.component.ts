@@ -1475,10 +1475,11 @@ debugger
   }
 
   showActionDetails(index: number | undefined) {
-
-    this.requestType = null;
     this.currentActionView = index;
-
+    if(index!=undefined){
+      this.requestType = null;
+    }
+   
     if(index!=undefined)
     this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
 
@@ -1499,13 +1500,6 @@ debugger
           this.actionresponsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
         });
     }
-
-  
-
-
-
-
-
 
   }
 

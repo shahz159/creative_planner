@@ -147,6 +147,8 @@ export class TimelineComponent implements OnInit {
     val=this.disablePreviousDate;
 
     this.current_Date = moment(val).format("MM/DD/YYYY");
+    this.starttime = null;
+    this.endtime = null;
     // this.getTimelineReportByDate(sel_date=='TODAY'?'today':'yesterday');
 
   }
@@ -459,7 +461,6 @@ clear(){
   this.showAction=false;
   this.project_type=null;
   this.workdes = "";
-  this.workdes = "";
   this.current_Date = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
   this.dateF = new FormControl(new Date());
   this.starttime = null;
@@ -642,6 +643,7 @@ submitDar() {
         // after timeline submission success then complete the action also if needed.  end
         this.timelineLog(this.Type);
         this.clear();   // clear all fields. project_code, master_code, ....
+        this.changeTimelineDate(this.timeline_of);  
     });
 
   this.getDarTime();

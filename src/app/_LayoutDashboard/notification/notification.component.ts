@@ -458,7 +458,7 @@ export class NotificationComponent implements OnInit {
     this.lv_enddate=null;
     this.aprv_cmts=null;
     this.notProvided=false;
-    this.leaveDecision='APPROVE';
+    this.leaveDecision=undefined;
   }
 
 
@@ -1267,7 +1267,7 @@ acceptSelectedValues() {
   // }
 
 //  leave requests approval start
-leaveDecision:"APPROVE"|"APPROVEBUT"|"REJECTED"|undefined='APPROVE';
+leaveDecision:"APPROVE"|"APPROVEBUT"|"REJECTED"|undefined=undefined;
 aprv_cmts:string|undefined;
 lv_startdate:any;
 lv_enddate:any;
@@ -1340,6 +1340,19 @@ onDecisionChanged(decision:"APPROVE"|"APPROVEBUT"|"REJECTED"){
   this.leaveDecision=decision;
   this.lrprev_comments();
 }
+
+closeLeaveAprvlSec(){
+  this.leaveDecision=null;
+  this.aprv_cmts=null;
+  this.lv_startdate=null;
+  this.lv_enddate=null;
+  this.previousCmts=[];
+  this.cmts_Loading=false;
+}
+
+
+
+
 
 
 lrprev_comments()

@@ -2937,17 +2937,7 @@
                                                   <div class="legend-border mt-4" style=" background-color: white;">
                                                       <div class="meeting-attendance-heading">Completion Report</div>
                                                       <div class="d-flex gap-1">
-                                                          <fieldset class="meeting-attendance-item mt-2" style="padding-top: 0;">
-                                                              <legend style=" max-width: fit-content; font-size: 10px;color: #9a9a9a; ">Approved by</legend>
-                                                             <div class="d-flex justify-content-between">
-                                                                  <div class="meeting-attendance-count fs-7">{{projectInfo.Approvedby}}</div>
-                                                                  <div class="meeting-attendance-count fs-6">{{projectInfo.ApprovedDate|date:'d MMM, yyyy'}}</div>
-                                                             </div>
-                                                             <div class="d-flex flex-column" *ngIf="projectInfo.ApproveComments">
-                                                              <span id="aprv-cmt-sec" class="text-muted fs-8 compl-remarks-span" (click)="expandRemarks('aprv-cmt-sec')" >{{projectInfo.ApproveComments}}</span>
-                                                             </div>
-
-                                                          </fieldset>
+                                                       
 
                                                           <fieldset class="meeting-attendance-item mt-2" style=" padding-top: 0;">
                                                               <legend style=" font-size: 10px;max-width: fit-content; color: #9a9a9a;">Submitted by</legend>
@@ -2970,6 +2960,18 @@
                                                                   </span>
                                                              </div>
                                                           </fieldset>
+
+                                                          <fieldset class="meeting-attendance-item mt-2" style="padding-top: 0;">
+                                                            <legend style=" max-width: fit-content; font-size: 10px;color: #9a9a9a; ">Approved by</legend>
+                                                           <div class="d-flex justify-content-between">
+                                                                <div class="meeting-attendance-count fs-7">{{projectInfo.Approvedby}}</div>
+                                                                <div class="meeting-attendance-count fs-6">{{projectInfo.ApprovedDate|date:'d MMM, yyyy'}}</div>
+                                                           </div>
+                                                           <div class="d-flex flex-column" *ngIf="projectInfo.ApproveComments">
+                                                            <span id="aprv-cmt-sec" class="text-muted fs-8 compl-remarks-span" (click)="expandRemarks('aprv-cmt-sec')" >{{projectInfo.ApproveComments}}</span>
+                                                           </div>
+                                                          </fieldset>
+
                                                       </div>
                                                       <div class="meeting-attendance">
                                                           <div class="meeting-attendance-item "    [ngClass]="{'meeting-attendance-item-hover curser-pointer':projectActionInfo&&projectActionInfo.length>0}"

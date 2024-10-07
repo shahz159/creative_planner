@@ -1850,10 +1850,6 @@ else{
   }
 
 
-
-
-
-
   this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
     (data) => {
       console.log(data,'atattachmeatattachmeatattachmeatattachme')
