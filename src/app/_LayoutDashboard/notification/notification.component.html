@@ -863,7 +863,7 @@
                           </thead>
                           <tbody>
                             <tr role="row" class="odd project-list_AC"  *ngFor="let item of _newNotificationLeave;let i=index"
-                            [class.active]="item.isActive">
+                            [class.active]="currentResIndex==i">
                               <td align="center">
                                 <div class="d-flex align-items-center">
                                   <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" placement="right"
@@ -1967,7 +1967,7 @@
 </div> -->
 <!--leave requisition end-->
 <!--leave requisition form start-->
-<div id="leave_requisition_form_slider_bar" class="leave-requisition-form-slider-bar animate-right">
+<!-- <div id="leave_requisition_form_slider_bar" class="leave-requisition-form-slider-bar animate-right">
   <div class="kt-portlet--body mb-0">
     <div class="offcanvas-header d-flex align-items-center justify-content-end kt-portlet__head">
       <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
@@ -2131,7 +2131,7 @@
     </div>
 
   </div>
-</div>
+</div> -->
 <!--leave requisition form end-->
 <!--
 
@@ -2211,7 +2211,7 @@
 
 <!--new leave_requisition_form_slider_bar  start-->
 
-<div id="leave_requisition_form_slider_bar101" class="leave-requisition-form-slider-bar animate-right">
+<div id="leave_requisition_form_slider_bar" class="leave-requisition-form-slider-bar animate-right">
   <div class="kt-portlet--body mb-0">
     <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
 
@@ -2235,36 +2235,115 @@
         </svg>
       </a>
     </div>
-    <div class="container req-form">
+    <div *ngIf="empLeaveDetails" class="container req-form">
       
       <div class="d-flex gap-1 mb-3 mt-2 px-3">
         <div class="kt-project-info-body w-100">
           <div class="d-flex justify-content-between">
             <div class="kt-project-name">
-              <h4 class="mb-0" style="color: #181818; font-weight: 700;">Casual Leave</h4>
+              <h4 class="mb-0" style="color: #181818; font-weight: 700;">{{empLeaveDetails[0].LeaveType}}</h4>
             </div>
           </div>
-          <div class="kt-project-desc">
-            <p style="margin: 0; color: #999999; font-weight: 400;">400L1232  </p>
+          <div class="kt-project-desc" *ngIf="_newNotificationLeave">
+            <p style="margin: 0; color: #999999; font-weight: 400;">{{_newNotificationLeave[currentResIndex].Leave_Code}}</p>
           </div>
+
+
+          <div class="d-flex align-items-center my-5 px-5">
+            <div class="d-flex flex-column align-items-center" style="max-width: 50px; overflow-x: visible;">
+              <div class="timeline-icon approved" style="border-width: 2px;">
+                <svg class="tmicn-svg" width="18px" height="20px" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+                  <path d="m 13,4.1974 q 0,0.3097 -0.21677,0.5265 l -5.60517,5.6051 -1.0529,1.0529 q -0.21677,0.2168 -0.52645,0.2168 -0.30968,0 -0.52645,-0.2168 L 4.01935,10.329 1.21677,7.5264 Q 1,7.3097 1,7 1,6.6903 1.21677,6.4735 L 2.26968,5.4206 q 0.21677,-0.2167 0.52645,-0.2167 0.30968,0 0.52645,0.2167 l 2.27613,2.2839 5.07871,-5.0864 q 0.21677,-0.2168 0.52645,-0.2168 0.30968,0 0.52645,0.2168 L 12.78323,3.671 Q 13,3.8877 13,4.1974 z"></path>
+                </svg>
+              </div>
+              <div class="fs-9 fw-bold text-nowrap">Leave applied</div>
+            </div>
+            <div class="flex-grow-1 mb-3 line-aprved" style="border-width:1px;"></div>
+            <div *ngIf="managerApproval" class="d-flex flex-column align-items-center" style="max-width: 75px; overflow-x: visible;">
+              <div class="timeline-icon" style="border-width: 2px;"  
+               [ngClass]="{
+                'approved':managerApproval.LeaveStatus.trim()=='Approved Leave',
+                'rejected':managerApproval.LeaveStatus.trim()=='Leave Rejected'
+                }">
+
+              <ng-container *ngIf="managerApproval.LeaveStatus.trim()=='Approved Leave'">
+                <svg class="tmicn-svg" width="18px" height="20px" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+                  <path d="m 13,4.1974 q 0,0.3097 -0.21677,0.5265 l -5.60517,5.6051 -1.0529,1.0529 q -0.21677,0.2168 -0.52645,0.2168 -0.30968,0 -0.52645,-0.2168 L 4.01935,10.329 1.21677,7.5264 Q 1,7.3097 1,7 1,6.6903 1.21677,6.4735 L 2.26968,5.4206 q 0.21677,-0.2167 0.52645,-0.2167 0.30968,0 0.52645,0.2167 l 2.27613,2.2839 5.07871,-5.0864 q 0.21677,-0.2168 0.52645,-0.2168 0.30968,0 0.52645,0.2168 L 12.78323,3.671 Q 13,3.8877 13,4.1974 z"></path>
+                </svg>
+              </ng-container>
+
+              <ng-container *ngIf="managerApproval.LeaveStatus.trim()=='Leave Rejected'">
+                 <svg class="tmicn-svg" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <g fill="none" fill-rule="evenodd">
+                    <g stroke-width="2.016" fill="none">
+                      <rect x="0" y="0" width="24" height="24"></rect>
+                      <line x1="17" y1="7" x2="7" y2="17" stroke="#ff00008c" stroke-width="2.016" stroke-linecap="round"></line>
+                      <line x1="7" y1="7" x2="17" y2="17" stroke="#ff00008c" stroke-width="2.016" stroke-linecap="round"></line>
+                    </g>
+                  </g>
+                </svg> 
+              </ng-container>
+
+
+
+
+              </div>
+              <div class="fs-9 fw-bold text-nowrap">Department head</div>
+            </div>
+            <div class="flex-grow-1 mb-3 line-aprved" style="border-width:1px;  border: 1px dashed #ede6ef;"  [ngClass]="{'line-aprved':(hrApproval&&hrApproval.LeaveStatus.trim()=='Leave Sanction')}"></div>
+            
+            
+            <div  class="d-flex flex-column align-items-center" style="max-width: 50px; overflow-x: visible;">
+              <div class="timeline-icon" style="border-width: 2px; " [ngClass]="{
+                'approved':hrApproval&&hrApproval.LeaveStatus.trim()=='Leave Sanction',
+                'rejected':hrApproval&&hrApproval.LeaveStatus.trim()=='Leave Rejected'
+                }"    >
+             
+                <ng-container *ngIf="(!hrApproval)||hrApproval.LeaveStatus.trim()=='Leave Sanction'">
+                  <svg class="tmicn-svg" width="18px" height="20px" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+                    <path d="m 13,4.1974 q 0,0.3097 -0.21677,0.5265 l -5.60517,5.6051 -1.0529,1.0529 q -0.21677,0.2168 -0.52645,0.2168 -0.30968,0 -0.52645,-0.2168 L 4.01935,10.329 1.21677,7.5264 Q 1,7.3097 1,7 1,6.6903 1.21677,6.4735 L 2.26968,5.4206 q 0.21677,-0.2167 0.52645,-0.2167 0.30968,0 0.52645,0.2167 l 2.27613,2.2839 5.07871,-5.0864 q 0.21677,-0.2168 0.52645,-0.2168 0.30968,0 0.52645,0.2168 L 12.78323,3.671 Q 13,3.8877 13,4.1974 z"></path>
+                  </svg>
+                </ng-container>
+  
+                <ng-container *ngIf="hrApproval&&hrApproval.LeaveStatus.trim()=='Leave Rejected'">
+                   <svg class="tmicn-svg" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="none" fill-rule="evenodd">
+                      <g stroke-width="2.016" fill="none">
+                        <rect x="0" y="0" width="24" height="24"></rect>
+                        <line x1="17" y1="7" x2="7" y2="17" stroke="#ff00008c" stroke-width="2.016" stroke-linecap="round"></line>
+                        <line x1="7" y1="7" x2="17" y2="17" stroke="#ff00008c" stroke-width="2.016" stroke-linecap="round"></line>
+                      </g>
+                    </g>
+                  </svg> 
+                </ng-container>
+
+              </div>
+              <div class="fs-9 fw-bold text-nowrap text-secondary">HR department</div>
+            </div>
+          </div>
+          
+
+
+         
+
           <div class="kt-info-box pb-3">
             
           <div class="row px-3 pt-3">
               <div class="col text-center cnt-ovrl1">
                 <div class="kt-info-lable-v1">Leave type</div>
-                <div class="kt-info-data-v1">Hajj leave</div>
+                <div class="kt-info-data-v1">{{empLeaveDetails[0].LeaveType}}</div>
               </div>
               <div class="col text-center cnt-ovrl1">
                 <div class="kt-info-lable-v1 d-flex justify-content-center">Trip</div>
-                <div class="kt-info-data-v1 bg-light-shade">Local</div>
+                <div class="kt-info-data-v1 bg-light-shade">{{empLeaveDetails[0].Trip}}</div>
               </div>
               <div class="col text-center cnt-ovrl1">
                 <div class="kt-info-lable-v1">Day Type</div>
-                <div class="kt-info-data-v1">Full</div>
+                <div class="kt-info-data-v1">{{empLeaveDetails[0].Type}}</div>
               </div>
               <div class="col text-center cnt-ovrl1">
                 <div class="kt-info-lable-v1">Travel</div>
-                <div class="kt-info-data-v1 bg-light-shade">with family</div>
+                <div class="kt-info-data-v1 bg-light-shade">{{empLeaveDetails[0].Travel}}</div>
               </div>
          </div>
 
@@ -2273,19 +2352,19 @@
                 <div class="kt-info-lable-v1">
                   <div class="kt-info-lable-v1">Start date</div>
                 </div>
-                <div class="kt-info-data-v1 bg-light-shade">20-02-2022</div>
+                <div class="kt-info-data-v1 bg-light-shade">{{empLeaveDetails[0].VacFrom |date:'dd-MM-yyyy'}}</div>
               </div> 
               <div class="col col-lg-3 text-center cnt-ovrl1">
                 <div class="kt-info-lable-v1">
                   <div class="kt-info-lable-v1">End date</div>
                 </div>
-                <div class="kt-info-data-v1 bg-light-shade">30-02-2022</div>
+                <div class="kt-info-data-v1 bg-light-shade">{{empLeaveDetails[0].VacTo | date:'dd-MM-yyyy'}}</div>
               </div> 
               <div class="col col-lg-3 text-center cnt-ovrl1">
                 <div class="kt-info-lable-v1">
                   <div class="kt-info-lable-v1">Duration</div>
                 </div>
-                <div class="kt-info-data-v1 bg-light-shade">10 days</div>
+                <div class="kt-info-data-v1 bg-light-shade">{{empLeaveDetails[0].Days_Count}}{{empLeaveDetails[0].Days_Count>1?' days':' day'}}</div>
               </div>     
           </div>
 
@@ -2294,7 +2373,7 @@
               <div class="kt-info-lable-v1">
                 <div class="kt-info-lable-v1">Remarks</div>
               </div>
-              <div class="kt-info-data-v1 bg-light-shade">this is remarks of the emp.</div>
+              <div class="kt-info-data-v1 bg-light-shade" [title]="empLeaveDetails[0].Remarks">{{empLeaveDetails[0].Remarks}}</div>
             </div> 
           </div>
 
@@ -2309,6 +2388,96 @@
 
 
     </div>
+
+    <div  *ngIf="managerApproval" class="container req-form" style="border-top: 1px solid #dde1f8;">
+      <div class="d-flex gap-1 mb-3 mt-2 px-3">
+        <div class="kt-project-info-body w-100">
+          <div class="d-flex justify-content-between mb-3">
+            <div class="kt-project-name">
+              <h4 class="mb-0" style="color: #181818; font-weight: 700;">Department head approval</h4>
+            </div>
+            <span [ngClass]="{
+              'Done':managerApproval.LeaveStatus.trim()=='Leave Sanction',
+              'cancellation':managerApproval.LeaveStatus.trim()=='Leave Rejected',
+              'completion':managerApproval.LeaveStatus.trim()=='Approved Leave'
+              }" class="kt-widget__other completion">{{managerApproval.LeaveStatus}}</span>
+          </div>
+          <div class="kt-info-box pb-3">
+            <div class="row px-3 pt-3">
+              <div class="col text-center cnt-ovrl1">
+                <div *ngIf="managerApproval.LeaveStatus.trim()!='Leave Rejected'" class="kt-info-lable-v1">Approved by</div>
+                <div *ngIf="managerApproval.LeaveStatus.trim()=='Leave Rejected'" class="kt-info-lable-v1">Rejected by</div>
+                <div class="kt-info-data-v1 text-wrap">{{managerApproval.DisplayName}}</div>
+              </div>
+              <div class="col col-lg-3 text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1">Start date</div>
+                <div class="kt-info-data-v1 bg-light-shade">{{managerApproval.Start_Date|date:'dd-MM-yyyy'}}</div>
+              </div>
+              <div class="col col-lg-3 text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1">End date</div>
+                <div class="kt-info-data-v1 bg-light-shade">{{managerApproval.End_Date|date:'dd-MM-yyyy'}}</div>
+              </div>
+              <div class="col col-lg-3 text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1">Duration</div>
+                <div class="kt-info-data-v1 bg-light-shade">{{managerApproval.duration}}{{managerApproval.duration>1?' days':' day'}}</div>
+              </div>
+            </div>
+            <div class="row px-3 pt-3">
+              <div class="col col-lg-12 text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1">Remarks</div>
+                <div class="kt-info-data-v1 bg-light-shade" [title]="managerApproval.Remarks">{{managerApproval.Remarks}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div  *ngIf="hrApproval" class="container req-form" style="border-top: 1px solid #dde1f8;">
+      <div class="d-flex gap-1 mb-3 mt-2 px-3">
+        <div class="kt-project-info-body w-100">
+          <div class="d-flex justify-content-between mb-3">
+            <div class="kt-project-name">
+              <h4 class="mb-0" style="color: #181818; font-weight: 700;">HR department</h4>
+            </div>
+            <span [ngClass]="{
+              'Done':hrApproval.LeaveStatus.trim()=='Leave Sanction',
+              'cancellation':hrApproval.LeaveStatus.trim()=='Leave Rejected',
+              'completion':hrApproval.LeaveStatus.trim()=='Approved Leave'
+              }" class="kt-widget__other completion">{{hrApproval.LeaveStatus}}</span>
+          </div>
+          <div class="kt-info-box pb-3">
+            <div class="row px-3 pt-3">
+              <div class="col text-center cnt-ovrl1">
+                <div *ngIf="hrApproval.LeaveStatus.trim()!='Leave Rejected'" class="kt-info-lable-v1">Approved by</div>
+                <div *ngIf="hrApproval.LeaveStatus.trim()=='Leave Rejected'" class="kt-info-lable-v1">Rejected by</div>
+                <div class="kt-info-data-v1 text-wrap">{{hrApproval.DisplayName}}</div>
+              </div>
+              <div class="col col-lg-3 text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1">Start date</div>
+                <div class="kt-info-data-v1 bg-light-shade">{{hrApproval.Start_Date|date:'dd-MM-yyyy'}}</div>
+              </div>
+              <div class="col col-lg-3 text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1">End date</div>
+                <div class="kt-info-data-v1 bg-light-shade">{{hrApproval.End_Date|date:'dd-MM-yyyy'}}</div>
+              </div>
+              <div class="col col-lg-3 text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1">Duration</div>
+                <div class="kt-info-data-v1 bg-light-shade">{{hrApproval.duration}}{{hrApproval.duration>1?' days':' day'}}</div>
+              </div>
+            </div>
+            <div class="row px-3 pt-3">
+              <div class="col col-lg-12 text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1">Remarks</div>
+                <div class="kt-info-data-v1 bg-light-shade" [title]="hrApproval.Remarks">{{hrApproval.Remarks}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
   </div>
 </div>
 

@@ -487,14 +487,20 @@
                                                                <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
                                                                 <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                             </span>
-                                                            <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
-                                                            </span> 
+                                                           
+                                                            <div class="pulsing-div">
+                                                                <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container> 
+                                                                 <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                            </div> 
+
                                                         </div>
                                                         <div *ngIf="item.Status=='Cancellation Under Approval'">
                                                             <span class="Cancellation-Under-Approval font-weight-400">Cancellation approval
                                                             </span>
-                                                            <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
-                                                            </span> 
+                                                            <div class="pulsing-div">
+                                                                <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container> 
+                                                                 <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                            </div> 
                                                         </div>
                                                         <div *ngIf="item.Status=='Cancelled'">
                                                             <span class="Cancelled font-weight-400">Cancelled
@@ -502,9 +508,11 @@
                                                         </div>
                                                         <div *ngIf="item.Status=='Under Approval'">
                                                             <span class="under-approval font-weight-400">New approval
-                                                            </span>
-                                                            <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
                                                             </span> 
+                                                            <div class="pulsing-div">
+                                                                <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container> 
+                                                                 <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                            </div> 
                                                         </div>
                                                         <div *ngIf="item.Status=='Not yet achieved'">
                                                             <span class="Delay_color font-weight-400">Not yet achieved
@@ -513,8 +521,10 @@
                                                         <div *ngIf="item.Status=='Forward Under Approval'">
                                                             <span class="Forward-Under-Approval font-weight-400">Forward approval
                                                             </span>
-                                                            <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
-                                                            </span> 
+                                                            <div class="pulsing-div">
+                                                                <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container> 
+                                                                 <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                            </div> 
                                                         </div>
                                                         <div *ngIf="item.Status=='Not Started'">
                                                           <span class="Not-Started font-weight-400">Not Started
@@ -542,6 +552,10 @@
                                                         <div *ngIf="item.Status=='Deadline Extend Under Approval'">
                                                             <span class="Deadline-Extend-Under-Approval font-weight-400">Deadline extend approval
                                                             </span>
+                                                            <div *ngIf="item.Pendingapprover&&item.PendingapproverEmpNo" class="pulsing-div">
+                                                                <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container> 
+                                                                 <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                            </div> 
                                                         </div>
                                                         <div *ngIf="item.Status=='Project Holded'">
                                                             <span class=" Project-Holded font-weight-400"
@@ -552,6 +566,10 @@
                                                             <span class=" Project-Hold-Under-Approval font-weight-400"
                                                                 > Hold approval
                                                             </span>
+                                                            <div *ngIf="item.Pendingapprover" class="pulsing-div">
+                                                                <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container> 
+                                                                 <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                            </div> 
                                                         </div>
                                                         <div *ngIf="item.Project_Block=='003'&&item.Status.includes('Delay')">
                                                             <span class="Delay font-weight-400">Delay

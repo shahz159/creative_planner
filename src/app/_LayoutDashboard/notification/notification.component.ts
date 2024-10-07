@@ -425,7 +425,7 @@ export class NotificationComponent implements OnInit {
   hrApproval:any;
 
   currentReqIndex: number = -1;
-  currentResIndex:number=0;
+  currentResIndex:number=-1;
   notProvided:boolean=false;
   open_leave_requisition(index, submitby, leavecode) {
     this.currentReqIndex = index;
@@ -517,6 +517,10 @@ export class NotificationComponent implements OnInit {
               else
               this.hrApproval=null;
 
+
+
+                console.log('managerApproval:',this.managerApproval);
+                console.log('hrApproval:',this.hrApproval);
              }
     });
 
@@ -532,6 +536,7 @@ export class NotificationComponent implements OnInit {
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("leave_requisition_form_slider_bar").classList.remove("kt-quick-panel--on");
     $('#leave_requisition_form_slider_bar').removeClass('open_requisition_sidebar_info');
+    this.currentResIndex=-1;
   }
 
   leave_Requests: any = []
@@ -547,15 +552,19 @@ export class NotificationComponent implements OnInit {
 
 
 
-  Leave_code: any = []
-  _newNotificationLeave: any = []
+  Leave_code: any = [];
+  _newNotificationLeave: any = [];
   newNotificationLeave() {
     this.notificationsLoading=true;
     this.service.GetEmployeeLeaveResponses(this.Current_user_ID).subscribe((data) => {
       this.notificationsLoading=false;
-      this._newNotificationLeave = JSON.parse(data[0]['LeaveResponses_json'])
+      this._newNotificationLeave = JSON.parse(data[0]['LeaveResponses_json']);
       console.log(this._newNotificationLeave, '+++++++++++++++++++++++++ ')
-    })
+      if(this._newNotificationLeave){
+        const lv_codes=Array.from(new Set(this._newNotificationLeave.map(_leave=>_leave.Leave_Code)));
+        this._newNotificationLeave=lv_codes.map((_lc)=>this._newNotificationLeave.find(lobj=>lobj.Leave_Code==_lc));
+      }
+    });
   }
 
 

@@ -1629,3 +1629,51 @@ display: inline-block; */
   background-color: #a7a7a7;
   color: #fff;
 }
+
+
+/*test*/
+
+.timeline-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 2rem;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+}
+.timeline-icon .tmicn-svg{
+  fill: #ccc;
+}
+
+
+.timeline-icon.approved{
+  border-color: #4caf50;
+}
+.timeline-icon.approved .tmicn-svg{
+  fill: #4caf50;
+}
+
+
+
+
+.timeline-icon.rejected{
+  border-color: #ff00008c;
+}
+.timeline-icon.rejected .tmicn-svg{
+  fill: red;
+}
+
+.line-aprved{
+   border-style:solid;
+   border-color:#4caf50b0;
+}
+.line-pending{
+  border-style:dashed;
+  border-color:#ede6ef;
+}
+
+/*test*/

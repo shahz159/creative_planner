@@ -1345,7 +1345,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.service.NewActivityService(this.URL_ProjectCode).subscribe(
       (data) => {
         if (data !== null && data !== undefined) {
-debugger
           this.Activity_List = JSON.parse(data[0]['ActivityList']); console.log("all activities:",this.Activity_List);
           // adding _type property
           this.Activity_List.forEach((_actvy)=>{
@@ -1360,7 +1359,7 @@ debugger
                               /Action -".*" Hold/.test(_Value)?'Action Hold':
                               /Action -".*" Start date changed/.test(_Value)?'Action Startdate changed':
                               /Action -".*" Deadline changed/.test(_Value)?'Action Deadline changed':
-                              ['Project Name changed','Project Responsible changed','Project Owner changed','Project Description changed','Client changed','Category changed'].includes(_Value)?'Project Details changed':
+                              ['Project Name changed','Project Responsible changed','Project Description changed','Client changed','Category changed'].includes(_Value)?'Project Details changed':
                               [/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/,/Action -".*" Owner changed/,/Action -".*" Responsible changed/].some(rg=>rg.test(_Value))?'Action Details changed':
                               (['Project Complete','Project Complete Rejected'].includes(_Value)||/Project Complete transferred to ".*"/.test(_Value))?'Project Complete':
                               _Value;

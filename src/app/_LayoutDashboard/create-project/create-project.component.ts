@@ -1063,6 +1063,13 @@ onResponsibleChanged(){
     const obj=this.PrjSupport.find(item=>item.Emp_No==this.PrjResp);
     if(obj)this.PrjSupport.splice(this.PrjSupport.indexOf(obj),1);
   //
+
+  // selected responsible cannot be selected also as project auditor
+      if(this.PrjAuditor==this.PrjResp){
+         this.PrjAuditor=null;
+      }
+  //
+
   }
 }
 
