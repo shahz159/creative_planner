@@ -9,6 +9,7 @@
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title mr-4">
                             <strong *ngIf="activeClassAll==true">All portfolio list</strong>
+
                             <strong *ngIf="activeClassFav==true">Favorite portfolio list</strong>
                             <strong *ngIf="activeClassOwners==true">Owner portfolio list</strong>
                             <strong *ngIf="activeClassShare==true">Shared portfolio list</strong>
@@ -385,6 +386,24 @@
 
             </div>
         </div>
+
+        <div  class="col-lg-12" *ngIf="this._ListProjStat == null&&(showing !== true)">
+          <div class="no-c">
+            <img src="../../../assets/images/no-image.png">
+          <h1 class="space">You don't have a portfolio. Please click on the right side of this icon + to create</h1>
+          </div>
+          </div>
+
+          <div  class="col-lg-12" *ngIf="this._ListProjStat==null &&(showing == true)">
+            <div class="no-c">
+              <img src="../../../assets/images/no-image.png">
+            <h1 class="space">No result found.</h1>
+            </div>
+            </div>
+
+
+
+          <!-- <div class="adjust" (click)="DropdownOpen()">Add portfolio</div> -->
         <div class="col-lg-12 project-description d-none">
             <div class="kt-portlet kt-portlet--bordered-semi mb-2">
 

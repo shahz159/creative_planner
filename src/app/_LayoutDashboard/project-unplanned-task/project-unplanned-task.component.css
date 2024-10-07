@@ -3368,6 +3368,30 @@ span.task-count {
   max-height: calc(100vh - 184px);
 }
 
+.smart-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  width: 100%;
+  padding: 4rem;
+  top: 25%;
+  position: relative;
+}
+
+.no-c {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.no-c img {
+  width: 60%;
+}
+.no-c h1 {
+  font-size: 18px;
+  color: #fff;
+}
 /*new details page loading circle start*/
 
 .smart-glass {
@@ -3380,6 +3404,9 @@ span.task-count {
   width: 288px;
   height: 388px;
 }
+
+
+
 
 .logo {
   width: 288px;

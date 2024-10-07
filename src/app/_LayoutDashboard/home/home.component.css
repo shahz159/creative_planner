@@ -1566,3 +1566,15 @@ button.btn.btn-more {
   transform: scale(1);
   transition-duration: 0.2s;
 }
+.no-c {
+  background-color: #fff;
+  height: 84vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.no-c h1 {
+  font-size: 18px;
+  color: #7c8688;
+}
