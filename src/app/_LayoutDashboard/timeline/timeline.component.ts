@@ -1055,7 +1055,19 @@ formatDuration(totalDuration) {
   return `${hoursInt > 0 ? hours : '00'} ${hoursInt === 0 || hoursInt === 1 ? 'Hr' : 'Hrs'} : ${minutesInt > 0 ? minutes : '00'} ${minutesInt === 0 || minutesInt === 1 ? 'Min' : 'Mins'}`;
 }
 
+formatHoursToHHMM(hours: number): string {
+  const totalMinutes = Math.round(hours * 60);
+  const hh = Math.floor(totalMinutes / 60);
+  const mm = totalMinutes % 60;
 
+  const hoursInt = hh;
+  const minutesInt = mm;
+
+  const hoursFormatted = `${hoursInt > 0 ? hh.toString().padStart(2, '0') : '00'} ${hoursInt === 0 || hoursInt === 1 ? 'Hr' : 'Hrs'}`;
+  const minutesFormatted = `${minutesInt > 0 ? mm.toString().padStart(2, '0') : '00'} ${minutesInt === 0 || minutesInt === 1 ? 'Min' : 'Mins'}`;
+
+  return `${hoursFormatted} : ${minutesFormatted}`;
+}
 // tmReportArr:any[]=[];
 // tmReportTotalDuration:any;
 // tmReportStatus:any;
