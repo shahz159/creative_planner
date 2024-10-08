@@ -5034,3 +5034,6 @@ color: #121212;
       opacity: 0;
     }
 }
+.lowercase {
+  text-transform: lowercase !important;
+}

@@ -5873,6 +5873,14 @@ bindCustomRecurrenceValues(){
       }
   // new code of portfolio meeting side bar end
 
+
+
+  getStatusNumber(status: string): number {
+    const match = status.match(/\d+/); // Find digits in the string
+    return match ? parseInt(match[0], 10) : null; // Convert to number, or return null if no number found
+  }
+
+
   getFilterLabel() {
     if (this._PortProjStatus === '') {
       return this.showDeletedPrjOnly ? 'Filter by:   Deleted projects' : 'Filter by:   Total projects';
