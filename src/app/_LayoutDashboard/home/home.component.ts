@@ -2097,7 +2097,61 @@ getNewFilterResult(){
   this.edited = true
 }
 
+grid_open(){
+  document.getElementById("grid-view").style.display = "inline-flex";
+  document.getElementById("list-view").style.display = "none";
+  document.getElementById("grid-view-div").style.display = "block";
+  document.getElementById("list-view-div").style.display = "none";
 
+}
+list_open(){
+  document.getElementById("grid-view").style.display = "none";
+  document.getElementById("list-view").style.display = "inline-flex";
+  document.getElementById("grid-view-div").style.display = "none";
+  document.getElementById("list-view-div").style.display = "block";
+}
 
+getStatusClass(status: string): string {
+  switch (status) {
+      case 'Delay':
+          return 'status-delay';
+      case 'InProcess':
+          return 'status-in-process';
+      case 'Completion Under Approval':
+          return 'status-completion-under-approval';
+      case 'Under Approval':
+          return 'status-under-approval';
+      case 'Forward Under Approval':
+          return 'status-forward-under-approval';
+      case 'Completed':
+          return 'status-completed';
+      case 'Project Hold':
+          return 'status-project-hold';
+      case 'Project Complete Rejected':
+          return 'status-project-complete-rejected';
+      case 'Project Holded':
+          return 'status-project-holded';
+      case 'New Project':
+          return 'status-new-project';
+      case 'Enactive Under Approval':
+          return 'status-enactive-under-approval';
+      case 'Deadline Extend Under Approval':
+          return 'status-deadline-extend-under-approval';
+      case 'Project Hold Under Approval':
+          return 'status-project-hold-under-approval';
+      case 'New Todo':
+          return 'status-new-todo';
+      case 'New Project Rejected':
+          return 'status-new-project-rejected';
+      case 'Version':
+          return 'status-version';
+      case 'ToDo Achieved':
+          return 'status-todo-achieved';
+      case 'ToDo Completed':
+          return 'status-todo-completed';
+      default:
+          return '';
+  }
+}
 
 }

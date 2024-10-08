@@ -2,7 +2,7 @@
   <ng-container *ngIf="(userFound===true)">
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height">
     <div class="row" [hidden]="PortfolioList">
-        <div class="col-lg-12 project-description">
+        <div class="col-lg-12 project-description d-none">
             <div class="kt-portlet kt-portlet--bordered-semi mb-2">
 
                 <div class="kt-portlet__head">
@@ -385,10 +385,10 @@
 
             </div>
         </div>
-        <div class="col-lg-12 project-description d-none">
+        <div class="col-lg-12 project-description">
             <div class="kt-portlet kt-portlet--bordered-semi mb-2">
 
-                <div class="kt-portlet__head">
+                <div class="kt-portlet__head portfolio-tool-head">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
                             <strong *ngIf="activeClassAll==true">All portfolio list <span class="head-title-count">{{countAll}}</span></strong>
@@ -421,97 +421,111 @@
                        
                         <div class="kt-portlet__head-toolbar">
 
+                           <div class="portfolio-pagination">
+                             <!-- Pagenation start -->
                            
-                            
 
-                            
-                            <!-- Pagenation start -->
-                            <label class="mx-1" *ngIf="activeClassAll==true">{{Portfolio_CurrentPage}} of {{NoOfPages}} pages</label>
-                            <label class="mx-1" *ngIf="activeClassFav==true">{{Portfolio_FavoritePage}} of {{NoOfPages}} pages</label>
-                            <label class="mx-1" *ngIf="activeClassOwners==true">{{Portfolio_OwnerPage}} of {{NoOfPages}} pages</label>
-                            <label class="mx-1" *ngIf="activeClassShare==true">{{Portfolio_SharedPage}} of {{NoOfPages}} pages</label>
-
-                            <button class="btn btn-label-info btn-upper btn-sm btn-bold mx-1 pg-btn" *ngIf="activeClassAll==true"
-                                (click)="Portfolio_CurrentPage = Portfolio_CurrentPage - 1;getPortfolio_List()"
-                                [disabled]="Portfolio_CurrentPage==1">
-                                <i class="fas fa-angle-left mr-0"></i>
+                             <button class="btn  pg-btn" *ngIf="activeClassAll==true"
+                             (click)="Portfolio_CurrentPage = Portfolio_CurrentPage - 1;getPortfolio_List()"
+                             [disabled]="Portfolio_CurrentPage==1">
+                             <i class="fas fa-angle-left mr-0"></i>
+                         </button>
+                         <button class="btn  pg-btn" *ngIf="activeClassFav==true"
+                             (click)="Portfolio_FavoritePage = Portfolio_FavoritePage - 1;Favourite_Portfolios()"
+                             [disabled]="Portfolio_FavoritePage==1">
+                             <i class="fas fa-angle-left mr-0"></i>
+                         </button>
+                         <button class="btn  pg-btn" *ngIf="activeClassOwners==true"
+                             (click)="Portfolio_OwnerPage = Portfolio_OwnerPage - 1;Owners_Portfolios()"
+                             [disabled]="Portfolio_OwnerPage==1">
+                             <i class="fas fa-angle-left mr-0"></i>
+                         </button>
+                         <button class="btn  pg-btn" *ngIf="activeClassShare==true"
+                             (click)="Portfolio_SharedPage = Portfolio_SharedPage - 1;Shared_Portfolios()"
+                             [disabled]="Portfolio_SharedPage==1">
+                             <i class="fas fa-angle-left mr-0"></i>
+                         </button>
+                         <!-- <button class="kt-todo__icon" data-toggle="kt-tooltip" title="Previous"
+                         (click)="Portfolio_CurrentPage = Portfolio_CurrentPage - 1;getPortfolio_List()" [disabled]="Portfolio_CurrentPage==1">
+                         <i class="fas fa-angle-left mr-0"></i>
+                     </button> -->
+                         <button class="btn pg-btn" *ngIf="activeClassAll==true"
+                             (click)="Portfolio_CurrentPage = Portfolio_CurrentPage + 1;getPortfolio_List()"
+                             [disabled]="NoOfRecordsPerPage < 30">
+                             <i class="fas fa-angle-right mr-0"></i>
+                         </button>
+                         <button class="btn pg-btn" *ngIf="activeClassFav==true"
+                             (click)="Portfolio_FavoritePage = Portfolio_FavoritePage + 1;Favourite_Portfolios()"
+                             [disabled]="NoOfRecordsPerPage < 30">
+                             <i class="fas fa-angle-right mr-0"></i>
+                         </button>
+                         <button class="btn pg-btn" *ngIf="activeClassOwners==true"
+                             (click)="Portfolio_OwnerPage = Portfolio_OwnerPage + 1;Owners_Portfolios()"
+                             [disabled]="NoOfRecordsPerPage < 30">
+                             <i class="fas fa-angle-right mr-0"></i>
+                         </button>
+                         <button class="btn pg-btn" *ngIf="activeClassShare==true"
+                             (click)="Portfolio_SharedPage = Portfolio_SharedPage + 1;Shared_Portfolios()"
+                             [disabled]="NoOfRecordsPerPage < 30">
+                             <i class="fas fa-angle-right mr-0"></i>
+                         </button>
+                         <!-- <button class="kt-todo__icon" data-toggle="kt-tooltip" title="Next"
+                         (click)="Portfolio_CurrentPage = Portfolio_CurrentPage + 1;getPortfolio_List()" >
+                         <i class="fas fa-angle-right mr-0"></i>
+                     </button> -->
+                     <label class="mx-1" *ngIf="activeClassAll==true">{{Portfolio_CurrentPage}} of {{NoOfPages}} pages</label>
+                     <label class="mx-1" *ngIf="activeClassFav==true">{{Portfolio_FavoritePage}} of {{NoOfPages}} pages</label>
+                     <label class="mx-1" *ngIf="activeClassOwners==true">{{Portfolio_OwnerPage}} of {{NoOfPages}} pages</label>
+                     <label class="mx-1" *ngIf="activeClassShare==true">{{Portfolio_SharedPage}} of {{NoOfPages}} pages</label>
+                         <!-- Pagenation End -->
+                           </div>
+                           <div class="dropdown">
+                            <button class="btn btn-view-portfolio dropdown-toggle" type="button" id="dropdownviewportfolioMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span class="view-label" id="grid-view">
+                                <svg width="64px" height="64px" viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8.25 0.75H2.25C1.42157 0.75 0.75 1.42157 0.75 2.25V8.25C0.75 9.07843 1.42157 9.75 2.25 9.75H8.25C9.07843 9.75 9.75 9.07843 9.75 8.25V2.25C9.75 1.42157 9.07843 0.75 8.25 0.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M8.25 14.25H2.25C1.42157 14.25 0.75 14.9216 0.75 15.75V21.75C0.75 22.5784 1.42157 23.25 2.25 23.25H8.25C9.07843 23.25 9.75 22.5784 9.75 21.75V15.75C9.75 14.9216 9.07843 14.25 8.25 14.25Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M21.75 0.75H15.75C14.9216 0.75 14.25 1.42157 14.25 2.25V8.25C14.25 9.07843 14.9216 9.75 15.75 9.75H21.75C22.5784 9.75 23.25 9.07843 23.25 8.25V2.25C23.25 1.42157 22.5784 0.75 21.75 0.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M21.75 14.25H15.75C14.9216 14.25 14.25 14.9216 14.25 15.75V21.75C14.25 22.5784 14.9216 23.25 15.75 23.25H21.75C22.5784 23.25 23.25 22.5784 23.25 21.75V15.75C23.25 14.9216 22.5784 14.25 21.75 14.25Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                Grid View
+                              </span>
+                              <span class="view-label" id="list-view" style="display: none">
+                                <svg width="64px" height="64px" viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21.75 0.75H2.25C1.42157 0.75 0.75 1.42157 0.75 2.25V8.25C0.75 9.07843 1.42157 9.75 2.25 9.75H21.75C22.5784 9.75 23.25 9.07843 23.25 8.25V2.25C23.25 1.42157 22.5784 0.75 21.75 0.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M21.75 14.25H2.25C1.42157 14.25 0.75 14.9216 0.75 15.75V21.75C0.75 22.5784 1.42157 23.25 2.25 23.25H21.75C22.5784 23.25 23.25 22.5784 23.25 21.75V15.75C23.25 14.9216 22.5784 14.25 21.75 14.25Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                List View
+                              </span>
                             </button>
-                            <button class="btn btn-label-info btn-upper btn-sm btn-bold mx-1 pg-btn" *ngIf="activeClassFav==true"
-                                (click)="Portfolio_FavoritePage = Portfolio_FavoritePage - 1;Favourite_Portfolios()"
-                                [disabled]="Portfolio_FavoritePage==1">
-                                <i class="fas fa-angle-left mr-0"></i>
-                            </button>
-                            <button class="btn btn-label-info btn-upper btn-sm btn-bold mx-1 pg-btn" *ngIf="activeClassOwners==true"
-                                (click)="Portfolio_OwnerPage = Portfolio_OwnerPage - 1;Owners_Portfolios()"
-                                [disabled]="Portfolio_OwnerPage==1">
-                                <i class="fas fa-angle-left mr-0"></i>
-                            </button>
-                            <button class="btn btn-label-info btn-upper btn-sm btn-bold mx-1 pg-btn" *ngIf="activeClassShare==true"
-                                (click)="Portfolio_SharedPage = Portfolio_SharedPage - 1;Shared_Portfolios()"
-                                [disabled]="Portfolio_SharedPage==1">
-                                <i class="fas fa-angle-left mr-0"></i>
-                            </button>
-                            <!-- <button class="kt-todo__icon" data-toggle="kt-tooltip" title="Previous"
-                            (click)="Portfolio_CurrentPage = Portfolio_CurrentPage - 1;getPortfolio_List()" [disabled]="Portfolio_CurrentPage==1">
-                            <i class="fas fa-angle-left mr-0"></i>
-                        </button> -->
-                            <button class="btn btn-label-info btn-hover-info btn-upper btn-sm btn-bold ml-1 mr-2" *ngIf="activeClassAll==true"
-                                (click)="Portfolio_CurrentPage = Portfolio_CurrentPage + 1;getPortfolio_List()"
-                                [disabled]="NoOfRecordsPerPage < 30">
-                                <i class="fas fa-angle-right mr-0"></i>
-                            </button>
-                            <button class="btn btn-label-info btn-hover-info btn-upper btn-sm btn-bold ml-1 mr-2" *ngIf="activeClassFav==true"
-                                (click)="Portfolio_FavoritePage = Portfolio_FavoritePage + 1;Favourite_Portfolios()"
-                                [disabled]="NoOfRecordsPerPage < 30">
-                                <i class="fas fa-angle-right mr-0"></i>
-                            </button>
-                            <button class="btn btn-label-info btn-hover-info btn-upper btn-sm btn-bold ml-1 mr-2" *ngIf="activeClassOwners==true"
-                                (click)="Portfolio_OwnerPage = Portfolio_OwnerPage + 1;Owners_Portfolios()"
-                                [disabled]="NoOfRecordsPerPage < 30">
-                                <i class="fas fa-angle-right mr-0"></i>
-                            </button>
-                            <button class="btn btn-label-info btn-hover-info btn-upper btn-sm btn-bold ml-1 mr-2" *ngIf="activeClassShare==true"
-                                (click)="Portfolio_SharedPage = Portfolio_SharedPage + 1;Shared_Portfolios()"
-                                [disabled]="NoOfRecordsPerPage < 30">
-                                <i class="fas fa-angle-right mr-0"></i>
-                            </button>
-                            <!-- <button class="kt-todo__icon" data-toggle="kt-tooltip" title="Next"
-                            (click)="Portfolio_CurrentPage = Portfolio_CurrentPage + 1;getPortfolio_List()" >
-                            <i class="fas fa-angle-right mr-0"></i>
-                        </button> -->
-
-                            <!-- Pagenation End -->
+                            <div class="dropdown-menu view-portfolio-menu" aria-labelledby="dropdownviewportfolioMenuButton">
+                              <a class="dropdown-item" href="javascript:void(0)" (click)="grid_open()">Grid View</a>
+                              <a class="dropdown-item" href="javascript:void(0)" (click)="list_open()">List View</a>
+                            </div>
+                          </div>
                             <a (click)="All_Portfolio()" class="kt-todo__icon" data-toggle="kt-tooltip" title="All"
                             [ngClass]="{'active': activeClassAll}">
-                            <i class="flaticon2-indent-dots"></i>
+                            <svg fill="currentColor" width="18px" height="18px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>list</title> <path d="M6 11.75h-2c-1.794 0.002-3.248 1.456-3.25 3.25v2c0.002 1.794 1.456 3.248 3.25 3.25h2c1.794-0.002 3.248-1.456 3.25-3.25v-2c-0.002-1.794-1.456-3.248-3.25-3.25h-0zM6.75 17c-0.001 0.414-0.336 0.749-0.75 0.75h-2c-0.414-0.001-0.749-0.336-0.75-0.75v-2c0.001-0.414 0.336-0.749 0.75-0.75h2c0.414 0.001 0.749 0.336 0.75 0.75v0zM30 14.75h-17c-0.69 0-1.25 0.56-1.25 1.25s0.56 1.25 1.25 1.25v0h17c0.69 0 1.25-0.56 1.25-1.25s-0.56-1.25-1.25-1.25v0zM6 0.75h-2c-1.794 0.002-3.248 1.456-3.25 3.25v2c0.002 1.794 1.456 3.248 3.25 3.25h2c1.794-0.002 3.248-1.456 3.25-3.25v-2c-0.002-1.794-1.456-3.248-3.25-3.25h-0zM6.75 6c-0.001 0.414-0.336 0.749-0.75 0.75h-2c-0.414-0.001-0.749-0.336-0.75-0.75v-2c0.001-0.414 0.336-0.749 0.75-0.75h2c0.414 0.001 0.749 0.336 0.75 0.75v0zM13 6.25h17c0.69 0 1.25-0.56 1.25-1.25s-0.56-1.25-1.25-1.25v0h-17c-0.69 0-1.25 0.56-1.25 1.25s0.56 1.25 1.25 1.25v0zM6 22.75h-2c-1.794 0.002-3.248 1.456-3.25 3.25v2c0.002 1.794 1.456 3.248 3.25 3.25h2c1.794-0.002 3.248-1.456 3.25-3.25v-2c-0.002-1.794-1.456-3.248-3.25-3.25h-0zM6.75 28c-0 0.414-0.336 0.75-0.75 0.75h-2c-0.414-0-0.75-0.336-0.75-0.75v-2c0-0.414 0.336-0.75 0.75-0.75h2c0.414 0 0.75 0.336 0.75 0.75v0zM30 25.75h-17c-0.69 0-1.25 0.56-1.25 1.25s0.56 1.25 1.25 1.25v0h17c0.69 0 1.25-0.56 1.25-1.25s-0.56-1.25-1.25-1.25v0z"></path> </g></svg>
                             
                         </a>
                         <a (click)="Owners_Portfolios()" class="kt-todo__icon" data-toggle="kt-tooltip"
                             title="Owner" [ngClass]="{'active': activeClassOwners}">
                             <!-- <i class="la la-user"></i> -->
-                            <i class="flaticon2-user"></i>
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="6" r="4" stroke="currentColor" stroke-width="1.5"></circle> <path d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z" stroke="currentColor" stroke-width="1.5"></path> </g></svg>
                             
                         </a>
                         <a (click)="Shared_Portfolios()" class="kt-todo__icon" data-toggle="kt-tooltip"
                             title="Shared" [ngClass]="{'active': activeClassShare}">
                             <!-- <i class="la la-share-alt"></i> -->
-                            <i class="fas fa-share-alt"></i>
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 12C9 13.3807 7.88071 14.5 6.5 14.5C5.11929 14.5 4 13.3807 4 12C4 10.6193 5.11929 9.5 6.5 9.5C7.88071 9.5 9 10.6193 9 12Z" stroke="currentColor" stroke-width="1.5"></path> <path d="M14 6.5L9 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M14 17.5L9 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M19 18.5C19 19.8807 17.8807 21 16.5 21C15.1193 21 14 19.8807 14 18.5C14 17.1193 15.1193 16 16.5 16C17.8807 16 19 17.1193 19 18.5Z" stroke="currentColor" stroke-width="1.5"></path> <path d="M19 5.5C19 6.88071 17.8807 8 16.5 8C15.1193 8 14 6.88071 14 5.5C14 4.11929 15.1193 3 16.5 3C17.8807 3 19 4.11929 19 5.5Z" stroke="currentColor" stroke-width="1.5"></path> </g></svg>
                             
                         </a>
                         <a (click)="Favourite_Portfolios()" class="kt-todo__icon" data-toggle="kt-tooltip"
                             title="Favourite" [ngClass]="{'active': activeClassFav}">
                             <!-- <i class="la la-star-o"></i> -->
-                            <i class="fas fa-star"></i>
-                            
+                            <!-- <i class="fas fa-star"></i> -->
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.2691 4.41115C11.5006 3.89177 11.6164 3.63208 11.7776 3.55211C11.9176 3.48263 12.082 3.48263 12.222 3.55211C12.3832 3.63208 12.499 3.89177 12.7305 4.41115L14.5745 8.54808C14.643 8.70162 14.6772 8.77839 14.7302 8.83718C14.777 8.8892 14.8343 8.93081 14.8982 8.95929C14.9705 8.99149 15.0541 9.00031 15.2213 9.01795L19.7256 9.49336C20.2911 9.55304 20.5738 9.58288 20.6997 9.71147C20.809 9.82316 20.8598 9.97956 20.837 10.1342C20.8108 10.3122 20.5996 10.5025 20.1772 10.8832L16.8125 13.9154C16.6877 14.0279 16.6252 14.0842 16.5857 14.1527C16.5507 14.2134 16.5288 14.2807 16.5215 14.3503C16.5132 14.429 16.5306 14.5112 16.5655 14.6757L17.5053 19.1064C17.6233 19.6627 17.6823 19.9408 17.5989 20.1002C17.5264 20.2388 17.3934 20.3354 17.2393 20.3615C17.0619 20.3915 16.8156 20.2495 16.323 19.9654L12.3995 17.7024C12.2539 17.6184 12.1811 17.5765 12.1037 17.56C12.0352 17.5455 11.9644 17.5455 11.8959 17.56C11.8185 17.5765 11.7457 17.6184 11.6001 17.7024L7.67662 19.9654C7.18404 20.2495 6.93775 20.3915 6.76034 20.3615C6.60623 20.3354 6.47319 20.2388 6.40075 20.1002C6.31736 19.9408 6.37635 19.6627 6.49434 19.1064L7.4341 14.6757C7.46898 14.5112 7.48642 14.429 7.47814 14.3503C7.47081 14.2807 7.44894 14.2134 7.41394 14.1527C7.37439 14.0842 7.31195 14.0279 7.18708 13.9154L3.82246 10.8832C3.40005 10.5025 3.18884 10.3122 3.16258 10.1342C3.13978 9.97956 3.19059 9.82316 3.29993 9.71147C3.42581 9.58288 3.70856 9.55304 4.27406 9.49336L8.77835 9.01795C8.94553 9.00031 9.02911 8.99149 9.10139 8.95929C9.16534 8.93081 9.2226 8.8892 9.26946 8.83718C9.32241 8.77839 9.35663 8.70162 9.42508 8.54808L11.2691 4.41115Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                         </a>
 
                         <a [hidden]="Z2A" (click)="_SortPortfoliolist()" class="kt-todo__icon"
                             data-toggle="kt-tooltip" title="Click to sort Asc">
-                            <i class="fa fa-sort-alpha-down-alt"></i>
+                            <svg width="21px" height="21px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10.22 15.97L9 17.19V5C9 4.59 8.66 4.25 8.25 4.25C7.84 4.25 7.5 4.59 7.5 5V17.19L6.28 15.97C5.99 15.68 5.51 15.68 5.22 15.97C4.93 16.26 4.93 16.74 5.22 17.03L7.72 19.53C7.79 19.6 7.87 19.65 7.96 19.69C8.05 19.73 8.15 19.75 8.25 19.75C8.35 19.75 8.44 19.73 8.54 19.69C8.63 19.65 8.71 19.6 8.78 19.53L11.28 17.03C11.57 16.74 11.57 16.26 11.28 15.97C10.99 15.68 10.51 15.68 10.22 15.97Z" fill="currentColor"></path> <path d="M18.96 18.25L17.25 13.46C17.08 13.03 16.69 12.75 16.25 12.75C15.81 12.75 15.42 13.03 15.25 13.48L13.55 18.25C13.41 18.64 13.61 19.07 14 19.21C14.39 19.35 14.82 19.15 14.96 18.76L15.24 17.98H17.27L17.55 18.76C17.66 19.07 17.95 19.26 18.26 19.26C18.34 19.26 18.43 19.25 18.51 19.22C18.9 19.08 19.1 18.65 18.96 18.26V18.25ZM15.77 16.48L16.25 15.14L16.73 16.48H15.77Z" fill="currentColor"></path> <path d="M13.83 10.54C14.02 10.98 14.42 11.25 14.88 11.25H18.01C18.42 11.25 18.76 10.91 18.76 10.5C18.76 10.09 18.42 9.75001 18.01 9.75001H15.62L18.44 6.82001C18.78 6.46001 18.88 5.93001 18.68 5.47001C18.49 5.03001 18.09 4.76001 17.63 4.76001H14.52C14.11 4.76001 13.77 5.10001 13.77 5.51001C13.77 5.92001 14.11 6.26001 14.52 6.26001H16.91L14.08 9.21001C13.74 9.57001 13.65 10.09 13.84 10.55L13.83 10.54Z" fill="currentColor"></path> </g></svg>
                         </a>
                         <a [hidden]="A2Z" (click)="_SortPortfoliolist()" class="kt-todo__icon"
                             data-toggle="kt-tooltip" title="Click to sort Desc">
-                            <i class="fas fa-sort-alpha-up"></i>
+                            <svg width="21px" height="21px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8.78001 4.47C8.71001 4.4 8.63001 4.35 8.54001 4.31C8.36001 4.23 8.15001 4.23 7.97001 4.31C7.88001 4.35 7.80001 4.4 7.73001 4.47L5.23001 6.97C4.94001 7.26 4.94001 7.74 5.23001 8.03C5.52001 8.32 6.00001 8.32 6.29001 8.03L7.51001 6.81V19C7.51001 19.41 7.85001 19.75 8.26001 19.75C8.67001 19.75 9.01001 19.41 9.01001 19V6.81L10.23 8.03C10.38 8.18 10.57 8.25 10.76 8.25C10.95 8.25 11.14 8.18 11.29 8.03C11.58 7.74 11.58 7.26 11.29 6.97L8.79001 4.47H8.78001Z" fill="currentColor"></path> <path d="M14 11.21C14.39 11.35 14.82 11.15 14.96 10.76L15.24 9.98001H17.27L17.55 10.76C17.66 11.07 17.95 11.26 18.26 11.26C18.34 11.26 18.43 11.25 18.51 11.22C18.9 11.08 19.1 10.65 18.96 10.26L17.25 5.47001C17.08 5.04001 16.69 4.76001 16.25 4.76001C15.81 4.76001 15.42 5.04001 15.25 5.49001L13.55 10.26C13.41 10.65 13.61 11.08 14 11.22V11.21ZM16.73 8.48001H15.77L16.25 7.14001L16.73 8.48001Z" fill="currentColor"></path> <path d="M18.67 13.46C18.48 13.02 18.08 12.75 17.62 12.75H14.51C14.1 12.75 13.76 13.09 13.76 13.5C13.76 13.91 14.1 14.25 14.51 14.25H16.9L14.07 17.2C13.73 17.56 13.64 18.08 13.83 18.54C14.02 18.98 14.42 19.25 14.88 19.25H18.01C18.42 19.25 18.76 18.91 18.76 18.5C18.76 18.09 18.42 17.75 18.01 17.75H15.62L18.44 14.82C18.78 14.46 18.88 13.93 18.68 13.47L18.67 13.46Z" fill="currentColor"></path> </g></svg>
                         </a>
                         <!-- Filters -->
 
@@ -520,7 +534,7 @@
                                 <li class="dropdown mega-dropdown" id="filtermenu">
                                     <a [ngClass]="edited ? 'kt-todo__icon  filter-dot' : 'kt-todo__icon '"
                                         data-toggle="dropdown" aria-expanded="false" id="test2">
-                                        <i class="fas fa-ellipsis-v mr-0"></i>
+                                        <svg width="18px" height="18px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-three-dots-vertical"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path> </g></svg>
                                     </a>
                                     <div class="dropdown-menu mega-dropdown-menu" aria-labelledby="test2">
                                         <div (click)="$event.stopPropagation();">
@@ -682,7 +696,7 @@
                             <div>
                                 <a class="kt-todo__icon" data-toggle="dropdown" id="test1" title="New Portfolio"
                                     [ngClass]="{'active': activeClass_NewPortfolio}" (click)="DropdownOpen()">
-                                    <i class="fas fa-plus"></i>
+                                    <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12H18M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-menu-md bg-ground"
                                     aria-labelledby="test1">
@@ -768,10 +782,10 @@
                         </button>
                         <div
                             class="kt-grid__item kt-grid__item--fluid kt-inbox__list kt-inbox__list--shown mb-1 flex-grow-1">
-                            <div class="n-portfolio-container d-none">
+                            <div class="n-portfolio-container" id="grid-view-div">
                                 <div class="n-portfolio-ul" >
                                     <div class="n-portfolio-li" *ngFor="let item of _ListProjStat ;let i=index">
-                                        <div class="n-portfolio-head">
+                                        <div class="n-portfolio-head"  [ngClass]="getStatusClass(item.Status)">
                                             <div class="n-portfolio-title"   (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
                                                 {{item.Portfolio_Name}}
                                             </div>
@@ -780,16 +794,17 @@
                                             <a *ngIf="item.Created_By == Current_user_ID"
                                             (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                             <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"></i>
+                                                [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"></i>
                                         </a>
                                         <a *ngIf="item.Created_By != Current_user_ID"
                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                         <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                            [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                            [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                         </a>
                                             </div>
                                         </div>
                                         <div class="n-portfolio-body">
+                                            <div class="per-con">75<small>%</small></div>
                                             <div class="n-portfolio-item">
                                                 <div class="n-portfolio-item-icon">
                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 21C5 17.134 8.13401 14 12 14C15.866 14 19 17.134 19 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -825,7 +840,7 @@
 
                                                 </div>
                                             </div>
-                                            <div class="n-portfolio-item">
+                                            <!-- <div class="n-portfolio-item">
                                                 <div class="n-portfolio-item-icon">
                                                     <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 512 512" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title></title><path d="M432.33,129.92a7.93,7.93,0,0,0-5.65-2.34h-38.1A359.67,359.67,0,0,0,392,77.74a8,8,0,0,0-8-8H128a8,8,0,0,0-8,8,360,360,0,0,0,3.43,49.86H85.32a8,8,0,0,0-8,8c0,26.33,9.85,51.85,28.49,73.81,17.38,20.48,41.63,37,70.22,47.86,12.67,14.91,27.08,26.39,42.8,33.54-1.57,47.84-24.13,82.8-31.32,92.77h-6.67a18,18,0,0,0-18,18v22.68a18,18,0,0,0,18,18H331.18a18,18,0,0,0,18-18V401.58a18,18,0,0,0-18-18h-6.57c-7.23-10.4-29.79-46.43-31.42-92.78,15.72-7.15,30.13-18.63,42.8-33.54,28.59-10.88,52.84-27.39,70.22-47.86,18.62-22,28.47-47.48,28.47-73.8v0A7.94,7.94,0,0,0,432.33,129.92ZM93.69,143.6h32.37c6.25,33.08,17.12,63,31.54,87.53C120.19,210.25,96.79,178.6,93.69,143.6Zm239.49,258v22.68a2,2,0,0,1-2,2H180.84a2,2,0,0,1-2-2V401.58a2,2,0,0,1,2-2H331.18A2,2,0,0,1,333.18,401.58Zm-126.4-18a189.48,189.48,0,0,0,27.81-87.21,85.93,85.93,0,0,0,42.86,0c2.51,39.13,18,70.56,28.08,87.22ZM282.2,278.09a71.43,71.43,0,0,1-52.39,0c-25.78-10-49.36-34.92-66.39-70.22-16.68-34.56-26.29-77.64-27.32-122.12H375.92c-1,44.48-10.64,87.56-27.32,122.12C331.57,243.16,308,268.1,282.2,278.09Zm72.22-47c14.43-24.56,25.3-54.46,31.54-87.54h32.36C415.22,178.57,391.83,210.23,354.42,231.12Z"></path></g></svg>
                                                 </div>
@@ -836,7 +851,7 @@
                                                     </div>
                                                     <div class="progress-count">75%</div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <div class="n-portfolio-foot">
                                             <div class="n-portfolio-status">
@@ -934,23 +949,201 @@
                                                 </div>
                                             </div>
                                             <div class="n-portfolio-action">
-                                                <div class="btn-group">
-                                                    <button type="button" class="btn btn-more" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <div class="p-g-more btn-group">
+                                                    <div data-toggle="dropdown"  class="btn btn-more" aria-haspopup="true" aria-expanded="false">
                                                         <svg fill="currentColor" height="64px" width="64px" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path class="cls-1" d="M8,6.5A1.5,1.5,0,1,1,6.5,8,1.5,1.5,0,0,1,8,6.5ZM.5,8A1.5,1.5,0,1,0,2,6.5,1.5,1.5,0,0,0,.5,8Zm12,0A1.5,1.5,0,1,0,14,6.5,1.5,1.5,0,0,0,12.5,8Z"></path> </g></svg>
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                      <button class="dropdown-item" type="button"  (click)="_deletePortfolio(item.Portfolio_ID,item.Portfolio_Name,item.Created_By,item.Created_DT,item.ProjectsCount,item.Status)">Delete</button>
-                                                      <button class="dropdown-item" type="button">Edit</button>
                                                     </div>
-                                                  </div>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <div class="dropdown-item" type="button"   (click)="_deletePortfolio(item.Portfolio_ID,item.Portfolio_Name,item.Created_By,item.Created_DT,item.ProjectsCount,item.Status)">
+                                                            <span class="p-g-more-item-icon">
+                                                                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M18.8332 8.5L18.3732 15.3991C18.1962 18.054 18.1077 19.3815 17.2427 20.1907C16.3777 21 15.0473 21 12.3865 21H11.6132C8.95235 21 7.62195 21 6.75694 20.1907C5.89194 19.3815 5.80344 18.054 5.62644 15.3991L5.1665 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M9.5 11L10 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M14.5 11L14 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6" stroke="currentColor" stroke-width="1.5"></path> </g></svg>
+                                                            </span>
+                                                            <span class="p-g-more-item-label">Delete Portfolio</span>
+                                                        </div>
+                                                      </div>
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- <div> -->
-                            <div class="p-0 flex-grow-1">
-                                <div data-type="inbox" class="kt-inbox__items">
+                            <div class="p-0 flex-grow-1" id="list-view-div" style="display: none;">
+                                <div class="kt-portlet mb-0">
+                                    <div class="kt-portlet-header">
+                                        <div class="p-h-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" id="Portfolio" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" ><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path><path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor"></path></g></svg>
+                                        </div>
+                                        <div class="p-h-name">Name</div>
+                                        <div class="p-h-datetime">Date & Time</div>
+                                        <div class="p-h-modified-by">Owner</div>
+                                        <div class="p-h-activity">Status</div>
+                                        <div class="p-h-more">&nbsp;</div>
+                                        <div class="p-h-more-scroll">&nbsp;</div>
+                                    </div>
+                                    <div class="kt-portlet-body">
+                                        <div class="folder-item-scroll">
+                                            <div class="folder-item" *ngFor="let item of _ListProjStat ;let i=index">
+                                                <div class="p-b-icon" [ngClass]="getStatusClass(item.Status)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" id="Portfolio" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" ><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path><path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor"></path></g></svg>
+                                                </div>
+                                                <div class="p-b-name">
+                                                    <div class="d-flex align-item-center">
+                                                        <div class="p-b-name-title" (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">{{item.Portfolio_Name}}</div>
+                                                       
+                                                        <div class="p-b-pin-star"  *ngIf="item.Created_By == Current_user_ID" [ngStyle]="{'display':item.IsFavourite1=== true ? 'block' : 'none'}">
+                                                            <svg fill="currentColor" width="16px" height="16px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <path class="clr-i-solid clr-i-solid-path-1" d="M34,16.78a2.22,2.22,0,0,0-1.29-4l-9-.34a.23.23,0,0,1-.2-.15L20.4,3.89a2.22,2.22,0,0,0-4.17,0l-3.1,8.43a.23.23,0,0,1-.2.15l-9,.34a2.22,2.22,0,0,0-1.29,4l7.06,5.55a.23.23,0,0,1,.08.24L7.35,31.21a2.22,2.22,0,0,0,3.38,2.45l7.46-5a.22.22,0,0,1,.25,0l7.46,5a2.2,2.2,0,0,0,2.55,0,2.2,2.2,0,0,0,.83-2.4l-2.45-8.64a.22.22,0,0,1,.08-.24Z"></path> <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect> </g></svg>
+                                                        </div>
+                                                        <div class="p-b-pin-star"   *ngIf="item.Created_By != Current_user_ID" [ngStyle]="{'display':item.IsFavourite1=== true ? 'block' : 'none'}">
+                                                            <svg fill="currentColor" width="16px" height="16px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <path class="clr-i-solid clr-i-solid-path-1" d="M34,16.78a2.22,2.22,0,0,0-1.29-4l-9-.34a.23.23,0,0,1-.2-.15L20.4,3.89a2.22,2.22,0,0,0-4.17,0l-3.1,8.43a.23.23,0,0,1-.2.15l-9,.34a2.22,2.22,0,0,0-1.29,4l7.06,5.55a.23.23,0,0,1,.08.24L7.35,31.21a2.22,2.22,0,0,0,3.38,2.45l7.46-5a.22.22,0,0,1,.25,0l7.46,5a2.2,2.2,0,0,0,2.55,0,2.2,2.2,0,0,0,.83-2.4l-2.45-8.64a.22.22,0,0,1,.08-.24Z"></path> <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect> </g></svg>
+                                                        </div>
+                                                    </div>
+                                                    <div class="p-b-name-subtitle">
+                                                        <span class="p-b-project-count">{{item.ProjectsCount}} Project(s)</span>
+                                                        <span class="p-b-percent-count">75%</span>
+                                                    </div>
+                                                </div>
+                                                <div class="p-b-datetime"><span>{{item.Created_DT|date:'medium'}}</span></div>
+                                                <div class="p-b-modified-by">
+                                                    <span *ngIf="item.CreatedName!=''; else SharedName">
+                                                        {{item.CreatedName}}
+                                                    </span>
+                                                    <ng-template #SharedName>
+                                                        {{item.SharedName}}
+                                                    </ng-template>
+                                                </div>
+                                                <div class="p-b-activity">
+                                                  
+                                                    <div *ngIf="item.Status=='Delay'">
+                                                        <span class="kt-inbox__label kt-badge Delay kt-badge   kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Delaydays}} maximum days delay
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='InProcess'">
+                                                        <span class="kt-inbox__label kt-badge kt-badge in-process kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Status=='InProcess'?'In-Process':item.Status}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='Completion Under Approval'">
+                                                        <span class="kt-inbox__label kt-badge kt-badge completion-under-approval kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Status== "Completion Under Approval" ? "Completion approval":item.status}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='Under Approval'">
+                                                        <span class="kt-inbox__label kt-badge kt-badge new-project-under kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Status==='Under Approval'? "New approval" :item.status=='Forward Under Approval'? "Forward approval" :(item.Status=='InProcess'?'In-process':item.Status)}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='Forward Under Approval'">
+                                                        <span  class="kt-inbox__label kt-badge kt-badge Forward_Under_Approval_color kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Status == "Forward Under Approval" ? "Forward approval" :item.status}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='Completed'">
+                                                        <span class="kt-inbox__label kt-badge kt-badge Completed_color kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status}}
+                                                    </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='Project Hold'">
+                                                        <span class="kt-inbox__label kt-badge kt-badge project-hold kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Status}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='Project Complete Rejected'">
+                                                        <span class="kt-inbox__label kt-badge kt-badge--unified-danger kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Status}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='Project Holded'">
+                                                        <span class="kt-inbox__label kt-badge kt-badge.kt-badge-light-bold kt-badge--inline"
+                                                                    style="background-color: #eae3fd;">
+                                                            {{item.Status}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='New Project'">
+                                                        <span  class="kt-inbox__label kt-badge kt-badge new-project kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Status}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='Enactive Under Approval'">
+                                                        <span  class="kt-inbox__label kt-badge kt-badge Enactive_Under_Approval_color  kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Status}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='Deadline Extend Under Approval'">
+                                                        <span class="kt-inbox__label kt-badge kt-badge Deadline_Extend_Under_Approval_color kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Status}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='Project Hold Under Approval'">
+                                                        <span class="kt-inbox__label kt-badge kt-badge Project_Hold_Under_Approval kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Status}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='New Todo'">
+                                                        <span  class="kt-inbox__label kt-badge kt-badge  kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Status}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='New Project Rejected'">
+                                                        <span  class="kt-inbox__label kt-badge kt-badge new-pro-rejected kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Status}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='Version'">
+                                                        <span  class="kt-inbox__label kt-badge kt-badge.kt-badge-light-bold kt-badge--inline"
+                                                                    style="background-color: #eae3fd;">
+                                                            {{item.Status}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='ToDo Achieved'">
+                                                        <span  class="kt-inbox__label kt-badge kt-badge todo-achieved kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Status}}
+                                                        </span>
+                                                    </div>
+                                                    <div *ngIf="item.Status=='ToDo Completed'">
+                                                        <span class="kt-inbox__label kt-badge kt-badge todo-completed kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                            {{item.Status}}
+                                                        </span>
+                                                    </div>
+                                              
+                                            </div>
+                                                <div class="p-b-more btn-group">
+                                                    <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <svg class="more-drop-icon" width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <circle cx="12" cy="7" r="0.5" transform="rotate(90 12 7)" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></circle> <circle cx="12" cy="12" r="0.5" transform="rotate(90 12 12)" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></circle> <circle cx="12" cy="17" r="0.5" transform="rotate(90 12 17)" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></circle> </g></svg>
+                                                    </div>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <div class="dropdown-item" type="button" (click)="AddFavourites(item.Portfolio_ID, item.Created_By == Current_user_ID ? item.IsFavourite : item.IsFavourite1)">
+                                                            <span class="p-b-more-item-icon">
+                                                                <svg fill="currentColor" width="24px" height="24px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                                    <g id="SVGRepo_iconCarrier">
+                                                                        <path class="clr-i-outline clr-i-outline-path-1" d="M27.19,34a2.22,2.22,0,0,1-1.24-.38l-7.46-5a.22.22,0,0,0-.25,0l-7.46,5A2.22,2.22,0,0,1,7.4,31.21l2.45-8.64a.23.23,0,0,0-.08-.24L2.71,16.78a2.22,2.22,0,0,1,1.29-4l9-.34a.23.23,0,0,0,.2-.15l3.1-8.43a2.22,2.22,0,0,1,4.17,0l3.1,8.43a.23.23,0,0,0,.2.15l9,.34a2.22,2.22,0,0,1,1.29,4L27,22.33a.22.22,0,0,0-.08.24l2.45,8.64A2.23,2.23,0,0,1,27.19,34Zm-8.82-7.42A2.21,2.21,0,0,1,19.6,27l7.46,5a.22.22,0,0,0,.34-.25l-2.45-8.64a2.21,2.21,0,0,1,.77-2.35l7.06-5.55a.22.22,0,0,0-.13-.4l-9-.34a2.22,2.22,0,0,1-2-1.46l-3.1-8.43a.22.22,0,0,0-.42,0L15.06,13a2.22,2.22,0,0,1-2,1.46l-9,.34a.22.22,0,0,0-.13.4L11,20.76a2.22,2.22,0,0,1,.77,2.35L9.33,31.75a.21.21,0,0,0,.08.24.2.2,0,0,0,.26,0l7.46-5A2.22,2.22,0,0,1,18.36,26.62Z"></path>
+                                                                        <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>
+                                                                    </g>
+                                                                </svg>
+                                                            </span>
+                                                            <span class="p-b-more-item-label">
+                                                                {{ item.Created_By == Current_user_ID ? (item.IsFavourite ? 'Remove from favorite' : 'Add to favorite') : (item.IsFavourite1 ? 'Remove from favorite' : 'Add to favorite') }}
+                                                            </span>
+                                                        </div>
+                                                        
+                                                        <div class="dropdown-item" type="button"  (click)="_deletePortfolio(item.Portfolio_ID,item.Portfolio_Name,item.Created_By,item.Created_DT,item.ProjectsCount,item.Status)">
+                                                            <span class="p-b-more-item-icon">
+                                                                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M18.8332 8.5L18.3732 15.3991C18.1962 18.054 18.1077 19.3815 17.2427 20.1907C16.3777 21 15.0473 21 12.3865 21H11.6132C8.95235 21 7.62195 21 6.75694 20.1907C5.89194 19.3815 5.80344 18.054 5.62644 15.3991L5.1665 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M9.5 11L10 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M14.5 11L14 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6" stroke="currentColor" stroke-width="1.5"></path> </g></svg>
+                                                            </span>
+                                                            <span class="p-b-more-item-label">Delete Portfolio</span>
+                                                        </div>
+                                                      </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div data-type="inbox" class="kt-inbox__items d-none">
                                     <div class="mb_1" *ngFor="let item of _ListProjStat ;let i=index">
                                         <div *ngIf="item.Status=='Delay'">
                                             <div class="Replied_border_left_true_Danger card mb-2 brdr-5 shadow-sm">
@@ -965,12 +1158,12 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1034,7 +1227,7 @@
                                                                     <a
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     </div>
@@ -1045,7 +1238,7 @@
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1109,13 +1302,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1178,13 +1371,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1250,13 +1443,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1321,13 +1514,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1391,13 +1584,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1460,13 +1653,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1529,13 +1722,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1599,13 +1792,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1668,13 +1861,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1737,13 +1930,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1806,13 +1999,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1874,13 +2067,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1942,13 +2135,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -2010,13 +2203,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -2079,13 +2272,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -2148,13 +2341,13 @@
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                                         <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
-                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc107' : 'ccc'}"
+                                                                            [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"
                                                                             id="StarIcon"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
                                                                     <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
-                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc107' : 'ccc'}"></i>
+                                                                        [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>

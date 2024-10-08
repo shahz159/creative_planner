@@ -239,11 +239,11 @@
             </div>
             <!--begin::Portlet 1 class="sticky-header" style="font-size: 13px;"-->
             <div class="kt-portlet portlet-height" *ngIf="sortType=='Date'">
-                <div class="kt-portlet__body kt-portlet__body_scroll p-0 scrollbar1">
+                <div class="kt-portlet__body kt-portlet__body_scroll p-0">
                     <div class="mt-3">
-                        <div class="">
+                        <div class="timeline-scroll">
                             <div class="" *ngIf="showtimeline==true">
-                                <div class="px-4" *ngFor="let item of darArray;let i =index">
+                                <div class="px-4 timeline-px-4" *ngFor="let item of darArray;let i =index">
                                     <div class="timeline-header sticky-header d-flex justify-content-between">
                                         <h4 class="header-date p-0 mb-0">
                                             {{item.SubmissionDate | date: 'fullDate'}}
@@ -459,11 +459,11 @@
             </div>
             <!--begin::Portlet 2-->
             <div class="kt-portlet portlet-height" *ngIf="sortType=='Project'">
-                <div class="kt-portlet__body kt-portlet__body_scroll pt-0 scrollbar1">
+                <div class="kt-portlet__body kt-portlet__body_scroll p-0">
                     <div class="mt-3">
-                        <div class="">
-                            <div class="item-b  ribbon-content " *ngIf="showtimeline==true">
-                                <div class="mt-3" *ngFor="let item of darArray;let i =index">
+                        <div class="timeline-scroll">
+                            <div class="" *ngIf="showtimeline==true">
+                                <div class="px-4 timeline-px-4" *ngFor="let item of darArray;let i =index">
                                     <div class="timeline-header sticky-header">
                                         <h4 class="header-date p-0 ">
                                             <a class="pro-link" href="javascript:void(0)" (click)="newDetails(item.project_code)">{{item.ProjectName }}</a>
