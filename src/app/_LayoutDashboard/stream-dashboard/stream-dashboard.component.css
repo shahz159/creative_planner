@@ -1192,8 +1192,8 @@ span.dar-dot {
 
 .yes-dar-status {
     color: #FF9800;
-    font-weight: bold;
-    font-size: 13px;
+    /* font-weight: bold;
+    font-size: 13px; */
 }
 
 .action-info {
@@ -1355,61 +1355,75 @@ span.dar-dot {
 .progress-bar.green-bar {
     background-color: #73de37;
 }
-.assign{
-  background-color:#2786fb !important ;
+
+.assign {
+    background-color: #2786fb !important;
     color: white !important;
 }
-.newappr{
-  background-color: #9c27b0 !important;
-  color: white !important;
+
+.newappr {
+    background-color: #9c27b0 !important;
+    color: white !important;
 }
-.notstart{
-  background-color: #E0E0E0 !important;
-  color: black !important;
+
+.notstart {
+    background-color: #E0E0E0 !important;
+    color: black !important;
 }
-.delay{
-  background-color: #D32F2F !important;
-  color: white !important;
+
+.delay {
+    background-color: #D32F2F !important;
+    color: white !important;
 }
-.rejected{
-background-color:#DFDFDF !important ;
-color: #000 !important;
+
+.rejected {
+    background-color: #DFDFDF !important;
+    color: #000 !important;
 }
-.delayinone{
-  background-color: #FDDF35 !important;
-  color: black !important;
+
+.delayinone {
+    background-color: #FDDF35 !important;
+    color: black !important;
 }
-.asstask{
-  background-color: #60708B !important;
-  color: white !important;
+
+.asstask {
+    background-color: #60708B !important;
+    color: white !important;
 }
 
 ::ng-deep .owl-nav {
     position: absolute;
     margin-top: 0px !important;
-    top: 35%;
+    top: 45%;
     right: 0;
     gap: 6px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
 }
+
 ::ng-deep .owl-carousel .owl-stage-outer {
     padding: 4px 4px;
 }
-::ng-deep .owl-nav .owl-next svg ,::ng-deep .owl-nav .owl-prev svg {
+
+::ng-deep .owl-nav .owl-next svg,
+::ng-deep .owl-nav .owl-prev svg {
     width: 22px;
     height: 22px;
 }
-::ng-deep .owl-nav .owl-next,::ng-deep .owl-nav .owl-prev  {
+
+::ng-deep .owl-nav .owl-next,
+::ng-deep .owl-nav .owl-prev {
     margin: 0px !important;
-    background: #dcdbdb !important;
+    /* background: #dcdbdb !important; */
+    background: #294f8152 !important;
     width: 30px;
     height: 30px;
     line-height: 1 !important;
 }
-.date-badge{
+
+.date-badge {
     width: 24px;
     height: 24px;
     display: inline-flex;
@@ -1422,44 +1436,619 @@ color: #000 !important;
     font-size: 14px;
 
 }
-.date-badge.active{
-  background-color: #2786fb;
+
+.date-badge.active {
+    background-color: #2786fb;
 }
 
-.attach-tippy{
-  position: relative;
+.attach-tippy {
+    position: relative;
 }
-.attach-tippy .st-line{
-  min-width: 13rem;
-  padding: 1rem 1rem;
-  position: absolute;
-  will-change: transform;
-  top: 0px;
-  left: 0px;
-  transform: translate3d(-110px, 23px, 0px);
-  font-size: 1rem;
-  color: #212529;
-  text-align: left;
-  list-style: none;
-  background-color: #fff;
-  background-clip: padding-box;
-  box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
-  border-radius: .25rem;
-  transition: all .15s ease-in-out, color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-  display: none;
-  z-index: 1;
+
+.attach-tippy .st-line {
+    min-width: 13rem;
+    padding: 1rem 1rem;
+    position: absolute;
+    will-change: transform;
+    top: 0px;
+    left: 0px;
+    transform: translate3d(-110px, 23px, 0px);
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
+    border-radius: .25rem;
+    transition: all .15s ease-in-out, color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    display: none;
+    z-index: 1;
 }
-.attach-tippy-div:hover .st-line{
-  display: block;
+
+.attach-tippy-div:hover .st-line {
+    display: block;
 }
-.attach-tippy:hover .st-line{
-  display: block;
+
+.attach-tippy:hover .st-line {
+    display: block;
 }
+
 .st-line {
-  font-size: 12px;
-  font-weight: 400;
-  color: #979797;
+    font-size: 12px;
+    font-weight: 400;
+    color: #979797;
 }
-.completed{
-  background-color:#62B134
+
+.completed {
+    background-color: #62B134
+}
+
+.activity-card {
+    background-color: #294f81;
+    box-shadow: 0px 0px 6px 2px #294f8182;
+}
+
+.activity-report-content {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.activity-report-days {
+    display: flex;
+    /* gap: 10px; */
+    margin-top: 8px;
+    color: #5fbdea;
+}
+
+.activity-report-days .icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.activity-report-days-ul {
+    display: flex;
+    gap: 10px;
+    flex: 1 1 0%;
+    padding-top: 4px;
+}
+
+.activity-report-days-li {
+    flex: 1 1 0%;
+    text-align: justify;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.activity-report-days-li-dot {
+    background-color: #496f9b;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-bottom: 8px;
+}
+
+.activity-report-days-li-label {
+    font-size: 12px;
+    color: #5fbdea;
+}
+
+.activity-report-days-li.active .activity-report-days-li-dot {
+    background-color: #5fbdea;
+}
+
+.activity-report-days-li.active .activity-report-days-li-label {
+    /* color: #005fd4; */
+}
+
+.activity-working-hours {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #496f9b;
+    padding: 6px 12px;
+    margin-top: 0.5rem;
+    border-radius: 8px;
+}
+
+.activity-working-hours-icon {
+    width: 30px;
+    height: 30px;
+    background-color: #5fbdea4d;
+    color: #325a88;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity-working-hours-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.activity-working-hours-label {
+    color: #fcfcfc;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.activity-working-hours-label b {
+    font-size: 18px;
+}
+
+.dar-f {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dar-item-b {
+    flex: 1;
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+    padding: 6px;
+    color: #282424;
+}
+
+.dar-con {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+::ng-deep .activity-item.owl-carousel .owl-stage-outer {
+    padding: 0px !important;
+}
+
+::ng-deep .activity-item.owl-theme .owl-nav.disabled+.owl-dots {
+    margin-top: 0px !important;
+}
+
+::ng-deep .activity-item.owl-carousel .owl-stage {
+    display: flex;
+    align-items: center;
+}
+
+::ng-deep .activity-item.owl-theme .owl-dots .owl-dot span {
+    width: 20px;
+    height: 6px;
+    background: #496f9b;
+    display: block;
+    border-radius: 4px;
+    margin: 5px 0px;
+    margin-right: 6px;
+    transition: width 0.2s ease-in-out;
+}
+
+::ng-deep .activity-item.owl-theme .owl-dots .owl-dot.active span,
+::ng-deep .activity-item.owl-theme .owl-dots .owl-dot:hover span {
+    background: #34bdff;
+    width: 40px;
+}
+
+
+.n-portfolio-ul {
+    display: flex;
+}
+
+.n-portfolio-li {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    box-shadow: 0 0.1rem 1rem 0.25rem rgb(0 0 0 / 5%) !important;
+    border-radius: 8px;
+    padding: 0rem;
+    flex: 1 1 auto;
+    min-width: 15rem;
+    height: max-content;
+    cursor: pointer;
+}
+
+.n-portfolio-head {
+    display: flex;
+    align-items: end;
+    gap: 4px;
+    margin-bottom: 0px;
+    height: 100px;
+    bottom: 0;
+    position: relative;
+    padding: 0px 10px;
+    padding-bottom: 6px;
+    background-color: #4377ff70;
+    border-radius: 8px 8px 0px 0px;
+}
+
+.n-portfolio-head:before,
+.n-portfolio-head:after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+}
+
+.n-portfolio-head:before {
+    background: #4377ff33;
+    border-top-right-radius: 8px;
+    -webkit-clip-path: polygon(20% 0, 100% 0, 100% 30%, 40% 70%);
+    clip-path: polygon(20% 0, 100% 0, 100% 30%, 40% 70%);
+}
+
+.n-portfolio-head:after {
+    background: #4377ff61;
+    border-bottom-right-radius: 0px;
+    -webkit-clip-path: polygon(40% 70%, 100% 30%, 100% 100%, 48.5% 100%);
+    clip-path: polygon(40% 70%, 100% 30%, 100% 100%, 48.5% 100%);
+}
+
+h3.kt-portlet__head-title strong {
+    display: flex;
+    align-items: center;
+}
+
+span.head-title-count {
+    background-color: #e3eefc;
+    color: #1a73e6;
+    padding: 4px 4px;
+    border-radius: 4px;
+    font-weight: 400;
+    margin-left: 6px;
+}
+
+.n-portfolio-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fffcfc;
+    width: 270px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    z-index: 1;
+}
+
+.n-portfolio-title:hover {
+    color: #fbfbfb;
+    transform: scale(1.01);
+}
+
+
+.n-portfolio-body {
+    padding: 10px;
+    position: relative;
+}
+
+.n-portfolio-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.n-portfolio-item-icon {
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    color: #6f6f6f;
+}
+
+.n-portfolio-item-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.n-portfolio-item-title {
+    font-size: 13px;
+    color: #736e6e;
+}
+
+.per-con {
+    position: absolute;
+    z-index: 9;
+    font-size: 28px;
+    top: -86px;
+    right: 10px;
+    opacity: 0.35;
+    color: #fff;
+}
+
+.per-con small {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.n-portfolio-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #efeeee;
+    padding: 10px;
+}
+
+.new-project-under {
+    background-color: #9C27B0 !important;
+    color: white;
+}
+
+.in-process {
+    background-color: #64B5F6;
+    color: white;
+}
+
+.completion-under-approval {
+    background-color: #81C784;
+    color: white;
+}
+
+.Delay {
+    background-color: #D32F2F !important;
+    color: white;
+}
+
+.project-hold {
+    background-color: #795548;
+    color: white
+}
+
+.new-pro-rejected {
+    background-color: #BA68C8 !important;
+    color: white !important;
+}
+
+
+.todo-achieved {
+    background-color: #335B1B !important;
+    color: #FFF !important;
+}
+
+
+.todo-completed {
+    background-color: #62B134 !important;
+    color: #FFF !important;
+}
+
+.Completed_color {
+    background-color: #388E3C !important;
+    color: white !important;
+    padding: 2px 10px;
+    border-radius: 3px;
+
+}
+
+.Forward_Under_Approval_color {
+    background-color: #9C27B0 !important;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 3px;
+}
+
+.new-projects {
+    background-color: #9C27B0 !important;
+    color: white !important;
+    padding: 2px 10px;
+    border-radius: 3px;
+}
+
+.Enactive_Under_Approval_color {
+    background-color: #F44336 !important;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 3px;
+}
+
+.Deadline_Extend_Under_Approval_color {
+    background-color: #F9A825 !important;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 3px;
+}
+
+.Project_Hold_Under_Approval {
+    background-color: #795548;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 3px;
+}
+
+.Cancellation-under {
+    background-color: #F44336 !important;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 3px;
+}
+
+.n-portfolio-head.status-under-approval,
+.n-portfolio-head.status-forward-under-approval {
+    background-color: #9c27b070;
+}
+
+.n-portfolio-head.status-under-approval:before,
+.n-portfolio-head.status-forward-under-approval:before {
+    background-color: #9c27b033;
+}
+
+.n-portfolio-head.status-under-approval:after,
+.n-portfolio-head.status-forward-under-approval:after {
+    background-color: #9c27b061;
+}
+
+.n-portfolio-head.status-delay {
+    background-color: #d32f2f70;
+}
+
+.n-portfolio-head.status-delay:before {
+    background-color: #d32f2f33;
+}
+
+.n-portfolio-head.status-delay:after {
+    background-color: #d32f2f61;
+}
+
+.n-portfolio-head.status-in-process {
+    background: #64b5f69c;
+}
+
+.n-portfolio-head.status-in-process:before {
+    background: #64b5f654;
+}
+
+.n-portfolio-head.status-in-process:after {
+    background: #64b5f691;
+}
+
+.n-portfolio-head.status-completion-under-approval {
+    background-color: #81c784ab;
+}
+
+.n-portfolio-head.status-completion-under-approval:before {
+    background-color: #81c78463;
+}
+
+.n-portfolio-head.status-completion-under-approval:after {
+    background-color: #81c784e0;
+}
+
+.n-portfolio-head.status-completed {
+    background-color: #388e3c70;
+}
+
+.n-portfolio-head.status-completed:before {
+    background-color: #388e3c33;
+}
+
+.n-portfolio-head.status-completed:after {
+    background-color: #388e3c61;
+}
+
+.n-portfolio-head.status-project-hold {
+    background-color: #79554870;
+}
+
+.n-portfolio-head.status-project-hold:before {
+    background-color: #79554833;
+}
+
+.n-portfolio-head.status-project-hold:after {
+    background-color: #79554861;
+}
+
+.n-portfolio-head.status-project-complete-rejected {
+    background-color: #d32f2f38;
+}
+
+.n-portfolio-head.status-project-complete-rejected:before {
+    background-color: #d32f2f2e;
+}
+
+.n-portfolio-head.status-project-complete-rejected:after {
+    background-color: #d32f2f4d;
+}
+
+.n-portfolio-head.status-project-holded,
+.n-portfolio-head.status-version {
+    background-color: #e4daff;
+}
+
+.n-portfolio-head.status-project-holded:before,
+.n-portfolio-head.status-version:before {
+    background-color: #dbcdff;
+}
+
+.n-portfolio-head.status-project-holded:after,
+.n-portfolio-head.status-version:after {
+    background-color: #c8b4ff;
+}
+
+/* .n-portfolio-head.status-new-project {
+  background-color: #e4daff;
+}
+.n-portfolio-head.status-new-project:before {
+  background-color: #dbcdff;
+}
+.n-portfolio-head.status-new-project:after {
+  background-color: #c8b4ff;
+} */
+.n-portfolio-head.status-enactive-under-approval {
+    background-color: #f4433670;
+}
+
+.n-portfolio-head.status-enactive-under-approval:before {
+    background-color: #f4433633;
+}
+
+.n-portfolio-head.status-enactive-under-approval:after {
+    background-color: #f4433661;
+}
+
+.n-portfolio-head.status-deadline-extend-under-approval {
+    background-color: #f9a82570;
+}
+
+.n-portfolio-head.status-deadline-extend-under-approval:before {
+    background-color: #f9a82533;
+}
+
+.n-portfolio-head.status-deadline-extend-under-approval:after {
+    background-color: #f9a82561;
+}
+
+.n-portfolio-head.status-project-hold-under-approval {
+    background-color: #79554870;
+}
+
+.n-portfolio-head.status-project-hold-under-approval:before {
+    background-color: #79554833;
+}
+
+.n-portfolio-head.status-project-hold-under-approval:after {
+    background-color: #79554861;
+}
+
+.n-portfolio-head.status-new-project-rejected {
+    background-color: #ba68c870;
+}
+
+.n-portfolio-head.status-new-project-rejected:before {
+    background-color: #ba68c833;
+}
+
+.n-portfolio-head.status-new-project-rejected:after {
+    background-color: #ba68c861;
+}
+
+.n-portfolio-head.status-todo-achieved {
+    background-color: #335b1b70;
+}
+
+.n-portfolio-head.status-todo-achieved:before {
+    background-color: #335b1b33;
+}
+
+.n-portfolio-head.status-todo-achieved:after {
+    background-color: #335b1b61;
+}
+
+.n-portfolio-head.status-todo-completed {
+    background-color: #62b13470;
+}
+
+.n-portfolio-head.status-todo-completed:before {
+    background-color: #62b13433;
+}
+
+.n-portfolio-head.status-todo-completed:after {
+    background-color: #62b13461;
 }
