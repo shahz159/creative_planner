@@ -728,6 +728,10 @@ background-color: #eaf2fd !important;
   background-color: #9C27B0 !important;
 }
 
+.cancellation{
+color: #F44336;
+}
+
 
 .UnderApproval {
   background-color: #9C27B0 !important;
@@ -893,7 +897,7 @@ button.Kt-Approval-btns {
   background-color: transparent;
   color: #2786fb;
   font-size: 14px;
-  border: 2px solid #2786fb;
+  border: 1px solid #2786fb;
   opacity: 1;
   font-size: 13px;
   letter-spacing: 0;
@@ -1660,4 +1664,51 @@ color:#1E88E5 !important ;
 }
 span.Status-Delay {
   color: #EE4137;
+}
+
+
+.extra-at-status{
+  width: fit-content;
+  border: 2px solid gray;
+  padding-left: 5px;
+  padding-right: 6px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  position: relative;
+  left: -2px;
+  color: gray;
+  font-weight: 600;
+  line-height: 1;
+  text-wrap: nowrap;
+}
+
+.AuditUnderApproval{
+  background-color: #A5D6A7 !important;
+  color: #fff;
+}
+
+.error-border,
+.error-date .input-group-text,
+.error-date .form-control,
+::ng-deep .error-vd .ng-select-container {
+  border: 1px solid #F44336 !important;
+}
+
+
+.Bt-close {
+  /* padding: 4px 1px; */
+  background-color: transparent;
+  color: #a7a7a7;
+  font-size: 14px;
+  border: 1px solid #a7a7a7;
+  opacity: 1;
+  font-size: 13px;
+  letter-spacing: 0;
+  font-weight: 500;
+  border-radius: 3px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.Bt-close:hover{
+  background-color: #a7a7a7;
+  color: #fff;
 }

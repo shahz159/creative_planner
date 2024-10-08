@@ -160,6 +160,7 @@
                                                        [linkedCalendars]="true"
                                                        [showClearButton]="true"
                                                        [autoApply]="false"
+                                                       (click)="closeallTab()"
                                                        (datesUpdated)="datesUpdated($event)"
                                                        [placeholder]="Dateselectionrange"
                                                        [locale]="{ format: 'DD-MM-YYYY' }"/>
@@ -171,7 +172,7 @@
                                             <div class="row">
                                                 <!-- Adding the new matdropdown for multiple filter                   -->
                                               <div  class="col-md-6">
-                                                <div class="form-group mb-0" >
+                                                <div  class="form-group mb-0" (click)="closeOnOtherClick('company')" >
                                                   <mat-form-field class="drp-dwn-field w-100"   *ngIf="CompanyCountFilter">
                                                     <mat-label>Company</mat-label>
                                                      <mat-chip-list #selected_companies>
@@ -293,11 +294,11 @@
 
 <!-- employee matdropdown start -->
                                               <div class="col-md-6">
-                                                <div class="form-group mb-0" >
+                                                <div class="form-group mb-0" (click)="closeOnOtherClick('employee')">
                                                   <mat-form-field class="drp-dwn-field w-100"   *ngIf="EmpCountInFilter||[]">
-                                                    <mat-label>Employees</mat-label>
+                                                    <mat-label >Employees</mat-label>
                                                      <mat-chip-list #selected_employee>
-                                                      <mat-chip *ngFor="let emptoshare of emplyToselect" class="Data_chip_kt" (removed)="removeSelectedemployee(emptoshare); getNewFilterResult();">
+                                                      <mat-chip *ngFor="let emptoshare of emplyToselect" class="Data_chip_kt"  (removed)="removeSelectedemployee(emptoshare); getNewFilterResult();">
                                                         {{getObjOf(EmpCountInFilter,emptoshare,'Emp_No')?.Name}}
 
                                                         -{{getObjOf(EmpCountInFilter,emptoshare,'Emp_No')?.Count}}
@@ -386,11 +387,11 @@
 
 <!-- project type matdropdown start -->
                                               <div class="col-md-6">
-                                                <div class="form-group mb-0" >
+                                                <div class="form-group mb-0" (click)="closeOnOtherClick('pro')"  >
                                                   <mat-form-field class="drp-dwn-field w-100"   *ngIf="TypeContInFilter||[]">
                                                     <mat-label>Project type</mat-label>
                                                      <mat-chip-list #selected_projecttype>
-                                                      <mat-chip *ngFor="let emptoshare of projtypeToselect" class="Data_chip_kt" (removed)="removeSelectedproject(emptoshare); getNewFilterResult();">
+                                                      <mat-chip *ngFor="let emptoshare of projtypeToselect" class="Data_chip_kt" (click)="closeAutocompleteDrpDwn('employeeDDwn');" (removed)="removeSelectedproject(emptoshare); getNewFilterResult();">
                                                         {{getObjOfpro(TypeContInFilter,emptoshare,'Block_No')?.Name}}
 
                                                         -{{getObjOf(TypeContInFilter,emptoshare,'Block_No')?.Count}}
@@ -501,7 +502,7 @@
 
 
                                                 <div class="col-md-6">
-                                                  <div class="form-group mb-0" >
+                                                  <div class="form-group mb-0" (click)="closeOnOtherClick('status')" >
                                                     <mat-form-field class="drp-dwn-field w-100"   *ngIf="StatusCountFilter||[]">
                                                       <mat-label>Status</mat-label>
                                                        <mat-chip-list #selected_status>
@@ -581,7 +582,7 @@
                                                 </button>
                                                 <button
                                                     class="btn btn-info btn-upper btn-sm btn-bold mr-2"
-                                                    data-toggle="dropdown" (click)="applyFilters();">Submit</button>
+                                                    data-toggle="dropdown" (click)="applyFilters();closeallTab()">Submit</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1174,14 +1175,14 @@
                                                         <div *ngIf="item.Link_Status==1;else not_Linked">
                                                             <a class="curser-pointer ml-2"
                                                                 (click)="_OpenMemosInfo(item.Project_Code,item.Project_Name)"><img
-                                                                    width="19px"
-                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                                    width="19px" height="21px"
+                                                                    src="./assets/images/Image (4).jfif"
                                                                     title="Linked"></a>
 
                                                         </div>
                                                         <ng-template #not_Linked>
-                                                            <a  (click)="_OpenMemosInfo()"><img width="19px" class="black-white ml-2"
-                                                                    src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"
+                                                            <a  (click)="_OpenMemosInfo()"><img width="19px" height="21px" class="black-white ml-2"
+                                                                    src="./assets/images/Image (4).jfif"
                                                                     title="Not Linked"></a>
                                                         </ng-template>
                                                         </div>
@@ -1215,8 +1216,8 @@
                                                       <div *ngIf="item.ForwardTo" class="d-flex align-items-center">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Arrow_Sub_Down_Right"> <path id="Vector" d="M13 11L18 16M18 16L13 21M18 16H10.1969C9.07899 16 8.5192 16 8.0918 15.7822C7.71547 15.5905 7.40973 15.2839 7.21799 14.9076C7 14.4798 7 13.9201 7 12.8V3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
                                                         <div  class="New_Approval_Project font-weight-400" style="line-height: 1;">{{item.ForwardTo}}</div>
-                                                    </div>
-                                                      </span>
+                                                      </div>
+                                                    </span>
 
 
                                                     </td>
@@ -1241,14 +1242,13 @@
                                                         <ng-container  *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') && item.Status=='InProcess'">
                                                             <div>
                                                                 <span class="InProcess_color font-weight-400" *ngIf=" item.Status=='InProcess'">In-process</span>
-                                                                <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}</span>
                                                             </div>
                                                         </ng-container>
                                                         <ng-container  *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') && item.Status!='InProcess'">
                                                             <ng-container [ngSwitch]="item.Status">
 
                                                                     <span class="Completed_color font-weight-400" *ngSwitchCase="'Completed'">{{item.Status}}</span>
-                                                                    <span class="Under_Approval_color font-weight-400" *ngSwitchCase="'Under Approval'">New approval   </span>
+                                                                    <span class="Under_Approval_color font-weight-400" *ngSwitchCase="'Under Approval'">New approval</span>
                                                                     <span class="New_Project_Rejected_color font-weight-400" *ngSwitchCase="'New Project Rejected'">New project rejected</span>
                                                                     <span class="Not_Started font-weight-400" *ngSwitchCase="'Not Started'">Not Started</span>
                                                                     <span class="Cancelled_color font-weight-400" *ngSwitchCase="'Cancelled'">Cancelled</span>
@@ -1256,7 +1256,10 @@
                                                                     <span class="Forward_Under_Approval_color font-weight-400"  *ngSwitchCase="'Forward Under Approval'">Forward approval</span>
                                                                     <span class="Hold_color font-weight-400" *ngSwitchCase="'Project Hold'">Hold</span>
                                                                     <span class="Completion_Under_Approval_color font-weight-400" *ngSwitchCase="'Completion Under Approval'">Completion Under Approval</span>
-                                                                    <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}</span>
+                                                                    <div *ngIf="item.Pendingapprover" class="pulsing-div">
+                                                                        <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container> 
+                                                                        <span class="pulsing-dot-label"> {{item.Pendingapprover}}</span>
+                                                                    </div>
                                                                     <ng-container *ngSwitchDefault>
                                                                         <span class="Delay_color font-weight-400 attach-tippy"  *ngIf="item.Status.toLowerCase().includes('delay')" >
                                                                             <span class="vi font-weight-400 st-line"> {{item.Status}}</span>
@@ -1278,8 +1281,12 @@
                                                             <div *ngIf="item.Status=='Under Approval'" class="attach-tippy">
                                                               <span class="pending_appr st-line">Pending approval</span>
                                                                 <span class="Under_Approval_color font-weight-400">New approval</span>
-                                                                <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
-                                                                </span>
+                                                                <div class="pulsing-div">
+                                                                    <ng-container *ngIf="item.PendingapproverEmpNo">
+                                                                        <span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span>
+                                                                    </ng-container>
+                                                                    <span class="pulsing-dot-label">{{item.Pendingapprover}}</span>
+                                                                </div>
                                                             </div>
                                                             <div *ngIf="item.Status=='Delay'" class="attach-tippy" >
                                                                 <span class="vi font-weight-400 st-line"> {{item.Delaydays}} days delay</span>
@@ -1335,23 +1342,37 @@
                                                                 </span>
                                                             </div>
                                                             <div *ngIf="item.Status=='Completion Under Approval'">
-                                                                <span class="Completion_Under_Approval_color font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">Completion approval
+
+                                                                <span *ngIf="item.AuditStatus=='Audit Pending';else compl_aprvl_status" class="AuditUnderApproval font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                                    Audit Approval
                                                                 </span>
+                                                                <ng-template #compl_aprvl_status>
+                                                                    <span class="Completion_Under_Approval_color font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                                        Completion approval
+                                                                    </span>
+                                                                </ng-template>
+
                                                                 <span class="attach-tippy">
                                                                   <b *ngIf="item.FileUrl" class="fa fa-paperclip text-info attachment cursor-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
                                                               <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
                                                                  <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
                                                                   <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                               </span>
-                                                              <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
-                                                            </span>
+                                                              <!-- <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
+                                                            </span> -->
+                                                            <div class="pulsing-div">
+                                                                <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                                <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                            </div> 
                                                             </div>
 
                                                             <div *ngIf="item.Status=='Cancellation Under Approval'">
                                                                 <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation approval
                                                                 </span>
-                                                                <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
-                                                                </span>
+                                                                <div class="pulsing-div">
+                                                                   <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                                    <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                                </div>
                                                             </div>
                                                             <div *ngIf="item.Status=='Cancelled'">
                                                                 <span class="Cancelled_color font-weight-400">Cancelled
@@ -1366,13 +1387,19 @@
                                                                     <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                                 </span>
 
+                                                                <span class="New_Approval_Project font-weight-400">
+                                                                    {{item.Approvedby}}
+                                                                </span>
+
                                                             </div>
                                                             <div *ngIf="item.Status=='Forward Under Approval'" class="attach-tippy">
-                                                              <span class=" pending_appr st-line">Pending approval</span>
+                                                                <span class=" pending_appr st-line">Pending approval</span>
                                                                 <span class="Forward_Under_Approval_color font-weight-400">Forward approval
                                                                 </span>
-                                                                <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
-                                                                </span>
+                                                                <div class="pulsing-div">
+                                                                    <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container> 
+                                                                    <span class="pulsing-dot-label"> {{item.Pendingapprover}}</span>
+                                                                </div>
                                                             </div>
                                                             <div *ngIf="item.Status=='Project Complete Rejected'">
                                                                 <span class="Project_Complete_Rejected_color font-weight-400">Project
@@ -1383,6 +1410,10 @@
                                                             <div *ngIf="item.Status=='Enactive Under Approval'">
                                                                 <span class="Enactive_Under_Approval_color font-weight-400">Enactive approval
                                                                 </span>
+                                                                <div class="pulsing-div">
+                                                                   <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container> 
+                                                                    <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                                </div>
                                                             </div>
 
                                                             <div *ngIf="item.Status=='Version'">
@@ -1392,6 +1423,10 @@
                                                             <div *ngIf="item.Status=='Deadline Extend Under Approval'">
                                                                 <span class="Deadline_Extend_Under_Approval_color font-weight-400">Deadline extend approval
                                                                 </span>
+                                                                <div class="pulsing-div">
+                                                                <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                                <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                                </div>
                                                             </div>
                                                             <div *ngIf="item.Status=='Project Holded'">
                                                                 <span class="Hold_color   font-weight-400"
@@ -1402,6 +1437,10 @@
                                                                 <span class="Project_Hold_Under_Approval font-weight-400"
                                                                   >Hold approval
                                                                 </span>
+                                                                <div  class="pulsing-div">
+                                                                   <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container> 
+                                                                    <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                                </div>
                                                             </div>
                                                             <div *ngIf="item.Status=='ToDo Achieved'">
                                                                 <span class="ToDo_Achieved_color font-weight-400">ToDo achieved
@@ -1558,7 +1597,9 @@
                 (click)="_CloseMemosidebar()">&times;</a>
             <div class="title-sidebar mb-0 text-white">
                 <h5 class="curser-pointer">
-                    <img width="25px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png"> Linked memos
+                    <span class="dms-span-img">
+                        <img height="22px" width="22px" src="./assets/images/smail-color.png" >
+                    </span> Linked memos
                 </h5>
                 <span class="text-small text-white">{{_displayProjName}}</span>
 

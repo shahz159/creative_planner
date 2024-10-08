@@ -691,6 +691,37 @@ div#mat-select-0-panel{
 }
 }
 
+
+.kt-widget__title1{
+  width: 200px;
+  font-weight: 500;
+}
+@media (max-width: 1440px){
+  .kt-widget__title1{
+    width: 160px;
+    font-weight: 500;
+  }
+}
+
+
+@media (max-width: 1300px){
+.kt-widget__title1{
+    width: 160px;
+    font-weight: 500;
+}
+}
+
+.kt-leave-fixboxes{
+   display:block;
+   width:100px;
+}
+
+
+
+
+
+
+
 .stores-sec .mega-dropdown-menu {
   padding: 20px;
   width: 60%;
@@ -1035,16 +1066,18 @@ textarea.form-control {
   width: 5px;
 }
 .previous-comments li a {
-  color: #000;
+  color: #a6a6a6;
   width: 100%;
   display: inline-block;
   padding: 0px 5px;
   line-height: 2;
-  border-bottom:1px dashed #ccc;
-  /* border-radius: 17px; */
+  /* border-bottom: 1px dashed #ccc; */
+  border: 1px solid #cccccc42;
+  border-radius: 3px;
+  margin-top: 6px;
 }
 .previous-comments li a:hover {
-  background-color: #ededed;
+  background-color: #cccccc14;
   color: #000;
 }
 
@@ -1165,10 +1198,10 @@ textarea.form-control {
   box-shadow: 0 0.1rem 1rem 0.25rem rgb(0 0 0/5%) !important;
 }
 .leave-requisition-form-slider-bar.open_requisition_sidebar_info {
-  width: 70% !important;
+  width: 55% !important;
 }
 .leave-requisition-form-slider-bar.open_requisition_sidebar_info .kt-portlet--body {
-  padding: 10px;
+  
 }
 .levress{
   text-decoration: none;
@@ -1185,8 +1218,8 @@ a.dropdown-item{
 }
 .not-title h5 {
   color: #000;
-  padding: 2px 12px;
-  margin-bottom: 0.5rem;
+  padding: 6px 3px;
+  margin-bottom: 0.2rem;
 }
 span.count {
   background: #9886eb;
@@ -1283,11 +1316,11 @@ span.count {
   text-wrap: nowrap;
 }
 .kt-detail-link:hover {
-  background-color: #ecf0ff;
+  background-color:#d8e0ff;
   transition: all .3s ease;
 }
 .kt-detail-link.active {
-  background-color: #e0e7ff;
+  background-color:#d8e0ff;
   transition: all .3s ease;
 }
 
@@ -1502,3 +1535,145 @@ display: inline-block; */
 }
 
 /*new details page loading circle end*/
+
+
+.AuditUnderApproval{
+  background-color: #A5D6A7 !important;
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: 3px;
+  width: max-content;
+  display: inline-block;
+}
+
+
+
+.cnt-ovrl1 {
+  text-decoration: none;
+  font-size: 0.85em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+
+
+.kt-info-lable-v1 {
+  font-size: 12px;
+  color: black;
+  letter-spacing: 0.3px;
+}
+
+
+.kt-info-data-v1 {
+  background-color: #dde1f8;
+  border-radius: 35px;
+  padding: 7px 4px;
+  font-weight: 500;
+  color: #4f4f4f;
+  margin-top: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kt-reject-form-view {
+  margin-top: 13px;
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 2px 4px 20px 1px #ccc;
+}
+
+.kt-info-pg-footer {
+  margin: 5px 10px;
+}
+
+.btn-project-stv {
+  width: 100px;
+  background-color: #f0f0f0;
+}
+
+.Bt-Submit {
+  background-color: transparent;
+  color: #2786fb; 
+  font-size: 14px;
+  border: 1px solid #2786fb;
+  opacity: 1;
+  font-size: 13px;
+  letter-spacing: 0;
+  font-weight: 500;
+  border-radius: 3px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.Bt-Submit:hover {
+  background-color: #2786fb;
+  color: #fff;
+}
+
+.Bt-close {
+  /* padding: 4px 1px; */
+  background-color: transparent;
+  color: #a7a7a7;
+  font-size: 14px;
+  border: 1px solid #a7a7a7;
+  opacity: 1;
+  font-size: 13px;
+  letter-spacing: 0;
+  font-weight: 500;
+  border-radius: 3px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.Bt-close:hover{
+  background-color: #a7a7a7;
+  color: #fff;
+}
+
+
+/*test*/
+
+.timeline-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 2rem;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+}
+.timeline-icon .tmicn-svg{
+  fill: #ccc;
+}
+
+
+.timeline-icon.approved{
+  border-color: #4caf50;
+}
+.timeline-icon.approved .tmicn-svg{
+  fill: #4caf50;
+}
+
+
+
+
+.timeline-icon.rejected{
+  border-color: #ff00008c;
+}
+.timeline-icon.rejected .tmicn-svg{
+  fill: red;
+}
+
+.line-aprved{
+   border-style:solid;
+   border-color:#4caf50b0;
+}
+.line-pending{
+  border-style:dashed;
+  border-color:#ede6ef;
+}
+
+/*test*/

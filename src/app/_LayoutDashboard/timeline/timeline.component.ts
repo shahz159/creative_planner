@@ -65,7 +65,7 @@ export class TimelineComponent implements OnInit {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
    }
-   selectedOption: string = 'option1'; // Set default option here
+  timeline_of:'TODAY'|'YESTERDAY';
   ObjSubTaskDTO: SubTaskDTO;
   Current_user_ID: any;
   timelineList:any;
@@ -136,9 +136,29 @@ export class TimelineComponent implements OnInit {
     this.currentminutes = this.date.getMinutes();
     // this.french();
   }
-  toggleTimeline(option: string) {
-    this.selectedOption = option;
+
+  changeTimelineDate(sel_date:'TODAY'|'YESTERDAY') {
+    this.timeline_of = sel_date;
+    let val;
+
+    if(this.timeline_of=='TODAY')
+    val=this.todayDate;
+    else if(this.timeline_of=='YESTERDAY')
+    val=this.disablePreviousDate;
+
+    this.current_Date = moment(val).format("MM/DD/YYYY");
+    this.starttime = null;
+    this.endtime = null;
+    // this.getTimelineReportByDate(sel_date=='TODAY'?'today':'yesterday');
+
   }
+
+
+
+
+
+
+
 
   french() {
     this._locale = 'fr';
@@ -175,7 +195,7 @@ export class TimelineComponent implements OnInit {
         if(this.sortType==this.sort1){
         this.addStatusIntoDarArr();
         }
-       
+
       });
 
 // by default date
@@ -212,7 +232,7 @@ export class TimelineComponent implements OnInit {
         this.timelineDuration=(data[0]['TotalTime']);
       });
 
-       
+
   }
 
 
@@ -245,7 +265,7 @@ export class TimelineComponent implements OnInit {
         (data=>{
           this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
           this.timelineDuration=(data[0]['TotalTime']);
-          this.darArray=this.timelineList; 
+          this.darArray=this.timelineList;
           if(this.sortType==this.sort1){
             this.addStatusIntoDarArr();
           }
@@ -441,7 +461,6 @@ clear(){
   this.showAction=false;
   this.project_type=null;
   this.workdes = "";
-  this.workdes = "";
   this.current_Date = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
   this.dateF = new FormControl(new Date());
   this.starttime = null;
@@ -580,6 +599,9 @@ submitDar() {
       this._Message = data['message'];
       this.notifyService.showSuccess(this._Message, "Success");
 
+      // if(this.timeline_of){
+      //   this.getTimelineReportByDate(this.timeline_of=='TODAY'?'today':'yesterday');
+      // }
 
 
       // after timeline submission success then complete the action also if needed. start
@@ -621,12 +643,15 @@ submitDar() {
         // after timeline submission success then complete the action also if needed.  end
         this.timelineLog(this.Type);
         this.clear();   // clear all fields. project_code, master_code, ....
+        this.changeTimelineDate(this.timeline_of);  
     });
 
   this.getDarTime();
-  document.getElementById("timepage").classList.remove("position-fixed");
-  document.getElementById("rightbar-overlay").style.display = "none";
-  document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+  // this.getTimelineReportByDate(this.timeline_of=='TODAY'?'today':'yesterday');
+  // close sidebar whenever timeline is added.
+  // document.getElementById("timepage").classList.remove("position-fixed");
+  // document.getElementById("rightbar-overlay").style.display = "none";
+  // document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
 
 }
 //Timeline submission ends
@@ -639,6 +664,7 @@ submitDar() {
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
     this.clear();
+    this.changeTimelineDate('TODAY');  // get timeline report
   }
 
   closedarBar() {
@@ -923,8 +949,8 @@ submitTL(submDate:string)
 {
 
   Swal.fire({
-    title: "Timeline Submit",
-    text: `Are you sure to submit the timeline of ${submDate}`,
+    title: "Timeline report submit",
+    text: `Are you sure to submit the timeline report of ${submDate}`,
     showCancelButton: true,
     confirmButtonText: 'Yes',
     cancelButtonText: 'No'
@@ -936,19 +962,20 @@ submitTL(submDate:string)
          this.service.NewInsertTimelineReport(empno,tmDate).subscribe((res:any)=>{
                console.log(res);
 
-          if(res&&res.message){    
+          if(res&&res.message){
                if(res.message=='1'){
                     Swal.fire(
-                      'Timeline Submitted successfully.',
+                      'Timeline report submitted successfully.',
                       `date : ${submDate}`,
                       'success'
                     );
-                   this.timelineLog(this.type1);  
+                   this.timelineLog(this.type1);
+                  //  this.getTimelineReportByDate(this.timeline_of=='TODAY'?'today':'yesterday');
                     // rebind
                }
                else if(res.message=='2'||res.message!='2'){
                 Swal.fire(
-                  'Failed to submit timeline.',
+                  'Failed to submit timeline report.',
                   `date : ${submDate}`,
                   'error'
                 );
@@ -960,18 +987,18 @@ submitTL(submDate:string)
               title: 'Something went wrong!',
               text: 'An issue occurred while processing your request. Please review the timeline before try again.',
             });
-          }       
+          }
 
          });
-    
+
       }
       else {
         Swal.fire(
-          'Timeline not submitted',
+          'Timeline report not submitted',
           `date : ${submDate}`,
           'error'
         );
-       
+
       }
     })
     .catch(e => console.log(e));
@@ -979,37 +1006,136 @@ submitTL(submDate:string)
 
 
 
-
+submission_json:any;
 addStatusIntoDarArr(){
   this.service.GetTimelineSubmissionStatus(this.Current_user_ID).subscribe((res:any)=>{
     if(res){
-        const submission_json=JSON.parse(res[0].submission_json);
-        if(submission_json){
+        this.submission_json=JSON.parse(res[0].submission_json);
+        if(this.submission_json){
           this.darArray.forEach((tm:any)=>{
             const d1=new Date(tm.SubmissionDate);
             d1.setHours(0,0,0,0);
-            const tm_submitted=submission_json.find(item=>{
+            const tm_submitted=this.submission_json.find(item=>{
                 const d2=new Date(item.SubmissionDate);
                 return d1.getTime()==d2.getTime();
             });
 
             if(tm_submitted)
-              tm.DarStatus=tm_submitted.Status; 
+              tm.DarStatus=tm_submitted.Status;
             else{
               debugger
               tm.DarStatus='Not Submitted';
               const crtdate=new Date();
               const daysDiff=Math.abs(moment(d1).diff(moment(crtdate),'days'));
               tm.submitable=daysDiff<=1;
-            } 
+            }
          });
+
+
         }
-      
+
         console.log('123 darArray:',this.darArray);
-        console.log('GetTimelineSubmissionStatus:',submission_json);
+        console.log('GetTimelineSubmissionStatus:',this.submission_json);
     }
 });
 }
+
+formatDuration(totalDuration) {
+  // Check if totalDuration is a valid string and formatted correctly
+  if (typeof totalDuration !== 'string' || totalDuration.length < 5) {
+    return '00 Hrs : 00 Mins'; // or some default value
+  }
+
+  // Extract hours and minutes safely
+  let hours = totalDuration.substring(0, 2);
+  let minutes = totalDuration.substring(3, 5);
+
+  // Convert hours and minutes to integers for comparison
+  const hoursInt = parseInt(hours, 10);
+  const minutesInt = parseInt(minutes, 10);
+
+  return `${hoursInt > 0 ? hours : '00'} ${hoursInt === 0 || hoursInt === 1 ? 'Hr' : 'Hrs'} : ${minutesInt > 0 ? minutes : '00'} ${minutesInt === 0 || minutesInt === 1 ? 'Min' : 'Mins'}`;
+}
+
+formatHoursToHHMM(hours: number): string {
+  const totalMinutes = Math.round(hours * 60);
+  const hh = Math.floor(totalMinutes / 60);
+  const mm = totalMinutes % 60;
+
+  const hoursInt = hh;
+  const minutesInt = mm;
+
+  const hoursFormatted = `${hoursInt > 0 ? hh.toString().padStart(2, '0') : '00'} ${hoursInt === 0 || hoursInt === 1 ? 'Hr' : 'Hrs'}`;
+  const minutesFormatted = `${minutesInt > 0 ? mm.toString().padStart(2, '0') : '00'} ${minutesInt === 0 || minutesInt === 1 ? 'Min' : 'Mins'}`;
+
+  return `${hoursFormatted} : ${minutesFormatted}`;
+}
+// tmReportArr:any[]=[];
+// tmReportTotalDuration:any;
+// tmReportStatus:any;
+// tmSubmDate:any;
+// tmReportLoading:boolean=false;
+// getTimelineReportByDate(dateVal:'today'|'yesterday') {
+//     this.tmReportArr=[];
+//     this.tmReportStatus=null;
+//     this.tmReportTotalDuration=null;
+//     this.tmSubmDate=null;
+//     // erase prev data.
+
+//     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+//     this.ObjSubTaskDTO.PageNumber = 1;
+//     this.ObjSubTaskDTO.PageSize = 2;
+//     this.ObjSubTaskDTO.sort = dateVal
+//     this.ObjSubTaskDTO.Start_Date = null;
+//     this.ObjSubTaskDTO.End_Date = null;
+//     this.tmReportLoading=true;
+//     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+//       (data => {
+//         this.tmReportLoading=false;
+//         console.log(data);
+//         if(data&&data[0].DAR_Details_Json){
+//              const dar_json=JSON.parse(data[0].DAR_Details_Json);
+//              if(dar_json&&dar_json[0]){
+//                 this.tmReportArr=dar_json[0].Dardata;
+//                 this.tmReportTotalDuration=dar_json[0].TotalDuration;
+//                 this.tmSubmDate=dar_json[0].SubmissionDate;
+
+//                 if(this.submission_json){
+
+//                     const d1=new Date(this.tmSubmDate);
+//                     d1.setHours(0,0,0,0);
+//                     const tm_submitted=this.submission_json.find(item=>{
+//                         const d2=new Date(item.SubmissionDate);
+//                         return d1.getTime()==d2.getTime();
+//                     });
+
+//                     if(tm_submitted)
+//                       this.tmReportStatus=tm_submitted.Status;
+//                     else{
+//                       this.tmReportStatus='Not Submitted';
+//                       // const crtdate=new Date();
+//                       // const daysDiff=Math.abs(moment(d1).diff(moment(crtdate),'days'));
+//                       // tm.submitable=daysDiff<=1;
+//                     }
+
+//                 }
+
+//             }
+//         }
+//       });
+
+// }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

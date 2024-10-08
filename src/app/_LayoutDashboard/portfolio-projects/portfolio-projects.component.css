@@ -3178,7 +3178,7 @@ transition-duration:0.3s;
   align-items: center;
   justify-content: center;
   padding: 12px;
-  background-color: #646C9A;
+  background-color: #388E3C !important;
 }
 .save-mat-selection:hover{
   background-color: #3D4991;
@@ -4659,7 +4659,6 @@ input.search-input {
   border-radius: 0px 0px 4px 4px;
   border-radius: 0 0 5px 5px;
   outline: 0 !important;
-  padding-top: 20px !important;
 
 }
 
@@ -4934,3 +4933,104 @@ color: #121212;
   color: #9C27B0 !important;
 
  }
+ .kt-filterdetails {
+  display: flex;
+  margin-top: 5px;
+  background-color: #f3f6f9;
+  margin: 0px 0px 9px 0px;
+}
+.search-filter{
+  margin: 0px 0px 0px 15px;
+}
+ .dms-span-img{
+  background-color: #fff;
+  border-radius: 4px;
+  width: 26px;
+  height: 26px;
+  display: inline-block;
+  text-align: center;
+  line-height: 1.5;
+  padding-left: 4px;
+}
+
+
+.pulsing-div{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 6px;
+}
+.pulsing-dot {
+  /* z-index: 10; */
+  box-sizing: content-box;
+  display: flex;
+  width: auto;
+  height: auto;
+  border-radius: 50%;
+  position: relative;
+}
+
+.pulsing-dot:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: #456999;
+  border-radius: 50%;
+  animation: pulse-border 1s ease-out infinite;
+}
+
+.pulsing-dot:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  /* transform: translateX(-50%) translateY(-50%); */
+  transform: translateX(-44%) translateY(-44%);
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: #7393bd;
+  border-radius: 50%;
+  transition: all 200ms;
+}
+
+.pulsing-dot.pulsing-dot-stat:after{
+  background: #888888;
+}
+.pulsing-dot.pulsing-dot-stat:before{
+  background: #757171;
+}
+.pulsing-dot-label{
+  display: flex;
+  width: max-content;
+  color: #979797;
+}
+@keyframes pulse-border {
+  0% {
+      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1);
+      opacity: 1;
+    }
+    25% {
+      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.5);
+      opacity: 0.75;
+    }
+      50% {
+      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.75);
+      opacity: 0.5;
+    }
+        75% {
+      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(2);
+      opacity: 0.25;
+    }
+      100% {
+      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(2.5);
+      opacity: 0;
+    }
+}

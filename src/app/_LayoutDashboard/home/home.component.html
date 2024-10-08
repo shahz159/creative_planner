@@ -9,6 +9,7 @@
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title mr-4">
                             <strong *ngIf="activeClassAll==true">All portfolio list</strong>
+
                             <strong *ngIf="activeClassFav==true">Favorite portfolio list</strong>
                             <strong *ngIf="activeClassOwners==true">Owner portfolio list</strong>
                             <strong *ngIf="activeClassShare==true">Shared portfolio list</strong>
@@ -416,9 +417,9 @@
                                 class="form-control right-flter-b border-0" (keyup.enter)="ServerSide_Search(PortfolioSearch)"/>
                         </div>
                         </div>
-                    
+
                     <div class="kt-portlet__head-label kt-todo__details icons-filter align-items-center">
-                       
+
                         <div class="kt-portlet__head-toolbar">
 
                            <div class="portfolio-pagination">

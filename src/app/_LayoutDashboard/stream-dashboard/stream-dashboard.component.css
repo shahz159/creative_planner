@@ -1181,6 +1181,7 @@ span.dar-dot {
     right: 0;
     border: 1px solid #a1a1a1;
     padding: 6px;
+    cursor: pointer !important;
 }
 
 .yes-dar-label {

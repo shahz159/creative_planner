@@ -794,6 +794,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     document.getElementById("shareBar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetCompanies();
+    this.valid = false
     //SnackBar Dismiss
   }
   OnCompanySelect(CompNo: string) {
@@ -876,16 +877,20 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
   shararrayseprate:any
   isElementPresent:any
+  valid : boolean = false
   share() {
     // if (this.CompanyDropdown == undefined) {
     //   return this._ErrorMessage_comp = "* Please Select Company";
     // }
-    if (this.shareToEmplys == undefined) {
-      return this._ErrorMessage_User = "* Please Select User Name";
+    debugger
+    if (this.shareToEmplys == undefined ||  this.shareToEmplys === null || this.shareToEmplys&&this.shareToEmplys.length ===0) {
+      return   this.valid = true
+    }else{
+  this.valid = false
+}
 
-    }
     if (this.preferences == null) {
-      return this._ErrorMessage_Pref = "* Please Select Preferences";
+      return this.valid = true
     }
     if (this.Current_user_ID == this.shareToEmplys[0]) {
       this.notifyService.showInfo("You Can't Share Portfolio by yourSelf", "");
@@ -1687,7 +1692,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     document.getElementById("portfoliosideBar").classList.remove("active");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
-
+    document.getElementById("shareBar").classList.remove("kt-action-panel--on");
     // $('.project-list_AC').removeClass('active');
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
@@ -3049,6 +3054,7 @@ getChangeSubtaskDetais(Project_Code) {
 
   }
   selectStartDate(event) {
+
     this._StartDate = event.value;
     let sd = event.value.format("YYYY-MM-DD").toString();
     this._SEndDate = event.value.format("YYYY-MM-DD").toString();
@@ -3105,6 +3111,35 @@ getChangeSubtaskDetais(Project_Code) {
         date.setDate(date.getDate() + 1);
       }
     }
+      // valid starttimearr setting start.
+      let _inputdate=event;
+      let _currentdate=moment();
+      if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+      {
+          const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+          const index:number=this.StartTimearr.findIndex((item:any)=>{
+              const t=moment(item,'h:mm A');
+              const result=t>=ct;
+              return result;
+          });
+          this.validStartTimearr=this.StartTimearr.slice(index);
+
+      // verify whether starttime and endtime are valid or not. start
+      _currentdate.format('h:mm A');
+
+      const inputtime1=moment(this.Startts,'h:mm A');
+      const inputtime2=moment(this.Endtms,'h:mm A');
+      if(inputtime1<ct)
+        this.Startts=this.validStartTimearr[0];
+      if(inputtime2<ct)
+        this.Endtms=this.validStartTimearr[1];
+
+     // verify whether starttime and endtime are valid or not. end
+
+      }
+      else
+      this.validStartTimearr=[...this.StartTimearr];
+      // valid starttimearr setting end.
 
   }
 
@@ -3889,7 +3924,7 @@ getChangeSubtaskDetais(Project_Code) {
               this.Getdraft_datalistmeeting();
               this.draftid = 0
             }
-            this.notifyService.showSuccess(this._Message, "Success");
+            this.notifyService.showSuccess(this._Message.split(' ').map((word, index) => index === 1 ? word.charAt(0).toLowerCase() + word.slice(1) : word).join(' '), "Success");
           }
           else {
             this.notifyService.showError(this._Message, "Failed");
@@ -4308,7 +4343,7 @@ allAgendas: any = [];
 agendasAdded: number = 0;
 totalcountofagenda:any
 addAgenda() {
-  if (this.agendaInput && this.agendaInput.trim().length > 0) {
+  if (this.agendaInput.trim().length > 0 && this.agendaInput.trim().length < 100) {
     this.agendasAdded += 1;
     const agenda = {
       index: this.agendasAdded,
@@ -4371,6 +4406,7 @@ cancelAgendaEdit(index: number) {
 
 updateAgenda(index: number) {
   const tf: any = document.getElementById(`agenda-text-field-${index}`);
+  if(tf.value.trim().length > 0 && tf.value.trim().length < 100){
   this.allAgendas[index].name = tf.value;
 
   $(`#agenda-label-${index}`).removeClass('d-none'); // label is visible.
@@ -4380,7 +4416,11 @@ updateAgenda(index: number) {
   $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
   $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
 
-
+} else if (tf.value.trim().length == 0){
+  this.notifyService.showInfo("Please enter atleast one word","");
+}else {
+  this.notifyService.showInfo("Maximum 100 characters are allowed", 'Please shorten it.');
+}
   console.log('all agendas after updating:', this.allAgendas);
 }
 // agenda in event creation end
@@ -4433,7 +4473,7 @@ closedarBar() {
   document.getElementById("Timeline_view").classList.remove("kt-timeline-panel--on");
   document.getElementById("rightbar-overlay").style.display = "none";
   document.getElementById("newdetails").classList.remove("position-fixed");
-
+  document.getElementById("shareBar").classList.remove("kt-action-panel--on");
 
   document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
   document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");  // PEOPLE ON PROJECT TAB.
@@ -4465,6 +4505,7 @@ all_status={
   'Completed':'#388E3C',
   'InProcess':'#64B5F6',
   'Completion Under Approval':'#81C784',
+  'Audit Approval':'#A5D6A7',
   'Forward Under Approval':'#64B5F6',
   'Under Approval': '#9C27B0',
   'Delay':'#D32F2F',
@@ -4493,12 +4534,16 @@ loadGanttChart(){
       let y=p2.Duration+(p2.Status=='Delay'?new Date(p2.DeadLine)>=new Date()?0:p2.Delaydays:0);
       return y-x;
   });
-  this.prj_statuses=_ProjectsListBy_Pid1.map(item=>item.Status);
+  this.prj_statuses=_ProjectsListBy_Pid1.map(item=>{item.Status
+       let result=item.Status=='Completion Under Approval'?(item.AuditStatus=='Audit Pending'?'Audit Approval':'Completion Under Approval'):item.Status;
+       return result;
+  });
   this.prj_statuses=Array.from(new Set(this.prj_statuses));
   const todays_date=new Date().getTime();
 
   const _series=_ProjectsListBy_Pid1.map((prj,_index)=>{
-      const color=this.all_status[prj.Status]||this.all_status['other'];
+      let p_status=prj.Status=='Completion Under Approval'?(prj.AuditStatus=='Audit Pending'?'Audit Approval':'Completion Under Approval'):prj.Status;
+      const color=this.all_status[p_status]||this.all_status['other'];
 
       let data_ar=[];
       const prj_startd=new Date(prj.DPG);
@@ -4829,7 +4874,7 @@ var options = {
  const daydiff=Math.abs(moment(_ProjectsListBy_Pid1[index].DPG,'YYYY-MM-DD').diff(moment(_ProjectsListBy_Pid1[index].DeadLine,'YYYY-MM-DD'),'days'))+1;
  const prj_totalactions=_ProjectsListBy_Pid1[index].Actioncount;
  const completed_actions=_ProjectsListBy_Pid1[index].CompletedActioncount;
- const prj_status=_ProjectsListBy_Pid1[index].Status;
+ const prj_status=_ProjectsListBy_Pid1[index].Status=='Completion Under Approval'?(_ProjectsListBy_Pid1[index].AuditStatus=='Audit Pending'?'Audit Approval':'Completion Under Approval'):_ProjectsListBy_Pid1[index].Status;
  const statusColor=this.all_status[prj_status]||this.all_status['other'];
  const delaydays_=Math.abs(_ProjectsListBy_Pid1[index].Delaydays);
  const prj_res=_ProjectsListBy_Pid1[index].Team_Res;
@@ -5629,7 +5674,7 @@ bindCustomRecurrenceValues(){
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
-      && (this.ScheduleType === 'Event' ?( this.allAgendas.length > 0  && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0) ) : true)
+      && (this.ScheduleType === 'Event' ?( this.allAgendas.length > 0 ) : true)
     ) {
       this.OnSubmitSchedule();
       this.notProvided = false;
@@ -5827,5 +5872,34 @@ bindCustomRecurrenceValues(){
         return `${delayText.toLowerCase()}`;
       }
   // new code of portfolio meeting side bar end
+
+  getFilterLabel() {
+    if (this._PortProjStatus === '') {
+      return this.showDeletedPrjOnly ? 'Filter by:   Deleted projects' : 'Filter by:   Total projects';
+    } else {
+      switch (this._PortProjStatus) {
+        case 'Forward Under Approval':
+          return 'Filter by:   Forward approval';
+        case 'Completion Under Approval':
+          return 'Filter by:   Completion approval';
+        case 'Under Approval':
+          return 'Filter by:   New approval';
+        case 'InProcess':
+          return 'Filter by:   In-Process';
+        case 'Cancellation Under Approval':
+          return 'Filter by:   Cancellation approval';
+        case 'Deadline Extended Under Approval':
+          return 'Filter by:   Deadline extend approval';
+        case 'Enactive Under Approval':
+          return 'Filter by:   Enactive approval'
+        default:
+          return `Filter by :   ${this._PortProjStatus}`;
+      }
+    }
+  }
+
+
+
+
 
 }

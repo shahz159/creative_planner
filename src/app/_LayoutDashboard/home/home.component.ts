@@ -281,7 +281,7 @@ export class HomeComponent implements OnInit {
         this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
 
         console.log(this._ListProjStat,"testsssssssssssssssssssssssssssssssssssssss");
-        this.NoOfRecordsPerPage = this._ListProjStat.length;
+        this.NoOfRecordsPerPage = this._ListProjStat&&this._ListProjStat.length;
         // this.AllPortfolioslist = this._ListProjStat;
         this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
         console.log(this.Companylist_Json,'aaaaaaaaaaaaaaaaaaaaaaaa')
@@ -298,7 +298,8 @@ export class HomeComponent implements OnInit {
         this.NoOfPages = data[0]['NoOfPages'];
         let shrearry: any;
         shrearry = this._ListProjStat;
-        if (this._ListProjStat.length == 0) {
+        if (this._ListProjStat&&this._ListProjStat.length == 0) {
+          this.userFound = true
           this.messageForEmpty = false;
         }
         else {
@@ -625,7 +626,8 @@ export class HomeComponent implements OnInit {
   selectedCom_String: any;
   selectedEmp_String: any;
   selectedStatus_String: any;
-
+  showing:boolean=false
+  // showing:boolean =false
   //Apply Filters
   SearchbyText() {
     this.CurrentPageNo = 1;
@@ -665,6 +667,7 @@ export class HomeComponent implements OnInit {
     //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
     this.service.GetPortfolioStatus(this._objStatusDTO)
       .subscribe(data => {
+        debugger
         this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
         this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
         this.Employeelist_Json = JSON.parse(data[0]['Employee_Json']);
@@ -675,25 +678,35 @@ export class HomeComponent implements OnInit {
 
         if (this._ListProjStat) {
           this._CurrentpageRecords = this.countAll;
+
+        }
+        if (this._ListProjStat==null){
+          this.showing = true
         }
 
         if (this.selectedItem_Emp.length == 0) {
           this.Employeelist_Json = JSON.parse(data[0]['Employee_Json']);
           this._CurrentpageRecords = this.selectedItem_Emp.length;
+
         }
         else {
           this.Employeelist_Json = this.selectedItem_Emp[0];
+
         }
-        this._CurrentpageRecords = this._ListProjStat.length;
+        this._CurrentpageRecords = this._ListProjStat&&this._ListProjStat.length;
+
         //Type
         if (this.selectedItem_Company.length == 0) {
           this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
           this._CurrentpageRecords = this.selectedItem_Company.length;
+
         }
         else {
           this.Companylist_Json = this.selectedItem_Company[0];
+
         }
         this._CurrentpageRecords = this._ListProjStat.length;
+
         //Status
         if (this.selectedItem_Status.length == 0) {
           this.Statuslist_Json = JSON.parse(data[0]['Status_Json']);
@@ -702,17 +715,21 @@ export class HomeComponent implements OnInit {
         }
         else {
           this.Statuslist_Json = this.selectedItem_Status[0];
+
         }
         this._CurrentpageRecords = this._ListProjStat.length;
+
 
         // this.countAll = this._ListProjStat.length;
 
         if (this._ListProjStat.length == 0) {
+
           this._filtersMessage = "No Portfolio Found";
           this._filtersMessage2 = "Please use clear for clearing filters & try again";
         }
         else {
           this._filtersMessage = "";
+
           this._filtersMessage2 = "";
         }
       });
@@ -983,6 +1000,7 @@ export class HomeComponent implements OnInit {
   }
 
   DropdownOpen() {
+    debugger
     this.activeClass_NewPortfolio = true;
   }
 

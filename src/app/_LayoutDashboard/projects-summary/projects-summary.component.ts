@@ -2091,6 +2091,50 @@ isInvalidDate(date: moment.Moment) {
   return date.weekday() === 0 || date.weekday() === 6; // Disable weekends
 }
 
+// closeOnOtherClick(id){
+//   debugger
+//   if(id == 'company'){
+//     this.closeAutocompleteDrpDwn('employeeDDwn');
+//     this.closeAutocompleteDrpDwn('proDDwn')
+//     this.closeAutocompleteDrpDwn('statusDDwn');
+//   }
+//   else if (id == 'employee'){
+//     this.closeAutocompleteDrpDwn('companyDDwn');
+//     this.closeAutocompleteDrpDwn('proDDwn')
+//     this.closeAutocompleteDrpDwn('statusDDwn');
+//   }
+//   else if (id == 'project'){
+//     this.closeAutocompleteDrpDwn('companyDDwn');
+//     this.closeAutocompleteDrpDwn('employeeDDwn');
+//     this.closeAutocompleteDrpDwn('statusDDwn');
+//   }
+//  else{
+//   this.closeAutocompleteDrpDwn('companyDDwn');
+//   this.closeAutocompleteDrpDwn('employeeDDwn');
+//   this.closeAutocompleteDrpDwn('proDDwn')
+//  }
+// }
+
+closeOnOtherClick(id){
+  debugger
+  const dropdowns= ['companyDDwn', 'employeeDDwn', 'proDDwn', 'statusDDwn'];
+  dropdowns.forEach((dropdown)=>{
+  if(dropdown !== `${id}DDwn` ){
+    this.closeAutocompleteDrpDwn(dropdown)
+  }
+  })
+}
+
+
+
+ closeallTab(){
+this.closeAutocompleteDrpDwn('companyDDwn');
+this.closeAutocompleteDrpDwn('employeeDDwn');
+this.closeAutocompleteDrpDwn('statusDDwn');
+this.closeAutocompleteDrpDwn('proDDwn')
+
+ }
+
 
 
 

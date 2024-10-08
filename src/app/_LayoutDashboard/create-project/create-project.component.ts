@@ -222,9 +222,9 @@ export class CreateProjectComponent implements OnInit {
          this.Client_json=JSON.parse(res[0].Client_json);
          this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
-         console.log(this.Responsible_json,"Responsible_jsonResponsible_jsonResponsible_jsonResponsible_jsonResponsible_json")
-         this.Team_json=JSON.parse(res[0].Team_json);
-         this.allUser_json=JSON.parse(res[0].allUser_json);
+         console.log(this.Responsible_json,"Responsible_json")
+         this.Team_json=JSON.parse(res[0].Team_json);  console.log('Team_json:',this.Team_json);
+         this.allUser_json=JSON.parse(res[0].allUser_json); console.log('allUser_json:',this.allUser_json);
          this.owner_json=JSON.parse(res[0].owner_json);
 
           this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
@@ -293,7 +293,7 @@ export class CreateProjectComponent implements OnInit {
     let projectType=this.ProjectType_json.find((e)=>{
       return e.Typeid===this.Prjtype
         })
-      this.projectTypes= projectType.ProjectType
+      this.projectTypes= projectType.ProjectType;
       var startDate = moment(this.Prjstartdate);
       var endDate = moment(this.Prjenddate);
       this.durationInDays = endDate.diff(startDate, 'days');
@@ -332,7 +332,7 @@ export class CreateProjectComponent implements OnInit {
 
 
   displaymessagemain(value: string): void {
-
+debugger
     // this.notifyService.showInfo("Project Owner cannot be changed","Not editable");
     const messages = {
       'Duration': {
@@ -550,7 +550,7 @@ createSRTProject(){
 
 
  createProject(){
-debugger
+
   this.Client_json.forEach(element => {
     if(element.ClientName==this.PrjClient){
       this.PrjClient=element.ClientId;
@@ -631,8 +631,12 @@ debugger
                   this.back_to_options();
                   this.GetAssignedTaskDetails();
                 }
-                else
-                this.Move_to_Add_action_tab();
+                else{
+                  this.Move_to_Add_action_tab();    // moved to step 3
+                  this.BsService.ConfirmBeforeRoute.emit('AT-3RD-STEP-PC'); // we are on step3 screen.
+
+                }
+
 
                }
              this.BsService.ProjectCreatedEvent.emit();
@@ -817,19 +821,44 @@ onFileChanged(event: any) {
   Scratech_btn(){
     $('.Assigned-projects-list').addClass('d-none');
     $('.Templates-list').addClass('d-none');
-    $('.np-step-1').removeClass('d-none');
-    $('.np-step-2').removeClass('d-none');
-    $('.np-step-1').addClass('d-none');
+    // $('.np-step-1').removeClass('d-none');
+    $('.np-step-2').removeClass('d-none');        // visible proj creation section.
+    $('.np-step-1').addClass('d-none');           // close let's start section.
     this.notificationMsg=0;
   }
 
   back_to_options(){
     this.unique_id=null;
-    $('.np-step-1').removeClass('d-none');
-    $('.np-step-2').addClass('d-none');
-    $('.Assigned-projects-list').addClass('d-none');
-    $('.Templates-list').addClass('d-none');
-    $('.Drafts-list').addClass('d-none');
+    $('.np-step-1').removeClass('d-none');                // visible let's start section.
+    $('.np-step-2').addClass('d-none');                  // close proj creation section.
+    $('.Assigned-projects-list').addClass('d-none');     //close assigned projects section
+    $('.Templates-list').addClass('d-none');             //close template projects section
+    $('.Drafts-list').addClass('d-none');                //close draft projects section.
+    $('.right-side-dv').addClass('d-none');              // close right side dv section.
+    $('.Add_action_tab').hide();                         // close action tab(3rd section).
+    $('.Project_details_tab').show();                    // open section 1 form.
+    $('.action-left-view').addClass('d-none');           // close actions view of 3rd step.
+    this.notificationMsg=0;
+  }
+
+
+  closeStep3Section(){
+     // when moving out from the 3rd step.
+
+    Swal.fire({
+        title:'Project not submitted',
+        text:"Click on 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
+        showConfirmButton:true,
+        confirmButtonText:'Keep as draft',
+        showCancelButton:true,
+        cancelButtonText:'Back',
+    }).then((decision)=>{
+        if(decision.isConfirmed){
+          this.BsService.ConfirmBeforeRoute.emit(null);   // if back to options from 3rd step. removes sidebar,header confirmations.
+          this.back_to_options();
+          this.reset();
+          }
+      });
   }
 
   Assigned_projects(){
@@ -962,6 +991,8 @@ gottoPrevious(){
     $('.sbs--basic li').removeClass('active');
     $('.sbs--basic li:nth-child(3)').addClass('active');
     this.notificationMsg=3;
+
+
   }
 
   back_to_add_team(){
@@ -1032,6 +1063,13 @@ onResponsibleChanged(){
     const obj=this.PrjSupport.find(item=>item.Emp_No==this.PrjResp);
     if(obj)this.PrjSupport.splice(this.PrjSupport.indexOf(obj),1);
   //
+
+  // selected responsible cannot be selected also as project auditor
+      if(this.PrjAuditor==this.PrjResp){
+         this.PrjAuditor=null;
+      }
+  //
+
   }
 }
 
@@ -1124,22 +1162,22 @@ onProjectOwnerChanged(){
 
 
   bind_Project:any
-  start_Date:any
-  date_str:any
+  // start_Date:any  //x
+  // date_str:any   //x
   duration:any
-  end_Date:any
-  date_End:any
-  task_Name:any
-  CreateName:any
+  // end_Date:any    //x
+  // date_End:any    //x
+  // task_Name:any   //x
+  CreateName:any;
   unique_id:number
-  projectType:any
-  portfolio:any
-  prtf:any
-  Attachment:any
+  // projectType:any   //x
+  // portfolio:any    //x
+  // prtf:any       //x
+  // Attachment:any   //x
   // allocated:any
 
   onButtonClick(value:any,id:number){
-    debugger
+ debugger
     this.bind_Project = [value];
     console.log('bind project:',this.bind_Project);
     // this.duration=this.bind_Project[0].Duration;
@@ -1168,9 +1206,7 @@ onProjectOwnerChanged(){
         const portfolioids=portfolios_.split(',');
         const result=this._portfoliosList.filter(item=>portfolioids.includes(item.Portfolio_ID.toString()));
         this.ngDropdwonPort = result;
-
     }
-
     else
      this.ngDropdwonPort=[];
 
@@ -1392,8 +1428,6 @@ initializeSelectedValue() {
 
 projectEdit(val) {
 
-
-debugger
 if (this.Allocated <= this.maxAllocation){
   this.notProvided = false
 }
@@ -1401,9 +1435,6 @@ else{
   this.notProvided = true
   return
 }
-
-
-
 
   this.isPrjNameValids=this.isValidString(this.ProjeditName,3);
   this.isPrjDesValids=this.isValidString(this.ProjeditDescription,5);
@@ -1527,26 +1558,25 @@ return;
 
     this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
       console.log(data['message'], "edit response");
-      if (data['message'] == '1') {
+
+      if(['1','5','6'].includes(data['message']))
+      {
         this.notifyService.showSuccess("Updated successfully", "Success");
         this.closeInfos();
       }
-      else if (data['message'] == '2') {
+      else if(data['message'] == '2')
+      {
         this.notifyService.showError("Not updated", "Failed");
-
-      }
-      else if (data['message'] == '5') {
-        this.notifyService.showSuccess(" Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully");
-        this.closeInfos();
-      }
-      else if (data['message'] == '6') {
-        this.notifyService.showSuccess("Updated successfully"+" Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
-        this.closeInfos();
       }
       else if (data['message'] == '8') {
-        this.notifyService.showError("Selected Project owner cannot be updated", "Not updated");
+        let sel_owner=this.owner_dropdown.find((item)=>item.Emp_No==this.selectedOwner);
+        if(sel_owner){
+          sel_owner=sel_owner.RACIS.slice(0,sel_owner.RACIS.indexOf('('));
+        }
+        this.notifyService.showError(`${sel_owner} cannot be set as an owner of ${this.selectedOwnResp}`, "Failed");
         this.closeInfos();
       }
+
       //this.getProjectDetails(this.URL_ProjectCode);
 
     });
@@ -1770,6 +1800,7 @@ debugger
               this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
                 if(res&&res.message==='Success'){
                       this.notification.showSuccess("Project sent to project owner "+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for approval',"Success");
+                      this.BsService.ConfirmBeforeRoute.emit(null);
                       this.router.navigate(['./backend/ProjectsSummary']);
                       //  this.closeInfo();
                   }
@@ -1893,12 +1924,11 @@ openTemplate(template:any){
    this.PrjAuth=PInfo.AuthorityEmpNo;
    this.fileAttachment=null
   //  this.PrjCrdtr='';
-   this.PrjAuditor='';
+   this.PrjAuditor=null;
   //  this.PrjInformer='';
   //  this.PrjSupport=[];
    this.Allocated_Hours=null;
    //  this.fileAttachment=new File()
-
 
     if(['001','002'].includes(this.Prjtype)){
       const actions=JSON.parse(res[0].Action_Json);
@@ -1936,6 +1966,7 @@ openTemplate(template:any){
           this.PrjInformer=_prjinfrmr.Emp_No;
           this.PrjSupport=_prjsupport;
           this.setRACIS();
+
       }
    });    // for geeting the support members.
 
@@ -1955,20 +1986,20 @@ openTemplateAction(templAction){
 
 
 // cancel project creation start
-cancelPrjCreation(){
-  Swal.fire({
-    title:'Cancel Project Creation',
-    text:"This action cannot be undo.",
-    showCancelButton:true,
-    showConfirmButton:true
-  }).then((choice:any)=>{
-        if(choice.isConfirmed){
-          this.Back_to_project_details_tab();
-          this.back_to_options();
+// cancelPrjCreation(){
+//   Swal.fire({
+//     title:'Cancel Project Creation',
+//     text:"This action cannot be undo.",
+//     showCancelButton:true,
+//     showConfirmButton:true
+//   }).then((choice:any)=>{
+//         if(choice.isConfirmed){
+//           this.Back_to_project_details_tab();
+//           this.back_to_options();
 
-        }
-  })
-}
+//         }
+//   })
+// }
 // cancel project creation end
 
 
@@ -2204,10 +2235,52 @@ this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((re
 });
 
 
+// lock sidebar and header
+this.BsService.ConfirmBeforeRoute.emit('AT-3RD-STEP-PC'); // we are on step3 screen.
+
+// lock sidebar and header
+
 }
 
 reset(){
-  this.PrjCategory=null,this.Prjtype=null,this.PrjName=null,this.PrjDes=null,this.Prjstartdate=null,this.Prjenddate=null,this.start_Date=null,this.end_Date=null,this.Allocated_Hours=null
+  // step1 form clear.   start
+  this.PrjName=null;
+  this.PrjDes=null;
+  this.Prjtype=null;
+  this.PrjCategory=null;
+  this.Prjstartdate=null;
+  this.Prjenddate=null;
+  this.Allocated_Hours=null;
+  this.prjsubmission=null;
+  this.Annual_date=null;
+  this.ngDropdwonPort=[];
+  this.fileAttachment=null;
+    // step1 form clear.   end
+
+    // step2 form clear.   start
+  this._remarks=null;
+  this.saveAsTemplate=false;
+  this.PrjAuditor=null;
+  if(this.allUser_json&&this.Team_json){
+    const defaultvalue=this.allUser_json.find((item)=>{
+      return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
+    });
+   this.PrjSupport=defaultvalue?[defaultvalue]:[];
+   this.PrjCrdtr=this.Team_json[0].CoordinatorNo.trim();
+   this.PrjInformer=this.Team_json[0].InformerNo.trim();
+  }
+  else{
+      this.PrjSupport=[];
+      this.PrjCrdtr=null;
+      this.PrjInformer=null;
+  }
+  this.setRACIS();
+     // step2 form clear.   start
+
+  // step3 info clear. start
+    this.PrjTemplActions=[];
+    this.PrjActionsInfo=[];
+  // step3 info clear. end
 
 }
 

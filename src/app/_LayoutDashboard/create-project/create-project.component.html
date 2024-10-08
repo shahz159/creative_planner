@@ -509,7 +509,7 @@
                                         <div class="d-flex align-items-center">
 
                                           <div class="kt-dl-icon"  ><span class="kt-svg-ic" title="Create"
-                                            (click)="Scratech_btn();onButtonClick(record,i+1);">
+                                            (click)="reset(); Scratech_btn(); onButtonClick(record,i+1);">
                                             <svg width="26px" height="26px" viewBox="2 2 19 19" fill="none"
                                               xmlns="http://www.w3.org/2000/svg">
                                               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -647,7 +647,7 @@
                                   <div class="kt-act-btns">
                                     <div class="d-flex align-items-center">
                                       <div class="kt-dl-icon"  ><span class="kt-svg-ic" title="Create"
-                                        (click)="Scratech_btn();openTemplate(record);">
+                                        (click)="reset(); Scratech_btn(); openTemplate(record);">
                                         <svg width="26px" height="26px" viewBox="2 2 19 19" fill="none"
                                           xmlns="http://www.w3.org/2000/svg">
                                           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -1759,7 +1759,7 @@
                                               <span (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)">{{fileAttachment.name}}</span>
                                               <span  *ngIf="fileAttachment" (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)">{{fileAttachment}}</span>
                                               <span class="dropzone-delete">
-                                                <i class="flaticon2-cross" (click)="fileAttachment=null;     "></i>
+                                                <i class="flaticon2-cross" (click)="fileAttachment=null;"></i>
                                               </span>
                                             </div>
                                           </div>
@@ -1827,7 +1827,7 @@
                                     [(ngModel)]="PrjResp" (change)="onResponsibleChanged();  setRACIS(); PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo.trim()))?PrjInformer:Responsible_json[0].OwnerEmpNo.trim(); ">
                                     <ng-option
                                       [value]="Responsible_json[0].ResponsibleNo.trim()">{{Responsible_json[0].ResponsibleName}}</ng-option>
-                                    <ng-option
+                                    <ng-option *ngIf="owner_json.length>1"
                                       [value]="Responsible_json[0].OwnerEmpNo.trim()">{{Responsible_json[0].OwnerName}}</ng-option>
                                   </ng-select>
                                   <span style="color:rgb(217,48,37)" *ngIf="!PrjResp">Please select responsible</span>
@@ -1880,7 +1880,10 @@
                                   <label>Auditor</label>
                                   <ng-select class="kt-form-vd" placeholder="Select auditor" [(ngModel)]="PrjAuditor"
                                     (change)="setRACIS()">
-                                    <ng-option *ngFor="let p of allUser_json" [value]="p.Emp_No">{{ p.Emp_Name}}</ng-option>
+                                    <ng-container *ngFor="let p of allUser_json">
+                                           <ng-option *ngIf="p.Emp_No!=PrjResp" [value]="p.Emp_No">{{ p.Emp_Name}}</ng-option>
+                                    </ng-container>
+                                    
                                   </ng-select>
                                 </div>
                               </div>
@@ -1982,7 +1985,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="Add_action_tab" *ngIf="Prjtype==='001'||Prjtype==='002'"     >
+                        <div class="Add_action_tab" *ngIf="Prjtype==='001'||Prjtype==='002'">
                           <ng-container *ngIf="currentActionView===undefined;else ActionView">
                             <div class="kt-prd-dtl ">
                               <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
@@ -2588,13 +2591,13 @@
                                 </div>
                                 <div class="kt-ctv-btn-two">
                                   <!-- <button type="button" class="btn btn-prv-w my-ct-v-btn-back btn-prev">Cancel</button> -->
-                                  <button type="button" class="btn btn-move-fws my-ct-v-btn "
-                                  (click)="back_to_options()">Back to options</button>&nbsp;
                                   <button type="button" class="btn btn-move-fw my-ct-v-btn btn-info"
-                                    (click)="sendApproval()">Submit project</button>
+                                    (click)="sendApproval()">Submit project</button>&nbsp;
+                                    <button type="button" class="btn btn-move-fws my-ct-v-btn "
+                                  (click)="closeStep3Section()">Back to options</button>
                                 </div>
                           </ng-container>
-                          </div>
+                        </div>
                         </div>
                       </div>
                     </div>
@@ -2784,32 +2787,44 @@
                               </svg>
                           </span> Owner</div>
                       <div class="input-icon Sub_In_ed" *ngIf="projectInfo">
-                          <!-- <ng-container
-                          *ngIf="projectInfo.OwnerEmpNo === Current_user_ID && ( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
+
+                      <!-- <ng-container  *ngIf="projectInfo.OwnerEmpNo === Current_user_ID && ( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
                           && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval') ; else ownwerEdit">
-                          <ng-select [(ngModel)]="Owner_Name" placeholder=" Select new owner">
-                              <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown"
-                                  [disabled]="item.Emp_No==selectedOwnResp">
-                                  {{item.RACIS}}
-                              </ng-option>
-                          </ng-select>
-                      </ng-container>
-                      <ng-template #ownwerEdit>
-                          <input type="text" (click)="displaymessagemain()" class="form-control readonly"
-                              [(ngModel)]="Owner_Name" readonly />
-                      </ng-template> -->
-                      <ng-container>
                       <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
-                          <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown">
+                          <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown" [disabled]="item.Emp_No==selectedOwnResp">
                               {{item.RACIS}}
                           </ng-option>
                       </ng-select>
                   </ng-container>
-                  <!-- <ng-template #ownwerEdit>
-                      <input type="text"  class="form-control "
-                          [(ngModel)]="selectedOwner"  />
+                  <ng-template #ownwerEdit>
+                      <input type="text" (click)="displaymessagemain()"  class="form-control readonly"
+                          [(ngModel)]="selectedOwner" readonly />
 
                   </ng-template> -->
+
+                  <ng-container
+                  *ngIf="projectInfo.OwnerEmpNo === Current_user_ID && ( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
+                  && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval') ; else ownwerEdit">
+                  <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
+                      <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown"
+                          [disabled]="item.Emp_No==selectedOwnResp">
+                          {{item.RACIS}}
+                      </ng-option>
+                  </ng-select>
+              </ng-container>
+              <ng-template #ownwerEdit>
+                  <input type="text" (click)="displaymessagemain('Owner')" class="form-control readonly"
+                      [(ngModel)]="selectedOwner" readonly />
+
+              </ng-template>
+
+
+
+
+
+
+
+
 
                       </div>
                   </div>
@@ -3160,23 +3175,23 @@
                         </span>
                          Owner
                     </div>
-                    <!-- <div class="input-icon Sub_In_ed" *ngIf="PrjActionsInfo">
-                         <input type="text"  class="form-control " [(ngModel)]="selectedOwner"   />
-                    </div> -->
+                    <div class="input-icon Sub_In_ed" *ngIf="PrjActionsInfo">
+                      <input type="text" (click)="editable('Owner')" class="form-control readonly" [(ngModel)]="selectedOwner" readonly />
+                 </div>
 
                     <!-- owner_dropdown -->
 
 
 
-                    <div class="input-icon Sub_In_ed"  >
-           <ng-container >
+                    <!-- <div class="input-icon Sub_In_ed readonly"> -->
+           <!-- <ng-container >
                   <ng-select [(ngModel)]="selectedOwner" (change)="OGowner=selectedOwner" placeholder=" Select new owner">
                       <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown" >
                           {{item.RACIS}}
                       </ng-option>
                   </ng-select>
-              </ng-container>
-  </div>
+              </ng-container> -->
+  <!-- </div> -->
  </div></div>
 
 

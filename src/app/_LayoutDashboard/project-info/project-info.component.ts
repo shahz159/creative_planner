@@ -312,7 +312,8 @@ Prj_Code:any;
   Approver_No: any;
   isRequest: any;
   actionList:any
-  projectActionInfo:any
+  projectActionInfo:any;
+  completionOffset:number=0;
   LoadProjectDetails() {
     this.service.NewSubTaskDetailsService(this.projectCode).subscribe(
       (data) => {
@@ -327,6 +328,9 @@ Prj_Code:any;
           this.isRequest = this.ProjectStatesJson[0]['request_type'];   console.log('this.isRequest:',this.isRequest);
           this.ProjectType_json=JSON.parse(data[0]['ProjectBlock']);
           this.Submission=JSON.parse(data[0]['submission_json']);
+          if(this.ProjectStatesJson[0].Status=='Completed'){
+            this.completionOffset=moment(this.ProjectStatesJson[0].CD).diff(moment(this.ProjectStatesJson[0].EndDate),'days');
+          }
           // this.actionList=JSON.parse(data[0]['Action_List']);
           // console.log( this.actionList," this.actionList this.actionList")
 
@@ -1407,6 +1411,7 @@ Prj_Code:any;
   comments_list: any;
   initials1: any;
   Submitted_By: string;
+  AuditRequestBY:string;
   prviousCommentsList: any;
   transfer_json: any;
   revert_json: any;
@@ -1459,6 +1464,7 @@ Prj_Code:any;
           this.new_duration = (this.requestDetails[0]['new_duration']);
           this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
           this.Submitted_By = (this.requestDetails[0]['Submitted_By']);   console.log('Submitted_By:',this.Submitted_By);
+          this.AuditRequestBY=(this.requestDetails[0]['AuditRequestBY']); 
           const fullName = this.Submitted_By && this.Submitted_By.split(' ');
           this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
           this.initials1 = this.initials1.toUpperCase();
@@ -2219,7 +2225,7 @@ thirdRecord:any
 
 GetRacisPeople(){
   this.service.NewProjectService(this.projectCode).subscribe(
-    (data)=>{ debugger
+    (data)=>{ 
       this.Project_List=JSON.parse(data[0]['RacisList']);   console.log('Project_List variable :',this.Project_List);
       this.uniqueName_List=new Set(this.Project_List.map(record=>record.RACIS))
       this.uniqueName_array=[...this.uniqueName_List]
@@ -2253,7 +2259,8 @@ GetRacisPeople(){
 ///////////////////////////////////// RACIS end /////////////////////////
 
 
-allUsers1:any;
+allUsers1:any;   // all users
+allUsers2:any;   // all users without prj owner and prj resp.
 racisNonRacis:any;
 sel_prjname:string|undefined;  // proj name provided.
 sel_user:any;       // selected emp
@@ -2287,7 +2294,8 @@ get_Dropdowns_data(){
   this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectCode).subscribe(
     (data) => {
       this.racisNonRacis=JSON.parse(data[0]['owner_dropdown']);
-      this.allUsers1=(JSON.parse(data[0]['alluserlist']));
+      this.allUsers1=(JSON.parse(data[0]['alluserlist']));  
+      this.allUsers2=this.allUsers1.filter((usr:any)=>(![this.EmpNo_Own,this.EmpNo_Res].includes(usr.Emp_No)));  
   });
 
   this.service.GetPortfoliosBy_ProjectId(null).subscribe((data) => {
@@ -2345,7 +2353,7 @@ getObjOf(arr, id, idName) {
 
 
 
-
+auditBtnDisabled:boolean=false;
 onPrjAuditSubmitClicked(){
         if(!(this.empAuditor_remarks&&this.empAuditor_remarks.trim()) || !this.emp_Auditor){
           this.notProvided=true;
@@ -2354,12 +2362,14 @@ onPrjAuditSubmitClicked(){
          else
          this.notProvided=false;
 
+      this.auditBtnDisabled=true;    // processing start.
       const project_code:string=this.projectCode;
       const empno:string=this.Current_user_ID;
       const auditor:string=this.emp_Auditor;
       const remarks:string=this.empAuditor_remarks;
       this.projectMoreDetailsService.NewUpdateProjectAuditApproval(project_code,empno,auditor,remarks).subscribe((res:any)=>{
           console.log(res);
+          this.auditBtnDisabled=false;     // processing end.
           if(res&&res.message){
               this.notifyService.showSuccess(res.message,'Success');
               this.LoadProjectDetails();
@@ -2372,6 +2382,7 @@ onPrjAuditSubmitClicked(){
       })
 }
 
+transferBtnDisabled:boolean=false;
 onTransferBtnClicked(){
           if(!(this.empAuditor_remarks&&this.empAuditor_remarks.trim()) || !this.emp_Auditor){
               this.notProvided=true;
@@ -2380,12 +2391,14 @@ onTransferBtnClicked(){
           else
             this.notProvided=false;
 
+          this.transferBtnDisabled=true;    // processing start.
           const project_code:string=this.projectCode;
           const empno:string=this.Current_user_ID;
           const remarks:string=this.empAuditor_remarks;
           const newowner:string=this.emp_Auditor;
           this.projectMoreDetailsService.NewUpdateTransferProjectComplete(project_code,empno,remarks,newowner).subscribe((res:any)=>{
-                  if(res&&res.message){
+            this.transferBtnDisabled=false;     // processing end.    
+            if(res&&res.message){
                       this.notifyService.showSuccess(res.message,'Success');
                       this.LoadProjectDetails();
                       this.getapprovalStats();

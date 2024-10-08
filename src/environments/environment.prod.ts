@@ -5,9 +5,7 @@ export const environment = {
 //  baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/'
 // --------Azure API-------- 
 // baseUrl:'https://creativeplannerapi.azurewebsites.net/api/'
- 
-//  baseUrl:'https://creativeplannerapi.azurewebsites.net/'
-  //-----Live Server----
+   //-----Live Server----
  baseUrl:'https://cswebapps.com/PortfolioAPI/api/'
 };
   //Devbox Server

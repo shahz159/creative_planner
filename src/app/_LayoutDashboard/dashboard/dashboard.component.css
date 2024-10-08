@@ -3655,7 +3655,7 @@ span.schedule-dt-muted {
     border-radius: 0px;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-
+schedule-select
 .schedule-add {
     background-color: #fff;
     color: #000;
@@ -4946,4 +4946,16 @@ span.previous-dot{
     top: 6px;
     right: 48px;
     display: none;
+}
+.live span.kt-meeting-status-icon svg path {
+    stroke: #3788d8 !important;
+}
+.live span.meet-blink {
+    color: #3788d8;
+}
+.join span.kt-meeting-status-icon svg path {
+    stroke: #9B30FF !important;
+}
+.join span.meet-blink {
+    color: #9B30FF;
 }

@@ -46,6 +46,8 @@ export class StreamDashboardComponent implements OnInit {
     this.todayDate = new Date()
     this.meetingDetails()
     this.portfolioSerivce()
+    this.getTimeLineStatus()
+    this.GetDashboardSummary()
   }
 
 
@@ -59,10 +61,10 @@ export class StreamDashboardComponent implements OnInit {
         nav: true,
         dots: false,
         navText: [
-         '<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>',
+            '<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>',
             '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>'
         ],
-
+        slideBy: 4,  // Move 4 items at a time
         responsive: {
           882: { items: 4 }
         }
@@ -106,12 +108,14 @@ export class StreamDashboardComponent implements OnInit {
     this.Emp_No = localStorage.getItem('EmpNo');
     this.service._GetDashboardSummaryCount(this.Emp_No)
       .subscribe((data) => {
+        console.log(data,"GetDashboardSummary()GetDashboardSummary()GetDashboardSummary()")
 
         this.DelayCount = data[0]['DelayCount'];
         sessionStorage.setItem('DelayCount', this.DelayCount);
 
         this.DelayActionCount = data[0]['DelayActionCount'];
         sessionStorage.setItem('DelayActionCount', this.DelayActionCount);
+        console.log( this.DelayActionCount," this.DelayActionCount this.DelayActionCount")
 
         this.AssignActionCount = data[0]['AssignActionCount'];
         sessionStorage.setItem('AssignActionCount', this.AssignActionCount);
@@ -293,6 +297,28 @@ export class StreamDashboardComponent implements OnInit {
     var myurl = `${url}/${P_id}`;
     var myWindow = window.open(myurl, P_id);
     myWindow.focus();
+  }
+
+
+  darArray : any
+  getTimeLineStatus(){
+    this.Emp_No = localStorage.getItem('EmpNo')
+    this.service.NewGetDashboardTimelineStatus(this.Emp_No).subscribe((data)=>{
+      this.darArray = JSON.parse(data['DAR_Details_Json']);
+      console.log(this.darArray,'darArraydarArray')
+    })
+
+  }
+
+
+
+  gotoTimeline() {
+    let Mode: string = "Timeline";
+    var url = document.baseURI + "backend";
+    var myurl = `${url}/${Mode}`;
+    var myWindow = window.open(myurl);
+    myWindow.focus();
+
   }
 
 

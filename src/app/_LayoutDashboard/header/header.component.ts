@@ -16,6 +16,8 @@ import { RESOURCE_CACHE_PROVIDER } from '@angular/platform-browser-dynamic';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_FORMATS,MomentDateAdapter,MAT_MOMENT_DATE_ADAPTER_OPTIONS,} from '@angular/material-moment-adapter';
 import { isString } from '@ng-bootstrap/ng-bootstrap/util/util';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
+import Swal from 'sweetalert2';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -57,6 +59,7 @@ export class HeaderComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,private notifyService: NotificationService,
     public loadingBarServce:LoadingBarService,
+    private bsService:BsServiceService
     ) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.notificationDTO = new NotificationActivityDTO();
@@ -85,6 +88,7 @@ export class HeaderComponent implements OnInit {
   isNotificationsLoading:boolean=false;
   urlcomponent:any;
   newfeaturetippy:any;
+  _confirmBeforeRouting:string;
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.getusername();
@@ -142,6 +146,12 @@ export class HeaderComponent implements OnInit {
         animateFill: true,
         inertia: true,
       });
+
+
+      this.bsService.ConfirmBeforeRoute.subscribe((modalScreen:any)=>{
+        this._confirmBeforeRouting=modalScreen;
+      })
+
 
   }
 
@@ -213,14 +223,41 @@ export class HeaderComponent implements OnInit {
 
   }
 
+
+ viewTimelineBtnClicked(){
+     if(this._confirmBeforeRouting){
+
+      if(this._confirmBeforeRouting=='AT-3RD-STEP-PC')
+      {
+          // moving from 3rd step
+          Swal.fire({
+            title:'Project Not Submitted',
+            text:"Click 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
+            showConfirmButton:true,
+            confirmButtonText:'Keep as draft',
+            showCancelButton:true,
+            cancelButtonText:'Back',
+            // icon:'warning'
+          }).then((decision)=>{
+              if(decision.isConfirmed){
+                this.bsService.ConfirmBeforeRoute.emit(null);
+                this.viewTimeline();
+              }
+          });
+      }
+      
+ }
+ else
+ this.viewTimeline();
+
+ }
+
+
   viewTimeline() {
-debugger
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["../backend/Timeline"],{queryParams:{section:this.timelineType}});
-
-
   }
 
   daterange() {
@@ -519,6 +556,32 @@ debugger
     var myWindow = window.open(myurl);
     myWindow.focus();
   }
+
+ onLogoutBtnClicked(){
+    if(this._confirmBeforeRouting){
+          if(this._confirmBeforeRouting=='AT-3RD-STEP-PC')
+          {
+              // moving from 3rd step
+              Swal.fire({
+                title:'Project Not Submitted',
+                text:"Click 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
+                showConfirmButton:true,
+                confirmButtonText:'Keep as draft',
+                showCancelButton:true,
+                cancelButtonText:'Back',
+                // icon:'warning'
+              }).then((decision)=>{
+                  if(decision.isConfirmed){
+                    this.bsService.ConfirmBeforeRoute.emit(null);
+                    this.logout();
+                  }
+              });
+          }
+          
+    }
+    else
+    this.logout();
+ }
 
   logout() {
     this.loadingBar_state.stop();
@@ -841,13 +904,40 @@ onLeaveSubmit(){
   });
 }
 
-
-
-
-
-
-
-
 // leave application end
+
+
+
+
+sectionActive:string;
+navigate(section:string){
+  if(this._confirmBeforeRouting){
+      if(this._confirmBeforeRouting=='AT-3RD-STEP-PC'){
+          // moving from 3rd step
+          Swal.fire({
+            title:'Project Not Submitted',
+            text:"Click 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
+            showConfirmButton:true,
+            confirmButtonText:'Keep as draft',
+            showCancelButton:true,
+            cancelButtonText:'Back',
+            // icon:'warning'
+          }).then((decision)=>{
+              if(decision.isConfirmed){
+                this.bsService.ConfirmBeforeRoute.emit(null);
+                this.sectionActive=section;
+                this.router.navigate([this.sectionActive]);
+              }
+          });
+      }
+
+  }
+  else{
+    this.sectionActive=section;
+    this.router.navigate([this.sectionActive]);
+  }
+
+}
+
 
 }

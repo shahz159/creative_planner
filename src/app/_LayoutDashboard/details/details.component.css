@@ -1058,7 +1058,8 @@ button.Kt-Approval-btns {
 }
 
 .kt-action-p-tittle {
-  margin-bottom: 11px;
+  /* margin-bottom: 11px; */
+  margin-bottom: 4px;
 }
 
 .Status-done {
@@ -1512,6 +1513,11 @@ label.my-chosse-flv {
 .CompletionUnderApproval {
   background-color: #81C784 !important;
   color: white !important;
+}
+
+.AuditUnderApproval {
+  background-color: #A5D6A7 !important;
+  color: #fff;
 }
 
 .DeadlineExtend {
@@ -1976,7 +1982,7 @@ a.kt-inbox__icon:hover svg path {
 }
 
 .Bt-Submit {
-  padding: 4px 1px;
+  /* padding: 4px 1px; */
   background-color: transparent;
   color: #2786fb;
   font-size: 14px;
@@ -3780,7 +3786,7 @@ mat-icon.mat-icon.notranslate.curser-pointer {
   align-items: center;
   justify-content: center;
   padding: 12px;
-  background-color: #646C9A;
+  background-color: #388E3C !important;
 }
 
 .save-mat-selection:hover {
@@ -3921,6 +3927,7 @@ a.Kt_cmt_user_name {
   color: #071437;
   border-radius: 0.475rem;
   font-weight: 500;
+
 }
 
 .bg-light-orange {
@@ -4859,6 +4866,7 @@ p.kt-dt-l {
   margin-bottom: 0px;
   color: #959595;
 }
+
 
 .project-users .user-initial {
   width: 100%;
@@ -6745,7 +6753,7 @@ div#User_list_View.kt-quick-active--on {
 }
 
 .Bt-close {
-  padding: 4px 1px;
+  /* padding: 4px 1px; */
   background-color: transparent;
   color: #a7a7a7;
   font-size: 14px;
@@ -7893,7 +7901,6 @@ input.search-input {
   border-radius: 0px 0px 4px 4px;
   border-radius: 0 0 5px 5px;
   outline: 0 !important;
-  padding-top: 20px !important;
 
 }
 
@@ -8582,7 +8589,7 @@ span.time-value {
 
 /*completion report css end */
 .diff-div {
-  background: #f9f9f9;
+  background: #f9f9f9 !important;
 }
 
 .kt-detail-link {
@@ -8762,7 +8769,7 @@ span.time-value {
    to{
        transform:scale(1.02);
    }
-  
+
 } */
 
 
@@ -8861,6 +8868,72 @@ span.time-value {
 .new_pro_rej {
   color: #ba68c8 !important;
 }
+.completion{
+  color:#81C784
+}
+
+.extra-at-status {
+  width: fit-content;
+  border: 2px solid gray;
+  padding-left: 5px;
+  padding-right: 6px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  position: relative;
+  left: -1px;
+  color: gray;
+  font-weight: 600;
+  text-wrap: nowrap;
+}
+
+
+
+.aprovls-sectn-forms {
+  margin-top: 13px;
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 2px 4px 20px 1px #ccc;
+}
+
+
+
+.inactive-prjusr .user-details h6 {
+  /* color: #b3b3b3 !important; */
+  opacity: 0.3 !important;
+}
+
+.inactive-prjusr .inactv-label {
+  background-color: #ff000026 !important;
+}
+
+.inactive-prjusr .inactv-label span {
+  background-color: transparent !important;
+  color: #D32F2F !important;
+}
+
+
+.audit-pending-notf {
+  background-color: #9c27b017;
+}
+
+.audit-pending-notf .notif-msg {
+  color: #9C27B0;
+  display: flex;
+  flex-direction: column;
+}
+
+.audit-complete-notf{
+   background-color:#9fffa3d1;
+}
+.audit-complete-notf .notif-msg {
+  color: #388E3C;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
 
 .pulsing-div {
   display: flex;
@@ -8899,7 +8972,7 @@ span.time-value {
   z-index: 1;
   left: 50%;
   top: 50%;
-  transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-44%) translateY(-44%);
   display: block;
   width: 6px;
   height: 6px;
@@ -8948,7 +9021,6 @@ span.time-value {
     opacity: 0;
   }
 }
-
 .user-msg-alert {
   position: relative;
 }
@@ -8961,7 +9033,8 @@ span.time-value {
   will-change: transform;
   box-shadow: 0 3px 5px -1px #00000033, 0 6px 10px 0 #00000024, 0 1px 18px 0 #0000001f;
   margin-top: 8px;
-  display: block;
+  /* display: block; */
+  display:none;
   right: auto;
   bottom: auto;
   width: 22rem;
@@ -8975,6 +9048,26 @@ span.time-value {
   background-color: #527ce2;
   background-clip: padding-box;
 }
+
+.user-msg-open{
+    animation-name:user-msg-open-anim;
+    animation-duration:0.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+
+
+@keyframes user-msg-open-anim{
+      from{
+        transform: translateY(60px);
+        opacity: 0.7;
+      }
+      to{
+         opacity: 1;
+      }
+}
+
 
 .user-msg-alert-body:before {
   content: "";
@@ -9008,7 +9101,7 @@ span.time-value {
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  box-shadow: 0px 0px 3px #3b5eb6;
+  box-shadow: 0px 0px 8px 0px #173ea0;
   transition: all 0.15s ease-in-out;
 }
 

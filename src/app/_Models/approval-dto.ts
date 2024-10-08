@@ -47,5 +47,6 @@ export class ApprovalDTO {
     ToDate:any;
     Country:string;
     CountryId:string;
+    AuditRequestBY:string;
 
 }
