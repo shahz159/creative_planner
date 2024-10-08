@@ -231,6 +231,8 @@ export class ProjectUnplannedTaskComponent implements OnInit{
 
     this.ProjectTypeService._GetRunwayCatId(this.CurrentUser_ID).subscribe(
       (data) => {
+        debugger
+        if(data!=null && data!=undefined && data!='')
         this.newCatid=(data[0]['CategoryId']);
         this.GetTodoProjects();
       });
@@ -1848,10 +1850,6 @@ else{
     fd.append("Attachment", "false");
     fd.append('file', "");
   }
-
-
-
-
 
 
   this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(

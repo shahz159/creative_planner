@@ -728,6 +728,10 @@ background-color: #eaf2fd !important;
   background-color: #9C27B0 !important;
 }
 
+.cancellation{
+color: #F44336;
+}
+
 
 .UnderApproval {
   background-color: #9C27B0 !important;
@@ -891,7 +895,7 @@ button.Kt-Approval-btns {
 
 .Bt-Submit {
   background-color: transparent;
-  color: #2786fb; 
+  color: #2786fb;
   font-size: 14px;
   border: 1px solid #2786fb;
   opacity: 1;

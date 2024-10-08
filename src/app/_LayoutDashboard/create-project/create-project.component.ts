@@ -634,9 +634,9 @@ createSRTProject(){
                 else{
                   this.Move_to_Add_action_tab();    // moved to step 3
                   this.BsService.ConfirmBeforeRoute.emit('AT-3RD-STEP-PC'); // we are on step3 screen.
-                 
+
                 }
-              
+
 
                }
              this.BsService.ProjectCreatedEvent.emit();
@@ -818,19 +818,19 @@ onFileChanged(event: any) {
 
   }
 
-  Scratech_btn(){ 
+  Scratech_btn(){
     $('.Assigned-projects-list').addClass('d-none');
     $('.Templates-list').addClass('d-none');
     // $('.np-step-1').removeClass('d-none');
-    $('.np-step-2').removeClass('d-none');        // visible proj creation section. 
+    $('.np-step-2').removeClass('d-none');        // visible proj creation section.
     $('.np-step-1').addClass('d-none');           // close let's start section.
     this.notificationMsg=0;
   }
-  
+
   back_to_options(){
     this.unique_id=null;
     $('.np-step-1').removeClass('d-none');                // visible let's start section.
-    $('.np-step-2').addClass('d-none');                  // close proj creation section.                  
+    $('.np-step-2').addClass('d-none');                  // close proj creation section.
     $('.Assigned-projects-list').addClass('d-none');     //close assigned projects section
     $('.Templates-list').addClass('d-none');             //close template projects section
     $('.Drafts-list').addClass('d-none');                //close draft projects section.
@@ -838,13 +838,13 @@ onFileChanged(event: any) {
     $('.Add_action_tab').hide();                         // close action tab(3rd section).
     $('.Project_details_tab').show();                    // open section 1 form.
     $('.action-left-view').addClass('d-none');           // close actions view of 3rd step.
-    this.notificationMsg=0; 
+    this.notificationMsg=0;
   }
 
 
   closeStep3Section(){
      // when moving out from the 3rd step.
-    
+
     Swal.fire({
         title:'Project not submitted',
         text:"Click on 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
@@ -856,7 +856,7 @@ onFileChanged(event: any) {
         if(decision.isConfirmed){
           this.BsService.ConfirmBeforeRoute.emit(null);   // if back to options from 3rd step. removes sidebar,header confirmations.
           this.back_to_options();
-          this.reset(); 
+          this.reset();
           }
       });
   }
@@ -990,7 +990,7 @@ gottoPrevious(){
     $('.sbs--basic .active').addClass('finished');
     $('.sbs--basic li').removeClass('active');
     $('.sbs--basic li:nth-child(3)').addClass('active');
-    this.notificationMsg=3; 
+    this.notificationMsg=3;
 
 
   }
@@ -1063,6 +1063,13 @@ onResponsibleChanged(){
     const obj=this.PrjSupport.find(item=>item.Emp_No==this.PrjResp);
     if(obj)this.PrjSupport.splice(this.PrjSupport.indexOf(obj),1);
   //
+
+  // selected responsible cannot be selected also as project auditor
+      if(this.PrjAuditor==this.PrjResp){
+         this.PrjAuditor=null;
+      }
+  //
+
   }
 }
 
@@ -1161,7 +1168,7 @@ onProjectOwnerChanged(){
   // end_Date:any    //x
   // date_End:any    //x
   // task_Name:any   //x
-  CreateName:any;    
+  CreateName:any;
   unique_id:number
   // projectType:any   //x
   // portfolio:any    //x
@@ -1170,7 +1177,7 @@ onProjectOwnerChanged(){
   // allocated:any
 
   onButtonClick(value:any,id:number){
- 
+ debugger
     this.bind_Project = [value];
     console.log('bind project:',this.bind_Project);
     // this.duration=this.bind_Project[0].Duration;

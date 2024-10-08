@@ -174,8 +174,7 @@ export class ProjectTypeService {
     this.ObjUserDetails.startdate=obj.startdate;
     this.ObjUserDetails.enddate=obj.enddate;
     //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
-    // console.log(this.rootUrl + "TestAPI/NewGetProjectDetailsByUserName_ForSummary","ddddddddddddddddddddddddddddddddddddddddddddddd");
-    // console.log(this.ObjUserDetails,"ggggggggggggggggggggggggggggg");
+   
     return this.http.post(this.rootUrl + "TestAPI/NewGetProjectDetailsByUserName_ForSummary", this.ObjUserDetails);
   }
   GetProjectsByOwner_Service_ForSummary(obj: UserDetailsDTO) {
@@ -850,7 +849,6 @@ export class ProjectTypeService {
 
 
   _InsertAssignTaskServie(fd) {
-    debugger
     return this.http.post(this.rootUrl + "Notification/NewInsertAssignTask", fd);
   }
 
