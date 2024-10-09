@@ -2431,5 +2431,36 @@ getFormattedDelay(delayDays: any): string {
 
 
 
+getStandardText(stdstatus: any): string {
+  if (!stdstatus) return '';
+
+  const days = parseInt(stdstatus);
+  if (isNaN(days)) return stdstatus; // Return original status if it's not a number
+
+  const periods = [
+    { unit: 'year', duration: 365 },
+    { unit: 'month', duration: 30 },
+    { unit: 'week', duration: 7 }
+  ];
+
+  for (const { unit, duration } of periods) {
+    const count = Math.floor(days / duration);
+    if (count > 0) {
+      const formattedCount = count < 10 ? `0${count}` : `${count}`;
+      return count === 1 ? `01 ${unit} delay` : `${formattedCount} ${unit}s delay`;
+    }
+  }
+
+  const formattedDays = days < 10 ? `0${days}` : `${days}`;
+  return `${formattedDays} day${days === 1 ? '' : 's'} delay`;
+}
+
+
+
+
+
+
+
+
 
 }

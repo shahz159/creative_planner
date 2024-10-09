@@ -136,11 +136,11 @@
                                                         'EnactiveUnderApproval': item.Status=='Enactive Under Approval',
                                                         'ForwardUnderApproval': item.Status=='Forward Under Approval',
                                                         'CompletionUnderApproval': item.Status=='Completion Under Approval',
-                                                        'Delay': item.Status=='Cancellation Under Approval',
+                                                        'Delay': (item.Status=='Cancellation Under Approval'||(Project_type=='Standard Tasks'&&item.Status.toLowerCase().includes('day')))||item.Status=='Not yet achieved',
                                                         'Cancelled': item.Status=='Cancelled',
                                                         'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                         'Hold': item.Status=='Project Hold',
-                                                        'AuditUnderApproval':(item.Status==='Completion Under Approval'&&item.AuditStatus=='Audit Pending')
+                                                        'AuditUnderApproval':(item.Status==='Completion Under Approval'&&item.AuditStatus=='Audit Pending')   
                                                         }">
 
                                        {{
@@ -148,10 +148,10 @@
                                             item.Status=="Cancellation Under Approval"?"Cancellation approval":
                                             item.Status=="Completion Under Approval" ? ((item.AuditStatus=='Audit Pending')?"Audit Approval":"Completion approval"):
                                             item.Status=='Forward Under Approval'? "Forward approval":
-
                                             item.Status=='Deadline Extend Under Approval'?"Deadline extend approval":
                                             item.Status=='InProcess'?'In-process':
                                             item.Status=='Project Hold'?'Hold':
+                                            (Project_type=='Standard Tasks'&&item.Status.toLowerCase().includes('day'))?getStandardText(item.Status):
                                             item.Status
                                          }}
 
@@ -169,7 +169,7 @@
 
 
                                     <div class="extra-at-status" *ngIf="item.Status==='Delay'&&(item.deadlineCount&&item.deadlineCount>0)" style="border-color:#d32f2f;">
-                                        <span class="fs-8" style="color: #d32f2f;">{{item.deadlineCount}} {{item.deadlineCount==1?'time':'times'}} extended</span>
+                                        <span class="fs-8" style="color: #d32f2f;">{{item.deadlineCount}} {{item.deadlineCount==1?'time':'times'}} deadline changed</span>
                                     </div>
 
 
@@ -209,8 +209,8 @@
                                  </span>
                            </div> -->
                         <div class="kt-project-type  ">
-                            <div class="Kt-Pd-Status Delay " *ngIf="item.Status.toLowerCase().includes('delay'); else notdelay_status">
-                                <ng-container *ngIf="item.Status=='Delay'"> {{getFormattedDelay(item.Delaydays)}} delay</ng-container>
+                            <div class="Kt-Pd-Status Delay" *ngIf="item.Status.toLowerCase().includes('delay'); else notdelay_status">
+                                <ng-container *ngIf="item.Status=='Delay'">{{getFormattedDelay(item.Delaydays)}} delay</ng-container>
                                 <ng-container *ngIf="item.Status!='Delay'">{{item.Status}}</ng-container>
                             </div>
                             <ng-template #notdelay_status>
@@ -220,9 +220,11 @@
                                                 'Done': item.Status=='Completed','ToDo':item.Status=='ToDo Achieved',
                                                 'ToDoCompleted':item.Status=='ToDo Completed','EnactiveUnderApproval': item.Status=='Enactive Under Approval',
                                                 'ForwardUnderApproval': item.Status=='Forward Under Approval', 'CompletionUnderApproval':item.Status=='Completion Under Approval',
-                                                'Delay': item.Status=='Cancellation Under Approval','Cancelled': item.Status=='Cancelled',
+                                                'Delay': item.Status=='Cancellation Under Approval'|| (Project_type=='Standard Tasks'&&item.Status.toLowerCase().includes('day'))||item.Status=='Not yet achieved',
+                                                'Cancelled': item.Status=='Cancelled',
                                                 'DeadlineExtend': item.Status=='Deadline Extend Under Approval', 'Hold': item.Status=='Project Hold',
                                                 'AuditUnderApproval':(item.Status==='Completion Under Approval'&&item.AuditStatus=='Audit Pending')
+
                                                 }"
                                                 >
                                                  <ng-container *ngIf="item.Status !== 'Project Hold'">
@@ -234,7 +236,9 @@
                                                       item.Status=='Forward Under Approval'?"Forward approval":
                                                       item.Status=='Deadline Extend Under Approval'?"Deadline extend approval":
                                                       item.Status=='InProcess'?'In-process':
-                                                      item.Status}}
+                                                      (Project_type=='Standard Tasks'&&item.Status.toLowerCase().includes('day'))?getStandardText(item.Status):
+                                                      item.Status
+                                                      }}
                                                  </span>
                                                   </ng-container>
                             </div>
@@ -253,6 +257,14 @@
 
                               </div>
                            </ng-template>
+
+
+
+
+
+
+
+
                             <div class="Requested_user_info">
                                 <span class="svg-Rq-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -332,9 +344,8 @@
                                                 'EnactiveUnderApproval': item.Status=='Enactive Under Approval',
                                                 'ForwardUnderApproval': item.Status=='Forward Under Approval' ,
                                                 'CompletionUnderApproval': item.Status=='Completion Under Approval',
-                                                'Delay': item.Status=='Cancellation Under Approval',
                                                 'Cancelled': item.Status=='Cancelled',
-                                                'Delay':item.Status.toLowerCase().includes('delay'),
+                                                'Delay':(item.Status=='Cancellation Under Approval'||item.Status.toLowerCase().includes('delay')||(Project_type=='Standard Tasks'&&item.Status.toLowerCase().includes('day'))||item.Status=='Not yet achieved'),
                                                 'DeadlineExtend': item.Status=='Deadline Extend Under Approval',
                                                 'Hold': item.Status=='Project Hold',
                                                 'AuditUnderApproval':(item.Status==='Completion Under Approval'&&item.AuditStatus=='Audit Pending')
@@ -346,6 +357,7 @@
                               item.Status=='Forward Under Approval'?"Forward approval":
                               item.Status=='Deadline Extend Under Approval'?"Deadline extend approval":
                               item.Status=='InProcess'?'In-process':
+                              (Project_type=='Standard Tasks'&&item.Status.toLowerCase().includes('day'))?getStandardText(item.Status):
                               item.Status
                             }}
                         </div>
