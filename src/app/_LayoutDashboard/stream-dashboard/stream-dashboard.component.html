@@ -693,9 +693,65 @@
                                     Portfolios
                                 </div>
                             </div>
+                            <div class="n-portfolio-ul owl-carousel owl-theme" >
+                                <div class="n-portfolio-li"  *ngFor="let item of portfoiloData"  (click)="openCard(item.Portfolio_ID,item.Portfolio_Name,item.Created_By)">
+                                    <div class="n-portfolio-head" >
+                                        <div class="n-portfolio-title"  >
+                                            {{item.Portfolio_Name}}
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="n-portfolio-body">
+                                        <div class="per-con">{{item.AchievementPercentage  | number:'1.0-2' }}<small>%</small></div>
+                                        <div class="n-portfolio-item">
+                                            <div class="n-portfolio-item-icon">
+                                                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 21C5 17.134 8.13401 14 12 14C15.866 14 19 17.134 19 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                            </div>
+                                            <div class="n-portfolio-item-title">
+                                                <span>
+                                                    Shaik Mohammad Rafi
+                                                </span>
+                                              
+                                            </div>
+                                        </div>
+                                        <div class="n-portfolio-item">
+                                            <div class="n-portfolio-item-icon">
+                                                <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="m 13,2.15688 0,9.68624 C 13,12.49386 12.491071,13 11.842857,13 L 2.1571429,13 C 1.5169643,12.99732 1,12.49922 1,11.84044 L 1,2.15688 C 1,1.51149 1.5035714,1 2.1571429,1 L 11.845536,1 C 12.488393,1 13,1.50346 13,2.15688 Z m -0.999107,9.68356 0,-9.68356 c 0,-0.0803 -0.06964,-0.15532 -0.155357,-0.15532 l -0.249107,0 L 8.6419643,3.99933 7,2.66302 5.3607143,3.99933 2.40625,1.99888 l -0.2491071,0 c -0.085714,0 -0.1553572,0.075 -0.1553572,0.15533 l 0,9.68623 c 0,0.0803 0.069643,0.15532 0.1553572,0.15532 l 9.6883931,0 c 0.08571,0.003 0.155357,-0.0723 0.155357,-0.15532 z m -6.9776787,-6.71636 0,0.99085 -1.96875,0 0,-0.99085 1.96875,0 z m 0,1.99241 0,0.99889 -1.96875,0 0,-0.99889 1.96875,0 z m 0.2973214,-3.94465 1.4464286,-1.17028 -3.1741072,0 1.7276786,1.17028 z m 5.6250003,1.95224 0,0.99085 -5.2500003,0 0,-0.99085 5.2500003,0 z m 0,1.99241 0,0.99889 -5.2500003,0 0,-0.99889 5.2500003,0 z M 8.6794643,3.17184 10.407143,2.00156 l -3.1714287,0 1.44375,1.17028 z m 2.2660717,5.94242 0,0.99888 -2.6625003,0 0,-0.99888 2.6625003,0 z"></path></g></svg>
+                                            </div>
+                                            <div class="n-portfolio-item-title">14 Project(s)</div>
+                                        </div>
+                                        <div class="n-portfolio-item">
+                                            <div class="n-portfolio-item-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+                                                    <path d="M39.2729 55.2725C48.1095 55.2725 55.2729 48.109 55.2729 39.2725C55.2729 30.4359 48.1095 23.2725 39.2729 23.2725C30.4364 23.2725 23.2729 30.4359 23.2729 39.2725C23.2729 48.109 30.4364 55.2725 39.2729 55.2725Z" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M39.2729 33.001V39.2727L43.6366 43.6363" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M43.6362 2.90918V8.72736" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M14.5454 2.90918V8.72736" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M17.5438 55.273C15.7834 55.273 13.1427 55.273 9.6219 55.273C7.28774 55.273 6.44132 55.0456 5.58798 54.6186C4.73465 54.1916 4.06495 53.565 3.60858 52.7665C3.15221 51.9681 2.90918 51.1761 2.90918 48.9921V15.0084C2.90918 12.8244 3.15221 12.0325 3.60858 11.234C4.06495 10.4356 4.73465 9.80896 5.58798 9.38195C6.44132 8.95494 7.28774 8.72754 9.6219 8.72754H48.5601C50.8943 8.72754 51.7407 8.95494 52.594 9.38195C53.4473 9.80896 54.117 10.4356 54.5734 11.234C55.0298 12.0325 55.2728 15.2634 55.2728 17.4475" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <rect x="11" y="19" width="8" height="8" rx="2" fill="currentColor"/>
+                                                    </svg>
+                                            </div>
+                                            <div class="n-portfolio-item-title">
+                                                <div class="n-portfolio-item-date">Feb 21, 2023, 10:51:21 AM</div>
 
-                            <div class="portfolio-item-list owl-carousel owl-theme">
-                                <div class="portfolio-item" *ngFor="let item of portfoiloData" (click)="openCard(item.Portfolio_ID,item.Portfolio_Name,item.Created_By)">
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="n-portfolio-foot">
+                                        <div class="n-portfolio-status">
+                                            <div>
+                                                <span class="kt-inbox__label kt-badge Delay kt-badge   kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                    13 maximum days delay
+                                                </span>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div> 
+                            <!-- <div class="portfolio-item-list owl-carousel owl-theme">
+                                <div class="portfolio-item" *ngFor="let item of portfoiloData"  (click)="openCard(item.Portfolio_ID,item.Portfolio_Name,item.Created_By)">
                                     <div class="portfolio-heading">{{item.Portfolio_Name}}</div>
                                     <div class="portfolio-percentage">{{item.AchievementPercentage  | number:'1.0-2' }}%</div>
                                     <div class="portfolio-sub-percentage">{{100 - item.AchievementPercentage  | number:'1.0-2'}}%</div>
@@ -704,33 +760,12 @@
                                         <div class="progress attach-tippy">
                                           <span class="st-line">{{item.AchievementPercentage | number:'1.0-2' }}</span>
                                             <div  class="progress-bar" role="progressbar"   [ngStyle]="{ width: item.AchievementPercentage + '%' ,backgroundColor:item.AchievementPercentage < 80 ? 'red' : '#62B134' }" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                            <!-- <div *ngIf="item.AchievementPercentage>=80" class="progress-bar completed" role="progressbar"   [ngStyle]="{ width: item.AchievementPercentage + '%' }" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div> -->
+                                           
                                          </div>
                                     </div>
                                 </div>
-                                <!-- <div class="portfolio-item">
-                                    <div class="portfolio-heading">DC Smartbrew</div>
-                                    <div class="portfolio-percentage">97%</div>
-                                    <div class="portfolio-sub-percentage">+34%</div>
-                                    <div class="portfolio-progress">
-                                        <div class="portfolio-progress-label">Achivement</div>
-                                        <div class="progress">
-                                            <div class="progress-bar green-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                          </div>
-                                    </div>
-                                </div> -->
-                                <!-- <div class="portfolio-item">
-                                    <div class="portfolio-heading">DC Menu Development</div>
-                                    <div class="portfolio-percentage">64%</div>
-                                    <div class="portfolio-sub-percentage">+34%</div>
-                                    <div class="portfolio-progress">
-                                        <div class="portfolio-progress-label">Achivement</div>
-                                        <div class="progress">
-                                            <div class="progress-bar red-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                          </div>
-                                    </div>
-                                </div> -->
-                            </div>
+                              
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -740,7 +775,7 @@
 
         </div>
         <div class="col-md-4">
-            <div class="card">
+            <div class="">
                 <div class="card-body p-0">
                     <div class="card h-100">
                         <div class="card-body p-0">
@@ -755,11 +790,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="card h-100 mt-3">
-                        <div class="card-body pt-0">
-                            <div class="card-title">Project Status</div>
+                            <div class="pt-3 px-3">
+                                <div class="card-title">Project Status</div>
                             <div class="action-tile">
                                 <div>
                                     <div class="action-tile-item-v1"  (click)="Delay_Click('Assigned Project')" >
@@ -859,171 +891,127 @@
                                         <div class="action-tile-item-count">11</div>
                                     </div> -->
                             </div>
-                            <hr>
-                            <div class="position-relative" *ngFor="let item of darArray">
-                                <div class="card-title mt-3">DAR Status</div>
-                            <div>
-                                <div class="dar-title"><span class="dar-dot"></span> Today DAR Achived</div>
-                                <div class="dar-time">{{item.todayHours }}</div>
-                                <div class="dar-progress">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                      </div>
-                                </div>
-                                <div class="dar-time-label">
-                                    <span>{{item.todayHours | slice:0:5}}</span>
-                                    <span>08:00</span>
-                                </div>
-                                <div class="action-tile">
-                                        <div class="action-tile-item-v1">
-                                            <div class="action-tile-item-count-v1 bl">123</div>
-                                            <div class="action-tile-item-name-v1">Under Approval</div>
-                                        </div>
-                                        <div class="action-tile-item-v1">
-                                            <div class="action-tile-item-count-v1 bl">12</div>
-                                            <div class="action-tile-item-name-v1">Rejected</div>
-                                        </div>
                             </div>
-                            <div class="yes-dar" (click)="gotoTimeline()" >
-                                <div class="yes-dar-label">Yesterday DAR</div>
-                                <div class="yes-dar-status">{{item.DarStatus}}</div>
-                            </div>
-                            <!-- <div class="action-tile">
-                                <div class="action-tile-item bgrad-9">
-                                    <div class="icon-right">
-                                        <div class="icon">
-                                            <svg fill="currentColor" height="64px" width="64px" version="1.1"
-                                                id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 270.668 270.668"
-                                                xml:space="preserve">
-                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                    stroke-linejoin="round"></g>
-                                                <g id="SVGRepo_iconCarrier">
-                                                    <g>
-                                                        <g>
-                                                            <g>
-                                                                <path
-                                                                    d="M220.747,43.166v-5.987h10.701c2.761,0,5-2.239,5-5V5c0-2.761-2.239-5-5-5H39.219c-2.761,0-5,2.239-5,5v27.179 c0,2.761,2.239,5,5,5H49.92v5.987c0,27.326,13.756,52.411,36.798,67.102l39.315,25.066L86.719,160.4 c-23.042,14.69-36.798,39.775-36.798,67.102v5.987H39.219c-2.761,0-5,2.239-5,5v27.179c0,2.761,2.239,5,5,5h192.229 c2.761,0,5-2.239,5-5v-27.179c0-2.761-2.239-5-5-5h-10.701v-5.987c0-27.327-13.756-52.411-36.798-67.102l-39.315-25.066 l39.315-25.066C206.99,95.577,220.747,70.492,220.747,43.166z M44.219,27.179V10h182.229v17.179 C215.974,27.179,54.388,27.179,44.219,27.179z M226.448,243.488v17.179H44.219v-17.179 C54.695,243.488,216.279,243.488,226.448,243.488z M178.573,168.831c20.147,12.845,32.175,34.777,32.175,58.67v5.987H59.92 v-5.987c0-23.893,12.027-45.825,32.174-58.67l43.239-27.568L178.573,168.831z M135.334,129.404l-43.239-27.567 C71.948,88.991,59.92,67.059,59.92,43.166v-5.987h150.826v5.987c0,23.893-12.028,45.825-32.174,58.67L135.334,129.404z">
-                                                                </path>
-                                                                <path
-                                                                    d="M99.37,193.333c-14.081,8.977-23.239,10.374-25.416,26.624h122.761c-2.177-16.25-11.334-17.647-25.416-26.624 l-35.965-22.93L99.37,193.333z">
-                                                                </path>
-                                                                <path
-                                                                    d="M135.334,113.357c39.228-25.01,36.736-23.361,39.037-25.048H96.297C98.599,89.997,95.573,88.007,135.334,113.357z">
-                                                                </path>
-                                                            </g>
-                                                        </g>
-                                                    </g>
-                                                </g>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="action-tile-item-name">Today's DAR Achievement</div>
-                                    <div class="action-tile-item-count">00
-                                        Hrs</div>
-                                </div>
-                                <div class="action-tile-item bgrad-2">
-                                    <div class="icon-right">
-                                        <div class="icon">
-                                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                    stroke-linejoin="round"></g>
-                                                <g id="SVGRepo_iconCarrier">
-                                                    <path d="M6.87988 18.1501V16.0801" stroke="currentColor"
-                                                        stroke-width="1.5" stroke-linecap="round"></path>
-                                                    <path d="M12 18.15V14.01" stroke="currentColor" stroke-width="1.5"
-                                                        stroke-linecap="round"></path>
-                                                    <path d="M17.1201 18.1499V11.9299" stroke="currentColor"
-                                                        stroke-width="1.5" stroke-linecap="round"></path>
-                                                    <path
-                                                        d="M17.1199 5.8501L16.6599 6.3901C14.1099 9.3701 10.6899 11.4801 6.87988 12.4301"
-                                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                                                    </path>
-                                                    <path d="M14.1899 5.8501H17.1199V8.7701" stroke="currentColor"
-                                                        stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                    <path
-                                                        d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                </g>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="action-tile-item-name">Yesterdays's DAR Status</div>
-                                    <div class="action-tile-item-count">Not Submitted</div>
-                                </div>
-                                <div class="action-tile-item bgrad-8">
-                                    <div class="icon-right">
-                                        <div class="icon">
-                                            <svg width="64px" height="64px" viewBox="0 0 16 16"
-                                                xmlns="http://www.w3.org/2000/svg" version="1.1" fill="none"
-                                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="1.5">
-                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                    stroke-linejoin="round"></g>
-                                                <g id="SVGRepo_iconCarrier">
-                                                    <path
-                                                        d="m1.75 11 6.25 3.25 6.25-3.25m-12.5-3 6.25 3.25 6.25-3.25m-6.25-6.25-6.25 3.25 6.25 3.25 6.25-3.25z">
-                                                    </path>
-                                                </g>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="action-tile-item-name">DAR Under Approval</div>
-                                    <div class="action-tile-item-count">11</div>
-                                </div>
-                                <div class="action-tile-item bgrad-7">
-                                    <div class="icon-right">
-                                        <div class="icon">
-                                            <svg fill="currentColor" height="64px" width="64px" version="1.1"
-                                                id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 329.328 329.328"
-                                                xml:space="preserve" stroke="currentColor">
-                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                    stroke-linejoin="round"></g>
-                                                <g id="SVGRepo_iconCarrier">
-                                                    <path
-                                                        d="M164.666,0C73.871,0,0.004,73.871,0.004,164.672c0.009,90.792,73.876,164.656,164.662,164.656 c90.793,0,164.658-73.865,164.658-164.658C329.324,73.871,255.459,0,164.666,0z M164.666,30c31.734,0,60.933,11.042,83.975,29.477 L59.478,248.638c-18.431-23.04-29.471-52.237-29.474-83.967C30.004,90.413,90.413,30,164.666,30z M164.666,299.328 c-31.733,0-60.934-11.042-83.977-29.477L269.854,80.691c18.431,23.043,29.471,52.244,29.471,83.979 C299.324,238.921,238.917,299.328,164.666,299.328z">
-                                                    </path>
-                                                </g>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="action-tile-item-name">DAR Rejected</div>
-                                    <div class="action-tile-item-count">11</div>
-                                </div>
-                            </div> -->
-
                         </div>
-                            </div>
-                            <hr>
-                                    <div class="card-title">Today Activity</div>
-                                    <div class="action-info">
-                                        <div class="action-info-item">
-                                            <div class="action-info-label">Actions Created</div>
-                                            <div class="action-info-status">04</div>
+                    </div>
+                    <div class="card h-100 mt-3 activity-card">
+                        <div class="activity-item owl-carousel owl-theme">
+                            <div class="card-body">
+                            
+                        
+                            
+                                <div class="activity-report">
+                                    <div class="activity-report-content">
+                                        <p style="margin-bottom: 0rem;">
+                                            This week, you’ve collectively invested valuable hours into your projects, and it shows! Your dedication is driving us closer to our goals. Remember, every step you take contributes to our success as a team.
+                                        </p>
+                                    </div>
+                                    <div class="activity-report-days">
+                                        <div class="icon">
+                                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 12L10.8189 13.8189V13.8189C10.9189 13.9189 11.0811 13.9189 11.1811 13.8189V13.8189L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                         </div>
-                                        <div class="action-info-item">
-                                            <div class="action-info-label">Actions Completed</div>
-                                            <div class="action-info-status">03</div>
-                                        </div>
-                                        <div class="action-info-item">
-                                            <div class="action-info-label">Projects Created</div>
-                                            <div class="action-info-status">04</div>
-                                        </div>
-                                        <div class="action-info-item">
-                                            <div class="action-info-label">Projects Completed</div>
-                                            <div class="action-info-status">03</div>
+                                        <div class="activity-report-days-ul">
+                                            
+                                            <div class="activity-report-days-li active">
+                                                <div class="activity-report-days-li-dot"></div>
+                                                <div class="activity-report-days-li-label">M</div>
+                                            </div>
+                                            <div class="activity-report-days-li active">
+                                                <div class="activity-report-days-li-dot"></div>
+                                                <div class="activity-report-days-li-label">T</div>
+                                            </div>
+                                            <div class="activity-report-days-li active">
+                                                <div class="activity-report-days-li-dot"></div>
+                                                <div class="activity-report-days-li-label">W</div>
+                                            </div>
+                                            <div class="activity-report-days-li active">
+                                                <div class="activity-report-days-li-dot"></div>
+                                                <div class="activity-report-days-li-label">T</div>
+                                            </div>
+                                            <div class="activity-report-days-li">
+                                                <div class="activity-report-days-li-dot"></div>
+                                                <div class="activity-report-days-li-label">F</div>
+                                            </div>
+                                            <div class="activity-report-days-li">
+                                                <div class="activity-report-days-li-dot"></div>
+                                                <div class="activity-report-days-li-label">S</div>
+                                            </div>
+                                            <div class="activity-report-days-li">
+                                                <div class="activity-report-days-li-dot"></div>
+                                                <div class="activity-report-days-li-label">S</div>
+                                            </div>
                                         </div>
                                     </div>
-                    </div>
+                                    <div class="activity-working-hours">
+                                        <div class="activity-working-hours-icon">
+                                            <svg width="64px" height="64px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5 2H7V3.07645C3.88491 3.55745 1.5 6.25021 1.5 9.5C1.5 13.0899 4.41015 16 8 16C11.5899 16 14.5 13.0899 14.5 9.5C14.5 8.0659 14.0356 6.74027 13.2489 5.66531L14.7071 4.20711L13.2929 2.79289L11.8347 4.2511C11.0146 3.65097 10.0487 3.23838 9 3.07645V2H11V0H5V2ZM7 6V10H9V6H7Z" fill="currentColor"></path> </g></svg>
+                                        </div>
+                                        <div class="activity-working-hours-label">
+                                            <b>32:15:00</b> Working hours this week
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-report">
+                                <div class="activity-report-content">
+                                    <p style="margin-bottom: 0rem;">
+                                        "Happy Monday! It's a new week to tackle your goals. You have pending actions to complete, or feel free to start a new task to kick things off. Let’s make this week productive!"
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-report">
+                                <div class="activity-report-content">
+                                    <p style="margin-bottom: 0rem;">
+                                        "Hello, I appreciate your efforts on the project. However, I’ve seen some delays in your timeline submissions. Could you please provide the updates as soon as possible? It’s important for moving forward. Thanks!"
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                       
                 </div>
+                <div class="card h-100 mt-3">
+                    <div class="card-body pt-0">
+                        <div class="position-relative">
+                            <div class="card-title mt-3">DAR Status</div>
+                        <div class="dar-f">
+                            <div class="dar-item-b">
+                                <div class="dar-con">05:20</div>
+                                <div class="dar-label">Today Achivement</div>
+                            </div>
+                            <div class="dar-item-b">
+                                <div class="dar-con yes-dar-status">Not Submited</div>
+                                <div class="dar-label">Yesterday Achivement</div>
+                            </div>
+                                              
+                        </div>
+                        </div>
+                        <hr>
+                                <div class="card-title">Last Week Activity</div>
+                                <div class="action-info">
+                                    <div class="action-info-item">
+                                        <div class="action-info-label">Actions Created</div>
+                                        <div class="action-info-status">04</div>
+                                    </div>
+                                    <div class="action-info-item">
+                                        <div class="action-info-label">Actions Completed</div>
+                                        <div class="action-info-status">03</div>
+                                    </div>
+                                    <div class="action-info-item">
+                                        <div class="action-info-label">Projects Created</div>
+                                        <div class="action-info-status">04</div>
+                                    </div>
+                                    <div class="action-info-item">
+                                        <div class="action-info-label">Projects Completed</div>
+                                        <div class="action-info-status">03</div>
+                                    </div>
+                                </div>
+                </div>
+            </div>
             </div>
         </div>
     </div>

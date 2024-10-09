@@ -5,7 +5,8 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { OldPwdValidators } from '../myprofile/old-pwd-validators';
 import { PolicyService } from 'src/app/_Services/policy.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
-
+declare var $: any;
+declare const ApexCharts: any;
 @Component({
   selector: 'app-myprofile',
   templateUrl: './myprofile.component.html',
@@ -70,6 +71,10 @@ export class MyprofileComponent implements OnInit {
       });
   }
 
+  ngAfterViewInit() {
+    this.drawLineGraph();
+  }
+
   get oldPwd() {
     return this.form1.get('oldPwd');
   }
@@ -108,5 +113,35 @@ export class MyprofileComponent implements OnInit {
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+  }
+    drawLineGraph() {
+    var options = {
+      series: [{
+        name: 'Total',
+        data: [22, 33, 17, 56, 99, 10, 11, 42, 5
+        ]
+      }],
+      chart: {
+        type: 'line', // Change chart type to line
+        height: 350
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 4,
+          horizontal: true,
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: ['Delay Projects', 'Delay Actions', 'Delay In One Month', 'Projects not Started', 'Assigned Projects', 'Not Working from 1 Month', 'Rejected Projects',
+          'Under Approval Projects', 'Assigned Actions'
+        ],
+      }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#ActionBar-chart"), options);
+    chart.render();
   }
 }

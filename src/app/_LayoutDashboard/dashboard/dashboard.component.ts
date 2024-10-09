@@ -3893,6 +3893,7 @@ currentTime:any;
   RecurrenceValue:any
 
   GetClickEventJSON_Calender(arg) {
+    console.log(arg,'testing process of popup box')
     this.EventScheduledjson = [];
     this.loading = true;
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -4411,6 +4412,7 @@ currentTime:any;
     this.fetchDataStartTime = performance.now();
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
+        console.log(data,'dataCalendar Json List')
         this.fetchDataEndTime = performance.now();
         this.fetchDataTime = this.fetchDataEndTime - this.fetchDataStartTime;
 

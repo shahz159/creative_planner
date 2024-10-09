@@ -9110,3 +9110,165 @@ span.time-value {
   border: 1px solid #5981e7;
   box-shadow: 0px 0px 3px #2358e2;
 }
+
+/* Approval timeline css start */
+.approval-timeline {
+  margin: 10px 10px 20px 10px;
+}
+.ap-ti {
+  width: 100%;
+  background-color: #c04f5d;
+  background: rgb(0,163,225);
+  background: linear-gradient(90deg, rgba(0,163,225,1) 0%,  rgb(39,87,156,1) 25%, rgba(147,79,192,1) 50%, rgba(192,79,142,1) 75%, rgba(192,79,93,1) 100%);
+  height: 10px;
+  position: absolute;
+  top: 47%;
+}
+.ap-ti:before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #089edf;
+  border-radius: 50%;
+  left: -15px;
+  top: -5px;
+}
+.ap-ti:after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -17px;
+  border-left: solid 14px #00000000;
+  border-right: solid 14px transparent;
+  border-bottom: solid 14px #c04f5d;
+  height: 0;
+  width: 0;
+  transform: rotate(90deg);
+}
+.disc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row; 
+  flex-wrap: wrap; 
+  z-index: 1;
+  justify-content: space-evenly;
+  position: relative;
+}
+
+.disc-list li {
+  position: relative;
+  width: 6rem;
+  height: 6rem;
+  text-align: center;
+  border-radius: 50%; 
+  background: #888;
+  color: #888;
+  display: flex;
+  flex-shrink: 0; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem 1.25rem 1.5rem 1.5rem; 
+  overflow: visible;
+}
+
+.disc-list li:nth-child(1) {
+  background: #00AFC0;
+  color: #00AFC0;
+}
+
+.disc-list li:nth-child(2) {
+  background: #00A3E1;
+  color: #00A3E1;
+}
+
+.disc-list li:nth-child(3) {
+  background: #27579C;
+  color: #27579C;
+}
+
+.disc-list li:nth-child(4) {
+  background: #934FC0;
+  color: #934FC0;
+}
+
+.disc-list li:nth-child(5) {
+  background: #C04F8E;
+  color: #C04F8E;
+}
+
+.disc-list li:nth-child(6) {
+  background: #C04F5D;
+  color: #C04F5D;
+}
+
+.disc-list li:nth-child(7) {
+  background: #C07E4F;
+  color: #C07E4F;
+}
+
+.disc-list li:nth-child(8) {
+  background: #C0B54F;
+  color: #C0B54F;
+}
+
+
+.disc-list li span {
+  color: #FFF;
+  display: block;
+  font-weight: bold;
+  font-size: 0.8rem;
+  max-width: 5rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.disc-list p {
+  color: #1c1b1b;
+  position: absolute;
+  bottom: -34px;
+  margin-bottom: 0px;
+  font-size: 11px;
+}
+.disc-list li:nth-child(even) p {
+  color: #1c1b1b;
+  position: absolute;
+  top: -34px;
+  margin-bottom: 0px;
+  font-size: 11px;
+}
+
+.disc-list li:nth-child(even) .disc-list-date{
+  color: #141414;
+  font-size: 0.8rem;
+  font-weight: normal;
+  position: absolute;
+  bottom: -20px;
+}
+.disc-list li:nth-child(even) .disc-list-time{
+  color: #141414;
+  font-size: 0.8rem;
+  font-weight: normal;
+  position: absolute;
+  bottom: -34px;
+}
+.disc-list li:nth-child(odd) .disc-list-date{
+  color: #141414;
+  font-size: 0.8rem;
+  font-weight: normal;
+  position: absolute;
+  top: -20px;
+}
+.disc-list li:nth-child(odd) .disc-list-time{
+  color: #141414;
+  font-size: 0.8rem;
+  font-weight: normal;
+  position: absolute;
+  top: -34px;
+}
+
+/* Approval timeline css end */

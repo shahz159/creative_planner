@@ -835,12 +835,9 @@
                                                   <div *ngIf="item1.SubmissionType && item1.Status!='InProcess' && item1.Status!='Under Approval' && item1.Status!='Forward Under Approval' && item1.Status!='New Project Rejected'"  class="attach-tippy">
                                                     <span class="vi  st-line" style="text-transform: lowercase;"> {{item1.Status}} delay</span>
                                                     <span class=" Delay_color font-weight-400 " style="text-transform: lowercase;">
-                                                      {{item1.Status}} delay
+                                                      {{getFormattedDelay(getStatusNumber(item1.Status))}} delay
                                                     </span>
                                                   </div>
-
-
-
 
 
 
@@ -1056,9 +1053,10 @@
                                         <ng-container *ngIf="showDeletedPrjOnly">
                                              <td>
 
-                                              <div *ngIf="item1.Status=='Delay'">
-                                                <span *ngIf="item1.Delaydays>0" class=" Delay_color font-weight-400 ">{{item1.Delaydays}} days
-                                                <span class="">{{item1.Status}}</span>
+                                              <div *ngIf="item1.Status=='Delay'" class="attach-tippy">
+                                                <span *ngIf="item1.Delaydays>0" class="vi st-line">{{(item1.Delaydays)}} days delay</span>
+                                                <span *ngIf="item1.Delaydays>0" class=" Delay_color font-weight-400 ">{{getFormattedDelay(item1.Delaydays)}}
+                                                <span class="lowercase">{{item1.Status}}</span>
                                                 </span>
                                              </div>
 
