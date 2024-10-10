@@ -69,8 +69,9 @@ export class StreamDashboardComponent implements OnInit {
           882: { items: 4 }
         }
       });
-    }, 500); 
+    }, 1000);
   }
+
   private initializeOwlCarousels2() {
     setTimeout(() => {
       $('.activity-item').owlCarousel({
@@ -90,8 +91,9 @@ export class StreamDashboardComponent implements OnInit {
           992: { items: 1 }
         }
       });
-    }, 500); 
+    }, 500);
   }
+
   view_graph_div() {
     document.getElementById("graph-div").style.display = "block";
   }
@@ -282,6 +284,7 @@ export class StreamDashboardComponent implements OnInit {
     this.Emp_No = localStorage.getItem('EmpNo');
     this.service.NewDashboardPortfolio(this.Emp_No).subscribe((data) => {
       this.portfoiloData = JSON.parse(data[0]['PortfolioJson']);
+      this.userFound=true
       console.log(this.portfoiloData, "this.portfoiloDatathis.portfoiloData")
 
     })
@@ -299,12 +302,13 @@ export class StreamDashboardComponent implements OnInit {
     myWindow.focus();
   }
 
-
+  userFound:boolean = undefined
   darArray : any
   getTimeLineStatus(){
     this.Emp_No = localStorage.getItem('EmpNo')
     this.service.NewGetDashboardTimelineStatus(this.Emp_No).subscribe((data)=>{
       this.darArray = JSON.parse(data['DAR_Details_Json']);
+
       console.log(this.darArray,'darArraydarArray')
     })
 
