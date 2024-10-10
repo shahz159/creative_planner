@@ -1056,6 +1056,14 @@ onResponsibleChanged(){
       const selectedowr=this.owner_json.find((item)=>item.EmpNo===this.PrjOwner);
       const newowr=this.owner_json[this.owner_json.indexOf(selectedowr)+1];
       this.PrjOwner=newowr.EmpNo;
+
+
+       // if prj owner and selected auditor are same.  (project owner cannot be set as project auditor)
+       if(this.PrjAuditor==this.PrjOwner){
+        this.notifyService.showError('Please ensure that the owner and responsible are not chosen as auditor.','Invalid project auditor');
+        this.PrjAuditor=null;
+       }
+       //
     }
     this.PrjAuth=this.Responsible_json[0].ResponsibleNo;
 
@@ -1066,6 +1074,7 @@ onResponsibleChanged(){
 
   // selected responsible cannot be selected also as project auditor
       if(this.PrjAuditor==this.PrjResp){
+        this.notifyService.showError("Please ensure that the owner and responsible are not chosen as auditor.",'Invalid project auditor');
          this.PrjAuditor=null;
       }
   //
@@ -1079,6 +1088,14 @@ onProjectOwnerChanged(){
       this.PrjResp=this.Responsible_json[0].ResponsibleNo;
       this.onResponsibleChanged();
       }
+
+   // selected owner cannot be selected also as project auditor
+   if(this.PrjAuditor==this.PrjOwner){
+    this.notifyService.showError('Please ensure that the owner and responsible are not chosen as auditor.','Invalid project auditor');
+    this.PrjAuditor=null;
+   }
+   //
+
   }
 }
 

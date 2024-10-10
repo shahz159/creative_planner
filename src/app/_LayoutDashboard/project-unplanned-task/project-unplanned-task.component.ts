@@ -1904,7 +1904,7 @@ actionSubmit(){
 
 
 
-  this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
+  this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;  
   this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
 
     this.Sub_ProjectCode = data['SubTask_ProjectCode'];
@@ -1942,7 +1942,7 @@ actionSubmit(){
     // alert(datestrEnd)
     console.log(datestrStart,this._StartDate,"startdate")
     console.log(datestrEnd,this._EndDate,"enddate")
-    const fd = new FormData();
+    const fd:any = new FormData(); 
     fd.append("Project_Code", this.Sub_ProjectCode);
     fd.append("Team_Autho", this.EmpNo_Autho);
     // fd.append('file', this._inputAttachments[0].Files);
@@ -1976,6 +1976,9 @@ actionSubmit(){
       this.ObjSubTaskDTO.Duration = 0;
     }
 
+    for (let [key, value] of fd.entries()) {
+      console.log(`${key}: ${value}`);
+    }
     this.service._InsertNewSubtask(fd).subscribe(event => {
 
       if (event.type === HttpEventType.Response){
