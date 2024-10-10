@@ -183,13 +183,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   actionowner_dropdown:any;
   actionresponsible_dropdown:any;
   isNewOwnerOk:boolean=false;
+  pageContentType:'PROJECT_DETAILS'|'ACTION_DETAILS'='PROJECT_DETAILS';  // which content the page is display project or action. by default project.
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
   @ViewChild(MatAutocompleteTrigger) customTrigger!: MatAutocompleteTrigger;
   @ViewChild('fruitInput') fruitInput: ElementRef;
 
-  @ViewChild('FirstChart') firstchart:any;
+
 
 
   constructor(private projectMoreDetailsService: ProjectMoreDetailsService,
@@ -904,6 +905,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         console.log('project Info fetching failure:',er);
         this.errorFetchingProjectInfo=true;
       }
+
+
+      this.pageContentType=this.projectInfo.Master_Code?'ACTION_DETAILS':'PROJECT_DETAILS';
       this.Submission = JSON.parse(res[0].submission_json);
       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
@@ -928,7 +932,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       this.Title_Name=this.projectInfo.Project_Name;
-      
+     
       if(this.projectInfo.Project_Block=='003'&&this.projectInfo.Status.includes('Delay')){
           let regex=/[0-9]+/;
           const result=regex.exec(this.projectInfo.Status);
@@ -1107,6 +1111,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
        this.isNewOwnerOk=true;    // popup visible
     }
     
+
+
+
+
 
  
     });
@@ -10656,13 +10664,18 @@ getca_Dropdowns(){
 }
 
 
-goToProject(pcode) {
+goToProject(pcode,acode:string|undefined) {    
+  let qparams='';
+  if(acode!==undefined){
+    qparams=`?actionCode=${acode}`;
+  }
   let name: string = 'Details';
   var url = document.baseURI + name;
-  var myurl = `${url}/${pcode}`;
+  var myurl = `${url}/${pcode}${qparams}`;
   var myWindow = window.open(myurl,pcode);
   myWindow.focus();
 }
+
 
 expandRemarks(id:string){
      const remark_sec=document.getElementById(id);
@@ -10724,6 +10737,8 @@ getNotificationsAnnouncements():string[]{
   allnotif=[...allnotif,'selfAssignedActns'];
   if(this.totalPActns4Aprvls>0)
   allnotif=[...allnotif,'totalPActns4Aprvls'];
+  if(this.pageContentType=='ACTION_DETAILS')
+  allnotif=[...allnotif,'action_details'];  
 
    return allnotif;
 }

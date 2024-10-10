@@ -1881,7 +1881,7 @@
                                   <ng-select class="kt-form-vd" placeholder="Select auditor" [(ngModel)]="PrjAuditor"
                                     (change)="setRACIS()">
                                     <ng-container *ngFor="let p of allUser_json">
-                                           <ng-option *ngIf="p.Emp_No!=PrjResp" [value]="p.Emp_No">{{ p.Emp_Name}}</ng-option>
+                                           <ng-option *ngIf="p.Emp_No!=PrjResp&&p.Emp_No!=PrjOwner" [value]="p.Emp_No">{{ p.Emp_Name}}</ng-option>
                                     </ng-container>
                                     
                                   </ng-select>
