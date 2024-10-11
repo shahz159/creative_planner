@@ -39,7 +39,7 @@
                         <span id="month-date" style="display: none;">July 2024</span>
                         <span id="schedule-date" style="display: block;">{{firstDate|date :'MMM d'}} – {{lastDates | date :'MMM d y'}}</span>
                         <div (click)="getEventsForWeeks(3)" class="custom-button-today">
-                            <span>Today</span>
+                            <span>today</span>
                         </div>
                     </div>
                 </div>
@@ -3973,8 +3973,8 @@
                       <div class="date-value">{{creation_date|date:'EEEE, MMMM d, YYYY'}}</div>
                       <div [ngClass]="{'icon-active': AdminMeeting_Status==1,'live': Isadmin==true && AdminMeeting_Status==1,'join': Isadmin==false && AdminMeeting_Status==1}"  title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'"  (click)="newMeetingDetails()">
                            <ng-container  *ngIf="AdminMeeting_Status==1">
-                            <span  *ngIf="Isadmin==true" class="meet-blink">Meeting ongoing live.</span>
-                            <span *ngIf="Isadmin==false" class="meet-blink">Meeting has started join Meeting.</span>
+                            <span  *ngIf="Isadmin==true" class="meet-blink">Meeting started.</span>
+                            <span *ngIf="Isadmin==false" class="meet-blink">Meeting started.</span>
                            </ng-container>
                     </div>
                     <div  *ngIf="Meeting_status==true && Schedule_type1=='Event'">
@@ -4140,8 +4140,8 @@
                                <ng-conainer *ngIf="Link_Detail.includes('teams.microsoft.com')">
                                 <a class="meeting-btn"  href="{{Link_Detail.substring(Link_Detail.indexOf('https://')) }}" target="_blank" >Join with Teams Meeting</a>   
                                </ng-conainer>
-                              
-                                <span class="copy-meeting-link"  [title]="copied ? 'Copied Meeting Link' : 'Copy Meeting Link'"  (click)="copyLink()">
+                              <ng-conainer *ngIf="Link_Detail && Link_Detail.includes('https://')">
+                                <span  class="copy-meeting-link"  [title]="copied ? 'Copied Meeting Link' : 'Copy Meeting Link'"  (click)="copyLink()">
                                     <ng-container *ngIf="!copied">
                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M19.5 16.5L19.5 4.5L18.75 3.75H9L8.25 4.5L8.25 7.5L5.25 7.5L4.5 8.25V20.25L5.25 21H15L15.75 20.25V17.25H18.75L19.5 16.5ZM15.75 15.75L15.75 8.25L15 7.5L9.75 7.5V5.25L18 5.25V15.75H15.75ZM6 9L14.25 9L14.25 19.5L6 19.5L6 9Z" fill="currentColor"></path> </g></svg>
                                     <span>Copy link</span>
@@ -4151,6 +4151,7 @@
                                     <span>Copied!</span>
                                     </ng-container>
                                 </span>
+                            </ng-conainer>
                             </div>
                             <div class="mt-2" *ngIf="urlUserID_Password" >
                                 <!-- <span class="mr-1"><b>User ID</b>: dfkdsfds;dsfdsf3dsfd</span>
