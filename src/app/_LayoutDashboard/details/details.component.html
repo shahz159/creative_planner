@@ -475,7 +475,8 @@
                                                 <div class="kt-info-box-tittle mt-0 mb-2">
                                                     <div class="kt-title-icon">
                                                         <span class="svg-icon kt-title-icon m-0">
-                                                            <svg width="22px" height="22px" fill="#fff"
+
+                                                            <svg *ngIf="pageContentType=='PROJECT_DETAILS'" width="22px" height="22px" fill="#fff"
                                                                 xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
                                                                 xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
                                                                 xmlns:graph="http://ns.adobe.com/Graphs/1.0/"
@@ -511,9 +512,33 @@
                                                                     </g>
                                                                 </switch>
                                                             </svg>
+
+                                                            <svg *ngIf="pageContentType=='ACTION_DETAILS'" width="20px" height="20px" viewBox="0 0 512 512" id="svg2793" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:serif="http://www.serif.com/" xmlns:svg="http://www.w3.org/2000/svg" fill="#ffffff" stroke="#ffffff">
+                                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                            <g id="SVGRepo_iconCarrier">
+                                                                <defs id="defs2797"></defs>
+                                                                <g id="_09-Round-Chart" style="display:inline" transform="translate(-3072,-1024)">
+                                                                    <g id="g2606" transform="translate(3282.77,1327.86)">
+                                                                        <path d="M 0,175.522 C -89.87,157.49 -160.117,87.247 -178.15,-2.619 h 91.441 c 6.863,19.997 18.253,38.267 33.348,53.362 C -38.267,65.838 -19.997,77.227 0,84.09 Z M 18.637,58.348 C -20.648,48.532 -51.15,18.03 -60.967,-21.255 c -1.669,-6.678 -7.669,-11.364 -14.553,-11.364 h -120.25 c -4.3,0 -8.394,1.846 -11.242,5.071 -2.847,3.222 -4.174,7.513 -3.643,11.781 7.022,56.445 33.152,109.793 73.578,150.217 40.426,40.426 93.777,66.554 150.225,73.576 0.619,0.078 1.237,0.115 1.853,0.115 3.636,0 7.173,-1.322 9.93,-3.758 C 28.154,201.536 30,197.442 30,193.141 V 72.901 C 30,66.018 25.314,60.018 18.637,58.348" id="path2604" style="fill-rule:nonzero"></path>
+                                                                    </g>
+                                                                    <g id="g2610" transform="translate(3373.23,1327.86)">
+                                                                        <path d="M 0,175.522 V 84.088 C 19.996,77.221 38.268,65.83 53.362,50.735 68.456,35.641 79.846,17.374 86.709,-2.619 h 91.44 C 160.109,87.248 89.863,157.49 0,175.522 M 195.771,-32.619 H 75.521 c -6.884,0 -12.883,4.686 -14.553,11.364 C 51.151,18.02 20.647,48.524 -18.64,58.35 -25.316,60.02 -30,66.019 -30,72.901 v 120.24 c 0,4.301 1.846,8.395 5.069,11.242 2.757,2.436 6.294,3.758 9.93,3.758 0.616,0 1.234,-0.038 1.853,-0.115 56.444,-7.022 109.793,-33.15 150.218,-73.576 40.426,-40.424 66.559,-93.772 73.585,-150.215 0.532,-4.269 -0.795,-8.56 -3.642,-11.783 -2.847,-3.225 -6.942,-5.071 -11.242,-5.071" id="path2608" style="fill-rule:nonzero"></path>
+                                                                    </g>
+                                                                    <g id="g2614" transform="translate(3282.77,1140.29)">
+                                                                        <path d="m 0,7.771 c -20.002,6.866 -38.273,18.258 -53.369,33.354 -15.094,15.093 -26.482,33.361 -33.341,53.353 h -91.44 C -160.118,4.617 -89.871,-65.629 0,-83.67 Z m 24.93,-120.305 c -3.224,-2.847 -7.508,-4.173 -11.784,-3.642 -56.444,7.026 -109.793,33.159 -150.219,73.584 -40.429,40.427 -66.561,93.775 -73.582,150.218 -0.531,4.269 0.796,8.559 3.643,11.783 2.848,3.223 6.942,5.069 11.242,5.069 h 120.25 c 6.885,0 12.885,-4.686 14.553,-11.365 C -51.159,73.837 -20.656,43.336 18.639,33.51 25.316,31.841 30,25.841 30,18.959 v -120.251 c 0,-4.3 -1.847,-8.395 -5.07,-11.242" id="path2612" style="fill-rule:nonzero"></path>
+                                                                    </g>
+                                                                    <g id="g2618" transform="translate(3373.23,1231.74)">
+                                                                        <path d="m 0,-175.115 c 89.872,18.04 160.118,88.285 178.151,178.148 H 86.71 C 79.847,-16.963 68.457,-35.232 53.362,-50.328 38.268,-65.423 19.997,-76.812 0,-83.676 Z m -18.637,117.182 c 39.286,9.816 69.788,40.318 79.605,79.603 1.669,6.678 7.669,11.363 14.553,11.363 h 120.25 c 4.3,0 8.394,-1.845 11.242,-5.069 2.847,-3.224 4.174,-7.514 3.643,-11.782 -7.021,-56.443 -33.152,-109.793 -73.578,-150.219 -40.425,-40.425 -93.776,-66.557 -150.225,-73.584 -4.258,-0.527 -8.559,0.795 -11.783,3.643 -3.223,2.846 -5.07,6.941 -5.07,11.242 v 120.25 c 0,6.884 4.686,12.884 11.363,14.553" id="path2616" style="fill-rule:nonzero"></path>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                          </svg>
+
+
                                                         </span>
                                                     </div>
-                                                    {{projectInfo&&projectInfo.Project_Type}}
+                                                    <ng-container *ngIf="pageContentType=='PROJECT_DETAILS'">{{projectInfo&&projectInfo.Project_Type}}</ng-container>
+                                                    <ng-container *ngIf="pageContentType=='ACTION_DETAILS'" >Action</ng-container>
                                                 </div>
                                             </div>
 
@@ -706,7 +731,7 @@
                                                                             }">
                                                                             <span class="vi font-weight-400 st-line"
                                                                                *ngIf="projectInfo?.Status === 'Delay' || projectInfo?.Status?.includes('Days')">
-                                                                               {{
+                                                                               {{ 
                                                                                   (projectInfo.Status === 'Delay' ? projectInfo.Delaydays + ' days' + ' delay ': '') ||
                                                                                  (projectInfo.Project_Block=='003' ?  projectInfo.Status+' delay' : '')}}
                                                                             </span>
@@ -726,10 +751,7 @@
 
 
                                                                 <ng-container *ngIf="projectInfo.Status==='Completed'">
-                                                                    <!-- deadlineExtendlist&&deadlineExtendlist.length>0)|| -->
                                                                     <div *ngIf="completionOffset>0" class="extra-at-status" style="border-color: #388e3c; color: #d32f2f;">
-                                                                          <!-- <span *ngIf="deadlineExtendlist&&deadlineExtendlist.length>0">{{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} extended</span>
-                                                                          <span *ngIf="(deadlineExtendlist&&deadlineExtendlist.length>0)&&(completionOffset>0)"> and </span> -->
                                                                           <span *ngIf="completionOffset>0">{{completionOffset}} days delayed</span>
                                                                     </div>
                                                                </ng-container>
@@ -743,7 +765,7 @@
 
 
                                                               <div class="extra-at-status" *ngIf="projectInfo.Status==='Delay'&&(deadlineExtendlist&&deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
-                                                                <span style="color: #d32f2f;">{{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} extended</span>
+                                                                <span style="color: #d32f2f;">{{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} deadline changed</span>
                                                               </div>
 
 
@@ -893,7 +915,7 @@
                                                                 </ng-template>
                                                             </div>
 
-                                                            <div class="col-lg-12 mt-2">
+                                                            <div class="col-lg-12 mt-2" [ngClass]="{'d-none':pageContentType=='ACTION_DETAILS'}">
                                                                 <div class="progress kt-projcect-progress bar"
                                                                     *ngIf="(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks'&&projectInfo.Project_Type!=='To do List')">
 
@@ -941,10 +963,7 @@
 
                                                                 </div>
                                                             </div>
-
-
-
-                                                            <div class="col-lg-12">
+                                                            <div class="col-lg-12" [ngClass]="{'d-none':pageContentType=='ACTION_DETAILS'}">
                                                                 <div class="kt-prg-progress">
                                                                     <ul type="none">
                                                                         <li *ngIf="TOTAL_ACTIONS_UNDER_APPROVAL"><span
@@ -985,7 +1004,7 @@
 
                                                         </div>
                                                     </div>
-                                                    <div class="CmP-wd  p-1 text-center"
+                                                    <div class="CmP-wd  p-1 text-center" [ngClass]="{'d-none':pageContentType=='ACTION_DETAILS'}"
                                                         *ngIf="(projectInfo.Project_Type!=='Standard Tasks'&&projectInfo.Project_Type!=='Routine Tasks'&&projectInfo.Project_Type!=='To do List')">
                                                         <div class="kt-prg-bar-info kt-total-prg-vl" title="Completed/All actions">
                                                             <b class="pt-2">{{TOTAL_ACTIONS_DONE}}/{{TOTAL_ACTIONS}}</b>
@@ -998,7 +1017,7 @@
                                         </ng-container>
                                     </div>
 
-                                    <ng-container *ngIf="projectInfo">
+                                    <ng-container *ngIf="projectInfo&&pageContentType=='PROJECT_DETAILS'">
 
                                         <div class="kt-info-box pb-0 mt-2" style="min-height:500px;"
                                             *ngIf="(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'); ">
@@ -1747,7 +1766,7 @@
                                 <div class="card-header p-0">
                                     <div class="kt-info-box">
                                         <div class="kt-project-tool-bar d-flex">
-                                            <div class="d-flex flex-grow-1 align-items-center gap_ic">
+                                            <div *ngIf="pageContentType=='PROJECT_DETAILS'" class="d-flex flex-grow-1 align-items-center gap_ic">
                                                 <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()"    [ngClass]="{'active':currentSidebarOpened==='LINK_DMS'}"  >
                                                    <ng-container *ngIf="isDMS>0">
                                                         <img src="./assets/images/Image (4).jfif" height="22" width="20px" title="View or link SMail">
@@ -1757,9 +1776,6 @@
                                                       </ng-container>
                                                     </a>
                                                 <div class="br-line"></div>
-
-
-
 
                                                 <a class="kt-inbox__icon" (click)="AddPortfolio()"  [ngClass]="{'active':currentSidebarOpened==='LINK_PORTFOLIO','event-active':projectInfo&&projectInfo.isPortfolio>0}"  title="View or link portfolio">
 
@@ -1775,7 +1791,7 @@
                                                     </svg>
 
 
-                                              </a>
+                                               </a>
 
                                                 <!-- <a class="kt-inbox__icon">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17"
@@ -1871,14 +1887,53 @@
 
                                                 </a>
 
+                                                <a class="kt-inbox__icon ac-activity event-active" [ngClass]="{'active':currentSidebarOpened==='ACTIVITY_LOG'}" (click)="View_Activity('PROJECT-ACTIVITIES')" title="Activity log">
+                                                    <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1" stroke-width="1" class="iconify iconify--mdi"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM13 7L12.9998 11.585L16.2426 14.8284L14.8284 16.2426L10.9998 12.413L11 7H13Z" ></path></svg>
+                                                </a>
+
+                                                <a class="kt-inbox__icon Attachment_view" [ngClass]="{'active':currentSidebarOpened==='LIST_OF_ATTACHMENTS','event-active':projectInfo&&projectInfo.isAttachment}" (click)="Attachment_view()" title="Attachments">
+                                                    <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="iconify iconify--mdi"><path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
+                                                </a>
+                                            </div>
+
+                                            <div *ngIf="pageContentType=='ACTION_DETAILS'" class="d-flex flex-grow-1 align-items-center gap_ic">
+                                       
+                                                <a class="kt-inbox__icon kt_Comments"  [ngClass]="{'active':currentSidebarOpened==='COMMENTS'}"  (click)="View_Comments()" title="Comments">
+                                                  <svg [ngStyle]="{fill:'#6388e3'}" class="Cmnts-svg" xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi" width="16" height="16"
+                                                       viewBox="0 0 1024 1024" version="1.1">
+                                                      <path d="M767.424 130.032 256.576 130.032c-70.4 0-128 57.6-128 128l0 335.632c0 70.4 57.6 128 128 128l118.352 0 0 172.288 213.328-172.288 179.152 0c70.4 0 128-57.6 128-128L895.408 258.032C895.424 187.632 837.824 130.032 767.424 130.032zM815.424 593.664c0 26.016-21.984 48-48 48L588.272 641.664 560 641.664l-22 17.76-83.056 67.088 0-4.848 0-80-80 0-118.352 0c-26.016 0-48-21.984-48-48L208.592 258.032c0-26.016 21.984-48 48-48l510.848 0c26.016 0 48 21.984 48 48L815.44 593.664z" />
+                                                      <path d="M347.888 425.872m-46.608 0a2.913 2.913 0 1 0 93.216 0 2.913 2.913 0 1 0-93.216 0Z" />
+                                                      <path d="M512 425.872m-46.608 0a2.913 2.913 0 1 0 93.216 0 2.913 2.913 0 1 0-93.216 0Z" />
+                                                      <path d="M676.096 425.872m-46.608 0a2.913 2.913 0 1 0 93.216 0 2.913 2.913 0 1 0-93.216 0Z" />
+                                                  </svg>
+                                                </a>
+
+                                                <a class="kt-inbox__icon" (click)="View_timeline()"   [ngClass]="{'active':currentSidebarOpened==='TIMELINE_VIEW','event-active':projectInfo&&projectInfo.TotalHours>0}" title="Timeline">
+                                                    <svg  xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi timeline-view-svg  " viewBox="0 0 1024 1024" version="1.1"><path d="M271.36 276.48c0-61.44-40.96-113.664-97.28-130.048V38.4C174.08 17.408 156.672 0 135.68 0S97.28 17.408 97.28 38.4v108.032C40.96 162.816 0 215.04 0 276.48c0 61.44 41.472 113.664 97.792 130.048l1.536 209.92C41.984 632.832 0 685.056 0 747.52c0 61.44 40.96 113.664 97.28 130.048V983.04c0 20.992 17.408 38.4 38.4 38.4s38.4-17.408 38.4-38.4v-105.472c56.32-16.384 97.28-68.608 97.28-130.048 0-60.928-39.936-112.128-95.232-129.536l-1.536-211.456C230.4 389.632 271.36 337.92 271.36 276.48z m-194.56 0c0-32.256 26.624-58.88 58.88-58.88S194.56 244.224 194.56 276.48s-26.624 58.88-58.88 58.88S76.8 308.736 76.8 276.48z m117.76 471.04c0 32.256-26.624 58.88-58.88 58.88S76.8 779.776 76.8 747.52s26.624-58.88 58.88-58.88S194.56 715.264 194.56 747.52zM924.16 97.28h-496.64C372.224 97.28 327.68 141.824 327.68 197.12v158.72C327.68 411.136 372.224 455.68 427.52 455.68h496.64c55.296 0 99.84-44.544 99.84-99.84v-158.72c0-55.296-44.544-99.84-99.84-99.84z m23.04 258.56c0 12.8-10.24 23.04-23.04 23.04h-496.64C414.72 378.88 404.48 368.64 404.48 355.84v-158.72c0-12.8 10.24-23.04 23.04-23.04h496.64c12.8 0 23.04 10.24 23.04 23.04v158.72zM924.16 568.32h-496.64c-55.296 0-99.84 44.544-99.84 99.84v158.72c0 55.296 44.544 99.84 99.84 99.84h496.64c55.296 0 99.84-44.544 99.84-99.84v-158.72c0-55.296-44.544-99.84-99.84-99.84z m23.04 258.56c0 12.8-10.24 23.04-23.04 23.04h-496.64c-12.8 0-23.04-10.24-23.04-23.04v-158.72c0-12.8 10.24-23.04 23.04-23.04h496.64c12.8 0 23.04 10.24 23.04 23.04v158.72z"/></svg>
+
+                                                </a>
+
+                                                <a class="kt-inbox__icon " (click)="openMeetingSidebar()"   [ngClass]="{'active':currentSidebarOpened==='MEETINGS','event-active':MeetingCount>0}"   title="View or link meeting">
+                                                    <span class="blink"></span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1" fill="currentColor"><path d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z"/></svg>
+
+                                                </a>
+
                                                 <a class="kt-inbox__icon ac-activity event-active" [ngClass]="{'active':currentSidebarOpened==='ACTIVITY_LOG'}"         (click)="View_Activity('PROJECT-ACTIVITIES')" title="Activity log">
                                                     <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1" stroke-width="1" class="iconify iconify--mdi"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM13 7L12.9998 11.585L16.2426 14.8284L14.8284 16.2426L10.9998 12.413L11 7H13Z" ></path></svg>
                                                 </a>
 
-                                                <a class="kt-inbox__icon Attachment_view" [ngClass]="{'active':currentSidebarOpened==='LIST_OF_ATTACHMENTS'}"    (click)="Attachment_view()" title="Attachments">
+                                                <a class="kt-inbox__icon Attachment_view" [ngClass]="{'active':currentSidebarOpened==='LIST_OF_ATTACHMENTS','event-active':projectInfo&&projectInfo.isAttachment}"    (click)="Attachment_view()" title="Attachments">
                                                     <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="iconify iconify--mdi"><path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
                                                 </a>
                                             </div>
+
+
+
+
+
+
+
                                             <!-- <a class="kt-inbox__icon">
                                               <span
                                                   class=""  title="New Features" (click)="featuremodel()">
@@ -2092,7 +2147,8 @@
                     (selfAssignedActns&&selfAssignedActns.length>0)||
                     (totalPActns4Aprvls>0)||
                     (projectInfo.AuditStatus=='Audit Complete'||(projectInfo.AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId)||(projectInfo.AuditStatus=='Audit Pending' && Current_user_ID!=approvalEmpId))||
-                    (projectInfo.NewOwner)
+                    (projectInfo.NewOwner)||
+                    (pageContentType=='ACTION_DETAILS')
                     ">
 
                 <div class="kt-Note-msg  d-flex">
@@ -2120,6 +2176,47 @@
                 </svg>
                 </div>
                 <div class="notifications-list">
+                    <div class="approval-timeline d-none">
+                        <h5 class="text-dark" style="margin-bottom: 2rem;">Approval Process</h5>
+                        <ol class="disc-list">
+                            <div class="ap-ti"></div>
+                            <li>
+                              <span>Completion</span>
+                              <span class="disc-list-date">20-10-2024</span>
+                              <span class="disc-list-time">9:30 AM</span>
+                              
+                              <p>Md Waseem Akram</p>
+                            </li>
+                            <li>
+                                <span>Audit</span>
+                                <span class="disc-list-date">24-10-2024</span>
+                                <span class="disc-list-time">11:30 AM</span>
+                                
+                                <p>Md Waseem Akram</p>
+                              </li> 
+                            <li>
+                              <span>Transfer</span>
+                              <span class="disc-list-date">24-10-2024</span>
+                              <span class="disc-list-time">12:30 PM</span>
+                              
+                              <p>Md Waseem Akram</p>
+                            </li>
+                            <li>
+                              <span>Next Version</span>
+                              <span class="disc-list-date">28-10-2024</span>
+                              <span class="disc-list-time">10:30 AM</span>
+                              
+                              <p>Md Waseem Akram</p>
+                            </li>
+                            <li>
+                              <span>Accept</span>
+                              <span class="disc-list-date">30-10-2024</span>
+                              <span class="disc-list-time">11:30 AM</span>
+                              
+                              <p>Md Waseem Akram</p>
+                            </li>     
+                          </ol>
+                    </div>
                     <div class="notification audit-pending-notf" *ngIf="projectInfo.AuditStatus=='Audit Pending'&&Current_user_ID==approvalEmpId">
                         <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #9c27b0;stroke: #a336b5;">
                         <g><g>
@@ -2666,6 +2763,16 @@
             </span>
             </div>
 
+            <div *ngIf="pageContentType=='ACTION_DETAILS'"  class="notification newversion-notification">
+                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z" fill="#1692df"></path></g></svg>
+                <span class="notif-msg fs-6" style="color: #00a2eb;">
+                  You are currently viewing the details of an action belonging to a project. 
+                 <span class="d-block fs-7"> Need to see the full project? <span  (click)="goToProject(projectInfo.Master_Code,projectInfo.Project_Code)" class=" curser-pointer text-underline">Click here to open the main project page.</span></span>
+                </span>
+            </div>
+
+
+
 
               </ng-template>
 
@@ -2686,7 +2793,8 @@
                                             <div class="kt-project-info-body">
                                                 <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
                                                     <div class="PA_title">
-                                                        <span>Project </span>
+                                                        <span *ngIf="pageContentType=='PROJECT_DETAILS'">Project</span>
+                                                        <span  *ngIf="pageContentType=='ACTION_DETAILS'">Action</span>
                                                         <a href="javascript:void(0)" *ngIf="
                                                             (projectInfo.Status!=='Completed')&&(
                                                             Current_user_ID == projectInfo.OwnerEmpNo ||
@@ -2839,7 +2947,7 @@
                                                               {{getDelayText(projectInfo&&projectInfo)}}
                                                             </div>
                                                             <div class="extra-at-status" *ngIf="(deadlineExtendlist&&deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
-                                                                <span style="color: #d32f2f;">{{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} extended</span>
+                                                                <span style="color: #d32f2f;">{{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} deadline changed</span>
                                                             </div>
                                                           </div>
                                                       </div>
@@ -2848,10 +2956,7 @@
                                                            <div class="Kt-Pd-Status Done d-flex">
                                                              Completed
                                                             </div>
-                                                            <!-- deadlineExtendlist&&deadlineExtendlist.length>0)|| -->
                                                             <div *ngIf="completionOffset>0" class="extra-at-status" style="color:#d32f35; border-color: #388e3c; ">
-                                                                <!-- <span *ngIf="deadlineExtendlist&&deadlineExtendlist.length>0">{{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} extended</span>
-                                                                <span *ngIf="(deadlineExtendlist&&deadlineExtendlist.length>0)&&(completionOffset>0)"> and </span> -->
                                                                 <span *ngIf="completionOffset>0">{{completionOffset}} {{completionOffset>1?'days':'day'}} delayed</span>
                                                             </div>
                                                       </div>
@@ -2951,7 +3056,7 @@
 
 
 
-                                              <ng-container *ngIf="projectInfo&&projectInfo.Status=='Completed'">
+                                              <ng-container *ngIf="projectInfo&&projectInfo.Status=='Completed'&&pageContentType=='PROJECT_DETAILS'">
 
                                                   <div class="legend-border mt-4" style=" background-color: white;">
                                                       <div class="meeting-attendance-heading">Completion Report</div>
@@ -3910,7 +4015,7 @@
                                                         </ng-template>
                                                     </div>
 
-                                                    <div class="col text-center">
+                                                    <div *ngIf="pageContentType=='PROJECT_DETAILS'" class="col text-center">
                                                         <div class="kt-info-lable-v">
                                                             RACIS
                                                         </div>

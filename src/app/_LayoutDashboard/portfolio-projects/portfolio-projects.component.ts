@@ -332,6 +332,7 @@ export class PortfolioProjectsComponent implements OnInit {
     this.GetPortfolioProjectsByPid();
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
     this.labelAll();
+
     // this.onButtonClick('tot');
     // this.getusermeetings();
     this.updateListbyDetailsPage();
@@ -372,6 +373,7 @@ export class PortfolioProjectsComponent implements OnInit {
   Availableport:any
   Portfolio : any[]
   Employeshare:any[];
+  UserAccessType : 'Full Access' | 'View Only'
 
   GetPortfolioProjectsByPid() {
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
@@ -394,14 +396,16 @@ export class PortfolioProjectsComponent implements OnInit {
     this.service.GetProjectsBy_portfolioId(this._Pid)
       .subscribe((data) => {
         this._MessageIfNotOwner = data[0]['message'];
-
+        console.log(this._MessageIfNotOwner,'this._MessageIfNotOwner')
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);
         this._PortFolio_Namecardheader = this._PortfolioDetailsById[0]['Portfolio_Name'];
         this.Rename_PortfolioName = this._PortFolio_Namecardheader;
         this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];
         this.createdBy = this._PortfolioDetailsById[0]['Created_By'];
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
+
         this.lastProject = this._ProjectsListBy_Pid.length;
+        console.log( this.lastProject,'lastProject')
         this.Employeshare =JSON.parse(data[0]['Employee_Json']);
         console.log( this.Employeshare,'employeeeeeeeeeeee')
         console.log("Portfolio Projects---->", this._ProjectsListBy_Pid);
@@ -410,7 +414,11 @@ export class PortfolioProjectsComponent implements OnInit {
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
         this.Deletedproject = JSON.parse(data[0]['PortfolioDeletedProjects']);
         console.log(" this.Deletedproject", this.Deletedproject)
-        this.Availableport = this._ProjectsListBy_Pid[0].availableports
+        if (this._ProjectsListBy_Pid[0] && this._ProjectsListBy_Pid[0].availableports) {
+          this.Availableport = this._ProjectsListBy_Pid[0].availableports;
+      } else {
+          console.warn('availableports is undefined or not available');
+      }
         console.log(this.Availableport,"availableportsavailableportsavailableports")
 
         this.CountDeleted=this.Deletedproject.length
@@ -539,8 +547,12 @@ export class PortfolioProjectsComponent implements OnInit {
           allowSearchFilter: true,
         };
         this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']);
+        console.log(this._ShareDetailsList,'_ShareDetailsList_ShareDetailsList')
         if(this._ShareDetailsList){
-
+          const _empOb=this._ShareDetailsList.find((ob)=>ob.EmployeeId==this.Current_user_ID);
+          console.log(_empOb,"_empOb_empOb_empOb_empOb_empOb")
+          this.UserAccessType=(this.Current_user_ID==this.createdBy)?'Full Access':_empOb.Preferences;
+          console.log(this.UserAccessType,"this.UserAccessTypethis.UserAccessTypethis.UserAccessType")
           this._SharedToEmps=this._ShareDetailsList.map(item=>item.EmployeeId);
           }
         if (this._ShareDetailsList == 0) {
@@ -549,8 +561,11 @@ export class PortfolioProjectsComponent implements OnInit {
         else {
           this._btnShareDetails = false;
         }
+        console.log(this._SharedToEmps,'this._SharedToEmpsthis._SharedToEmps')
         this.PreferenceTpye = data[0]["PreferenceType"];
+
         this.With_Data = JSON.parse(data[0]['EmployeePreferenceJson']);
+
         this.Share_preferences = false;
         this.viewpreference=this.With_Data[0]&&this.With_Data.Preferences;
         if (this.PreferenceTpye == 1) {
@@ -1238,6 +1253,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
             })
         })
       this.notifyService.showSuccess("Removed Successfully", '')
+      // this.GetPortfolioProjectsByPid();
     }
     else {
       this.notifyService.showInfo("Action Cancelled", '');
@@ -5872,6 +5888,14 @@ bindCustomRecurrenceValues(){
         return `${delayText.toLowerCase()}`;
       }
   // new code of portfolio meeting side bar end
+
+
+
+  getStatusNumber(status: string): number {
+    const match = status.match(/\d+/); // Find digits in the string
+    return match ? parseInt(match[0], 10) : null; // Convert to number, or return null if no number found
+  }
+
 
   getFilterLabel() {
     if (this._PortProjStatus === '') {
