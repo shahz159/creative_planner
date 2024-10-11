@@ -1628,9 +1628,9 @@ span.dar-dot {
     width: 40px;
 }
 
-
-/* .n-portfolio-ul {
+ .n-portfolio-ul {
     display: flex;
+    overflow-x: hidden;
 }
 
 .n-portfolio-li {
@@ -1645,34 +1645,18 @@ span.dar-dot {
     border-radius: 8px;
     padding: 0rem;
     flex: 1 1 auto;
-    min-width: 15rem;
+    min-width: 202px;
+    margin-right: 10px;
     height: max-content;
     cursor: pointer;
-} */
-.n-portfolio-ul {
-  list-style-type: none; /* Remove default list styles */
-  padding: 0; /* Remove padding */
-  margin: 0; /* Remove margin */
-  display: flex; /* Use flexbox for better control */
-  overflow-x: auto; /* Allow horizontal scrolling if needed */
 }
 
-.n-portfolio-li {
-  position: relative;
-  flex: 0 0 20%; /* Set each item to take 20% of the container width (4 items) */
-  background-color: #fff;
-  background-clip: border-box;
-  box-shadow: 0 0.1rem 1rem 0.25rem rgb(0 0 0 / 5%) !important;
-  /* border-radius: 8px; */
- /* Add some padding for spacing */
-
-  cursor: pointer;
-  height: max-content; /* Allow height to adjust automatically */
+@media screen and (min-width: 1400px) {
+  .n-portfolio-li {
+    min-width: 206px;
+}
 }
 
-.n-portfolio-li:last-child {
-  margin-right: 0; /* Remove right margin on the last item */
-}
 
 .n-portfolio-head {
     display: flex;
