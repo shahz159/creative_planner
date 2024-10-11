@@ -22,7 +22,7 @@ import { string } from '@amcharts/amcharts4/core';
 import { pluginService } from 'chart.js';
 import { add } from '@amcharts/amcharts4/.internal/core/utils/Array';
 import { ConsoleService } from '@ng-select/ng-select/lib/console.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete'
 
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
@@ -76,6 +76,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
     public ProjectTypeService: ProjectTypeService,
     private renderer: Renderer2,
     public router: Router,
+    private route: ActivatedRoute,
     // public _projectunplanned: ProjectUnplannedTaskComponent,
     // public BsService: BsServiceService,
     // public service:GetRACISandNonRACISEmployeesforMoredetails,
@@ -217,6 +218,24 @@ export class ProjectUnplannedTaskComponent implements OnInit{
     this.totalproject();
     // this.initAutosize();
   }
+
+
+
+ ngAfterViewInit(){
+       // open assigned task if asked in url
+    this.route.queryParamMap.subscribe((qparams)=>{
+      const assigned_taskId=qparams.get('taskId');
+      if(assigned_taskId){
+            //
+      }
+    });
+     // open assigned task if asked in url
+ }
+
+
+
+
+
 
 
 

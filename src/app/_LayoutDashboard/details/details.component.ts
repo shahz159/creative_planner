@@ -895,6 +895,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   // projectDelay:any;
   errorFetchingProjectInfo:boolean=false;
   projecttypes : any
+  task_assign_json:any;
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
     this.errorFetchingProjectInfo=false;
@@ -906,6 +907,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         this.errorFetchingProjectInfo=true;
       }
 
+
+     if(this.projectInfo.isProject==false&&this.projectInfo.isTask==true){
+         this.task_assign_json=JSON.parse(this.projectInfo.assign_json); 
+     }
 
       this.pageContentType=this.projectInfo.Master_Code?'ACTION_DETAILS':'PROJECT_DETAILS';
       this.Submission = JSON.parse(res[0].submission_json);
@@ -1347,7 +1352,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   activitiesLoading:boolean=false;
   activitiesOf:'ACTION-ACTIVITIES'|'PROJECT-ACTIVITIES'='PROJECT-ACTIVITIES';
   firstFiveRecords: any[] = [];
-  GetActivityDetails() {
+  GetActivityDetails(filterConfig?:{activityType:string,byEmp:string}) {
     console.log('GetActivityDetails is called.');
     this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(this.URL_ProjectCode).subscribe(
@@ -1360,7 +1365,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                  if(_actvy.Value){
                     
                  const _Value=_actvy.Value.trim(); 
-                    
+                
                        result=/New Action- ".*"/.test(_Value)?'New Action':
                               (/Timeline added .*/.test(_Value)|| _Value=='Project Timeline added')?'Timeline added':
                               /Action Complete- ".*"/.test(_Value)?'Action Complete':
@@ -1369,7 +1374,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                               /Action -".*" Deadline changed/.test(_Value)?'Action Deadline changed':
                               ['Project Name changed','Project Responsible changed','Project Description changed','Client changed','Category changed'].includes(_Value)?'Project Details changed':
                               [/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/,/Action -".*" Owner changed/,/Action -".*" Responsible changed/].some(rg=>rg.test(_Value))?'Action Details changed':
-                              (['Project Complete','Project Complete Rejected'].includes(_Value)||/Project Complete transferred to ".*"/.test(_Value))?'Project Complete':
+                              (['Project Complete Approved','Project Complete Rejected','Project Audit Approved','Project Audit Rejected'].includes(_Value)||
+                               [/Project Complete Submitted to ".*"/,/Project Audit Submitted to ".*"/,/Project Complete transferred to ".*"/,/Project next version assigned to ".*"/].some(rg=>rg.test(_Value)))?'Project Complete':
                               _Value;
                  }
                  _actvy._type=result.trim();
@@ -1392,7 +1398,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                 });
          // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
 
-   this.arrangeActivitiesBy('all','all');
+   if(filterConfig)     
+   this.arrangeActivitiesBy(filterConfig.activityType,filterConfig.byEmp);
+   else 
+   this.arrangeActivitiesBy('all','all'); 
    this.emps_of_actvs=Array.from(new Set(this.Activity_List.map(_actv=>_actv.Modifiedby)));
    this.actvs_types=Array.from(new Set(this.Activity_List.map(_actv=>_actv._type)));
 
@@ -1822,20 +1831,27 @@ multipleback(){
     this.GetprojectComments()
    }
 
-  View_Activity(type:"PROJECT-ACTIVITIES"|"ACTION-ACTIVITIES") {
+  View_Activity(type:"PROJECT-ACTIVITIES"|"ACTION-ACTIVITIES",filterConfig?:{activityType:string,byEmp:string}) {
     document.getElementById("Activity_Log").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("newdetails").classList.add("position-fixed");
     this.currentSidebarOpened='ACTIVITY_LOG';
     this.activitiesOf=type;
     if(this.activitiesOf==='PROJECT-ACTIVITIES'){
-      this.GetActivityDetails();    // get all activities of the project.
+      this.GetActivityDetails(filterConfig);    // get all activities of the project.
     }
     else if(this.activitiesOf==='ACTION-ACTIVITIES'){
       this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);   // get all activities of the action selcted.
     }
 
   }
+
+  
+
+
+
+
+
   Attachment_view() {
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -10076,6 +10092,7 @@ onPrjAuditSubmitClicked(){
           if(res&&res.message){
             this.getapprovalStats();
             this.getProjectDetails(this.URL_ProjectCode);
+            this.GetPeopleDatils();
             this.notifyService.showSuccess(res.message,'Success'); 
           }
           else
@@ -10762,6 +10779,44 @@ getFormattedDuration(totalDuration: number): string {
 
   return `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
 }
+
+
+// OnPortfolioClick(P_id: any, P_Name: string, CreatedName: string) {
+//   sessionStorage.setItem('portfolioId', P_id);
+//   sessionStorage.setItem('portfolioname', P_Name);
+//   sessionStorage.setItem('PortfolioOwner', CreatedName);
+//   //sessionStorage.setItem('portfolioCDT', P_CDT);
+//   //this.router.navigate(['/portfolioprojects/', P_id]);
+//   // const Url = this.router.serializeUrl(this.router.createUrlTree(['testcreativeplanner/portfolioprojects/', P_id]));
+//   // window.open(Url);
+//   let name: string = 'portfolioprojects';
+//   var url = document.baseURI + name;
+//   var myurl = `${url}/${P_id}`;
+//   var myWindow = window.open(myurl, P_id);
+//   myWindow.focus();
+// }
+
+  openRunwayTask(taskid:string){
+      // let name: string = 'UnplannedTask';
+      // var url = document.baseURI + name;
+      // var myurl = `${url}`;
+      // var myWindow = window.open(myurl);
+      // myWindow.focus();
+      this.router.navigate(["../UnplannedTask"],{queryParams:{taskId:taskid}});
+  }
+
+  openAssignedProject(taskid:string){
+    // let name: string = 'backend/createproject';
+    // var url = document.baseURI + name;
+    // var myurl = `${url}`;
+    // var myWindow = window.open(myurl);
+    // myWindow.focus();
+
+    this.router.navigate(["../backend/createproject"],{queryParams:{AssignedProjectId:taskid}});
+  }
+
+
+
 
 
 

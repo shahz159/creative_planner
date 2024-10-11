@@ -6067,6 +6067,30 @@ svg>g[class^="raphael-group-fjUjWDEW"]>text {
 }
 
 
+.rj-btn {
+  border: 0;
+  transform: rotate(91deg);
+  background-color: transparent;
+  cursor:pointer;
+}
+
+.rj-btn svg{
+   fill:none !important;
+}
+
+.rj-btn:hover svg {
+  stroke: #909090;
+  fill: #909090 !important;
+  stroke-width: 2.1;
+}
+
+.rj-btn:hover svg path.arrow {
+  stroke: white;
+}
+.rj-btn:active svg {
+  transform: scale(0.97);
+  transition-duration: 0.1s;
+}
 
 
 
@@ -9272,3 +9296,10 @@ span.time-value {
 }
 
 /* Approval timeline css end */
+
+.not-started-project {
+  background-color: #888888 !important;
+  color:#fff !important;
+}
+
+

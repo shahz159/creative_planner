@@ -435,9 +435,10 @@
                             <div class="card-body p-3">
                               <div class="col-lg-12  card-Scroll pt-0">
                                 <div class="kt-action-list" *ngFor="let record of assigntask_json ;let i = index;">
-                                  <div class="kt-act-card d-flex align-items-center">
+                                  <div class="kt-act-card d-flex align-items-center ">
                                     <div class="kt-act-no">
                                       <p>{{i+1}}</p><span>Project</span>
+                                      <input [id]="'task-'+record.Assign_Id" type="text" style="width: 0; height: 0; position: absolute; visibility: hidden;"/>
                                     </div>
                                     <div class="kt-act-info">
                                       <div class="kt-act-ttl-v" >

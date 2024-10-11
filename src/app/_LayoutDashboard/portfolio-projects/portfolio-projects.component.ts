@@ -141,6 +141,7 @@ export class PortfolioProjectsComponent implements OnInit {
   currentActionView: number | undefined;
   URL_ProjectCode: any;
   Current_user_ID: string;
+  UserAccessType:'Full Access'|'View Only';
 
 
   requestDetails: any;
@@ -398,8 +399,8 @@ export class PortfolioProjectsComponent implements OnInit {
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);
         this._PortFolio_Namecardheader = this._PortfolioDetailsById[0]['Portfolio_Name'];
         this.Rename_PortfolioName = this._PortFolio_Namecardheader;
-        this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];
-        this.createdBy = this._PortfolioDetailsById[0]['Created_By'];
+        this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];  
+        this.createdBy = this._PortfolioDetailsById[0]['Created_By'];   
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
         this.lastProject = this._ProjectsListBy_Pid.length;
         this.Employeshare =JSON.parse(data[0]['Employee_Json']);
@@ -541,8 +542,14 @@ export class PortfolioProjectsComponent implements OnInit {
         this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']);
         if(this._ShareDetailsList){
 
+          // user page validation here
+          const _empOb=this._ShareDetailsList.find((ob)=>ob.EmployeeId==this.Current_user_ID);
+          this.UserAccessType=(this.Current_user_ID==this.createdBy)?'Full Access':_empOb.Preferences;
+          //
+
           this._SharedToEmps=this._ShareDetailsList.map(item=>item.EmployeeId);
-          }
+          console.log('_ShareDetailsList',this._ShareDetailsList);
+        }
         if (this._ShareDetailsList == 0) {
           this._btnShareDetails = true;
         }

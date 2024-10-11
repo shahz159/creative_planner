@@ -2802,3 +2802,8 @@ color: #2786fb;
   padding: 0px 4px;
   border-radius: 4px;
 }
+
+
+.taskItemfocus{
+ border:2px solid #8cabfa;
+}
