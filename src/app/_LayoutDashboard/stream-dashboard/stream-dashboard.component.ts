@@ -292,7 +292,7 @@ export class StreamDashboardComponent implements OnInit {
     this.service.NewDashboardPortfolio(this.Emp_No).subscribe((data) => {
       this.portfoiloData = JSON.parse(data[0]['PortfolioJson']);
 
-        // this.userFound = true
+        this.userFound = true
 
 
       console.log(this.portfoiloData, "this.portfoiloDatathis.portfoiloData")
@@ -318,7 +318,7 @@ export class StreamDashboardComponent implements OnInit {
     this.Emp_No = localStorage.getItem('EmpNo')
     this.service.NewGetDashboardTimelineStatus(this.Emp_No).subscribe((data)=>{
       this.darArray = JSON.parse(data['DAR_Details_Json']);
-      this.userFound = true
+      // this.userFound = true
       console.log(this.darArray,'darArraydarArray')
     })
 
