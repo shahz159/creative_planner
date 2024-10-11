@@ -10964,8 +10964,8 @@
                                 <angular-editor [(ngModel)]="Description_Type" (input)="updateCharacterCount_Meeting()"
                                 (paste)="updateCharacterCount_Meeting()"
                                  [config]="config"></angular-editor>
-                               <span *ngIf="characterCount_Meeting > 0" >Max Characters {{characterCount_Meeting}}/500</span>
-                                 <span *ngIf="characterCount_Meeting>=500"  style="color:red">    description should not exceed 500 characters.</span>
+                               <span *ngIf="characterCount_Meeting > 0" >Max characters {{characterCount_Meeting}}/500</span>
+                                 <span *ngIf="characterCount_Meeting>=500"  style="color:red">    Description should be less than 500 characters.</span>
                             </div>
                         </div>
                     </div>
@@ -12640,8 +12640,8 @@
                                       [ngClass]="{'error-border':!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired}"
                                       [(ngModel)]="ProjectDescription"   (input)="updateCharacterCount()" (paste)="updateCharacterCount()"></textarea>
                               </div>
-                              <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500 </span>
-                              <span *ngIf="characterCount>=500"  style="color:red"> description should not exceed 500 characters.</span>
+                              <span *ngIf="characterCount > 0" >Max characters {{characterCount}}/500 </span>
+                              <span *ngIf="characterCount>=500"  style="color:red"> Description should be less than 500 characters.</span>
                               <span style="color:red" *ngIf="!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired" >project description required</span>
                           </div>
                       </div>
@@ -13185,8 +13185,8 @@
                                   [(ngModel)]="ActionDescription" (input)="updateCharacterCount_Action()"
                                   (paste)="updateCharacterCount_Action()" ></textarea>
                           </div>
-                          <span *ngIf="characterCount_Action > 0" >Max Characters {{characterCount_Action}}/500</span>
-                          <span *ngIf="characterCount_Action >=500"  style="color:red">    description should not exceed 500 characters.</span>
+                          <span *ngIf="characterCount_Action > 0" >Max characters {{characterCount_Action}}/500</span>
+                          <span *ngIf="characterCount_Action >=500"  style="color:red">    Description should be less than 500 characters.</span>
                           <span style="color:red" class="fs-8" *ngIf="!ActionDescription&&formFieldsRequired" >action description required.</span>
                       </div>
                   </div>
