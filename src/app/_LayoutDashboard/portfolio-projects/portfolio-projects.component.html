@@ -40,6 +40,18 @@
                         </h3>
 
                     </div>
+              <!-- <div class="portfolio-top-action">
+                    <div class="kt-quick-search kt-quick-search--inline ml-3">
+                      <div class="kt-quick-search__form">
+                      <div class="input-group" *ngIf="_MessageIfNotOwner ==''" >
+                        <input type="text" class="form-control kt-quick-search__input pl-3"
+                            placeholder="Search projects" [(ngModel)]="_SearchProjects"
+                            style="width: 468px;height:30px">
+                        <div class="input-group-prepend"><span class="input-group-text"><i
+                                    class="flaticon2-search-1"></i></span></div>
+                    </div></div></div></div> -->
+
+
                     <div class="portfolio-top-action">
                         <div class="kt-quick-search kt-quick-search--inline ml-3" [hidden]="HideStatusDropdown">
                             <div class="kt-quick-search__form">
@@ -50,8 +62,12 @@
                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                 class="flaticon2-search-1"></i></span></div>
                                 </div>
+
                             </div>
-                        </div>
+  </div>
+
+
+
                         <div class="kt-todo__details">
 
 
@@ -407,7 +423,25 @@
                 </div>
             </div>
 
+
+            <!-- <div class="portfolio-top-action">
+              <div class="kt-quick-search kt-quick-search--inline ml-3">
+                <div class="kt-quick-search__form">
+                <div class="input-group" *ngIf="_MessageIfNotOwner ==''" >
+                  <input type="text" class="form-control kt-quick-search__input pl-3"
+                      placeholder="Search projects" [(ngModel)]="_SearchProjects"
+                      style="width: 468px;height:30px">
+                  <div class="input-group-prepend"><span class="input-group-text"><i
+                              class="flaticon2-search-1"></i></span></div>
+              </div></div></div></div> -->
+
+
+
+
+
+
         <!--begin:: Widgets/Best Sellers->
+
             <-- begin::Portlet -->
         <div class="kt-portlet mt-3 mb-0">
             <!-- <div class="kt-portlet__head" style="border-bottom: 0px solid #ebedf2;"> -->
@@ -527,6 +561,10 @@
                 </div> -->
             <!-- </div> -->
             <!-- Portfolio Projects -->
+
+
+
+
             <div class="kt-portlet__body pt-3 pb-2">
                 <div class="tab-content">
                     <div class="tab-pane active" aria-expanded="true" [hidden]="HideProjects">
