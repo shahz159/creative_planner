@@ -1073,8 +1073,6 @@ export class DashboardComponent implements OnInit {
       this.GetScheduledJson();
       this.GetPending_Request();
     })
-
-
   }
 
   PendingdeleteSchedule(id) {
@@ -1369,10 +1367,6 @@ export class DashboardComponent implements OnInit {
                 ac.updatePosition();
             });
           })
-
-
-
-
 
         }
 
@@ -3909,6 +3903,8 @@ currentTime:any;
         this.meetingRestriction(Schedule_date);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
+
+       
          console.log(this.EventScheduledjson, "Testing12");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -3933,7 +3929,7 @@ currentTime:any;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
         this.RecurrenceValue=this.EventScheduledjson[0].Recurrence
 
-
+        debugger
 
         document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
@@ -3947,11 +3943,11 @@ currentTime:any;
           // document.getElementById("copy_data2").style.display = "flex";
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Meeting_status==false) && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
-        debugger
+      
           document.getElementById("hiddenedit").style.display = "none";
           // document.getElementById("deleteendit").style.display = "flex";
 
-            document.getElementById("main-foot").style.display = "flex";
+          document.getElementById("main-foot").style.display = "flex";
 
 
           // document.getElementById("copy_data").style.display = "none";

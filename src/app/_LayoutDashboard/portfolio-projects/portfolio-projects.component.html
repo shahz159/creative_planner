@@ -3640,8 +3640,8 @@
                       <div class="form-group">
                           <angular-editor [(ngModel)]="Description_Type"
                           (input)="updateCharacterCount()" (paste)="updateCharacterCount()" [config]="config"></angular-editor>
-                          <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500</span>
-                          <span *ngIf="characterCount>=500"  style="color:red">    description should not exceed 500 characters.</span>
+                          <span *ngIf="characterCount > 0" >Max characters {{characterCount}}/500</span>
+                          <span *ngIf="characterCount>=500"  style="color:red">    Description should be less than 500 characters.</span>
                     </div>
                   </div>
               </div>
