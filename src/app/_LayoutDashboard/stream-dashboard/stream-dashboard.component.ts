@@ -98,7 +98,7 @@ export class StreamDashboardComponent implements OnInit {
           992: { items: 1 }
         }
       });
-    }, 1000);
+    }, 2000);
   }
 
   view_graph_div() {
