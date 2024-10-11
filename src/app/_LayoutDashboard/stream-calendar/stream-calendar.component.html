@@ -39,7 +39,7 @@
                         <span id="month-date" style="display: none;">July 2024</span>
                         <span id="schedule-date" style="display: block;">{{firstDate|date :'MMM d'}} – {{lastDates | date :'MMM d y'}}</span>
                         <div (click)="getEventsForWeeks(3)" class="custom-button-today">
-                            <span>Today</span>
+                            <span>today</span>
                         </div>
                     </div>
                 </div>
@@ -2174,8 +2174,8 @@
                                                             <div class="task-add-item-group">
                                                                 <!-- <textarea class="task-add-item-textarea" id="adddetails"  placeholder="Details"></textarea> -->
                                                                 <angular-editor [placeholder]="'Add description'"[(ngModel)]="Description_Type"  (input)="updateCharacterCount()" (paste)="updateCharacterCount()"   [config]="config"  ></angular-editor>
-                                                                <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500 </span>
-                                                                <span *ngIf="characterCount>=500"  style="color:red">    Description should not exceed 500 characters.</span>
+                                                                <span *ngIf="characterCount > 0" >Max characters {{characterCount}}/500 </span>
+                                                                <span *ngIf="characterCount>=500"  style="color:red">    Description should be less than 500 characters.</span>
                                                             </div>
                                                         </div>
                                                         <div class="task-add-item">
@@ -2483,6 +2483,8 @@
             <h5 class="modal-title">
                 <span id="event-title" >Create event</span>
                 <span id="task-title" style="display: none" >Create task</span>
+                <span id="Copy-title" style="display: none" >Copy event</span>
+                <span id="Edit-title" style="display: none" >Edit event</span>
             </h5>
             <div class="create-event-modal-close"  title="Close" (click)="createEventTaskModal_dismiss()">
                 <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17.769 16l9.016-9.016c0.226-0.226 0.366-0.539 0.366-0.884 0-0.691-0.56-1.251-1.251-1.251-0.346 0-0.658 0.14-0.885 0.367v0l-9.015 9.015-9.016-9.015c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l9.015 9.016-9.015 9.015c-0.227 0.226-0.367 0.539-0.367 0.885 0 0.691 0.56 1.251 1.251 1.251 0.345 0 0.658-0.14 0.884-0.366v0l9.016-9.016 9.015 9.016c0.227 0.228 0.541 0.369 0.888 0.369 0.691 0 1.251-0.56 1.251-1.251 0-0.347-0.141-0.661-0.369-0.887l-0-0z"></path> </g></svg>
@@ -2571,8 +2573,8 @@
                                 <!-- <textarea class="form-control" id="createtaskTextarea" rows="3" placeholder="Add Description"></textarea> -->
                                 <angular-editor  [(ngModel)]="Description_Type"  (input)="updateCharacterCount()" (paste)="updateCharacterCount()"                                
                                 [placeholder]="'Add description'"  [config]="config"></angular-editor>
-                                <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500 </span>
-                                <span *ngIf="characterCount>=500"  style="color:red">    Description should not exceed 500 characters.</span>
+                                <span *ngIf="characterCount > 0" >Max characters {{characterCount}}/500 </span>
+                                <span *ngIf="characterCount>=500"  style="color:red">    Description should be less than 500 characters.</span>
                             </div>
                         </div>               
                         <div id="create-event-div">
@@ -2637,7 +2639,7 @@
                                               </label>
                                         </div>
                                         <div>
-                                            <div class="meeting-type-div" *ngIf="selectedOption === 'option1'">
+                                            <div class="meeting-type-div" id="Location_Name" style="display:none" *ngIf="selectedOption === 'option1'">
                                                 <div class="meeting-type-control">
                                                     <div class="meeting-type-icon">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="36" height="22" viewBox="0 0 36 22" fill="none"><path d="M31.7143 3.79541H4.08222C3.64171 3.79541 3.24124 4.15583 3.24124 4.63639V17.6115C3.24124 18.052 3.60166 18.4524 4.08222 18.4524H31.7143C32.1548 18.4524 32.5553 18.092 32.5553 17.6115V4.59634C32.5553 4.15583 32.1949 3.79541 31.7143 3.79541ZM30.9134 16.8105H4.9232V5.43732H30.8733L30.9134 16.8105Z" fill="#6772FE"></path><path d="M34.5576 7.88013C34.1171 7.88013 33.7166 8.24054 33.7166 8.7211V13.5267C33.7166 13.9672 34.0771 14.3677 34.5576 14.3677C35.0382 14.3677 35.3986 14.0072 35.3986 13.5267V8.7211C35.3986 8.28059 34.9981 7.88013 34.5576 7.88013Z" fill="#6772FE"></path><path d="M11.3707 19.6938H6.5651C6.12459 19.6938 5.72412 20.0543 5.72412 20.5348C5.72412 21.0154 6.08454 21.3758 6.5651 21.3758H11.3707C11.8112 21.3758 12.2117 21.0154 12.2117 20.5348C12.2117 20.0543 11.8112 19.6938 11.3707 19.6938Z" fill="#6772FE"></path><path d="M20.3011 19.6938H15.4955C15.055 19.6938 14.6545 20.0543 14.6545 20.5348C14.6545 21.0154 15.0149 21.3758 15.4955 21.3758H20.3011C20.7416 21.3758 21.142 21.0154 21.142 20.5348C21.142 20.0543 20.7416 19.6938 20.3011 19.6938Z" fill="#6772FE"></path><path d="M29.2715 19.6938H24.4659C24.0254 19.6938 23.6249 20.0543 23.6249 20.5348C23.6249 21.0154 23.9853 21.3758 24.4659 21.3758H29.2715C29.712 21.3758 30.1124 21.0154 30.1124 20.5348C30.1124 20.0543 29.712 19.6938 29.2715 19.6938Z" fill="#6772FE"></path><path d="M6.5651 2.55402H11.3707C11.8112 2.55402 12.2117 2.1936 12.2117 1.71305C12.2117 1.27253 11.8512 0.87207 11.3707 0.87207H6.5651C6.12459 0.87207 5.72412 1.23249 5.72412 1.71305C5.76417 2.1936 6.12459 2.55402 6.5651 2.55402Z" fill="#6772FE"></path><path d="M15.4955 2.55402H20.3011C20.7416 2.55402 21.142 2.1936 21.142 1.71305C21.142 1.27253 20.7816 0.87207 20.3011 0.87207H15.4955C15.055 0.87207 14.6545 1.23249 14.6545 1.71305C14.6946 2.1936 15.055 2.55402 15.4955 2.55402Z" fill="#6772FE"></path><path d="M24.4659 2.55402H29.2715C29.712 2.55402 30.1124 2.1936 30.1124 1.71305C30.1124 1.27253 29.752 0.87207 29.2715 0.87207H24.4659C24.0254 0.87207 23.6249 1.23249 23.6249 1.71305C23.6249 2.1936 24.0254 2.55402 24.4659 2.55402Z" fill="#6772FE"></path><path d="M1.27897 7.88013C0.838454 7.88013 0.437988 8.28059 0.437988 8.7211V13.5267C0.437988 13.9672 0.798407 14.3677 1.27897 14.3677C1.75952 14.3677 2.11994 14.0072 2.11994 13.5267V8.7211C2.11994 8.28059 1.75952 7.88013 1.27897 7.88013Z" fill="#6772FE"></path></svg>
@@ -3676,7 +3678,7 @@
                 <div class="modal-time-item-icon">
                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 2L14 5M14 5L11 8M14 5H6.8C5.11984 5 4.27976 5 3.63803 5.32698C3.07354 5.6146 2.6146 6.07354 2.32698 6.63803C2 7.27976 2 8.11984 2 9.8V15.5C2 15.9644 2 16.1966 2.02567 16.3916C2.2029 17.7378 3.26222 18.7971 4.60842 18.9743C4.80337 19 5.03558 19 5.5 19M10 19H17.2C18.8802 19 19.7202 19 20.362 18.673C20.9265 18.3854 21.3854 17.9265 21.673 17.362C22 16.7202 22 15.8802 22 14.2V8.5C22 8.03558 22 7.80337 21.9743 7.60842C21.7971 6.26222 20.7378 5.2029 19.3916 5.02567C19.1966 5 18.9644 5 18.5 5M10 19L13 22M10 19L13 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                 </div>
-                <div class="modal-time-item-control">
+                <div class="modal-time-item-control"  id="div_recurrence">
                     <mat-select name="Select Type" placeholder="Do not repeat"
                     [(value)]="selectedrecuvalue1" class="form-control" (click)="customrecurrencemodal()"  (selectionChange)="onRecurrenceTypeChange($event);" >
 
@@ -3969,22 +3971,44 @@
                     <div class="custom-evt-tsk-label">
                       <div class="date-info">Created On</div>
                       <div class="date-value">{{creation_date|date:'EEEE, MMMM d, YYYY'}}</div>
+                      <div [ngClass]="{'icon-active': AdminMeeting_Status==1,'live': Isadmin==true && AdminMeeting_Status==1,'join': Isadmin==false && AdminMeeting_Status==1}"  title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'"  (click)="newMeetingDetails()">
+                           <ng-container  *ngIf="AdminMeeting_Status==1">
+                            <span  *ngIf="Isadmin==true" class="meet-blink">Meeting started.</span>
+                            <span *ngIf="Isadmin==false" class="meet-blink">Meeting started.</span>
+                           </ng-container>
+                    </div>
+                    <div  *ngIf="Meeting_status==true && Schedule_type1=='Event'">
+                        <span>Meeting has completed</span>
+                    </div>
                     </div>
                     <div class="custom-evt-tsk-action">
-                        <div class="custom-evt-tsk-action-icon" title="View Meeting">
+                        <div class="custom-evt-tsk-action-icon"  [ngClass]="{'icon-active': AdminMeeting_Status==1,'live': Isadmin==true && AdminMeeting_Status==1,'join': Isadmin==false && AdminMeeting_Status==1}"  title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'"  (click)="newMeetingDetails()">
                             <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"> <path d="M7.421 4.356A1.25 1.25 0 005.5 5.411v5.178a1.25 1.25 0 001.921 1.055l4.069-2.59a1.25 1.25 0 000-2.109L7.42 4.356zM10.353 8L7 10.134V5.866L10.353 8z"></path> <path d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"></path> </g> </g></svg>
+                               <ng-container  *ngIf="AdminMeeting_Status==1">
+                                <span  *ngIf="Isadmin==true" class="meet-blink-dot"></span>
+                                <span *ngIf="Isadmin==false" class="meet-blink-dot"></span>
+                               </ng-container>
                         </div>
-                        <div class="custom-evt-tsk-action-icon" title="Copy">
+                        <div class="custom-evt-tsk-action-icon met-done"  *ngIf="Meeting_status==true && Schedule_type1=='Event'" (click)="newMeetingDetails()">
+                            <span class="met-done-dot"></span><span>Done</span>
+                        </div>
+
+                        <div class="custom-evt-tsk-action-icon" title="Copy" (click)="DublicateTaskandEvent()">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M21 8C21 6.34315 19.6569 5 18 5H10C8.34315 5 7 6.34315 7 8V20C7 21.6569 8.34315 23 10 23H18C19.6569 23 21 21.6569 21 20V8ZM19 8C19 7.44772 18.5523 7 18 7H10C9.44772 7 9 7.44772 9 8V20C9 20.5523 9.44772 21 10 21H18C18.5523 21 19 20.5523 19 20V8Z" fill="currentColor"></path> <path d="M6 3H16C16.5523 3 17 2.55228 17 2C17 1.44772 16.5523 1 16 1H6C4.34315 1 3 2.34315 3 4V18C3 18.5523 3.44772 19 4 19C4.55228 19 5 18.5523 5 18V4C5 3.44772 5.44772 3 6 3Z" fill="currentColor"></path> </g></svg>
                         </div>
-                        <div class="custom-evt-tsk-action-icon" title="Pending">
+                        <div class="custom-evt-tsk-action-icon" title="Pending" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false" (click)="sweet_pending()">
                             <svg width="64px" height="64px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Free-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"> <g transform="translate(-451.000000, -748.000000)" id="Group" stroke="currentColor" stroke-width="1.75"> <g transform="translate(449.000000, 746.000000)" id="Shape"> <line x1="17" y1="3" x2="17" y2="5"> </line> <line x1="7" y1="3" x2="7" y2="5"> </line> <path d="M18,11.5 L18,17.9933387 M18.0043926,21.0066613 L18,20.9933387"> </path> <path d="M8.03064542,21 C7.42550126,21 6.51778501,21 5.30749668,21 C4.50512981,21 4.2141722,20.9218311 3.92083887,20.7750461 C3.62750553,20.6282612 3.39729582,20.4128603 3.24041943,20.1383964 C3.08354305,19.8639324 3,19.5916914 3,18.8409388 L3,7.15906122 C3,6.4083086 3.08354305,6.13606756 3.24041943,5.86160362 C3.39729582,5.58713968 3.62750553,5.37173878 3.92083887,5.22495386 C4.2141722,5.07816894 4.50512981,5 5.30749668,5 L18.6925033,5 C19.4948702,5 19.7858278,5.07816894 20.0791611,5.22495386 C20.3724945,5.37173878 20.6027042,5.58713968 20.7595806,5.86160362 C20.9164569,6.13606756 21,7.24671889 21,7.99747152"> </path> </g> </g> </g> </g></svg>
                         </div>
-                        <div class="custom-evt-tsk-action-icon" title="Edit">
+                        <div class="custom-evt-tsk-action-icon" title="Edit" (click)="ReshudingTaskandEvent();updateCharacterCount()">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Edit_Pencil_01"> <path id="Vector" d="M12 8.00012L4 16.0001V20.0001L8 20.0001L16 12.0001M12 8.00012L14.8686 5.13146L14.8704 5.12976C15.2652 4.73488 15.463 4.53709 15.691 4.46301C15.8919 4.39775 16.1082 4.39775 16.3091 4.46301C16.5369 4.53704 16.7345 4.7346 17.1288 5.12892L18.8686 6.86872C19.2646 7.26474 19.4627 7.46284 19.5369 7.69117C19.6022 7.89201 19.6021 8.10835 19.5369 8.3092C19.4628 8.53736 19.265 8.73516 18.8695 9.13061L18.8686 9.13146L16 12.0001M12 8.00012L16 12.0001" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
                         </div>
                         <div class="custom-evt-tsk-action-icon" title="Delete">
+                            <span *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0"  data-toggle="modal" data-target="#delevent">
+                                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                            </span>
+                            <span *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0"  (click)="onSingleEventDelete()">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                           </span>                     
                         </div>
                         <div class="custom-evt-tsk-action-icon" title="Close" (click)="customEventModal_dismiss()">
                             <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17.769 16l9.016-9.016c0.226-0.226 0.366-0.539 0.366-0.884 0-0.691-0.56-1.251-1.251-1.251-0.346 0-0.658 0.14-0.885 0.367v0l-9.015 9.015-9.016-9.015c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l9.015 9.016-9.015 9.015c-0.227 0.226-0.367 0.539-0.367 0.885 0 0.691 0.56 1.251 1.251 1.251 0.345 0 0.658-0.14 0.884-0.366v0l9.016-9.016 9.015 9.016c0.227 0.228 0.541 0.369 0.888 0.369 0.691 0 1.251-0.56 1.251-1.251 0-0.347-0.141-0.661-0.369-0.887l-0-0z"></path> </g></svg>
@@ -4016,8 +4040,32 @@
                             <div class="custom-evt-tsk-item-date">{{item.Schedule_date| date:'EEEE, MMMM d, YYYY'}}</div>
                             <div class="custom-evt-tsk-item-time">
                                 <span>{{ parseTime(item.NewSt_Time) | date: 'h:mm a' }} - {{ parseTime(item.NewEd_Time) | date: 'h:mm a' }} ({{ getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time) }})</span>
-                                <span class="event item-badge">Event</span>
-                                <span class="daily item-badge">Daily</span>
+                                <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==true" class="event item-badge" >
+                                {{item.Schedule_Type}}
+                            </span>
+                            <span
+                                *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat' && Isadmin==true && Meeting_status==false" class="daily item-badge">
+                                {{item.Recurrence}}
+                            </span>
+                            <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==false" class="event item-badge">
+                                {{item.Schedule_Type}}
+                            </span>
+                            <span
+                                *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Isadmin==false && Meeting_status==false" class="daily item-badge">
+                                {{item.Recurrence}}
+                            </span>
+                            <span *ngIf="Meeting_status==true" class="event item-badge">
+                                {{item.Schedule_Type}}
+                            </span>
+                            <span *ngIf="item.Recurrence!='Do not repeat' && Meeting_status==true" class="daily item-badge">
+                                {{item.Recurrence}}
+                            </span>
+                            <span *ngIf="Status1 =='Rejected'" class="event item-badge">
+                                {{item.Schedule_Type}}
+                            </span>
+                            <span *ngIf="Status1 =='Rejected' && item.Recurrence!='Do not repeat'" class="daily item-badge">
+                                {{item.Recurrence}}
+                            </span>
                             </div>
                         </div>
                     </div>
@@ -4042,18 +4090,28 @@
                             <span class="custom-evt-tsk-item-description"  [innerHTML]="item.Description"></span>
                         </div>
                     </div>
-                    <div class="custom-evt-tsk-item">
+                    <div class="custom-evt-tsk-item" *ngIf="item.Location!=''">
                         <div class="custom-evt-tsk-item-icon">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                         </div>
-                        <div class="custom-evt-tsk-item-control">
-                            <span class="custom-evt-tsk-item-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</span>
+                        <div class="custom-evt-tsk-item-control"><a href="{{item.Addressurl}}" target=”_blank”>{{item.Location}}</a>
+                            <span class="custom-evt-tsk-item-description">{{item.FullAddress_loc}}</span>
                         </div>
                     </div>
-                    <div class="custom-evt-tsk-item">
-                        <div class="custom-evt-tsk-item-icon mt-2">
-                            <!-- <svg width="64px" height="64px" viewBox="0 -22.5 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <polygon fill="#00832D" points="144.822496 105.321856 169.778926 133.848796 203.341343 155.294133 209.178931 105.50196 203.341343 56.8331137 169.136495 75.6715889"> </polygon> <path d="M0.000557021739,150.659712 L0.000557021739,193.089915 C0.000557021739,202.77838 7.86384724,210.643527 17.5541688,210.643527 L59.9843714,210.643527 L68.7704609,178.585069 L59.9843714,150.659712 L30.8744153,141.873623 L0.000557021739,150.659712 Z" fill="#0066DA"> </path> <polygon fill="#E94235" points="59.9838143 9.9475983e-14 0 59.9838143 30.875715 68.7494798 59.9838143 59.9838143 68.6102243 32.4390893"> </polygon> <polygon fill="#2684FC" points="0.000557021739 150.679394 59.9843714 150.679394 59.9843714 59.9832573 0.000557021739 59.9832573"> </polygon> <path d="M241.658683,25.3977775 L203.341157,56.8342278 L203.341157,155.29339 L241.818362,186.852385 C247.577967,191.364261 256.003849,187.251584 256.003849,179.930462 L256.003849,32.1785888 C256.003849,24.7757699 247.377439,20.6835169 241.658683,25.3977775" fill="#00AC47"> </path> <path d="M144.822496,105.321856 L144.822496,150.659712 L59.9843714,150.659712 L59.9843714,210.643527 L185.787731,210.643527 C195.478053,210.643527 203.341343,202.77838 203.341343,193.089915 L203.341343,155.294133 L144.822496,105.321856 Z" fill="#00AC47"> </path> <path d="M185.787731,0 L59.9843714,0 L59.9843714,59.9838143 L144.822496,59.9838143 L144.822496,105.32167 L203.341343,56.832928 L203.341343,17.5536117 C203.341343,7.86329022 195.478053,0 185.787731,0" fill="#FFBA00"> </path> </g> </g></svg> -->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2228.833 2073.333">
+                    <div class="custom-evt-tsk-item"  *ngIf="Link_Detail!=''">
+                        <div class="custom-evt-tsk-item-icon mt-2" *ngIf="Link_Detail.includes('meet.google.com')">
+                            <svg xmlns="http://www.w3.org/2000/svg" aria-label="Google Meet" role="img" viewBox="0 0 512 512" width="20px" height="20px" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><rect width="512" height="512" rx="15%" fill="#ffffff"></rect><path d="M166 106v90h-90" fill="#ea4335"></path><path d="M166 106v90h120v62l90-73v-49q0-30-30-30" fill="#ffba00"></path><path d="M164 406v-90h122v-60l90 71v49q0 30-30 30" fill="#00ac47"></path><path d="M286 256l90-73v146" fill="#00832d"></path><path d="M376 183l42-34c9-7 18-7 18 7v200c0 14-9 14-18 7l-42-34" fill="#00ac47"></path><path d="M76 314v62q0 30 30 30h60v-92" fill="#0066da"></path><path d="M76 196h90v120h-90" fill="#2684fc"></path></g></svg>
+                        </div>
+                        <div class="custom-evt-tsk-item-icon mt-2" *ngIf="Link_Detail.includes('skype.com')">
+                           <svg width="20px" height="20px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>Skype-color</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Color-" transform="translate(-400.000000, -660.000000)" fill="#00AEF3"> <path d="M446.619944,689.095462 C446.967074,687.531907 447.147695,685.912711 447.147695,684.249 C447.147695,671.785081 436.900282,661.677621 424.253998,661.677621 C422.921919,661.677621 421.61524,661.791688 420.339605,662.008694 C418.293509,660.737263 415.87206,660 413.278457,660 C405.943556,660 400,665.859155 400,673.09268 C400,675.507564 400.66604,677.766649 401.823142,679.714137 C401.521167,681.177534 401.360301,682.696575 401.360301,684.249 C401.360301,696.718484 411.610536,706.823161 424.253998,706.823161 C425.687676,706.823161 427.087488,706.692401 428.447789,706.444792 C430.318909,707.435229 432.452493,708 434.724365,708 C442.056444,708 448,702.138063 448,694.910103 C448,692.820727 447.503293,690.8482 446.619944,689.095462 Z M435.997178,695.03808 C434.938852,696.518171 433.375353,697.686663 431.343368,698.515736 C429.336783,699.339245 426.932267,699.759346 424.19191,699.759346 C420.904045,699.759346 418.146754,699.189011 415.993415,698.06225 C414.455315,697.244305 413.188147,696.13702 412.225776,694.76265 C411.252117,693.382716 410.761054,692.011128 410.761054,690.684055 C410.761054,689.860546 411.082785,689.142758 411.714958,688.555729 C412.341486,687.971483 413.145814,687.67936 414.105362,687.67936 C414.889934,687.67936 415.570085,687.910276 416.120414,688.369327 C416.648166,688.811685 417.099718,689.465484 417.463782,690.302904 C417.870179,691.221005 418.310442,691.994436 418.776105,692.598157 C419.227658,693.187967 419.873942,693.680403 420.698024,694.067119 C421.527752,694.451052 422.648166,694.651365 424.022578,694.651365 C425.916275,694.651365 427.468485,694.250739 428.634055,693.46618 C429.777046,692.701095 430.330198,691.77743 430.330198,690.647887 C430.330198,689.760389 430.039511,689.059294 429.446849,688.508433 C428.82032,687.935316 427.999059,687.490176 427.002822,687.178578 C425.96143,686.861415 424.550329,686.51365 422.803387,686.151974 C420.424271,685.651191 418.406397,685.058599 416.803387,684.382542 C415.160865,683.695357 413.837253,682.741089 412.869238,681.547557 C411.887112,680.331768 411.387582,678.809946 411.387582,677.02104 C411.387582,675.318379 411.90969,673.779864 412.942615,672.455573 C413.964252,671.139628 415.460019,670.110242 417.387582,669.411928 C419.286924,668.719179 421.544685,668.368632 424.104421,668.368632 C426.147695,668.368632 427.945437,668.60233 429.446849,669.064163 C430.956726,669.525995 432.226717,670.149191 433.225776,670.91984 C434.233302,671.698835 434.984008,672.525126 435.452493,673.387585 C435.926623,674.25839 436.169332,675.123631 436.169332,675.96105 C436.169332,676.767866 435.853246,677.502347 435.229539,678.139454 C434.60301,678.784907 433.809972,679.110416 432.878645,679.110416 C432.031985,679.110416 431.365945,678.904538 430.908749,678.503912 C430.479774,678.128326 430.033866,677.544079 429.539981,676.709442 C428.969897,675.641106 428.278457,674.798122 427.485419,674.202747 C426.714958,673.624065 425.430856,673.334724 423.661336,673.334724 C422.024459,673.334724 420.686736,673.657451 419.696143,674.300122 C418.742239,674.914971 418.276576,675.624413 418.276576,676.464615 C418.276576,676.976526 418.426152,677.407755 418.736595,677.774996 C419.058325,678.170057 419.518344,678.509477 420.099718,678.798818 C420.700847,679.096505 421.321731,679.335768 421.942615,679.502695 C422.577611,679.677969 423.644403,679.936707 425.109125,680.270562 C426.963311,680.660059 428.665099,681.102417 430.169332,681.57816 C431.696143,682.056686 433.011289,682.646496 434.08937,683.339245 C435.184384,684.043123 436.0508,684.944531 436.668862,686.023996 C437.286924,687.111807 437.600188,688.447227 437.600188,690.002434 C437.600188,691.860894 437.058325,693.555208 435.997178,695.03808 Z" id="Skype"> </path> </g> </g> </g></svg>
+                        </div>
+                        <div class="custom-evt-tsk-item-icon mt-2" *ngIf="Link_Detail.includes('zoom')">
+                            <svg xmlns="http://www.w3.org/2000/svg" aria-label="Zoom" role="img" viewBox="0 0 512 512" width="20px" height="20px" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><rect width="512" height="512" rx="15%" fill="#2D8CFF"></rect><path fill="#ffffff" d="M428 357c8 2 15-2 19-8 2-3 2-8 2-19V179c0-11 0-15-2-19-3-8-11-11-19-8-21 14-67 55-68 72-.8 3-.8 8-.8 15v38c0 8 0 11 .8 15 1 8 4 15 8 19 12 9 52 45 61 45zM64 187c0-15 0-23 3-27 2-4 8-8 11-11 4-3 11-3 27-3h129c38 0 57 0 72 8 11 8 23 15 30 30 8 15 8 34 8 72v68c0 15 0 23-3 27-2 4-8 8-11 11-4 3-11 3-27 3H174c-38 0-57 0-72-8-11-8-23-15-30-30-8-15-8-34-8-72z"></path></g></svg>
+                         </div>
+                         <div class="custom-evt-tsk-item-icon mt-2" *ngIf="Link_Detail.includes('teams.microsoft.com')">
+                           <svg width="20px" height="20px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#5059C9" d="M10.765 6.875h3.616c.342 0 .619.276.619.617v3.288a2.272 2.272 0 01-2.274 2.27h-.01a2.272 2.272 0 01-2.274-2.27V7.199c0-.179.145-.323.323-.323zM13.21 6.225c.808 0 1.464-.655 1.464-1.462 0-.808-.656-1.463-1.465-1.463s-1.465.655-1.465 1.463c0 .807.656 1.462 1.465 1.462z"></path><path fill="#7B83EB" d="M8.651 6.225a2.114 2.114 0 002.117-2.112A2.114 2.114 0 008.65 2a2.114 2.114 0 00-2.116 2.112c0 1.167.947 2.113 2.116 2.113zM11.473 6.875h-5.97a.611.611 0 00-.596.625v3.75A3.669 3.669 0 008.488 15a3.669 3.669 0 003.582-3.75V7.5a.611.611 0 00-.597-.625z"></path><path fill="#000000" d="M8.814 6.875v5.255a.598.598 0 01-.596.595H5.193a3.951 3.951 0 01-.287-1.476V7.5a.61.61 0 01.597-.624h3.31z" opacity=".1"></path><path fill="#000000" d="M8.488 6.875v5.58a.6.6 0 01-.596.595H5.347a3.22 3.22 0 01-.267-.65 3.951 3.951 0 01-.172-1.15V7.498a.61.61 0 01.596-.624h2.985z" opacity=".2"></path><path fill="#000000" d="M8.488 6.875v4.93a.6.6 0 01-.596.595H5.08a3.951 3.951 0 01-.172-1.15V7.498a.61.61 0 01.596-.624h2.985z" opacity=".2"></path><path fill="#000000" d="M8.163 6.875v4.93a.6.6 0 01-.596.595H5.079a3.951 3.951 0 01-.172-1.15V7.498a.61.61 0 01.596-.624h2.66z" opacity=".2"></path><path fill="#000000" d="M8.814 5.195v1.024c-.055.003-.107.006-.163.006-.055 0-.107-.003-.163-.006A2.115 2.115 0 016.593 4.6h1.625a.598.598 0 01.596.594z" opacity=".1"></path><path fill="#000000" d="M8.488 5.52v.699a2.115 2.115 0 01-1.79-1.293h1.195a.598.598 0 01.595.594z" opacity=".2"></path><path fill="#000000" d="M8.488 5.52v.699a2.115 2.115 0 01-1.79-1.293h1.195a.598.598 0 01.595.594z" opacity=".2"></path><path fill="#000000" d="M8.163 5.52v.647a2.115 2.115 0 01-1.465-1.242h.87a.598.598 0 01.595.595z" opacity=".2"></path><path fill="url(#microsoft-teams-color-16__paint0_linear_2372_494)" d="M1.597 4.925h5.969c.33 0 .597.267.597.596v5.958a.596.596 0 01-.597.596h-5.97A.596.596 0 011 11.479V5.521c0-.33.267-.596.597-.596z"></path><path fill="#ffffff" d="M6.152 7.193H4.959v3.243h-.76V7.193H3.01v-.63h3.141v.63z"></path><defs><linearGradient id="microsoft-teams-color-16__paint0_linear_2372_494" x1="2.244" x2="6.906" y1="4.46" y2="12.548" gradientUnits="userSpaceOnUse"><stop stop-color="#5A62C3"></stop><stop offset=".5" stop-color="#4D55BD"></stop><stop offset="1" stop-color="#3940AB"></stop></linearGradient></defs></g></svg>
+                         </div>
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2228.833 2073.333">
                           <path fill="#5059C9" d="M1554.637,777.5h575.713c54.391,0,98.483,44.092,98.483,98.483c0,0,0,0,0,0v524.398 c0,199.901-162.051,361.952-361.952,361.952h0h-1.711c-199.901,0.028-361.975-162-362.004-361.901c0-0.017,0-0.034,0-0.052V828.971 C1503.167,800.544,1526.211,777.5,1554.637,777.5L1554.637,777.5z"></path>
                           <circle fill="#5059C9" cx="1943.75" cy="440.583" r="233.25"></circle>
                           <circle fill="#7B83EB" cx="1218.083" cy="336.917" r="336.917"></circle>
@@ -4067,18 +4125,39 @@
                           <path opacity=".2" d="M1192.167,561.355v111.442c-17.496-1.161-34.848-3.937-51.833-8.293 c-104.963-24.857-191.679-98.469-233.25-198.003h190.228C1149.616,466.699,1191.968,509.051,1192.167,561.355z"></path>
                           <path opacity=".2" d="M1140.333,561.355v103.148c-104.963-24.857-191.679-98.469-233.25-198.003 h138.395C1097.783,466.699,1140.134,509.051,1140.333,561.355z"></path>
                           <linearGradient id="a" gradientUnits="userSpaceOnUse" x1="198.099" y1="1683.0726" x2="942.2344" y2="394.2607" gradientTransform="matrix(1 0 0 -1 0 2075.3333)">
-                            <stop offset="0" stop-color="#5a62c3"></stop>
-                            <stop offset=".5" stop-color="#4d55bd"></stop>
-                            <stop offset="1" stop-color="#3940ab"></stop>
-                          </linearGradient>
-                          <path fill="url(#a)" d="M95.01,466.5h950.312c52.473,0,95.01,42.538,95.01,95.01v950.312c0,52.473-42.538,95.01-95.01,95.01 H95.01c-52.473,0-95.01-42.538-95.01-95.01V561.51C0,509.038,42.538,466.5,95.01,466.5z"></path>
-                          <path fill="#FFF" d="M820.211,828.193H630.241v517.297H509.211V828.193H320.123V727.844h500.088V828.193z"></path>
-                        </svg>
-                        <!-- <svg width="64px" height="64px" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M246.93895,149.01069 C246.857867,149.460702 246.801109,149.914768 246.715971,150.364779 L246.278122,147.786333 C246.517317,148.187695 246.715971,148.605274 246.93895,149.01069 C248.260607,141.818608 248.953868,134.456251 248.953868,127.097949 C248.953868,110.779951 245.759189,94.948452 239.44686,80.0453559 C233.35751,65.64903 224.645118,52.7203104 213.536717,41.6200174 C202.444532,30.5197244 189.507704,21.8073323 175.119487,15.7179824 C160.220445,9.41376198 144.388946,6.21908306 128.070948,6.21908306 C120.380204,6.21908306 112.677298,6.94072373 105.181154,8.37995091 C105.164938,8.38400507 105.144667,8.38400507 105.124396,8.38805923 C105.546029,8.61103809 105.971716,8.80969198 106.38524,9.04077916 L103.843281,8.64347138 C104.268968,8.56238815 104.698709,8.47319661 105.124396,8.38805923 C94.8389896,2.91899596 83.2724681,0 71.564051,0 C52.4486816,0 34.4765856,7.4434397 20.9600127,20.9640668 C7.44749386,34.4806398 0,52.4527358 0,71.5681052 C0,83.7346425 3.12981234,95.6944176 9.00429171,106.263615 C9.08132077,105.825766 9.13402486,105.383863 9.21916225,104.946013 L9.65701164,107.479864 C9.42997862,107.082556 9.23132473,106.669032 9.00429171,106.263615 C7.81236836,113.111094 7.18397339,120.108576 7.18397339,127.097949 C7.18397339,143.420002 10.3786523,159.247446 16.6909811,174.154597 C22.7722227,188.554977 31.4886689,201.475588 42.5849078,212.575881 C53.6933091,223.676174 66.6139203,232.400728 81.0183546,238.473862 C95.9173965,244.790245 111.75295,247.988978 128.070948,247.988978 C135.173838,247.988978 142.292945,247.340312 149.241777,246.107847 C148.836361,245.880814 148.422836,245.674052 148.009312,245.434856 L150.591812,245.888922 C150.145855,245.97406 149.695843,246.026764 149.241777,246.107847 C159.948816,252.164764 172.070758,255.383768 184.448111,255.383768 C203.559427,255.383768 221.523414,247.95249 235.039987,234.427809 C248.560614,220.919344 256,202.943194 256,183.827825 C256,171.620746 252.853971,159.620429 246.93895,149.01069 L246.93895,149.01069 Z M128.553393,201.130984 C85.6076649,201.130984 66.3949956,180.016913 66.3949956,164.193523 C66.3949956,156.077092 72.3870457,150.389104 80.6453718,150.389104 C99.0228838,150.389104 94.2632988,176.777639 128.553393,176.777639 C146.10791,176.777639 155.801409,167.246306 155.801409,157.491995 C155.801409,151.625624 152.906738,145.122749 141.348325,142.272674 L103.15002,132.737287 C72.3870457,125.022219 66.8044659,108.39205 66.8044659,92.759205 C66.8044659,60.3015916 97.364732,48.1147834 126.064138,48.1147834 C152.501322,48.1147834 183.665658,62.7259799 183.665658,82.1981154 C183.665658,90.5415789 176.441143,95.3944097 168.186871,95.3944097 C152.501322,95.3944097 155.387885,73.6843772 123.793808,73.6843772 C108.116367,73.6843772 99.4323541,80.7832132 99.4323541,90.9429409 C99.4323541,101.082398 111.813762,104.321672 122.565397,106.770386 L150.839116,113.046227 C181.808853,119.946409 189.661763,138.027967 189.661763,155.059498 C189.661763,181.43587 169.415282,201.130984 128.553393,201.130984 Z M148.009312,245.434856 C148.422836,245.674052 148.836361,245.880814 149.241777,246.107847 C149.695843,246.026764 150.145855,245.97406 150.591812,245.888922 L148.009312,245.434856 Z M246.715971,150.364779 C246.801109,149.914768 246.857867,149.460702 246.93895,149.01069 C246.715971,148.605274 246.517317,148.187695 246.278122,147.786333 L246.715971,150.364779 Z M9.21916225,104.946013 C9.13402486,105.383863 9.08132077,105.825766 9.00429171,106.263615 C9.23132473,106.669032 9.42997862,107.082556 9.65701164,107.479864 L9.21916225,104.946013 Z M106.38524,9.04077916 C105.971716,8.80969198 105.546029,8.61103809 105.124396,8.38805923 C104.698709,8.47319661 104.268968,8.56238815 103.843281,8.64347138 L106.38524,9.04077916 Z" fill="#00AFF0"> </path> </g> </g></svg> -->
-                             <!-- <svg xmlns="http://www.w3.org/2000/svg" aria-label="Zoom" role="img" viewBox="0 0 512 512" width="64px" height="64px" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><rect width="512" height="512" rx="15%" fill="#2D8CFF"></rect><path fill="#ffffff" d="M428 357c8 2 15-2 19-8 2-3 2-8 2-19V179c0-11 0-15-2-19-3-8-11-11-19-8-21 14-67 55-68 72-.8 3-.8 8-.8 15v38c0 8 0 11 .8 15 1 8 4 15 8 19 12 9 52 45 61 45zM64 187c0-15 0-23 3-27 2-4 8-8 11-11 4-3 11-3 27-3h129c38 0 57 0 72 8 11 8 23 15 30 30 8 15 8 34 8 72v68c0 15 0 23-3 27-2 4-8 8-11 11-4 3-11 3-27 3H174c-38 0-57 0-72-8-11-8-23-15-30-30-8-15-8-34-8-72z"></path></g></svg> -->
-                        </div>
+                            <stop offset="0" stop-color="#5a62c3"></stop> <stop offset=".5" stop-color="#4d55bd"></stop> <stop offset="1" stop-color="#3940ab"></stop>  </linearGradient> <path fill="url(#a)" d="M95.01,466.5h950.312c52.473,0,95.01,42.538,95.01,95.01v950.312c0,52.473-42.538,95.01-95.01,95.01 H95.01c-52.473,0-95.01-42.538-95.01-95.01V561.51C0,509.038,42.538,466.5,95.01,466.5z"></path> <path fill="#FFF" d="M820.211,828.193H630.241v517.297H509.211V828.193H320.123V727.844h500.088V828.193z"></path> </svg> -->                     
                         <div class="custom-evt-tsk-item-control">
-                           <a class="meeting-btn" href="" target="_blank">Join with Microsoft Teams</a>                            
+                            <div class="d-flex align-items-center">
+                                <ng-conainer *ngIf="Link_Detail.includes('meet.google.com')">
+                                <a class="meeting-btn"  href="{{Link_Detail.substring(Link_Detail.indexOf('https://')) }}" target="_blank" >Join with Google Meet</a>   
+                               </ng-conainer>
+                               <ng-conainer *ngIf="Link_Detail.includes('skype.com')">
+                                <a class="meeting-btn"  href="{{Link_Detail.substring(Link_Detail.indexOf('https://')) }}" target="_blank" >Join with Skype Meeting</a>   
+                               </ng-conainer>
+                               <ng-conainer *ngIf="Link_Detail.includes('zoom')">
+                                <a class="meeting-btn"  href="{{Link_Detail.substring(Link_Detail.indexOf('https://')) }}" target="_blank" >Join with Zoom Meeting</a>   
+                               </ng-conainer>
+                               <ng-conainer *ngIf="Link_Detail.includes('teams.microsoft.com')">
+                                <a class="meeting-btn"  href="{{Link_Detail.substring(Link_Detail.indexOf('https://')) }}" target="_blank" >Join with Teams Meeting</a>   
+                               </ng-conainer>
+                              <ng-conainer *ngIf="Link_Detail && Link_Detail.includes('https://')">
+                                <span  class="copy-meeting-link"  [title]="copied ? 'Copied Meeting Link' : 'Copy Meeting Link'"  (click)="copyLink()">
+                                    <ng-container *ngIf="!copied">
+                                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M19.5 16.5L19.5 4.5L18.75 3.75H9L8.25 4.5L8.25 7.5L5.25 7.5L4.5 8.25V20.25L5.25 21H15L15.75 20.25V17.25H18.75L19.5 16.5ZM15.75 15.75L15.75 8.25L15 7.5L9.75 7.5V5.25L18 5.25V15.75H15.75ZM6 9L14.25 9L14.25 19.5L6 19.5L6 9Z" fill="currentColor"></path> </g></svg>
+                                    <span>Copy link</span>
+                                   </ng-container>
+                                   <ng-container *ngIf="copied">
+                                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                    <span>Copied!</span>
+                                    </ng-container>
+                                </span>
+                            </ng-conainer>
+                            </div>
+                            <div class="mt-2" *ngIf="urlUserID_Password" >
+                                <!-- <span class="mr-1"><b>User ID</b>: dfkdsfds;dsfdsf3dsfd</span>
+                                <span ><b>Password</b>: dfkdsfdsfd</span> -->
+                                <span [innerHTML]="urlUserID_Password"> </span>
+                            </div>
                         </div>
                     </div>
                     <div class="custom-evt-tsk-item">
@@ -4169,12 +4248,29 @@
                                             </svg>
                                         </span>
                                         <span class="participants-status" aria-hidden="true">
-                                            <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
-                                                <path fill="#E8EAED"
-                                                    d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
-                                                <path fill="none" stroke="#3C4043" stroke-width="1.5"
-                                                    d="M5 5c0-1.1.9-2 2-2s2 .9 2 2-1 1.5-1.5 2S7 8 7 9M7 10v1.5"></path>
-                                            </svg>
+                                            <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
+                                            *ngIf="_user.Status=='Accepted'">
+                                            <path fill="#CEEAD6"
+                                                d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
+                                            <path fill="none" stroke="#137333" stroke-width="1.5" d="M3.5 6.5L6 9l5-5">
+                                            </path>
+                                        </svg>
+    
+                                        <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
+                                            *ngIf="_user.Status=='Rejected'">
+                                            <path fill="#FAD2CF"
+                                                d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
+                                            <path fill="none" stroke="#B31412" stroke-width="1.5" d="M4 10l6-6M10 10L4 4">
+                                            </path>
+                                        </svg>
+    
+                                        <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
+                                            *ngIf="_user.Status=='May be'||_user.Status=='Proposed'">
+                                            <path fill="#E8EAED"
+                                                d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
+                                            <path fill="none" stroke="#3C4043" stroke-width="1.5"
+                                                d="M5 5c0-1.1.9-2 2-2s2 .9 2 2-1 1.5-1.5 2S7 8 7 9M7 10v1.5"></path>
+                                        </svg>
                                         </span>
                                     </div>
                                     <div class="participants-details">
@@ -4529,4 +4625,45 @@
       </div>
     </div>
   </div>
+
+
+
+<!-- Delete recurring event Start -->
+  <div class="modal fade" id="delevent" tabindex="-1" role="dialog" aria-labelledby="delevent" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 300px;">
+        <div class="modal-content">
+            <div class="modal-header pb-0" style="border-bottom: 0px">
+                <h5 class="modal-title">Delete recurring event</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="rescontent" style="color: #3c4043;">
+                    <div class="form-check mb-3">
+                        <label class="form-check-label">
+                            <input type="radio" (click)="AllDelete_event(1)" name="optradio" checked><span
+                                class="ml-2">This Event
+                                Only</span>
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <label class="form-check-label">
+                            <input type="radio" (click)="AllDelete_event(2)" name="optradio"><span class="ml-2">This and
+                                Following Events</span>
+                        </label>
+                    </div>            
+                </div>
+            </div>
+            <div class="modal-footer pt-0" style="border-top: 0px">
+                <a type="button" class="text-gry fs-5 mr-3" data-dismiss="modal">Close</a>
+                <a type="button" class="text-info fs-5" (click)="AlldeleteSchedule()" data-dismiss="modal">
+                    Save changes</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Delete recurring event End -->
+
+
 <!-- Project Modal End -->

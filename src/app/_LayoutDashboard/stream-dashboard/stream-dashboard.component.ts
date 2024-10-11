@@ -64,13 +64,21 @@ export class StreamDashboardComponent implements OnInit {
             '<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>',
             '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>'
         ],
-        slideBy: 4,  // Move 4 items at a time
+
         responsive: {
-          882: { items: 4 }
+          992: {
+            items: 3,
+            slideBy: 3,
+           },
+          1400: {
+            items: 4,
+            slideBy: 4,
+           },
         }
       });
-    }, 500); 
+    }, 2000);
   }
+
   private initializeOwlCarousels2() {
     setTimeout(() => {
       $('.activity-item').owlCarousel({
@@ -90,8 +98,9 @@ export class StreamDashboardComponent implements OnInit {
           992: { items: 1 }
         }
       });
-    }, 500); 
+    }, 2000);
   }
+
   view_graph_div() {
     document.getElementById("graph-div").style.display = "block";
   }
@@ -282,6 +291,10 @@ export class StreamDashboardComponent implements OnInit {
     this.Emp_No = localStorage.getItem('EmpNo');
     this.service.NewDashboardPortfolio(this.Emp_No).subscribe((data) => {
       this.portfoiloData = JSON.parse(data[0]['PortfolioJson']);
+
+        this.userFound = true
+
+
       console.log(this.portfoiloData, "this.portfoiloDatathis.portfoiloData")
 
     })
@@ -299,12 +312,13 @@ export class StreamDashboardComponent implements OnInit {
     myWindow.focus();
   }
 
-
+  userFound:boolean = undefined
   darArray : any
   getTimeLineStatus(){
     this.Emp_No = localStorage.getItem('EmpNo')
     this.service.NewGetDashboardTimelineStatus(this.Emp_No).subscribe((data)=>{
       this.darArray = JSON.parse(data['DAR_Details_Json']);
+      // this.userFound = true
       console.log(this.darArray,'darArraydarArray')
     })
 

@@ -2335,7 +2335,6 @@
                                 <input [matDatepicker]="basicDatepicker" (click)="basicDatepicker.open()"
                                     (dateChange)="proposecahngedate($event)" class="form-control"
                                     [min]="disablePreviousDate" [(ngModel)]="Proposedate"/>
-
                                 </span>
                             <span>
                                 <mat-datepicker #basicDatepicker></mat-datepicker>
@@ -3126,8 +3125,8 @@
                         <div class="form-group">
                             <angular-editor [(ngModel)]="Description_Type"  (input)="updateCharacterCount()"
                             (paste)="updateCharacterCount()" [config]="config"></angular-editor>
-                            <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500 </span>
-                            <span *ngIf="characterCount>=500"  style="color:red">    Description should not exceed 500 characters.</span>
+                            <span *ngIf="characterCount > 0" >Max characters {{characterCount}}/500 </span>
+                            <span *ngIf="characterCount>=500"  style="color:red">    Description should be less than 500 characters.</span>
                         </div>
                     </div>
                 </div>
@@ -4234,7 +4233,7 @@
                                 </div>
                             </div>
                         </div>
-<!-- newd
+                      <!-- newd
                         <div *ngIf="Note_deadlineexpire && ScheduleType=='Task'" style="color: red;">
                             Note:Selected Project is Expired,Please Extend your Project Deadline date
                         </div> newd-->
