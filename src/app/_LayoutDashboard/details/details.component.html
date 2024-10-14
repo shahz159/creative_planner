@@ -3394,7 +3394,8 @@
                                                                       <div class="col-md-12">
                                                                           <div class="mb-2">
                                                                           <label>Project Name<span class="text-danger">*</span></label>
-                                                                          <input type="text" placeholder="Enter project name" class="form-control" [(ngModel)]="sel_prjname"/>
+                                                                          <input [ngClass]="{'error-border':(!(sel_prjname&&sel_prjname.trim())&&notProvided)}" type="text" placeholder="Enter project name" class="form-control" [(ngModel)]="sel_prjname"/>
+                                                                          <span *ngIf="!(sel_prjname&&sel_prjname.trim())&&notProvided" style="color:red">please enter project name.</span>       
                                                                           </div>
                                                                       </div>
                                                                   </div>
@@ -3407,7 +3408,9 @@
                                                                                   placeholder="Select employee"
                                                                                   [searchable]="true" name="RACIS"
                                                                                   [(ngModel)]="sel_user"
+                                                                                  [ngClass]="{'error-border':(!sel_user&&notProvided)}"
                                                                                   required></ng-select>
+                                                                             <span *ngIf="!sel_user&&notProvided" style="color:red">please select employee.</span>     
                                                                           </div>
                                                                       </div>
                                                                       <div class="col-md-6">
@@ -3509,14 +3512,20 @@
                                                                       <textarea class="form-control kt-approval-msg"  id="auditTextarea" rows="6" ></textarea>
                                                                   </div> -->
                                                               </div>
+                                                              <ng-container *ngIf="selectedType == '2'">
+                                                                <label>Enter comments<span class="text-danger">*</span></label>
+                                                                <textarea class="form-control kt-approval-msg" [ngClass]="{'error-border':(!(comments&&comments.trim())&&notProvided)}"
+                                                                    id="exampleTextarea" rows="6" [(ngModel)]="comments"></textarea>
+                                                                <span *ngIf="!(comments&&comments.trim())&&notProvided" style="color:red">please provide your comments.</span>       
+                                                               </ng-container>
                                                               <!-- Conditional Assign-->
 
 
 
-
+                                                             <!--approval reject -->
                                                                 <div *ngIf="isRejectOptionsVisible">
                                                                     <label>Reject type<span class="text-danger">*</span></label>
-                                                                    <ng-select required #action="ngModel" name="rej_type"
+                                                                    <ng-select [ngClass]="{'error-border':(!rejectType&&notProvided)}" required #action="ngModel" name="rej_type"
                                                                         placeholder="Select Reject Type" id="rej_type"
                                                                         [(ngModel)]="rejectType" (change)="rejectApproval()">
                                                                         <ng-option [value]="item.TypeID"
@@ -3524,6 +3533,7 @@
                                                                             {{item.RejectType}}
                                                                         </ng-option>
                                                                     </ng-select>
+                                                                    <span *ngIf="!rejectType&&notProvided" style="color:red">please select reject type.</span>
                                                                 </div>
                                                                 <div class="col-lg-12 mt-3 mb-3 p-0"
                                                                     *ngIf="isRejectOptionsVisible">
@@ -3566,24 +3576,28 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <ng-container *ngIf="rejectType">
+                                                                <ng-container *ngIf="selectedType=='3'">
                                                                     <label>Enter comments<span class="text-danger">*</span></label>
-                                                                    <textarea class="form-control kt-approval-msg"
+                                                                    <textarea [ngClass]="{'error-border':(!(comments&&comments.trim())&&notProvided)}" 
+                                                                        class="form-control kt-approval-msg"
                                                                         id="exampleTextarea" rows="6"
                                                                         [(ngModel)]="comments"></textarea>
+                                                                    <span *ngIf="!(comments&&comments.trim())&&notProvided" style="color:red">please provide your comments.</span>    
                                                                 </ng-container>
-                                                                <ng-container *ngIf="selectedType == '2'">
-                                                                    <label>Enter comments<span class="text-danger">*</span></label>
-                                                                    <textarea class="form-control kt-approval-msg"
-                                                                        id="exampleTextarea" rows="6"
-                                                                        [(ngModel)]="comments"></textarea>
-                                                                </ng-container>
+                                                             <!--approval reject -->
+
+
+
+                                                           <!--approval accept-->
                                                                 <ng-container *ngIf="selectedType == '1'">
                                                                     <label>Enter comments</label>
                                                                     <textarea class="form-control kt-approval-msg"
                                                                         id="exampleTextarea" rows="6"
                                                                         [(ngModel)]="comments"></textarea>
                                                                 </ng-container>
+                                                            <!--approval accept-->  
+                                                            
+                                                            
 
                                                                 <!--this is new <ng-container *ngIf="selectedType == '5'">
                                                                   <label>Select employee</label>
@@ -3630,14 +3644,16 @@
                                                                                         class="btn btn-project-stv Bt-Submit"
                                                                                         primary="true">Submit</button>
 
-                                                                                    <button type="submit"
+                                                                                    <!-- <button type="submit"
                                                                                         class="btn btn-project-stv Bt-Submit"
                                                                                         *ngIf="Conditional_Active || Reject_active"
                                                                                         data-to="#pills-3-tab"
                                                                                         (click)="submitApproval();Close_Approval()"
-
-                                                                                        primary="true"  [disabled]="!comments || !selectedType " >Submit </button>
+                                                                                        primary="true"  [disabled]="!comments || !selectedType " >Submit 
+                                                                                    </button> -->
                                                                                         <!---->
+                                                                                        <button *ngIf="Reject_active" (click)="submitApproval();" type="submit" class="btn btn-project-stv Bt-Submit" primary="true" >Submit</button>
+                                                                                        <button *ngIf="Conditional_Active" (click)="submitApproval();" type="submit" class="btn btn-project-stv Bt-Submit" primary="true" >Submit</button>
 
                                                                                         <button *ngIf="Audit_active" type="button" class="btn btn-project-stv Bt-Submit text-nowrap curser-pointer"
                                                                                         [ngStyle]="{width:(auditBtnDisabled||approvalsFetching)?'fit-content':'none'}" [disabled]="auditBtnDisabled||approvalsFetching" primary="true" (click)="onPrjAuditSubmitClicked()">
@@ -5737,9 +5753,13 @@
             <div class="d-flex align-items-md-center flex-column">
                 <div class="text-center acc-section">
                     <h1 class="text-primary main_acc fs-1">New Project Version Unavailable</h1>
-                    <h5 class="acc-desc  user-not-found-msg  hide-content">
+                    <h5 *ngIf="Current_user_ID!=task_assign_json[0].Assignto_EmpNo" class="acc-desc  user-not-found-msg  hide-content">
                         The new version of the project is not yet available. It hasn't been created or started by the assigned employee.
                     </h5>
+                    <h5 *ngIf="Current_user_ID==task_assign_json[0].Assignto_EmpNo" class="acc-desc  user-not-found-msg  hide-content">
+                        This project has been assigned to you. Please initiate the new version to make it available.                    
+                    </h5>
+
                </div>
 
         <div class="d-flex  w-100 access-denied-header p-3 rounded mt-2 mx-2 ng-star-inserted">
@@ -5802,13 +5822,13 @@
             <div class="pulsing-div">
                 <span class="pulsing-dot pulsing-dot-pending"></span>
             </div>
-        Note: You can view and create project from the "Create project --&gt; Assigned projects section". <span (click)="openAssignedProject(task_assign_json[0].Assign_Id)" class="text-underline curser-pointer ">click here to view</span>
+        <span class="unprj-text-note">Note: You can view and create project from the "Create project --&gt; Assigned projects section".</span> <span class="openhere" (click)="openAssignedProject(task_assign_json[0].Assign_Id)">open here</span>
         </div>       
         <div *ngIf="Current_user_ID==task_assign_json[0].Createdby_EmpNo" class=" d-flex gap-2  text-info font-weight-bold fs-6 px-2 p-2 mt-4 ml-1">
             <div class="pulsing-div">
                 <span class="pulsing-dot pulsing-dot-pending"></span>  
             </div>
-            Note: You can view or edit this task from your "Runway page". <span (click)="openRunwayTask(task_assign_json[0].Assign_Id)" class="text-underline curser-pointer">click here to view</span>
+           <span class="unprj-text-note">Note: You can view or edit this task from your "Runway page".</span> <span class="openhere"(click)="openRunwayTask(task_assign_json[0].Assign_Id)">open here</span>
         </div>
         </div>
         

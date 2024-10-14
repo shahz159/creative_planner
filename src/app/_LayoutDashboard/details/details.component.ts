@@ -2644,10 +2644,11 @@ currentStdAprView:number|undefined;
     $(".Btn_Reject").removeClass('active');
   }
 
-
+// accept, reject or next version submission done via this same method only.
+approvalSubmitting:boolean=false;
   submitApproval() {
     console.log('passing single approvaljson:',this.singleapporval_json);
-    
+    debugger
     if (this.selectedType == '1') {   
       console.log("singleapporval_json:",this.singleapporval_json);
       if (this.comments == '' || this.comments == null) {
@@ -2660,8 +2661,10 @@ currentStdAprView:number|undefined;
           element.Remarks = this.comments;
         });
       }
+      this.approvalSubmitting=true;
       this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
         subscribe((data) => {
+          this.approvalSubmitting=false;
           this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Approved successfully by - " + this._fullname, "Success");
           this.getapprovalStats();
           this.GetApproval(1);
@@ -2671,65 +2674,77 @@ currentStdAprView:number|undefined;
       console.log(this.singleapporval_json, "accept")
     }
     else if (this.selectedType == '2') {
+// validation here
+        if((this.sel_prjname&&this.sel_prjname.trim()!=='')&&this.sel_user&&(this.comments&&this.comments.trim()!=''))
+        { // when user provided all mandatory fields.
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Project_Code = this.URL_ProjectCode;
+          this.approvalObj.Request_type = this.requestType;
 
-      this.approvalObj.Emp_no = this.Current_user_ID;
-      this.approvalObj.Project_Code = this.URL_ProjectCode;
-      this.approvalObj.Request_type = this.requestType;
-
-      this.approvalObj.taskname=this.sel_prjname;
-      this.approvalObj.projecttype=this.sel_ptype?this.sel_ptype:'0';
-      this.approvalObj.assignto=this.sel_user;
-      this.approvalObj.portfolioId=(this.ngDropdwonPort2&&this.ngDropdwonPort2.length>0)?(this.ngDropdwonPort2.join(',')):'0';
+          this.approvalObj.taskname=this.sel_prjname;
+          this.approvalObj.projecttype=this.sel_ptype?this.sel_ptype:'0';
+          this.approvalObj.assignto=this.sel_user;
+          this.approvalObj.portfolioId=(this.ngDropdwonPort2&&this.ngDropdwonPort2.length>0)?(this.ngDropdwonPort2.join(',')):'0';
 
 
-      this.approvalObj.startdate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_sdate?this.sel_sdate:'0');
-      this.approvalObj.enddate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_edate?this.sel_edate:'0');
-      this.approvalObj.SubmissionType=['003','008'].includes(this.sel_ptype)?( this.sel_submtype?this.sel_submtype:'0' ):'0';
+          this.approvalObj.startdate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_sdate?this.sel_sdate:'0');
+          this.approvalObj.enddate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_edate?this.sel_edate:'0');
+          this.approvalObj.SubmissionType=['003','008'].includes(this.sel_ptype)?( this.sel_submtype?this.sel_submtype:'0' ):'0';
 
-      if (this.comments == '' || this.comments == null) {
-        this.approvalObj.Remarks = 'Accepted';
-      }
-      else {
-        this.approvalObj.Remarks = this.comments;
-      }
-
-      this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
-        subscribe((data) => {
-          this._Message = (data['message']);
-          if (this._Message == 'Not Authorized' || this._Message == '0') {
-            this.notifyService.showError("project not approved", 'Failed.');
+          if (this.comments == '' || this.comments == null) {
+            this.approvalObj.Remarks = 'Accepted';
           }
           else {
-            this.notifyService.showSuccess("Project Approved Successfully", this._Message);
-            this.getapprovalStats();
-            this.getProjectDetails(this.URL_ProjectCode);
-
-
+            this.approvalObj.Remarks = this.comments;
           }
-        });
+            
+          this.approvalSubmitting=true;
+          this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
+            subscribe((data) => {
+              this.approvalSubmitting=false;
+              this._Message = (data['message']);
+              if (this._Message == 'Not Authorized' || this._Message == '0') {
+                this.notifyService.showError("project not approved", 'Failed.');
+              }
+              else {
+                this.closeApproval();
+                this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+                this.getapprovalStats();
+                this.getProjectDetails(this.URL_ProjectCode);
+              }
+            });
+        }
+        else
+        {  // when mandatory field are missing.
+            this.notProvided=true;
+        }
     }
     else if (this.selectedType == '3') {
-      
-     
-      if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
-        this.noRejectType = true;
-        this.notifyService.showError("Please select Reject Type", "Failed");
-        return false;
-      }
-      else {
+// on reject btn click
+      if(this.rejectType&&(this.comments&&this.comments.trim()!=''))
+      {  // when both reject type and comments are provided.
         this.singleapporval_json.forEach(element => {
           element.Remarks = this.comments;
           element.RejectType = this.rejectType;
         });
+        this.approvalSubmitting=true;
         this.approvalservice.NewUpdateSingleRejectApprovalsService(this.singleapporval_json).
           subscribe((data) => {
+            // if success 
+            this.Close_Approval(); 
+            this.approvalSubmitting=false;
             this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Rejected successfully by - " + this._fullname, "Success");
             this.getapprovalStats();
             this.getProjectDetails(this.URL_ProjectCode);
             this.getRejectType();
-
-          });
+        
+        });
       }
+      else
+      {  // when mandatory field are not provided. 
+        this.notProvided=true;
+      }
+// on reject btn click
     }
     else if (this.selectedType == '4') {
       this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
@@ -10781,20 +10796,6 @@ getFormattedDuration(totalDuration: number): string {
 }
 
 
-// OnPortfolioClick(P_id: any, P_Name: string, CreatedName: string) {
-//   sessionStorage.setItem('portfolioId', P_id);
-//   sessionStorage.setItem('portfolioname', P_Name);
-//   sessionStorage.setItem('PortfolioOwner', CreatedName);
-//   //sessionStorage.setItem('portfolioCDT', P_CDT);
-//   //this.router.navigate(['/portfolioprojects/', P_id]);
-//   // const Url = this.router.serializeUrl(this.router.createUrlTree(['testcreativeplanner/portfolioprojects/', P_id]));
-//   // window.open(Url);
-//   let name: string = 'portfolioprojects';
-//   var url = document.baseURI + name;
-//   var myurl = `${url}/${P_id}`;
-//   var myWindow = window.open(myurl, P_id);
-//   myWindow.focus();
-// }
 
   openRunwayTask(taskid:string){
       // let name: string = 'UnplannedTask';
@@ -10802,7 +10803,7 @@ getFormattedDuration(totalDuration: number): string {
       // var myurl = `${url}`;
       // var myWindow = window.open(myurl);
       // myWindow.focus();
-      this.router.navigate(["../UnplannedTask"],{queryParams:{taskId:taskid}});
+      this.router.navigate(["../UnplannedTask"],{queryParams:{category:3595, taskid:taskid}});
   }
 
   openAssignedProject(taskid:string){

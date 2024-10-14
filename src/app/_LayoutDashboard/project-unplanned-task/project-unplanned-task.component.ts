@@ -32,6 +32,7 @@ import {  ElementRef } from '@angular/core';
 import * as moment from 'moment';
 import { PortfolioDTO } from 'src/app/_Models/portfolio-dto';
 import { ActionToAssignComponent } from '../action-to-assign/action-to-assign.component';
+import { EventEmitter } from '@angular/core';
 declare var $: any;
 @Component({
   selector: 'app-project-unplanned-task',
@@ -134,7 +135,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
   // }
 
 
-
+ 
 
   ngOnInit(): void {
 
@@ -221,16 +222,16 @@ export class ProjectUnplannedTaskComponent implements OnInit{
 
 
 
- ngAfterViewInit(){
-       // open assigned task if asked in url
-    this.route.queryParamMap.subscribe((qparams)=>{
-      const assigned_taskId=qparams.get('taskId');
-      if(assigned_taskId){
-            //
-      }
-    });
-     // open assigned task if asked in url
- }
+//  ngAfterViewInit(){
+//        // open assigned task if asked in url
+//     this.route.queryParamMap.subscribe((qparams)=>{
+//       const assigned_taskId=qparams.get('taskId');
+//       if(assigned_taskId){
+//             alert(assigned_taskId)
+//       }
+//     });
+//      // open assigned task if asked in url
+//  }
 
 
 
@@ -244,20 +245,69 @@ export class ProjectUnplannedTaskComponent implements OnInit{
   // }
 
   newCatid:any;
-
+  categoryTasksLoaded:EventEmitter<any>;
   getCatid(){
 
+    let category_Id;
+    let taskToOpen;
+    this.route.queryParamMap.subscribe((qparams)=>{
+         category_Id=qparams.get('category');
+         taskToOpen=qparams.get('taskid');
+    });
 
-    this.ProjectTypeService._GetRunwayCatId(this.CurrentUser_ID).subscribe(
-      (data) => {
-        debugger
-        if(data!=null && data!=undefined && data!='')
-        this.newCatid=(data[0]['CategoryId']);
-        this.GetTodoProjects();
-      });
+    if(category_Id&&taskToOpen){
+      this.newCatid=category_Id;  
+      this.GetTodoProjects();
+      this.expandTask(taskToOpen);
+    }
+    else{
+        // get last open category and show the list.
+        this.ProjectTypeService._GetRunwayCatId(this.CurrentUser_ID).subscribe(
+          (data) => {
+            if(data!=null && data!=undefined && data!='')
+            this.newCatid=(data[0]['CategoryId']);
+            this.GetTodoProjects();
+          });
+    }
       this.router.navigate(["UnplannedTask/"]);
-
   }
+
+
+  expandTask(taskId:number){
+       
+    this.categoryTasksLoaded=new EventEmitter<any>();
+    this.categoryTasksLoaded.subscribe(()=>{   
+      // when all tasks of the category loaded.
+      const listindex=[this._TodoList,this.ActionedAssigned_Josn,this._CompletedList,this.ActionedSubtask_Json].findIndex((list)=>{
+        return list&&list.find((item)=>item.Assign_Id==taskId);
+      });
+
+      if(listindex>-1){
+             const anchrId=listindex==0?'Unassigntask':
+                           listindex==1?'AssignedTaskProject':
+                           listindex==2?'Completed':
+                           'Actiontoprojects';
+             const e1:any=document.querySelector(`#${anchrId}Btn`);
+             const e2=document.querySelector(`#${anchrId}Item-${taskId}`);
+             const e3:any=e2.querySelector('.inputforfocus');
+
+                           
+             e1.click();
+             setTimeout(()=>e3.focus(),500);
+             e2.classList.add('task-item-focus');
+             e2.addEventListener('animationend',()=>e2.classList.remove('task-item-focus'));
+             this.categoryTasksLoaded.unsubscribe();
+      }  
+    });
+         
+  }
+
+
+
+
+
+
+
 
   _Demotext: string = "";
   _TodoList = [];
@@ -345,6 +395,10 @@ export class ProjectUnplannedTaskComponent implements OnInit{
         this.userFound = true
 
         console.log("Data---->", this.FiterEmployee);
+
+
+
+
       });
   }
 
@@ -405,10 +459,14 @@ export class ProjectUnplannedTaskComponent implements OnInit{
         // console.log("Data---->", data);
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
         console.log(this.CategoryList,"this.CategoryListthis.CategoryListthis.CategoryListthis.CategoryList")
-        this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+        this._TodoList = JSON.parse(data[0]['JsonData_Json']);   
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+
+        console.log(this._TodoList,this.ActionedAssigned_Josn,this._CompletedList,this.ActionedSubtask_Json);
+
+
         if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
 
 
@@ -448,6 +506,15 @@ export class ProjectUnplannedTaskComponent implements OnInit{
         this.CountsAccepted= _Accepted;
         this.CountsPending= _Pending;
         this.CountsRejected= _Rejected;
+        
+         
+        if(this.categoryTasksLoaded){
+          setTimeout(()=>{
+            this.categoryTasksLoaded.emit();
+          },1000);
+        }
+         
+        
       });
 
   }
@@ -707,7 +774,7 @@ console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeLi
   OnCategoryClick(C_id, C_Name) {
     // _Id = C_id;
     // _Name = C_Name;
-
+debugger
     this._selectedcatname = C_Name;
     this._selectedcatid = C_id;
     this.BsService.setNewCategoryID(this._selectedcatid);
