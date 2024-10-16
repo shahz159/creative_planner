@@ -4382,3 +4382,66 @@ ul.schedule-select-list li .slect-close:hover svg {
         opacity: 1
     }
 }
+
+
+.smart-glass {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 288px;
+    height: 388px;
+}
+.logo {
+    width: 288px;
+    height: 288px;
+    position: relative;
+}
+
+.circle {
+    padding: 20px;
+    border: 6px solid transparent;
+    border-top-color: #6388e3;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    animation: connect 2.5s linear infinite;
+}
+
+
+.loader-img{
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+.blue-color path {
+    fill: #2786fb; /* Blue color */
+}
+
+.purple-color path {
+    fill: #9B30FF; /* Green color */
+}
+
+.red-color path {
+    fill: #f10505; /* Red color */
+}
+
+.green-color path {
+    fill: #1dc9b7 ; /* green color */
+}

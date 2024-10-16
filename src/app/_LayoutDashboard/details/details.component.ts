@@ -909,7 +909,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
      if(this.projectInfo.isProject==false&&this.projectInfo.isTask==true){
-         this.task_assign_json=JSON.parse(this.projectInfo.assign_json); 
+         this.task_assign_json=JSON.parse(this.projectInfo.assign_json);
      }
 
       this.pageContentType=this.projectInfo.Master_Code?'ACTION_DETAILS':'PROJECT_DETAILS';
@@ -937,7 +937,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       this.Title_Name=this.projectInfo.Project_Name;
-     
+
       if(this.projectInfo.Project_Block=='003'&&this.projectInfo.Status.includes('Delay')){
           let regex=/[0-9]+/;
           const result=regex.exec(this.projectInfo.Status);
@@ -1112,16 +1112,16 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             const r=arr.find((ob)=>ob['userNewOwner-'+this.projectInfo.Project_Code]==true);
             this.isNewOwnerOk=r?false:true;
        }
-       else 
+       else
        this.isNewOwnerOk=true;    // popup visible
     }
-    
 
 
 
 
 
- 
+
+
     });
   }
 
@@ -1294,12 +1294,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
             return obj;
           });
-          
-// sorting people based on active or inactive     
+
+// sorting people based on active or inactive
           const active_emp=this.PeopleOnProject.filter(item=>item.isActive);
           const inactive_emp=this.PeopleOnProject.filter(item=>!item.isActive)
           this.PeopleOnProject=[...active_emp,...inactive_emp];
-// sorting people based on active or inactive 
+// sorting people based on active or inactive
 
 
         }
@@ -1324,11 +1324,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
         this.racisNonRacis=JSON.parse(data[0]['owner_dropdown']);      console.log('racisNonRacis list:',this.racisNonRacis);
         this.allUsers1=(JSON.parse(data[0]['alluserlist']));           console.log('alluserlist:',this.allUsers1);
-        
+
         if(this.projectInfo){
           this.allUsers2=(JSON.parse(data[0]['alluserlist'])).filter((usr:any)=>(![this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo].includes(usr.Emp_No)));
         }
-       
+
 
       });
 
@@ -1363,9 +1363,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.Activity_List.forEach((_actvy)=>{
                  let result='others';
                  if(_actvy.Value){
-                    
-                 const _Value=_actvy.Value.trim(); 
-                
+
+                 const _Value=_actvy.Value.trim();
+
                        result=/New Action- ".*"/.test(_Value)?'New Action':
                               (/Timeline added .*/.test(_Value)|| _Value=='Project Timeline added')?'Timeline added':
                               /Action Complete- ".*"/.test(_Value)?'Action Complete':
@@ -1398,10 +1398,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                 });
          // PROJECT DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
 
-   if(filterConfig)     
+   if(filterConfig)
    this.arrangeActivitiesBy(filterConfig.activityType,filterConfig.byEmp);
-   else 
-   this.arrangeActivitiesBy('all','all'); 
+   else
+   this.arrangeActivitiesBy('all','all');
    this.emps_of_actvs=Array.from(new Set(this.Activity_List.map(_actv=>_actv.Modifiedby)));
    this.actvs_types=Array.from(new Set(this.Activity_List.map(_actv=>_actv._type)));
 
@@ -1455,15 +1455,15 @@ export class DetailsComponent implements OnInit, AfterViewInit {
    // adding _type property
       this.ActionActivity_List.forEach((_actvy)=>{
         let result='others';
-        if(_actvy.Value){  
-        const _Value=_actvy.Value.trim(); 
+        if(_actvy.Value){
+        const _Value=_actvy.Value.trim();
         result=/New Action- ".*"/.test(_Value)?'New Action':
               _Value=='Project Timeline added'?'Timeline added':
               /Action Complete- ".*"/.test(_Value)?'Action Complete':
               [/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/,/Action -".*" Owner changed/,/Action -".*" Responsible changed/].some(rg=>rg.test(_Value))?'Action Details changed':
               /Action -".*" Start date changed/.test(_Value)?'Action Startdate changed':
               /Action -".*" Deadline changed/.test(_Value)?'Action Deadline changed':
-              _Value; 
+              _Value;
         }
         _actvy._type=result.trim();
       });
@@ -1512,9 +1512,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     if(index!=undefined){
       this.requestType = null;
     }
-   
+
     if(index!=undefined)
-    this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost; 
+    this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
 
     if (index>-1 && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval"||this.projectActionInfo[index].Status === "Cancellation Under Approval"))
       this.GetApproval(this.projectActionInfo[index].Project_Code);
@@ -1863,7 +1863,7 @@ multipleback(){
 
   }
 
-  
+
 
 
 
@@ -2270,13 +2270,13 @@ multipleback(){
     // this.approvalEmpId = null;
     this.approvalsFetching=true;   // fetching approvals or processing start.
     this.approvalObj.Project_Code = this.URL_ProjectCode;
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {  
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.approvalsFetching=false;    // fetched approvals or processing end.
       this.requestDetails = data as [];
-      console.log(this.requestDetails, "approvals");   
+      console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
         this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
-        this.requestType = (this.requestDetails[0]['Request_type']);  
+        this.requestType = (this.requestDetails[0]['Request_type']);
 
 
         this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']));
@@ -2292,7 +2292,7 @@ multipleback(){
                this.pendingAprvls.push({ request_type:item.Type, totalRequests:1 });
           });
         }
-      
+
 
 
         this.forwardType = (this.requestDetails[0]['ForwardType']);
@@ -2306,6 +2306,7 @@ multipleback(){
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
         //this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
         this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
+        debugger
         this.AuditRequestBY = (this.requestDetails[0]['AuditRequestBY']);   console.log('AuditRequestBY:',this.AuditRequestBY);
         const fullName = this.Submitted_By.split(' ');
         this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
@@ -2431,7 +2432,7 @@ fetchingStdTaskAprvls:boolean=false;
      this.sel_edate=undefined;
      this.sel_submtype=undefined;
      this.ngDropdwonPort2=[];
-  
+
   // clearing entered data if any.
 
     switch (actionType) {
@@ -2679,7 +2680,7 @@ fetchingStdTaskAprvls:boolean=false;
 approvalSubmitting:boolean=false;
   submitApproval() {
     console.log('passing single approvaljson:',this.singleapporval_json);
-    if (this.selectedType == '1') {   
+    if (this.selectedType == '1') {
       console.log("singleapporval_json:",this.singleapporval_json);
       if (this.comments == '' || this.comments == null) {
         this.singleapporval_json.forEach(element => {
@@ -2693,7 +2694,7 @@ approvalSubmitting:boolean=false;
       }
       this.approvalSubmitting=true;
       this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
-        subscribe((data) => {  
+        subscribe((data) => {
           this.Close_Approval();
           this.approvalSubmitting=false;
           this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Approved successfully by - " + this._fullname, "Success");
@@ -2728,7 +2729,7 @@ approvalSubmitting:boolean=false;
           else {
             this.approvalObj.Remarks = this.comments;
           }
-            
+
           this.approvalSubmitting=true;
           this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
             subscribe((data) => {
@@ -2761,18 +2762,18 @@ approvalSubmitting:boolean=false;
         this.approvalSubmitting=true;
         this.approvalservice.NewUpdateSingleRejectApprovalsService(this.singleapporval_json).
           subscribe((data) => {
-            // if success 
-            this.Close_Approval(); 
+            // if success
+            this.Close_Approval();
             this.approvalSubmitting=false;
             this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Rejected successfully by - " + this._fullname, "Success");
             this.getapprovalStats();
             this.getProjectDetails(this.URL_ProjectCode);
             this.getRejectType();
-        
+
         });
       }
       else
-      {  // when mandatory field are not provided. 
+      {  // when mandatory field are not provided.
         this.notProvided=true;
       }
 // on reject btn click
@@ -3244,7 +3245,7 @@ try{
 
       }catch(e){
           console.error(e);
-      }      
+      }
       });
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
@@ -3356,7 +3357,7 @@ try{
    if(!(
         (this.ProjectName&&this.ProjectName.trim()!='')&&
         // (this.ProjectDescription&&this.ProjectDescription.trim()!='')
-        (this.ProjectDescription?(this.characterCount<500):true)
+        (this.ProjectDescription?(this.characterCount<=500):true)
       ))
    {
       this.formFieldsRequired=true;
@@ -3577,7 +3578,7 @@ try{
   onAction_update() {
     this.updatingAction = true;
 // check all mandatory field are provided.
-    if(!(this.ActionName&&(this.ActionDescription?(this.characterCount_Action<500):true)&&
+    if(!(this.ActionName&&(this.ActionDescription?(this.characterCount_Action<=500):true)&&
          this.ActionOwner&&this.ActionResponsible&&
          this.selectedcategory&&this.ActionClient&&
          this.ActionstartDate&&this.ActionendDate&&
@@ -4502,8 +4503,8 @@ debugger
     this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, sorttype.toString())
       .subscribe((data) => {
             this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-            console.log(this.AttachmentList,'fileuploading fileupdloading')
-            console.log('my AttachmentList:',JSON.parse(this.AttachmentList[0]['JsonData']));
+            // console.log(this.AttachmentList,'fileuploading fileupdloading')
+            // console.log('my AttachmentList:',JSON.parse(this.AttachmentList[0]['JsonData']));
             this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
             console.log(this._TotalDocs,"this._TotalDocsthis._TotalDocs")
            if (this.AttachmentList && this.AttachmentList.length) {
@@ -5578,9 +5579,9 @@ debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
-    
+
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson;
-       
+
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status;
@@ -5879,7 +5880,7 @@ getChangeSubtaskDetais(Project_Code) {
 
   }
   selectStartDate(event) {
-   
+
     this._StartDate = event.value;
     // let sd = event.value.format("YYYY-MM-DD").toString();
     let sd = event.format("YYYY-MM-DD").toString();
@@ -5949,19 +5950,19 @@ getChangeSubtaskDetais(Project_Code) {
              return result;
          });
          this.validStartTimearr=this.StartTimearr.slice(index);
- 
+
      // verify whether starttime and endtime are valid or not. start
      _currentdate.format('h:mm A');
- 
+
      const inputtime1=moment(this.Startts,'h:mm A');
      const inputtime2=moment(this.Endtms,'h:mm A');
      if(inputtime1<ct)
        this.Startts=this.validStartTimearr[0];
      if(inputtime2<ct)
        this.Endtms=this.validStartTimearr[1];
- 
+
     // verify whether starttime and endtime are valid or not. end
- 
+
      }
      else
      this.validStartTimearr=[...this.StartTimearr];
@@ -6500,7 +6501,7 @@ getChangeSubtaskDetais(Project_Code) {
   }
 
   OnSubmitSchedule() {
-  
+
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -9020,7 +9021,7 @@ cancelAgendaEdit(index: number) {
 
 updateAgenda(index: number) {
   const tf: any = document.getElementById(`agenda-text-field-${index}`);
-  
+
   if(tf.value.trim().length > 0 && tf.value.trim().length < 100){
   this.allAgendas[index].name = tf.value;
 
@@ -10064,7 +10065,7 @@ openRemoveSADialog(index:number,removalType:'SUPPORT'|'AUDITOR'){
   document.getElementById(`pOnPrj-user-row-${index}`).classList.add('pOnPrj-row-selection');
 }
 
-closeRemoveSADialog(index:number){ 
+closeRemoveSADialog(index:number){
   document.getElementById(`mark-admin-drop${index}`).classList.remove("show");
   document.getElementById(`pOnPrj-user-row-${index}`).classList.remove('pOnPrj-row-selection');
   this.sprtaudtr_remarks=undefined;
@@ -10138,7 +10139,7 @@ onPrjAuditSubmitClicked(){
             this.getapprovalStats();
             this.getProjectDetails(this.URL_ProjectCode);
             this.GetPeopleDatils();
-            this.notifyService.showSuccess(res.message,'Success'); 
+            this.notifyService.showSuccess(res.message,'Success');
           }
           else
             this.notifyService.showError('something went wrong.','Failed');
@@ -10154,7 +10155,7 @@ onTransferBtnClicked(){
         }
         else
           this.notProvided=false;
-      
+
       this.transferBtnDisabled=true;    // processing start.
       const project_code:string=this.projectInfo.Project_Code;
       const empno:string=this.Current_user_ID;
@@ -10726,7 +10727,7 @@ getca_Dropdowns(){
 }
 
 
-goToProject(pcode,acode:string|undefined) {    
+goToProject(pcode,acode:string|undefined) {
   let qparams='';
   if(acode!==undefined){
     qparams=`?actionCode=${acode}`;
@@ -10800,7 +10801,7 @@ getNotificationsAnnouncements():string[]{
   if(this.totalPActns4Aprvls>0)
   allnotif=[...allnotif,'totalPActns4Aprvls'];
   if(this.pageContentType=='ACTION_DETAILS')
-  allnotif=[...allnotif,'action_details'];  
+  allnotif=[...allnotif,'action_details'];
 
    return allnotif;
 }
