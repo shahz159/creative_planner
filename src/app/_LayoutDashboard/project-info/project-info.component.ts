@@ -1100,6 +1100,7 @@ Prj_Code:any;
 
   Close_Comments() {
     this.comments = "";
+    this.notProvided=false;
   }
 
   noRejectType: boolean = false;
@@ -1129,13 +1130,24 @@ Prj_Code:any;
     this.Audit_active=false;
     this.Transfer_active=false;
     this.Conditional_Active=false;
+   
   }
 
   approvalClick(actionType) {
     // $("#ProjectInfoNew").scrollTop(0);
+    //clear prev form data
     this.comments="";
     this.empAuditor_remarks='';
     this.emp_Auditor=undefined;
+    this.notProvided=false;
+    this.sel_user=undefined;
+    this.sel_ptype=undefined;
+    this.sel_sdate=undefined;
+    this.sel_edate=undefined;
+    this.sel_submtype=undefined;
+    this.ngDropdwonPort2=[];
+    // clear prev form data
+
 
    switch (actionType) {
       case 'ACCEPT': {
@@ -1159,6 +1171,8 @@ Prj_Code:any;
         this.Reject_active = false;
         this.Audit_active=false;
         this.Transfer_active=false;
+        this.sel_prjname=this._ProjectName+'- V2';
+
       }; break;
       case 'REJECT': {
         this.isRejectOptionsVisible = true;
@@ -1211,7 +1225,7 @@ Prj_Code:any;
       targetElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
     }
   }
-
+  approvalSubmitting:boolean=false;
   submitApproval() {
     if (this.selectedType == '1') {
       if (this.comments == '' || this.comments == null) {
@@ -1224,8 +1238,10 @@ Prj_Code:any;
           element.Remarks = this.comments;
         });
       }
+      this.approvalSubmitting=true;
       this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
         subscribe((data) => {
+          this.approvalSubmitting=false;
           this.notifyService.showSuccess("Project Approved successfully by - " + this._fullname, "Success");
           this.LoadProjectDetails();
           this.getapprovalStats();
@@ -1253,111 +1269,128 @@ Prj_Code:any;
           }
         });
       console.log(this.singleapporval_json, "accept")
-
+    this.close_info_Slide();   // close project info sidebar.
     }
     else if (this.selectedType == '2') {
-      this.approvalObj.Emp_no = this.Current_user_ID;
-      this.approvalObj.Project_Code = this.projectCode;
-      this.approvalObj.Request_type = this.requestType;
 
-      this.approvalObj.taskname=this.sel_prjname;
-      this.approvalObj.projecttype=this.sel_ptype?this.sel_ptype:'0';
-      this.approvalObj.assignto=this.sel_user;
-      this.approvalObj.portfolioId=(this.ngDropdwonPort2&&this.ngDropdwonPort2.length>0)?(this.ngDropdwonPort2.join(',')):'0';
-      this.approvalObj.startdate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_sdate?this.sel_sdate:'0');
-      this.approvalObj.enddate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_edate?this.sel_edate:'0');
-      this.approvalObj.SubmissionType=['003','008'].includes(this.sel_ptype)?( this.sel_submtype?this.sel_submtype:'0' ):'0';
-
-
-      if (this.comments == '' || this.comments == null) {
-        this.approvalObj.Remarks = 'Accepted';
-      }
-      else {
-        this.approvalObj.Remarks = this.comments;
-      }
-      this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
-        subscribe((data) => {
-          this._Message = (data['message']);
-          if (this._Message == 'Not Authorized' || this._Message == '0') {
-            this.notifyService.showError("project not approved", 'Failed.');
+        if((this.sel_prjname&&this.sel_prjname.trim()!=='')&&this.sel_user&&(this.comments&&this.comments.trim()!=''))
+        {
+          this.notProvided=false;    
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Project_Code = this.projectCode;
+          this.approvalObj.Request_type = this.requestType;
+          this.approvalObj.taskname=this.sel_prjname;
+          this.approvalObj.projecttype=this.sel_ptype?this.sel_ptype:'0';
+          this.approvalObj.assignto=this.sel_user;
+          this.approvalObj.portfolioId=(this.ngDropdwonPort2&&this.ngDropdwonPort2.length>0)?(this.ngDropdwonPort2.join(',')):'0';
+          this.approvalObj.startdate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_sdate?this.sel_sdate:'0');
+          this.approvalObj.enddate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_edate?this.sel_edate:'0');
+          this.approvalObj.SubmissionType=['003','008'].includes(this.sel_ptype)?( this.sel_submtype?this.sel_submtype:'0' ):'0';  
+          if (this.comments == '' || this.comments == null) {
+            this.approvalObj.Remarks = 'Accepted';
           }
           else {
-            this.notifyService.showSuccess("Project Approved Successfully", this._Message);
-            this.LoadProjectDetails();
-            this.getapprovalStats();
-            if (this._Urlid == '1') {
-              this.router.navigate(["/backend/ProjectsSummary/"]);
-              this._projectSummary.GetProjectsByUserName(this.Summarytype);
-            }
-            else if (this._Urlid == '2') {
-              this._portfolioprojects.GetPortfolioProjectsByPid();
-            }
-            else if (this._Urlid == '3') {
-              this._viewdashboard.GetCompletedProjects();
-            }
-            else if (this._Urlid == '4') {
-              this._projectsAdd.GetProjectsByUserName();
-              this._projectsAdd.getDropdownsDataFromDB();
-            }
-            else if (this._Urlid == '5') {
-              this._toDo.GetProjectsByUserName();
-            }
-            else if (this._Urlid == '6') {
-              this.router.navigate(["Notifications"]);
-              this._notification.viewAll('Req');
-            }
+            this.approvalObj.Remarks = this.comments;
           }
-        });
-    }
-    else if (this.selectedType == '3') {
-      if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
-        this.noRejectType = true;
-        this.notifyService.showError("Please select Reject Type", "Failed");
-        return false;
-      }
-      else {
-        this.singleapporval_json.forEach(element => {
-          element.Remarks = this.comments;
-          element.RejectType = this.rejectType;
-        });
 
-        this.approvalservice.NewUpdateSingleRejectApprovalsService(this.singleapporval_json).
+          this.approvalSubmitting=true;
+          this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
           subscribe((data) => {
-            this.notifyService.showSuccess("Project Rejected successfully by - " + this._fullname, "Success");
-            this.LoadProjectDetails();
-            this.getapprovalStats();
-            if (this._Urlid == '1') {
-              this.router.navigate(["/backend/ProjectsSummary/"]);
-              this._projectSummary.GetProjectsByUserName(this.Summarytype);
+            this.approvalSubmitting=false;
+            this._Message = (data['message']);
+            if (this._Message == 'Not Authorized' || this._Message == '0') {
+              this.notifyService.showError("project not approved", 'Failed.');
             }
-            else if (this._Urlid == '2') {
-              this._portfolioprojects.GetPortfolioProjectsByPid();
-            }
-            else if (this._Urlid == '3') {
-              this._viewdashboard.GetCompletedProjects();
-            }
-            else if (this._Urlid == '4') {
-              this._projectsAdd.GetProjectsByUserName();
-              this._projectsAdd.getDropdownsDataFromDB();
-            }
-            else if (this._Urlid == '5') {
-              this._toDo.GetProjectsByUserName();
-              this._toDo.GetSubtask_Details();
-            }
-            else if (this._Urlid == '6') {
-              this.router.navigate(["Notifications"]);
-              this._notification.viewAll('Req');
+            else {
+              this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+              this.LoadProjectDetails();
+              this.getapprovalStats();
+              if (this._Urlid == '1') {
+                this.router.navigate(["/backend/ProjectsSummary/"]);
+                this._projectSummary.GetProjectsByUserName(this.Summarytype);
+              }
+              else if (this._Urlid == '2') {
+                this._portfolioprojects.GetPortfolioProjectsByPid();
+              }
+              else if (this._Urlid == '3') {
+                this._viewdashboard.GetCompletedProjects();
+              }
+              else if (this._Urlid == '4') {
+                this._projectsAdd.GetProjectsByUserName();
+                this._projectsAdd.getDropdownsDataFromDB();
+              }
+              else if (this._Urlid == '5') {
+                this._toDo.GetProjectsByUserName();
+              }
+              else if (this._Urlid == '6') {
+                this.router.navigate(["Notifications"]);
+                this._notification.viewAll('Req');
+              }
             }
           });
+      
+          this.close_info_Slide();   // close project info sidebar.
+        }
+        else
+        {
+          this.notProvided=true;
+        }  
+
+    }
+    else if (this.selectedType == '3') {
+ 
+      if(this.rejectType&&(this.comments&&this.comments.trim()!=''))
+      {
+         this.notProvided=false;
+          this.singleapporval_json.forEach(element => {
+            element.Remarks = this.comments;
+            element.RejectType = this.rejectType;
+          });
+          this.approvalSubmitting=true;
+          this.approvalservice.NewUpdateSingleRejectApprovalsService(this.singleapporval_json).
+            subscribe((data) => {
+              this.approvalSubmitting=true;
+              this.notifyService.showSuccess("Project Rejected successfully by - " + this._fullname, "Success");
+              this.LoadProjectDetails();
+              this.getapprovalStats();
+              if (this._Urlid == '1') {
+                this.router.navigate(["/backend/ProjectsSummary/"]);
+                this._projectSummary.GetProjectsByUserName(this.Summarytype);
+              }
+              else if (this._Urlid == '2') {
+                this._portfolioprojects.GetPortfolioProjectsByPid();
+              }
+              else if (this._Urlid == '3') {
+                this._viewdashboard.GetCompletedProjects();
+              }
+              else if (this._Urlid == '4') {
+                this._projectsAdd.GetProjectsByUserName();
+                this._projectsAdd.getDropdownsDataFromDB();
+              }
+              else if (this._Urlid == '5') {
+                this._toDo.GetProjectsByUserName();
+                this._toDo.GetSubtask_Details();
+              }
+              else if (this._Urlid == '6') {
+                this.router.navigate(["Notifications"]);
+                this._notification.viewAll('Req');
+              }
+            });     
+
+
+        this.close_info_Slide();   // close project info sidebar.
+      }
+      else 
+      {
+         this.notProvided=true;
       }
     }
     else if (this.selectedType == '4') {
       this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+      this.close_info_Slide();   // close project info sidebar.
     }
-    this.close_info_Slide();
+   
   }
-
-
 
   submitApproval1() {
     this.active = true;

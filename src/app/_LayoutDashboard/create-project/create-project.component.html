@@ -404,9 +404,27 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="d-flex align-items-center justify-content-between w-100">
-                        <div class="title-view-md">
-                          <p class="mb-0">Assigned projects</p>
+          
+                        <div class="title-view-md d-flex gap-1 align-items-end ml-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" viewBox="0 0 74 75" fill="none">
+                            <g clip-path="url(#clip0_237_573)">
+                              <path d="M19.0912 63.3546C19.0912 60.5455 16.8442 58.2682 14.0725 58.2682C11.3007 58.2682 9.05371 60.5455 9.05371 63.3546C9.05371 66.1637 11.3007 68.4409 14.0725 68.4409C16.8442 68.4409 19.0912 66.1637 19.0912 63.3546Z" fill="#838383" class="dtv"></path>
+                              <path d="M41.8422 63.3546C41.8422 60.5455 39.5952 58.2682 36.8234 58.2682C34.0517 58.2682 31.8047 60.5455 31.8047 63.3546C31.8047 66.1637 34.0517 68.4409 36.8234 68.4409C39.5952 68.4409 41.8422 66.1637 41.8422 63.3546Z" fill="#B8B8B8"></path>
+                              <path d="M64.5932 63.3546C64.5932 60.5455 62.3462 58.2682 59.5744 58.2682C56.8026 58.2682 54.5557 60.5455 54.5557 63.3546C54.5557 66.1637 56.8026 68.4409 59.5744 68.4409C62.3462 68.4409 64.5932 66.1637 64.5932 63.3546Z" fill="#B8B8B8"></path>
+                              <path d="M43.0996 13.8838C43.0996 10.3716 40.2909 7.52441 36.8262 7.52441C33.3614 7.52441 30.5527 10.3716 30.5527 13.8838C30.5527 17.396 33.3614 20.2432 36.8262 20.2432C40.2909 20.2432 43.0996 17.396 43.0996 13.8838Z" fill="#838383" class="dtv"></path>
+                              <path d="M39.8359 53.3657L39.8359 42.6109C39.1109 42.1871 38.4076 41.7269 37.7288 41.232L36.8126 40.5886C35.8965 41.2627 34.9498 41.9061 33.7588 42.5496L33.7588 53.3657C34.5442 53.1315 35.3535 52.9876 36.1713 52.9368L37.4539 52.9368C38.262 52.985 39.0615 53.129 39.8359 53.3657Z"fill="#B8B8B8"></path>
+                              <path d="M27.59 33.1735L26.3379 33.8783L24.9331 34.7362L22.2763 36.0844C14.6418 39.9451 11.1299 43.9284 11.1299 51.9563L11.1299 53.3657C12.122 53.0762 13.1505 52.9317 14.1837 52.9368C15.217 52.9309 16.2456 53.0754 17.2375 53.3657L17.2375 51.9563C17.2375 46.9925 18.795 44.817 24.2002 41.8142L25.5134 41.0788L26.9792 40.3435C35.8353 35.9006 39.1945 32.6833 39.9274 25.2376C38.9275 25.4809 37.9024 25.6043 36.8736 25.6053C35.841 25.6019 34.8136 25.4576 33.8197 25.1763L33.8197 24.9925C33.4838 28.6081 31.9264 30.6917 27.59 33.1735Z" fill="#838383" class="dtv"></path>
+                              <path d="M43.9897 38.8114L45.3639 39.5468L47.6848 40.7111L49.059 41.4465L50.3111 42.1513C55.2278 44.9702 56.6631 47.1763 56.6631 51.9563L56.6631 53.3657C57.4472 53.1263 58.2572 52.9823 59.0756 52.9368L60.2055 52.9368C61.0236 52.9848 61.8333 53.1288 62.618 53.3657L62.618 51.1596C62.4042 43.7752 58.8618 39.7919 51.5021 35.8393L48.2345 34.1847L47.0435 33.5412L46.0358 32.9897C45.2729 32.5461 44.5385 32.0549 43.837 31.519C43.1285 33.4201 42.0951 35.1828 40.7832 36.7279C41.7941 37.5083 42.8665 38.2051 43.9897 38.8114Z" fill="#B8B8B8"></path>
+                            </g>
+                            <defs><clipPath id="clip0_237_573">
+                                <rect width="74" height="73" fill="white" transform="translate(0.499023 74.8003) rotate(-90)"></rect>
+                              </clipPath>
+                            </defs>
+                          </svg>
+                          <p class="mb-0 fs-5 fw-bold">Assigned projects</p>
+                          <span *ngIf="assigntask_json&&assigntask_json.length>0" class="label-draft-text">Total : <span class="label-draft-count">{{assigntask_json.length}}</span></span>
                         </div>
+
                         <div class="kt-ctv-btn mt-0">
                           <button type="button" (click)="back_to_options()"
                             class="btn btn-prv-w mr-0 bg-light y-ct-v-btn-back btn-prev">Back to options</button>
@@ -414,7 +432,7 @@
                       </div>
                       <div class="card mt-3">
                         <div class="tabs-view-dg">
-                          <ul class="nav nav-tabs nav-bold nav-tabs-line mb-0">
+                          <ul class="nav nav-tabs nav-bold nav-tabs-line mb-0 d-none">
                             <li class="nav-item">
                               <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_4">
                                 <span class="nav-text">Assigned projects</span>
@@ -429,15 +447,16 @@
                             </li> -->
                           </ul>
                         </div>
-                        <div class="tab-content" id="myTabContent">
+                        <div class="tab-content  pt-4" id="myTabContent">
                           <div class="mt-3" id="kt_tab_pane_1_4" aria-labelledby="kt_tab_pane_1_4"
                             class="tab-pane fade show active">
                             <div class="card-body p-3">
-                              <div class="col-lg-12  card-Scroll pt-0">
-                                <div class="kt-action-list" *ngFor="let record of assigntask_json ;let i = index;">
-                                  <div class="kt-act-card d-flex align-items-center">
+                              <div class="col-lg-12  card-Scroll pt-0" style="scroll-behavior:smooth">
+                                <div [id]="'assign-task-'+record.Assign_Id" class="kt-action-list" *ngFor="let record of assigntask_json ;let i = index;">
+                                  <div class="kt-act-card d-flex align-items-center ">
                                     <div class="kt-act-no">
                                       <p>{{i+1}}</p><span>Project</span>
+                                      <input type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/>
                                     </div>
                                     <div class="kt-act-info">
                                       <div class="kt-act-ttl-v" >
