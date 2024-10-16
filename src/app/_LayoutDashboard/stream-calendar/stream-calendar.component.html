@@ -4199,8 +4199,6 @@
                                 <a class="meeting-btn"  href="{{Link_Detail.substring(Link_Detail.indexOf('https://')) }}" target="_blank" >Join with Online Meeting</a>   
                                </ng-conainer>
 
-
-
                               <ng-conainer *ngIf="Link_Detail && Link_Detail.includes('https://')">
                                 <span  class="copy-meeting-link"  [title]="copied ? 'Copied Meeting Link' : 'Copy Meeting Link'"  (click)="copyLink()">
                                     <ng-container *ngIf="!copied">
@@ -4438,6 +4436,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="collapse"  id="propose_date_time_open">
                         <div class="propose-date-time-div">
                             <h6>Propose New Time</h6>
@@ -4491,6 +4490,10 @@
                             </div>
                         </div>
                     </div>
+
+
+
+                    
                 </div>
             </div>
         </div>

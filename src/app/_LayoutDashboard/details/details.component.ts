@@ -4503,8 +4503,8 @@ debugger
     this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, sorttype.toString())
       .subscribe((data) => {
             this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-            console.log(this.AttachmentList,'fileuploading fileupdloading')
-            console.log('my AttachmentList:',JSON.parse(this.AttachmentList[0]['JsonData']));
+            // console.log(this.AttachmentList,'fileuploading fileupdloading')
+            // console.log('my AttachmentList:',JSON.parse(this.AttachmentList[0]['JsonData']));
             this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
             console.log(this._TotalDocs,"this._TotalDocsthis._TotalDocs")
            if (this.AttachmentList && this.AttachmentList.length) {
