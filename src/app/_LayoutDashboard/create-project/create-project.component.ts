@@ -190,20 +190,52 @@ export class CreateProjectComponent implements OnInit {
 
 
 
-  ngAfterViewInit(){
+  ngAfterViewChecked(){
     // open assigned project if asked in url
     this.route.queryParamMap.subscribe((qparams)=>{
       const assignedPrjTask=qparams.get('AssignedProjectId');
       if(assignedPrjTask){
-        setTimeout(()=>{
-          this.Assigned_projects();
-          this.scrollToTaskById(assignedPrjTask);
-        },2000)
+            const assignedTaskViewed=this.viewAssignedTaskById(assignedPrjTask);  
+            if(assignedTaskViewed){
+               const ob={...this.route.snapshot.queryParams};
+               delete ob.AssignedProjectId;
+               this.router.navigate([],{queryParams:ob})
+            }
       }
+
+
     });
-     // open assigned project if asked in url
+    // open assigned project if asked in url
+
 
   }
+
+
+
+
+ viewAssignedTaskById(id:string):boolean{
+  let isProcessDone:boolean=false;
+  try{
+   const e1=document.querySelector('.Assigned-projects-list');
+   const e2=document.querySelector('.np-step-1');
+   const e3=e1.querySelector(`#myTabContent #assign-task-${id} .kt-act-card`);
+   const e4:any=e3.querySelector('.kt-act-no input'); 
+
+   e1.classList.remove('d-none');
+   e2.classList.add('d-none');
+   setTimeout(()=>e4.focus(),300);
+   e3.classList.add('selected-anim');
+   e3.addEventListener('animationend',()=>{  
+    e3.classList.remove('selected-anim');
+   });
+   isProcessDone=true;
+  
+  }catch(e){
+   isProcessDone=false;
+  }
+
+   return isProcessDone;
+ }
 
 
 
@@ -220,8 +252,6 @@ export class CreateProjectComponent implements OnInit {
 
   //   })
   // }
-
-
 
   Project_Type:any
 
@@ -880,8 +910,10 @@ onFileChanged(event: any) {
   }
 
   scrollToTaskById(id){
-       const el:any=document.querySelector(`.Assigned-projects-list .tab-content .kt-action-list input#task-${id}`);
-       el.focus();
+    debugger
+      //  const el:any=document.querySelector(`.Assigned-projects-list .tab-content .kt-action-list input#task-${id}`);
+        const el=document.getElementById('task-11736');
+        el.focus();
   }
 
   templateProjects(){
@@ -1133,8 +1165,9 @@ onProjectOwnerChanged(){
   draft_json:any;
   daysDifference:any
   userFound:boolean|undefined;
+  loadingAssignedTasks:boolean=false;
   GetAssignedTaskDetails(){
-
+    this.loadingAssignedTasks=true;
     this.createProjectService.NewGetAssignedTaskDetails().subscribe
     ((res)=>{  console.log("draft_json:",JSON.parse(res[0].draft_json));
       this.assigntask_json = JSON.parse(res[0].Assigntask_json).map(task => {
@@ -1145,7 +1178,7 @@ onProjectOwnerChanged(){
           ...task,
           Duration: duration
         };
-      });
+      });   
       this.template_json=JSON.parse(res[0].templates_json);
       this.conditional_List=JSON.parse(res[0].conditional_json);
 

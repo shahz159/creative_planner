@@ -3279,6 +3279,7 @@ span.kt-inbox__label.kt-badge--unified-info.kt-badge-light-bold {
 }
 .runway-card-body {
     padding: 10px;
+    scroll-behavior: smooth;
 }
 .runway-card-header {
     background-color: #fff;
@@ -3788,3 +3789,32 @@ font-size: inherit;
   outline: none;
   border: 0;
 } */
+
+
+.task-item-focus {
+    animation: point-task 1s ease-in-out 0.8s 1 forwards;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  
+  @keyframes point-task {
+    0% {
+      transform: translateX(0);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 rgba(58, 134, 255, 0);
+      border: 1px solid transparent;
+    }
+    50% {
+      transform: translateX(5px);
+      background-color: #f2f6fc;
+      box-shadow: 0 4px 8px rgba(58, 134, 255, 0.2);
+      border: 1px solid #3a86ff;
+    }
+    100% {
+      transform: translateX(0);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 rgba(58, 134, 255, 0);
+      border: 1px solid transparent;
+    }
+  }
+  
+  

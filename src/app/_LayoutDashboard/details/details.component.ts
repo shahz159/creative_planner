@@ -1440,17 +1440,34 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           let count:number=0;
           this.ActionActivity_List.map((actv:any)=>{
 
-            if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
-               {   // actv.count : 2,3,4....
-                   let updatecount=(actv.count-count);
-                   let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                   actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
-                   count+=1;
-               }
-              return actv;
-          });
+        // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+                if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
+                  {   // actv.count : 2,3,4....
+                      let updatecount=(actv.count-count);
+                      let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+                      actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
+                      count+=1;
+                  }
+                  return actv;
+              });
+        // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
 
-
+   // adding _type property
+      this.ActionActivity_List.forEach((_actvy)=>{
+        let result='others';
+        if(_actvy.Value){  
+        const _Value=_actvy.Value.trim(); 
+        result=/New Action- ".*"/.test(_Value)?'New Action':
+              _Value=='Project Timeline added'?'Timeline added':
+              /Action Complete- ".*"/.test(_Value)?'Action Complete':
+              [/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/,/Action -".*" Owner changed/,/Action -".*" Responsible changed/].some(rg=>rg.test(_Value))?'Action Details changed':
+              /Action -".*" Start date changed/.test(_Value)?'Action Startdate changed':
+              /Action -".*" Deadline changed/.test(_Value)?'Action Deadline changed':
+              _Value; 
+        }
+        _actvy._type=result.trim();
+      });
+      // adding _type property
 
           this.ActionfirstFiveRecords = this.ActionActivity_List.slice(0, 5);
           this.ActionfirstFiveRecords=this.ActionfirstFiveRecords.map((item)=>{
@@ -2253,26 +2270,29 @@ multipleback(){
     // this.approvalEmpId = null;
     this.approvalsFetching=true;   // fetching approvals or processing start.
     this.approvalObj.Project_Code = this.URL_ProjectCode;
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {   debugger
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {  
       this.approvalsFetching=false;    // fetched approvals or processing end.
       this.requestDetails = data as [];
-      console.log(this.requestDetails, "approvals");
+      console.log(this.requestDetails, "approvals");   
       if (this.requestDetails.length > 0) {
         this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
         this.requestType = (this.requestDetails[0]['Request_type']);  
 
 
         this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']));
-        this.multiapproval_list=this.multiapproval_list.filter((_aprvl)=>_aprvl.Emp_No==this.Current_user_ID);
-        console.log('multiapproval_list my approvals:',this.multiapproval_list);
         this.pendingAprvls=[];  // must be empty before calculation.
-        this.multiapproval_list.forEach((item)=>{
-             const temp=this.pendingAprvls.find((item1)=>item1.request_type==item.Type);
-             if(temp)
-             temp.totalRequests+=1;
-             else
-             this.pendingAprvls.push({ request_type:item.Type, totalRequests:1 });
-        });
+        if(this.multiapproval_list){
+          this.multiapproval_list=this.multiapproval_list.filter((_aprvl)=>_aprvl.Emp_No==this.Current_user_ID);
+          console.log('multiapproval_list my approvals:',this.multiapproval_list);
+          this.multiapproval_list.forEach((item)=>{
+               const temp=this.pendingAprvls.find((item1)=>item1.request_type==item.Type);
+               if(temp)
+               temp.totalRequests+=1;
+               else
+               this.pendingAprvls.push({ request_type:item.Type, totalRequests:1 });
+          });
+        }
+      
 
 
         this.forwardType = (this.requestDetails[0]['ForwardType']);
@@ -2375,8 +2395,11 @@ multipleback(){
 
 standardjson:any;
 currentStdAprView:number|undefined;
+fetchingStdTaskAprvls:boolean=false;
   getstandardapprovalStats(){
+    this.fetchingStdTaskAprvls=true;
     this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data:any) => {
+       this.fetchingStdTaskAprvls=false;
       if(data&&data.length>0){
         console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
         this.requestDetails = data as [];
@@ -2401,6 +2424,14 @@ currentStdAprView:number|undefined;
     this.comments = "";
     this.empAuditor_remarks='';
     this.emp_Auditor=undefined;
+     this.notProvided=false;
+     this.sel_user=undefined;
+     this.sel_ptype=undefined;
+     this.sel_sdate=undefined;
+     this.sel_edate=undefined;
+     this.sel_submtype=undefined;
+     this.ngDropdwonPort2=[];
+  
   // clearing entered data if any.
 
     switch (actionType) {
@@ -2644,10 +2675,10 @@ currentStdAprView:number|undefined;
     $(".Btn_Reject").removeClass('active');
   }
 
-
+// accept, reject or next version submission done via this same method only.
+approvalSubmitting:boolean=false;
   submitApproval() {
     console.log('passing single approvaljson:',this.singleapporval_json);
-    
     if (this.selectedType == '1') {   
       console.log("singleapporval_json:",this.singleapporval_json);
       if (this.comments == '' || this.comments == null) {
@@ -2660,8 +2691,11 @@ currentStdAprView:number|undefined;
           element.Remarks = this.comments;
         });
       }
+      this.approvalSubmitting=true;
       this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
-        subscribe((data) => {
+        subscribe((data) => {  
+          this.Close_Approval();
+          this.approvalSubmitting=false;
           this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Approved successfully by - " + this._fullname, "Success");
           this.getapprovalStats();
           this.GetApproval(1);
@@ -2671,75 +2705,81 @@ currentStdAprView:number|undefined;
       console.log(this.singleapporval_json, "accept")
     }
     else if (this.selectedType == '2') {
+// validation here
+        if((this.sel_prjname&&this.sel_prjname.trim()!=='')&&this.sel_user&&(this.comments&&this.comments.trim()!=''))
+        { // when user provided all mandatory fields.
+          this.approvalObj.Emp_no = this.Current_user_ID;
+          this.approvalObj.Project_Code = this.URL_ProjectCode;
+          this.approvalObj.Request_type = this.requestType;
 
-      this.approvalObj.Emp_no = this.Current_user_ID;
-      this.approvalObj.Project_Code = this.URL_ProjectCode;
-      this.approvalObj.Request_type = this.requestType;
-
-      this.approvalObj.taskname=this.sel_prjname;
-      this.approvalObj.projecttype=this.sel_ptype?this.sel_ptype:'0';
-      this.approvalObj.assignto=this.sel_user;
-      this.approvalObj.portfolioId=(this.ngDropdwonPort2&&this.ngDropdwonPort2.length>0)?(this.ngDropdwonPort2.join(',')):'0';
+          this.approvalObj.taskname=this.sel_prjname;
+          this.approvalObj.projecttype=this.sel_ptype?this.sel_ptype:'0';
+          this.approvalObj.assignto=this.sel_user;
+          this.approvalObj.portfolioId=(this.ngDropdwonPort2&&this.ngDropdwonPort2.length>0)?(this.ngDropdwonPort2.join(',')):'0';
 
 
-      this.approvalObj.startdate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_sdate?this.sel_sdate:'0');
-      this.approvalObj.enddate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_edate?this.sel_edate:'0');
-      this.approvalObj.SubmissionType=['003','008'].includes(this.sel_ptype)?( this.sel_submtype?this.sel_submtype:'0' ):'0';
+          this.approvalObj.startdate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_sdate?this.sel_sdate:'0');
+          this.approvalObj.enddate=['003','008'].includes(this.sel_ptype)?'0': (this.sel_edate?this.sel_edate:'0');
+          this.approvalObj.SubmissionType=['003','008'].includes(this.sel_ptype)?( this.sel_submtype?this.sel_submtype:'0' ):'0';
 
-      if (this.comments == '' || this.comments == null) {
-        this.approvalObj.Remarks = 'Accepted';
-      }
-      else {
-        this.approvalObj.Remarks = this.comments;
-      }
-
-      this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
-        subscribe((data) => {
-          this._Message = (data['message']);
-          if (this._Message == 'Not Authorized' || this._Message == '0') {
-            this.notifyService.showError("project not approved", 'Failed.');
+          if (this.comments == '' || this.comments == null) {
+            this.approvalObj.Remarks = 'Accepted';
           }
           else {
-            this.notifyService.showSuccess("Project Approved Successfully", this._Message);
-            this.getapprovalStats();
-            this.getProjectDetails(this.URL_ProjectCode);
-
-
+            this.approvalObj.Remarks = this.comments;
           }
-        });
+            
+          this.approvalSubmitting=true;
+          this.approvalservice.InsertConditionalAcceptApprovalService(this.approvalObj).
+            subscribe((data) => {
+              this.approvalSubmitting=false;
+              this._Message = (data['message']);
+              if (this._Message == 'Not Authorized' || this._Message == '0') {
+                this.notifyService.showError("project not approved", 'Failed.');
+              }
+              else {
+                this.Close_Approval();
+                this.notifyService.showSuccess("Project Approved Successfully", this._Message);
+                this.getapprovalStats();
+                this.getProjectDetails(this.URL_ProjectCode);
+              }
+            });
+        }
+        else
+        {  // when mandatory field are missing.
+            this.notProvided=true;
+        }
     }
     else if (this.selectedType == '3') {
-      
-     
-      if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
-        this.noRejectType = true;
-        this.notifyService.showError("Please select Reject Type", "Failed");
-        return false;
-      }
-      else {
+// on reject btn click
+      if(this.rejectType&&(this.comments&&this.comments.trim()!=''))
+      {  // when both reject type and comments are provided.
         this.singleapporval_json.forEach(element => {
           element.Remarks = this.comments;
           element.RejectType = this.rejectType;
         });
+        this.approvalSubmitting=true;
         this.approvalservice.NewUpdateSingleRejectApprovalsService(this.singleapporval_json).
           subscribe((data) => {
+            // if success 
+            this.Close_Approval(); 
+            this.approvalSubmitting=false;
             this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Rejected successfully by - " + this._fullname, "Success");
             this.getapprovalStats();
             this.getProjectDetails(this.URL_ProjectCode);
             this.getRejectType();
-
-          });
+        
+        });
       }
+      else
+      {  // when mandatory field are not provided. 
+        this.notProvided=true;
+      }
+// on reject btn click
     }
     else if (this.selectedType == '4') {
       this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
     }
-    this.close_info_Slide();
-
-  }
-
-
-  close_info_Slide() {
   }
 
 
@@ -10781,20 +10821,6 @@ getFormattedDuration(totalDuration: number): string {
 }
 
 
-// OnPortfolioClick(P_id: any, P_Name: string, CreatedName: string) {
-//   sessionStorage.setItem('portfolioId', P_id);
-//   sessionStorage.setItem('portfolioname', P_Name);
-//   sessionStorage.setItem('PortfolioOwner', CreatedName);
-//   //sessionStorage.setItem('portfolioCDT', P_CDT);
-//   //this.router.navigate(['/portfolioprojects/', P_id]);
-//   // const Url = this.router.serializeUrl(this.router.createUrlTree(['testcreativeplanner/portfolioprojects/', P_id]));
-//   // window.open(Url);
-//   let name: string = 'portfolioprojects';
-//   var url = document.baseURI + name;
-//   var myurl = `${url}/${P_id}`;
-//   var myWindow = window.open(myurl, P_id);
-//   myWindow.focus();
-// }
 
   openRunwayTask(taskid:string){
       // let name: string = 'UnplannedTask';
@@ -10802,7 +10828,7 @@ getFormattedDuration(totalDuration: number): string {
       // var myurl = `${url}`;
       // var myWindow = window.open(myurl);
       // myWindow.focus();
-      this.router.navigate(["../UnplannedTask"],{queryParams:{taskId:taskid}});
+      this.router.navigate(["../UnplannedTask"],{queryParams:{category:3595, taskid:taskid}});
   }
 
   openAssignedProject(taskid:string){
