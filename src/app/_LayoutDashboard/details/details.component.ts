@@ -1440,17 +1440,34 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           let count:number=0;
           this.ActionActivity_List.map((actv:any)=>{
 
-            if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
-               {   // actv.count : 2,3,4....
-                   let updatecount=(actv.count-count);
-                   let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                   actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
-                   count+=1;
-               }
-              return actv;
-          });
+        // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+                if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
+                  {   // actv.count : 2,3,4....
+                      let updatecount=(actv.count-count);
+                      let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+                      actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
+                      count+=1;
+                  }
+                  return actv;
+              });
+        // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
 
-
+   // adding _type property
+      this.ActionActivity_List.forEach((_actvy)=>{
+        let result='others';
+        if(_actvy.Value){  
+        const _Value=_actvy.Value.trim(); 
+        result=/New Action- ".*"/.test(_Value)?'New Action':
+              _Value=='Project Timeline added'?'Timeline added':
+              /Action Complete- ".*"/.test(_Value)?'Action Complete':
+              [/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/,/Action -".*" Owner changed/,/Action -".*" Responsible changed/].some(rg=>rg.test(_Value))?'Action Details changed':
+              /Action -".*" Start date changed/.test(_Value)?'Action Startdate changed':
+              /Action -".*" Deadline changed/.test(_Value)?'Action Deadline changed':
+              _Value; 
+        }
+        _actvy._type=result.trim();
+      });
+      // adding _type property
 
           this.ActionfirstFiveRecords = this.ActionActivity_List.slice(0, 5);
           this.ActionfirstFiveRecords=this.ActionfirstFiveRecords.map((item)=>{
@@ -2253,26 +2270,29 @@ multipleback(){
     // this.approvalEmpId = null;
     this.approvalsFetching=true;   // fetching approvals or processing start.
     this.approvalObj.Project_Code = this.URL_ProjectCode;
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {   debugger
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {  
       this.approvalsFetching=false;    // fetched approvals or processing end.
       this.requestDetails = data as [];
-      console.log(this.requestDetails, "approvals");
+      console.log(this.requestDetails, "approvals");   
       if (this.requestDetails.length > 0) {
         this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
         this.requestType = (this.requestDetails[0]['Request_type']);  
 
 
         this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']));
-        this.multiapproval_list=this.multiapproval_list.filter((_aprvl)=>_aprvl.Emp_No==this.Current_user_ID);
-        console.log('multiapproval_list my approvals:',this.multiapproval_list);
         this.pendingAprvls=[];  // must be empty before calculation.
-        this.multiapproval_list.forEach((item)=>{
-             const temp=this.pendingAprvls.find((item1)=>item1.request_type==item.Type);
-             if(temp)
-             temp.totalRequests+=1;
-             else
-             this.pendingAprvls.push({ request_type:item.Type, totalRequests:1 });
-        });
+        if(this.multiapproval_list){
+          this.multiapproval_list=this.multiapproval_list.filter((_aprvl)=>_aprvl.Emp_No==this.Current_user_ID);
+          console.log('multiapproval_list my approvals:',this.multiapproval_list);
+          this.multiapproval_list.forEach((item)=>{
+               const temp=this.pendingAprvls.find((item1)=>item1.request_type==item.Type);
+               if(temp)
+               temp.totalRequests+=1;
+               else
+               this.pendingAprvls.push({ request_type:item.Type, totalRequests:1 });
+          });
+        }
+      
 
 
         this.forwardType = (this.requestDetails[0]['ForwardType']);
@@ -2375,8 +2395,11 @@ multipleback(){
 
 standardjson:any;
 currentStdAprView:number|undefined;
+fetchingStdTaskAprvls:boolean=false;
   getstandardapprovalStats(){
+    this.fetchingStdTaskAprvls=true;
     this.approvalservice.GetStandardApprovals(this.URL_ProjectCode).subscribe((data:any) => {
+       this.fetchingStdTaskAprvls=false;
       if(data&&data.length>0){
         console.log("getstandardapprovalStats:",JSON.parse(data[0]['standardJson']));
         this.requestDetails = data as [];
@@ -2401,6 +2424,14 @@ currentStdAprView:number|undefined;
     this.comments = "";
     this.empAuditor_remarks='';
     this.emp_Auditor=undefined;
+     this.notProvided=false;
+     this.sel_user=undefined;
+     this.sel_ptype=undefined;
+     this.sel_sdate=undefined;
+     this.sel_edate=undefined;
+     this.sel_submtype=undefined;
+     this.ngDropdwonPort2=[];
+  
   // clearing entered data if any.
 
     switch (actionType) {
@@ -2648,7 +2679,6 @@ currentStdAprView:number|undefined;
 approvalSubmitting:boolean=false;
   submitApproval() {
     console.log('passing single approvaljson:',this.singleapporval_json);
-    debugger
     if (this.selectedType == '1') {   
       console.log("singleapporval_json:",this.singleapporval_json);
       if (this.comments == '' || this.comments == null) {
@@ -2663,7 +2693,8 @@ approvalSubmitting:boolean=false;
       }
       this.approvalSubmitting=true;
       this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
-        subscribe((data) => {
+        subscribe((data) => {  
+          this.Close_Approval();
           this.approvalSubmitting=false;
           this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Approved successfully by - " + this._fullname, "Success");
           this.getapprovalStats();
@@ -2707,7 +2738,7 @@ approvalSubmitting:boolean=false;
                 this.notifyService.showError("project not approved", 'Failed.');
               }
               else {
-                this.closeApproval();
+                this.Close_Approval();
                 this.notifyService.showSuccess("Project Approved Successfully", this._Message);
                 this.getapprovalStats();
                 this.getProjectDetails(this.URL_ProjectCode);
@@ -2749,12 +2780,6 @@ approvalSubmitting:boolean=false;
     else if (this.selectedType == '4') {
       this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
     }
-    this.close_info_Slide();
-
-  }
-
-
-  close_info_Slide() {
   }
 
 

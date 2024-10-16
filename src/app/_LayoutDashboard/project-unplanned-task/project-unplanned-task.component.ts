@@ -1911,13 +1911,13 @@ else{
     }
 
 
-  const fd = new FormData();
+  const fd = new FormData(); debugger
   fd.append("TaskName", this.selected_taskName.trim());
   fd.append("Desc", '');
   fd.append("ProjectType", this.selectedProjecttype);
   fd.append("AssignTo", this.employeSelect);
   fd.append("Portfolio_Id", this.port_id);
-  fd.append("StartDate", datestrStart);
+  fd.append("StartDate", datestrStart); 
   fd.append("EndDate", datestrEnd);
 
   fd.append("ProjectDays", ProjectDays.toString());

@@ -573,14 +573,20 @@
                         <!-- Project Audit and Transfer ownership-->
 
 
+
+
+
+                  
+
                          <!-- Conditional Assign-->
                          <div *ngIf="selectedType == '2'"  class="mt-3 ">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-2">
                                     <label>Project Name<span class="text-danger">*</span></label>
-                                    <input type="text" placeholder="Enter project name" class="form-control" [(ngModel)]="sel_prjname"/>
-                                    </div>
+                                    <input [ngClass]="{'error-border':(!(sel_prjname&&sel_prjname.trim())&&notProvided)}" type="text" placeholder="Enter project name" class="form-control" [(ngModel)]="sel_prjname"/>
+                                    <span *ngIf="!(sel_prjname&&sel_prjname.trim())&&notProvided" style="color:red">please enter project name.</span>   
+                                  </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -592,7 +598,9 @@
                                             placeholder="Select employee"
                                             [searchable]="true" name="RACIS"
                                             [(ngModel)]="sel_user"
+                                            [ngClass]="{'error-border':(!sel_user&&notProvided)}"
                                             required></ng-select>
+                                       <span *ngIf="!sel_user&&notProvided" style="color:red">please select employee.</span>         
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -691,17 +699,26 @@
                             </div>
 
                         </div>
+                        <ng-container *ngIf="selectedType == '2'">
+                            Enter comments<span style="color:red">*</span>
+                            <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"  [ngClass]="{'error-border':(!(comments&&comments.trim())&&notProvided)}"
+                                [(ngModel)]="comments"></textarea>
+                            <span *ngIf="!(comments&&comments.trim())&&notProvided" style="color:red">please provide your comments.</span>      
+                        </ng-container>
+
                         <!-- Conditional Assign-->
 
 
+                        <!--approval reject-->
                     <div *ngIf="isRejectOptionsVisible">
-                        Reject type*
-                        <ng-select required #action="ngModel" name="rej_type" placeholder="Select Reject Type"
+                        Reject type <span style="color:red">*</span>
+                        <ng-select [ngClass]="{'error-border':(!rejectType&&notProvided)}" required #action="ngModel" name="rej_type" placeholder="Select Reject Type"
                             id="rej_type" [(ngModel)]="rejectType" (change)="rejectApproval()">
                             <ng-option [value]="item.TypeID" *ngFor="let item of reject_list">
                                 {{item.RejectType}}
                             </ng-option>
                         </ng-select>
+                        <span *ngIf="!rejectType&&notProvided" style="color:red">please select reject type.</span>
                     </div>
                     <div class="col-lg-12 mt-3 mb-3 p-0" *ngIf="isRejectOptionsVisible">
                         <div class="appr-comts" *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
@@ -737,21 +754,27 @@
                             </div>
                         </div>
                     </div>
-                    <ng-container *ngIf="rejectType">
-                        Enter comments*
+                    <ng-container *ngIf="selectedType=='3'">
+                        Enter comments <span style="color:red">*</span>
                         <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"
+                            [ngClass]="{'error-border':(!(comments&&comments.trim())&&notProvided)}" 
                             [(ngModel)]="comments"></textarea>
+                       <span *ngIf="!(comments&&comments.trim())&&notProvided" style="color:red">please provide your comments.</span>     
                     </ng-container>
-                    <ng-container *ngIf="selectedType == '2'">
-                        Enter comments<span style="color:red">*</span>
-                        <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="3"
-                            [(ngModel)]="comments"></textarea>
-                    </ng-container>
+
+                        <!--approval reject-->
+
+
+                <!--approval accept-->
                     <ng-container *ngIf="selectedType == '1'">
                         Enter comments
                         <textarea class="form-control kt-approval-msg" id="exampleTextarea" rows="6"
                             [(ngModel)]="comments"></textarea>
                     </ng-container>
+                <!--approval accept-->
+
+
+
                     <!---------- Close and Submit button html---------------->
                     <div class="kt-info-pg-footer">
                         <div class="row mt-3">
@@ -766,15 +789,9 @@
                                     <!-- <button type="button" data-to="#pills-3-tab"  class="btn btn-project-stv mr-3 Bt-Close">Close</button> -->
                                     <span>
 
-
-                                        <button (click)="submitApproval()" type="button" *ngIf="Accept_active"
-                                            data-to="#pills-3-tab" class="btn btn-project-stv Bt-Submit"
-                                            primary="true">Submit</button>
-
-                                        <button type="submit" class="btn btn-project-stv Bt-Submit"
-                                            *ngIf="Conditional_Active || Reject_active" data-to="#pills-3-tab"
-                                            (click)="submitApproval()" [disabled]="!comments || !selectedType"
-                                            primary="true">Submit</button>
+                                            <button *ngIf="Accept_active" (click)="submitApproval();" [disabled]="approvalSubmitting" type="button" class="btn btn-project-stv Bt-Submit" primary="true">Submit</button>
+                                            <button *ngIf="Reject_active" (click)="submitApproval();" [disabled]="approvalSubmitting" type="submit" class="btn btn-project-stv Bt-Submit" primary="true" >Submit</button>
+                                            <button *ngIf="Conditional_Active" (click)="submitApproval();" [disabled]="approvalSubmitting" type="submit" class="btn btn-project-stv Bt-Submit" primary="true">Submit</button>
 
                                             <button *ngIf="Audit_active" type="button" class="btn btn-project-stv Bt-Submit text-nowrap curser-pointer" primary="true"
                                             [ngStyle]="{width:auditBtnDisabled?'fit-content':'none'}"  [disabled]="auditBtnDisabled" (click)="onPrjAuditSubmitClicked()">
