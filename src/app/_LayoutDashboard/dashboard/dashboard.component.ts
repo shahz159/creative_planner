@@ -1073,8 +1073,6 @@ export class DashboardComponent implements OnInit {
       this.GetScheduledJson();
       this.GetPending_Request();
     })
-
-
   }
 
   PendingdeleteSchedule(id) {
@@ -1369,10 +1367,6 @@ export class DashboardComponent implements OnInit {
                 ac.updatePosition();
             });
           })
-
-
-
-
 
         }
 
@@ -1793,7 +1787,7 @@ export class DashboardComponent implements OnInit {
 
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
-      (this.Description_Type?(this.characterCount<500):true)&&
+      (this.Description_Type?(this.characterCount<=500):true)&&
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
@@ -2180,7 +2174,7 @@ export class DashboardComponent implements OnInit {
       this.Endtms &&
       this.MinLastNameLength
       && (this.ScheduleType === 'Event' ?  this.allAgendas.length > 0 : true)
-      && (this.Description_Type?(this.characterCount<500):true)
+      && (this.Description_Type?(this.characterCount<=500):true)
     ) {
       this.notProvided = false;
 
@@ -3909,6 +3903,8 @@ currentTime:any;
         this.meetingRestriction(Schedule_date);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
+
+        console.log(this.Isadmin, "Isadmin");
          console.log(this.EventScheduledjson, "Testing12");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -3927,13 +3923,13 @@ currentTime:any;
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this.pending_status = this.EventScheduledjson[0].Pending_meeting;
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
-        console.log(this.Meeting_status, "Meeting_status");
+        
         this._StartDate=this.EventScheduledjson[0].Schedule_date;
         this.Startts=this.EventScheduledjson[0].St_Time;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
         this.RecurrenceValue=this.EventScheduledjson[0].Recurrence
 
-
+        debugger
 
         document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
@@ -3947,11 +3943,11 @@ currentTime:any;
           // document.getElementById("copy_data2").style.display = "flex";
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Meeting_status==false) && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
-        debugger
+      
           document.getElementById("hiddenedit").style.display = "none";
           // document.getElementById("deleteendit").style.display = "flex";
 
-            document.getElementById("main-foot").style.display = "flex";
+          document.getElementById("main-foot").style.display = "flex";
 
 
           // document.getElementById("copy_data").style.display = "none";

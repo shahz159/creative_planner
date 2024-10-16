@@ -623,8 +623,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.CurrentTaskCount = this.Agendas_List.map(item => ({ TaskCount: item.CurrentTaskCount, agendaid: item.AgendaId }));
 
 
-      console.log(this.Agendas_List,'CurrentNotesCount')
-
+    
       if (this.Agendas_List.every(obj => obj.Status == 1)) {
         this.hasStatusOne = true;
       } else {
@@ -663,8 +662,11 @@ export class MeetingDetailsComponent implements OnInit {
       let regexp = /href="https:\/\/[^"]+"/;
       let result = regexp.exec(str);
       if (result && result[0])
+      this.Link_Detail = result[0].slice(6, result[0].length - 1);
 
-        this.Link_Detail = result[0].slice(6, result[0].length - 1);
+   
+
+     console.log(this.Link_Detail,'Link_Detail2')
 
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
       this.totalguest = this.User_Scheduledjson.length;
@@ -5770,7 +5772,7 @@ debugger
       this.Endtms &&
       this.MinLastNameLength
       && (this.ScheduleType === 'Event' ?  this.allAgendas.length > 0  : true)
-      && (this.Description_Type?(this.characterCount<500):true)
+      && (this.Description_Type?(this.characterCount<=500):true)
     ) {
 
     this._calenderDto.flagid = this._PopupConfirmedValue;
@@ -7256,7 +7258,7 @@ onParticipantFilter(){
 
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
-      (this.Description_Type?(this.characterCount<500):true)&&
+      (this.Description_Type?(this.characterCount<=500):true)&&
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
@@ -7664,5 +7666,21 @@ getFileType(fileName: string): string {
   return extension ? extension : '';
 }
 
+
+copied = false;
+
+  copyLink() {
+    const textarea = document.createElement('textarea');
+    textarea.value = this.Link_Detail;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+
+    this.copied = true;
+    setTimeout(() => {
+      this.copied = false;
+    }, 3000); // revert after 2 seconds
+  }
 
 }

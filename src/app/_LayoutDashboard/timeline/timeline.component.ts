@@ -472,6 +472,7 @@ clear(){
   this._inputAttachments='';
   this.bothActTlSubm=false;
   this.fieldRequired=false;
+  this.submittingDar=false;
 }
 
 
@@ -544,7 +545,10 @@ diff_minutes(dt2, dt1) {
   return Math.abs(Math.round(diff));
 }
 
+submittingDar:boolean=false;
 submitDar() {
+
+  this.submittingDar=true;   // submitting dar process start.
 
   if (this.starttime != null && this.endtime != null) {
     const [shours, sminutes] = this.starttime.split(":");
@@ -596,6 +600,7 @@ submitDar() {
 
   this.service._InsertDARServie(this.objProjectDto)
     .subscribe(data => {
+    
       this._Message = data['message'];
       this.notifyService.showSuccess(this._Message, "Success");
 
@@ -644,6 +649,7 @@ submitDar() {
         this.timelineLog(this.Type);
         this.clear();   // clear all fields. project_code, master_code, ....
         this.changeTimelineDate(this.timeline_of);  
+        this.submittingDar=false;       // dar submitting process end.
     });
 
   this.getDarTime();

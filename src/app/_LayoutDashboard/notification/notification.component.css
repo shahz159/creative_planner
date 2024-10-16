@@ -1631,7 +1631,7 @@ display: inline-block; */
 }
 
 
-/*test*/
+/*circles*/
 
 .timeline-icon {
   width: 36px;
@@ -1643,15 +1643,20 @@ display: inline-block; */
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #ccc;
+  border: 1px solid #e1e1ef;
 }
 .timeline-icon .tmicn-svg{
-  fill: #ccc;
+  fill: #e1e1ef;
 }
 
 
 .timeline-icon.approved{
   border-color: #4caf50;
+  animation-name: grow_circle;
+  animation-duration:0.5s;
+  animation-delay:2s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 .timeline-icon.approved .tmicn-svg{
   fill: #4caf50;
@@ -1667,6 +1672,7 @@ display: inline-block; */
   fill: red;
 }
 
+
 .line-aprved{
    border-style:solid;
    border-color:#4caf50b0;
@@ -1676,4 +1682,10 @@ display: inline-block; */
   border-color:#ede6ef;
 }
 
-/*test*/
+
+
+
+
+
+
+/*circles*/

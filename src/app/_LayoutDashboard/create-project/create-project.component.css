@@ -660,6 +660,28 @@ button.btn.btn-sm.btn-bg-light.Clr-act {
   box-shadow: 1px 1px 20px #cccccc78;
   margin-bottom: 8px;
 }
+.Assigned-projects-list #myTabContent .kt-action-list .kt-act-card.selected-anim{
+  animation-name: selectedAnim;
+  animation-delay: 0.5s;
+  animation-duration: 1.5s;
+  animation-iteration-count: 2;
+  animation-timing-function: cubic-bezier(0, 1, 1, 1);
+  animation-direction: alternate;
+  animation-fill-mode: backwards;
+}  
+
+@keyframes selectedAnim{
+     from{
+        background-color: white;
+        border:2px solid #a2c2eb;
+     }
+     to{
+      background-color: #e9f3ff75;
+      border: 2px solid #a2c2eb;
+     }
+   
+}
+
 
 span.kt-act-svg-ic {
   border-right: 1px solid #ccc;
@@ -2802,3 +2824,8 @@ color: #2786fb;
   padding: 0px 4px;
   border-radius: 4px;
 }
+
+
+/* .taskItemfocus{
+ border:2px solid #8cabfa;
+} */

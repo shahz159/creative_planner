@@ -432,7 +432,7 @@ debugger
         this._ProjectDataList = data;
         this._CurrentpageRecords = this._ProjectDataList.length;
         //this._totalProjectsCount=this._ProjectDataList.length;
-
+console.log(this._ProjectDataList,'this._ProjectDataListthis._ProjectDataListthis._ProjectDataList')
         if (this._ProjectDataList.length == 0) {
           this._filtersMessage = "No more projects matched your search";
           this._filtersMessage2 = " Clear the filters & try again";
@@ -1129,6 +1129,36 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
+}
+
+getStatusNumber(status: string): number {
+  const match = status.match(/\d+/); // Find digits in the string
+  return match ? parseInt(match[0], 10) : null; // Convert to number, or return null if no number found
+}
+
+
+
+getFormattedDelay(delayDays: any): string {
+  let delayText = '';
+
+  if (delayDays >= 365) {
+    const years = Math.floor(delayDays / 365);
+    delayText = years === 1 ? '01 year' : years < 10 ? `0${years} years` : `${years} years`;
+  } else if (delayDays >= 30) {
+    const months = Math.floor(delayDays / 30);
+    delayText = months === 1 ? '01 month' : months < 10 ? `0${months} months` : `${months} months`;
+  } else if (delayDays >= 7) {
+    const weeks = Math.floor(delayDays / 7);
+    delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
+  } else {
+    delayText = delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
+  }
+
+  return `${delayText.toLowerCase()}`;
+}
+formatStatus(status) {
+  // Use a regular expression to replace '(s)' with an empty string
+  return status.replace(/\(s\)/, 's').trim();
 }
 
 }

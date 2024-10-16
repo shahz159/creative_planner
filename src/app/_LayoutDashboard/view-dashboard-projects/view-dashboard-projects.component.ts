@@ -1066,7 +1066,7 @@ getAssignedActions(type:'BYME'|'TOME'){
 
 
 openAssignedProject(assignId:string) {
-
+debugger
   let name = `/backend/createproject`;
   // var url = document.baseURI + name;
   // var myurl = `${url}`;
