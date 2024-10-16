@@ -143,6 +143,7 @@ export class PortfolioProjectsComponent implements OnInit {
   Current_user_ID: string;
 
 
+
   requestDetails: any;
   requestType: any;
   isPrjContainAprvls:boolean=false;  // to control pending approval label located in prj status section.
@@ -400,8 +401,8 @@ export class PortfolioProjectsComponent implements OnInit {
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);
         this._PortFolio_Namecardheader = this._PortfolioDetailsById[0]['Portfolio_Name'];
         this.Rename_PortfolioName = this._PortFolio_Namecardheader;
-        this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];
-        this.createdBy = this._PortfolioDetailsById[0]['Created_By'];
+        this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];  
+        this.createdBy = this._PortfolioDetailsById[0]['Created_By'];   
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
 
         this.lastProject = this._ProjectsListBy_Pid.length;
@@ -554,7 +555,8 @@ export class PortfolioProjectsComponent implements OnInit {
           this.UserAccessType=(this.Current_user_ID==this.createdBy)?'Full Access':_empOb.Preferences;
           console.log(this.UserAccessType,"this.UserAccessTypethis.UserAccessTypethis.UserAccessType")
           this._SharedToEmps=this._ShareDetailsList.map(item=>item.EmployeeId);
-          }
+          console.log('_ShareDetailsList',this._ShareDetailsList);
+        }
         if (this._ShareDetailsList == 0) {
           this._btnShareDetails = true;
         }

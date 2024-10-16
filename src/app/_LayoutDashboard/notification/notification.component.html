@@ -86,7 +86,7 @@
             </div>
            <!-- <button class="btn btn-outline-success btn-sm mr-2" (click)="leaveform(Current_user_ID,Leave_Code.trim())">sample</button>  -->
            <!-- style="display: none;" -->
-             <div class="kt-portlet__head-label" >
+             <!-- <div class="kt-portlet__head-label" >
 
               <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -105,7 +105,7 @@
                   Leave Responses
                 </a>
               </div>
-            </div>
+            </div> -->
           </div>
 
           <div class="kt-portlet__head-label mr-2">
@@ -2251,22 +2251,24 @@
 
           <div class="d-flex align-items-center my-5 px-5">
             <div class="d-flex flex-column align-items-center" style="max-width: 50px; overflow-x: visible;">
+              <div class="fs-9 fw-bold text-nowrap border p-1 rounded mb-2">Leave applied</div>
               <div class="timeline-icon approved" style="border-width: 2px;">
                 <svg class="tmicn-svg" width="18px" height="20px" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
                   <path d="m 13,4.1974 q 0,0.3097 -0.21677,0.5265 l -5.60517,5.6051 -1.0529,1.0529 q -0.21677,0.2168 -0.52645,0.2168 -0.30968,0 -0.52645,-0.2168 L 4.01935,10.329 1.21677,7.5264 Q 1,7.3097 1,7 1,6.6903 1.21677,6.4735 L 2.26968,5.4206 q 0.21677,-0.2167 0.52645,-0.2167 0.30968,0 0.52645,0.2167 l 2.27613,2.2839 5.07871,-5.0864 q 0.21677,-0.2168 0.52645,-0.2168 0.30968,0 0.52645,0.2168 L 12.78323,3.671 Q 13,3.8877 13,4.1974 z"></path>
                 </svg>
               </div>
-              <div class="fs-9 fw-bold text-nowrap">Leave applied</div>
+              <div class="fs-9 fw-bold text-nowrap">Approved</div>
             </div>
-            <div class="flex-grow-1 mb-3 line-aprved" style="border-width:1px;"></div>
+            <div class="flex-grow-1 mt-3 line-aprved" style="border-width:1px;"></div>
             <div *ngIf="managerApproval" class="d-flex flex-column align-items-center" style="max-width: 75px; overflow-x: visible;">
-              <div class="timeline-icon" style="border-width: 2px;"
+              <div class="fs-9 fw-bold text-nowrap border p-1 rounded mb-2">Department head</div>
+              <div class="timeline-icon" style="border-width: 2px;" 
                [ngClass]="{
                 'approved':managerApproval.LeaveStatus.trim()=='Approved Leave',
                 'rejected':managerApproval.LeaveStatus.trim()=='Leave Rejected'
                 }">
 
-              <ng-container *ngIf="managerApproval.LeaveStatus.trim()=='Approved Leave'">
+              <ng-container *ngIf="(!managerApproval)||managerApproval.LeaveStatus.trim()=='Approved Leave'">
                 <svg class="tmicn-svg" width="18px" height="20px" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
                   <path d="m 13,4.1974 q 0,0.3097 -0.21677,0.5265 l -5.60517,5.6051 -1.0529,1.0529 q -0.21677,0.2168 -0.52645,0.2168 -0.30968,0 -0.52645,-0.2168 L 4.01935,10.329 1.21677,7.5264 Q 1,7.3097 1,7 1,6.6903 1.21677,6.4735 L 2.26968,5.4206 q 0.21677,-0.2167 0.52645,-0.2167 0.30968,0 0.52645,0.2167 l 2.27613,2.2839 5.07871,-5.0864 q 0.21677,-0.2168 0.52645,-0.2168 0.30968,0 0.52645,0.2168 L 12.78323,3.671 Q 13,3.8877 13,4.1974 z"></path>
                 </svg>
@@ -2283,22 +2285,22 @@
                   </g>
                 </svg>
               </ng-container>
-
-
-
-
               </div>
-              <div class="fs-9 fw-bold text-nowrap">Department head</div>
+              <div *ngIf="managerApproval.LeaveStatus.trim()=='Approved Leave'" class="fs-9 fw-bold text-nowrap">Approved</div>
+              <div *ngIf="managerApproval.LeaveStatus.trim()=='Leave Rejected'" class="fs-9 fw-bold text-nowrap">Rejected</div>
+         
+
             </div>
-            <div class="flex-grow-1 mb-3" style="border-width:1px;" [ngClass]="{'line-aprved':(hrApproval&&hrApproval.LeaveStatus.trim()=='Leave Sanction')}"></div>
-
-
+            <div class="flex-grow-1 mt-3" style="border-width:1px;" [ngClass]="{'line-aprved':(hrApproval&&hrApproval.LeaveStatus),'line-pending':(!hrApproval)}"></div>
+          
             <div  class="d-flex flex-column align-items-center" style="max-width: 50px; overflow-x: visible;">
-              <div class="timeline-icon" style="border-width: 2px; " [ngClass]="{
+             
+            <div class="fs-9 fw-bold text-nowrap border p-1 rounded mb-2" [ngClass]="{'text-secondary':(!hrApproval)}">HR department</div>
+             <div class="timeline-icon" style="border-width: 2px; " [ngClass]="{
                 'approved':hrApproval&&hrApproval.LeaveStatus.trim()=='Leave Sanction',
                 'rejected':hrApproval&&hrApproval.LeaveStatus.trim()=='Leave Rejected'
-                }"    >
-
+                }">
+             
                 <ng-container *ngIf="(!hrApproval)||hrApproval.LeaveStatus.trim()=='Leave Sanction'">
                   <svg class="tmicn-svg" width="18px" height="20px" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
                     <path d="m 13,4.1974 q 0,0.3097 -0.21677,0.5265 l -5.60517,5.6051 -1.0529,1.0529 q -0.21677,0.2168 -0.52645,0.2168 -0.30968,0 -0.52645,-0.2168 L 4.01935,10.329 1.21677,7.5264 Q 1,7.3097 1,7 1,6.6903 1.21677,6.4735 L 2.26968,5.4206 q 0.21677,-0.2167 0.52645,-0.2167 0.30968,0 0.52645,0.2167 l 2.27613,2.2839 5.07871,-5.0864 q 0.21677,-0.2168 0.52645,-0.2168 0.30968,0 0.52645,0.2168 L 12.78323,3.671 Q 13,3.8877 13,4.1974 z"></path>
@@ -2318,7 +2320,11 @@
                 </ng-container>
 
               </div>
-              <div class="fs-9 fw-bold text-nowrap text-secondary">HR department</div>
+              <div *ngIf="hrApproval&&hrApproval.LeaveStatus.trim()=='Leave Sanction'" class="fs-9 fw-bold text-nowrap">Approved</div>
+              <div *ngIf="hrApproval&&hrApproval.LeaveStatus.trim()=='Leave Rejected'" class="fs-9 fw-bold text-nowrap">Rejected</div>
+              <div *ngIf="(managerApproval&&managerApproval.LeaveStatus.trim()=='Approved Leave')&&(!hrApproval)" class="fs-9 fw-bold text-nowrap text-secondary">Pending</div>
+              <div *ngIf="managerApproval&&managerApproval.LeaveStatus.trim()=='Leave Rejected'" class="fs-9 fw-bold text-nowrap text-secondary">Not received</div>
+
             </div>
           </div>
 

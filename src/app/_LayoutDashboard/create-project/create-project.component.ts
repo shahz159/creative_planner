@@ -1,5 +1,5 @@
 import { object } from '@amcharts/amcharts4/core';
-import { Component, EventEmitter, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router, RouterLink , ActivatedRoute} from '@angular/router';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
@@ -62,8 +62,6 @@ export const MY_DATE_FORMATS = {
 })
 export class CreateProjectComponent implements OnInit {
   @ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;
-
-
   Current_user_ID:string;
   ProjectDto:ProjectDetailsDTO|undefined;
 
@@ -132,7 +130,7 @@ export class CreateProjectComponent implements OnInit {
   saveAsTemplate:boolean=false;
   notProvided:boolean=false;
   notificationMsg:number=0;
-
+  
 
   constructor(private router: Router,private location: Location,
     private createProjectService:CreateprojectService,
@@ -153,12 +151,12 @@ export class CreateProjectComponent implements OnInit {
   ngOnInit(): void {
 
     // this.deletingDraftactions()
+    debugger
     const navigatingToCreateProject = localStorage.getItem('navigatingToCreateProject');
-
     if (navigatingToCreateProject === 'true') {
-    this.Assigned_projects()
+    setTimeout(()=>{ this.Assigned_projects();    },1500);
     localStorage.removeItem('navigatingToCreateProject');
-  }
+    }
 
     this.ProjectDto=new ProjectDetailsDTO();
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -188,9 +186,56 @@ export class CreateProjectComponent implements OnInit {
       //     console.log('prj cost here:',res);
       // })
 
+  }
+
+
+
+  ngAfterViewChecked(){
+    // open assigned project if asked in url
+    this.route.queryParamMap.subscribe((qparams)=>{
+      const assignedPrjTask=qparams.get('AssignedProjectId');
+      if(assignedPrjTask){
+            const assignedTaskViewed=this.viewAssignedTaskById(assignedPrjTask);  
+            if(assignedTaskViewed){
+               const ob={...this.route.snapshot.queryParams};
+               delete ob.AssignedProjectId;
+               this.router.navigate([],{queryParams:ob})
+            }
+      }
+
+
+    });
+    // open assigned project if asked in url
 
 
   }
+
+
+
+
+ viewAssignedTaskById(id:string):boolean{
+  let isProcessDone:boolean=false;
+  try{
+   const e1=document.querySelector('.Assigned-projects-list');
+   const e2=document.querySelector('.np-step-1');
+   const e3=e1.querySelector(`#myTabContent #assign-task-${id} .kt-act-card`);
+   const e4:any=e3.querySelector('.kt-act-no input'); 
+
+   e1.classList.remove('d-none');
+   e2.classList.add('d-none');
+   setTimeout(()=>e4.focus(),300);
+   e3.classList.add('selected-anim');
+   e3.addEventListener('animationend',()=>{  
+    e3.classList.remove('selected-anim');
+   });
+   isProcessDone=true;
+  
+  }catch(e){
+   isProcessDone=false;
+  }
+
+   return isProcessDone;
+ }
 
 
 
@@ -207,8 +252,6 @@ export class CreateProjectComponent implements OnInit {
 
   //   })
   // }
-
-
 
   Project_Type:any
 
@@ -866,6 +909,13 @@ onFileChanged(event: any) {
     $('.np-step-1').addClass('d-none');
   }
 
+  scrollToTaskById(id){
+    debugger
+      //  const el:any=document.querySelector(`.Assigned-projects-list .tab-content .kt-action-list input#task-${id}`);
+        const el=document.getElementById('task-11736');
+        el.focus();
+  }
+
   templateProjects(){
     $('.Templates-list').removeClass('d-none');
     $('.np-step-1').addClass('d-none');
@@ -1115,8 +1165,9 @@ onProjectOwnerChanged(){
   draft_json:any;
   daysDifference:any
   userFound:boolean|undefined;
+  loadingAssignedTasks:boolean=false;
   GetAssignedTaskDetails(){
-
+    this.loadingAssignedTasks=true;
     this.createProjectService.NewGetAssignedTaskDetails().subscribe
     ((res)=>{  console.log("draft_json:",JSON.parse(res[0].draft_json));
       this.assigntask_json = JSON.parse(res[0].Assigntask_json).map(task => {
@@ -1127,7 +1178,7 @@ onProjectOwnerChanged(){
           ...task,
           Duration: duration
         };
-      });
+      });   
       this.template_json=JSON.parse(res[0].templates_json);
       this.conditional_List=JSON.parse(res[0].conditional_json);
 
@@ -1142,23 +1193,12 @@ onProjectOwnerChanged(){
          d===1?'Yesterday':
          [2,3].includes(d)?d+' days ago':
          this.datepipe.transform(dft.CreatedOn,'dd-MM-yyyy')
-
-
-
 };
-
-
-
-
-
-
 
       });
 
       console.log(this.conditional_List,'--conditional prjs------------->')
-      console.log(this.assigntask_json,'--assigntask_json--');
-
-
+      console.log(this.assigntask_json,'--assigntask_json--');  
  });
   }
 

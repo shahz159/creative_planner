@@ -769,7 +769,7 @@
                                 <div class="accordion accordion-runway" [ngClass]="getAccordionClass()" id="accordionRunway">
                                     <div class="runway-card d-none"  id="taskdd">
                                       <div class="runway-card-header" id="headingOne" *ngIf="_TodoList.length>0">
-                                          <a class="" type="button" data-toggle="collapse" data-target="#collapseUnassign" aria-expanded="false" aria-controls="collapseUnassign">
+                                          <a id="UnassigntaskBtn" class="" type="button" data-toggle="collapse" data-target="#collapseUnassign" aria-expanded="false" aria-controls="collapseUnassign">
                                             <span>Unassign task &nbsp;<span class="task-count unass">{{_TodoList.length}}</span></span>
                                             <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                                           </a>
@@ -777,7 +777,7 @@
 
                                       <div id="collapseUnassign" class="collapse" aria-labelledby="headingOne" data-parent="#accordionRunway">
                                         <div class="runway-card-body scrollbar1">
-                                            <div class="mb-2 card  Replied_border_left_true_NewProject" *ngFor="let item of _TodoList; let i=index">
+                                            <div [id]="'UnassigntaskItem-'+item.Assign_Id"  class="mb-2 card  Replied_border_left_true_NewProject" *ngFor="let item of _TodoList; let i=index">
                                                 <div class="card-body p-2" >
                                                     <div data-type="inbox" class="d-flex align-items-center my-1">
                                                         <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
@@ -785,6 +785,7 @@
                                                                 <input type="radio" name="Subtask" class="subtask-radio mx-4"
                                                                     (click)="OnRadioClick(item.Assign_Id)"
                                                                     [disabled]="item.TypeOfTask=='SUBTASK'" />
+                                                                <input class="inputforfocus" type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/>    
                                                             </div>
                                                         </div>
 
@@ -904,20 +905,21 @@
 
                                     <div class="runway-card d-none" id="Completed">
                                       <div class="runway-card-header" id="headingTwo" *ngIf="_CompletedList&&_CompletedList.length>0">
-                                          <a class="collapsed" type="button" data-toggle="collapse" data-target="#collapseCompleted" aria-expanded="false" aria-controls="collapseCompleted">
+                                          <a id="CompletedBtn" class="collapsed" type="button" data-toggle="collapse" data-target="#collapseCompleted" aria-expanded="false" aria-controls="collapseCompleted">
                                             <span>Completed &nbsp;<span class="task-count cou-com">{{_CompletedList&&_CompletedList.length}}</span></span>
                                             <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                                           </a>
                                       </div>
                                       <div id="collapseCompleted" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionRunway">
                                         <div class="runway-card-body scrollbar1">
-                                            <div class="card mb-2  Replied_border_left_true_success" *ngFor="let item of _CompletedList">
+                                            <div [id]="'CompletedItem-'+item.Assign_Id"  class="card mb-2  Replied_border_left_true_success" *ngFor="let item of _CompletedList">
                                                 <div class="card-body p-2">
                                                     <div data-type="inbox" class="d-flex align-items-center my-1">
                                                         <div class="symbol symbol-60 symbol-2by3 flex-shrink-0">
                                                             <div class="kt-inbox__actions">
                                                                 <input type="radio" class="subtask-radio mx-4"
                                                                     (click)="On_Uncheck(item.Assign_Id)" checked>
+                                                                    <input class="inputforfocus" type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/>
                                                                 <span></span>
                                                             </div>
                                                         </div>
@@ -954,14 +956,14 @@
 
                                     <div class="runway-card d-none" id='ActionToProjects'>
                                       <div class="runway-card-header" id="headingThree"   *ngIf="((ActionedSubtask_Json.length) > 0)">
-                                          <a class="collapsed" type="button" data-toggle="collapse" data-target="#collapseActionproject" aria-expanded="false" aria-controls="collapseActionproject">
+                                          <a id="ActiontoprojectsBtn" class="collapsed" type="button" data-toggle="collapse" data-target="#collapseActionproject" aria-expanded="false" aria-controls="collapseActionproject">
                                             <span>Action to projects &nbsp;<span class="task-count act-pro">{{ActionedSubtask_Json.length}}</span></span>
                                             <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                                           </a>
                                       </div>
                                       <div id="collapseActionproject" class="collapse" aria-labelledby="headingThree" data-parent="#accordionRunway">
                                         <div class="runway-card-body scrollbar1">
-                                            <div    class="mb-2 card  Replied_border_left_true_underApprovals" *ngFor="let item of ActionedSubtask_Json;let i = index">
+                                            <div [id]="'ActiontoprojectsItem-'+item.Assign_Id"   class="mb-2 card  Replied_border_left_true_underApprovals" *ngFor="let item of ActionedSubtask_Json;let i = index">
                                                 <div class="card-body p-2">
                                                     <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
 
@@ -1057,6 +1059,7 @@
                                                                     </div>
                                                               </div> -->
                                                             </a>
+                                                            <input class="inputforfocus" type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/>
 
                                                                 <!-- <a (click)="openActionInDetails(item.Project_Code,item.ActionCode)"  class="btn px-0 mr-2 info-btn curser-pointer"  role="button" placement="right"
                                                                 data-trigger="focus"  data-toggle="tooltip" title="View Action!" >
@@ -1238,7 +1241,7 @@
 
                                     <div class="runway-card d-none" id="AssignedTask">
                                       <div class="runway-card-header" id="headingFour"    *ngIf="ActionedAssigned_Josn.length>0">
-                                          <a class="collapsed" type="button" data-toggle="collapse" data-target="#collapseActiontask" aria-expanded="false" aria-controls="collapseActiontask">
+                                          <a id="AssignedTaskProjectBtn" class="collapsed" type="button" data-toggle="collapse" data-target="#collapseActiontask" aria-expanded="false" aria-controls="collapseActiontask">
                                            <span> Assigned Task/Project &nbsp;<span class="task-count ass-tas" >{{ActionedAssigned_Josn.length}}</span></span>
                                             <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                                           </a>
@@ -1246,7 +1249,7 @@
                                       <div id="collapseActiontask" class="collapse" aria-labelledby="headingThree" data-parent="#accordionRunway">
                                         <div class="runway-card-body scrollbar1">
 
-                                            <div   class="mb-2 card Replied_border_left_true_warning" *ngFor="let item of ActionedAssigned_Josn;let i=index;">
+                                            <div [id]="'AssignedTaskProjectItem-'+item.Assign_Id"  class="mb-2 card Replied_border_left_true_warning" *ngFor="let item of ActionedAssigned_Josn;let i=index;">
                                                 <!-- <div class="overlay-card"   ></div> -->
                                                 <div class="card-body p-2">
                                                     <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
@@ -1368,6 +1371,7 @@
                                                                     </div>
                                                               </div> -->
                                                             </a>
+                                                            <input class="inputforfocus" type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/>
                                                         </div>
                                                              <!--more details-->
                                                                 <!-- <div>
