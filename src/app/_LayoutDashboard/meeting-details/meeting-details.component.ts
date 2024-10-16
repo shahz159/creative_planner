@@ -666,7 +666,7 @@ export class MeetingDetailsComponent implements OnInit {
 
    
 
-
+     console.log(this.Link_Detail,'Link_Detail2')
 
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
       this.totalguest = this.User_Scheduledjson.length;
@@ -5772,7 +5772,7 @@ debugger
       this.Endtms &&
       this.MinLastNameLength
       && (this.ScheduleType === 'Event' ?  this.allAgendas.length > 0  : true)
-      && (this.Description_Type?(this.characterCount<500):true)
+      && (this.Description_Type?(this.characterCount<=500):true)
     ) {
 
     this._calenderDto.flagid = this._PopupConfirmedValue;
@@ -7258,7 +7258,7 @@ onParticipantFilter(){
 
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
-      (this.Description_Type?(this.characterCount<500):true)&&
+      (this.Description_Type?(this.characterCount<=500):true)&&
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
