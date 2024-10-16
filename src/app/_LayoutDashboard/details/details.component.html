@@ -5040,7 +5040,7 @@
                                                         </div>
                                                     </ng-container>
                                                    
-                                                    <ng-container *ngIf="(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Completion Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Forward Under Approval')||(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Cancellation Under Approval')">
+                                                    <ng-container *ngIf="(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Completion Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Forward Under Approval')||(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Forward Under Approval')">
                                                     <div class="kt-info-box mt-2 diff-div border-0">
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <div class="kt-info-box-tittle mt-3">
@@ -5850,7 +5850,7 @@
                                 </div>
                             </div>
                             <div class="kt-inbox__labels">
-                                <span class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline fs-7 p-1 mt-1 not-started-project">Not Started</span>
+                                <span class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline fs-7 p-1 mt-1 not-started-project">pending</span>
                             </div>
                         </div>
 
@@ -5904,7 +5904,7 @@
             <div class="pulsing-div">
                 <span class="pulsing-dot pulsing-dot-pending"></span>  
             </div>
-           <span class="unprj-text-note">Note: You can view or edit this task from your "Runway page".</span> <span class="openhere"(click)="openRunwayTask(task_assign_json[0].Assign_Id)">open here</span>
+           <span class="unprj-text-note">Note: You can view or edit this task from your "Runway page".</span> <span class="openhere"(click)="openRunwayTask(task_assign_json[0].Assign_Id)">click to open</span>
         </div>
         </div>
         
