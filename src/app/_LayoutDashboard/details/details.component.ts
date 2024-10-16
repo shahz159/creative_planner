@@ -932,7 +932,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.projectActionInfo = JSON.parse(res[0].Action_Json);
       this.type_list = JSON.parse(this.projectInfo['typelist']);
       this.Title_Name=this.projectInfo.Project_Name;
-     
+
       if(this.projectInfo.Project_Block=='003'&&this.projectInfo.Status.includes('Delay')){
           let regex=/[0-9]+/;
           const result=regex.exec(this.projectInfo.Status);
@@ -1107,16 +1107,16 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             const r=arr.find((ob)=>ob['userNewOwner-'+this.projectInfo.Project_Code]==true);
             this.isNewOwnerOk=r?false:true;
        }
-       else 
+       else
        this.isNewOwnerOk=true;    // popup visible
     }
-    
 
 
 
 
 
- 
+
+
     });
   }
 
@@ -1289,12 +1289,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
             return obj;
           });
-          
-// sorting people based on active or inactive     
+
+// sorting people based on active or inactive
           const active_emp=this.PeopleOnProject.filter(item=>item.isActive);
           const inactive_emp=this.PeopleOnProject.filter(item=>!item.isActive)
           this.PeopleOnProject=[...active_emp,...inactive_emp];
-// sorting people based on active or inactive 
+// sorting people based on active or inactive
 
 
         }
@@ -1319,11 +1319,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
         this.racisNonRacis=JSON.parse(data[0]['owner_dropdown']);      console.log('racisNonRacis list:',this.racisNonRacis);
         this.allUsers1=(JSON.parse(data[0]['alluserlist']));           console.log('alluserlist:',this.allUsers1);
-        
+
         if(this.projectInfo){
           this.allUsers2=(JSON.parse(data[0]['alluserlist'])).filter((usr:any)=>(![this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo].includes(usr.Emp_No)));
         }
-       
+
 
       });
 
@@ -1358,9 +1358,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.Activity_List.forEach((_actvy)=>{
                  let result='others';
                  if(_actvy.Value){
-                    
-                 const _Value=_actvy.Value.trim(); 
-                    
+
+                 const _Value=_actvy.Value.trim();
+
                        result=/New Action- ".*"/.test(_Value)?'New Action':
                               (/Timeline added .*/.test(_Value)|| _Value=='Project Timeline added')?'Timeline added':
                               /Action Complete- ".*"/.test(_Value)?'Action Complete':
@@ -1486,7 +1486,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     if(index!=undefined){
       this.requestType = null;
     }
-   
+
     if(index!=undefined)
     this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
 
@@ -2243,7 +2243,7 @@ multipleback(){
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
         this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
-        this.requestType = (this.requestDetails[0]['Request_type']);  
+        this.requestType = (this.requestDetails[0]['Request_type']);
 
 
         this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']));
@@ -2270,6 +2270,7 @@ multipleback(){
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
         //this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
         this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
+        debugger
         this.AuditRequestBY = (this.requestDetails[0]['AuditRequestBY']);   console.log('AuditRequestBY:',this.AuditRequestBY);
         const fullName = this.Submitted_By.split(' ');
         this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
@@ -2631,8 +2632,8 @@ currentStdAprView:number|undefined;
 
   submitApproval() {
     console.log('passing single approvaljson:',this.singleapporval_json);
-    
-    if (this.selectedType == '1') {   
+
+    if (this.selectedType == '1') {
       console.log("singleapporval_json:",this.singleapporval_json);
       if (this.comments == '' || this.comments == null) {
         this.singleapporval_json.forEach(element => {
@@ -2693,8 +2694,8 @@ currentStdAprView:number|undefined;
         });
     }
     else if (this.selectedType == '3') {
-      
-     
+
+
       if (this.rejectType == null || this.rejectType == undefined || this.rejectType == '') {
         this.noRejectType = true;
         this.notifyService.showError("Please select Reject Type", "Failed");
@@ -5517,9 +5518,9 @@ debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
-    
+
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson;
-       
+
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status;
@@ -5818,7 +5819,7 @@ getChangeSubtaskDetais(Project_Code) {
 
   }
   selectStartDate(event) {
-   
+
     this._StartDate = event.value;
     // let sd = event.value.format("YYYY-MM-DD").toString();
     let sd = event.format("YYYY-MM-DD").toString();
@@ -5888,19 +5889,19 @@ getChangeSubtaskDetais(Project_Code) {
              return result;
          });
          this.validStartTimearr=this.StartTimearr.slice(index);
- 
+
      // verify whether starttime and endtime are valid or not. start
      _currentdate.format('h:mm A');
- 
+
      const inputtime1=moment(this.Startts,'h:mm A');
      const inputtime2=moment(this.Endtms,'h:mm A');
      if(inputtime1<ct)
        this.Startts=this.validStartTimearr[0];
      if(inputtime2<ct)
        this.Endtms=this.validStartTimearr[1];
- 
+
     // verify whether starttime and endtime are valid or not. end
- 
+
      }
      else
      this.validStartTimearr=[...this.StartTimearr];
@@ -6439,7 +6440,7 @@ getChangeSubtaskDetais(Project_Code) {
   }
 
   OnSubmitSchedule() {
-  
+
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -8959,7 +8960,7 @@ cancelAgendaEdit(index: number) {
 
 updateAgenda(index: number) {
   const tf: any = document.getElementById(`agenda-text-field-${index}`);
-  
+
   if(tf.value.trim().length > 0 && tf.value.trim().length < 100){
   this.allAgendas[index].name = tf.value;
 
@@ -10003,7 +10004,7 @@ openRemoveSADialog(index:number,removalType:'SUPPORT'|'AUDITOR'){
   document.getElementById(`pOnPrj-user-row-${index}`).classList.add('pOnPrj-row-selection');
 }
 
-closeRemoveSADialog(index:number){ 
+closeRemoveSADialog(index:number){
   document.getElementById(`mark-admin-drop${index}`).classList.remove("show");
   document.getElementById(`pOnPrj-user-row-${index}`).classList.remove('pOnPrj-row-selection');
   this.sprtaudtr_remarks=undefined;
@@ -10076,7 +10077,7 @@ onPrjAuditSubmitClicked(){
           if(res&&res.message){
             this.getapprovalStats();
             this.getProjectDetails(this.URL_ProjectCode);
-            this.notifyService.showSuccess(res.message,'Success'); 
+            this.notifyService.showSuccess(res.message,'Success');
           }
           else
             this.notifyService.showError('something went wrong.','Failed');
@@ -10092,7 +10093,7 @@ onTransferBtnClicked(){
         }
         else
           this.notProvided=false;
-      
+
       this.transferBtnDisabled=true;    // processing start.
       const project_code:string=this.projectInfo.Project_Code;
       const empno:string=this.Current_user_ID;
@@ -10664,7 +10665,7 @@ getca_Dropdowns(){
 }
 
 
-goToProject(pcode,acode:string|undefined) {    
+goToProject(pcode,acode:string|undefined) {
   let qparams='';
   if(acode!==undefined){
     qparams=`?actionCode=${acode}`;
@@ -10738,7 +10739,7 @@ getNotificationsAnnouncements():string[]{
   if(this.totalPActns4Aprvls>0)
   allnotif=[...allnotif,'totalPActns4Aprvls'];
   if(this.pageContentType=='ACTION_DETAILS')
-  allnotif=[...allnotif,'action_details'];  
+  allnotif=[...allnotif,'action_details'];
 
    return allnotif;
 }

@@ -2115,18 +2115,20 @@ getNewFilterResult(){
   this.edited = true
 }
 
+ViewType : String = 'Grid View'
 grid_open(){
   document.getElementById("grid-view").style.display = "inline-flex";
   document.getElementById("list-view").style.display = "none";
   document.getElementById("grid-view-div").style.display = "block";
   document.getElementById("list-view-div").style.display = "none";
-
+  this.ViewType = 'Grid View'
 }
 list_open(){
   document.getElementById("grid-view").style.display = "none";
   document.getElementById("list-view").style.display = "inline-flex";
   document.getElementById("grid-view-div").style.display = "none";
   document.getElementById("list-view-div").style.display = "block";
+  this.ViewType = 'List View'
 }
 
 getStatusClass(status: string): string {

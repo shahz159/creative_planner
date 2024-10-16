@@ -731,7 +731,7 @@
                                                                             }">
                                                                             <span class="vi font-weight-400 st-line"
                                                                                *ngIf="projectInfo?.Status === 'Delay' || projectInfo?.Status?.includes('Days')">
-                                                                               {{ 
+                                                                               {{
                                                                                   (projectInfo.Status === 'Delay' ? projectInfo.Delaydays + ' days' + ' delay ': '') ||
                                                                                  (projectInfo.Project_Block=='003' ?  projectInfo.Status+' delay' : '')}}
                                                                             </span>
@@ -1564,6 +1564,7 @@
                                                                                         <span *ngSwitchCase="'Not Started'" class="Status-In-progress">Not Started</span>
                                                                                         <span *ngSwitchCase="'Forward Under Approval'" class="approve">Forward approval</span>
                                                                                         <span *ngSwitchCase="'Completion Under Approval'" class="completion">Completion approval</span>
+                                                                                        <span *ngSwitchCase="'Cancellation Under Approval'" class="cancelled">Cancellation approval</span>
                                                                                         <span *ngSwitchDefault class="Status-In-progress">{{action&&action.Status}}</span>
                                                                                     </span>
                                                                                     <!-- (projectInfo.Status === 'Under Approval') ? 'New' : projectInfo.Status -->
@@ -1897,7 +1898,7 @@
                                             </div>
 
                                             <div *ngIf="pageContentType=='ACTION_DETAILS'" class="d-flex flex-grow-1 align-items-center gap_ic">
-                                       
+
                                                 <a class="kt-inbox__icon kt_Comments"  [ngClass]="{'active':currentSidebarOpened==='COMMENTS'}"  (click)="View_Comments()" title="Comments">
                                                   <svg [ngStyle]="{fill:'#6388e3'}" class="Cmnts-svg" xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi" width="16" height="16"
                                                        viewBox="0 0 1024 1024" version="1.1">
@@ -2184,37 +2185,37 @@
                               <span>Completion</span>
                               <span class="disc-list-date">20-10-2024</span>
                               <span class="disc-list-time">9:30 AM</span>
-                              
+
                               <p>Md Waseem Akram</p>
                             </li>
                             <li>
                                 <span>Audit</span>
                                 <span class="disc-list-date">24-10-2024</span>
                                 <span class="disc-list-time">11:30 AM</span>
-                                
+
                                 <p>Md Waseem Akram</p>
-                              </li> 
+                              </li>
                             <li>
                               <span>Transfer</span>
                               <span class="disc-list-date">24-10-2024</span>
                               <span class="disc-list-time">12:30 PM</span>
-                              
+
                               <p>Md Waseem Akram</p>
                             </li>
                             <li>
                               <span>Next Version</span>
                               <span class="disc-list-date">28-10-2024</span>
                               <span class="disc-list-time">10:30 AM</span>
-                              
+
                               <p>Md Waseem Akram</p>
                             </li>
                             <li>
                               <span>Accept</span>
                               <span class="disc-list-date">30-10-2024</span>
                               <span class="disc-list-time">11:30 AM</span>
-                              
+
                               <p>Md Waseem Akram</p>
-                            </li>     
+                            </li>
                           </ol>
                     </div>
                     <div class="notification audit-pending-notf" *ngIf="projectInfo.AuditStatus=='Audit Pending'&&Current_user_ID==approvalEmpId">
@@ -2235,7 +2236,7 @@
                         <span class="fs-7" style="text-decoration: underline">Next steps: </span>
                             <span class="fs-7"> 1. You have to analyze the project and give your approval acceptance or rejection as per the above remarks.
                             <br>2. If you accept the project approval, then it will land to the project owner for the final approval.<br>
-                            3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.    
+                            3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.
                         </span>
                         </span>
                     </div>
@@ -2307,7 +2308,7 @@
                     </div>
 
 
-                    
+
 
               <ng-container *ngIf="getNotificationsAnnouncements().length>3; else atmost3Notifications">
                   <div id="pinMessages" class="pin-message accordion ">
@@ -2351,7 +2352,7 @@
               </ng-template>
 
               <ng-template #allNotificationsTemplate>
-        
+
               <div *ngIf="myUnderApprvActions.length>0" class="notification underapproval-notification  myactions-underaprv-notif">
                   <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64"
@@ -2517,7 +2518,7 @@
                   <span class="notif-msg">
 
                     <ng-container *ngIf="(projectInfo.AuditStatus&&projectInfo.AuditStatus=='Audit Reject'); else otherrejects">
-                       Project audit rejected for 
+                       Project audit rejected for
                        "{{lastactivity[0].rejectType}}"
                       by
                       {{lastactivity[0].Empname}}
@@ -2654,8 +2655,9 @@
                   <span class="notif-msg fs-6" style="color:#00a2eb">
                       You have {{multiapproval_list.length}} pending approval(s).
                       <ng-container *ngFor="let aprvl of pendingAprvls; let i=index;">
-                          <span>{{aprvl.totalRequests}} for {{aprvl.request_type}}</span>{{i+1===pendingAprvls.length-1?' and':(i+1===pendingAprvls.length)?'':', '}}
-                      </ng-container><b>.</b>
+                          <span>{{aprvl.totalRequests}} for {{aprvl.request_type}}</span>{{i+1===pendingAprvls.length-1?' and':(i+1===pendingAprvls.length)?'':', '}}.
+                      </ng-container>
+                      <!-- <b>.</b> -->
                   </span>
                   <button class="reqaccess-open-btn  curser-pointer " (click)="MultipleApprovalSideBar()">
                       <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2766,7 +2768,7 @@
             <div *ngIf="pageContentType=='ACTION_DETAILS'"  class="notification newversion-notification">
                 <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z" fill="#1692df"></path></g></svg>
                 <span class="notif-msg fs-6" style="color: #00a2eb;">
-                  You are currently viewing the details of an action belonging to a project. 
+                  You are currently viewing the details of an action belonging to a project.
                  <span class="d-block fs-7"> Need to see the full project? <span  (click)="goToProject(projectInfo.Master_Code,projectInfo.Project_Code)" class=" curser-pointer text-underline">Click here to open the main project page.</span></span>
                 </span>
             </div>
@@ -3061,7 +3063,7 @@
                                                   <div class="legend-border mt-4" style=" background-color: white;">
                                                       <div class="meeting-attendance-heading">Completion Report</div>
                                                       <div class="d-flex gap-1">
-                                                       
+
 
                                                           <fieldset class="meeting-attendance-item mt-2" style=" padding-top: 0;">
                                                               <legend style=" font-size: 10px;max-width: fit-content; color: #9a9a9a;">Submitted by</legend>
@@ -3179,8 +3181,8 @@
                                                 <!-- Request type start  -->
                                                 <ng-container *ngIf="Current_user_ID  == approvalEmpId || requestDetails&&requestDetails.length>2 ">
                                                     <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!(isApprovalSection&&projectInfo.Status!=='Cancelled'&&(multiapproval_list.length+totalStdTskApvs==1))">
-                                                       
-                                                       
+
+
                                                         <div class="col-lg-12 mb-3 p-3" *ngIf="projectInfo.AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId"
                                                         style="    background-color: #e4e7f9;
                                                         border-radius: 14px;
@@ -3200,10 +3202,10 @@
                                                             <span *ngIf="!projectInfo.Owner_remarks">{{requestComments}}</span>
                                                                     <span> 1. You have to analyze the project and give your approval acceptance or rejection as per the above remarks.
                                                                     <br>2. If you accept the project approval, then it will land to the project owner for the final approval.<br>
-                                                                    3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.    
+                                                                    3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.
                                                                 </span>
                                                         </div> -->
-                                                    </div> 
+                                                    </div>
 
                                                     <div class="col-lg-12 mb-3 p-3" *ngIf="projectInfo.AuditStatus=='Audit Complete' && Current_user_ID==approvalEmpId"
                                                     style="background-color:white;border-radius:2px;border:1px solid #6388e3;">
@@ -3216,9 +3218,9 @@
                                                         <span *ngIf="projectInfo.Auditor_acceptremarks">{{projectInfo.Auditor_acceptremarks}}</span>
                                                     </div>
                                                    </div>
-                                                       
-                                                       
-                                                       
+
+
+
                                                         <div class="d-flex justify-content-between align-items-center">
 
                                                             <div class="kt-info-box-tittle">
@@ -3654,7 +3656,7 @@
                                                             <!-- projectInfo.AuditStatus=='Audit Complete'&&Current_user_ID==approvalEmpId -->
 
 
-                                                            
+
 
                                                             <div class="col-lg-12 mb-3">
                                                                 <div class="kt-info-lable-v">Remarks</div>
@@ -4629,7 +4631,7 @@
 
 
                                                                 <button class="Ct-btn Bt-Submit ml-2" *ngIf="
-                                                                (!['Completion Under Approval','New Project Rejected','Cancelled','Completed','Under Approval','Project Hold'].includes(projectActionInfo[currentActionView].Status))&&
+                                                                (!['Completion Under Approval','New Project Rejected','Cancelled','Completed','Under Approval','Project Hold','Cancellation Under Approval'].includes(projectActionInfo[currentActionView].Status))&&
                                                                 (
                                                                 projectActionInfo[currentActionView].Team_Res===Current_user_ID ||
                                                                 projectActionInfo[currentActionView].Project_Owner===Current_user_ID||
@@ -4662,7 +4664,7 @@
                                                                 projectActionInfo[currentActionView].Project_Owner===Current_user_ID||
                                                                 projectInfo.OwnerEmpNo===Current_user_ID||
                                                                 projectInfo.ResponsibleEmpNo===Current_user_ID
-                                                                )&&projectActionInfo[currentActionView].Status!='Completed'" (click)="cancelAction(currentActionView)">Action cancel</button>
+                                                                )&&projectActionInfo[currentActionView].Status!='Completed'&&projectActionInfo[currentActionView].Status!='Cancellation Under Approval'" (click)="cancelAction(currentActionView)">Action cancel</button>
 
 
                                                               <button class=" Bt-newprj-release  ml-2" (click)="openNewPrjReleaseSideBar()" *ngIf="
@@ -4767,8 +4769,8 @@
                                                             </div>
 
                                                             <div *ngSwitchDefault class="kt-project-type">
-                                                                <div class="Kt-Pd-Status new-project-under ">
-                                                                    {{projectActionInfo[currentActionView].Status =='Under Approval'?'New approval':projectActionInfo[currentActionView].Status }} </div>
+                                                                <div class="Kt-Pd-Status" [ngClass]="{'new-project-under':projectActionInfo[currentActionView].Status =='Under Approval','Cancellation':projectActionInfo[currentActionView].Status =='Cancellation Under Approval' }"   >
+                                                                    {{projectActionInfo[currentActionView].Status =='Under Approval'?'New approval':projectActionInfo[currentActionView].Status =='Cancellation Under Approval' ? 'Cancellation approval':projectActionInfo[currentActionView].Status }} </div>
                                                             </div>
                                                         </div>
 
