@@ -1514,9 +1514,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     }
    
     if(index!=undefined)
-    this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
+    this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost; 
 
-    if (index>-1 && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval") )
+    if (index>-1 && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval"||this.projectActionInfo[index].Status === "Cancellation Under Approval"))
       this.GetApproval(this.projectActionInfo[index].Project_Code);
 
     if(index!=undefined){
@@ -3219,7 +3219,7 @@ approvalSubmitting:boolean=false;
         console.log('totalSubtaskHours:',this.totalSubtaskHours);
 
         console.log('darArr:', this.Category_List);
-
+try{
         if (this.darArr.length == 0 && (this.projectInfo.OwnerEmpNo == this.Current_user_ID || this.projectInfo.ResponsibleEmpNo == this.Current_user_ID)) {
 // user is prj owner
 // user is prj resp + he does not contains any actions.
@@ -3240,6 +3240,11 @@ approvalSubmitting:boolean=false;
                   this.actionCode = selectedActionOpt.Project_Code;
                 }
         }
+
+
+      }catch(e){
+          console.error(e);
+      }      
       });
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(

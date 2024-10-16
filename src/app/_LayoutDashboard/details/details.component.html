@@ -5040,7 +5040,7 @@
                                                         </div>
                                                     </ng-container>
                                                    
-                                                    <ng-container *ngIf="(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Completion Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Forward Under Approval')">
+                                                    <ng-container *ngIf="(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Completion Under Approval') || (Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Forward Under Approval')||(Current_user_ID  == approval_Emp&&projectActionInfo[currentActionView].Status==='Cancellation Under Approval')">
                                                     <div class="kt-info-box mt-2 diff-div border-0">
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <div class="kt-info-box-tittle mt-3">
