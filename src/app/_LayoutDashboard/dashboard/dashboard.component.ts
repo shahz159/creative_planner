@@ -576,7 +576,7 @@ export class DashboardComponent implements OnInit {
     this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
     //end
 
-    // this.GetMemosByEmployeeId();
+    this.GetMemosByEmployeeId();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     // this._EndDate = moment().format("YYYY-MM-DD").toString();
 
@@ -779,6 +779,7 @@ export class DashboardComponent implements OnInit {
   // Scheduling Work
   // Start Here
   proposecahngedate(event) {
+    console.log(event,'event')
     this.Proposedate = event.value.format("YYYY-MM-DD").toString()
   }
   proposenewtime() {
@@ -3929,7 +3930,7 @@ currentTime:any;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
         this.RecurrenceValue=this.EventScheduledjson[0].Recurrence
 
-        debugger
+ 
 
         document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {

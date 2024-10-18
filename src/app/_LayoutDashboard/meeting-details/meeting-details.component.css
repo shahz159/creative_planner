@@ -107,7 +107,9 @@
     font-size: 12px;
     margin-bottom: 0px;
     max-height: 50px;
-    overflow: hidden;
+    /* overflow: hidden; */
+    overflow: auto;
+    scrollbar-width: thin;
 }
 
 .kt-metric-info {
