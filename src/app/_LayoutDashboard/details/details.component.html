@@ -2178,7 +2178,7 @@
                 </svg>
                 </div>
                 <div class="notifications-list">
-                    <div class="approval-timeline d-none">
+                    <!-- <div class="approval-timeline d-none">
                         <h5 class="text-dark" style="margin-bottom: 2rem;">Approval Process</h5>
                         <ol class="disc-list">
                             <div class="ap-ti"></div>
@@ -2218,7 +2218,7 @@
                               <p>Md Waseem Akram</p>
                             </li>
                           </ol>
-                    </div>
+                    </div> -->
                     <div class="notification audit-pending-notf" *ngIf="projectInfo.AuditStatus=='Audit Pending'&&Current_user_ID==approvalEmpId">
                         <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #9c27b0;stroke: #a336b5;">
                         <g><g>
@@ -2690,7 +2690,7 @@
                  <ng-container *ngIf="pendingAprvls.length>1">
                       You have {{multiapproval_list.length}} pending approval(s).
                       <ng-container *ngFor="let aprvl of pendingAprvls; let i=index;">
-                          <span>{{aprvl.totalRequests}} for {{aprvl.request_type}}</span>{{i+1===pendingAprvls.length-1?' and':(i+1===pendingAprvls.length)?'':', '}}.
+                          <span>{{aprvl.totalRequests}} for {{aprvl.request_type}}</span>{{i+1===pendingAprvls.length-1?' and':(i+1===pendingAprvls.length)?'.':', '}}
                       </ng-container>
                  </ng-container>
 
@@ -2790,8 +2790,8 @@
                   <span class="notif-msg fs-6" style="color:#00a2eb">
                       {{totalPActns4Aprvls}} action(s) pending for approval, Assigned to
                       <ng-container *ngFor="let act of pendingActns4Aprvls; let i=index;">
-                          <span class="delayaction-of-emp curser-pointer" (click)="showPendingAprvlActnsOfEmp(act.empno)">{{act.name}}({{act.totalApprovals}})</span>{{i+1===pendingActns4Aprvls.length-1?' and':(i+1===pendingActns4Aprvls.length)?'':', '}}
-                      </ng-container><b>.</b>
+                          <span class="delayaction-of-emp curser-pointer" (click)="showPendingAprvlActnsOfEmp(act.empno)">{{act.name}}({{act.totalApprovals}})</span>{{i+1===pendingActns4Aprvls.length-1?' and':(i+1===pendingActns4Aprvls.length)?'.':', '}}
+                      </ng-container>
               </span>
               </div>
 
@@ -4951,7 +4951,7 @@
 
 
                                                             <div *ngSwitchDefault class="kt-project-type">
-                                                                <div class="Kt-Pd-Status Not_Started ">
+                                                                <div class="Kt-Pd-Status  ">
                                                                   {{projectActionInfo[currentActionView].Status=='Under Approval'?'New action approval':
                                                                   projectActionInfo[currentActionView].Status==='Forward Under Approval'?'Forward approval':
                                                                     projectActionInfo[currentActionView].Status=='InProcess'? 'In-process':
@@ -5899,7 +5899,7 @@
             <div class="pulsing-div">
                 <span class="pulsing-dot pulsing-dot-pending"></span>
             </div>
-        <span class="unprj-text-note">Note: You can view and create project from the "Create project --&gt; Assigned projects section".</span> <span class="openhere" (click)="openAssignedProject(task_assign_json[0].Assign_Id)">open here</span>
+        <span class="unprj-text-note">Note: You can view and create project from the "Create project --&gt; Assigned projects section".</span> <span class="openhere" (click)="openAssignedProject(task_assign_json[0].Assign_Id)">click to open</span>
         </div>
         <div *ngIf="Current_user_ID==task_assign_json[0].Createdby_EmpNo" class=" d-flex gap-2  text-info font-weight-bold fs-6 px-2 p-2 mt-4 ml-1">
             <div class="pulsing-div">

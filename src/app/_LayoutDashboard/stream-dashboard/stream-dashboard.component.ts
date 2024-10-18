@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ChangeDetectorRef} from '@angular/core';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 declare var $: any;
 import { CalenderService } from 'src/app/_Services/calender.service';
 import { CalenderDTO } from 'src/app/_Models/calender-dto';
-
-
+import { StatusDTO } from 'src/app/_Models/status-dto';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -31,29 +32,45 @@ export class StreamDashboardComponent implements OnInit {
   ProjectsNotWorking: any = sessionStorage.getItem('ProjectsNotWorking');
   NotificationCount: any = sessionStorage.getItem('NotificationCount');
   _calenderDto: CalenderDTO;
-
-
+  _objStatusDTO: StatusDTO;
+  isLoading: boolean = true;
+  _ListProjStat: StatusDTO[];
+  Companylist_Json: any;
+  Employeelist_Json: any;
+  Statuslist_Json: any;
+  countFav: any;
 
   constructor(public service: ProjectTypeService,
+    private cdr: ChangeDetectorRef, private router: Router,
+    private _snackBar: MatSnackBar,
     private CalenderService: CalenderService
-  ) { this._calenderDto = new CalenderDTO; }
+  ) {
+    this._calenderDto = new CalenderDTO;
+    this._objStatusDTO = new StatusDTO;
+   }
 
   ngOnInit(): void {
     this.initializeOwlCarousels();
     this.initializeOwlCarousels2();
     this.Current_user_ID = localStorage.getItem('EmpNo');
-    this.UserfullName = localStorage.getItem("UserfullName")
-    this.todayDate = new Date()
-    this.meetingDetails()
-    this.portfolioSerivce()
-    this.getTimeLineStatus()
-    this.GetDashboardSummary()
+    this.UserfullName = localStorage.getItem("UserfullName");
+    this.todayDate = new Date();
+    this.meetingDetails();
+    this.portfolioSerivce();
+    this.getTimeLineStatus();
+    this._objStatusDTO.Emp_No = this.Current_user_ID;
+
+    this.GetDashboardSummary();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 3000);
+
   }
 
 
   private initializeOwlCarousels() {
     setTimeout(() => {
-      $('.n-portfolio-ul').owlCarousel({
+      $('.n-portfolio-ul-slider').owlCarousel({
         loop: false,
         margin: 10,
         autoplay: false,
@@ -292,7 +309,9 @@ export class StreamDashboardComponent implements OnInit {
     this.service.NewDashboardPortfolio(this.Emp_No).subscribe((data) => {
       this.portfoiloData = JSON.parse(data[0]['PortfolioJson']);
 
-        this.userFound = true
+        // this.userFound = true
+
+
 
 
       console.log(this.portfoiloData, "this.portfoiloDatathis.portfoiloData")
@@ -314,12 +333,16 @@ export class StreamDashboardComponent implements OnInit {
 
   userFound:boolean = undefined
   darArray : any
+  weekarray : any
   getTimeLineStatus(){
     this.Emp_No = localStorage.getItem('EmpNo')
     this.service.NewGetDashboardTimelineStatus(this.Emp_No).subscribe((data)=>{
       this.darArray = JSON.parse(data['DAR_Details_Json']);
-      // this.userFound = true
+
       console.log(this.darArray,'darArraydarArray')
+
+    this.weekarray =   this.darArray[0].WeekSubmissionStatus
+    console.log( this.weekarray," this.weekarray this.weekarray")
     })
 
   }
@@ -337,6 +360,85 @@ export class StreamDashboardComponent implements OnInit {
 
 
 
+  getStatusClass(status: string): string {
+    switch (status) {
+        case 'Delay':
+            return 'status-delay';
+        case 'InProcess':
+            return 'status-in-process';
+        case 'Completion Under Approval':
+            return 'status-completion-under-approval';
+        case 'Under Approval':
+            return 'status-under-approval';
+        case 'Forward Under Approval':
+            return 'status-forward-under-approval';
+        case 'Completed':
+            return 'status-completed';
+        case 'Project Hold':
+            return 'status-project-hold';
+        case 'Project Complete Rejected':
+            return 'status-project-complete-rejected';
+        case 'Project Holded':
+            return 'status-project-holded';
+        case 'New Project':
+            return 'status-new-project';
+        case 'Enactive Under Approval' :
+        case 'Cancelled':
+            return 'status-enactive-under-approval';
+        case 'Deadline Extend Under Approval':
+            return 'status-deadline-extend-under-approval';
+        case 'Project Hold Under Approval':
+            return 'status-project-hold-under-approval';
+        case 'New Todo':
+            return 'status-new-todo';
+        case 'New Project Rejected':
+            return 'status-new-project-rejected';
+        case 'Version':
+            return 'status-version';
+        case 'ToDo Achieved':
+            return 'status-todo-achieved';
+        case 'ToDo Completed':
+            return 'status-todo-completed';
+        default:
+            return '';
+    }
+  }
+
+  messagefav: string;
+  AddFavourites(portfolioId, isfav) {
+
+    // this.LoadingBar_state.start();
+    this.service.SetFavourite_Service(portfolioId, isfav, this.Current_user_ID).subscribe((data) => {
+      //  console.log("retrun Data----->",data1)
+
+      this._objStatusDTO.Emp_No = this.Current_user_ID;
+      this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
+
+        (data) => {
+          debugger
+          console.log(data,"new StatusDTO;")
+          this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
+          this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
+          this.Employeelist_Json = JSON.parse(data[0]['Employee_Json']);
+          this.Statuslist_Json = JSON.parse(data[0]['Status_Json']);
+          this.countFav = data[0]['Favourites'];
+          this.cdr.detectChanges();
+
+          if (isfav == false) {
+            this.messagefav = "Added to Favourites";
+          }
+          else {
+            this.messagefav = "Removed From Favourites";
+          }
+          let action: string = ""
+          this._snackBar.open(this.messagefav, action, {
+            duration: 1500,
+          });
+
+        });
+    })
+    // this.isLoading = true
+  }
 
 
 }
