@@ -3357,7 +3357,7 @@ try{
    if(!(
         (this.ProjectName&&this.ProjectName.trim()!='')&&
         // (this.ProjectDescription&&this.ProjectDescription.trim()!='')
-        (this.ProjectDescription?(this.characterCount<500):true)
+        (this.ProjectDescription?(this.characterCount<=500):true)
       ))
    {
       this.formFieldsRequired=true;
@@ -3578,7 +3578,7 @@ try{
   onAction_update() {
     this.updatingAction = true;
 // check all mandatory field are provided.
-    if(!(this.ActionName&&(this.ActionDescription?(this.characterCount_Action<500):true)&&
+    if(!(this.ActionName&&(this.ActionDescription?(this.characterCount_Action<=500):true)&&
          this.ActionOwner&&this.ActionResponsible&&
          this.selectedcategory&&this.ActionClient&&
          this.ActionstartDate&&this.ActionendDate&&
@@ -4503,8 +4503,8 @@ debugger
     this._LinkService.GetAttachements(this.Current_user_ID, this.URL_ProjectCode, sorttype.toString())
       .subscribe((data) => {
             this.AttachmentList = JSON.parse(data[0]['Attachments_Json']);
-            console.log(this.AttachmentList,'fileuploading fileupdloading')
-            console.log('my AttachmentList:',JSON.parse(this.AttachmentList[0]['JsonData']));
+            // console.log(this.AttachmentList,'fileuploading fileupdloading')
+            // console.log('my AttachmentList:',JSON.parse(this.AttachmentList[0]['JsonData']));
             this._TotalDocs = JSON.parse(data[0]["TotalDocs"]);
             console.log(this._TotalDocs,"this._TotalDocsthis._TotalDocs")
            if (this.AttachmentList && this.AttachmentList.length) {
