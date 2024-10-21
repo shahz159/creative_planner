@@ -5768,13 +5768,16 @@
                                                             Done
                                                         </div>
                                                         <ng-template #Meeting_status>
-                                                            <div  class="Kt-Pd-Status Expired " >
+                                                            <div *ngIf="today == item.Schedule_date;else allExpireDate"  class="Kt-Pd-Status Today_Meeting " >
+                                                               Today meeting
+                                                            </div>
+                                                            <ng-template  #allExpireDate>
+                                                            <div class="Kt-Pd-Status Expired " >
                                                                 Expired
                                                             </div>
+                                                          </ng-template>
                                                         </ng-template>
                                                     </div>
-                                                    
-                
                                                 </div>
                                                 <div class="m-line"></div>
                                                 <div>

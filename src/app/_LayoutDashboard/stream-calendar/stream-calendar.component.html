@@ -3888,7 +3888,7 @@
                     <div class="date-value">{{creation_date|date:'EEEE, MMMM d, YYYY'}}</div>
                   </div>
                   <div class="custom-evt-tsk-action">
-                    <div class="custom-evt-tsk-action-icon" title="Copy">
+                    <div class="custom-evt-tsk-action-icon" title="Copy" (click)="DublicateTaskandEvent()">
                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M21 8C21 6.34315 19.6569 5 18 5H10C8.34315 5 7 6.34315 7 8V20C7 21.6569 8.34315 23 10 23H18C19.6569 23 21 21.6569 21 20V8ZM19 8C19 7.44772 18.5523 7 18 7H10C9.44772 7 9 7.44772 9 8V20C9 20.5523 9.44772 21 10 21H18C18.5523 21 19 20.5523 19 20V8Z" fill="currentColor"></path> <path d="M6 3H16C16.5523 3 17 2.55228 17 2C17 1.44772 16.5523 1 16 1H6C4.34315 1 3 2.34315 3 4V18C3 18.5523 3.44772 19 4 19C4.55228 19 5 18.5523 5 18V4C5 3.44772 5.44772 3 6 3Z" fill="currentColor"></path> </g></svg>
                     </div>
                     <div class="custom-evt-tsk-action-icon" title="Pending">
@@ -3927,15 +3927,36 @@
                       </div>
                       <div class="custom-evt-tsk-item-control">
                           <div class="custom-evt-tsk-item-date">{{item.Schedule_date| date:'EEEE, MMMM d, YYYY'}}</div>
-                          <div class="custom-evt-tsk-item-time">{{ parseTime(item.NewSt_Time) | date: 'h:mm a' }} - {{ parseTime(item.NewEd_Time) | date: 'h:mm a' }} ({{ getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time) }})</div>
-                      </div>
+                          <div class="custom-evt-tsk-item-time">{{ parseTime(item.NewSt_Time) | date: 'h:mm a' }} - {{ parseTime(item.NewEd_Time) | date: 'h:mm a' }} ({{ getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time) }})
+                                     
+                       <span *ngIf="Status1 !='Rejected'  && Meeting_status==false" class="info item-badge">
+                            {{item.Schedule_Type}}
+                        </span>
+                        <span  *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Meeting_status==false" class="info item-badge">
+                            {{item.Recurrence}}
+                        </span>
+                        <span *ngIf="Meeting_status==true" class="info item-badge">
+                            {{item.Schedule_Type}}
+                        </span>
+                        <span *ngIf="item.Recurrence!='Do not repeat' && Meeting_status==true" class="info item-badge">
+                            {{item.Recurrence}}
+                        </span>
+                        <span *ngIf="Status1 =='Rejected'"  class="info item-badge">
+                            {{item.Schedule_Type}}
+                        </span>
+                        <span *ngIf="Status1 =='Rejected' && item.Recurrence!='Do not repeat'" class="info item-badge">
+                            {{item.Recurrence}}
+                        </span>
+                      
+                        </div>
+                        </div>
                   </div>
-                  <div class="custom-evt-tsk-item">
+                  <div class="custom-evt-tsk-item" *ngIf="item.Description">
                       <div class="custom-evt-tsk-item-icon">
                           <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M4 12H20M4 8H20M4 16H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
                       </div>
                       <div class="custom-evt-tsk-item-control">
-                          <span class="custom-evt-tsk-item-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</span>
+                          <span class="custom-evt-tsk-item-description"  [innerHTML]="item.Description"></span>
                       </div>
                   </div>
                   <div class="custom-evt-tsk-item" *ngIf="Project_NameScheduledjson&&Project_NameScheduledjson.length > 0">
@@ -4108,9 +4129,9 @@
                                 <span>{{ parseTime(item.NewSt_Time) | date: 'h:mm a' }} - {{ parseTime(item.NewEd_Time) | date: 'h:mm a' }} ({{ getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time) }})</span>
                                 <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==true" class="event item-badge" >
                                 {{item.Schedule_Type}}
-                            </span>
+                                </span>
 
-                            <span *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat' && Isadmin==true && Meeting_status==false" class="info item-badge">
+                            <span *ngIf="Status1 !='Rejected' && item.Recurrence!='Do not repeat' && Isadmin==true && Meeting_status==false" class="info item-badge">
                                 {{item.Recurrence}}
                             </span>
                             <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==false" [ngClass]="{'info item-badge': Isadmin==true , 'purple item-badge': Isadmin==false }" >
@@ -4131,7 +4152,6 @@
                             <span *ngIf="Status1 =='Rejected' && item.Recurrence!='Do not repeat'" class="danger item-badge">
                                 {{item.Recurrence}}
                             </span>
-
                             </div>
                         </div>
                     </div>

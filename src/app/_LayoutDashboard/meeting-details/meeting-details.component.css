@@ -4474,6 +4474,11 @@ span.kt-dt-cnt-view {
     color: #fff !important;
 }
 
+.Today_Meeting {
+    background-color: #2786fb !important;
+    color: #fff !important;
+}
+
 .Kt-Pd-Status {
     color: #ffffff;
     font-weight: 600;

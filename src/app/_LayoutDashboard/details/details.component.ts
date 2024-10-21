@@ -271,6 +271,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     // this.GetProjectAndsubtashDrpforCalender()
 
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
+    this.DisablePrevious.setDate(this.DisablePrevious.getDate());
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
@@ -3155,6 +3156,7 @@ approvalSubmitting:boolean=false;
   dateF = new FormControl(new Date());
   todayDate = new Date();
   disablePreviousDate = new Date();
+  DisablePrevious = new Date();
   starttime: any=null;
   timedata: any = [];
   timedata1: any;

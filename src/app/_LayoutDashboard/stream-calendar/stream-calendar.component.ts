@@ -2264,7 +2264,7 @@ bindCustomRecurrenceValues(){
         element[vLocation_url]='';
         element[vOnlinelink]=false;
          element[vLink_Details]='';
-         element[vDescription]='';
+        //  element[vDescription]='';
          element[vPortfolio_name]='';
          element[vDMS_Name]='';
          element[vAgendas]='[]';
@@ -2276,6 +2276,8 @@ bindCustomRecurrenceValues(){
       });
 
       this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
+      console.log(this._calenderDto.ScheduleJson, "finalarray 1234");
+      
       if (this.Schedule_ID != 0) {
         this._calenderDto.Schedule_ID = this.Schedule_ID;
 
@@ -2296,9 +2298,9 @@ bindCustomRecurrenceValues(){
 
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
-      console.log(JSON.stringify(finalarray), "finalarray")
-      this._calenderDto.draftid = this.draftid;
+      
 
+      this._calenderDto.draftid = this.draftid;
 
       console.log('_calenderDto obj:', JSON.parse(this._calenderDto.ScheduleJson));
 
@@ -2867,7 +2869,6 @@ customrecurrencemodal() {
 
 
 GetClickEventJSON_Calender(arg,meetingClassNeme) {
-  console.log(arg, "Testing11");
   this.meetingClassNemes=meetingClassNeme;
    this.EventScheduledjson = [];
   this.loading = true;
@@ -2961,7 +2962,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
 
       this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
-      console.log(this.User_Scheduledjson, "000");
+     
       this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
       this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
 
@@ -2981,7 +2982,6 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
         this._LinkService._GetMemosSubject(this.dmsIdjson).
           subscribe((data) => {
             this._MemosSubjectList = JSON.parse(data['JsonData']);
-            console.log("Subject Name ------------>", this._MemosSubjectList);
           });
       }
       // console.log(this.dmsIdjson,"ids");
@@ -3416,6 +3416,7 @@ DublicateTaskandEvent() {
     // valid starttimearr and endtimearr setting end.
     });
   this.customEventModal_dismiss();
+  this.customTaskModal_dismiss()
 }
 
 
