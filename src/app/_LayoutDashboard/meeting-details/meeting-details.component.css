@@ -107,7 +107,9 @@
     font-size: 12px;
     margin-bottom: 0px;
     max-height: 50px;
-    overflow: hidden;
+    /* overflow: hidden; */
+    overflow: auto;
+    scrollbar-width: thin;
 }
 
 .kt-metric-info {
@@ -4469,6 +4471,11 @@ span.kt-dt-cnt-view {
 
 .Expired {
     background-color: #cf052d !important;
+    color: #fff !important;
+}
+
+.Today_Meeting {
+    background-color: #2786fb !important;
     color: #fff !important;
 }
 

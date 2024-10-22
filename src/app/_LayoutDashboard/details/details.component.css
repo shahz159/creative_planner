@@ -9297,8 +9297,8 @@ span.time-value {
 
 /* Approval timeline css end */
 .Cancellation{
-  background-color: #F44336;
-  color: white;
+  background-color: #F44336 !important;
+  color: white !important;
 }
 .cancelled{
   color: #F44336;

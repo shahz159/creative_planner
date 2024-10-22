@@ -1899,7 +1899,7 @@
                                         
                                             <!-- <div  class="PA_title"><span>Meeting</span>
                                             </div> -->
-                                            <div *ngIf="Meetingstatuscom!='Completed'"  class="PA_title PA_Edit_btn curser-pointer" (click)="ReshudingTaskandEvent()">
+                                            <!-- <div *ngIf="Meetingstatuscom!='Completed'"  class="PA_title PA_Edit_btn curser-pointer" (click)="ReshudingTaskandEvent()">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                     viewBox="0 0 18 18" fill="none">
                                                     <path
@@ -1912,7 +1912,7 @@
                                                         stroke-linejoin="round" />
                                                 </svg>
                                                 <span class="lbl-hdn ">Edit</span>
-                                            </div>
+                                            </div> -->
                                     
                                     </div>
                                         <div class="kt-project-option">
@@ -5758,7 +5758,7 @@
                                                                 Online
                                                         </span>
                                                         <span *ngIf="item.OnlineLink == false">
-                                                                Offlined
+                                                                Offline
                                                         </span>
                                                         </div>
                                                     </div>
@@ -5768,13 +5768,16 @@
                                                             Done
                                                         </div>
                                                         <ng-template #Meeting_status>
-                                                            <div  class="Kt-Pd-Status Expired " >
+                                                            <div *ngIf="today == item.Schedule_date;else allExpireDate"  class="Kt-Pd-Status Today_Meeting " >
+                                                               Today meeting
+                                                            </div>
+                                                            <ng-template  #allExpireDate>
+                                                            <div class="Kt-Pd-Status Expired " >
                                                                 Expired
                                                             </div>
+                                                          </ng-template>
                                                         </ng-template>
                                                     </div>
-                                                    
-                
                                                 </div>
                                                 <div class="m-line"></div>
                                                 <div>
@@ -6330,7 +6333,7 @@
                                                             Online
                                                         </span>
                                                         <span *ngIf="data.OnlineLink == false">
-                                                            Offlined
+                                                            Offline
                                                         </span>
                                                     </div>
                                                 </div>

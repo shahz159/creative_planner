@@ -4951,7 +4951,7 @@
 
 
                                                             <div *ngSwitchDefault class="kt-project-type">
-                                                                <div class="Kt-Pd-Status Not_Started ">
+                                                                <div class="Kt-Pd-Status  ">
                                                                   {{projectActionInfo[currentActionView].Status=='Under Approval'?'New action approval':
                                                                   projectActionInfo[currentActionView].Status==='Forward Under Approval'?'Forward approval':
                                                                     projectActionInfo[currentActionView].Status=='InProcess'? 'In-process':
@@ -15954,7 +15954,7 @@
                     <div class="date-menu-close d-none" (click)="date_menu_close('date-menu')">Close</div>
                     <div class="date-menu-calender">
                         <mat-card class="demo-inline-calendar-card">
-                            <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
+                            <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="DisablePrevious"></mat-calendar>
                           </mat-card>
                     </div>
                     <div class="date-menu-time">

@@ -2946,7 +2946,7 @@ ul.card-task-item-project-ul li:hover::before {
 .custom-evt-tsk-body {
     padding: 0.5rem;
     padding-right: 1.25rem;
-    max-height: 64vh;
+    max-height: 58vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -3483,6 +3483,152 @@ span.part-count {
 }
 
 .propose-date-time-menu-close {
+    background-color: #e2e5ec;
+    border: 1px solid #e2e5ec;
+    color: #595d6e;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: normal;
+    text-align: center;
+}
+.repeat-date-time-div {
+    border-top: 1px solid #dadce0;
+    padding: 1rem 1rem;
+    color: #3c4043;
+}
+
+.repeat-date-time {
+    background: #f1f1f1;
+    border-radius: 4px;
+    padding: 0.65rem 1rem;
+    position: relative;
+}
+
+.repeat-event .form-group {
+    margin-bottom: 0rem;
+}
+
+.repeat-dt-tm {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    color: #000;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.repeat-dt-muted {
+    color: #d8e2fb;
+    font-weight: 700;
+}
+
+.repeat-dt-text {
+    display: flex;
+    align-items: center;
+    margin-top: 0.25rem;
+    color: #8a8a8a;
+    font-size: 10px;
+    gap: 2px;
+}
+.repeat-date-time-menu {
+    border: 0 !important;
+    margin: 0;
+    min-width: 40rem;
+    box-shadow: 0px 0px 20px 0px #00000033, 0px 0px 20px 0px #00000024, 0px 0px 20px 0px #0000001f;
+    padding: 1rem 1rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    z-index: 95;
+    position: absolute;
+    will-change: transform;
+    top: 0px;
+    left: 0px;
+    right: auto;
+    bottom: auto;
+    transform: translate3d(-24px, -326px, 0px);
+    margin-top: 0px;
+    margin-bottom: 0.125rem;
+    display: none;
+}
+
+.repeat-date-time-menu.show {
+    display: block;
+}
+
+.repeat-date-time-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.repeat-date-time-menu-calendar {
+    width: 100%;
+}
+
+.repeat-date-time-menu-t {
+    width: 100%;
+}
+
+.repeat-date-time-menu .mat-card {
+    background: #f1f1f1;
+    padding: 0px;
+    box-shadow: none !important;
+}
+
+::ng-deep .repeat-date-time-menu .ng-select .ng-select-container {
+    border: 0px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+::ng-deep .repeat-date-time-menu .ng-select.ng-select-opened>.ng-select-container {
+    background: #f1f1f1;
+}
+
+.repeat-date-time-menu-t-select {
+    height: 36px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
+    background-color: rgba(255, 255, 255, 0);
+    color: #3c4043;
+    border: none;
+    border-radius: 0;
+}
+
+.repeat-date-time-menu-action {
+    position: absolute;
+    bottom: 4%;
+    right: 3%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.repeat-date-time-menu-submit {
+    background-color: #1a73e8;
+    border: 1px solid #1a73e8;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: normal;
+    text-align: center;
+}
+
+.repeat-date-time-menu-close {
     background-color: #e2e5ec;
     border: 1px solid #e2e5ec;
     color: #595d6e;
@@ -4428,10 +4574,22 @@ ul.schedule-select-list li .slect-close:hover svg {
 }
 
 
+@keyframes connect {
+    0% {
+        transform: rotate(0deg);
+    }
 
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 .blue-color path {
     fill: #2786fb; /* Blue color */
+}
+
+.default-color path {
+    fill: #9B30FF; /* Blue color */
 }
 
 .purple-color path {
@@ -4444,4 +4602,29 @@ ul.schedule-select-list li .slect-close:hover svg {
 
 .green-color path {
     fill: #1dc9b7 ; /* green color */
+}
+
+.item-badge.danger {
+    color: #dc3545;
+    background: rgba(253, 39, 235, 0.1);
+}
+.item-badge.success {
+    color: #1DC9B7;
+    background: rgba(29, 201, 183, 0.1);
+}
+.item-badge.purple {
+    color: #9B30FF;
+    background: rgba(148, 0, 211, 0.1);
+}
+
+.item-badge.info {
+    color: #2786fb;
+    background: rgba(39, 134, 251, 0.1);
+}
+
+.error-border,
+.error-date .input-group-text,
+.error-date .form-control,
+::ng-deep .error-vd .ng-select-container {
+    border: 1px solid #F44336 !important;
 }
