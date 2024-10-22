@@ -949,6 +949,7 @@ export class DashboardComponent implements OnInit {
 
         document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be')) {
+     
           document.getElementById("hiddenedit").style.display = "flex";
           // document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
@@ -958,6 +959,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be')) {
+       
           document.getElementById("hiddenedit").style.display = "none";
           // document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
@@ -3932,11 +3934,11 @@ currentTime:any;
 
  
 
-        document.getElementById("deleteendit").style.display = "flex";
+        // document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
-
+     
           document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
-          // document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "flex";
           // document.getElementById("act-btn").style.display = "flex";
@@ -3944,9 +3946,9 @@ currentTime:any;
           // document.getElementById("copy_data2").style.display = "flex";
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Meeting_status==false) && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
-      
+        
           document.getElementById("hiddenedit").style.display = "none";
-          // document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = "none";
 
           document.getElementById("main-foot").style.display = "flex";
 
@@ -3958,7 +3960,7 @@ currentTime:any;
         }
         else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
           document.getElementById("hiddenedit").style.display = "flex";
-          // document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "flex";
           // document.getElementById("copy_data1").style.display = "flex";
@@ -3967,7 +3969,7 @@ currentTime:any;
         }
         else {
           document.getElementById("hiddenedit").style.display = "none";
-          // document.getElementById("deleteendit").style.display = "flex";
+           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "none";
           // document.getElementById("copy_data1").style.display = "none";
@@ -7110,7 +7112,7 @@ getMeetingApprovals(){
       $("#cal-main").addClass("col-lg-12");
 
     }
-    //  console.log(this.multiapproval_json,'appraval data in the dashboard')
+      console.log(this.multiapproval_json,'appraval data in the dashboard')
   })
 }
 

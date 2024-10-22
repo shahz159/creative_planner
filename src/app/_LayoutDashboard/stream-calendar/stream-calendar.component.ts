@@ -3193,6 +3193,26 @@ sweet_pending() {
 }
 
 
+Task_pending() {
+  Swal.fire({
+    title: 'Pending task',
+    text: 'Do you want to move the task to pending?',
+    showCancelButton: true,
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No'
+  }).then((response: any) => {
+    if (response.value) {
+      this.Pending_meeting();
+    } else if (response.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire(
+        'Cancelled',
+        'Task not moved to pending.',
+        'error'
+      )
+    }
+  });
+}
+
 
 Pending_meeting() {
   this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
