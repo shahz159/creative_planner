@@ -1991,7 +1991,7 @@ actionSubmit(){
 
 
   this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;  
-  this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
+  this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => { debugger
 
     this.Sub_ProjectCode = data['SubTask_ProjectCode'];
     this.EmpNo_Autho = data['Team_Autho'];

@@ -1134,24 +1134,21 @@ formatHoursToHHMM(hours: number): string {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* timeline submit end */
 
-close_add_time() {
-  document.getElementById("dropdown-timeline-menu").classList.remove("show");
-}
-btn_timeline_table_accordion(){
-  document.getElementById("btn-timeline-table-accordion").classList.toggle("rotate");
-}
-endTimelineModal(){
-  document.getElementById("endTimelineModal").style.display = "block";
-  document.getElementById("endTimelineModal").classList.add("show");
-  document.getElementById("endTimelineModalBackdrop").style.display = "block";
-  document.getElementById("endTimelineModalBackdrop").classList.add("show");
-}
-endTimelineModal_dismiss(){
-  document.getElementById("endTimelineModal").style.display = "none";
-  document.getElementById("endTimelineModal").classList.remove("show");
-  document.getElementById("endTimelineModalBackdrop").style.display = "none";
-  document.getElementById("endTimelineModalBackdrop").classList.remove("show");
-}
+
 }

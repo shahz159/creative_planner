@@ -265,10 +265,16 @@ export class CreateProjectComponent implements OnInit {
          this.Client_json=JSON.parse(res[0].Client_json);
          this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
-         console.log(this.Responsible_json,"Responsible_json")
-         this.Team_json=JSON.parse(res[0].Team_json);  console.log('Team_json:',this.Team_json);
-         this.allUser_json=JSON.parse(res[0].allUser_json); console.log('allUser_json:',this.allUser_json);
-         this.owner_json=JSON.parse(res[0].owner_json);
+         this.Team_json=JSON.parse(res[0].Team_json);  
+         this.allUser_json=JSON.parse(res[0].allUser_json); 
+
+         let owner_values=JSON.parse(res[0].owner_json);
+         owner_values=owner_values.map(ob=>({...ob,type:'Hierarchical'}));
+         const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo.trim()];  
+         let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob.Emp_No));
+         otherusers=otherusers.map(ob=>({EmpNo:ob.Emp_No, EmpName:ob.Emp_Name, type:'Others'}));
+         this.owner_json=[...owner_values,...otherusers];
+        
 
           this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
           this.PrjResp=this.Responsible_json[0].ResponsibleNo.trim();
@@ -280,6 +286,16 @@ export class CreateProjectComponent implements OnInit {
                return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
           })
           this.PrjSupport=defaultvalue?[defaultvalue]:[];
+
+
+
+
+          
+
+
+
+
+
 
           // this.Prjtype=this.ProjectType_json[0].Typeid;// by default prj type core is selected.
           this.Project_Type=this.ProjectType_json[0].ProjectType;
@@ -1128,6 +1144,18 @@ onResponsibleChanged(){
          this.PrjAuditor=null;
       }
   //
+
+
+
+
+  
+ 
+
+  // const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.PrjResp];
+  // let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob.Emp_No));
+  // otherusers=otherusers.map(ob=>({EmpNo:ob.Emp_No, EmpName:ob.Emp_Name, type:'Others'}));
+  // this.owner_json=[...owner_values,...otherusers];
+
 
   }
 }
