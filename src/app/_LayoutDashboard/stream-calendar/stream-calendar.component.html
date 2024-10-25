@@ -109,7 +109,7 @@
                     </button>
                     <div class="dropdown-menu drop-cus"  aria-labelledby="dropdownCreateMenuLink">
                         <a class="dropdown-item"  (click)="Task_type(1)" (click)="createEventonlyTaskModal()">Task</a>
-                        <a class="dropdown-item"  (click)="Task_type(2)">Event</a>
+                        <a class="dropdown-item"  (click)="changeScheduleType(2);Task_type(2)">Event</a>
                         <!-- (click)="open_schedule_event_task()" -->
                     </div>
                 </div>
@@ -506,7 +506,7 @@
                         <div class="sch-evt-item  sch-evt-border-bottom" *ngFor="let meetingItem of group.events"  (click)="customEventModal(meetingItem.Schedule_Type);GetClickEventJSON_Calender(meetingItem.Schedule_ID,meetingItem.className)">
                             <div style="display: flex;align-items: center;">
                                 <div class="sch-evt-p sch-evt-pr-0">
-                                    <svg *ngIf="meetingItem.Schedule_Type==1" width="18px" height="18px" viewBox="0 0 20 20"
+                                    <svg *ngIf="meetingItem.Schedule_Type==1 &&  meetingItem.className!='fc-green'" width="18px" height="18px" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg" fill="none">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
@@ -517,6 +517,16 @@
                                         </path>
                                     </g>
                                    </svg>
+                                   <svg *ngIf="meetingItem.Schedule_Type==1 && meetingItem.className=='fc-green'" width="18px" height="18px" viewBox="0 0 20 20"
+                                   xmlns="http://www.w3.org/2000/svg" fill="none">
+                                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                  <g id="SVGRepo_iconCarrier">
+                                      <path fill="#1dc9b7" fill-rule="evenodd"
+                                            d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z">
+                                      </path>
+                                  </g>
+                                 </svg>
                                     <svg *ngIf="meetingItem.Schedule_Type==2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                         width="20px" height="20px" viewBox="0 0 20 20" version="1.1" [ngClass]="meetingItem.className ?{
                                             'blue-color': meetingItem.className =='fc-info',
@@ -538,10 +548,13 @@
                                         </g>
                                     </svg>
                                 </div>
-                                <div class="sch-evt-time sch-evt-p  sch-evt-pr-0">{{meetingItem.start | date: 'h:mm a'}} - {{meetingItem.end | date: 'h:mm a'}}
-                                </div>
+                                <div class="sch-evt-time sch-evt-p  sch-evt-pr-0" *ngIf="meetingItem.className=='fc-red'"><s>{{meetingItem.start | date: 'h:mm a'}} - {{meetingItem.end | date: 'h:mm a'}}</s> </div>                         
+                                <div class="sch-evt-time sch-evt-p  sch-evt-pr-0" *ngIf="meetingItem.className=='fc-green'"><s>{{meetingItem.start | date: 'h:mm a'}} - {{meetingItem.end | date: 'h:mm a'}}</s> </div>
+                                <div class="sch-evt-time sch-evt-p  sch-evt-pr-0" *ngIf="meetingItem.className!='fc-green' && meetingItem.className!='fc-red'">{{meetingItem.start | date: 'h:mm a'}} - {{meetingItem.end | date: 'h:mm a'}}</div>
                                 <div class="sch-evt-info">
-                                    <span class="sch-evt-p sch-evt-pl-0">{{meetingItem.title}}</span>
+                                    <span class="sch-evt-p sch-evt-pl-0" *ngIf="meetingItem.className=='fc-green'"><s>{{meetingItem.title}}</s></span>
+                                    <span class="sch-evt-p sch-evt-pl-0" *ngIf="meetingItem.className=='fc-red'"><s>{{meetingItem.title}}</s></span>
+                                    <span class="sch-evt-p sch-evt-pl-0" *ngIf="meetingItem.className!='fc-green' && meetingItem.className!='fc-red'">{{meetingItem.title}}</span>
                                 </div>
                             </div>
                             <div class="sch-evt-mem">
@@ -2233,7 +2246,7 @@
 
 
 
-                                                        <div class="task-add-item">
+                                                        <div class="task-add-item"  id="subtaskid">
                                                             <div class="task-add-item-icon">
                                                                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11.2929 2.29289C11.6834 1.90237 12.3166 1.90237 12.7071 2.29289L16.7071 6.29289C17.0976 6.68342 17.0976 7.31658 16.7071 7.70711C16.3166 8.09763 15.6834 8.09763 15.2929 7.70711L13 5.41421V15C13 15.5523 12.5523 16 12 16C11.4477 16 11 15.5523 11 15V5.41421L8.70711 7.70711C8.31658 8.09763 7.68342 8.09763 7.29289 7.70711C6.90237 7.31658 6.90237 6.68342 7.29289 6.29289L11.2929 2.29289ZM5 13C5 11.3431 6.34315 10 8 10H9C9.55228 10 10 10.4477 10 11C10 11.5523 9.55228 12 9 12H8C7.44772 12 7 12.4477 7 13V19C7 19.5523 7.44772 20 8 20H16C16.5523 20 17 19.5523 17 19V13C17 12.4477 16.5523 12 16 12H15C14.4477 12 14 11.5523 14 11C14 10.4477 14.4477 10 15 10H16C17.6569 10 19 11.3431 19 13V19C19 20.6569 17.6569 22 16 22H8C6.34315 22 5 20.6569 5 19V13Z" fill="currentColor"></path> </g></svg>
                                                             </div>
@@ -2538,7 +2551,7 @@
                     </div>
                     <div class="create-event-item-group">
                         <div class="create-event-date-time-div">
-                            <div class="create-event-date-time">
+                            <div class="create-event-date-time">                            
                                 <div class="form-group mb-0">
                                     <div class="curser-pointer"  (click)="eventtaskitemtimeModal()">
                                         <div class="create-event-dt-tm">
@@ -2553,10 +2566,38 @@
                                         </div>
                                         <div class="create-event-dt-text">
                                             <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
-                                            <span>The {{ScheduleType=='Event'?'event':ScheduleType=='Task'?'task':''}} scheduled on {{_StartDate|date:'MMMM d, y'}} {{Startts}} to {{Endtms}}</span>
+                                            <span>The {{ScheduleType=='Event'?'event':ScheduleType=='Task'?'task':''}} scheduled on {{_StartDate|date:'MMMM d, y'}} {{Startts}} to {{Endtms}}
+                                          -
+                                            <ng-container  *ngIf="selectedrecuvalue">
+                                                <span *ngIf="selectedrecuvalue=='0'">Do not repeat</span>
+                                                <span *ngIf="selectedrecuvalue=='1'">Daily until {{_EndDate|date:'MMMM d, y'}}</span>
+                                                <span *ngIf="selectedrecuvalue=='2'">Weekly until {{_EndDate|date:'MMMM d, y'}}</span>
+                                                <span *ngIf="selectedrecuvalue=='3'">Monthly until {{_EndDate|date:'MMMM d, y'}}</span>
+                                            </ng-container>
+
+                                            <ng-container *ngIf="selectedrecuvalue=='2'">
+                                                -
+                                                <ng-container *ngIf="mtgOnDays.length===1">Every {{mtgOnDays[0]}}</ng-container>
+                                                <ng-container *ngIf="mtgOnDays.length>1"> on
+                                                    <ng-container *ngFor="let day of mtgOnDays;let i=index">
+                                                    {{day+(i+1===mtgOnDays.length?'.':i+2===mtgOnDays.length?' and ':', ')}}
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+
+                                              <ng-container  *ngIf="selectedrecuvalue=='3'">
+                                                -
+                                                  <ng-container *ngIf="mtgOnDays.length===1">Every {{mtgOnDays[0]}}</ng-container>
+                                                  <ng-container *ngIf="mtgOnDays.length>1"> on
+                                                      <ng-container *ngFor="let day of mtgOnDays;let i=index">
+                                                         {{day+(i+1===mtgOnDays.length?'.':i+2===mtgOnDays.length?' and ':', ')}}
+                                                      </ng-container>
+                                                  </ng-container>
+                                                </ng-container>
+                                            </span>
+
                                         </div>                       
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -2894,7 +2935,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="create-event-item">
+                            <div class="create-event-item"  id="subtaskid">
                                 <div class="create-event-item-icon">
                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.2929 2.29289C11.6834 1.90237 12.3166 1.90237 12.7071 2.29289L16.7071 6.29289C17.0976 6.68342 17.0976 7.31658 16.7071 7.70711C16.3166 8.09763 15.6834 8.09763 15.2929 7.70711L13 5.41421V15C13 15.5523 12.5523 16 12 16C11.4477 16 11 15.5523 11 15V5.41421L8.70711 7.70711C8.31658 8.09763 7.68342 8.09763 7.29289 7.70711C6.90237 7.31658 6.90237 6.68342 7.29289 6.29289L11.2929 2.29289ZM5 13C5 11.3431 6.34315 10 8 10H9C9.55228 10 10 10.4477 10 11C10 11.5523 9.55228 12 9 12H8C7.44772 12 7 12.4477 7 13V19C7 19.5523 7.44772 20 8 20H16C16.5523 20 17 19.5523 17 19V13C17 12.4477 16.5523 12 16 12H15C14.4477 12 14 11.5523 14 11C14 10.4477 14.4477 10 15 10H16C17.6569 10 19 11.3431 19 13V19C19 20.6569 17.6569 22 16 22H8C6.34315 22 5 20.6569 5 19V13Z" fill="currentColor"></path></g></svg>
                                 </div>
@@ -3888,18 +3929,23 @@
                     <div class="date-value">{{creation_date|date:'EEEE, MMMM d, YYYY'}}</div>
                   </div>
                   <div class="custom-evt-tsk-action">
-                    <div class="custom-evt-tsk-action-icon" title="Copy" (click)="DublicateTaskandEvent()">
+                    <div class="custom-evt-tsk-action-icon" title="Copy" (click)="changeScheduleType(1);DublicateTaskandEvent()">
                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M21 8C21 6.34315 19.6569 5 18 5H10C8.34315 5 7 6.34315 7 8V20C7 21.6569 8.34315 23 10 23H18C19.6569 23 21 21.6569 21 20V8ZM19 8C19 7.44772 18.5523 7 18 7H10C9.44772 7 9 7.44772 9 8V20C9 20.5523 9.44772 21 10 21H18C18.5523 21 19 20.5523 19 20V8Z" fill="currentColor"></path> <path d="M6 3H16C16.5523 3 17 2.55228 17 2C17 1.44772 16.5523 1 16 1H6C4.34315 1 3 2.34315 3 4V18C3 18.5523 3.44772 19 4 19C4.55228 19 5 18.5523 5 18V4C5 3.44772 5.44772 3 6 3Z" fill="currentColor"></path> </g></svg>
                     </div>
                     <div class="custom-evt-tsk-action-icon" title="Pending"  *ngIf="Isadmin==true && pending_status==false" (click)="Task_pending()">
                         <svg width="64px" height="64px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Free-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"> <g transform="translate(-451.000000, -748.000000)" id="Group" stroke="currentColor" stroke-width="1.75"> <g transform="translate(449.000000, 746.000000)" id="Shape"> <line x1="17" y1="3" x2="17" y2="5"> </line> <line x1="7" y1="3" x2="7" y2="5"> </line> <path d="M18,11.5 L18,17.9933387 M18.0043926,21.0066613 L18,20.9933387"> </path> <path d="M8.03064542,21 C7.42550126,21 6.51778501,21 5.30749668,21 C4.50512981,21 4.2141722,20.9218311 3.92083887,20.7750461 C3.62750553,20.6282612 3.39729582,20.4128603 3.24041943,20.1383964 C3.08354305,19.8639324 3,19.5916914 3,18.8409388 L3,7.15906122 C3,6.4083086 3.08354305,6.13606756 3.24041943,5.86160362 C3.39729582,5.58713968 3.62750553,5.37173878 3.92083887,5.22495386 C4.2141722,5.07816894 4.50512981,5 5.30749668,5 L18.6925033,5 C19.4948702,5 19.7858278,5.07816894 20.0791611,5.22495386 C20.3724945,5.37173878 20.6027042,5.58713968 20.7595806,5.86160362 C20.9164569,6.13606756 21,7.24671889 21,7.99747152"> </path> </g> </g> </g> </g></svg>
                     </div>
-                      <div class="custom-evt-tsk-action-icon" title="Edit">
+                      <div class="custom-evt-tsk-action-icon" title="Edit" (click)="changeScheduleType(1);ReshudingTaskandEvent();updateCharacterCount()">
                           <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Edit_Pencil_01"> <path id="Vector" d="M12 8.00012L4 16.0001V20.0001L8 20.0001L16 12.0001M12 8.00012L14.8686 5.13146L14.8704 5.12976C15.2652 4.73488 15.463 4.53709 15.691 4.46301C15.8919 4.39775 16.1082 4.39775 16.3091 4.46301C16.5369 4.53704 16.7345 4.7346 17.1288 5.12892L18.8686 6.86872C19.2646 7.26474 19.4627 7.46284 19.5369 7.69117C19.6022 7.89201 19.6021 8.10835 19.5369 8.3092C19.4628 8.53736 19.265 8.73516 18.8695 9.13061L18.8686 9.13146L16 12.0001M12 8.00012L16 12.0001" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
                       </div>
                       <div class="custom-evt-tsk-action-icon" title="Delete">
-                          <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                      </div>
+                        <span *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0" (click)="deleteRecurringTask()" data-toggle="modal" data-target="#delevent">
+                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                        </span>
+                        <span *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0"  (click)="onSingleEventDelete()">
+                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                       </span>                     
+                    </div>
                       <div class="custom-evt-tsk-action-icon"  title="Close"  (click)="customTaskModal_dismiss()">
                           <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17.769 16l9.016-9.016c0.226-0.226 0.366-0.539 0.366-0.884 0-0.691-0.56-1.251-1.251-1.251-0.346 0-0.658 0.14-0.885 0.367v0l-9.015 9.015-9.016-9.015c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l9.015 9.016-9.015 9.015c-0.227 0.226-0.367 0.539-0.367 0.885 0 0.691 0.56 1.251 1.251 1.251 0.345 0 0.658-0.14 0.884-0.366v0l9.016-9.016 9.015 9.016c0.227 0.228 0.541 0.369 0.888 0.369 0.691 0 1.251-0.56 1.251-1.251 0-0.347-0.141-0.661-0.369-0.887l-0-0z"></path> </g></svg>
                       </div>
@@ -3908,8 +3954,11 @@
               <div class="custom-evt-tsk-body"  *ngFor="let item of EventScheduledjson">
                   <div class="custom-evt-tsk-item">
                       <div class="custom-evt-tsk-item-icon task-color">
-                          <svg width="64px" height="64px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" fill-rule="evenodd" d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z"></path></g></svg>
-                      </div>
+                          <svg *ngIf="Meeting_status==false && Schedule_type1=='Task'" 
+                          width="64px" height="64px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" fill-rule="evenodd" d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z"></path></g></svg>  
+                          <svg *ngIf="Meeting_status==true && Schedule_type1=='Task'" 
+                          width="64px" height="64px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#1dc9b7" fill-rule="evenodd" d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z"></path></g></svg>                     
+                        </div>
                       <div class="custom-evt-tsk-item-control line-clamp">
                           <span class="custom-evt-tsk-item-title">{{item.Task_Name}}</span>
                       </div>
@@ -4009,12 +4058,19 @@
                       </div>
                   </div>
               </div>
-              <div class="custom-evt-tsk-footer">
+              <div class="custom-evt-tsk-footer"  *ngIf="Meeting_status==false && Isadmin==true && Schedule_type1=='Task'">
                   <div></div>
                   <div class="custom-evt-tsk-footer-action">
                       <button class="btn btn-evt-tsk-foot" (click)="End_meeting()">Mark completed</button>
                   </div>
               </div>
+
+              <div class="custom-evt-tsk-footer"  *ngIf="Meeting_status==true && Isadmin==true && Schedule_type1=='Task'">
+                <div></div>
+                <div class="custom-evt-tsk-footer-action">
+                    <button class="btn btn-evt-tsk-foot" (click)="uncomplete_task()">Mark uncompleted</button>
+                </div>
+            </div>
           </div>
         </div>
       </div>
@@ -4062,17 +4118,17 @@
                             <span class="met-done-dot"></span><span>Done</span>
                         </div>
 
-                        <div class="custom-evt-tsk-action-icon" title="Copy" (click)="DublicateTaskandEvent()">
+                        <div class="custom-evt-tsk-action-icon" title="Copy" (click)="changeScheduleType(2);DublicateTaskandEvent()">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M21 8C21 6.34315 19.6569 5 18 5H10C8.34315 5 7 6.34315 7 8V20C7 21.6569 8.34315 23 10 23H18C19.6569 23 21 21.6569 21 20V8ZM19 8C19 7.44772 18.5523 7 18 7H10C9.44772 7 9 7.44772 9 8V20C9 20.5523 9.44772 21 10 21H18C18.5523 21 19 20.5523 19 20V8Z" fill="currentColor"></path> <path d="M6 3H16C16.5523 3 17 2.55228 17 2C17 1.44772 16.5523 1 16 1H6C4.34315 1 3 2.34315 3 4V18C3 18.5523 3.44772 19 4 19C4.55228 19 5 18.5523 5 18V4C5 3.44772 5.44772 3 6 3Z" fill="currentColor"></path> </g></svg>
                         </div>
                         <div class="custom-evt-tsk-action-icon" title="Pending" *ngIf="Meeting_status==false && Isadmin==true" (click)="sweet_pending()">
                             <svg width="64px" height="64px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Free-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"> <g transform="translate(-451.000000, -748.000000)" id="Group" stroke="currentColor" stroke-width="1.75"> <g transform="translate(449.000000, 746.000000)" id="Shape"> <line x1="17" y1="3" x2="17" y2="5"> </line> <line x1="7" y1="3" x2="7" y2="5"> </line> <path d="M18,11.5 L18,17.9933387 M18.0043926,21.0066613 L18,20.9933387"> </path> <path d="M8.03064542,21 C7.42550126,21 6.51778501,21 5.30749668,21 C4.50512981,21 4.2141722,20.9218311 3.92083887,20.7750461 C3.62750553,20.6282612 3.39729582,20.4128603 3.24041943,20.1383964 C3.08354305,19.8639324 3,19.5916914 3,18.8409388 L3,7.15906122 C3,6.4083086 3.08354305,6.13606756 3.24041943,5.86160362 C3.39729582,5.58713968 3.62750553,5.37173878 3.92083887,5.22495386 C4.2141722,5.07816894 4.50512981,5 5.30749668,5 L18.6925033,5 C19.4948702,5 19.7858278,5.07816894 20.0791611,5.22495386 C20.3724945,5.37173878 20.6027042,5.58713968 20.7595806,5.86160362 C20.9164569,6.13606756 21,7.24671889 21,7.99747152"> </path> </g> </g> </g> </g></svg>
                         </div>
-                        <div class="custom-evt-tsk-action-icon" title="Edit" (click)="ReshudingTaskandEvent();updateCharacterCount()">
+                        <div class="custom-evt-tsk-action-icon" title="Edit" (click)="changeScheduleType(2);ReshudingTaskandEvent();updateCharacterCount()">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Edit_Pencil_01"> <path id="Vector" d="M12 8.00012L4 16.0001V20.0001L8 20.0001L16 12.0001M12 8.00012L14.8686 5.13146L14.8704 5.12976C15.2652 4.73488 15.463 4.53709 15.691 4.46301C15.8919 4.39775 16.1082 4.39775 16.3091 4.46301C16.5369 4.53704 16.7345 4.7346 17.1288 5.12892L18.8686 6.86872C19.2646 7.26474 19.4627 7.46284 19.5369 7.69117C19.6022 7.89201 19.6021 8.10835 19.5369 8.3092C19.4628 8.53736 19.265 8.73516 18.8695 9.13061L18.8686 9.13146L16 12.0001M12 8.00012L16 12.0001" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
                         </div>
                         <div class="custom-evt-tsk-action-icon" title="Delete">
-                            <span *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0"  data-toggle="modal" data-target="#delevent">
+                            <span *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0" (click)="deleteRecurringEvent()" data-toggle="modal" data-target="#delevent">
                                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                             </span>
                             <span *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0"  (click)="onSingleEventDelete()">
@@ -4842,7 +4898,10 @@
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 300px;">
         <div class="modal-content">
             <div class="modal-header pb-0" style="border-bottom: 0px">
-                <h5 class="modal-title">Delete recurring event</h5>
+
+                <h5 class="modal-title" *ngIf="!deleteTask">Delete recurring event</h5>
+                <h5 class="modal-title"  *ngIf="deleteTask">Delete recurring task</h5>
+
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

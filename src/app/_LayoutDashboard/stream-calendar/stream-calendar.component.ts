@@ -241,6 +241,7 @@ export class StreamCalendarComponent implements OnInit {
 
 
   ngOnInit(): void {
+    
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.initAutosize();
     this.initFirstclass();
@@ -259,7 +260,7 @@ export class StreamCalendarComponent implements OnInit {
       inertia: true,
       placement: 'left'
     });
-
+    this.loadingDMS = false;
     this.GetScheduledJson();
 
 
@@ -317,7 +318,32 @@ export class StreamCalendarComponent implements OnInit {
      this._SEndDate = moment().format("YYYY-MM-DD").toString();
      // this.Event_requests();
      this.GetTimeslabfordate()
+
+
+
+
+
+
+
+
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
   private initAutosize() {
     function autosize() {
@@ -602,9 +628,9 @@ export class StreamCalendarComponent implements OnInit {
   }
 
 
-
-
 /////////////////////////////////////////// Create Event and Create Task sidebar start /////////////////////////////////////////////////////////
+
+
 Title_Name: any;
 notProvided: boolean = false;
 MinLastNameLength: boolean;
@@ -2124,6 +2150,7 @@ bindCustomRecurrenceValues(){
       }
       for (let index = 0; index < this.dayArr.length; index++) {
         if (this.dayArr[index].checked) {
+          debugger
           const day = this.dayArr[index].value;
           _arraytext.push(day);
           var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
@@ -2490,7 +2517,7 @@ bindCustomRecurrenceValues(){
 
   GetScheduledJson() {
 
-    this.loadingDMS = false;
+   
     this._calenderDto.EmpNo = this.Current_user_ID;
     this._calenderDto.User_Type=this.user_Type;
     this.fetchDataStartTime = performance.now();
@@ -3094,7 +3121,7 @@ End_meeting() {
       (data => {
         this.GetScheduledJson();
         this.GetPending_Request();
-        this.customEventModal_dismiss();
+        this.customTaskModal_dismiss();
       });
     console.log(this._calenderDto, "dto")
     this.notifyService.showSuccess("Task completed.", "Success");
@@ -3221,6 +3248,7 @@ Pending_meeting() {
     this.GetScheduledJson();
     this.GetPending_Request();
     this.customEventModal_dismiss();
+    this.customTaskModal_dismiss();
   });
 
 }
@@ -3239,9 +3267,14 @@ onSingleEventDelete() {
     }
   });
 }
+
+
+
 AllDelete_event(val) {
   this.flagevent = val;
 }
+
+
 
 AlldeleteSchedule() {
 
@@ -3250,6 +3283,7 @@ AlldeleteSchedule() {
   this.CalenderService.NewDelete_table(this._calenderDto).subscribe(text => {
     this.notifyService.showSuccess("Deleted successfully", "Success");
     this.customEventModal_dismiss();
+    this.customTaskModal_dismiss();
     this.GetScheduledJson();
     this.GetPending_Request();
   })
@@ -3647,9 +3681,9 @@ ReshudingTaskandEvent() {
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
         this._meetingroom = this.Location_Type?true:false;
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
-        document.getElementById("subtaskid").style.display = "none";
-        document.getElementById("Guest_Name").style.display = "flex";
-        document.getElementById("meeting-online-add").style.display = "flex";
+         document.getElementById("subtaskid").style.display = "none";
+        //69 document.getElementById("Guest_Name").style.display = "flex";
+        //69 document.getElementById("meeting-online-add").style.display = "flex";
         document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
         document.getElementById("Descrip_Name").style.display = "flex";
         document.getElementById("core_viw121").style.display = "flex";
@@ -3693,6 +3727,7 @@ ReshudingTaskandEvent() {
         // valid starttimearr and endtimearr setting end.
     });
    this.customEventModal_dismiss();
+   this.customTaskModal_dismiss();
 }
 
 
@@ -4436,8 +4471,6 @@ proposedate(){
 
 
 
-
-
 proposenewtime() {
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.propose_date = this.propose_date;
@@ -4608,5 +4641,30 @@ submitEventToRepeat(){
       alert('Please Select Valid Date and Time');
     }
   }
+
+
+  deleteTask:boolean=false;
+
+  deleteRecurringTask(){
+    this.deleteTask=true;
+  }
+
+  deleteRecurringEvent(){
+    this.deleteTask=false;
+  }
+
+
+  uncomplete_task() {
+
+    this.CalenderService.NewTaskUncomplete(this.Schedule_ID).subscribe
+      (data => {
+        this.GetScheduledJson();
+        this.GetPending_Request();
+        this.customTaskModal_dismiss();
+      });
+    // console.log(this._calenderDto, "dto")
+    this.notifyService.showSuccess("Task Uncomplete.", "Success");
+  }
+
 /////////////////////////////////////////// Created On (Schedule event popup box) End /////////////////////////////////////////////////////////
 }

@@ -1851,7 +1851,7 @@ export class DashboardComponent implements OnInit {
         + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       this.EventNumber = timestamp;
     }
-
+ 
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -1872,6 +1872,7 @@ export class DashboardComponent implements OnInit {
       }
       for (let index = 0; index < this.dayArr.length; index++) {
         if (this.dayArr[index].checked) {
+          debugger
           const day = this.dayArr[index].value;
           _arraytext.push(day);
           var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
@@ -3926,6 +3927,7 @@ currentTime:any;
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this.pending_status = this.EventScheduledjson[0].Pending_meeting;
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
+        console.log(this.Meeting_status,'Meeting_status')
         
         this._StartDate=this.EventScheduledjson[0].Schedule_date;
         this.Startts=this.EventScheduledjson[0].St_Time;
@@ -3938,7 +3940,7 @@ currentTime:any;
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
      
           document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
-          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("deleteendit").style.display =this.Meeting_status==true?'none':'flex';
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "flex";
           // document.getElementById("act-btn").style.display = "flex";
