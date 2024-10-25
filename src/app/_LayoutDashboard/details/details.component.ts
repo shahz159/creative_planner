@@ -5241,7 +5241,7 @@ config: AngularEditorConfig = {
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
-    placeholder: 'Enter text here...',
+    placeholder: 'Please enter description',
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
@@ -10848,9 +10848,6 @@ getFormattedDuration(totalDuration: number): string {
 
     this.router.navigate(["../backend/createproject"],{queryParams:{AssignedProjectId:taskid}});
   }
-
-
-
 
 
 

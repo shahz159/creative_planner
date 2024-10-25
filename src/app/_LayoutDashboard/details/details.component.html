@@ -11105,11 +11105,13 @@
                           <div class="se-col-1">
                               <div class="label-icon">
                                   <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 6V19M6 6H18" stroke="#717171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                              </div>
+                                  <!-- <span class="text-danger size">*</span> -->
+                                 </div>
                           </div>
                           <div class="se-col-11">
                               <div class="d-flex align-items-end">
                                   <div class="form-group w-100">
+                                    <!-- <span >Add title<span class="text-danger">*</span></span> -->
                                       <input id="dsb-evt-titleName" class="form-control" [ngClass]="{
                                           'error-borderbottom': ((!Title_Name||(Title_Name&&(Title_Name.trim().length<3||Title_Name.trim().length>100)))&&notProvided)
                                           ||( !MinLastNameLength||Title_Name&&(Title_Name.trim().length>100) )
@@ -11118,7 +11120,7 @@
                                           minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
                                       <div class="d-flex flex-column ">
                                       <span style="color:red" [hidden]="MinLastNameLength">Please enter min length 3.</span>
-                                      <span style="color:red" *ngIf="(!Title_Name || !Title_Name.trim() )&&notProvided">Please enter title name</span>
+                                      <span style="color:red" *ngIf="(!Title_Name || !Title_Name.trim() )&&notProvided">Please enter title name.</span>
                                       <span style="color:red" *ngIf="Title_Name&&(Title_Name.trim().length>100)">Title should not exceed 100 characters.</span>
                                      </div>
                                   </div>
@@ -12819,7 +12821,7 @@
                                       [(ngModel)]="ProjectDescription"   (input)="updateCharacterCount()" (paste)="updateCharacterCount()"></textarea>
                               </div>
                               <span *ngIf="characterCount > 0" >Max characters {{characterCount}}/500 </span>
-                              <span *ngIf="characterCount>=501"  style="color:red"> Description should be less than 500 characters.</span>
+                              <span *ngIf="characterCount>=501"  style="color:red"> Description should be less than or equal 500 characters.</span>
                               <span style="color:red" *ngIf="!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired" >project description required</span>
                           </div>
                       </div>
