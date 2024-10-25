@@ -1014,10 +1014,12 @@ span.previous-dot {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: 50vh;
 }
 
 .notimeline-present img {
-  width: 13%;
+  width: 24%;
 }
 
 .tm-subm-sb {
@@ -1095,7 +1097,7 @@ span.previous-dot {
 .add-timeline-item {
   display: flex;
   position: relative;
-  padding-bottom: 1rem;
+  padding-bottom: 2rem;
   transition: all 0.15s ease-in-out;
 }
 
@@ -1112,8 +1114,8 @@ span.previous-dot {
 }
 
 .add-timeline-item-icon svg {
-  width: 22px;
-  height: 22px;
+  width: 25px;
+  height: 24px;
   color: #5f6368;
 }
 
@@ -1131,12 +1133,20 @@ span.previous-dot {
 ::ng-deep .add-timeline-item-group .ng-select .ng-select-container {
   border-radius: 0px;
   border: 0px;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 2px solid #ededed;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-out;
 }
 
 ::ng-deep .add-timeline-item-group .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
-  border-color: #5867dd;
+  border-color: #09a5ec;
   box-shadow: none;
+  border-width:2px;
+  transition-delay:0.2s;
+  transition-duration:0.2s;
+  transition-property:border-color;
+  transition-timing-function: ease-in;
+
 }
 
 .add-timeline-date-time-div {
@@ -1161,15 +1171,19 @@ span.previous-dot {
 }
 
 .add-timeline-picktime-box {
-  border: 1px solid #d3d3d3e0;
+  border: 2px solid #d3d3d3e0;
   border-radius: 7px;
   display: inline-block;
   min-width: 65px;
   padding: 0.07em 0.5em;
 }
 
+.add-timeline-picktime-box.time-duration{
+  background-color: #d3d3d3e0;
+}
+
 .add-timeline-dt-muted {
-  color: #d8e2fb;
+  color: #cccccc;
   font-weight: 700;
 }
 
@@ -1190,10 +1204,27 @@ span.previous-dot {
 }
 
 ::ng-deep .add-timeline-item-group .datetime-ngselect .ng-select .ng-select-container {
-  border-radius: 8px;
+  /* border-radius: 8px; */
   border: 0px;
-  border-bottom: 0px solid #f1f2fc;
-  background-color: #f1f2fc;
+  border-bottom: 1px solid #f1f2fc;
+  /* background-color: #f1f2fc; */
+}
+
+#d-date{
+  border-color: #f1f2fc;
+  border-width:2px;
+  transition-duration:0.5s;
+  transition-property:border-color;
+  transition-timing-function: ease-in;
+}
+
+#d-date:focus-within{
+  border-color: #09a5ec;
+  border-width:2px;
+  transition-delay:0.2s;
+  transition-duration:0.2s;
+  transition-property:border-color;
+  transition-timing-function: ease-in;
 }
 
 .add-timeline-item-input-group .input-group-text {
@@ -1298,10 +1329,11 @@ span.previous-dot {
 }
 
 .end-timeline-modal-body {
-  padding: .75rem 1.25rem;
-  padding-right: 0rem;
-  max-height: 64vh;
-  overflow-y: scroll;
+  /* padding: .75rem 1.25rem; */
+  /* padding-right: 0rem; */
+  /* max-height: 64vh;
+  overflow-y: scroll; */
+  padding:1rem;
   overflow-x: hidden;
 }
 
@@ -1353,7 +1385,33 @@ span.previous-dot {
 .end-timeline-ul {
   margin-top: 1rem;
   user-select: none;
+  max-height: 64vh;
+  overflow-y: auto;
+
+  min-height: 50vh;
 }
+
+.end-timeline-ul::-webkit-scrollbar{
+    width:0.6rem;
+}
+
+.end-timeline-ul::-webkit-scrollbar-thumb{
+    background-color: #e8e8e8;
+    border-radius: 15px;
+}
+
+.timeline-report-line {
+  width: 2px;
+  background-color: #e2e0e0;
+  flex-grow: 1;
+  align-self: center;
+  position: relative;
+  left: -3px;
+  top: 9px;
+}
+
+
+
 
 .end-timeline-li-heading {
   display: flex;
@@ -1650,3 +1708,81 @@ span.timeline-time svg {
 }
 
 /* Notification pin css */
+
+
+
+/* project, action details chip css*/
+
+.info-chip{
+  border: 1px solid #e1e1e1; 
+  border-radius: 4px; 
+  padding: 0.1rem 1rem; 
+  user-select: none;  
+  display: flex; 
+  column-gap: 10px;
+}
+
+.info-chip-label{
+  line-height: 2; 
+  font-weight: 500;
+}
+
+.info-chip-value{
+  line-height: 1.8;
+  color: #242424;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: lowercase;
+}
+
+
+/* project, action details chip css*/
+
+
+
+.timeline-descr{
+  color: #999898;
+  font-weight: 400;
+  cursor: default;
+}
+
+.timeline-descr.collapse{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  max-height: 3em;
+  line-height: 1.5em;
+}
+
+/* .ellipsis-dots{
+  letter-spacing: 0.1em;
+  font-size: 13px;
+  line-height: 8px;
+  font-weight: bold;
+} */
+
+
+.report-item .timeline-time .tm-start-end{
+  font-size: 9px;
+  color: #a9a9a9 !important;
+}
+
+.notimeline-present-label{
+  color: #b2b3b3;
+  font-weight: 400;
+}
+
+.end-timeline-ul .action-label{
+  background-color: #76a5e0;
+  color: #ffffff !important;
+  font-weight: 400;
+  padding: 1px 3px 1px 3px;
+  margin-right: 3px;
+  border-radius: 3px;
+}
+

@@ -547,6 +547,8 @@ export class MeetingDetailsComponent implements OnInit {
   completionReports:any;
   CurrentNotesCount:any;
   CurrentTaskCount:any;
+  Status1: any;
+
   
 
   meeting_details() {
@@ -711,7 +713,8 @@ export class MeetingDetailsComponent implements OnInit {
       //.log(this.Isadmin,'isadmin')
       this.sched_admin = this.EventScheduledjson[0]['Owner_isadmin']
       this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
-
+      this.Status1 = this.EventScheduledjson[0].Status.trim();
+      
       if (this.Isadmin) {
         this.isCheckboxDisabled = false;
       }

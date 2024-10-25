@@ -109,7 +109,7 @@
                     </button>
                     <div class="dropdown-menu drop-cus"  aria-labelledby="dropdownCreateMenuLink">
                         <a class="dropdown-item"  (click)="Task_type(1)" (click)="createEventonlyTaskModal()">Task</a>
-                        <a class="dropdown-item"  (click)="Task_type(2)">Event</a>
+                        <a class="dropdown-item"  (click)="changeScheduleType(2);Task_type(2)">Event</a>
                         <!-- (click)="open_schedule_event_task()" -->
                     </div>
                 </div>
@@ -503,11 +503,10 @@
                                <!-- JUL WED, 2024 -->
                             </div>
                         </div>
-                        <div class="sch-evt-item  sch-evt-border-bottom" *ngFor="let meetingItem of group.events"  (click)="customEventModal(meetingItem.Schedule_Type)">
-                            <div style="display: flex;align-items: center;" (click)="GetClickEventJSON_Calender(meetingItem.Schedule_ID)">
+                        <div class="sch-evt-item  sch-evt-border-bottom" *ngFor="let meetingItem of group.events"  (click)="customEventModal(meetingItem.Schedule_Type);GetClickEventJSON_Calender(meetingItem.Schedule_ID,meetingItem.className)">
+                            <div style="display: flex;align-items: center;">
                                 <div class="sch-evt-p sch-evt-pr-0">
-
-                                    <svg *ngIf="meetingItem.Schedule_Type==1" width="18px" height="18px" viewBox="0 0 20 20"
+                                    <svg *ngIf="meetingItem.Schedule_Type==1 &&  meetingItem.className!='fc-green'" width="18px" height="18px" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg" fill="none">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
@@ -518,13 +517,23 @@
                                         </path>
                                     </g>
                                    </svg>
+                                   <svg *ngIf="meetingItem.Schedule_Type==1 && meetingItem.className=='fc-green'" width="18px" height="18px" viewBox="0 0 20 20"
+                                   xmlns="http://www.w3.org/2000/svg" fill="none">
+                                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                  <g id="SVGRepo_iconCarrier">
+                                      <path fill="#1dc9b7" fill-rule="evenodd"
+                                            d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z">
+                                      </path>
+                                  </g>
+                                 </svg>
                                     <svg *ngIf="meetingItem.Schedule_Type==2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                        width="20px" height="20px" viewBox="0 0 20 20" version="1.1" [ngClass]="{
+                                        width="20px" height="20px" viewBox="0 0 20 20" version="1.1" [ngClass]="meetingItem.className ?{
                                             'blue-color': meetingItem.className =='fc-info',
                                             'purple-color':  meetingItem.className =='fc-purple' || meetingItem.className =='fc-req',
                                             'red-color': meetingItem.className =='fc-red',
                                             'green-color': meetingItem.className =='fc-suc'
-                                        }">
+                                        }: 'default-color'">
                                         <g id="meeting">
                                             <!-- 69 <g id="meeting" style="color: #2786fb;"> -->
                                             <path
@@ -539,10 +548,13 @@
                                         </g>
                                     </svg>
                                 </div>
-                                <div class="sch-evt-time sch-evt-p  sch-evt-pr-0">{{meetingItem.start | date: 'h:mm a'}} - {{meetingItem.end | date: 'h:mm a'}}
-                                </div>
+                                <div class="sch-evt-time sch-evt-p  sch-evt-pr-0" *ngIf="meetingItem.className=='fc-red'"><s>{{meetingItem.start | date: 'h:mm a'}} - {{meetingItem.end | date: 'h:mm a'}}</s> </div>                         
+                                <div class="sch-evt-time sch-evt-p  sch-evt-pr-0" *ngIf="meetingItem.className=='fc-green'"><s>{{meetingItem.start | date: 'h:mm a'}} - {{meetingItem.end | date: 'h:mm a'}}</s> </div>
+                                <div class="sch-evt-time sch-evt-p  sch-evt-pr-0" *ngIf="meetingItem.className!='fc-green' && meetingItem.className!='fc-red'">{{meetingItem.start | date: 'h:mm a'}} - {{meetingItem.end | date: 'h:mm a'}}</div>
                                 <div class="sch-evt-info">
-                                    <span class="sch-evt-p sch-evt-pl-0">{{meetingItem.title}}</span>
+                                    <span class="sch-evt-p sch-evt-pl-0" *ngIf="meetingItem.className=='fc-green'"><s>{{meetingItem.title}}</s></span>
+                                    <span class="sch-evt-p sch-evt-pl-0" *ngIf="meetingItem.className=='fc-red'"><s>{{meetingItem.title}}</s></span>
+                                    <span class="sch-evt-p sch-evt-pl-0" *ngIf="meetingItem.className!='fc-green' && meetingItem.className!='fc-red'">{{meetingItem.title}}</span>
                                 </div>
                             </div>
                             <div class="sch-evt-mem">
@@ -2234,7 +2246,7 @@
 
 
 
-                                                        <div class="task-add-item">
+                                                        <div class="task-add-item"  id="subtaskid">
                                                             <div class="task-add-item-icon">
                                                                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11.2929 2.29289C11.6834 1.90237 12.3166 1.90237 12.7071 2.29289L16.7071 6.29289C17.0976 6.68342 17.0976 7.31658 16.7071 7.70711C16.3166 8.09763 15.6834 8.09763 15.2929 7.70711L13 5.41421V15C13 15.5523 12.5523 16 12 16C11.4477 16 11 15.5523 11 15V5.41421L8.70711 7.70711C8.31658 8.09763 7.68342 8.09763 7.29289 7.70711C6.90237 7.31658 6.90237 6.68342 7.29289 6.29289L11.2929 2.29289ZM5 13C5 11.3431 6.34315 10 8 10H9C9.55228 10 10 10.4477 10 11C10 11.5523 9.55228 12 9 12H8C7.44772 12 7 12.4477 7 13V19C7 19.5523 7.44772 20 8 20H16C16.5523 20 17 19.5523 17 19V13C17 12.4477 16.5523 12 16 12H15C14.4477 12 14 11.5523 14 11C14 10.4477 14.4477 10 15 10H16C17.6569 10 19 11.3431 19 13V19C19 20.6569 17.6569 22 16 22H8C6.34315 22 5 20.6569 5 19V13Z" fill="currentColor"></path> </g></svg>
                                                             </div>
@@ -2492,6 +2504,8 @@
                 <span id="task-title" style="display: none" >Create task</span>
                 <span id="Copy-title" style="display: none" >Copy event</span>
                 <span id="Edit-title" style="display: none" >Edit event</span>
+                <span id="Repeat-title" style="display: none">Repeat event</span>
+
             </h5>
             <div class="create-event-modal-close"  title="Close" (click)="createEventTaskModal_dismiss()">
                 <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17.769 16l9.016-9.016c0.226-0.226 0.366-0.539 0.366-0.884 0-0.691-0.56-1.251-1.251-1.251-0.346 0-0.658 0.14-0.885 0.367v0l-9.015 9.015-9.016-9.015c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l9.015 9.016-9.015 9.015c-0.227 0.226-0.367 0.539-0.367 0.885 0 0.691 0.56 1.251 1.251 1.251 0.345 0 0.658-0.14 0.884-0.366v0l9.016-9.016 9.015 9.016c0.227 0.228 0.541 0.369 0.888 0.369 0.691 0 1.251-0.56 1.251-1.251 0-0.347-0.141-0.661-0.369-0.887l-0-0z"></path> </g></svg>
@@ -2537,7 +2551,7 @@
                     </div>
                     <div class="create-event-item-group">
                         <div class="create-event-date-time-div">
-                            <div class="create-event-date-time">
+                            <div class="create-event-date-time">                            
                                 <div class="form-group mb-0">
                                     <div class="curser-pointer"  (click)="eventtaskitemtimeModal()">
                                         <div class="create-event-dt-tm">
@@ -2552,10 +2566,38 @@
                                         </div>
                                         <div class="create-event-dt-text">
                                             <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
-                                            <span>The {{ScheduleType=='Event'?'event':ScheduleType=='Task'?'task':''}} scheduled on {{_StartDate|date:'MMMM d, y'}} {{Startts}} to {{Endtms}}</span>
+                                            <span>The {{ScheduleType=='Event'?'event':ScheduleType=='Task'?'task':''}} scheduled on {{_StartDate|date:'MMMM d, y'}} {{Startts}} to {{Endtms}}
+                                          -
+                                            <ng-container  *ngIf="selectedrecuvalue">
+                                                <span *ngIf="selectedrecuvalue=='0'">Do not repeat</span>
+                                                <span *ngIf="selectedrecuvalue=='1'">Daily until {{_EndDate|date:'MMMM d, y'}}</span>
+                                                <span *ngIf="selectedrecuvalue=='2'">Weekly until {{_EndDate|date:'MMMM d, y'}}</span>
+                                                <span *ngIf="selectedrecuvalue=='3'">Monthly until {{_EndDate|date:'MMMM d, y'}}</span>
+                                            </ng-container>
+
+                                            <ng-container *ngIf="selectedrecuvalue=='2'">
+                                                -
+                                                <ng-container *ngIf="mtgOnDays.length===1">Every {{mtgOnDays[0]}}</ng-container>
+                                                <ng-container *ngIf="mtgOnDays.length>1"> on
+                                                    <ng-container *ngFor="let day of mtgOnDays;let i=index">
+                                                    {{day+(i+1===mtgOnDays.length?'.':i+2===mtgOnDays.length?' and ':', ')}}
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+
+                                              <ng-container  *ngIf="selectedrecuvalue=='3'">
+                                                -
+                                                  <ng-container *ngIf="mtgOnDays.length===1">Every {{mtgOnDays[0]}}</ng-container>
+                                                  <ng-container *ngIf="mtgOnDays.length>1"> on
+                                                      <ng-container *ngFor="let day of mtgOnDays;let i=index">
+                                                         {{day+(i+1===mtgOnDays.length?'.':i+2===mtgOnDays.length?' and ':', ')}}
+                                                      </ng-container>
+                                                  </ng-container>
+                                                </ng-container>
+                                            </span>
+
                                         </div>                       
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -2893,7 +2935,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="create-event-item">
+                            <div class="create-event-item"  id="subtaskid">
                                 <div class="create-event-item-icon">
                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.2929 2.29289C11.6834 1.90237 12.3166 1.90237 12.7071 2.29289L16.7071 6.29289C17.0976 6.68342 17.0976 7.31658 16.7071 7.70711C16.3166 8.09763 15.6834 8.09763 15.2929 7.70711L13 5.41421V15C13 15.5523 12.5523 16 12 16C11.4477 16 11 15.5523 11 15V5.41421L8.70711 7.70711C8.31658 8.09763 7.68342 8.09763 7.29289 7.70711C6.90237 7.31658 6.90237 6.68342 7.29289 6.29289L11.2929 2.29289ZM5 13C5 11.3431 6.34315 10 8 10H9C9.55228 10 10 10.4477 10 11C10 11.5523 9.55228 12 9 12H8C7.44772 12 7 12.4477 7 13V19C7 19.5523 7.44772 20 8 20H16C16.5523 20 17 19.5523 17 19V13C17 12.4477 16.5523 12 16 12H15C14.4477 12 14 11.5523 14 11C14 10.4477 14.4477 10 15 10H16C17.6569 10 19 11.3431 19 13V19C19 20.6569 17.6569 22 16 22H8C6.34315 22 5 20.6569 5 19V13Z" fill="currentColor"></path></g></svg>
                                 </div>
@@ -3662,6 +3704,11 @@
             (click)="OnSubmitReSchedule(1)">Update</button>
             <button type="button" class="btn btn-event-close" (click)="createEventTaskModal_dismiss()">Close</button>
           </div>
+          
+          <div class="modal-footer" *ngIf="eventRepeat==true&&copyTask==false&&editTask==false">
+            <button type="button"  class="btn btn-event-save" (click)="onSubmitBtnClicked()">Submit</button>        
+            <button type="button" class="btn btn-event-close" (click)="createEventTaskModal_dismiss()">Close</button>
+          </div>
       </div>
     </div>
 </div>
@@ -3867,14 +3914,12 @@
 <!-- Custom Task Modal Start -->
 <div class="modal-backdrop fade" id="customTaskModalBackdrop" style="display: none"></div>
 <div class="modal fade" id="customTaskModal" data-backdrop="static"  data-keyboard="false"  tabindex="-1" role="dialog" aria-labelledby="customTaskModalTitle" aria-modal="true" style="display: none"> 
+    <div class="d-flex align-items-center justify-content-center" *ngIf="loading" style="height:65vh;margin-top:8em;">
+        <div class="spinner-border  w-100px h-100px" style="color:#6388e3;" role="status">
+       <span class="visually-hidden"></span>
+       </div>
+    </div>
     <div class="modal-dialog modal-dialog-centered" role="document">
-
-        <div class="d-flex align-items-center justify-content-center" *ngIf="loading" style="height:65vh">
-            <div class="spinner-border  w-100px h-100px" style="color:#6388e3;" role="status">
-           <span class="visually-hidden"></span>
-           </div>
-        </div>
-
       <div class="modal-content">
         <div class="modal-body p-0">
           <div class="custom-evt-tsk-card">
@@ -3884,18 +3929,23 @@
                     <div class="date-value">{{creation_date|date:'EEEE, MMMM d, YYYY'}}</div>
                   </div>
                   <div class="custom-evt-tsk-action">
-                    <div class="custom-evt-tsk-action-icon" title="Copy">
+                    <div class="custom-evt-tsk-action-icon" title="Copy" (click)="changeScheduleType(1);DublicateTaskandEvent()">
                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M21 8C21 6.34315 19.6569 5 18 5H10C8.34315 5 7 6.34315 7 8V20C7 21.6569 8.34315 23 10 23H18C19.6569 23 21 21.6569 21 20V8ZM19 8C19 7.44772 18.5523 7 18 7H10C9.44772 7 9 7.44772 9 8V20C9 20.5523 9.44772 21 10 21H18C18.5523 21 19 20.5523 19 20V8Z" fill="currentColor"></path> <path d="M6 3H16C16.5523 3 17 2.55228 17 2C17 1.44772 16.5523 1 16 1H6C4.34315 1 3 2.34315 3 4V18C3 18.5523 3.44772 19 4 19C4.55228 19 5 18.5523 5 18V4C5 3.44772 5.44772 3 6 3Z" fill="currentColor"></path> </g></svg>
                     </div>
-                    <div class="custom-evt-tsk-action-icon" title="Pending">
+                    <div class="custom-evt-tsk-action-icon" title="Pending"  *ngIf="Isadmin==true && pending_status==false" (click)="Task_pending()">
                         <svg width="64px" height="64px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Free-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"> <g transform="translate(-451.000000, -748.000000)" id="Group" stroke="currentColor" stroke-width="1.75"> <g transform="translate(449.000000, 746.000000)" id="Shape"> <line x1="17" y1="3" x2="17" y2="5"> </line> <line x1="7" y1="3" x2="7" y2="5"> </line> <path d="M18,11.5 L18,17.9933387 M18.0043926,21.0066613 L18,20.9933387"> </path> <path d="M8.03064542,21 C7.42550126,21 6.51778501,21 5.30749668,21 C4.50512981,21 4.2141722,20.9218311 3.92083887,20.7750461 C3.62750553,20.6282612 3.39729582,20.4128603 3.24041943,20.1383964 C3.08354305,19.8639324 3,19.5916914 3,18.8409388 L3,7.15906122 C3,6.4083086 3.08354305,6.13606756 3.24041943,5.86160362 C3.39729582,5.58713968 3.62750553,5.37173878 3.92083887,5.22495386 C4.2141722,5.07816894 4.50512981,5 5.30749668,5 L18.6925033,5 C19.4948702,5 19.7858278,5.07816894 20.0791611,5.22495386 C20.3724945,5.37173878 20.6027042,5.58713968 20.7595806,5.86160362 C20.9164569,6.13606756 21,7.24671889 21,7.99747152"> </path> </g> </g> </g> </g></svg>
                     </div>
-                      <div class="custom-evt-tsk-action-icon" title="Edit">
+                      <div class="custom-evt-tsk-action-icon" title="Edit" (click)="changeScheduleType(1);ReshudingTaskandEvent();updateCharacterCount()">
                           <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Edit_Pencil_01"> <path id="Vector" d="M12 8.00012L4 16.0001V20.0001L8 20.0001L16 12.0001M12 8.00012L14.8686 5.13146L14.8704 5.12976C15.2652 4.73488 15.463 4.53709 15.691 4.46301C15.8919 4.39775 16.1082 4.39775 16.3091 4.46301C16.5369 4.53704 16.7345 4.7346 17.1288 5.12892L18.8686 6.86872C19.2646 7.26474 19.4627 7.46284 19.5369 7.69117C19.6022 7.89201 19.6021 8.10835 19.5369 8.3092C19.4628 8.53736 19.265 8.73516 18.8695 9.13061L18.8686 9.13146L16 12.0001M12 8.00012L16 12.0001" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
                       </div>
                       <div class="custom-evt-tsk-action-icon" title="Delete">
-                          <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                      </div>
+                        <span *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0" (click)="deleteRecurringTask()" data-toggle="modal" data-target="#delevent">
+                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                        </span>
+                        <span *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0"  (click)="onSingleEventDelete()">
+                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                       </span>                     
+                    </div>
                       <div class="custom-evt-tsk-action-icon"  title="Close"  (click)="customTaskModal_dismiss()">
                           <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17.769 16l9.016-9.016c0.226-0.226 0.366-0.539 0.366-0.884 0-0.691-0.56-1.251-1.251-1.251-0.346 0-0.658 0.14-0.885 0.367v0l-9.015 9.015-9.016-9.015c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l9.015 9.016-9.015 9.015c-0.227 0.226-0.367 0.539-0.367 0.885 0 0.691 0.56 1.251 1.251 1.251 0.345 0 0.658-0.14 0.884-0.366v0l9.016-9.016 9.015 9.016c0.227 0.228 0.541 0.369 0.888 0.369 0.691 0 1.251-0.56 1.251-1.251 0-0.347-0.141-0.661-0.369-0.887l-0-0z"></path> </g></svg>
                       </div>
@@ -3904,8 +3954,11 @@
               <div class="custom-evt-tsk-body"  *ngFor="let item of EventScheduledjson">
                   <div class="custom-evt-tsk-item">
                       <div class="custom-evt-tsk-item-icon task-color">
-                          <svg width="64px" height="64px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" fill-rule="evenodd" d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z"></path></g></svg>
-                      </div>
+                          <svg *ngIf="Meeting_status==false && Schedule_type1=='Task'" 
+                          width="64px" height="64px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" fill-rule="evenodd" d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z"></path></g></svg>  
+                          <svg *ngIf="Meeting_status==true && Schedule_type1=='Task'" 
+                          width="64px" height="64px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#1dc9b7" fill-rule="evenodd" d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z"></path></g></svg>                     
+                        </div>
                       <div class="custom-evt-tsk-item-control line-clamp">
                           <span class="custom-evt-tsk-item-title">{{item.Task_Name}}</span>
                       </div>
@@ -3923,15 +3976,36 @@
                       </div>
                       <div class="custom-evt-tsk-item-control">
                           <div class="custom-evt-tsk-item-date">{{item.Schedule_date| date:'EEEE, MMMM d, YYYY'}}</div>
-                          <div class="custom-evt-tsk-item-time">{{ parseTime(item.NewSt_Time) | date: 'h:mm a' }} - {{ parseTime(item.NewEd_Time) | date: 'h:mm a' }} ({{ getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time) }})</div>
-                      </div>
+                          <div class="custom-evt-tsk-item-time">{{ parseTime(item.NewSt_Time) | date: 'h:mm a' }} - {{ parseTime(item.NewEd_Time) | date: 'h:mm a' }} ({{ getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time) }})
+                                     
+                       <span *ngIf="Status1 !='Rejected'  && Meeting_status==false" class="info item-badge">
+                            {{item.Schedule_Type}}
+                        </span>
+                        <span  *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Meeting_status==false" class="info item-badge">
+                            {{item.Recurrence}}
+                        </span>
+                        <span *ngIf="Meeting_status==true" class="info item-badge">
+                            {{item.Schedule_Type}}
+                        </span>
+                        <span *ngIf="item.Recurrence!='Do not repeat' && Meeting_status==true" class="info item-badge">
+                            {{item.Recurrence}}
+                        </span>
+                        <span *ngIf="Status1 =='Rejected'"  class="info item-badge">
+                            {{item.Schedule_Type}}
+                        </span>
+                        <span *ngIf="Status1 =='Rejected' && item.Recurrence!='Do not repeat'" class="info item-badge">
+                            {{item.Recurrence}}
+                        </span>
+                      
+                        </div>
+                        </div>
                   </div>
-                  <div class="custom-evt-tsk-item">
+                  <div class="custom-evt-tsk-item" *ngIf="item.Description">
                       <div class="custom-evt-tsk-item-icon">
                           <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M4 12H20M4 8H20M4 16H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
                       </div>
                       <div class="custom-evt-tsk-item-control">
-                          <span class="custom-evt-tsk-item-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</span>
+                          <span class="custom-evt-tsk-item-description"  [innerHTML]="item.Description"></span>
                       </div>
                   </div>
                   <div class="custom-evt-tsk-item" *ngIf="Project_NameScheduledjson&&Project_NameScheduledjson.length > 0">
@@ -3984,12 +4058,19 @@
                       </div>
                   </div>
               </div>
-              <div class="custom-evt-tsk-footer">
+              <div class="custom-evt-tsk-footer"  *ngIf="Meeting_status==false && Isadmin==true && Schedule_type1=='Task'">
                   <div></div>
                   <div class="custom-evt-tsk-footer-action">
                       <button class="btn btn-evt-tsk-foot" (click)="End_meeting()">Mark completed</button>
                   </div>
               </div>
+
+              <div class="custom-evt-tsk-footer"  *ngIf="Meeting_status==true && Isadmin==true && Schedule_type1=='Task'">
+                <div></div>
+                <div class="custom-evt-tsk-footer-action">
+                    <button class="btn btn-evt-tsk-foot" (click)="uncomplete_task()">Mark uncompleted</button>
+                </div>
+            </div>
           </div>
         </div>
       </div>
@@ -3999,11 +4080,18 @@
 
 <!-- Custom Event Modal Start -->
 <div class="modal-backdrop fade" id="customEventModalBackdrop" style="display: none"></div>
+
 <div class="modal fade" id="customEventModal" data-backdrop="static"  data-keyboard="false"  tabindex="-1" role="dialog" aria-labelledby="customEventModalTitle" aria-modal="true" style="display: none">
+    <div class="d-flex align-items-center justify-content-center" *ngIf="loading" style="height:65vh;margin-top:8em;">
+        <div class="spinner-border  w-100px h-100px" style="color:#6388e3;" role="status">
+       <span class="visually-hidden"></span>
+       </div>
+    </div>
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-body p-0">
             <div class="custom-evt-tsk-card">
+
                 <div class="custom-evt-tsk-head">
                     <div class="custom-evt-tsk-label">
                       <div class="date-info">Created On</div>
@@ -4030,24 +4118,24 @@
                             <span class="met-done-dot"></span><span>Done</span>
                         </div>
 
-                        <div class="custom-evt-tsk-action-icon" title="Copy" (click)="DublicateTaskandEvent()">
+                        <div class="custom-evt-tsk-action-icon" title="Copy" (click)="changeScheduleType(2);DublicateTaskandEvent()">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M21 8C21 6.34315 19.6569 5 18 5H10C8.34315 5 7 6.34315 7 8V20C7 21.6569 8.34315 23 10 23H18C19.6569 23 21 21.6569 21 20V8ZM19 8C19 7.44772 18.5523 7 18 7H10C9.44772 7 9 7.44772 9 8V20C9 20.5523 9.44772 21 10 21H18C18.5523 21 19 20.5523 19 20V8Z" fill="currentColor"></path> <path d="M6 3H16C16.5523 3 17 2.55228 17 2C17 1.44772 16.5523 1 16 1H6C4.34315 1 3 2.34315 3 4V18C3 18.5523 3.44772 19 4 19C4.55228 19 5 18.5523 5 18V4C5 3.44772 5.44772 3 6 3Z" fill="currentColor"></path> </g></svg>
                         </div>
-                        <div class="custom-evt-tsk-action-icon" title="Pending" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false" (click)="sweet_pending()">
+                        <div class="custom-evt-tsk-action-icon" title="Pending" *ngIf="Meeting_status==false && Isadmin==true" (click)="sweet_pending()">
                             <svg width="64px" height="64px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Free-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"> <g transform="translate(-451.000000, -748.000000)" id="Group" stroke="currentColor" stroke-width="1.75"> <g transform="translate(449.000000, 746.000000)" id="Shape"> <line x1="17" y1="3" x2="17" y2="5"> </line> <line x1="7" y1="3" x2="7" y2="5"> </line> <path d="M18,11.5 L18,17.9933387 M18.0043926,21.0066613 L18,20.9933387"> </path> <path d="M8.03064542,21 C7.42550126,21 6.51778501,21 5.30749668,21 C4.50512981,21 4.2141722,20.9218311 3.92083887,20.7750461 C3.62750553,20.6282612 3.39729582,20.4128603 3.24041943,20.1383964 C3.08354305,19.8639324 3,19.5916914 3,18.8409388 L3,7.15906122 C3,6.4083086 3.08354305,6.13606756 3.24041943,5.86160362 C3.39729582,5.58713968 3.62750553,5.37173878 3.92083887,5.22495386 C4.2141722,5.07816894 4.50512981,5 5.30749668,5 L18.6925033,5 C19.4948702,5 19.7858278,5.07816894 20.0791611,5.22495386 C20.3724945,5.37173878 20.6027042,5.58713968 20.7595806,5.86160362 C20.9164569,6.13606756 21,7.24671889 21,7.99747152"> </path> </g> </g> </g> </g></svg>
                         </div>
-                        <div class="custom-evt-tsk-action-icon" title="Edit" (click)="ReshudingTaskandEvent();updateCharacterCount()">
+                        <div class="custom-evt-tsk-action-icon" title="Edit" (click)="changeScheduleType(2);ReshudingTaskandEvent();updateCharacterCount()">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Edit_Pencil_01"> <path id="Vector" d="M12 8.00012L4 16.0001V20.0001L8 20.0001L16 12.0001M12 8.00012L14.8686 5.13146L14.8704 5.12976C15.2652 4.73488 15.463 4.53709 15.691 4.46301C15.8919 4.39775 16.1082 4.39775 16.3091 4.46301C16.5369 4.53704 16.7345 4.7346 17.1288 5.12892L18.8686 6.86872C19.2646 7.26474 19.4627 7.46284 19.5369 7.69117C19.6022 7.89201 19.6021 8.10835 19.5369 8.3092C19.4628 8.53736 19.265 8.73516 18.8695 9.13061L18.8686 9.13146L16 12.0001M12 8.00012L16 12.0001" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
                         </div>
                         <div class="custom-evt-tsk-action-icon" title="Delete">
-                            <span *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0"  data-toggle="modal" data-target="#delevent">
+                            <span *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0" (click)="deleteRecurringEvent()" data-toggle="modal" data-target="#delevent">
                                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                             </span>
                             <span *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0"  (click)="onSingleEventDelete()">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                            </span>                     
                         </div>
-                        <div class="custom-evt-tsk-action-icon" title="Close" (click)="customEventModal_dismiss()">
+                        <div class="custom-evt-tsk-action-icon" title="Close"  (click)="customEventModal_dismiss()">
                             <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17.769 16l9.016-9.016c0.226-0.226 0.366-0.539 0.366-0.884 0-0.691-0.56-1.251-1.251-1.251-0.346 0-0.658 0.14-0.885 0.367v0l-9.015 9.015-9.016-9.015c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l9.015 9.016-9.015 9.015c-0.227 0.226-0.367 0.539-0.367 0.885 0 0.691 0.56 1.251 1.251 1.251 0.345 0 0.658-0.14 0.884-0.366v0l9.016-9.016 9.015 9.016c0.227 0.228 0.541 0.369 0.888 0.369 0.691 0 1.251-0.56 1.251-1.251 0-0.347-0.141-0.661-0.369-0.887l-0-0z"></path> </g></svg>
                         </div>
                     </div>
@@ -4055,7 +4143,25 @@
                 <div class="custom-evt-tsk-body" *ngFor="let item of EventScheduledjson">
                     <div class="custom-evt-tsk-item">
                         <div class="custom-evt-tsk-item-icon event-color mt-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1"><g id="meeting"><path d="M 2.9375 3.746094 C 2.996094 3.742188 2.996094 3.742188 3.058594 3.742188 C 3.191406 3.742188 3.328125 3.742188 3.464844 3.742188 C 3.5625 3.742188 3.65625 3.742188 3.753906 3.742188 C 4.046875 3.742188 4.335938 3.742188 4.628906 3.742188 C 4.765625 3.742188 4.902344 3.742188 5.039062 3.738281 C 5.496094 3.738281 5.953125 3.738281 6.410156 3.738281 C 6.527344 3.738281 6.648438 3.738281 6.765625 3.738281 C 6.808594 3.738281 6.808594 3.738281 6.855469 3.738281 C 7.332031 3.738281 7.808594 3.738281 8.28125 3.734375 C 8.773438 3.734375 9.261719 3.734375 9.75 3.734375 C 10.027344 3.734375 10.300781 3.734375 10.574219 3.730469 C 10.835938 3.730469 11.09375 3.730469 11.351562 3.730469 C 11.445312 3.730469 11.539062 3.730469 11.636719 3.730469 C 12.742188 3.726562 12.742188 3.726562 13.203125 4.042969 C 13.234375 4.066406 13.269531 4.085938 13.304688 4.109375 C 13.777344 4.457031 14.082031 4.921875 14.179688 5.507812 C 14.183594 5.597656 14.1875 5.691406 14.191406 5.785156 C 14.191406 5.808594 14.195312 5.835938 14.195312 5.859375 C 14.195312 5.941406 14.199219 6.023438 14.203125 6.105469 C 14.203125 6.160156 14.203125 6.21875 14.207031 6.273438 C 14.210938 6.410156 14.214844 6.542969 14.21875 6.679688 C 14.445312 6.53125 14.671875 6.378906 14.898438 6.230469 C 14.980469 6.179688 15.058594 6.125 15.136719 6.074219 C 15.695312 5.707031 15.695312 5.707031 16.25 5.339844 C 16.292969 5.308594 16.335938 5.28125 16.378906 5.25 C 16.453125 5.203125 16.527344 5.152344 16.601562 5.101562 C 17.03125 4.8125 17.433594 4.621094 17.964844 4.707031 C 18.410156 4.800781 18.714844 5.023438 18.984375 5.390625 C 19.136719 5.667969 19.183594 5.910156 19.183594 6.226562 C 19.1875 6.257812 19.1875 6.292969 19.1875 6.328125 C 19.1875 6.4375 19.1875 6.550781 19.1875 6.664062 C 19.1875 6.742188 19.1875 6.824219 19.1875 6.902344 C 19.1875 7.167969 19.1875 7.429688 19.1875 7.691406 C 19.1875 7.785156 19.1875 7.875 19.191406 7.964844 C 19.191406 8.390625 19.191406 8.816406 19.191406 9.246094 C 19.191406 9.734375 19.191406 10.226562 19.195312 10.71875 C 19.195312 11.101562 19.195312 11.480469 19.195312 11.859375 C 19.195312 12.085938 19.195312 12.316406 19.199219 12.542969 C 19.199219 12.753906 19.199219 12.96875 19.199219 13.183594 C 19.199219 13.261719 19.199219 13.339844 19.199219 13.417969 C 19.203125 14.019531 19.148438 14.46875 18.71875 14.917969 C 18.414062 15.207031 18.039062 15.328125 17.621094 15.316406 C 17.164062 15.285156 16.792969 15.046875 16.421875 14.792969 C 16.386719 14.769531 16.355469 14.746094 16.320312 14.722656 C 16.246094 14.671875 16.171875 14.625 16.101562 14.574219 C 15.914062 14.445312 15.726562 14.316406 15.539062 14.191406 C 15.5 14.164062 15.464844 14.140625 15.425781 14.113281 C 15.027344 13.84375 14.625 13.582031 14.21875 13.320312 C 14.21875 13.371094 14.21875 13.371094 14.21875 13.417969 C 14.214844 13.542969 14.214844 13.667969 14.210938 13.792969 C 14.210938 13.847656 14.207031 13.898438 14.207031 13.953125 C 14.199219 14.621094 14.027344 15.21875 13.554688 15.703125 C 13.09375 16.078125 12.65625 16.257812 12.0625 16.253906 C 12.023438 16.257812 11.984375 16.257812 11.941406 16.257812 C 11.808594 16.257812 11.671875 16.257812 11.535156 16.257812 C 11.4375 16.257812 11.34375 16.257812 11.246094 16.257812 C 10.953125 16.257812 10.664062 16.257812 10.371094 16.257812 C 10.234375 16.257812 10.097656 16.257812 9.960938 16.261719 C 9.503906 16.261719 9.046875 16.261719 8.589844 16.261719 C 8.472656 16.261719 8.351562 16.261719 8.234375 16.261719 C 8.207031 16.261719 8.175781 16.261719 8.144531 16.261719 C 7.667969 16.261719 7.191406 16.261719 6.71875 16.265625 C 6.226562 16.265625 5.738281 16.265625 5.25 16.265625 C 4.972656 16.265625 4.699219 16.265625 4.425781 16.269531 C 4.164062 16.269531 3.90625 16.269531 3.648438 16.269531 C 3.554688 16.269531 3.460938 16.269531 3.363281 16.269531 C 2.257812 16.273438 2.257812 16.273438 1.796875 15.957031 C 1.746094 15.921875 1.746094 15.921875 1.695312 15.890625 C 1.226562 15.546875 0.910156 15.074219 0.820312 14.492188 C 0.816406 14.371094 0.816406 14.25 0.816406 14.132812 C 0.8125 14.09375 0.8125 14.058594 0.8125 14.019531 C 0.8125 13.898438 0.8125 13.777344 0.8125 13.652344 C 0.8125 13.566406 0.8125 13.476562 0.8125 13.390625 C 0.8125 13.101562 0.8125 12.8125 0.8125 12.527344 C 0.8125 12.425781 0.8125 12.328125 0.808594 12.226562 C 0.808594 11.816406 0.808594 11.402344 0.808594 10.988281 C 0.808594 10.882812 0.808594 10.773438 0.808594 10.667969 C 0.808594 10.640625 0.808594 10.613281 0.808594 10.585938 C 0.808594 10.15625 0.808594 9.722656 0.804688 9.292969 C 0.804688 8.851562 0.804688 8.40625 0.804688 7.964844 C 0.804688 7.714844 0.804688 7.46875 0.800781 7.21875 C 0.800781 6.984375 0.800781 6.75 0.800781 6.519531 C 0.800781 6.433594 0.800781 6.347656 0.800781 6.261719 C 0.796875 5.8125 0.800781 5.417969 0.976562 5 C 0.988281 4.96875 1 4.941406 1.011719 4.910156 C 1.230469 4.410156 1.671875 4.054688 2.167969 3.847656 C 2.425781 3.753906 2.664062 3.746094 2.9375 3.746094 Z M 2.589844 5.621094 C 2.480469 5.800781 2.496094 5.988281 2.496094 6.191406 C 2.496094 6.222656 2.496094 6.257812 2.496094 6.292969 C 2.492188 6.40625 2.492188 6.519531 2.492188 6.632812 C 2.492188 6.714844 2.492188 6.796875 2.492188 6.875 C 2.492188 7.097656 2.492188 7.316406 2.492188 7.539062 C 2.492188 7.675781 2.492188 7.8125 2.492188 7.953125 C 2.492188 8.382812 2.492188 8.8125 2.492188 9.246094 C 2.492188 9.742188 2.488281 10.242188 2.488281 10.738281 C 2.488281 11.125 2.488281 11.507812 2.488281 11.894531 C 2.488281 12.125 2.488281 12.351562 2.488281 12.582031 C 2.484375 12.800781 2.484375 13.015625 2.484375 13.230469 C 2.484375 13.3125 2.484375 13.390625 2.484375 13.46875 C 2.484375 13.578125 2.484375 13.6875 2.484375 13.792969 C 2.484375 13.824219 2.484375 13.855469 2.484375 13.890625 C 2.488281 14.117188 2.527344 14.304688 2.675781 14.488281 C 2.78125 14.566406 2.882812 14.574219 3.011719 14.574219 C 3.042969 14.574219 3.074219 14.574219 3.109375 14.574219 C 3.144531 14.574219 3.179688 14.574219 3.21875 14.574219 C 3.273438 14.574219 3.273438 14.574219 3.332031 14.574219 C 3.460938 14.578125 3.585938 14.578125 3.714844 14.578125 C 3.804688 14.578125 3.898438 14.578125 3.988281 14.578125 C 4.238281 14.578125 4.484375 14.578125 4.734375 14.578125 C 4.890625 14.578125 5.042969 14.578125 5.199219 14.578125 C 5.628906 14.578125 6.058594 14.578125 6.488281 14.578125 C 6.527344 14.578125 6.527344 14.578125 6.570312 14.578125 C 6.613281 14.578125 6.613281 14.578125 6.652344 14.578125 C 6.710938 14.578125 6.765625 14.578125 6.820312 14.578125 C 6.847656 14.578125 6.878906 14.578125 6.90625 14.578125 C 7.355469 14.578125 7.804688 14.582031 8.25 14.582031 C 8.710938 14.582031 9.171875 14.582031 9.632812 14.582031 C 9.890625 14.582031 10.152344 14.582031 10.410156 14.582031 C 10.652344 14.585938 10.894531 14.585938 11.140625 14.585938 C 11.230469 14.585938 11.316406 14.585938 11.40625 14.585938 C 11.527344 14.585938 11.652344 14.585938 11.773438 14.585938 C 11.824219 14.585938 11.824219 14.585938 11.878906 14.585938 C 12.066406 14.585938 12.191406 14.574219 12.34375 14.453125 C 12.519531 14.261719 12.503906 14.058594 12.503906 13.808594 C 12.503906 13.777344 12.503906 13.742188 12.503906 13.707031 C 12.507812 13.59375 12.507812 13.480469 12.507812 13.367188 C 12.507812 13.285156 12.507812 13.203125 12.507812 13.125 C 12.507812 12.902344 12.507812 12.683594 12.507812 12.460938 C 12.507812 12.324219 12.507812 12.1875 12.507812 12.046875 C 12.507812 11.617188 12.507812 11.1875 12.507812 10.753906 C 12.507812 10.257812 12.511719 9.757812 12.511719 9.261719 C 12.511719 8.875 12.511719 8.492188 12.511719 8.105469 C 12.511719 7.875 12.511719 7.648438 12.511719 7.417969 C 12.515625 7.199219 12.515625 6.984375 12.515625 6.769531 C 12.515625 6.6875 12.515625 6.609375 12.515625 6.53125 C 12.515625 6.421875 12.515625 6.3125 12.515625 6.207031 C 12.515625 6.175781 12.515625 6.144531 12.515625 6.109375 C 12.511719 5.882812 12.472656 5.695312 12.324219 5.511719 C 12.21875 5.433594 12.117188 5.425781 11.988281 5.425781 C 11.957031 5.425781 11.925781 5.425781 11.890625 5.425781 C 11.835938 5.425781 11.835938 5.425781 11.78125 5.425781 C 11.746094 5.425781 11.707031 5.425781 11.667969 5.425781 C 11.539062 5.421875 11.414062 5.421875 11.285156 5.421875 C 11.195312 5.421875 11.101562 5.421875 11.011719 5.421875 C 10.761719 5.421875 10.515625 5.421875 10.265625 5.421875 C 10.109375 5.421875 9.957031 5.421875 9.800781 5.421875 C 9.371094 5.421875 8.941406 5.421875 8.511719 5.421875 C 8.472656 5.421875 8.472656 5.421875 8.429688 5.421875 C 8.386719 5.421875 8.386719 5.421875 8.347656 5.421875 C 8.289062 5.421875 8.234375 5.421875 8.179688 5.421875 C 8.136719 5.421875 8.136719 5.421875 8.09375 5.421875 C 7.644531 5.421875 7.195312 5.417969 6.75 5.417969 C 6.289062 5.417969 5.828125 5.417969 5.367188 5.417969 C 5.109375 5.417969 4.847656 5.417969 4.589844 5.417969 C 4.347656 5.414062 4.105469 5.414062 3.859375 5.414062 C 3.769531 5.414062 3.683594 5.414062 3.59375 5.414062 C 3.472656 5.414062 3.347656 5.414062 3.226562 5.414062 C 3.191406 5.414062 3.15625 5.414062 3.121094 5.414062 C 2.890625 5.417969 2.746094 5.445312 2.589844 5.621094 Z M 17.324219 6.6875 C 17.28125 6.71875 17.28125 6.71875 17.234375 6.746094 C 17.1875 6.78125 17.1875 6.78125 17.136719 6.8125 C 17.101562 6.835938 17.066406 6.855469 17.035156 6.878906 C 16.84375 7.003906 16.652344 7.132812 16.464844 7.261719 C 16.078125 7.523438 15.703125 7.761719 15.28125 7.960938 C 14.578125 8.300781 14.578125 8.300781 14.128906 8.914062 C 13.910156 9.625 13.886719 10.515625 14.179688 11.210938 C 14.5 11.71875 15.097656 11.972656 15.617188 12.222656 C 15.988281 12.402344 16.320312 12.636719 16.65625 12.871094 C 16.824219 12.984375 16.996094 13.097656 17.164062 13.207031 C 17.210938 13.238281 17.210938 13.238281 17.253906 13.265625 C 17.371094 13.355469 17.371094 13.355469 17.5 13.398438 C 17.5 11.15625 17.5 8.914062 17.5 6.601562 C 17.429688 6.601562 17.378906 6.652344 17.324219 6.6875 Z M 17.324219 6.6875 " style="stroke: none; fill-rule: nonzero; fill: currentcolor; fill-opacity: 1;"></path><path d="M 4.46875 6.625 C 4.507812 6.625 4.550781 6.625 4.59375 6.625 C 4.683594 6.621094 4.773438 6.621094 4.859375 6.625 C 4.996094 6.625 5.128906 6.621094 5.261719 6.621094 C 5.347656 6.621094 5.4375 6.621094 5.523438 6.621094 C 5.582031 6.621094 5.582031 6.621094 5.640625 6.621094 C 5.933594 6.621094 6.21875 6.664062 6.441406 6.867188 C 6.652344 7.09375 6.699219 7.3125 6.691406 7.617188 C 6.667969 7.851562 6.578125 7.992188 6.414062 8.15625 C 6.125 8.351562 5.875 8.378906 5.53125 8.375 C 5.492188 8.375 5.449219 8.375 5.40625 8.375 C 5.316406 8.378906 5.226562 8.378906 5.140625 8.375 C 5.003906 8.375 4.871094 8.378906 4.738281 8.378906 C 4.652344 8.378906 4.5625 8.378906 4.476562 8.378906 C 4.4375 8.378906 4.398438 8.378906 4.359375 8.378906 C 4.066406 8.378906 3.78125 8.335938 3.558594 8.132812 C 3.347656 7.90625 3.300781 7.6875 3.308594 7.382812 C 3.332031 7.148438 3.421875 7.007812 3.585938 6.84375 C 3.875 6.648438 4.125 6.621094 4.46875 6.625 Z M 4.46875 6.625 " style="stroke: none; fill-rule: nonzero; fill: currentcolor; fill-opacity: 1;"></path></g></svg>
+                            <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1"><g id="meeting"><path d="M 2.9375 3.746094 C 2.996094 3.742188 2.996094 3.742188 3.058594 3.742188 C 3.191406 3.742188 3.328125 3.742188 3.464844 3.742188 C 3.5625 3.742188 3.65625 3.742188 3.753906 3.742188 C 4.046875 3.742188 4.335938 3.742188 4.628906 3.742188 C 4.765625 3.742188 4.902344 3.742188 5.039062 3.738281 C 5.496094 3.738281 5.953125 3.738281 6.410156 3.738281 C 6.527344 3.738281 6.648438 3.738281 6.765625 3.738281 C 6.808594 3.738281 6.808594 3.738281 6.855469 3.738281 C 7.332031 3.738281 7.808594 3.738281 8.28125 3.734375 C 8.773438 3.734375 9.261719 3.734375 9.75 3.734375 C 10.027344 3.734375 10.300781 3.734375 10.574219 3.730469 C 10.835938 3.730469 11.09375 3.730469 11.351562 3.730469 C 11.445312 3.730469 11.539062 3.730469 11.636719 3.730469 C 12.742188 3.726562 12.742188 3.726562 13.203125 4.042969 C 13.234375 4.066406 13.269531 4.085938 13.304688 4.109375 C 13.777344 4.457031 14.082031 4.921875 14.179688 5.507812 C 14.183594 5.597656 14.1875 5.691406 14.191406 5.785156 C 14.191406 5.808594 14.195312 5.835938 14.195312 5.859375 C 14.195312 5.941406 14.199219 6.023438 14.203125 6.105469 C 14.203125 6.160156 14.203125 6.21875 14.207031 6.273438 C 14.210938 6.410156 14.214844 6.542969 14.21875 6.679688 C 14.445312 6.53125 14.671875 6.378906 14.898438 6.230469 C 14.980469 6.179688 15.058594 6.125 15.136719 6.074219 C 15.695312 5.707031 15.695312 5.707031 16.25 5.339844 C 16.292969 5.308594 16.335938 5.28125 16.378906 5.25 C 16.453125 5.203125 16.527344 5.152344 16.601562 5.101562 C 17.03125 4.8125 17.433594 4.621094 17.964844 4.707031 C 18.410156 4.800781 18.714844 5.023438 18.984375 5.390625 C 19.136719 5.667969 19.183594 5.910156 19.183594 6.226562 C 19.1875 6.257812 19.1875 6.292969 19.1875 6.328125 C 19.1875 6.4375 19.1875 6.550781 19.1875 6.664062 C 19.1875 6.742188 19.1875 6.824219 19.1875 6.902344 C 19.1875 7.167969 19.1875 7.429688 19.1875 7.691406 C 19.1875 7.785156 19.1875 7.875 19.191406 7.964844 C 19.191406 8.390625 19.191406 8.816406 19.191406 9.246094 C 19.191406 9.734375 19.191406 10.226562 19.195312 10.71875 C 19.195312 11.101562 19.195312 11.480469 19.195312 11.859375 C 19.195312 12.085938 19.195312 12.316406 19.199219 12.542969 C 19.199219 12.753906 19.199219 12.96875 19.199219 13.183594 C 19.199219 13.261719 19.199219 13.339844 19.199219 13.417969 C 19.203125 14.019531 19.148438 14.46875 18.71875 14.917969 C 18.414062 15.207031 18.039062 15.328125 17.621094 15.316406 C 17.164062 15.285156 16.792969 15.046875 16.421875 14.792969 C 16.386719 14.769531 16.355469 14.746094 16.320312 14.722656 C 16.246094 14.671875 16.171875 14.625 16.101562 14.574219 C 15.914062 14.445312 15.726562 14.316406 15.539062 14.191406 C 15.5 14.164062 15.464844 14.140625 15.425781 14.113281 C 15.027344 13.84375 14.625 13.582031 14.21875 13.320312 C 14.21875 13.371094 14.21875 13.371094 14.21875 13.417969 C 14.214844 13.542969 14.214844 13.667969 14.210938 13.792969 C 14.210938 13.847656 14.207031 13.898438 14.207031 13.953125 C 14.199219 14.621094 14.027344 15.21875 13.554688 15.703125 C 13.09375 16.078125 12.65625 16.257812 12.0625 16.253906 C 12.023438 16.257812 11.984375 16.257812 11.941406 16.257812 C 11.808594 16.257812 11.671875 16.257812 11.535156 16.257812 C 11.4375 16.257812 11.34375 16.257812 11.246094 16.257812 C 10.953125 16.257812 10.664062 16.257812 10.371094 16.257812 C 10.234375 16.257812 10.097656 16.257812 9.960938 16.261719 C 9.503906 16.261719 9.046875 16.261719 8.589844 16.261719 C 8.472656 16.261719 8.351562 16.261719 8.234375 16.261719 C 8.207031 16.261719 8.175781 16.261719 8.144531 16.261719 C 7.667969 16.261719 7.191406 16.261719 6.71875 16.265625 C 6.226562 16.265625 5.738281 16.265625 5.25 16.265625 C 4.972656 16.265625 4.699219 16.265625 4.425781 16.269531 C 4.164062 16.269531 3.90625 16.269531 3.648438 16.269531 C 3.554688 16.269531 3.460938 16.269531 3.363281 16.269531 C 2.257812 16.273438 2.257812 16.273438 1.796875 15.957031 C 1.746094 15.921875 1.746094 15.921875 1.695312 15.890625 C 1.226562 15.546875 0.910156 15.074219 0.820312 14.492188 C 0.816406 14.371094 0.816406 14.25 0.816406 14.132812 C 0.8125 14.09375 0.8125 14.058594 0.8125 14.019531 C 0.8125 13.898438 0.8125 13.777344 0.8125 13.652344 C 0.8125 13.566406 0.8125 13.476562 0.8125 13.390625 C 0.8125 13.101562 0.8125 12.8125 0.8125 12.527344 C 0.8125 12.425781 0.8125 12.328125 0.808594 12.226562 C 0.808594 11.816406 0.808594 11.402344 0.808594 10.988281 C 0.808594 10.882812 0.808594 10.773438 0.808594 10.667969 C 0.808594 10.640625 0.808594 10.613281 0.808594 10.585938 C 0.808594 10.15625 0.808594 9.722656 0.804688 9.292969 C 0.804688 8.851562 0.804688 8.40625 0.804688 7.964844 C 0.804688 7.714844 0.804688 7.46875 0.800781 7.21875 C 0.800781 6.984375 0.800781 6.75 0.800781 6.519531 C 0.800781 6.433594 0.800781 6.347656 0.800781 6.261719 C 0.796875 5.8125 0.800781 5.417969 0.976562 5 C 0.988281 4.96875 1 4.941406 1.011719 4.910156 C 1.230469 4.410156 1.671875 4.054688 2.167969 3.847656 C 2.425781 3.753906 2.664062 3.746094 2.9375 3.746094 Z M 2.589844 5.621094 C 2.480469 5.800781 2.496094 5.988281 2.496094 6.191406 C 2.496094 6.222656 2.496094 6.257812 2.496094 6.292969 C 2.492188 6.40625 2.492188 6.519531 2.492188 6.632812 C 2.492188 6.714844 2.492188 6.796875 2.492188 6.875 C 2.492188 7.097656 2.492188 7.316406 2.492188 7.539062 C 2.492188 7.675781 2.492188 7.8125 2.492188 7.953125 C 2.492188 8.382812 2.492188 8.8125 2.492188 9.246094 C 2.492188 9.742188 2.488281 10.242188 2.488281 10.738281 C 2.488281 11.125 2.488281 11.507812 2.488281 11.894531 C 2.488281 12.125 2.488281 12.351562 2.488281 12.582031 C 2.484375 12.800781 2.484375 13.015625 2.484375 13.230469 C 2.484375 13.3125 2.484375 13.390625 2.484375 13.46875 C 2.484375 13.578125 2.484375 13.6875 2.484375 13.792969 C 2.484375 13.824219 2.484375 13.855469 2.484375 13.890625 C 2.488281 14.117188 2.527344 14.304688 2.675781 14.488281 C 2.78125 14.566406 2.882812 14.574219 3.011719 14.574219 C 3.042969 14.574219 3.074219 14.574219 3.109375 14.574219 C 3.144531 14.574219 3.179688 14.574219 3.21875 14.574219 C 3.273438 14.574219 3.273438 14.574219 3.332031 14.574219 C 3.460938 14.578125 3.585938 14.578125 3.714844 14.578125 C 3.804688 14.578125 3.898438 14.578125 3.988281 14.578125 C 4.238281 14.578125 4.484375 14.578125 4.734375 14.578125 C 4.890625 14.578125 5.042969 14.578125 5.199219 14.578125 C 5.628906 14.578125 6.058594 14.578125 6.488281 14.578125 C 6.527344 14.578125 6.527344 14.578125 6.570312 14.578125 C 6.613281 14.578125 6.613281 14.578125 6.652344 14.578125 C 6.710938 14.578125 6.765625 14.578125 6.820312 14.578125 C 6.847656 14.578125 6.878906 14.578125 6.90625 14.578125 C 7.355469 14.578125 7.804688 14.582031 8.25 14.582031 C 8.710938 14.582031 9.171875 14.582031 9.632812 14.582031 C 9.890625 14.582031 10.152344 14.582031 10.410156 14.582031 C 10.652344 14.585938 10.894531 14.585938 11.140625 14.585938 C 11.230469 14.585938 11.316406 14.585938 11.40625 14.585938 C 11.527344 14.585938 11.652344 14.585938 11.773438 14.585938 C 11.824219 14.585938 11.824219 14.585938 11.878906 14.585938 C 12.066406 14.585938 12.191406 14.574219 12.34375 14.453125 C 12.519531 14.261719 12.503906 14.058594 12.503906 13.808594 C 12.503906 13.777344 12.503906 13.742188 12.503906 13.707031 C 12.507812 13.59375 12.507812 13.480469 12.507812 13.367188 C 12.507812 13.285156 12.507812 13.203125 12.507812 13.125 C 12.507812 12.902344 12.507812 12.683594 12.507812 12.460938 C 12.507812 12.324219 12.507812 12.1875 12.507812 12.046875 C 12.507812 11.617188 12.507812 11.1875 12.507812 10.753906 C 12.507812 10.257812 12.511719 9.757812 12.511719 9.261719 C 12.511719 8.875 12.511719 8.492188 12.511719 8.105469 C 12.511719 7.875 12.511719 7.648438 12.511719 7.417969 C 12.515625 7.199219 12.515625 6.984375 12.515625 6.769531 C 12.515625 6.6875 12.515625 6.609375 12.515625 6.53125 C 12.515625 6.421875 12.515625 6.3125 12.515625 6.207031 C 12.515625 6.175781 12.515625 6.144531 12.515625 6.109375 C 12.511719 5.882812 12.472656 5.695312 12.324219 5.511719 C 12.21875 5.433594 12.117188 5.425781 11.988281 5.425781 C 11.957031 5.425781 11.925781 5.425781 11.890625 5.425781 C 11.835938 5.425781 11.835938 5.425781 11.78125 5.425781 C 11.746094 5.425781 11.707031 5.425781 11.667969 5.425781 C 11.539062 5.421875 11.414062 5.421875 11.285156 5.421875 C 11.195312 5.421875 11.101562 5.421875 11.011719 5.421875 C 10.761719 5.421875 10.515625 5.421875 10.265625 5.421875 C 10.109375 5.421875 9.957031 5.421875 9.800781 5.421875 C 9.371094 5.421875 8.941406 5.421875 8.511719 5.421875 C 8.472656 5.421875 8.472656 5.421875 8.429688 5.421875 C 8.386719 5.421875 8.386719 5.421875 8.347656 5.421875 C 8.289062 5.421875 8.234375 5.421875 8.179688 5.421875 C 8.136719 5.421875 8.136719 5.421875 8.09375 5.421875 C 7.644531 5.421875 7.195312 5.417969 6.75 5.417969 C 6.289062 5.417969 5.828125 5.417969 5.367188 5.417969 C 5.109375 5.417969 4.847656 5.417969 4.589844 5.417969 C 4.347656 5.414062 4.105469 5.414062 3.859375 5.414062 C 3.769531 5.414062 3.683594 5.414062 3.59375 5.414062 C 3.472656 5.414062 3.347656 5.414062 3.226562 5.414062 C 3.191406 5.414062 3.15625 5.414062 3.121094 5.414062 C 2.890625 5.417969 2.746094 5.445312 2.589844 5.621094 Z M 17.324219 6.6875 C 17.28125 6.71875 17.28125 6.71875 17.234375 6.746094 C 17.1875 6.78125 17.1875 6.78125 17.136719 6.8125 C 17.101562 6.835938 17.066406 6.855469 17.035156 6.878906 C 16.84375 7.003906 16.652344 7.132812 16.464844 7.261719 C 16.078125 7.523438 15.703125 7.761719 15.28125 7.960938 C 14.578125 8.300781 14.578125 8.300781 14.128906 8.914062 C 13.910156 9.625 13.886719 10.515625 14.179688 11.210938 C 14.5 11.71875 15.097656 11.972656 15.617188 12.222656 C 15.988281 12.402344 16.320312 12.636719 16.65625 12.871094 C 16.824219 12.984375 16.996094 13.097656 17.164062 13.207031 C 17.210938 13.238281 17.210938 13.238281 17.253906 13.265625 C 17.371094 13.355469 17.371094 13.355469 17.5 13.398438 C 17.5 11.15625 17.5 8.914062 17.5 6.601562 C 17.429688 6.601562 17.378906 6.652344 17.324219 6.6875 Z M 17.324219 6.6875 " style="stroke: none; fill-rule: nonzero; fill: currentcolor; fill-opacity: 1;"></path><path d="M 4.46875 6.625 C 4.507812 6.625 4.550781 6.625 4.59375 6.625 C 4.683594 6.621094 4.773438 6.621094 4.859375 6.625 C 4.996094 6.625 5.128906 6.621094 5.261719 6.621094 C 5.347656 6.621094 5.4375 6.621094 5.523438 6.621094 C 5.582031 6.621094 5.582031 6.621094 5.640625 6.621094 C 5.933594 6.621094 6.21875 6.664062 6.441406 6.867188 C 6.652344 7.09375 6.699219 7.3125 6.691406 7.617188 C 6.667969 7.851562 6.578125 7.992188 6.414062 8.15625 C 6.125 8.351562 5.875 8.378906 5.53125 8.375 C 5.492188 8.375 5.449219 8.375 5.40625 8.375 C 5.316406 8.378906 5.226562 8.378906 5.140625 8.375 C 5.003906 8.375 4.871094 8.378906 4.738281 8.378906 C 4.652344 8.378906 4.5625 8.378906 4.476562 8.378906 C 4.4375 8.378906 4.398438 8.378906 4.359375 8.378906 C 4.066406 8.378906 3.78125 8.335938 3.558594 8.132812 C 3.347656 7.90625 3.300781 7.6875 3.308594 7.382812 C 3.332031 7.148438 3.421875 7.007812 3.585938 6.84375 C 3.875 6.648438 4.125 6.621094 4.46875 6.625 Z M 4.46875 6.625 " style="stroke: none; fill-rule: nonzero; fill: currentcolor; fill-opacity: 1;"></path></g></svg> -->
+                            <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            width="20px" height="20px" viewBox="0 0 20 20" version="1.1" [ngClass]="meetingClassNemes ?{
+                                'blue-color': meetingClassNemes =='fc-info',
+                                'purple-color':  meetingClassNemes =='fc-purple' || meetingClassNemes =='fc-req',
+                                'red-color': meetingClassNemes =='fc-red',
+                                'green-color': meetingClassNemes =='fc-suc'
+                            } : 'purple-color'">
+                            <g id="meeting">
+                                <path
+                                    d="M 2.9375 3.746094 C 2.996094 3.742188 2.996094 3.742188 3.058594 3.742188 C 3.191406 3.742188 3.328125 3.742188 3.464844 3.742188 C 3.5625 3.742188 3.65625 3.742188 3.753906 3.742188 C 4.046875 3.742188 4.335938 3.742188 4.628906 3.742188 C 4.765625 3.742188 4.902344 3.742188 5.039062 3.738281 C 5.496094 3.738281 5.953125 3.738281 6.410156 3.738281 C 6.527344 3.738281 6.648438 3.738281 6.765625 3.738281 C 6.808594 3.738281 6.808594 3.738281 6.855469 3.738281 C 7.332031 3.738281 7.808594 3.738281 8.28125 3.734375 C 8.773438 3.734375 9.261719 3.734375 9.75 3.734375 C 10.027344 3.734375 10.300781 3.734375 10.574219 3.730469 C 10.835938 3.730469 11.09375 3.730469 11.351562 3.730469 C 11.445312 3.730469 11.539062 3.730469 11.636719 3.730469 C 12.742188 3.726562 12.742188 3.726562 13.203125 4.042969 C 13.234375 4.066406 13.269531 4.085938 13.304688 4.109375 C 13.777344 4.457031 14.082031 4.921875 14.179688 5.507812 C 14.183594 5.597656 14.1875 5.691406 14.191406 5.785156 C 14.191406 5.808594 14.195312 5.835938 14.195312 5.859375 C 14.195312 5.941406 14.199219 6.023438 14.203125 6.105469 C 14.203125 6.160156 14.203125 6.21875 14.207031 6.273438 C 14.210938 6.410156 14.214844 6.542969 14.21875 6.679688 C 14.445312 6.53125 14.671875 6.378906 14.898438 6.230469 C 14.980469 6.179688 15.058594 6.125 15.136719 6.074219 C 15.695312 5.707031 15.695312 5.707031 16.25 5.339844 C 16.292969 5.308594 16.335938 5.28125 16.378906 5.25 C 16.453125 5.203125 16.527344 5.152344 16.601562 5.101562 C 17.03125 4.8125 17.433594 4.621094 17.964844 4.707031 C 18.410156 4.800781 18.714844 5.023438 18.984375 5.390625 C 19.136719 5.667969 19.183594 5.910156 19.183594 6.226562 C 19.1875 6.257812 19.1875 6.292969 19.1875 6.328125 C 19.1875 6.4375 19.1875 6.550781 19.1875 6.664062 C 19.1875 6.742188 19.1875 6.824219 19.1875 6.902344 C 19.1875 7.167969 19.1875 7.429688 19.1875 7.691406 C 19.1875 7.785156 19.1875 7.875 19.191406 7.964844 C 19.191406 8.390625 19.191406 8.816406 19.191406 9.246094 C 19.191406 9.734375 19.191406 10.226562 19.195312 10.71875 C 19.195312 11.101562 19.195312 11.480469 19.195312 11.859375 C 19.195312 12.085938 19.195312 12.316406 19.199219 12.542969 C 19.199219 12.753906 19.199219 12.96875 19.199219 13.183594 C 19.199219 13.261719 19.199219 13.339844 19.199219 13.417969 C 19.203125 14.019531 19.148438 14.46875 18.71875 14.917969 C 18.414062 15.207031 18.039062 15.328125 17.621094 15.316406 C 17.164062 15.285156 16.792969 15.046875 16.421875 14.792969 C 16.386719 14.769531 16.355469 14.746094 16.320312 14.722656 C 16.246094 14.671875 16.171875 14.625 16.101562 14.574219 C 15.914062 14.445312 15.726562 14.316406 15.539062 14.191406 C 15.5 14.164062 15.464844 14.140625 15.425781 14.113281 C 15.027344 13.84375 14.625 13.582031 14.21875 13.320312 C 14.21875 13.371094 14.21875 13.371094 14.21875 13.417969 C 14.214844 13.542969 14.214844 13.667969 14.210938 13.792969 C 14.210938 13.847656 14.207031 13.898438 14.207031 13.953125 C 14.199219 14.621094 14.027344 15.21875 13.554688 15.703125 C 13.09375 16.078125 12.65625 16.257812 12.0625 16.253906 C 12.023438 16.257812 11.984375 16.257812 11.941406 16.257812 C 11.808594 16.257812 11.671875 16.257812 11.535156 16.257812 C 11.4375 16.257812 11.34375 16.257812 11.246094 16.257812 C 10.953125 16.257812 10.664062 16.257812 10.371094 16.257812 C 10.234375 16.257812 10.097656 16.257812 9.960938 16.261719 C 9.503906 16.261719 9.046875 16.261719 8.589844 16.261719 C 8.472656 16.261719 8.351562 16.261719 8.234375 16.261719 C 8.207031 16.261719 8.175781 16.261719 8.144531 16.261719 C 7.667969 16.261719 7.191406 16.261719 6.71875 16.265625 C 6.226562 16.265625 5.738281 16.265625 5.25 16.265625 C 4.972656 16.265625 4.699219 16.265625 4.425781 16.269531 C 4.164062 16.269531 3.90625 16.269531 3.648438 16.269531 C 3.554688 16.269531 3.460938 16.269531 3.363281 16.269531 C 2.257812 16.273438 2.257812 16.273438 1.796875 15.957031 C 1.746094 15.921875 1.746094 15.921875 1.695312 15.890625 C 1.226562 15.546875 0.910156 15.074219 0.820312 14.492188 C 0.816406 14.371094 0.816406 14.25 0.816406 14.132812 C 0.8125 14.09375 0.8125 14.058594 0.8125 14.019531 C 0.8125 13.898438 0.8125 13.777344 0.8125 13.652344 C 0.8125 13.566406 0.8125 13.476562 0.8125 13.390625 C 0.8125 13.101562 0.8125 12.8125 0.8125 12.527344 C 0.8125 12.425781 0.8125 12.328125 0.808594 12.226562 C 0.808594 11.816406 0.808594 11.402344 0.808594 10.988281 C 0.808594 10.882812 0.808594 10.773438 0.808594 10.667969 C 0.808594 10.640625 0.808594 10.613281 0.808594 10.585938 C 0.808594 10.15625 0.808594 9.722656 0.804688 9.292969 C 0.804688 8.851562 0.804688 8.40625 0.804688 7.964844 C 0.804688 7.714844 0.804688 7.46875 0.800781 7.21875 C 0.800781 6.984375 0.800781 6.75 0.800781 6.519531 C 0.800781 6.433594 0.800781 6.347656 0.800781 6.261719 C 0.796875 5.8125 0.800781 5.417969 0.976562 5 C 0.988281 4.96875 1 4.941406 1.011719 4.910156 C 1.230469 4.410156 1.671875 4.054688 2.167969 3.847656 C 2.425781 3.753906 2.664062 3.746094 2.9375 3.746094 Z M 2.589844 5.621094 C 2.480469 5.800781 2.496094 5.988281 2.496094 6.191406 C 2.496094 6.222656 2.496094 6.257812 2.496094 6.292969 C 2.492188 6.40625 2.492188 6.519531 2.492188 6.632812 C 2.492188 6.714844 2.492188 6.796875 2.492188 6.875 C 2.492188 7.097656 2.492188 7.316406 2.492188 7.539062 C 2.492188 7.675781 2.492188 7.8125 2.492188 7.953125 C 2.492188 8.382812 2.492188 8.8125 2.492188 9.246094 C 2.492188 9.742188 2.488281 10.242188 2.488281 10.738281 C 2.488281 11.125 2.488281 11.507812 2.488281 11.894531 C 2.488281 12.125 2.488281 12.351562 2.488281 12.582031 C 2.484375 12.800781 2.484375 13.015625 2.484375 13.230469 C 2.484375 13.3125 2.484375 13.390625 2.484375 13.46875 C 2.484375 13.578125 2.484375 13.6875 2.484375 13.792969 C 2.484375 13.824219 2.484375 13.855469 2.484375 13.890625 C 2.488281 14.117188 2.527344 14.304688 2.675781 14.488281 C 2.78125 14.566406 2.882812 14.574219 3.011719 14.574219 C 3.042969 14.574219 3.074219 14.574219 3.109375 14.574219 C 3.144531 14.574219 3.179688 14.574219 3.21875 14.574219 C 3.273438 14.574219 3.273438 14.574219 3.332031 14.574219 C 3.460938 14.578125 3.585938 14.578125 3.714844 14.578125 C 3.804688 14.578125 3.898438 14.578125 3.988281 14.578125 C 4.238281 14.578125 4.484375 14.578125 4.734375 14.578125 C 4.890625 14.578125 5.042969 14.578125 5.199219 14.578125 C 5.628906 14.578125 6.058594 14.578125 6.488281 14.578125 C 6.527344 14.578125 6.527344 14.578125 6.570312 14.578125 C 6.613281 14.578125 6.613281 14.578125 6.652344 14.578125 C 6.710938 14.578125 6.765625 14.578125 6.820312 14.578125 C 6.847656 14.578125 6.878906 14.578125 6.90625 14.578125 C 7.355469 14.578125 7.804688 14.582031 8.25 14.582031 C 8.710938 14.582031 9.171875 14.582031 9.632812 14.582031 C 9.890625 14.582031 10.152344 14.582031 10.410156 14.582031 C 10.652344 14.585938 10.894531 14.585938 11.140625 14.585938 C 11.230469 14.585938 11.316406 14.585938 11.40625 14.585938 C 11.527344 14.585938 11.652344 14.585938 11.773438 14.585938 C 11.824219 14.585938 11.824219 14.585938 11.878906 14.585938 C 12.066406 14.585938 12.191406 14.574219 12.34375 14.453125 C 12.519531 14.261719 12.503906 14.058594 12.503906 13.808594 C 12.503906 13.777344 12.503906 13.742188 12.503906 13.707031 C 12.507812 13.59375 12.507812 13.480469 12.507812 13.367188 C 12.507812 13.285156 12.507812 13.203125 12.507812 13.125 C 12.507812 12.902344 12.507812 12.683594 12.507812 12.460938 C 12.507812 12.324219 12.507812 12.1875 12.507812 12.046875 C 12.507812 11.617188 12.507812 11.1875 12.507812 10.753906 C 12.507812 10.257812 12.511719 9.757812 12.511719 9.261719 C 12.511719 8.875 12.511719 8.492188 12.511719 8.105469 C 12.511719 7.875 12.511719 7.648438 12.511719 7.417969 C 12.515625 7.199219 12.515625 6.984375 12.515625 6.769531 C 12.515625 6.6875 12.515625 6.609375 12.515625 6.53125 C 12.515625 6.421875 12.515625 6.3125 12.515625 6.207031 C 12.515625 6.175781 12.515625 6.144531 12.515625 6.109375 C 12.511719 5.882812 12.472656 5.695312 12.324219 5.511719 C 12.21875 5.433594 12.117188 5.425781 11.988281 5.425781 C 11.957031 5.425781 11.925781 5.425781 11.890625 5.425781 C 11.835938 5.425781 11.835938 5.425781 11.78125 5.425781 C 11.746094 5.425781 11.707031 5.425781 11.667969 5.425781 C 11.539062 5.421875 11.414062 5.421875 11.285156 5.421875 C 11.195312 5.421875 11.101562 5.421875 11.011719 5.421875 C 10.761719 5.421875 10.515625 5.421875 10.265625 5.421875 C 10.109375 5.421875 9.957031 5.421875 9.800781 5.421875 C 9.371094 5.421875 8.941406 5.421875 8.511719 5.421875 C 8.472656 5.421875 8.472656 5.421875 8.429688 5.421875 C 8.386719 5.421875 8.386719 5.421875 8.347656 5.421875 C 8.289062 5.421875 8.234375 5.421875 8.179688 5.421875 C 8.136719 5.421875 8.136719 5.421875 8.09375 5.421875 C 7.644531 5.421875 7.195312 5.417969 6.75 5.417969 C 6.289062 5.417969 5.828125 5.417969 5.367188 5.417969 C 5.109375 5.417969 4.847656 5.417969 4.589844 5.417969 C 4.347656 5.414062 4.105469 5.414062 3.859375 5.414062 C 3.769531 5.414062 3.683594 5.414062 3.59375 5.414062 C 3.472656 5.414062 3.347656 5.414062 3.226562 5.414062 C 3.191406 5.414062 3.15625 5.414062 3.121094 5.414062 C 2.890625 5.417969 2.746094 5.445312 2.589844 5.621094 Z M 17.324219 6.6875 C 17.28125 6.71875 17.28125 6.71875 17.234375 6.746094 C 17.1875 6.78125 17.1875 6.78125 17.136719 6.8125 C 17.101562 6.835938 17.066406 6.855469 17.035156 6.878906 C 16.84375 7.003906 16.652344 7.132812 16.464844 7.261719 C 16.078125 7.523438 15.703125 7.761719 15.28125 7.960938 C 14.578125 8.300781 14.578125 8.300781 14.128906 8.914062 C 13.910156 9.625 13.886719 10.515625 14.179688 11.210938 C 14.5 11.71875 15.097656 11.972656 15.617188 12.222656 C 15.988281 12.402344 16.320312 12.636719 16.65625 12.871094 C 16.824219 12.984375 16.996094 13.097656 17.164062 13.207031 C 17.210938 13.238281 17.210938 13.238281 17.253906 13.265625 C 17.371094 13.355469 17.371094 13.355469 17.5 13.398438 C 17.5 11.15625 17.5 8.914062 17.5 6.601562 C 17.429688 6.601562 17.378906 6.652344 17.324219 6.6875 Z M 17.324219 6.6875 "
+                                    style="stroke: none; fill-rule: nonzero;">
+                                </path>
+                                <path
+                                    d="M 4.46875 6.625 C 4.507812 6.625 4.550781 6.625 4.59375 6.625 C 4.683594 6.621094 4.773438 6.621094 4.859375 6.625 C 4.996094 6.625 5.128906 6.621094 5.261719 6.621094 C 5.347656 6.621094 5.4375 6.621094 5.523438 6.621094 C 5.582031 6.621094 5.582031 6.621094 5.640625 6.621094 C 5.933594 6.621094 6.21875 6.664062 6.441406 6.867188 C 6.652344 7.09375 6.699219 7.3125 6.691406 7.617188 C 6.667969 7.851562 6.578125 7.992188 6.414062 8.15625 C 6.125 8.351562 5.875 8.378906 5.53125 8.375 C 5.492188 8.375 5.449219 8.375 5.40625 8.375 C 5.316406 8.378906 5.226562 8.378906 5.140625 8.375 C 5.003906 8.375 4.871094 8.378906 4.738281 8.378906 C 4.652344 8.378906 4.5625 8.378906 4.476562 8.378906 C 4.4375 8.378906 4.398438 8.378906 4.359375 8.378906 C 4.066406 8.378906 3.78125 8.335938 3.558594 8.132812 C 3.347656 7.90625 3.300781 7.6875 3.308594 7.382812 C 3.332031 7.148438 3.421875 7.007812 3.585938 6.84375 C 3.875 6.648438 4.125 6.621094 4.46875 6.625 Z M 4.46875 6.625 "
+                                    style="stroke: none; fill-rule: nonzero;">
+                                </path>
+                            </g>
+                           </svg>
                         </div>
                         <div class="custom-evt-tsk-item-control line-clamp">
                             <span class="custom-evt-tsk-item-title">{{item.Task_Name}}</span>
@@ -4079,28 +4185,27 @@
                                 <span>{{ parseTime(item.NewSt_Time) | date: 'h:mm a' }} - {{ parseTime(item.NewEd_Time) | date: 'h:mm a' }} ({{ getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time) }})</span>
                                 <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==true" class="event item-badge" >
                                 {{item.Schedule_Type}}
-                            </span>
-                            <span
-                                *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat' && Isadmin==true && Meeting_status==false" class="daily item-badge">
+                                </span>
+
+                            <span *ngIf="Status1 !='Rejected' && item.Recurrence!='Do not repeat' && Isadmin==true && Meeting_status==false" class="info item-badge">
                                 {{item.Recurrence}}
                             </span>
-                            <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==false" class="event item-badge">
+                            <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==false" [ngClass]="{'info item-badge': Isadmin==true , 'purple item-badge': Isadmin==false }" >
                                 {{item.Schedule_Type}}
                             </span>
-                            <span
-                                *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Isadmin==false && Meeting_status==false" class="daily item-badge">
+                            <span *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Isadmin==false && Meeting_status==false" class="purple item-badge">
                                 {{item.Recurrence}}
                             </span>
-                            <span *ngIf="Meeting_status==true" class="event item-badge">
+                            <span *ngIf="Meeting_status==true" class="success item-badge">
                                 {{item.Schedule_Type}}
                             </span>
-                            <span *ngIf="item.Recurrence!='Do not repeat' && Meeting_status==true" class="daily item-badge">
+                            <span *ngIf="item.Recurrence!='Do not repeat' && Meeting_status==true" class="success item-badge">
                                 {{item.Recurrence}}
                             </span>
-                            <span *ngIf="Status1 =='Rejected'" class="event item-badge">
+                            <span *ngIf="Status1 =='Rejected'" class="danger item-badge">
                                 {{item.Schedule_Type}}
                             </span>
-                            <span *ngIf="Status1 =='Rejected' && item.Recurrence!='Do not repeat'" class="daily item-badge">
+                            <span *ngIf="Status1 =='Rejected' && item.Recurrence!='Do not repeat'" class="danger item-badge">
                                 {{item.Recurrence}}
                             </span>
                             </div>
@@ -4410,7 +4515,7 @@
                     </div>
                 </div>
                 </div>
-                <div>
+                 <div>
                     <div class="custom-evt-tsk-footer" style="display: block;" id="main-foot">
                         <div><span>Going?</span></div>
                         <div class="custom-evt-tsk-footer-action">
@@ -4445,42 +4550,46 @@
                                     <div class="curser-pointer" (click)="Propose_date_time_menu()">
                                         <div class="propose-dt-tm">
                                             <div>
-                                                <span>Wednesday, August 7, 2024</span>
+                                                <span>{{propose_date | date:'EEEE, MMMM d, YYYY'}}</span>
+                                                <!-- <span>Wednesday, August 7, 2024</span> -->
                                             </div>
                                             <div class="d-flex">
-                                                <span class="picktime-box">09:00 AM</span>
+                                                <span class="picktime-box">{{ proposeStartTimes}}</span>
                                                 <span class="propose-dt-muted">-</span>
-                                                <span class="picktime-box">09:15 AM</span>
+                                                <span class="picktime-box">{{ proposeEndTimes}}</span>
                                             </div>
                                         </div>
                                         <div class="propose-dt-text">
                                             <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
-                                            <span>The proposed event on August 7,2024 from 09:00 AM until 09:15 AM</span>
+                                            <span>The proposed event on {{propose_date | date:'MMMM d, YYYY'}} from {{ proposeStartTimes}} until {{ proposeEndTimes}}</span>
                                         </div>                       
                                     </div>
                                     <div class="propose-date-time-menu" id="propose-date-time-menu">
                                         <div class="propose-date-time-menu-item">
                                             <div class="propose-date-time-menu-action">
-                                                <div class="propose-date-time-menu-submit">Submit</div>
+                                                <div class="propose-date-time-menu-submit" (click)="proposedate()">Submit</div>
                                                 <div class="propose-date-time-menu-close" (click)="Propose_date_time_menu_close()">Close</div>
                                             </div>
                                             <div class="propose-date-time-menu-calendar">
                                                 <mat-card class="demo-inline-calendar-card">
-                                                    <mat-calendar   [minDate]="disablePreviousDate"></mat-calendar>
+                                                    <mat-calendar   [(selected)]="Proposedate"  (selectedChange)="proposecahngedate($event)" [minDate]="disablePreviousDate">                                                        
+                                                    </mat-calendar>
                                                     </mat-card>
                                             </div>
                                             <div class="propose-date-time-menu-t">
                                                 <div class="mb-2">
                                                     <label>Start Time <span class="text-danger">*</span> </label>
                                                     <ng-select  class="propose-date-time-menu-t-select"
-                                                        placeholder="Start Time">
-                                                        <ng-option></ng-option>
+                                                    [(ngModel)]="PropStart"   placeholder="Start Time" (change)="purposeaddtime()">
+                                                    <ng-option *ngFor="let item of  StartTimearr; let i=index" [value]="item">
+                                                        {{item}}</ng-option>
                                                     </ng-select>
                                                 </div>
                                                 <div class="">
                                                     <label>End Time <span class="text-danger">*</span> </label>
-                                                    <ng-select class="propose-date-time-menu-t-select"  placeholder="End Time">
-                                                        <ng-option></ng-option>
+                                                    <ng-select class="propose-date-time-menu-t-select"   [(ngModel)]="PurposeEnd"  placeholder="End Time">
+                                                        <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                                            {{item1}}</ng-option>
                                                     </ng-select>
                                                 </div>
                                             </div>
@@ -4488,13 +4597,95 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="w-100 text-right mt-2">
+                                <button class="btn btn-evt-foot yes" data-toggle="collapse"
+                                    href="#propse" (click)="proposenewtime()">Submit new time</button>
+                                <!-- <button class="btn btn-evt-foot ml-2">Cancel</button> -->
+                            </div>
                         </div>
                     </div>
 
 
-
-                    
+                    <div class="custom-evt-tsk-footer" id=""   *ngIf="Meeting_status==false && Isadmin==true && Schedule_type1=='Event'">     
+                        <div><span>Repeat Event?</span></div>      
+                        <div class="custom-evt-tsk-footer-action">
+                            <div class="action-btns">
+                                <button class="btn btn-evt-foot"  data-toggle="collapse"
+                                href="#propse11" role="button" aria-expanded="false" aria-controls="propse11">Repeat</button>
+                                <button class="btn btn-evt-foot" (click)="sweet_end()">End now</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapse" id="propse11">
+                    <div class="repeat-date-time-div">
+                        <h6>Repeat Event</h6>
+                        <div class="repeat-date-time">
+                            <div class="form-group mb-0">
+                                <div class="curser-pointer" (click)="Repeat_date_time_menu()">
+                                    <div class="repeat-dt-tm">
+                                        <div>
+                                            <span>{{repeatStartDate | date:'EEEE, MMMM d, YYYY'}}</span>
+                                        </div>
+                                        <div class="d-flex">
+                                            <span class="picktime-box">{{repeatStartts}}</span>
+                                            <span class="repeat-dt-muted">-</span>
+                                            <span class="picktime-box">{{repeatEndtms}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="repeat-dt-text">
+                                        <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
+                                        <span>The repeated event on {{repeatStartDate | date:'EEEE, MMMM d, YYYY'}} from {{repeatStartts}} until {{repeatEndtms}}</span>
+                                    </div>                       
+                                </div>
+                                <div class="repeat-date-time-menu" id="repeat-date-time-menu">
+                                    <div class="repeat-date-time-menu-item">
+                                        <div class="repeat-date-time-menu-action">
+                                            <div class="repeat-date-time-menu-submit" (click)="repeatEventTime()">Submit</div>
+                                            <div class="repeat-date-time-menu-close" (click)="Repeat_date_time_menu_close()">Close</div>
+                                        </div>
+                                        <div class="repeat-date-time-menu-calendar">
+                                            <mat-card class="demo-inline-calendar-card">
+                                                <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
+                                                </mat-card>
+                                        </div>
+                                        <div class="repeat-date-time-menu-t">
+                                            <div class="mb-2">
+                                                <label>Start Time <span class="text-danger">*</span> </label>
+                                                <ng-select  class="repeat-date-time-menu-t-select" [ngClass]="{'error-vd': !Startts&&notProvided}"  (open)="onfocus($event)"
+                                                    placeholder="Start Time" [(ngModel)]="Startts" (change)="addstarttime()">
+                                                    <ng-option *ngFor="let item of  validStartTimearr; let i=index" [value]="item">
+                                                        {{item}}</ng-option>
+                                                </ng-select>
+                                                <span *ngIf="!Startts&&notProvided" style="color:red">Please select start time.</span>
+                                            </div>
+                                            <div class="">
+                                                <label>End Time <span class="text-danger">*</span> </label>
+                                                <ng-select class="repeat-date-time-menu-t-select" style="cursor: pointer;"  [ngClass]="{'error-vd': !Endtms&&notProvided}" (open)="onfocus($event)"  [(ngModel)]="Endtms" placeholder="End Time">
+                                                    <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                                        {{item1}}
+                                                        ({{
+                                                            Startts|timeDiff:item1
+                                                        }})
+                                                    </ng-option>
+                                                </ng-select>
+                                                  <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <span *ngIf="earlyDate==true" style="color:red">invalid date.</span>
+                        <div class="w-100 text-right mt-2">
+                            <button class="btn btn-evt-foot yes" (click)="submitEventToRepeat()">Submit repeat event</button>
+                            <button class="btn btn-evt-foot ml-2" data-toggle="collapse" href="#propse11" (click)="onCustomBtnClicked()">Custom</button>
+                            <button id='closeRepeatDialog_btn' class="btn btn-evt-foot ml-2" data-toggle="collapse"
+                            href="#propse11">Cancel</button>
+                        </div>
+                    </div>        
                 </div>
+                </div>
+
             </div>
         </div>
       </div>
@@ -4707,7 +4898,10 @@
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 300px;">
         <div class="modal-content">
             <div class="modal-header pb-0" style="border-bottom: 0px">
-                <h5 class="modal-title">Delete recurring event</h5>
+
+                <h5 class="modal-title" *ngIf="!deleteTask">Delete recurring event</h5>
+                <h5 class="modal-title"  *ngIf="deleteTask">Delete recurring task</h5>
+
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

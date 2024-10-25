@@ -359,26 +359,25 @@ export class DashboardComponent implements OnInit {
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
       [
-        // 'bold',
-        // 'italic',
-        // 'underline',
-        
+        'undo', // Hide Undo button
+        'redo', // Hide Redo button
         'strikeThrough',
         'subscript',
         'superscript',
         'indent',
         'outdent',
-        // 'insertUnorderedList',
-        // 'insertOrderedList',
+        'justifyLeft',
+        'justifyCenter',
+        'justifyRight',
+        'justifyFull',
         'heading',
-        // 'fontName'
+        'fontName',
+        // 'fontSize',
+        'textColor',
+        'backgroundColor',
+        'customClasses'
       ],
       [
-        // 'fontSize',
-        // 'textColor',
-        // 'backgroundColor',
-        'customClasses',
-
         'unlink',
         'insertImage',
         'insertVideo',
@@ -576,7 +575,7 @@ export class DashboardComponent implements OnInit {
     this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
     //end
 
-    // this.GetMemosByEmployeeId();
+    this.GetMemosByEmployeeId();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     // this._EndDate = moment().format("YYYY-MM-DD").toString();
 
@@ -779,6 +778,7 @@ export class DashboardComponent implements OnInit {
   // Scheduling Work
   // Start Here
   proposecahngedate(event) {
+    console.log(event,'event')
     this.Proposedate = event.value.format("YYYY-MM-DD").toString()
   }
   proposenewtime() {
@@ -948,6 +948,7 @@ export class DashboardComponent implements OnInit {
 
         document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be')) {
+     
           document.getElementById("hiddenedit").style.display = "flex";
           // document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
@@ -957,6 +958,7 @@ export class DashboardComponent implements OnInit {
 
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be')) {
+       
           document.getElementById("hiddenedit").style.display = "none";
           // document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "flex";
@@ -1848,7 +1850,7 @@ export class DashboardComponent implements OnInit {
         + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       this.EventNumber = timestamp;
     }
-
+ 
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -1869,6 +1871,7 @@ export class DashboardComponent implements OnInit {
       }
       for (let index = 0; index < this.dayArr.length; index++) {
         if (this.dayArr[index].checked) {
+          debugger
           const day = this.dayArr[index].value;
           _arraytext.push(day);
           var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
@@ -3923,19 +3926,20 @@ currentTime:any;
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this.pending_status = this.EventScheduledjson[0].Pending_meeting;
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
+        console.log(this.Meeting_status,'Meeting_status')
         
         this._StartDate=this.EventScheduledjson[0].Schedule_date;
         this.Startts=this.EventScheduledjson[0].St_Time;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
         this.RecurrenceValue=this.EventScheduledjson[0].Recurrence
 
-        debugger
+ 
 
-        document.getElementById("deleteendit").style.display = "flex";
+        // document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
-
+     
           document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
-          // document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("deleteendit").style.display =this.Meeting_status==true?'none':'flex';
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "flex";
           // document.getElementById("act-btn").style.display = "flex";
@@ -3943,9 +3947,9 @@ currentTime:any;
           // document.getElementById("copy_data2").style.display = "flex";
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Meeting_status==false) && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
-      
+        
           document.getElementById("hiddenedit").style.display = "none";
-          // document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = "none";
 
           document.getElementById("main-foot").style.display = "flex";
 
@@ -3957,7 +3961,7 @@ currentTime:any;
         }
         else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
           document.getElementById("hiddenedit").style.display = "flex";
-          // document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "flex";
           // document.getElementById("copy_data1").style.display = "flex";
@@ -3966,7 +3970,7 @@ currentTime:any;
         }
         else {
           document.getElementById("hiddenedit").style.display = "none";
-          // document.getElementById("deleteendit").style.display = "flex";
+           document.getElementById("deleteendit").style.display = "flex";
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "none";
           // document.getElementById("copy_data1").style.display = "none";
@@ -7109,7 +7113,7 @@ getMeetingApprovals(){
       $("#cal-main").addClass("col-lg-12");
 
     }
-    //  console.log(this.multiapproval_json,'appraval data in the dashboard')
+      console.log(this.multiapproval_json,'appraval data in the dashboard')
   })
 }
 

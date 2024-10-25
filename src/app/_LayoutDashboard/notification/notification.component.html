@@ -86,7 +86,7 @@
             </div>
            <!-- <button class="btn btn-outline-success btn-sm mr-2" (click)="leaveform(Current_user_ID,Leave_Code.trim())">sample</button>  -->
            <!-- style="display: none;" -->
-             <div class="kt-portlet__head-label" >
+             <!-- <div class="kt-portlet__head-label" >
 
               <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -105,7 +105,7 @@
                   Leave Responses
                 </a>
               </div>
-            </div>
+            </div> -->
           </div>
 
           <div class="kt-portlet__head-label mr-2">
@@ -726,7 +726,7 @@
                 <!--new leave aprv list start-->
                  <div id="leave-aprv-list" class="table-responsive">
                        <ng-container *ngIf="leavePanel==='REQUESTS'">
-                        <table class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
+                        <table *ngIf="leave_Requests&&leave_Requests.length>0; else noitemsfound" class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
                           <thead>
                             <tr role="row">
 
@@ -828,7 +828,7 @@
                        </ng-container>
 
                        <ng-container *ngIf="leavePanel==='RESPONSES'">
-                        <table class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
+                        <table *ngIf="_newNotificationLeave&&_newNotificationLeave.length>0; else noitemsfound" class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
                           <thead>
                             <tr role="row">
 
@@ -925,6 +925,15 @@
                           </tbody>
                         </table>
                        </ng-container>
+
+                       <ng-template #noitemsfound>
+                         <div class="d-flex flex-column justify-content-center align-items-center pt-5">
+                           <img width="30%" height="30%" src="./assets/images/Document Type.png"/>
+                           <span *ngIf="leavePanel==='REQUESTS'" class="text-muted fs-6">No leave requests found</span>
+                           <span *ngIf="leavePanel==='RESPONSES'" class="text-muted fs-6">No leave responses found</span>
+                         </div>
+                      </ng-template>
+
                  </div>
                 <!--new leave aprv list end-->
               </div>
