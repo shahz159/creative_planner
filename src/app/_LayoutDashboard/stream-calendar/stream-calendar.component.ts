@@ -29,7 +29,7 @@ export const MY_FORMATS = {
     monthYearA11yLabel: "MMMM YYYY"
   }
 };
-
+moment.locale('en');
 
 @Component({
   selector: 'app-stream-calendar',
@@ -82,20 +82,23 @@ export class StreamCalendarComponent implements OnInit {
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
       [
-        // 'bold',
-        // 'italic',
-        // 'underline',
-        'undo',
-        'redo',
+        'undo', // Hide Undo button
+        'redo', // Hide Redo button
         'strikeThrough',
         'subscript',
         'superscript',
         'indent',
         'outdent',
-        // 'insertUnorderedList',
-        // 'insertOrderedList',
+        'justifyLeft',
+        'justifyCenter',
+        'justifyRight',
+        'justifyFull',
         'heading',
-        // 'fontName'
+        'fontName',
+        // 'fontSize',
+        'textColor',
+        'backgroundColor',
+        'customClasses'
       ],
       [
         // 'fontSize',
@@ -312,6 +315,7 @@ export class StreamCalendarComponent implements OnInit {
      jsonData[Day] = moment().format('dddd').substring(0, 3);
      var DayNum1 = "DayNum";
      jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
+     debugger
      this.AllDatesSDandED.push(jsonData);
      // this.GetProjectAndsubtashDrpforCalender();
      // this.calendar.updateTodaysDate();
@@ -2149,8 +2153,7 @@ bindCustomRecurrenceValues(){
         return false;
       }
       for (let index = 0; index < this.dayArr.length; index++) {
-        if (this.dayArr[index].checked) {
-          debugger
+        if (this.dayArr[index].checked) {        
           const day = this.dayArr[index].value;
           _arraytext.push(day);
           var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
@@ -3627,7 +3630,7 @@ ReshudingTaskandEvent() {
         this.MasterCode = (this.MasterCode[0].stringval);
 
         document.getElementById("subtaskid").style.display = "flex";
-        document.getElementById("Guest_Name").style.display = "none";
+        // document.getElementById("Guest_Name").style.display = "none";
         document.getElementById("Location_Name").style.display = "none";
         document.getElementById("Descrip_Name").style.display = "none";
         document.getElementById("core_viw123").style.display = "flex";

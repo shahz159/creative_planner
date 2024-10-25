@@ -84,6 +84,8 @@ export class MeetingDetailsComponent implements OnInit {
   currentSidebarOpened: "Private_Notes" | "NOT_OPENED" = 'NOT_OPENED';
   notesContent: any;
   _ObjCompletedProj: CompletedProjectsDTO;
+
+
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -109,13 +111,14 @@ export class MeetingDetailsComponent implements OnInit {
         // 'insertUnorderedList',
         // 'insertOrderedList',
         'heading',
-        // 'fontName'
+        'fontName',
+        'customClasses',
       ],
       [
         // 'fontSize',
         // 'textColor',
         // 'backgroundColor',
-        'customClasses',
+       
         'unlink',
         'insertImage',
         'insertVideo',
@@ -142,6 +145,9 @@ export class MeetingDetailsComponent implements OnInit {
     // Add sanitizeHtml option and set it to false
     sanitize: false
   };
+
+
+  
   private refreshSubscription: Subscription;
   constructor(
     private projectMoreDetailsService: ProjectMoreDetailsService,

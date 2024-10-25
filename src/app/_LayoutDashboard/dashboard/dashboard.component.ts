@@ -1871,7 +1871,6 @@ export class DashboardComponent implements OnInit {
       }
       for (let index = 0; index < this.dayArr.length; index++) {
         if (this.dayArr[index].checked) {
-          debugger
           const day = this.dayArr[index].value;
           _arraytext.push(day);
           var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
@@ -2243,6 +2242,8 @@ export class DashboardComponent implements OnInit {
       // timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
       //   + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       // this.EventNumber = timestamp;
+
+      
       let finalarray = [];
       this.daysSelectedII = [];
       // const format2 = "YYYY-MM-DD";
