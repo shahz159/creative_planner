@@ -807,11 +807,11 @@
                                                     </div>
 
 
-                                                    <button *ngIf="(projectInfo.Status==='Project Hold')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"  class="btn-inside-notifi  release-now-shrtcut"  (click)="openPrjReleaseSideBar()">
+                                                    <button *ngIf="(projectInfo.Status==='Project Hold')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"  class="btn-inside-notifi  release-now-shrtcut"  (click)=" $event.stopPropagation();   openPrjReleaseSideBar()">
                                                         Project release
                                                       </button>
 
-                                                    <button  *ngIf="(projectInfo.Status==='New Project Rejected')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"    class="btn-inside-notifi  re-release-prj-shrtcut" (click)="openNewPrjReleaseSideBar()">
+                                                    <button  *ngIf="(projectInfo.Status==='New Project Rejected')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"    class="btn-inside-notifi  re-release-prj-shrtcut" (click)="$event.stopPropagation();  openNewPrjReleaseSideBar()">
                                                         New project release
                                                      </button>
 
@@ -3125,7 +3125,7 @@
                                                                       <span class="fs-9 text-info">Attachment</span>
                                                                   </span>
                                                              </div>
-                                                          </fieldset>
+                                                          </fieldset>   
 
                                                           <fieldset class="meeting-attendance-item mt-2" style="padding-top: 0;">
                                                             <legend style=" max-width: fit-content; font-size: 10px;color: #9a9a9a; ">Approved by</legend>
