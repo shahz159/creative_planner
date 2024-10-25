@@ -9319,3 +9319,10 @@ span.time-value {
      text-decoration: underline;
      cursor: pointer;
 }
+.size {
+  font-size: 24px; /* Adjust the size as needed */
+  margin-top: -5px; /* Adjust the value to move it up */
+}
+.size:hover {
+  display: none;
+}
