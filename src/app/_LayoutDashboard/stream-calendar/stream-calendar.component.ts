@@ -236,10 +236,6 @@ export class StreamCalendarComponent implements OnInit {
       this.isClassAdded = true;
     }
   }
-  togglemeetingtypeOption(option: string) {
-    this.selectedOption = option;
-  }
-
 
 
 
@@ -315,7 +311,6 @@ export class StreamCalendarComponent implements OnInit {
      jsonData[Day] = moment().format('dddd').substring(0, 3);
      var DayNum1 = "DayNum";
      jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
-     debugger
      this.AllDatesSDandED.push(jsonData);
      // this.GetProjectAndsubtashDrpforCalender();
      // this.calendar.updateTodaysDate();
@@ -325,21 +320,7 @@ export class StreamCalendarComponent implements OnInit {
 
 
 
-
-
-
-
-
   }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -718,7 +699,7 @@ SubmissionName: string;
 TM_DisplayName: string;
 _subname1: boolean;
 EventNumber: any;
-_meetingroom:boolean=false;
+_meetingroom:boolean=true;
 _onlinelink: boolean = false;
 draftid: number = 0;
 timeslotsavl: any[] = [];
@@ -2242,7 +2223,6 @@ bindCustomRecurrenceValues(){
         var vUser_Name = "User_Name";
         element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
 
-
         var vLocation_Type = "Location_Type";
         element[vLocation_Type] = (this._meetingroom==true)?(this.Location_Type == undefined ? "" : this.Location_Type):'';
 
@@ -2255,6 +2235,7 @@ bindCustomRecurrenceValues(){
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
+    
         var vLink_Details = "Link_Details";
         let link_d=this.Link_Details;
         if(this.Link_Details){
@@ -4669,5 +4650,54 @@ submitEventToRepeat(){
     this.notifyService.showSuccess("Task Uncomplete.", "Success");
   }
 
+
+
+
+
+
+
+
+
+
+  togglemeetingtypeOption(option: string) {
+    this.selectedOption = option;
+    if(this.selectedOption === 'option2'){
+      this._onlinelink = true;
+    }else if(this.selectedOption === 'option1'){
+      this._meetingroom=true;
+    }else{
+      this._onlinelink = false;
+      this._meetingroom=false;
+    }
+  
+  }
+
+  // Online_method(event) {
+
+  //   if (event.target.checked) {
+  //     document.getElementById("Descrip_Name12").style.display = "flex";
+  //     this._onlinelink = event.target.checked;
+  //     // alert(this._onlinelink)
+  //   }
+  //   else {
+  //     document.getElementById("Descrip_Name12").style.display = "none";
+  //     this._onlinelink = false;
+  //     // alert(this._onlinelink)
+  //   }
+
+  // }
+
+
+
+  // Meeting_method(event){
+  //   if (event.target.checked) {
+  //     document.getElementById("Location_Name").style.display = "flex";
+  //     this._meetingroom = event.target.checked;
+  //   }
+  //   else {
+  //     document.getElementById("Location_Name").style.display = "none";
+  //     this._meetingroom = false;
+  //   }
+  //  }
 /////////////////////////////////////////// Created On (Schedule event popup box) End /////////////////////////////////////////////////////////
 }

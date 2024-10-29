@@ -122,12 +122,6 @@
                 <div class="kt-list-nav">
                     <div class="kt-list-label">My Calender</div>
                     <div class="kt-list-nav-main-cal-scroll">
-                        <div class="kt-list-nav-item">
-                            <span class="kt-list-nav-item-check">
-                                <input class="form-check-input" type="checkbox" value="" id="checkmycaltask">
-                            </span>
-                            <label class="kt-list-nav-item-label" for="checkmycaltask">My tasks</label>
-                        </div>
                         <div class="kt-list-nav-item" (click)="sortMeetingCalender(0)">
                             <span class="kt-list-nav-item-check">
                                 <input class="form-check-input"  [checked]="user_Type === 0"  type="checkbox" value="" id="checkallmeetings">
@@ -170,7 +164,12 @@
                             </span>
                             <label class="kt-list-nav-item-label" for="checkdomeetings">Done not attended</label>
                         </div>
-                        
+                        <div class="kt-list-nav-item">
+                            <span class="kt-list-nav-item-check">
+                                <input class="form-check-input" type="checkbox" value="" id="checkmycaltask">
+                            </span>
+                            <label class="kt-list-nav-item-label" for="checkmycaltask">My tasks</label>
+                        </div>
                         <!-- <div class="kt-list-nav-item">
                             <span class="kt-list-nav-item-check">
                                 <input class="form-check-input" type="checkbox" value="" id="checkconfirmmeetings">
@@ -2493,7 +2492,7 @@
 <div class="modal-backdrop fade" id="createEventTaskModalBackdrop" style="display: none"></div>
 <div class="modal fade create-event-task-modal" id="createEventTaskModal" data-backdrop="static"  data-keyboard="false"  tabindex="-1" role="dialog" aria-labelledby="createEventTaskModalTitle" aria-modal="true"  style="display: none">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-      <div class="modal-content">
+      <div class="modal-content"> 
         <div class="modal-header">
             <h5 class="modal-title">
                 <span id="event-title" >Create event</span>
@@ -2677,14 +2676,14 @@
                                     <div class="create-event-meeting-type">
                                         <div class="create-event-meeting-type-radio">
                                             <label>
-                                                <input type="radio" name="meetingtypeOption" id="meetingtypeRadio1" (change)="togglemeetingtypeOption('option1')" [checked]="selectedOption === 'option1'" class="cust-radio"/> Meeting Room
+                                                <input type="radio" name="meetingtypeOption" id="meetingtypeRadio1"   (change)="togglemeetingtypeOption('option1')" [checked]="selectedOption === 'option1'" class="cust-radio"/> Meeting Room
                                               </label>
                                               <label>
-                                                <input type="radio" name="meetingtypeOption" id="meetingtypeRadio2" (change)="togglemeetingtypeOption('option2')" [checked]="selectedOption === 'option2'" class="cust-radio"/> Online
+                                                <input type="radio" name="meetingtypeOption"  id="meetingtypeRadio2"  (change)="togglemeetingtypeOption('option2')" [checked]="selectedOption === 'option2'" class="cust-radio"/> Online
                                               </label>
                                         </div>
                                         <div>
-                                            <div class="meeting-type-div" id="Location_Name" style="display:none" *ngIf="selectedOption === 'option1'">
+                                            <div class="meeting-type-div"  *ngIf="selectedOption === 'option1'">
                                                 <div class="meeting-type-control">
                                                     <div class="meeting-type-icon">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="36" height="22" viewBox="0 0 36 22" fill="none"><path d="M31.7143 3.79541H4.08222C3.64171 3.79541 3.24124 4.15583 3.24124 4.63639V17.6115C3.24124 18.052 3.60166 18.4524 4.08222 18.4524H31.7143C32.1548 18.4524 32.5553 18.092 32.5553 17.6115V4.59634C32.5553 4.15583 32.1949 3.79541 31.7143 3.79541ZM30.9134 16.8105H4.9232V5.43732H30.8733L30.9134 16.8105Z" fill="#6772FE"></path><path d="M34.5576 7.88013C34.1171 7.88013 33.7166 8.24054 33.7166 8.7211V13.5267C33.7166 13.9672 34.0771 14.3677 34.5576 14.3677C35.0382 14.3677 35.3986 14.0072 35.3986 13.5267V8.7211C35.3986 8.28059 34.9981 7.88013 34.5576 7.88013Z" fill="#6772FE"></path><path d="M11.3707 19.6938H6.5651C6.12459 19.6938 5.72412 20.0543 5.72412 20.5348C5.72412 21.0154 6.08454 21.3758 6.5651 21.3758H11.3707C11.8112 21.3758 12.2117 21.0154 12.2117 20.5348C12.2117 20.0543 11.8112 19.6938 11.3707 19.6938Z" fill="#6772FE"></path><path d="M20.3011 19.6938H15.4955C15.055 19.6938 14.6545 20.0543 14.6545 20.5348C14.6545 21.0154 15.0149 21.3758 15.4955 21.3758H20.3011C20.7416 21.3758 21.142 21.0154 21.142 20.5348C21.142 20.0543 20.7416 19.6938 20.3011 19.6938Z" fill="#6772FE"></path><path d="M29.2715 19.6938H24.4659C24.0254 19.6938 23.6249 20.0543 23.6249 20.5348C23.6249 21.0154 23.9853 21.3758 24.4659 21.3758H29.2715C29.712 21.3758 30.1124 21.0154 30.1124 20.5348C30.1124 20.0543 29.712 19.6938 29.2715 19.6938Z" fill="#6772FE"></path><path d="M6.5651 2.55402H11.3707C11.8112 2.55402 12.2117 2.1936 12.2117 1.71305C12.2117 1.27253 11.8512 0.87207 11.3707 0.87207H6.5651C6.12459 0.87207 5.72412 1.23249 5.72412 1.71305C5.76417 2.1936 6.12459 2.55402 6.5651 2.55402Z" fill="#6772FE"></path><path d="M15.4955 2.55402H20.3011C20.7416 2.55402 21.142 2.1936 21.142 1.71305C21.142 1.27253 20.7816 0.87207 20.3011 0.87207H15.4955C15.055 0.87207 14.6545 1.23249 14.6545 1.71305C14.6946 2.1936 15.055 2.55402 15.4955 2.55402Z" fill="#6772FE"></path><path d="M24.4659 2.55402H29.2715C29.712 2.55402 30.1124 2.1936 30.1124 1.71305C30.1124 1.27253 29.752 0.87207 29.2715 0.87207H24.4659C24.0254 0.87207 23.6249 1.23249 23.6249 1.71305C23.6249 2.1936 24.0254 2.55402 24.4659 2.55402Z" fill="#6772FE"></path><path d="M1.27897 7.88013C0.838454 7.88013 0.437988 8.28059 0.437988 8.7211V13.5267C0.437988 13.9672 0.798407 14.3677 1.27897 14.3677C1.75952 14.3677 2.11994 14.0072 2.11994 13.5267V8.7211C2.11994 8.28059 1.75952 7.88013 1.27897 7.88013Z" fill="#6772FE"></path></svg>
