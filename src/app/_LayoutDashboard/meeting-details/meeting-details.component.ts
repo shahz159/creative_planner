@@ -5149,7 +5149,7 @@ sortbyCurrent_Time(){
 
   // }
   selectStartDate(event) {
-debugger
+
     this._StartDate = event;
     let sd = event.format("YYYY-MM-DD").toString();
     this._SEndDate = event.format("YYYY-MM-DD").toString();
@@ -5247,7 +5247,58 @@ debugger
     // valid starttimearr setting end.
 
 
-  }
+
+
+////test start ///////////////////////////////////////////
+
+if(this.editTask && this.selectedrecuvalue =='2'){
+
+  // uncheck prev date.
+    let d=new Date(this._Oldstart_date);
+    const index=d.getDay();
+    this.dayArr[index].checked=false;
+  // uncheck prev date.
+  
+  // update new
+    let d2=new Date(this._StartDate);
+    const index2=d2.getDay();
+    this.dayArr[index2].checked=true;
+    this.mtgOnDays=[];
+    this.dayArr.forEach((item:any)=>{
+      if(item.checked){
+          let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
+         this.mtgOnDays.push(d_name);
+      }
+   });
+  // update new
+  } else if(this.editTask && this.selectedrecuvalue == "3"){
+
+    // uncheck prev date.
+    let d=new Date(this._Oldstart_date);
+    const index=d.getDate();
+    this.MonthArr[index].checked=false;
+    // uncheck prev date.
+
+    // update new
+    let d2=new Date(this._StartDate);
+    const index2=d2.getDate();
+    this.MonthArr[index2-1].checked=true;
+  
+    this.mtgOnDays=[];
+    this.MonthArr.forEach((item:any)=>{
+      if(item.checked){
+       
+         const d_no=Number.parseInt(item.value);
+         this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
+      }
+    });
+    // update new
+}
+  ////test end  ///////////////////////////////////////////
+
+
+
+}
 
   onfocus(val) {
     //  console.log(val, "ttt");

@@ -1983,7 +1983,7 @@ export class DashboardComponent implements OnInit {
 
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
-
+debugger
         var vLink_Details = "Link_Details";
         let link_d=this.Link_Details;
         if(this.Link_Details){
@@ -2243,7 +2243,7 @@ export class DashboardComponent implements OnInit {
       //   + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       // this.EventNumber = timestamp;
 
-      
+   
       let finalarray = [];
       this.daysSelectedII = [];
       // const format2 = "YYYY-MM-DD";
@@ -2264,6 +2264,7 @@ export class DashboardComponent implements OnInit {
         }
         for (let index = 0; index < this.dayArr.length; index++) {
           if (this.dayArr[index].checked) {
+          
             const day = this.dayArr[index].value;
             _arraytext.push(day);
             var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
@@ -3051,6 +3052,60 @@ export class DashboardComponent implements OnInit {
     else
     this.validStartTimearr=[...this.StartTimearr];
     // valid starttimearr setting end.
+
+
+
+////test start ///////////////////////////////////////////
+
+if(this.editTask && this.selectedrecuvalue =='2'){
+
+// uncheck prev date.
+  let d=new Date(this._Oldstart_date);
+  const index=d.getDay();
+  this.dayArr[index].checked=false;
+// uncheck prev date.
+
+// update new
+  let d2=new Date(this._StartDate);
+  const index2=d2.getDay();
+  this.dayArr[index2].checked=true;
+
+  this.mtgOnDays=[];
+  this.dayArr.forEach((item:any)=>{
+    if(item.checked){
+        let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
+       this.mtgOnDays.push(d_name);
+    }
+ });
+// update new
+} else if(this.editTask && this.selectedrecuvalue == "3"){
+
+    // uncheck prev date.
+    let d=new Date(this._Oldstart_date);
+    const index=d.getDate();
+    this.MonthArr[index].checked=false;
+    // uncheck prev date.
+
+    // update new
+    let d2=new Date(this._StartDate);
+    const index2=d2.getDate();
+    this.MonthArr[index2-1].checked=true;
+
+    this.mtgOnDays=[];
+    this.MonthArr.forEach((item:any)=>{
+      if(item.checked){
+       
+         const d_no=Number.parseInt(item.value);
+         this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
+      }
+    });
+    // update new
+}
+
+
+////test end  ///////////////////////////////////////////
+
+
 
 
   }
