@@ -29,7 +29,7 @@ export const MY_FORMATS = {
     monthYearA11yLabel: "MMMM YYYY"
   }
 };
-
+moment.locale('en');
 
 @Component({
   selector: 'app-stream-calendar',
@@ -82,20 +82,23 @@ export class StreamCalendarComponent implements OnInit {
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
       [
-        // 'bold',
-        // 'italic',
-        // 'underline',
-        'undo',
-        'redo',
+        'undo', // Hide Undo button
+        'redo', // Hide Redo button
         'strikeThrough',
         'subscript',
         'superscript',
         'indent',
         'outdent',
-        // 'insertUnorderedList',
-        // 'insertOrderedList',
+        'justifyLeft',
+        'justifyCenter',
+        'justifyRight',
+        'justifyFull',
         'heading',
-        // 'fontName'
+        'fontName',
+        // 'fontSize',
+        'textColor',
+        'backgroundColor',
+        'customClasses'
       ],
       [
         // 'fontSize',
@@ -233,10 +236,6 @@ export class StreamCalendarComponent implements OnInit {
       this.isClassAdded = true;
     }
   }
-  togglemeetingtypeOption(option: string) {
-    this.selectedOption = option;
-  }
-
 
 
 
@@ -321,21 +320,7 @@ export class StreamCalendarComponent implements OnInit {
 
 
 
-
-
-
-
-
   }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -714,7 +699,7 @@ SubmissionName: string;
 TM_DisplayName: string;
 _subname1: boolean;
 EventNumber: any;
-_meetingroom:boolean=false;
+_meetingroom:boolean=true;
 _onlinelink: boolean = false;
 draftid: number = 0;
 timeslotsavl: any[] = [];
@@ -2149,8 +2134,7 @@ bindCustomRecurrenceValues(){
         return false;
       }
       for (let index = 0; index < this.dayArr.length; index++) {
-        if (this.dayArr[index].checked) {
-          debugger
+        if (this.dayArr[index].checked) {        
           const day = this.dayArr[index].value;
           _arraytext.push(day);
           var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
@@ -2239,7 +2223,6 @@ bindCustomRecurrenceValues(){
         var vUser_Name = "User_Name";
         element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
 
-
         var vLocation_Type = "Location_Type";
         element[vLocation_Type] = (this._meetingroom==true)?(this.Location_Type == undefined ? "" : this.Location_Type):'';
 
@@ -2252,6 +2235,7 @@ bindCustomRecurrenceValues(){
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
+    
         var vLink_Details = "Link_Details";
         let link_d=this.Link_Details;
         if(this.Link_Details){
@@ -3627,7 +3611,7 @@ ReshudingTaskandEvent() {
         this.MasterCode = (this.MasterCode[0].stringval);
 
         document.getElementById("subtaskid").style.display = "flex";
-        document.getElementById("Guest_Name").style.display = "none";
+        // document.getElementById("Guest_Name").style.display = "none";
         document.getElementById("Location_Name").style.display = "none";
         document.getElementById("Descrip_Name").style.display = "none";
         document.getElementById("core_viw123").style.display = "flex";
@@ -4666,5 +4650,54 @@ submitEventToRepeat(){
     this.notifyService.showSuccess("Task Uncomplete.", "Success");
   }
 
+
+
+
+
+
+
+
+
+
+  togglemeetingtypeOption(option: string) {
+    this.selectedOption = option;
+    if(this.selectedOption === 'option2'){
+      this._onlinelink = true;
+    }else if(this.selectedOption === 'option1'){
+      this._meetingroom=true;
+    }else{
+      this._onlinelink = false;
+      this._meetingroom=false;
+    }
+  
+  }
+
+  // Online_method(event) {
+
+  //   if (event.target.checked) {
+  //     document.getElementById("Descrip_Name12").style.display = "flex";
+  //     this._onlinelink = event.target.checked;
+  //     // alert(this._onlinelink)
+  //   }
+  //   else {
+  //     document.getElementById("Descrip_Name12").style.display = "none";
+  //     this._onlinelink = false;
+  //     // alert(this._onlinelink)
+  //   }
+
+  // }
+
+
+
+  // Meeting_method(event){
+  //   if (event.target.checked) {
+  //     document.getElementById("Location_Name").style.display = "flex";
+  //     this._meetingroom = event.target.checked;
+  //   }
+  //   else {
+  //     document.getElementById("Location_Name").style.display = "none";
+  //     this._meetingroom = false;
+  //   }
+  //  }
 /////////////////////////////////////////// Created On (Schedule event popup box) End /////////////////////////////////////////////////////////
 }

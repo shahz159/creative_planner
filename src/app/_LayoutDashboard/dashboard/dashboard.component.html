@@ -1452,7 +1452,7 @@
                                     </div>-
                                     <div class="title-day">
                                         <span *ngIf="item.Schedule_date!=item.SEndDate">
-                                            {{parseTime(item.SEndDate) | date: 'h:mm a'}}
+                                            {{item.SEndDate | date:'EEEE, MMMM d, YYYY'}}
                                         </span>
                                         <span *ngIf="item.Schedule_date!=item.SEndDate">,</span>
                                         {{parseTime(item.NewEd_Time) | date: 'h:mm a'}}

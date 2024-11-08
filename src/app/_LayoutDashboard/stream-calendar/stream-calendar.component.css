@@ -4628,3 +4628,7 @@ ul.schedule-select-list li .slect-close:hover svg {
 ::ng-deep .error-vd .ng-select-container {
     border: 1px solid #F44336 !important;
 }
+
+::ng-deep .pac-container {
+    z-index: 9999!important ;
+}
