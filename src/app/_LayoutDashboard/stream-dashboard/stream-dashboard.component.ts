@@ -1,3 +1,4 @@
+import { forEach } from '@angular-devkit/schematics';
 import { Component, OnInit ,ChangeDetectorRef} from '@angular/core';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 declare var $: any;
@@ -58,6 +59,7 @@ export class StreamDashboardComponent implements OnInit {
     this.meetingDetails();
     this.portfolioSerivce();
     this.getTimeLineStatus();
+    this.getEmployee()
     this._objStatusDTO.Emp_No = this.Current_user_ID;
 
     this.GetDashboardSummary();
@@ -332,19 +334,66 @@ export class StreamDashboardComponent implements OnInit {
   }
 
   userFound:boolean = undefined
-  darArray : any
-  weekarray : any
+  darArray : any;
+  weekArr : any = [
+    {
+        DayName: "Monday",
+        SubmissionStatus: "Not Submitted"
+    },
+    {
+        DayName: "Tuesday",
+        SubmissionStatus: "Not Submitted"
+    },
+    {
+        DayName: "Wednesday",
+        SubmissionStatus: "Not Submitted"
+    },
+    {
+        DayName: "Thursday",
+        SubmissionStatus: "Not Submitted"
+    },
+    {
+        DayName: "Friday",
+        SubmissionStatus: "Not Submitted"
+    },
+    {
+      DayName: "Saturday",
+      SubmissionStatus: "Not Submitted"
+  },
+   {
+    DayName: "Sunday",
+    SubmissionStatus: "Not Submitted"
+   }
+  ];
+
   getTimeLineStatus(){
     this.Emp_No = localStorage.getItem('EmpNo')
     this.service.NewGetDashboardTimelineStatus(this.Emp_No).subscribe((data)=>{
       this.darArray = JSON.parse(data['DAR_Details_Json']);
 
-      console.log(this.darArray,'darArraydarArray')
+      const week_Arr = this.darArray[0].WeekSubmissionStatus;
+      this.weekArr.forEach((item,index)=>{
+        debugger
+        if(week_Arr[index]){
+          item.SubmissionStatus=week_Arr[index].SubmissionStatus;
+        }
 
-    this.weekarray =   this.darArray[0].WeekSubmissionStatus
-    console.log( this.weekarray," this.weekarray this.weekarray")
+      })
+    console.log(this.darArray,'darArraydarArray')
+
     })
 
+  }
+
+
+
+  // TestAPI/NewGetEmployeePerformance
+  employeeReport:any
+  getEmployee(){
+    this.service.GetEmployeePerformance(this.Emp_No).subscribe((data)=>{
+          this.employeeReport =   JSON.parse(data['EmployeeReport'])
+      console.log(this.employeeReport,"GetEmployeePerformanceGetEmployeePerformance")
+    })
   }
 
 
@@ -405,40 +454,40 @@ export class StreamDashboardComponent implements OnInit {
   }
 
   messagefav: string;
-  AddFavourites(portfolioId, isfav) {
+  // AddFavourites(portfolioId, isfav) {
 
-    // this.LoadingBar_state.start();
-    this.service.SetFavourite_Service(portfolioId, isfav, this.Current_user_ID).subscribe((data) => {
-      //  console.log("retrun Data----->",data1)
+  //   // this.LoadingBar_state.start();
+  //   this.service.SetFavourite_Service(portfolioId, isfav, this.Current_user_ID).subscribe((data) => {
+  //     //  console.log("retrun Data----->",data1)
 
-      this._objStatusDTO.Emp_No = this.Current_user_ID;
-      this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
+  //     this._objStatusDTO.Emp_No = this.Current_user_ID;
+  //     this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
 
-        (data) => {
-          debugger
-          console.log(data,"new StatusDTO;")
-          this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
-          this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
-          this.Employeelist_Json = JSON.parse(data[0]['Employee_Json']);
-          this.Statuslist_Json = JSON.parse(data[0]['Status_Json']);
-          this.countFav = data[0]['Favourites'];
-          this.cdr.detectChanges();
+  //       (data) => {
+  //         debugger
+  //         console.log(data,"new StatusDTO;")
+  //         this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
+  //         this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
+  //         this.Employeelist_Json = JSON.parse(data[0]['Employee_Json']);
+  //         this.Statuslist_Json = JSON.parse(data[0]['Status_Json']);
+  //         this.countFav = data[0]['Favourites'];
+  //         this.cdr.detectChanges();
 
-          if (isfav == false) {
-            this.messagefav = "Added to Favourites";
-          }
-          else {
-            this.messagefav = "Removed From Favourites";
-          }
-          let action: string = ""
-          this._snackBar.open(this.messagefav, action, {
-            duration: 1500,
-          });
+  //         if (isfav == false) {
+  //           this.messagefav = "Added to Favourites";
+  //         }
+  //         else {
+  //           this.messagefav = "Removed From Favourites";
+  //         }
+  //         let action: string = ""
+  //         this._snackBar.open(this.messagefav, action, {
+  //           duration: 1500,
+  //         });
 
-        });
-    })
-    // this.isLoading = true
-  }
+  //       });
+  //   })
+  //   // this.isLoading = true
+  // }
 
 
 }

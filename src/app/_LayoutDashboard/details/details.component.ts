@@ -116,6 +116,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   totalActionsWith0hrs:number=0;
   totalSelfAssignedActns:number=0;
   totalPActns4Aprvls:number=0;
+  actionsAssignedByMe:number=0;
 
 
   TOTAL_ACTIONS_IN_PROCESS: number = 0;
@@ -1047,7 +1048,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
               this.selfAssignedActns.push({name:actn.Responsible, selfactns:1,empno:actn.Team_Res});
             }
 
-
             if(['Under Approval','Forward Under Approval'].includes(actn.Status)){
 
                   const temp=this.pendingActns4Aprvls.find(item=>item.empno==actn.Team_Res);
@@ -1057,6 +1057,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                   this.pendingActns4Aprvls.push({ name:actn.Responsible, empno:actn.Team_Res, totalApprovals:1   });
             }
 
+debugger
+            if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno===actn.Team_Res)){
+              this.actionsAssignedByMe+=1;
+            }
 
      });
      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
@@ -5100,6 +5104,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
   }
 
   toggleMtgsSection(sec:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'){
+    debugger
     this.mtg_section=sec;
     const bx=this.mtg_section=='UPCOMING'?'#upcoming_meetings_tabpanel div#upcoming-mtg-0-btn':
              this.mtg_section=='TODAY'?'#today_meetings_tabpanel div#today-mtg-0-btn':
@@ -5247,25 +5252,28 @@ config: AngularEditorConfig = {
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
       [
-        // 'bold',
-        // 'italic',
-        // 'underline',
+        'undo', // Hide Undo button
+        'redo', // Hide Redo button
         'strikeThrough',
         'subscript',
         'superscript',
         'indent',
         'outdent',
-        // 'insertUnorderedList',
-        // 'insertOrderedList',
+        'justifyLeft',
+        'justifyCenter',
+        'justifyRight',
+        'justifyFull',
         'heading',
-        // 'fontName'
+        'fontName',
+        // 'fontSize',
+        'textColor',
+        'backgroundColor',
+        'customClasses'
       ],
       [
         // 'fontSize',
         // 'textColor',
         // 'backgroundColor',
-        'customClasses',
-
         'unlink',
         'insertImage',
         'insertVideo',
@@ -6502,6 +6510,11 @@ getChangeSubtaskDetais(Project_Code) {
     return moment({ hour, minute }).format("hh:mm A");
   }
 
+
+
+
+
+
   OnSubmitSchedule() {
 
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
@@ -6727,7 +6740,7 @@ getChangeSubtaskDetais(Project_Code) {
           //UploadCalendarAttachmenst
           // console.log(data, "m");
           this._Message = data['message'];
-          if (this._Message == "Updated successfully") {
+          if (this._Message == "Update successfully") {
             if (this.draftid != 0) {
               this.Getdraft_datalistmeeting();
               this.draftid = 0
@@ -7707,10 +7720,15 @@ filterConfig:{filterby:string,sortby:string}={
          sortby:'All'
 };
 onFilterConfigChanged({filterBy,sortBy}){
+  debugger
   if(filterBy&&sortBy){
     this.filterConfig.filterby=filterBy;
     this.filterConfig.sortby=sortBy;
     this.filterConfigChanged=true;
+    // if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno!=actn.Team_Res)){
+    //   this.actionsAssignedByMe+=1;
+    //            }
+
     this.filteredPrjAction=this.getFilteredPrjActions(this.filterConfig.filterby,this.filterConfig.sortby);
   }
 }
@@ -7722,7 +7740,10 @@ clearFilterConfigs(){
   this.filterConfigChanged=false;
 }
 
+
+count:any
 getFilteredPrjActions(filterby:string='All',sortby:string='All'){
+  debugger
 if(['001','002'].includes(this.projectInfo.Project_Block)){
 
   let arr=this.projectActionInfo?this.projectActionInfo:[];
@@ -7735,18 +7756,26 @@ if(['001','002'].includes(this.projectInfo.Project_Block)){
        });
      }
      else{  // when sortby is 'Assigned By me'
+
         arr=arr.filter((action)=>{
+
               return action.AssignedbyEmpno.trim()===this.Current_user_ID;
+
         });
+
      }
     }
 
     if(filterby!=='All'){
       arr=arr.filter((action)=>{
+
          return action.Status===filterby;
+
        })
+
     }
   }
+
   return arr;
 
 }

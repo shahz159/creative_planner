@@ -1348,8 +1348,8 @@ span.count2 {
 
 .project-list_AC.active {
   background-color: #e0f1ff;
-
 }
+
 
 .new-project {
   background-color: #9C27B0 !important;
@@ -5233,11 +5233,11 @@ color: #121212;
   background-color: #f1f1f1;
 }
 .audit-pending-notf {
-  background-color: #9c27b017;
+  background-color: #fd7e7a38 ;
 }
 
 .audit-pending-notf .notif-msg {
-  color: #9C27B0;
+  color: #ff2727;
   display: flex;
   flex-direction: column;
 }
@@ -5250,3 +5250,53 @@ color: #121212;
   display: flex;
   flex-direction: column;
 }
+.status-text {
+  text-transform: lowercase !important; /* This will make the text appear in lowercase */
+}
+tr.odd.project-list_AC.active {
+  background-color: #e0f1ff;
+}
+.kt-todo__icon.filter-dot::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 9px;
+  background-color: #9e6df5;
+  width: 6px;
+  height: 6px;
+  display: block;
+  z-index: 9;
+  border-radius: 50px;
+}
+
+.delayaction-of-emp:hover {
+  color: currentColor;
+  cursor: pointer !important;
+  text-decoration: underline;
+  text-decoration-style: solid;
+}
+.audit-pending-notfc {
+  background-color: #81C784;
+}
+.notification .notif-msgs {
+  flex-grow: 1;
+  font-family: var(--font-family-sans-serif);
+  font-weight: 500;
+  font-size: 14px;
+  color: white;
+}
+
+
+
+.audit-pending-notffor {
+  background-color:#d886e7 ;
+}
+.notification .notif-msgs {
+  flex-grow: 1;
+  font-family: var(--font-family-sans-serif);
+  font-weight: 500;
+  font-size: 14px;
+  color: white;
+}
+
+

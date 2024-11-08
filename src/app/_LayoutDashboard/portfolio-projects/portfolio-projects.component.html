@@ -66,28 +66,32 @@
                             </div>
   </div>
 
-
+   <!-- <div *ngIf="TotalProjects">1 - {{TotalProjects}} of {{TotalProjects}}</div>
+   <div *ngIf="CountInprocess">1 - {{CountInprocess}} of {{TotalProjects}}</div> -->
+   <!-- <div *ngIf="countgetFilter()">{{ countgetFilter() }}</div> -->
+    <div *ngIf="resultCount>0"> 1 - {{resultCount}} of {{resultCount}}</div>
 
                         <div class="kt-todo__details">
 
 
                                  <ng-container  *ngIf="_MessageIfNotOwner == ''">
-                                    <a class="kt-todo__icon" title="{{Project_Graph}}" *ngIf="Project_Graph=='Graphs'" (click)="ProjectsGraphsClick()">
+                                    <a class="kt-todo__icon" title="Click to view the {{Project_Graph}}" *ngIf="Project_Graph=='Graphs'" (click)="ProjectsGraphsClick()">
                                         <i class="fas fa-chart-pie"></i>
                                     </a>
 
 
-                                    <a class="kt-todo__icon" title="Back to {{Project_Graph}}" *ngIf="Project_Graph=='Projects'" (click)="ProjectsGraphsClick()">
+                                    <a class="kt-todo__icon" title="Click back to {{Project_Graph}}" *ngIf="Project_Graph=='Projects'" (click)="ProjectsGraphsClick()">
                                         <i class="fab fa-wpforms"></i>
-                                    </a></ng-container>
+                                    </a>
+                                  </ng-container>
 
                                     <ng-container *ngIf="_MessageIfNotOwner == '' && UserAccessType === 'Full Access'">
-                                    <a  class="kt-todo__icon" title="Add project" *ngIf="Project_Graph=='Graphs'"  (click)="populateForm()">
+                                    <a  class="kt-todo__icon" title="Click to add project in portfolio" *ngIf="Project_Graph=='Graphs'"  (click)="populateForm()">
                                         <i class="fas fa-plus"></i>
                                     </a>
 
 
-                                    <a class="kt-todo__icon" title="Share" *ngIf="Project_Graph=='Graphs'"  (click)="share_Users()">
+                                    <a class="kt-todo__icon" title="Click to share the portfolio" *ngIf="Project_Graph=='Graphs'"  (click)="share_Users()">
                                         <i class="fas fa-share-alt"></i>
                                     </a>
 
@@ -95,26 +99,29 @@
 
 
 
-                                    <a    class="kt-todo__icon "   (click)="openMeetingSidebar()"     title="View or link meeting">
+                                    <a    class="kt-todo__icon "   (click)="openMeetingSidebar()"     title="Click to view or link meeting">
                                       <svg xmlns="http://www.w3.org/2000/svg" height="18" width="18" class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1" fill="currentColor"><path d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z"/></svg>
 
 
-                                  </a></ng-container>
+                                  </a>
+                                </ng-container>
 
 
                                     <div class="dropdown">
                                       <ng-container *ngIf="_MessageIfNotOwner == ''">
 
-                                        <a   class="kt-todo__icon" data-toggle="dropdown"  title="Filter">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </a></ng-container>
+
+                                        <a class="kt-todo__icon"  [ngClass]="{'filter-dot':showDot}"  data-toggle="dropdown" title="Click to filter the projects" aria-haspopup="true" aria-expanded="false" ><svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" aria-hidden="true" role="img" font-size="1.5rem" width="1em" height="1em" viewBox="0 -1 17 17" class="iconify iconify--mdi"><path _ngcontent-lde-c401="" d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"></path></svg></a>
+
+                                      </ng-container>
+
 
                                         <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter" id="dropd">
 
-                                            <ul class="drop-ul">
+                                            <ul  class="drop-ul">
                                                 <li class="dropdown-header">Filter by</li>
                                                 <li *ngIf="TotalProjects>0" (click)="labelAll(); onButtonClick('tot')">
-                                                    <button id="tot" class="btn btn-filtr active">
+                                                    <button id="tot" class="btn btn-filtr active" [ngClass]="{'active':_PortProjStatus==''&&this.showDeletedPrjOnly!==true}"  >
                                                         <div class="d-flex align-items-center">
                                                             <span class="count tot">{{TotalProjects}}</span>
                                                             <div  class="fil-lbl">Total projects</div>
@@ -133,7 +140,7 @@
                                                 </li>
                                                 <!-- onButtonClick('inn') -->
                                                 <li *ngIf="CountInprocess>0" (click)="labelInprocess();onButtonClick('inn')">
-                                                    <button  id="inn" class="btn btn-filtr">
+                                                    <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='InProcess'}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count in-pro"> {{CountInprocess}}</span>
                                                             <div class="fil-lbl">In-Process</div>
@@ -151,7 +158,7 @@
                                                     </button>
                                                 </li>
                                                 <li *ngIf="CountDelay>0" (click)="labelDelay();onButtonClick('del')">
-                                                    <button  id="del" class="btn btn-filtr">
+                                                    <button  id="del" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Delay'}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count del"> {{CountDelay}} </span>
                                                             <div class="fil-lbl">Delay</div>
@@ -169,7 +176,7 @@
                                                     </button>
                                                 </li>
                                                 <li *ngIf="CountNotStarted > 0" (click)="labelDraft();onButtonClick('draft')">
-                                                    <button id="draft" class="btn btn-filtr">
+                                                    <button id="draft" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Not Started'}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count draf">{{CountNotStarted}}</span>
                                                             <div class="fil-lbl">Not started</div>
@@ -187,7 +194,7 @@
                                                     </button>
                                                 </li>
                                                 <li *ngIf="CountCompleted > 0" (click)="labelCompleted();onButtonClick('compl')">
-                                                    <button id="compl" class="btn btn-filtr">
+                                                    <button id="compl" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Completed'}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count com">{{CountCompleted}}</span>
                                                             <div class="fil-lbl">Completed</div>
@@ -205,7 +212,7 @@
                                                     </button>
                                                 </li>
                                                 <li *ngIf="CountNewProject > 0" (click)="labelNewProject();onButtonClick('new-pro')">
-                                                    <button  id="new-pro" class="btn btn-filtr">
+                                                    <button  id="new-pro" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='New Project'}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count new-pro">{{CountNewProject}}</span>
                                                             <div class="fil-lbl">New project</div>
@@ -223,7 +230,7 @@
                                                     </button>
                                                 </li>
                                                 <li *ngIf="CountCompletionUA>0" (click)="labelCompletionapproval();onButtonClick('Compl-Apprv')">
-                                                    <button id="Compl-Apprv" class="btn btn-filtr">
+                                                    <button id="Compl-Apprv" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Completion Under Approval'}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count com-appr">{{CountCompletionUA}}</span>
                                                             <div class="fil-lbl">Completion approval</div>
@@ -241,7 +248,7 @@
                                                     </button>
                                                 </li>
                                                 <li *ngIf="CountCancellation>0" (click)="labelCancellationapproval();onButtonClick('Cancel-app')">
-                                                    <button id="Cancel-app"class="btn btn-filtr">
+                                                    <button id="Cancel-app"class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Cancellation Under Approval'}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count can-app">{{CountCancellation}}</span>
                                                             <div class="fil-lbl">Cancellation approval</div>
@@ -259,7 +266,7 @@
                                                     </button>
                                                 </li>
                                                 <li *ngIf="CountForward>0" (click)="labelForward();onButtonClick('Count-forward')">
-                                                    <button id="Count-forward" class="btn btn-filtr">
+                                                    <button id="Count-forward" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Forward Under Approval'}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count for-app">{{CountForward}}</span>
                                                             <div class="fil-lbl">Forward approval</div>
@@ -277,7 +284,7 @@
                                                     </button>
                                                 </li>
                                                 <li *ngIf="CountDeadLineExtendedUA>0" (click)="labelDeadline();onButtonClick('Count-deadline')">
-                                                    <button id="Count-deadline" class="btn btn-filtr">
+                                                    <button id="Count-deadline" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Deadline Extended Under Approval'}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count dead-ext">{{CountDeadLineExtendedUA}}</span>
                                                             <div class="fil-lbl">Deadline extended approval</div>
@@ -295,7 +302,7 @@
                                                     </button>
                                                 </li>
                                                 <li *ngIf="CountAll_UA > 0" (click)="labelUA();onButtonClick('underappr')">
-                                                    <button id="underappr" class="btn btn-filtr">
+                                                    <button id="underappr" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Under Approval'}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count new-pro">{{CountAll_UA}}</span>
                                                             <div class="fil-lbl">New approval</div>
@@ -313,7 +320,7 @@
                                                     </button>
                                                 </li>
                                                 <li *ngIf="CountProjectHold > 0"  (click)="labelProjectHold();onButtonClick('pro-hold')">
-                                                    <button id="pro-hold" class="btn btn-filtr">
+                                                    <button id="pro-hold" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Project Hold'}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count pro-hold">{{CountProjectHold}}</span>
                                                             <div class="fil-lbl">Project hold</div>
@@ -331,7 +338,7 @@
                                                     </button>
                                                 </li>
                                                 <li *ngIf="CountRejecteds > 0" (click)="labelRejecteds();onButtonClick('reject')">
-                                                    <button id="reject" class="btn btn-filtr">
+                                                    <button id="reject" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='New Project Rejected'}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count rej">{{CountRejecteds}}</span>
                                                             <div class="fil-lbl">Rejected</div>
@@ -349,7 +356,7 @@
                                                     </button>
                                                 </li>
                                                 <li *ngIf="Count_ToDoCompleted > 0" (click)="labelToDoCompleted();onButtonClick('todocomp')">
-                                                    <button id="todocomp" class="btn btn-filtr">
+                                                    <button id="todocomp" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='ToDo Completed'}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count todo-com">{{Count_ToDoCompleted}}</span>
                                                             <div class="fil-lbl">ToDo completed</div>
@@ -367,7 +374,7 @@
                                                     </button>
                                                 </li>
                                                 <li *ngIf="Count_ToDoAchieved > 0" (click)="labelToDoAchieved();onButtonClick('todoachi')">
-                                                    <button id="todoachi" class="btn btn-filtr">
+                                                    <button id="todoachi" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='ToDo Achieved'}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count todo-ach">{{Count_ToDoAchieved}}</span>
                                                             <div class="fil-lbl">ToDo achived</div>
@@ -385,7 +392,7 @@
                                                     </button>
                                                 </li>
                                                 <li *ngIf="CountDeleted>0" (click)="labeldeletedproject();onButtonClick('delete')">
-                                                    <button id="delete" class="btn btn-filtr">
+                                                    <button id="delete" class="btn btn-filtr" [ngClass]="{'active':this._PortProjStatus == '' && this.showDeletedPrjOnly==true}" >
                                                         <div class="d-flex align-items-center">
                                                             <span class="count del">{{CountDeleted}}</span>
                                                             <div class="fil-lbl">Deleted projects</div>
@@ -403,12 +410,129 @@
                                                     </button>
                                                 </li>
                                             </ul>
+                                            <div></div>
+                                            <ul class="drop-ul">
+                                              <li class="dropdown-header">Sort by</li>
+                                              <button id="tot" class="btn btn-filtr" [ngClass]="{'active':_FilterByEmp===All}" (click)="labelAll();filterProjectsOfEmp();" >
+                                                <div class="d-flex align-items-center">
+                                                    <span class="count tot">{{_ProjectsListBy_Pid.length}} </span>
+                                                    <div  class="fil-lbl" >All</div>
+                                                    <span  class="chck-icn">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            width="16" height="16"
+                                                            fill="currentColor" class="bi bi-check2"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                            </path>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </button>
+                                              <li *ngFor="let item of filteredEmployees" >
+
+                                                <button id="tot" class="btn btn-filtr " [ngClass]="{'active':_FilterByEmp==item.Emp_No}" (click)="filterProjectsOfEmp(item.Emp_No);" >
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="count tot">{{item.totalProjects}}</span>
+                                                        <div  class="fil-lbl">{{item.Team_Res}}</div>
+                                                        <span *ngIf="_FilterByEmp==item.Emp_No" class="chck-icn">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                width="16" height="16"
+                                                                fill="currentColor" class="bi bi-check2"
+                                                                viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                                </path>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                </button>
+                                            </li>
+
+                                            </ul>
+
                                         </div>
+
                                     </div>
+                                    <ng-container *ngIf="_MessageIfNotOwner == ''">
+
+
+                                <a   (click)="labelAll();filterProjectsOfEmp();notShow()" class="kt-todo__icon"  data-toggle="dropdown"   title="Click to reset the filter" aria-haspopup="true" aria-expanded="false" ><svg   xmlns="http://www.w3.org/2000/svg" fill="currentColor" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="1.5rem" width="20px" height="20px" viewBox="0 0 24 24" class="iconify iconify--mdi"><path   d="M2 12a9 9 0 0 0 9 9c2.39 0 4.68-.94 6.4-2.6l-1.5-1.5A6.706 6.706 0 0 1 11 19c-6.24 0-9.36-7.54-4.95-11.95C10.46 2.64 18 5.77 18 12h-3l4 4h.1l3.9-4h-3a9 9 0 0 0-18 0Z"></path></svg></a>
+                                    </ng-container>
                         </div>
                     </div>
+
                 </div>
             </div>
+
+
+
+
+
+<div class="kt-Note-msg d-flex" *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0 || this.forwardPrjPort&&this.forwardPrjPort.length>0 ||this.completionPrjPort&&this.completionPrjPort.length>0 || this.newapprovalPrjport&&this.newapprovalPrjport.length > 0">
+  <div class="kt-note-icon" style="align-self: flex-start;"><svg xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px"
+      viewBox="0 0 66 65" xml:space="preserve">
+      <path
+        d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z">
+      </path>
+      <path
+        d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z">
+      </path>
+      <path
+        d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z">
+      </path>
+      <path
+        d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z">
+      </path>
+      <path
+        d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z">
+      </path>
+      <path
+        d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z">
+      </path>
+      <path
+        d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z">
+      </path>
+      <path
+        d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z">
+      </path>
+    </svg></div>
+  <div  class="notifications-list">
+
+<span *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length>0"  class="notification audit-pending-notf ">
+    <span  class="notif-msg"><span  style="font-weight: bold;">Need your action on <span class="delayaction-of-emp" (click)="labelDelay();filterProjectsOfEmp(Current_user_ID)"  > {{this.delayPrjsofPort.length}} delay projects</span>    </span></span>
+  </span>
+
+    <span *ngIf="this.forwardPrjPort&&this.forwardPrjPort.length>0  " class="notification audit-pending-notffor ">
+      <span  class="notif-msgs"><span  *ngIf="this.forwardPrjPort&&this.forwardPrjPort.length>0" style="font-weight: bold;">Need your action on <span class="delayaction-of-emp" (click)="labelForward();filterProjectsOfEmp(Current_user_ID)"  > {{this.forwardPrjPort.length}} forward projects</span>    </span></span>      </span>
+
+
+      <span *ngIf="this.completionPrjPort&&this.completionPrjPort.length>0" class="notification audit-pending-notfc ">
+        <span  class="notif-msgs completion-under-approval"><span  *ngIf="this.completionPrjPort&&this.completionPrjPort.length>0" style="font-weight: bold;">Need action on this <span class="delayaction-of-emp" (click)="labelCompletionapproval();filterProjectsOfEmp(Current_user_ID)"  > {{this.completionPrjPort.length}} completion projects</span>    </span></span>      </span>
+
+
+
+        <span *ngIf="this.newapprovalPrjport&&this.newapprovalPrjport.length>0  " class="notification audit-pending-notffor ">
+          <span  class="notif-msgs"><span  *ngIf="this.newapprovalPrjport&&this.newapprovalPrjport.length>0" style="font-weight: bold;">Need your action on <span class="delayaction-of-emp" (click)="labelUA();filterProjectsOfEmp(Current_user_ID)"  > {{this.newapprovalPrjport.length}} new approvals</span>    </span></span>      </span>
+
+
+
+      <!-- <span  *ngIf="this.completionPrjPort&&this.completionPrjPort.length>0" class="notif-msgs delayaction-of-emp" style="margin-left:-1276px;font-weight: bold;"  (click)="labelCompletionapproval();filterProjectsOfEmp(Current_user_ID)">and this {{this.completionPrjPort.length}} completion projects</span>  -->
+
+
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
 
 
 <!-- <div class="kt-Note-msg d-flex " *ngIf="UserAccessType === 'Full Access'&&this.Current_user_ID!==this.createdBy">
@@ -631,25 +755,66 @@
                                     <div class="row">
 
                                         <div class="col-sm-12 table-scroll" *ngIf="_MessageIfNotOwner==''">
+
                                             <table class="brdr kt-pot-ttls table table-hover dataTable no-footer dtr-inline" style="border-collapse: collapse !important;">
                                                 <thead>
                                                     <th class="icond" style="z-index: 12 !important;"></th>
-                                                    <th (click)="_SortProjectList()"> <p class="kt-widget__title mb-0">
-                                                        <a [hidden]="Z2A" class="mr-2" data-toggle="kt-tooltip"
-                                                            title="Click to sort">
-                                                            <i class="fas fa-sort-alpha-up"></i>
+
+                                                    <!-- <th [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name=" Project_Name" tabindex="0"
+                                                      class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                                                      aria-label="Project Type: activate to sort column ascending" (click)="_SortProjectList()">
+                                                      <p class="kt-widget__title mb-0">
+                                                        <a [hidden]="Z2A" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
+                                                          <i class="fas fa-sort-alpha-up"></i>
                                                         </a>
-                                                        <a [hidden]="A2Z" class="mr-2" data-toggle="kt-tooltip"
-                                                            title="Click to sort">
-                                                            <i class="fa fa-sort-alpha-down-alt"></i>
-                                                        </a>ProjectName</p></th>
+                                                        <a [hidden]="A2Z" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
+                                                          <i class="fa fa-sort-alpha-down-alt"></i>
+                                                        </a>Project name
+                                                      </p>
+                                                    </th> -->
+
+
+
+                                                    <th [appSort]="_ProjectsListBy_Pid" data-order="desc"
+                                                    data-name="Project_Name" tabindex="0" aria-controls="project-4"
+                                                    class="curser-pointer" rowspan="1" colspan="1"
+                                                    style="width: 0px;" (click)="_SortProjectList()"
+                                                    aria-label="Project Title &amp;amp; Description: activate to sort column ascending">
+                                                    <a [hidden]="Z2A" class="mr-2" data-toggle="kt-tooltip"
+                                                        title="Click to sort">
+                                                        <i class="fas fa-sort-alpha-up"></i>
+                                                    </a>
+                                                    <a [hidden]="A2Z" class="mr-2" data-toggle="kt-tooltip"
+                                                        title="Click to sort">
+                                                        <i class="fa fa-sort-alpha-down-alt"></i>
+                                                    </a>
+                                                    Project name
+                                                </th>
+
+
+
+
                                                     <th></th>
-                                                    <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Project type</span></th>
+
+                                                    <th [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="Exec_BlockName" tabindex="0" class="curser-pointer"
+                                                    aria-controls="project-4" rowspan="1" colspan="1" aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other"><i class="fas fa-sort"></i> Project type</span></th>
                                                     <!-- <th><span class="kt-widget__other" *ngIf="!showDeletedPrjOnly"><i class="fas fa-sort"></i> Category</span></th> -->
-                                                    <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Responsible</span></th>
-                                                    <th><span class="kt-widget__other text-nowrap"><i class="fas fa-sort"></i> Deadline </span></th>
-                                                    <th  *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i class="fas fa-sort"></i> Last update </span> </th>
-                                                    <th><span class="kt-widget__other"><i class="fas fa-sort"></i> Status</span> </th>
+
+                                                    <th [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="TM_DisplayName" tabindex="0" class="curser-pointer"
+                                                      aria-controls="project-4" rowspan="1" colspan="1" aria-label="Project Type: activate to sort column ascending"><span
+                                                        class="kt-widget__other"><i class="fas fa-sort"></i> Responsible</span></th>
+
+
+                                                    <th [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="DeadLine" tabindex="0" class="curser-pointer"
+                                                    aria-controls="project-4" rowspan="1" colspan="1" aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other text-nowrap"><i class="fas fa-sort"></i> Deadline </span></th>
+
+                                                    <th [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="Project_StartDate" tabindex="0" class="curser-pointer"
+                                                    aria-controls="project-4" rowspan="1" colspan="1" aria-label="Project Type: activate to sort column ascending" *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i class="fas fa-sort"></i> Last update </span> </th>
+
+                                                    <th [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="Status" tabindex="0" aria-controls="project-4" rowspan="1"
+                                                      colspan="1" class="curser-pointer" aria-label="Status: activate to sort column ascending"><span
+                                                        class="kt-widget__other"><i class="fas fa-sort"></i> Status</span> </th>
+
                                                     <th *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i class="fas fa-sort"></i> Racis</span> </th>
 
 
@@ -667,10 +832,12 @@
                                             <tbody>
                                               <ng-container
                                             *ngFor="let item1 of (showDeletedPrjOnly)?Deletedproject:_ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
-                                            <tr  *ngIf="(item1.Status==_PortProjStatus)||(item1.Status.includes('Delay')&&_PortProjStatus=='Delay')||_PortProjStatus==''">
+                                            <tr
+                                            *ngIf=" ((item1.Status==_PortProjStatus)||(item1.Status.includes('Delay')&&_PortProjStatus=='Delay')||_PortProjStatus=='')&&
+                                                    ((!_FilterByEmp) || item1.Emp_No==_FilterByEmp||item1.OwnerEmpNo==_FilterByEmp) " class="odd project-list_AC" [class.active]="item1.isActive">
 
                                                     <td class="icond">
-                                                        <span class="table-card brdr success project-list_AC" [class.active]="item1.active"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                                        <span class="table-card brdr success"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
 
                                                     'success':item1.Status=='Completed',
                                                     'warning':item1.Status=='InProcess',
@@ -689,9 +856,53 @@
 
                                                     }"></span>
 
-                                                        <div class="d-flex align-items-center">
+
+
+<!-- <div class="kt-Note-msg d-flex" *ngIf="UserfullName == item1.Team_Res || item1.Project_Owner == UserfullName" >
+  <div class="kt-note-icon" style="align-self: flex-start;"><svg xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px"
+      viewBox="0 0 66 65" xml:space="preserve" style="enable-background: new 0 0 66 66;">
+      <path
+        d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z">
+      </path>
+      <path
+        d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z">
+      </path>
+      <path
+        d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z">
+      </path>
+      <path
+        d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z">
+      </path>
+      <path
+        d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z">
+      </path>
+      <path
+        d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z">
+      </path>
+      <path
+        d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z">
+      </path>
+      <path
+        d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z">
+      </path>
+    </svg></div>
+  <div  class="notifications-list">
+
+<div class="notification audit-pending-notf ">
+    <span  class="notif-msg"><span  style="font-weight: bold;">You have {{this.delayPrjsofPort.length}} delay projects</span></span></div>
+</div>
+</div> -->
+
+
+
+
+
+
+
+                                                        <div class="d-flex align-items-center ">
                                                             <a tabindex="0" class="btn px-0 mb-0 info-btn" role="button"
-                                                            placement="right" data-trigger="focus" title="Project info" (click)="openInfo2(item1.Project_Code);info_active_btn(item1)">
+                                                            placement="right" data-trigger="focus" title="Click to view the project info" (click)="openInfo2(item1.Project_Code);info_active_btn(item1)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                             viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                        <g>
@@ -715,7 +926,7 @@
                                                         <!-- <img src="assets/images/Info1.png" width="25px"> InfoContent2 -->
                                                         </a>
                                                         <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" placement="right"
-                                                            data-trigger="focus"  data-toggle="tooltip" title="Project dashboard" (click)="newDetails(item1.Project_Code)">
+                                                            data-trigger="focus"  data-toggle="tooltip" title="Click to view the Project dashboard" (click)="newDetails(item1.Project_Code)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                             viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                          <g>
@@ -753,7 +964,7 @@
                                                         </ng-template> -->
 
                                                   <ng-container  *ngIf="!showDeletedPrjOnly">
-                                                        <a (click)="Openportfoliosidebar()"  class="btn-v-icon"
+                                                        <!-- <a (click)="Openportfoliosidebar()"  class="btn-v-icon"
                                                           title="View">
                                                           <div class="port-info-btn">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -770,21 +981,49 @@
                                                               </g>
                                                             </svg>
                                                           </div>
-                                                        </a></ng-container>
+                                                        </a> -->
+                                                        <ng-containeer *ngIf="item1.availableports!=null && item1.availableports!=undefined; else prtfolio">
+                                                          <div class="port-info-btn ml-2"  title="Click to view the linked portfolio" (click)="_OpenfortfolioInfo(i,item1.Project_Name);info_active_btn(item1)">
+
+                                                            <svg xmlns="http://www.w3.org/2000/svg"  width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
+                                                                  <defs></defs>
+                                                                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                      <rect x="0" y="0" width="24" height="24"></rect>
+                                                                      <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path>
+                                                                      <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor" ></path>
+                                                                  </g>
+                                                              </svg>
+                                                          </div>
+                                                      </ng-containeer>
+                                                      <ng-template #prtfolio>
+                                                          <span class="port-info-btn-no-acive ml-2" title="Not Linked" (click)="_OpenfortfolioInfo()">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
+                                                                      <defs></defs>
+                                                                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                          <rect x="0" y="0" width="24" height="24"></rect>
+                                                                          <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path>
+                                                                          <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor" ></path>
+                                                                      </g>
+                                                                  </svg>
+                                                          </span>
+                                                      </ng-template>
+
+
+                                                      </ng-container>
 
 
 
 
-                                                        <span *ngIf="item1.Link_Status==1;else not_Linked">
-                                                          <a class="curser-pointer mr-2"
-                                                              (click)="_OpenMemosInfo(item1.Project_Code,item1.Project_Name)"><img
+                                                        <span   *ngIf="item1.Link_Status==1;else not_Linked" >
+                                                          <a class="curser-pointer mr-2 ml-2"
+                                                              (click)="_OpenMemosInfo(item1.Project_Code,item1.Project_Name);"><img
                                                                   width="19px"
                                                                   src="./assets/images/Image (4).jfif"
-                                                                  title="Linked"></a>
+                                                                  title="Click to view the SMail"></a>
 
                                                       </span>
                                                       <ng-template #not_Linked>
-                                                          <a class="mr-2"><img width="19px" class="black-white"
+                                                          <a class="mr-2"><img width="19px" (click)="noDms()" class="black-white ml-2"
                                                                   src="./assets/images/Image (4).jfif"
                                                                   title="Not linked"></a>
                                                       </ng-template>
@@ -809,7 +1048,7 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <p class="kt-widget__title mb-0 kt-project-name" title="{{item1.Project_Name}}"> {{item1.Project_Name}}
+                                                        <p class="kt-widget__title mb-0 kt-project-name "  title="{{item1.Project_Name}}"> {{item1.Project_Name}}
                                                          <!-- <span class="count2">{{item1.Actioncount}}</span> -->
                                                         </p>
 
@@ -972,12 +1211,23 @@
                                                         >Hold</span>
                                                   </div>
                                                   <div *ngIf="item1.Status=='Under Approval'">
+                                                    <span class="attach-tippy">
                                                       <span class="new-project font-weight-400 ">New approval</span>
                                                       <div class="pulsing-div">
-                                                       <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
-                                                        <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
-                                                      </div>
+                                                        <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                         <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
+                                                       </div>
+
+                                                      <span class="st-line curser-pointer" >
+
+                                                   <div style="color:#9C27B0;">Pending approval since : {{item1.approvalfromdate | date: 'dd-MM-yyyy'}}</div></span>
+                                                                 </span>
+
                                                   </div>
+
+
+
+
                                                   <div *ngIf="item1.Status=='Not Started'">
                                                     <span
                                                         class="Not-Started font-weight-400 ">{{ item1.Status  }}</span>
@@ -1004,15 +1254,29 @@
                                                     </div>
                                                   </div>
 
+
                                                   <div *ngIf="item1.Status=='Cancellation Under Approval'">
+                                                    <span class="attach-tippy">
                                                       <span
                                                           class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status =="Cancellation Under Approval" ? "Cancellation approval":item1.Status}}
                                                       </span>
+
                                                     <div class="pulsing-div">
                                                       <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
                                                         <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
                                                     </div>
-                                                  </div>
+
+
+                                                 <span class="st-line curser-pointer" >
+                                                   <div style="width: max-content;color:#EE4137">Pending approval since : <h6>{{item1.approvalfromdate | date :'dd-MM-yyyy'}} </h6></div>
+                                                  </span>
+                                                </span>
+                                              </div>
+
+
+
+
+
                                                   <div *ngIf="item1.Status=='Cancelled'">
                                                       <span
                                                           class="Cancelled_color font-weight-400 text-cancel">{{item1.Status}}
@@ -1020,7 +1284,7 @@
 
                                                   </div>
                                                   <div *ngIf="item1.Status=='Forward Under Approval'" class="attach-tippy">
-                                                    <span class="pending_appr st-line">Pending approval</span>
+                                                    <span class="pending_appr st-line">Pending approval since : {{item1.approvalfromdate | date: 'dd-MM-yyyy'}}</span>
                                                       <span
                                                           class="font-weight-400 Forward_Under_Approval_color">{{item1.Status =="Forward Under Approval"? "Forward approval":item1.Status}}
                                                       </span>
@@ -1151,8 +1415,8 @@
                                              <td>
 
                                               <div *ngIf="item1.Status=='Delay'" class="attach-tippy">
-                                                <span *ngIf="item1.Delaydays>0" class="vi st-line">{{(item1.Delaydays)}} days delay</span>
-                                                <span *ngIf="item1.Delaydays>0" class=" Delay_color font-weight-400 ">{{getFormattedDelay(item1.Delaydays)}}
+                                                <span *ngIf="item1.Delaydays>0" class="vi st-line status-text">{{(item1.Delaydays)}} days delay</span>
+                                                <span *ngIf="item1.Delaydays>0" class=" Delay_color font-weight-400 status-text">{{getFormattedDelay(item1.Delaydays)}}
                                                 <span class="lowercase">{{item1.Status}}</span>
                                                 </span>
                                              </div>
@@ -1270,9 +1534,17 @@
                                                 </span>
                                             </div>
 
-                                            <div *ngIf="item1.Project_Block=='003'&&item1.Status.includes('Delay')">
-                                              <span class="Delay_color font-weight-400">{{item1.Status}}</span>
+                                            <div *ngIf="item1.Project_Block=='003'&&item1.Status.includes('Delay')" class="attach-tippy">
+                                              <span class="vi st-line status-text">{{formatStatus(item1.Status)}}</span>
+                                              <span class="Delay_color font-weight-400 status-text">{{getFormattedDelay(getStatusNumber(item1.Status))}} delay</span>
                                            </div>
+
+                                           <div *ngIf="item1.Project_Block=='003' && item1.Status.endsWith('Days')" class="attach-tippy">
+                                            <span class="vi st-line status-text">{{item1.Status}} delay</span>
+                                            <span class="Delay_color font-weight-400 status-text">{{getFormattedDelay(getStatusNumber(item1.Status))}} delay</span>
+                                        </div>
+
+
 
                                             </td>
                                         </ng-container>
@@ -1300,7 +1572,7 @@
                                     <td *ngIf="showDeletedPrjOnly">
                                     <div class="d-flex align-items-center " *ngIf="UserAccessType === 'Full Access'" style="gap: 10px;">
                                         <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                        class="btn-v-icon" title="View">
+                                        class="btn-v-icon" title="Click to view the portfolio">
                                         <ng-container *ngIf="item1.availableports && item1.availableports.length > 0; else noReference">
                                         <span>
                                             <svg xmlns="http://www.w3.org/2000/svg"  width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
@@ -1325,7 +1597,7 @@
 
                                     </a>
 
-                                    <a  *ngIf="UserAccessType === 'Full Access'"  class="btn-v-icon" (click)="RestorePortfolioProjects(item1.Project_ID,item1.Portfolio_ID)" title="Restore">
+                                    <a  *ngIf="UserAccessType === 'Full Access'"  class="btn-v-icon" (click)="RestorePortfolioProjects(item1.Project_ID,item1.Portfolio_ID)" title="Click to restore the project">
                                     <span>
                                         <svg style="
                                         width: 21px;
@@ -1350,7 +1622,35 @@
                                             </tr>
                                            </ng-container>
                                             </tbody>
-                                          </table>
+                                           </table>
+
+
+                                           <!-- <h1 *ngIf="nofilterResult">no filter result found.</h1> -->
+
+                                           <ng-container *ngIf="nofilterResult">
+                                            <div class="no-prjact-found  ">
+                                                <div
+                                                    style="  display:flex; flex-direction:column;    align-items: center;  justify-content:center;      ">
+                                                    <svg xmlns:svg="http://www.w3.org/2000/svg" stroke="#dfdfdf"
+                                                        fill="#dfdfdf" width="25%" height="25%" version="1.1"
+                                                        x="0px" y="0px" viewBox="0 0 100 125">
+                                                        <g xmlns="http://www.w3.org/2000/svg"
+                                                            transform="translate(0,-952.36218)">
+                                                            <path
+                                                                d="M 15.8125 6 A 2.0001999 2.0001999 0 0 0 14 8 L 14 78 A 2.0001999 2.0001999 0 0 0 16 80 L 41.8125 80 C 45.315901 88.237691 53.501014 94 63 94 C 72.157117 94 80.087984 88.61635 83.78125 80.84375 A 2.0059224 2.0059224 0 1 0 80.15625 79.125 C 77.107988 85.5402 70.595823 90 63 90 C 52.482909 90 44 81.5171 44 71 C 44 60.4829 52.482909 52 63 52 C 73.517102 52 82 60.4829 82 71 A 2.0001999 2.0001999 0 1 0 86 71 C 86 60.038034 78.283596 50.853014 68 48.5625 L 68 24 A 2.0001999 2.0001999 0 0 0 67.40625 22.5625 L 51.40625 6.5625 A 2.0001999 2.0001999 0 0 0 50 6 L 16 6 A 2.0001999 2.0001999 0 0 0 15.8125 6 z M 18 10 L 48 10 L 48 24 A 2.0001999 2.0001999 0 0 0 50 26 L 64 26 L 64 48.03125 C 63.669714 48.017096 63.333697 48 63 48 C 60.657104 48 58.381633 48.376638 56.25 49.03125 A 2.0001999 2.0001999 0 0 0 56 49 L 25 49 A 2.0001999 2.0001999 0 0 0 24.8125 49 A 2.0021961 2.0021961 0 1 0 25 53 L 48.71875 53 C 46.919488 54.428914 45.335787 56.103478 44.03125 58 L 25 58 A 2.0001999 2.0001999 0 0 0 24.8125 58 A 2.0021961 2.0021961 0 1 0 25 62 L 41.84375 62 C 41.16589 63.585758 40.651128 65.256302 40.34375 67 L 25 67 A 2.0001999 2.0001999 0 0 0 24.8125 67 A 2.0021961 2.0021961 0 1 0 25 71 L 40 71 C 40 72.710582 40.20632 74.394809 40.5625 76 L 18 76 L 18 10 z M 52 12.8125 L 61.1875 22 L 52 22 L 52 12.8125 z M 24.8125 40 A 2.0021961 2.0021961 0 1 0 25 44 L 57 44 A 2.0001999 2.0001999 0 1 0 57 40 L 25 40 A 2.0001999 2.0001999 0 0 0 24.8125 40 z M 62.78125 57.96875 A 2.0001999 2.0001999 0 0 0 61 60 L 61 62 A 2.0001999 2.0001999 0 1 0 65 62 L 65 60 A 2.0001999 2.0001999 0 0 0 62.78125 57.96875 z M 62.78125 66.96875 A 2.0001999 2.0001999 0 0 0 61 69 L 61 82 A 2.0001999 2.0001999 0 1 0 65 82 L 65 69 A 2.0001999 2.0001999 0 0 0 62.78125 66.96875 z "
+                                                                transform="translate(0,952.36218)"></path>
+                                                        </g>
+                                                    </svg>
+                                                    <div class="bnk-txt"><a
+                                                            class="kt-blank-msg  text-gray-400 ">Sorry, that filter
+                                                            combination has no results.<br><u
+                                                                (click)="labelAll();filterProjectsOfEmp();notShow()"
+                                                                style="cursor:pointer;">Clear filters</u></a></div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+
+
 
 
 
@@ -1651,7 +1951,7 @@
         </div>
     </div>
     <!-- begin::Quick Panel -->
-    <div id="Project_info_slider_bar" class="project-info-side-bar animate-right">
+    <div id="Project_info_slider_bar" class="project-info-side-bar animate-right" >
         <router-outlet></router-outlet>
     </div>
     <!-- end::Quick Panel -->
@@ -2034,20 +2334,39 @@
           <div class="kt-portlet__head-label" style="
           display: flex;
           align-items: center;
-          justify-content: space-between;
-      ">
-
-              <div class="title-sidebar mb-0 text-white">
+          justify-content: space-between;  ">
+         <div class="title-sidebar mb-0 text-white">
                   <h5 class="curser-pointer">
                     <svg  xmlns="http://www.w3.org/2000/svg" width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" version="1.1"><defs ></defs><g  stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect  x="0" y="0" width="24" height="24"></rect><path  d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path><path  d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor"></path></g></svg>
                      Linked portfolio(s)
                   </h5>
-                  <!-- <span class="text-small text-white">{{_displayprtflioName}}</span> -->
+                  <span class="text-small text-white">{{_displayprtflioName}}</span>
               </div>
+
               <a href="javascript:void(0)" class="close-btn text-white" (click)="Closeportfoliosidebar()"><i class="fas fa-times"></i></a>
           </div>
+
       </div>
       <div class="kt-portlet__body p-3">
+        <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
+            <div class="card-body">
+                <div class="kt-widget1 kt-widget1--fit">
+                    <div class="kt-widget1__item" *ngFor="let item of portfolio_List; let i=index">
+                        <div class="kt-widget1__info kt-align-left" >
+                         <h5 (click)="OnCardClick(item.Portfolio_ID)" class="curser-pointer">
+
+
+                                 {{i+1}}. {{item.Portfolio_Name}}
+
+                           </h5>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div></div>
+      <!-- <div class="kt-portlet__body p-3">
           <div class="accordion accordion-light  accordion-svg-icon" id="accordionExample7">
               <div class="card-body">
                   <div class="kt-widget1 kt-widget1--fit">
@@ -2063,7 +2382,7 @@
                   </div>
               </div>
           </div>
-      </div>
+      </div> -->
 
 
 <!-- meeting design start -->
@@ -2126,7 +2445,8 @@
           <div class="w-100">
 
               <div class="d-flex justify-content-between align-items-center  m-2 tabs-iconic">
-                  <ul class="nav nav-tabs tabs-list mb-0 border-0 d-flex py-1 px-1">
+
+                <ul class="nav nav-tabs tabs-list mb-0 border-0 d-flex py-1 px-1">
                       <li class="nav-item">
                           <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab"
                               href="#upcoming_meetings_tabpanel"><span class="lbl-hdn">upcoming </span><span
@@ -2276,14 +2596,14 @@
                                 *ngIf="upcomingMeetings&&upcomingMeetings.length>0; else no_meetings_Present">
                                 <ng-container *ngFor="let meetings of upcomingMeetings;let i=index">
 
-                                    <div data-toggle="collapse" aria-expanded="false"
-                                        class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
+                                    <div data-toggle="collapse" aria-expanded="true"
+                                        class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  "
                                         [attr.data-target]="'#upcoming-mtg-'+i">
                                         <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{meetings.date|date:'MMM d y'}}</span>
                                         <span class="Kt-replay-time"> Total Meetings :<small class="tlv-df" *ngIf="meetings.totalmeetings" >{{meetings.totalmeetings.length}}</small> </span>
                                     </div>
 
-                                    <div [id]="'upcoming-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse bounce-effect"
+                                    <div [id]="'upcoming-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 show collapse bounce-effect"
                                         [attr.aria-labelledby]="'upcoming-mtg-'+i" aria-hidden="true">
 
                                         <div class="met-card mb-3" *ngFor="let meeting of meetings.totalmeetings"  (click)="meetingReport(meeting.Schedule_ID)">
@@ -2469,14 +2789,14 @@
                             <ng-container *ngIf="todaymeetings&&todaymeetings.length>0;else no_meetings_Present">
                                 <ng-container *ngFor="let tmeetings of todaymeetings;let i=index">
 
-                                        <div data-toggle="collapse" aria-expanded="false"
-                                            class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
+                                        <div data-toggle="collapse" aria-expanded="true"
+                                            class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  "
                                             [attr.data-target]="'#today-mtg-'+i">
                                             <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{tmeetings.date|date:'MMM d y'}}</span>
                                             <span class="Kt-replay-time"> Total Meetings :<small class="tlv-df" *ngIf="tmeetings.totalmeetings" >{{tmeetings.totalmeetings.length}}</small> </span>
                                         </div>
 
-                                        <div [id]="'today-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse bounce-effect"
+                                        <div [id]="'today-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 show collapse bounce-effect"
                                             [attr.aria-labelledby]="'today-mtg-'+i" aria-hidden="true">
 
                                             <div class="met-card mb-3 cursor-pointer" *ngFor="let meeting of tmeetings.totalmeetings"   (click)="meetingReport(meeting.Schedule_ID)">
@@ -2686,14 +3006,14 @@
 
 
 
-                              <div data-toggle="collapse" aria-expanded="false"
-                              class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
+                              <div data-toggle="collapse" aria-expanded="true"
+                              class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  "
                               [attr.data-target]="'#last7d-mtg-'+i">
                               <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{lmeetings.date|date:'MMM d y'}}</span>
                               <span class="Kt-replay-time"> Total meetings :<small class="tlv-df" *ngIf="lmeetings.totalmeetings" >{{lmeetings.totalmeetings.length}}</small> </span>
                           </div>
 
-                            <div [id]="'last7d-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse bounce-effect"
+                            <div [id]="'last7d-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 show collapse bounce-effect"
                                 [attr.aria-labelledby]="'last7d-mtg-'+i" aria-hidden="true">
 
 
@@ -2932,14 +3252,14 @@
                             <ng-container *ngIf="lastMonthMeetings&&lastMonthMeetings.length>0; else no_meetings_Present">
                                 <ng-container *ngFor="let lmmeetings of lastMonthMeetings;let i=index">
 
-                                  <div data-toggle="collapse" aria-expanded="false"
-                                  class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
+                                  <div data-toggle="collapse" aria-expanded="true"
+                                  class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0 "
                                   [attr.data-target]="'#last7d-mtg-'+i">
                                   <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{lmmeetings.date|date:'MMM d y'}}</span>
                                   <span class="Kt-replay-time"> Total meetings :<small class="tlv-df" *ngIf="lmmeetings.totalmeetings" >{{lmmeetings.totalmeetings.length}}</small> </span>
                               </div>
 
-                                    <div [id]="'last7d-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse bounce-effect"
+                                    <div [id]="'last7d-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 show collapse bounce-effect"
                                         [attr.aria-labelledby]="'lastmonth-mtg-'+i" aria-hidden="true">
 
                                         <div class="met-card mb-3" *ngFor="let lmmeeting of lmmeetings.totalmeetings"  (click)="meetingReport(lmmeeting.Schedule_ID)">
@@ -3115,14 +3435,14 @@
 
                                 <ng-container *ngFor="let omeetings of olderMeetings;let i=index">
 
-                                    <div data-toggle="collapse" aria-expanded="false"
-                                        class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
+                                    <div data-toggle="collapse" aria-expanded="true"
+                                        class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  "
                                         [attr.data-target]="'#older-mtg-'+i">
                                         <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{omeetings.date|date:'MMM d y'}}</span>
                                         <span class="Kt-replay-time"> Total Meetings :<small class="tlv-df" *ngIf="omeetings.totalmeetings" >{{omeetings.totalmeetings.length}}</small> </span>
                                     </div>
 
-                                    <div [id]="'older-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse bounce-effect"
+                                    <div [id]="'older-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 show collapse bounce-effect"
                                         [attr.aria-labelledby]="'older-mtg-'+i" aria-hidden="true">
                                                                                             <!--  -->
                                         <div class="met-card mb-3" *ngFor="let omeeting of omeetings.totalmeetings"   (click)="meetingReport(omeeting.Schedule_ID)" >
@@ -3581,7 +3901,7 @@
               </div>
 
           </div>
-      </div>
+      </div>  </div>
       <div class="kt-portlet__body flex-row" id="recall-meeting" style="display: none;">
         <div class="w-100">
 
@@ -3667,7 +3987,7 @@
             </div>
         </div>
     </div>
-      </div>
+
 
 
 
@@ -4388,10 +4708,10 @@
 
 
 
-                <div class="modal-icon mr-1 curser-pointer" [ngClass]="{'filter-dot':isFilteredOn}" id="filter-icon" (click)="project_filter()">
+                <div class="modal-icon mr-1 curser-pointer" title="Filter" [ngClass]="{'filter-dot':isFilteredOn}" id="filter-icon" (click)="project_filter()">
                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 4.6C3 4.03995 3 3.75992 3.10899 3.54601C3.20487 3.35785 3.35785 3.20487 3.54601 3.10899C3.75992 3 4.03995 3 4.6 3H19.4C19.9601 3 20.2401 3 20.454 3.10899C20.6422 3.20487 20.7951 3.35785 20.891 3.54601C21 3.75992 21 4.03995 21 4.6V6.33726C21 6.58185 21 6.70414 20.9724 6.81923C20.9479 6.92127 20.9075 7.01881 20.8526 7.10828C20.7908 7.2092 20.7043 7.29568 20.5314 7.46863L14.4686 13.5314C14.2957 13.7043 14.2092 13.7908 14.1474 13.8917C14.0925 13.9812 14.0521 14.0787 14.0276 14.1808C14 14.2959 14 14.4182 14 14.6627V17L10 21V14.6627C10 14.4182 10 14.2959 9.97237 14.1808C9.94787 14.0787 9.90747 13.9812 9.85264 13.8917C9.7908 13.7908 9.70432 13.7043 9.53137 13.5314L3.46863 7.46863C3.29568 7.29568 3.2092 7.2092 3.14736 7.10828C3.09253 7.01881 3.05213 6.92127 3.02763 6.81923C3 6.70414 3 6.58185 3 6.33726V4.6Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                 </div>
-                <div class="modal-icon curser-pointer" (click)="clearAppliedFiltered(); PrjInputSearch.value=null;   InputSearchRef.value=null; ">
+                <div class="modal-icon curser-pointer" title="Reset" (click)="clearAppliedFiltered(); PrjInputSearch.value=null;   InputSearchRef.value=null; ">
                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.52185 7H7C7.55229 7 8 7.44772 8 8C8 8.55229 7.55228 9 7 9H3C1.89543 9 1 8.10457 1 7V3C1 2.44772 1.44772 2 2 2C2.55228 2 3 2.44772 3 3V5.6754C4.26953 3.8688 6.06062 2.47676 8.14852 1.69631C10.6633 0.756291 13.435 0.768419 15.9415 1.73041C18.448 2.69239 20.5161 4.53782 21.7562 6.91897C22.9963 9.30013 23.3228 12.0526 22.6741 14.6578C22.0254 17.263 20.4464 19.541 18.2345 21.0626C16.0226 22.5842 13.3306 23.2444 10.6657 22.9188C8.00083 22.5931 5.54702 21.3041 3.76664 19.2946C2.20818 17.5356 1.25993 15.3309 1.04625 13.0078C0.995657 12.4579 1.45216 12.0088 2.00445 12.0084C2.55673 12.0079 3.00351 12.4566 3.06526 13.0055C3.27138 14.8374 4.03712 16.5706 5.27027 17.9625C6.7255 19.605 8.73118 20.6586 10.9094 20.9247C13.0876 21.1909 15.288 20.6513 17.0959 19.4075C18.9039 18.1638 20.1945 16.3018 20.7247 14.1724C21.2549 12.043 20.9881 9.79319 19.9745 7.8469C18.9608 5.90061 17.2704 4.3922 15.2217 3.6059C13.173 2.8196 10.9074 2.80968 8.8519 3.57803C7.11008 4.22911 5.62099 5.40094 4.57993 6.92229C4.56156 6.94914 4.54217 6.97505 4.52185 7Z" fill="#a3a4a5"></path> </g></svg>
                 </div>
               </div>
@@ -5770,7 +6090,7 @@
   </div>
 
   </div>
-</div>
+
 
 
 

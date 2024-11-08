@@ -1095,7 +1095,7 @@
                                                     <td align="center">
                                                         <div class="d-flex align-items-center ">
                                                             <a tabindex="0" class="btn px-0 mr-2 info-btn curser-pointer" role="button" placement="right"
-                                                            data-trigger="focus" data-toggle="tooltip" title="Project info" (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)">
+                                                            data-trigger="focus" data-toggle="tooltip" title="Click to view the project info" (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                             <g>
@@ -1123,7 +1123,7 @@
                                                             <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
                                                         </a> -->
                                                         <a tabindex="0" class="btn px-0 mr-2 info-btn curser-pointer"  role="button" placement="right"
-                                                            data-trigger="focus"  data-toggle="tooltip" title="Project dashboard" (click)="newDetails(item.Project_Code)">
+                                                            data-trigger="focus"  data-toggle="tooltip" title="Click to view the project dashboard" (click)="newDetails(item.Project_Code)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                             viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                          <g>
@@ -1148,7 +1148,7 @@
                                                         </a>
 
                                                             <ng-containeer *ngIf="item.availableports!=null && item.availableports!=undefined; else prtfolio">
-                                                            <div class="port-info-btn ml-2"  title="Linked" (click)="_OpenfortfolioInfo(i,item.Project_Name)">
+                                                            <div class="port-info-btn ml-2"  title="Click to view the linked portfolio" (click)="_OpenfortfolioInfo(i,item.Project_Name)">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"  width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
                                                                     <defs></defs>
                                                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1177,7 +1177,7 @@
                                                                 (click)="_OpenMemosInfo(item.Project_Code,item.Project_Name)"><img
                                                                     width="19px" height="21px"
                                                                     src="./assets/images/Image (4).jfif"
-                                                                    title="Linked"></a>
+                                                                    title="Click to view the SMail"></a>
 
                                                         </div>
                                                         <ng-template #not_Linked>
@@ -1257,7 +1257,7 @@
                                                                     <span class="Hold_color font-weight-400" *ngSwitchCase="'Project Hold'">Hold</span>
                                                                     <span class="Completion_Under_Approval_color font-weight-400" *ngSwitchCase="'Completion Under Approval'">Completion Under Approval</span>
                                                                     <div *ngIf="item.Pendingapprover" class="pulsing-div">
-                                                                        <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container> 
+                                                                        <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
                                                                         <span class="pulsing-dot-label"> {{item.Pendingapprover}}</span>
                                                                     </div>
                                                                     <ng-container *ngSwitchDefault>
@@ -1363,7 +1363,7 @@
                                                             <div class="pulsing-div">
                                                                 <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
                                                                 <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
-                                                            </div> 
+                                                            </div>
                                                             </div>
 
                                                             <div *ngIf="item.Status=='Cancellation Under Approval'">
@@ -1397,7 +1397,7 @@
                                                                 <span class="Forward_Under_Approval_color font-weight-400">Forward approval
                                                                 </span>
                                                                 <div class="pulsing-div">
-                                                                    <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container> 
+                                                                    <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
                                                                     <span class="pulsing-dot-label"> {{item.Pendingapprover}}</span>
                                                                 </div>
                                                             </div>
@@ -1411,7 +1411,7 @@
                                                                 <span class="Enactive_Under_Approval_color font-weight-400">Enactive approval
                                                                 </span>
                                                                 <div class="pulsing-div">
-                                                                   <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container> 
+                                                                   <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
                                                                     <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
                                                                 </div>
                                                             </div>
@@ -1438,7 +1438,7 @@
                                                                   >Hold approval
                                                                 </span>
                                                                 <div  class="pulsing-div">
-                                                                   <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container> 
+                                                                   <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
                                                                     <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
                                                                 </div>
                                                             </div>
