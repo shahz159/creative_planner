@@ -515,7 +515,7 @@ $(document).ready(function(){
           this.emptyspace=true;
         }
       this.getDropdownsDataFromDB();
-      debugger
+
 
       // this.changeDaysInWeek()
 
@@ -797,7 +797,7 @@ dates:any
 
 
   getDropdownsDataFromDB1(){
-debugger
+
 
 
       this._objDropdownDTO.EmpNo = this.Current_user_ID;
@@ -1986,6 +1986,7 @@ removeSelectedemployee(item){
 }
 
 getObjOf(arr, id, idName) {
+
   const obj = arr.find(item => item[idName] == id);
   return obj;
 }
@@ -2116,7 +2117,7 @@ isInvalidDate(date: moment.Moment) {
 // }
 
 closeOnOtherClick(id){
-  debugger
+
   const dropdowns= ['companyDDwn', 'employeeDDwn', 'proDDwn', 'statusDDwn'];
   dropdowns.forEach((dropdown)=>{
   if(dropdown !== `${id}DDwn` ){

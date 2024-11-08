@@ -174,7 +174,7 @@ export class ProjectTypeService {
     this.ObjUserDetails.startdate=obj.startdate;
     this.ObjUserDetails.enddate=obj.enddate;
     //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
-   
+
     return this.http.post(this.rootUrl + "TestAPI/NewGetProjectDetailsByUserName_ForSummary", this.ObjUserDetails);
   }
   GetProjectsByOwner_Service_ForSummary(obj: UserDetailsDTO) {
@@ -211,8 +211,8 @@ export class ProjectTypeService {
     this.ObjUserDetails.Emp_No = EmpNo;
     this.ObjUserDetails.PageNumber = obj.PageNumber;
     this.ObjUserDetails.PageSize = obj.PageSize;
-    this.ObjUserDetails.SearchText = obj.SearchText;  
-    //this.ObjUserDetails.PortfolioId = obj.PortfolioId;  
+    this.ObjUserDetails.SearchText = obj.SearchText;
+    //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "Projects/NewGetProjectsForRunwayTask", this.ObjUserDetails);
   }
   GetDeadlineByProjectCode(Project_Code) {
@@ -581,7 +581,10 @@ export class ProjectTypeService {
   }
 
 
-
+  GetEmployeePerformance(Emp_No: string){
+    this.ObjSubTaskDTO.Emp_No = Emp_No
+    return this.http.post(this.rootUrl + "TestAPI/NewGetEmployeePerformance", this.ObjSubTaskDTO);
+  }
 
 
 

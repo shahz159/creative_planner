@@ -391,7 +391,7 @@
                           <div class="d-flex align-items-center">
                             <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button"
                             *ngIf="item.Req_Type!='Task Complete'" placement="right" data-trigger="focus"
-                            data-toggle="tooltip" title="Project Info!"
+                            data-toggle="tooltip" title="Click to view the project info"
                             (click)="openInfo(item.Project_Code1);info_active_btn(item)">
                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
@@ -416,7 +416,7 @@
                           </a>
                           <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button"
                             *ngIf="item.Req_Type=='Task Complete'" placement="right" data-trigger="focus"
-                            data-toggle="tooltip" title="Project Info!"
+                            data-toggle="tooltip" title="Click to view the project info"
                             (click)="openInfo1(item.Project_Code1, item.Project_Code);info_active_btn(item)">
                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
@@ -480,7 +480,7 @@
                                                         </a>
                                                     </ng-template> -->
                           <a tabindex="0" class="btn px-0 info-btn mr-2" role="button" placement="right"
-                            data-trigger="focus" data-toggle="tooltip" title="Project dashboard!"
+                            data-trigger="focus" data-toggle="tooltip" title="Click to view the project dashboard"
                             (click)="openDetails(item.Master_Code,item.Project_Code1)">
                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
@@ -2271,7 +2271,7 @@
             <div class="flex-grow-1 mt-3 line-aprved" style="border-width:1px;"></div>
             <div *ngIf="managerApproval" class="d-flex flex-column align-items-center" style="max-width: 75px; overflow-x: visible;">
               <div class="fs-9 fw-bold text-nowrap border p-1 rounded mb-2">Department head</div>
-              <div class="timeline-icon" style="border-width: 2px;" 
+              <div class="timeline-icon" style="border-width: 2px;"
                [ngClass]="{
                 'approved':managerApproval.LeaveStatus.trim()=='Approved Leave',
                 'rejected':managerApproval.LeaveStatus.trim()=='Leave Rejected'
@@ -2297,19 +2297,19 @@
               </div>
               <div *ngIf="managerApproval.LeaveStatus.trim()=='Approved Leave'" class="fs-9 fw-bold text-nowrap">Approved</div>
               <div *ngIf="managerApproval.LeaveStatus.trim()=='Leave Rejected'" class="fs-9 fw-bold text-nowrap">Rejected</div>
-         
+
 
             </div>
             <div class="flex-grow-1 mt-3" style="border-width:1px;" [ngClass]="{'line-aprved':(hrApproval&&hrApproval.LeaveStatus),'line-pending':(!hrApproval)}"></div>
-          
+
             <div  class="d-flex flex-column align-items-center" style="max-width: 50px; overflow-x: visible;">
-             
+
             <div class="fs-9 fw-bold text-nowrap border p-1 rounded mb-2" [ngClass]="{'text-secondary':(!hrApproval)}">HR department</div>
              <div class="timeline-icon" style="border-width: 2px; " [ngClass]="{
                 'approved':hrApproval&&hrApproval.LeaveStatus.trim()=='Leave Sanction',
                 'rejected':hrApproval&&hrApproval.LeaveStatus.trim()=='Leave Rejected'
                 }">
-             
+
                 <ng-container *ngIf="(!hrApproval)||hrApproval.LeaveStatus.trim()=='Leave Sanction'">
                   <svg class="tmicn-svg" width="18px" height="20px" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
                     <path d="m 13,4.1974 q 0,0.3097 -0.21677,0.5265 l -5.60517,5.6051 -1.0529,1.0529 q -0.21677,0.2168 -0.52645,0.2168 -0.30968,0 -0.52645,-0.2168 L 4.01935,10.329 1.21677,7.5264 Q 1,7.3097 1,7 1,6.6903 1.21677,6.4735 L 2.26968,5.4206 q 0.21677,-0.2167 0.52645,-0.2167 0.30968,0 0.52645,0.2167 l 2.27613,2.2839 5.07871,-5.0864 q 0.21677,-0.2168 0.52645,-0.2168 0.30968,0 0.52645,0.2168 L 12.78323,3.671 Q 13,3.8877 13,4.1974 z"></path>

@@ -1370,6 +1370,7 @@ export class HomeComponent implements OnInit {
 
   Favourite_Portfolios() {
     // this.Portfolio_CurrentPage = 1;
+    debugger
     this.NoSharedmsg = true;
     this.activeClassFav = true;
     this.activeClassAll = false;
