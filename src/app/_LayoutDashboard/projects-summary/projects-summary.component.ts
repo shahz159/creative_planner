@@ -534,7 +534,7 @@ Dateselectionrange: string = 'Date selection range';
           this.emptyspace=true;
         }
       this.getDropdownsDataFromDB();
-      debugger
+
 
       // this.changeDaysInWeek()
 
@@ -816,7 +816,7 @@ dates:any
 
 
   getDropdownsDataFromDB1(){
-debugger
+
 
 
       this._objDropdownDTO.EmpNo = this.Current_user_ID;
@@ -2144,7 +2144,7 @@ isInvalidDate(date: moment.Moment) {
 // }
 
 closeOnOtherClick(id){
-  debugger
+
   const dropdowns= ['companyDDwn', 'employeeDDwn', 'proDDwn', 'statusDDwn'];
   dropdowns.forEach((dropdown)=>{
   if(dropdown !== `${id}DDwn` ){

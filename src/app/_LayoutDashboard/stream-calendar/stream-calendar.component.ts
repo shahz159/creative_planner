@@ -29,7 +29,7 @@ export const MY_FORMATS = {
     monthYearA11yLabel: "MMMM YYYY"
   }
 };
-
+moment.locale('en');
 
 @Component({
   selector: 'app-stream-calendar',
@@ -82,20 +82,23 @@ export class StreamCalendarComponent implements OnInit {
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
       [
-        // 'bold',
-        // 'italic',
-        // 'underline',
-        'undo',
-        'redo',
+        'undo', // Hide Undo button
+        'redo', // Hide Redo button
         'strikeThrough',
         'subscript',
         'superscript',
         'indent',
         'outdent',
-        // 'insertUnorderedList',
-        // 'insertOrderedList',
+        'justifyLeft',
+        'justifyCenter',
+        'justifyRight',
+        'justifyFull',
         'heading',
-        // 'fontName'
+        'fontName',
+        // 'fontSize',
+        'textColor',
+        'backgroundColor',
+        'customClasses'
       ],
       [
         // 'fontSize',
@@ -233,14 +236,11 @@ export class StreamCalendarComponent implements OnInit {
       this.isClassAdded = true;
     }
   }
-  togglemeetingtypeOption(option: string) {
-    this.selectedOption = option;
-  }
-
 
 
 
   ngOnInit(): void {
+    
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.initAutosize();
     this.initFirstclass();
@@ -259,7 +259,7 @@ export class StreamCalendarComponent implements OnInit {
       inertia: true,
       placement: 'left'
     });
-
+    this.loadingDMS = false;
     this.GetScheduledJson();
 
 
@@ -317,7 +317,18 @@ export class StreamCalendarComponent implements OnInit {
      this._SEndDate = moment().format("YYYY-MM-DD").toString();
      // this.Event_requests();
      this.GetTimeslabfordate()
+
+
+
   }
+
+
+
+
+
+
+
+
   
   private initAutosize() {
     function autosize() {
@@ -600,11 +611,35 @@ export class StreamCalendarComponent implements OnInit {
   close_month_more_view() {
     document.getElementById("month-day-events-more").classList.remove("show");
   }
+  pending_list_open(){
+    document.getElementById("pending-list").classList.add("quickaction-open");
+  }
+  pending_list_close(){
+    document.getElementById("pending-list").classList.remove("quickaction-open");
+  }
 
-
-
+  draft_list_open(){
+    document.getElementById("draft-list").classList.add("quickaction-open");
+  }
+  draft_list_close(){
+    document.getElementById("draft-list").classList.remove("quickaction-open");
+  }
+  requestaccess_list_open(){
+    document.getElementById("requestaccess-list").classList.add("quickaction-open");
+  }
+  requestaccess_list_close(){
+    document.getElementById("requestaccess-list").classList.remove("quickaction-open");
+  }
+  bookmark_list_open(){
+    document.getElementById("bookmark-list").classList.add("quickaction-open");
+  }
+  bookmark_list_close(){
+    document.getElementById("bookmark-list").classList.remove("quickaction-open");
+  }
 
 /////////////////////////////////////////// Create Event and Create Task sidebar start /////////////////////////////////////////////////////////
+
+
 Title_Name: any;
 notProvided: boolean = false;
 MinLastNameLength: boolean;
@@ -688,7 +723,7 @@ SubmissionName: string;
 TM_DisplayName: string;
 _subname1: boolean;
 EventNumber: any;
-_meetingroom:boolean=false;
+_meetingroom:boolean=true;
 _onlinelink: boolean = false;
 draftid: number = 0;
 timeslotsavl: any[] = [];
@@ -2123,7 +2158,7 @@ bindCustomRecurrenceValues(){
         return false;
       }
       for (let index = 0; index < this.dayArr.length; index++) {
-        if (this.dayArr[index].checked) {
+        if (this.dayArr[index].checked) {        
           const day = this.dayArr[index].value;
           _arraytext.push(day);
           var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
@@ -2212,7 +2247,6 @@ bindCustomRecurrenceValues(){
         var vUser_Name = "User_Name";
         element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
 
-
         var vLocation_Type = "Location_Type";
         element[vLocation_Type] = (this._meetingroom==true)?(this.Location_Type == undefined ? "" : this.Location_Type):'';
 
@@ -2225,6 +2259,7 @@ bindCustomRecurrenceValues(){
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
 
+    
         var vLink_Details = "Link_Details";
         let link_d=this.Link_Details;
         if(this.Link_Details){
@@ -2490,7 +2525,7 @@ bindCustomRecurrenceValues(){
 
   GetScheduledJson() {
 
-    this.loadingDMS = false;
+   
     this._calenderDto.EmpNo = this.Current_user_ID;
     this._calenderDto.User_Type=this.user_Type;
     this.fetchDataStartTime = performance.now();
@@ -2642,8 +2677,12 @@ getEventsForWeeks(weeksFromToday: number) {
     }));
     
       this.filteredMeetingsArray = this.groupedMeetingsArray;
+    
       console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
+       
 }
+
+
 
 
 
@@ -3094,7 +3133,7 @@ End_meeting() {
       (data => {
         this.GetScheduledJson();
         this.GetPending_Request();
-        this.customEventModal_dismiss();
+        this.customTaskModal_dismiss();
       });
     console.log(this._calenderDto, "dto")
     this.notifyService.showSuccess("Task completed.", "Success");
@@ -3221,6 +3260,7 @@ Pending_meeting() {
     this.GetScheduledJson();
     this.GetPending_Request();
     this.customEventModal_dismiss();
+    this.customTaskModal_dismiss();
   });
 
 }
@@ -3239,9 +3279,14 @@ onSingleEventDelete() {
     }
   });
 }
+
+
+
 AllDelete_event(val) {
   this.flagevent = val;
 }
+
+
 
 AlldeleteSchedule() {
 
@@ -3250,6 +3295,7 @@ AlldeleteSchedule() {
   this.CalenderService.NewDelete_table(this._calenderDto).subscribe(text => {
     this.notifyService.showSuccess("Deleted successfully", "Success");
     this.customEventModal_dismiss();
+    this.customTaskModal_dismiss();
     this.GetScheduledJson();
     this.GetPending_Request();
   })
@@ -3257,7 +3303,7 @@ AlldeleteSchedule() {
 
 
 
-DublicateTaskandEvent() {
+DublicateTaskandEvent(val:number) {
   this.createTaskEvent=false;
   document.getElementById("div_endDate_new").style.display = "none";
   // 69 document.getElementById("Schenddate").style.display = "none";
@@ -3301,8 +3347,15 @@ DublicateTaskandEvent() {
       document.getElementById("task-title").style.display = "none"; 
       document.getElementById("Edit-title").style.display = "none";
       document.getElementById("Repeat-title").style.display = "none";
-      document.getElementById("Copy-title").style.display = "block";
-      document.getElementById("Location_Name").style.display = "none";
+      if(val ==1){
+        document.getElementById("Copy-title").style.display = "none";
+        document.getElementById("Copy-task").style.display = "block";
+      }else{
+        document.getElementById("Copy-task").style.display = "none";
+        document.getElementById("Copy-title").style.display = "block";
+      }
+     
+      //69 document.getElementById("Location_Name").style.display = "none";
       
 
       this.AllDatesSDandED = [];
@@ -3396,7 +3449,7 @@ DublicateTaskandEvent() {
         document.getElementById("core_viw222").style.display = "flex";
         document.getElementById("core_Dms").style.display = "flex";
         document.getElementById("meeting-online-add").style.display = "flex";
-        document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
+        //69 document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
 
         const TEsb = document.getElementById('TaskEvent-Sidebar')
         TEsb.addEventListener('scroll', () => {
@@ -3593,8 +3646,8 @@ ReshudingTaskandEvent() {
         this.MasterCode = (this.MasterCode[0].stringval);
 
         document.getElementById("subtaskid").style.display = "flex";
-        document.getElementById("Guest_Name").style.display = "none";
-        document.getElementById("Location_Name").style.display = "none";
+        // document.getElementById("Guest_Name").style.display = "none";
+        //69 document.getElementById("Location_Name").style.display = "none";
         document.getElementById("Descrip_Name").style.display = "none";
         document.getElementById("core_viw123").style.display = "flex";
         document.getElementById("core_viw121").style.display = "none";
@@ -3647,10 +3700,10 @@ ReshudingTaskandEvent() {
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
         this._meetingroom = this.Location_Type?true:false;
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
-        document.getElementById("subtaskid").style.display = "none";
-        document.getElementById("Guest_Name").style.display = "flex";
-        document.getElementById("meeting-online-add").style.display = "flex";
-        document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
+         document.getElementById("subtaskid").style.display = "none";
+        //69 document.getElementById("Guest_Name").style.display = "flex";
+        //69 document.getElementById("meeting-online-add").style.display = "flex";
+        //69 document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
         document.getElementById("Descrip_Name").style.display = "flex";
         document.getElementById("core_viw121").style.display = "flex";
         document.getElementById("core_viw123").style.display = "none";
@@ -3693,6 +3746,7 @@ ReshudingTaskandEvent() {
         // valid starttimearr and endtimearr setting end.
     });
    this.customEventModal_dismiss();
+   this.customTaskModal_dismiss();
 }
 
 
@@ -4382,7 +4436,7 @@ repeatEvent() {
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
         document.getElementById("subtaskid").style.display = "none";
         document.getElementById("Guest_Name").style.display = "flex";
-        document.getElementById("Location_Name").style.display = "flex";
+        //69 document.getElementById("Location_Name").style.display = "flex";
         document.getElementById("Descrip_Name").style.display = "flex";
         document.getElementById("core_viw121").style.display = "flex";
         document.getElementById("core_viw123").style.display = "none";
@@ -4432,8 +4486,6 @@ proposedate(){
   this.proposeEndTimes=this.PurposeEnd
   this.Propose_date_time_menu_close();
 }
-
-
 
 
 
@@ -4608,5 +4660,79 @@ submitEventToRepeat(){
       alert('Please Select Valid Date and Time');
     }
   }
+
+
+  deleteTask:boolean=false;
+
+  deleteRecurringTask(){
+    this.deleteTask=true;
+  }
+
+  deleteRecurringEvent(){
+    this.deleteTask=false;
+  }
+
+
+  uncomplete_task() {
+
+    this.CalenderService.NewTaskUncomplete(this.Schedule_ID).subscribe
+      (data => {
+        this.GetScheduledJson();
+        this.GetPending_Request();
+        this.customTaskModal_dismiss();
+      });
+    // console.log(this._calenderDto, "dto")
+    this.notifyService.showSuccess("Task Uncomplete.", "Success");
+  }
+
+
+
+
+
+
+
+
+
+
+  togglemeetingtypeOption(option: string) {
+    this.selectedOption = option;
+    if(this.selectedOption === 'option2'){
+      this._onlinelink = true;
+    }else if(this.selectedOption === 'option1'){
+      this._meetingroom=true;
+    }else{
+      this._onlinelink = false;
+      this._meetingroom=false;
+    }
+  
+  }
+
+  // Online_method(event) {
+
+  //   if (event.target.checked) {
+  //     document.getElementById("Descrip_Name12").style.display = "flex";
+  //     this._onlinelink = event.target.checked;
+  //     // alert(this._onlinelink)
+  //   }
+  //   else {
+  //     document.getElementById("Descrip_Name12").style.display = "none";
+  //     this._onlinelink = false;
+  //     // alert(this._onlinelink)
+  //   }
+
+  // }
+
+
+
+  // Meeting_method(event){
+  //   if (event.target.checked) {
+  //     document.getElementById("Location_Name").style.display = "flex";
+  //     this._meetingroom = event.target.checked;
+  //   }
+  //   else {
+  //     document.getElementById("Location_Name").style.display = "none";
+  //     this._meetingroom = false;
+  //   }
+  //  }
 /////////////////////////////////////////// Created On (Schedule event popup box) End /////////////////////////////////////////////////////////
 }

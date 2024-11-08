@@ -17,6 +17,7 @@ import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ProjectMoreDetailsService } from '../../_Services/project-more-details.service';
 import Swal from 'sweetalert2';
+import tippy from 'node_modules/tippy.js';
 
 //import { LoginDTO } from 'src/app/_Models/login-dto';
 //import { LoginComponent } from '../login/login.component';
@@ -114,6 +115,7 @@ export const MY_DATE_FORMATS = {
 
 export class PortfolioProjectsComponent implements OnInit {
   _PortProjStatus: string;
+  _FilterByEmp:string;
   _ShareDetailsList: any;
   _SharedToEmps:any=[];   // array of emp number to whom the portfolio shared.
   //_PortfolioListTable: boolean;
@@ -141,6 +143,7 @@ export class PortfolioProjectsComponent implements OnInit {
   currentActionView: number | undefined;
   URL_ProjectCode: any;
   Current_user_ID: string;
+  UserfullName : string
 
 
 
@@ -321,6 +324,7 @@ export class PortfolioProjectsComponent implements OnInit {
   ngOnInit(): void {
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
+    this.UserfullName = localStorage.getItem('UserfullName')
     this.Project_Graph = "Graphs";
     this.Max50Char = true;
     this.pieBarCharts = true;
@@ -334,9 +338,11 @@ export class PortfolioProjectsComponent implements OnInit {
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
     this.labelAll();
 
+
     // this.onButtonClick('tot');
     // this.getusermeetings();
     this.updateListbyDetailsPage();
+
 
 
 
@@ -375,6 +381,15 @@ export class PortfolioProjectsComponent implements OnInit {
   Portfolio : any[]
   Employeshare:any[];
   UserAccessType : 'Full Access' | 'View Only'
+  uniqueid:any
+  counting:number=0
+  delayPrjsofPort :any
+  forwardPrjPort:any
+  completionPrjPort:any
+  newapprovalPrjport : any
+  checking: boolean = false;
+  isPendingChecked : boolean = false
+
 
   GetPortfolioProjectsByPid() {  
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
@@ -401,8 +416,8 @@ export class PortfolioProjectsComponent implements OnInit {
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);
         this._PortFolio_Namecardheader = this._PortfolioDetailsById[0]['Portfolio_Name'];
         this.Rename_PortfolioName = this._PortFolio_Namecardheader;
-        this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];  
-        this.createdBy = this._PortfolioDetailsById[0]['Created_By'];   
+        this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];
+        this.createdBy = this._PortfolioDetailsById[0]['Created_By'];
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
 
         this.lastProject = this._ProjectsListBy_Pid.length;
@@ -411,6 +426,119 @@ export class PortfolioProjectsComponent implements OnInit {
         console.log( this.Employeshare,'employeeeeeeeeeeee')
         console.log("Portfolio Projects---->", this._ProjectsListBy_Pid);
         this.userFound = true
+        this.uniqueid = this._ProjectsListBy_Pid.find((ob)=>ob.Team_Res==this.Current_user_ID)
+        console.log(this.uniqueid,'Team_ResTeam_ResTeam_ResTeam_ResTeam_ResTeam_Res')
+
+
+
+      this.filteredEmployees = [];
+      this._ProjectsListBy_Pid.forEach(item=>{
+        const x=this.filteredEmployees.find(emp=>item.Emp_No === emp.Emp_No)
+        if(x){
+            x.totalProjects+=1;
+        }
+        else{
+          const obj={
+            Emp_No:item.Emp_No,
+            Team_Res:item.Team_Res,
+            totalProjects:1
+           };
+          this.filteredEmployees.push(obj)
+        }
+
+      })
+        console.log(this.filteredEmployees,"this.filteredEmployeesthis.filteredEmployees")
+
+        this.delayPrjsofPort = []
+        this._ProjectsListBy_Pid.forEach(item => {
+          if (item.Status === 'Delay' && (item.Emp_No == this.Current_user_ID || item.OwnerEmpNo == this.Current_user_ID ))  {
+             const obj = {
+              prjname : item.Project_Name,
+              prjcode : item.Project_Code,
+              status : item.Status,
+              emp_No : item.Emp_No,
+              owner : item.OwnerEmpNo
+              };
+              this.delayPrjsofPort.push(obj)
+          }
+        });
+        console.log(this.delayPrjsofPort, 'storingDelaycount');
+
+
+
+        this.forwardPrjPort = []
+
+        this._ProjectsListBy_Pid.forEach((item=>{
+          if(item.Status =='Forward Under Approval' && item.PendingapproverEmpNo == this.Current_user_ID){
+            const obj = {
+              prjname : item.Project_Name,
+              prjcode : item.Project_Code,
+              status: item.Status,
+              empNo : item.Emp_No
+              };
+              this.forwardPrjPort.push(obj)
+          }
+        }))
+console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
+
+
+  this.completionPrjPort = []
+
+  this._ProjectsListBy_Pid.forEach((item)=>{
+    if (item.Status === 'Completion Under Approval'  && item.PendingapproverEmpNo === this.Current_user_ID){
+      const obj = {
+        prjname : item.Project_Name,
+        prjcode : item.Project_Code,
+        status: item.Status,
+        empNo : item.Emp_No
+      }
+      this.completionPrjPort.push(obj)
+    }
+  })
+  console.log(this.completionPrjPort,"this.completionPrjPort.completionPrjPort")
+
+
+
+
+
+  this.newapprovalPrjport = []
+
+  this._ProjectsListBy_Pid.forEach((item)=>{
+    if (item.Status === 'Under Approval'  && item.PendingapproverEmpNo === this.Current_user_ID){
+      const obj = {
+        prjname : item.Project_Name,
+        prjcode : item.Project_Code,
+        status: item.Status,
+        owner : item.PendingapproverEmpNo,
+        empNo : item.Emp_No
+      }
+      this.newapprovalPrjport.push(obj)
+    }
+  })
+  console.log(this.newapprovalPrjport,"this.newapprovalPrjport.newapprovalPrjport")
+
+
+
+
+
+    // this.checking = this._ProjectsListBy_Pid.some((emp) => {
+
+    // return emp.Team_Res === this.UserfullName || emp.Project_Owner===this.UserfullName ;
+    // });
+
+
+
+    this.isPendingChecked = this._ProjectsListBy_Pid.some((emp)=>{
+      debugger
+      return emp.PendingapproverEmpNo === this.Current_user_ID
+    })
+
+
+
+
+
+
+
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
         this.Deletedproject = JSON.parse(data[0]['PortfolioDeletedProjects']);
@@ -602,6 +730,11 @@ export class PortfolioProjectsComponent implements OnInit {
         this.labelAll()
         this.onButtonClick('tot')
           }
+
+
+
+
+          this.hasFilterResult();
       });
 
 
@@ -746,7 +879,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
 
 LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-  debugger
+
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -899,7 +1032,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     // if (this.CompanyDropdown == undefined) {
     //   return this._ErrorMessage_comp = "* Please Select Company";
     // }
-    debugger
+
     if (this.shareToEmplys == undefined ||  this.shareToEmplys === null || this.shareToEmplys&&this.shareToEmplys.length ===0) {
       return   this.valid = true
     }else{
@@ -1265,6 +1398,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   labelAll() {
     this._PortProjStatus = "";
     this.showDeletedPrjOnly=false;
+
   }
 
   labelInprocess() {
@@ -1317,8 +1451,10 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   labelCompleted() {
     this._PortProjStatus = 'Completed';
     this.showDeletedPrjOnly=false;
-    console.log('_PortProjStatus:',this._PortProjStatus);
+    var b = this._PortProjStatus.length
+    console.log('_PortProjStatus:bbbbb',b);
     console.log('_ProjectsListBy_Pid:',this._ProjectsListBy_Pid);
+
   }
 
   labelNewProject() {
@@ -1335,6 +1471,18 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     this.showDeletedPrjOnly=false;
     //this._PortProjStatus.includes('New Project Rejected');
   }
+
+  showDot : boolean = false
+  filterProjectsOfEmp(filterbyEmp:string){
+
+    this.showDot = true
+    this._FilterByEmp=filterbyEmp;
+    this.hasFilterResult();
+
+    console.log(this._FilterByEmp,"this._FilterByEmpthis._FilterByEmp")
+  }
+
+
 
 
 
@@ -1611,6 +1759,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
               this._MemosSubjectList = JSON.parse(data['JsonData']);
               this._MemosNotFound = "";
             });
+            // this.Closeportfoliosidebar()
         }
         else {
           this._MemosSubjectList = [];
@@ -1619,6 +1768,10 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
       });
     //Displaying Right Side Bar...
     document.getElementById("MemosSideBar").style.width = "350px";
+  }
+
+  noDms(){
+    this.notifyService.showInfo("",'No Dms link in this project.')
   }
 
   _CloseMemosidebar() {
@@ -1692,20 +1845,39 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     //document.getElementById("mysideInfobar").style.width='0';
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    this._CloseMemosidebar()
   }
 
   info_active_btn(item: any): void {
+
       // If the item is already active, deactivate it
       // If the item is not active, deactivate all items and activate the clicked one
-      this._ProjectsListBy_Pid.forEach(otherItem => otherItem.active = false);
-      item.active = true;
+    //   this._ProjectsListBy_Pid.forEach(otherItem => otherItem.active = false);
+    //   item.active = true;
 
-    // Manually trigger change detection
-    this.cdr.detectChanges();
+    // // Manually trigger change detection
+    // this.cdr.detectChanges();
+
+    item.isActive = !item.isActive;
+
+    // If you want to allow only one item to be active at a time, uncomment the following lines:
+  if (item.isActive) {
+    this._ProjectsListBy_Pid.forEach(otherItem => {
+      if (otherItem !== item) {
+        otherItem.isActive = false;
+      }
+    });
   }
+}
+
+
+
+
 
   closeInfo() {
-    this._ProjectsListBy_Pid.forEach(item => item.active = false);
+    // this._ProjectsListBy_Pid.forEach(item => item.active = false);
+    this._ProjectsListBy_Pid.forEach(item => item.isActive = false);
+
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     document.getElementById("portfoliosideBar").classList.remove("active");
@@ -1714,6 +1886,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     // $('.project-list_AC').removeClass('active');
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    this._CloseMemosidebar()
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
   }
 
@@ -1908,6 +2081,38 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
       });
   }
 
+
+nofilterResult:boolean = false;
+resultCount: number=0;
+hasFilterResult(){
+
+let list;
+let result=[];
+
+if(this.showDeletedPrjOnly){
+  list=[...this.Deletedproject];
+  result=list.filter((p)=>{
+    return (((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp||this._FilterByEmp=="All"));
+  });
+
+}else{
+  list=[...this._ProjectsListBy_Pid];
+  result=list.filter((p)=>{
+
+    return (((p.Status==this._PortProjStatus)||(p.Status.includes('Delay')&&this._PortProjStatus=='Delay')||this._PortProjStatus=='')&& ((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp || p.OwnerEmpNo==this._FilterByEmp  ||this._FilterByEmp=="All"));
+  });
+  debugger
+  console.log(result);
+}
+
+this.resultCount = result.length;
+this.nofilterResult=(result.length==0);
+}
+
+
+
+
+
   onButtonClick(buttonId: string) {
 
     // const elements = {
@@ -1940,12 +2145,12 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     //     }
     //   }
     // }
-    const elements = document.getElementsByClassName('btn-filtr');
-    for (let i = 0; i < elements.length; i++) {
-      elements[i].classList.remove('active');
-    }
-
-
+    // const elements = document.getElementsByClassName('btn-filtr');
+    // for (let i = 0; i < elements.length; i++) {
+    //   elements[i].classList.remove('active');
+    // }
+    this.showDot = true
+    this.hasFilterResult()
     if(buttonId=='tot')
       document.getElementById('tot').classList.add('active');
     else if(buttonId=='inn')
@@ -2025,25 +2230,48 @@ triger(){
     });
 
   }
-  Openportfoliosidebar(){
+
+  // Openportfoliosidebar(){
+  //   document.getElementById("portfoliosideBar").classList.add("active");
+  //   document.getElementById("rightbar-overlay").style.display = "block";
+  //   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  // }
+  portfolio_List:any;
+  _displayprtflioName:any;
+  _OpenfortfolioInfo(index:number,Project_Name) {
+   if(index!=undefined &&Project_Name!=undefined){
+    this._displayprtflioName=Project_Name
+    this.portfolio_List=this._ProjectsListBy_Pid[index]['availableports'];
+    console.log(this.portfolio_List,"this.portfolio_Listthis.portfolio_List")
     document.getElementById("portfoliosideBar").classList.add("active");
-    document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+     document.getElementById("rightbar-overlay").style.display = "block";
+       document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+       this._CloseMemosidebar()
+   }else{
+
+      this.notifyService.showInfo("",'No portfolio link in this project.')
+   }
+
   }
+
+
+
   Closeportfoliosidebar(){
     document.getElementById("portfoliosideBar").classList.remove("active");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    // this._CloseMemosidebar()
   }
+
   backMainMeetings() {
     document.getElementById("recall-meeting").style.display = "none";
     document.getElementById("main-meeting").style.display = "block";
     this.selectedMtgs2Link=[];  // clear selected meetings.
   }
   showRecallMeetingsView() {
-
     document.getElementById("recall-meeting").style.display = "block";
     document.getElementById("main-meeting").style.display = "none";
+
 
   }
 
@@ -2507,25 +2735,31 @@ config: AngularEditorConfig = {
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
       [
-        // 'bold',
-        // 'italic',
-        // 'underline',
+        'undo', // Hide Undo button
+        'redo', // Hide Redo button
         'strikeThrough',
         'subscript',
         'superscript',
         'indent',
         'outdent',
-        // 'insertUnorderedList',
-        // 'insertOrderedList',
+        'justifyLeft',
+        'justifyCenter',
+        'justifyRight',
+        'justifyFull',
         'heading',
-        // 'fontName'
+        'fontName',
+        // 'fontSize',
+        'textColor',
+        'backgroundColor',
+        'customClasses'
       ],
       [
         // 'fontSize',
         // 'textColor',
         // 'backgroundColor',
-        'customClasses',
-
+    // 'fontSize',
+        // 'textColor',
+        // 'backgroundColor',
         'unlink',
         'insertImage',
         'insertVideo',
@@ -2960,7 +3194,7 @@ getChangeSubtaskDetais(Project_Code) {
   Online_method(event) {
 
     if (event.target.checked) {
-      document.getElementById("Descrip_Name12").style.display = "block";
+      document.getElementById("Descrip_Name12").style.display = "flex";
       this._onlinelink = event.target.checked;
     }
     else {
@@ -3672,7 +3906,12 @@ getChangeSubtaskDetais(Project_Code) {
   formatTime1(hour, minute) {
     return moment({ hour, minute }).format("hh:mm A");
   }
-  eventRepeat:boolean = false
+
+  eventRepeat:boolean = false;
+  Meeting_Id:any;
+  Meeting_password:any;
+
+
   OnSubmitSchedule() {
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
@@ -3823,7 +4062,8 @@ getChangeSubtaskDetais(Project_Code) {
 
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
-
+        this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
+     
 
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
@@ -3929,6 +4169,7 @@ getChangeSubtaskDetais(Project_Code) {
                     (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
                     (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
                     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                    this._CloseMemosidebar()
                     document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
                 }
               }
@@ -3967,6 +4208,8 @@ getChangeSubtaskDetais(Project_Code) {
           this.SelectDms = null;
           this.Location_Type = null;
           this.Link_Details = null;
+          this.Meeting_Id = null;
+          this.Meeting_password = null;
           this._onlinelink = false;
           this.Allocated_subtask = null;
           this.TM_DisplayName = null;
@@ -5377,6 +5620,7 @@ close_project_filter() {
 }
 
 clearAppliedFiltered(){
+
   this.basedOnFilter.byuser=null;
   this.basedOnFilter.bycompany=null;
     switch(this.projectmodaltype){
@@ -5762,6 +6006,7 @@ bindCustomRecurrenceValues(){
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    this._CloseMemosidebar()
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     document.getElementById("Descrip_Name12").style.display = "none";
 
@@ -5923,6 +6168,52 @@ bindCustomRecurrenceValues(){
       }
     }
   }
+
+
+  formatStatus(status: string): string {
+    return status.replace(/day\(s\)/i, 'days');
+}
+
+
+countgetFilter() {
+  const countMap = {
+    'Forward Under Approval': this.CountForward,
+    'Completion Under Approval': this.CountCompletionUA,
+    'Completed': this.CountCompleted,
+    'Delay': this.CountDelay,
+    'Not started': this.CountNotStarted,
+    'Under Approval': this.CountAll_UA,
+    'New project': this.CountNewProject,
+    'Project hold': this.CountProjectHold,
+    'Rejected': this.CountRejecteds,
+    'InProcess': this.CountInprocess,
+    'Cancellation Under Approval': this.CountCancellation,
+    'Deadline Extended Under Approval': this.CountDeadLineExtendedUA,
+    'ToDo completed': this.Count_ToDoCompleted,
+    'ToDo achieved': this.Count_ToDoAchieved,
+    'Project Hold': this.CountProjectHold
+  };
+
+  // Handle empty status condition
+  if (this._PortProjStatus === '') {
+    return this.showDeletedPrjOnly
+      ? `1 - ${this.CountDeleted} of ${this.CountDeleted}`
+      : `1 - ${this.TotalProjects} of ${this.TotalProjects}`;
+  }
+
+  // Return the formatted count based on the status
+  const count = countMap[this._PortProjStatus];
+  return count !== undefined
+    ? `1 - ${count} of ${count}`
+    : 'Status not found';
+}
+notShow(){
+  this.showDot = false
+}
+
+showDelayproj(){
+
+}
 
 
 

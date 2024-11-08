@@ -452,22 +452,22 @@
                      </button> -->
                          <button class="btn pg-btn" *ngIf="activeClassAll==true"
                              (click)="Portfolio_CurrentPage = Portfolio_CurrentPage + 1;getPortfolio_List()"
-                             [disabled]="NoOfRecordsPerPage < 30">
+                             [disabled]="Portfolio_CurrentPage==NoOfPages">
                              <i class="fas fa-angle-right mr-0"></i>
                          </button>
                          <button class="btn pg-btn" *ngIf="activeClassFav==true"
                              (click)="Portfolio_FavoritePage = Portfolio_FavoritePage + 1;Favourite_Portfolios()"
-                             [disabled]="NoOfRecordsPerPage < 30">
+                             [disabled]="NoOfPages==Portfolio_FavoritePage">
                              <i class="fas fa-angle-right mr-0"></i>
                          </button>
                          <button class="btn pg-btn" *ngIf="activeClassOwners==true"
                              (click)="Portfolio_OwnerPage = Portfolio_OwnerPage + 1;Owners_Portfolios()"
-                             [disabled]="NoOfRecordsPerPage < 30">
+                             [disabled]="Portfolio_OwnerPage==NoOfPages">
                              <i class="fas fa-angle-right mr-0"></i>
                          </button>
                          <button class="btn pg-btn" *ngIf="activeClassShare==true"
                              (click)="Portfolio_SharedPage = Portfolio_SharedPage + 1;Shared_Portfolios()"
-                             [disabled]="NoOfRecordsPerPage < 30">
+                             [disabled]="NoOfPages==Portfolio_SharedPage">
                              <i class="fas fa-angle-right mr-0"></i>
                          </button>
                          <!-- <button class="kt-todo__icon" data-toggle="kt-tooltip" title="Next"

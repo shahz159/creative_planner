@@ -116,6 +116,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   totalActionsWith0hrs:number=0;
   totalSelfAssignedActns:number=0;
   totalPActns4Aprvls:number=0;
+  actionsAssignedByMe:number=0;
 
 
   TOTAL_ACTIONS_IN_PROCESS: number = 0;
@@ -1054,7 +1055,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
               this.selfAssignedActns.push({name:actn.Responsible, selfactns:1,empno:actn.Team_Res});
             }
 
-
             if(['Under Approval','Forward Under Approval'].includes(actn.Status)){
 
                   const temp=this.pendingActns4Aprvls.find(item=>item.empno==actn.Team_Res);
@@ -1064,6 +1064,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                   this.pendingActns4Aprvls.push({ name:actn.Responsible, empno:actn.Team_Res, totalApprovals:1   });
             }
 
+debugger
+            if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno===actn.Team_Res)){
+              this.actionsAssignedByMe+=1;
+            }
 
      });
      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
@@ -5145,6 +5149,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
   }
 
   toggleMtgsSection(sec:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'){
+    debugger
     this.mtg_section=sec;
     const bx=this.mtg_section=='UPCOMING'?'#upcoming_meetings_tabpanel div#upcoming-mtg-0-btn':
              this.mtg_section=='TODAY'?'#today_meetings_tabpanel div#today-mtg-0-btn':
@@ -5286,31 +5291,34 @@ config: AngularEditorConfig = {
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
-    placeholder: 'Enter text here...',
+    placeholder: 'Please enter description',
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
       [
-        // 'bold',
-        // 'italic',
-        // 'underline',
+        'undo', // Hide Undo button
+        'redo', // Hide Redo button
         'strikeThrough',
         'subscript',
         'superscript',
         'indent',
         'outdent',
-        // 'insertUnorderedList',
-        // 'insertOrderedList',
+        'justifyLeft',
+        'justifyCenter',
+        'justifyRight',
+        'justifyFull',
         'heading',
-        // 'fontName'
+        'fontName',
+        // 'fontSize',
+        'textColor',
+        'backgroundColor',
+        'customClasses'
       ],
       [
         // 'fontSize',
         // 'textColor',
         // 'backgroundColor',
-        'customClasses',
-
         'unlink',
         'insertImage',
         'insertVideo',
@@ -6549,6 +6557,11 @@ getChangeSubtaskDetais(Project_Code) {
     return moment({ hour, minute }).format("hh:mm A");
   }
 
+
+
+
+
+
   OnSubmitSchedule() {
 
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
@@ -6774,7 +6787,7 @@ getChangeSubtaskDetais(Project_Code) {
           //UploadCalendarAttachmenst
           // console.log(data, "m");
           this._Message = data['message'];
-          if (this._Message == "Updated successfully") {
+          if (this._Message == "Update successfully") {
             if (this.draftid != 0) {
               this.Getdraft_datalistmeeting();
               this.draftid = 0
@@ -7754,10 +7767,15 @@ filterConfig:{filterby:string,sortby:string}={
          sortby:'All'
 };
 onFilterConfigChanged({filterBy,sortBy}){
+  debugger
   if(filterBy&&sortBy){
     this.filterConfig.filterby=filterBy;
     this.filterConfig.sortby=sortBy;
     this.filterConfigChanged=true;
+    // if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno!=actn.Team_Res)){
+    //   this.actionsAssignedByMe+=1;
+    //            }
+
     this.filteredPrjAction=this.getFilteredPrjActions(this.filterConfig.filterby,this.filterConfig.sortby);
   }
 }
@@ -7769,7 +7787,10 @@ clearFilterConfigs(){
   this.filterConfigChanged=false;
 }
 
+
+count:any
 getFilteredPrjActions(filterby:string='All',sortby:string='All'){
+  debugger
 if(['001','002'].includes(this.projectInfo.Project_Block)){
 
   let arr=this.projectActionInfo?this.projectActionInfo:[];
@@ -7782,18 +7803,26 @@ if(['001','002'].includes(this.projectInfo.Project_Block)){
        });
      }
      else{  // when sortby is 'Assigned By me'
+
         arr=arr.filter((action)=>{
+
               return action.AssignedbyEmpno.trim()===this.Current_user_ID;
+
         });
+
      }
     }
 
     if(filterby!=='All'){
       arr=arr.filter((action)=>{
+
          return action.Status===filterby;
+
        })
+
     }
   }
+
   return arr;
 
 }
@@ -9696,8 +9725,12 @@ changeScheduleType(val:number){
   }
   this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
 }
-eventRepeat:boolean = false
-OnSubmitSchedule1() { debugger
+eventRepeat:boolean = false;
+Meeting_Id:any;
+Meeting_password:any;
+
+
+OnSubmitSchedule1() { 
   if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
     this._subname1 = true;
     return false;
@@ -9771,7 +9804,7 @@ OnSubmitSchedule1() { debugger
 
   if (finalarray.length > 0) {
     finalarray.forEach(element => {
-      debugger
+    
       const date1: Date = new Date(this._StartDate);
       // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
       //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
@@ -9845,10 +9878,11 @@ OnSubmitSchedule1() { debugger
       var vLocation_url = "Addressurl";
       element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
 
+
       var vOnlinelink = "Onlinelink";
       element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
-
-
+      this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
+    
       var vLink_Details = "Link_Details";
       element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
 
@@ -9991,6 +10025,8 @@ OnSubmitSchedule1() { debugger
         this.SelectDms = null;
         this.Location_Type = null;
         this.Link_Details = null;
+        this.Meeting_Id = null;
+        this.Meeting_password = null;
         this._onlinelink = false;
         this.Allocated_subtask = null;
         this.TM_DisplayName = null;

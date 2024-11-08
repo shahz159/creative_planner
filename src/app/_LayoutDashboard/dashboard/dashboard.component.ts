@@ -359,26 +359,25 @@ export class DashboardComponent implements OnInit {
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
       [
-        // 'bold',
-        // 'italic',
-        // 'underline',
-        
+        'undo', // Hide Undo button
+        'redo', // Hide Redo button
         'strikeThrough',
         'subscript',
         'superscript',
         'indent',
         'outdent',
-        // 'insertUnorderedList',
-        // 'insertOrderedList',
+        'justifyLeft',
+        'justifyCenter',
+        'justifyRight',
+        'justifyFull',
         'heading',
-        // 'fontName'
+        'fontName',
+        // 'fontSize',
+        'textColor',
+        'backgroundColor',
+        'customClasses'
       ],
       [
-        // 'fontSize',
-        // 'textColor',
-        // 'backgroundColor',
-        'customClasses',
-
         'unlink',
         'insertImage',
         'insertVideo',
@@ -697,44 +696,71 @@ export class DashboardComponent implements OnInit {
 
 
 
-  onFileChange(event) {
 
+  onFileChange(event) {
+    debugger
     if (event.target.files.length > 0) {
-      var length = event.target.files.length;
+      const length = event.target.files.length;
       for (let index = 0; index < length; index++) {
         const file = event.target.files[index];
-        var contentType = file.type;
+        const fileName = file.name;
+        const contentType = file.type;
+
+        // Skip file if its name already exists in either array
+        const fileAlreadyExists =
+          this.Attachment12_ary.some(att => att.File_Name === fileName) ||
+          this._lstMultipleFiales.some(existingFile => existingFile.FileName === fileName);
+
+        if (fileAlreadyExists) {
+          Swal.fire({
+            title: `File "${fileName}" Already Exists`,
+            text: `The file "${fileName}" was not added to avoid duplication.`
+          })
+          continue; // Skip this file
+        }
+  
+        // Determine file extension
+        let fileExtension = '';
         if (contentType === "application/pdf") {
-          contentType = ".pdf";
+          fileExtension = ".pdf";
+        } else if (contentType === "image/png") {
+          fileExtension = ".png";
+        } else if (contentType === "image/jpeg") {
+          fileExtension = ".jpeg";
+        } else if (contentType === "image/jpg") {
+          fileExtension = ".jpg";
         }
-        else if (contentType === "image/png") {
-          contentType = ".png";
-        }
-        else if (contentType === "image/jpeg") {
-          contentType = ".jpeg";
-        }
-        else if (contentType === "image/jpg") {
-          contentType = ".jpg";
-        }
-        this.myFiles.push(event.target.files[index].name);
-        // alert(this.myFiles.length);
-        console.log(this.myFiles, "attach")
-        //_lstMultipleFiales
-        var d = new Date().valueOf();
-      
-        this._lstMultipleFiales = [...this._lstMultipleFiales, {
-          UniqueId: d,
-          FileName: event.target.files[index].name,
-          Size: event.target.files[index].size,
-          Files: event.target.files[index]
-        }];
+  
+        // Add file to _lstMultipleFiales array
+        this.myFiles.push(fileName);
+        const uniqueId = new Date().valueOf();
+  
+        this._lstMultipleFiales.push({
+          UniqueId: uniqueId,
+          FileName: fileName,
+          Size: file.size,
+          Files: file
+        });
       }
     }
-
-    const uploadFileInput = (<HTMLInputElement>document.getElementById("uploadFile"));
-    uploadFileInput.value = null;
-    uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+  
+    // Reset the input value and styling
+    const uploadFileInput = document.getElementById("uploadFile") as HTMLInputElement;
+    if (uploadFileInput) {
+      uploadFileInput.value = null;
+      uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+    }
+    (event.target as HTMLInputElement).value = '';
   }
+
+
+
+
+
+
+
+
+
 
   RemoveSelectedFile(_id) {
     var removeIndex = this._lstMultipleFiales.map(function (item) { return item.UniqueId; }).indexOf(_id);
@@ -747,17 +773,17 @@ export class DashboardComponent implements OnInit {
 
 
 
-
+  _attachmentValue:any = 0;
+  RemovedFile_id:any = [];
 
 
   RemoveExistingFile(_id) {
 
-
     this.Attachment12_ary.forEach(element => {
       if (element.file_id == _id) {
-        this.RemovedAttach.push(element.Cloud_Name)
+        // this.RemovedAttach.push(element.Cloud_Name);
+        this.RemovedFile_id.push(element.file_id);
       }
-
     });
     var removeIndex = this.Attachment12_ary.map(function (item) { return item.file_id; }).indexOf(_id);
     this.Attachment12_ary.splice(removeIndex, 1);
@@ -1151,7 +1177,6 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-        console.log(this.EventScheduledjson, "test")
         this.Schedule_ID = 0;
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
         this.Startts = (this.EventScheduledjson[0]['St_Time']);
@@ -1163,9 +1188,8 @@ export class DashboardComponent implements OnInit {
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
         // this._SEndDate = moment().format("YYYY-MM-DD").toString();
         this.Addressurl = this.EventScheduledjson[0]['Addressurl'];
-
-
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
+
 
         if (this._FutureEventTasksCount > 0) {
           // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
@@ -1453,6 +1477,25 @@ export class DashboardComponent implements OnInit {
         this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
         this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
 
+  
+       if(this.Link_Details != ''){
+        if(!this.Link_Details.includes('<a href=')){
+          var details = this.Link_Details.split(', ')
+          this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+          this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+          this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined' || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+          console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
+        }
+        else if(this.Link_Details.includes('<a href=')){
+          this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
+          this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
+          this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
+        
+          console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details 69');
+        }
+       }
+       
+       
 
 
         this.pending_status = this.EventScheduledjson[0]['Pending_meeting'];
@@ -1833,6 +1876,11 @@ export class DashboardComponent implements OnInit {
     return lastDays;
   }
 
+  Meeting_Id:any;
+  Meeting_password:any;
+
+
+
   OnSubmitSchedule() {
 
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
@@ -1851,7 +1899,7 @@ export class DashboardComponent implements OnInit {
         + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       this.EventNumber = timestamp;
     }
-
+ 
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -1982,16 +2030,21 @@ export class DashboardComponent implements OnInit {
         var vLocation_url = "Addressurl";
         element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
 
+
+
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
-
+        this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
+    
         var vLink_Details = "Link_Details";
-        let link_d=this.Link_Details;
-        if(this.Link_Details){
-          link_d=this.Link_Details.replace(/&#160;/g, ' ');
-          link_d=this.anchoredIt(link_d);
-        }
-        element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
+        element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+        // var vLink_Details = "Link_Details";
+        // let link_d=this.Link_Details;
+        // if(this.Link_Details){
+        //   link_d=this.Link_Details.replace(/&#160;/g, ' ');
+        //   link_d=this.anchoredIt(link_d);
+        // }
+        // element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
      
         if (this.Description_Type && this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, '').length > 0) {
           // Remove occurrences of &nbsp; and &#160; while collapsing spaces
@@ -2049,7 +2102,7 @@ export class DashboardComponent implements OnInit {
       else {
         this._calenderDto.Schedule_ID = 0;
       }
-
+debugger
       let _attachmentValue = 0;
       const frmData = new FormData();
       for (var i = 0; i < this._lstMultipleFiales.length; i++) {
@@ -2066,7 +2119,7 @@ export class DashboardComponent implements OnInit {
       this._calenderDto.draftid = this.draftid;
 
 
-      console.log('_calenderDto obj:', JSON.parse(this._calenderDto.ScheduleJson));
+      console.log('_calenderDto obj:', frmData);
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
@@ -2139,6 +2192,8 @@ export class DashboardComponent implements OnInit {
           this.SelectDms = null;
           this.Location_Type = null;
           this.Link_Details = null;
+          this.Meeting_Id = null;
+          this.Meeting_password = null;
           this._onlinelink = false;
           this.Allocated_subtask = null;
           this.TM_DisplayName = null;
@@ -2243,6 +2298,8 @@ export class DashboardComponent implements OnInit {
       // timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
       //   + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       // this.EventNumber = timestamp;
+
+   
       let finalarray = [];
       this.daysSelectedII = [];
       // const format2 = "YYYY-MM-DD";
@@ -2263,6 +2320,7 @@ export class DashboardComponent implements OnInit {
         }
         for (let index = 0; index < this.dayArr.length; index++) {
           if (this.dayArr[index].checked) {
+          
             const day = this.dayArr[index].value;
             _arraytext.push(day);
             var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
@@ -2375,19 +2433,20 @@ export class DashboardComponent implements OnInit {
 
           var vOnlinelink = "Onlinelink";
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+          this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
 
           var vLink_Details = "Link_Details";
+          element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
           // let link_d=this.Link_Details.replace(/&#160;/g, ' ');
           // link_d=this.anchoredIt(link_d);
-
-          let link_d=this.Link_Details;
-          if(this.Link_Details){
-            link_d=this.Link_Details.replace(/&#160;/g, ' ');
-            link_d=this.anchoredIt(link_d);
-          }
-
-
-          element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
+          // let link_d=this.Link_Details;
+          
+          // let link_d=this.Link_Details;
+          // if(this.Link_Details){
+          //   link_d=this.Link_Details.replace(/&#160;/g, ' ');
+          //   link_d=this.anchoredIt(link_d);
+          // }
+          // element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
 
           if (this.Description_Type && this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, '').length > 0) {
              this.Description_Type = this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, ' ').trim();
@@ -2439,30 +2498,35 @@ export class DashboardComponent implements OnInit {
         else {
           this._calenderDto.Schedule_ID = 0;
         }
-        let _attachmentValue = 0;
+
+        
         const frmData = new FormData();
         for (var i = 0; i < this._lstMultipleFiales.length; i++) {
           frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
         }
-        if (this._lstMultipleFiales.length > 0)
-          _attachmentValue = 1;
+        if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
+          this._attachmentValue = 1;
         else
-          _attachmentValue = 0;
+         this. _attachmentValue = 0;
 
+      
         frmData.append("EventNumber", this.EventNumber.toString());
         frmData.append("CreatedBy", this.Current_user_ID.toString());
         frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
         frmData.append("flag_id", this._calenderDto.flagid.toString());
-        this._calenderDto.attachment = this.RemovedAttach.toString();
+        frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id);
+        
+        this._calenderDto.attachment =this._attachmentValue.toString();
 
-
+        
 
         this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
           (data => {
-            this.RemovedAttach = [];
+            
             // alert(data['Schedule_date'])
+          
             frmData.append("Schedule_date", data['Schedule_date'].toString());
-            if (_attachmentValue == 1) {
+            if (this._attachmentValue == 1) {
               this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
                 (event: HttpEvent<any>) => {
                   switch (event.type) {
@@ -2496,9 +2560,10 @@ export class DashboardComponent implements OnInit {
                 }
               )
             }
-
+        
             // console.log(data, "m");
             this._Message = data['message'];
+
             if (this._Message == 'Not updated') {
               Swal.fire({
                 title: 'Meeting not released from the Pending list.',
@@ -2543,8 +2608,11 @@ export class DashboardComponent implements OnInit {
             this.Location_Type = null;
             this.Allocated_subtask = null;
             this.Link_Details = null;
+            this.Meeting_Id = null;
+            this.Meeting_password = null;
             this._onlinelink = false;
             this.TM_DisplayName = null;
+            this._attachmentValue=0;
             this.Projectstartdate = "";
             this.projectEnddate = null;
             this.Status_project = null;
@@ -3052,6 +3120,60 @@ export class DashboardComponent implements OnInit {
     // valid starttimearr setting end.
 
 
+
+////test start ///////////////////////////////////////////
+
+if(this.editTask && this.selectedrecuvalue =='2'){
+
+// uncheck prev date.
+  let d=new Date(this._Oldstart_date);
+  const index=d.getDay();
+  this.dayArr[index].checked=false;
+// uncheck prev date.
+
+// update new
+  let d2=new Date(this._StartDate);
+  const index2=d2.getDay();
+  this.dayArr[index2].checked=true;
+
+  this.mtgOnDays=[];
+  this.dayArr.forEach((item:any)=>{
+    if(item.checked){
+        let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
+       this.mtgOnDays.push(d_name);
+    }
+ });
+// update new
+} else if(this.editTask && this.selectedrecuvalue == "3"){
+
+    // uncheck prev date.
+    let d=new Date(this._Oldstart_date);
+    const index=d.getDate();
+    this.MonthArr[index].checked=false;
+    // uncheck prev date.
+
+    // update new
+    let d2=new Date(this._StartDate);
+    const index2=d2.getDate();
+    this.MonthArr[index2-1].checked=true;
+
+    this.mtgOnDays=[];
+    this.MonthArr.forEach((item:any)=>{
+      if(item.checked){
+       
+         const d_no=Number.parseInt(item.value);
+         this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
+      }
+    });
+    // update new
+}
+
+
+////test end  ///////////////////////////////////////////
+
+
+
+
   }
 
   // old
@@ -3466,7 +3588,7 @@ currentTime:any;
       this.Endtms = vahr.toString() + ':' + mins;
       // alert(this.Startts)
       // alert(this.Endtms)
-
+debugger
       if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
         //  alert(this.scstartdate)
@@ -3907,12 +4029,13 @@ currentTime:any;
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
 
-        console.log(this.Isadmin, "Isadmin");
+       
          console.log(this.EventScheduledjson, "Testing12");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status.trim();
+        console.log(this.Status1, "Isadmin");
         this.Proposedate = this.EventScheduledjson[0].Schedule_date;
         this.PropStart = this.EventScheduledjson[0].St_Time;
         this.PurposeEnd = this.EventScheduledjson[0].Ed_Time;
@@ -3926,19 +4049,27 @@ currentTime:any;
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this.pending_status = this.EventScheduledjson[0].Pending_meeting;
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
+        console.log(this.Meeting_status,'Meeting_status')
         
         this._StartDate=this.EventScheduledjson[0].Schedule_date;
         this.Startts=this.EventScheduledjson[0].St_Time;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
         this.RecurrenceValue=this.EventScheduledjson[0].Recurrence
+        this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
 
+
+        // var details = this.Link_Details.split(', ')
+        // this.Link_Details= details[0].split('Meeting link:-')[1].trim()==undefined || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+        // this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+        // this.Meeting_password=  details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+        // console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
  
 
         // document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
      
           document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
-          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("deleteendit").style.display =this.Meeting_status==true?'none':'flex';
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "flex";
           // document.getElementById("act-btn").style.display = "flex";
@@ -4535,7 +4666,7 @@ currentTime:any;
     //
     let is12am: boolean = (end.getHours() == 0 && end.getMinutes() == 0 && end.getSeconds() == 0);
     if (eventIsWithinView && (startMidnight !== endMidnight) && !is12am) {
-
+debugger
       if (start < viewStart) {
         this.TwinEvent.push(event._def.extendedProps.Schedule_ID);
       }
@@ -4585,7 +4716,7 @@ currentTime:any;
 
 
   public handleAddressChange(address: Address) {
-debugger
+
     if (this.checkAddressURL(address.name.toString())) {
       this.Addressurl = address.name;
     }
@@ -4594,10 +4725,8 @@ debugger
     }
     this.Location_Type = address.name;
 
-
     console.log(address, "add11")
     this.Locationfulladd = address.formatted_address;
-
   }
 
 
@@ -5266,6 +5395,16 @@ debugger
 
   }
   Insert_indraft() {
+    // var now = new Date();
+    // if(this.eventRepeat===false){
+    //   let timestamp = "";
+    //   timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
+    //     + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
+    //   this.EventNumber = timestamp;
+    // }
+
+
+
 
     if (this.draftid != 0) {
       this._calenderDto.draftid = this.draftid;
@@ -5297,10 +5436,72 @@ debugger
     }
     this._calenderDto.Project_Code = this.MasterCode.toString();
 
+
+debugger
+    let _attachmentValue = 0;
+    const frmData = new FormData();
+    for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+      frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+    }
+    if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
+      _attachmentValue = 1;
+    else
+      _attachmentValue = 0;
+
+      ;
+      frmData.append("EventNumber", this.EventNumber=this.EventNumber='');
+      frmData.append("CreatedBy", this.Current_user_ID.toString());
+      frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id);
+      
+
     const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
     this._calenderDto.DraftAgendas=mtgAgendas;
+
+   
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
       (data => {
+           
+        var Attamentdraftid= data['draftid']
+        frmData.append("draftid", Attamentdraftid);
+ 
+        if (_attachmentValue == 1) {
+          this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+            (event: HttpEvent<any>) => {
+              switch (event.type) {
+                case HttpEventType.Sent:
+                  console.log('Request has been made!');
+                  break;
+                case HttpEventType.ResponseHeader:
+                  console.log('Response header has been received!');
+                  break;
+                case HttpEventType.UploadProgress:
+                  this.progress = Math.round(event.loaded / event.total * 100);
+                  console.log(`Uploaded! ${this.progress}%`);
+                  break;
+                case HttpEventType.Response:
+                  console.log('User successfully created!', event.body);
+
+                  // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+                  (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+                  this._lstMultipleFiales = [];
+                  // empty(this._lstMultipleFiales);
+                  // alert(this._lstMultipleFiales.length);
+                  setTimeout(() => {
+                    this.progress = 0;
+                  }, 1500);
+
+                  (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                  (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                  document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                  document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+              }
+            }
+          )
+        }
+
+
+
+
         if (data['message'] == '1') {
           this.Getdraft_datalistmeeting();
           this.closeschd();
@@ -5354,7 +5555,7 @@ debugger
   draftid: number = 0;
   draft_arry: any = [];
 
-  darft_click(Sno, val) {
+  darft_click(Sno, val, attachments) {
     this.draftid = Sno;
 
     this.Task_type(val);
@@ -5363,12 +5564,19 @@ debugger
     console.log(this.draft_arry[0], '6969')
     // console.log(this.draft_arry,"ss11111111")
     this.allAgendas = JSON.parse(this.draft_arry[0]['Agendas']);
-
+    debugger
+    this.Attachment12_ary= attachments;
     this.MasterCode = [];
+    this.projectsSelected=[];
     this.arr = JSON.parse(this.draft_arry[0]['Project_code']);
     this.arr.forEach(element => {
-      this.MasterCode.push(element.stringval);
+      this.MasterCode.push(parseInt(element.stringval));
     });
+    this.arr.forEach(element => {
+      this.projectsSelected.push(element.stringval);
+    });
+
+   
     //  this.MasterCode=this.draft_arry[0]["Project_Code"]
     this.Portfolio = [];
     this.Portfolio1 = [];
@@ -5426,6 +5634,7 @@ debugger
     this.Attachment12_ary = [];
     this.RemovedAttach = [];
     this._lstMultipleFiales = [];
+    this.RemovedFile_id = [];
     this.maxDate = null;
     this.selected = null;
     this.Title_Name = null;
@@ -5491,6 +5700,8 @@ debugger
     this._onlinelink=false;
     this._meetingroom=false;
     this.Link_Details = null;
+    this.Meeting_Id = null;
+    this.Meeting_password = null;
     this.subtashDrpLoading=false;
     this.loading=false;
 
@@ -5532,6 +5743,9 @@ debugger
     this.projectEnddate = null;
     this.Status_project = null;
     this.AllocatedHours = null;
+    this.Link_Details = null;
+    this.Meeting_Id = null;
+    this.Meeting_password = null;
     this.daysSelected = [];
     this.selectdaytime = [];
     this.daysSelectedII = [];

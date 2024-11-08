@@ -273,7 +273,7 @@
                                                     <!-- Project details info column -->
                                                     <td class="kt-widget__title mb-0 " style="width: 100px;">
                                                         <div class="d-flex align-items-center">
-                                                            <a data-toggle="tooltip" title="Project info"
+                                                            <a data-toggle="tooltip" title="Click to view the project info"
                                                             class="btn px-0 info-btn  mr-2"
                                                             *ngIf="item.Project_Code != null && item.Status !='Pending'"
                                                             (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)">
@@ -300,7 +300,7 @@
                                                         </a>
                                                         <a tabindex="0" class="btn px-0 info-btn  mr-2" role="button" placement="right"
                                                             *ngIf="item.Project_Code != null && item.Status !='Pending'"
-                                                            data-trigger="focus"  data-toggle="tooltip" title="Project dashboard"  (click)="newDetails(item.Project_Code)">
+                                                            data-trigger="focus"  data-toggle="tooltip" title="Click to view the project dashboard"  (click)="newDetails(item.Project_Code)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                     viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                                 <g>
@@ -556,7 +556,7 @@
                                                     <td align="center">
                                                         <div class="d-flex align-items-center">
                                                         <a tabindex="0" class="btn px-0 info-btn mr-2" role="button" placement="right"
-                                                            data-trigger="focus" title="Project Info" (click)="openInfo(item.Project_Code,item.Master_Code);info_active_btn(item)">
+                                                            data-trigger="focus" title="Click to view the project info" (click)="openInfo(item.Project_Code,item.Master_Code);info_active_btn(item)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                     viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                                 <g>
@@ -580,7 +580,7 @@
                                                         </a>
 
                                                         <a *ngIf="(delayType==='Actions'||Mode==='AssignedActions'); else justopenprj"   tabindex="0" class="btn px-0 info-btn mr-2" role="button" placement="right"
-                                                            data-trigger="focus"  data-toggle="tooltip" title="Project dashboard"  (click)="newDetails(item.Master_Code,item.Project_Code)">
+                                                            data-trigger="focus"  data-toggle="tooltip" title="Click to view the project dashboard"  (click)="newDetails(item.Master_Code,item.Project_Code)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                     viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                                 <g>
@@ -605,7 +605,7 @@
                                                         </a>
                                                       <ng-template #justopenprj>
                                                         <a tabindex="0" class="btn px-0 info-btn mr-2" role="button" placement="right"
-                                                        data-trigger="focus"  data-toggle="tooltip" title="Project dashboard"  (click)="newDetails(item.Project_Code)">
+                                                        data-trigger="focus"  data-toggle="tooltip" title="Click to view the project dashboard"  (click)="newDetails(item.Project_Code)">
                                                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                         viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                    <g>
@@ -638,7 +638,7 @@
 
 
                                                             <ng-containeer *ngIf="item.availableports!=null && item.availableports!=undefined; else prtfolio">
-                                                            <span class="port-info-btn ml-2"  title="Linked"  (click)="_OpenfortfolioInfo(i,item.Project_Name)">
+                                                            <span class="port-info-btn ml-2"  title="Click to view the linked portfolio"  (click)="_OpenfortfolioInfo(i,item.Project_Name)">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"  width="21" height="21" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
                                                                     <defs></defs>
                                                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -666,7 +666,7 @@
                                                             <a class="curser-pointer ml-2"
                                                                    (click)="_OpenMemosInfo(item.Project_Code,item.Project_Name)"><img width="19px"
                                                                     src="./assets/images/Image (4).jfif"
-                                                                    title="Linked"></a>
+                                                                    title="Click to view the SMail"></a>
 
                                                         </span>
                                                         <ng-template #not_Linked>
@@ -974,7 +974,7 @@
                 <h5 class="curser-pointer">
                     <span class="dms-span-img">
                     <img width="22px" height="22px" src="../../../assets//images/smail-color.png"></span> Linked memos
-                   
+
                 </h5>
                 <span class="text-small text-white">{{_displayProjName}}</span>
 
