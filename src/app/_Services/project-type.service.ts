@@ -285,7 +285,6 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewGetCompanies", this.obj_CompanyDTO)
   }
   LoginCredentials(objLoginDetails) {
-
     return this.http.post(this.rootUrl + "TestAPI/NewGetLoginDetails", objLoginDetails);
     // .subscribe(data => {
     //   this.User_Details = data as LoginDTO[];
@@ -1084,6 +1083,15 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.submissionDate=submDate;
     return this.http.post(this.rootUrl+'ApprovalAPI/NewInsertTimelineReport',this.ObjSubTaskDTO);
   }
+
+
+
+  NewGetEmployeePerformance(empno:string){
+    this.ObjSubTaskDTO.Emp_No=empno;
+    return this.http.post(this.rootUrl+'TestAPI/NewGetEmployeePerformance',this.ObjSubTaskDTO);
+  }
+
+
 
 
 }

@@ -2825,6 +2825,17 @@ color: #2786fb;
   border-radius: 4px;
 }
 
+.overutilization-notification {
+  background-color: #fdbc4a38;
+}
+
+.overutilization-notification .notif-img{
+  fill: #bc7204 !important;
+  margin-top: 4px;
+}
+.overutilization-notification .notif-msg{
+  color: #c57a05 !important;
+}
 
 /* .taskItemfocus{
  border:2px solid #8cabfa;

@@ -555,10 +555,10 @@
         </div>
     </div>
 
-    <div class=" kt-portlet__body p-0 sidehf_scroll scroll-y  tm-subm-sb bg-white">
-       <div class="pin-note-div">
+       <div class=" kt-portlet__body p-0 sidehf_scroll scroll-y  tm-subm-sb bg-white">
+       <div *ngIf="dueTodayTasksCount.length>0" class="pin-note-div">
         <div class="kt-Note-msg d-flex bg-transparent">
-            <div class="kt-note-icon" style="align-self: flex-start;">
+            <!-- <div class="kt-note-icon" style="align-self: flex-start;">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25"
                     version="1.1" x="0px" y="0px" viewBox="0 0 66 65" xml:space="preserve"
                     style="enable-background: new 0 0 66 66;">
@@ -587,28 +587,10 @@
                         d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z">
                     </path>
                 </svg>
-            </div>
+            </div> -->
             <div class="notifications-list">
-
-                    
-                    <div class="notification delay-notification">
-                        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727" class="notif-img">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
-                                <g>
-                                    <path
-                                        d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z">
-                                    </path>
-                                    <path
-                                        d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z">
-                                    </path>
-                                </g>
-                            </g>
-                        </svg>
-                        <span class="notif-msg" style="color: #ff2727;">2 Actions delay, max 302 days. Notable delays by <span class="delayaction-of-emp">Md Waseem Akram</span>(302 days)<b>.</b></span>
-                    </div>
-                    <div class="notification overutilization-notification" style="cursor: pointer;">
+        
+                    <div *ngIf="dueTodayTasksCount.length>0" class="notification overutilization-notification" style="cursor: pointer;">
                         <svg width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -623,21 +605,20 @@
                                 </g>
                             </g>
                         </svg>
-                        <span class="notif-msg" style="color: #c57a05;">2 action(s) with Zero "0" allocated hour, Assigned to Mohammed Mateen(1) and Mohammed Raohan(1). </span>
+                        <span class="notif-msg" style="color: #c57a05;">
+                             You have 
+                             <ng-container *ngFor="let item of dueTodayTasksCount; let i=index;">
+                                <span>
+                                   {{item.count}} 
+                                   {{
+                                      item.taskType=='ActionsDueToday'?'actions':   
+                                      item.taskType=='ProjectsDueToday'?'projects':
+                                      item.taskType=='AssignedTasksDue'?'assigned tasks':''          
+                                    }}</span>{{i+1===dueTodayTasksCount.length-1?' and':(i+1===dueTodayTasksCount.length)?'':', '}}
+                             </ng-container>
+                             due today. Please complete it to avoid delay.
+                        </span>
                     </div>
-                    <div class="notification newversion-notification">
-                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.00024000000000000003">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
-                                <path
-                                    d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z"
-                                    fill="#1692df"></path>
-                            </g>
-                        </svg>
-                        <span class="notif-msg fs-6" style="color: #00a2eb;">1 action(s) pending for approval, Assigned to <span class="delayaction-of-emp curser-pointer">Mohammed Mateen(1)</span>.</span>
-                    </div>
-
             </div>
         </div>
        </div>
@@ -770,7 +751,7 @@
             </div> -->
             <!-- *ngIf="tmReportStatus=='Not Submitted'||tmReportArr.length==0"   -->
             <div class="timeline-item-div">
-                <!-- <h4 class="header-date p-0">{{current_Date|date:'EEEE, MMMM d, y'}}</h4> -->
+              
                 <div class="add-timeline-list">
                     <div class="add-timeline-item">
                         <div class="add-timeline-item-icon">
@@ -799,7 +780,7 @@
                         </div>
                         <div class="add-timeline-item-group">
                             <div class="form-group w-100 mb-0">
-                                <ng-select required #project="ngModel" name="project" placeholder="Select Project" id="projName" [ngClass]="{'error-vd': (fieldRequired&&!master_code)}"
+                                <ng-select [disabled]="loadingTimelineProjects"  required #project="ngModel" name="project" [placeholder]="loadingTimelineProjects?'Loading...':'Select Project'" id="projName" [ngClass]="{'error-vd': (fieldRequired&&!master_code)}"
                         [(ngModel)]="master_code" (change)="getTimelineActions(); getPADetails(master_code,'PROJECT'); ">
                         <ng-option [value]="item.Project_Code" *ngFor="let item of projectList">
                             {{item.Project_Name }}
@@ -879,7 +860,7 @@
                         </div>
                         <div class="add-timeline-item-group">
                             <div class="form-group w-100 mb-0">
-                                <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName" [ngClass]="{'error-vd': (fieldRequired&&!project_code)||(noact_msg==true && project_type=='core')}"
+                                <ng-select  required #action="ngModel" name="action" placeholder="Select Action" id="actinName" [ngClass]="{'error-vd': (fieldRequired&&!project_code)||(noact_msg==true && project_type=='core')}"
                                     [(ngModel)]="project_code"  (change)="getPADetails(project_code,'ACTION');  prostate(project_code);">
                                     <ng-option [value]="item.Project_Code" *ngFor="let item of actionList">
                                         {{item.Project_Name }}
@@ -1031,7 +1012,8 @@
                         <div class="complete-action-div">
                             <h6>
                                 <svg width="18px" height="18px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#008000" fill-rule="evenodd" d="M4,4 L9,4 C9.55228,4 10,3.55228 10,3 C10,2.44772 9.55228,2 9,2 L4,2 C2.89543,2 2,2.89543 2,4 L2,12 C2,13.1046 2.89543,14 4,14 L12,14 C13.1046,14 14,13.1046 14,12 L14,10 C14,9.44771 13.5523,9 13,9 C12.4477,9 12,9.44771 12,10 L12,12 L4,12 L4,4 Z M15.2071,2.29289 C14.8166,1.90237 14.1834,1.90237 13.7929,2.29289 L8.5,7.58579 L7.70711,6.79289 C7.31658,6.40237 6.68342,6.40237 6.29289,6.79289 C5.90237,7.18342 5.90237,7.81658 6.29289,8.20711 L7.79289,9.70711 C7.98043,9.89464 8.23478,10 8.5,10 C8.76522,10 9.01957,9.89464 9.20711,9.70711 L15.2071,3.70711 C15.5976,3.31658 15.5976,2.68342 15.2071,2.29289 Z"></path> </g></svg>
-                                <span>"Timeline submission for approval" action is completed.</span>
+                                <!-- <span>"Timeline submission for approval" action is completed.</span> -->
+                                 <span>Action Completion</span>
                             </h6>
                             <div class="add-timeline-item">
                                 <div class="add-timeline-item-icon">
@@ -1268,94 +1250,123 @@
                 <div class="card-body">
                     <div class="timeline-header sticky-header d-flex justify-content-between">
                         <h4 class="header-date p-0 mb-0" style="font-size: 14px;">
-                            TODAY
-                            <span class="text-muted fs-8 d-block">Friday, October 18, 2024</span>
+                            <span class="text-uppercase">{{timeline_of}}</span>
+                            <span class="text-muted fs-8 d-block">{{current_Date|date:'EEEE, MMMM d, y'}}</span>
+                            <span *ngIf="tmReportStatus" class="d-inline-block mt-1 tl-status fs-7 font-weight-400"  [ngClass]="{
+                                'tl-submitted':tmReportStatus=='Accepted',
+                                'tl-notsubmitted':tmReportStatus=='Not Submitted',
+                                'tl-underaprvl':tmReportStatus=='Under Approval',
+                                'tl-suspend':tmReportStatuss=='Suspend'
+                                }">
+                                <svg *ngIf="tmReportStatus=='Accepted'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style=" width: 20px;height: 20px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.1" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="#388e3c"></path> <path d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" stroke="#388e3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 12L10.8189 13.8189V13.8189C10.9189 13.9189 11.0811 13.9189 11.1811 13.8189V13.8189L15 10" stroke="#388e3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                {{tmReportStatus}}
+                            </span>
                         </h4>
-                        <div class="d-flex" style="font-size: 14px;">
-                            <div class="initial-box color-7 b-50 mr-2">MA</div>
-                            <span class="user--name">Md Waseem Akram</span>
-                        </div>
+
+                        <a (click)="btn_timeline_table_accordion();"  type="button" data-toggle="collapse" data-target="#collapseTimeline" aria-expanded="false" aria-controls="collapseTimeline" href="javascript:void(0)" class="collapseTimeline-closeBtn btn btn-xs btn-icon btn-hover-info" >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+                            </svg>
+                        </a>
                     </div>
                     <div class="mt-3">
-                        <table class="time-table mb-1 border">
+                        <ng-container *ngIf="(tmReportArr&&tmReportArr.length>0); else noTimelinePresent">
+                         <table class="time-table collapseTimeline-table  mb-1 border">
                             <thead>
                                 <tr>
-                                    <th style="width: 50px; font-size: 12px;">S.No.</th>
-                                    <th style="width: 280px; font-size: 12px;">Type</th>
-                                    <th style="font-size: 12px;">Achievement</th>
-                                    <th style="width: 80px; font-size: 12px;">Start</th>
-                                    <th style="width: 80px; font-size: 12px;">End</th>
-                                    <th style="width: 80px; font-size: 12px;">Time</th>
+                                    <th style="width: 5%; font-size: 12px;">S.No.</th>
+                                    <th style="width: 30%; font-size: 12px;">Type</th>
+                                    <th style="width:35%; font-size: 12px;">Achievement</th>
+                                    <th style="width: 10%; font-size: 12px;">Start</th>
+                                    <th style="width: 10%; font-size: 12px;">End</th>
+                                    <th style="width: 10%; font-size: 12px;">Time</th>
                                 </tr>
-                            </thead>
+                            </thead>  
                             <tbody>
-                                <tr>
-                                    <td>1</td>
+                                <tr *ngFor="let item of tmReportArr; let i=index;">
+                                    <td>{{i+1}}</td>
                                     <td>
-                                        <a href="javascript:void(0)" class="pro-link">Prj completion aprv testing123</a>
-                                        <a href="javascript:void(0)" class="pro-link fs-6 cursor-pointer">
-                                            <div class="desp-txt fs-7 actlabel-at-type">Action</div>
-                                            newaction 11111
-                                        </a>
+                                        <span *ngIf="item.ProjectName && item.Tasktype!='Lunch' && item.Tasktype!='Personal'" class="prj-name fs-6"  (click)="newDetails(item.project_code)">{{item.ProjectName}}</span>
+                                        <span class="d-block" *ngIf="item.ActionName && item.ActionName!=item.ProjectName">
+                                          <span class="fs-9 action-label">action</span>
+                                          <a href="javascript:void(0)"  class="pro-link fs-8 actn-name" (click)="newDetailsaction(item.project_code,item.ActionCode)">{{item.ActionName}}</a>
+                                        </span>
+                                         <span *ngIf="item.Tasktype=='Lunch'" >Lunch</span>
+                                         <span *ngIf="item.Tasktype=='Personal'">Personal</span>
                                     </td>
-                                    <td>testing timeline submit</td>
-                                    <td>08:00</td>
-                                    <td>08:15</td>
-                                    <td>00:15</td>
+                                    <!-- <td [id]="'timeline-descr-'+i" class="work-desc collapse curser-pointer" (click)="expandDescription('.collapseTimeline-table #timeline-descr-'+i)">
+                                        {{item.WorkAchieved}}
+                                    </td> -->
+
+                                     <td>
+                                        <div class="d-flex gap-1">
+                                            <div #tlDescBx class="compl-remarks-span">
+                                                {{item.WorkAchieved}}
+                                                By using ngIf in combination with isAccordionOpen, the inner content is only rendered (and the overflow check only happens) when the accordion is open. This way, the buttons update automatically without relying on extra DOM events or manual detection adjustments, and the solution remains clean and reactive.
+                                            </div>
+                                            <button title="show full" class="txt-expnd-btn align-self-end" *ngIf="tlDescBx.scrollHeight>tlDescBx.clientHeight" (click)="$event.stopPropagation(); tlDescBx.classList.remove('compl-remarks-span'); lessbtn1.classList.remove('d-none'); ">
+                                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                            </button>
+                                            <button title="show less" #lessbtn1 class="txt-expnd-btn align-self-end d-none"   (click)="$event.stopPropagation(); tlDescBx.classList.add('compl-remarks-span'); lessbtn1.classList.add('d-none');">
+                                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                            </button>
+                                        </div> 
+                                     </td>
+                                    <td>{{item.starttime}}</td>
+                                    <td>{{item.endtime}}</td>
+                                    <td>{{item.duration}}</td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table> 
+                       </ng-container>
+                        <ng-template #noTimelinePresent>
+                            <div class="notimeline-present">
+                                <img src="./assets/images/noTimelinePresent.png" class="notimeline-present-img" />
+                                <div class="bnk-txt mt-3 d-flex justify-content-center">
+                                    <h3 class="blank-txt fs-6 notimeline-present-label">No timeline found.</h3>
+                                </div>
+                            </div>
+                        </ng-template>
                     </div>
                     <div class="time-totals mb-3 mt-3">
-                        <ul class="time-totals-list mb-0">
-                            <li class="totals-list--item">
-                                <strong>Total hours: </strong><span>00:15:00 hrs</span>
-                            </li>
-                        </ul>
+                        <div class="total-time-div d-flex gap-1 align-items-center">
+                            <div class="total-time-title">Total hours :</div>
+                            <div class="total-time-count">
+                                <ng-container *ngIf="tmReportTotalDuration">
+                                <span><span>{{tmReportTotalDuration.hours}}</span><span class="time-value"> Hrs</span></span>
+                                <span><span>{{tmReportTotalDuration.minutes}}</span><span class="time-value"> Min</span></span>
+                                </ng-container>
+                                <ng-container *ngIf="!tmReportTotalDuration">
+                                    <span><span>0</span><span class="time-value"> Hrs</span></span>
+                                    <span><span>0</span><span class="time-value"> Min</span></span>
+                                </ng-container> 
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-info ml-1 btn-fw curser-pointer"  (click)="endTimelineModal()">End Day</button>
                     </div>
                 </div>
-            </div>
-            
-          </div>
+            </div> 
+        </div>
     </div>
 
 
     <div class="kt-portlet__foot py-3 d-flex justify-content-end gap-1">
-
-
-        <!--given-->
-        <!-- <button class="btn btn-timeline-table-accordion btn-sm" id="btn-timeline-table-accordion" (click)="btn_timeline_table_accordion();" type="button" data-toggle="collapse" data-target="#collapseTimeline" aria-expanded="false" aria-controls="collapseTimeline">
+        <button class="btn btn-timeline-table-accordion btn-sm" id="btn-timeline-table-accordion" (click)="btn_timeline_table_accordion();" type="button" data-toggle="collapse" data-target="#collapseTimeline" aria-expanded="false" aria-controls="collapseTimeline">
             <span><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Caret_Up_MD"> <path id="Vector" d="M8 14L12 10L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></span>
-            <span>02 Hrs : 30 Mins</span>
+            <span *ngIf="tmReportTotalDuration">{{tmReportTotalDuration.hours}} Hrs : {{tmReportTotalDuration.minutes}} Mins</span>
+            <span *ngIf="!tmReportTotalDuration">0 Hrs : 0 Mins</span>
         </button>
-        <button type="submit" class="btn btn-info btn-sm btn-fw curser-pointer" [disabled]="submittingDar" (click)="onTLSubmitBtnClick()">Add timeline</button>
-        <button type="submit" class="btn btn-danger btn-sm curser-pointer"  (click)="endTimelineModal()">End Day</button> -->
-       <!--given-->
+        <button type="submit" class="btn btn-info btn-sm btn-fw curser-pointer"  (click)="endTimelineModal()">End Day</button>   
+        <button type="submit" class="btn btn-info btn-sm btn-fw curser-pointer  actnTl-submitbt" [disabled]="submittingDar" (click)="onTLSubmitBtnClick()">
+            <ng-container *ngIf="bothActTlSubm==false">Add timeline</ng-container>
+            <ng-container *ngIf="bothActTlSubm==true">Add Timeline & Complete Action</ng-container>
+        </button>
 
-
-
-       <button class="btn btn-timeline-table-accordion btn-sm"  (click)="endTimelineModal();" type="button">
-        <span><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Caret_Up_MD"> <path id="Vector" d="M8 14L12 10L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></span>
-        <span *ngIf="tmReportTotalDuration">{{tmReportTotalDuration.hours}} Hrs : {{tmReportTotalDuration.minutes}} Mins</span>
-        <span *ngIf="!tmReportTotalDuration">0 Hrs : 0 Mins</span>
-       </button>
-       <button type="submit" class="btn btn-info btn-sm btn-fw curser-pointer" [disabled]="submittingDar" (click)="onTLSubmitBtnClick()">Submit Timeline</button>
-
-
-
-
-
-        <!-- <button type="submit" class="btn btn-sm btn-info" (click)="submitDar()" *ngIf="showAction==true"
-            [disabled]="!master_code || !project_code || !workdes || !starttime || !endtime || endtime < starttime||(bothActTlSubm&&!_remarks)">
-            Submit</button>
-        <button type="submit" class="btn btn-info btn-sm" (click)="submitDar()" *ngIf="showAction==false"
-            [disabled]=" !master_code ||  !workdes  || !starttime || !endtime || endtime < starttime">
-            Submit</button> -->
-<!--
-            <button type="submit" class="btn btn-sm btn-info" (click)="onTLSubmitBtnClick()">Submit</button>
-
-        <button type="reset" class="btn btn-secondary btn-sm ml-2" (click)="clear()">Reset</button> -->
      
+    
+<!--
+        <button type="submit" class="btn btn-sm btn-info" (click)="onTLSubmitBtnClick()">Submit</button>
+        <button type="reset" class="btn btn-secondary btn-sm ml-2" (click)="clear()">Reset</button> -->
         <!-- <button type="submit" class="btn btn-secondary btn-sm ml-2" (click)="closedarBar()">Cancel</button>
         <button type="reset" class="btn btn-secondary btn-sm mr-2 ml-2 curser-pointer" (click)="clear()">Reset</button> -->
       
@@ -1372,7 +1383,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 565px;">
     <div class="modal-content">
       <div class="end-timeline-modal-header">
-        <h5 class="end-timeline-modal-title" id="exampleModalLongTitle">Timeline Report</h5>
+        <h5 class="end-timeline-modal-title" id="exampleModalLongTitle">Summary Report</h5>
         <span *ngIf="tmReportStatus" class="tl-status fs-7 font-weight-400"  [ngClass]="{
             'tl-submitted':tmReportStatus=='Accepted',
             'tl-notsubmitted':tmReportStatus=='Not Submitted',
@@ -1384,43 +1395,275 @@
         </span>
       </div>
       <div class="end-timeline-modal-body">
-     <div [ngClass]="{'d-none':endDayConfirmed}">
-        <div class="time-info ">
-            <div class="total-time-div">
-                <div class="total-time-count">
-                    <span>
-                        {{current_Date|date:'EEEE, MMMM d, y'}}
-                    </span>
-                    
+     <div>
+        <div class="time-info">
+            <div class="total-time-div w-50  d-flex justify-content-start gap-1 align-items-center">
+                <div class="total-time-title">
+                    <svg viewBox="0 0 24 24" width="24px" height="24px" focusable="false" class="mat-datepicker-toggle-default-icon" style="fill: #808497;">
+                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"></path>
+                    </svg>
                 </div>
-                <div class="total-time-title">Date</div>
+                <div style="display:grid; grid-template-rows: 17px;">
+                <div class="total-time-count">
+                    <span>{{current_Date|date:'EEEE, MMMM d, y'}}</span>
+                </div>
+                <span class="text-muted font-weight-bold fs-9">Date</span>
+               </div>
             </div>
-            <div class="total-time-div">
+            <div class="total-time-div w-50 d-flex justify-content-start gap-1 align-items-center">
+
+                <div class="total-time-title">
+                    <svg width="20px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00024000000000000003" style="fill: #808497;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M23 12C23 12.3545 22.9832 12.7051 22.9504 13.051C22.3838 12.4841 21.7204 12.014 20.9871 11.6675C20.8122 6.85477 16.8555 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12C3.00683 16.8555 6.85477 20.8122 11.6675 20.9871C12.014 21.7204 12.4841 22.3838 13.051 22.9504C12.7051 22.9832 12.3545 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12Z"></path> <path d="M13 11.8812L13.8426 12.3677C13.2847 12.7802 12.7902 13.2737 12.3766 13.8307L11.5174 13.3346C11.3437 13.2343 11.2115 13.0898 11.1267 12.9235C11 12.7274 11 12.4667 11 12.4667V6C11 5.44771 11.4477 5 12 5C12.5523 5 13 5.44772 13 6V11.8812Z"></path> <path d="M15.2929 17.7071C15.6834 17.3166 16.3166 17.3166 16.7071 17.7071L17.3482 18.3482L19.2473 16.4491C19.6379 16.0586 20.271 16.0586 20.6615 16.4491C21.0521 16.8397 21.0521 17.4728 20.6615 17.8634L18.1213 20.4036C18.0349 20.49 17.9367 20.5573 17.8318 20.6054C17.4488 20.8294 16.9487 20.7772 16.6203 20.4487L15.2929 19.1213C14.9024 18.7308 14.9024 18.0976 15.2929 17.7071Z"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M18 24C21.3137 24 24 21.3137 24 18C24 14.6863 21.3137 12 18 12C14.6863 12 12 14.6863 12 18C12 21.3137 14.6863 24 18 24ZM18 22.0181C15.7809 22.0181 13.9819 20.2191 13.9819 18C13.9819 15.7809 15.7809 13.9819 18 13.9819C20.2191 13.9819 22.0181 15.7809 22.0181 18C22.0181 20.2191 20.2191 22.0181 18 22.0181Z"></path> </g>
+                    </svg>
+                </div>
+
+            <div style="display:grid; grid-template-rows: 17px;">
                 <div *ngIf="tmReportTotalDuration" class="total-time-count">
                     <span>
                         <span>{{tmReportTotalDuration.hours}}</span>
-                    <span class="time-value">Hrs</span>
+                    <span class="time-value"> Hrs</span>
                     </span>
                     <span>
                         <span>{{tmReportTotalDuration.minutes}}</span>
-                        <span class="time-value">Min</span>
+                        <span class="time-value"> Min</span>
                     </span>
                 </div>
                 <div *ngIf="!tmReportTotalDuration" class="total-time-count">
                     <span>
                         <span>0</span>
-                    <span class="time-value">Hrs</span>
+                    <span class="time-value"> Hrs</span>
                     </span>
                     <span>
                         <span>0</span>
-                        <span class="time-value">Min</span>
+                        <span class="time-value"> Min</span>
                     </span>
                 </div>
+                <span class="text-muted font-weight-bold fs-9">Total Timeline added</span>
+            </div>
 
-                <div class="total-time-title">Total timeline added</div>
             </div>
         </div>
-        <div class="end-timeline-ul mt-4  p-2 pt-3 ">
+        <div class="summary-report-content mt-4">
+            <div class="mt-2 px-2">
+                <h6 class="text-muted d-flex align-items-center gap-1">
+                <svg width="18px" height="18px" viewBox="0 0 512 512" id="svg2793" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:serif="http://www.serif.com/" xmlns:svg="http://www.w3.org/2000/svg" fill="#74788d" stroke="#74788d" style="fill-rule: evenodd;clip-rule: evenodd;stroke-linejoin: round;stroke-miterlimit: 2;stroke-width: 3px;">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs id="defs2797"></defs><g id="_09-Round-Chart" transform="translate(-3072,-1024)" style="display: inline;"><g id="g2606" transform="translate(3282.77,1327.86)"><path d="M 0,175.522 C -89.87,157.49 -160.117,87.247 -178.15,-2.619 h 91.441 c 6.863,19.997 18.253,38.267 33.348,53.362 C -38.267,65.838 -19.997,77.227 0,84.09 Z M 18.637,58.348 C -20.648,48.532 -51.15,18.03 -60.967,-21.255 c -1.669,-6.678 -7.669,-11.364 -14.553,-11.364 h -120.25 c -4.3,0 -8.394,1.846 -11.242,5.071 -2.847,3.222 -4.174,7.513 -3.643,11.781 7.022,56.445 33.152,109.793 73.578,150.217 40.426,40.426 93.777,66.554 150.225,73.576 0.619,0.078 1.237,0.115 1.853,0.115 3.636,0 7.173,-1.322 9.93,-3.758 C 28.154,201.536 30,197.442 30,193.141 V 72.901 C 30,66.018 25.314,60.018 18.637,58.348" id="path2604" style="fill-rule: nonzero;"></path></g><g id="g2610" transform="translate(3373.23,1327.86)">
+                    <path d="M 0,175.522 V 84.088 C 19.996,77.221 38.268,65.83 53.362,50.735 68.456,35.641 79.846,17.374 86.709,-2.619 h 91.44 C 160.109,87.248 89.863,157.49 0,175.522 M 195.771,-32.619 H 75.521 c -6.884,0 -12.883,4.686 -14.553,11.364 C 51.151,18.02 20.647,48.524 -18.64,58.35 -25.316,60.02 -30,66.019 -30,72.901 v 120.24 c 0,4.301 1.846,8.395 5.069,11.242 2.757,2.436 6.294,3.758 9.93,3.758 0.616,0 1.234,-0.038 1.853,-0.115 56.444,-7.022 109.793,-33.15 150.218,-73.576 40.426,-40.424 66.559,-93.772 73.585,-150.215 0.532,-4.269 -0.795,-8.56 -3.642,-11.783 -2.847,-3.225 -6.942,-5.071 -11.242,-5.071" id="path2608" style="fill-rule: nonzero;"></path></g>
+                    <g id="g2614" transform="translate(3282.77,1140.29)"><path d="m 0,7.771 c -20.002,6.866 -38.273,18.258 -53.369,33.354 -15.094,15.093 -26.482,33.361 -33.341,53.353 h -91.44 C -160.118,4.617 -89.871,-65.629 0,-83.67 Z m 24.93,-120.305 c -3.224,-2.847 -7.508,-4.173 -11.784,-3.642 -56.444,7.026 -109.793,33.159 -150.219,73.584 -40.429,40.427 -66.561,93.775 -73.582,150.218 -0.531,4.269 0.796,8.559 3.643,11.783 2.848,3.223 6.942,5.069 11.242,5.069 h 120.25 c 6.885,0 12.885,-4.686 14.553,-11.365 C -51.159,73.837 -20.656,43.336 18.639,33.51 25.316,31.841 30,25.841 30,18.959 v -120.251 c 0,-4.3 -1.847,-8.395 -5.07,-11.242" id="path2612" style="fill-rule: nonzero;"></path></g>
+                    <g id="g2618" transform="translate(3373.23,1231.74)"><path d="m 0,-175.115 c 89.872,18.04 160.118,88.285 178.151,178.148 H 86.71 C 79.847,-16.963 68.457,-35.232 53.362,-50.328 38.268,-65.423 19.997,-76.812 0,-83.676 Z m -18.637,117.182 c 39.286,9.816 69.788,40.318 79.605,79.603 1.669,6.678 7.669,11.363 14.553,11.363 h 120.25 c 4.3,0 8.394,-1.845 11.242,-5.069 2.847,-3.224 4.174,-7.514 3.643,-11.782 -7.021,-56.443 -33.152,-109.793 -73.578,-150.219 -40.425,-40.425 -93.776,-66.557 -150.225,-73.584 -4.258,-0.527 -8.559,0.795 -11.783,3.643 -3.223,2.846 -5.07,6.941 -5.07,11.242 v 120.25 c 0,6.884 4.686,12.884 11.363,14.553" id="path2616" style="fill-rule: nonzero;"></path></g></g></g>
+                </svg>
+                Actions
+                </h6>
+
+                <div class="summary-report-table border rounded">
+                <table width="100%" cellpadding="10px">
+                <tbody>
+                    <tr>
+                        <td width="50%">
+                            <div class="d-flex gap-1 align-items-center">
+                                <svg class="done-svg" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 400" xml:space="preserve" style="stroke-width: 5px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M199.996,0C89.713,0,0,89.72,0,200s89.713,200,199.996,200S400,310.28,400,200S310.279,0,199.996,0z M199.996,373.77 C104.18,373.77,26.23,295.816,26.23,200c0-95.817,77.949-173.769,173.766-173.769c95.817,0,173.771,77.953,173.771,173.769 C373.768,295.816,295.812,373.77,199.996,373.77z"></path> <path d="M272.406,134.526L169.275,237.652l-41.689-41.68c-5.123-5.117-13.422-5.12-18.545,0.003 c-5.125,5.125-5.125,13.425,0,18.548l50.963,50.955c2.561,2.558,5.916,3.838,9.271,3.838s6.719-1.28,9.279-3.842 c0.008-0.011,0.014-0.022,0.027-0.035L290.95,153.071c5.125-5.12,5.125-13.426,0-18.546 C285.828,129.402,277.523,129.402,272.406,134.526z"></path> </g> </g> </g></svg>
+                                <span class="done-label">Completed today</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
+                                <span class="done-count">{{daySummaryReport.ActionsCompletedToday}}</span>
+                                <!-- <button (click)="viewActions('COMPLETED')" *ngIf="daySummaryReport.ActionsCompletedToday>0"  class="btn px-1 py-1 btn-outline-secondary fs-9">
+                                    <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#383838" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#9e9e9e" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>
+                                </button> -->
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex gap-1 align-items-center">
+                                <svg class="due-svg" version="1.1" id="designs" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .sketchy_een{fill:#e28936;} </style> <path class="sketchy_een" d="M29.879,27.345c-0.068-0.107-0.117-0.227-0.18-0.336c-0.094-0.164-0.193-0.326-0.287-0.49 c-0.201-0.354-0.389-0.713-0.582-1.07c-0.398-0.732-0.836-1.439-1.219-2.182c-0.387-0.754-0.768-1.512-1.15-2.268 c-0.398-0.785-0.85-1.541-1.281-2.311c-0.443-0.789-0.832-1.609-1.252-2.412c-0.408-0.781-0.818-1.564-1.219-2.35 c-0.414-0.812-0.836-1.621-1.258-2.428c-0.432-0.818-0.877-1.629-1.291-2.459c-0.406-0.816-0.826-1.627-1.24-2.439 c-0.465-0.918-0.965-1.824-1.496-2.705c-0.152-0.255-0.417-0.403-0.696-0.427c-0.083-0.025-0.168-0.041-0.255-0.041 c-0.077,0-0.154,0.01-0.229,0.03c-0.23,0.064-0.385,0.207-0.518,0.398c-0.287,0.412-0.561,0.83-0.826,1.258 c-0.217,0.35-0.416,0.713-0.641,1.057c-0.459,0.701-0.977,1.361-1.391,2.092c-0.432,0.756-0.885,1.5-1.328,2.25 c-0.432,0.732-0.816,1.49-1.238,2.229c-0.422,0.744-0.875,1.471-1.311,2.207c-0.434,0.732-0.822,1.488-1.25,2.225 c-0.42,0.727-0.836,1.457-1.268,2.176c-0.439,0.729-0.844,1.475-1.27,2.213c-0.514,0.893-1.004,1.799-1.564,2.664 c-0.254,0.395-0.512,0.783-0.758,1.182c-0.248,0.4-0.498,0.803-0.762,1.193c-0.162,0.24-0.137,0.541-0.012,0.791 c-0.02,0.072-0.043,0.143-0.043,0.219c0,0.215,0.086,0.424,0.238,0.576c0.162,0.162,0.352,0.217,0.576,0.238 c0.848,0.076,1.701,0.064,2.553,0.08c0.867,0.014,1.734,0.004,2.602,0.016c0.818,0.01,1.637,0.021,2.457,0.027 c0.842,0.004,1.684,0.041,2.525,0.031c0.842-0.012,1.684-0.045,2.525-0.035c0.447,0.004,0.895,0.014,1.34,0.043 c0.418,0.027,0.834,0.076,1.254,0.098c0.814,0.041,1.627,0.029,2.443,0.039c0.844,0.01,1.684,0.027,2.527,0.074 c0.98,0.053,1.959,0.129,2.941,0.164c0.461,0.018,0.922,0.023,1.385,0.031c0.422,0.008,0.842,0.016,1.262-0.018 c0.23-0.02,0.43-0.08,0.598-0.248c0.033-0.033,0.05-0.078,0.076-0.115c0.065-0.019,0.131-0.029,0.193-0.066 C29.967,28.31,30.131,27.751,29.879,27.345z M26.428,27.276c-0.812-0.02-1.627-0.09-2.441-0.129 c-0.404-0.021-0.811-0.059-1.217-0.072c-0.404-0.014-0.809-0.021-1.215-0.033c-0.844-0.023-1.688-0.031-2.533-0.037 c-0.848-0.006-1.691-0.098-2.537-0.125c-0.832-0.029-1.67-0.004-2.502,0.027c-0.852,0.033-1.701,0.027-2.553,0.021 c-0.846-0.008-1.689-0.006-2.535,0.01c-1,0.016-1.998,0.035-2.996,0.012c-0.651-0.015-1.304-0.042-1.955-0.08 c0.281-0.451,0.56-0.904,0.848-1.352c0.465-0.723,0.881-1.469,1.287-2.225c0.801-1.486,1.672-2.934,2.52-4.393 c0.439-0.756,0.896-1.5,1.326-2.264c0.402-0.711,0.85-1.396,1.273-2.094c0.443-0.73,0.848-1.479,1.27-2.221 c0.43-0.758,0.883-1.504,1.33-2.252c0.256-0.428,0.502-0.861,0.748-1.295c0.254-0.449,0.566-0.865,0.859-1.291 c0.275-0.4,0.531-0.814,0.791-1.225c0.096-0.151,0.202-0.296,0.3-0.446c0.31,0.527,0.627,1.051,0.922,1.586 c0.426,0.773,0.799,1.574,1.18,2.367c0.385,0.803,0.816,1.582,1.238,2.365c0.432,0.801,0.838,1.617,1.27,2.42 c0.854,1.592,1.646,3.217,2.496,4.812c0.408,0.766,0.854,1.512,1.26,2.279c0.404,0.766,0.803,1.535,1.195,2.307 c0.393,0.768,0.84,1.504,1.258,2.256c0.198,0.356,0.383,0.717,0.574,1.074C27.402,27.283,26.916,27.286,26.428,27.276z M16.968,18.518c0.021,0.545,0.064,1.088,0.066,1.633c0.002,0.457-0.383,0.838-0.838,0.838c-0.471,0-0.818-0.381-0.838-0.838 c-0.021-0.553-0.035-1.105-0.049-1.658c-0.014-0.562-0.027-1.133-0.006-1.695c0.021-0.555,0.055-1.109,0.07-1.666 c0.016-0.623,0.014-1.246,0.02-1.869c0.006-0.416,0.346-0.766,0.768-0.766c0.41,0,0.773,0.348,0.766,0.766 c-0.023,1.189-0.057,2.377-0.014,3.566C16.933,17.392,16.946,17.956,16.968,18.518z M16.969,23.753c0,0.451-0.377,0.828-0.828,0.828 s-0.828-0.377-0.828-0.828s0.377-0.828,0.828-0.828S16.969,23.302,16.969,23.753z"></path> </g></svg>
+                                <span class="due-label">Due today</span>
+                            </div>
+                        </td>
+                        <td>
+                        <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
+                            <span class="due-count">{{daySummaryReport.ActionsDueToday}}</span>
+                            <!-- <button (click)="viewActions('DUE')" *ngIf="daySummaryReport.ActionsDueToday>0" class="btn px-1 py-1 btn-outline-secondary fs-9">
+                                <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#383838" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#9e9e9e" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
+                            </button> -->
+                        </div>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex gap-1 align-items-center">
+                                <svg class="overalldelay-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#000000" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
+                                <span class="overalldelay-label">Overall delayed</span>
+                            </div>     
+                        </td>
+                        <td>
+                            <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
+                                <span class="overalldelay-count">{{daySummaryReport.ActionsDelayed}}</span>
+                                <button (click)="viewActions('DELAYED')" *ngIf="daySummaryReport.ActionsDelayed>0" class="btn px-1 py-1 btn-outline-secondary fs-9">
+                                    <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#383838" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#9e9e9e" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
+                                </button>
+                            </div>
+                        </td>
+                    </tr> 
+                </tbody>
+                </table>
+                </div>
+            </div>
+
+            <div class="mt-4 px-2">
+                <h6 class="text-muted">
+                <svg width="21px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: scale(1.1);"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-ryv-c390="" id="SVGRepo_iconCarrier"><path d="M4 15.8294V15.75V8C4 7.69114 4.16659 7.40629 4.43579 7.25487L4.45131 7.24614L11.6182 3.21475L11.6727 3.18411C11.8759 3.06979 12.1241 3.06979 12.3273 3.18411L19.6105 7.28092C19.8511 7.41625 20 7.67083 20 7.94687V8V15.75V15.8294C20 16.1119 19.8506 16.3733 19.6073 16.5167L12.379 20.7766C12.1451 20.9144 11.8549 20.9144 11.621 20.7766L4.39267 16.5167C4.14935 16.3733 4 16.1119 4 15.8294Z" stroke="#74788d" stroke-width="1.4"></path><path d="M12 21V12" stroke="#5f6368" stroke-width="1.4"></path><path d="M12 12L4 7.5" stroke="#5f6368" stroke-width="1.4"></path><path d="M20 7.5L12 12" stroke="#5f6368" stroke-width="1.4"></path></g>
+                </svg>
+                Projects
+                </h6>
+            <div class="summary-report-table border rounded">
+                <table width="100%"  cellpadding="10px">
+                <tbody>
+                    <tr>
+                        <td width="50%">
+                            <div class="d-flex gap-1 align-items-center">
+                                <svg class="done-svg" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 400" xml:space="preserve" style="stroke-width: 5px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M199.996,0C89.713,0,0,89.72,0,200s89.713,200,199.996,200S400,310.28,400,200S310.279,0,199.996,0z M199.996,373.77 C104.18,373.77,26.23,295.816,26.23,200c0-95.817,77.949-173.769,173.766-173.769c95.817,0,173.771,77.953,173.771,173.769 C373.768,295.816,295.812,373.77,199.996,373.77z"></path> <path d="M272.406,134.526L169.275,237.652l-41.689-41.68c-5.123-5.117-13.422-5.12-18.545,0.003 c-5.125,5.125-5.125,13.425,0,18.548l50.963,50.955c2.561,2.558,5.916,3.838,9.271,3.838s6.719-1.28,9.279-3.842 c0.008-0.011,0.014-0.022,0.027-0.035L290.95,153.071c5.125-5.12,5.125-13.426,0-18.546 C285.828,129.402,277.523,129.402,272.406,134.526z"></path> </g> </g> </g></svg>
+                                <span class="done-label">Completed today</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
+                                <span class="done-count">{{daySummaryReport.ProjectsCompletedToday}}</span>
+                                <!-- <button *ngIf="daySummaryReport.ProjectsCompletedToday>0" class="btn px-1 py-1 btn-outline-secondary fs-9">
+                                    <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#383838" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#9e9e9e" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>
+                                </button> -->
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex gap-1 align-items-center">
+                                <svg class="due-svg" version="1.1" id="designs" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .sketchy_een{fill:#e28936;} </style> <path class="sketchy_een" d="M29.879,27.345c-0.068-0.107-0.117-0.227-0.18-0.336c-0.094-0.164-0.193-0.326-0.287-0.49 c-0.201-0.354-0.389-0.713-0.582-1.07c-0.398-0.732-0.836-1.439-1.219-2.182c-0.387-0.754-0.768-1.512-1.15-2.268 c-0.398-0.785-0.85-1.541-1.281-2.311c-0.443-0.789-0.832-1.609-1.252-2.412c-0.408-0.781-0.818-1.564-1.219-2.35 c-0.414-0.812-0.836-1.621-1.258-2.428c-0.432-0.818-0.877-1.629-1.291-2.459c-0.406-0.816-0.826-1.627-1.24-2.439 c-0.465-0.918-0.965-1.824-1.496-2.705c-0.152-0.255-0.417-0.403-0.696-0.427c-0.083-0.025-0.168-0.041-0.255-0.041 c-0.077,0-0.154,0.01-0.229,0.03c-0.23,0.064-0.385,0.207-0.518,0.398c-0.287,0.412-0.561,0.83-0.826,1.258 c-0.217,0.35-0.416,0.713-0.641,1.057c-0.459,0.701-0.977,1.361-1.391,2.092c-0.432,0.756-0.885,1.5-1.328,2.25 c-0.432,0.732-0.816,1.49-1.238,2.229c-0.422,0.744-0.875,1.471-1.311,2.207c-0.434,0.732-0.822,1.488-1.25,2.225 c-0.42,0.727-0.836,1.457-1.268,2.176c-0.439,0.729-0.844,1.475-1.27,2.213c-0.514,0.893-1.004,1.799-1.564,2.664 c-0.254,0.395-0.512,0.783-0.758,1.182c-0.248,0.4-0.498,0.803-0.762,1.193c-0.162,0.24-0.137,0.541-0.012,0.791 c-0.02,0.072-0.043,0.143-0.043,0.219c0,0.215,0.086,0.424,0.238,0.576c0.162,0.162,0.352,0.217,0.576,0.238 c0.848,0.076,1.701,0.064,2.553,0.08c0.867,0.014,1.734,0.004,2.602,0.016c0.818,0.01,1.637,0.021,2.457,0.027 c0.842,0.004,1.684,0.041,2.525,0.031c0.842-0.012,1.684-0.045,2.525-0.035c0.447,0.004,0.895,0.014,1.34,0.043 c0.418,0.027,0.834,0.076,1.254,0.098c0.814,0.041,1.627,0.029,2.443,0.039c0.844,0.01,1.684,0.027,2.527,0.074 c0.98,0.053,1.959,0.129,2.941,0.164c0.461,0.018,0.922,0.023,1.385,0.031c0.422,0.008,0.842,0.016,1.262-0.018 c0.23-0.02,0.43-0.08,0.598-0.248c0.033-0.033,0.05-0.078,0.076-0.115c0.065-0.019,0.131-0.029,0.193-0.066 C29.967,28.31,30.131,27.751,29.879,27.345z M26.428,27.276c-0.812-0.02-1.627-0.09-2.441-0.129 c-0.404-0.021-0.811-0.059-1.217-0.072c-0.404-0.014-0.809-0.021-1.215-0.033c-0.844-0.023-1.688-0.031-2.533-0.037 c-0.848-0.006-1.691-0.098-2.537-0.125c-0.832-0.029-1.67-0.004-2.502,0.027c-0.852,0.033-1.701,0.027-2.553,0.021 c-0.846-0.008-1.689-0.006-2.535,0.01c-1,0.016-1.998,0.035-2.996,0.012c-0.651-0.015-1.304-0.042-1.955-0.08 c0.281-0.451,0.56-0.904,0.848-1.352c0.465-0.723,0.881-1.469,1.287-2.225c0.801-1.486,1.672-2.934,2.52-4.393 c0.439-0.756,0.896-1.5,1.326-2.264c0.402-0.711,0.85-1.396,1.273-2.094c0.443-0.73,0.848-1.479,1.27-2.221 c0.43-0.758,0.883-1.504,1.33-2.252c0.256-0.428,0.502-0.861,0.748-1.295c0.254-0.449,0.566-0.865,0.859-1.291 c0.275-0.4,0.531-0.814,0.791-1.225c0.096-0.151,0.202-0.296,0.3-0.446c0.31,0.527,0.627,1.051,0.922,1.586 c0.426,0.773,0.799,1.574,1.18,2.367c0.385,0.803,0.816,1.582,1.238,2.365c0.432,0.801,0.838,1.617,1.27,2.42 c0.854,1.592,1.646,3.217,2.496,4.812c0.408,0.766,0.854,1.512,1.26,2.279c0.404,0.766,0.803,1.535,1.195,2.307 c0.393,0.768,0.84,1.504,1.258,2.256c0.198,0.356,0.383,0.717,0.574,1.074C27.402,27.283,26.916,27.286,26.428,27.276z M16.968,18.518c0.021,0.545,0.064,1.088,0.066,1.633c0.002,0.457-0.383,0.838-0.838,0.838c-0.471,0-0.818-0.381-0.838-0.838 c-0.021-0.553-0.035-1.105-0.049-1.658c-0.014-0.562-0.027-1.133-0.006-1.695c0.021-0.555,0.055-1.109,0.07-1.666 c0.016-0.623,0.014-1.246,0.02-1.869c0.006-0.416,0.346-0.766,0.768-0.766c0.41,0,0.773,0.348,0.766,0.766 c-0.023,1.189-0.057,2.377-0.014,3.566C16.933,17.392,16.946,17.956,16.968,18.518z M16.969,23.753c0,0.451-0.377,0.828-0.828,0.828 s-0.828-0.377-0.828-0.828s0.377-0.828,0.828-0.828S16.969,23.302,16.969,23.753z"></path> </g></svg>
+                                <span class="due-label">Due today</span>
+                            </div>
+                        </td>
+                        <td>
+                        <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
+                            <span class="due-count">{{daySummaryReport.ProjectsDueToday}}</span>
+                            <!-- <button *ngIf="daySummaryReport.ProjectsDueToday>0" class="btn px-1 py-1 btn-outline-secondary fs-9">
+                                <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#383838" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#9e9e9e" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
+                            </button> -->
+                        </div>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex gap-1 align-items-center">
+                                <svg class="overalldelay-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#000000" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
+                                <span class="overalldelay-label">Overall delayed</span>
+                            </div>     
+                        </td>
+                        <td>
+                            <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
+                                <span class="overalldelay-count">{{daySummaryReport.ProjectsDelayed}}</span>
+                                <button (click)="viewProjects('DELAYED')"  *ngIf="daySummaryReport.ProjectsDelayed>0" class="btn px-1 py-1 btn-outline-secondary fs-9">
+                                    <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#383838" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#9e9e9e" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
+                                </button>
+                            </div>
+                        </td>
+                    </tr> 
+                </tbody>
+                </table>
+            </div>
+            </div>
+
+
+            <div class="mt-4 px-2">
+                <h6 class="text-muted">
+                    <svg  fill="currentColor" width="21px" height="25px" viewBox="0 0 32 32" id="icon" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:none;}</style></defs><title>task</title><polygon points="14 20.18 10.41 16.59 9 18 14 23 23 14 21.59 12.58 14 20.18"></polygon><path d="M25,5H22V4a2,2,0,0,0-2-2H12a2,2,0,0,0-2,2V5H7A2,2,0,0,0,5,7V28a2,2,0,0,0,2,2H25a2,2,0,0,0,2-2V7A2,2,0,0,0,25,5ZM12,4h8V8H12ZM25,28H7V7h3v3H22V7h3Z" transform="translate(0 0)"></path><rect id="_Transparent_Rectangle_" data-name="<Transparent Rectangle>" width="32" height="32" class="cls-1"></rect></g></svg>
+                Standard tasks
+                </h6>
+
+                <div class="summary-report-table border rounded">
+                <table width="100%" cellpadding="10px">
+                <tbody>
+                    <tr>
+                        <td width="50%">
+                            <div class="d-flex gap-1 align-items-center">
+                                <svg class="done-svg" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 400" xml:space="preserve" style="stroke-width: 5px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M199.996,0C89.713,0,0,89.72,0,200s89.713,200,199.996,200S400,310.28,400,200S310.279,0,199.996,0z M199.996,373.77 C104.18,373.77,26.23,295.816,26.23,200c0-95.817,77.949-173.769,173.766-173.769c95.817,0,173.771,77.953,173.771,173.769 C373.768,295.816,295.812,373.77,199.996,373.77z"></path> <path d="M272.406,134.526L169.275,237.652l-41.689-41.68c-5.123-5.117-13.422-5.12-18.545,0.003 c-5.125,5.125-5.125,13.425,0,18.548l50.963,50.955c2.561,2.558,5.916,3.838,9.271,3.838s6.719-1.28,9.279-3.842 c0.008-0.011,0.014-0.022,0.027-0.035L290.95,153.071c5.125-5.12,5.125-13.426,0-18.546 C285.828,129.402,277.523,129.402,272.406,134.526z"></path> </g> </g> </g></svg>
+                                <span class="done-label">Submitted today</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
+                                <span class="done-count">{{daySummaryReport.StandardSubmittedToday}}</span>
+                                <!-- <button *ngIf="daySummaryReport.StandardSubmittedToday>0" class="btn px-1 py-1 btn-outline-secondary fs-9">
+                                    <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#383838" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#9e9e9e" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>
+                                </button> -->
+                            </div>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>
+                            <div class="d-flex gap-1 align-items-center">
+                                <svg class="overalldelay-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#000000" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
+                                <span class="overalldelay-label">Delayed</span>
+                            </div>     
+                        </td>
+                        <td>
+                            <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
+                                <span class="overalldelay-count">{{daySummaryReport.StandardDelayed}}</span>
+                                <button (click)="viewStandardTasks('DELAYED')"  *ngIf="daySummaryReport.StandardDelayed>0" class="btn px-1 py-1 btn-outline-secondary fs-9">
+                                    <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#383838" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#9e9e9e" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
+                                </button>
+                            </div>
+                        </td>
+                    </tr> 
+                </tbody>
+                </table>
+                </div>
+            </div>
+
+
+            <div class="mt-4 px-2">
+                <h6 class="text-muted">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 74 75" fill="none"><g clip-path="url(#clip0_237_573)"><path  d="M19.0912 63.3546C19.0912 60.5455 16.8442 58.2682 14.0725 58.2682C11.3007 58.2682 9.05371 60.5455 9.05371 63.3546C9.05371 66.1637 11.3007 68.4409 14.0725 68.4409C16.8442 68.4409 19.0912 66.1637 19.0912 63.3546Z" fill="#838383" class="dtv"></path><path d="M41.8422 63.3546C41.8422 60.5455 39.5952 58.2682 36.8234 58.2682C34.0517 58.2682 31.8047 60.5455 31.8047 63.3546C31.8047 66.1637 34.0517 68.4409 36.8234 68.4409C39.5952 68.4409 41.8422 66.1637 41.8422 63.3546Z" fill="#B8B8B8"></path>
+                    <path d="M64.5932 63.3546C64.5932 60.5455 62.3462 58.2682 59.5744 58.2682C56.8026 58.2682 54.5557 60.5455 54.5557 63.3546C54.5557 66.1637 56.8026 68.4409 59.5744 68.4409C62.3462 68.4409 64.5932 66.1637 64.5932 63.3546Z" fill="#B8B8B8"></path><path d="M43.0996 13.8838C43.0996 10.3716 40.2909 7.52441 36.8262 7.52441C33.3614 7.52441 30.5527 10.3716 30.5527 13.8838C30.5527 17.396 33.3614 20.2432 36.8262 20.2432C40.2909 20.2432 43.0996 17.396 43.0996 13.8838Z" fill="#838383" class="dtv"></path><path d="M39.8359 53.3657L39.8359 42.6109C39.1109 42.1871 38.4076 41.7269 37.7288 41.232L36.8126 40.5886C35.8965 41.2627 34.9498 41.9061 33.7588 42.5496L33.7588 53.3657C34.5442 53.1315 35.3535 52.9876 36.1713 52.9368L37.4539 52.9368C38.262 52.985 39.0615 53.129 39.8359 53.3657Z" fill="#B8B8B8"></path>
+                    <path d="M27.59 33.1735L26.3379 33.8783L24.9331 34.7362L22.2763 36.0844C14.6418 39.9451 11.1299 43.9284 11.1299 51.9563L11.1299 53.3657C12.122 53.0762 13.1505 52.9317 14.1837 52.9368C15.217 52.9309 16.2456 53.0754 17.2375 53.3657L17.2375 51.9563C17.2375 46.9925 18.795 44.817 24.2002 41.8142L25.5134 41.0788L26.9792 40.3435C35.8353 35.9006 39.1945 32.6833 39.9274 25.2376C38.9275 25.4809 37.9024 25.6043 36.8736 25.6053C35.841 25.6019 34.8136 25.4576 33.8197 25.1763L33.8197 24.9925C33.4838 28.6081 31.9264 30.6917 27.59 33.1735Z" fill="#838383" class="dtv"></path><path d="M43.9897 38.8114L45.3639 39.5468L47.6848 40.7111L49.059 41.4465L50.3111 42.1513C55.2278 44.9702 56.6631 47.1763 56.6631 51.9563L56.6631 53.3657C57.4472 53.1263 58.2572 52.9823 59.0756 52.9368L60.2055 52.9368C61.0236 52.9848 61.8333 53.1288 62.618 53.3657L62.618 51.1596C62.4042 43.7752 58.8618 39.7919 51.5021 35.8393L48.2345 34.1847L47.0435 33.5412L46.0358 32.9897C45.2729 32.5461 44.5385 32.0549 43.837 31.519C43.1285 33.4201 42.0951 35.1828 40.7832 36.7279C41.7941 37.5083 42.8665 38.2051 43.9897 38.8114Z" fill="#B8B8B8"></path></g>
+                    <defs><clipPath id="clip0_237_573"><rect width="74" height="73" fill="white" transform="translate(0.499023 74.8003) rotate(-90)"></rect></clipPath></defs>
+                </svg>
+                Assigned tasks
+                </h6>
+                <div class="summary-report-table border rounded">
+                <table width="100%"  cellpadding="10px">
+                <tbody>
+                
+                    <tr>
+                        <td width="50%">
+                            <div class="d-flex gap-1 align-items-center">
+                                <svg class="due-svg" version="1.1" id="designs" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .sketchy_een{fill:#e28936;} </style> <path class="sketchy_een" d="M29.879,27.345c-0.068-0.107-0.117-0.227-0.18-0.336c-0.094-0.164-0.193-0.326-0.287-0.49 c-0.201-0.354-0.389-0.713-0.582-1.07c-0.398-0.732-0.836-1.439-1.219-2.182c-0.387-0.754-0.768-1.512-1.15-2.268 c-0.398-0.785-0.85-1.541-1.281-2.311c-0.443-0.789-0.832-1.609-1.252-2.412c-0.408-0.781-0.818-1.564-1.219-2.35 c-0.414-0.812-0.836-1.621-1.258-2.428c-0.432-0.818-0.877-1.629-1.291-2.459c-0.406-0.816-0.826-1.627-1.24-2.439 c-0.465-0.918-0.965-1.824-1.496-2.705c-0.152-0.255-0.417-0.403-0.696-0.427c-0.083-0.025-0.168-0.041-0.255-0.041 c-0.077,0-0.154,0.01-0.229,0.03c-0.23,0.064-0.385,0.207-0.518,0.398c-0.287,0.412-0.561,0.83-0.826,1.258 c-0.217,0.35-0.416,0.713-0.641,1.057c-0.459,0.701-0.977,1.361-1.391,2.092c-0.432,0.756-0.885,1.5-1.328,2.25 c-0.432,0.732-0.816,1.49-1.238,2.229c-0.422,0.744-0.875,1.471-1.311,2.207c-0.434,0.732-0.822,1.488-1.25,2.225 c-0.42,0.727-0.836,1.457-1.268,2.176c-0.439,0.729-0.844,1.475-1.27,2.213c-0.514,0.893-1.004,1.799-1.564,2.664 c-0.254,0.395-0.512,0.783-0.758,1.182c-0.248,0.4-0.498,0.803-0.762,1.193c-0.162,0.24-0.137,0.541-0.012,0.791 c-0.02,0.072-0.043,0.143-0.043,0.219c0,0.215,0.086,0.424,0.238,0.576c0.162,0.162,0.352,0.217,0.576,0.238 c0.848,0.076,1.701,0.064,2.553,0.08c0.867,0.014,1.734,0.004,2.602,0.016c0.818,0.01,1.637,0.021,2.457,0.027 c0.842,0.004,1.684,0.041,2.525,0.031c0.842-0.012,1.684-0.045,2.525-0.035c0.447,0.004,0.895,0.014,1.34,0.043 c0.418,0.027,0.834,0.076,1.254,0.098c0.814,0.041,1.627,0.029,2.443,0.039c0.844,0.01,1.684,0.027,2.527,0.074 c0.98,0.053,1.959,0.129,2.941,0.164c0.461,0.018,0.922,0.023,1.385,0.031c0.422,0.008,0.842,0.016,1.262-0.018 c0.23-0.02,0.43-0.08,0.598-0.248c0.033-0.033,0.05-0.078,0.076-0.115c0.065-0.019,0.131-0.029,0.193-0.066 C29.967,28.31,30.131,27.751,29.879,27.345z M26.428,27.276c-0.812-0.02-1.627-0.09-2.441-0.129 c-0.404-0.021-0.811-0.059-1.217-0.072c-0.404-0.014-0.809-0.021-1.215-0.033c-0.844-0.023-1.688-0.031-2.533-0.037 c-0.848-0.006-1.691-0.098-2.537-0.125c-0.832-0.029-1.67-0.004-2.502,0.027c-0.852,0.033-1.701,0.027-2.553,0.021 c-0.846-0.008-1.689-0.006-2.535,0.01c-1,0.016-1.998,0.035-2.996,0.012c-0.651-0.015-1.304-0.042-1.955-0.08 c0.281-0.451,0.56-0.904,0.848-1.352c0.465-0.723,0.881-1.469,1.287-2.225c0.801-1.486,1.672-2.934,2.52-4.393 c0.439-0.756,0.896-1.5,1.326-2.264c0.402-0.711,0.85-1.396,1.273-2.094c0.443-0.73,0.848-1.479,1.27-2.221 c0.43-0.758,0.883-1.504,1.33-2.252c0.256-0.428,0.502-0.861,0.748-1.295c0.254-0.449,0.566-0.865,0.859-1.291 c0.275-0.4,0.531-0.814,0.791-1.225c0.096-0.151,0.202-0.296,0.3-0.446c0.31,0.527,0.627,1.051,0.922,1.586 c0.426,0.773,0.799,1.574,1.18,2.367c0.385,0.803,0.816,1.582,1.238,2.365c0.432,0.801,0.838,1.617,1.27,2.42 c0.854,1.592,1.646,3.217,2.496,4.812c0.408,0.766,0.854,1.512,1.26,2.279c0.404,0.766,0.803,1.535,1.195,2.307 c0.393,0.768,0.84,1.504,1.258,2.256c0.198,0.356,0.383,0.717,0.574,1.074C27.402,27.283,26.916,27.286,26.428,27.276z M16.968,18.518c0.021,0.545,0.064,1.088,0.066,1.633c0.002,0.457-0.383,0.838-0.838,0.838c-0.471,0-0.818-0.381-0.838-0.838 c-0.021-0.553-0.035-1.105-0.049-1.658c-0.014-0.562-0.027-1.133-0.006-1.695c0.021-0.555,0.055-1.109,0.07-1.666 c0.016-0.623,0.014-1.246,0.02-1.869c0.006-0.416,0.346-0.766,0.768-0.766c0.41,0,0.773,0.348,0.766,0.766 c-0.023,1.189-0.057,2.377-0.014,3.566C16.933,17.392,16.946,17.956,16.968,18.518z M16.969,23.753c0,0.451-0.377,0.828-0.828,0.828 s-0.828-0.377-0.828-0.828s0.377-0.828,0.828-0.828S16.969,23.302,16.969,23.753z"></path> </g></svg>
+                                <span class="due-label">Pending Tasks</span>
+                            </div>
+                        </td>
+                        <td>
+                        <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
+                            <span class="due-count">{{daySummaryReport.AssignedTasksDue}}</span>
+                            <button (click)="viewTasks()" *ngIf="daySummaryReport.AssignedTasksDue>0" class="btn px-1 py-1 btn-outline-secondary fs-9">
+                                <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#383838" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#9e9e9e" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
+                            </button>
+                        </div>
+                    </td>
+                    </tr>
+                
+                </tbody>
+                </table>
+                </div>
+            </div>
+
+
+            <div *ngIf="daySummaryReport" class="completion-ending-statement mx-2 mt-4 mb-2" [ngClass]="{'success':daySummaryReport.EmployeePerformance>=70, 'danger':daySummaryReport.EmployeePerformance<=30}">
+                <span *ngIf="daySummaryReport.EmployeePerformance>=70">You have achieved {{daySummaryReport.EmployeePerformance}}% of your tasks. Great progress so far—keep pushing forward!</span>
+                <span *ngIf="daySummaryReport.EmployeePerformance<70">You have achieved {{daySummaryReport.EmployeePerformance}}% of your tasks. Keep up the momentum and continue improving!</span>
+            </div>
+        </div>
+        <!--given <div class="end-timeline-ul mt-4  p-2 pt-3 ">
             <ng-container *ngIf="(tmReportArr&&tmReportArr.length>0); else noTimelinePresent">
              <div *ngFor="let item of tmReportArr; let i=index;" class=" report-item mb-4">
                 <div class="end-timeline-li-heading">
@@ -1446,6 +1689,7 @@
                            <span *ngIf="item.Tasktype=='Personal'">Personal</span>
                           <span [id]="'timeline-descr-'+i" class="timeline-descr collapse fs-8 curser-pointer" (click)="expandDescription('.end-timeline-ul #timeline-descr-'+i)">{{item.WorkAchieved}}</span>
                         </div>
+                        
                        <span class="timeline-time text-nowrap ml-5 align-self-start d-flex flex-column align-items-end">
                          <span class="font-weight-bold fs-8">{{item.duration}}</span>
                          <span class="tm-start-end">{{formatTimes(item.starttime)}} - {{formatTimes(item.endtime)}}</span>
@@ -1462,41 +1706,14 @@
                     </div>
                 </div>
             </ng-template>
-        </div>
+        </div>  -->
      </div>
-      <div [ngClass]="{'d-none':!endDayConfirmed}" class="end-timeline-ul mt-2 px-4 pt-3" style="min-height:66.5vh">
-            <h5 class="text-start mb-5">Confirm End of Day</h5>
-            <span class="text-muted fs-6">Are you sure you want to end the day? Click on the 'Yes, End Day' button to submit the timeline report. You can still add timelines for the date.</span>
-            <table border="1px" cellpadding="10em" class="border mt-5">
-                <tbody>
-                 <tr> <td>Date</td> <td><span class="time-value">{{current_Date|date:'EEEE, MMMM d, y'}}</span></td> </tr>
-                 <tr> <td>Total timeline added</td> <td><div *ngIf="tmReportTotalDuration" class="total-time-count"><span><span>{{tmReportTotalDuration.hours}}</span><span class="time-value">Hrs</span></span><span><span>{{tmReportTotalDuration.minutes}}</span><span class="time-value">Min</span></span></div></td></tr>
-               </tbody>
-        </table>
-      </div>
       </div>
       <div class="end-timeline-modal-footer">
-        <!-- <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"  (click)="endTimelineModal_dismiss()">Close</button>
-        <ng-container *ngIf="tmReportStatus=='Not Submitted'">
-            <button *ngIf="!endDayConfirmed"  type="button" class="btn btn-sm btn-info" (click)="endDayConfirmed=true;">End Day ></button>
-            <button *ngIf="endDayConfirmed" type="button" class="btn btn-sm btn-info" (click)="submitTL(tmSubmDate)">Yes, End Day</button>
-        </ng-container>    -->
-
-
-
-        <ng-container *ngIf="!endDayConfirmed">
-            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"  (click)="endTimelineModal_dismiss()">Close</button>
-            <button *ngIf="tmReportStatus=='Not Submitted'" type="button" class="btn btn-sm btn-info" (click)="endDayConfirmed=true;">End Day ></button>
-        </ng-container>
-
-        <ng-container *ngIf="endDayConfirmed">
-            <button type="button" class="btn btn-sm btn-secondary" (click)="endDayConfirmed=false">Previous</button>
-            <button type="button" class="btn btn-sm btn-info" (click)="endDay(tmSubmDate); endDayConfirmed=false;">Yes, End Day</button>
-        </ng-container>
-
-        
-      
-     </div>
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" (click)="endTimelineModal_dismiss()">Close</button>
+            <!--if user not entered timeline or if user entered timeline but not ended day-->
+            <button *ngIf="tmReportStatus==null||tmReportStatus=='Not Submitted'" type="button" class="btn btn-sm btn-info" (click)="endDay(tmSubmDate)">End Day Now</button>
+      </div>
     </div>
   </div>
 </div>

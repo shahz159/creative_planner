@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectMoreDetailsService } from '../../_Services/project-more-details.service';
@@ -184,6 +184,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   actionresponsible_dropdown:any;
   isNewOwnerOk:boolean=false;
   pageContentType:'PROJECT_DETAILS'|'ACTION_DETAILS'='PROJECT_DETAILS';  // which content the page is display project or action. by default project.
+  noActvySinceCreation:boolean=false;
+  noActvy4NDays:number=-1;
+
+
+
+
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
@@ -205,6 +211,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     public datepipe: DatePipe,
     private CalenderService: CalenderService,
     private createProjectService:CreateprojectService,
+    public cdr:ChangeDetectorRef
 
   ) {
 
@@ -1118,6 +1125,21 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     }
 
 
+    this.detectMembersWithoutActions();  // calculate 'hasNoActionMembers';
+
+
+   // when project has no activity done even after start date.   calculation here.
+    const prjs_date=new Date(this.projectInfo.StartDate); prjs_date.setHours(0,0,0,0);
+    const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+    this.noActvySinceCreation=(['Completed','Cancelled'].includes(this.projectInfo.Status)==false&&cr_date>prjs_date&&this.projectInfo.TotalHours==0);
+    if(this.noActvySinceCreation){
+      this.noActvy4NDays=moment(cr_date).diff(prjs_date,'days');
+    }   
+    // when project has no activity done even after start date.
+
+
+
+
 
 
 
@@ -1178,7 +1200,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   getDelayText(action: any): string {
-
+ 
     if (!action || action.Delaydays == null) return '';
 
     let delayText = '';
@@ -1193,7 +1215,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       const weeks = Math.floor(action.Delaydays / 7);
       delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
     } else {
-      delayText = action.Delaydays < 10 ? `0${action.Delaydays} days` : `${action.Delaydays} days`;
+      delayText=action.Delaydays==0?'0 days': action.Delaydays < 10 ? `0${action.Delaydays} days`:`${action.Delaydays} days`;
     }
 
     return delayText + ' delay';
@@ -1269,11 +1291,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             this.projectAuditor={empName:prj_auditor.RACIS, empNo:prj_auditor.Emp_No};
           }
 // If project has project auditor
+          
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{
+
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', '), isActive:result[0].isActive};
             console.log(this.PeopleOnProject,"sssssssss")
-            if(this.Subtask_Res_List){
+            if(this.Subtask_Res_List){  
               const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
               if(p){
                   obj.contribution=p.RespDuration;
@@ -1303,6 +1327,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 // sorting people based on active or inactive
 
 
+          this.detectMembersWithoutActions();  // calculate 'hasNoActionMembers';
         }
       });
 
@@ -1509,20 +1534,17 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   showActionDetails(index: number | undefined) {
-    this.currentActionView = index;
-    if(index!=undefined){
-      this.requestType = null;
-    }
-
-    if(index!=undefined)
-    this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
-
+     this.currentActionView = index;
+  
     if (index>-1 && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval"||this.projectActionInfo[index].Status === "Cancellation Under Approval"))
       this.GetApproval(this.projectActionInfo[index].Project_Code);
 
     if(index!=undefined){
+      this.requestType = null;
+      this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
+
       this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
-      $(document).ready(() =>this.drawStatistics1(this.projectActionInfo[index].Project_Code));
+      $(document).ready(() =>this.getDarInfoOfAction(index));
 
        if(this.projectActionInfo[this.currentActionView].Status=='New Project Rejected'){
          this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
@@ -1581,69 +1603,91 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   BarChartOfAction:any;
-  drawStatistics1(actionCode:string) {
+  noActvyOnActnSinceCreation:boolean=false;
+  noActnActvy4NDays:number=0;
 
+  getDarInfoOfAction(index) {
+    const actionCode:string=this.projectActionInfo[index].Project_Code;
     this.service.DARGraphCalculations_Json(actionCode)
       .subscribe(data1 => {
         console.log("drawstatistics data1:",data1)
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
         this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
         // this.RemainingHours = (data1[0]['RemainingHours']);
+        
+        // when action has no activity done even after start date.   calculation here.
+          const actn_sdate=new Date(this.projectActionInfo[index].StartDate); actn_sdate.setHours(0,0,0,0);
+          const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+          this.noActvyOnActnSinceCreation=(['Completed','Cancelled'].includes(this.projectActionInfo[index].Status)==false&&cr_date>actn_sdate&&this.UsedInDAR==0);
+          if(this.noActvyOnActnSinceCreation){
+            this.noActnActvy4NDays=moment(cr_date).diff(actn_sdate,'days');
+          }   
+        // when action has no activity done even after start date.
+        
 
-            // new code
 
-            var options = {
-              series: [{
-                data: [
-                  this.maxDuration,
-                  this.UsedInDAR,
-                  this.maxDuration-this.UsedInDAR
-                  ]
-              }],
-              chart: {
-                type: 'bar',
-                height: 350
-              },
-              plotOptions: {
-                bar: {
-                  distributed: true,
-                  horizontal: false,
-                  columnWidth: '55%',
-                }
-              },
-              dataLabels: {
-                enabled: true,
-                style:{
-                  colors:['#3a81c9','#3e6be0','#303031'],
-                  fontFamily:'Lucida Sans Unicode'
-                },
-                formatter: function (v) {
-                  return v + ' hrs';
-                }
-              },
-              yaxis: {
-                title: {
-                  text: ''
-                },
-                labels: {}
-              },
-              xaxis: {
-                categories: ['Allocated', 'Used', 'Remaining'],
-                labels: {
-                  rotate: -90
-                }
-              },
-              colors:['#7dbeff', '#7da1ff',(this.maxDuration-this.UsedInDAR)<0?'#757575':'#dbe1e4']
+      // draw action bar chart.
+        this.drawActionBarChart(); 
+     });
+          
 
-            };
+  }
 
-            if (this.prjBARCHART)
-              this.prjBARCHART.destroy();
-            this.prjBARCHART = new ApexCharts(document.querySelector("#chart-container1"), options);
-            this.prjBARCHART.render();
-            // new code
-            });
+ 
 
+
+  drawActionBarChart(){
+    var options = {
+      series: [{
+        data: [
+          this.maxDuration,
+          this.UsedInDAR,
+          this.maxDuration-this.UsedInDAR
+          ]
+      }],
+      chart: {
+        type: 'bar',
+        height: 350
+      },
+      plotOptions: {
+        bar: {
+          distributed: true,
+          horizontal: false,
+          columnWidth: '55%',
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        style:{
+          colors:['#3a81c9','#3e6be0','#303031'],
+          fontFamily:'Lucida Sans Unicode'
+        },
+        formatter: function (v) {
+          return v + ' hrs';
+        }
+      },
+      yaxis: {
+        title: {
+          text: ''
+        },
+        labels: {}
+      },
+      xaxis: {
+        categories: ['Allocated', 'Used', 'Remaining'],
+        labels: {
+          rotate: -90
+        }
+      },
+      colors:['#7dbeff', '#7da1ff',(this.maxDuration-this.UsedInDAR)<0?'#757575':'#dbe1e4']
+
+    };
+
+    if (this.prjBARCHART)
+      this.prjBARCHART.destroy();
+    this.prjBARCHART = new ApexCharts(document.querySelector("#chart-container1"), options);
+    this.prjBARCHART.render();
+    // new code
+    
   }
 
 
@@ -2274,7 +2318,7 @@ multipleback(){
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.approvalsFetching=false;    // fetched approvals or processing end.
       this.requestDetails = data as [];
-      console.log(this.requestDetails, "approvals");
+      console.log(this.requestDetails, "approvals");  debugger
       if (this.requestDetails.length > 0) {
         this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
         this.requestType = (this.requestDetails[0]['Request_type']);
@@ -3216,12 +3260,13 @@ approvalSubmitting:boolean=false;
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
         this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
         this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
+        this.darArr=this.darArr.filter(acn=>['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(acn.SubProject_Status.trim())==false);
         this.Subtask_Res_List=JSON.parse(data[0]['SubTaskResponsibe_Json']);
         this.totalSubtaskHours = (data[0]['SubtaskHours']);
         console.log('Subtask_Res_List:',this.Subtask_Res_List);
         console.log('totalSubtaskHours:',this.totalSubtaskHours);
 
-        console.log('darArr:', this.Category_List);
+        console.log('darArr:', this.darArr);
 try{
         if (this.darArr.length == 0 && (this.projectInfo.OwnerEmpNo == this.Current_user_ID || this.projectInfo.ResponsibleEmpNo == this.Current_user_ID)) {
 // user is prj owner
@@ -5290,6 +5335,7 @@ config: AngularEditorConfig = {
       },
     ],
   };
+ 
   Location_Type: any;
   Addressurl: string = "";
   Locationfulladd: string;
@@ -5445,13 +5491,14 @@ Task_type(value:number){
        $('#online-add').css('display','block');
 
 
-      const es=document.getElementById('event-Sidebar');
-      es.addEventListener('scroll',()=>{
-            this.autocompletes.forEach((ac)=>{
-              if(ac.panelOpen)
-              ac.updatePosition();
-            });
-      })
+      // const es=document.getElementById('event-Sidebar');
+      // es.addEventListener('scroll',()=>{
+      //       this.autocompletes.forEach((ac)=>{
+      //         if(ac.panelOpen)
+      //         ac.updatePosition();
+      //       });
+      // })
+
 
 
                   // valid starttimearr and endtimearr setting start.
@@ -7957,7 +8004,7 @@ closeNewPrjReleaseSideBar() {
 
 getRejectType() {
   this.approvalObj.Project_Code = this.URL_ProjectCode;
-  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {
+  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {  console.log('getrejecttype:',data);
     this.activity = data[0]["activity"];
     this.send_from = data[0]["sendFrom"];
     this.rejectactivity = data[0]["rejectactivity"];
@@ -10206,8 +10253,11 @@ loadActionsGantt(){
   const todays_date = new Date().getTime();
   const curdate = new Date();
   let actions_list:any=this.projectActionInfo.filter((actn)=>{
-         return (this.ganttActnsConfig.byuser=='All'||actn.Team_Res.trim()==this.ganttActnsConfig.byuser);
+         const x=(this.ganttActnsConfig.bystatus=='All'||actn.Status.trim()==this.ganttActnsConfig.bystatus);
+         const y=(this.ganttActnsConfig.byuser=='All'||actn.Team_Res.trim()==this.ganttActnsConfig.byuser);
+         return x&&y;
   });
+
   this.total_userActns=actions_list.length;
   const _series = actions_list.map((actn, _index) => {
     const color = all_status[actn.Status] || all_status['other'];
@@ -10315,7 +10365,7 @@ loadActionsGantt(){
                 textElements.forEach(te => {
                   const clonedTe = te.cloneNode(true);
                   clonedTe.setAttribute('y', '65%');
-                  clonedTe.setAttribute('fill', '#000');
+                  clonedTe.setAttribute('fill', '#6b6f71');
                   dateGcHv.appendChild(clonedTe);
                 });
 
@@ -10417,8 +10467,14 @@ loadActionsGantt(){
         show: true,
         style: {
           offsetY: 10, // Adjust this value to add space below the labels
-          colors:'#000'
+          colors:'#6b6f71',
+          fontSize:'11px',
+          fontWeight: 'bold'
         },
+        datetimeFormatter: {
+          month: "MMM",  
+          day: "dd MMM",   
+      },
 
       },
       axisBorder: {
@@ -10427,7 +10483,8 @@ loadActionsGantt(){
       axisTicks: {
         show: true
       },
-      max:max_Xvalue.getTime()
+      max:max_Xvalue.getTime(),
+   
 
     },
     yaxis: {
@@ -10605,9 +10662,10 @@ console.log('apexchart gantt:',this.ActnsGanttChart);
 
 
 ActnsGanttChart:any;
-ganttActnsConfig:{byuser:string}={byuser:'All'};
-filterActionsOnGantt(option:string){
-     this.ganttActnsConfig.byuser=option;
+ganttActnsConfig:{bystatus:string,byuser:string}={bystatus:'All',byuser:'All'};
+filterActionsOnGantt(_bystatus:string,_byuser:string){
+     this.ganttActnsConfig.bystatus=_bystatus;
+     this.ganttActnsConfig.byuser=_byuser;
      this.loadActionsGantt();
 }
 
@@ -10615,7 +10673,7 @@ filterActionsOnGantt(option:string){
 
 onActnsGanttClosed(){
     this.ActnsGanttChart=null;
-    this.ganttActnsConfig={byuser:'All'};
+    this.ganttActnsConfig={bystatus:'All',byuser:'All'};
     this.total_userActns=undefined;
 }
 
@@ -10744,11 +10802,19 @@ goToProject(pcode,acode:string|undefined) {
 
 expandRemarks(id:string){
      const remark_sec=document.getElementById(id);
-     if(remark_sec.classList.contains('compl-remarks-span'))
+     if(remark_sec.classList.contains('compl-remarks-span')){
         remark_sec.classList.remove('compl-remarks-span');
-     else
-        remark_sec.classList.add('compl-remarks-span');
+        document.getElementById('less-btn').classList.remove('d-none');
+     }
+     else{
+      remark_sec.classList.add('compl-remarks-span');
+      document.getElementById('less-btn').classList.add('d-none');
+     }
+        
 }
+
+
+
 
 // conditional accept functionality end
 
@@ -10804,6 +10870,10 @@ getNotificationsAnnouncements():string[]{
   allnotif=[...allnotif,'totalPActns4Aprvls'];
   if(this.pageContentType=='ACTION_DETAILS')
   allnotif=[...allnotif,'action_details'];
+  if(this.hasNoActionMembers&&this.hasNoActionMembers.length>0)
+  allnotif=[...allnotif,'hasNoActionMembers'];
+  if(this.noActvySinceCreation)
+  allnotif=[...allnotif,'noActvySinceCreation'];
 
    return allnotif;
 }
@@ -10848,6 +10918,30 @@ getFormattedDuration(totalDuration: number): string {
 
     this.router.navigate(["../backend/createproject"],{queryParams:{AssignedProjectId:taskid}});
   }
+
+
+
+
+
+  hasNoActionMembers:any=[];
+  detectMembersWithoutActions(){
+      if(this.Project_List&&this.filteremployee)
+      {    // if we have info of all the peoples present in the project. and info of all the people who have actions.   
+        const peopleWithActns=this.filteremployee.map(item=>item.Team_Res);
+        const arr=[];
+        this.Project_List.forEach((item)=>{
+                if(item.Role!='Owner'&&peopleWithActns.includes(item.Emp_No)==false)   
+                {
+                   if(arr.findIndex(ob=>ob.Emp_No==item.Emp_No)==-1)
+                   arr.push({  Emp_No:item.Emp_No, Emp_Name:item.RACIS.slice(0,item.RACIS.indexOf('(')).trim() })
+                }
+         });
+        this.hasNoActionMembers=arr; 
+      } 
+  }
+
+
+
 
 
 
