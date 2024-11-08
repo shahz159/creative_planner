@@ -9649,8 +9649,12 @@ changeScheduleType(val:number){
   }
   this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
 }
-eventRepeat:boolean = false
-OnSubmitSchedule1() { debugger
+eventRepeat:boolean = false;
+Meeting_Id:any;
+Meeting_password:any;
+
+
+OnSubmitSchedule1() { 
   if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
     this._subname1 = true;
     return false;
@@ -9724,7 +9728,7 @@ OnSubmitSchedule1() { debugger
 
   if (finalarray.length > 0) {
     finalarray.forEach(element => {
-      debugger
+    
       const date1: Date = new Date(this._StartDate);
       // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
       //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
@@ -9798,10 +9802,11 @@ OnSubmitSchedule1() { debugger
       var vLocation_url = "Addressurl";
       element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
 
+
       var vOnlinelink = "Onlinelink";
       element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
-
-
+      this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
+    
       var vLink_Details = "Link_Details";
       element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
 
@@ -9944,6 +9949,8 @@ OnSubmitSchedule1() { debugger
         this.SelectDms = null;
         this.Location_Type = null;
         this.Link_Details = null;
+        this.Meeting_Id = null;
+        this.Meeting_password = null;
         this._onlinelink = false;
         this.Allocated_subtask = null;
         this.TM_DisplayName = null;

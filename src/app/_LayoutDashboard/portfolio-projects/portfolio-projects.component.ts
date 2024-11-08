@@ -2960,7 +2960,7 @@ getChangeSubtaskDetais(Project_Code) {
   Online_method(event) {
 
     if (event.target.checked) {
-      document.getElementById("Descrip_Name12").style.display = "block";
+      document.getElementById("Descrip_Name12").style.display = "flex";
       this._onlinelink = event.target.checked;
     }
     else {
@@ -3672,7 +3672,12 @@ getChangeSubtaskDetais(Project_Code) {
   formatTime1(hour, minute) {
     return moment({ hour, minute }).format("hh:mm A");
   }
-  eventRepeat:boolean = false
+
+  eventRepeat:boolean = false;
+  Meeting_Id:any;
+  Meeting_password:any;
+
+
   OnSubmitSchedule() {
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
@@ -3823,7 +3828,8 @@ getChangeSubtaskDetais(Project_Code) {
 
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
-
+        this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
+     
 
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
@@ -3967,6 +3973,8 @@ getChangeSubtaskDetais(Project_Code) {
           this.SelectDms = null;
           this.Location_Type = null;
           this.Link_Details = null;
+          this.Meeting_Id = null;
+          this.Meeting_password = null;
           this._onlinelink = false;
           this.Allocated_subtask = null;
           this.TM_DisplayName = null;

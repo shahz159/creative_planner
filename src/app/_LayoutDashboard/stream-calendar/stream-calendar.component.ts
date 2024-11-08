@@ -611,7 +611,31 @@ export class StreamCalendarComponent implements OnInit {
   close_month_more_view() {
     document.getElementById("month-day-events-more").classList.remove("show");
   }
+  pending_list_open(){
+    document.getElementById("pending-list").classList.add("quickaction-open");
+  }
+  pending_list_close(){
+    document.getElementById("pending-list").classList.remove("quickaction-open");
+  }
 
+  draft_list_open(){
+    document.getElementById("draft-list").classList.add("quickaction-open");
+  }
+  draft_list_close(){
+    document.getElementById("draft-list").classList.remove("quickaction-open");
+  }
+  requestaccess_list_open(){
+    document.getElementById("requestaccess-list").classList.add("quickaction-open");
+  }
+  requestaccess_list_close(){
+    document.getElementById("requestaccess-list").classList.remove("quickaction-open");
+  }
+  bookmark_list_open(){
+    document.getElementById("bookmark-list").classList.add("quickaction-open");
+  }
+  bookmark_list_close(){
+    document.getElementById("bookmark-list").classList.remove("quickaction-open");
+  }
 
 /////////////////////////////////////////// Create Event and Create Task sidebar start /////////////////////////////////////////////////////////
 
@@ -2653,8 +2677,12 @@ getEventsForWeeks(weeksFromToday: number) {
     }));
     
       this.filteredMeetingsArray = this.groupedMeetingsArray;
+    
       console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
+       
 }
+
+
 
 
 
@@ -3275,7 +3303,7 @@ AlldeleteSchedule() {
 
 
 
-DublicateTaskandEvent() {
+DublicateTaskandEvent(val:number) {
   this.createTaskEvent=false;
   document.getElementById("div_endDate_new").style.display = "none";
   // 69 document.getElementById("Schenddate").style.display = "none";
@@ -3319,8 +3347,15 @@ DublicateTaskandEvent() {
       document.getElementById("task-title").style.display = "none"; 
       document.getElementById("Edit-title").style.display = "none";
       document.getElementById("Repeat-title").style.display = "none";
-      document.getElementById("Copy-title").style.display = "block";
-      document.getElementById("Location_Name").style.display = "none";
+      if(val ==1){
+        document.getElementById("Copy-title").style.display = "none";
+        document.getElementById("Copy-task").style.display = "block";
+      }else{
+        document.getElementById("Copy-task").style.display = "none";
+        document.getElementById("Copy-title").style.display = "block";
+      }
+     
+      //69 document.getElementById("Location_Name").style.display = "none";
       
 
       this.AllDatesSDandED = [];
@@ -3414,7 +3449,7 @@ DublicateTaskandEvent() {
         document.getElementById("core_viw222").style.display = "flex";
         document.getElementById("core_Dms").style.display = "flex";
         document.getElementById("meeting-online-add").style.display = "flex";
-        document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
+        //69 document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
 
         const TEsb = document.getElementById('TaskEvent-Sidebar')
         TEsb.addEventListener('scroll', () => {
@@ -3612,7 +3647,7 @@ ReshudingTaskandEvent() {
 
         document.getElementById("subtaskid").style.display = "flex";
         // document.getElementById("Guest_Name").style.display = "none";
-        document.getElementById("Location_Name").style.display = "none";
+        //69 document.getElementById("Location_Name").style.display = "none";
         document.getElementById("Descrip_Name").style.display = "none";
         document.getElementById("core_viw123").style.display = "flex";
         document.getElementById("core_viw121").style.display = "none";
@@ -3668,7 +3703,7 @@ ReshudingTaskandEvent() {
          document.getElementById("subtaskid").style.display = "none";
         //69 document.getElementById("Guest_Name").style.display = "flex";
         //69 document.getElementById("meeting-online-add").style.display = "flex";
-        document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
+        //69 document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
         document.getElementById("Descrip_Name").style.display = "flex";
         document.getElementById("core_viw121").style.display = "flex";
         document.getElementById("core_viw123").style.display = "none";
@@ -4401,7 +4436,7 @@ repeatEvent() {
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
         document.getElementById("subtaskid").style.display = "none";
         document.getElementById("Guest_Name").style.display = "flex";
-        document.getElementById("Location_Name").style.display = "flex";
+        //69 document.getElementById("Location_Name").style.display = "flex";
         document.getElementById("Descrip_Name").style.display = "flex";
         document.getElementById("core_viw121").style.display = "flex";
         document.getElementById("core_viw123").style.display = "none";

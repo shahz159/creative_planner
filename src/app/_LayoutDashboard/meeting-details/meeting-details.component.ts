@@ -554,6 +554,9 @@ export class MeetingDetailsComponent implements OnInit {
   CurrentNotesCount:any;
   CurrentTaskCount:any;
   Status1: any;
+  Meeting_Id:any;
+  Meeting_password:any;
+
 
   
 
@@ -655,16 +658,18 @@ export class MeetingDetailsComponent implements OnInit {
       this.Link_Detail = this.EventScheduledjson[0].Link_Details;
 
 
-
       let startIndex = this.Link_Detail.indexOf('</a>');
       let anchorText = this.Link_Detail.substring(startIndex + 4);
 
+
+ 
+
       var UserID_Password = anchorText.replace(/<[^>]*>/g, ' ');
       if (UserID_Password != '') {
-        this.urlUserID_Password = UserID_Password.trim()
+        this.urlUserID_Password = UserID_Password.trim();
       }
 
-
+      console.log(this.urlUserID_Password,'Link_Detail');
 
       let str = this.Link_Detail;
       let regexp = /href="https:\/\/[^"]+"/;
@@ -2577,6 +2582,72 @@ export class MeetingDetailsComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
   }
 
+
+
+
+
+
+  onFileChange1(event) {
+    if (event.target.files.length > 0) {
+      const length = event.target.files.length;
+      for (let index = 0; index < length; index++) {
+        const file = event.target.files[index];
+        const fileName = file.name;
+        const contentType = file.type;
+
+        // Skip file if its name already exists in either array
+        const fileAlreadyExists =
+          this.Attachment12_ary.some(att => att.File_Name === fileName) ||
+          this._lstMultipleFiales.some(existingFile => existingFile.FileName === fileName);
+
+        if (fileAlreadyExists) {
+          Swal.fire({
+            title: `File "${fileName}" Already Exists`,
+            text: `The file "${fileName}" was not added to avoid duplication.`
+          })
+          continue; // Skip this file
+        }
+  
+        // Determine file extension
+        let fileExtension = '';
+        if (contentType === "application/pdf") {
+          fileExtension = ".pdf";
+        } else if (contentType === "image/png") {
+          fileExtension = ".png";
+        } else if (contentType === "image/jpeg") {
+          fileExtension = ".jpeg";
+        } else if (contentType === "image/jpg") {
+          fileExtension = ".jpg";
+        }
+  
+        // Add file to _lstMultipleFiales array
+        this.myFiles.push(fileName);
+        const uniqueId = new Date().valueOf();
+  
+        this._lstMultipleFiales.push({
+          UniqueId: uniqueId,
+          FileName: fileName,
+          Size: file.size,
+          Files: file
+        });
+      }
+    }
+  
+    // Reset the input value and styling
+    const uploadFileInput = document.getElementById("uploadFile") as HTMLInputElement;
+    if (uploadFileInput) {
+      uploadFileInput.value = null;
+      uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+    }
+    (event.target as HTMLInputElement).value = '';
+  }
+
+
+
+
+
+
+
   RemoveSelectedFile(_id) {
     var removeIndex = this._lstMultipleFiales.map(function (item) { return item.UniqueId; }).indexOf(_id);
     this._lstMultipleFiales.splice(removeIndex, 1);
@@ -2829,14 +2900,17 @@ export class MeetingDetailsComponent implements OnInit {
 
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+        this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
 
         var vLink_Details = "Link_Details";
-        let link_d=this.Link_Details;
-        if(this.Link_Details){
-          link_d=this.Link_Details.replace(/&#160;/g, ' ');
-          link_d=this.anchoredIt(link_d);
-        }
-        element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
+        element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+        // var vLink_Details = "Link_Details";
+        // let link_d=this.Link_Details;
+        // if(this.Link_Details){
+        //   link_d=this.Link_Details.replace(/&#160;/g, ' ');
+        //   link_d=this.anchoredIt(link_d);
+        // }
+        // element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
 
         
         var vDescription = "Description";
@@ -2977,6 +3051,8 @@ export class MeetingDetailsComponent implements OnInit {
           this.SelectDms = null;
           this.Location_Type = null;
           this.Link_Details = null;
+          this.Meeting_Id = null;
+          this.Meeting_password = null;
           this._onlinelink = false;
           this.Allocated_subtask = null;
           this.TM_DisplayName = null;
@@ -3107,7 +3183,7 @@ export class MeetingDetailsComponent implements OnInit {
         if (this.CompletedMeeting_notes != null && this.CompletedMeeting_notes != undefined && this.CompletedMeeting_notes != '') {
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
           this.AutoComplete = this.CompletedMeeting_notes[0].AutoComplete;
-
+      
           this.AttendeeCount = this.CompletedMeeting_notes[0].online_count;
           this.actualTime_S = this.CompletedMeeting_notes[0].Actual_Start;
           this.separateTime(this.actualTime_S);
@@ -3169,6 +3245,7 @@ export class MeetingDetailsComponent implements OnInit {
   startperiod: any;
   endperiod: any;
   separateTime(time: string) {
+  
     const [hour, period] = time.split(' ');
     if (time == this.actualTime_S) {
       this.starthour = hour;
@@ -4090,7 +4167,22 @@ export class MeetingDetailsComponent implements OnInit {
         this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
         this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
 
-
+        if(this.Link_Details != ''){
+        if(!this.Link_Details.includes('<a href=')){
+        var details = this.Link_Details.split(', ')
+        this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+        this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+        this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined'  || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+        console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
+        }
+        else if(this.Link_Details.includes('<a href=')){
+          this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
+          this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
+          this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
+         
+          console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details 69');
+        }
+      }
 
         this.pending_status = this.EventScheduledjson[0]['Pending_meeting'];
 
@@ -4821,13 +4913,17 @@ bindCustomRecurrenceValues(){
 
   }
 
-  RemovedAttach: any = [];
 
+  _attachmentValue:any = 0;
+  RemovedAttach: any = [];
+  RemovedFile_id:any = [];
 
   RemoveExistingFile(_id) {
     this.Attachment12_ary.forEach(element => {
       if (element.file_id == _id) {
-        this.RemovedAttach.push(element.Cloud_Name)
+        // this.RemovedAttach.push(element.Cloud_Name)
+        this.RemovedFile_id.push(element.file_id);
+
       }
     });
     var removeIndex = this.Attachment12_ary.map(function (item) { return item.file_id; }).indexOf(_id);
@@ -5763,6 +5859,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     this.SelectDms = null;
     this.MasterCode = null;
     this.Subtask = null;
+    this.RemovedFile_id = [];
     // this.Startts = null;
     // this.Endtms = null;
     this.St_date = "";
@@ -5808,6 +5905,9 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     this.AllDatesSDandED.push(jsonData);
     this.notProvided = false;
     this.subtashDrpLoading=false;
+    this.Link_Details = null;
+    this.Meeting_Id = null;
+    this.Meeting_password = null;
   }
 
 
@@ -6025,18 +6125,20 @@ if(this.editTask && this.selectedrecuvalue =='2'){
 
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+        this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
 
         var vLink_Details = "Link_Details";
+        element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
         // let link_d=this.Link_Details.replace(/&#160;/g, ' ');
         // link_d=this.anchoredIt(link_d);
 
-        let link_d=this.Link_Details;
-        if(this.Link_Details){
-          link_d=this.Link_Details.replace(/&#160;/g, ' ');
-          link_d=this.anchoredIt(link_d);
-        }
+        // let link_d=this.Link_Details;
+        // if(this.Link_Details){
+        //   link_d=this.Link_Details.replace(/&#160;/g, ' ');
+        //   link_d=this.anchoredIt(link_d);
+        // }
 
-        element[vLink_Details] = this.Link_Details == undefined ? "" : link_d;
+        // element[vLink_Details] = this.Link_Details == undefined ? "" : link_d;
 
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
@@ -6081,29 +6183,37 @@ if(this.editTask && this.selectedrecuvalue =='2'){
       else {
         this._calenderDto.Schedule_ID = 0;
       }
-      let _attachmentValue = 0;
+
+
+debugger
+
+
+
+      this._attachmentValue = 0;
+      
       const frmData = new FormData();
       for (var i = 0; i < this._lstMultipleFiales.length; i++) {
         frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
       }
-      if (this._lstMultipleFiales.length > 0)
-        _attachmentValue = 1;
+      if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
+        this._attachmentValue = 1;
       else
-        _attachmentValue = 0;
+        this._attachmentValue = 0;
 
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
       frmData.append("flag_id", this._calenderDto.flagid.toString());
-      this._calenderDto.attachment = this.RemovedAttach.toString();
-       debugger
-      console.log(this._calenderDto.attachment, "finalarray");
+      frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id);
+
+       this._calenderDto.attachment = this._attachmentValue.toString();
+
       this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
         (data => {
           this.RemovedAttach = [];
           // alert(data['Schedule_date'])
           frmData.append("Schedule_date", data['Schedule_date'].toString());
-          if (_attachmentValue == 1) {
+          if (this._attachmentValue == 1) {
             this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
               (event: HttpEvent<any>) => {
                 switch (event.type) {
