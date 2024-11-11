@@ -2538,6 +2538,8 @@ bindCustomRecurrenceValues(){
         this.dataBindStartTime = performance.now();
 
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
+
+        console.log(data,'Scheduledjson')
         this.loadingDMS = true;
         this.Scheduledjson = this.Scheduledjson
         .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());

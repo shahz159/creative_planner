@@ -5638,7 +5638,7 @@ debugger
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
 
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson;
-
+        console.log(this.Attachments_ary, "Attachments_ary");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status;
@@ -6749,6 +6749,9 @@ getChangeSubtaskDetais(Project_Code) {
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
+          var Attamentdraftid= data['draftid']
+          frmData.append("draftid", Attamentdraftid= Attamentdraftid?Attamentdraftid:0);
+
 
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
