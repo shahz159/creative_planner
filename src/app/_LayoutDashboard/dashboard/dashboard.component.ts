@@ -2113,16 +2113,20 @@ debugger
       else
         _attachmentValue = 0;
 
-      frmData.append("EventNumber", this.EventNumber.toString());
+      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       console.log(JSON.stringify(finalarray), "finalarray")
-      this._calenderDto.draftid = this.draftid;
+      this._calenderDto.draftid = this.draftid? this.draftid : 0;
 
 
       console.log('_calenderDto obj:', frmData);
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
+
+
+          var Attamentdraftid= data['draftid']
+          frmData.append("draftid", Attamentdraftid= Attamentdraftid?Attamentdraftid:0);
 
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
@@ -2510,7 +2514,7 @@ debugger
          this. _attachmentValue = 0;
 
       
-        frmData.append("EventNumber", this.EventNumber.toString());
+         frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
         frmData.append("CreatedBy", this.Current_user_ID.toString());
         frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
         frmData.append("flag_id", this._calenderDto.flagid.toString());
@@ -2524,7 +2528,9 @@ debugger
           (data => {
             
             // alert(data['Schedule_date'])
-          
+           var Attamentdraftid= data['draftid']
+           frmData.append("draftid", Attamentdraftid= Attamentdraftid?Attamentdraftid:0);
+
             frmData.append("Schedule_date", data['Schedule_date'].toString());
             if (this._attachmentValue == 1) {
               this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
@@ -4035,7 +4041,7 @@ debugger
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status.trim();
-        console.log(this.Status1, "Isadmin");
+        console.log(this.Attachments_ary, "Attachments_ary");
         this.Proposedate = this.EventScheduledjson[0].Schedule_date;
         this.PropStart = this.EventScheduledjson[0].St_Time;
         this.PurposeEnd = this.EventScheduledjson[0].Ed_Time;
@@ -4168,7 +4174,7 @@ debugger
         this.creation_date = this.EventScheduledjson[0].Created_date;
         this.pending_status = this.EventScheduledjson[0].Pending_meeting;
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
-        console.log(this.Meeting_status, "Meeting_status");
+        console.log(this.Attachments_ary, "Attachments_ary");
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
 
@@ -4266,7 +4272,7 @@ debugger
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
-        console.log(this.Meeting_status, "Meeting_status");
+        console.log(this.Attachments_ary, "Attachments_ary");
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.creation_date = this.EventScheduledjson[0].Created_date;
         // console.log(this.EventScheduledjson, "Testing12");
@@ -5395,16 +5401,6 @@ debugger
 
   }
   Insert_indraft() {
-    // var now = new Date();
-    // if(this.eventRepeat===false){
-    //   let timestamp = "";
-    //   timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
-    //     + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
-    //   this.EventNumber = timestamp;
-    // }
-
-
-
 
     if (this.draftid != 0) {
       this._calenderDto.draftid = this.draftid;
@@ -5449,7 +5445,7 @@ debugger
       _attachmentValue = 0;
 
       ;
-      frmData.append("EventNumber", this.EventNumber=this.EventNumber='');
+      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id);
       
@@ -5461,8 +5457,9 @@ debugger
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
       (data => {
            
-        var Attamentdraftid= data['draftid']
-        frmData.append("draftid", Attamentdraftid);
+   
+      var Attamentdraftid= data['draftid']
+      frmData.append("draftid", Attamentdraftid= Attamentdraftid?Attamentdraftid:0);
  
         if (_attachmentValue == 1) {
           this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
@@ -7381,6 +7378,57 @@ parseTime(time: string): Date {
   if (modifier === 'PM' && hours !== 12) hours += 12;
   if (modifier === 'AM' && hours === 12) hours = 0;
   return new Date(1970, 0, 1, hours, minutes); // Return a date object with a fixed date
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  debugger
+  let FileUrl: string;
+  
+  FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+  if (iscloud == false) {
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
+    // if (this.projectInfo.AuthorityEmpNo == this.projectInfo.ResponsibleEmpNo) {
+    //   // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+    //   FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
+    // }
+    // else if (this.projectInfo.AuthorityEmpNo != this.projectInfo.ResponsibleEmpNo) {
+    //   FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
+    // }
+    let name = "ArchiveView/" + pcode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+  else if (iscloud == true) {
+    let name = "ArchiveView/" + pcode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(url1);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
 }
 
 

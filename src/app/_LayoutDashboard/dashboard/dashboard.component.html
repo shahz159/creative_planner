@@ -1839,8 +1839,9 @@
                         </div>
                         <div class="rgt-des">
                             <div class="" *ngFor="let trt of Attachments_ary">
-                                <div class="main-s">
-                                    <a target=”_blank” href="{{trt.url}}">{{trt.File_Name}}</a>
+                                <div class="main-s"  (click)="LoadDocument(trt.Project_Code,true,trt.File_Name&&trt.File_Name,trt.url,trt.contenttype,trt.Created_by)">
+                                    <!-- <a target=”_blank” href="{{trt.url}}">{{trt.File_Name}}</a> -->
+                                    {{trt.File_Name}}
                                 </div>
                             </div>
                         </div>

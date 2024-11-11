@@ -2674,8 +2674,13 @@ export class MeetingDetailsComponent implements OnInit {
       else
         _attachmentValue = 0;
 
+        debugger
       frmData.append("EventNumber", this.EventNumber);
       frmData.append("CreatedBy", this.Current_user_ID);
+      var Attamentdraftid= '';
+      frmData.append("draftid", Attamentdraftid);
+
+
 
       if (_attachmentValue == 1) {
         this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
