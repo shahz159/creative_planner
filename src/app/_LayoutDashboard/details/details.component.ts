@@ -6738,7 +6738,7 @@ getChangeSubtaskDetais(Project_Code) {
       else
         _attachmentValue = 0;
 
-        frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       console.log(JSON.stringify(finalarray), "finalarray")
       this._calenderDto.draftid = this.draftid;
@@ -6750,8 +6750,8 @@ getChangeSubtaskDetais(Project_Code) {
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
 
-          var Attamentdraftid= data['draftid']
-          frmData.append("draftid", Attamentdraftid= Attamentdraftid?Attamentdraftid:0);
+          var Attamentdraftid= '0'
+          frmData.append("draftid", Attamentdraftid= Attamentdraftid);
 
 
           if (_attachmentValue == 1) {
@@ -9953,6 +9953,7 @@ OnSubmitSchedule1() {
 
     frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
     frmData.append("CreatedBy", this.Current_user_ID.toString());
+    frmData.append("RemovedFile_id", this._calenderDto.file_ids='0');
     console.log(JSON.stringify(finalarray), "finalarray")
     this._calenderDto.draftid = this.draftid;
 
@@ -9961,8 +9962,8 @@ OnSubmitSchedule1() {
 
     this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
       (data => {
-        var Attamentdraftid= data['draftid']
-        frmData.append("draftid", Attamentdraftid= Attamentdraftid?Attamentdraftid:0);
+        var Attamentdraftid= '0'
+        frmData.append("draftid", Attamentdraftid= Attamentdraftid);
 
 
         if (_attachmentValue == 1) {

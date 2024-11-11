@@ -5458,8 +5458,8 @@ debugger
       (data => {
            
    
-      var Attamentdraftid= data['draftid']
-      frmData.append("draftid", Attamentdraftid= Attamentdraftid?Attamentdraftid:0);
+      var Attamentdraftid = '0'
+      frmData.append("draftid", Attamentdraftid);
  
         if (_attachmentValue == 1) {
           this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
