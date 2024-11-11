@@ -2675,7 +2675,7 @@ export class MeetingDetailsComponent implements OnInit {
         _attachmentValue = 0;
 
         debugger
-      frmData.append("EventNumber", this.EventNumber);
+      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID);
       var Attamentdraftid= '';
       frmData.append("draftid", Attamentdraftid);

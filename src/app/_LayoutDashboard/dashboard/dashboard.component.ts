@@ -2108,7 +2108,7 @@ debugger
       for (var i = 0; i < this._lstMultipleFiales.length; i++) {
         frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
       }
-      if (this._lstMultipleFiales.length > 0)
+      if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
         _attachmentValue = 1;
       else
         _attachmentValue = 0;
@@ -2117,7 +2117,7 @@ debugger
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       console.log(JSON.stringify(finalarray), "finalarray")
       this._calenderDto.draftid = this.draftid? this.draftid : 0;
-
+      frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
 
       console.log('_calenderDto obj:', frmData);
 
@@ -2518,7 +2518,7 @@ debugger
         frmData.append("CreatedBy", this.Current_user_ID.toString());
         frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
         frmData.append("flag_id", this._calenderDto.flagid.toString());
-        frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id);
+        frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
         
         this._calenderDto.attachment =this._attachmentValue.toString();
 
@@ -5447,7 +5447,7 @@ debugger
       ;
       frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
-      frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id);
+      frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
       
 
     const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);

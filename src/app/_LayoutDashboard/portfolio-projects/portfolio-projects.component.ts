@@ -4129,7 +4129,7 @@ getChangeSubtaskDetais(Project_Code) {
       else
         _attachmentValue = 0;
 
-      frmData.append("EventNumber", this.EventNumber.toString());
+      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       console.log(JSON.stringify(finalarray), "finalarray")
       this._calenderDto.draftid = this.draftid;
@@ -4139,6 +4139,10 @@ getChangeSubtaskDetais(Project_Code) {
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
+
+          var Attamentdraftid= data['draftid']
+          frmData.append("draftid", Attamentdraftid= Attamentdraftid?Attamentdraftid:0);
+
 
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
