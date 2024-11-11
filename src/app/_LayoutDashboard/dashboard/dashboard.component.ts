@@ -5462,7 +5462,7 @@ debugger
       (data => {
            
    
-      this.Attamentdraftid = 0
+      this.Attamentdraftid= data['draftid']
       frmData.append("draftid", this.Attamentdraftid);
  
         if (_attachmentValue == 1) {
