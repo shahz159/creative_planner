@@ -1015,11 +1015,11 @@ span.previous-dot {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50vh;
+  height: 35vh;
 }
 
 .notimeline-present img {
-  width: 24%;
+  width: 18%;
 }
 
 .tm-subm-sb {
@@ -1351,21 +1351,21 @@ span.previous-dot {
   border: 1px solid #e1e1e1;
   border-radius: 10px;
   padding: 0.65rem 1rem;
-  width: 100%;
+  /* width: 100%; */
   -webkit-user-select: none;
   user-select: none;
 }
 
 .total-time-count {
-  color: #242424;
-  font-size: 16px;
-  font-weight: 600;
+  color: #5b5b5b;
+  font-weight: 400;
+  font-size: 13px;
   display: flex;
   gap: 6px;
 }
 
 .total-time-title {
-  color: #5b5b5b;
+  color: #a4a0a0;
   font-size: 14px;
   font-weight: 400;
   width: max-content;
@@ -1385,10 +1385,10 @@ span.previous-dot {
 .end-timeline-ul {
   margin-top: 1rem;
   user-select: none;
-  max-height: 64vh;
+  max-height: 40vh;
   overflow-y: auto;
 
-  min-height: 50vh;
+  min-height: 40vh;
 }
 
 .end-timeline-ul::-webkit-scrollbar{
@@ -1492,6 +1492,11 @@ span.previous-dot {
   padding-left: 2rem;
 }
 
+
+
+
+
+
 .end-timeline-modal-body::-webkit-scrollbar {
   background: transparent;
   height: 8px;
@@ -1512,6 +1517,11 @@ span.timeline-time {
   gap: 2px;
   color: #736a6a;
   font-weight: 400;
+}
+
+.timeline-task-duration{
+  font-size: 12px;
+  font-weight: 500;
 }
 
 span.timeline-time svg {
@@ -1768,7 +1778,7 @@ span.timeline-time svg {
 
 
 .report-item .timeline-time .tm-start-end{
-  font-size: 9px;
+  font-size: 10px;
   color: #a9a9a9 !important;
 }
 
@@ -1784,5 +1794,190 @@ span.timeline-time svg {
   padding: 1px 3px 1px 3px;
   margin-right: 3px;
   border-radius: 3px;
+  
 }
 
+    
+
+
+/* test */
+
+
+
+
+
+.collapseTimeline-table{
+  display: block;
+  max-height: 35vh;
+  overflow-y: auto;
+}
+
+.collapseTimeline-table thead{
+    position: sticky;
+    top: 0;
+    background-color: white;
+}
+
+.collapseTimeline-table::-webkit-scrollbar{
+  width:0.6rem;
+}
+
+.collapseTimeline-table::-webkit-scrollbar-thumb{
+  background-color: #e8e8e8;
+  border-radius: 15px;
+}
+
+.collapseTimeline-table .work-desc.collapse{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  max-height: 5.4em;
+  line-height: 1.4em;
+}
+
+
+
+.collapseTimeline-table .action-label{
+  background-color: #76a5e0;
+  color: #ffffff !important;
+  font-weight: 400;
+  padding: 1px 3px 1px 3px;
+  margin-right: 3px;
+  border-radius: 3px;
+}
+
+
+#collapseTimeline .collapseTimeline-closeBtn
+{
+  position: relative;
+  top: -12px;
+  right: -4px;
+}
+
+
+#collapseTimeline .prj-name,#collapseTimeline .actn-name{
+  color: #5867dd;
+  text-decoration: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+#collapseTimeline .prj-name:hover,#collapseTimeline .actn-name:hover{
+  color: #2739c1;
+}
+
+.completion-ending-statement{
+  background-color: #fff0d7;
+  color: #c27d0a;
+  padding: 6px;
+  border-left: 2px solid #c27d0a;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+
+.completion-ending-statement.success{
+  background-color: #3ef9465c;
+  color: #388e3c;
+  border-left-color:#388e3c;
+}
+
+.completion-ending-statement.danger{
+  background-color: #d32f2f36;
+  color: #d32f2f;
+  border-left-color:#d32f2f;
+}
+
+
+
+.done-svg, .due-svg, .overalldelay-svg{
+   width:16px;
+   height:16px;
+   stroke-width: 0.25px !important;
+}
+
+.done-svg{ fill:#388E3C;   }
+.due-svg{ stroke:#c27d0a; }
+.overalldelay-svg{    stroke-width: 0 !important; fill: #d32f2f;  }
+
+.done-label{ color:#388E3C;   }
+.due-label{  color:#c27d0a;  }
+.overalldelay-label{ color:#d32f2f; }
+
+
+.summary-report-content{
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+
+.summary-report-content::-webkit-scrollbar{
+  width:0.6rem;
+}
+
+.summary-report-content::-webkit-scrollbar-thumb{
+  background-color: #e1e1e1;
+  border-radius: 15px;
+}
+
+
+
+.summary-report-table{
+  width:90%;
+}
+
+
+
+
+
+
+
+
+
+/*test*/
+
+.actnTl-submitbt{
+  max-width: 120px;
+  line-height: 13px;
+}
+
+
+
+
+.compl-remarks-span {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  max-height: 3em;
+  line-height: 1.5em;
+  cursor: default;
+
+}
+
+
+.txt-expnd-btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  border-radius: 3px;
+  border: 0;
+  background-color:#edededc2; 
+}
+
+.txt-expnd-btn svg{
+  stroke: #898989;
+  stroke-width: 2px; 
+}
+
+.txt-expnd-btn:hover{
+  background-color: #eaeaea;
+}
+
+.txt-expnd-btn:hover svg{
+  stroke-width: 2.6px;
+}

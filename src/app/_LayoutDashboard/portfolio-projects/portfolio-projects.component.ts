@@ -391,7 +391,7 @@ export class PortfolioProjectsComponent implements OnInit {
   isPendingChecked : boolean = false
 
 
-  GetPortfolioProjectsByPid() {
+  GetPortfolioProjectsByPid() {  
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
     this._Pid = this.Url_portfolioId;
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -6129,7 +6129,7 @@ bindCustomRecurrenceValues(){
           const weeks = Math.floor(delayDays / 7);
           delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
         } else {
-          delayText = delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
+          delayText = delayDays==0?'0 days':delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
         }
 
         return `${delayText.toLowerCase()}`;

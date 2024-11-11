@@ -1245,7 +1245,7 @@
                                                             </div>
                                                         </ng-container>
                                                         <ng-container  *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') && item.Status!='InProcess'">
-                                                            <ng-container [ngSwitch]="item.Status">
+                                                            <ng-container [ngSwitch]="item.Status?item.Status.trim():''">
 
                                                                     <span class="Completed_color font-weight-400" *ngSwitchCase="'Completed'">{{item.Status}}</span>
                                                                     <span class="Under_Approval_color font-weight-400" *ngSwitchCase="'Under Approval'">New approval</span>
@@ -1291,7 +1291,7 @@
                                                             <div *ngIf="item.Status=='Delay'" class="attach-tippy" >
                                                                 <span class="vi font-weight-400 st-line"> {{item.Delaydays}} days delay</span>
                                                                 <span
-                                                                    class="Delay_color " >
+                                                                    class="Delay_color">
                                                                    {{getFormattedDelay(item.Delaydays)}}
                                                                 </span>
 
