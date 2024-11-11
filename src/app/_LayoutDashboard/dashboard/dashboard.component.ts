@@ -2125,8 +2125,8 @@ debugger
         (data => {
 
 
-          var Attamentdraftid= data['draftid']
-          frmData.append("draftid", Attamentdraftid= Attamentdraftid?Attamentdraftid:0);
+          this.Attamentdraftid= data['draftid']
+          frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
 
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
@@ -2528,8 +2528,8 @@ debugger
           (data => {
             
             // alert(data['Schedule_date'])
-           var Attamentdraftid= data['draftid']
-           frmData.append("draftid", Attamentdraftid= Attamentdraftid?Attamentdraftid:0);
+            this.Attamentdraftid= data['draftid']
+           frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
 
             frmData.append("Schedule_date", data['Schedule_date'].toString());
             if (this._attachmentValue == 1) {
@@ -5400,6 +5400,10 @@ debugger
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
+
+  Attamentdraftid:any
+
+
   Insert_indraft() {
 
     if (this.draftid != 0) {
@@ -5458,8 +5462,8 @@ debugger
       (data => {
            
    
-      var Attamentdraftid = '0'
-      frmData.append("draftid", Attamentdraftid);
+      this.Attamentdraftid = 0
+      frmData.append("draftid", this.Attamentdraftid);
  
         if (_attachmentValue == 1) {
           this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
