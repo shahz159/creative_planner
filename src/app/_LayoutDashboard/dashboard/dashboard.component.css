@@ -1462,6 +1462,16 @@ span.s-dot{
     color: #3c4043;
 }
 
+.main-s .Attament-title {
+   cursor: pointer;
+    color: #5867dd;
+}
+
+.main-s:hover .Attament-title {   
+    color: #4250bc;
+}
+
+
 .sub-s {
     font-size: 12px;
     font-weight: 400;

@@ -1243,7 +1243,7 @@
                     <div id="copy_data2" class="icons-right" style="display:block;" data-toggle="tooltip"
                         title="Pending!" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false">
                         <span class="tool-span" (click)="sweet_pending()">
-                            <svg class="toolicns kt-p-ic-top" width="22" height="22"
+                            <!-- <svg class="toolicns kt-p-ic-top" width="22" height="22"
                                 xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
                                 xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
                                 xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg"
@@ -1277,7 +1277,9 @@
                                         </g>
                                     </g>
                                 </switch>
-                            </svg> </span>
+                            </svg>  -->
+                            <svg _ngcontent-wnc-c407="" width="17px" height="17px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g _ngcontent-wnc-c407="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-wnc-c407="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-wnc-c407="" id="SVGRepo_iconCarrier"><g _ngcontent-wnc-c407="" id="Free-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><g _ngcontent-wnc-c407="" transform="translate(-451.000000, -748.000000)" id="Group" stroke="currentColor" stroke-width="1.75"><g _ngcontent-wnc-c407="" transform="translate(449.000000, 746.000000)" id="Shape"><line _ngcontent-wnc-c407="" x1="17" y1="3" x2="17" y2="5"></line><line _ngcontent-wnc-c407="" x1="7" y1="3" x2="7" y2="5"></line><path _ngcontent-wnc-c407="" d="M18,11.5 L18,17.9933387 M18.0043926,21.0066613 L18,20.9933387"></path><path _ngcontent-wnc-c407="" d="M8.03064542,21 C7.42550126,21 6.51778501,21 5.30749668,21 C4.50512981,21 4.2141722,20.9218311 3.92083887,20.7750461 C3.62750553,20.6282612 3.39729582,20.4128603 3.24041943,20.1383964 C3.08354305,19.8639324 3,19.5916914 3,18.8409388 L3,7.15906122 C3,6.4083086 3.08354305,6.13606756 3.24041943,5.86160362 C3.39729582,5.58713968 3.62750553,5.37173878 3.92083887,5.22495386 C4.2141722,5.07816894 4.50512981,5 5.30749668,5 L18.6925033,5 C19.4948702,5 19.7858278,5.07816894 20.0791611,5.22495386 C20.3724945,5.37173878 20.6027042,5.58713968 20.7595806,5.86160362 C20.9164569,6.13606756 21,7.24671889 21,7.99747152"></path></g></g></g></g></svg>
+                        </span>
                     </div>
                     <div class="icons-right" id="hiddenedit" style="display:block;" data-toggle="tooltip" title="Edit">
                         <span class="tool-span" (click)="ReshudingTaskandEvent();updateCharacterCount()">
@@ -1393,9 +1395,9 @@
                             </div>
                             <div class="box-cl" *ngIf="(Status1 =='Pending' || Status1 =='May be')" style="border:4px solid #9B30FF;">
                             </div>
-                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected'  && Isadmin==true" style="background-color: #3788d8;">
+                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected'  && Status1=='Owner'" style="background-color: #3788d8;">
                             </div>
-                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected' && Isadmin==false" style="background-color: #9B30FF;">
+                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected' && Status1!='Owner'" style="background-color: #9B30FF;">
                             </div>
                          </ng-template>
 
@@ -1407,22 +1409,22 @@
                                     <span id="title1">{{item.Task_Name}}</span>
                                 </div>
                                 <div class="">
-                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==true" style="height: 18px;"
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Status1=='Owner'" style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         {{item.Schedule_Type}}
                                     </span>
                                     <span
-                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat' && Isadmin==true && Meeting_status==false"
+                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat' && Status1=='Owner' && Meeting_status==false"
                                         style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1">
                                         {{item.Recurrence}}
                                     </span>
-                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==false" style="height: 18px;"
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Status1!='Owner'" style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-purple kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         {{item.Schedule_Type}}
                                     </span>
                                     <span
-                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Isadmin==false && Meeting_status==false"
+                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Status1!='Owner' && Meeting_status==false"
                                         style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-purple kt-badge--bold kt-badge--inline mb-1">
                                         {{item.Recurrence}}
@@ -1841,7 +1843,7 @@
                             <div class="" *ngFor="let trt of Attachments_ary">
                                 <div class="main-s"  (click)="LoadDocument(trt.Project_Code,true,trt.File_Name&&trt.File_Name,trt.url,trt.contenttype,trt.Created_by)">
                                     <!-- <a target=”_blank” href="{{trt.url}}">{{trt.File_Name}}</a> -->
-                                    {{trt.File_Name}}
+                                   <span class="Attament-title"> {{trt.File_Name}}</span>
                                 </div>
                             </div>
                         </div>

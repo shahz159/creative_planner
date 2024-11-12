@@ -1999,7 +1999,7 @@ export class DashboardComponent implements OnInit {
 
         var vRecurrence = "Recurrence";
         element[vRecurrence] = this.selectedrecuvalue;
-
+        debugger
         var vRecurrence_value = "Recurrence_values";
         element[vRecurrence_value] = _arraytext.toString();
 
@@ -2102,7 +2102,7 @@ export class DashboardComponent implements OnInit {
       else {
         this._calenderDto.Schedule_ID = 0;
       }
-debugger
+
       let _attachmentValue = 0;
       const frmData = new FormData();
       for (var i = 0; i < this._lstMultipleFiales.length; i++) {
@@ -4613,6 +4613,7 @@ debugger
 
   TwinEvent = [];
   customizeEvent = (info) => {
+    debugger
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
@@ -5421,9 +5422,65 @@ debugger
     if (this.Portfolio == null) {
       this.Portfolio = [];
     }
+
+
+    this.daysSelectedII = [];
+    const format2 = "YYYY-MM-DD";
+    var start = moment(this.minDate);
+    const _arraytext = [];
+    if (this.selectedrecuvalue == "0") {
+      const d1 = new Date(moment(start).format(format2));
+      const date = new Date(d1.getTime());
+      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+    }
+    else if (this.selectedrecuvalue == "1") {
+      this.daysSelectedII = this.AllDatesSDandED;
+    }
+    else if (this.selectedrecuvalue == "2") {
+      if (this.dayArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.dayArr.length; index++) {
+        if (this.dayArr[index].checked) {
+        
+          const day = this.dayArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+      if (this.daysSelectedII.length == 0) {
+        alert('please select valid day');
+      }
+    }
+    else if (this.selectedrecuvalue == "3") {
+      if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.MonthArr.length; index++) {
+        if (this.MonthArr[index].checked == true) {
+          const day = this.MonthArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+    }
+
     this._calenderDto.Portfolio = this.Portfolio.toString();
     this._calenderDto.location = this.Location_Type;
     this._calenderDto.loc_status = this._onlinelink;
+    this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password;
+    this._calenderDto.Link_details=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+debugger
+    this._calenderDto.Recurrence = this.selectedrecuvalue ;
+    this._calenderDto.Rec_values = _arraytext.toString();
+    this._calenderDto.Rec_EndDate = this._EndDate;
+
+
+
     this._calenderDto.Note = this.Description_Type;
     this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
     //  alert( this.ScheduleType);
@@ -5437,7 +5494,6 @@ debugger
     this._calenderDto.Project_Code = this.MasterCode.toString();
 
 
-debugger
     let _attachmentValue = 0;
     const frmData = new FormData();
     for (var i = 0; i < this._lstMultipleFiales.length; i++) {
@@ -5483,40 +5539,38 @@ debugger
                   console.log('User successfully created!', event.body);
 
                   // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                  (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+                  
+
+                  (<HTMLInputElement>document.getElementById("customFile")).value = "";
                   this._lstMultipleFiales = [];
                   // empty(this._lstMultipleFiales);
                   // alert(this._lstMultipleFiales.length);
                   setTimeout(() => {
                     this.progress = 0;
-                  }, 1500);
+                  }, 2000);
 
-                  (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                  (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                  //69 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                  //69 (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
                   document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                  document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+                  //69 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
               }
             }
           )
         }
 
-
-
-
         if (data['message'] == '1') {
-          this.Getdraft_datalistmeeting();
-          this.closeschd();
+          this.closeschd();        
           this.notifyService.showSuccess("Draft saved", "Success");
         }
         if (data['message'] == '2') {
-          this.Getdraft_datalistmeeting();
-          this.closeschd();
+          this.closeschd();  
           this.notifyService.showSuccess("Draft updated", "Success");
         }
       });
-
-
+      this.Getdraft_datalistmeeting();
   }
+
+
   draftdata_meet: any = [];
   draftcount: any;
   Getdraft_datalistmeeting() {
@@ -5524,6 +5578,7 @@ debugger
     this._calenderDto.Emp_No = this.Current_user_ID;
     this.CalenderService.NewGetMeeting_darftdata(this._calenderDto).subscribe
       (data => {
+        debugger
         console.log(data, "ssdddd")
         if (data['Draft_meetingdata'] != "" && data['Draft_meetingdata'] != null && data['Draft_meetingdata'] != undefined) {
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
@@ -5558,14 +5613,14 @@ debugger
 
   darft_click(Sno, val, attachments) {
     this.draftid = Sno;
-
+   
     this.Task_type(val);
+
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]
     console.log(this.draft_arry[0], '6969')
-    // console.log(this.draft_arry,"ss11111111")
+  
     this.allAgendas = JSON.parse(this.draft_arry[0]['Agendas']);
-    debugger
     this.Attachment12_ary= attachments;
     this.MasterCode = [];
     this.projectsSelected=[];
@@ -5573,12 +5628,30 @@ debugger
     this.arr.forEach(element => {
       this.MasterCode.push(parseInt(element.stringval));
     });
-    this.arr.forEach(element => {
-      this.projectsSelected.push(element.stringval);
-    });
 
-   
+
+    this.Link_Details= this.draft_arry[0].Link_details;
+    if(this.Link_Details != ''){
+      if(!this.Link_Details.includes('<a href=')){
+        var details = this.Link_Details.split(', ')
+        this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+        this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+        this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined' || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+        console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
+      }
+      else if(this.Link_Details.includes('<a href=')){
+        this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
+        this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
+        this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
+        console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details 69');
+      }
+     }
+    // this.arr.forEach(element => {
+    //   this.projectsSelected.push(element.stringval == this.ProjectListArray);
+    // });
     //  this.MasterCode=this.draft_arry[0]["Project_Code"]
+
+
     this.Portfolio = [];
     this.Portfolio1 = [];
     this.arr1 = JSON.parse(this.draft_arry[0]['Portfolio_id']);
@@ -5615,10 +5688,85 @@ debugger
     this._onlinelink = this.draft_arry[0]["online"];
     this.Location_Type = this.draft_arry[0]["location"];
     $('#Descrip_Name12').css('display',this._onlinelink?'flex':'none');
+   
+    setTimeout(() => {
+      this.projectsSelected = this.ProjectListArray.filter(project =>
+        this.arr.some(item => item.stringval === project.Project_Code)
+       );
+    }, 1000);
 
+
+debugger
+
+    this.selectedrecuvalue= this.draft_arry[0].Recurrence;
+    this._EndDate = this.draft_arry[0].Rec_EndDate;
+
+
+
+    if (this.selectedrecuvalue=='2') {
+
+      this._labelName = "Schedule Date";
+      // document.getElementById("div_endDate").style.display = "none";
+      document.getElementById("div_endDate_new").style.display = "block";
+      document.getElementById("Recurrence_hide").style.display = "block";
+      document.getElementById("weekly_121_new").style.display = "block";
+      this.selectedrecuvalue = '2';
+      let Recc = [];
+      var ret1 = this.draft_arry[0].Rec_values;
+      Recc = ret1.split(",");
+
+      for (var i = 0; i < Recc.length; i++) {
+        this.dayArr.forEach(element => {
+          if (element.value == Recc[i]) {
+            element.checked = true;
+          }
+        });
+      }
+
+      this.dayArr.forEach((item:any)=>{
+        if(item.checked){
+            let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
+           this.mtgOnDays.push(d_name);
+        }
+     });
+
+
+    }
+    else if (this.selectedrecuvalue=='3') {
+      document.getElementById("Recurrence_hide").style.display = "block";
+      document.getElementById("div_endDate_new").style.display = "block";
+      // document.getElementById("div_endDate").style.display = "none";
+      document.getElementById("Monthly_121_new").style.display = "block";
+      this._labelName = "Schedule Date";
+      this.selectedrecuvalue = '3';
+      let Recc = [];
+      var ret1 = this.draft_arry[0].Rec_values;
+      Recc = ret1.split(",");
+      for (var i = 0; i < Recc.length; i++) {
+        this.MonthArr.forEach(element => {
+          if (element.value == Recc[i]) {
+            element.checked = true;
+          }
+        });
+      }
+
+      this.MonthArr.forEach((item:any)=>{
+        if(item.checked){
+           const d_no=Number.parseInt(item.value);
+           this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
+        }
+      });
+
+    }
+  
+   
   }
-  closeschd() {
 
+
+
+
+
+  closeschd() {
     // this.Insert_indraft();
     // document.getElementById('date-menu').classList.remove("show");
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
