@@ -459,6 +459,236 @@
 
                                 <a   (click)="labelAll();filterProjectsOfEmp();notShow()" class="kt-todo__icon"  data-toggle="dropdown"   title="Click to reset the filter" aria-haspopup="true" aria-expanded="false" ><svg   xmlns="http://www.w3.org/2000/svg" fill="currentColor" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="1.5rem" width="20px" height="20px" viewBox="0 0 24 24" class="iconify iconify--mdi"><path   d="M2 12a9 9 0 0 0 9 9c2.39 0 4.68-.94 6.4-2.6l-1.5-1.5A6.706 6.706 0 0 1 11 19c-6.24 0-9.36-7.54-4.95-11.95C10.46 2.64 18 5.77 18 12h-3l4 4h.1l3.9-4h-3a9 9 0 0 0-18 0Z"></path></svg></a>
                                     </ng-container>
+
+
+                                    <div class="dropdown">
+                                      <ng-container *ngIf="_MessageIfNotOwner == ''">
+
+
+                                        <a class="kt-todo__icon"    data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" ><svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" aria-hidden="true" role="img" font-size="1.5rem" width="1em" height="1em" viewBox="0 -1 17 17" class="iconify iconify--mdi"><path _ngcontent-lde-c401="" d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"></path></svg></a>
+
+                                      </ng-container>
+
+
+                                        <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter"  id="dropd"  (click)="$event.stopPropagation()">
+
+                                            <ul  class="drop-ul">
+                                              <!-- [ngClass]="{'active':_PortProjStatus==''&&this.showDeletedPrjOnly!==true}" -->
+                                                <!-- <li class="dropdown-header">Filter by</li> -->
+
+                                                <li>
+                                                 <button  class="btn btn-filtr "   >
+                                                        <div class="d-flex align-items-center">
+                                                      <div  class="fil-lbl"> Project type  </div>
+                                                            <label class="switch">
+                                                              <input type="checkbox"  [checked]="true"  (change)="togglevisibilityforClass('projtypeclass',$event);" >
+                                                              <span class="slider"></span>
+                                                            </label>
+
+                                                        </div>
+                                                    </button>
+                                                </li>
+
+                                                <li>
+                                                  <button  class="btn btn-filtr "   >
+                                                         <div class="d-flex align-items-center">
+                                                       <div  class="fil-lbl">Owner</div>
+                                                             <label class="switch">
+                                                               <input type="checkbox"    (change)="togglevisibilityforClass('owner_class',$event);" >
+                                                               <span class="slider"></span>
+                                                             </label>
+
+                                                         </div>
+                                                     </button>
+                                                 </li>
+
+
+                                               <li>
+
+                                                    <button   class="btn btn-filtr" >
+                                                        <div class="d-flex align-items-center">
+                                                            <!-- <span class="count in-pro"> {{CountInprocess}}</span> -->
+                                                            <div class="fil-lbl">Responsible</div>
+                                                            <label class="switch">
+                                                              <input type="checkbox"  [checked]="true" (change)="togglevisibilityforClass('responclass',$event);">
+                                                              <span class="slider"></span>
+                                                            </label>
+
+                                                        </div>
+                                                    </button>
+                                                </li>
+
+
+                                                <li>
+                                                  <button   class="btn btn-filtr" >
+                                                      <div class="d-flex align-items-center">
+                                                          <!-- <span class="count in-pro"> {{CountInprocess}}</span> -->
+                                                          <div class="fil-lbl">Client</div>
+                                                          <label class="switch">
+                                                            <input type="checkbox" (change)="togglevisibilityforClass('client_class',$event);">
+                                                            <span class="slider"></span>
+                                                          </label>
+
+                                                      </div>
+                                                  </button>
+                                              </li>
+
+
+
+                                              <li  >
+                                                <button  class="btn btn-filtr" >
+                                                    <div class="d-flex align-items-center">
+                                                        <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
+                                                        <div class="fil-lbl">Cost</div>
+                                                        <label class="switch">
+                                                          <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('classCost', $event);">
+                                                          <span class="slider"></span>
+                                                        </label>
+
+                                                    </div>
+                                                </button>
+                                            </li>
+
+
+
+                                            <li>
+                                              <button   class="btn btn-filtr" >
+                                                  <div class="d-flex align-items-center">
+                                                      <!-- <span class="count del"> {{CountDelay}} </span> -->
+                                                      <div class="fil-lbl">Department</div>
+                                                      <label class="switch">
+                                                        <input type="checkbox" (change)="togglevisibilityforClass('class_depart',$event);">
+                                                        <span class="slider"></span>
+                                                      </label>
+
+                                                  </div>
+                                              </button>
+                                          </li>
+
+
+
+
+
+
+
+                                                <li>
+                                                    <button   class="btn btn-filtr" >
+                                                        <div class="d-flex align-items-center">
+                                                            <!-- <span class="count del"> {{CountDelay}} </span> -->
+                                                            <div class="fil-lbl">Deadline</div>
+                                                            <label class="switch">
+                                                              <input type="checkbox"   [checked]="true" (change)="togglevisibilityforClass('class_deadline',$event);">
+                                                              <span class="slider"></span>
+                                                            </label>
+
+                                                        </div>
+                                                    </button>
+                                                </li>
+
+
+
+                                                <li >
+                                                  <button  class="btn btn-filtr" >
+                                                      <div class="d-flex align-items-center">
+                                                          <!-- <span class="count com">{{CountCompleted}}</span> -->
+                                                          <div class="fil-lbl">Status</div>
+                                                          <label class="switch">
+                                                            <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('statusClass',$event);">
+                                                            <span class="slider"></span>
+                                                          </label>
+
+                                                      </div>
+                                                  </button>
+                                              </li>
+
+
+
+                                                <li >
+                                                    <button  class="btn btn-filtr" >
+                                                        <div class="d-flex align-items-center">
+                                                            <!-- <span class="count draf">{{CountNotStarted}}</span> -->
+                                                            <div class="fil-lbl">Last update</div>
+                                                            <label class="switch">
+                                                              <input type="checkbox" [checked]="true"   (change)="togglevisibilityforClass('clas_lasup',$event);">
+                                                              <span class="slider"></span>
+                                                            </label>
+
+                                                        </div>
+                                                    </button>
+                                                </li>
+
+                                                <li  >
+                                                    <button   class="btn btn-filtr" >
+                                                        <div class="d-flex align-items-center">
+                                                            <!-- <span class="count new-pro">{{CountNewProject}}</span> -->
+                                                            <div class="fil-lbl">Racis</div>
+                                                            <label class="switch">
+                                                              <input type="checkbox" (change)="togglevisibilityforClass('racisClass',$event);">
+                                                              <span class="slider"></span>
+                                                            </label>
+
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li  >
+                                                    <button  class="btn btn-filtr" >
+                                                        <div class="d-flex align-items-center">
+                                                            <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
+                                                            <div class="fil-lbl">Actions</div>
+                                                            <label class="switch">
+                                                              <input type="checkbox" (change)="togglevisibilityforClass('action_class', $event);">
+                                                              <span class="slider"></span>
+                                                            </label>
+
+                                                        </div>
+                                                    </button>
+                                                </li>
+
+
+                                            <ng-container  *ngIf="showDeletedPrjOnly">
+                                                <li>
+                                                  <button  class="btn btn-filtr" >
+                                                      <div class="d-flex align-items-center">
+                                                          <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
+                                                          <div class="fil-lbl">Deleted by</div>
+                                                          <label class="switch">
+                                                            <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('isdeleteds', $event);">
+                                                            <span class="slider"></span>
+                                                          </label>
+
+                                                      </div>
+                                                  </button>
+                                              </li>
+                                              <li  >
+                                                <button  class="btn btn-filtr" >
+                                                    <div class="d-flex align-items-center">
+                                                        <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
+                                                        <div class="fil-lbl">References</div>
+                                                        <label class="switch">
+                                                          <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('referClass', $event);">
+                                                          <span class="slider"></span>
+                                                        </label>
+
+                                                    </div>
+                                                </button>
+                                            </li>
+                                          </ng-container>
+
+
+
+
+
+                                            </ul>
+
+
+
+                                        </div>
+
+                                    </div>
+
+
+
+
                         </div>
                     </div>
 
@@ -468,8 +698,8 @@
 
 
 
-
-<div class="kt-Note-msg d-flex" *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0 || this.forwardPrjPort&&this.forwardPrjPort.length>0 ||this.completionPrjPort&&this.completionPrjPort.length>0 || this.newapprovalPrjport&&this.newapprovalPrjport.length > 0">
+<!--
+<div class="kt-Note-msg d-flex" *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0 || this.forwardPrjPort&&this.forwardPrjPort.length > 0 ||this.completionPrjPort&&this.completionPrjPort.length > 0 || this.newapprovalPrjport&&this.newapprovalPrjport.length > 0">
   <div class="kt-note-icon" style="align-self: flex-start;"><svg xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px"
       viewBox="0 0 66 65" xml:space="preserve">
@@ -504,27 +734,127 @@
     <span  class="notif-msg"><span  style="font-weight: bold;">Need your action on <span class="delayaction-of-emp" (click)="labelDelay();filterProjectsOfEmp(Current_user_ID)"  > {{this.delayPrjsofPort.length}} delay projects</span>    </span></span>
   </span>
 
-    <span *ngIf="this.forwardPrjPort&&this.forwardPrjPort.length>0  " class="notification audit-pending-notffor ">
-      <span  class="notif-msgs"><span  *ngIf="this.forwardPrjPort&&this.forwardPrjPort.length>0" style="font-weight: bold;">Need your action on <span class="delayaction-of-emp" (click)="labelForward();filterProjectsOfEmp(Current_user_ID)"  > {{this.forwardPrjPort.length}} forward projects</span>    </span></span>      </span>
+    <span *ngIf="this.forwardPrjPort&&this.forwardPrjPort.length > 0  " class="notification audit-pending-notffor ">
+      <span  class="notif-msgs"><span  *ngIf="this.forwardPrjPort&&this.forwardPrjPort.length > 0" style="font-weight: bold;">Need your action on <span class="delayaction-of-emp" (click)="labelForward();filterProjectsOfEmp(Current_user_ID)"  > {{this.forwardPrjPort.length}} forward projects</span>    </span></span>      </span>
 
 
-      <span *ngIf="this.completionPrjPort&&this.completionPrjPort.length>0" class="notification audit-pending-notfc ">
+      <span *ngIf="this.completionPrjPort&&this.completionPrjPort.length > 0" class="notification audit-pending-notfc ">
         <span  class="notif-msgs completion-under-approval"><span  *ngIf="this.completionPrjPort&&this.completionPrjPort.length>0" style="font-weight: bold;">Need action on this <span class="delayaction-of-emp" (click)="labelCompletionapproval();filterProjectsOfEmp(Current_user_ID)"  > {{this.completionPrjPort.length}} completion projects</span>    </span></span>      </span>
 
 
 
-        <span *ngIf="this.newapprovalPrjport&&this.newapprovalPrjport.length>0  " class="notification audit-pending-notffor ">
-          <span  class="notif-msgs"><span  *ngIf="this.newapprovalPrjport&&this.newapprovalPrjport.length>0" style="font-weight: bold;">Need your action on <span class="delayaction-of-emp" (click)="labelUA();filterProjectsOfEmp(Current_user_ID)"  > {{this.newapprovalPrjport.length}} new approvals</span>    </span></span>      </span>
+        <span *ngIf="this.newapprovalPrjport&&this.newapprovalPrjport.length > 0  " class="notification audit-pending-notffor ">
+          <span  class="notif-msgs"><span  *ngIf="this.newapprovalPrjport&&this.newapprovalPrjport.length > 0" style="font-weight: bold;">Need your action on <span class="delayaction-of-emp" (click)="labelUA();filterProjectsOfEmp(Current_user_ID)"  > {{this.newapprovalPrjport.length}} new approvals</span>    </span></span>      </span>
 
 
 
-      <!-- <span  *ngIf="this.completionPrjPort&&this.completionPrjPort.length>0" class="notif-msgs delayaction-of-emp" style="margin-left:-1276px;font-weight: bold;"  (click)="labelCompletionapproval();filterProjectsOfEmp(Current_user_ID)">and this {{this.completionPrjPort.length}} completion projects</span>  -->
 
 
 
 
     </div>
+</div> -->
+
+
+
+
+
+<!-- <div  id="pinMessages" class="pin-message accordion "><div  class="card border-0"><div  id="headingOne" class="card-header"><h2  class="mb-0" style="background-color: transparent;"><a  type="button" data-toggle="collapse" data-target="#collapsepinMessage" aria-expanded="false" aria-controls="collapsepinMessage" class="pin-msg-btn collapsed" style="border-radius: 5px;"><div  class="d-flex align-items-center"><span  style="line-height: 0; fill: #656464;"><svg  width="20px" height="20px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M3 1H1v18h18V1H3zm14 2v14H3V3h14zm4 18H5v2h18V5h-2v16zM15 5H5v2h10V5zM5 9h10v2H5V9zm7 4H5v2h7v-2z"></path></g></svg></span><div  class="pin-msg-btn-text"><span > You have <b >6</b> notifications.</span></div></div><div  class="pin-msg-btn-caret"><svg  width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><g  id="Arrow / Caret_Down_MD"><path  id="Vector" d="M16 10L12 14L8 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></g></svg></div></a></h2></div><div  id="collapsepinMessage" aria-labelledby="headingOne" data-parent="#pinMessages" class="collapse" style=""><div  class="card-body p-0">
+<div  class="notification delay-notification mydelay-action-notf "><svg  viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727" class="notif-img"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><g ><path  d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path><path  d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path></g></g></svg><span  class="notif-msg" style="color: #ff2727;"> You have 7 actions delay with maximum delay of 164 days</span><button  title="show actions" class="mydelayactns-open-btn curser-pointer"><svg  stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M12 22.4199C17.5228 22.4199 22 17.9428 22 12.4199C22 6.89707 17.5228 2.41992 12 2.41992C6.47715 2.41992 2 6.89707 2 12.4199C2 17.9428 6.47715 22.4199 12 22.4199Z" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M8 13.8599L10.87 10.8C11.0125 10.6416 11.1868 10.5149 11.3815 10.4282C11.5761 10.3415 11.7869 10.2966 12 10.2966C12.2131 10.2966 12.4239 10.3415 12.6185 10.4282C12.8132 10.5149 12.9875 10.6416 13.13 10.8L16 13.8599" stroke-linecap="round" stroke-linejoin="round" class="arrow"></path></g></svg></button></div>
+
+<div  class="notification overutilization-notification "><svg  width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><title >warning</title><g  id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g  id="add" transform="translate(32.000000, 42.666667)"><path  d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg><span  class="notif-msg" style="color: #c57a05;"> Project exceeds planned capacity with total utilization of 174%, an increase of 74%. </span></div>
+
+<div  class="notifications-list ">
+   -->
+
+   <div class="kt-Note-msg d-flex" *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0 || this.forwardPrjPort&&this.forwardPrjPort.length > 0 ||this.completionPrjPort&&this.completionPrjPort.length > 0 || this.newapprovalPrjport&&this.newapprovalPrjport.length > 0" >
+   <div class="kt-note-icon" style="align-self: flex-start;"><svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px"
+    viewBox="0 0 66 65" xml:space="preserve">
+    <path
+      d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z">
+    </path>
+    <path
+      d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z">
+    </path>
+    <path
+      d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z">
+    </path>
+    <path
+      d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z">
+    </path>
+    <path
+      d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z">
+    </path>
+    <path
+      d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z">
+    </path>
+    <path
+      d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z">
+    </path>
+    <path
+      d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z">
+    </path>
+  </svg></div>
+
+  <!-- <svg  viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727" class="notif-img"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><g ><path  d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path><path  d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path></g></g></svg> -->
+
+
+
+
+
+
+  <div  class="notification delay-notification "><span  class="notif-msg" style="color: #ff2727;"> You have <span *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0" (click)="labelDelay();filterProjectsOfEmp(Current_user_ID)"  class="delayaction-of-emp ">{{this.delayPrjsofPort.length}} delay projects</span><b *ngIf="this.forwardPrjPort.length>0" >,&nbsp;</b>
+   <span *ngIf="this.forwardPrjPort&&this.forwardPrjPort.length > 0"  class="delayaction-of-emp " (click)="labelForward();filterProjectsOfEmp(Current_user_ID)"  style="color:#81C784">{{this.forwardPrjPort.length}} forward approval project</span> <b *ngIf="this.completionPrjPort.length > 0" >,&nbsp;</b>
+
+  <span *ngIf="this.completionPrjPort&&this.completionPrjPort.length > 0"  style="color:#81C784" class="delayaction-of-emp " (click)="labelCompletionapproval();filterProjectsOfEmp(Current_user_ID)" >{{this.completionPrjPort.length}} Completion project</span><b *ngIf="newapprovalPrjport.length > 0&&this.delayPrjsofPort.length>0" class="">,&nbsp;</b>
+
+<span *ngIf="this.newapprovalPrjport&&this.newapprovalPrjport.length > 0"  style="color:#9C27B0 " class="delayaction-of-emp " (click)="labelUA();filterProjectsOfEmp(Current_user_ID)">{{this.newapprovalPrjport.length}} New approval</span>
+
+
+<!-- (109 days)<b  class="">,&nbsp;</b>
+
+<span  class="delayaction-of-emp ">Mohammed Raohan</span> (109 days)
+
+
+<span  class="">&nbsp;and&nbsp;</span>
+   <span  class="delayaction-of-emp ">Shaik Akheel Ahmed</span> (115 days)
+
+<b >.</b> -->
+</span>
+
 </div>
+
+</div>
+
+<!-- <div  class="notification overutilization-notification " style="cursor: pointer;"><svg  width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><title >warning</title><g  id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g  id="add" transform="translate(32.000000, 42.666667)"><path  d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg><span  class="notif-msg" style="color: #c57a05;"> 2 action(s) with Zero "0" allocated hour, Assigned to  Mohammed Mateen(1) and  Md Waseem Akram(1)
+
+</span></div>
+<div  class="notification newversion-notification "><svg  width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.00024000000000000003"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z" fill="#1692df"></path></g></svg><span  class="notif-msg fs-6" style="color: #00a2eb;"> Project has 2 Actions with the same owner and responsible, managed by <span  class="delayaction-of-emp ">Mohammed Mateen(2)</span>
+<b >.</b></span></div>
+<div  class="notification newversion-notification "><svg  width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.00024000000000000003"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z" fill="#1692df"></path></g></svg><span  class="notif-msg fs-6" style="color: #00a2eb;"> 1 action(s) pending for approval, Assigned to <span  class="delayaction-of-emp curser-pointer ">Shaik Akheel Ahmed(1)</span>.
+
+</span></div>
+</div></div></div></div> -->
+
+<!-- </div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -796,65 +1126,117 @@
 
                                                     <th></th>
 
-                                                    <th [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="Exec_BlockName" tabindex="0" class="curser-pointer"
-                                                    aria-controls="project-4" rowspan="1" colspan="1" aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other"><i class="fas fa-sort"></i> Project type</span></th>
-                                                    <!-- <th><span class="kt-widget__other" *ngIf="!showDeletedPrjOnly"><i class="fas fa-sort"></i> Category</span></th> -->
-
-                                                    <th [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="TM_DisplayName" tabindex="0" class="curser-pointer"
-                                                      aria-controls="project-4" rowspan="1" colspan="1" aria-label="Project Type: activate to sort column ascending"><span
-                                                        class="kt-widget__other"><i class="fas fa-sort"></i> Responsible</span></th>
+                                                    <th [ngClass]="{'d-none':!isprojtype}" id="prjType" [appSort]="this._ProjectsListBy_Pid" data-order="desc"
+                                                      data-name="Exec_BlockName" tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                                                      aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other"><i
+                                                          class="fas fa-sort"></i> Project type</span></th>
 
 
-                                                    <th [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="DeadLine" tabindex="0" class="curser-pointer"
-                                                    aria-controls="project-4" rowspan="1" colspan="1" aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other text-nowrap"><i class="fas fa-sort"></i> Deadline </span></th>
 
-                                                    <th [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="Project_StartDate" tabindex="0" class="curser-pointer"
-                                                    aria-controls="project-4" rowspan="1" colspan="1" aria-label="Project Type: activate to sort column ascending" *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i class="fas fa-sort"></i> Last update </span> </th>
 
-                                                    <th [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="Status" tabindex="0" aria-controls="project-4" rowspan="1"
-                                                      colspan="1" class="curser-pointer" aria-label="Status: activate to sort column ascending"><span
-                                                        class="kt-widget__other"><i class="fas fa-sort"></i> Status</span> </th>
+                                                          <th [ngClass]="{'d-none':!isowner}"  [appSort]="this._ProjectsListBy_Pid" data-order="desc"
+                                                          data-name="Exec_BlockName" tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                                                          aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other"><i
+                                                              class="fas fa-sort"></i>Owner</span></th>
 
-                                                    <th *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i class="fas fa-sort"></i> Racis</span> </th>
 
+
+                                                    <th [ngClass]="{'d-none':!isrespon}" [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="TM_DisplayName"
+                                                      tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                                                      aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other"><i
+                                                          class="fas fa-sort"></i> Responsible</span></th>
+
+
+                                                  <th [ngClass]="{'d-none':!isclient}" [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="TM_DisplayName"
+                                                  tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                                                  aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other"><i
+                                                      class="fas fa-sort"></i> Client</span></th>
+
+
+                                                <th [ngClass]="{'d-none':!iscost}" ><span class="kt-widget__other"><i class="fas fa-sort"></i>
+                                                        Cost</span> </th>
+
+
+                                              <th [ngClass]="{'d-none':!isDepartment}" ><span class="kt-widget__other"><i class="fas fa-sort"></i>
+                                                Department</span> </th>
+
+
+                                                    <th [ngClass]="{'d-none':!isdeadline}" [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="DeadLine"
+                                                      tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                                                      aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other text-nowrap"><i
+                                                          class="fas fa-sort"></i> Deadline </span></th>
+
+
+
+
+                                                  <th [ngClass]="{'d-none':!isstatus}" class="statusid" [appSort]="this._ProjectsListBy_Pid" data-order="desc"
+                                                  data-name="Status" tabindex="0" aria-controls="project-4" rowspan="1" colspan="1" class="curser-pointer"
+                                                  aria-label="Status: activate to sort column ascending"><span class="kt-widget__other"><i class="fas fa-sort"></i>
+                                                    Status</span> </th>
+
+
+
+                                                    <th [ngClass]="{'d-none':!islastupdate}" [appSort]="this._ProjectsListBy_Pid" data-order="desc"
+                                                      data-name="Project_StartDate" tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                                                      aria-label="Project Type: activate to sort column ascending" *ngIf="!showDeletedPrjOnly"><span
+                                                        class="kt-widget__other"><i class="fas fa-sort"></i> Last update </span> </th>
+
+
+
+                                                    <th [ngClass]="{'d-none':!isracis}" class="racisid" *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i
+                                                          class="fas fa-sort"></i> Racis</span> </th>
+
+
+
+
+
+
+                                                    <th *ngIf="showDeletedPrjOnly" [ngClass]="{'d-none':!isdeleted}">
+                                                      <div class="mx-2 p-1"> <span class="kt-widget__other "><i class="fas fa-sort"></i> Deleted by</span></div>
+                                                    </th>
+
+
+                                                    <th [ngClass]="{'d-none':!isrefer}" *ngIf="showDeletedPrjOnly&&UserAccessType === 'Full Access'"> <i
+                                                        class="fas fa-sort"></i> References</th>
 
                                                     <th>
-
-                                                      <div class="mx-2 p-1"> <span class="kt-widget__other " *ngIf="showDeletedPrjOnly"><i class="fas fa-sort"></i>  Deleted by</span></div>
-                                                     <span class="kt-widget__other tb-w-45" *ngIf="!showDeletedPrjOnly&&UserAccessType === 'Full Access'"> Actions</span>
+                                                      <span [ngClass]="{'d-none':!isaction}" class="act_id" class="kt-widget__other tb-w-45"
+                                                        *ngIf="!showDeletedPrjOnly&&UserAccessType === 'Full Access'"> Actions</span>
                                                     </th>
-                                            <th *ngIf="showDeletedPrjOnly&&UserAccessType === 'Full Access'" > <i  class="fas fa-sort"></i> References</th>
-                                                </thead>
+
+                                                    </thead>
 
 
 
 
-                                            <tbody>
-                                              <ng-container
+                                        <tbody>
+                                          <ng-container
                                             *ngFor="let item1 of (showDeletedPrjOnly)?Deletedproject:_ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
                                             <tr
-                                            *ngIf=" ((item1.Status==_PortProjStatus)||(item1.Status.includes('Delay')&&_PortProjStatus=='Delay')||_PortProjStatus=='')&&
-                                                    ((!_FilterByEmp) || item1.Emp_No==_FilterByEmp||item1.OwnerEmpNo==_FilterByEmp) " class="odd project-list_AC" [class.active]="item1.isActive">
+                                              *ngIf=" ((item1.Status==_PortProjStatus)||(item1.Status.includes('Delay')&&_PortProjStatus=='Delay')||_PortProjStatus=='')&&
+                                                                                            ((!_FilterByEmp) || item1.Emp_No==_FilterByEmp||item1.OwnerEmpNo==_FilterByEmp) "
+                                              class="odd project-list_AC" [class.active]="item1.isActive">
 
-                                                    <td class="icond">
-                                                        <span class="table-card brdr success"  [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
+                                              <td class="icond">
+                                                <span class="table-card brdr success" [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
 
-                                                    'success':item1.Status=='Completed',
-                                                    'warning':item1.Status=='InProcess',
-                                                    'EnactiveUnderApp':item1.Status=='Enactive Under Approval',
-                                                    'ForwardUnderApproval':item1.Status=='Forward Under Approval',
-                                                    'newProject':item1.Status=='New Project',
-                                                    'completeUnderApproval':item1.Status=='Completion Under Approval',
-                                                    'UnderApprovals':item1.Status=='Under Approval',
-                                                    'DeadlineExtended':item1.Status=='Deadline Extend Under Approval',
-                                                    'HoldunderApp':item1.Status=='Project Hold Under Approval',
-                                                    'projectholded':item1.Status=='Project Holded',
-                                                    'projecthold':item1.Status=='Project Hold',
-                                                    'TodoAchieved':item1.Status=='ToDo Achieved',
-                                                    'ToDoCompleted':item1.Status=='ToDo Completed',
-                                                    'NewTodo':item1.Status=='New Todo'
+                                                                                            'success':item1.Status=='Completed',
+                                                                                            'warning':item1.Status=='InProcess',
+                                                                                            'EnactiveUnderApp':item1.Status=='Enactive Under Approval',
+                                                                                            'ForwardUnderApproval':item1.Status=='Forward Under Approval',
+                                                                                            'newProject':item1.Status=='New Project',
+                                                                                            'completeUnderApproval':item1.Status=='Completion Under Approval',
+                                                                                            'UnderApprovals':item1.Status=='Under Approval',
+                                                                                            'DeadlineExtended':item1.Status=='Deadline Extend Under Approval',
+                                                                                            'HoldunderApp':item1.Status=='Project Hold Under Approval',
+                                                                                            'projectholded':item1.Status=='Project Holded',
+                                                                                            'projecthold':item1.Status=='Project Hold',
+                                                                                            'TodoAchieved':item1.Status=='ToDo Achieved',
+                                                                                            'ToDoCompleted':item1.Status=='ToDo Completed',
+                                                                                            'NewTodo':item1.Status=='New Todo'
 
-                                                    }"></span>
+                                                                                            }">
+                                                </span>
 
 
 
@@ -1057,40 +1439,102 @@
                                                         <span class="count2" title="Completed/All" *ngIf="item1.Actioncount>0 ">{{item1.CompletedActioncount}}/{{item1.Actioncount}}</span>
                                                     </td>
 
-                                                    <td>
+
+
+
+
+                                                <!-- project type data start     -->
+
+                                                    <td [ngClass]="{'d-none':!isprojtype}" class="projtypeclass">
                                                         <div class="kt-widget__other"><span >{{item1.Exec_BlockName}}</span></div>
-                                                          <ng-container *ngIf="showDeletedPrjOnly">
+
+                                                          <ng-container     *ngIf="showDeletedPrjOnly">
                                                           <div *ngIf="item1.ReportType==null;else ReportType">
-                                                              <!-- <p class="kt-widget__other" title="Category">Developemt</p> -->
+
                                                           </div>
                                                           <ng-template #ReportType>
-                                                              <!-- <p
-                                                                  class="kt-widget__other"  title="Category" >{{item1.ReportType}}</p> -->
+                                                            <div>
+                                                            <p
+                                                            class="kt-widget__other"  >{{item1.ReportType}}</p></div>
                                                           </ng-template>
+
                                                           </ng-container>
+
                                                           <ng-container *ngIf="!showDeletedPrjOnly">
-                                                            <div> <div *ngIf="item1.ReportType==null;else ReportType">
-                                                              <p class="kt-widget__other" >Developemt</p>
-                                                          </div>
-                                                          <ng-template #ReportType>
-                                                              <p
-                                                                  class="kt-widget__other"  >{{item1.ReportType}}</p>
-                                                          </ng-template></div>
-                                                        </ng-container>
+                                                            <div >
+                                                              <div *ngIf="item1.ReportType==null;else ReportType">
+                                                                <p class="kt-widget__other">Developemt</p>
+                                                              </div>
+                                                              <ng-template #ReportType>
+                                                                <p class="kt-widget__other">{{item1.ReportType}}</p>
+                                                              </ng-template>
+                                                            </div>
+                                                          </ng-container>
+
                                                       </td>
 
+                                                      <!-- project type data end -->
+
+
 <!-- <td *ngIf="showDeletedPrjOnly" ></td> -->
-                                                    <td>
+
+                                                 <!-- owner data start -->
+                                                 <td [ngClass]="{'d-none':!isowner}" class="owner_class"  >Md Waseem Akram</td>
+                                              <!-- owner data end -->
+
+
+
+
+
+                                   <!-- responsible data start -->
+                                                    <td [ngClass]="{'d-none':!isrespon}" class="responclass">
                                                         <span class="kt-widget__other">{{item1.TM_DisplayName}}</span>
                                                         <div class="d-flex align-items-center" *ngIf="item1.Status=='Forward Under Approval'">
                                                           <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Arrow_Sub_Down_Right"> <path id="Vector" d="M13 11L18 16M18 16L13 21M18 16H10.1969C9.07899 16 8.5192 16 8.0918 15.7822C7.71547 15.5905 7.40973 15.2839 7.21799 14.9076C7 14.4798 7 13.9201 7 12.8V3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
                                                           <div  class="New_Approval_Project font-weight-400" style="line-height: 1;">{{item1.ForwardTo}}</div>
                                                       </div>
                                                       </td>
+                                                <!-- responsible data end-->
+
+
+
+                                              <!-- client data start -->
+                                               <td [ngClass]="{'d-none':!isclient}"  class="client_class" >Devbox Software</td>
+                                                <!-- client data end -->
+
+
+
+                                                <!-- cost data start -->
+
+                                                <!-- <ng-container *ngIf="!showDeletedPrjOnly"> -->
+
+                                                  <td   [ngClass]="{'d-none': !iscost}"  class="classCost" >150</td>
+
+
+                                                 <!-- </ng-container> -->
+                                                 <!-- cost data end -->
+
+
+                                                    <!-- cost data start -->
+
+                                                <!-- <ng-container *ngIf="!showDeletedPrjOnly"> -->
+
+                                                  <td   [ngClass]="{'d-none':!isDepartment }"  class="classCost" >Devbox</td>
+
+                                                 <!-- </ng-container> -->
+                                                 <!-- cost data end -->
+
+
+
+
+
+
+                                                         <!-- Deadline data start                 -->
                                                 <ng-container *ngIf="!showDeletedPrjOnly">
-                                                    <td>
-                                                        <span class="kt-widget__other text-nowrap ng-star-inserted">
-                                                            <div
+                                                    <td  [ngClass]="{'d-none':!isdeadline}"  class="class_deadline">
+                                                        <span class="kt-widget__other text-nowrap ">
+
+                                                         <div
                                                                 *ngIf="item1.Exec_BlockName=='Standard Tasks' || item1.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                                 <span
                                                                     class="kt-widget__other text-nowrap">{{item1.SubmissionType}}</span>
@@ -1099,26 +1543,240 @@
                                                           </span>
 
                                                             <ng-template #Projecttype>
-                                                              <div>
+                                                              <div  >
                                                                 <p class="kt-widget__other text-nowrap font">
                                                                     {{item1.DeadLine|date:'dd-MM-yyyy'}}</p>
+
+
+
 
                                                                     <p data-toggle="tooltip" data-placement="top" title="{{item1.Created_DT|date:'medium'}}" style="flex: 0.5;">
 
                                                                     </div>
                                                             </ng-template>
                                                         </td>
-                                                    <td>
+
+                                                         <!-- Deadline data end -->
+
+
+                                                    <!-- status data start -->
+                                                         <ng-container *ngIf="!showDeletedPrjOnly">
+                                                          <td   [ngClass]="{'d-none':!isstatus}"    class="statusClass">
+                                                            <div *ngIf="item1.Status=='Delay'"  class="attach-tippy">
+                                                              <span class="vi  st-line" style="text-transform: lowercase;"> {{item1.Delaydays}} days delay</span>
+                                                              <span *ngIf="item1.Delaydays>=0" class=" Delay_color font-weight-400 " style="text-transform: lowercase;">
+                                                                {{getFormattedDelay(item1.Delaydays)}}
+
+
+                                                                <span class="" style="text-transform: lowercase;">{{item1.Status==='Delay' ? 'delay' : item1.Status}}
+
+                                                                </span>
+                                                              </span>
+                                                            </div>
+                                                            <div *ngIf="item1.SubmissionType && item1.Status.includes('Days')"  class="attach-tippy">
+                                                              <span class="vi  st-line" style="text-transform: lowercase;"> {{item1.Status}} delay </span>
+                                                              <span class=" Delay_color font-weight-400 " style="text-transform: lowercase;">
+                                                                {{getFormattedDelay(getStatusNumber(item1.Status))}} delay
+                                                              </span>
+                                                            </div>
+
+
+                                                            <div *ngIf="item1.SubmissionType && item1.Status!='InProcess' &&item1.Status =='Not yet achieved' && item1.Status!='Under Approval'&&item1.Status!='Completed' && item1.Status!='Forward Under Approval' && item1.Status!='New Project Rejected'"  class="attach-tippy">
+                                                              <!-- <span class="vi  st-line" style="text-transform: lowercase;"> {{item1.Status}}  </span> -->
+                                                              <span class=" Delay_color font-weight-400 " style="text-transform: lowercase;">
+                                                                {{(item1.Status)}}
+                                                              </span>
+                                                            </div>
+
+
+
+
+                                                            <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">
+                                                                <span
+                                                                    class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>
+                                                                    <span class="attach-tippy">
+                                                                      <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
+                                                                  <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
+                                                                     <div style="width: max-content;">Approved by: <h6>{{item1.Approvedby}} </h6></div>
+                                                                      <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
+                                                                  </span>
+                                                                    <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
+                                                                  <span class="New_Approval_Project font-weight-400">
+                                                                      {{item1.Approvedby}}
+                                                                  </span>
+                                                           </div>
+                                                            <div *ngIf="item1.Status=='InProcess'">
+                                                                <span
+                                                                    class="in-process font-weight-400">{{item1.Status=='InProcess'?'In-process':item1.status}}</span>
+                                                                <br>
+                                                                <!-- <span *ngIf="item1.Delaydays<0"
+                                                                    class="text-info delayDays">
+                                                                    <strong>{{item1.Delaydays}} Days Left </strong>
+                                                                </span> -->
+                                                            </div>
+                                                            <div *ngIf="item1.Status=='Project Complete Rejected'">
+                                                                <span
+                                                                    class="Project_Complete_Rejected_color font-weight-400">{{item1.Status}}</span>
+                                                            </div>
+                                                            <div *ngIf="item1.Status=='Project Hold'">
+                                                                <span class="Hold font-weight-400">Hold</span>
+                                                            </div>
+                                                            <div *ngIf="item1.Status=='Project Holded'">
+                                                                <span class="Hold_color font-weight-400"
+                                                                  >Hold</span>
+                                                            </div>
+                                                            <div *ngIf="item1.Status=='Under Approval'">
+                                                              <span class="attach-tippy">
+                                                                <span class="new-project font-weight-400 ">New approval</span>
+                                                                <div class="pulsing-div">
+                                                                  <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                                   <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
+                                                                 </div>
+
+                                                                <span class="st-line curser-pointer" >
+
+                                                             <div style="color:#9C27B0;">Pending approval since : {{item1.approvalfromdate | date: 'dd-MM-yyyy'}}</div></span>
+                                                                           </span>
+
+                                                            </div>
+
+
+
+
+                                                            <div *ngIf="item1.Status=='Not Started'">
+                                                              <span
+                                                                  class="Not-Started font-weight-400 ">{{ item1.Status  }}</span>
+                                                              <br>
+                                                          </div>
+                                                            <div *ngIf="item1.Status=='New Todo'">
+                                                                <span
+                                                                    class="New_Todo_color font-weight-400">{{item1.Status}}
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item1.Status=='Completion Under Approval'">
+                                                                <span class="font-weight-400 completion-under-approval">
+                                                                  {{(item1.AuditStatus=='Audit Pending')?"Audit Approval":"Completion approval"}}
+                                                                </span>
+                                                                <span class="attach-tippy">
+                                                                  <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
+                                                               <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
+                                                                 <div style="width: max-content;">Submit by: <h6>{{item1.Submitby}} </h6></div>
+                                                                  <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
+                                                              </span>
+                                                              <div class="pulsing-div">
+                                                               <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                                  <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
+                                                              </div>
+                                                            </div>
+
+
+                                                            <div *ngIf="item1.Status=='Cancellation Under Approval'">
+                                                              <span class="attach-tippy">
+                                                                <span
+                                                                    class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status =="Cancellation Under Approval" ? "Cancellation approval":item1.Status}}
+                                                                </span>
+
+                                                              <div class="pulsing-div">
+                                                                <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                                  <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
+                                                              </div>
+
+
+                                                           <span class="st-line curser-pointer" >
+                                                             <div style="width: max-content;color:#EE4137">Pending approval since : <h6>{{item1.approvalfromdate | date :'dd-MM-yyyy'}} </h6></div>
+                                                            </span>
+                                                          </span>
+                                                        </div>
+
+
+
+
+
+                                                            <div *ngIf="item1.Status=='Cancelled'">
+                                                                <span
+                                                                    class="Cancelled_color font-weight-400 text-cancel">{{item1.Status}}
+                                                                </span>
+
+                                                            </div>
+                                                            <div *ngIf="item1.Status=='Forward Under Approval'" class="attach-tippy">
+                                                              <span class="pending_appr st-line">Pending approval since : {{item1.approvalfromdate | date: 'dd-MM-yyyy'}}</span>
+                                                                <span
+                                                                    class="font-weight-400 Forward_Under_Approval_color">{{item1.Status =="Forward Under Approval"? "Forward approval":item1.Status}}
+                                                                </span>
+                                                                  <div class="pulsing-div">
+                                                               <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                                      <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
+                                                                  </div>
+                                                            </div>
+                                                            <div *ngIf="item1.Status=='New Project'">
+                                                                <span class="New-project font-weight-400"
+                                                                    >{{item1.Status}}</span>
+                                                            </div>
+                                                            <div *ngIf="item1.Status=='New Project Rejected'">
+                                                                <span
+                                                                    class="New_Project_Rejected_color font-weight-400">{{item1.Status}}
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item1.Status=='Deadline Extend Under Approval'">
+                                                                <span class="font-weight-400 Deadline_Extend_Under_Approval_color"
+                                                                   >{{item1.Status== "Deadline Extend Under Approval" ? "Deadline extend approval" :item1.Status}}
+                                                                </span>
+                                                                <div class="pulsing-div">
+                                                                  <span *ngIf="item1.PendingapproverEmpNo==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span>
+                                                                  <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
+                                                              </div>
+                                                            </div>
+                                                            <div *ngIf="item1.Status=='Enactive Under Approval'">
+                                                                <span class="font-weight-400 Enactive_Under_Approval_color">{{item1.Status=="Enactive Under Approval"? "Enactive approval":item1.Status}}
+                                                                </span>
+                                                                <div class="pulsing-div">
+                                                                  <span *ngIf="item1.PendingapproverEmpNo==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span>
+                                                                  <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
+                                                              </div>
+                                                            </div>
+                                                            <div *ngIf="item1.Status=='Project Hold Under Approval'">
+                                                                <span class="font-weight-400"
+                                                                    style="color: #a85098;">{{item1.Status=="Project Hold Under Approval" ? "Hold approval" : item1.Status}}
+                                                                </span>
+                                                                <div class="pulsing-div">
+                                                                  <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                                  <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
+                                                              </div>
+                                                            </div>
+                                                            <div *ngIf="item1.Status=='ToDo Achieved'">
+                                                                <span class="todoachieved font-weight-400
+                                                                ">{{item1.Status}}
+                                                                </span>
+                                                            </div>
+                                                            <div *ngIf="item1.Status=='ToDo Completed'">
+                                                                <span class="todos-completed font-weight-400"
+                                                                    >{{item1.Status}}
+                                                                </span>
+                                                            </div>
+                                                           <div *ngIf="item1.Project_Block=='003'&&item1.Status.includes('Delay')">
+                                                              <span class="Delay_color font-weight-400">{{item1.Status}}</span>
+                                                           </div>
+
+                                                          </td>
+                                                        </ng-container>
+                                           <!-- status data end -->
+
+
+
+                                                  <!-- lastupdate data start -->
+                                                    <td [ngClass]="{'d-none':!islastupdate}"  class="clas_lasup">
                                                       <p class="kt-widget__other">
-                                                        <!-- |dateAgo -->
+
                                                         {{item1.Project_StartDate|dateAgo}}
                                                     </p>
                                                     </td>
+                                                    <!-- lastupdate data end -->
+
                                                 </ng-container>
 
-                                                <ng-container  *ngIf="showDeletedPrjOnly">
-                                                    <td>
-                                                      <span class="kt-widget__other text-nowrap ng-star-inserted">
+                                                <ng-container   *ngIf="showDeletedPrjOnly">
+                                                    <td  [ngClass]="{'d-none':!isdeadline}">
+                                                      <span class="kt-widget__other text-nowrap ">
                                                           <div
                                                               *ngIf="item1.Exec_BlockName=='Standard Tasks' || item1.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                               <span
@@ -1128,7 +1786,7 @@
                                                         </span>
 
                                                           <ng-template #Projecttype>
-                                                            <div>
+                                                            <div >
                                                               <p class="kt-widget__other text-nowrap font">
                                                                   {{item1.DeadLine|date:'dd-MM-yyyy'}}</p>
 
@@ -1145,207 +1803,9 @@
 
 
 
-                                            <ng-container *ngIf="!showDeletedPrjOnly">
-                                                <td>
-                                                  <div *ngIf="item1.Status=='Delay'"  class="attach-tippy">
-                                                    <span class="vi  st-line" style="text-transform: lowercase;"> {{item1.Delaydays}} days delay</span>
-                                                    <span *ngIf="item1.Delaydays>=0" class=" Delay_color font-weight-400 " style="text-transform: lowercase;">
-                                                      {{getFormattedDelay(item1.Delaydays)}}
 
 
-                                                      <span class="" style="text-transform: lowercase;">{{item1.Status==='Delay' ? 'delay' : item1.Status}}
-
-                                                      </span>
-                                                    </span>
-                                                  </div>
-                                                  <div *ngIf="item1.SubmissionType && item1.Status.includes('Days')"  class="attach-tippy">
-                                                    <span class="vi  st-line" style="text-transform: lowercase;"> {{item1.Status}} delay </span>
-                                                    <span class=" Delay_color font-weight-400 " style="text-transform: lowercase;">
-                                                      {{getFormattedDelay(getStatusNumber(item1.Status))}} delay
-                                                    </span>
-                                                  </div>
-
-
-                                                  <div *ngIf="item1.SubmissionType && item1.Status!='InProcess' &&item1.Status =='Not yet achieved' && item1.Status!='Under Approval'&&item1.Status!='Completed' && item1.Status!='Forward Under Approval' && item1.Status!='New Project Rejected'"  class="attach-tippy">
-                                                    <!-- <span class="vi  st-line" style="text-transform: lowercase;"> {{item1.Status}}  </span> -->
-                                                    <span class=" Delay_color font-weight-400 " style="text-transform: lowercase;">
-                                                      {{(item1.Status)}}
-                                                    </span>
-                                                  </div>
-
-
-
-
-                                                  <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">
-                                                      <span
-                                                          class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>
-                                                          <span class="attach-tippy">
-                                                            <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
-                                                        <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
-                                                           <div style="width: max-content;">Approved by: <h6>{{item1.Approvedby}} </h6></div>
-                                                            <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
-                                                        </span>
-                                                          <!-- <span  class="fa fa-paperclip text-primary curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType)"> -->
-                                                        <span class="New_Approval_Project font-weight-400">
-                                                            {{item1.Approvedby}}
-                                                        </span>
-                                                 </div>
-                                                  <div *ngIf="item1.Status=='InProcess'">
-                                                      <span
-                                                          class="in-process font-weight-400">{{item1.Status=='InProcess'?'In-process':item1.status}}</span>
-                                                      <br>
-                                                      <!-- <span *ngIf="item1.Delaydays<0"
-                                                          class="text-info delayDays">
-                                                          <strong>{{item1.Delaydays}} Days Left </strong>
-                                                      </span> -->
-                                                  </div>
-                                                  <div *ngIf="item1.Status=='Project Complete Rejected'">
-                                                      <span
-                                                          class="Project_Complete_Rejected_color font-weight-400">{{item1.Status}}</span>
-                                                  </div>
-                                                  <div *ngIf="item1.Status=='Project Hold'">
-                                                      <span class="Hold font-weight-400">Hold</span>
-                                                  </div>
-                                                  <div *ngIf="item1.Status=='Project Holded'">
-                                                      <span class="Hold_color font-weight-400"
-                                                        >Hold</span>
-                                                  </div>
-                                                  <div *ngIf="item1.Status=='Under Approval'">
-                                                    <span class="attach-tippy">
-                                                      <span class="new-project font-weight-400 ">New approval</span>
-                                                      <div class="pulsing-div">
-                                                        <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
-                                                         <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
-                                                       </div>
-
-                                                      <span class="st-line curser-pointer" >
-
-                                                   <div style="color:#9C27B0;">Pending approval since : {{item1.approvalfromdate | date: 'dd-MM-yyyy'}}</div></span>
-                                                                 </span>
-
-                                                  </div>
-
-
-
-
-                                                  <div *ngIf="item1.Status=='Not Started'">
-                                                    <span
-                                                        class="Not-Started font-weight-400 ">{{ item1.Status  }}</span>
-                                                    <br>
-                                                </div>
-                                                  <div *ngIf="item1.Status=='New Todo'">
-                                                      <span
-                                                          class="New_Todo_color font-weight-400">{{item1.Status}}
-                                                      </span>
-                                                  </div>
-                                                  <div *ngIf="item1.Status=='Completion Under Approval'">
-                                                      <span class="font-weight-400 completion-under-approval">
-                                                        {{(item1.AuditStatus=='Audit Pending')?"Audit Approval":"Completion approval"}}
-                                                      </span>
-                                                      <span class="attach-tippy">
-                                                        <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
-                                                     <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
-                                                       <div style="width: max-content;">Submit by: <h6>{{item1.Submitby}} </h6></div>
-                                                        <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
-                                                    </span>
-                                                    <div class="pulsing-div">
-                                                     <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
-                                                        <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
-                                                    </div>
-                                                  </div>
-
-
-                                                  <div *ngIf="item1.Status=='Cancellation Under Approval'">
-                                                    <span class="attach-tippy">
-                                                      <span
-                                                          class="Cancellation_Under_Approval_color font-weight-400 text-cancel">{{item1.Status =="Cancellation Under Approval" ? "Cancellation approval":item1.Status}}
-                                                      </span>
-
-                                                    <div class="pulsing-div">
-                                                      <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
-                                                        <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
-                                                    </div>
-
-
-                                                 <span class="st-line curser-pointer" >
-                                                   <div style="width: max-content;color:#EE4137">Pending approval since : <h6>{{item1.approvalfromdate | date :'dd-MM-yyyy'}} </h6></div>
-                                                  </span>
-                                                </span>
-                                              </div>
-
-
-
-
-
-                                                  <div *ngIf="item1.Status=='Cancelled'">
-                                                      <span
-                                                          class="Cancelled_color font-weight-400 text-cancel">{{item1.Status}}
-                                                      </span>
-
-                                                  </div>
-                                                  <div *ngIf="item1.Status=='Forward Under Approval'" class="attach-tippy">
-                                                    <span class="pending_appr st-line">Pending approval since : {{item1.approvalfromdate | date: 'dd-MM-yyyy'}}</span>
-                                                      <span
-                                                          class="font-weight-400 Forward_Under_Approval_color">{{item1.Status =="Forward Under Approval"? "Forward approval":item1.Status}}
-                                                      </span>
-                                                        <div class="pulsing-div">
-                                                     <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
-                                                            <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
-                                                        </div>
-                                                  </div>
-                                                  <div *ngIf="item1.Status=='New Project'">
-                                                      <span class="New-project font-weight-400"
-                                                          >{{item1.Status}}</span>
-                                                  </div>
-                                                  <div *ngIf="item1.Status=='New Project Rejected'">
-                                                      <span
-                                                          class="New_Project_Rejected_color font-weight-400">{{item1.Status}}
-                                                      </span>
-                                                  </div>
-                                                  <div *ngIf="item1.Status=='Deadline Extend Under Approval'">
-                                                      <span class="font-weight-400 Deadline_Extend_Under_Approval_color"
-                                                         >{{item1.Status== "Deadline Extend Under Approval" ? "Deadline extend approval" :item1.Status}}
-                                                      </span>
-                                                      <div class="pulsing-div">
-                                                        <span *ngIf="item1.PendingapproverEmpNo==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span>
-                                                        <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
-                                                    </div>
-                                                  </div>
-                                                  <div *ngIf="item1.Status=='Enactive Under Approval'">
-                                                      <span class="font-weight-400 Enactive_Under_Approval_color">{{item1.Status=="Enactive Under Approval"? "Enactive approval":item1.Status}}
-                                                      </span>
-                                                      <div class="pulsing-div">
-                                                        <span *ngIf="item1.PendingapproverEmpNo==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span>
-                                                        <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
-                                                    </div>
-                                                  </div>
-                                                  <div *ngIf="item1.Status=='Project Hold Under Approval'">
-                                                      <span class="font-weight-400"
-                                                          style="color: #a85098;">{{item1.Status=="Project Hold Under Approval" ? "Hold approval" : item1.Status}}
-                                                      </span>
-                                                      <div class="pulsing-div">
-                                                        <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
-                                                        <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
-                                                    </div>
-                                                  </div>
-                                                  <div *ngIf="item1.Status=='ToDo Achieved'">
-                                                      <span class="todoachieved font-weight-400
-                                                      ">{{item1.Status}}
-                                                      </span>
-                                                  </div>
-                                                  <div *ngIf="item1.Status=='ToDo Completed'">
-                                                      <span class="todos-completed font-weight-400"
-                                                          >{{item1.Status}}
-                                                      </span>
-                                                  </div>
-                                                 <div *ngIf="item1.Project_Block=='003'&&item1.Status.includes('Delay')">
-                                                    <span class="Delay_color font-weight-400">{{item1.Status}}</span>
-                                                 </div>
-
-                                                </td>
-                                              </ng-container>
-
-                                              <td *ngIf="!showDeletedPrjOnly" data-toggle="tooltip" data-placement="top"
+                                              <td [ngClass]="{'d-none':!isracis}" class="racisClass" *ngIf="!showDeletedPrjOnly" data-toggle="tooltip" data-placement="top"
                                               title="RACIS">
                                               <div class="kt-widget__details">
                                                   <div class="kt-section__content kt-section__content--solid">
@@ -1391,12 +1851,14 @@
                                              </td>
 
 
+
+
                                                     <!-- <ng-template  *ngIf="!showDeletedPrjOnly;else deletedbys" >
                                                     </ng-template> -->
                                                     <!-- <ng-template #deletedbys ><td>deleting</td>  </ng-template> -->
 
                                                     <ng-container *ngIf="!showDeletedPrjOnly;else deletedby">
-                                                        <td>
+                                                        <td  [ngClass]="{'d-none':!isaction}"  class="action_class">
                                                       <div *ngIf="viewpreference != 'View Only'">
                                                         <div class="" *ngIf="UserAccessType === 'Full Access'"  >
                                                           <a class="btn btn-label-primary btn-upper btn-sm btn-bold mr-2 px-2 py-1"
@@ -1412,7 +1874,7 @@
 
 
                                         <ng-container *ngIf="showDeletedPrjOnly">
-                                             <td>
+                                             <td [ngClass]="{'d-none':!isstatus}" >
 
                                               <div *ngIf="item1.Status=='Delay'" class="attach-tippy">
                                                 <span *ngIf="item1.Delaydays>0" class="vi st-line status-text">{{(item1.Delaydays)}} days delay</span>
@@ -1550,7 +2012,7 @@
                                         </ng-container>
 
 
-                                    <td *ngIf="showDeletedPrjOnly" class="attach-tippy-div">
+                                    <td    [ngClass]="{'d-none':!isdeleted}" class="isdeleteds"  *ngIf="showDeletedPrjOnly" class="attach-tippy-div">
                                         <span class="Delay_color curser-pointer">Deleted </span>
                                             <!-- <div class="d-flex align-items-center justify-content-start">
 
@@ -1569,7 +2031,7 @@
 
                                     </td>
 
-                                    <td *ngIf="showDeletedPrjOnly">
+                                    <td     [ngClass]="{'d-none':!isrefer}" class="referClass"  *ngIf="showDeletedPrjOnly">
                                     <div class="d-flex align-items-center " *ngIf="UserAccessType === 'Full Access'" style="gap: 10px;">
                                         <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                         class="btn-v-icon" title="Click to view the portfolio">

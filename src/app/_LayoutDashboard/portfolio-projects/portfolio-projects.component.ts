@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { DatePipe } from '@angular/common';
 import { BsServiceService } from './../../_Services/bs-service.service';
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef,Renderer2,ViewChildren,QueryList } from '@angular/core';
@@ -337,12 +338,12 @@ export class PortfolioProjectsComponent implements OnInit {
     this.GetPortfolioProjectsByPid();
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
     this.labelAll();
-
+    // this.togglevisibilityforClass('classCost', 'iscost')
 
     // this.onButtonClick('tot');
     // this.getusermeetings();
     this.updateListbyDetailsPage();
-
+    // isprojtype=true
 
 
 
@@ -485,7 +486,7 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
   this.completionPrjPort = []
 
   this._ProjectsListBy_Pid.forEach((item)=>{
-    if (item.Status === 'Completion Under Approval'  && item.PendingapproverEmpNo === this.Current_user_ID){
+    if (item.Status === 'Completion Under Approval'  && item.OwnerEmpNo === this.Current_user_ID){
       const obj = {
         prjname : item.Project_Name,
         prjcode : item.Project_Code,
@@ -504,7 +505,7 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
   this.newapprovalPrjport = []
 
   this._ProjectsListBy_Pid.forEach((item)=>{
-    if (item.Status === 'Under Approval'  && item.PendingapproverEmpNo === this.Current_user_ID){
+    if (item.Status === 'Under Approval'  && item.PendingapproverEmpNo.trim() == this.Current_user_ID){
       const obj = {
         prjname : item.Project_Name,
         prjcode : item.Project_Code,
@@ -1771,7 +1772,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   noDms(){
-    this.notifyService.showInfo("",'No Dms link in this project.')
+    this.notifyService.showInfo("",'No Smail link in this project.')
   }
 
   _CloseMemosidebar() {
@@ -1857,7 +1858,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
     // // Manually trigger change detection
     // this.cdr.detectChanges();
-
+debugger
     item.isActive = !item.isActive;
 
     // If you want to allow only one item to be active at a time, uncomment the following lines:
@@ -2088,7 +2089,7 @@ hasFilterResult(){
 
 let list;
 let result=[];
-
+debugger
 if(this.showDeletedPrjOnly){
   list=[...this.Deletedproject];
   result=list.filter((p)=>{
@@ -2099,9 +2100,9 @@ if(this.showDeletedPrjOnly){
   list=[...this._ProjectsListBy_Pid];
   result=list.filter((p)=>{
 
-    return (((p.Status==this._PortProjStatus)||(p.Status.includes('Delay')&&this._PortProjStatus=='Delay')||this._PortProjStatus=='')&& ((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp || p.OwnerEmpNo==this._FilterByEmp  ||this._FilterByEmp=="All"));
+    return (((p.Status==this._PortProjStatus)||(p.Status.includes('Delay')&&this._PortProjStatus=='Delay')||this._PortProjStatus=='')&& ((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp ||  p.PendingapproverEmpNo == this._FilterByEmp || p.OwnerEmpNo==this._FilterByEmp  ||this._FilterByEmp=="All"));
   });
-  debugger
+
   console.log(result);
 }
 
@@ -6215,12 +6216,48 @@ notShow(){
   this.showDot = false
 }
 
-showDelayproj(){
+
+
+
+isaction = false;
+isracis = false;
+isstatus = true;
+islastupdate = true;
+isdeadline = true;
+isrespon = true;
+isprojtype = true
+isdeleted = true
+isrefer = true
+iscost = true
+isowner = false
+isclient = false
+isDepartment = false
+
+  togglevisibilityforClass(className: string, event: any): void {
+
+    // Mapping object for class names and their corresponding state variables
+    const classToStateMap: { [key: string]: string } = {
+      'action_class': 'isaction',
+      'racisClass': 'isracis',
+      'statusClass': 'isstatus',
+      'clas_lasup': 'islastupdate',
+      'class_deadline': 'isdeadline',
+      'responclass': 'isrespon',
+      'projtypeclass': 'isprojtype',
+      'isdeleteds': 'isdeleted',
+      'referClass':  'isrefer',
+      'classCost' :'iscost',
+      'owner_class' :'isowner',
+      'client_class': 'isclient',
+      'class_depart'  : 'isDepartment'
+    };
+
+    // Check if the className exists in the map and update the corresponding state variable
+    if (classToStateMap[className] !== undefined) {
+      this[classToStateMap[className]] = event.target.checked;
+    }
+
+  }
 
 }
 
-
-
-
-
-}
