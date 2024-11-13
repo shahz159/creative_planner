@@ -1418,7 +1418,7 @@ this.edited = true
   }else{
     document.getElementById("MemosSideBar").style.width = "0";
     document.getElementById("prtfloSideBar").style.width = "0";
-    this.notifyService.showInfo("",'No dms link in this project')
+    this.notifyService.showInfo("",'No Smail link in this project.')
   }
   }
 
@@ -1442,7 +1442,7 @@ this.edited = true
    }else{
         document.getElementById("prtfloSideBar").style.width = "0";
         document.getElementById("MemosSideBar").style.width = "0";
-      this.notifyService.showInfo("",'No portfolio link in this project')
+      this.notifyService.showInfo("",'No portfolio link in this project.')
    }
 
   }
