@@ -1037,6 +1037,17 @@ button.Kt-Approval-btns {
   color: #ffffff;
 }
 
+.Add_Action_btn.disabled{
+  background-color: #A3B8E2;
+  border-color: #A3B8E2;
+  cursor: not-allowed;
+}
+
+
+
+
+
+
 .kt-p-box {
   padding: 10px 10px;
   background-color: #f6f6f6;
@@ -9072,7 +9083,12 @@ span.time-value {
   background-color: #527ce2;
   background-clip: padding-box;
 }
-
+.user-msg-alert-body.addaction-shadow{
+  top: unset;
+  left: unset;
+  transform: translate3d(139px, -47px, 0px);
+  box-shadow: 3px 0px 5px -1px #00000033, 2px 0px 10px 0 #00000024, 0 1px 18px 0 #0000001f;
+}
 .user-msg-open{
     animation-name:user-msg-open-anim;
     animation-duration:0.5s;
@@ -9104,7 +9120,11 @@ span.time-value {
   height: 0;
   width: 0;
 }
-
+.user-msg-alert-body.addaction-shadow:before {
+  top: 45%;
+  left: -3%;
+  transform: rotate(-90deg);
+}
 .user-msg-alert-title {
   font-size: 16px;
   font-weight: 600;
@@ -9318,6 +9338,39 @@ span.time-value {
      font-weight: 700;
      text-decoration: underline;
      cursor: pointer;
+}
+
+
+
+.txt-expnd-btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  border-radius: 3px;
+  border: 0;
+  background-color:#edededc2; 
+}
+
+.txt-expnd-btn svg{
+  stroke: #898989;
+  stroke-width: 2px; 
+}
+
+.txt-expnd-btn:hover{
+  background-color: #eaeaea;
+}
+
+.txt-expnd-btn:hover svg{
+  stroke-width: 2.6px;
+}
+
+
+
+
+
+.Add_Action_btn.disabled:hover + .addaction-shadow{
+    display:block;
 }
 .size {
   font-size: 24px; /* Adjust the size as needed */

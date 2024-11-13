@@ -630,7 +630,7 @@
 
                             <div class="time-event flex-1">
                                 <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
-                                    tabindex="0" (click)="darft_click(item.Sno,item.project_type)">
+                                    tabindex="0" (click)="darft_click(item.Sno,item.project_type,item.attachments)">
                                     <!-- (click)="GetClickEventPending_Calenders(item.Schedule_ID)" -->
                                     <div class="fc-daygrid-event-dot"></div>
                                     <!-- <div class="fc-event-time">4:30PM-5:00PM</div> -->
@@ -1243,7 +1243,7 @@
                     <div id="copy_data2" class="icons-right" style="display:block;" data-toggle="tooltip"
                         title="Pending!" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false">
                         <span class="tool-span" (click)="sweet_pending()">
-                            <svg class="toolicns kt-p-ic-top" width="22" height="22"
+                            <!-- <svg class="toolicns kt-p-ic-top" width="22" height="22"
                                 xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
                                 xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
                                 xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg"
@@ -1277,7 +1277,9 @@
                                         </g>
                                     </g>
                                 </switch>
-                            </svg> </span>
+                            </svg>  -->
+                            <svg _ngcontent-wnc-c407="" width="17px" height="17px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g _ngcontent-wnc-c407="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-wnc-c407="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-wnc-c407="" id="SVGRepo_iconCarrier"><g _ngcontent-wnc-c407="" id="Free-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><g _ngcontent-wnc-c407="" transform="translate(-451.000000, -748.000000)" id="Group" stroke="currentColor" stroke-width="1.75"><g _ngcontent-wnc-c407="" transform="translate(449.000000, 746.000000)" id="Shape"><line _ngcontent-wnc-c407="" x1="17" y1="3" x2="17" y2="5"></line><line _ngcontent-wnc-c407="" x1="7" y1="3" x2="7" y2="5"></line><path _ngcontent-wnc-c407="" d="M18,11.5 L18,17.9933387 M18.0043926,21.0066613 L18,20.9933387"></path><path _ngcontent-wnc-c407="" d="M8.03064542,21 C7.42550126,21 6.51778501,21 5.30749668,21 C4.50512981,21 4.2141722,20.9218311 3.92083887,20.7750461 C3.62750553,20.6282612 3.39729582,20.4128603 3.24041943,20.1383964 C3.08354305,19.8639324 3,19.5916914 3,18.8409388 L3,7.15906122 C3,6.4083086 3.08354305,6.13606756 3.24041943,5.86160362 C3.39729582,5.58713968 3.62750553,5.37173878 3.92083887,5.22495386 C4.2141722,5.07816894 4.50512981,5 5.30749668,5 L18.6925033,5 C19.4948702,5 19.7858278,5.07816894 20.0791611,5.22495386 C20.3724945,5.37173878 20.6027042,5.58713968 20.7595806,5.86160362 C20.9164569,6.13606756 21,7.24671889 21,7.99747152"></path></g></g></g></g></svg>
+                        </span>
                     </div>
                     <div class="icons-right" id="hiddenedit" style="display:block;" data-toggle="tooltip" title="Edit">
                         <span class="tool-span" (click)="ReshudingTaskandEvent();updateCharacterCount()">
@@ -1393,9 +1395,9 @@
                             </div>
                             <div class="box-cl" *ngIf="(Status1 =='Pending' || Status1 =='May be')" style="border:4px solid #9B30FF;">
                             </div>
-                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected'  && Isadmin==true" style="background-color: #3788d8;">
+                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected'  && Status1=='Owner'" style="background-color: #3788d8;">
                             </div>
-                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected' && Isadmin==false" style="background-color: #9B30FF;">
+                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected' && Status1!='Owner'" style="background-color: #9B30FF;">
                             </div>
                          </ng-template>
 
@@ -1407,22 +1409,22 @@
                                     <span id="title1">{{item.Task_Name}}</span>
                                 </div>
                                 <div class="">
-                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==true" style="height: 18px;"
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Status1=='Owner'" style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         {{item.Schedule_Type}}
                                     </span>
                                     <span
-                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat' && Isadmin==true && Meeting_status==false"
+                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat' && Status1=='Owner' && Meeting_status==false"
                                         style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1">
                                         {{item.Recurrence}}
                                     </span>
-                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==false" style="height: 18px;"
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Status1!='Owner'" style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-purple kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         {{item.Schedule_Type}}
                                     </span>
                                     <span
-                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Isadmin==false && Meeting_status==false"
+                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Status1!='Owner' && Meeting_status==false"
                                         style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-purple kt-badge--bold kt-badge--inline mb-1">
                                         {{item.Recurrence}}
@@ -1582,9 +1584,28 @@
                                 </div>
                             </div>
                         </div> -->
-                        <div class="rgt-des">
+
+
+                        <div class="rgt-des" *ngIf="item.Link_Details.includes('<a href=')">
                             <div class="" *ngIf="item.Link_Details">
                                 <div class="main-s" [innerHTML]="item.Link_Details"></div>
+                            </div>
+                        </div>
+
+
+                        <div class="rgt-des"  *ngIf="!item.Link_Details.includes('<a href=')">
+                            <div *ngIf="item.Link_Details">
+                                <div class="main-s" *ngIf="item.Link_Details.split(',')[0].replace('Meeting link:-', '').trim() && item.Link_Details.split(',')[0].replace('Meeting link:-', '').trim() != 'null' && item.Link_Details.split(',')[0].replace('Meeting link:-', '').trim() != 'undefined'">
+                                    <a [href]="item.Link_Details.split(',')[0].replace('Meeting link:-', '').trim()" target="_blank">
+                                        {{ item.Link_Details.split(',')[0].replace('Meeting link:-', '').trim() }}
+                                    </a>
+                                </div>
+                                <div class="main-s" *ngIf="item.Link_Details.split(',')[1].replace('Meeting Id:-', '').trim() && item.Link_Details.split(',')[1].replace('Meeting Id:-', '').trim() !='null' && item.Link_Details.split(',')[1].replace('Meeting Id:-', '').trim() !='undefined'">
+                                    UserId:- {{ item.Link_Details.split(',')[1].replace('Meeting Id:-', '').trim() }}
+                                </div>
+                                <div class="main-s" *ngIf="item.Link_Details.split(',')[2].replace('Meeting password:-', '').trim() && item.Link_Details.split(',')[2].replace('Meeting password:-', '').trim() !='null' && item.Link_Details.split(',')[2].replace('Meeting password:-', '').trim() !='undefined'">
+                                    Password:- {{ item.Link_Details.split(',')[2].replace('Meeting password:-', '').trim() }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1820,8 +1841,9 @@
                         </div>
                         <div class="rgt-des">
                             <div class="" *ngFor="let trt of Attachments_ary">
-                                <div class="main-s">
-                                    <a target=”_blank” href="{{trt.url}}">{{trt.File_Name}}</a>
+                                <div class="main-s"  (click)="LoadDocument(trt.Project_Code,true,trt.File_Name&&trt.File_Name,trt.url,trt.contenttype,trt.Created_by)">
+                                    <!-- <a target=”_blank” href="{{trt.url}}">{{trt.File_Name}}</a> -->
+                                   <span class="Attament-title"> {{trt.File_Name}}</span>
                                 </div>
                             </div>
                         </div>
@@ -2442,7 +2464,7 @@
             </div> -->
 
             <div class="foot-main " style="display: block;" id=""
-               *ngIf="Meeting_status==false && Isadmin==true && Schedule_type1=='Event'">
+               *ngIf="Meeting_status==false && AdminMeeting_Status!=1 && Status1=='Owner' && Schedule_type1=='Event'">
                 <div class="foot-body br-top secfootr" id="secfootr555">
                     <div class="ftbtns flex-1">
                         <div class="d-flex align-items-center justify-content-end gap-1">
@@ -2450,7 +2472,7 @@
                                href="#propse11" role="button" aria-expanded="false" aria-controls="propse11">
                                Repeat
                            </button>
-                           <button class="btn btn-sm btn-light-primary btn-pill footbtns" (click)="sweet_end()">End now</button>
+                           <button  class="btn btn-sm btn-light-primary btn-pill footbtns d-none" (click)="sweet_end()">End now</button>
 
                         </div>
                         <div class="mt-1 collapse" id="propse11">
@@ -3405,7 +3427,7 @@
                 </div>
 
                 <div class="se-row" id="Descrip_Name12" style="display:none" >
-                    <div class="se-col-1">
+                    <!-- <div class="se-col-1">
                         <div class="label-icon">
                             <span aria-hidden="true" class="side-icns"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="svg-icn">
@@ -3421,9 +3443,40 @@
                         <div class="form-group">
                             <angular-editor  [placeholder]="editorPlaceholder" [(ngModel)]="Link_Details" [config]="config" ></angular-editor>
                         </div>
-                    </div>
+                    </div> -->
 
-                </div>
+
+                    <div class="se-col-1">
+                        <div class="label-icon">
+                            <span aria-hidden="true" class="side-icns"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="svg-icn">
+                                    <path
+                                        d="M17.6572 14.8282L16.2429 13.414L17.6572 11.9998C19.2193 10.4377 19.2193 7.90506 17.6572 6.34296C16.0951 4.78086 13.5624 4.78086 12.0003 6.34296L10.5861 7.75717L9.17188 6.34296L10.5861 4.92875C12.9292 2.5856 16.7282 2.5856 19.0714 4.92875C21.4145 7.27189 21.4145 11.0709 19.0714 13.414L17.6572 14.8282ZM14.8287 17.6567L13.4145 19.0709C11.0714 21.414 7.27238 21.414 4.92923 19.0709C2.58609 16.7277 2.58609 12.9287 4.92923 10.5856L6.34345 9.17139L7.75766 10.5856L6.34345 11.9998C4.78135 13.5619 4.78135 16.0946 6.34345 17.6567C7.90555 19.2188 10.4382 19.2188 12.0003 17.6567L13.4145 16.2425L14.8287 17.6567ZM14.8287 7.75717L16.2429 9.17139L9.17188 16.2425L7.75766 14.8282L14.8287 7.75717Z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                        <div class="se-col-11">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input class="form-control"  placeholder="Meeting link" type="text"  [(ngModel)]="Link_Details" >
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input class="form-control"  placeholder="Meeting Id" type="text" [(ngModel)]="Meeting_Id">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Meeting password" type="text" [(ngModel)]="Meeting_password">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                 </div> 
 
                 <div class="se-row" id="Location_Name" style="display:none">
                     <div class="se-col-1">
@@ -3516,12 +3569,12 @@
                                          </div>
                                          <div class="file-name">{{url.File_Name}}</div>
                                      </div>
-                                     <div  class="file-remove">
+                                     <!-- <div [ngClass]="{'d-none': editTask == true}" class="file-remove"> -->
+                                        <div  class="file-remove">
                                          <span (click)="RemoveExistingFile(url.file_id)" title="remove"  class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
                                      </div>
                                 </div>
                              </li>
-
                         </ul>
                     </div>
                 </div>

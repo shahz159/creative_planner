@@ -173,11 +173,12 @@ export class TimelineComponent implements OnInit {
   setTimelineDate(val)
   {   
        this.current_Date = moment(val).format("MM/DD/YYYY");
+       this.dateF = new FormControl(new Date(val));
        this.starttime = null;
        this.endtime = null;
        this.noTimeSpaceAvailable=false;
        this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
-       .subscribe(data => {  debugger
+       .subscribe(data => { 
         const _timeList=JSON.parse(data[0]['time_json']); 
         let _lastEndtime;
         if (_timeList.length != 0) {
@@ -444,17 +445,22 @@ debugger
     }
   }
 
+loadingTimelineProjects:boolean=false;
 getTimelineProjects(){
   this.showProject=true;
   this.master_code=null;
   this.project_code=null;
   this.showAction=false;
   this.noact_msg=false;
+  this.projectList=null;
+  this.loadingTimelineProjects=true;
   this.ObjSubTaskDTO.Emp_No=this.Current_user_ID;
   this.ObjSubTaskDTO.ProjectBlock=this.project_type;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
-  (data=>{
+  (data=>{ debugger
+    this.loadingTimelineProjects=false;
     this.projectList=JSON.parse(data[0]['ProjectList']); 
+    this.projectList=this.projectList.filter(p=>['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(p.Status.trim())==false)
     console.log(this.projectList);
   });
 }
@@ -477,16 +483,19 @@ owner_empno: any;
 resp_empno: any;
 noact_msg: boolean =false;
 
+
 getTimelineActions(){
 
   this.showAction=false;
   this.project_code=null;
   this.noact_msg=false;
+  this.actionList=null;
+  
   this.ObjSubTaskDTO.Emp_No=this.Current_user_ID;
   this.ObjSubTaskDTO.Project_Code=this.master_code;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
   (data=>{
-
+   
     this.actionList=JSON.parse(data[0]['ActionList']); console.log('actions here:',this.actionList);
     this.owner_empno=(data[0]['Project_Owner']);
     this.resp_empno=(data[0]['Team_Res']);
@@ -712,6 +721,7 @@ submitDar() {
     document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
     this.clear();
     this.setTimelineDate(this.current_Date);
+    this.getDayReportSummary();
     // this.changeTimelineDate('TODAY');  // get timeline report
 
   }
@@ -878,7 +888,7 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
 fieldRequired:boolean=false;
 onTLSubmitBtnClick(){
  const isLunchOrPersonal:boolean=['lunch','personal'].includes(this.project_type);
-debugger
+
        if(
            (isLunchOrPersonal?true:this.master_code)&&
            (isLunchOrPersonal?true:(this.showAction?this.project_code:true))&&
@@ -895,11 +905,22 @@ debugger
       // when all mandatory fields are provided.
          this.submitDar();
          }
-         else{
+         else{ 
         // when some mandatory fields are not provided.
         this.fieldRequired=true;
+
+        // if start time, end time or date if not provided.
+        if(!(this.starttime&&this.endtime&&this.dateF.value)){
+          setTimeout(()=>document.getElementById("dropdown-timeline-menu").classList.add("show"),0);
+        }
+
+
+        // 
       }
 }
+
+
+
 
 
 // form validation new end.
@@ -1015,7 +1036,7 @@ submitTL(submDate:string)
 
   Swal.fire({
     title: "Confirm End of Day",
-    text:'Are you sure you want to end the day? Once ended, no further updates can be made to the timeline.',
+    text:'Are you sure you want to end the day?',
     showCancelButton: true,
     confirmButtonText: 'Yes, End Day',
     cancelButtonText: 'No'
@@ -1072,8 +1093,15 @@ submitTL(submDate:string)
 
 endDay(submDate:string)
 {
+
+  if(this.tmReportTotalDuration==null){    // if there is no timeline has been entered by the user on the selected date.
+    this.notifyService.showError('Please enter a timeline for the selected date before ending the day.','Timeline Required');
+    return;
+  }
+
   const empno=this.Current_user_ID;
   const tmDate=moment(new Date(submDate)).format('MM/DD/YYYY');
+
   this.service.NewInsertTimelineReport(empno,tmDate).subscribe((res:any)=>{
   if(res&&res.message){
       if(res.message=='1'){
@@ -1081,9 +1109,12 @@ endDay(submDate:string)
             'Timeline report submitted successfully.',
             `date : ${submDate}`,
             'success'
-          );
-          this.timelineLog(this.type1);
-          this.getTimelineReportByDate(this.timeline_of);
+          );   
+          this.timelineLog(this.type1); 
+          this.service.GetTimelineSubmissionStatus(this.Current_user_ID).subscribe((res:any)=>{  // get new latest submission list 
+              this.submission_json=JSON.parse(res[0].submission_json);
+              this.getTimelineReportByDate(this.timeline_of);
+           });
           this.endTimelineModal_dismiss();
           // rebind
       }
@@ -1102,7 +1133,8 @@ endDay(submDate:string)
     text: 'An issue occurred while processing your request. Please review the timeline before try again.',
   });
   }
-});
+   });
+
 }
 
 
@@ -1190,7 +1222,7 @@ tmReportTotalDuration:{hours:string,minutes:string};
 tmReportStatus:any;
 tmSubmDate:any;
 tmReportLoading:boolean=false;
-getTimelineReportByDate(dateVal:'today'|'yesterday') {
+getTimelineReportByDate(dateVal:'today'|'yesterday') {   debugger
     this.tmReportArr=[];
     this.tmReportStatus=null;
     this.tmReportTotalDuration=null;
@@ -1205,17 +1237,19 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
     this.ObjSubTaskDTO.End_Date = null;
     this.tmReportLoading=true;
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-      (data => {    
+      (data => {    debugger
         this.tmReportLoading=false;
         console.log(data);
         if(data&&data[0].DAR_Details_Json){
              const dar_json=JSON.parse(data[0].DAR_Details_Json);
              if(dar_json&&dar_json[0]){
                 this.tmReportArr=dar_json[0].Dardata;     console.log('tmreportarr:',this.tmReportArr);
-                this.tmReportArr.reverse();
                 this.tmReportArr.forEach(ob=>{
                   const k=/00:\d\d/.test(ob.Duration);
                    ob.duration=k?(ob.Duration.split(':')[1]+' mins'):(ob.Duration+' hrs');   
+                   ob.starttime=this.formatTimes(ob.starttime);
+                   ob.endtime=this.formatTimes(ob.endtime);
+
                 });  // adding 'duration' property to show timing in more easy way on the view.
 
 
@@ -1231,6 +1265,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
                         return d1.getTime()==d2.getTime();
                     });
 
+                   
                     if(tm_submitted)
                       this.tmReportStatus=tm_submitted.Status;
                     else{
@@ -1243,7 +1278,11 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
                 }
 
             }
+
+
         }
+
+
       });
 
 }
@@ -1263,13 +1302,14 @@ endTimelineModal(){
   document.getElementById("endTimelineModal").classList.add("show");
   document.getElementById("endTimelineModalBackdrop").style.display = "block";
   document.getElementById("endTimelineModalBackdrop").classList.add("show");
+  this.getDayReportSummary();
 }
 endTimelineModal_dismiss(){
   document.getElementById("endTimelineModal").style.display = "none";
   document.getElementById("endTimelineModal").classList.remove("show");
   document.getElementById("endTimelineModalBackdrop").style.display = "none";
   document.getElementById("endTimelineModalBackdrop").classList.remove("show");
-  this.endDayConfirmed=false;
+
 }
 
 
@@ -1295,8 +1335,111 @@ expandDescription(id:string){
   workachvsec.classList.add('collapse');
 }
 
-endDayConfirmed:boolean=false;
 
+
+daySummaryReport:any;
+dueTodayTasksCount:{taskType:string,count:number}[]=[];
+getDayReportSummary(){
+    this.service.NewGetEmployeePerformance(this.Current_user_ID).subscribe((res:any)=>{
+      console.log("daySummaryReport res:",res);
+        if(res&&res.EmployeeReport){   
+               this.daySummaryReport=JSON.parse(res.EmployeeReport)[0];
+              console.log("daySummaryReport:",this.daySummaryReport);
+              this.dueTodayTasksCount=[];
+              ['ActionsDueToday','ProjectsDueToday','AssignedTasksDue'].forEach((dkey)=>{
+                if(this.daySummaryReport[dkey]>0){
+                      const ob={ taskType:dkey, count:this.daySummaryReport[dkey] };
+                      this.dueTodayTasksCount.push(ob);
+                }
+              });
+        }
+    })
+}
+
+
+
+viewActions(type:'COMPLETED'|'DUE'|'DELAYED'){
+  if(type=='DELAYED')
+  {
+    let myurl = document.baseURI+'/ViewProjects/DelayProjects?section=Actions';
+    let myWindow = window.open(myurl,'_blank');
+    myWindow.focus(); 
+  } 
+}
+
+viewProjects(type:'COMPLETED'|'DUE'|'DELAYED'){
+  if(type=='DELAYED')
+  {
+    let myurl = document.baseURI+'/ViewProjects/DelayProjects?section=Projects';
+    let myWindow = window.open(myurl,'_blank');
+    myWindow.focus(); 
+  } 
+}
+
+
+viewTasks(){
+  let myurl = document.baseURI+'/backend/createproject?AssignedProjectId=none';
+  let myWindow = window.open(myurl,'_blank');
+  myWindow.focus();
+}
+
+
+viewStandardTasks(type:'COMPLETED'|'DELAYED'){
+   if(type=='DELAYED')
+   {
+
+    let myurl = document.baseURI+'/backend/ProjectsSummary';
+    let myWindow = window.open(myurl,'_blank');
+    const obj={
+      EmpNo:this.Current_user_ID, 
+      ProjectType:'003',
+      Status:'InProcess',
+    };
+    myWindow.sessionStorage.setItem('filterprjsby',JSON.stringify(obj));
+    myWindow.focus(); 
+
+   }
+}
+
+
+
+// let qparams='';
+//     if(acode!==undefined){
+//       qparams=`?actionCode=${acode}`;
+//     }
+//     let name: string = 'Details';
+//     var url = document.baseURI + name;
+//     var myurl = `${url}/${pcode}${qparams}`;
+//     var myWindow = window.open(myurl,pcode);
+//     myWindow.focus(); 
+
+
+
+
+
+
+
+
+
+
+
+
+// if (type === 'Assigned Project') {
+//   let Mode: string = 'AssignedTask'
+//   var url = document.baseURI + this.page_Name;
+//   var myurl = `${url}/${Mode}?section=${type}`;
+
+//   var myWindow = window.open(myurl);
+//   myWindow.focus();
+// } else {
+//   let Mode: string = "DelayProjects";
+//   var url = document.baseURI + this.page_Name;
+//   var myurl = `${url}/${Mode}?section=${type}`;
+  
+//   var myWindow = window.open(myurl);
+//   myWindow.focus();
+
+// }
 
 
 

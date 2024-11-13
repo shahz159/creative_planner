@@ -208,7 +208,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    debugger
+  
     this.submitted = true;
     if (this.loginForm.invalid) {
       return;
@@ -221,7 +221,7 @@ export class LoginComponent implements OnInit {
       //alert("One");
       this.service.LoginCredentials(this.Obj_ILoginDTO)
         .subscribe(
-          (data) => {
+          (data) => {    
             this.UserDetails_List = data as UserDetailsDTO[];
            // console.log("Data---->", this.UserDetails_List);
             this.message = this.UserDetails_List[0]['Message'];

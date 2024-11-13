@@ -696,44 +696,71 @@ export class DashboardComponent implements OnInit {
 
 
 
-  onFileChange(event) {
 
+  onFileChange(event) {
+    debugger
     if (event.target.files.length > 0) {
-      var length = event.target.files.length;
+      const length = event.target.files.length;
       for (let index = 0; index < length; index++) {
         const file = event.target.files[index];
-        var contentType = file.type;
+        const fileName = file.name;
+        const contentType = file.type;
+
+        // Skip file if its name already exists in either array
+        const fileAlreadyExists =
+          this.Attachment12_ary.some(att => att.File_Name === fileName) ||
+          this._lstMultipleFiales.some(existingFile => existingFile.FileName === fileName);
+
+        if (fileAlreadyExists) {
+          Swal.fire({
+            title: `File "${fileName}" Already Exists`,
+            text: `The file "${fileName}" was not added to avoid duplication.`
+          })
+          continue; // Skip this file
+        }
+  
+        // Determine file extension
+        let fileExtension = '';
         if (contentType === "application/pdf") {
-          contentType = ".pdf";
+          fileExtension = ".pdf";
+        } else if (contentType === "image/png") {
+          fileExtension = ".png";
+        } else if (contentType === "image/jpeg") {
+          fileExtension = ".jpeg";
+        } else if (contentType === "image/jpg") {
+          fileExtension = ".jpg";
         }
-        else if (contentType === "image/png") {
-          contentType = ".png";
-        }
-        else if (contentType === "image/jpeg") {
-          contentType = ".jpeg";
-        }
-        else if (contentType === "image/jpg") {
-          contentType = ".jpg";
-        }
-        this.myFiles.push(event.target.files[index].name);
-        // alert(this.myFiles.length);
-        console.log(this.myFiles, "attach")
-        //_lstMultipleFiales
-        var d = new Date().valueOf();
-      
-        this._lstMultipleFiales = [...this._lstMultipleFiales, {
-          UniqueId: d,
-          FileName: event.target.files[index].name,
-          Size: event.target.files[index].size,
-          Files: event.target.files[index]
-        }];
+  
+        // Add file to _lstMultipleFiales array
+        this.myFiles.push(fileName);
+        const uniqueId = new Date().valueOf();
+  
+        this._lstMultipleFiales.push({
+          UniqueId: uniqueId,
+          FileName: fileName,
+          Size: file.size,
+          Files: file
+        });
       }
     }
-
-    const uploadFileInput = (<HTMLInputElement>document.getElementById("uploadFile"));
-    uploadFileInput.value = null;
-    uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+  
+    // Reset the input value and styling
+    const uploadFileInput = document.getElementById("uploadFile") as HTMLInputElement;
+    if (uploadFileInput) {
+      uploadFileInput.value = null;
+      uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+    }
+    (event.target as HTMLInputElement).value = '';
   }
+
+
+
+
+
+
+
+
+
 
   RemoveSelectedFile(_id) {
     var removeIndex = this._lstMultipleFiales.map(function (item) { return item.UniqueId; }).indexOf(_id);
@@ -746,17 +773,17 @@ export class DashboardComponent implements OnInit {
 
 
 
-
+  _attachmentValue:any = 0;
+  RemovedFile_id:any = [];
 
 
   RemoveExistingFile(_id) {
 
-
     this.Attachment12_ary.forEach(element => {
       if (element.file_id == _id) {
-        this.RemovedAttach.push(element.Cloud_Name)
+        // this.RemovedAttach.push(element.Cloud_Name);
+        this.RemovedFile_id.push(element.file_id);
       }
-
     });
     var removeIndex = this.Attachment12_ary.map(function (item) { return item.file_id; }).indexOf(_id);
     this.Attachment12_ary.splice(removeIndex, 1);
@@ -1150,7 +1177,6 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-        console.log(this.EventScheduledjson, "test")
         this.Schedule_ID = 0;
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
         this.Startts = (this.EventScheduledjson[0]['St_Time']);
@@ -1162,9 +1188,8 @@ export class DashboardComponent implements OnInit {
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
         // this._SEndDate = moment().format("YYYY-MM-DD").toString();
         this.Addressurl = this.EventScheduledjson[0]['Addressurl'];
-
-
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
+
 
         if (this._FutureEventTasksCount > 0) {
           // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
@@ -1452,6 +1477,25 @@ export class DashboardComponent implements OnInit {
         this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
         this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
 
+  
+       if(this.Link_Details != ''){
+        if(!this.Link_Details.includes('<a href=')){
+          var details = this.Link_Details.split(', ')
+          this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+          this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+          this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined' || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+          console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
+        }
+        else if(this.Link_Details.includes('<a href=')){
+          this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
+          this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
+          this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
+        
+          console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details 69');
+        }
+       }
+       
+       
 
 
         this.pending_status = this.EventScheduledjson[0]['Pending_meeting'];
@@ -1832,6 +1876,11 @@ export class DashboardComponent implements OnInit {
     return lastDays;
   }
 
+  Meeting_Id:any;
+  Meeting_password:any;
+
+
+
   OnSubmitSchedule() {
 
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
@@ -1950,7 +1999,7 @@ export class DashboardComponent implements OnInit {
 
         var vRecurrence = "Recurrence";
         element[vRecurrence] = this.selectedrecuvalue;
-
+        debugger
         var vRecurrence_value = "Recurrence_values";
         element[vRecurrence_value] = _arraytext.toString();
 
@@ -1981,16 +2030,21 @@ export class DashboardComponent implements OnInit {
         var vLocation_url = "Addressurl";
         element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
 
+
+
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
-debugger
+        this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
+    
         var vLink_Details = "Link_Details";
-        let link_d=this.Link_Details;
-        if(this.Link_Details){
-          link_d=this.Link_Details.replace(/&#160;/g, ' ');
-          link_d=this.anchoredIt(link_d);
-        }
-        element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
+        element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+        // var vLink_Details = "Link_Details";
+        // let link_d=this.Link_Details;
+        // if(this.Link_Details){
+        //   link_d=this.Link_Details.replace(/&#160;/g, ' ');
+        //   link_d=this.anchoredIt(link_d);
+        // }
+        // element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
      
         if (this.Description_Type && this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, '').length > 0) {
           // Remove occurrences of &nbsp; and &#160; while collapsing spaces
@@ -2054,21 +2108,25 @@ debugger
       for (var i = 0; i < this._lstMultipleFiales.length; i++) {
         frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
       }
-      if (this._lstMultipleFiales.length > 0)
+      if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
         _attachmentValue = 1;
       else
         _attachmentValue = 0;
 
-      frmData.append("EventNumber", this.EventNumber.toString());
+      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       console.log(JSON.stringify(finalarray), "finalarray")
-      this._calenderDto.draftid = this.draftid;
+      this._calenderDto.draftid = this.draftid? this.draftid : 0;
+      frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
 
-
-      console.log('_calenderDto obj:', JSON.parse(this._calenderDto.ScheduleJson));
+      console.log('_calenderDto obj:', frmData);
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
+
+
+          this.Attamentdraftid= data['draftid']
+          frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
 
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
@@ -2138,6 +2196,8 @@ debugger
           this.SelectDms = null;
           this.Location_Type = null;
           this.Link_Details = null;
+          this.Meeting_Id = null;
+          this.Meeting_password = null;
           this._onlinelink = false;
           this.Allocated_subtask = null;
           this.TM_DisplayName = null;
@@ -2377,19 +2437,20 @@ debugger
 
           var vOnlinelink = "Onlinelink";
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+          this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
 
           var vLink_Details = "Link_Details";
+          element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
           // let link_d=this.Link_Details.replace(/&#160;/g, ' ');
           // link_d=this.anchoredIt(link_d);
-
-          let link_d=this.Link_Details;
-          if(this.Link_Details){
-            link_d=this.Link_Details.replace(/&#160;/g, ' ');
-            link_d=this.anchoredIt(link_d);
-          }
-
-
-          element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
+          // let link_d=this.Link_Details;
+          
+          // let link_d=this.Link_Details;
+          // if(this.Link_Details){
+          //   link_d=this.Link_Details.replace(/&#160;/g, ' ');
+          //   link_d=this.anchoredIt(link_d);
+          // }
+          // element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
 
           if (this.Description_Type && this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, '').length > 0) {
              this.Description_Type = this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, ' ').trim();
@@ -2441,30 +2502,37 @@ debugger
         else {
           this._calenderDto.Schedule_ID = 0;
         }
-        let _attachmentValue = 0;
+
+        
         const frmData = new FormData();
         for (var i = 0; i < this._lstMultipleFiales.length; i++) {
           frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
         }
-        if (this._lstMultipleFiales.length > 0)
-          _attachmentValue = 1;
+        if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
+          this._attachmentValue = 1;
         else
-          _attachmentValue = 0;
+         this. _attachmentValue = 0;
 
-        frmData.append("EventNumber", this.EventNumber.toString());
+      
+         frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
         frmData.append("CreatedBy", this.Current_user_ID.toString());
         frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
         frmData.append("flag_id", this._calenderDto.flagid.toString());
-        this._calenderDto.attachment = this.RemovedAttach.toString();
+        frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
+        
+        this._calenderDto.attachment =this._attachmentValue.toString();
 
-
+        
 
         this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
           (data => {
-            this.RemovedAttach = [];
+            
             // alert(data['Schedule_date'])
+            this.Attamentdraftid= data['draftid']
+           frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
+
             frmData.append("Schedule_date", data['Schedule_date'].toString());
-            if (_attachmentValue == 1) {
+            if (this._attachmentValue == 1) {
               this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
                 (event: HttpEvent<any>) => {
                   switch (event.type) {
@@ -2498,9 +2566,10 @@ debugger
                 }
               )
             }
-
+        
             // console.log(data, "m");
             this._Message = data['message'];
+
             if (this._Message == 'Not updated') {
               Swal.fire({
                 title: 'Meeting not released from the Pending list.',
@@ -2545,8 +2614,11 @@ debugger
             this.Location_Type = null;
             this.Allocated_subtask = null;
             this.Link_Details = null;
+            this.Meeting_Id = null;
+            this.Meeting_password = null;
             this._onlinelink = false;
             this.TM_DisplayName = null;
+            this._attachmentValue=0;
             this.Projectstartdate = "";
             this.projectEnddate = null;
             this.Status_project = null;
@@ -3522,7 +3594,7 @@ currentTime:any;
       this.Endtms = vahr.toString() + ':' + mins;
       // alert(this.Startts)
       // alert(this.Endtms)
-
+debugger
       if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
         //  alert(this.scstartdate)
@@ -3963,12 +4035,13 @@ currentTime:any;
         this.AdminMeeting_Status = data['AdminMeeting_Status'];
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
 
-        console.log(this.Isadmin, "Isadmin");
+       
          console.log(this.EventScheduledjson, "Testing12");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status.trim();
+        console.log(this.Attachments_ary, "Attachments_ary");
         this.Proposedate = this.EventScheduledjson[0].Schedule_date;
         this.PropStart = this.EventScheduledjson[0].St_Time;
         this.PurposeEnd = this.EventScheduledjson[0].Ed_Time;
@@ -3988,7 +4061,14 @@ currentTime:any;
         this.Startts=this.EventScheduledjson[0].St_Time;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
         this.RecurrenceValue=this.EventScheduledjson[0].Recurrence
+        this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
 
+
+        // var details = this.Link_Details.split(', ')
+        // this.Link_Details= details[0].split('Meeting link:-')[1].trim()==undefined || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+        // this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+        // this.Meeting_password=  details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+        // console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
  
 
         // document.getElementById("deleteendit").style.display = "flex";
@@ -4094,7 +4174,7 @@ currentTime:any;
         this.creation_date = this.EventScheduledjson[0].Created_date;
         this.pending_status = this.EventScheduledjson[0].Pending_meeting;
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
-        console.log(this.Meeting_status, "Meeting_status");
+        console.log(this.Attachments_ary, "Attachments_ary");
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
 
@@ -4192,7 +4272,7 @@ currentTime:any;
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
-        console.log(this.Meeting_status, "Meeting_status");
+        console.log(this.Attachments_ary, "Attachments_ary");
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.creation_date = this.EventScheduledjson[0].Created_date;
         // console.log(this.EventScheduledjson, "Testing12");
@@ -4533,6 +4613,7 @@ currentTime:any;
 
   TwinEvent = [];
   customizeEvent = (info) => {
+    debugger
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
@@ -4592,7 +4673,7 @@ currentTime:any;
     //
     let is12am: boolean = (end.getHours() == 0 && end.getMinutes() == 0 && end.getSeconds() == 0);
     if (eventIsWithinView && (startMidnight !== endMidnight) && !is12am) {
-
+debugger
       if (start < viewStart) {
         this.TwinEvent.push(event._def.extendedProps.Schedule_ID);
       }
@@ -4642,7 +4723,7 @@ currentTime:any;
 
 
   public handleAddressChange(address: Address) {
-debugger
+
     if (this.checkAddressURL(address.name.toString())) {
       this.Addressurl = address.name;
     }
@@ -4651,10 +4732,8 @@ debugger
     }
     this.Location_Type = address.name;
 
-
     console.log(address, "add11")
     this.Locationfulladd = address.formatted_address;
-
   }
 
 
@@ -5322,6 +5401,10 @@ debugger
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 
   }
+
+  Attamentdraftid:any
+
+
   Insert_indraft() {
 
     if (this.draftid != 0) {
@@ -5339,9 +5422,65 @@ debugger
     if (this.Portfolio == null) {
       this.Portfolio = [];
     }
+
+
+    this.daysSelectedII = [];
+    const format2 = "YYYY-MM-DD";
+    var start = moment(this.minDate);
+    const _arraytext = [];
+    if (this.selectedrecuvalue == "0") {
+      const d1 = new Date(moment(start).format(format2));
+      const date = new Date(d1.getTime());
+      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+    }
+    else if (this.selectedrecuvalue == "1") {
+      this.daysSelectedII = this.AllDatesSDandED;
+    }
+    else if (this.selectedrecuvalue == "2") {
+      if (this.dayArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.dayArr.length; index++) {
+        if (this.dayArr[index].checked) {
+        
+          const day = this.dayArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+      if (this.daysSelectedII.length == 0) {
+        alert('please select valid day');
+      }
+    }
+    else if (this.selectedrecuvalue == "3") {
+      if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.MonthArr.length; index++) {
+        if (this.MonthArr[index].checked == true) {
+          const day = this.MonthArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+    }
+
     this._calenderDto.Portfolio = this.Portfolio.toString();
     this._calenderDto.location = this.Location_Type;
     this._calenderDto.loc_status = this._onlinelink;
+    this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password;
+    this._calenderDto.Link_details=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+debugger
+    this._calenderDto.Recurrence = this.selectedrecuvalue ;
+    this._calenderDto.Rec_values = _arraytext.toString();
+    this._calenderDto.Rec_EndDate = this._EndDate;
+
+
+
     this._calenderDto.Note = this.Description_Type;
     this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
     //  alert( this.ScheduleType);
@@ -5354,24 +5493,84 @@ debugger
     }
     this._calenderDto.Project_Code = this.MasterCode.toString();
 
+
+    let _attachmentValue = 0;
+    const frmData = new FormData();
+    for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+      frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+    }
+    if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
+      _attachmentValue = 1;
+    else
+      _attachmentValue = 0;
+
+      ;
+      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+      frmData.append("CreatedBy", this.Current_user_ID.toString());
+      frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
+      
+
     const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
     this._calenderDto.DraftAgendas=mtgAgendas;
+
+   
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
       (data => {
+           
+   
+      this.Attamentdraftid= data['draftid']
+      frmData.append("draftid", this.Attamentdraftid);
+ 
+        if (_attachmentValue == 1) {
+          this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+            (event: HttpEvent<any>) => {
+              switch (event.type) {
+                case HttpEventType.Sent:
+                  console.log('Request has been made!');
+                  break;
+                case HttpEventType.ResponseHeader:
+                  console.log('Response header has been received!');
+                  break;
+                case HttpEventType.UploadProgress:
+                  this.progress = Math.round(event.loaded / event.total * 100);
+                  console.log(`Uploaded! ${this.progress}%`);
+                  break;
+                case HttpEventType.Response:
+                  console.log('User successfully created!', event.body);
+
+                  // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+                  
+
+                  (<HTMLInputElement>document.getElementById("customFile")).value = "";
+                  this._lstMultipleFiales = [];
+                  // empty(this._lstMultipleFiales);
+                  // alert(this._lstMultipleFiales.length);
+                  setTimeout(() => {
+                    this.progress = 0;
+                  }, 2000);
+
+                  //69 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                  //69 (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                  document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                  //69 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+              }
+            }
+          )
+        }
+
         if (data['message'] == '1') {
-          this.Getdraft_datalistmeeting();
-          this.closeschd();
+          this.closeschd();        
           this.notifyService.showSuccess("Draft saved", "Success");
         }
         if (data['message'] == '2') {
-          this.Getdraft_datalistmeeting();
-          this.closeschd();
+          this.closeschd();  
           this.notifyService.showSuccess("Draft updated", "Success");
         }
       });
-
-
+      this.Getdraft_datalistmeeting();
   }
+
+
   draftdata_meet: any = [];
   draftcount: any;
   Getdraft_datalistmeeting() {
@@ -5379,6 +5578,7 @@ debugger
     this._calenderDto.Emp_No = this.Current_user_ID;
     this.CalenderService.NewGetMeeting_darftdata(this._calenderDto).subscribe
       (data => {
+        debugger
         console.log(data, "ssdddd")
         if (data['Draft_meetingdata'] != "" && data['Draft_meetingdata'] != null && data['Draft_meetingdata'] != undefined) {
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
@@ -5411,22 +5611,47 @@ debugger
   draftid: number = 0;
   draft_arry: any = [];
 
-  darft_click(Sno, val) {
+  darft_click(Sno, val, attachments) {
     this.draftid = Sno;
-
+   
     this.Task_type(val);
+
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]
     console.log(this.draft_arry[0], '6969')
-    // console.log(this.draft_arry,"ss11111111")
+  
     this.allAgendas = JSON.parse(this.draft_arry[0]['Agendas']);
-
+    this.Attachment12_ary= attachments;
     this.MasterCode = [];
+    this.projectsSelected=[];
     this.arr = JSON.parse(this.draft_arry[0]['Project_code']);
     this.arr.forEach(element => {
-      this.MasterCode.push(element.stringval);
+      this.MasterCode.push(parseInt(element.stringval));
     });
+
+
+    this.Link_Details= this.draft_arry[0].Link_details;
+    if(this.Link_Details != ''){
+      if(!this.Link_Details.includes('<a href=')){
+        var details = this.Link_Details.split(', ')
+        this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+        this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+        this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined' || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+        console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
+      }
+      else if(this.Link_Details.includes('<a href=')){
+        this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
+        this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
+        this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
+        console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details 69');
+      }
+     }
+    // this.arr.forEach(element => {
+    //   this.projectsSelected.push(element.stringval == this.ProjectListArray);
+    // });
     //  this.MasterCode=this.draft_arry[0]["Project_Code"]
+
+
     this.Portfolio = [];
     this.Portfolio1 = [];
     this.arr1 = JSON.parse(this.draft_arry[0]['Portfolio_id']);
@@ -5463,10 +5688,85 @@ debugger
     this._onlinelink = this.draft_arry[0]["online"];
     this.Location_Type = this.draft_arry[0]["location"];
     $('#Descrip_Name12').css('display',this._onlinelink?'flex':'none');
+   
+    setTimeout(() => {
+      this.projectsSelected = this.ProjectListArray.filter(project =>
+        this.arr.some(item => item.stringval === project.Project_Code)
+       );
+    }, 1000);
 
+
+debugger
+
+    this.selectedrecuvalue= this.draft_arry[0].Recurrence;
+    this._EndDate = this.draft_arry[0].Rec_EndDate;
+
+
+
+    if (this.selectedrecuvalue=='2') {
+
+      this._labelName = "Schedule Date";
+      // document.getElementById("div_endDate").style.display = "none";
+      document.getElementById("div_endDate_new").style.display = "block";
+      document.getElementById("Recurrence_hide").style.display = "block";
+      document.getElementById("weekly_121_new").style.display = "block";
+      this.selectedrecuvalue = '2';
+      let Recc = [];
+      var ret1 = this.draft_arry[0].Rec_values;
+      Recc = ret1.split(",");
+
+      for (var i = 0; i < Recc.length; i++) {
+        this.dayArr.forEach(element => {
+          if (element.value == Recc[i]) {
+            element.checked = true;
+          }
+        });
+      }
+
+      this.dayArr.forEach((item:any)=>{
+        if(item.checked){
+            let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
+           this.mtgOnDays.push(d_name);
+        }
+     });
+
+
+    }
+    else if (this.selectedrecuvalue=='3') {
+      document.getElementById("Recurrence_hide").style.display = "block";
+      document.getElementById("div_endDate_new").style.display = "block";
+      // document.getElementById("div_endDate").style.display = "none";
+      document.getElementById("Monthly_121_new").style.display = "block";
+      this._labelName = "Schedule Date";
+      this.selectedrecuvalue = '3';
+      let Recc = [];
+      var ret1 = this.draft_arry[0].Rec_values;
+      Recc = ret1.split(",");
+      for (var i = 0; i < Recc.length; i++) {
+        this.MonthArr.forEach(element => {
+          if (element.value == Recc[i]) {
+            element.checked = true;
+          }
+        });
+      }
+
+      this.MonthArr.forEach((item:any)=>{
+        if(item.checked){
+           const d_no=Number.parseInt(item.value);
+           this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
+        }
+      });
+
+    }
+  
+   
   }
-  closeschd() {
 
+
+
+
+
+  closeschd() {
     // this.Insert_indraft();
     // document.getElementById('date-menu').classList.remove("show");
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
@@ -5483,6 +5783,7 @@ debugger
     this.Attachment12_ary = [];
     this.RemovedAttach = [];
     this._lstMultipleFiales = [];
+    this.RemovedFile_id = [];
     this.maxDate = null;
     this.selected = null;
     this.Title_Name = null;
@@ -5548,6 +5849,8 @@ debugger
     this._onlinelink=false;
     this._meetingroom=false;
     this.Link_Details = null;
+    this.Meeting_Id = null;
+    this.Meeting_password = null;
     this.subtashDrpLoading=false;
     this.loading=false;
 
@@ -5589,6 +5892,9 @@ debugger
     this.projectEnddate = null;
     this.Status_project = null;
     this.AllocatedHours = null;
+    this.Link_Details = null;
+    this.Meeting_Id = null;
+    this.Meeting_password = null;
     this.daysSelected = [];
     this.selectdaytime = [];
     this.daysSelectedII = [];
@@ -7224,6 +7530,57 @@ parseTime(time: string): Date {
   if (modifier === 'PM' && hours !== 12) hours += 12;
   if (modifier === 'AM' && hours === 12) hours = 0;
   return new Date(1970, 0, 1, hours, minutes); // Return a date object with a fixed date
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  debugger
+  let FileUrl: string;
+  
+  FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+  if (iscloud == false) {
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
+    // if (this.projectInfo.AuthorityEmpNo == this.projectInfo.ResponsibleEmpNo) {
+    //   // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+    //   FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
+    // }
+    // else if (this.projectInfo.AuthorityEmpNo != this.projectInfo.ResponsibleEmpNo) {
+    //   FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
+    // }
+    let name = "ArchiveView/" + pcode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+  else if (iscloud == true) {
+    let name = "ArchiveView/" + pcode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(url1);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
 }
 
 

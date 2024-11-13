@@ -400,7 +400,7 @@ debugger
         allowRemoteDataSearch: true,
         noDataAvailablePlaceholderText: 'Please wait..',
       };
-      // console.log("Project List for Dropdown...",this._ProjectDataList);
+      console.log("Project List for Dropdown...",this._ProjectDataList);
     });
   }
 

@@ -222,7 +222,11 @@ export class CalenderService {
     this.obj_CalenderDTO.User_list = obj.User_list;
     this.obj_CalenderDTO.Project_Code = obj.Project_Code;
     this.obj_CalenderDTO.DraftAgendas = obj.DraftAgendas;
-
+    this.obj_CalenderDTO.Link_details=obj.Link_details;
+    this.obj_CalenderDTO.Recurrence=obj.Recurrence;
+    this.obj_CalenderDTO.Rec_values=obj.Rec_values;
+    this.obj_CalenderDTO.Rec_EndDate=obj.Rec_EndDate;
+  
     return this.http.post(this.rootUrl + "CalenderAPI/Newinsertdarft_meetingco", this.obj_CalenderDTO);
   }
   NewGetrequeat_Accpect(obj:CalenderDTO){
