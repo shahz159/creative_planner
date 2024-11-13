@@ -5400,7 +5400,7 @@ debugger
 
   }
 
-  Attamentdraftid:any
+  Attamentdraftid:any;
 
 
   Insert_indraft() {
@@ -5508,8 +5508,8 @@ debugger
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
       
       debugger
-    const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-    this._calenderDto.DraftAgendas=mtgAgendas;
+      const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+      this._calenderDto.DraftAgendas=mtgAgendas;
 
    
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
@@ -5613,8 +5613,6 @@ debugger
     this.draftid = Sno;
    
     this.Task_type(val);
-
-
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]
     console.log(this.draft_arry[0], '6969')
@@ -5628,9 +5626,9 @@ debugger
       this.MasterCode.push(parseInt(element.stringval));
     });
 
-
+debugger
     this.Link_Details= this.draft_arry[0].Link_details;
-    if(this.Link_Details != ''){
+    if(this.Link_Details != '' && this.Link_Details != undefined ){
       if(!this.Link_Details.includes('<a href=')){
         var details = this.Link_Details.split(', ')
         this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
@@ -5692,7 +5690,7 @@ debugger
       this.projectsSelected = this.ProjectListArray.filter(project =>
         this.arr.some(item => item.stringval === project.Project_Code)
        );
-    }, 1000);
+    }, 1500);
 
 
 
