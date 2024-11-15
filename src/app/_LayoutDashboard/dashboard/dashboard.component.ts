@@ -531,6 +531,7 @@ export class DashboardComponent implements OnInit {
       allDaySlot: false
     };
 
+    
     tippy('#agenda-info-icon', {
       content: "Agenda is mandatory for a meeting, Please provide atleast 1.",
       arrow: true,
@@ -548,6 +549,7 @@ export class DashboardComponent implements OnInit {
     this.ScheduleType = "Create"
     this.GetTimeslabfordate();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
+
     this.typetext = "This Project consists of Core/Secondary Projects";
     this.Current_user_ID = localStorage.getItem('EmpNo');
 
@@ -1167,6 +1169,17 @@ export class DashboardComponent implements OnInit {
 
   DublicateTaskandEvent() {
 
+    Swal.fire({
+      title: `Copy meeting`,
+      text: `Are you sure you want to copy this meeting? It will be created as a new meeting with you as the organizer.`,
+      showCancelButton: true,
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Call your second function when OK is clicked
+      
+    
     document.getElementById("div_endDate_new").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
     // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
@@ -1426,12 +1439,18 @@ export class DashboardComponent implements OnInit {
           this.EndTimearr = this.timingarryend;
  // valid starttimearr and endtimearr setting end.
 
-
-
-
       });
     this.closeevearea();
 
+
+
+
+  } 
+  // else if (result.isDismissed) {
+    // Skip all when Cancel is clicked
+    // continue; // Skip this file
+  // }
+  });
   }
 
 
@@ -4349,8 +4368,6 @@ debugger
       ((data) => {
         this.Pending_request = data as [];
         this.pendingcount = this.Pending_request.length;
-        // alert(this.pendingcount)
-        // alert(this.Pending_request.length)
         console.log(this.Pending_request, "111100000")
       });
   }
@@ -4620,8 +4637,8 @@ debugger
       eventElement.style.opacity = '0.5'; // Change the background color for past events
     }
 
-    const time_str=info.el.children[0].innerHTML.toUpperCase();
-    info.el.children[0].innerHTML=time_str.replace(/([0-9]+:[0-9]+)(AM|PM)/g, '$1 $2');
+    // const time_str=info.el.children[0].innerHTML.toUpperCase();
+    // info.el.children[0].innerHTML=time_str.replace(/([0-9]+:[0-9]+)(AM|PM)/g, '$1 $2');
     // if(taskComplete == 'fc-green'){
     //   const eventElement = info.el;
     //   eventElement.style.opacity = '0.5';
@@ -6638,6 +6655,7 @@ onProjectSearch(inputtext:any){
     }
     else if(this.projectmodaltype=='SMail')
     {
+      debugger
       keyname='Subject';
       arrtype=this.Memos_List;
       selectedinto='SelectDms';
@@ -6841,6 +6859,7 @@ discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:strin
             this.projectsSelected.splice(i,1);
      };break;
      case 'PORTFOLIO':{
+      debugger
           const i=this.Portfolio.findIndex(ptf=>ptf==item);
           this.Portfolio.splice(i,1);
 
@@ -6943,6 +6962,7 @@ onPortfolioFilter(){
 }
 
 onDMSFilter(){
+debugger
      const _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
       const fresult=this.Memos_List.filter((_memo:any)=>{
 
@@ -7014,8 +7034,28 @@ clearAppliedFiltered(){
 eventRepeat:boolean=false;
 earlyDate:boolean=false;
 onCustomBtnClicked(){
-  $('#propse11').removeClass('show');
-  this.repeatEvent();
+  Swal.fire({
+    title: `Repeat meeting`,
+    text: `A meeting cannot be scheduled more than once on the same day. To change the meeting time, please edit the existing meeting`,
+    showCancelButton: true,
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancel',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Call your second function when OK is clicked
+      $('#propse11').removeClass('show');
+      this.repeatEvent();
+    } 
+    // else if (result.isDismissed) {
+      // Skip all when Cancel is clicked
+      // continue; // Skip this file
+    // }
+  }) 
+
+
+
+
+
 }
 
 
