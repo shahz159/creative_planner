@@ -392,7 +392,7 @@ export class PortfolioProjectsComponent implements OnInit {
   isPendingChecked : boolean = false
 
 
-  GetPortfolioProjectsByPid() {  
+  GetPortfolioProjectsByPid() {
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
     this._Pid = this.Url_portfolioId;
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -486,7 +486,7 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
   this.completionPrjPort = []
 
   this._ProjectsListBy_Pid.forEach((item)=>{
-    if (item.Status === 'Completion Under Approval'  && item.OwnerEmpNo === this.Current_user_ID){
+    if (item.Status === 'Completion Under Approval'  && item.PendingapproverEmpNo === this.Current_user_ID){
       const obj = {
         prjname : item.Project_Name,
         prjcode : item.Project_Code,
@@ -530,7 +530,7 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
 
 
     this.isPendingChecked = this._ProjectsListBy_Pid.some((emp)=>{
-      debugger
+
       return emp.PendingapproverEmpNo === this.Current_user_ID
     })
 
@@ -1853,22 +1853,23 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
       // If the item is already active, deactivate it
       // If the item is not active, deactivate all items and activate the clicked one
-    //   this._ProjectsListBy_Pid.forEach(otherItem => otherItem.active = false);
-    //   item.active = true;
+      this._ProjectsListBy_Pid.forEach(otherItem => otherItem.active = false);
+      item.active = true;
 
-    // // Manually trigger change detection
-    // this.cdr.detectChanges();
-debugger
-    item.isActive = !item.isActive;
+    // Manually trigger change detection
+    this.cdr.detectChanges();
 
-    // If you want to allow only one item to be active at a time, uncomment the following lines:
-  if (item.isActive) {
-    this._ProjectsListBy_Pid.forEach(otherItem => {
-      if (otherItem !== item) {
-        otherItem.isActive = false;
-      }
-    });
-  }
+  //   item.isActive = !item.isActive;
+
+  //   // If you want to allow only one item to be active at a time, uncomment the following lines:
+  // if (item.isActive) {
+  //   this._ProjectsListBy_Pid.forEach(otherItem => {
+  //     if (otherItem !== item) {
+  //       otherItem.isActive = false;
+  //     }
+  //   });
+
+
 }
 
 
@@ -1876,8 +1877,9 @@ debugger
 
 
   closeInfo() {
-    // this._ProjectsListBy_Pid.forEach(item => item.active = false);
-    this._ProjectsListBy_Pid.forEach(item => item.isActive = false);
+    this._ProjectsListBy_Pid.forEach(item => item.active = false);
+    this.Deletedproject.forEach(item=> item.active = false)
+    // this._ProjectsListBy_Pid.forEach(item => item.isActive = false);
 
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
@@ -2089,7 +2091,7 @@ hasFilterResult(){
 
 let list;
 let result=[];
-debugger
+
 if(this.showDeletedPrjOnly){
   list=[...this.Deletedproject];
   result=list.filter((p)=>{
@@ -4225,7 +4227,7 @@ getChangeSubtaskDetais(Project_Code) {
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
         this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
-     
+
 
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';

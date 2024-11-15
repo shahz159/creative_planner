@@ -496,25 +496,25 @@
                               <a class="dropdown-item" [ngClass]="{'focus' : currentview === 'list'}" href="javascript:void(0)" (click)="list_open()">List View</a>
                             </div>
                           </div>
-                            <a (click)="All_Portfolio()" class="kt-todo__icon" data-toggle="kt-tooltip" title="All"
+                            <a (click)="All_Portfolio()" class="kt-todo__icon" data-toggle="kt-tooltip" title="Click to get all portfolio list"
                             [ngClass]="{'active': activeClassAll}">
                             <svg fill="currentColor" width="18px" height="18px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>list</title> <path d="M6 11.75h-2c-1.794 0.002-3.248 1.456-3.25 3.25v2c0.002 1.794 1.456 3.248 3.25 3.25h2c1.794-0.002 3.248-1.456 3.25-3.25v-2c-0.002-1.794-1.456-3.248-3.25-3.25h-0zM6.75 17c-0.001 0.414-0.336 0.749-0.75 0.75h-2c-0.414-0.001-0.749-0.336-0.75-0.75v-2c0.001-0.414 0.336-0.749 0.75-0.75h2c0.414 0.001 0.749 0.336 0.75 0.75v0zM30 14.75h-17c-0.69 0-1.25 0.56-1.25 1.25s0.56 1.25 1.25 1.25v0h17c0.69 0 1.25-0.56 1.25-1.25s-0.56-1.25-1.25-1.25v0zM6 0.75h-2c-1.794 0.002-3.248 1.456-3.25 3.25v2c0.002 1.794 1.456 3.248 3.25 3.25h2c1.794-0.002 3.248-1.456 3.25-3.25v-2c-0.002-1.794-1.456-3.248-3.25-3.25h-0zM6.75 6c-0.001 0.414-0.336 0.749-0.75 0.75h-2c-0.414-0.001-0.749-0.336-0.75-0.75v-2c0.001-0.414 0.336-0.749 0.75-0.75h2c0.414 0.001 0.749 0.336 0.75 0.75v0zM13 6.25h17c0.69 0 1.25-0.56 1.25-1.25s-0.56-1.25-1.25-1.25v0h-17c-0.69 0-1.25 0.56-1.25 1.25s0.56 1.25 1.25 1.25v0zM6 22.75h-2c-1.794 0.002-3.248 1.456-3.25 3.25v2c0.002 1.794 1.456 3.248 3.25 3.25h2c1.794-0.002 3.248-1.456 3.25-3.25v-2c-0.002-1.794-1.456-3.248-3.25-3.25h-0zM6.75 28c-0 0.414-0.336 0.75-0.75 0.75h-2c-0.414-0-0.75-0.336-0.75-0.75v-2c0-0.414 0.336-0.75 0.75-0.75h2c0.414 0 0.75 0.336 0.75 0.75v0zM30 25.75h-17c-0.69 0-1.25 0.56-1.25 1.25s0.56 1.25 1.25 1.25v0h17c0.69 0 1.25-0.56 1.25-1.25s-0.56-1.25-1.25-1.25v0z"></path> </g></svg>
 
                         </a>
                         <a (click)="Owners_Portfolios()" class="kt-todo__icon" data-toggle="kt-tooltip"
-                            title="Owner" [ngClass]="{'active': activeClassOwners}">
+                            title="Click to get owner portfolio list" [ngClass]="{'active': activeClassOwners}">
                             <!-- <i class="la la-user"></i> -->
                             <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="6" r="4" stroke="currentColor" stroke-width="1.5"></circle> <path d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z" stroke="currentColor" stroke-width="1.5"></path> </g></svg>
 
                         </a>
                         <a (click)="Shared_Portfolios()" class="kt-todo__icon" data-toggle="kt-tooltip"
-                            title="Shared" [ngClass]="{'active': activeClassShare}">
+                            title="Click to get shared portfolio list" [ngClass]="{'active': activeClassShare}">
                             <!-- <i class="la la-share-alt"></i> -->
                             <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 12C9 13.3807 7.88071 14.5 6.5 14.5C5.11929 14.5 4 13.3807 4 12C4 10.6193 5.11929 9.5 6.5 9.5C7.88071 9.5 9 10.6193 9 12Z" stroke="currentColor" stroke-width="1.5"></path> <path d="M14 6.5L9 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M14 17.5L9 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M19 18.5C19 19.8807 17.8807 21 16.5 21C15.1193 21 14 19.8807 14 18.5C14 17.1193 15.1193 16 16.5 16C17.8807 16 19 17.1193 19 18.5Z" stroke="currentColor" stroke-width="1.5"></path> <path d="M19 5.5C19 6.88071 17.8807 8 16.5 8C15.1193 8 14 6.88071 14 5.5C14 4.11929 15.1193 3 16.5 3C17.8807 3 19 4.11929 19 5.5Z" stroke="currentColor" stroke-width="1.5"></path> </g></svg>
 
                         </a>
                         <a (click)="Favourite_Portfolios()" class="kt-todo__icon" data-toggle="kt-tooltip"
-                            title="Favourite" [ngClass]="{'active': activeClassFav}">
+                            title="Click to get favorite portfolio list" [ngClass]="{'active': activeClassFav}">
                             <!-- <i class="la la-star-o"></i> -->
                             <!-- <i class="fas fa-star"></i> -->
                             <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.2691 4.41115C11.5006 3.89177 11.6164 3.63208 11.7776 3.55211C11.9176 3.48263 12.082 3.48263 12.222 3.55211C12.3832 3.63208 12.499 3.89177 12.7305 4.41115L14.5745 8.54808C14.643 8.70162 14.6772 8.77839 14.7302 8.83718C14.777 8.8892 14.8343 8.93081 14.8982 8.95929C14.9705 8.99149 15.0541 9.00031 15.2213 9.01795L19.7256 9.49336C20.2911 9.55304 20.5738 9.58288 20.6997 9.71147C20.809 9.82316 20.8598 9.97956 20.837 10.1342C20.8108 10.3122 20.5996 10.5025 20.1772 10.8832L16.8125 13.9154C16.6877 14.0279 16.6252 14.0842 16.5857 14.1527C16.5507 14.2134 16.5288 14.2807 16.5215 14.3503C16.5132 14.429 16.5306 14.5112 16.5655 14.6757L17.5053 19.1064C17.6233 19.6627 17.6823 19.9408 17.5989 20.1002C17.5264 20.2388 17.3934 20.3354 17.2393 20.3615C17.0619 20.3915 16.8156 20.2495 16.323 19.9654L12.3995 17.7024C12.2539 17.6184 12.1811 17.5765 12.1037 17.56C12.0352 17.5455 11.9644 17.5455 11.8959 17.56C11.8185 17.5765 11.7457 17.6184 11.6001 17.7024L7.67662 19.9654C7.18404 20.2495 6.93775 20.3915 6.76034 20.3615C6.60623 20.3354 6.47319 20.2388 6.40075 20.1002C6.31736 19.9408 6.37635 19.6627 6.49434 19.1064L7.4341 14.6757C7.46898 14.5112 7.48642 14.429 7.47814 14.3503C7.47081 14.2807 7.44894 14.2134 7.41394 14.1527C7.37439 14.0842 7.31195 14.0279 7.18708 13.9154L3.82246 10.8832C3.40005 10.5025 3.18884 10.3122 3.16258 10.1342C3.13978 9.97956 3.19059 9.82316 3.29993 9.71147C3.42581 9.58288 3.70856 9.55304 4.27406 9.49336L8.77835 9.01795C8.94553 9.00031 9.02911 8.99149 9.10139 8.95929C9.16534 8.93081 9.2226 8.8892 9.26946 8.83718C9.32241 8.77839 9.35663 8.70162 9.42508 8.54808L11.2691 4.41115Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -533,7 +533,7 @@
                         <div class="stores-sec">
                             <ul class="nav navbar-nav filters">
                                 <li class="dropdown mega-dropdown" id="filtermenu">
-                                    <a [ngClass]="edited ? 'kt-todo__icon  filter-dot' : 'kt-todo__icon '"
+                                    <a  title="Click to filter the projects" [ngClass]="edited ? 'kt-todo__icon  filter-dot' : 'kt-todo__icon '"
                                         data-toggle="dropdown" aria-expanded="false" id="test2">
                                         <svg width="18px" height="18px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-three-dots-vertical"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path> </g></svg>
                                     </a>
@@ -695,7 +695,7 @@
                         <!-- Filters End -->
                             <!--Create new portfolio-->
                             <div>
-                                <a class="kt-todo__icon" data-toggle="dropdown" id="test1" title="New Portfolio"
+                                <a class="kt-todo__icon" data-toggle="dropdown" id="test1" title="Click to create new portfolio"
                                     [ngClass]="{'active': activeClass_NewPortfolio}" (click)="DropdownOpen()">
                                     <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12H18M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                 </a>
@@ -805,7 +805,7 @@
                                             </div>
                                         </div>
                                         <div class="n-portfolio-body">
-                                            <div *ngIf="item.AchievementPercentage>0" class="per-con">{{item.AchievementPercentage  | number:'1.0-2'}}<small>%</small></div>
+                                            <!-- <div *ngIf="item.AchievementPercentage>0" class="per-con">{{item.AchievementPercentage  | number:'1.0-2'}}<small>%</small></div> -->
                                             <div class="n-portfolio-item">
                                                 <div class="n-portfolio-item-icon">
                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 21C5 17.134 8.13401 14 12 14C15.866 14 19 17.134 19 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -823,7 +823,7 @@
                                                 <div class="n-portfolio-item-icon">
                                                     <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="m 13,2.15688 0,9.68624 C 13,12.49386 12.491071,13 11.842857,13 L 2.1571429,13 C 1.5169643,12.99732 1,12.49922 1,11.84044 L 1,2.15688 C 1,1.51149 1.5035714,1 2.1571429,1 L 11.845536,1 C 12.488393,1 13,1.50346 13,2.15688 Z m -0.999107,9.68356 0,-9.68356 c 0,-0.0803 -0.06964,-0.15532 -0.155357,-0.15532 l -0.249107,0 L 8.6419643,3.99933 7,2.66302 5.3607143,3.99933 2.40625,1.99888 l -0.2491071,0 c -0.085714,0 -0.1553572,0.075 -0.1553572,0.15533 l 0,9.68623 c 0,0.0803 0.069643,0.15532 0.1553572,0.15532 l 9.6883931,0 c 0.08571,0.003 0.155357,-0.0723 0.155357,-0.15532 z m -6.9776787,-6.71636 0,0.99085 -1.96875,0 0,-0.99085 1.96875,0 z m 0,1.99241 0,0.99889 -1.96875,0 0,-0.99889 1.96875,0 z m 0.2973214,-3.94465 1.4464286,-1.17028 -3.1741072,0 1.7276786,1.17028 z m 5.6250003,1.95224 0,0.99085 -5.2500003,0 0,-0.99085 5.2500003,0 z m 0,1.99241 0,0.99889 -5.2500003,0 0,-0.99889 5.2500003,0 z M 8.6794643,3.17184 10.407143,2.00156 l -3.1714287,0 1.44375,1.17028 z m 2.2660717,5.94242 0,0.99888 -2.6625003,0 0,-0.99888 2.6625003,0 z"></path></g></svg>
                                                 </div>
-                                                <div class="n-portfolio-item-title">{{item.ProjectsCount}} Projects</div>
+                                                <div class="n-portfolio-item-title">{{item.ProjectsCount}} Projects <span *ngIf="item.AchievementPercentage>0"  class="p-b-percent-count">{{item.AchievementPercentage  | number:'1.0-2'}}%</span></div>
                                             </div>
                                             <div class="n-portfolio-item">
                                                 <div class="n-portfolio-item-icon">
@@ -837,7 +837,7 @@
                                                         </svg>
                                                 </div>
                                                 <div class="n-portfolio-item-title">
-                                                    <div class="n-portfolio-item-date">{{item.Created_DT|date:'medium'}}</div>
+                                                    <div class="n-portfolio-item-date">{{item.Created_DT|date:'dd-MM-yyyy'}}</div>
 
                                                 </div>
                                             </div>
@@ -951,17 +951,19 @@
                                             </div>
                                             <div class="n-portfolio-action">
                                                 <div class="p-g-more btn-group">
-                                                    <div data-toggle="dropdown"  class="btn btn-more" aria-haspopup="true" aria-expanded="false">
-                                                        <svg fill="currentColor" height="64px" width="64px" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path class="cls-1" d="M8,6.5A1.5,1.5,0,1,1,6.5,8,1.5,1.5,0,0,1,8,6.5ZM.5,8A1.5,1.5,0,1,0,2,6.5,1.5,1.5,0,0,0,.5,8Zm12,0A1.5,1.5,0,1,0,14,6.5,1.5,1.5,0,0,0,12.5,8Z"></path> </g></svg>
-                                                    </div>
-                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                    <div data-toggle="dropdown" title="Click to delete portfolio" class="btn btn-more" aria-haspopup="true" aria-expanded="false" (click)="_deletePortfolio(item.Portfolio_ID,item.Portfolio_Name,item.Created_By,item.Created_DT,item.ProjectsCount,item.Status)">
+                                                        <!-- <svg fill="currentColor" height="64px" width="64px" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path class="cls-1" d="M8,6.5A1.5,1.5,0,1,1,6.5,8,1.5,1.5,0,0,1,8,6.5ZM.5,8A1.5,1.5,0,1,0,2,6.5,1.5,1.5,0,0,0,.5,8Zm12,0A1.5,1.5,0,1,0,14,6.5,1.5,1.5,0,0,0,12.5,8Z"></path> </g></svg> -->
+                                                        <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M18.8332 8.5L18.3732 15.3991C18.1962 18.054 18.1077 19.3815 17.2427 20.1907C16.3777 21 15.0473 21 12.3865 21H11.6132C8.95235 21 7.62195 21 6.75694 20.1907C5.89194 19.3815 5.80344 18.054 5.62644 15.3991L5.1665 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M9.5 11L10 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M14.5 11L14 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6" stroke="currentColor" stroke-width="1.5"></path> </g></svg>
+
+                                                      </div>
+                                                    <!-- <div class="dropdown-menu dropdown-menu-right">
                                                         <div class="dropdown-item" type="button"   (click)="_deletePortfolio(item.Portfolio_ID,item.Portfolio_Name,item.Created_By,item.Created_DT,item.ProjectsCount,item.Status)">
                                                             <span class="p-g-more-item-icon">
                                                                 <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M18.8332 8.5L18.3732 15.3991C18.1962 18.054 18.1077 19.3815 17.2427 20.1907C16.3777 21 15.0473 21 12.3865 21H11.6132C8.95235 21 7.62195 21 6.75694 20.1907C5.89194 19.3815 5.80344 18.054 5.62644 15.3991L5.1665 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M9.5 11L10 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M14.5 11L14 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6" stroke="currentColor" stroke-width="1.5"></path> </g></svg>
                                                             </span>
                                                             <span class="p-g-more-item-label">Delete Portfolio</span>
                                                         </div>
-                                                      </div>
+                                                      </div> -->
                                                 </div>
 
                                             </div>

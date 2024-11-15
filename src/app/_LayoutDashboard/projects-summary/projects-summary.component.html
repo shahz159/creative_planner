@@ -124,7 +124,7 @@
                         <div class="mr-1">
                             <ul class="nav navbar-nav filters">
                                 <li class="dropdown mega-dropdown" id="filtermenu">
-                                    <a (click)="filterMegadropdown()" [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'"><i
+                                    <a (click)="filterMegadropdown()"  title="Click to filter the projects" [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'"><i
                                             class="fas fa-ellipsis-v mr-0 "></i>
                                     </a>
                                     <div class="dropdown-menu mega-dropdown-menu" id="mega_dropdown_menu">
@@ -614,7 +614,7 @@
                                 <span class="label-hidden">Filters</span>
                             </button> -->
 
-                            <a class="btn btn-label-primary btn-upper btn-sm btn-bold filter-dot mr-1" data-toggle="dropdown">
+                            <a   title="Click to reset the filter"  class="btn btn-label-primary btn-upper btn-sm btn-bold filter-dot mr-1" data-toggle="dropdown">
                                 <i class="fas fa-ellipsis-v mr-0 "></i>
                             </a>
 
@@ -851,7 +851,7 @@
                         </div>
                         <!-- new filters -->
 
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll();getNewFilterResult();">
+                        <button   title="Click to reset the filter" class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll();getNewFilterResult();">
                             <i class="fas fa-sync-alt mr-0"></i>
                         </button>
 
@@ -1025,62 +1025,346 @@
                                                     </th>
                                                     <th>
                                                      </th>
-                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                    <th  [ngClass]="{'d-none':!isprojtype}"  [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Exec_BlockName" tabindex="0" class="curser-pointer"
                                                         aria-controls="project-4" rowspan="1" colspan="1"
                                                         aria-label="Project Type: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> Project type
                                                     </th>
+
+
+                                                    <th  [ngClass]="{'d-none':!isowner}"  [appSort]="_ProjectDataList" data-order="desc"
+                                                    data-name="Project_Owner" tabindex="0" class="curser-pointer"
+                                                    aria-controls="project-4" rowspan="1" colspan="1"
+                                                    aria-label="Project Type: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Owner
+                                                </th>
+
+
+
                                                     <!-- <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="ReportType" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" class="curser-pointer"
                                                         aria-label="Category: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> Category
                                                     </th> -->
-                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+                                                    <th  [ngClass]="{'d-none':!isrespon}"   [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="TM_DisplayName" tabindex="0" class="curser-pointer"
                                                         aria-controls="project-4" rowspan="1" colspan="1"
                                                         aria-label="User Name: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> Responsible
                                                     </th>
-                                                    <th [appSort]="_ProjectDataList" data-order="desc"
+
+                                                      <th  [ngClass]="{'d-none':!isclient}"    [appSort]="_ProjectDataList" data-order="desc"
+                                                      data-name="TM_DisplayName" tabindex="0" class="curser-pointer"
+                                                      aria-controls="project-4" rowspan="1" colspan="1"
+                                                      aria-label="User Name: activate to sort column ascending">
+                                                      <i class="fas fa-sort"></i> Client
+                                                    </th>
+
+
+                                                  <th [ngClass]="{'d-none':!iscost}" [appSort]="_ProjectDataList" data-order="desc"
+                                                     data-name="TM_DisplayName" tabindex="0" class="curser-pointer"
+                                                    aria-controls="project-4" rowspan="1" colspan="1"
+                                                    aria-label="User Name: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Cost
+                                                  </th>
+
+
+
+                                                  <th  [ngClass]="{'d-none':!isDepartment}" [appSort]="_ProjectDataList" data-order="desc"
+                                                    data-name="TM_DisplayName" tabindex="0" class="curser-pointer"
+                                                   aria-controls="project-4" rowspan="1" colspan="1"
+                                                   aria-label="User Name: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Company
+                                                  </th>
+
+
+
+
+                                                    <th [ngClass]="{'d-none':!isdeadline}"  [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="DeadLine" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" class="curser-pointer"
                                                         aria-label="End Date: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> Deadline
                                                     </th>
-                                                    <th [appSort]="_ProjectDataList" data-order="desc"
-                                                        data-name="LastUpdate" tabindex="0" aria-controls="project-4"
-                                                        rowspan="1" colspan="1" class="curser-pointer"
-                                                        aria-label="End Date: activate to sort column ascending">
-                                                        <i class="fas fa-sort"></i> Last update
-                                                    </th>
+
 
                                                     <ng-container  *ngIf="(StatusCountFilter&&StatusCountFilter.length!=0&&StatusCountFilter[0].Name!='Delay')" >
-                                                        <th [appSort]="_ProjectDataList" data-order="desc"
+                                                        <th [ngClass]="{'d-none':!isstatus}"  [appSort]="_ProjectDataList" data-order="desc"
                                                                 data-name="Status" tabindex="0" aria-controls="project-4"
                                                                 rowspan="1" colspan="1" class="curser-pointer"
                                                                 aria-label="Status: activate to sort column ascending">
                                                                 <i class="fas fa-sort"></i> Status
                                                         </th>
 
-                                                    <!-- <ng-container  *ngIf="StatusCountFilter[0]&&StatusCountFilter[0].Name!='Delay'" > -->
 
                                                 </ng-container>
 
+                                     <!-- <ng-container  *ngIf="StatusCountFilter[0]&&StatusCountFilter[0].Name!='Delay'" > -->
+
+
                                                     <ng-container  *ngIf="(StatusCountFilter&&StatusCountFilter.length!=0&&StatusCountFilter[0].Name=='Delay')" >
-                                                        <th [appSort]="_ProjectDataList" data-order="desc"  (click)="newDelaySorting() "
+                                                        <th  [ngClass]="{'d-none':!isstatus}" [appSort]="_ProjectDataList" data-order="desc"  (click)="newDelaySorting() "
                                                         data-name="Status" tabindex="0" aria-controls="project-4"
                                                         rowspan="1" colspan="1" class="curser-pointer"
                                                         aria-label="Status: activate to sort column ascending">
                                                         <i class="fas fa-sort"></i> Status
                                                         </th>
                                                     </ng-container>
-                                                    <th data-order="desc" data-name="Users" tabindex="0" aria-controls="project-4"
+
+
+                                                    <th  [ngClass]="{'d-none':!islastupdate}"  [appSort]="_ProjectDataList" data-order="desc"
+                                                         data-name="LastUpdate" tabindex="0" aria-controls="project-4"
+                                                        rowspan="1" colspan="1" class="curser-pointer"
+                                                        aria-label="End Date: activate to sort column ascending">
+                                                        <i class="fas fa-sort"></i> Last update
+                                                    </th>
+
+                                                    <th   [ngClass]="{'d-none':!isracis}"  data-order="desc" data-name="Users" tabindex="0" aria-controls="project-4"
                                                     rowspan="1" colspan="1" class="curser-pointer"
                                                     aria-label="Users: activate to sort column ascending">
                                                     <i class="fas fa-sort"></i> RACIS
                                                 </th>
+
+
+
+
+
+
+                                                <th class="custom-view-dropdown">
+
+                                                  <div class="dropdown ">
+
+
+
+                                                      <a class="kt-todo__icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+
+
+                                                        <svg viewBox="0 0 24 24" style="height:28px" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                          <g id="SVGRepo_iconCarrier">
+                                                            <circle opacity="0.5" cx="12" cy="12" r="10" stroke="#1C274C" stroke-width="1.5"></circle>
+                                                            <path d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15" stroke="#1C274C" stroke-width="1.5"
+                                                              stroke-linecap="round"></path>
+                                                          </g>
+                                                        </svg>
+                                                      </a>
+
+
+
+
+                                                    <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter"
+                                                      id="dropd" (click)="$event.stopPropagation()">
+
+                                                      <ul class="drop-ul">
+                                                        <h1 class="dropdown-header" style="font-size: 16px;">Customize view</h1>
+
+                                                        <li>
+                                                          <button class="btn btn-filtr ">
+                                                            <div class="d-flex align-items-center">
+                                                              <div class="fil-lbl"> Project type </div>
+                                                              <label class="switch">
+                                                                <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('projtypeclass',$event);">
+                                                                <span class="slider"></span>
+                                                              </label>
+
+                                                            </div>
+                                                          </button>
+                                                        </li>
+
+                                                        <li>
+                                                          <button class="btn btn-filtr ">
+                                                            <div class="d-flex align-items-center">
+                                                              <div class="fil-lbl">Owner</div>
+                                                              <label class="switch">
+                                                                <input type="checkbox" (change)="togglevisibilityforClass('owner_class',$event);">
+                                                                <span class="slider"></span>
+                                                              </label>
+
+                                                            </div>
+                                                          </button>
+                                                        </li>
+
+
+                                                        <li>
+
+                                                          <button class="btn btn-filtr">
+                                                            <div class="d-flex align-items-center">
+                                                              <!-- <span class="count in-pro"> {{CountInprocess}}</span> -->
+                                                              <div class="fil-lbl">Responsible</div>
+                                                              <label class="switch">
+                                                                <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('responclass',$event);">
+                                                                <span class="slider"></span>
+                                                              </label>
+
+                                                            </div>
+                                                          </button>
+                                                        </li>
+
+
+                                                        <li>
+                                                          <button class="btn btn-filtr">
+                                                            <div class="d-flex align-items-center">
+                                                              <!-- <span class="count in-pro"> {{CountInprocess}}</span> -->
+                                                              <div class="fil-lbl">Client</div>
+                                                              <label class="switch">
+                                                                <input type="checkbox" (change)="togglevisibilityforClass('client_class',$event);">
+                                                                <span class="slider"></span>
+                                                              </label>
+
+                                                            </div>
+                                                          </button>
+                                                        </li>
+
+
+
+                                                        <li>
+                                                          <button class="btn btn-filtr">
+                                                            <div class="d-flex align-items-center">
+                                                              <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
+                                                              <div class="fil-lbl">Cost</div>
+                                                              <label class="switch">
+                                                                <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('classCost', $event);">
+                                                                <span class="slider"></span>
+                                                              </label>
+
+                                                            </div>
+                                                          </button>
+                                                        </li>
+
+
+
+                                                        <li>
+                                                          <button class="btn btn-filtr">
+                                                            <div class="d-flex align-items-center">
+                                                              <!-- <span class="count del"> {{CountDelay}} </span> -->
+                                                              <div class="fil-lbl">Company</div>
+                                                              <label class="switch">
+                                                                <input type="checkbox" (change)="togglevisibilityforClass('class_depart',$event);">
+                                                                <span class="slider"></span>
+                                                              </label>
+
+                                                            </div>
+                                                          </button>
+                                                        </li>
+
+
+
+
+
+
+
+                                                        <li>
+                                                          <button class="btn btn-filtr">
+                                                            <div class="d-flex align-items-center">
+                                                              <!-- <span class="count del"> {{CountDelay}} </span> -->
+                                                              <div class="fil-lbl">Deadline</div>
+                                                              <label class="switch">
+                                                                <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('class_deadline',$event);">
+                                                                <span class="slider"></span>
+                                                              </label>
+
+                                                            </div>
+                                                          </button>
+                                                        </li>
+
+
+
+                                                        <li>
+                                                          <button class="btn btn-filtr">
+                                                            <div class="d-flex align-items-center">
+                                                              <!-- <span class="count com">{{CountCompleted}}</span> -->
+                                                              <div class="fil-lbl">Status</div>
+                                                              <label class="switch">
+                                                                <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('statusClass',$event);">
+                                                                <span class="slider"></span>
+                                                              </label>
+
+                                                            </div>
+                                                          </button>
+                                                        </li>
+
+
+
+                                                        <li>
+                                                          <button class="btn btn-filtr">
+                                                            <div class="d-flex align-items-center">
+                                                              <!-- <span class="count draf">{{CountNotStarted}}</span> -->
+                                                              <div class="fil-lbl">Last update</div>
+                                                              <label class="switch">
+                                                                <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('clas_lasup',$event);">
+                                                                <span class="slider"></span>
+                                                              </label>
+
+                                                            </div>
+                                                          </button>
+                                                        </li>
+
+                                                        <li>
+                                                          <button class="btn btn-filtr">
+                                                            <div class="d-flex align-items-center">
+                                                              <!-- <span class="count new-pro">{{CountNewProject}}</span> -->
+                                                              <div class="fil-lbl">Racis</div>
+                                                              <label class="switch">
+                                                                <input type="checkbox" (change)="togglevisibilityforClass('racisClass',$event);">
+                                                                <span class="slider"></span>
+                                                              </label>
+
+                                                            </div>
+                                                          </button>
+                                                        </li>
+
+
+
+                                                        <ng-container *ngIf="showDeletedPrjOnly">
+                                                          <li>
+                                                            <button class="btn btn-filtr">
+                                                              <div class="d-flex align-items-center">
+                                                                <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
+                                                                <div class="fil-lbl">Deleted by</div>
+                                                                <label class="switch">
+                                                                  <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('isdeleteds', $event);">
+                                                                  <span class="slider"></span>
+                                                                </label>
+
+                                                              </div>
+                                                            </button>
+                                                          </li>
+                                                          <li>
+                                                            <button class="btn btn-filtr">
+                                                              <div class="d-flex align-items-center">
+                                                                <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
+                                                                <div class="fil-lbl">References</div>
+                                                                <label class="switch">
+                                                                  <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('referClass', $event);">
+                                                                  <span class="slider"></span>
+                                                                </label>
+
+                                                              </div>
+                                                            </button>
+                                                          </li>
+                                                        </ng-container>
+
+
+
+
+
+                                                      </ul>
+
+
+
+                                                    </div>
+
+                                                  </div>
+                                                </th>
+
+
+
+
+
                                                     <!-- <th tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
                                                         aria-label="Status: activate to sort column ascending">
                                                         Link
@@ -1199,7 +1483,11 @@
                                                             {{item.CompletedActioncount}}/{{ item.Actioncount }}
                                                       </span>
                                                     </td>
-                                                    <td>
+
+
+                                                    <!--  -->
+
+                                                    <td [ngClass]="{'d-none':!isprojtype}" class="projtypeclass">
                                                         <div style="display: flex; flex-direction: column; ">
                                                             <div class="kt-widget__other">{{item.Exec_BlockName}}</div>
                                                         <div *ngIf="item.ReportType==null;else ReportType">
@@ -1211,7 +1499,21 @@
                                                         </div>
                                                     </td>
 
-                                                    <td><div class="kt-widget__other">{{item.Team_Res}}</div>
+
+
+                                                    <!-- owner data start -->
+
+                                                    <td [ngClass]="{'d-none':!isowner}" class="owner_class" ><div class="kt-widget__other">{{item.Project_Owner}}</div>
+
+
+
+                                                    </td>
+
+                                               <!-- owner data end -->
+
+
+
+                                                    <td  [ngClass]="{'d-none':!isrespon}"  class="responclass"  ><div class="kt-widget__other">{{item.Team_Res}}</div>
                                                    <span *ngIf="item.Status=='Forward Under Approval'">
                                                       <div *ngIf="item.ForwardTo" class="d-flex align-items-center">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Arrow_Sub_Down_Right"> <path id="Vector" d="M13 11L18 16M18 16L13 21M18 16H10.1969C9.07899 16 8.5192 16 8.0918 15.7822C7.71547 15.5905 7.40973 15.2839 7.21799 14.9076C7 14.4798 7 13.9201 7 12.8V3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
@@ -1221,243 +1523,320 @@
 
 
                                                     </td>
-                                                    <td>
+
+
+                                           <!-- client data start -->
+                                                    <td  [ngClass]="{'d-none':!isclient}" class="client_class"  ><div class="kt-widget__other">{{item.Client_Name}}</div>
+
+                                                        </td>
+
+                                             <!-- client data end -->
+
+
+
+                                                 <!-- cost data start -->
+                                                    <td  *ngIf="item.Project_Cost" [ngClass]="{'d-none':!iscost}" class="classCost" ><div class="kt-widget__other">{{item.Project_Cost}}</div>
+
+                                                    </td>
+                                                    <td  *ngIf="!item.Project_Cost" [ngClass]="{'d-none':!iscost}" class="classCost" ><div class="kt-widget__other">0</div>
+
+                                                    </td>
+
+                                         <!-- cost data end -->
+
+
+                                              <!-- department data start -->
+                                              <td  [ngClass]="{'d-none':!isDepartment}" class="class_depart" ><div class="kt-widget__other">{{item.Com_Name}}</div>
+
+                                              </td>
+
+                                   <!-- department data end -->
+
+
+
+
+
+
+
+
+                                                    <td [ngClass]="{'d-none':!isdeadline}" class="class_deadline"  >
                                                         <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                             <span class="kt-widget__other text-nowrap">{{item.SubmissionType1}}</span>
+
+   <div  class="text-nowrap font" *ngIf="item.SubmissionType === 'Weekly'||'Daily'|| 'Annually'||'Monthly'  ">{{item.StandardDuration}}</div>
                                                         </div>
                                                         <ng-template #Projecttype>
                                                             <span class="kt-widget__other text-nowrap">
                                                                 {{item.DeadLine|date:'dd-MM-yyyy'}}</span>
                                                         </ng-template>
                                                     </td>
-                                                    <td data-toggle="tooltip" data-placement="top"
+
+
+
+
+
+                                                    <td  [ngClass]="{'d-none':!isstatus}"    class="stat-td statusClass">
+                                                      <!-- <div *ngIf="_MainProjectStatus=='Delay'">
+                                                          <span class="text-danger font-weight-400">Delay</span>
+                                                      </div> -->
+                                                      <ng-container  *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') && item.Status=='InProcess'">
+                                                          <div>
+                                                              <span class="InProcess_color font-weight-400" *ngIf=" item.Status=='InProcess'">In-process</span>
+                                                          </div>
+                                                      </ng-container>
+                                                      <ng-container  *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') && item.Status!='InProcess'">
+                                                          <ng-container [ngSwitch]="item.Status?item.Status.trim():''">
+
+                                                                  <span class="Completed_color font-weight-400" *ngSwitchCase="'Completed'">{{item.Status}}</span>
+                                                                  <span class="Under_Approval_color font-weight-400" *ngSwitchCase="'Under Approval'">New approval</span>
+                                                                  <span class="New_Project_Rejected_color font-weight-400" *ngSwitchCase="'New Project Rejected'">New project rejected</span>
+                                                                  <span class="Not_Started font-weight-400" *ngSwitchCase="'Not Started'">Not Started</span>
+                                                                  <span class="Cancelled_color font-weight-400" *ngSwitchCase="'Cancelled'">Cancelled</span>
+                                                                  <span class="Cancellation_Under_Approval_color font-weight-400" *ngSwitchCase="'Cancellation Under Approval'">Cancellation approval</span>
+                                                                  <span class="Forward_Under_Approval_color font-weight-400"  *ngSwitchCase="'Forward Under Approval'">Forward approval</span>
+                                                                  <span class="Hold_color font-weight-400" *ngSwitchCase="'Project Hold'">Hold</span>
+                                                                  <span class="Completion_Under_Approval_color font-weight-400" *ngSwitchCase="'Completion Under Approval'">Completion Under Approval</span>
+                                                                  <div *ngIf="item.Pendingapprover" class="pulsing-div">
+                                                                      <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                                      <span class="pulsing-dot-label"> {{item.Pendingapprover}}</span>
+                                                                  </div>
+                                                                  <ng-container *ngSwitchDefault>
+                                                                      <span class="Delay_color font-weight-400 attach-tippy"  *ngIf="item.Status.toLowerCase().includes('delay')" >
+                                                                          <span class="vi font-weight-400 st-line"> {{item.Status}}</span>
+                                                                          {{getFormattedDelay(getStatusNumber(item.Status))}}
+                                                                      </span>
+                                                                     <div class="attach-tippy" *ngIf="item.Status !== 'Not yet achieved'" >
+                                                                      <span class="vi font-weight-400 st-line"> {{item.Status}} Delay</span>
+                                                                      <span class="Delay_color font-weight-400" *ngIf="!item.Status.toLowerCase().includes('delay')" >{{getFormattedDelay(getStatusNumber(item.Status))}}</span>
+                                                                    </div>
+                                                                    <div  *ngIf="item.Status === 'Not yet achieved'" >
+                                                                      <!-- <span class="vi font-weight-400 "> {{item.Status}} </span> -->
+                                                                      <span class="Delay_color font-weight-400" *ngIf="!item.Status.toLowerCase().includes('delay')" >{{(item.Status) }}</span>
+                                                                    </div>
+                                                                    </ng-container>
+
+                                                          </ng-container>
+                                                      </ng-container>
+                                                      <ng-container  *ngIf="(item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks')">
+                                                          <div *ngIf="item.Status=='Under Approval'" class="attach-tippy">
+                                                            <span class="pending_appr st-line">Pending approval since: {{item.approvalfromdate | date:'dd-MM-yyyy'}}</span>
+                                                              <span class="Under_Approval_color font-weight-400">New approval</span>
+                                                              <div class="pulsing-div">
+                                                                  <ng-container *ngIf="item.PendingapproverEmpNo">
+                                                                      <span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span>
+                                                                  </ng-container>
+                                                                  <span class="pulsing-dot-label">{{item.Pendingapprover}}</span>
+                                                              </div>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='Delay'" class="attach-tippy" >
+                                                              <span class="vi font-weight-400 st-line"> {{item.Delaydays}} days delay</span>
+                                                              <span
+                                                                  class="Delay_color">
+                                                                 {{getFormattedDelay(item.Delaydays)}}
+                                                              </span>
+
+                                                          </div>
+
+<!--
+                                                          <span class="attach-tippy">
+
+                                                          </span> -->
+<!--
+                                                          <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                            <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
+                                                             <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span> -->
+
+
+
+
+
+                                                          <!-- Other Status -->
+
+                                                          <div *ngIf="item.Status=='InProcess'">
+                                                              <span class="InProcess_color font-weight-400">In-process</span>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='ToDo InProcess'">
+                                                              <span class="TODOinprocess font-weight-400">ToDo
+                                                                  Inprocess</span>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='New Project'">
+                                                              <span class="NEWPROJECT font-weight-400">New
+                                                                  project</span>
+                                                          </div>
+
+
+
+                                                          <!-- <div *ngIf="item.Status=='New Project Rejected'" class="attach-tippy">
+                                                            <span class="rej st-line status-text">Rejected by {{item.RejectedBy}}  Rejected from : {{item.RejectFromDate | date :'dd-MM-yyyy'}} Rejected comment : {{item.Rejectcomments}}</span>
+                                                              <span class="New_Project_Rejected_color font-weight-400">New project rejected</span>
+                                                              <span class="pulsing-dot-label">  </span>
+                                                          </div> -->
+
+
+
+
+                                                          <div *ngIf="item.Status=='New Project Rejected'" class="attach-tippy-div">
+                                                            <span class="New_Project_Rejected_color font-weight-400">New project rejected</span>
+                                                            <span class="attach-tippy">
+
+                                                            <span class=" rej st-line curser-pointer" >
+                                                               <div style="width: max-content;">Rejected by: <h6>{{item.RejectedBy}} </h6></div>
+                                                                <div>on: {{item.RejectFromDate | date: 'dd-MM-yyyy'}}</div>
+                                                                <div>Comment : {{item.Rejectcomments}}</div></span>
+                                                            </span>
+
+                                                            <span class="New_Approval_Project font-weight-400">
+                                                                {{item.Approvedby}}
+                                                            </span>
+
+                                                        </div>
+
+
+
+
+
+
+
+                                                          <div *ngIf="item.Status=='Project Hold'">
+                                                              <span class="Hold_color font-weight-400">
+                                                                  Hold</span>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='ToDo Completed'">
+                                                              <span class="ToDo_Completed_color font-weight-400">ToDo
+                                                                  completed</span>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='New Todo'">
+                                                              <span class="New_Todo_color font-weight-400">New todo
+                                                              </span>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='Completion Under Approval'">
+
+                                                              <span *ngIf="item.AuditStatus=='Audit Pending';else compl_aprvl_status" class="AuditUnderApproval font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                                  Audit Approval
+                                                              </span>
+                                                              <ng-template #compl_aprvl_status>
+                                                                  <span class="Completion_Under_Approval_color font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                                      Completion approval
+                                                                  </span>
+                                                              </ng-template>
+
+                                                              <span class="attach-tippy">
+                                                                <b *ngIf="item.FileUrl" class="fa fa-paperclip text-info attachment cursor-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
+                                                            <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                               <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
+                                                                <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
+                                                            </span>
+                                                            <!-- <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
+                                                          </span> -->
+                                                          <div class="pulsing-div">
+                                                              <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                              <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                          </div>
+                                                          </div>
+
+                                                          <div *ngIf="item.Status=='Cancellation Under Approval'" class="attach-tippy">
+                                                            <span class="can st-line status-text">Pending approval since : {{item.approvalfromdate | date :'dd-MM-yyyy'}}</span>
+                                                              <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation approval
+                                                              </span>
+
+                                                              <div class="pulsing-div">
+                                                                 <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                                  <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                              </div>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='Cancelled'">
+                                                              <span class="Cancelled_color font-weight-400">Cancelled
+                                                              </span>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='Completed'" class="attach-tippy-div">
+                                                              <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">Completed</span>
+                                                              <span class="attach-tippy">
+                                                                  <b *ngIf="item.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
+                                                              <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                                 <div style="width: max-content;">Approved by: <h6>{{item.Approvedby}} </h6></div>
+                                                                  <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
+                                                              </span>
+
+                                                              <span class="New_Approval_Project font-weight-400">
+                                                                  {{item.Approvedby}}
+                                                              </span>
+
+                                                          </div>
+                                                          <div *ngIf="item.Status=='Forward Under Approval'" class="attach-tippy">
+                                                              <span class=" pending_appr st-line">Pending approval since : {{item.approvalfromdate | date:'dd-MM-yyyy'}}</span>
+                                                              <span class="Forward_Under_Approval_color font-weight-400">Forward approval
+                                                              </span>
+                                                              <div class="pulsing-div">
+                                                                  <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                                  <span class="pulsing-dot-label"> {{item.Pendingapprover}}</span>
+                                                              </div>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='Project Complete Rejected'">
+                                                              <span class="Project_Complete_Rejected_color font-weight-400">Project
+                                                                  complete
+                                                                  rejected
+                                                              </span>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='Enactive Under Approval'">
+                                                              <span class="Enactive_Under_Approval_color font-weight-400">Enactive approval
+                                                              </span>
+                                                              <div class="pulsing-div">
+                                                                 <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                                  <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                              </div>
+                                                          </div>
+
+                                                          <div *ngIf="item.Status=='Version'">
+                                                              <span class="text-danger font-weight-400">Version
+                                                              </span>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='Deadline Extend Under Approval'" class="attach-tippy">
+                                                            <span class="deadline pending_appr st-line">Pending approval since : {{item.approvalfromdate | date:'dd-MM-yyyy'}}</span>
+                                                              <span class="Deadline_Extend_Under_Approval_color font-weight-400">Deadline extend approval
+                                                              </span>
+                                                              <div class="pulsing-div">
+                                                              <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                              <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                              </div>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='Project Holded'">
+                                                              <span class="Hold_color   font-weight-400"
+                                                                    >Hold
+                                                              </span>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='Project Hold Under Approval'">
+                                                              <span class="Project_Hold_Under_Approval font-weight-400"
+                                                                >Hold approval
+                                                              </span>
+                                                              <div  class="pulsing-div">
+                                                                 <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                                  <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                              </div>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='ToDo Achieved'">
+                                                              <span class="ToDo_Achieved_color font-weight-400">ToDo achieved
+                                                              </span>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='Not Started'">
+                                                              <span class="Not_Started font-weight-400">Not Started
+                                                              </span>
+                                                          </div>
+                                                          <div *ngIf="item.Status=='Standardtask Enactive Hold'">
+                                                              <span class="text-danger font-weight-400">Standardtask enactive hold
+                                                              </span>
+                                                          </div>
+                                                      </ng-container>
+
+                                                  </td>
+
+
+                                                    <td  [ngClass]="{'d-none':!islastupdate}" class="clas_lasup"  data-toggle="tooltip" data-placement="top"
                                                         title="{{item.LastUpdate|date:'medium'}}">
                                                         <span class="kt-widget__other text-info">
                                                             {{item.LastUpdate|dateAgo}}</span>
                                                     </td>
-                                                    <td class="stat-td">
-                                                        <!-- <div *ngIf="_MainProjectStatus=='Delay'">
-                                                            <span class="text-danger font-weight-400">Delay</span>
-                                                        </div> -->
-                                                        <ng-container  *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') && item.Status=='InProcess'">
-                                                            <div>
-                                                                <span class="InProcess_color font-weight-400" *ngIf=" item.Status=='InProcess'">In-process</span>
-                                                            </div>
-                                                        </ng-container>
-                                                        <ng-container  *ngIf="(item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks') && item.Status!='InProcess'">
-                                                            <ng-container [ngSwitch]="item.Status?item.Status.trim():''">
 
-                                                                    <span class="Completed_color font-weight-400" *ngSwitchCase="'Completed'">{{item.Status}}</span>
-                                                                    <span class="Under_Approval_color font-weight-400" *ngSwitchCase="'Under Approval'">New approval</span>
-                                                                    <span class="New_Project_Rejected_color font-weight-400" *ngSwitchCase="'New Project Rejected'">New project rejected</span>
-                                                                    <span class="Not_Started font-weight-400" *ngSwitchCase="'Not Started'">Not Started</span>
-                                                                    <span class="Cancelled_color font-weight-400" *ngSwitchCase="'Cancelled'">Cancelled</span>
-                                                                    <span class="Cancellation_Under_Approval_color font-weight-400" *ngSwitchCase="'Cancellation Under Approval'">Cancellation approval</span>
-                                                                    <span class="Forward_Under_Approval_color font-weight-400"  *ngSwitchCase="'Forward Under Approval'">Forward approval</span>
-                                                                    <span class="Hold_color font-weight-400" *ngSwitchCase="'Project Hold'">Hold</span>
-                                                                    <span class="Completion_Under_Approval_color font-weight-400" *ngSwitchCase="'Completion Under Approval'">Completion Under Approval</span>
-                                                                    <div *ngIf="item.Pendingapprover" class="pulsing-div">
-                                                                        <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
-                                                                        <span class="pulsing-dot-label"> {{item.Pendingapprover}}</span>
-                                                                    </div>
-                                                                    <ng-container *ngSwitchDefault>
-                                                                        <span class="Delay_color font-weight-400 attach-tippy"  *ngIf="item.Status.toLowerCase().includes('delay')" >
-                                                                            <span class="vi font-weight-400 st-line"> {{item.Status}}</span>
-                                                                            {{getFormattedDelay(getStatusNumber(item.Status))}}
-                                                                        </span>
-                                                                       <div class="attach-tippy" *ngIf="item.Status !== 'Not yet achieved'" >
-                                                                        <span class="vi font-weight-400 st-line"> {{item.Status}} Delay</span>
-                                                                        <span class="Delay_color font-weight-400" *ngIf="!item.Status.toLowerCase().includes('delay')" >{{getFormattedDelay(getStatusNumber(item.Status))}}</span>
-                                                                      </div>
-                                                                      <div  *ngIf="item.Status === 'Not yet achieved'" >
-                                                                        <!-- <span class="vi font-weight-400 "> {{item.Status}} </span> -->
-                                                                        <span class="Delay_color font-weight-400" *ngIf="!item.Status.toLowerCase().includes('delay')" >{{(item.Status) }}</span>
-                                                                      </div>
-                                                                      </ng-container>
-
-                                                            </ng-container>
-                                                        </ng-container>
-                                                        <ng-container  *ngIf="(item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks')">
-                                                            <div *ngIf="item.Status=='Under Approval'" class="attach-tippy">
-                                                              <span class="pending_appr st-line">Pending approval</span>
-                                                                <span class="Under_Approval_color font-weight-400">New approval</span>
-                                                                <div class="pulsing-div">
-                                                                    <ng-container *ngIf="item.PendingapproverEmpNo">
-                                                                        <span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span>
-                                                                    </ng-container>
-                                                                    <span class="pulsing-dot-label">{{item.Pendingapprover}}</span>
-                                                                </div>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='Delay'" class="attach-tippy" >
-                                                                <span class="vi font-weight-400 st-line"> {{item.Delaydays}} days delay</span>
-                                                                <span
-                                                                    class="Delay_color">
-                                                                   {{getFormattedDelay(item.Delaydays)}}
-                                                                </span>
-
-                                                            </div>
-
-<!--
-                                                            <span class="attach-tippy">
-
-                                                            </span> -->
-<!--
-                                                            <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
-                                                              <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
-                                                               <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span> -->
-
-
-
-
-
-                                                            <!-- Other Status -->
-
-                                                            <div *ngIf="item.Status=='InProcess'">
-                                                                <span class="InProcess_color font-weight-400">In-process</span>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='ToDo InProcess'">
-                                                                <span class="TODOinprocess font-weight-400">ToDo
-                                                                    Inprocess</span>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='New Project'">
-                                                                <span class="NEWPROJECT font-weight-400">New
-                                                                    project</span>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='New Project Rejected'">
-                                                                <span class="New_Project_Rejected_color font-weight-400">New
-                                                                    project
-                                                                    rejected</span>
-                                                            </div>
-
-                                                            <div *ngIf="item.Status=='Project Hold'">
-                                                                <span class="Hold_color font-weight-400">
-                                                                    Hold</span>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='ToDo Completed'">
-                                                                <span class="ToDo_Completed_color font-weight-400">ToDo
-                                                                    completed</span>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='New Todo'">
-                                                                <span class="New_Todo_color font-weight-400">New todo
-                                                                </span>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='Completion Under Approval'">
-
-                                                                <span *ngIf="item.AuditStatus=='Audit Pending';else compl_aprvl_status" class="AuditUnderApproval font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
-                                                                    Audit Approval
-                                                                </span>
-                                                                <ng-template #compl_aprvl_status>
-                                                                    <span class="Completion_Under_Approval_color font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
-                                                                        Completion approval
-                                                                    </span>
-                                                                </ng-template>
-
-                                                                <span class="attach-tippy">
-                                                                  <b *ngIf="item.FileUrl" class="fa fa-paperclip text-info attachment cursor-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
-                                                              <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
-                                                                 <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
-                                                                  <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
-                                                              </span>
-                                                              <!-- <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
-                                                            </span> -->
-                                                            <div class="pulsing-div">
-                                                                <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
-                                                                <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
-                                                            </div>
-                                                            </div>
-
-                                                            <div *ngIf="item.Status=='Cancellation Under Approval'">
-                                                                <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation approval
-                                                                </span>
-                                                                <div class="pulsing-div">
-                                                                   <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
-                                                                    <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
-                                                                </div>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='Cancelled'">
-                                                                <span class="Cancelled_color font-weight-400">Cancelled
-                                                                </span>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='Completed'" class="attach-tippy-div">
-                                                                <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">Completed</span>
-                                                                <span class="attach-tippy">
-                                                                    <b *ngIf="item.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
-                                                                <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
-                                                                   <div style="width: max-content;">Approved by: <h6>{{item.Approvedby}} </h6></div>
-                                                                    <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
-                                                                </span>
-
-                                                                <span class="New_Approval_Project font-weight-400">
-                                                                    {{item.Approvedby}}
-                                                                </span>
-
-                                                            </div>
-                                                            <div *ngIf="item.Status=='Forward Under Approval'" class="attach-tippy">
-                                                                <span class=" pending_appr st-line">Pending approval</span>
-                                                                <span class="Forward_Under_Approval_color font-weight-400">Forward approval
-                                                                </span>
-                                                                <div class="pulsing-div">
-                                                                    <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
-                                                                    <span class="pulsing-dot-label"> {{item.Pendingapprover}}</span>
-                                                                </div>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='Project Complete Rejected'">
-                                                                <span class="Project_Complete_Rejected_color font-weight-400">Project
-                                                                    complete
-                                                                    rejected
-                                                                </span>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='Enactive Under Approval'">
-                                                                <span class="Enactive_Under_Approval_color font-weight-400">Enactive approval
-                                                                </span>
-                                                                <div class="pulsing-div">
-                                                                   <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
-                                                                    <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
-                                                                </div>
-                                                            </div>
-
-                                                            <div *ngIf="item.Status=='Version'">
-                                                                <span class="text-danger font-weight-400">Version
-                                                                </span>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='Deadline Extend Under Approval'">
-                                                                <span class="Deadline_Extend_Under_Approval_color font-weight-400">Deadline extend approval
-                                                                </span>
-                                                                <div class="pulsing-div">
-                                                                <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
-                                                                <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
-                                                                </div>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='Project Holded'">
-                                                                <span class="Hold_color   font-weight-400"
-                                                                      >Hold
-                                                                </span>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='Project Hold Under Approval'">
-                                                                <span class="Project_Hold_Under_Approval font-weight-400"
-                                                                  >Hold approval
-                                                                </span>
-                                                                <div  class="pulsing-div">
-                                                                   <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
-                                                                    <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
-                                                                </div>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='ToDo Achieved'">
-                                                                <span class="ToDo_Achieved_color font-weight-400">ToDo achieved
-                                                                </span>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='Not Started'">
-                                                                <span class="Not_Started font-weight-400">Not Started
-                                                                </span>
-                                                            </div>
-                                                            <div *ngIf="item.Status=='Standardtask Enactive Hold'">
-                                                                <span class="text-danger font-weight-400">Standardtask enactive hold
-                                                                </span>
-                                                            </div>
-                                                        </ng-container>
-
-                                                    </td>
-                                                    <td data-toggle="tooltip" data-placement="top"
+                                                    <td  [ngClass]="{'d-none':!isracis}" class="racisClass"  data-toggle="tooltip" data-placement="top"
                                                         title="RACIS">
                                                         <div class="kt-widget__details">
                                                             <div class="kt-section__content kt-section__content--solid">
@@ -1520,7 +1899,7 @@
                                                             </span>
                                                           </div>
                                                     </td>
-
+<td></td>
                                                     <!-- <td (click)="_onRowClick(item.Project_Code,item.Project_Name)"
                                                         class="curser-pointer">
                                                         <a><i class="fa fa-link text-primary"></i></a>

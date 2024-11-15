@@ -168,7 +168,7 @@
             <div class="stores-sec mr-1">
               <ul class="nav navbar-nav filters">
                 <li class="dropdown mega-dropdown" id="filtermenu">
-                  <a [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'"
+                  <a  title="Click to filter the projects"   [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'"
                     data-toggle="dropdown"><i class="fas fa-ellipsis-v mr-0 "></i>
                   </a>
                   <div class="dropdown-menu mega-dropdown-menu">
@@ -271,7 +271,7 @@
                 </li>
               </ul>
             </div>
-            <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll()">
+            <button title="Click to reset the filter"  class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll()">
               <i class="fas fa-sync-alt mr-0"></i>
             </button>
 
@@ -308,7 +308,7 @@
                       <tr role="row">
                         <th style="width: 50px;" tabindex="0" aria-controls="project-4" class="text-center" rowspan="1"
                           colspan="1">
-                          <input type="checkbox" id="snocheck" title="Select All" [(ngModel)]="selectAllCheckbox"
+                          <input type="checkbox" id="snocheck" title="Click to select all" [(ngModel)]="selectAllCheckbox"
                             (change)="selectall($event)" class="form-check-input ps-1 btn px-0">
 
                         </th>

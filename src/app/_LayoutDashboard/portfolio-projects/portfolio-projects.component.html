@@ -461,230 +461,7 @@
                                     </ng-container>
 
 
-                                    <div class="dropdown">
-                                      <ng-container *ngIf="_MessageIfNotOwner == ''">
 
-
-                                        <a class="kt-todo__icon"    data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" ><svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" aria-hidden="true" role="img" font-size="1.5rem" width="1em" height="1em" viewBox="0 -1 17 17" class="iconify iconify--mdi"><path _ngcontent-lde-c401="" d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"></path></svg></a>
-
-                                      </ng-container>
-
-
-                                        <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter"  id="dropd"  (click)="$event.stopPropagation()">
-
-                                            <ul  class="drop-ul">
-                                              <!-- [ngClass]="{'active':_PortProjStatus==''&&this.showDeletedPrjOnly!==true}" -->
-                                                <!-- <li class="dropdown-header">Filter by</li> -->
-
-                                                <li>
-                                                 <button  class="btn btn-filtr "   >
-                                                        <div class="d-flex align-items-center">
-                                                      <div  class="fil-lbl"> Project type  </div>
-                                                            <label class="switch">
-                                                              <input type="checkbox"  [checked]="true"  (change)="togglevisibilityforClass('projtypeclass',$event);" >
-                                                              <span class="slider"></span>
-                                                            </label>
-
-                                                        </div>
-                                                    </button>
-                                                </li>
-
-                                                <li>
-                                                  <button  class="btn btn-filtr "   >
-                                                         <div class="d-flex align-items-center">
-                                                       <div  class="fil-lbl">Owner</div>
-                                                             <label class="switch">
-                                                               <input type="checkbox"    (change)="togglevisibilityforClass('owner_class',$event);" >
-                                                               <span class="slider"></span>
-                                                             </label>
-
-                                                         </div>
-                                                     </button>
-                                                 </li>
-
-
-                                               <li>
-
-                                                    <button   class="btn btn-filtr" >
-                                                        <div class="d-flex align-items-center">
-                                                            <!-- <span class="count in-pro"> {{CountInprocess}}</span> -->
-                                                            <div class="fil-lbl">Responsible</div>
-                                                            <label class="switch">
-                                                              <input type="checkbox"  [checked]="true" (change)="togglevisibilityforClass('responclass',$event);">
-                                                              <span class="slider"></span>
-                                                            </label>
-
-                                                        </div>
-                                                    </button>
-                                                </li>
-
-
-                                                <li>
-                                                  <button   class="btn btn-filtr" >
-                                                      <div class="d-flex align-items-center">
-                                                          <!-- <span class="count in-pro"> {{CountInprocess}}</span> -->
-                                                          <div class="fil-lbl">Client</div>
-                                                          <label class="switch">
-                                                            <input type="checkbox" (change)="togglevisibilityforClass('client_class',$event);">
-                                                            <span class="slider"></span>
-                                                          </label>
-
-                                                      </div>
-                                                  </button>
-                                              </li>
-
-
-
-                                              <li  >
-                                                <button  class="btn btn-filtr" >
-                                                    <div class="d-flex align-items-center">
-                                                        <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
-                                                        <div class="fil-lbl">Cost</div>
-                                                        <label class="switch">
-                                                          <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('classCost', $event);">
-                                                          <span class="slider"></span>
-                                                        </label>
-
-                                                    </div>
-                                                </button>
-                                            </li>
-
-
-
-                                            <li>
-                                              <button   class="btn btn-filtr" >
-                                                  <div class="d-flex align-items-center">
-                                                      <!-- <span class="count del"> {{CountDelay}} </span> -->
-                                                      <div class="fil-lbl">Department</div>
-                                                      <label class="switch">
-                                                        <input type="checkbox" (change)="togglevisibilityforClass('class_depart',$event);">
-                                                        <span class="slider"></span>
-                                                      </label>
-
-                                                  </div>
-                                              </button>
-                                          </li>
-
-
-
-
-
-
-
-                                                <li>
-                                                    <button   class="btn btn-filtr" >
-                                                        <div class="d-flex align-items-center">
-                                                            <!-- <span class="count del"> {{CountDelay}} </span> -->
-                                                            <div class="fil-lbl">Deadline</div>
-                                                            <label class="switch">
-                                                              <input type="checkbox"   [checked]="true" (change)="togglevisibilityforClass('class_deadline',$event);">
-                                                              <span class="slider"></span>
-                                                            </label>
-
-                                                        </div>
-                                                    </button>
-                                                </li>
-
-
-
-                                                <li >
-                                                  <button  class="btn btn-filtr" >
-                                                      <div class="d-flex align-items-center">
-                                                          <!-- <span class="count com">{{CountCompleted}}</span> -->
-                                                          <div class="fil-lbl">Status</div>
-                                                          <label class="switch">
-                                                            <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('statusClass',$event);">
-                                                            <span class="slider"></span>
-                                                          </label>
-
-                                                      </div>
-                                                  </button>
-                                              </li>
-
-
-
-                                                <li >
-                                                    <button  class="btn btn-filtr" >
-                                                        <div class="d-flex align-items-center">
-                                                            <!-- <span class="count draf">{{CountNotStarted}}</span> -->
-                                                            <div class="fil-lbl">Last update</div>
-                                                            <label class="switch">
-                                                              <input type="checkbox" [checked]="true"   (change)="togglevisibilityforClass('clas_lasup',$event);">
-                                                              <span class="slider"></span>
-                                                            </label>
-
-                                                        </div>
-                                                    </button>
-                                                </li>
-
-                                                <li  >
-                                                    <button   class="btn btn-filtr" >
-                                                        <div class="d-flex align-items-center">
-                                                            <!-- <span class="count new-pro">{{CountNewProject}}</span> -->
-                                                            <div class="fil-lbl">Racis</div>
-                                                            <label class="switch">
-                                                              <input type="checkbox" (change)="togglevisibilityforClass('racisClass',$event);">
-                                                              <span class="slider"></span>
-                                                            </label>
-
-                                                        </div>
-                                                    </button>
-                                                </li>
-                                                <li  >
-                                                    <button  class="btn btn-filtr" >
-                                                        <div class="d-flex align-items-center">
-                                                            <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
-                                                            <div class="fil-lbl">Actions</div>
-                                                            <label class="switch">
-                                                              <input type="checkbox" (change)="togglevisibilityforClass('action_class', $event);">
-                                                              <span class="slider"></span>
-                                                            </label>
-
-                                                        </div>
-                                                    </button>
-                                                </li>
-
-
-                                            <ng-container  *ngIf="showDeletedPrjOnly">
-                                                <li>
-                                                  <button  class="btn btn-filtr" >
-                                                      <div class="d-flex align-items-center">
-                                                          <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
-                                                          <div class="fil-lbl">Deleted by</div>
-                                                          <label class="switch">
-                                                            <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('isdeleteds', $event);">
-                                                            <span class="slider"></span>
-                                                          </label>
-
-                                                      </div>
-                                                  </button>
-                                              </li>
-                                              <li  >
-                                                <button  class="btn btn-filtr" >
-                                                    <div class="d-flex align-items-center">
-                                                        <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
-                                                        <div class="fil-lbl">References</div>
-                                                        <label class="switch">
-                                                          <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('referClass', $event);">
-                                                          <span class="slider"></span>
-                                                        </label>
-
-                                                    </div>
-                                                </button>
-                                            </li>
-                                          </ng-container>
-
-
-
-
-
-                                            </ul>
-
-
-
-                                        </div>
-
-                                    </div>
 
 
 
@@ -802,9 +579,15 @@
 
 
 
+  <!-- <div data-v-1c9b9602="" class="TableViewColumnPicker__trigger"><svg data-v-1c9b9602="" class="w-svg-sprite">
+      <use xlink:href="#ci-add" fill=""></use>
+    </svg></div> -->
 
 
-  <div  class="notification delay-notification "><span  class="notif-msg" style="color: #ff2727;"> You have <span *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0" (click)="labelDelay();filterProjectsOfEmp(Current_user_ID)"  class="delayaction-of-emp ">{{this.delayPrjsofPort.length}} delay projects</span><b *ngIf="this.forwardPrjPort.length>0" >,&nbsp;</b>
+
+
+
+  <div  class="notification delay-notification "><span  class="notif-msg" > You have <span style="color: #ff2727;" *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0" (click)="labelDelay();filterProjectsOfEmp(Current_user_ID)"  class="delayaction-of-emp ">{{this.delayPrjsofPort.length}} delay projects</span><b *ngIf="this.forwardPrjPort.length>0" >,&nbsp;</b>
    <span *ngIf="this.forwardPrjPort&&this.forwardPrjPort.length > 0"  class="delayaction-of-emp " (click)="labelForward();filterProjectsOfEmp(Current_user_ID)"  style="color:#81C784">{{this.forwardPrjPort.length}} forward approval project</span> <b *ngIf="this.completionPrjPort.length > 0" >,&nbsp;</b>
 
   <span *ngIf="this.completionPrjPort&&this.completionPrjPort.length > 0"  style="color:#81C784" class="delayaction-of-emp " (click)="labelCompletionapproval();filterProjectsOfEmp(Current_user_ID)" >{{this.completionPrjPort.length}} Completion project</span><b *ngIf="newapprovalPrjport.length > 0&&this.delayPrjsofPort.length>0" class="">,&nbsp;</b>
@@ -1079,7 +862,7 @@
                                 <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                   <div class="row kt-filterdetails" *ngIf="_MessageIfNotOwner==''" >
                                     <div class="search-filter" >
-                                      <div *ngIf="getFilterLabel()">{{ getFilterLabel() }}</div>
+                                      <div *ngIf="getFilterLabel()">{{ getFilterLabel() }}  <span  *ngIf="resultCount>0"><span class="count">1</span><span> - </span> <span  class="count">{{resultCount}}</span> of <span  class="count">{{resultCount}}</span></span></div>
                                     </div>
                                   </div>
                                     <div class="row">
@@ -1087,7 +870,7 @@
                                         <div class="col-sm-12 table-scroll" *ngIf="_MessageIfNotOwner==''">
 
                                             <table class="brdr kt-pot-ttls table table-hover dataTable no-footer dtr-inline" style="border-collapse: collapse !important;">
-                                                <thead>
+                                                <thead class="position-relative">
                                                     <th class="icond" style="z-index: 12 !important;"></th>
 
                                                     <!-- <th [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name=" Project_Name" tabindex="0"
@@ -1158,7 +941,7 @@
 
 
                                               <th [ngClass]="{'d-none':!isDepartment}" ><span class="kt-widget__other"><i class="fas fa-sort"></i>
-                                                Department</span> </th>
+                                                Company</span> </th>
 
 
                                                     <th [ngClass]="{'d-none':!isdeadline}" [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="DeadLine"
@@ -1183,6 +966,24 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                                     <th [ngClass]="{'d-none':!isracis}" class="racisid" *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i
                                                           class="fas fa-sort"></i> Racis</span> </th>
 
@@ -1199,12 +1000,262 @@
                                                     <th [ngClass]="{'d-none':!isrefer}" *ngIf="showDeletedPrjOnly&&UserAccessType === 'Full Access'"> <i
                                                         class="fas fa-sort"></i> References</th>
 
-                                                    <th>
-                                                      <span [ngClass]="{'d-none':!isaction}" class="act_id" class="kt-widget__other tb-w-45"
-                                                        *ngIf="!showDeletedPrjOnly&&UserAccessType === 'Full Access'"> Actions</span>
+                                                    <th [ngClass]="{'d-none':!isaction}"   *ngIf="!showDeletedPrjOnly&&UserAccessType === 'Full Access'">
+                                                      <span class="act_id" class="kt-widget__other tb-w-45"> Actions</span>
                                                     </th>
 
+                                                    <th class="custom-view-dropdown">
+                                                      <div class=" dropdown ">
+                                                        <ng-container *ngIf="_MessageIfNotOwner == ''">
+
+
+                                                          <a class="kt-todo__icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+
+
+                                                            <svg viewBox="0 0 24 24" style="height:28px" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                              <g id="SVGRepo_iconCarrier">
+                                                                <circle opacity="0.5" cx="12" cy="12" r="10" stroke="#1C274C" stroke-width="1.5"></circle>
+                                                                <path d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15" stroke="#1C274C" stroke-width="1.5"
+                                                                  stroke-linecap="round"></path>
+                                                              </g>
+                                                            </svg>
+                                                          </a>
+
+                                                        </ng-container>
+
+
+                                                        <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter"
+                                                          id="dropd" (click)="$event.stopPropagation()">
+
+                                                          <ul class="drop-ul">
+                                                            <h1 class="dropdown-header" style="font-size: 16px;">Customize view</h1>
+
+                                                            <li>
+                                                              <button class="btn btn-filtr ">
+                                                                <div class="d-flex align-items-center">
+                                                                  <div class="fil-lbl"> Project type </div>
+                                                                  <label class="switch">
+                                                                    <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('projtypeclass',$event);">
+                                                                    <span class="slider"></span>
+                                                                  </label>
+
+                                                                </div>
+                                                              </button>
+                                                            </li>
+
+                                                            <li>
+                                                              <button class="btn btn-filtr ">
+                                                                <div class="d-flex align-items-center">
+                                                                  <div class="fil-lbl">Owner</div>
+                                                                  <label class="switch">
+                                                                    <input type="checkbox" (change)="togglevisibilityforClass('owner_class',$event);">
+                                                                    <span class="slider"></span>
+                                                                  </label>
+
+                                                                </div>
+                                                              </button>
+                                                            </li>
+
+
+                                                            <li>
+
+                                                              <button class="btn btn-filtr">
+                                                                <div class="d-flex align-items-center">
+                                                                  <!-- <span class="count in-pro"> {{CountInprocess}}</span> -->
+                                                                  <div class="fil-lbl">Responsible</div>
+                                                                  <label class="switch">
+                                                                    <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('responclass',$event);">
+                                                                    <span class="slider"></span>
+                                                                  </label>
+
+                                                                </div>
+                                                              </button>
+                                                            </li>
+
+
+                                                            <li>
+                                                              <button class="btn btn-filtr">
+                                                                <div class="d-flex align-items-center">
+                                                                  <!-- <span class="count in-pro"> {{CountInprocess}}</span> -->
+                                                                  <div class="fil-lbl">Client</div>
+                                                                  <label class="switch">
+                                                                    <input type="checkbox" (change)="togglevisibilityforClass('client_class',$event);">
+                                                                    <span class="slider"></span>
+                                                                  </label>
+
+                                                                </div>
+                                                              </button>
+                                                            </li>
+
+
+
+                                                            <li>
+                                                              <button class="btn btn-filtr">
+                                                                <div class="d-flex align-items-center">
+                                                                  <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
+                                                                  <div class="fil-lbl">Cost</div>
+                                                                  <label class="switch">
+                                                                    <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('classCost', $event);">
+                                                                    <span class="slider"></span>
+                                                                  </label>
+
+                                                                </div>
+                                                              </button>
+                                                            </li>
+
+
+
+                                                            <li>
+                                                              <button class="btn btn-filtr">
+                                                                <div class="d-flex align-items-center">
+                                                                  <!-- <span class="count del"> {{CountDelay}} </span> -->
+                                                                  <div class="fil-lbl">Company</div>
+                                                                  <label class="switch">
+                                                                    <input type="checkbox" (change)="togglevisibilityforClass('class_depart',$event);">
+                                                                    <span class="slider"></span>
+                                                                  </label>
+
+                                                                </div>
+                                                              </button>
+                                                            </li>
+
+
+
+
+
+
+
+                                                            <li>
+                                                              <button class="btn btn-filtr">
+                                                                <div class="d-flex align-items-center">
+                                                                  <!-- <span class="count del"> {{CountDelay}} </span> -->
+                                                                  <div class="fil-lbl">Deadline</div>
+                                                                  <label class="switch">
+                                                                    <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('class_deadline',$event);">
+                                                                    <span class="slider"></span>
+                                                                  </label>
+
+                                                                </div>
+                                                              </button>
+                                                            </li>
+
+
+
+                                                            <li>
+                                                              <button class="btn btn-filtr">
+                                                                <div class="d-flex align-items-center">
+                                                                  <!-- <span class="count com">{{CountCompleted}}</span> -->
+                                                                  <div class="fil-lbl">Status</div>
+                                                                  <label class="switch">
+                                                                    <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('statusClass',$event);">
+                                                                    <span class="slider"></span>
+                                                                  </label>
+
+                                                                </div>
+                                                              </button>
+                                                            </li>
+
+
+
+                                                            <li *ngIf="!showDeletedPrjOnly">
+                                                              <button class="btn btn-filtr">
+                                                                <div class="d-flex align-items-center">
+                                                                  <!-- <span class="count draf">{{CountNotStarted}}</span> -->
+                                                                  <div class="fil-lbl">Last update</div>
+                                                                  <label class="switch">
+                                                                    <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('clas_lasup',$event);">
+                                                                    <span class="slider"></span>
+                                                                  </label>
+
+                                                                </div>
+                                                              </button>
+                                                            </li>
+
+                                                            <li *ngIf="!showDeletedPrjOnly">
+                                                              <button class="btn btn-filtr">
+                                                                <div class="d-flex align-items-center">
+                                                                  <!-- <span class="count new-pro">{{CountNewProject}}</span> -->
+                                                                  <div class="fil-lbl">Racis</div>
+                                                                  <label class="switch">
+                                                                    <input type="checkbox" (change)="togglevisibilityforClass('racisClass',$event);">
+                                                                    <span class="slider"></span>
+                                                                  </label>
+
+                                                                </div>
+                                                              </button>
+                                                            </li>
+                                                            <li *ngIf="!showDeletedPrjOnly">
+                                                              <button class="btn btn-filtr">
+                                                                <div class="d-flex align-items-center">
+                                                                  <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
+                                                                  <div class="fil-lbl">Actions</div>
+                                                                  <label class="switch">
+                                                                    <input type="checkbox" (change)="togglevisibilityforClass('action_class', $event);">
+                                                                    <span class="slider"></span>
+                                                                  </label>
+
+                                                                </div>
+                                                              </button>
+                                                            </li>
+
+
+                                                            <ng-container *ngIf="showDeletedPrjOnly">
+                                                              <li>
+                                                                <button class="btn btn-filtr">
+                                                                  <div class="d-flex align-items-center">
+                                                                    <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
+                                                                    <div class="fil-lbl">Deleted by</div>
+                                                                    <label class="switch">
+                                                                      <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('isdeleteds', $event);">
+                                                                      <span class="slider"></span>
+                                                                    </label>
+
+                                                                  </div>
+                                                                </button>
+                                                              </li>
+                                                              <li>
+                                                                <button class="btn btn-filtr">
+                                                                  <div class="d-flex align-items-center">
+                                                                    <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
+                                                                    <div class="fil-lbl">References</div>
+                                                                    <label class="switch">
+                                                                      <input type="checkbox" [checked]="true" (change)="togglevisibilityforClass('referClass', $event);">
+                                                                      <span class="slider"></span>
+                                                                    </label>
+
+                                                                  </div>
+                                                                </button>
+                                                              </li>
+                                                            </ng-container>
+
+
+
+
+
+                                                          </ul>
+
+
+
+                                                        </div>
+
+                                                      </div>
+                                                    </th>
+
+
+
+
+
+
+
+
+
+
+
                                                     </thead>
+
 
 
 
@@ -1215,7 +1266,7 @@
                                             <tr
                                               *ngIf=" ((item1.Status==_PortProjStatus)||(item1.Status.includes('Delay')&&_PortProjStatus=='Delay')||_PortProjStatus=='')&&
                                                                                             ((!_FilterByEmp) || item1.Emp_No==_FilterByEmp||item1.OwnerEmpNo==_FilterByEmp) "
-                                              class="odd project-list_AC" [class.active]="item1.isActive">
+                                              class="odd project-list_AC" [class.active]="item1.active">
 
                                               <td class="icond">
                                                 <span class="table-card brdr success" [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
@@ -1479,7 +1530,7 @@
 <!-- <td *ngIf="showDeletedPrjOnly" ></td> -->
 
                                                  <!-- owner data start -->
-                                                 <td [ngClass]="{'d-none':!isowner}" class="owner_class"  >Md Waseem Akram</td>
+                                                 <td [ngClass]="{'d-none':!isowner}" class="owner_class"  >{{item1.Project_Owner}}</td>
                                               <!-- owner data end -->
 
 
@@ -1499,7 +1550,7 @@
 
 
                                               <!-- client data start -->
-                                               <td [ngClass]="{'d-none':!isclient}"  class="client_class" >Devbox Software</td>
+                                               <td [ngClass]="{'d-none':!isclient}"  class="client_class" >{{item1.Client_Name}}</td>
                                                 <!-- client data end -->
 
 
@@ -1508,7 +1559,8 @@
 
                                                 <!-- <ng-container *ngIf="!showDeletedPrjOnly"> -->
 
-                                                  <td   [ngClass]="{'d-none': !iscost}"  class="classCost" >150</td>
+                                                  <td *ngIf="item1.Project_Cost"  [ngClass]="{'d-none': !iscost}"  class="classCost" >{{item1.Project_Cost}}</td>
+                                                  <td *ngIf="!item1.Project_Cost"  [ngClass]="{'d-none': !iscost}"  class="classCost" >0</td>
 
 
                                                  <!-- </ng-container> -->
@@ -1519,7 +1571,7 @@
 
                                                 <!-- <ng-container *ngIf="!showDeletedPrjOnly"> -->
 
-                                                  <td   [ngClass]="{'d-none':!isDepartment }"  class="classCost" >Devbox</td>
+                                                  <td   [ngClass]="{'d-none':!isDepartment }"  class="classCost" >{{item1.Com_Name}}</td>
 
                                                  <!-- </ng-container> -->
                                                  <!-- cost data end -->
@@ -1538,7 +1590,7 @@
                                                                 *ngIf="item1.Exec_BlockName=='Standard Tasks' || item1.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                                 <span
                                                                     class="kt-widget__other text-nowrap">{{item1.SubmissionType}}</span>
-
+                                                                       <div  class="text-nowrap font" *ngIf="item1.SubmissionType === 'Weekly'||'Daily'|| 'Annually'||'Monthly'  ">{{item1.StandardDuration}}</div>
                                                             </div>
                                                           </span>
 
@@ -1712,12 +1764,35 @@
                                                                 <span class="New-project font-weight-400"
                                                                     >{{item1.Status}}</span>
                                                             </div>
-                                                            <div *ngIf="item1.Status=='New Project Rejected'">
+
+
+                                                            <!-- <div *ngIf="item1.Status=='New Project Rejected'" class="attach-tippy">
+                                                              <span class="rejs st-line status-text">Rejected from : {{item1.RejectFromDate | date :'dd-MM-yyyy'}} Rejected comment : {{item1.Rejectcomments}}</span>
                                                                 <span
-                                                                    class="New_Project_Rejected_color font-weight-400">{{item1.Status}}
-                                                                </span>
-                                                            </div>
-                                                            <div *ngIf="item1.Status=='Deadline Extend Under Approval'">
+                                                                    class="New_Project_Rejected_color font-weight-400">{{item1.Status}}  </span>
+                                                                    <span class="pulsing-dot-label"> {{item1.RejectedBy}} </span>
+                                                            </div> -->
+
+
+
+
+
+                                                            <div *ngIf="item1.Status=='New Project Rejected'" class="attach-tippy-div">
+                                                              <span class="New_Project_Rejected_color font-weight-400">New project rejected</span>
+                                                              <span class="attach-tippy">
+
+                                                              <span class=" rej st-line curser-pointer" >
+                                                                 <div style="width: max-content;">Rejected by: <h6>{{item1.RejectedBy}} </h6></div>
+                                                                  <div>on: {{item1.RejectFromDate | date: 'dd-MM-yyyy'}}</div>
+                                                                  <div>Comment : {{item1.Rejectcomments}}</div></span>
+                                                              </span></div>
+
+
+
+
+
+                                                            <div *ngIf="item1.Status=='Deadline Extend Under Approval'" class="attach-tippy">
+                                                              <span class="st-line status-text">Pending approval since : {{item1.approvalfromdate | date :'dd-MM-yyyy'}}</span>
                                                                 <span class="font-weight-400 Deadline_Extend_Under_Approval_color"
                                                                    >{{item1.Status== "Deadline Extend Under Approval" ? "Deadline extend approval" :item1.Status}}
                                                                 </span>
@@ -1781,7 +1856,7 @@
                                                               *ngIf="item1.Exec_BlockName=='Standard Tasks' || item1.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                               <span
                                                                   class="kt-widget__other text-nowrap">{{item1.SubmissionType}}</span>
-
+                                                                  <div  class="text-nowrap font" *ngIf="item1.SubmissionType === 'Weekly'||'Daily'|| 'Annually'||'Monthly'  ">{{item1.StandardDuration}}</div>
                                                           </div>
                                                         </span>
 
@@ -1789,6 +1864,7 @@
                                                             <div >
                                                               <p class="kt-widget__other text-nowrap font">
                                                                   {{item1.DeadLine|date:'dd-MM-yyyy'}}</p>
+
 
                                                                   <p data-toggle="tooltip" data-placement="top" title="{{item1.Created_DT|date:'medium'}}" style="flex: 0.5;">
                                                                     <!-- <p class="kt-widget__other" title="Last Update">
@@ -1803,6 +1879,7 @@
 
 
 
+   <!-- <div  class="text-nowrap font" *ngIf="item1.SubmissionType === 'Weekly'||'Daily'|| 'Annually'||'Monthly'  ">{{item1.StandardDuration}}</div> -->
 
 
                                               <td [ngClass]="{'d-none':!isracis}" class="racisClass" *ngIf="!showDeletedPrjOnly" data-toggle="tooltip" data-placement="top"
@@ -2080,7 +2157,7 @@
                                     </a>
                                     </ng-template></div>
                                     </td>
-
+<td></td>
                                             </tr>
                                            </ng-container>
                                             </tbody>
@@ -4947,7 +5024,7 @@
               </div>
           </div> -->
 
-        
+
 
           <div class="se-col-1">
             <div class="label-icon">
