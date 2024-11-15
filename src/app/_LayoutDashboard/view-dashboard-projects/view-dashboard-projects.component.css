@@ -1551,7 +1551,9 @@ td:nth-child(4) {
 .vi{
   color:#D32F2F !important ;
 }
-
+.rej{
+  color: #BA68C8 !important;
+}
 .attach-tippy{
   position: relative;
 }
@@ -1599,4 +1601,9 @@ td:nth-child(4) {
 .bg-primary {
   --bs-bg-rgb-color: rgba(62, 151, 255);
   background-color: #3e97ff !important;
+}
+.pulsing-dot-label{
+  display: flex;
+  width: max-content;
+  color: #979797;
 }

@@ -2112,7 +2112,7 @@ h3.kt-portlet__head-title {
 
 .table-scroll {
   overflow-y: auto;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 150px);
   scrollbar-width: thin;
 }
 
@@ -5109,7 +5109,7 @@ color: #121212;
 
 .delay-notification {
   /* background-color: #fd7e7a38; */
-  background-color: #85e59d38;
+  background-color: #edf3ff;
   color: red;
 }
 
@@ -5254,9 +5254,13 @@ color: #121212;
 .status-text {
   text-transform: lowercase !important; /* This will make the text appear in lowercase */
 }
+
+
 tr.odd.project-list_AC.active {
   background-color: #e0f1ff;
 }
+
+
 .kt-todo__icon.filter-dot::after {
   content: "";
   position: absolute;
@@ -5422,8 +5426,8 @@ tr.odd.project-list_AC.active {
 .switch {
   position: relative;
   display: inline-block;
-  width: 42px;
-  height: 20px;
+  width: 34px;
+  height: 12px;
   margin-bottom: 0px;
 }
 
@@ -5449,13 +5453,14 @@ tr.odd.project-list_AC.active {
 .slider:before {
   position: absolute;
   content: "";
-  height: 16px;
-  width: 16px;
+  height: 17px;
+  width: 17px;
   border-radius: 50%;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
+  left: -4px;
+  bottom: -2px;
+  background-color: #ffffff;
   transition: 0.4s;
+  box-shadow: 0px 0px 4px #b1b1b1;
 }
 
 
@@ -5464,8 +5469,41 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(22px);
+  transform: translateX(26px);
 }
 .notification {
   width: 100%;
+}
+
+.TableViewColumnPicker__trigger {
+  fill: #000;
+  align-items: center;
+  background: #f5f7fa;
+  border: 1px solid #4461d7;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  font-size: 12px;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+}
+
+svg:not {
+  overflow: hidden;
+}
+.w-svg-sprite {
+  display: inline-block;
+  min-width: 1em;
+  max-width: 1em;
+  height: 1em;
+  vertical-align: -.125em;
+}
+.custom-view-dropdown {
+  top: 0;
+  right: 0;
+  background-color: #e9e9e9 !important;
+}
+.rejs{
+  color: #BA68C8 !important;
 }

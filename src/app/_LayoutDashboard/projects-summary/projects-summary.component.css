@@ -2957,6 +2957,10 @@ tr.odd.project-list_AC.active {
   border-radius: 3px;
 }
 
+.deadline{
+  color : #F9A825 !important;
+}
+
 .Cancellation_Under_Approval_color {
   background-color: #F44336 !important;
   color: white;
@@ -3024,6 +3028,10 @@ tr.odd.project-list_AC.active {
   padding: 2px 10px;
   border-radius: 3px;
 }
+.can{
+ color :  #EE4137 !important
+}
+
 
 .Enactive_Under_Approval_color {
   background-color: #F44336 !important;
@@ -3577,4 +3585,120 @@ td:nth-child(4) {
   text-align: center;
   line-height: 1.5;
   padding-left: 4px;
+}
+
+.dropdown-menu.dropdown-filter {
+  float: left;
+  width: 250px;
+  min-width: 160px;
+  padding: 7px 0 0 0 !important;
+  margin: 2px 0 0;
+  z-index: 1002;
+}
+
+.btn-filtr {
+  color: #323130;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 400;
+}
+
+.btn-filtr:hover {
+  background: #f3f2f1;
+}
+
+.btn-filtr.active{
+  color: #2786fb;
+  background: rgba(39, 134, 251, 0.1) !important;
+}
+
+.btn-filtr.active .count {
+  background: #5766d7;
+  color: #fff;
+}
+
+.btn-filtr .count{
+  background: #717171;
+  color: #fff;
+  border-radius: 3px;
+  margin-right: 4px;
+  padding: 0px 2px;
+  font-size: 10px;
+  width: 20px;
+  height: 20px;
+  line-height: 2;
+}
+.btn-filtr svg {
+  fill: #5c5b5a;
+  width: 16px;
+  height: 16px;
+  margin: 0 5px;
+}
+.btn-filtr.active svg {
+  fill: #5766d7 !important;
+}
+.fil-lbl {
+  flex: 1;
+  text-align: left;
+}
+.drop-ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 12px;
+  margin-bottom: 0px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 14px;
+}
+
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 17px;
+  width: 17px;
+  border-radius: 50%;
+  left: -4px;
+  bottom: -2px;
+  background-color: white;
+  transition: 0.4s;
+  box-shadow: 0px 0px 4px #b1b1b1;
+}
+
+
+input:checked + .slider {
+  background-color: #6388e3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.custom-view-dropdown {
+  top: 0;
+  right: 0;
+  background-color: #e9e9e9 !important;
+}
+.rej{
+  color: #BA68C8 !important;
 }
