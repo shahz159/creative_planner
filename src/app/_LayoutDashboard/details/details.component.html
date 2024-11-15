@@ -1093,8 +1093,9 @@
 
                                                     <!-- *ngIf="(projectInfo&&projectInfo.Status!='Completed')" -->
                                                 <ng-container *ngIf="projectInfo">
-                                                    
+                                                
                                                     <ng-container *ngIf="['Cancelled','Project Hold'].includes(projectInfo.Status.trim()); else actionsCanBeAdded"> 
+                                                        <ng-container *ngIf="projectInfo.Status=='Project Hold'">
                                                         <div  class="Kt-Pd-Status Add_Action_btn disabled">
                                                             <span class="add-act-plus-icon"></span><svg  xmlns="http://www.w3.org/2000/svg" width="13" height="18" fill="currentColor" viewBox="4 3 8 12" class="bi bi-plus"><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path></svg> Add Action
                                                         </div>
@@ -1102,6 +1103,7 @@
                                                             <p class="user-msg-alert-title">Not Allowed</p>
                                                             <p class="user-msg-alert-content">You cannot add actions on this project. Please release the project to proceed.</p>
                                                         </div>
+                                                       </ng-container>
                                                     </ng-container>
                                                     <ng-template #actionsCanBeAdded>
                                                         <div class="Kt-Pd-Status Add_Action_btn" (click)="addNewAction()">
@@ -1497,10 +1499,10 @@
                                                                                     (click)="onFilterConfigChanged({filterBy:filterConfig.filterby,sortBy:'Assigned By me'})"
                                                                                     [ngClass]="{'active2':filterConfig.sortby==='Assigned By me'}"
                                                                                     class="btn btn-filtr"
-                                                                                    ng-reflect-ng-class="[object Object]">
+                                                                                    >
                                                                                     <div class="d-flex align-items-center"
                                                                                         style="margin-left: -2px;">
-                                                                                        <svg
+                                                                                        <!-- <svg
                                                                                             xmlns="http://www.w3.org/2000/svg"
                                                                                             width="16" height="16"
                                                                                             fill="currentColor"
@@ -1509,8 +1511,8 @@
                                                                                             <path
                                                                                                 d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z">
                                                                                             </path>
-                                                                                        </svg>
-                                                                                        <!-- <div  class="fbx-actns-count fbx-usercount">{{actionsAssignedByMe}}</div> -->
+                                                                                        </svg> -->
+                                                                                        <div class="fbx-actns-count fbx-usercount">{{actionsAssignedByMe}}</div>
                                                                                         <div class="fil-lbl ml-1">Assigned by me
                                                                                         </div>
                                                                                         <span class="chck-icn ng-star-inserted"
@@ -2254,7 +2256,7 @@
                           </ol>
                     </div> -->
                     <div class="notification audit-pending-notf" *ngIf="projectInfo.AuditStatus=='Audit Pending'&&Current_user_ID==approvalEmpId">
-                        <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #9c27b0;stroke: #a336b5;">
+                        <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #204d22;stroke: #204d22;">
                         <g><g>
                             <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
                             <path d="M114.585,138.558c32.776,0,57.236-30.539,57.794-81.752C172.734,21.268,155.809,0,114.585,0 C73.359,0,56.431,21.268,56.793,56.806C57.348,108.019,81.807,138.558,114.585,138.558z"></path>
@@ -2265,14 +2267,14 @@
                         </g>
                         </svg>
                         <span class="notif-msg">
-                        <span style="font-weight: bold">Project has been assigned to you for auditing by {{AuditRequestBY}}.</span>
-                        <span class="fs-7" *ngIf="projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{projectInfo.Owner_remarks}}</span>
+                        <span>Project has been assigned to you for auditing by {{AuditRequestBY}}.</span>
+                        <!-- <span class="fs-7" *ngIf="projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{projectInfo.Owner_remarks}}</span>
                         <span class="fs-7" *ngIf="!projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{requestComments}}</span>
-                        <span class="fs-7" style="text-decoration: underline">Next steps: </span>
-                            <span class="fs-7"> 1. You have to analyze the project and give your approval acceptance or rejection.
+                        <span class="fs-7" style="text-decoration: underline">Next steps: </span> -->
+                            <!-- <span class="fs-7"> 1. You have to analyze the project and give your approval acceptance or rejection.
                             <br>2. If you accept the project approval, then it will land to the project owner for the final approval.<br>
                             3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.
-                        </span>
+                        </span> -->
                         </span>
                     </div>
 
@@ -2310,7 +2312,7 @@
                     </div>
 
                     <div class="notification audit-pending-notf" *ngIf="projectInfo.AuditStatus=='Audit Pending'&&Current_user_ID!=approvalEmpId">
-                        <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #9c27b0;stroke: #a336b5;">
+                        <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #204d22;stroke: #204d22;">
                         <g><g>
                             <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
                             <path d="M114.585,138.558c32.776,0,57.236-30.539,57.794-81.752C172.734,21.268,155.809,0,114.585,0 C73.359,0,56.431,21.268,56.793,56.806C57.348,108.019,81.807,138.558,114.585,138.558z"></path>
@@ -2325,7 +2327,7 @@
                         </span>
                     </div>
 
-                    <div class="notification audit-pending-notf" *ngIf="projectInfo.NewOwner&&projectInfo.NewOwner===Current_user_ID">
+                    <div class="notification transfer-ownership-notf" *ngIf="projectInfo.NewOwner&&projectInfo.NewOwner===Current_user_ID">
                         <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #9c27b0;stroke: #a336b5;">
                         <g><g>
                             <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
@@ -2346,7 +2348,7 @@
                         </span>
                     </div>
 
-                    <div class="notification audit-pending-notf" *ngIf="projectInfo.NewOwner&&projectInfo.NewOwner!=Current_user_ID">
+                    <div class="notification transfer-ownership-notf" *ngIf="projectInfo.NewOwner&&projectInfo.NewOwner!=Current_user_ID">
                         <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #9c27b0;stroke: #a336b5;">
                         <g><g>
                             <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
@@ -3143,7 +3145,7 @@
                                                    </div>
 
                                                 </div>
-                                                <div class="kt-project-desc w-80">
+                                                <div class="kt-project-desc w-100 mt-1">
                                                  <!-- <p>{{projectInfo&&projectInfo.Project_Description | slice:0:limited_data}}
                                                     {{ isExpanded ? (projectInfo&&projectInfo.Project_Description | slice:limited_data): ' ' }}
                                                     <ng-container *ngIf="projectInfo&&projectInfo.Project_Description.length>98">
@@ -3320,41 +3322,9 @@
                                                     <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!(isApprovalSection&&projectInfo.Status!=='Cancelled'&&(multiapproval_list.length+totalStdTskApvs==1))">
 
 
-                                                    <div class="col-lg-12 mb-3 p-3" *ngIf="projectInfo.AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId"
-                                                        style="background-color: #e4e7f9;
-                                                        border-radius: 14px;
-                                                        border: 1px solid #6388e336;
-                                                        color: #4f4f4f;">
-                                                        <div class="d-flex justify-content-between">
-                                                            <h6 style="text-align:left;margin:0;font-weight: bold;">Project has been assigned to you for auditing by {{AuditRequestBY}}</h6>
-                                                            <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
-                                                        </div>
-                                                        <div>
-                                                            <span *ngIf="projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{projectInfo.Owner_remarks}}</span>
-                                                            <span *ngIf="!projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{requestComments}}</span>
-                                                        </div>
-                                                        <!-- <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
-                                                        <div>
-                                                            <span *ngIf="projectInfo.Owner_remarks">{{projectInfo.Owner_remarks}}</span>
-                                                            <span *ngIf="!projectInfo.Owner_remarks">{{requestComments}}</span>
-                                                                    <span> 1. You have to analyze the project and give your approval acceptance or rejection as per the above remarks.
-                                                                    <br>2. If you accept the project approval, then it will land to the project owner for the final approval.<br>
-                                                                    3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.
-                                                                </span>
-                                                        </div> -->
-                                                    </div>
+                                                   
 
-                                                    <div class="col-lg-12 mb-3 p-3" *ngIf="projectInfo.AuditStatus=='Audit Complete' && Current_user_ID==approvalEmpId"
-                                                    style="background-color:white;border-radius:2px;border:1px solid #6388e3;">
-                                                    <div class="d-flex justify-content-between">
-                                                        <h6 style="text-align:left;margin:0;">Project audit completed by {{projectAuditor.empName}}</h6>
-                                                        <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
-                                                    </div>
-                                                    <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Remarks:</h6>
-                                                    <div>
-                                                        <span *ngIf="projectInfo.Auditor_acceptremarks">{{projectInfo.Auditor_acceptremarks}}</span>
-                                                    </div>
-                                                   </div>
+                                                   
 
 
 
@@ -3372,7 +3342,47 @@
                                                                             </g>
                                                                         </svg>
                                                                     </span>
-                                                                </div> Approval
+                                                                </div> 
+                                                                
+                                                                <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status" class="text-nowrap">
+
+                                                                    <div class="kt-project-type " *ngSwitchCase="'Under Approval'">
+                                                                          <div class="Kt-Pd-Status new-project-under"> New approval </div>
+                                                                    </div>
+              
+                                                                    <div class="kt-project-type " *ngSwitchCase="'Completion Under Approval'">
+                                                                      <div *ngIf="projectInfo.AuditStatus=='Audit Pending'" class="Kt-Pd-Status AuditUnderApproval d-flex align-items-center">
+                                                                          Audit Approval
+                                                                      </div>
+                                                                      <div *ngIf="projectInfo.AuditStatus!='Audit Pending'" class="Kt-Pd-Status CompletionUnderApproval d-flex align-items-center">
+                                                                          Completion approval
+                                                                      </div>
+                                                                    </div>
+              
+                                                                    <div class="kt-project-type d-flex" *ngSwitchCase="'Forward Under Approval'">
+                                                                          <div class="Kt-Pd-Status ForwardUnderApproval d-flex text-nowrap">
+                                                                              Forward approval
+                                                                          </div>
+                                                                          <div *ngIf="projectInfo.Delaydays>0" class="extra-at-status" style="color:#d32f35; border-color:#9C27B0;  ">
+                                                                              <span>{{projectInfo.Delaydays}} {{projectInfo.Delaydays>1?'days':'day'}} delayed</span>
+                                                                          </div>
+                                                                    </div>
+              
+                                                                    <div class="kt-project-type" *ngSwitchCase="'Enactive Under Approval'">
+                                                                          <div class="Kt-Pd-Status EnactiveUnderApproval"> EnActive approval</div>
+                                                                    </div>
+              
+                                                                    <div class="kt-project-type" *ngSwitchCase="'Deadline Extend Under Approval'">
+                                                                          <div class="Kt-Pd-Status DeadlineExtend"> Deadline extend approval</div>
+                                                                    </div>
+        
+                                                                    <div class="kt-project-type " *ngSwitchCase="'Cancellation Under Approval'">
+                                                                          <div class="Kt-Pd-Status Delay"> Cancellation approval</div>
+                                                                    </div>
+              
+                                                                 </div>
+
+
                                                             </div>
                                                             <div class="kt-info-box border-0 w-100">
                                                                 <!-- <div class="d-flex align-items-center justify-content-end g-10">
@@ -3458,6 +3468,46 @@
                                                                 <div class="clearfix"></div>
                                                             </div>
                                                         </div>
+
+
+                                                    <div class="col-lg-12 mb-3 p-3 mt-3" *ngIf="projectInfo.AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId"
+                                                        style="background-color: #e4e7f9;
+                                                        border-radius: 14px;
+                                                        border: 1px solid #6388e336;
+                                                        color: #4f4f4f;">
+                                                        <div class="d-flex justify-content-between">
+                                                            <h6 style="text-align:left;margin:0;font-weight: bold;">Project has been assigned to you for auditing by {{AuditRequestBY}}</h6>
+                                                            <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
+                                                        </div>
+                                                        <div>
+                                                            <span *ngIf="projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{projectInfo.Owner_remarks}}</span>
+                                                            <span *ngIf="!projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{requestComments}}</span>
+                                                        </div>
+                                                        <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
+                                                        <span class="fs-7"> 
+                                                            1. You have to analyze the project and give your approval acceptance or rejection.<br>
+                                                            2. If you accept the project approval, then it will land to the project owner for the final approval.<br>
+                                                            3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.
+                                                        </span>
+                                                    </div>
+
+
+                                                    <div class="col-lg-12 mb-3 p-3 mt-3" *ngIf="projectInfo.AuditStatus=='Audit Complete' && Current_user_ID==approvalEmpId"
+                                                    style="background-color:white;border-radius:2px;border:1px solid #6388e3;">
+                                                    <div class="d-flex justify-content-between">
+                                                        <h6 style="text-align:left;margin:0;">Project audit completed by {{projectAuditor.empName}}</h6>
+                                                        <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
+                                                    </div>
+                                                    <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Remarks:</h6>
+                                                    <div>
+                                                        <span *ngIf="projectInfo.Auditor_acceptremarks">{{projectInfo.Auditor_acceptremarks}}</span>
+                                                    </div>
+                                                   </div>
+
+
+
+
+
 
                                                         <div class="kt-reject-form-view aprovls-sectn-forms" [hidden]="!isTextAreaVisible">
 
@@ -3817,7 +3867,11 @@
 
 
 
-                                                            <div class="col-lg-12 mb-3">
+
+
+
+                                                         
+                                                            <div *ngIf="requestType!='Project Audit'" class="col-lg-12 mb-3">
                                                                 <div class="kt-info-lable-v">Remarks</div>
                                                                 <div class="kt-info-data-v p-2 " data-toggle="tooltip" style="overflow:unset; text-overflow: unset; white-space: unset;">
                                                                     <div class="d-flex px-2">
@@ -3833,6 +3887,7 @@
                                                                     </div>                                                         
                                                                 </div>
                                                             </div>
+                                                     
 
                                                             <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'&&completedoc">
                                                                 <div class="kt-info-lable-v">Attachment</div>
@@ -3863,10 +3918,6 @@
                                                                 <!-- <div class="kt-info-data-v bg-light-shade curser-pointer" (click)="openPDF(iscloud,url)"  data-toggle="tooltip" title="{{completedoc}}"><a>{{completedoc}}</a></div> -->
                                                             </div>
 
-
-
-
-
                                                             <div class="col-lg-12 mb-2"
                                                                 *ngIf="requestType=='Task Complete' && completedoc">
                                                                 <div class="kt-info-lable-v">Task attachment</div>
@@ -3892,7 +3943,27 @@
                                                                 <!-- <div class="kt-info-data-v bg-light-shade curser-pointer" (click)="openPDF(iscloud,url)"  data-toggle="tooltip" title="{{completedoc}}"><a>{{completedoc}}</a></div> -->
                                                             </div>
 
-
+                                                            <div class="col-lg-12 mt-3 mb-2" *ngIf="requestType=='Project Audit'&&completedoc">
+                                                                <div class="kt-info-lable-v">Attachment</div>
+                                                                <div class="">
+                                                                    <div class="attachment-view">
+                                                                        <span>
+                                                                            <svg
+                                                                                xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                                height="16" fill="currentColor"
+                                                                                viewBox="0 0 16 16" class="bi bi-paperclip">
+                                                                                <path
+                                                                                    d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z">
+                                                                                </path>
+                                                                            </svg>
+                                                                        </span>
+                                                                        <span
+                                                                            (click)=" LoadDocument1(complete_List[0].IsCloud,complete_List[0].Sourcefile,complete_List[0].CompleteProofDoc,complete_List[0].contenttype,complete_List[0].Team_Res)"
+                                                                            data-toggle="tooltip" title="{{completedoc}}">
+                                                                            {{completedoc}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
                                                             <div class="col-lg-4">
                                                                 <div class="kt-info-lable-v text-center">Request type</div>
@@ -8325,7 +8396,7 @@
                                           </div>
                                         </div>
 
-                                       <ng-container *ngIf="Data.Role&&projectInfo">
+                                       <!-- <ng-container *ngIf="Data.Role&&projectInfo">
                                         <div *ngIf="Data.Role.includes('Auditor')&&(projectInfo.Status!='Completion Under Approval'&&projectInfo.Status!='Completed')" class="d-flex">
                                             <button  (click)="onChangeAuditorBtnClicked();" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted curser-pointer ">
                                                 <svg  width="14px" height="15px" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path></g></svg>
@@ -8336,18 +8407,53 @@
                                                 <span class="auditor-btn-text">&nbsp;remove</span>
                                             </button>
                                        </div>
-                                     </ng-container>
+                                     </ng-container> -->
 
-                                        <ng-container *ngIf="projectInfo">
-                                         <div *ngIf="Data.isRemovable&&(Current_user_ID == projectInfo.OwnerEmpNo || Current_user_ID == projectInfo.ResponsibleEmpNo || isHierarchy == true)" class="d-flex align-self-start">
-                                                <button (click)="openRemoveSADialog(i,'SUPPORT')" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted  curser-pointer ">
+                                   
+
+
+
+                                     <ng-container *ngIf="projectInfo&&Data.Role&&(Current_user_ID == projectInfo.OwnerEmpNo || Current_user_ID == projectInfo.ResponsibleEmpNo || isHierarchy == true)">
+
+                                        
+                                            <button *ngIf="Data.Role.includes('Auditor')&&(projectInfo.Status!='Completion Under Approval'&&projectInfo.Status!='Completed')" (click)="onChangeAuditorBtnClicked();" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted curser-pointer ">
+                                                <svg  width="14px" height="15px" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path></g></svg>
+                                                <span class="auditor-btn-text">&nbsp;change auditor</span>
+                                            </button>
+                                       
+
+
+                                           <ng-container *ngIf="Data.Role.includes('Auditor')&&Data.Role.includes('Support'); else notbothAuditorAndSupport">
+                                                <button data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle Auditor-edit-btn btn btn-sm  d-flex  text-muted curser-pointer">
                                                     <svg viewBox="0 0 24 24" height="18px" width="17px" role="img" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" ><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z" fill="currentColor"></path></svg>
-                                                    <span *ngIf="Data.Role=='Support';else alsoAsSupport" class="auditor-btn-text">&nbsp;remove</span>
-                                                    <ng-template #alsoAsSupport><span class="auditor-btn-text">&nbsp;remove support</span></ng-template>
+                                                    <span class="auditor-btn-text">&nbsp;remove</span>
                                                 </button>
-                                         </div>
+
+                                                <div class="dropdown-menu drop-cus">
+                                                    <a (click)="openRemoveSADialog(i,'AUDITOR')" class="dropdown-item">Remove as auditor</a>
+                                                    <a (click)="openRemoveSADialog(i,'SUPPORT')" class="dropdown-item">Remove as support</a>
+                                                </div>
+                                           </ng-container>
+                                           <ng-template #notbothAuditorAndSupport>
+
+                                                <div *ngIf="Data.Role.includes('Support')&&Data.isRemovable" class="d-flex align-self-start">
+                                                    <button (click)="openRemoveSADialog(i,'SUPPORT')" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted  curser-pointer ">
+                                                        <svg viewBox="0 0 24 24" height="18px" width="17px" role="img" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" ><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z" fill="currentColor"></path></svg>
+                                                        <span *ngIf="Data.Role=='Support';else alsoAsSupport" class="auditor-btn-text">&nbsp;remove</span>
+                                                        <ng-template #alsoAsSupport><span class="auditor-btn-text">&nbsp;remove support</span></ng-template>
+                                                    </button>
+                                                </div>
+
+                                                <button *ngIf="Data.Role.includes('Auditor')&&(projectInfo.Status!='Completion Under Approval'&&projectInfo.Status!='Completed')" (click)="openRemoveSADialog(i,'AUDITOR')"  class="Auditor-edit-btn btn btn-sm  d-flex  text-muted  curser-pointer ">
+                                                    <svg viewBox="0 0 24 24" height="18px" width="17px" role="img" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" ><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z" fill="currentColor"></path></svg>
+                                                    <span class="auditor-btn-text">&nbsp;remove auditor</span>
+                                                </button>
+
+                                           </ng-template>
+
                                         </ng-container>
-                                        <!--remarks on removing support/auditor-->
+
+                                        <!--( popup ) remarks on removing support/auditor-->
                                         <div class="mark-admin-drop" id="mark-admin-drop{{i}}">
                                             <div class="form-group mb-0">
                                                 <label *ngIf="typeUserRemove=='SUPPORT'" for="exampleFormControlTextarea1" class="fs-7" style="font-weight:600;">Remove as support</label>
@@ -8361,9 +8467,7 @@
                                                 <button class="btn btn-sm btn-secondary" (click)="closeRemoveSADialog(i)">Cancel</button>
                                             </div>
                                         </div>
-                                        <!--remarks on removing support/auditor-->
-
-
+                                        <!--( popup ) remarks on removing support/auditor-->
 
                                     </div>
 
@@ -14846,9 +14950,7 @@
                                           <span class="kt-detail-iconname">Next version</span>
                                         </div>
                                        </ng-container>
-
                                         </ng-container>
-
 
 
                                         <div title="Approve it, to appreciate project team for great work." [ngClass]="Accept_active ==true ? 'kt-detail-link active ':'kt-detail-link'" (click)="approvalClick('ACCEPT')">
@@ -14861,31 +14963,49 @@
                                           <span class="kt-detail-iconname">Reject</span>
                                         </div>
 
-
-
-                                          <!-- <div>
-                                              <button
-                                                  [ngClass]="Accept_active ==true ? 'Kt-Approval-btns Btn_Accpet active':'Kt-Approval-btns Btn_Accpet'"
-                                                  (click)="approvalClick('ACCEPT')">Accept</button>
-                                          </div> -->
-
-                                          <!-- <div *ngIf="requestType=='Project Complete'">
-                                              <button
-                                                  [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
-                                                  (click)="approvalClick('CONDITIONAL')">Conditional
-                                                  accept</button>
-                                          </div> -->
-                                          <!-- <div>
-                                              <button
-                                                  [ngClass]="Reject_active ==true ? 'Kt-Approval-btns Btn_Reject active' : 'Kt-Approval-btns Btn_Reject'"
-                                                  (click)="approvalClick('REJECT')">Reject</button>
-                                          </div> -->
-                                          <!---------- Reject Type html---------------->
-
                                       </div>
                                       <div class="clearfix"></div>
                                   </div>
                               </div>
+
+
+                              <div class="col-lg-12 mb-3 p-3 mt-3" *ngIf="projectInfo.AuditStatus=='Audit Pending'"
+                              style="background-color: #e4e7f9;
+                              border-radius: 14px;
+                              border: 1px solid #6388e336;
+                              color: #4f4f4f;">
+                              <div class="d-flex justify-content-between">
+                                  <h6 style="text-align:left;margin:0;font-weight: bold;">Project has been assigned to you for auditing by {{AuditRequestBY}}</h6>
+                                  <h6 class="text-muted" style="margin:0;">{{aprv.Rec_Date|date:'dd-MM-yyyy'}}</h6>
+                              </div>
+                              <div>
+                                  <span *ngIf="projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{projectInfo.Owner_remarks}}</span>
+                                  <span *ngIf="!projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{requestComments}}</span>
+                              </div>
+                              <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
+                              <span class="fs-7"> 
+                                  1. You have to analyze the project and give your approval acceptance or rejection.<br>
+                                  2. If you accept the project approval, then it will land to the project owner for the final approval.<br>
+                                  3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.
+                              </span>
+                          </div>
+
+
+                          <div class="col-lg-12 mb-3 p-3 mt-3" *ngIf="projectInfo.AuditStatus=='Audit Complete'"
+                          style="background-color:white;border-radius:2px;border:1px solid #6388e3;">
+                          <div class="d-flex justify-content-between">
+                              <h6 style="text-align:left;margin:0;">Project audit completed by {{projectAuditor.empName}}</h6>
+                              <h6 class="text-muted" style="margin:0;">{{aprv.Rec_Date|date:'dd-MM-yyyy'}}</h6>
+                          </div>
+                          <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Remarks:</h6>
+                          <div>
+                              <span *ngIf="projectInfo.Auditor_acceptremarks">{{projectInfo.Auditor_acceptremarks}}</span>
+                          </div>
+                         </div>
+ 
+
+
+
                               <div class="kt-reject-form-view aprovls-sectn-forms" [hidden]="!isTextAreaVisible">
 
                                 <div class="mb-2">
@@ -15210,7 +15330,7 @@
                                   </div>
                               </div>
                               <div class="row mt-3 px-3" id="kt_open_scroll">
-                                  <div class="col-lg-12 mb-3">
+                                  <div *ngIf="aprv.Type!='Project Audit'" class="col-lg-12 mb-3">
                                       <div class="kt-info-lable-v">Remarks</div>
                                         <div class="kt-info-data-v px-2 " data-toggle="tooltip"  style="overflow:unset; white-space:unset; text-overflow:unset;">
                                                 <div [id]="'pending-aprvl-remark-'+i" (click)="expandRemarks('pending-aprvl-remark-'+i)"  class="compl-remarks-span px-2 curser-pointer" title="Click to view more or collapse">
@@ -15242,6 +15362,31 @@
                                           </div>
                                       </div>
                                   </div>
+
+                                  
+                                  <div class="col-lg-12 mt-3" *ngIf="aprv.Type=='Project Audit'&&completedoc">
+                                    <div class="kt-info-lable-v">Attachment</div>
+
+                                    <div class="">
+                                        <div class="attachment-view">
+                                            <span>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="16"
+                                                    height="16" fill="currentColor"
+                                                    viewBox="0 0 16 16" class="bi bi-paperclip">
+                                                    <path
+                                                        d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+
+                                            <span
+                                                (click)=" LoadDocument1(complete_List[0].IsCloud,complete_List[0].Sourcefile,complete_List[0].CompleteProofDoc,complete_List[0].contenttype,complete_List[0].Team_Res)"
+                                                data-toggle="tooltip" title="{{completedoc}}">
+                                                {{completedoc}}</span>
+                                        </div>
+                                    </div>
+                                </div>
 
                                   <div class="col-lg-4">
                                       <div class="kt-info-lable-v text-center">Request type</div>

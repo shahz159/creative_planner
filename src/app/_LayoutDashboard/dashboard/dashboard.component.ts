@@ -528,7 +528,8 @@ export class DashboardComponent implements OnInit {
         hour12: true
       },
       nowIndicator: true,
-      allDaySlot: false
+      allDaySlot: false,
+     
     };
 
     tippy('#agenda-info-icon', {
@@ -4528,6 +4529,13 @@ debugger
   }
 
 
+
+
+
+
+
+  @ViewChild('dashboardcalender') dashboardcalender:any;
+
   fetchDataStartTime: number;
   fetchDataEndTime: number;
   dataBindStartTime: number;
@@ -4586,7 +4594,9 @@ debugger
           },
           nowIndicator: true,
           allDaySlot: false,
-          datesSet: () => { this.TwinEvent = []; }
+          datesSet: () => { 
+            this.TwinEvent = [];   
+          }
           // eventClick: function(info) {
           //   alert('Event: ' + info.event.title);
           //   alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
@@ -4600,7 +4610,7 @@ debugger
       });
   }
 
-
+   
 
 
 
@@ -4614,13 +4624,10 @@ debugger
       const eventElement = info.el;
       eventElement.style.opacity = '0.5'; // Change the background color for past events
     }
-
+  
     const time_str=info.el.children[0].innerHTML.toUpperCase();
     info.el.children[0].innerHTML=time_str.replace(/([0-9]+:[0-9]+)(AM|PM)/g, '$1 $2');
-    // if(taskComplete == 'fc-green'){
-    //   const eventElement = info.el;
-    //   eventElement.style.opacity = '0.5';
-    // }
+    
 
     const event = info.event;
     const start = new Date(event.start);

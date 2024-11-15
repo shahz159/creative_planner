@@ -1064,8 +1064,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                   this.pendingActns4Aprvls.push({ name:actn.Responsible, empno:actn.Team_Res, totalApprovals:1   });
             }
 
-debugger
-            if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno===actn.Team_Res)){
+debugger    
+            if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno!=actn.Team_Res)){
               this.actionsAssignedByMe+=1;
             }
 
@@ -2383,8 +2383,8 @@ multipleback(){
           this.newResponsible = (this.revert_json[0]['newResp']);
           this.forwardto = (this.revert_json[0]['Forwardedto']);
           this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
-        }
-        if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
+        }  debugger
+        if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved'||this.requestType == 'Project Audit') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
             this.completedoc = (this.complete_List[0]['Sourcefile']);
@@ -7803,21 +7803,15 @@ if(['001','002'].includes(this.projectInfo.Project_Block)){
        });
      }
      else{  // when sortby is 'Assigned By me'
-
         arr=arr.filter((action)=>{
-
-              return action.AssignedbyEmpno.trim()===this.Current_user_ID;
-
+              return (action.AssignedbyEmpno.trim()==this.Current_user_ID&&action.AssignedbyEmpno!=action.Team_Res);
         });
-
      }
     }
 
     if(filterby!=='All'){
       arr=arr.filter((action)=>{
-
          return action.Status===filterby;
-
        })
 
     }
@@ -10140,7 +10134,8 @@ onChangeAuditorBtnClicked(){
 
 openRemoveSADialog(index:number,removalType:'SUPPORT'|'AUDITOR'){
   if(this.p_index>-1){
-    this.closeRemoveSADialog(this.p_index);
+    const pindex=this.p_index;
+    this.closeRemoveSADialog(pindex);
   }   // closing opened dialog if present.
 
   this.p_index=index;
@@ -10158,6 +10153,10 @@ closeRemoveSADialog(index:number){
   this.typeUserRemove=undefined;
   this.p_index=-1;
 }
+
+
+
+
 
 
 onSARemoveSubmit(){

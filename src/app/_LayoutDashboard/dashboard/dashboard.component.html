@@ -530,7 +530,7 @@
                         <!-- <div id="kt_calendar"></div> -->
                         <!-- <FullCalendar defaultView="dayGridMonth" header={{ left: 'prev,next', center: 'title', right: 'dayGridDay,dayGridWeek,dayGridMonth' }} plugins={[dayGridPlugin]}/> -->
                         <ng-container *ngIf="showsearch==false">
-                            <full-calendar [options]="calendarOptions"></full-calendar>
+                            <full-calendar #dashboardcalender   [options]="calendarOptions"></full-calendar>
                         </ng-container>
                     </div>
                 </div>

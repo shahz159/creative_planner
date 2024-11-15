@@ -294,14 +294,6 @@ export class CreateProjectComponent implements OnInit {
 
 
 
-
-          
-
-
-
-
-
-
           // this.Prjtype=this.ProjectType_json[0].Typeid;// by default prj type core is selected.
           this.Project_Type=this.ProjectType_json[0].ProjectType;
           this.PrjOfType=this.Prjtype==='001'?'Core Tasks':
@@ -887,6 +879,7 @@ onFileChanged(event: any) {
     $('.np-step-2').removeClass('d-none');        // visible proj creation section.
     $('.np-step-1').addClass('d-none');           // close let's start section.
     this.notificationMsg=0;
+    this.promptToReadGuidelines();
   }
 
   back_to_options(){
@@ -901,7 +894,39 @@ onFileChanged(event: any) {
     $('.Project_details_tab').show();                    // open section 1 form.
     $('.action-left-view').addClass('d-none');           // close actions view of 3rd step.
     this.notificationMsg=0;
+    this.dontShowAgain=false; 
   }
+
+
+
+  promptToReadGuidelines(){
+     const hasRead=localStorage.getItem('readPrjCreationGuidelines');
+     if(!hasRead){
+          Swal.fire({
+            title:'Before you begin',
+            text:"Read the guidelines to avoid setup issues and streamline your project creation. Click on the 'View Guidelines' button to view the guidelines.",
+            showConfirmButton:true,
+            confirmButtonText:'View Guidelines',
+            showCancelButton:true,
+            cancelButtonText:'Skip',
+            allowOutsideClick: false
+          }).then((decision)=>{
+            if(decision.isConfirmed){
+              this.New_project_guideline(); 
+            }
+            localStorage.setItem('readPrjCreationGuidelines','true');   
+           });
+     }
+  }
+
+
+
+
+
+
+
+
+
 
 
   closeStep3Section(){
@@ -1423,6 +1448,8 @@ getActionsDetails(){
     this.PrjActionsInfo=[];
 
     this.detectMembersWithoutActions();   // update 'hasNoActionMembers' may needed since new action is added into the project.
+    setTimeout(()=>this.hasActnsMatchingPrjDeadline(),2000);   // warning dialog if more than 50% actns deadline same as the project deadline.
+
   });
 
 }
@@ -1853,11 +1880,11 @@ sendApproval=async()=>{
   let _title;
   let _msg;
   if(_prjendd<_curtd){   // when both startdate and enddate are invalid.
-   _title='Invalid Project Dates';
+   _title='Invalid project dates';
    _msg='Please select new start date and end date of the project before submitting it.';
   }
   else if(_prjstrtd<_curtd){  // when startdate is invalid.
-    _title='Invalid Project Start Date';
+    _title='Invalid project start date';
     _msg='Please select new start date of the project before submitting it.';
   }
   
@@ -1866,7 +1893,7 @@ sendApproval=async()=>{
       text:_msg,
       showConfirmButton:true,
       showCancelButton:true,
-      confirmButtonText:'Select New Dates',
+      confirmButtonText:'Select new dates',
       cancelButtonText:'Cancel'
   }).then(choice=>{
         if(choice.isConfirmed){
@@ -1881,7 +1908,33 @@ sendApproval=async()=>{
 //  
 
 
-// 2.validation: Check if any action's start date is before the project start date
+// 2.validation: if project has no actions.
+const pdur=Math.abs(moment(_prjstrtd).diff(moment(_prjendd),'days'));
+if(this.PrjActionsInfo.length==0){  
+
+  Swal.fire({
+     title:'Actions required',
+     html:`
+     <div style="text-align: justify;">
+     No actions are defined in this project. Seems like the project hasn't been fully planned for the given duration.<br>
+     <div style="font-size: 12px;color: #00a2eb;border: 1px solid #aae4ff;font-weight: 500;margin-top: 10px;background-color: #d8efff;padding: 5px;border-radius: 4px;display: flex; align-items: flex-start;column-gap: 7px;">
+      <svg width="30px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.00024000000000000003" style="min-width: 18px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z" fill="#1692df"></path></g>
+      </svg>
+      <span>Well-defined actions in project can help ensure better tracking and project success.</span>
+      </div>
+    </div> 
+     `,
+     showConfirmButton:true, 
+     confirmButtonText: 'OK',
+   })
+
+   return;
+ }
+//
+
+
+// 3.validation: Check if any action's start date is before the project start date
   const inputdate = new Date(this.projectInfo.StartDate);
   const actn_index = this.PrjActionsInfo.findIndex((actn) => {
       const actdate = new Date(actn.StartDate);
@@ -1889,7 +1942,7 @@ sendApproval=async()=>{
   });
  if(actn_index>-1){
   Swal.fire({
-    title: 'Invalid Action Dates',
+    title: 'Invalid action dates',
     html: `Action <b>"${this.PrjActionsInfo[actn_index].Project_Name}"</b> cannot start before the project itself. Please revise the start date for this action to comply with the project timeline.`,
     showCancelButton:true,
     showConfirmButton:true,
@@ -1906,27 +1959,35 @@ sendApproval=async()=>{
 //  
 
 
-// 3.warning: if any RACIS member doesn't have atleast one action in the project.
+// 3.validation: if any RACIS member doesn't have atleast one action in the project.
 this.detectMembersWithoutActions();
 if(this.hasNoActionMembers.length>0){  
  const choice=await Swal.fire({
-    title:'Team Members with No Actions Assigned',
+    title:'Team members with no actions assigned',
     text:'Project includes team members with no actions assigned to them. Do you still want to proceed with this project?',
     showConfirmButton:true,
     showCancelButton:true,
     confirmButtonText: 'Yes, Proceed',
     cancelButtonText: 'Cancel'
   })
- if(choice.isConfirmed==false) 
- return;
+ if(choice.isConfirmed==false){
+  return;
+ }
 }
 //
 
 
-// 4.confirmation: project cost confirmation from user.
+
+// 5.validation: project cost confirmation from user.
  const final_choice=await Swal.fire({
        title:'Are you sure?',
-       text:`You will be going to spend "${this.PrjCost}.00 SAR" on this project. Do you want to continue?`,
+       html:`<div style="text-align: justify;">
+                You will be going to spend <b>"${this.PrjCost}.00 SAR"</b> on this project. Do you want to continue?
+                ${this.PrjCost>=3000?`<span style="display: flex;align-items: center;column-gap: 8px;font-size: 12px;margin-top: 8px;background-color: #fdbc4a38;color: #c57a05;border: 1px solid #cc922d63;padding: 10px;border-radius: 5px;font-weight: 500;">
+                  <svg width="40px" height="20px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
+                  The project cost has reached 3000 SAR or more. Please ensure that the plan aligns with the annual business plan\'s budget.</span>`:''} 
+             </div>`,
+       
        showConfirmButton:true,
        showCancelButton:true,
        confirmButtonText: 'Yes, confirm',
@@ -2198,8 +2259,7 @@ if(['003','008'].includes(this.Prjtype)){
      const h=Number.parseInt(alhr.split(':')[0]);
      const m=Number.parseInt(alhr.split(':')[1]);
      alhr=h+'.'+m;
-}
-
+}  
   this.ProjectDto.Emp_No=this.Current_user_ID;
   this.ProjectDto.Hours=alhr;
   this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:{Status:boolean,Message:string,Data:number})=>{
@@ -2353,7 +2413,7 @@ this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((re
 // getting file attachment name if provided in the draft project. start
 
 this.detectMembersWithoutActions();   // update 'hasNoActionMembers' may needed since new action is added into the project.
-
+this.hasActnsMatchingPrjDeadline();   // warning dialog if more than 50% actns deadline same as the project deadline.
 });
 
 
@@ -3175,6 +3235,62 @@ alertMaxAllocations() {
     console.log(this.start_dt,this.end_dt,this.maxAllocations,"allcoation")
   }
 }
+
+
+
+
+
+dontShowAgain:boolean=false;
+hasActnsMatchingPrjDeadline(){
+ let totalActnsMatch=0;
+ let totalActnsInPrj=this.PrjActionsInfo.length;
+ if(totalActnsInPrj<4){
+    return;
+ }
+ const prj_deadline=new Date(this.projectInfo.EndDate);
+ this.PrjActionsInfo.forEach((actn:any)=>{
+       const actn_deadline=new Date(actn.EndDate);
+       if(prj_deadline.getTime()==actn_deadline.getTime()){
+           totalActnsMatch++;
+       }   
+ });
+
+ const percent_val=(totalActnsMatch/totalActnsInPrj)*100;    // 0/10 ===>0 .  8/10==>80%.  0/0==>0    10/0==>infinity(impossible)
+ if(percent_val>=50&&this.dontShowAgain==false){
+    Swal.fire({
+      title:'Confirm Action Deadlines',
+      html:`<div style="text-align: justify;"><b>${totalActnsMatch}/${totalActnsInPrj}</b> actions are currently planned to end with the main project.  Is this intentional? <br/> If not, consider adjusting deadlines using 'Edit' to optimize workflow.</div>`,
+      showCancelButton:true,
+      cancelButtonText:"OK",
+      cancelButtonColor:'#3085d6',
+      showConfirmButton:true,
+      confirmButtonText:"Don't Show Again",
+      confirmButtonColor:'#aaa'     
+  }).then(choice=>{
+      if(choice.isConfirmed==true){
+          this.dontShowAgain=true;
+      }
+  })
+
+ }
+
+ 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
