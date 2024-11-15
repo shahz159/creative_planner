@@ -7250,9 +7250,28 @@ onParticipantFilter(){
 
 
   onCustomBtnClicked(){
-    $('#propse11').removeClass('show');
-    this.repeatEvent();
-
+   
+    Swal.fire({
+      title: `Repeat meeting`,
+      text: `A meeting cannot be scheduled more than once on the same day. To change the meeting time, please edit the existing meeting`,
+      showCancelButton: true,
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Call your second function when OK is clicked
+        $('#propse11').removeClass('show');
+        this.repeatEvent();
+      } 
+      // else if (result.isDismissed) {
+        // Skip all when Cancel is clicked
+        // continue; // Skip this file
+      // }
+    }) 
+  
+  
+  
+  
   }
 
 
@@ -7857,5 +7876,58 @@ copied = false;
       this.copied = false;
     }, 3000); // revert after 2 seconds
   }
+
+
+
+
+
+  
+LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+  debugger
+  let FileUrl: string;
+  
+  FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+  if (iscloud == false) {
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
+    // if (this.projectInfo.AuthorityEmpNo == this.projectInfo.ResponsibleEmpNo) {
+    //   // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+    //   FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
+    // }
+    // else if (this.projectInfo.AuthorityEmpNo != this.projectInfo.ResponsibleEmpNo) {
+    //   FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
+    // }
+    let name = "ArchiveView/" + pcode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+  else if (iscloud == true) {
+    let name = "ArchiveView/" + pcode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(url1);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+}
+
+
+newDetails(ProjectCode) {
+  let name: string = 'Details';
+  var url = document.baseURI + name;
+  var myurl = `${url}/${ProjectCode}`;
+  var myWindow = window.open(myurl, ProjectCode);
+  myWindow.focus();
+}
 
 }

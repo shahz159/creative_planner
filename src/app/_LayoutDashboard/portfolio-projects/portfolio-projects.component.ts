@@ -185,7 +185,7 @@ export class PortfolioProjectsComponent implements OnInit {
   ProjDto:ProjectDetailsDTO|undefined;
   formFieldsRequired:boolean=false;
   isLoadingData:boolean|undefined;
-
+  mtg_section:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'='TODAY';
 
 
 
@@ -2373,16 +2373,12 @@ Insert_indraft() {
     _attachmentValue = 1;
   else
     _attachmentValue = 0;
-
-    
+ 
     frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
     frmData.append("CreatedBy", this.Current_user_ID.toString());
     frmData.append("RemovedFile_id", this._calenderDto.file_ids='');
-    
-    debugger
     const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
     this._calenderDto.DraftAgendas=mtgAgendas;
-
 
 
   this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
@@ -2545,7 +2541,7 @@ Insert_indraft() {
         console.log(this.upcomingMeetings,'linklkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')                                        // get upcoming meetings.
         this.upcMtgCnt = this.upcomingMeetings.length;                           // store totalno of meetings.
         this.upcomingMeetings = this.groupMeetingsByDate(this.upcomingMeetings);
-        console.log("UPCOMMING MEETINGS:",this.upcomingMeetings);
+      
 
         this.todaymeetings = this.getMeetingsByDate(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));     // get todays meetings.
         this.tdMtgCnt = this.todaymeetings.length;                                                        // store totalno of meetings.
@@ -2583,11 +2579,55 @@ Insert_indraft() {
 
         this.isLoadingData=false;
 
+debugger
+
+        if(this.upcomingMeetings.length>0 && this.todaymeetings.length>0){
+          this.mtg_section='TODAY';
+         }else if (this.upcomingMeetings.length>0){
+           this.mtg_section='UPCOMING';
+         }
+ 
+        
+       // by default today section is opened, below line set the first meeting to open if present.
+       setTimeout(()=>{
+          this.toggleMtgsSection(this.mtg_section);
+       },1000);
+       // by default today section is opened, below line set the first meeting to open if present.
       });
-
-
     //
+   
   }
+
+
+
+
+  toggleMtgsSection(sec:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'){
+    debugger
+    this.mtg_section=sec;
+    const bx=this.mtg_section=='UPCOMING'?'#upcoming_meetings_tabpanel div#upcoming-mtg-0-btn':
+             this.mtg_section=='TODAY'?'#today_meetings_tabpanel div#today-mtg-0-btn':
+             this.mtg_section=='LAST7DAYS'?'#last_7_days_meetings_tabpanel div#last7d-mtg-0-Btn':
+             this.mtg_section=='LASTMONTH'?'#last_month_meetings_tabpanel div#lastmonth-mtg-0-Btn':
+             null;
+    if(bx){
+        const btn:any=document.querySelector(bx);
+        if(btn&&btn.getAttribute('aria-expanded')=='false'){
+          btn.click();
+        }
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
   closeMeetingSidebar() {
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
@@ -6381,6 +6421,10 @@ isDepartment = false
     }
 
   }
+
+
+
+
 
 }
 

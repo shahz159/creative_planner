@@ -39,10 +39,10 @@ export class CalenderService {
     this.obj_CalenderDTO.User_Type=obj.User_Type
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetScheduledtimejson", this.obj_CalenderDTO);
   }
+
+
   NewGetPending_request(obj:CalenderDTO){
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
-
-
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetPending_requests1", this.obj_CalenderDTO);
   }
 
@@ -198,17 +198,13 @@ export class CalenderService {
 
 
 
-
-
-
-
-
   NewGetMeeting_darftdata(obj:CalenderDTO){
-
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
-
     return this.http.post(this.rootUrl + "CalenderAPI/NewGet_darftmeetdatacon", this.obj_CalenderDTO);
   }
+
+
+
   Newdraft_Meetingnotes(obj:CalenderDTO){
     this.obj_CalenderDTO.draftid=obj.draftid;
     this.obj_CalenderDTO.Dms = obj.Dms;
