@@ -1999,7 +1999,7 @@ export class DashboardComponent implements OnInit {
 
         var vRecurrence = "Recurrence";
         element[vRecurrence] = this.selectedrecuvalue;
-        debugger
+ 
         var vRecurrence_value = "Recurrence_values";
         element[vRecurrence_value] = _arraytext.toString();
 
@@ -2102,16 +2102,16 @@ export class DashboardComponent implements OnInit {
       else {
         this._calenderDto.Schedule_ID = 0;
       }
-
-      let _attachmentValue = 0;
+      debugger
+      
       const frmData = new FormData();
       for (var i = 0; i < this._lstMultipleFiales.length; i++) {
         frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
       }
       if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
-        _attachmentValue = 1;
+       this._attachmentValue = 1;
       else
-        _attachmentValue = 0;
+        this._attachmentValue = 0;
 
       frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
@@ -2120,6 +2120,7 @@ export class DashboardComponent implements OnInit {
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
 
       console.log('_calenderDto obj:', frmData);
+      this._calenderDto.attachment =this._attachmentValue.toString();
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
@@ -2128,7 +2129,7 @@ export class DashboardComponent implements OnInit {
           this.Attamentdraftid= data['draftid']
           frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
 
-          if (_attachmentValue == 1) {
+          if (this._attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
               (event: HttpEvent<any>) => {
                 switch (event.type) {
@@ -2209,6 +2210,7 @@ export class DashboardComponent implements OnInit {
           this.Avaliabletime = [];
           this.timeslotsavl = [];
           this.singleselectarry = [];
+          this._attachmentValue=0;
           this.daysSelected = [];
           // this.Recurr_arr = [];
           this.selected = null;
@@ -3028,7 +3030,7 @@ export class DashboardComponent implements OnInit {
 
 
   selectStartDate(event) {
-
+debugger
     this._StartDate = event;
     let sd = event.format("YYYY-MM-DD").toString();
     this._SEndDate = event.format("YYYY-MM-DD").toString();
@@ -3043,6 +3045,8 @@ export class DashboardComponent implements OnInit {
     //     this.pendingavailability==true;
     //   }
     // });
+
+  
     var start = moment(this.minDate);
     var end = moment(this.maxDate);
     const format2 = "YYYY-MM-DD";
@@ -3173,14 +3177,8 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     });
     // update new
 }
-
-
 ////test end  ///////////////////////////////////////////
-
-
-
-
-  }
+}
 
   // old
 //   selectStartDate(event) {
@@ -5402,7 +5400,7 @@ debugger
 
   }
 
-  Attamentdraftid:any
+  Attamentdraftid:any;
 
 
   Insert_indraft() {
@@ -5474,7 +5472,7 @@ debugger
     this._calenderDto.loc_status = this._onlinelink;
     this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password;
     this._calenderDto.Link_details=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
-debugger
+
     this._calenderDto.Recurrence = this.selectedrecuvalue ;
     this._calenderDto.Rec_values = _arraytext.toString();
     this._calenderDto.Rec_EndDate = this._EndDate;
@@ -5509,9 +5507,9 @@ debugger
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
       
-
-    const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-    this._calenderDto.DraftAgendas=mtgAgendas;
+      debugger
+      const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+      this._calenderDto.DraftAgendas=mtgAgendas;
 
    
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
@@ -5578,7 +5576,7 @@ debugger
     this._calenderDto.Emp_No = this.Current_user_ID;
     this.CalenderService.NewGetMeeting_darftdata(this._calenderDto).subscribe
       (data => {
-        debugger
+   
         console.log(data, "ssdddd")
         if (data['Draft_meetingdata'] != "" && data['Draft_meetingdata'] != null && data['Draft_meetingdata'] != undefined) {
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
@@ -5615,7 +5613,6 @@ debugger
     this.draftid = Sno;
    
     this.Task_type(val);
-
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]
     console.log(this.draft_arry[0], '6969')
@@ -5629,9 +5626,9 @@ debugger
       this.MasterCode.push(parseInt(element.stringval));
     });
 
-
+debugger
     this.Link_Details= this.draft_arry[0].Link_details;
-    if(this.Link_Details != ''){
+    if(this.Link_Details != '' && this.Link_Details != undefined ){
       if(!this.Link_Details.includes('<a href=')){
         var details = this.Link_Details.split(', ')
         this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
@@ -5693,10 +5690,9 @@ debugger
       this.projectsSelected = this.ProjectListArray.filter(project =>
         this.arr.some(item => item.stringval === project.Project_Code)
        );
-    }, 1000);
+    }, 1500);
 
 
-debugger
 
     this.selectedrecuvalue= this.draft_arry[0].Recurrence;
     this._EndDate = this.draft_arry[0].Rec_EndDate;
@@ -5760,6 +5756,62 @@ debugger
     }
   
    
+
+
+
+
+    debugger
+
+
+    var start = moment(this.minDate);
+    var end = moment(this._EndDate);
+    const format2 = "YYYY-MM-DD";
+    const d1 = new Date(moment(start).format(format2));
+    const d2 = new Date(moment(end).format(format2));
+    const date = new Date(d1.getTime());
+    this.daysSelectedII = [];
+    this.scstartdate = d1;
+    this.AllDatesSDandED = [];
+    var jsonData = {};
+    var columnName = "Date";
+    var columnNames = "StartTime";
+    var columnNamee = "EndTime";
+    var IsActive = "IsActive";
+    var Day = "Day";
+    var DayNum = "DayNum";
+
+    if (this.selectedrecuvalue == "0") {
+      // this._EndDate = event.value.format("YYYY-MM-DD").toString();
+      // this.maxDate = event.value.format("YYYY-MM-DD").toString();
+      jsonData[columnName] = (moment(date).format(format2));
+      jsonData[columnNames] = this.Startts;
+      jsonData[columnNamee] = this.Endtms;
+      jsonData[IsActive] = 1;
+      // jsonData[Day] = event.format('dddd').substring(0, 3);
+      // jsonData[DayNum] = event.format('DD').substring(0, 3);
+      this.AllDatesSDandED.push(jsonData);
+    }
+    else {
+      const dates = [];
+      while (date <= d2) {
+        dates.push(moment(date).format(format2));
+        var jsonData = {};
+        var columnName = "Date";
+        jsonData[columnName] = (moment(date).format(format2));
+        var columnNames = "StartTime";
+        jsonData[columnNames] = this.Startts;
+        var columnNamee = "EndTime";
+        jsonData[columnNamee] = this.Endtms;
+        var IsActive = "IsActive";
+        jsonData[IsActive] = 1;
+        var Day = "Day";
+        jsonData[Day] = moment(date).format('dddd').substring(0, 3);
+        var DayNum = "DayNum";
+        jsonData[DayNum] = moment(date).format('DD').substring(0, 3);
+        this.AllDatesSDandED.push(jsonData);
+        date.setDate(date.getDate() + 1);
+      }
+    }
   }
 
 
