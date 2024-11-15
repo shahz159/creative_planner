@@ -5630,9 +5630,11 @@ debugger
     this.draftid = Sno;
    
     this.Task_type(val);
+
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]
     console.log(this.draft_arry[0], '6969')
+    this. GetProjectAndsubtashDrpforCalender();
   
     this.allAgendas = JSON.parse(this.draft_arry[0]['Agendas']);
     this.Attachment12_ary= attachments;
@@ -5703,11 +5705,7 @@ debugger
     this.Location_Type = this.draft_arry[0]["location"];
     $('#Descrip_Name12').css('display',this._onlinelink?'flex':'none');
    
-    setTimeout(() => {
-      this.projectsSelected = this.ProjectListArray.filter(project =>
-        this.arr.some(item => item.stringval === project.Project_Code)
-       );
-    }, 1500);
+ 
 
 
 
@@ -5776,8 +5774,12 @@ debugger
 
 
 
-
-    debugger
+   // setTimeout(() => {
+    this.projectsSelected = this.ProjectListArray.filter(project =>
+      this.arr.some(item => item.stringval === project.Project_Code)
+     );
+  // }, 2000);
+   
 
 
     var start = moment(this.minDate);
