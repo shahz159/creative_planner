@@ -10,7 +10,7 @@
                     <div class="w-c">
                         <span class="w-c-h">Hello, {{this.UserfullName}}</span>
                         <div class="w-c-m">
-                            <div class="w-c-s" *ngFor="let item of employeeReport">You have Completed <b>{{item.EmployeePerformance}} <small>%</small></b> task.</div>
+                            <div class="w-c-s" *ngFor="let item of employeeReport">You have completed <b>{{item.EmployeePerformance}}<small>%</small></b> task.</div>
                         <div class="w-c-date"><span>{{todayDate | date:'d MMMM, yyyy'}}</span>
                             <div class="icon">
                                 <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="64px" height="64px" viewBox="0 0 30 30" version="1.1" id="svg822" inkscape:version="0.92.4 (f8dce91, 2019-08-02)" sodipodi:docname="event.svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs id="defs816"></defs>  <metadata id="metadata819">   </metadata> <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1" transform="translate(0,-289.0625)"> <path style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.99999976;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" d="M 9 4 L 9 7 L 7 7 C 5.3552974 7 4 8.3553 4 10 L 4 24 C 4 25.6447 5.3552974 27 7 27 L 23 27 C 24.644703 27 26 25.6447 26 24 L 26 10 C 26 8.3553 24.644703 7 23 7 L 21 7 L 21 4 L 19 4 L 19 7 L 11 7 L 11 4 L 9 4 z M 7 9 L 23 9 C 23.571297 9 24 9.4287 24 10 L 24 24 C 24 24.5713 23.571297 25 23 25 L 7 25 C 6.4287028 25 6 24.5713 6 24 L 6 10 C 6 9.4287 6.4287028 9 7 9 z M 17 17 C 16.446 17 16 17.446 16 18 L 16 22 C 16 22.554 16.446 23 17 23 L 21 23 C 21.554 23 22 22.554 22 22 L 22 18 C 22 17.446 21.554 17 21 17 L 17 17 z " transform="translate(0,289.0625)" id="rect894"></path> <g id="g825" transform="translate(0,1)" style="fill:CurrentColor"></g> </g> </g></svg>
@@ -516,8 +516,33 @@
                                     <div class="tab-scroll">
 
                                         <ul class="upcoming-events-ul">
+
+
+                                          <li>
+                                            <div class="upcoming-events-li" *ngIf="CompletedCount > 0" (click)="notification()">
+                                                <div class="date">
+
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        viewBox="0 0 1024 1024" version="1.1"
+                                                        class="iconify iconify--mdi">
+                                                        <path
+                                                            d="M271.36 276.48c0-61.44-40.96-113.664-97.28-130.048V38.4C174.08 17.408 156.672 0 135.68 0S97.28 17.408 97.28 38.4v108.032C40.96 162.816 0 215.04 0 276.48c0 61.44 41.472 113.664 97.792 130.048l1.536 209.92C41.984 632.832 0 685.056 0 747.52c0 61.44 40.96 113.664 97.28 130.048V983.04c0 20.992 17.408 38.4 38.4 38.4s38.4-17.408 38.4-38.4v-105.472c56.32-16.384 97.28-68.608 97.28-130.048 0-60.928-39.936-112.128-95.232-129.536l-1.536-211.456C230.4 389.632 271.36 337.92 271.36 276.48z m-194.56 0c0-32.256 26.624-58.88 58.88-58.88S194.56 244.224 194.56 276.48s-26.624 58.88-58.88 58.88S76.8 308.736 76.8 276.48z m117.76 471.04c0 32.256-26.624 58.88-58.88 58.88S76.8 779.776 76.8 747.52s26.624-58.88 58.88-58.88S194.56 715.264 194.56 747.52zM924.16 97.28h-496.64C372.224 97.28 327.68 141.824 327.68 197.12v158.72C327.68 411.136 372.224 455.68 427.52 455.68h496.64c55.296 0 99.84-44.544 99.84-99.84v-158.72c0-55.296-44.544-99.84-99.84-99.84z m23.04 258.56c0 12.8-10.24 23.04-23.04 23.04h-496.64C414.72 378.88 404.48 368.64 404.48 355.84v-158.72c0-12.8 10.24-23.04 23.04-23.04h496.64c12.8 0 23.04 10.24 23.04 23.04v158.72zM924.16 568.32h-496.64c-55.296 0-99.84 44.544-99.84 99.84v158.72c0 55.296 44.544 99.84 99.84 99.84h496.64c55.296 0 99.84-44.544 99.84-99.84v-158.72c0-55.296-44.544-99.84-99.84-99.84z m23.04 258.56c0 12.8-10.24 23.04-23.04 23.04h-496.64c-12.8 0-23.04-10.24-23.04-23.04v-158.72c0-12.8 10.24-23.04 23.04-23.04h496.64c12.8 0 23.04 10.24 23.04 23.04v158.72z"
+                                                            fill="#294f80"></path>
+                                                    </svg>
+                                                </div>
+                                                <div class="content">
+                                                    <div class="title">Under approval</div>
+                                                    <div class="owner">You have {{CompletedCount}} projects currently under approval, which is a positive sign of progress.
+                                                    </div>
+                                                    <div class="timing"></div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+
+
                                              <li>
-                                                <div class="upcoming-events-li" *ngIf="this.DelayCount> 0">
+                                                <div class="upcoming-events-li" *ngIf="this.DelayCount> 0" (click)="Delay_Click('Projects')">
                                                     <div class="date">
                                                         <svg xmlns="http://www.w3.org/2000/svg" id="Portfolio"
                                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
@@ -546,7 +571,7 @@
                                             </li>
 
                                             <li>
-                                              <div class="upcoming-events-li" *ngIf="this.DelayActionCount > 0">
+                                              <div class="upcoming-events-li" *ngIf="this.DelayActionCount > 0" (click)="Delay_Click('Actions')">
                                                   <div class="date">
                                                       <svg width="64px" height="64px" viewBox="0 0 16 16"
                                                           xmlns="http://www.w3.org/2000/svg" fill="none">
@@ -573,7 +598,7 @@
                                               </div>
                                           </li>
                                           <li>
-                                            <div class="upcoming-events-li" *ngIf="this.TotalExpiryInMonth> 0">
+                                            <div class="upcoming-events-li" *ngIf="this.TotalExpiryInMonth> 0" (click)="ExpiryInOneMonth_Click()">
                                                 <div class="date">
                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
@@ -610,7 +635,7 @@
                                             </div>
                                         </li>
                                             <li>
-                                                <div class="upcoming-events-li" *ngIf="AssignedProjects > 0">
+                                                <div class="upcoming-events-li" *ngIf="AssignedProjects > 0" (click)="Delay_Click('Assigned Project')">
                                                     <div class="date">
                                                         <!-- <p class="break">March 5 2024</p> -->
                                                         <svg id="todo" xmlns="http://www.w3.org/2000/svg"
@@ -637,7 +662,7 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="upcoming-events-li" *ngIf="AssignActionCount > 0">
+                                                <div class="upcoming-events-li" *ngIf="AssignActionCount > 0"  (click)="AssignedActions_Click()">
                                                     <div class="date">
                                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                                                             xmlns="http://www.w3.org/2000/svg">
@@ -660,29 +685,10 @@
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li>
-                                                <div class="upcoming-events-li" *ngIf="CompletedCount > 0">
-                                                    <div class="date">
 
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            viewBox="0 0 1024 1024" version="1.1"
-                                                            class="iconify iconify--mdi">
-                                                            <path
-                                                                d="M271.36 276.48c0-61.44-40.96-113.664-97.28-130.048V38.4C174.08 17.408 156.672 0 135.68 0S97.28 17.408 97.28 38.4v108.032C40.96 162.816 0 215.04 0 276.48c0 61.44 41.472 113.664 97.792 130.048l1.536 209.92C41.984 632.832 0 685.056 0 747.52c0 61.44 40.96 113.664 97.28 130.048V983.04c0 20.992 17.408 38.4 38.4 38.4s38.4-17.408 38.4-38.4v-105.472c56.32-16.384 97.28-68.608 97.28-130.048 0-60.928-39.936-112.128-95.232-129.536l-1.536-211.456C230.4 389.632 271.36 337.92 271.36 276.48z m-194.56 0c0-32.256 26.624-58.88 58.88-58.88S194.56 244.224 194.56 276.48s-26.624 58.88-58.88 58.88S76.8 308.736 76.8 276.48z m117.76 471.04c0 32.256-26.624 58.88-58.88 58.88S76.8 779.776 76.8 747.52s26.624-58.88 58.88-58.88S194.56 715.264 194.56 747.52zM924.16 97.28h-496.64C372.224 97.28 327.68 141.824 327.68 197.12v158.72C327.68 411.136 372.224 455.68 427.52 455.68h496.64c55.296 0 99.84-44.544 99.84-99.84v-158.72c0-55.296-44.544-99.84-99.84-99.84z m23.04 258.56c0 12.8-10.24 23.04-23.04 23.04h-496.64C414.72 378.88 404.48 368.64 404.48 355.84v-158.72c0-12.8 10.24-23.04 23.04-23.04h496.64c12.8 0 23.04 10.24 23.04 23.04v158.72zM924.16 568.32h-496.64c-55.296 0-99.84 44.544-99.84 99.84v158.72c0 55.296 44.544 99.84 99.84 99.84h496.64c55.296 0 99.84-44.544 99.84-99.84v-158.72c0-55.296-44.544-99.84-99.84-99.84z m23.04 258.56c0 12.8-10.24 23.04-23.04 23.04h-496.64c-12.8 0-23.04-10.24-23.04-23.04v-158.72c0-12.8 10.24-23.04 23.04-23.04h496.64c12.8 0 23.04 10.24 23.04 23.04v158.72z"
-                                                                fill="#294f80"></path>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="content">
-                                                        <div class="title">Under approval</div>
-                                                        <div class="owner">You have {{CompletedCount}} projects currently under approval, which is a positive sign of progress.
-                                                        </div>
-                                                        <div class="timing"></div>
-                                                    </div>
-                                                </div>
-                                            </li>
 
                                             <li>
-                                              <div class="upcoming-events-li" *ngIf="ProjectsNotStarted > 0">
+                                              <div class="upcoming-events-li" *ngIf="ProjectsNotStarted > 0" (click)="Not_Started()">
                                                   <div class="date">
 
                                                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -704,7 +710,7 @@
 
 
                                           <li>
-                                            <div class="upcoming-events-li" *ngIf="RejectedCount > 0">
+                                            <div class="upcoming-events-li" *ngIf="RejectedCount > 0" (click)="Rejected_Click()">
                                                 <div class="date">
 
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -758,7 +764,7 @@
 
                                     </div>
                                     <div class="n-portfolio-body" >
-                                        <div *ngIf="item.AchievementPercentage>0" class="per-con">{{item.AchievementPercentage  | number:'1.0-2' }}<small>%</small></div>
+                                        <!-- <div *ngIf="item.AchievementPercentage>0" class="per-con">{{item.AchievementPercentage  | number:'1.0-2' }}<small>%</small></div> -->
                                         <div class="n-portfolio-item">
                                             <div class="n-portfolio-item-icon">
                                                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 21C5 17.134 8.13401 14 12 14C15.866 14 19 17.134 19 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -774,7 +780,7 @@
                                             <div class="n-portfolio-item-icon">
                                                 <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="m 13,2.15688 0,9.68624 C 13,12.49386 12.491071,13 11.842857,13 L 2.1571429,13 C 1.5169643,12.99732 1,12.49922 1,11.84044 L 1,2.15688 C 1,1.51149 1.5035714,1 2.1571429,1 L 11.845536,1 C 12.488393,1 13,1.50346 13,2.15688 Z m -0.999107,9.68356 0,-9.68356 c 0,-0.0803 -0.06964,-0.15532 -0.155357,-0.15532 l -0.249107,0 L 8.6419643,3.99933 7,2.66302 5.3607143,3.99933 2.40625,1.99888 l -0.2491071,0 c -0.085714,0 -0.1553572,0.075 -0.1553572,0.15533 l 0,9.68623 c 0,0.0803 0.069643,0.15532 0.1553572,0.15532 l 9.6883931,0 c 0.08571,0.003 0.155357,-0.0723 0.155357,-0.15532 z m -6.9776787,-6.71636 0,0.99085 -1.96875,0 0,-0.99085 1.96875,0 z m 0,1.99241 0,0.99889 -1.96875,0 0,-0.99889 1.96875,0 z m 0.2973214,-3.94465 1.4464286,-1.17028 -3.1741072,0 1.7276786,1.17028 z m 5.6250003,1.95224 0,0.99085 -5.2500003,0 0,-0.99085 5.2500003,0 z m 0,1.99241 0,0.99889 -5.2500003,0 0,-0.99889 5.2500003,0 z M 8.6794643,3.17184 10.407143,2.00156 l -3.1714287,0 1.44375,1.17028 z m 2.2660717,5.94242 0,0.99888 -2.6625003,0 0,-0.99888 2.6625003,0 z"></path></g></svg>
                                             </div>
-                                            <div class="n-portfolio-item-title">  {{ item.TotalProjects}} Projects</div>
+                                            <div class="n-portfolio-item-title">  {{ item.TotalProjects}} Projects <span *ngIf="item.AchievementPercentage>0"  class="p-b-percent-count">{{item.AchievementPercentage | number:'1.0-2'}}%</span></div>
                                         </div>
                                         <div class="n-portfolio-item">
                                             <div class="n-portfolio-item-icon">
@@ -788,7 +794,7 @@
                                                     </svg>
                                             </div>
                                             <div class="n-portfolio-item-title">
-                                                <div class="n-portfolio-item-date">{{item.Created_DT| date: 'MMM d, y, h:mm:ss a'}}</div>
+                                                <div class="n-portfolio-item-date">{{item.Created_DT| date: 'dd-MM-yyyy'}}</div>
 
                                             </div>
                                         </div>
@@ -969,10 +975,14 @@
                                         <div class="action-tile-item-count-v1 gre newappr">{{CompletedCount}}</div>
                                         <div class="action-tile-item-name-v1">Under Approval</div>
                                     </div>
-                                    <div class="action-tile-item-v1" (click)="Not_Started()">
+                                    <!-- <div class="action-tile-item-v1" (click)="Not_Started()">
                                         <div class="action-tile-item-count-v1 vo notstart">{{ProjectsNotStarted}}</div>
                                         <div class="action-tile-item-name-v1">Not Started</div>
-                                    </div>
+                                    </div> -->
+                                    <div class="action-tile-item-v1" (click)="Rejected_Click()" >
+                                      <div class="action-tile-item-count-v1 re-4 rejected">{{RejectedCount}}</div>
+                                      <div class="action-tile-item-name-v1">Rejected Projects</div>
+                                  </div>
                                 </div>
                                 <div>
                                     <div class="action-tile-item-v1" (click)="Delay_Click('Projects')">
@@ -989,10 +999,7 @@
                                         <div class="action-tile-item-count-v1 re-3 delayinone">{{TotalExpiryInMonth}}</div>
                                         <div class="action-tile-item-name-v1">Delay in 1 Month</div>
                                     </div>
-                                    <div class="action-tile-item-v1" (click)="Rejected_Click()" >
-                                        <div class="action-tile-item-count-v1 re-4 rejected">{{RejectedCount}}</div>
-                                        <div class="action-tile-item-name-v1">Rejected Projects</div>
-                                    </div>
+
                                 </div>
                                 <!-- <div class="action-tile-item bgrad-4">
                                         <div class="icon-right">
@@ -1124,7 +1131,8 @@
                                 <div class="dar-label">Today Achivement</div>
                             </div>
                             <div class="dar-item-b">
-                                <div class="dar-con yes-dar-status">{{item.DarStatus}}</div>
+                              <!-- {{item.DarStatus}} -->
+                                <div class="dar-con yes-dar-status">Not Submitted</div>
                                 <div class="dar-label">Yesterday Achivement</div>
                             </div>
 
@@ -1133,42 +1141,42 @@
                         <hr>
                                 <div class="card-title">This Week Activity</div>
                                 <div class="action-info" *ngFor="let item of employeeReport">
-                                    <div class="action-info-item">
+                                    <div class="action-info-item" *ngIf="item.ActionsCompletedToday>0">
                                         <div class="action-info-label">Actions Completed Today</div>
                                         <div class="action-info-status">{{item.ActionsCompletedToday}}</div>
                                     </div>
-                                    <div class="action-info-item">
+                                    <div class="action-info-item" *ngIf="item.ActionsDelayed>0">
                                         <div class="action-info-label">Actions Delayed</div>
                                         <div class="action-info-status">{{item.ActionsDelayed}}</div>
                                     </div>
-                                    <div class="action-info-item">
+                                    <div class="action-info-item" *ngIf="item.ActionsDueToday>0" >
                                         <div class="action-info-label">Actions Due</div>
                                         <div class="action-info-status">{{item.ActionsDueToday}}</div>
                                     </div>
-                                    <div class="action-info-item">
+                                    <div class="action-info-item" *ngIf="item.AssignedTasksDue>0">
                                         <div class="action-info-label">Assigned Tasks</div>
                                         <div class="action-info-status">{{item.AssignedTasksDue}}</div>
                                     </div>
 
-                                    <div class="action-info-item">
+                                    <div class="action-info-item" *ngIf="item.ProjectsDueToday>0" >
                                       <div class="action-info-label">Projects Due</div>
                                       <div class="action-info-status">{{item.ProjectsDueToday}}</div>
                                   </div>
 
-                                    <div class="action-info-item">
+                                    <div class="action-info-item" *ngIf="item.ProjectsCompletedToday>0">
                                       <div class="action-info-label">Projects Completed</div>
                                       <div class="action-info-status">{{item.ProjectsCompletedToday}}</div>
                                   </div>
-                                  <div class="action-info-item">
+                                  <div class="action-info-item" *ngIf="item.ProjectsDelayed>0">
                                     <div class="action-info-label">Projects Delayed</div>
                                     <div class="action-info-status">{{item.ProjectsDelayed}}</div>
                                 </div>
 
-                              <div class="action-info-item">
+                              <div class="action-info-item"  *ngIf="item.StandardDelayed>0">
                                 <div class="action-info-label">Standard Delayed</div>
                                 <div class="action-info-status">{{item.StandardDelayed}}</div>
                             </div>
-                            <div class="action-info-item">
+                            <div class="action-info-item" *ngIf="item.StandardSubmittedToday>0">
                               <div class="action-info-label">Standard Submitted</div>
                               <div class="action-info-status">{{item.StandardSubmittedToday}}</div>
                           </div>

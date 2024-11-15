@@ -87,7 +87,7 @@ Dateselectionrange: string = 'Date selection range';
   Z2A: boolean;
   _raciDetails: boolean = true;
   approvalObj = new ApprovalDTO();
-  
+
 
   ngOnInit() {
 
@@ -119,12 +119,12 @@ Dateselectionrange: string = 'Date selection range';
         sessionStorage.removeItem('filterprjsby');
 
         this.getNewFilterResult();
-        this.applyFilters();    
+        this.applyFilters();
    }
    else{  //  show all projects without any filter.
     this.GetProjectsByUserName(this.type1);
    }
-   
+
     // this.getDropdownsDataFromDB();
 
 // JQUERY
@@ -1437,7 +1437,7 @@ debugger
   }else{
     document.getElementById("MemosSideBar").style.width = "0";
     document.getElementById("prtfloSideBar").style.width = "0";
-    this.notifyService.showInfo("",'No dms link in this project')
+    this.notifyService.showInfo("",'No Smail link in this project.')
   }
   }
 
@@ -1461,7 +1461,7 @@ debugger
    }else{
         document.getElementById("prtfloSideBar").style.width = "0";
         document.getElementById("MemosSideBar").style.width = "0";
-      this.notifyService.showInfo("",'No portfolio link in this project')
+      this.notifyService.showInfo("",'No portfolio link in this project.')
    }
 
   }
@@ -1725,7 +1725,7 @@ onEmpSelected(selected:boolean,selectedItem:any){
 filterByResult:boolean=false
 
 getNewFilterResult(){
-  
+
 this.edited = false
 
   this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>this.emplyToselect.includes(item.Emp_No));
@@ -2019,7 +2019,7 @@ projtypeToselect:any=[];
 onprojtypeSelected(e:any){
 
   const projtyChoosed=this.TypeContInFilter.find((p:any)=>p.Block_No===e.option.value);
- 
+
   if(projtyChoosed){
        const index=this.projtypeToselect.indexOf(projtyChoosed.Block_No);
        if(index===-1){
@@ -2163,6 +2163,45 @@ this.closeAutocompleteDrpDwn('proDDwn')
 
  }
 
+ isaction = false;
+ isracis = false;
+ isstatus = true;
+ islastupdate = true;
+ isdeadline = true;
+ isrespon = true;
+ isprojtype = true
+ isdeleted = true
+ isrefer = true
+ iscost = true
+ isowner = false
+ isclient = false
+ isDepartment = false
+
+   togglevisibilityforClass(className: string, event: any): void {
+
+     // Mapping object for class names and their corresponding state variables
+     const classToStateMap: { [key: string]: string } = {
+       'action_class': 'isaction',
+       'racisClass': 'isracis',
+       'statusClass': 'isstatus',
+       'clas_lasup': 'islastupdate',
+       'class_deadline': 'isdeadline',
+       'responclass': 'isrespon',
+       'projtypeclass': 'isprojtype',
+       'isdeleteds': 'isdeleted',
+       'referClass':  'isrefer',
+       'classCost' :'iscost',
+       'owner_class' :'isowner',
+       'client_class': 'isclient',
+       'class_depart'  : 'isDepartment'
+     };
+
+     // Check if the className exists in the map and update the corresponding state variable
+     if (classToStateMap[className] !== undefined) {
+       this[classToStateMap[className]] = event.target.checked;
+     }
+
+   }
 
 
 

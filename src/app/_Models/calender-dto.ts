@@ -58,7 +58,19 @@ export class CalenderDTO {
     Agendas:any;
     fileid :any;
     file_ids:any;
-   
+    Link_details:any;
+    Recurrence:any;
+    Rec_values:any;
+    Rec_EndDate:any;
+    Attendees:any;
+    Pending_date:any;
+    Draft_date:any;
+    AttendeeCount:any;
+    ProjectCount:any;
+    PortfolioCount:any;
+    DmsCount:any;
+    Schedule_date:any;
+
     // Exec_BLockName:string;
     // Project_Name:string;
     // BlockNameProject:string;

@@ -4912,8 +4912,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
     //
 
 
-
-
     this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
     this.ObjSubTaskDTO.startdate = null;
     this.ObjSubTaskDTO.enddate = null;
@@ -4964,7 +4962,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
         this.last7dmeetings = this.groupMeetingsByDate(this.last7dmeetings);
         console.log (this.last7dmeetings,"last7dmeetings")                        // format them.
 
-
         const date1 = new Date();                 // currentdate.
         date1.setMonth(date1.getMonth() - 1);    // date1 is prev month.
         this.meeting_arry.forEach(m => {
@@ -4976,26 +4973,25 @@ $('#acts-attachments-tab-btn').removeClass('active');
           else if (!(sd.getTime() > date1.getTime())) {   // when meeting held date is even order than last months
             this.olderMeetings.push(m);
           }
-
-
-
         });
-
         this.lstMthCnt = this.lastMonthMeetings.length;
         this.oldMtgCnt = this.olderMeetings.length;
-
         this.lastMonthMeetings = this.groupMeetingsByDate(this.lastMonthMeetings);      // format them.
         console.log(this.lastMonthMeetings,"this.lastMonthMeetings")
         this.olderMeetings = this.groupMeetingsByDate(this.olderMeetings);
         console.log(this.olderMeetings,"olderrr meetings")    // format them.
-
         this.isLoadingData=false;
 
+        if(this.upcomingMeetings.length>0 && this.todaymeetings.length>0){
+         this.mtg_section='TODAY';
+        }else if (this.upcomingMeetings.length>0){
+          this.mtg_section='UPCOMING';
+        }
 
-
+        
       // by default today section is opened, below line set the first meeting to open if present.
       setTimeout(()=>{
-         this.toggleMtgsSection('TODAY');
+         this.toggleMtgsSection(this.mtg_section);
       },1000);
       // by default today section is opened, below line set the first meeting to open if present.
 
@@ -5638,7 +5634,7 @@ debugger
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
 
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson;
-
+        console.log(this.Attachments_ary, "Attachments_ary");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status;
@@ -6477,10 +6473,12 @@ getChangeSubtaskDetais(Project_Code) {
     this.subtask_loading=false;
     this._onlinelink=false;
     this._meetingroom=false;
-    this.Link_Details = null;
     this.subtashDrpLoading=false;
     this.loading=false;
     this.allAgendas = [];
+    this.Link_Details = null;
+    this.Meeting_Id = null;
+    this.Meeting_password = null;
 
   }
 
@@ -6738,7 +6736,7 @@ getChangeSubtaskDetais(Project_Code) {
       else
         _attachmentValue = 0;
 
-      frmData.append("EventNumber", this.EventNumber.toString());
+      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       console.log(JSON.stringify(finalarray), "finalarray")
       this._calenderDto.draftid = this.draftid;
@@ -6749,6 +6747,10 @@ getChangeSubtaskDetais(Project_Code) {
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
+
+          var Attamentdraftid= '0'
+          frmData.append("draftid", Attamentdraftid= Attamentdraftid);
+
 
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
@@ -8631,6 +8633,12 @@ backMainMeetings() {
   this.selectedMtgs2Link=[];  // clear selected meetings.
 }
 
+
+
+
+Attamentdraftid:any
+
+
 //  save meeting as draft start.
 Insert_indraft() {
   if (this.draftid != 0) {
@@ -8644,27 +8652,143 @@ Insert_indraft() {
   if (this.SelectDms == null) {
     this.SelectDms = [];
   }
-  this._calenderDto.Dms = this.SelectDms.map(item=>item.MailId).join(',');
+  this._calenderDto.Dms = this.SelectDms.toString();
   if (this.Portfolio == null) {
     this.Portfolio = [];
   }
-  this._calenderDto.Portfolio = this.Portfolio.map(item=>item.portfolio_id).join(',');
+
+
+  this.daysSelectedII = [];
+    const format2 = "YYYY-MM-DD";
+    var start = moment(this.minDate);
+    const _arraytext = [];
+    if (this.selectedrecuvalue == "0") {
+      const d1 = new Date(moment(start).format(format2));
+      const date = new Date(d1.getTime());
+      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+    }
+    else if (this.selectedrecuvalue == "1") {
+      this.daysSelectedII = this.AllDatesSDandED;
+    }
+    else if (this.selectedrecuvalue == "2") {
+      if (this.dayArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.dayArr.length; index++) {
+        if (this.dayArr[index].checked) {
+        
+          const day = this.dayArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+      if (this.daysSelectedII.length == 0) {
+        alert('please select valid day');
+      }
+    }
+    else if (this.selectedrecuvalue == "3") {
+      if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.MonthArr.length; index++) {
+        if (this.MonthArr[index].checked == true) {
+          const day = this.MonthArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+    }
+
+
+    debugger
+
+  this._calenderDto.Portfolio = this.Portfolio.toString();
   this._calenderDto.location = this.Location_Type;
   this._calenderDto.loc_status = this._onlinelink;
+  this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password;
+  this._calenderDto.Link_details=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+  this._calenderDto.Recurrence = this.selectedrecuvalue ;
+  this._calenderDto.Rec_values = _arraytext.toString();
+  this._calenderDto.Rec_EndDate = this._EndDate;
+
   this._calenderDto.Note = this.Description_Type;
   this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
   //  alert( this.ScheduleType);
   if (this.ngEmployeeDropdown == null) {
     this.ngEmployeeDropdown = [];
   }
-  this._calenderDto.User_list = this.ngEmployeeDropdown.map(item=>item.Emp_No).join(",");
+  this._calenderDto.User_list = this.ngEmployeeDropdown.toString();
+  
   if (this.MasterCode == null) {
     this.MasterCode = [];
   }
   this._calenderDto.Project_Code = this.MasterCode.toString();
 
+
+  let _attachmentValue = 0;
+  const frmData = new FormData();
+  for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+    frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+  }
+  if (this._lstMultipleFiales.length > 0)
+    _attachmentValue = 1;
+  else
+    _attachmentValue = 0;
+
+    frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+    frmData.append("CreatedBy", this.Current_user_ID.toString());
+    frmData.append("RemovedFile_id", this._calenderDto.file_ids='');
+    const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+    this._calenderDto.DraftAgendas=mtgAgendas;
+
+
   this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
     (data => {
+
+      this.Attamentdraftid= data['draftid']
+      frmData.append("draftid", this.Attamentdraftid);
+ 
+        if (_attachmentValue == 1) {
+          this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+            (event: HttpEvent<any>) => {
+              switch (event.type) {
+                case HttpEventType.Sent:
+                  console.log('Request has been made!');
+                  break;
+                case HttpEventType.ResponseHeader:
+                  console.log('Response header has been received!');
+                  break;
+                case HttpEventType.UploadProgress:
+                  this.progress = Math.round(event.loaded / event.total * 100);
+                  console.log(`Uploaded! ${this.progress}%`);
+                  break;
+                case HttpEventType.Response:
+                  console.log('User successfully created!', event.body);
+
+                  // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+                  
+
+                  (<HTMLInputElement>document.getElementById("customFile")).value = "";
+                  this._lstMultipleFiales = [];
+                  // empty(this._lstMultipleFiales);
+                  // alert(this._lstMultipleFiales.length);
+                  setTimeout(() => {
+                    this.progress = 0;
+                  }, 2000);
+
+                  //69 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                  //69 (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                  document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                  //69 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+              }
+            }
+          )
+        }
+
       if (data['message'] == '1') {
         // this.Getdraft_datalistmeeting();
         this.closeschd();
@@ -8677,8 +8801,6 @@ Insert_indraft() {
       //   this.notifyService.showSuccess("Draft updated", "Success");
       // }
     });
-
-
 }
 
 
@@ -9941,8 +10063,9 @@ OnSubmitSchedule1() {
     else
       _attachmentValue = 0;
 
-    frmData.append("EventNumber", this.EventNumber.toString());
+    frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
     frmData.append("CreatedBy", this.Current_user_ID.toString());
+    frmData.append("RemovedFile_id", this._calenderDto.file_ids='0');
     console.log(JSON.stringify(finalarray), "finalarray")
     this._calenderDto.draftid = this.draftid;
 
@@ -9951,6 +10074,9 @@ OnSubmitSchedule1() {
 
     this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
       (data => {
+        var Attamentdraftid= '0'
+        frmData.append("draftid", Attamentdraftid= Attamentdraftid);
+
 
         if (_attachmentValue == 1) {
           this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
@@ -10977,11 +11103,24 @@ getFormattedDuration(totalDuration: number): string {
 
 
 
+  newDetails(ProjectCode) {
+    let name: string = 'Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${ProjectCode}`;
+    var myWindow = window.open(myurl, ProjectCode);
+    myWindow.focus();
+  }
 
 
 
-
-
+  OnCardClick(P_id: any) {
+    sessionStorage.setItem('portfolioId', P_id);
+    let name: string = 'portfolioprojects';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${P_id}`;
+    var myWindow = window.open(myurl, P_id);
+    myWindow.focus();
+  }
 
 }
 

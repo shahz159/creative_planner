@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { DatePipe } from '@angular/common';
 import { BsServiceService } from './../../_Services/bs-service.service';
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef,Renderer2,ViewChildren,QueryList } from '@angular/core';
@@ -184,7 +185,7 @@ export class PortfolioProjectsComponent implements OnInit {
   ProjDto:ProjectDetailsDTO|undefined;
   formFieldsRequired:boolean=false;
   isLoadingData:boolean|undefined;
-
+  mtg_section:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'='TODAY';
 
 
 
@@ -337,12 +338,12 @@ export class PortfolioProjectsComponent implements OnInit {
     this.GetPortfolioProjectsByPid();
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
     this.labelAll();
-
+    // this.togglevisibilityforClass('classCost', 'iscost')
 
     // this.onButtonClick('tot');
     // this.getusermeetings();
     this.updateListbyDetailsPage();
-
+    // isprojtype=true
 
 
 
@@ -391,7 +392,7 @@ export class PortfolioProjectsComponent implements OnInit {
   isPendingChecked : boolean = false
 
 
-  GetPortfolioProjectsByPid() {  
+  GetPortfolioProjectsByPid() {
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
     this._Pid = this.Url_portfolioId;
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -504,7 +505,7 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
   this.newapprovalPrjport = []
 
   this._ProjectsListBy_Pid.forEach((item)=>{
-    if (item.Status === 'Under Approval'  && item.PendingapproverEmpNo === this.Current_user_ID){
+    if (item.Status === 'Under Approval'  && item.PendingapproverEmpNo.trim() == this.Current_user_ID){
       const obj = {
         prjname : item.Project_Name,
         prjcode : item.Project_Code,
@@ -529,7 +530,7 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
 
 
     this.isPendingChecked = this._ProjectsListBy_Pid.some((emp)=>{
-      debugger
+
       return emp.PendingapproverEmpNo === this.Current_user_ID
     })
 
@@ -1771,7 +1772,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   noDms(){
-    this.notifyService.showInfo("",'No Dms link in this project.')
+    this.notifyService.showInfo("",'No Smail link in this project.')
   }
 
   _CloseMemosidebar() {
@@ -1852,22 +1853,23 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
       // If the item is already active, deactivate it
       // If the item is not active, deactivate all items and activate the clicked one
-    //   this._ProjectsListBy_Pid.forEach(otherItem => otherItem.active = false);
-    //   item.active = true;
+      this._ProjectsListBy_Pid.forEach(otherItem => otherItem.active = false);
+      item.active = true;
 
-    // // Manually trigger change detection
-    // this.cdr.detectChanges();
+    // Manually trigger change detection
+    this.cdr.detectChanges();
 
-    item.isActive = !item.isActive;
+  //   item.isActive = !item.isActive;
 
-    // If you want to allow only one item to be active at a time, uncomment the following lines:
-  if (item.isActive) {
-    this._ProjectsListBy_Pid.forEach(otherItem => {
-      if (otherItem !== item) {
-        otherItem.isActive = false;
-      }
-    });
-  }
+  //   // If you want to allow only one item to be active at a time, uncomment the following lines:
+  // if (item.isActive) {
+  //   this._ProjectsListBy_Pid.forEach(otherItem => {
+  //     if (otherItem !== item) {
+  //       otherItem.isActive = false;
+  //     }
+  //   });
+
+
 }
 
 
@@ -1875,8 +1877,9 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
 
   closeInfo() {
-    // this._ProjectsListBy_Pid.forEach(item => item.active = false);
-    this._ProjectsListBy_Pid.forEach(item => item.isActive = false);
+    this._ProjectsListBy_Pid.forEach(item => item.active = false);
+    this.Deletedproject.forEach(item=> item.active = false)
+    // this._ProjectsListBy_Pid.forEach(item => item.isActive = false);
 
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
@@ -2099,9 +2102,9 @@ if(this.showDeletedPrjOnly){
   list=[...this._ProjectsListBy_Pid];
   result=list.filter((p)=>{
 
-    return (((p.Status==this._PortProjStatus)||(p.Status.includes('Delay')&&this._PortProjStatus=='Delay')||this._PortProjStatus=='')&& ((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp || p.OwnerEmpNo==this._FilterByEmp  ||this._FilterByEmp=="All"));
+    return (((p.Status==this._PortProjStatus)||(p.Status.includes('Delay')&&this._PortProjStatus=='Delay')||this._PortProjStatus=='')&& ((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp ||  p.PendingapproverEmpNo == this._FilterByEmp || p.OwnerEmpNo==this._FilterByEmp  ||this._FilterByEmp=="All"));
   });
-  debugger
+
   console.log(result);
 }
 
@@ -2275,6 +2278,9 @@ triger(){
 
   }
 
+
+  Attamentdraftid:any;
+
 //  save meeting as draft start.
 Insert_indraft() {
   if (this.draftid != 0) {
@@ -2288,27 +2294,141 @@ Insert_indraft() {
   if (this.SelectDms == null) {
     this.SelectDms = [];
   }
-  this._calenderDto.Dms = this.SelectDms.map(item=>item.MailId).join(',');
+  this._calenderDto.Dms = this.SelectDms.toString();
   if (this.Portfolio == null) {
     this.Portfolio = [];
   }
-  this._calenderDto.Portfolio = this.Portfolio.map(item=>item.portfolio_id).join(',');
+
+  this.daysSelectedII = [];
+    const format2 = "YYYY-MM-DD";
+    var start = moment(this.minDate);
+    const _arraytext = [];
+    if (this.selectedrecuvalue == "0") {
+      const d1 = new Date(moment(start).format(format2));
+      const date = new Date(d1.getTime());
+      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+    }
+    else if (this.selectedrecuvalue == "1") {
+      this.daysSelectedII = this.AllDatesSDandED;
+    }
+    else if (this.selectedrecuvalue == "2") {
+      if (this.dayArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.dayArr.length; index++) {
+        if (this.dayArr[index].checked) {
+        
+          const day = this.dayArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+      if (this.daysSelectedII.length == 0) {
+        alert('please select valid day');
+      }
+    }
+    else if (this.selectedrecuvalue == "3") {
+      if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.MonthArr.length; index++) {
+        if (this.MonthArr[index].checked == true) {
+          const day = this.MonthArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+    }
+
+  this._calenderDto.Portfolio = this.Portfolio.toString();
   this._calenderDto.location = this.Location_Type;
   this._calenderDto.loc_status = this._onlinelink;
+  this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password;
+  this._calenderDto.Link_details=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+  this._calenderDto.Recurrence = this.selectedrecuvalue ;
+  this._calenderDto.Rec_values = _arraytext.toString();
+  this._calenderDto.Rec_EndDate = this._EndDate;
+
   this._calenderDto.Note = this.Description_Type;
   this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
   //  alert( this.ScheduleType);
   if (this.ngEmployeeDropdown == null) {
     this.ngEmployeeDropdown = [];
   }
-  this._calenderDto.User_list = this.ngEmployeeDropdown.map(item=>item.Emp_No).join(",");
+  this._calenderDto.User_list = this.ngEmployeeDropdown.toString();
   if (this.MasterCode == null) {
     this.MasterCode = [];
   }
   this._calenderDto.Project_Code = this.MasterCode.toString();
 
+
+  let _attachmentValue = 0;
+  const frmData = new FormData();
+  for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+    frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+  }
+  if (this._lstMultipleFiales.length > 0)
+    _attachmentValue = 1;
+  else
+    _attachmentValue = 0;
+ 
+    frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+    frmData.append("CreatedBy", this.Current_user_ID.toString());
+    frmData.append("RemovedFile_id", this._calenderDto.file_ids='');
+    const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+    this._calenderDto.DraftAgendas=mtgAgendas;
+
+
   this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
     (data => {
+
+      this.Attamentdraftid= data['draftid']
+      frmData.append("draftid", this.Attamentdraftid);
+ 
+        if (_attachmentValue == 1) {
+          this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+            (event: HttpEvent<any>) => {
+              switch (event.type) {
+                case HttpEventType.Sent:
+                  console.log('Request has been made!');
+                  break;
+                case HttpEventType.ResponseHeader:
+                  console.log('Response header has been received!');
+                  break;
+                case HttpEventType.UploadProgress:
+                  this.progress = Math.round(event.loaded / event.total * 100);
+                  console.log(`Uploaded! ${this.progress}%`);
+                  break;
+                case HttpEventType.Response:
+                  console.log('User successfully created!', event.body);
+
+                  // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+                  
+
+                  (<HTMLInputElement>document.getElementById("customFile")).value = "";
+                  this._lstMultipleFiales = [];
+                  // empty(this._lstMultipleFiales);
+                  // alert(this._lstMultipleFiales.length);
+                  setTimeout(() => {
+                    this.progress = 0;
+                  }, 2000);
+
+                  //69 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                  //69 (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                  document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                  //69 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+              }
+            }
+          )
+        }
+
+
+
+
       if (data['message'] == '1') {
         // this.Getdraft_datalistmeeting();
         this.closeschd();
@@ -2423,7 +2543,7 @@ Insert_indraft() {
         console.log(this.upcomingMeetings,'linklkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')                                        // get upcoming meetings.
         this.upcMtgCnt = this.upcomingMeetings.length;                           // store totalno of meetings.
         this.upcomingMeetings = this.groupMeetingsByDate(this.upcomingMeetings);
-        console.log("UPCOMMING MEETINGS:",this.upcomingMeetings);
+      
 
         this.todaymeetings = this.getMeetingsByDate(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));     // get todays meetings.
         this.tdMtgCnt = this.todaymeetings.length;                                                        // store totalno of meetings.
@@ -2461,11 +2581,55 @@ Insert_indraft() {
 
         this.isLoadingData=false;
 
+debugger
+
+        if(this.upcomingMeetings.length>0 && this.todaymeetings.length>0){
+          this.mtg_section='TODAY';
+         }else if (this.upcomingMeetings.length>0){
+           this.mtg_section='UPCOMING';
+         }
+ 
+        
+       // by default today section is opened, below line set the first meeting to open if present.
+       setTimeout(()=>{
+          this.toggleMtgsSection(this.mtg_section);
+       },1000);
+       // by default today section is opened, below line set the first meeting to open if present.
       });
-
-
     //
+   
   }
+
+
+
+
+  toggleMtgsSection(sec:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'){
+    debugger
+    this.mtg_section=sec;
+    const bx=this.mtg_section=='UPCOMING'?'#upcoming_meetings_tabpanel div#upcoming-mtg-0-btn':
+             this.mtg_section=='TODAY'?'#today_meetings_tabpanel div#today-mtg-0-btn':
+             this.mtg_section=='LAST7DAYS'?'#last_7_days_meetings_tabpanel div#last7d-mtg-0-Btn':
+             this.mtg_section=='LASTMONTH'?'#last_month_meetings_tabpanel div#lastmonth-mtg-0-Btn':
+             null;
+    if(bx){
+        const btn:any=document.querySelector(bx);
+        if(btn&&btn.getAttribute('aria-expanded')=='false'){
+          btn.click();
+        }
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
   closeMeetingSidebar() {
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
@@ -4063,7 +4227,7 @@ getChangeSubtaskDetais(Project_Code) {
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
         this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
-     
+
 
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
@@ -4129,7 +4293,7 @@ getChangeSubtaskDetais(Project_Code) {
       else
         _attachmentValue = 0;
 
-      frmData.append("EventNumber", this.EventNumber.toString());
+      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       console.log(JSON.stringify(finalarray), "finalarray")
       this._calenderDto.draftid = this.draftid;
@@ -4139,6 +4303,10 @@ getChangeSubtaskDetais(Project_Code) {
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
+
+          var Attamentdraftid= data['draftid']
+          frmData.append("draftid", Attamentdraftid= Attamentdraftid?Attamentdraftid:0);
+
 
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
@@ -5950,55 +6118,57 @@ bindCustomRecurrenceValues(){
     }
   }
 
-  Insert_indrafts() {
-    if (this.draftid != 0) {
-      this._calenderDto.draftid = this.draftid;
-    }
-    else {
-      this._calenderDto.draftid = 0;
-    }
-    this._calenderDto.Task_Name = this.Title_Name;
-    this._calenderDto.Emp_No = this.Current_user_ID;
-    if (this.SelectDms == null) {
-      this.SelectDms = [];
-    }
-    this._calenderDto.Dms = this.SelectDms.toString();
-    if (this.Portfolio == null) {
-      this.Portfolio = [];
-    }
-    this._calenderDto.Portfolio = this.Portfolio.toString();
-    this._calenderDto.location = this.Location_Type;
-    this._calenderDto.loc_status = this._onlinelink;
-    this._calenderDto.Note = this.Description_Type;
-    this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
-    //  alert( this.ScheduleType);
-    if (this.ngEmployeeDropdown == null) {
-      this.ngEmployeeDropdown = [];
-    }
-    this._calenderDto.User_list = this.ngEmployeeDropdown.toString();
-    if (this.MasterCode == null) {
-      this.MasterCode = [];
-    }
-    this._calenderDto.Project_Code = this.MasterCode.toString();
+  // Insert_indrafts() {
+  //   if (this.draftid != 0) {
+  //     this._calenderDto.draftid = this.draftid;
+  //   }
+  //   else {
+  //     this._calenderDto.draftid = 0;
+  //   }
+  //   this._calenderDto.Task_Name = this.Title_Name;
+  //   this._calenderDto.Emp_No = this.Current_user_ID;
+  //   if (this.SelectDms == null) {
+  //     this.SelectDms = [];
+  //   }
+  //   this._calenderDto.Dms = this.SelectDms.toString();
+  //   if (this.Portfolio == null) {
+  //     this.Portfolio = [];
+  //   }
+  //   this._calenderDto.Portfolio = this.Portfolio.toString();
+  //   this._calenderDto.location = this.Location_Type;
+  //   this._calenderDto.loc_status = this._onlinelink;
+  //   this._calenderDto.Note = this.Description_Type;
+  //   this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
+  //   //  alert( this.ScheduleType);
+  //   if (this.ngEmployeeDropdown == null) {
+  //     this.ngEmployeeDropdown = [];
+  //   }
+  //   this._calenderDto.User_list = this.ngEmployeeDropdown.toString();
+  //   if (this.MasterCode == null) {
+  //     this.MasterCode = [];
+  //   }
+  //   this._calenderDto.Project_Code = this.MasterCode.toString();
 
-    const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-    this._calenderDto.DraftAgendas=mtgAgendas;
-    this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
-      (data => {
-        if (data['message'] == '1') {
-          this.Getdraft_datalistmeeting();
-          this.closeschd();
-          this.notifyService.showSuccess("Draft saved", "Success");
-        }
-        if (data['message'] == '2') {
-          this.Getdraft_datalistmeeting();
-          this.closeschd();
-          this.notifyService.showSuccess("Draft updated", "Success");
-        }
-      });
+  //   const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+  //   this._calenderDto.DraftAgendas=mtgAgendas;
+  //   this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
+  //     (data => {
+  //       if (data['message'] == '1') {
+  //         this.Getdraft_datalistmeeting();
+  //         this.closeschd();
+  //         this.notifyService.showSuccess("Draft saved", "Success");
+  //       }
+  //       if (data['message'] == '2') {
+  //         this.Getdraft_datalistmeeting();
+  //         this.closeschd();
+  //         this.notifyService.showSuccess("Draft updated", "Success");
+  //       }
+  //     });
+  // }
 
 
-  }
+
+
   closeschds() {
 
     // this.Insert_indraft();
@@ -6211,12 +6381,52 @@ notShow(){
   this.showDot = false
 }
 
-showDelayproj(){
+
+
+
+isaction = false;
+isracis = false;
+isstatus = true;
+islastupdate = true;
+isdeadline = true;
+isrespon = true;
+isprojtype = true
+isdeleted = true
+isrefer = true
+iscost = true
+isowner = false
+isclient = false
+isDepartment = false
+
+  togglevisibilityforClass(className: string, event: any): void {
+
+    // Mapping object for class names and their corresponding state variables
+    const classToStateMap: { [key: string]: string } = {
+      'action_class': 'isaction',
+      'racisClass': 'isracis',
+      'statusClass': 'isstatus',
+      'clas_lasup': 'islastupdate',
+      'class_deadline': 'isdeadline',
+      'responclass': 'isrespon',
+      'projtypeclass': 'isprojtype',
+      'isdeleteds': 'isdeleted',
+      'referClass':  'isrefer',
+      'classCost' :'iscost',
+      'owner_class' :'isowner',
+      'client_class': 'isclient',
+      'class_depart'  : 'isDepartment'
+    };
+
+    // Check if the className exists in the map and update the corresponding state variable
+    if (classToStateMap[className] !== undefined) {
+      this[classToStateMap[className]] = event.target.checked;
+    }
+
+  }
+
+
+
+
 
 }
 
-
-
-
-
-}

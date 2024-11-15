@@ -107,7 +107,7 @@
                         <div class="stores-sec mr-1">
                             <ul class="nav navbar-nav filters">
                                 <li class="dropdown mega-dropdown" id="filtermenu">
-                                    <a [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'" data-toggle="dropdown"><i
+                                    <a   title="Click to filter the projects" [ngClass]="edited ? 'btn btn-label-primary btn-upper btn-sm btn-bold filter-dot' : 'btn btn-label-primary btn-upper btn-sm btn-bold'" data-toggle="dropdown"><i
                                         class="fas fa-ellipsis-v mr-0 "></i>
                                 </a>
                                     <div class="dropdown-menu mega-dropdown-menu">
@@ -223,7 +223,7 @@
                                 <i class="fas fa-sort-alpha-up font-16 mr-0"></i>
                             </a>
                         </div>
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll()">
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" title="Click to reset the filter"   (click)="resetAll()">
                             <i class="fas fa-sync-alt mr-0"></i>
                         </button>
                         <!-- <button class="btn btn-label-primary  btn-sm btn-bold mr-1" (click)="BackBttn()">
@@ -762,11 +762,29 @@
                                                             <span class="New-project font-weight-400">New
                                                                 project</span>
                                                         </div>
-                                                        <div *ngIf="item.Status=='New Project Rejected'">
+                                                        <!-- <div *ngIf="item.Status=='New Project Rejected'" class="attach-tippy">
+                                                          <span class="rej st-line status-text">Rejected from : {{item.RejectFromDate | date :'dd-MM-yyyy'}} Rejected comment : {{item.Rejectcomments}}</span>
                                                             <span class="New_Project_Rejected_color font-weight-400">New
                                                                 project
                                                                 rejected</span>
-                                                        </div>
+                                                                <span class="pulsing-dot-label"> {{item.RejectedBy}} </span>
+                                                        </div> -->
+
+
+
+                                                          <div *ngIf="item.Status=='New Project Rejected'" class="attach-tippy-div">
+                                                            <span class="New_Project_Rejected_color font-weight-400">New project rejected</span>
+                                                            <span class="attach-tippy">
+
+                                                            <span class=" rej st-line curser-pointer" >
+                                                               <div style="width: max-content;">Rejected by: <h6>{{item.RejectedBy}} </h6></div>
+                                                                <div>on: {{item.RejectFromDate | date: 'dd-MM-yyyy'}}</div>
+                                                                <div>Comment : {{item.Rejectcomments}}</div></span>
+                                                            </span></div>
+
+
+
+
 
                                                         <div *ngIf="item.Status=='Not Started'">
                                                           <span class="not-started">

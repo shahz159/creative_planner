@@ -860,7 +860,7 @@
                                                                     <!-- <div class="dark-title">21 Thu, January 2024</div> -->
                                                                     <!-- <div class="dark-title">{{ startTime | date:'d EEE,MMMM YYYY'}} -->
                                                         
-                                                                   <div class="dark-title">{{item.Schedule_date | date:'EEEE, MMMM d, YYYY'}}
+                                                                   <div class="dark-title">{{item.Schedule_date | date:'EEEE, MMMM d, yyyy'}}
                                                                     </div>
                                                                     <span class="deadline-count d-none">
                                                                         <span class="deadline-count-btn">
@@ -4457,7 +4457,7 @@
                                                 </g>
                                             </svg>
                                         </span>
-                                        <span>Offlined</span>
+                                        <span>Offline</span>
                                     </ng-container>
                                     </ng-container>
                                     </div>
@@ -4543,7 +4543,7 @@
                                                             </g>
                                                         </svg>
                                                     </span>
-                                                    <span>Offlined</span>
+                                                    <span>Offline</span>
                                                 
                                                 </div>
                                                 <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
@@ -6992,7 +6992,7 @@
                                                 <div class="text-muted ml-2 fs-7">{{item.Created_by}}</div>
                                             </div>
                                             <div class="text-muted ml-1 fs-7 text-right">{{item.Created_date| date : 'dd-MM-YYYY'}}</div>
-                                            <div class="delte-attach" (click)="DeleteAttachment(item.file_id)">
+                                            <div *ngIf="Status1=='Owner' && Meetingstatuscom!='Completed'" class="delte-attach" (click)="DeleteAttachment(item.file_id)">
                                                 <div class="icn">
                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                 </div>
@@ -8734,7 +8734,7 @@
         
         
                                     <li *ngFor='let url of Attachment12_ary'>
-                                        <div class="schedule-file-list-item">
+                                        <div class="schedule-file-list-item curser-pointer"  (click)="LoadDocument(url.file_id,true,url.File_Name&&url.File_Name,url.url,url.contenttype,url.Created_by)">
                                             <div class="file-info">
                                                 <div class="file-svg">
                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 9V17.8C19 18.9201 19 19.4802 18.782 19.908C18.5903 20.2843 18.2843 20.5903 17.908 20.782C17.4802 21 16.9201 21 15.8 21H8.2C7.07989 21 6.51984 21 6.09202 20.782C5.71569 20.5903 5.40973 20.2843 5.21799 19.908C5 19.4802 5 18.9201 5 17.8V6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.0799 3 8.2 3H13M19 9L13 3M19 9H14C13.4477 9 13 8.55228 13 8V3" stroke="#2684fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -8767,7 +8767,7 @@
                                 </div>
                                 <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
                                     <li *ngFor="let prj of projectsSelected">
-                                    <div class="schedule-select-list-item">
+                                    <div class="schedule-select-list-item curser-pointer"  (click)="newDetails(prj.Project_Code)">
                                         <span class="schedule-select-list-title">{{prj.Project_Name}}</span>
                                         <span (click)="discardChoosedItem('PROJECT',prj.Project_Code)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
                                     </div>
@@ -8792,7 +8792,7 @@
                                 </div>
                                 <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
                                     <li *ngFor="let prtfid of Portfolio">
-                                    <div class="schedule-select-list-item">
+                                    <div class="schedule-select-list-item curser-pointer" (click)="OnCardClick(prtfid)">
                                         <span class="schedule-select-list-title">{{getObjOf(Portfoliolist_1,prtfid,'portfolio_id').Portfolio_Name}}</span>
                                         <span (click)="discardChoosedItem('PORTFOLIO',prtfid)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
                                     </div>
