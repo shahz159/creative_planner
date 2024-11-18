@@ -1752,9 +1752,12 @@
      </div>
       </div>
       <div class="end-timeline-modal-footer">
-            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" (click)="endTimelineModal_dismiss()">Close</button>
-            <!--if user not entered timeline or if user entered timeline but not ended day-->
-            <button *ngIf="tmReportStatus==null||tmReportStatus=='Not Submitted'" type="button" class="btn btn-sm btn-info" (click)="endDay(tmSubmDate)">End day now</button>
+           <span *ngIf="tm4EndDate_msg==true" class="text-danger"><b>*</b> Please enter timeline for the selected date before ending the day.</span>
+           <div class="d-flex justify-content-end gap-1">
+             <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" (click)="endTimelineModal_dismiss()">Close</button>
+              <!--if user not entered timeline or if user entered timeline but not ended day-->
+             <button *ngIf="tmReportStatus==null||tmReportStatus=='Not Submitted'" type="button" class="btn btn-sm btn-info" (click)="endDay(tmSubmDate)">End day now</button>
+           </div>
       </div>
     </div>
   </div>

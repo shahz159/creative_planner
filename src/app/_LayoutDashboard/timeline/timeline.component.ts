@@ -1088,11 +1088,13 @@ submitTL(submDate:string)
 }
 
 
+tm4EndDate_msg:boolean=false;
+
 endDay(submDate:string)
 {
 
   if(this.tmReportTotalDuration==null){    // if there is no timeline has been entered by the user on the selected date.
-    this.notifyService.showError('Please enter a timeline for the selected date before ending the day.','Timeline Required');
+    this.tm4EndDate_msg=true;
     return;
   }
 
@@ -1133,17 +1135,6 @@ endDay(submDate:string)
    });
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1300,13 +1291,14 @@ endTimelineModal(){
   document.getElementById("endTimelineModalBackdrop").style.display = "block";
   document.getElementById("endTimelineModalBackdrop").classList.add("show");
   this.getDayReportSummary();
+  this.tm4EndDate_msg=false;
 }
 endTimelineModal_dismiss(){
   document.getElementById("endTimelineModal").style.display = "none";
   document.getElementById("endTimelineModal").classList.remove("show");
   document.getElementById("endTimelineModalBackdrop").style.display = "none";
   document.getElementById("endTimelineModalBackdrop").classList.remove("show");
-
+  this.tm4EndDate_msg=false;
 }
 
 
