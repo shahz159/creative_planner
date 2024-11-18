@@ -2318,7 +2318,7 @@ Insert_indraft() {
       }
       for (let index = 0; index < this.dayArr.length; index++) {
         if (this.dayArr[index].checked) {
-        
+
           const day = this.dayArr[index].value;
           _arraytext.push(day);
           var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
@@ -2376,11 +2376,11 @@ Insert_indraft() {
   else
     _attachmentValue = 0;
 
-    
+
     frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
     frmData.append("CreatedBy", this.Current_user_ID.toString());
     frmData.append("RemovedFile_id", this._calenderDto.file_ids='');
-    
+
     debugger
     const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
     this._calenderDto.DraftAgendas=mtgAgendas;
@@ -2392,7 +2392,7 @@ Insert_indraft() {
 
       this.Attamentdraftid= data['draftid']
       frmData.append("draftid", this.Attamentdraftid);
- 
+
         if (_attachmentValue == 1) {
           this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
             (event: HttpEvent<any>) => {
@@ -2411,7 +2411,7 @@ Insert_indraft() {
                   console.log('User successfully created!', event.body);
 
                   // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                  
+
 
                   (<HTMLInputElement>document.getElementById("customFile")).value = "";
                   this._lstMultipleFiales = [];
@@ -6383,6 +6383,30 @@ isDepartment = false
     }
 
   }
+
+
+  formatTime(input: string): string {
+    // Check if the input is already in the correct format
+    if (/^\d{2} Hr : \d{2} Mins$/.test(input)) {
+      return input; // If the format is correct, return it as-is
+    }
+
+    // Extract hours and minutes using regex for formatting if needed
+    const matches = input.match(/(\d+)Hr:(\d+)Mins/);
+
+    if (!matches) {
+      return 'Invalid Format'; // Handle unexpected format
+    }
+
+    // Extract hours and minutes
+    const hours = parseInt(matches[1], 10) || 0;
+    const minutes = parseInt(matches[2], 10) || 0;
+
+    // Format the string
+    return `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+  }
+
+
 
 }
 

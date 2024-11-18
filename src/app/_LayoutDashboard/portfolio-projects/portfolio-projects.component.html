@@ -918,7 +918,7 @@
 
 
                                                           <th [ngClass]="{'d-none':!isowner}"  [appSort]="this._ProjectsListBy_Pid" data-order="desc"
-                                                          data-name="Exec_BlockName" tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                                                          data-name="Project_Owner" tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
                                                           aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other"><i
                                                               class="fas fa-sort"></i>Owner</span></th>
 
@@ -930,18 +930,36 @@
                                                           class="fas fa-sort"></i> Responsible</span></th>
 
 
-                                                  <th [ngClass]="{'d-none':!isclient}" [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="TM_DisplayName"
+                                                  <th [ngClass]="{'d-none':!isclient}" [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="Client_Name"
                                                   tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
                                                   aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other"><i
                                                       class="fas fa-sort"></i> Client</span></th>
 
-
+<!--
                                                 <th [ngClass]="{'d-none':!iscost}" ><span class="kt-widget__other"><i class="fas fa-sort"></i>
-                                                        Cost</span> </th>
+                                                        Cost</span> </th> -->
 
 
-                                              <th [ngClass]="{'d-none':!isDepartment}" ><span class="kt-widget__other"><i class="fas fa-sort"></i>
-                                                Company</span> </th>
+                                              <th [ngClass]="{'d-none':!iscost}" [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="Project_Cost"
+                                              tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                                              aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other"><i
+                                                  class="fas fa-sort"></i> Cost</span></th>
+
+
+
+
+
+
+                                              <!-- <th [ngClass]="{'d-none':!isDepartment}" ><span class="kt-widget__other"><i class="fas fa-sort"></i>
+                                                Company</span> </th> -->
+
+                                          <th [ngClass]="{'d-none':!isDepartment}" [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="Com_Name"
+                                          tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                                          aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other"><i
+                                              class="fas fa-sort"></i> Company</span></th>
+
+
+
 
 
                                                     <th [ngClass]="{'d-none':!isdeadline}" [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="DeadLine"
@@ -1559,9 +1577,10 @@
 
                                                 <!-- <ng-container *ngIf="!showDeletedPrjOnly"> -->
 
-                                                  <td *ngIf="item1.Project_Cost"  [ngClass]="{'d-none': !iscost}"  class="classCost" >{{item1.Project_Cost}}</td>
-                                                  <td *ngIf="!item1.Project_Cost"  [ngClass]="{'d-none': !iscost}"  class="classCost" >0</td>
-
+                                                  <td *ngIf="item1.Project_Cost;else SAR"  [ngClass]="{'d-none': !iscost}"  class="classCost" >{{item1.Project_Cost |currency:'SAR '}}</td>
+                                                 <ng-template #SAR>
+                                                  <td  [ngClass]="{'d-none': !iscost}"  class="classCost" > SAR 00.00</td>
+                                                </ng-template>
 
                                                  <!-- </ng-container> -->
                                                  <!-- cost data end -->
@@ -1584,13 +1603,17 @@
                                                          <!-- Deadline data start                 -->
                                                 <ng-container *ngIf="!showDeletedPrjOnly">
                                                     <td  [ngClass]="{'d-none':!isdeadline}"  class="class_deadline">
-                                                        <span class="kt-widget__other text-nowrap ">
+                                                        <span class="kt-widget__other text-nowrap">
 
                                                          <div
                                                                 *ngIf="item1.Exec_BlockName=='Standard Tasks' || item1.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                                 <span
                                                                     class="kt-widget__other text-nowrap">{{item1.SubmissionType}}</span>
-                                                                       <div  class="text-nowrap font" *ngIf="item1.SubmissionType === 'Weekly'||'Daily'|| 'Annually'||'Monthly'  ">{{item1.StandardDuration}}</div>
+                                                                    <div
+                                                                    class="text-nowrap font light-font"
+                                                                    *ngIf="item1.SubmissionType === 'Weekly' || item1.SubmissionType === 'Daily' || item1.SubmissionType === 'Annually' || item1.SubmissionType === 'Monthly'">
+                                                                    {{ formatTime(item1.StandardDuration) }}
+                                                                  </div>
                                                             </div>
                                                           </span>
 
