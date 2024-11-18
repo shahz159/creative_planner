@@ -2205,4 +2205,26 @@ this.closeAutocompleteDrpDwn('proDDwn')
 
 
 
+   formatTime(input: string): string {
+    // Check if the input is already in the correct format
+    if (/^\d{2} Hr : \d{2} Mins$/.test(input)) {
+      return input; // If the format is correct, return it as-is
+    }
+
+    // Extract hours and minutes using regex for formatting if needed
+    const matches = input.match(/(\d+)Hr:(\d+)Mins/);
+
+    if (!matches) {
+      return 'Invalid Format'; // Handle unexpected format
+    }
+
+    // Extract hours and minutes
+    const hours = parseInt(matches[1], 10) || 0;
+    const minutes = parseInt(matches[2], 10) || 0;
+
+    // Format the string
+    return `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+  }
+
+
 }
