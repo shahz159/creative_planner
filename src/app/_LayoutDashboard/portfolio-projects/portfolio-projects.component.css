@@ -5507,3 +5507,8 @@ svg:not {
 .rejs{
   color: #BA68C8 !important;
 }
+.light-font {
+  font-size:small; /* or use a specific value, e.g., 12px */
+  font-weight: 400; /* Makes the font weight lighter */
+  color: #666; /* Optional: Adjust color for a lighter appearance */
+}

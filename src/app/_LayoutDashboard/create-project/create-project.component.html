@@ -404,7 +404,7 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="d-flex align-items-center justify-content-between w-100">
-          
+
                         <div class="title-view-md d-flex gap-1 align-items-end ml-1">
                           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" viewBox="0 0 74 75" fill="none">
                             <g clip-path="url(#clip0_237_573)">
@@ -527,7 +527,7 @@
                                       <div class="kt-act-btns">
                                         <div class="d-flex align-items-center">
 
-                                          <div class="kt-dl-icon"  ><span class="kt-svg-ic" title="Create"
+                                          <div class="kt-dl-icon"  ><span class="kt-svg-ic" title="Click to open assigned project"
                                             (click)="reset(); Scratech_btn(); onButtonClick(record,i+1);">
                                             <svg width="26px" height="26px" viewBox="2 2 19 19" fill="none"
                                               xmlns="http://www.w3.org/2000/svg">
@@ -546,7 +546,7 @@
 
 
 
-                                          <div class="kt-dl-icon db-v" title="Delete" (click)="onRejectButtonClick(record,i+1)" data-toggle="modal"
+                                          <div class="kt-dl-icon db-v" title="Click to delete assigned project" (click)="onRejectButtonClick(record,i+1)" data-toggle="modal"
                                             data-target="#exampleModalCenter">  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                             aria-hidden="true" role="img" font-size="1.5rem" width="1.2em" height="1.2em"
                                             viewBox="0 0 24 24" class="iconify iconify--mdi">
@@ -665,7 +665,7 @@
                                   </div>
                                   <div class="kt-act-btns">
                                     <div class="d-flex align-items-center">
-                                      <div class="kt-dl-icon"  ><span class="kt-svg-ic" title="Create"
+                                      <div class="kt-dl-icon"  ><span class="kt-svg-ic" title="Click to open template"
                                         (click)="reset(); Scratech_btn(); openTemplate(record);">
                                         <svg width="26px" height="26px" viewBox="2 2 19 19" fill="none"
                                           xmlns="http://www.w3.org/2000/svg">
@@ -683,7 +683,7 @@
 
 
 
-                                      <div class="kt-dl-icon db-v" title="Delete" (click)="onTmpRmvDialogOpen(i)"><span class="kt-svg-ic">
+                                      <div class="kt-dl-icon db-v" title="Click to delete template" (click)="onTmpRmvDialogOpen(i)"><span class="kt-svg-ic">
                                           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                             aria-hidden="true" role="img" font-size="1.5rem" width="1.2em" height="1.2em"
                                             viewBox="0 0 24 24" class="iconify iconify--mdi">
@@ -797,7 +797,7 @@
                                       <div class="kt-act-btns">
                                         <div class="d-flex align-items-center">
 
-                                          <div class="kt-dl-icon" title="Create"  (click)="openDraft(i)">
+                                          <div class="kt-dl-icon" title="Click to open draft"  (click)="openDraft(i)">
                                             <span class="kt-svg-ic">
                                               <svg width="26px" height="26px" viewBox="2 2 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -816,7 +816,7 @@
 
 
 
-                                            <div class="kt-dl-icon db-v" title="Delete" (click)="deleteDraft(i)">
+                                            <div class="kt-dl-icon db-v" title="Click to delete draft" (click)="deleteDraft(i)">
                                                   <span class="kt-svg-ic">
                                                       <svg xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="1.5rem" width="1.1em" height="1.1em" viewBox="0 0 24 24" class="iconify iconify--mdi">
                                                         <path fill="gray" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z"></path>
@@ -1849,7 +1849,7 @@
                               <div class="col-lg-6 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Owner<span class="text-danger">*</span></label>
-                                 
+
                                   <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!PrjOwner&&notProvided}"  [items]="owner_json" bindLabel="EmpName" bindValue="EmpNo" groupBy="type"
                                   (change)="onProjectOwnerChanged();  PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo.trim()))?PrjInformer:Responsible_json[0].OwnerEmpNo.trim();  setRACIS(); "
                                   placeholder="Select owner" id="owner-drp-dwn" [searchable]="true" name="owner-drp-dwn"
@@ -1921,7 +1921,7 @@
                                     <ng-container *ngFor="let p of allUser_json">
                                            <ng-option *ngIf="p.Emp_No!=PrjResp&&p.Emp_No!=PrjOwner" [value]="p.Emp_No">{{ p.Emp_Name}}</ng-option>
                                     </ng-container>
-                                    
+
                                   </ng-select>
                                 </div>
                               </div>

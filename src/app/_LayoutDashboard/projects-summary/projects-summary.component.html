@@ -1535,12 +1535,14 @@
 
 
                                                  <!-- cost data start -->
-                                                    <td  *ngIf="item.Project_Cost" [ngClass]="{'d-none':!iscost}" class="classCost" ><div class="kt-widget__other">{{item.Project_Cost}}</div>
+                                                    <td  *ngIf="item.Project_Cost; else SAR" [ngClass]="{'d-none':!iscost}" class="classCost" ><div class="kt-widget__other">{{item.Project_Cost |currency:'SAR '}}</div>
 
                                                     </td>
-                                                    <td  *ngIf="!item.Project_Cost" [ngClass]="{'d-none':!iscost}" class="classCost" ><div class="kt-widget__other">0</div>
 
-                                                    </td>
+                                                    <ng-template  #SAR>
+                                                    <td  [ngClass]="{'d-none':!iscost}" class="classCost" ><div class="kt-widget__other">SAR 00.00</div>
+
+                                                    </td></ng-template>
 
                                          <!-- cost data end -->
 
@@ -1563,7 +1565,7 @@
                                                         <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                             <span class="kt-widget__other text-nowrap">{{item.SubmissionType1}}</span>
 
-   <div  class="text-nowrap font" *ngIf="item.SubmissionType === 'Weekly'||'Daily'|| 'Annually'||'Monthly'  ">{{item.StandardDuration}}</div>
+                          <div  class="text-nowrap font" *ngIf="item.SubmissionType === 'Weekly'||'Daily'|| 'Annually'||'Monthly'  ">{{formatTime(item.StandardDuration)}}</div>
                                                         </div>
                                                         <ng-template #Projecttype>
                                                             <span class="kt-widget__other text-nowrap">
