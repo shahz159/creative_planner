@@ -664,7 +664,7 @@
                                 <div class="pending-event-info">
                                     <div *ngIf="item.Draft_date">Created date : {{item.Draft_date | date:'EEEE, MMMM d, YYYY'}}</div>
                                     <!-- Friday, November 15, 2024 -->
-                                    <div *ngIf="item.modified_date">Modified date : {{item.Draft_date | date:'EEEE, MMMM d, YYYY'}} </div>
+                                    <div *ngIf="item.modified_date">Modified date : {{item.modified_date | date:'EEEE, MMMM d, YYYY'}} </div>
                                     <div class="pending-user-link">
                                         <div  class="pending-user-link-item" *ngIf="item.AttendeeCount" title="{{item.Attendees}}">
                                             <div class="pending-user-link-icon" >
@@ -1207,7 +1207,7 @@
                     </div>
 
 
-                    <div class="icons-right curser-pointer " [ngClass]="{'icon-active': AdminMeeting_Status==1,'live': Isadmin==true && AdminMeeting_Status==1,'join': Isadmin==false && AdminMeeting_Status==1}"  title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'" (click)="newMeetingDetails()">
+                    <div class="icons-right curser-pointer " [ngClass]="{'icon-active': AdminMeeting_Status==1,'live': Isadmin==true && AdminMeeting_Status==1,'join': Isadmin==false && AdminMeeting_Status==1}"  title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event' && pending_status==false" (click)="newMeetingDetails()">
                             <span class=" kt-meeting-status-icon">
                                     <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Media / Play_Circle"> <g id="Vector"> <path d="M3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12Z" stroke="#5f6368" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M10 15V9L15 12L10 15Z" stroke="#5f6368" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g> </g></svg>
                                     <ng-container  *ngIf="AdminMeeting_Status==1">

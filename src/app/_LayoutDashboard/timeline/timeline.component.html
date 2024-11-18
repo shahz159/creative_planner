@@ -590,7 +590,7 @@
             </div> -->
             <div class="notifications-list">
         
-                    <div *ngIf="dueTodayTasksCount.length>0" class="notification delay-notification" style="cursor: pointer;">
+                    <div *ngIf="dueTodayTasksCount.length>0" class="notification delay-notification">
                         <svg width="24px" height="24px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -1702,7 +1702,7 @@
 
             <div *ngIf="daySummaryReport" class="completion-ending-statement mx-2 mt-4 mb-2" [ngClass]="{'success':daySummaryReport.EmployeePerformance>=70, 'danger':daySummaryReport.EmployeePerformance<70}">
                 <span *ngIf="daySummaryReport.EmployeePerformance>=70">You have achieved {{daySummaryReport.EmployeePerformance}}% of your tasks. Great progress so far—keep pushing forward!</span>
-                <span *ngIf="daySummaryReport.EmployeePerformance<70">You have achieved {{daySummaryReport.EmployeePerformance}}% of your tasks. Keep up the momentum and continue improving!</span>
+                <span *ngIf="daySummaryReport.EmployeePerformance<70">You have achieved {{daySummaryReport.EmployeePerformance}}% of your tasks but there’s still more to do. Finishing the rest is important to keep your performance on track."</span>
             </div>
         </div>
         <!--given <div class="end-timeline-ul mt-4  p-2 pt-3 ">
