@@ -75,7 +75,7 @@
                 </a>
               </div> -->
 
-              <div *ngIf="sendtype=='Req' && selectedItems.length >0">
+              <div *ngIf="sendtype=='Req' && selectedItems.length >0" style="display:none">
                 <button class="btn btn-outline-success btn-sm mr-2 fs-7"
                   (click)="acceptSelectedValues()">Accept</button>
                 <button class="btn btn-outline-danger btn-sm fd-7" (click)="rejectpros()">Reject</button>
@@ -278,6 +278,32 @@
           </div>
         </div>
       </div>
+
+
+
+      <div *ngIf="sendtype=='Req' && selectedItems.length >0" class=" bg-white p-2 px-3 rounded d-flex align-items-center justify-content-between">
+        
+        <div class="">
+          <button  (click)="acceptSelectedValues()" class="btn btn-outline-success btn-sm mr-2 fs-7  d-inline-flex gap-1   ">
+            <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" style="stroke: currentColor; stroke-width: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="checkmark"> <line class="cls-1" x1="3" x2="12" y1="16" y2="25"></line> <line class="cls-1" x1="12" x2="29" y1="25" y2="7"></line> </g> </g></svg>
+            <span class="fs-8" style="font-weight:500">Accept</span>
+          </button>
+          <button (click)="onAcceptWithCmtsBtnClicked()" class="btn btn-outline-success btn-sm mr-2 fs-7  d-inline-flex gap-1">
+            <svg fill="currentColor" width="17px" height="17px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.093,1.293l-11.2,11.2a.99.99,0,0,0-.242.391l-1.6,4.8A1,1,0,0,0,5,19a1.014,1.014,0,0,0,.316-.051l4.8-1.6a1.006,1.006,0,0,0,.391-.242l11.2-11.2a1,1,0,0,0,0-1.414l-3.2-3.2A1,1,0,0,0,17.093,1.293ZM9.26,15.526l-2.679.893.893-2.679L17.8,3.414,19.586,5.2ZM3,21H20a1,1,0,0,1,0,2H3a1,1,0,0,1,0-2Z"></path></g></svg>
+            <span class="fs-8" style="font-weight:500">Accept with Comments</span>
+          </button>
+          <button (click)="rejectpros()" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
+            <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="stroke: currentColor; stroke-width: 3px; stroke-linecap: butt;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="cross"> <line class="cls-1" x1="7" x2="25" y1="7" y2="25"></line> <line class="cls-1" x1="7" x2="25" y1="25" y2="7"></line> </g> </g></svg>
+            <span class="fs-8" style="font-weight:500">Reject</span>
+          </button>
+      </div>
+      <span class="fs-6 text-muted font-weight-bold">{{selectedItems.length}} selected</span>
+    </div>
+
+
+
+
+
       <div class="not-title">
         <h5 id="titlepro" style="display: block;">Project approvals</h5>
         <h5 id="titleinfo" style="display: none;">Information</h5>
@@ -2498,5 +2524,142 @@
 
 
 <!--new leave_requisition_form_slider_bar  end-->
+
+
+
+
+<!--accept approvals with comment sidebar start-->
+
+
+<div id="acceptbar" class="sideInfobar animate-right">
+  <div class="kt-portlet mb-0">
+    <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
+      <h4 class="m-0">Accept projects</h4>
+      <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeInfo()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+          <path fill="none" d="M0 0h24v24H0z"></path>
+          <path
+            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+          </path>
+        </svg>
+      </a>
+    </div>
+    <div class="kt-portlet__body sidehf_scroll scroll-y mb-0">
+      <div class="pb-1">
+        <div class="card-body card-car px-1 py-4">
+
+          <div class="card card-mid flex-1">
+            <div class="card-header">
+              <h5 clas="card-title"> {{selectedItems.length}} Projects selected</h5>
+            </div>
+            <div class="card-body p-0">
+              <div class=" cus-scroll scroll-y">
+                <div class="meetdt" *ngFor="let item of selectedItems">
+                  <div id="" class="eve-area">
+                    <div class="">
+                      <div class="event-main">
+                        <span class="event-color event-color--info"></span>
+                        <span class="event-title mr-2">
+                          <a href="javascript:;">{{item.Project_Name}}</a>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="btm-des">
+                      <div class="ml-4 mr-2 status-d">
+                        <h6 *ngIf="item.Status!='Delay'" [ngClass]="{
+                                                        'text-success mb-0':item.Status=='Completed',
+                                                        'text-warning mb-0':item.Status=='InProcess',
+                                                        'text-primary mb-0':item.Status=='Under Approval',
+                                                        'text-info mb-0':item.Status=='Completion Under Approval',
+                                                        'text-Rejected mb-0':item.Status=='New Project Rejected',
+                                                        'text-underApproval mb-0':item.Status=='Enactive Under Approval',
+                                                        'text-underApproval mb-0':item.Status=='Forward Under Approval',
+                                                        'text-underApp mb-0':item.Status=='New Project',
+                                                        'text-completed mb-0':item.Status=='Completion Under Approval',
+                                                        'text-completeRejected mb-0':item.Status=='Project Complete Rejected',
+                                                        'text-Todo mb-0':item.Status=='ToDo Completed'}"
+                          data-toggle="tooltip" title="Project Status!">
+                      {{item.Status=='Under Approval'?'New approval':item.Status=='Enactive Under Approval'?'Enactive approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
+                        </h6>
+                        <h6 class=" text-danger mb-0" data-toggle="tooltip" title="Project Status!"
+                          *ngIf="item.Status=='Delay'">
+                          {{item.Status==='Under Approval'?'New Approval':item.Status}}
+                          {{item.Delaydays}} days
+                        </h6>
+                      </div>
+
+                      <span class="mr-2 showv">|</span>
+                      <div class="ml-1 mr-2 status-d">
+                        <h6 [ngClass]="{
+                                                    'Done mb-0':item.Req_Type=='Project Complete' ||  item.Req_Type=='Task Complete'
+                                                    || item.Req_Type=='StandardTask Completed' || item.Req_Type=='Approved Project',
+                                                    'text-primary mb-0':item.Req_Type=='Project Forward' || item.Req_Type=='RACIS change' || item.Req_Type=='New Action' || item.Req_Type=='Revert Back',
+                                                    'text-info mb-0':item.Req_Type=='New Project' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
+                                                    || item.Req_Type=='ToDo Achieved',
+                                                    'text-danger mb-0':item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
+                                                    || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive'
+                                                    }" data-toggle="tooltip" title="Request type">
+                          {{item.Req_Type=="New Project"?"New approval":item.Req_Type}}
+                        </h6>
+                      </div>
+                      <span class="mr-2 showv">|</span>
+                      <div class="">
+                        <span class="showv mr-2 text-muted">
+                          <i class="far fa-calendar-alt mr-1"></i>
+                          {{item.DPG | date:'dd/MM/yyyy'}} - {{item.DeadLine | date:'dd/MM/yyyy'}}
+                        </span>
+                      </div>
+                      <span class="mr-2 showv">|</span>
+                      <div class="">
+                        <span class="showv mr-2 text-muted">
+                          <i class="far fa-user mr-1"></i>
+                          {{item.Responsible}}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="">
+        <div class="card-body py-2 px-1">
+          <div class="crd-hdr">
+          </div>
+          <div class="col-md-12 checked-rad pl-1 pt-3">
+            <div class="form-group">
+              <label class="mb-2">Enter comments</label><span style="color:red">*</span>
+              <textarea class="form-control h-100px" [(ngModel)]="approverComments" [ngClass]="{'error-border':(!approverComments||!approverComments.trim())&&notProvided}"   placeholder="Enter your comments here."></textarea>
+              <span *ngIf="(!approverComments||!approverComments.trim())&&notProvided" style="color:red;">comments required.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="kt-portlet__foot py-3 d-flex justify-content-end gap-1">
+      <button class="btn btn-secondary mr-2" (click)="closeInfo()">Close</button>
+      <button type="submit" class="btn btn-info" (click)="submitAprvlsWithCmts()">Submit</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--accept approvals with comment sidebar end-->
 
 

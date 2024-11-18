@@ -1524,7 +1524,7 @@ Prj_Code:any;
             this.forwardto = (this.revert_json[0]['Forwardedto']);
             this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
           }
-          if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
+          if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved'||this.requestType == 'Project Audit') {
             this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
             this.completedoc = (this.complete_List[0]['Sourcefile']);
             this.iscloud = (this.complete_List[0]['IsCloud']);

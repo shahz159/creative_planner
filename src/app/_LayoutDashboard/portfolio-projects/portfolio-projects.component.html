@@ -3009,37 +3009,42 @@
               <div class="d-flex justify-content-between align-items-center  m-2 tabs-iconic">
 
                 <ul class="nav nav-tabs tabs-list mb-0 border-0 d-flex py-1 px-1">
-                      <li class="nav-item">
-                          <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab"
-                              href="#upcoming_meetings_tabpanel"><span class="lbl-hdn">upcoming </span><span
+                    <li class="nav-item">
+                        <!-- data-toggle="tab"  href="#upcoming_meetings_tabpanel"   -->
+                          <a class="btn icon-btn icn-hvr fav-btn"  [ngClass]="{'active':mtg_section=='UPCOMING'}"  (click)="toggleMtgsSection('UPCOMING');"
+                             ><span class="lbl-hdn">upcoming </span><span
                                   class="total-meeting-count" *ngIf="upcMtgCnt">{{upcMtgCnt}}</span></a>
                       </li>
                       <li class="nav-item">
-                          <a class="btn icon-btn icn-hvr fav-btn active" data-toggle="tab"
-                              href="#today_meetings_tabpanel"><span class="lbl-hdn"> Today
+                        <!-- data-toggle="tab"  href="#today_meetings_tabpanel" -->
+                          <a class="btn icon-btn icn-hvr fav-btn"  [ngClass]="{'active':mtg_section=='TODAY'}"   (click)="toggleMtgsSection('TODAY');"
+                              ><span class="lbl-hdn"> Today
                               </span><span class="total-meeting-count" *ngIf="tdMtgCnt">{{tdMtgCnt}}</span></a>
                       </li>
                       <li class="nav-item">
-                          <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab"
-                              href="#last_7_days_meetings_tabpanel"><span class="lbl-hdn"> last
+                        <!-- data-toggle="tab" href="#last_7_days_meetings_tabpanel" -->
+                          <a class="btn icon-btn icn-hvr fav-btn" [ngClass]="{'active':mtg_section=='LAST7DAYS'}" (click)="toggleMtgsSection('LAST7DAYS');"
+                              ><span class="lbl-hdn"> last
                                   7 days </span><span class="total-meeting-count"
                                   *ngIf="lst7dCnt">{{lst7dCnt}}</span></a>
                       </li>
                       <li class="nav-item">
-                          <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab"
-                              href="#last_month_meetings_tabpanel"><span class="lbl-hdn"> last
+                        <!-- data-toggle="tab"   href="#last_month_meetings_tabpanel" -->
+                          <a class="btn icon-btn icn-hvr fav-btn"  [ngClass]="{'active':mtg_section=='LASTMONTH'}"  (click)="toggleMtgsSection('LASTMONTH'); "
+                             ><span class="lbl-hdn"> last
                                   month </span><span class="total-meeting-count"
                                   *ngIf="lstMthCnt">{{lstMthCnt}}</span></a>
                       </li>
                       <li class="nav-item">
-                          <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab"
-                              href="#older_meetings_tabpanel"><span class="lbl-hdn"> older
+                        <!-- data-toggle="tab" href="#older_meetings_tabpanel" -->
+                          <a class="btn icon-btn icn-hvr fav-btn"   [ngClass]="{'active':mtg_section=='OLDER'}"  (click)="toggleMtgsSection('OLDER');"
+                              ><span class="lbl-hdn"> older
                               </span><span class="total-meeting-count" *ngIf="oldMtgCnt">{{oldMtgCnt}}</span></a>
                       </li>
+
                       <li class="nav-item dropdown-toggle icv-tog" data-toggle="dropdown" aria-haspopup="true"
                           aria-expanded="false">
-                          <a class="btn icon-btn icn-hvr fav-btn" data-toggle="tab"
-                              href="#custom_meetings_tabpanel"><span class="lbl-hdn"> custom </span></a>
+                          <a class="btn icon-btn icn-hvr fav-btn"  [ngClass]="{'active':mtg_section=='CUSTOM'}"   (click)="toggleMtgsSection('CUSTOM');"><span class="lbl-hdn"> custom </span></a>
                           <div class="dropdown-menu pt-1 mt-2 dropdown_left_fix">
                               <div class="px-2 pt-0  d-inline-block" id="range-picker_header">
                                   <div (click)="$event.stopPropagation();">
@@ -3151,7 +3156,7 @@
                     </ng-container>
                     <ng-template #gotmtgResult>
 
-                        <div class="tab-pane fade curser-pointer" title="click to open meeting notes"    id="upcoming_meetings_tabpanel" role="tabpanel"
+                        <div [ngClass]="{'show active':mtg_section=='UPCOMING'}" class="tab-pane fade curser-pointer" title="click to open meeting notes"    id="upcoming_meetings_tabpanel" role="tabpanel"
                             aria-labelledby="upcoming_meetings_tabpanel">
 
                             <ng-container
@@ -3345,7 +3350,7 @@
                         </div>
 
 
-                        <div class="tab-pane fade curser-pointer   active show" title="click to open meeting notes"  id="today_meetings_tabpanel" role="tabpanel"
+                        <div [ngClass]="{'show active':mtg_section=='TODAY'}" class="tab-pane fade curser-pointer   active show" title="click to open meeting notes"  id="today_meetings_tabpanel" role="tabpanel"
                             aria-labelledby="today_meetings_tabpanel">
 
                             <ng-container *ngIf="todaymeetings&&todaymeetings.length>0;else no_meetings_Present">
@@ -3560,7 +3565,7 @@
                         </div>
 
 
-                        <div class="tab-pane fade curser-pointer " title="click to open meeting notes"    id="last_7_days_meetings_tabpanel" role="tabpanel"
+                        <div  [ngClass]="{'show active':mtg_section=='LAST7DAYS'}" class="tab-pane fade curser-pointer " title="click to open meeting notes"    id="last_7_days_meetings_tabpanel" role="tabpanel"
                         aria-labelledby="last_7_days_meetings_tabpanel">
 
                         <ng-container *ngIf="last7dmeetings&&last7dmeetings.length>0; else no_meetings_Present">
@@ -3809,7 +3814,7 @@
                     </div>
 
 
-                        <div class="tab-pane fade curser-pointer "  title="click to open meeting notes"    id="last_month_meetings_tabpanel" role="tabpanel"
+                        <div [ngClass]="{'show active':mtg_section=='LASTMONTH'}" class="tab-pane fade curser-pointer "  title="click to open meeting notes"    id="last_month_meetings_tabpanel" role="tabpanel"
                             aria-labelledby="last_month_meetings_tabpanel">
                             <ng-container *ngIf="lastMonthMeetings&&lastMonthMeetings.length>0; else no_meetings_Present">
                                 <ng-container *ngFor="let lmmeetings of lastMonthMeetings;let i=index">
@@ -3990,7 +3995,7 @@
                             </ng-container>
                         </div>
 
-                        <div class="tab-pane fade curser-pointer " title="click to open meeting notes"  id="older_meetings_tabpanel" role="tabpanel"
+                        <div [ngClass]="{'show active':mtg_section=='OLDER'}" class="tab-pane fade curser-pointer " title="click to open meeting notes"  id="older_meetings_tabpanel" role="tabpanel"
                             aria-labelledby="older_meetings_tabpanel">
                             <ng-container *ngIf="olderMeetings&&olderMeetings.length>0; else no_meetings_Present">
 
@@ -4213,7 +4218,7 @@
 
                         </div>
 
-                        <div class="tab-pane fade curser-pointer " title="click to open meeting notes"   id="custom_meetings_tabpanel" role="tabpanel"
+                        <div  [ngClass]="{'show active':mtg_section=='CUSTOM'}"  class="tab-pane fade curser-pointer " title="click to open meeting notes"   id="custom_meetings_tabpanel" role="tabpanel"
                             aria-labelledby="custom_meetings_tabpanel">
 
                             <!-- <div class="px-3 pt-3  d-inline-block"  id="range-picker_header">
@@ -5208,7 +5213,7 @@
       </div>
       <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
           <li *ngFor="let prj of projectsSelected">
-             <div class="schedule-select-list-item">
+             <div class="schedule-select-list-item curser-pointer" (click)="newDetails(prj.Project_Code)">
               <span class="schedule-select-list-title">{{prj.Project_Name}}</span>
               <span (click)="discardChoosedItem('PROJECT',prj.Project_Code)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
              </div>
@@ -5236,7 +5241,7 @@
 
     <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
       <li *ngFor="let prtfid of Portfolio">
-         <div class="schedule-select-list-item">
+         <div class="schedule-select-list-item curser-pointer" (click)="OnCardClick(prtfid)">
           <span class="schedule-select-list-title">{{getObjOf(Portfoliolist_1,prtfid,'portfolio_id').Portfolio_Name}}</span>
           <span (click)="discardChoosedItem('PORTFOLIO',prtfid)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
          </div>
@@ -6452,7 +6457,6 @@
                                           </tr>
                                       </tbody>
                                   </table>
-
                                   <a class="resetbtn">Clear date-range</a>
                               </div>
                           </div>
@@ -6494,24 +6498,13 @@
               <div class="form-group mb-0" *ngIf=" copyTask==true || create==true ">
                   <button type="submit" class="btn btn-info w-110 ml-2"
                       (click)="onSubmitBtnClicked()">Submit</button>
-
-
                   <button *ngIf="draftid==0" (click)="Insert_indraft()"  type="cancel" class="btn btn-dull ml-3"
                       >Save draft</button>
-
                   <button type="cancel" class="btn btn-secondary ml-3" (click)="meetingsViewOn=true; closeschd();">Close</button>
-
               </div>
           </div>
-
       </div>
-
-
-
-
-
   </ng-template>
-
   </div>
 
   <div id="User_list_View" class="sideInfobar animate-right bg-slide-br">

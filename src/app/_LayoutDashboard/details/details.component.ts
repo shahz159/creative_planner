@@ -1064,8 +1064,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                   this.pendingActns4Aprvls.push({ name:actn.Responsible, empno:actn.Team_Res, totalApprovals:1   });
             }
 
-debugger
-            if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno===actn.Team_Res)){
+debugger    
+            if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno!=actn.Team_Res)){
               this.actionsAssignedByMe+=1;
             }
 
@@ -2383,8 +2383,8 @@ multipleback(){
           this.newResponsible = (this.revert_json[0]['newResp']);
           this.forwardto = (this.revert_json[0]['Forwardedto']);
           this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
-        }
-        if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
+        }  debugger
+        if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved'||this.requestType == 'Project Audit') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
             this.completedoc = (this.complete_List[0]['Sourcefile']);
@@ -4912,8 +4912,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
     //
 
 
-
-
     this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
     this.ObjSubTaskDTO.startdate = null;
     this.ObjSubTaskDTO.enddate = null;
@@ -4964,7 +4962,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
         this.last7dmeetings = this.groupMeetingsByDate(this.last7dmeetings);
         console.log (this.last7dmeetings,"last7dmeetings")                        // format them.
 
-
         const date1 = new Date();                 // currentdate.
         date1.setMonth(date1.getMonth() - 1);    // date1 is prev month.
         this.meeting_arry.forEach(m => {
@@ -4976,26 +4973,25 @@ $('#acts-attachments-tab-btn').removeClass('active');
           else if (!(sd.getTime() > date1.getTime())) {   // when meeting held date is even order than last months
             this.olderMeetings.push(m);
           }
-
-
-
         });
-
         this.lstMthCnt = this.lastMonthMeetings.length;
         this.oldMtgCnt = this.olderMeetings.length;
-
         this.lastMonthMeetings = this.groupMeetingsByDate(this.lastMonthMeetings);      // format them.
         console.log(this.lastMonthMeetings,"this.lastMonthMeetings")
         this.olderMeetings = this.groupMeetingsByDate(this.olderMeetings);
         console.log(this.olderMeetings,"olderrr meetings")    // format them.
-
         this.isLoadingData=false;
 
+        if(this.upcomingMeetings.length>0 && this.todaymeetings.length>0){
+         this.mtg_section='TODAY';
+        }else if (this.upcomingMeetings.length>0){
+          this.mtg_section='UPCOMING';
+        }
 
-
+        
       // by default today section is opened, below line set the first meeting to open if present.
       setTimeout(()=>{
-         this.toggleMtgsSection('TODAY');
+         this.toggleMtgsSection(this.mtg_section);
       },1000);
       // by default today section is opened, below line set the first meeting to open if present.
 
@@ -7809,21 +7805,15 @@ if(['001','002'].includes(this.projectInfo.Project_Block)){
        });
      }
      else{  // when sortby is 'Assigned By me'
-
         arr=arr.filter((action)=>{
-
-              return action.AssignedbyEmpno.trim()===this.Current_user_ID;
-
+              return (action.AssignedbyEmpno.trim()==this.Current_user_ID&&action.AssignedbyEmpno!=action.Team_Res);
         });
-
      }
     }
 
     if(filterby!=='All'){
       arr=arr.filter((action)=>{
-
          return action.Status===filterby;
-
        })
 
     }
@@ -8749,15 +8739,11 @@ Insert_indraft() {
   else
     _attachmentValue = 0;
 
-    
     frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
     frmData.append("CreatedBy", this.Current_user_ID.toString());
     frmData.append("RemovedFile_id", this._calenderDto.file_ids='');
-    
-  
     const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
     this._calenderDto.DraftAgendas=mtgAgendas;
-
 
 
   this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
@@ -10274,7 +10260,8 @@ onChangeAuditorBtnClicked(){
 
 openRemoveSADialog(index:number,removalType:'SUPPORT'|'AUDITOR'){
   if(this.p_index>-1){
-    this.closeRemoveSADialog(this.p_index);
+    const pindex=this.p_index;
+    this.closeRemoveSADialog(pindex);
   }   // closing opened dialog if present.
 
   this.p_index=index;
@@ -10292,6 +10279,10 @@ closeRemoveSADialog(index:number){
   this.typeUserRemove=undefined;
   this.p_index=-1;
 }
+
+
+
+
 
 
 onSARemoveSubmit(){
@@ -11112,11 +11103,24 @@ getFormattedDuration(totalDuration: number): string {
 
 
 
+  newDetails(ProjectCode) {
+    let name: string = 'Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${ProjectCode}`;
+    var myWindow = window.open(myurl, ProjectCode);
+    myWindow.focus();
+  }
 
 
 
-
-
+  OnCardClick(P_id: any) {
+    sessionStorage.setItem('portfolioId', P_id);
+    let name: string = 'portfolioprojects';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${P_id}`;
+    var myWindow = window.open(myurl, P_id);
+    myWindow.focus();
+  }
 
 }
 

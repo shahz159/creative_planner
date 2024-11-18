@@ -8949,11 +8949,11 @@ span.time-value {
 
 
 .audit-pending-notf {
-  background-color: #9c27b017;
+  background-color: #cafacc;
 }
 
 .audit-pending-notf .notif-msg {
-  color: #9C27B0;
+  color: #204d22;
   display: flex;
   flex-direction: column;
 }
@@ -8966,6 +8966,22 @@ span.time-value {
   display: flex;
   flex-direction: column;
 }
+
+
+
+.transfer-ownership-notf{
+  background-color: #faddff;
+}
+.transfer-ownership-notf .notif-msg {
+  color: #9c27b0;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+
 
 
 

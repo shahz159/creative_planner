@@ -128,6 +128,8 @@ export class ActionToProjectComponent implements OnInit {
   nonRacis:any = [];
   allUsers:any=[];
 
+  actionCost:any;
+
   constructor(
     public notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
@@ -477,8 +479,6 @@ debugger
 
 
 
-
-
   OnSubmit() {
 
 
@@ -486,8 +486,6 @@ debugger
       this._projcode = true;
       // return false;
     }else this._projcode=false;
-
-
 
 
     if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
@@ -552,8 +550,23 @@ return
 
 
 
-   const continueNext=()=>{
-debugger
+   const continueNext=async()=>{
+
+   // Action cost calculate.
+    this.actionCost=null;  // must be empty before calculating.
+    const res:any=await this.service.GetCPProjectCost(this.selectedEmpNo,this._allocated.toString()).toPromise();
+    if(res&&res.Status){
+          this.actionCost=res.Data;
+          console.log("action cost:",this.actionCost);
+    }
+    else{
+      this.notifyService.showError('','Internal server error');
+      console.error('Unable to get action cost value.')
+      return;
+    } 
+  // Action cost calculate.
+    
+    
     if(this.owner==null || this.owner==undefined || this.owner==''){
       this.owner=this.Owner_Empno;
     }
@@ -572,7 +585,7 @@ debugger
     // console.log(this.owner,"selected owner")
 
     this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
-
+debugger
       this.Sub_ProjectCode = data['SubTask_ProjectCode'];
       this.EmpNo_Autho = data['Team_Autho'];
       this.ProjectBlock = data['ProjectBlock'];
@@ -637,6 +650,7 @@ debugger
       fd.append("AssignId", this.task_id.toString());
       fd.append("Owner", this.owner);
       fd.append("isattachment",this.completionattachment.toString());
+      fd.append("actionCost",this.actionCost);
 
       if (this.ObjSubTaskDTO.Duration != null) {
         fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
@@ -700,11 +714,8 @@ debugger
           this.closeInfo();
         }
         else if(this._Urlid == 5){
-
-
           this.createproject.getActionsDetails();
-          this.createproject.newProjectDetails(this._MasterCode);
-
+          this.createproject.newProjectDetails(this._MasterCode); 
           this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
           this.closeInfo();
         }
@@ -723,9 +734,6 @@ debugger
       });
 
 
-
-
-
       });
 
 
@@ -737,7 +745,7 @@ debugger
 
 
     if(this._Urlid == 5 && this.allocatedHour>0){
-      debugger
+    
       // only in project creation page.
          const exceeds:boolean=this.createproject.hasExceededTotalAllocatedHr(this._allocated);
          if(exceeds)
@@ -926,6 +934,7 @@ debugger
     this._inputAttachments2 = [];
     this.selectedEmpNo = '';
     this.selected_Employee = [];
+    this.actionCost=null;
 
 
     if((<HTMLInputElement>document.getElementById("uploadFile")))
@@ -1100,15 +1109,35 @@ isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
 
 sameDateActions:boolean=false;
 hasSameDateActions(){
-debugger
   const result:boolean=this.actionCount.some((item:any)=>{
-    debugger
              const d1=moment(item.DeadLine).format("MM/DD/YYYY");
              const d2=moment(this._EndDate).format("MM/DD/YYYY");
              return (d1==d2&&item.count>3);
   });
   this.sameDateActions=result;
 }
+
+
+
+
+// action cost start.
+
+
+// getActionCost(userId:string,allocatedhr:string){
+//   this.actionCost=null;
+
+//   const empno=userId;
+//   const allcHr=allocatedhr;
+//   this.service.GetCPProjectCost(empno,allcHr).subscribe((res:{Status:boolean,Message:string,Data:number})=>{
+//       if(res.Status){
+//          this.actionCost=res.Data;
+//          console.log("action cost:",this.actionCost);
+//       }
+//   });
+// }
+
+// action cost end.
+
 
 
 

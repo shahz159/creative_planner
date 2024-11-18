@@ -751,7 +751,6 @@ submitDar() {
   }
 
   newDetails(pcode) {
-    debugger
     let name: string = 'Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
@@ -761,7 +760,6 @@ submitDar() {
 
 
   newDetailsaction(pcode,acode:string|undefined) {
-    debugger
 let qparams='';
     if(acode!==undefined){
       qparams=`?actionCode=${acode}`;
@@ -827,16 +825,14 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
       if(of==='PROJECT'){
         this.p_details=null;
         this.a_details=null;
+        this.p_loading=true;
       }
       else{
         this.a_details=null;
+        this.a_loading=true;
       }
-
-      if(of=='PROJECT')
-      this.p_loading=true;
-      else if(of=='ACTION')
-      this.a_loading=true;
- 
+      
+      
       this.service.NewSubTaskDetailsService(prjcode).subscribe((res:any)=>{
       
                  console.log("|||=>",res[0].ProjectStates_Json);
@@ -845,7 +841,7 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
                   this.p_details=JSON.parse(res[0].ProjectStates_Json)[0];
                   this.p_details.project_type=JSON.parse(res[0].ProjectName_Json)[0].Project_Type;
                   this.projectMoreDetailsService.getProjectTimeLine(prjcode, '1', this.Current_user_ID).subscribe((res: any) => { 
-                      this.p_loading=false;
+                    
                       const tlTotalHrs:number = +JSON.parse(res[0].Totalhours);    
                       const remainingHrs:number=+((this.p_details.AllocatedHours-tlTotalHrs).toFixed(1));
                       this.p_details={
@@ -854,13 +850,13 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
                         remainingHours:remainingHrs<0?0:remainingHrs,
                         extraHours:remainingHrs<0?(Math.abs(remainingHrs)):0
                       };
+                      this.p_loading=false;     console.log('p_loading:',this.p_details);
                   });
 
                  }
                  else{
                   this.a_details=JSON.parse(res[0].ProjectStates_Json)[0];
                   this.service.DARGraphCalculations_Json(prjcode).subscribe((res:any)=>{
-                    this.a_loading=false; 
                     const actionAlhrs = (res[0]['ProjectMaxDuration']);  // action planned allocated hrs.
                     const usedhrs = (res[0]['TotalHoursUsedInDAR']);  // my timeline hrs on the action.
                     const remainingHrs:number=+((actionAlhrs-usedhrs).toFixed(1));
@@ -870,7 +866,8 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
                         remainingHours:remainingHrs<0?0:remainingHrs,
                         extraHours:remainingHrs<0?(Math.abs(remainingHrs)):0
                     }
-                           
+                    this.a_loading=false;
+                              console.log('a_loading:',this.a_details);
                    });
                  }
       });
@@ -1346,7 +1343,7 @@ getDayReportSummary(){
                this.daySummaryReport=JSON.parse(res.EmployeeReport)[0];
               console.log("daySummaryReport:",this.daySummaryReport);
               this.dueTodayTasksCount=[];
-              ['ActionsDueToday','ProjectsDueToday','AssignedTasksDue'].forEach((dkey)=>{
+              ['ActionsDueToday','ProjectsDueToday','StandardDueToday'].forEach((dkey)=>{
                 if(this.daySummaryReport[dkey]>0){
                       const ob={ taskType:dkey, count:this.daySummaryReport[dkey] };
                       this.dueTodayTasksCount.push(ob);
