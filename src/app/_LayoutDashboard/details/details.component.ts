@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectMoreDetailsService } from '../../_Services/project-more-details.service';
@@ -116,6 +116,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   totalActionsWith0hrs:number=0;
   totalSelfAssignedActns:number=0;
   totalPActns4Aprvls:number=0;
+  actionsAssignedByMe:number=0;
 
 
   TOTAL_ACTIONS_IN_PROCESS: number = 0;
@@ -184,6 +185,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   actionresponsible_dropdown:any;
   isNewOwnerOk:boolean=false;
   pageContentType:'PROJECT_DETAILS'|'ACTION_DETAILS'='PROJECT_DETAILS';  // which content the page is display project or action. by default project.
+  noActvySinceCreation:boolean=false;
+  noActvy4NDays:number=-1;
+
+
+
+
 
   @ViewChild('auto') autoComplete: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autoCompleteTrigger: MatAutocompleteTrigger;
@@ -205,6 +212,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     public datepipe: DatePipe,
     private CalenderService: CalenderService,
     private createProjectService:CreateprojectService,
+    public cdr:ChangeDetectorRef
 
   ) {
 
@@ -271,6 +279,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     // this.GetProjectAndsubtashDrpforCalender()
 
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
+    this.DisablePrevious.setDate(this.DisablePrevious.getDate());
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
@@ -1046,7 +1055,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
               this.selfAssignedActns.push({name:actn.Responsible, selfactns:1,empno:actn.Team_Res});
             }
 
-
             if(['Under Approval','Forward Under Approval'].includes(actn.Status)){
 
                   const temp=this.pendingActns4Aprvls.find(item=>item.empno==actn.Team_Res);
@@ -1056,6 +1064,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                   this.pendingActns4Aprvls.push({ name:actn.Responsible, empno:actn.Team_Res, totalApprovals:1   });
             }
 
+debugger    
+            if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno!=actn.Team_Res)){
+              this.actionsAssignedByMe+=1;
+            }
 
      });
      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
@@ -1115,6 +1127,21 @@ export class DetailsComponent implements OnInit, AfterViewInit {
        else
        this.isNewOwnerOk=true;    // popup visible
     }
+
+
+    this.detectMembersWithoutActions();  // calculate 'hasNoActionMembers';
+
+
+   // when project has no activity done even after start date.   calculation here.
+    const prjs_date=new Date(this.projectInfo.StartDate); prjs_date.setHours(0,0,0,0);
+    const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+    this.noActvySinceCreation=(['Completed','Cancelled'].includes(this.projectInfo.Status)==false&&cr_date>prjs_date&&this.projectInfo.TotalHours==0);
+    if(this.noActvySinceCreation){
+      this.noActvy4NDays=moment(cr_date).diff(prjs_date,'days');
+    }   
+    // when project has no activity done even after start date.
+
+
 
 
 
@@ -1177,7 +1204,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   getDelayText(action: any): string {
-
+ 
     if (!action || action.Delaydays == null) return '';
 
     let delayText = '';
@@ -1192,7 +1219,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       const weeks = Math.floor(action.Delaydays / 7);
       delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
     } else {
-      delayText = action.Delaydays < 10 ? `0${action.Delaydays} days` : `${action.Delaydays} days`;
+      delayText=action.Delaydays==0?'0 days': action.Delaydays < 10 ? `0${action.Delaydays} days`:`${action.Delaydays} days`;
     }
 
     return delayText + ' delay';
@@ -1268,11 +1295,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             this.projectAuditor={empName:prj_auditor.RACIS, empNo:prj_auditor.Emp_No};
           }
 // If project has project auditor
+          
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{
+
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', '), isActive:result[0].isActive};
             console.log(this.PeopleOnProject,"sssssssss")
-            if(this.Subtask_Res_List){
+            if(this.Subtask_Res_List){  
               const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
               if(p){
                   obj.contribution=p.RespDuration;
@@ -1302,6 +1331,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 // sorting people based on active or inactive
 
 
+          this.detectMembersWithoutActions();  // calculate 'hasNoActionMembers';
         }
       });
 
@@ -1508,20 +1538,17 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   showActionDetails(index: number | undefined) {
-    this.currentActionView = index;
-    if(index!=undefined){
-      this.requestType = null;
-    }
-
-    if(index!=undefined)
-    this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
-
+     this.currentActionView = index;
+  
     if (index>-1 && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval"||this.projectActionInfo[index].Status === "Cancellation Under Approval"))
       this.GetApproval(this.projectActionInfo[index].Project_Code);
 
     if(index!=undefined){
+      this.requestType = null;
+      this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
+
       this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
-      $(document).ready(() =>this.drawStatistics1(this.projectActionInfo[index].Project_Code));
+      $(document).ready(() =>this.getDarInfoOfAction(index));
 
        if(this.projectActionInfo[this.currentActionView].Status=='New Project Rejected'){
          this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
@@ -1580,69 +1607,91 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   BarChartOfAction:any;
-  drawStatistics1(actionCode:string) {
+  noActvyOnActnSinceCreation:boolean=false;
+  noActnActvy4NDays:number=0;
 
+  getDarInfoOfAction(index) {
+    const actionCode:string=this.projectActionInfo[index].Project_Code;
     this.service.DARGraphCalculations_Json(actionCode)
       .subscribe(data1 => {
         console.log("drawstatistics data1:",data1)
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
         this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
         // this.RemainingHours = (data1[0]['RemainingHours']);
+        
+        // when action has no activity done even after start date.   calculation here.
+          const actn_sdate=new Date(this.projectActionInfo[index].StartDate); actn_sdate.setHours(0,0,0,0);
+          const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+          this.noActvyOnActnSinceCreation=(['Completed','Cancelled'].includes(this.projectActionInfo[index].Status)==false&&cr_date>actn_sdate&&this.UsedInDAR==0);
+          if(this.noActvyOnActnSinceCreation){
+            this.noActnActvy4NDays=moment(cr_date).diff(actn_sdate,'days');
+          }   
+        // when action has no activity done even after start date.
+        
 
-            // new code
 
-            var options = {
-              series: [{
-                data: [
-                  this.maxDuration,
-                  this.UsedInDAR,
-                  this.maxDuration-this.UsedInDAR
-                  ]
-              }],
-              chart: {
-                type: 'bar',
-                height: 350
-              },
-              plotOptions: {
-                bar: {
-                  distributed: true,
-                  horizontal: false,
-                  columnWidth: '55%',
-                }
-              },
-              dataLabels: {
-                enabled: true,
-                style:{
-                  colors:['#3a81c9','#3e6be0','#303031'],
-                  fontFamily:'Lucida Sans Unicode'
-                },
-                formatter: function (v) {
-                  return v + ' hrs';
-                }
-              },
-              yaxis: {
-                title: {
-                  text: ''
-                },
-                labels: {}
-              },
-              xaxis: {
-                categories: ['Allocated', 'Used', 'Remaining'],
-                labels: {
-                  rotate: -90
-                }
-              },
-              colors:['#7dbeff', '#7da1ff',(this.maxDuration-this.UsedInDAR)<0?'#757575':'#dbe1e4']
+      // draw action bar chart.
+        this.drawActionBarChart(); 
+     });
+          
 
-            };
+  }
 
-            if (this.prjBARCHART)
-              this.prjBARCHART.destroy();
-            this.prjBARCHART = new ApexCharts(document.querySelector("#chart-container1"), options);
-            this.prjBARCHART.render();
-            // new code
-            });
+ 
 
+
+  drawActionBarChart(){
+    var options = {
+      series: [{
+        data: [
+          this.maxDuration,
+          this.UsedInDAR,
+          this.maxDuration-this.UsedInDAR
+          ]
+      }],
+      chart: {
+        type: 'bar',
+        height: 350
+      },
+      plotOptions: {
+        bar: {
+          distributed: true,
+          horizontal: false,
+          columnWidth: '55%',
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        style:{
+          colors:['#3a81c9','#3e6be0','#303031'],
+          fontFamily:'Lucida Sans Unicode'
+        },
+        formatter: function (v) {
+          return v + ' hrs';
+        }
+      },
+      yaxis: {
+        title: {
+          text: ''
+        },
+        labels: {}
+      },
+      xaxis: {
+        categories: ['Allocated', 'Used', 'Remaining'],
+        labels: {
+          rotate: -90
+        }
+      },
+      colors:['#7dbeff', '#7da1ff',(this.maxDuration-this.UsedInDAR)<0?'#757575':'#dbe1e4']
+
+    };
+
+    if (this.prjBARCHART)
+      this.prjBARCHART.destroy();
+    this.prjBARCHART = new ApexCharts(document.querySelector("#chart-container1"), options);
+    this.prjBARCHART.render();
+    // new code
+    
   }
 
 
@@ -2273,7 +2322,7 @@ multipleback(){
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.approvalsFetching=false;    // fetched approvals or processing end.
       this.requestDetails = data as [];
-      console.log(this.requestDetails, "approvals");
+      console.log(this.requestDetails, "approvals");  debugger
       if (this.requestDetails.length > 0) {
         this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
         this.requestType = (this.requestDetails[0]['Request_type']);
@@ -2334,8 +2383,8 @@ multipleback(){
           this.newResponsible = (this.revert_json[0]['newResp']);
           this.forwardto = (this.revert_json[0]['Forwardedto']);
           this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
-        }
-        if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
+        }  debugger
+        if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved'||this.requestType == 'Project Audit') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
             this.completedoc = (this.complete_List[0]['Sourcefile']);
@@ -3155,6 +3204,7 @@ approvalSubmitting:boolean=false;
   dateF = new FormControl(new Date());
   todayDate = new Date();
   disablePreviousDate = new Date();
+  DisablePrevious = new Date();
   starttime: any=null;
   timedata: any = [];
   timedata1: any;
@@ -3214,12 +3264,13 @@ approvalSubmitting:boolean=false;
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
         this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
         this.darArr = JSON.parse(data[0]['Json_ResponsibleInProcess']);
+        this.darArr=this.darArr.filter(acn=>['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(acn.SubProject_Status.trim())==false);
         this.Subtask_Res_List=JSON.parse(data[0]['SubTaskResponsibe_Json']);
         this.totalSubtaskHours = (data[0]['SubtaskHours']);
         console.log('Subtask_Res_List:',this.Subtask_Res_List);
         console.log('totalSubtaskHours:',this.totalSubtaskHours);
 
-        console.log('darArr:', this.Category_List);
+        console.log('darArr:', this.darArr);
 try{
         if (this.darArr.length == 0 && (this.projectInfo.OwnerEmpNo == this.Current_user_ID || this.projectInfo.ResponsibleEmpNo == this.Current_user_ID)) {
 // user is prj owner
@@ -4861,8 +4912,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
     //
 
 
-
-
     this.ObjSubTaskDTO.Project_Code = this.URL_ProjectCode;
     this.ObjSubTaskDTO.startdate = null;
     this.ObjSubTaskDTO.enddate = null;
@@ -4913,7 +4962,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
         this.last7dmeetings = this.groupMeetingsByDate(this.last7dmeetings);
         console.log (this.last7dmeetings,"last7dmeetings")                        // format them.
 
-
         const date1 = new Date();                 // currentdate.
         date1.setMonth(date1.getMonth() - 1);    // date1 is prev month.
         this.meeting_arry.forEach(m => {
@@ -4925,26 +4973,25 @@ $('#acts-attachments-tab-btn').removeClass('active');
           else if (!(sd.getTime() > date1.getTime())) {   // when meeting held date is even order than last months
             this.olderMeetings.push(m);
           }
-
-
-
         });
-
         this.lstMthCnt = this.lastMonthMeetings.length;
         this.oldMtgCnt = this.olderMeetings.length;
-
         this.lastMonthMeetings = this.groupMeetingsByDate(this.lastMonthMeetings);      // format them.
         console.log(this.lastMonthMeetings,"this.lastMonthMeetings")
         this.olderMeetings = this.groupMeetingsByDate(this.olderMeetings);
         console.log(this.olderMeetings,"olderrr meetings")    // format them.
-
         this.isLoadingData=false;
 
+        if(this.upcomingMeetings.length>0 && this.todaymeetings.length>0){
+         this.mtg_section='TODAY';
+        }else if (this.upcomingMeetings.length>0){
+          this.mtg_section='UPCOMING';
+        }
 
-
+        
       // by default today section is opened, below line set the first meeting to open if present.
       setTimeout(()=>{
-         this.toggleMtgsSection('TODAY');
+         this.toggleMtgsSection(this.mtg_section);
       },1000);
       // by default today section is opened, below line set the first meeting to open if present.
 
@@ -5098,6 +5145,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
   }
 
   toggleMtgsSection(sec:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'){
+    debugger
     this.mtg_section=sec;
     const bx=this.mtg_section=='UPCOMING'?'#upcoming_meetings_tabpanel div#upcoming-mtg-0-btn':
              this.mtg_section=='TODAY'?'#today_meetings_tabpanel div#today-mtg-0-btn':
@@ -5239,31 +5287,34 @@ config: AngularEditorConfig = {
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
-    placeholder: 'Enter text here...',
+    placeholder: 'Please enter description',
     translate: 'no',
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
       [
-        // 'bold',
-        // 'italic',
-        // 'underline',
+        'undo', // Hide Undo button
+        'redo', // Hide Redo button
         'strikeThrough',
         'subscript',
         'superscript',
         'indent',
         'outdent',
-        // 'insertUnorderedList',
-        // 'insertOrderedList',
+        'justifyLeft',
+        'justifyCenter',
+        'justifyRight',
+        'justifyFull',
         'heading',
-        // 'fontName'
+        'fontName',
+        // 'fontSize',
+        'textColor',
+        'backgroundColor',
+        'customClasses'
       ],
       [
         // 'fontSize',
         // 'textColor',
         // 'backgroundColor',
-        'customClasses',
-
         'unlink',
         'insertImage',
         'insertVideo',
@@ -5288,6 +5339,7 @@ config: AngularEditorConfig = {
       },
     ],
   };
+ 
   Location_Type: any;
   Addressurl: string = "";
   Locationfulladd: string;
@@ -5443,13 +5495,14 @@ Task_type(value:number){
        $('#online-add').css('display','block');
 
 
-      const es=document.getElementById('event-Sidebar');
-      es.addEventListener('scroll',()=>{
-            this.autocompletes.forEach((ac)=>{
-              if(ac.panelOpen)
-              ac.updatePosition();
-            });
-      })
+      // const es=document.getElementById('event-Sidebar');
+      // es.addEventListener('scroll',()=>{
+      //       this.autocompletes.forEach((ac)=>{
+      //         if(ac.panelOpen)
+      //         ac.updatePosition();
+      //       });
+      // })
+
 
 
                   // valid starttimearr and endtimearr setting start.
@@ -5581,7 +5634,7 @@ debugger
         this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
 
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson;
-
+        console.log(this.Attachments_ary, "Attachments_ary");
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
         this.Status1 = this.EventScheduledjson[0].Status;
@@ -6420,10 +6473,12 @@ getChangeSubtaskDetais(Project_Code) {
     this.subtask_loading=false;
     this._onlinelink=false;
     this._meetingroom=false;
-    this.Link_Details = null;
     this.subtashDrpLoading=false;
     this.loading=false;
     this.allAgendas = [];
+    this.Link_Details = null;
+    this.Meeting_Id = null;
+    this.Meeting_password = null;
 
   }
 
@@ -6499,6 +6554,11 @@ getChangeSubtaskDetais(Project_Code) {
   formatTime1(hour, minute) {
     return moment({ hour, minute }).format("hh:mm A");
   }
+
+
+
+
+
 
   OnSubmitSchedule() {
 
@@ -6676,7 +6736,7 @@ getChangeSubtaskDetais(Project_Code) {
       else
         _attachmentValue = 0;
 
-      frmData.append("EventNumber", this.EventNumber.toString());
+      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       console.log(JSON.stringify(finalarray), "finalarray")
       this._calenderDto.draftid = this.draftid;
@@ -6687,6 +6747,10 @@ getChangeSubtaskDetais(Project_Code) {
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
+
+          var Attamentdraftid= '0'
+          frmData.append("draftid", Attamentdraftid= Attamentdraftid);
+
 
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
@@ -6725,7 +6789,7 @@ getChangeSubtaskDetais(Project_Code) {
           //UploadCalendarAttachmenst
           // console.log(data, "m");
           this._Message = data['message'];
-          if (this._Message == "Updated successfully") {
+          if (this._Message == "Update successfully") {
             if (this.draftid != 0) {
               this.Getdraft_datalistmeeting();
               this.draftid = 0
@@ -7705,10 +7769,15 @@ filterConfig:{filterby:string,sortby:string}={
          sortby:'All'
 };
 onFilterConfigChanged({filterBy,sortBy}){
+  debugger
   if(filterBy&&sortBy){
     this.filterConfig.filterby=filterBy;
     this.filterConfig.sortby=sortBy;
     this.filterConfigChanged=true;
+    // if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno!=actn.Team_Res)){
+    //   this.actionsAssignedByMe+=1;
+    //            }
+
     this.filteredPrjAction=this.getFilteredPrjActions(this.filterConfig.filterby,this.filterConfig.sortby);
   }
 }
@@ -7720,7 +7789,10 @@ clearFilterConfigs(){
   this.filterConfigChanged=false;
 }
 
+
+count:any
 getFilteredPrjActions(filterby:string='All',sortby:string='All'){
+  debugger
 if(['001','002'].includes(this.projectInfo.Project_Block)){
 
   let arr=this.projectActionInfo?this.projectActionInfo:[];
@@ -7734,7 +7806,7 @@ if(['001','002'].includes(this.projectInfo.Project_Block)){
      }
      else{  // when sortby is 'Assigned By me'
         arr=arr.filter((action)=>{
-              return action.AssignedbyEmpno.trim()===this.Current_user_ID;
+              return (action.AssignedbyEmpno.trim()==this.Current_user_ID&&action.AssignedbyEmpno!=action.Team_Res);
         });
      }
     }
@@ -7743,8 +7815,10 @@ if(['001','002'].includes(this.projectInfo.Project_Block)){
       arr=arr.filter((action)=>{
          return action.Status===filterby;
        })
+
     }
   }
+
   return arr;
 
 }
@@ -7955,7 +8029,7 @@ closeNewPrjReleaseSideBar() {
 
 getRejectType() {
   this.approvalObj.Project_Code = this.URL_ProjectCode;
-  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {
+  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {  console.log('getrejecttype:',data);
     this.activity = data[0]["activity"];
     this.send_from = data[0]["sendFrom"];
     this.rejectactivity = data[0]["rejectactivity"];
@@ -8559,6 +8633,12 @@ backMainMeetings() {
   this.selectedMtgs2Link=[];  // clear selected meetings.
 }
 
+
+
+
+Attamentdraftid:any
+
+
 //  save meeting as draft start.
 Insert_indraft() {
   if (this.draftid != 0) {
@@ -8572,27 +8652,143 @@ Insert_indraft() {
   if (this.SelectDms == null) {
     this.SelectDms = [];
   }
-  this._calenderDto.Dms = this.SelectDms.map(item=>item.MailId).join(',');
+  this._calenderDto.Dms = this.SelectDms.toString();
   if (this.Portfolio == null) {
     this.Portfolio = [];
   }
-  this._calenderDto.Portfolio = this.Portfolio.map(item=>item.portfolio_id).join(',');
+
+
+  this.daysSelectedII = [];
+    const format2 = "YYYY-MM-DD";
+    var start = moment(this.minDate);
+    const _arraytext = [];
+    if (this.selectedrecuvalue == "0") {
+      const d1 = new Date(moment(start).format(format2));
+      const date = new Date(d1.getTime());
+      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+    }
+    else if (this.selectedrecuvalue == "1") {
+      this.daysSelectedII = this.AllDatesSDandED;
+    }
+    else if (this.selectedrecuvalue == "2") {
+      if (this.dayArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.dayArr.length; index++) {
+        if (this.dayArr[index].checked) {
+        
+          const day = this.dayArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+      if (this.daysSelectedII.length == 0) {
+        alert('please select valid day');
+      }
+    }
+    else if (this.selectedrecuvalue == "3") {
+      if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.MonthArr.length; index++) {
+        if (this.MonthArr[index].checked == true) {
+          const day = this.MonthArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+    }
+
+
+    debugger
+
+  this._calenderDto.Portfolio = this.Portfolio.toString();
   this._calenderDto.location = this.Location_Type;
   this._calenderDto.loc_status = this._onlinelink;
+  this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password;
+  this._calenderDto.Link_details=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+  this._calenderDto.Recurrence = this.selectedrecuvalue ;
+  this._calenderDto.Rec_values = _arraytext.toString();
+  this._calenderDto.Rec_EndDate = this._EndDate;
+
   this._calenderDto.Note = this.Description_Type;
   this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
   //  alert( this.ScheduleType);
   if (this.ngEmployeeDropdown == null) {
     this.ngEmployeeDropdown = [];
   }
-  this._calenderDto.User_list = this.ngEmployeeDropdown.map(item=>item.Emp_No).join(",");
+  this._calenderDto.User_list = this.ngEmployeeDropdown.toString();
+  
   if (this.MasterCode == null) {
     this.MasterCode = [];
   }
   this._calenderDto.Project_Code = this.MasterCode.toString();
 
+
+  let _attachmentValue = 0;
+  const frmData = new FormData();
+  for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+    frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+  }
+  if (this._lstMultipleFiales.length > 0)
+    _attachmentValue = 1;
+  else
+    _attachmentValue = 0;
+
+    frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+    frmData.append("CreatedBy", this.Current_user_ID.toString());
+    frmData.append("RemovedFile_id", this._calenderDto.file_ids='');
+    const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+    this._calenderDto.DraftAgendas=mtgAgendas;
+
+
   this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
     (data => {
+
+      this.Attamentdraftid= data['draftid']
+      frmData.append("draftid", this.Attamentdraftid);
+ 
+        if (_attachmentValue == 1) {
+          this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+            (event: HttpEvent<any>) => {
+              switch (event.type) {
+                case HttpEventType.Sent:
+                  console.log('Request has been made!');
+                  break;
+                case HttpEventType.ResponseHeader:
+                  console.log('Response header has been received!');
+                  break;
+                case HttpEventType.UploadProgress:
+                  this.progress = Math.round(event.loaded / event.total * 100);
+                  console.log(`Uploaded! ${this.progress}%`);
+                  break;
+                case HttpEventType.Response:
+                  console.log('User successfully created!', event.body);
+
+                  // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+                  
+
+                  (<HTMLInputElement>document.getElementById("customFile")).value = "";
+                  this._lstMultipleFiales = [];
+                  // empty(this._lstMultipleFiales);
+                  // alert(this._lstMultipleFiales.length);
+                  setTimeout(() => {
+                    this.progress = 0;
+                  }, 2000);
+
+                  //69 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                  //69 (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                  document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                  //69 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+              }
+            }
+          )
+        }
+
       if (data['message'] == '1') {
         // this.Getdraft_datalistmeeting();
         this.closeschd();
@@ -8605,8 +8801,6 @@ Insert_indraft() {
       //   this.notifyService.showSuccess("Draft updated", "Success");
       // }
     });
-
-
 }
 
 
@@ -9647,8 +9841,12 @@ changeScheduleType(val:number){
   }
   this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
 }
-eventRepeat:boolean = false
-OnSubmitSchedule1() { debugger
+eventRepeat:boolean = false;
+Meeting_Id:any;
+Meeting_password:any;
+
+
+OnSubmitSchedule1() { 
   if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
     this._subname1 = true;
     return false;
@@ -9722,7 +9920,7 @@ OnSubmitSchedule1() { debugger
 
   if (finalarray.length > 0) {
     finalarray.forEach(element => {
-      debugger
+    
       const date1: Date = new Date(this._StartDate);
       // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
       //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
@@ -9796,10 +9994,11 @@ OnSubmitSchedule1() { debugger
       var vLocation_url = "Addressurl";
       element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
 
+
       var vOnlinelink = "Onlinelink";
       element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
-
-
+      this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
+    
       var vLink_Details = "Link_Details";
       element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
 
@@ -9864,8 +10063,9 @@ OnSubmitSchedule1() { debugger
     else
       _attachmentValue = 0;
 
-    frmData.append("EventNumber", this.EventNumber.toString());
+    frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
     frmData.append("CreatedBy", this.Current_user_ID.toString());
+    frmData.append("RemovedFile_id", this._calenderDto.file_ids='0');
     console.log(JSON.stringify(finalarray), "finalarray")
     this._calenderDto.draftid = this.draftid;
 
@@ -9874,6 +10074,9 @@ OnSubmitSchedule1() { debugger
 
     this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
       (data => {
+        var Attamentdraftid= '0'
+        frmData.append("draftid", Attamentdraftid= Attamentdraftid);
+
 
         if (_attachmentValue == 1) {
           this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
@@ -9942,6 +10145,8 @@ OnSubmitSchedule1() { debugger
         this.SelectDms = null;
         this.Location_Type = null;
         this.Link_Details = null;
+        this.Meeting_Id = null;
+        this.Meeting_password = null;
         this._onlinelink = false;
         this.Allocated_subtask = null;
         this.TM_DisplayName = null;
@@ -10055,7 +10260,8 @@ onChangeAuditorBtnClicked(){
 
 openRemoveSADialog(index:number,removalType:'SUPPORT'|'AUDITOR'){
   if(this.p_index>-1){
-    this.closeRemoveSADialog(this.p_index);
+    const pindex=this.p_index;
+    this.closeRemoveSADialog(pindex);
   }   // closing opened dialog if present.
 
   this.p_index=index;
@@ -10073,6 +10279,10 @@ closeRemoveSADialog(index:number){
   this.typeUserRemove=undefined;
   this.p_index=-1;
 }
+
+
+
+
 
 
 onSARemoveSubmit(){
@@ -10204,8 +10414,11 @@ loadActionsGantt(){
   const todays_date = new Date().getTime();
   const curdate = new Date();
   let actions_list:any=this.projectActionInfo.filter((actn)=>{
-         return (this.ganttActnsConfig.byuser=='All'||actn.Team_Res.trim()==this.ganttActnsConfig.byuser);
+         const x=(this.ganttActnsConfig.bystatus=='All'||actn.Status.trim()==this.ganttActnsConfig.bystatus);
+         const y=(this.ganttActnsConfig.byuser=='All'||actn.Team_Res.trim()==this.ganttActnsConfig.byuser);
+         return x&&y;
   });
+
   this.total_userActns=actions_list.length;
   const _series = actions_list.map((actn, _index) => {
     const color = all_status[actn.Status] || all_status['other'];
@@ -10295,6 +10508,7 @@ loadActionsGantt(){
 
       events: {
         updated: ()=>{
+   
 
         try{
 
@@ -10313,7 +10527,7 @@ loadActionsGantt(){
                 textElements.forEach(te => {
                   const clonedTe = te.cloneNode(true);
                   clonedTe.setAttribute('y', '65%');
-                  clonedTe.setAttribute('fill', '#000');
+                  clonedTe.setAttribute('fill', '#6b6f71');
                   dateGcHv.appendChild(clonedTe);
                 });
 
@@ -10388,7 +10602,7 @@ loadActionsGantt(){
             }
 
 
-
+            console.log('update start and done.')
         },
 
 
@@ -10415,8 +10629,14 @@ loadActionsGantt(){
         show: true,
         style: {
           offsetY: 10, // Adjust this value to add space below the labels
-          colors:'#000'
+          colors:'#6b6f71',
+          fontSize:'11px',
+          fontWeight: 'bold'
         },
+        datetimeFormatter: {
+          month: "MMM",  
+          day: "dd MMM",   
+      },
 
       },
       axisBorder: {
@@ -10425,7 +10645,8 @@ loadActionsGantt(){
       axisTicks: {
         show: true
       },
-      max:max_Xvalue.getTime()
+      max:max_Xvalue.getTime(),
+   
 
     },
     yaxis: {
@@ -10474,8 +10695,8 @@ loadActionsGantt(){
     tooltip: {
       custom: ({ series, seriesIndex, dataPointIndex, w }) => {
         const data = w.config.series[seriesIndex].data[dataPointIndex];
-        const index = data.index;
-        const actn_name = actions_list[index].Project_Name;
+        const index = data.index;  
+        const actn_name = actions_list[index].Project_Name;   
         const actn_descrp=actions_list[index].Project_Description;
         const actn_start = this.datepipe.transform(new Date(actions_list[index].StartDate), 'MMM d, y');
         const actn_end = this.datepipe.transform(new Date(actions_list[index].EndDate), 'MMM d, y');
@@ -10580,19 +10801,13 @@ loadActionsGantt(){
 
 
  if(this.ActnsGanttChart){
-    this.ActnsGanttChart.updateOptions(options);
+    this.ActnsGanttChart.updateOptions(options);    
  }
  else{
+ 
   this.ActnsGanttChart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
-
   this.ActnsGanttChart.render();
-
-
 console.log('apexchart gantt:',this.ActnsGanttChart);
-
-
-
-
 
  }
 
@@ -10603,18 +10818,21 @@ console.log('apexchart gantt:',this.ActnsGanttChart);
 
 
 ActnsGanttChart:any;
-ganttActnsConfig:{byuser:string}={byuser:'All'};
-filterActionsOnGantt(option:string){
-     this.ganttActnsConfig.byuser=option;
+ganttActnsConfig:{bystatus:string,byuser:string}={bystatus:'All',byuser:'All'};
+filterActionsOnGantt(_bystatus:string,_byuser:string){
+     this.ganttActnsConfig.bystatus=_bystatus;
+     this.ganttActnsConfig.byuser=_byuser;
      this.loadActionsGantt();
 }
 
 
 
 onActnsGanttClosed(){
+    this.ActnsGanttChart.destroy();
     this.ActnsGanttChart=null;
-    this.ganttActnsConfig={byuser:'All'};
+    this.ganttActnsConfig={bystatus:'All',byuser:'All'};
     this.total_userActns=undefined;
+    
 }
 
 
@@ -10742,11 +10960,19 @@ goToProject(pcode,acode:string|undefined) {
 
 expandRemarks(id:string){
      const remark_sec=document.getElementById(id);
-     if(remark_sec.classList.contains('compl-remarks-span'))
+     if(remark_sec.classList.contains('compl-remarks-span')){
         remark_sec.classList.remove('compl-remarks-span');
-     else
-        remark_sec.classList.add('compl-remarks-span');
+        document.getElementById('less-btn').classList.remove('d-none');
+     }
+     else{
+      remark_sec.classList.add('compl-remarks-span');
+      document.getElementById('less-btn').classList.add('d-none');
+     }
+        
 }
+
+
+
 
 // conditional accept functionality end
 
@@ -10802,6 +11028,10 @@ getNotificationsAnnouncements():string[]{
   allnotif=[...allnotif,'totalPActns4Aprvls'];
   if(this.pageContentType=='ACTION_DETAILS')
   allnotif=[...allnotif,'action_details'];
+  if(this.hasNoActionMembers&&this.hasNoActionMembers.length>0)
+  allnotif=[...allnotif,'hasNoActionMembers'];
+  if(this.noActvySinceCreation)
+  allnotif=[...allnotif,'noActvySinceCreation'];
 
    return allnotif;
 }
@@ -10851,6 +11081,43 @@ getFormattedDuration(totalDuration: number): string {
 
 
 
+  hasNoActionMembers:any=[];
+  detectMembersWithoutActions(){
+      if(this.Project_List&&this.filteremployee)
+      {    // if we have info of all the peoples present in the project. and info of all the people who have actions.   
+        const peopleWithActns=this.filteremployee.map(item=>item.Team_Res);
+        const arr=[];
+        this.Project_List.forEach((item)=>{
+                if(item.Role!='Owner'&&peopleWithActns.includes(item.Emp_No)==false)   
+                {
+                   if(arr.findIndex(ob=>ob.Emp_No==item.Emp_No)==-1)
+                   arr.push({  Emp_No:item.Emp_No, Emp_Name:item.RACIS.slice(0,item.RACIS.indexOf('(')).trim() })
+                }
+         });
+        this.hasNoActionMembers=arr; 
+      } 
+  }
+
+
+
+  newDetails(ProjectCode) {
+    let name: string = 'Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${ProjectCode}`;
+    var myWindow = window.open(myurl, ProjectCode);
+    myWindow.focus();
+  }
+
+
+
+  OnCardClick(P_id: any) {
+    sessionStorage.setItem('portfolioId', P_id);
+    let name: string = 'portfolioprojects';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${P_id}`;
+    var myWindow = window.open(myurl, P_id);
+    myWindow.focus();
+  }
 
 }
 

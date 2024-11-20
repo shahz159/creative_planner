@@ -823,6 +823,10 @@ a.dropdown-item{
 #rejectbar.kt-quick-panel--on {
   width: 50% !important;
 }
+
+#acceptbar.kt-quick-panel--on {
+  width: 50% !important;
+}
 .event-main {
   flex: 1 1 auto;
   display: flex;
@@ -1567,7 +1571,7 @@ display: inline-block; */
 
 
 .kt-info-data-v1 {
-  background-color: #dde1f8;
+  background-color: #f0f0f0;
   border-radius: 35px;
   padding: 7px 4px;
   font-weight: 500;
@@ -1576,6 +1580,9 @@ display: inline-block; */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.leaveAprvlForm .kt-info-data-v1{
+   background-color: #dde1f8;
 }
 
 .kt-reject-form-view {

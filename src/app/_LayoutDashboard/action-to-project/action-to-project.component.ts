@@ -128,6 +128,8 @@ export class ActionToProjectComponent implements OnInit {
   nonRacis:any = [];
   allUsers:any=[];
 
+  actionCost:any;
+
   constructor(
     public notifyService: NotificationService,
     public ProjectTypeService: ProjectTypeService,
@@ -400,7 +402,7 @@ debugger
         allowRemoteDataSearch: true,
         noDataAvailablePlaceholderText: 'Please wait..',
       };
-      // console.log("Project List for Dropdown...",this._ProjectDataList);
+      console.log("Project List for Dropdown...",this._ProjectDataList);
     });
   }
 
@@ -477,295 +479,332 @@ debugger
 
 
 
+//   OnSubmit() {
 
 
-  OnSubmit() {
+//     if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
+//       this._projcode = true;
+//       // return false;
+//     }else this._projcode=false;
 
 
-    if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
-      this._projcode = true;
-      // return false;
-    }else this._projcode=false;
+//     if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
+//       // this.Sub_ProjectName==="VALID"
+//       this._subname = true;
+//     }else this._subname=false;
+
+//     if (this.isPrjNameValid !== 'VALID'  ) {
+//       // Don't proceed with form submision if input is invalid
+//       return;
+//     }
+
+//     if(this.Sub_ProjectName.length>100){
+//     return
+//     }
+
+//     if (this._Description == "" || this._Description == null || this._Description == undefined ) {
+//       this._desbool = true;
+//       // return false;
+//     }else this._desbool = false;
+//     if(this.isPrjDesValid !=='VALID'){
+//       return
+//     }
+
+//     if(this._Description.length>500){
+//     return
+//     }
 
 
+//     if (this.selectedEmpNo == "" || this.selectedEmpNo == null || this.selectedEmpNo == undefined) {
+//       this._selectemp = true;
+//       // return false;
+//     }else this._selectemp = false;
+
+//     if (this._StartDate == null || this._StartDate == null || this._StartDate == undefined) {
+//       this._sdate = true;
+//       // return false;
+//     }else this._sdate = false;
+
+//     if (this._EndDate == null || this._EndDate == null || this._EndDate == undefined) {
+//       this._edate = true;
+//       // return false;
+//     }else this._edate = false;
+
+//     if(this._allocated==null||this._allocated==undefined||this._allocated==0){
+//       this._alchr=true;
+//       // return false;
+//     }else  this._alchr=false;
+
+//     if(this._Urlid==5){
+//        const d1=new Date(this.ProjectStartDate);
+//        const d2=new Date(this.ProjectDeadLineDate);
+//        this._actbefore=this._StartDate<d1;
+//       //  this._actafter=this._EndDate>d2;
+//       //  console.log("asdf eeeeee:",this._actbefore,this._actafter);
+//     }
 
 
-    if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
-      // this.Sub_ProjectName==="VALID"
-      this._subname = true;
-
-
-    }else this._subname=false;
-    if (this.isPrjNameValid !== 'VALID'  ) {
-      // Don't proceed with form submision if input is invalid
-      return;
-  }
-if(this.Sub_ProjectName.length>100){
-return
-}
-
-    if (this._Description == "" || this._Description == null || this._Description == undefined ) {
-      this._desbool = true;
-      // return false;
-    }else this._desbool = false;
-    if(this.isPrjDesValid !=='VALID'){
-      return
-    }
-
-if(this._Description.length>500){
-return
-}
-
-
-    if (this.selectedEmpNo == "" || this.selectedEmpNo == null || this.selectedEmpNo == undefined) {
-      this._selectemp = true;
-      // return false;
-    }else this._selectemp = false;
-
-    if (this._StartDate == null || this._StartDate == null || this._StartDate == undefined) {
-      this._sdate = true;
-      // return false;
-    }else this._sdate = false;
-
-    if (this._EndDate == null || this._EndDate == null || this._EndDate == undefined) {
-      this._edate = true;
-      // return false;
-    }else this._edate = false;
-
-    if(this._allocated==null||this._allocated==undefined||this._allocated==0){
-      this._alchr=true;
-      // return false;
-    }else  this._alchr=false;
-
-    if(this._Urlid==5){
-       const d1=new Date(this.ProjectStartDate);
-       const d2=new Date(this.ProjectDeadLineDate);
-       this._actbefore=this._StartDate<d1;
-      //  this._actafter=this._EndDate>d2;
-      //  console.log("asdf eeeeee:",this._actbefore,this._actafter);
-    }
-
-
-   const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._actbefore ,this._alchr].some(item=>item);
-   if(fieldsRequired)
-   return false;        // please provide all mandatory fields value.
+//    const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._actbefore ,this._alchr].some(item=>item);
+//    if(fieldsRequired)
+//    return false;        // please provide all mandatory fields value.
 
 
 
-   const continueNext=()=>{
-debugger
-    if(this.owner==null || this.owner==undefined || this.owner==''){
-      this.owner=this.Owner_Empno;
-    }
-    else{
-      this.owner = this.owner;
-    }
+//    const continueNext=async()=>{
 
-    if (this._MasterCode == null) {
-      this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
-      this._MasterCode = this.selectedProjectCode;
-    }
-    else {
-      this.ObjSubTaskDTO.MasterCode = this._MasterCode;
-    }
+//    // Action cost calculate.
+//     this.actionCost=null;  // must be empty before calculating.
+//     const res:any=await this.service.GetCPProjectCost(this.selectedEmpNo,this._allocated.toString()).toPromise();
+//     if(res&&res.Status){
+//           this.actionCost=res.Data;
+//           console.log("action cost:",this.actionCost);
+//     }
+//     else{
+//       this.notifyService.showError('','Internal server error');
+//       console.error('Unable to get action cost value.')
+//       return;
+//     } 
+//   // Action cost calculate.
+    
+    
+//     if(this.owner==null || this.owner==undefined || this.owner==''){
+//       this.owner=this.Owner_Empno;
+//     }
+//     else{
+//       this.owner = this.owner;
+//     }
 
-    // console.log(this.owner,"selected owner")
+//     if (this._MasterCode == null) {
+//       this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
+//       this._MasterCode = this.selectedProjectCode;
+//     }
+//     else {
+//       this.ObjSubTaskDTO.MasterCode = this._MasterCode;
+//     }
 
-    this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
+//     // console.log(this.owner,"selected owner")
 
-      this.Sub_ProjectCode = data['SubTask_ProjectCode'];
-      this.EmpNo_Autho = data['Team_Autho'];
-      this.ProjectBlock = data['ProjectBlock'];
+//     this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
+// debugger
+//       this.Sub_ProjectCode = data['SubTask_ProjectCode'];
+//       this.EmpNo_Autho = data['Team_Autho'];
+//       this.ProjectBlock = data['ProjectBlock'];
 
-      if (this.task_id != null) {
-        this.ObjSubTaskDTO.AssignId = this.task_id;
-      }
-      else {
-        this.task_id = 0;
-      }
+//       if (this.task_id != null) {
+//         this.ObjSubTaskDTO.AssignId = this.task_id;
+//       }
+//       else {
+//         this.task_id = 0;
+//       }
 
-      this.ObjSubTaskDTO.SubProject_Name = this.Sub_ProjectName.trim();
-      this.ObjSubTaskDTO.SubtaskDescription = this._Description;
-      this.ObjSubTaskDTO.ProjectBlock = this.ProjectBlock;
-      this.ObjSubTaskDTO.StartDate = this._StartDate;
-      this.ObjSubTaskDTO.SubProject_DeadLine = this._EndDate;
+//       this.ObjSubTaskDTO.SubProject_Name = this.Sub_ProjectName.trim();
+//       this.ObjSubTaskDTO.SubtaskDescription = this._Description;
+//       this.ObjSubTaskDTO.ProjectBlock = this.ProjectBlock;
+//       this.ObjSubTaskDTO.StartDate = this._StartDate;
+//       this.ObjSubTaskDTO.SubProject_DeadLine = this._EndDate;
 
-      // this.ObjSubTaskDTO.Duration = (-Difference_In_Days);
-      // this.ObjSubTaskDTO.Duration = this.ObjSubTaskDTO.Duration * 8 / 1;
-      //If we are using 8 hours format then divide by 3 for HourDifference.
+//       // this.ObjSubTaskDTO.Duration = (-Difference_In_Days);
+//       // this.ObjSubTaskDTO.Duration = this.ObjSubTaskDTO.Duration * 8 / 1;
+//       //If we are using 8 hours format then divide by 3 for HourDifference.
 
-      this.maxAllocation = this.maxAllocation * 8 / 1;
-      this.ObjSubTaskDTO.Emp_No = this.CurrentUser_ID;
-      this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
-      this.ObjSubTaskDTO.Remarks = this._remarks;
-      this.ObjSubTaskDTO.Duration = this._allocated;
-      // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
-      console.log( this.fileAttachment)
-     if (this.fileAttachment&& this.fileAttachment.length > 0) {
-        this.ObjSubTaskDTO.Attachments =  this.fileAttachment;
-      }
+//       this.maxAllocation = this.maxAllocation * 8 / 1;
+//       this.ObjSubTaskDTO.Emp_No = this.CurrentUser_ID;
+//       this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
+//       this.ObjSubTaskDTO.Remarks = this._remarks;
+//       this.ObjSubTaskDTO.Duration = this._allocated;
+//       // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
+//       console.log( this.fileAttachment)
+//      if (this.fileAttachment&& this.fileAttachment.length > 0) {
+//         this.ObjSubTaskDTO.Attachments =  this.fileAttachment;
+//       }
 
-      var datestrStart = moment(this._StartDate).format("MM/DD/YYYY");
-      var datestrEnd = moment(this._EndDate).format("MM/DD/YYYY");
-      // alert(datestrStart)
-      // alert(datestrEnd)
-      console.log(datestrStart,this._StartDate,"startdate")
-      console.log(datestrEnd,this._EndDate,"enddate")
-      const fd = new FormData();
-      fd.append("Project_Code", this.Sub_ProjectCode);
-      fd.append("Team_Autho", this.EmpNo_Autho);
-      // fd.append('file', this._inputAttachments[0].Files);
-      if ( this.fileAttachment) {
-        fd.append("Attachment", "true");
-        fd.append('file',  this.fileAttachment);
-      }
-      else {
-        fd.append("Attachment", "false");
-        fd.append('file', "");
-      }
-      fd.append("_MasterCode", this.ObjSubTaskDTO.MasterCode);
-      fd.append("SubtaskName", this.Sub_ProjectName.trim());
-      fd.append("Desc", this._Description);
-      fd.append("Projectblock", this.ProjectBlock);
-      fd.append("StartDate", datestrStart);
-      fd.append("EndDate", datestrEnd);
-      // fd.append("Allocated", this.maxAllocation.toString());
-      fd.append("Emp_No", this.CurrentUser_ID);
-      fd.append("AssignTo", this.selectedEmpNo);
-      fd.append("Remarks", this._remarks);
-      fd.append("EmployeeName", localStorage.getItem('UserfullName'));
-      fd.append("AssignId", this.task_id.toString());
-      fd.append("Owner", this.owner);
-      fd.append("isattachment",this.completionattachment.toString());
+//       var datestrStart = moment(this._StartDate).format("MM/DD/YYYY");
+//       var datestrEnd = moment(this._EndDate).format("MM/DD/YYYY");
+//       // alert(datestrStart)
+//       // alert(datestrEnd)
+//       console.log(datestrStart,this._StartDate,"startdate")
+//       console.log(datestrEnd,this._EndDate,"enddate")
+//       const fd = new FormData();
+//       fd.append("Project_Code", this.Sub_ProjectCode);
+//       fd.append("Team_Autho", this.EmpNo_Autho);
+//       // fd.append('file', this._inputAttachments[0].Files);
+//       if ( this.fileAttachment) {
+//         fd.append("Attachment", "true");
+//         fd.append('file',  this.fileAttachment);
+//       }
+//       else {
+//         fd.append("Attachment", "false");
+//         fd.append('file', "");
+//       }
+//       fd.append("_MasterCode", this.ObjSubTaskDTO.MasterCode);
+//       fd.append("SubtaskName", this.Sub_ProjectName.trim());
+//       fd.append("Desc", this._Description);
+//       fd.append("Projectblock", this.ProjectBlock);
+//       fd.append("StartDate", datestrStart);
+//       fd.append("EndDate", datestrEnd);
+//       // fd.append("Allocated", this.maxAllocation.toString());
+//       fd.append("Emp_No", this.CurrentUser_ID);
+//       fd.append("AssignTo", this.selectedEmpNo);
+//       fd.append("Remarks", this._remarks);
+//       fd.append("EmployeeName", localStorage.getItem('UserfullName'));
+//       fd.append("AssignId", this.task_id.toString());
+//       fd.append("Owner", this.owner);
+//       fd.append("isattachment",this.completionattachment.toString());
+//       fd.append("actionCost",this.actionCost);
 
-      if (this.ObjSubTaskDTO.Duration != null) {
-        fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
-      }
-      else {
-        this.ObjSubTaskDTO.Duration = 0;
-      }
+//       if (this.ObjSubTaskDTO.Duration != null) {
+//         fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
+//       }
+//       else {
+//         this.ObjSubTaskDTO.Duration = 0;
+//       }
 
-      this.service._InsertNewSubtask(fd).subscribe(event => {
+//       this.service._InsertNewSubtask(fd).subscribe(event => {
 
-        if (event.type === HttpEventType.Response){
-          var myJSON = JSON.stringify(event);
-          this._Message = (JSON.parse(myJSON).body).Message;
-          // console.log(event,myJSON,this._Message,"action data");
-          if(this._Message=='1'){
-            this.notifyService.showSuccess("Action created successfully", "Success");
-          }
-          else if(this._Message=='2'){
-            this.notifyService.showInfo("Request submitted to the Assigned employee","Action Under Approval");
-          }
-          else if(this._Message=='3'){
-            this.notifyService.showError("Something went wrong", "Action not created");
-          }
-          else if(this._Message=='7'){
-            this.notifyService.showError("Something went wrong", "Action not created");
-          }
-          else{
-            this.notifyService.showError("Something went wrong", "Action not created");
-          }
-        }
+//         if (event.type === HttpEventType.Response){
+//           var myJSON = JSON.stringify(event);
+//           this._Message = (JSON.parse(myJSON).body).Message;
+//           // console.log(event,myJSON,this._Message,"action data");
+//           if(this._Message=='1'){
+//             this.notifyService.showSuccess("Action created successfully", "Success");
+//           }
+//           else if(this._Message=='2'){
+//             this.notifyService.showInfo("Request submitted to the Assigned employee","Action Under Approval");
+//           }
+//           else if(this._Message=='3'){
+//             this.notifyService.showError("Something went wrong", "Action not created");
+//           }
+//           else if(this._Message=='7'){
+//             this.notifyService.showError("Something went wrong", "Action not created");
+//           }
+//           else{
+//             this.notifyService.showError("Something went wrong", "Action not created");
+//           }
+//         }
 
-        if (this._Urlid == 1) {
-          this._Todoproject.CallOnSubmitAction();
-          this.Clear_Feilds();
-          this.closeInfo();
-          this._inputAttachments = [];
-        }
-        else if(this._Urlid == 2){
-          this._projectunplanned.getCatid();
-          this.Clear_Feilds();
-          this.closeInfo();
-          this._inputAttachments = [];
-        }
-        else if(this._Urlid == 3){
-          this._meetingreport.getScheduleId();
-            this._meetingreport.GetAssigned_SubtaskProjects();
-          this.Clear_Feilds();
-          this.closeInfo();
-          this._inputAttachments = [];
-        }
-        else if(this._Urlid == 7){
-          this._meetingreport.getScheduleId();
-            this._meetingreport.GetAssigned_SubtaskProjects();
-          this.Clear_Feilds();
-          this.closeInfo();
-          this._inputAttachments = [];
-        }
-        else if(this._Urlid == 4){
+//         if (this._Urlid == 1) {
+//           this._Todoproject.CallOnSubmitAction();
+//           this.Clear_Feilds();
+//           this.closeInfo();
+//           this._inputAttachments = [];
+//         }
+//         else if(this._Urlid == 2){
+//           this._projectunplanned.getCatid();
+//           this.Clear_Feilds();
+//           this.closeInfo();
+//           this._inputAttachments = [];
+//         }
+//         else if(this._Urlid == 3){
+//           this._meetingreport.getScheduleId();
+//             this._meetingreport.GetAssigned_SubtaskProjects();
+//           this.Clear_Feilds();
+//           this.closeInfo();
+//           this._inputAttachments = [];
+//         }
+//         else if(this._Urlid == 7){
+//           this._meetingreport.getScheduleId();
+//             this._meetingreport.GetAssigned_SubtaskProjects();
+//           this.Clear_Feilds();
+//           this.closeInfo();
+//           this._inputAttachments = [];
+//         }
+//         else if(this._Urlid == 4){
 
-          this._details.getProjectDetails(this.selectedProjectCode);
-          this.closeInfo();
-        }
-        else if(this._Urlid == 5){
-
-
-          this.createproject.getActionsDetails();
-          this.createproject.newProjectDetails(this._MasterCode);
-
-          this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
-          this.closeInfo();
-        }
-        else {
-          this._MoreDetails.GetProjectDetails();
-          this._MoreDetails.GetSubtask_Details();
-          this._MoreDetails.getapproval_actiondetails();
-          this._MoreDetails.getRejectType();
-          this.Clear_Feilds();
-          this.closeInfo();
-          this._inputAttachments = [];
-        }
-
-
-
-      });
-
-
-
-
-
-      });
-
-
-   }
-
-
+//           this._details.getProjectDetails(this.selectedProjectCode);
+//           this.closeInfo();
+//         }
+//         else if(this._Urlid == 5){
+//           this.createproject.getActionsDetails();
+//           this.createproject.newProjectDetails(this._MasterCode); 
+//           this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
+//           this.closeInfo();
+//         }
+//         else {
+//           this._MoreDetails.GetProjectDetails();
+//           this._MoreDetails.GetSubtask_Details();
+//           this._MoreDetails.getapproval_actiondetails();
+//           this._MoreDetails.getRejectType();
+//           this.Clear_Feilds();
+//           this.closeInfo();
+//           this._inputAttachments = [];
+//         }
 
 
 
+//       });
 
-    if(this._Urlid == 5 && this.allocatedHour>0){
-      debugger
-      // only in project creation page.
-         const exceeds:boolean=this.createproject.hasExceededTotalAllocatedHr(this._allocated);
-         if(exceeds)
-          {
-               Swal.fire({
-                  confirmButtonText:'Yes',
-                  cancelButtonText:'No',
-                  showCancelButton:true,
-                  showConfirmButton:true,
-                  text:'Provided allocated hrs to this action exceeds the project planned allocated hrs. Do you want to continue?',
-                  title:'Exceeds project allocated hrs.'
-               }).then(choice=>{
-                   if(choice.isConfirmed)
-                    continueNext();
-               })
-          }
-          else
-           continueNext();
-    }
-    else
-    {  // details page, runway ...
-        continueNext();
-    }
+
+//       });
+
+
+//    }
 
 
 
 
-  }
+   
+
+
+
+
+//     if(this._Urlid == 5){
+//       // only for project creation page.
+//   debugger
+//       //1. when provided allocated hrs exceeds main project planned allocated hr then confirm.
+//       if(this.allocatedHour>0){
+//         const exceeds:boolean=this.createproject.hasExceededTotalAllocatedHr(this._allocated);
+//         if(exceeds)
+//         {
+//                Swal.fire({
+//                   confirmButtonText:'Yes',
+//                   cancelButtonText:'No',
+//                   showCancelButton:true,
+//                   showConfirmButton:true,
+//                   text:'Provided allocated hrs to this action exceeds the project planned allocated hrs. Do you want to continue?',
+//                   title:'Exceeds project allocated hrs.'
+//                }).then(choice=>{
+//                    if(choice.isConfirmed==false)
+//                     return;
+//                     // continueNext();
+//                });
+//         }
+//         // else
+//         // continueNext();
+//       }
+
+
+
+//       //2. when draft action deadline matches with main project deadline.
+//       // const actn_deadline = new Date(this._EndDate);
+//       // const prj_deadline = new Date(this.ProjectDeadLineDate);
+//       // if(actn_deadline.getTime()==prj_deadline.getTime()){
+//       //       const already_matched=this.createproject.hasActnsMatchingPrjDeadline(actn_deadline);
+//       //       if(already_matched>=2){
+//       //         Swal.fire({
+//       //           title:'Invalid Action Deadline',
+//       //           html:'<div style="text-align:justify;">Action deadline should be less than the main project deadline. Please modify the action deadline to continue</div>',
+//       //           icon:'error',
+//       //           showConfirmButton:true,
+//       //           confirmButtonText:'OK'
+//       //        }); 
+//       //        return;
+//       //       }
+//       // }
+  
+  
+
+//     continueNext();
+      
+//     }
+//     else
+//     {  // details page, runway ...
+//         continueNext();
+//     }
+
+
+
+
+//   }
 
 
   convert(str) {
@@ -786,79 +825,444 @@ debugger
       }
     });
   }
-  sweetAlert() {
-  debugger
-   const processContinue=()=>{
+
+//   sweetAlert() {
+//   debugger
+//    const processContinue=()=>{
+// debugger
+
+// //     if (this.actionCount.DeadLine==this._EndDate&&this.actionCount.count>3){
+// //   Swal.fire({
+// //     title:'invalid Date',
+// //     text:'you have 3 action on that date',
+// //     showCloseButton:true
+// //    });
+// //    return;
+// // }
+
+//     var datestrEnd = (new Date(this._EndDate)).toUTCString();
+//     var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
+//     const dateOne = new Date(this._EndDate);
+//     const dateTwo = new Date(this.ProjectDeadLineDate);
+//     // console.log(dateOne)
+//     // console.log(dateTwo)
+//     if ((dateTwo < dateOne) && (this.Current_user_ID==this.Owner_Empno || this.Current_user_ID==this.Resp_empno || this.Current_user_ID==this.Autho_empno || this.isHierarchy==true)) {
+//       Swal.fire({
+//         title: 'Action deadine is greater than main project deadline ?',
+//         text: 'Do you want to continue for selection of date after main project deadline!!',
+//         // icon: 'warning',
+//         // iconHtml: '<img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Blue_question_mark_icon.svg">',
+//         showCancelButton: true,
+//         confirmButtonText: 'Yes',
+//         cancelButtonText: 'No'
+//       }).then((response: any) => {
+//         if (response.value) {
+//           this.OnSubmit();
+//         } else if (response.dismiss === Swal.DismissReason.cancel) {
+//           Swal.fire(
+//             'Cancelled',
+//             'Action not created',
+//             'error'
+//           )
+//         }
+//       });
+//     }
+//     else if ((dateTwo < dateOne) && (this.Current_user_ID!=this.Owner_Empno && this.Current_user_ID!=this.Resp_empno && this.Current_user_ID!=this.Autho_empno && this.isHierarchy==false)) {
+//       Swal.fire({
+//         title: 'Unable to create this action.',
+//         text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
+//         // showCancelButton: true
+//       });
+
+//     }
+//     else {
+//       this.OnSubmit();
+//     }
+//    }
+
+//    if(this.owner==this.selectedEmpNo){
+//     Swal.fire({
+//       title: 'Action owner and responsible are same.',
+//       text: 'Do you want to continue?',
+//       // icon: 'warning',
+//       // iconHtml: '<img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Blue_question_mark_icon.svg">',
+//       showCancelButton: true,
+//       confirmButtonText: 'Yes',
+//       cancelButtonText: 'No'
+//     }).then((response: any) => {
+//       if (response.value) {
+//          processContinue();
+//       }
+//     });
+//    }
+//    else
+//    processContinue();
+//   }
 
 
-//     if (this.actionCount.DeadLine==this._EndDate&&this.actionCount.count>3){
-//   Swal.fire({
-//     title:'invalid Date',
-//     text:'you have 3 action on that date',
-//     showCloseButton:true
-//    });
-//    return;
-// }
 
-    var datestrEnd = (new Date(this._EndDate)).toUTCString();
-    var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
-    const dateOne = new Date(this._EndDate);
-    const dateTwo = new Date(this.ProjectDeadLineDate);
-    // console.log(dateOne)
-    // console.log(dateTwo)
-    if ((dateTwo < dateOne) && (this.Current_user_ID==this.Owner_Empno || this.Current_user_ID==this.Resp_empno || this.Current_user_ID==this.Autho_empno || this.isHierarchy==true)) {
-      Swal.fire({
-        title: 'Action deadine is greater than main project deadline ?',
-        text: 'Do you want to continue for selection of date after main project deadline!!',
-        // icon: 'warning',
-        // iconHtml: '<img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Blue_question_mark_icon.svg">',
+
+
+// sweet alert method new
+
+sweetAlert2=async()=>{
+    
+// 1. Validation : Action owner and responsible are same.  
+  if(this.owner==this.selectedEmpNo){
+     const choice = await Swal.fire({
+        title: 'Action owner and responsible are same.',
+        text: 'Do you want to continue?',
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No'
-      }).then((response: any) => {
-        if (response.value) {
-          this.OnSubmit();
-        } else if (response.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire(
-            'Cancelled',
-            'Action not created',
-            'error'
-          )
-        }
       });
-    }
-    else if ((dateTwo < dateOne) && (this.Current_user_ID!=this.Owner_Empno && this.Current_user_ID!=this.Resp_empno && this.Current_user_ID!=this.Autho_empno && this.isHierarchy==false)) {
-      Swal.fire({
-        title: 'Unable to create this action.',
-        text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
-        // showCancelButton: true
-      });
-
-    }
-    else {
-      this.OnSubmit();
-    }
-   }
-
-   if(this.owner==this.selectedEmpNo){
-    Swal.fire({
-      title: 'Action owner and responsible are same.',
-      text: 'Do you want to continue?',
-      // icon: 'warning',
-      // iconHtml: '<img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Blue_question_mark_icon.svg">',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((response: any) => {
-      if (response.value) {
-         processContinue();
-      }
-    });
-   }
-   else
-   processContinue();
-
+    if(choice.isConfirmed==false){
+       return;
+    }  
   }
+
+//2. Validation : Action deadline is greater than main project deadline.
+var datestrEnd = (new Date(this._EndDate)).toUTCString();
+var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
+const dateOne = new Date(this._EndDate);
+const dateTwo = new Date(this.ProjectDeadLineDate);
+if ((dateTwo < dateOne) && (this.Current_user_ID==this.Owner_Empno || this.Current_user_ID==this.Resp_empno || this.Current_user_ID==this.Autho_empno || this.isHierarchy==true)) {
+ 
+  const choice = await Swal.fire({
+    title: 'Action deadline is greater than main project deadline ?',
+    text: 'Do you want to continue for selection of date after main project deadline!',
+    showCancelButton: true,
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No'
+  });
+  
+  if(choice.isConfirmed==false){
+    Swal.fire(
+      'Cancelled',
+      'Action not created',
+      'error'
+    );
+    return;
+  }
+
+}
+else if ((dateTwo < dateOne) && (this.Current_user_ID!=this.Owner_Empno && this.Current_user_ID!=this.Resp_empno && this.Current_user_ID!=this.Autho_empno && this.isHierarchy==false)) {
+  Swal.fire({
+    title: 'Unable to create this action.',
+    text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
+    // showCancelButton: true
+  });
+ return;
+}
+
+
+
+// 3. Validation : forms fields required check  start.
+if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
+  this._projcode = true;
+  // return false;
+}else this._projcode=false;
+
+
+if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
+  // this.Sub_ProjectName==="VALID"
+  this._subname = true;
+}else this._subname=false;
+
+if (this.isPrjNameValid !== 'VALID'  ) {
+  // Don't proceed with form submision if input is invalid
+  return;
+}
+
+if(this.Sub_ProjectName.length>100){
+return;
+}
+
+if (this._Description == "" || this._Description == null || this._Description == undefined ) {
+  this._desbool = true;
+  // return false;
+}else this._desbool = false;
+if(this.isPrjDesValid !=='VALID'){
+  return
+}
+
+if(this._Description.length>500){
+return
+}
+
+
+if (this.selectedEmpNo == "" || this.selectedEmpNo == null || this.selectedEmpNo == undefined) {
+  this._selectemp = true;
+  // return false;
+}else this._selectemp = false;
+
+if (this._StartDate == null || this._StartDate == null || this._StartDate == undefined) {
+  this._sdate = true;
+  // return false;
+}else this._sdate = false;
+
+if (this._EndDate == null || this._EndDate == null || this._EndDate == undefined) {
+  this._edate = true;
+  // return false;
+}else this._edate = false;
+
+if(this._allocated==null||this._allocated==undefined||this._allocated==0){
+  this._alchr=true;
+  // return false;
+}else  this._alchr=false;
+
+if(this._Urlid==5){
+   const d1=new Date(this.ProjectStartDate);
+   const d2=new Date(this.ProjectDeadLineDate);
+   this._actbefore=this._StartDate<d1;
+  //  this._actafter=this._EndDate>d2;
+  //  console.log("asdf eeeeee:",this._actbefore,this._actafter);
+}
+
+
+const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._actbefore ,this._alchr].some(item=>item);
+if(fieldsRequired)
+return false;        // please provide all mandatory fields value.
+// 3. Validation : forms fields required check end.
+
+
+
+// 4. Validation : only for project creation page.
+if(this._Urlid == 5){
+  
+  //1. when provided allocated hrs exceeds main project planned allocated hr then confirm.
+  if(this.allocatedHour>0){
+    const exceeds:boolean=this.createproject.hasExceededTotalAllocatedHr(this._allocated);
+    if(exceeds)
+    {
+            const choice = await Swal.fire({
+            confirmButtonText:'Yes',
+            cancelButtonText:'No',
+            showCancelButton:true,
+            showConfirmButton:true,
+            text:'Provided allocated hrs to this action exceeds the project planned allocated hrs. Do you want to continue?',
+            title:'Exceeds project allocated hrs.'
+           });
+           if(choice.isConfirmed==false){
+            return;
+           }
+    }
+  }
+
+  //2. when draft action deadline matches with main project deadline.
+  const actn_deadline = new Date(this._EndDate);
+  const prj_deadline = new Date(this.ProjectDeadLineDate);
+  if(actn_deadline.getTime()==prj_deadline.getTime()){
+        const already_matched=this.createproject.actnsMatchingPrjDeadline();
+        if(already_matched>=2){
+          Swal.fire({
+            title:'Invalid Action End Date',
+            html:'<div style="text-align:justify;">Action end date should be less than the main project deadline. Please modify the action end date to continue</div>',
+            icon:'error',
+            showConfirmButton:true,
+            confirmButtonText:'OK'
+         }); 
+         return;
+        }
+  }
+
+
+}
+
+
+// Action creation here
+this.startActionCreation();
+
+
+}
+
+startActionCreation=async()=>{
+
+  // Action cost calculate.
+   this.actionCost=null;  // must be empty before calculating.
+   const res:any=await this.service.GetCPProjectCost(this.selectedEmpNo,this._allocated.toString()).toPromise();
+   if(res&&res.Status){
+         this.actionCost=res.Data;
+         console.log("action cost:",this.actionCost);
+   }
+   else{
+     this.notifyService.showError('','Internal server error');
+     console.error('Unable to get action cost value.')
+     return;
+   } 
+ // Action cost calculate.
+   
+   
+   if(this.owner==null || this.owner==undefined || this.owner==''){
+     this.owner=this.Owner_Empno;
+   }
+   else{
+     this.owner = this.owner;
+   }
+
+   if (this._MasterCode == null) {
+     this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
+     this._MasterCode = this.selectedProjectCode;
+   }
+   else {
+     this.ObjSubTaskDTO.MasterCode = this._MasterCode;
+   }
+
+   // console.log(this.owner,"selected owner")
+
+   this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
+
+     this.Sub_ProjectCode = data['SubTask_ProjectCode'];
+     this.EmpNo_Autho = data['Team_Autho'];
+     this.ProjectBlock = data['ProjectBlock'];
+
+     if (this.task_id != null) {
+       this.ObjSubTaskDTO.AssignId = this.task_id;
+     }
+     else {
+       this.task_id = 0;
+     }
+
+     this.ObjSubTaskDTO.SubProject_Name = this.Sub_ProjectName.trim();
+     this.ObjSubTaskDTO.SubtaskDescription = this._Description;
+     this.ObjSubTaskDTO.ProjectBlock = this.ProjectBlock;
+     this.ObjSubTaskDTO.StartDate = this._StartDate;
+     this.ObjSubTaskDTO.SubProject_DeadLine = this._EndDate;
+
+     // this.ObjSubTaskDTO.Duration = (-Difference_In_Days);
+     // this.ObjSubTaskDTO.Duration = this.ObjSubTaskDTO.Duration * 8 / 1;
+     //If we are using 8 hours format then divide by 3 for HourDifference.
+
+     this.maxAllocation = this.maxAllocation * 8 / 1;
+     this.ObjSubTaskDTO.Emp_No = this.CurrentUser_ID;
+     this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
+     this.ObjSubTaskDTO.Remarks = this._remarks;
+     this.ObjSubTaskDTO.Duration = this._allocated;
+     // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
+     console.log( this.fileAttachment)
+    if (this.fileAttachment&& this.fileAttachment.length > 0) {
+       this.ObjSubTaskDTO.Attachments =  this.fileAttachment;
+     }
+
+     var datestrStart = moment(this._StartDate).format("MM/DD/YYYY");
+     var datestrEnd = moment(this._EndDate).format("MM/DD/YYYY");
+     // alert(datestrStart)
+     // alert(datestrEnd)
+     console.log(datestrStart,this._StartDate,"startdate")
+     console.log(datestrEnd,this._EndDate,"enddate")
+     const fd = new FormData();
+     fd.append("Project_Code", this.Sub_ProjectCode);
+     fd.append("Team_Autho", this.EmpNo_Autho);
+     // fd.append('file', this._inputAttachments[0].Files);
+     if ( this.fileAttachment) {
+       fd.append("Attachment", "true");
+       fd.append('file',  this.fileAttachment);
+     }
+     else {
+       fd.append("Attachment", "false");
+       fd.append('file', "");
+     }
+     fd.append("_MasterCode", this.ObjSubTaskDTO.MasterCode);
+     fd.append("SubtaskName", this.Sub_ProjectName.trim());
+     fd.append("Desc", this._Description);
+     fd.append("Projectblock", this.ProjectBlock);
+     fd.append("StartDate", datestrStart);
+     fd.append("EndDate", datestrEnd);
+     // fd.append("Allocated", this.maxAllocation.toString());
+     fd.append("Emp_No", this.CurrentUser_ID);
+     fd.append("AssignTo", this.selectedEmpNo);
+     fd.append("Remarks", this._remarks);
+     fd.append("EmployeeName", localStorage.getItem('UserfullName'));
+     fd.append("AssignId", this.task_id.toString());
+     fd.append("Owner", this.owner);
+     fd.append("isattachment",this.completionattachment.toString());
+     fd.append("actionCost",this.actionCost);
+
+     if (this.ObjSubTaskDTO.Duration != null) {
+       fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
+     }
+     else {
+       this.ObjSubTaskDTO.Duration = 0;
+     }
+
+     this.service._InsertNewSubtask(fd).subscribe(event => {
+
+       if (event.type === HttpEventType.Response){
+         var myJSON = JSON.stringify(event);
+         this._Message = (JSON.parse(myJSON).body).Message;
+         // console.log(event,myJSON,this._Message,"action data");
+         if(this._Message=='1'){
+           this.notifyService.showSuccess("Action created successfully", "Success");
+         }
+         else if(this._Message=='2'){
+           this.notifyService.showInfo("Request submitted to the Assigned employee","Action Under Approval");
+         }
+         else if(this._Message=='3'){
+           this.notifyService.showError("Something went wrong", "Action not created");
+         }
+         else if(this._Message=='7'){
+           this.notifyService.showError("Something went wrong", "Action not created");
+         }
+         else{
+           this.notifyService.showError("Something went wrong", "Action not created");
+         }
+       }
+
+       if (this._Urlid == 1) {
+         this._Todoproject.CallOnSubmitAction();
+         this.Clear_Feilds();
+         this.closeInfo();
+         this._inputAttachments = [];
+       }
+       else if(this._Urlid == 2){
+         this._projectunplanned.getCatid();
+         this.Clear_Feilds();
+         this.closeInfo();
+         this._inputAttachments = [];
+       }
+       else if(this._Urlid == 3){
+         this._meetingreport.getScheduleId();
+           this._meetingreport.GetAssigned_SubtaskProjects();
+         this.Clear_Feilds();
+         this.closeInfo();
+         this._inputAttachments = [];
+       }
+       else if(this._Urlid == 7){
+         this._meetingreport.getScheduleId();
+           this._meetingreport.GetAssigned_SubtaskProjects();
+         this.Clear_Feilds();
+         this.closeInfo();
+         this._inputAttachments = [];
+       }
+       else if(this._Urlid == 4){
+
+         this._details.getProjectDetails(this.selectedProjectCode);
+         this.closeInfo();
+       }
+       else if(this._Urlid == 5){
+         this.createproject.getActionsDetails();
+         this.createproject.newProjectDetails(this._MasterCode); 
+         this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
+         this.closeInfo();
+       }
+       else {
+         this._MoreDetails.GetProjectDetails();
+         this._MoreDetails.GetSubtask_Details();
+         this._MoreDetails.getapproval_actiondetails();
+         this._MoreDetails.getRejectType();
+         this.Clear_Feilds();
+         this.closeInfo();
+         this._inputAttachments = [];
+       }
+
+     });
+
+     });
+}
+
+// sweet alert method new
+
+
 
   closeInfo() {
      this.characterCount=0;
@@ -926,6 +1330,7 @@ debugger
     this._inputAttachments2 = [];
     this.selectedEmpNo = '';
     this.selected_Employee = [];
+    this.actionCost=null;
 
 
     if((<HTMLInputElement>document.getElementById("uploadFile")))
@@ -1100,15 +1505,35 @@ isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
 
 sameDateActions:boolean=false;
 hasSameDateActions(){
-debugger
   const result:boolean=this.actionCount.some((item:any)=>{
-    debugger
              const d1=moment(item.DeadLine).format("MM/DD/YYYY");
              const d2=moment(this._EndDate).format("MM/DD/YYYY");
              return (d1==d2&&item.count>3);
   });
   this.sameDateActions=result;
 }
+
+
+
+
+// action cost start.
+
+
+// getActionCost(userId:string,allocatedhr:string){
+//   this.actionCost=null;
+
+//   const empno=userId;
+//   const allcHr=allocatedhr;
+//   this.service.GetCPProjectCost(empno,allcHr).subscribe((res:{Status:boolean,Message:string,Data:number})=>{
+//       if(res.Status){
+//          this.actionCost=res.Data;
+//          console.log("action cost:",this.actionCost);
+//       }
+//   });
+// }
+
+// action cost end.
+
 
 
 

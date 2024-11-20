@@ -39,10 +39,10 @@ export class CalenderService {
     this.obj_CalenderDTO.User_Type=obj.User_Type
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetScheduledtimejson", this.obj_CalenderDTO);
   }
+
+
   NewGetPending_request(obj:CalenderDTO){
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
-
-
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetPending_requests1", this.obj_CalenderDTO);
   }
 
@@ -198,17 +198,13 @@ export class CalenderService {
 
 
 
-
-
-
-
-
   NewGetMeeting_darftdata(obj:CalenderDTO){
-
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
-
     return this.http.post(this.rootUrl + "CalenderAPI/NewGet_darftmeetdatacon", this.obj_CalenderDTO);
   }
+
+
+
   Newdraft_Meetingnotes(obj:CalenderDTO){
     this.obj_CalenderDTO.draftid=obj.draftid;
     this.obj_CalenderDTO.Dms = obj.Dms;
@@ -222,7 +218,11 @@ export class CalenderService {
     this.obj_CalenderDTO.User_list = obj.User_list;
     this.obj_CalenderDTO.Project_Code = obj.Project_Code;
     this.obj_CalenderDTO.DraftAgendas = obj.DraftAgendas;
-
+    this.obj_CalenderDTO.Link_details=obj.Link_details;
+    this.obj_CalenderDTO.Recurrence=obj.Recurrence;
+    this.obj_CalenderDTO.Rec_values=obj.Rec_values;
+    this.obj_CalenderDTO.Rec_EndDate=obj.Rec_EndDate;
+  
     return this.http.post(this.rootUrl + "CalenderAPI/Newinsertdarft_meetingco", this.obj_CalenderDTO);
   }
   NewGetrequeat_Accpect(obj:CalenderDTO){
@@ -273,6 +273,7 @@ NewPending_table(obj:CalenderDTO){
     this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.draftid=obj.draftid;
+    this.obj_CalenderDTO.attachment= obj.attachment;
     return this.http.post(this.rootUrl + "TestAPI/NewInsertSchedule_CalenderUpdated", this.obj_CalenderDTO);
   }
 

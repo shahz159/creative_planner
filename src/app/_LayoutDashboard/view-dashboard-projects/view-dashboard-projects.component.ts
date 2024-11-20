@@ -94,10 +94,10 @@ export class ViewDashboardProjectsComponent implements OnInit {
     console.log("------base Url-------->", this.router.url);
     this.A2Z = true;
     this.Z2A = false;
-    this._subtaskDiv = true;   debugger
+    this._subtaskDiv = true;
     this.activatedRoute.queryParams.subscribe(params => {
       const section = params['section'];
-
+debugger
       if (section) {
         // Handle the case when you are coming from the dashboard
         if (section === 'Projects') {
@@ -156,7 +156,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
 
   openInfo(prjCode:string,actCode:string) {
     // document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
-    debugger
+
     $('#Project_info_slider_bar').addClass('open_sidebar_info');
     if(prjCode&&actCode)
       this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", prjCode,actCode, "3"]);
@@ -249,7 +249,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
           }
           else {
             this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
-console.log(this._ProjectDataList,'_ProjectDataList')
+console.log(this._ProjectDataList,'_ProjectDataListxxxxxxxxxxxxxx')
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
@@ -266,7 +266,7 @@ console.log(this._ProjectDataList,'_ProjectDataList')
 
 
   getDelayProjects(type) {
-    debugger
+
     this.projectsDataTable = false;
     this.AssignedTask = true;
     this.delayType=type;
@@ -931,7 +931,7 @@ debugger
     }else{
       document.getElementById("MemosSideBar").style.width = "0";
       document.getElementById("portfloSideBar").style.width = "0";
-      this.notifyService.showInfo("",'No dms link in this project')
+      this.notifyService.showInfo("",'No Smail link in this project.')
     }
 
   }
@@ -947,7 +947,7 @@ debugger
     }else{
       document.getElementById("portfloSideBar").style.width = "0";
       document.getElementById("MemosSideBar").style.width = "0";
-      this.notifyService.showInfo("",'No portfolio link in this project')
+      this.notifyService.showInfo("",'No portfolio link in this project.')
     }
    }
 
@@ -1113,7 +1113,7 @@ debugger
         const weeks = Math.floor(delayDays / 7);
         delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
       } else {
-        delayText = delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
+        delayText = delayDays==0?'0 days':delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
       }
 
       return `${delayText.toLowerCase()} delay`;

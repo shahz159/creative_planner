@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { DatePipe } from '@angular/common';
 import { BsServiceService } from './../../_Services/bs-service.service';
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef,Renderer2,ViewChildren,QueryList } from '@angular/core';
@@ -17,6 +18,7 @@ import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ProjectMoreDetailsService } from '../../_Services/project-more-details.service';
 import Swal from 'sweetalert2';
+import tippy from 'node_modules/tippy.js';
 
 //import { LoginDTO } from 'src/app/_Models/login-dto';
 //import { LoginComponent } from '../login/login.component';
@@ -114,6 +116,7 @@ export const MY_DATE_FORMATS = {
 
 export class PortfolioProjectsComponent implements OnInit {
   _PortProjStatus: string;
+  _FilterByEmp:string;
   _ShareDetailsList: any;
   _SharedToEmps:any=[];   // array of emp number to whom the portfolio shared.
   //_PortfolioListTable: boolean;
@@ -141,6 +144,7 @@ export class PortfolioProjectsComponent implements OnInit {
   currentActionView: number | undefined;
   URL_ProjectCode: any;
   Current_user_ID: string;
+  UserfullName : string
 
 
 
@@ -181,7 +185,7 @@ export class PortfolioProjectsComponent implements OnInit {
   ProjDto:ProjectDetailsDTO|undefined;
   formFieldsRequired:boolean=false;
   isLoadingData:boolean|undefined;
-
+  mtg_section:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'='TODAY';
 
 
 
@@ -321,6 +325,7 @@ export class PortfolioProjectsComponent implements OnInit {
   ngOnInit(): void {
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
+    this.UserfullName = localStorage.getItem('UserfullName')
     this.Project_Graph = "Graphs";
     this.Max50Char = true;
     this.pieBarCharts = true;
@@ -333,15 +338,17 @@ export class PortfolioProjectsComponent implements OnInit {
     this.GetPortfolioProjectsByPid();
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
     this.labelAll();
+    // this.togglevisibilityforClass('classCost', 'iscost')
 
     // this.onButtonClick('tot');
     // this.getusermeetings();
     this.updateListbyDetailsPage();
+    // isprojtype=true
 
 
 
 
-    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
+    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
     $(document).on('change', '.custom-file-input', function (event) {
       $(this).next('.custom-file-label').html(event.target.files[0].name);
     });
@@ -375,6 +382,15 @@ export class PortfolioProjectsComponent implements OnInit {
   Portfolio : any[]
   Employeshare:any[];
   UserAccessType : 'Full Access' | 'View Only'
+  uniqueid:any
+  counting:number=0
+  delayPrjsofPort :any
+  forwardPrjPort:any
+  completionPrjPort:any
+  newapprovalPrjport : any
+  checking: boolean = false;
+  isPendingChecked : boolean = false
+
 
   GetPortfolioProjectsByPid() {
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
@@ -401,8 +417,8 @@ export class PortfolioProjectsComponent implements OnInit {
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);
         this._PortFolio_Namecardheader = this._PortfolioDetailsById[0]['Portfolio_Name'];
         this.Rename_PortfolioName = this._PortFolio_Namecardheader;
-        this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];  
-        this.createdBy = this._PortfolioDetailsById[0]['Created_By'];   
+        this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];
+        this.createdBy = this._PortfolioDetailsById[0]['Created_By'];
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
 
         this.lastProject = this._ProjectsListBy_Pid.length;
@@ -411,6 +427,119 @@ export class PortfolioProjectsComponent implements OnInit {
         console.log( this.Employeshare,'employeeeeeeeeeeee')
         console.log("Portfolio Projects---->", this._ProjectsListBy_Pid);
         this.userFound = true
+        this.uniqueid = this._ProjectsListBy_Pid.find((ob)=>ob.Team_Res==this.Current_user_ID)
+        console.log(this.uniqueid,'Team_ResTeam_ResTeam_ResTeam_ResTeam_ResTeam_Res')
+
+
+
+      this.filteredEmployees = [];
+      this._ProjectsListBy_Pid.forEach(item=>{
+        const x=this.filteredEmployees.find(emp=>item.Emp_No === emp.Emp_No)
+        if(x){
+            x.totalProjects+=1;
+        }
+        else{
+          const obj={
+            Emp_No:item.Emp_No,
+            Team_Res:item.Team_Res,
+            totalProjects:1
+           };
+          this.filteredEmployees.push(obj)
+        }
+
+      })
+        console.log(this.filteredEmployees,"this.filteredEmployeesthis.filteredEmployees")
+
+        this.delayPrjsofPort = []
+        this._ProjectsListBy_Pid.forEach(item => {
+          if (item.Status === 'Delay' && (item.Emp_No == this.Current_user_ID || item.OwnerEmpNo == this.Current_user_ID ))  {
+             const obj = {
+              prjname : item.Project_Name,
+              prjcode : item.Project_Code,
+              status : item.Status,
+              emp_No : item.Emp_No,
+              owner : item.OwnerEmpNo
+              };
+              this.delayPrjsofPort.push(obj)
+          }
+        });
+        console.log(this.delayPrjsofPort, 'storingDelaycount');
+
+
+
+        this.forwardPrjPort = []
+
+        this._ProjectsListBy_Pid.forEach((item=>{
+          if(item.Status =='Forward Under Approval' && item.PendingapproverEmpNo == this.Current_user_ID){
+            const obj = {
+              prjname : item.Project_Name,
+              prjcode : item.Project_Code,
+              status: item.Status,
+              empNo : item.Emp_No
+              };
+              this.forwardPrjPort.push(obj)
+          }
+        }))
+console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
+
+
+  this.completionPrjPort = []
+
+  this._ProjectsListBy_Pid.forEach((item)=>{
+    if (item.Status === 'Completion Under Approval'  && item.PendingapproverEmpNo === this.Current_user_ID){
+      const obj = {
+        prjname : item.Project_Name,
+        prjcode : item.Project_Code,
+        status: item.Status,
+        empNo : item.Emp_No
+      }
+      this.completionPrjPort.push(obj)
+    }
+  })
+  console.log(this.completionPrjPort,"this.completionPrjPort.completionPrjPort")
+
+
+
+
+
+  this.newapprovalPrjport = []
+
+  this._ProjectsListBy_Pid.forEach((item)=>{
+    if (item.Status === 'Under Approval'  && item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+      const obj = {
+        prjname : item.Project_Name,
+        prjcode : item.Project_Code,
+        status: item.Status,
+        owner : item.PendingapproverEmpNo,
+        empNo : item.Emp_No
+      }
+      this.newapprovalPrjport.push(obj)
+    }
+  })
+  console.log(this.newapprovalPrjport,"this.newapprovalPrjport.newapprovalPrjport")
+
+
+
+
+
+    // this.checking = this._ProjectsListBy_Pid.some((emp) => {
+
+    // return emp.Team_Res === this.UserfullName || emp.Project_Owner===this.UserfullName ;
+    // });
+
+
+
+    this.isPendingChecked = this._ProjectsListBy_Pid.some((emp)=>{
+
+      return emp.PendingapproverEmpNo === this.Current_user_ID
+    })
+
+
+
+
+
+
+
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
         this.Deletedproject = JSON.parse(data[0]['PortfolioDeletedProjects']);
@@ -602,6 +731,11 @@ export class PortfolioProjectsComponent implements OnInit {
         this.labelAll()
         this.onButtonClick('tot')
           }
+
+
+
+
+          this.hasFilterResult();
       });
 
 
@@ -746,7 +880,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
 
 LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-  debugger
+
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -899,7 +1033,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     // if (this.CompanyDropdown == undefined) {
     //   return this._ErrorMessage_comp = "* Please Select Company";
     // }
-    debugger
+
     if (this.shareToEmplys == undefined ||  this.shareToEmplys === null || this.shareToEmplys&&this.shareToEmplys.length ===0) {
       return   this.valid = true
     }else{
@@ -1265,6 +1399,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   labelAll() {
     this._PortProjStatus = "";
     this.showDeletedPrjOnly=false;
+
   }
 
   labelInprocess() {
@@ -1317,8 +1452,10 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   labelCompleted() {
     this._PortProjStatus = 'Completed';
     this.showDeletedPrjOnly=false;
-    console.log('_PortProjStatus:',this._PortProjStatus);
+    var b = this._PortProjStatus.length
+    console.log('_PortProjStatus:bbbbb',b);
     console.log('_ProjectsListBy_Pid:',this._ProjectsListBy_Pid);
+
   }
 
   labelNewProject() {
@@ -1335,6 +1472,18 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     this.showDeletedPrjOnly=false;
     //this._PortProjStatus.includes('New Project Rejected');
   }
+
+  showDot : boolean = false
+  filterProjectsOfEmp(filterbyEmp:string){
+
+    this.showDot = true
+    this._FilterByEmp=filterbyEmp;
+    this.hasFilterResult();
+
+    console.log(this._FilterByEmp,"this._FilterByEmpthis._FilterByEmp")
+  }
+
+
 
 
 
@@ -1611,6 +1760,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
               this._MemosSubjectList = JSON.parse(data['JsonData']);
               this._MemosNotFound = "";
             });
+            // this.Closeportfoliosidebar()
         }
         else {
           this._MemosSubjectList = [];
@@ -1619,6 +1769,10 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
       });
     //Displaying Right Side Bar...
     document.getElementById("MemosSideBar").style.width = "350px";
+  }
+
+  noDms(){
+    this.notifyService.showInfo("",'No Smail link in this project.')
   }
 
   _CloseMemosidebar() {
@@ -1692,9 +1846,11 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     //document.getElementById("mysideInfobar").style.width='0';
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    this._CloseMemosidebar()
   }
 
   info_active_btn(item: any): void {
+
       // If the item is already active, deactivate it
       // If the item is not active, deactivate all items and activate the clicked one
       this._ProjectsListBy_Pid.forEach(otherItem => otherItem.active = false);
@@ -1702,10 +1858,29 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
     // Manually trigger change detection
     this.cdr.detectChanges();
-  }
+
+  //   item.isActive = !item.isActive;
+
+  //   // If you want to allow only one item to be active at a time, uncomment the following lines:
+  // if (item.isActive) {
+  //   this._ProjectsListBy_Pid.forEach(otherItem => {
+  //     if (otherItem !== item) {
+  //       otherItem.isActive = false;
+  //     }
+  //   });
+
+
+}
+
+
+
+
 
   closeInfo() {
     this._ProjectsListBy_Pid.forEach(item => item.active = false);
+    this.Deletedproject.forEach(item=> item.active = false)
+    // this._ProjectsListBy_Pid.forEach(item => item.isActive = false);
+
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
     document.getElementById("portfoliosideBar").classList.remove("active");
@@ -1714,6 +1889,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     // $('.project-list_AC').removeClass('active');
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    this._CloseMemosidebar()
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
   }
 
@@ -1908,6 +2084,38 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
       });
   }
 
+
+nofilterResult:boolean = false;
+resultCount: number=0;
+hasFilterResult(){
+
+let list;
+let result=[];
+
+if(this.showDeletedPrjOnly){
+  list=[...this.Deletedproject];
+  result=list.filter((p)=>{
+    return (((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp||this._FilterByEmp=="All"));
+  });
+
+}else{
+  list=[...this._ProjectsListBy_Pid];
+  result=list.filter((p)=>{
+
+    return (((p.Status==this._PortProjStatus)||(p.Status.includes('Delay')&&this._PortProjStatus=='Delay')||this._PortProjStatus=='')&& ((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp ||  p.PendingapproverEmpNo == this._FilterByEmp || p.OwnerEmpNo==this._FilterByEmp  ||this._FilterByEmp=="All"));
+  });
+
+  console.log(result);
+}
+
+this.resultCount = result.length;
+this.nofilterResult=(result.length==0);
+}
+
+
+
+
+
   onButtonClick(buttonId: string) {
 
     // const elements = {
@@ -1940,12 +2148,12 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
     //     }
     //   }
     // }
-    const elements = document.getElementsByClassName('btn-filtr');
-    for (let i = 0; i < elements.length; i++) {
-      elements[i].classList.remove('active');
-    }
-
-
+    // const elements = document.getElementsByClassName('btn-filtr');
+    // for (let i = 0; i < elements.length; i++) {
+    //   elements[i].classList.remove('active');
+    // }
+    this.showDot = true
+    this.hasFilterResult()
     if(buttonId=='tot')
       document.getElementById('tot').classList.add('active');
     else if(buttonId=='inn')
@@ -2025,27 +2233,53 @@ triger(){
     });
 
   }
-  Openportfoliosidebar(){
+
+  // Openportfoliosidebar(){
+  //   document.getElementById("portfoliosideBar").classList.add("active");
+  //   document.getElementById("rightbar-overlay").style.display = "block";
+  //   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  // }
+  portfolio_List:any;
+  _displayprtflioName:any;
+  _OpenfortfolioInfo(index:number,Project_Name) {
+   if(index!=undefined &&Project_Name!=undefined){
+    this._displayprtflioName=Project_Name
+    this.portfolio_List=this._ProjectsListBy_Pid[index]['availableports'];
+    console.log(this.portfolio_List,"this.portfolio_Listthis.portfolio_List")
     document.getElementById("portfoliosideBar").classList.add("active");
-    document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+     document.getElementById("rightbar-overlay").style.display = "block";
+       document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+       this._CloseMemosidebar()
+   }else{
+
+      this.notifyService.showInfo("",'No portfolio link in this project.')
+   }
+
   }
+
+
+
   Closeportfoliosidebar(){
     document.getElementById("portfoliosideBar").classList.remove("active");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    // this._CloseMemosidebar()
   }
+
   backMainMeetings() {
     document.getElementById("recall-meeting").style.display = "none";
     document.getElementById("main-meeting").style.display = "block";
     this.selectedMtgs2Link=[];  // clear selected meetings.
   }
   showRecallMeetingsView() {
-
     document.getElementById("recall-meeting").style.display = "block";
     document.getElementById("main-meeting").style.display = "none";
 
+
   }
+
+
+  Attamentdraftid:any;
 
 //  save meeting as draft start.
 Insert_indraft() {
@@ -2060,27 +2294,141 @@ Insert_indraft() {
   if (this.SelectDms == null) {
     this.SelectDms = [];
   }
-  this._calenderDto.Dms = this.SelectDms.map(item=>item.MailId).join(',');
+  this._calenderDto.Dms = this.SelectDms.toString();
   if (this.Portfolio == null) {
     this.Portfolio = [];
   }
-  this._calenderDto.Portfolio = this.Portfolio.map(item=>item.portfolio_id).join(',');
+
+  this.daysSelectedII = [];
+    const format2 = "YYYY-MM-DD";
+    var start = moment(this.minDate);
+    const _arraytext = [];
+    if (this.selectedrecuvalue == "0") {
+      const d1 = new Date(moment(start).format(format2));
+      const date = new Date(d1.getTime());
+      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+    }
+    else if (this.selectedrecuvalue == "1") {
+      this.daysSelectedII = this.AllDatesSDandED;
+    }
+    else if (this.selectedrecuvalue == "2") {
+      if (this.dayArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.dayArr.length; index++) {
+        if (this.dayArr[index].checked) {
+
+          const day = this.dayArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+      if (this.daysSelectedII.length == 0) {
+        alert('please select valid day');
+      }
+    }
+    else if (this.selectedrecuvalue == "3") {
+      if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+        alert('Please select day');
+        return false;
+      }
+      for (let index = 0; index < this.MonthArr.length; index++) {
+        if (this.MonthArr[index].checked == true) {
+          const day = this.MonthArr[index].value;
+          _arraytext.push(day);
+          var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+          this.daysSelectedII = this.daysSelectedII.concat(newArray);
+        }
+      }
+    }
+
+  this._calenderDto.Portfolio = this.Portfolio.toString();
   this._calenderDto.location = this.Location_Type;
   this._calenderDto.loc_status = this._onlinelink;
+  this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password;
+  this._calenderDto.Link_details=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+  this._calenderDto.Recurrence = this.selectedrecuvalue ;
+  this._calenderDto.Rec_values = _arraytext.toString();
+  this._calenderDto.Rec_EndDate = this._EndDate;
+
   this._calenderDto.Note = this.Description_Type;
   this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
   //  alert( this.ScheduleType);
   if (this.ngEmployeeDropdown == null) {
     this.ngEmployeeDropdown = [];
   }
-  this._calenderDto.User_list = this.ngEmployeeDropdown.map(item=>item.Emp_No).join(",");
+  this._calenderDto.User_list = this.ngEmployeeDropdown.toString();
   if (this.MasterCode == null) {
     this.MasterCode = [];
   }
   this._calenderDto.Project_Code = this.MasterCode.toString();
 
+
+  let _attachmentValue = 0;
+  const frmData = new FormData();
+  for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+    frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+  }
+  if (this._lstMultipleFiales.length > 0)
+    _attachmentValue = 1;
+  else
+    _attachmentValue = 0;
+
+    frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+    frmData.append("CreatedBy", this.Current_user_ID.toString());
+    frmData.append("RemovedFile_id", this._calenderDto.file_ids='');
+    const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+    this._calenderDto.DraftAgendas=mtgAgendas;
+
+
   this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
     (data => {
+
+      this.Attamentdraftid= data['draftid']
+      frmData.append("draftid", this.Attamentdraftid);
+
+        if (_attachmentValue == 1) {
+          this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+            (event: HttpEvent<any>) => {
+              switch (event.type) {
+                case HttpEventType.Sent:
+                  console.log('Request has been made!');
+                  break;
+                case HttpEventType.ResponseHeader:
+                  console.log('Response header has been received!');
+                  break;
+                case HttpEventType.UploadProgress:
+                  this.progress = Math.round(event.loaded / event.total * 100);
+                  console.log(`Uploaded! ${this.progress}%`);
+                  break;
+                case HttpEventType.Response:
+                  console.log('User successfully created!', event.body);
+
+                  // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+
+
+                  (<HTMLInputElement>document.getElementById("customFile")).value = "";
+                  this._lstMultipleFiales = [];
+                  // empty(this._lstMultipleFiales);
+                  // alert(this._lstMultipleFiales.length);
+                  setTimeout(() => {
+                    this.progress = 0;
+                  }, 2000);
+
+                  //69 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                  //69 (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                  document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                  //69 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+              }
+            }
+          )
+        }
+
+
+
+
       if (data['message'] == '1') {
         // this.Getdraft_datalistmeeting();
         this.closeschd();
@@ -2195,7 +2543,7 @@ Insert_indraft() {
         console.log(this.upcomingMeetings,'linklkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')                                        // get upcoming meetings.
         this.upcMtgCnt = this.upcomingMeetings.length;                           // store totalno of meetings.
         this.upcomingMeetings = this.groupMeetingsByDate(this.upcomingMeetings);
-        console.log("UPCOMMING MEETINGS:",this.upcomingMeetings);
+
 
         this.todaymeetings = this.getMeetingsByDate(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));     // get todays meetings.
         this.tdMtgCnt = this.todaymeetings.length;                                                        // store totalno of meetings.
@@ -2233,11 +2581,55 @@ Insert_indraft() {
 
         this.isLoadingData=false;
 
+debugger
+
+        if(this.upcomingMeetings.length>0 && this.todaymeetings.length>0){
+          this.mtg_section='TODAY';
+         }else if (this.upcomingMeetings.length>0){
+           this.mtg_section='UPCOMING';
+         }
+
+
+       // by default today section is opened, below line set the first meeting to open if present.
+       setTimeout(()=>{
+          this.toggleMtgsSection(this.mtg_section);
+       },1000);
+       // by default today section is opened, below line set the first meeting to open if present.
       });
-
-
     //
+
   }
+
+
+
+
+  toggleMtgsSection(sec:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'){
+    debugger
+    this.mtg_section=sec;
+    const bx=this.mtg_section=='UPCOMING'?'#upcoming_meetings_tabpanel div#upcoming-mtg-0-btn':
+             this.mtg_section=='TODAY'?'#today_meetings_tabpanel div#today-mtg-0-btn':
+             this.mtg_section=='LAST7DAYS'?'#last_7_days_meetings_tabpanel div#last7d-mtg-0-Btn':
+             this.mtg_section=='LASTMONTH'?'#last_month_meetings_tabpanel div#lastmonth-mtg-0-Btn':
+             null;
+    if(bx){
+        const btn:any=document.querySelector(bx);
+        if(btn&&btn.getAttribute('aria-expanded')=='false'){
+          btn.click();
+        }
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
   closeMeetingSidebar() {
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
@@ -2507,25 +2899,31 @@ config: AngularEditorConfig = {
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
       [
-        // 'bold',
-        // 'italic',
-        // 'underline',
+        'undo', // Hide Undo button
+        'redo', // Hide Redo button
         'strikeThrough',
         'subscript',
         'superscript',
         'indent',
         'outdent',
-        // 'insertUnorderedList',
-        // 'insertOrderedList',
+        'justifyLeft',
+        'justifyCenter',
+        'justifyRight',
+        'justifyFull',
         'heading',
-        // 'fontName'
+        'fontName',
+        // 'fontSize',
+        'textColor',
+        'backgroundColor',
+        'customClasses'
       ],
       [
         // 'fontSize',
         // 'textColor',
         // 'backgroundColor',
-        'customClasses',
-
+    // 'fontSize',
+        // 'textColor',
+        // 'backgroundColor',
         'unlink',
         'insertImage',
         'insertVideo',
@@ -2960,7 +3358,7 @@ getChangeSubtaskDetais(Project_Code) {
   Online_method(event) {
 
     if (event.target.checked) {
-      document.getElementById("Descrip_Name12").style.display = "block";
+      document.getElementById("Descrip_Name12").style.display = "flex";
       this._onlinelink = event.target.checked;
     }
     else {
@@ -3672,7 +4070,12 @@ getChangeSubtaskDetais(Project_Code) {
   formatTime1(hour, minute) {
     return moment({ hour, minute }).format("hh:mm A");
   }
-  eventRepeat:boolean = false
+
+  eventRepeat:boolean = false;
+  Meeting_Id:any;
+  Meeting_password:any;
+
+
   OnSubmitSchedule() {
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
@@ -3823,6 +4226,7 @@ getChangeSubtaskDetais(Project_Code) {
 
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+        this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
 
 
         var vLink_Details = "Link_Details";
@@ -3889,7 +4293,7 @@ getChangeSubtaskDetais(Project_Code) {
       else
         _attachmentValue = 0;
 
-      frmData.append("EventNumber", this.EventNumber.toString());
+      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       console.log(JSON.stringify(finalarray), "finalarray")
       this._calenderDto.draftid = this.draftid;
@@ -3899,6 +4303,10 @@ getChangeSubtaskDetais(Project_Code) {
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
+
+          var Attamentdraftid= data['draftid']
+          frmData.append("draftid", Attamentdraftid= Attamentdraftid?Attamentdraftid:0);
+
 
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
@@ -3929,6 +4337,7 @@ getChangeSubtaskDetais(Project_Code) {
                     (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
                     (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
                     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                    this._CloseMemosidebar()
                     document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
                 }
               }
@@ -3967,6 +4376,8 @@ getChangeSubtaskDetais(Project_Code) {
           this.SelectDms = null;
           this.Location_Type = null;
           this.Link_Details = null;
+          this.Meeting_Id = null;
+          this.Meeting_password = null;
           this._onlinelink = false;
           this.Allocated_subtask = null;
           this.TM_DisplayName = null;
@@ -5377,6 +5788,7 @@ close_project_filter() {
 }
 
 clearAppliedFiltered(){
+
   this.basedOnFilter.byuser=null;
   this.basedOnFilter.bycompany=null;
     switch(this.projectmodaltype){
@@ -5706,55 +6118,57 @@ bindCustomRecurrenceValues(){
     }
   }
 
-  Insert_indrafts() {
-    if (this.draftid != 0) {
-      this._calenderDto.draftid = this.draftid;
-    }
-    else {
-      this._calenderDto.draftid = 0;
-    }
-    this._calenderDto.Task_Name = this.Title_Name;
-    this._calenderDto.Emp_No = this.Current_user_ID;
-    if (this.SelectDms == null) {
-      this.SelectDms = [];
-    }
-    this._calenderDto.Dms = this.SelectDms.toString();
-    if (this.Portfolio == null) {
-      this.Portfolio = [];
-    }
-    this._calenderDto.Portfolio = this.Portfolio.toString();
-    this._calenderDto.location = this.Location_Type;
-    this._calenderDto.loc_status = this._onlinelink;
-    this._calenderDto.Note = this.Description_Type;
-    this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
-    //  alert( this.ScheduleType);
-    if (this.ngEmployeeDropdown == null) {
-      this.ngEmployeeDropdown = [];
-    }
-    this._calenderDto.User_list = this.ngEmployeeDropdown.toString();
-    if (this.MasterCode == null) {
-      this.MasterCode = [];
-    }
-    this._calenderDto.Project_Code = this.MasterCode.toString();
+  // Insert_indrafts() {
+  //   if (this.draftid != 0) {
+  //     this._calenderDto.draftid = this.draftid;
+  //   }
+  //   else {
+  //     this._calenderDto.draftid = 0;
+  //   }
+  //   this._calenderDto.Task_Name = this.Title_Name;
+  //   this._calenderDto.Emp_No = this.Current_user_ID;
+  //   if (this.SelectDms == null) {
+  //     this.SelectDms = [];
+  //   }
+  //   this._calenderDto.Dms = this.SelectDms.toString();
+  //   if (this.Portfolio == null) {
+  //     this.Portfolio = [];
+  //   }
+  //   this._calenderDto.Portfolio = this.Portfolio.toString();
+  //   this._calenderDto.location = this.Location_Type;
+  //   this._calenderDto.loc_status = this._onlinelink;
+  //   this._calenderDto.Note = this.Description_Type;
+  //   this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
+  //   //  alert( this.ScheduleType);
+  //   if (this.ngEmployeeDropdown == null) {
+  //     this.ngEmployeeDropdown = [];
+  //   }
+  //   this._calenderDto.User_list = this.ngEmployeeDropdown.toString();
+  //   if (this.MasterCode == null) {
+  //     this.MasterCode = [];
+  //   }
+  //   this._calenderDto.Project_Code = this.MasterCode.toString();
 
-    const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-    this._calenderDto.DraftAgendas=mtgAgendas;
-    this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
-      (data => {
-        if (data['message'] == '1') {
-          this.Getdraft_datalistmeeting();
-          this.closeschd();
-          this.notifyService.showSuccess("Draft saved", "Success");
-        }
-        if (data['message'] == '2') {
-          this.Getdraft_datalistmeeting();
-          this.closeschd();
-          this.notifyService.showSuccess("Draft updated", "Success");
-        }
-      });
+  //   const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+  //   this._calenderDto.DraftAgendas=mtgAgendas;
+  //   this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
+  //     (data => {
+  //       if (data['message'] == '1') {
+  //         this.Getdraft_datalistmeeting();
+  //         this.closeschd();
+  //         this.notifyService.showSuccess("Draft saved", "Success");
+  //       }
+  //       if (data['message'] == '2') {
+  //         this.Getdraft_datalistmeeting();
+  //         this.closeschd();
+  //         this.notifyService.showSuccess("Draft updated", "Success");
+  //       }
+  //     });
+  // }
 
 
-  }
+
+
   closeschds() {
 
     // this.Insert_indraft();
@@ -5762,6 +6176,7 @@ bindCustomRecurrenceValues(){
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    this._CloseMemosidebar()
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     document.getElementById("Descrip_Name12").style.display = "none";
 
@@ -5884,7 +6299,7 @@ bindCustomRecurrenceValues(){
           const weeks = Math.floor(delayDays / 7);
           delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
         } else {
-          delayText = delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
+          delayText = delayDays==0?'0 days':delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
         }
 
         return `${delayText.toLowerCase()}`;
@@ -5925,7 +6340,113 @@ bindCustomRecurrenceValues(){
   }
 
 
+  formatStatus(status: string): string {
+    return status.replace(/day\(s\)/i, 'days');
+}
+
+
+countgetFilter() {
+  const countMap = {
+    'Forward Under Approval': this.CountForward,
+    'Completion Under Approval': this.CountCompletionUA,
+    'Completed': this.CountCompleted,
+    'Delay': this.CountDelay,
+    'Not started': this.CountNotStarted,
+    'Under Approval': this.CountAll_UA,
+    'New project': this.CountNewProject,
+    'Project hold': this.CountProjectHold,
+    'Rejected': this.CountRejecteds,
+    'InProcess': this.CountInprocess,
+    'Cancellation Under Approval': this.CountCancellation,
+    'Deadline Extended Under Approval': this.CountDeadLineExtendedUA,
+    'ToDo completed': this.Count_ToDoCompleted,
+    'ToDo achieved': this.Count_ToDoAchieved,
+    'Project Hold': this.CountProjectHold
+  };
+
+  // Handle empty status condition
+  if (this._PortProjStatus === '') {
+    return this.showDeletedPrjOnly
+      ? `1 - ${this.CountDeleted} of ${this.CountDeleted}`
+      : `1 - ${this.TotalProjects} of ${this.TotalProjects}`;
+  }
+
+  // Return the formatted count based on the status
+  const count = countMap[this._PortProjStatus];
+  return count !== undefined
+    ? `1 - ${count} of ${count}`
+    : 'Status not found';
+}
+notShow(){
+  this.showDot = false
+}
+
+
+
+
+isaction = false;
+isracis = false;
+isstatus = true;
+islastupdate = true;
+isdeadline = true;
+isrespon = true;
+isprojtype = true
+isdeleted = true
+isrefer = true
+iscost = true
+isowner = false
+isclient = false
+isDepartment = false
+
+  togglevisibilityforClass(className: string, event: any): void {
+
+    // Mapping object for class names and their corresponding state variables
+    const classToStateMap: { [key: string]: string } = {
+      'action_class': 'isaction',
+      'racisClass': 'isracis',
+      'statusClass': 'isstatus',
+      'clas_lasup': 'islastupdate',
+      'class_deadline': 'isdeadline',
+      'responclass': 'isrespon',
+      'projtypeclass': 'isprojtype',
+      'isdeleteds': 'isdeleted',
+      'referClass':  'isrefer',
+      'classCost' :'iscost',
+      'owner_class' :'isowner',
+      'client_class': 'isclient',
+      'class_depart'  : 'isDepartment'
+    };
+
+    // Check if the className exists in the map and update the corresponding state variable
+    if (classToStateMap[className] !== undefined) {
+      this[classToStateMap[className]] = event.target.checked;
+    }
+
+  }
+
+
+  formatTime(input: string): string {
+    // Check if the input is already in the correct format
+    if (/^\d{2} Hr : \d{2} Mins$/.test(input)) {
+      return input; // If the format is correct, return it as-is
+    }
+
+    // Extract hours and minutes using regex for formatting if needed
+    const matches = input.match(/(\d+)Hr:(\d+)Mins/);
+
+    if (!matches) {
+      return 'Invalid Format'; // Handle unexpected format
+    }
+
+    // Extract hours and minutes
+    const hours = parseInt(matches[1], 10) || 0;
+    const minutes = parseInt(matches[2], 10) || 0;
+
+    // Format the string
+    return `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+  }
 
 
 
 }
+

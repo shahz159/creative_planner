@@ -86,6 +86,7 @@ export class CreateProjectComponent implements OnInit {
   PrjInformer:string;
   PrjAuditor:string;
   PrjSupport:{Emp_Name:string,Emp_No:string}[]=[];
+  totalPeopleOnProject=[];
   todayDate: Date = (new Date);
   EmpName:any
   previousdate :Date= new Date(this.todayDate.getFullYear(),this.todayDate.getMonth(),this.todayDate.getDate(),0,0,0,0)
@@ -195,6 +196,7 @@ export class CreateProjectComponent implements OnInit {
     this.route.queryParamMap.subscribe((qparams)=>{
       const assignedPrjTask=qparams.get('AssignedProjectId');
       if(assignedPrjTask){
+          
             const assignedTaskViewed=this.viewAssignedTaskById(assignedPrjTask);  
             if(assignedTaskViewed){
                const ob={...this.route.snapshot.queryParams};
@@ -219,17 +221,20 @@ export class CreateProjectComponent implements OnInit {
    const e1=document.querySelector('.Assigned-projects-list');
    const e2=document.querySelector('.np-step-1');
    const e3=e1.querySelector(`#myTabContent #assign-task-${id} .kt-act-card`);
-   const e4:any=e3.querySelector('.kt-act-no input'); 
-
+   let e4:any;
    e1.classList.remove('d-none');
    e2.classList.add('d-none');
-   setTimeout(()=>e4.focus(),300);
-   e3.classList.add('selected-anim');
-   e3.addEventListener('animationend',()=>{  
-    e3.classList.remove('selected-anim');
-   });
-   isProcessDone=true;
-  
+
+   if(e3){
+    e3.classList.add('selected-anim');
+    e3.addEventListener('animationend',()=>{  
+     e3.classList.remove('selected-anim');
+    });
+    e4=e3.querySelector('.kt-act-no input'); 
+    setTimeout(()=>{ if(e4)e4.focus(); },300);
+   }
+
+   isProcessDone=true;  
   }catch(e){
    isProcessDone=false;
   }
@@ -265,10 +270,16 @@ export class CreateProjectComponent implements OnInit {
          this.Client_json=JSON.parse(res[0].Client_json);
          this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
-         console.log(this.Responsible_json,"Responsible_json")
-         this.Team_json=JSON.parse(res[0].Team_json);  console.log('Team_json:',this.Team_json);
-         this.allUser_json=JSON.parse(res[0].allUser_json); console.log('allUser_json:',this.allUser_json);
-         this.owner_json=JSON.parse(res[0].owner_json);
+         this.Team_json=JSON.parse(res[0].Team_json);  
+         this.allUser_json=JSON.parse(res[0].allUser_json); 
+
+         let owner_values=JSON.parse(res[0].owner_json);
+         owner_values=owner_values.map(ob=>({...ob,type:'Hierarchical'}));
+         const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo.trim()];  
+         let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob.Emp_No));
+         otherusers=otherusers.map(ob=>({EmpNo:ob.Emp_No, EmpName:ob.Emp_Name, type:'Others'}));
+         this.owner_json=[...owner_values,...otherusers];
+        
 
           this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
           this.PrjResp=this.Responsible_json[0].ResponsibleNo.trim();
@@ -280,6 +291,8 @@ export class CreateProjectComponent implements OnInit {
                return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
           })
           this.PrjSupport=defaultvalue?[defaultvalue]:[];
+
+
 
           // this.Prjtype=this.ProjectType_json[0].Typeid;// by default prj type core is selected.
           this.Project_Type=this.ProjectType_json[0].ProjectType;
@@ -443,17 +456,14 @@ debugger
   })
 
   this.service.GetRACISandNonRACISEmployeesforMoredetails(this.PrjCode).subscribe(
-    (data) => {
-      debugger
+    (data) => {  
       this.owner_dropdown = (JSON.parse(data[0]['RacisList']));
       this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));  console.log("this 3:",this.responsible_dropdown);
-
     });
 
 
-
   this.service.SubTaskDetailsService_ToDo_Page(prjCode, null, this.Current_user_ID).subscribe(
-      (data) => {
+      (data) => {  
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
         this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
         console.log(this.Category_List, "CategoryDropdown");
@@ -463,12 +473,12 @@ debugger
         (data) => {
 
           if (data != null && data != undefined) {
-              this.PrjSupport=JSON.parse(data[0]['RacisList']);
-              console.log(this.PrjSupport,'this.PrjSupportthis.PrjSupportthis.PrjSupportthis.PrjSupport')
-
-              console.log("draft support:",this.PrjSupport)
-              this.PrjSupport=this.PrjSupport.map((item:any)=>({Emp_No:item.Emp_No,Emp_Name:item.RACIS}));
+              this.totalPeopleOnProject=JSON.parse(data[0]['RacisList']);
+              this.PrjSupport=this.totalPeopleOnProject.map((item:any)=>({Emp_No:item.Emp_No,Emp_Name:item.RACIS}));
               this.setRACIS();
+              console.log("draft support:",this.PrjSupport)
+
+              this.detectMembersWithoutActions();   // 'hasNoActionMembers' may need updation whenever PrjSupport is fetched.
           }
 
 
@@ -657,6 +667,7 @@ createSRTProject(){
            if(res&&res.message==='Success'){
                this.PrjCode=res.Project_Code;
                this.getAddActionDetails();
+         
 
               //  this.notification.showSuccess("Saved successfully","");
                this.notification.showInfo("Please submit the project for approval","");
@@ -868,6 +879,7 @@ onFileChanged(event: any) {
     $('.np-step-2').removeClass('d-none');        // visible proj creation section.
     $('.np-step-1').addClass('d-none');           // close let's start section.
     this.notificationMsg=0;
+    this.promptToReadGuidelines();
   }
 
   back_to_options(){
@@ -882,7 +894,33 @@ onFileChanged(event: any) {
     $('.Project_details_tab').show();                    // open section 1 form.
     $('.action-left-view').addClass('d-none');           // close actions view of 3rd step.
     this.notificationMsg=0;
+    this.okWithType=false;
+    // this.dontShowAgain=false; 
   }
+
+
+
+  promptToReadGuidelines(){
+     const hasRead=localStorage.getItem('readPrjCreationGuidelines');
+     if(!hasRead){
+          Swal.fire({
+            title:'Before you begin',
+            text:"Please read the guidelines to avoid project issues and streamline your project creation. Click on the 'View Guidelines' button to view the guidelines.",
+            showConfirmButton:true,
+            confirmButtonText:'View Guidelines',
+            showCancelButton:true,
+            cancelButtonText:'Skip',
+            allowOutsideClick: false
+          }).then((decision)=>{
+            if(decision.isConfirmed){
+              this.New_project_guideline(); 
+            }
+            localStorage.setItem('readPrjCreationGuidelines','true');   
+           });
+     }
+  }
+
+
 
 
   closeStep3Section(){
@@ -1128,6 +1166,18 @@ onResponsibleChanged(){
          this.PrjAuditor=null;
       }
   //
+
+
+
+
+  
+ 
+
+  // const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.PrjResp];
+  // let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob.Emp_No));
+  // otherusers=otherusers.map(ob=>({EmpNo:ob.Emp_No, EmpName:ob.Emp_Name, type:'Others'}));
+  // this.owner_json=[...owner_values,...otherusers];
+
 
   }
 }
@@ -1378,14 +1428,22 @@ openFileReupload(){
 // action add in step3 code start
 PrjActionsInfo:any=[];
 currentActionView:number|undefined;
+draftActionsLoading:boolean=false;
+
 getActionsDetails(){
+  this.draftActionsLoading=true;
   this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((res)=>{
+    this.draftActionsLoading=false;
+
     console.log("LLL:",res);
     if(res[0].Action_Json)
     this.PrjActionsInfo = JSON.parse(res[0].Action_Json);
-
     else
     this.PrjActionsInfo=[];
+
+    this.detectMembersWithoutActions();   // update 'hasNoActionMembers' may needed since new action is added into the project.
+    // setTimeout(()=>this.hasActnsMatchingPrjDeadline(),2000);   // warning dialog if more than 50% actns deadline same as the project deadline.
+
   });
 
 }
@@ -1666,22 +1724,25 @@ return;
 RACIS:any=[];
 
 
-setRACIS(){
+setRACIS(){      debugger
     this.RACIS=[];
-
+  try{
+     if(this.PrjOwner)
      this.RACIS.push(this.owner_json.find((item)=>item.EmpNo===this.PrjOwner).EmpName);
+     if(this.PrjResp)
      this.RACIS.push(this.Responsible_json[0].OwnerEmpNo===this.PrjResp?this.Responsible_json[0].OwnerName:this.Responsible_json[0].ResponsibleName);
+     if(this.PrjAuth)
      this.RACIS.push(this.Authority_json.find((item)=>item.EmpNo===this.PrjAuth).EmpName);
-      this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjCrdtr).Emp_Name);
-      this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjInformer).Emp_Name);
-
-      const au=this.allUser_json.find((item)=>item.Emp_No===this.PrjAuditor);
-      if(au)this.RACIS.push(au.Emp_Name);
+     if(this.PrjCrdtr)
+     this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjCrdtr).Emp_Name);
+     if(this.PrjInformer)
+     this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjInformer).Emp_Name);
+     if(this.PrjAuditor)
+     this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjAuditor).Emp_Name);
+    
 
      const e=this.PrjSupport.map((item)=>item.Emp_Name);
      this.RACIS=[...this.RACIS,...e];
-
-
 
      let arr=[];
      for(let i=0;i<this.RACIS.length;i++){
@@ -1690,8 +1751,10 @@ setRACIS(){
      }
      this.RACIS=arr;
 
-      console.log("RACIS:",this.RACIS);
-
+    console.log("RACIS:",this.RACIS);
+  }catch(e){
+     console.error('FACING PROBLEM WITH setRACIS METHOD');
+  }
 
 }
 
@@ -1753,132 +1816,181 @@ addreschange() {
 // strin =new Date(this.todayDate.getFullYear(),this.todayDate.getMonth(),this.todayDate.getDate(),0,0,0,0);
 // RACIS CODE end
 // send prj to project owner for approval start
-sendApproval(){
-debugger
-
-// if (this.actionCount.DeadLine==this.End_Date&&this.actionCount.count>3){
-//   Swal.fire({
-//     title:'invalid Date',
-//     text:'you have 3 action on that date',
-//     showCloseButton:true
-//    });
-//    return;
-// }
 
 
+hasNoActionMembers:any=[];
+detectMembersWithoutActions(){  debugger
+  let _hasNoActionMembers=[];
+  if(this.PrjActionsInfo&&this.PrjActionsInfo.length>0){
+    const actns_resps=this.PrjActionsInfo.map(pact=>pact.Team_Res);
+    _hasNoActionMembers=this.totalPeopleOnProject.filter(ob=>{
+         return ob.Role!='Owner'&&actns_resps.includes(ob.Emp_No)==false;
+    });
+  }
+  else{
+    _hasNoActionMembers=this.totalPeopleOnProject.filter(ob=>ob.Role!='Owner');   
+  }
+  _hasNoActionMembers=_hasNoActionMembers.map(ob=>(ob.RACIS.slice(0,ob.RACIS.indexOf('('))).trim() );
+  this.hasNoActionMembers=Array.from(new Set(_hasNoActionMembers));
+}
+
+
+
+
+
+
+
+
+sendApproval=async()=>{
+
+  const _sendApprovalToOwner=()=>{
+      
+    this.ProjectDto.Emp_No=this.Current_user_ID;
+    this.ProjectDto.isTemplate=this.saveAsTemplate;
+    this.ProjectDto.Project_Code=this.PrjCode;
+    this.ProjectDto.file = this.fileAttachment
+    this.ProjectDto.Remarks=this._remarks;
+    this.ProjectDto.Project_Cost=this.PrjCost;
+    this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
+      if(res&&res.message==='Success'){
+            this.notification.showSuccess("Project sent to project owner "+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for approval',"Success");
+            this.BsService.ConfirmBeforeRoute.emit(null);
+            this.router.navigate(['./backend/ProjectsSummary']);
+            //  this.closeInfo();
+        }
+      else{
+          this.notification.showError('something went wrong','Failed');
+      }
+    });
+  }
+
+
+// 1.validation: when project start date is less than the current date.
   const _prjstrtd= new Date(this.projectInfo.StartDate);
   const _prjendd= new Date(this.projectInfo.EndDate);
   const _curtd=new Date(this.todayDate.getFullYear(),this.todayDate.getMonth(),this.todayDate.getDate(),0,0,0,0);
   if(_prjstrtd<_curtd||_prjendd<_curtd){
 
-    let msg;
-    if(_prjstrtd<_curtd)
-    msg="Please select a new start date.";
-
-    if(_prjendd<_curtd)
-    msg="Please select new start date and new end date.";
-
-     Swal.fire({
-      title:'invalid Date',
-      text:msg,
-      showCloseButton:true
-     });
-     return;
+  let _title;
+  let _msg;
+  if(_prjendd<_curtd){   // when both startdate and enddate are invalid.
+   _title='Invalid project dates';
+   _msg='Please select new start date and end date of the project before submitting it.';
   }
+  else if(_prjstrtd<_curtd){  // when startdate is invalid.
+    _title='Invalid project start date';
+    _msg='Please select new start date of the project before submitting it.';
+  }
+  
+  Swal.fire({
+      title:_title,
+      text:_msg,
+      showConfirmButton:true,
+      showCancelButton:true,
+      confirmButtonText:'Select new dates',
+      cancelButtonText:'Cancel'
+  }).then(choice=>{
+        if(choice.isConfirmed){
+          this.Project_details_edit();
+          this.updateCharacterCount_Desc();
+          this.alertMaxAllocation();
+        }
+  });
+   
+  return;
+  }
+//  
 
 
+// 2.validation: if project has no actions.
+const pdur=Math.abs(moment(_prjstrtd).diff(moment(_prjendd),'days'));
+if(this.PrjActionsInfo.length==0){  
+
+  Swal.fire({
+     title:'Actions required',
+     html:`
+     <div style="text-align: justify;">
+     No actions are defined in this project. Seems like the project hasn't been fully planned for the given duration.<br>
+     <div style="font-size: 12px;color: #00a2eb;border: 1px solid #aae4ff;font-weight: 500;margin-top: 10px;background-color: #d8efff;padding: 5px;border-radius: 4px;display: flex; align-items: flex-start;column-gap: 7px;">
+      <svg width="30px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.00024000000000000003" style="min-width: 18px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z" fill="#1692df"></path></g>
+      </svg>
+      <span>Well-defined actions in project can help ensure better tracking and project success.</span>
+      </div>
+    </div> 
+     `,
+     showConfirmButton:true, 
+     confirmButtonText: 'OK',
+   })
+
+   return;
+ }
+//
 
 
+// 3.validation: Check if any action's start date is before the project start date
   const inputdate = new Date(this.projectInfo.StartDate);
-
-  // Check if any action's start date is before the project start date
-  const isInvalid = this.PrjActionsInfo.some((actn) => {
+  const actn_index = this.PrjActionsInfo.findIndex((actn) => {
       const actdate = new Date(actn.StartDate);
       return actdate < inputdate;
   });
+ if(actn_index>-1){
+  Swal.fire({
+    title: 'Invalid action dates',
+    html: `Action <b>"${this.PrjActionsInfo[actn_index].Project_Name}"</b> cannot start before the project itself. Please revise the start date for this action to comply with the project timeline.`,
+    showCancelButton:true,
+    showConfirmButton:true,
+    confirmButtonText:'View',
+    cancelButtonText:'Cancel'
+   }).then(choice=>{
+        if(choice.isConfirmed){
+          this.showActionDetails(actn_index);
+        } 
+   })
 
-  // If any action's start date is before the project start date, show the popup
-  if (isInvalid) {
-      Swal.fire({
-          showCloseButton: true,
-          title: 'Invalid Action  Date.',
-          text: "Please select a new action start date",
-          showCancelButton:true
-      });
-      return;
-  }
-
-
-
-
-
-//     if (f < g && a<g ) {
-//      Swal.fire({
-//       title:"Please Select  a new start date",
-//       text:"the  Start date and End date of project has expired",
-//       showCloseButton:true
-//      })
-// return;
-//     }
+   return;
+ }
+//  
 
 
-  //   const c= new Date(this.projectInfo.StartDate)
-
-  //   // const d= new Date(this.projectInfo.EndDate)
-  //   const h= new Date(this.todayDate)
-  //     if (c<h) {
-  //      Swal.fire({
-  //       title:"Please Select  a new start date ",
-  //       text:"the  Start date of project has expired",
-  //       showCloseButton:true
-  //      })
-  // return;
-  //     }
+// 3.validation: if any RACIS member doesn't have atleast one action in the project.
+this.detectMembersWithoutActions();
+if(this.hasNoActionMembers.length>0){  
+ const choice=await Swal.fire({
+    title:'Team members with no actions assigned',
+    text:'Project includes team members with no actions assigned to them. Do you still want to proceed with this project?',
+    showConfirmButton:true,
+    showCancelButton:true,
+    confirmButtonText: 'Yes, Proceed',
+    cancelButtonText: 'Cancel'
+  })
+ if(choice.isConfirmed==false){
+  return;
+ }
+}
+//
 
 
 
-   Swal.fire({
+// 5.validation: project cost confirmation from user.
+ const final_choice=await Swal.fire({
        title:'Are you sure?',
-       text:`You will be going to spend "${this.PrjCost}.00 SAR" on this project. Do you want to continue?`,
+       html:`<div style="text-align: justify;">
+                You will be going to spend <b>"${this.PrjCost}.00 SAR"</b> on this project. Do you want to continue?
+                ${this.PrjCost>=3000?`<span style="display: flex;align-items: center;column-gap: 8px;font-size: 12px;margin-top: 8px;background-color: #fdbc4a38;color: #c57a05;border: 1px solid #cc922d63;padding: 10px;border-radius: 5px;font-weight: 500;">
+                  <svg width="40px" height="20px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
+                  The project cost has reached 3000 SAR or more. Please ensure that the plan aligns with the annual business plan\'s budget.</span>`:''} 
+             </div>`,
+       
        showConfirmButton:true,
        showCancelButton:true,
        confirmButtonText: 'Yes, confirm',
        cancelButtonText: 'Cancel'
-   })
-   .then(choice=>{
-
-      if(choice.isConfirmed){
-              this.ProjectDto.Emp_No=this.Current_user_ID;
-              this.ProjectDto.isTemplate=this.saveAsTemplate;
-              this.ProjectDto.Project_Code=this.PrjCode;
-              this.ProjectDto.file = this.fileAttachment
-              this.ProjectDto.Remarks=this._remarks;
-              this.ProjectDto.Project_Cost=this.PrjCost;
-              this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
-                if(res&&res.message==='Success'){
-                      this.notification.showSuccess("Project sent to project owner "+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for approval',"Success");
-                      this.BsService.ConfirmBeforeRoute.emit(null);
-                      this.router.navigate(['./backend/ProjectsSummary']);
-                      //  this.closeInfo();
-                  }
-                else{
-                    this.notification.showError('something went wrong','Failed');
-                }
-              });
-      }
-
-   });
-
-
-
-// }
-// else{
-//   Swal.fire(
-//     'Action Required',
-//     'Please provide atleast one action to submit the project.',
-//     'error'
-//   );
-// }
+ });
+ if(final_choice.isConfirmed){
+  _sendApprovalToOwner();
+ }
+//
 
 }
 // send prj to project owner for approval end
@@ -2141,8 +2253,7 @@ if(['003','008'].includes(this.Prjtype)){
      const h=Number.parseInt(alhr.split(':')[0]);
      const m=Number.parseInt(alhr.split(':')[1]);
      alhr=h+'.'+m;
-}
-
+}  
   this.ProjectDto.Emp_No=this.Current_user_ID;
   this.ProjectDto.Hours=alhr;
   this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:{Status:boolean,Message:string,Data:number})=>{
@@ -2195,7 +2306,7 @@ debugger
 Action_Code:any
 
 deletingDraftactions(index:number){
-debugger
+
   Swal.fire({
 
     showCancelButton:true,
@@ -2211,7 +2322,10 @@ debugger
                    if(res['message']=='1'){
                      this.notifyService.showSuccess(`'${this.PrjActionsInfo[index].Project_Name}' action is deleted`,"Deleted successfully");
                     //  this.GetAssignedTaskDetails();
-                    this.openDraft(index)
+                    this.currentActionView=undefined;
+                    this.getActionsDetails();  // rebind action list.
+                    // const draftIndex=this.draft_json.findIndex(d=>d.Project_Code==this.PrjCode)
+                    // this.openDraft(draftIndex);
                    }
                    else{
                       this.notifyService.showError(`Failed to delete ${this.PrjActionsInfo[index].Project_Name}`,"Failed");
@@ -2264,8 +2378,11 @@ this.newProjectDetails(this.draft_json[index].Project_Code);
 
 // this.getActionsDetails();
 
+this.draftActionsLoading=true;
 this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((res)=>{
-  console.log("after after openDraft method:",res);
+  console.log("after after openDraft method:",res);   debugger
+  this.draftActionsLoading=false;
+
   if(res[0].Action_Json)
   this.PrjActionsInfo = JSON.parse(res[0].Action_Json);
   else
@@ -2289,6 +2406,8 @@ this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((re
   }
 // getting file attachment name if provided in the draft project. start
 
+this.detectMembersWithoutActions();   // update 'hasNoActionMembers' may needed since new action is added into the project.
+// this.hasActnsMatchingPrjDeadline();   // warning dialog if more than 50% actns deadline same as the project deadline.
 });
 
 
@@ -2337,6 +2456,9 @@ reset(){
   // step3 info clear. start
     this.PrjTemplActions=[];
     this.PrjActionsInfo=[];
+    this.draftActionsLoading=false;
+    this.hasNoActionMembers=[];
+    this.totalPeopleOnProject=[];
   // step3 info clear. end
 
 }
@@ -3107,6 +3229,111 @@ alertMaxAllocations() {
     console.log(this.start_dt,this.end_dt,this.maxAllocations,"allcoation")
   }
 }
+
+
+
+
+
+// dontShowAgain:boolean=false;
+// hasActnsMatchingPrjDeadline(){
+//  let totalActnsMatch=0;
+//  let totalActnsInPrj=this.PrjActionsInfo.length;
+//  if(totalActnsInPrj<4){
+//     return;
+//  }
+//  const prj_deadline=new Date(this.projectInfo.EndDate);
+//  this.PrjActionsInfo.forEach((actn:any)=>{
+//        const actn_deadline=new Date(actn.EndDate);
+//        if(prj_deadline.getTime()==actn_deadline.getTime()){
+//            totalActnsMatch++;
+//        }   
+//  });
+
+//  const percent_val=(totalActnsMatch/totalActnsInPrj)*100;    // 0/10 ===>0 .  8/10==>80%.  0/0==>0    10/0==>infinity(impossible)
+//  if(percent_val>=50&&this.dontShowAgain==false){
+//     Swal.fire({
+//       title:'Confirm Action Deadlines',
+//       html:`<div style="text-align: justify;"><b>${totalActnsMatch}/${totalActnsInPrj}</b> actions are currently planned to end with the main project.  Is this intentional? <br/> If not, consider adjusting deadlines using action 'Edit' to optimize workflow.</div>`,
+//       showCancelButton:true,
+//       cancelButtonText:"OK",
+//       cancelButtonColor:'#3085d6',
+//       showConfirmButton:true,
+//       confirmButtonText:"Don't Show Again",
+//       confirmButtonColor:'#aaa'     
+//   }).then(choice=>{
+//       if(choice.isConfirmed==true){
+//           this.dontShowAgain=true;
+//       }
+//   })
+
+//  }
+
+ 
+// }
+
+
+
+actnsMatchingPrjDeadline():number{
+  const prj_deadline=new Date(this.projectInfo.EndDate);
+  let totalActnsMatch=0;
+  this.PrjActionsInfo.forEach((actn:any)=>{
+           const actn_deadline=new Date(actn.EndDate);
+           if(prj_deadline.getTime()==actn_deadline.getTime()){
+               totalActnsMatch++;
+           }   
+  });
+  return totalActnsMatch;
+}
+
+
+
+okWithType:boolean=false;
+promptIfNameTypeMismatch(){
+
+  if(this.PrjName&&this.PrjName.trim()&&this.Prjtype){
+
+    const words_003=[
+      'weekly','daily','monthly','yearly','annually','half yearly','quarterly','every week','every month','every year',
+       'annual','recurring', 'repetitive'
+    ];
+    const isincluded=words_003.some((wrd:string)=>{
+      const regex = new RegExp(`\\b${wrd}\\b`, 'i'); // Match exact word with word boundaries
+      return regex.test(this.PrjName.trim());
+    });
+
+    if(isincluded){
+      const typematched=['003','008'].includes(this.Prjtype);
+      if(typematched==false&&this.okWithType==false){
+        Swal.fire({
+            title:'Are You Sure About the Project Type?',
+            text:'The project name suggests a Standard or Routine type. View guidelines or proceed if correct.',
+            showConfirmButton:true,
+            showCancelButton:true,
+            confirmButtonText:'Continue Anyway',
+            cancelButtonText:'View Guidelines',
+            
+        }).then((choice)=>{
+             if(choice.isConfirmed){
+                this.okWithType=true
+             }
+              if(choice.isConfirmed==false){
+                this.New_project_guideline(); 
+              }
+              
+        });
+      }
+    }
+
+  }
+
+}
+
+ 
+
+
+
+
+
 
 
 }

@@ -8,7 +8,7 @@ import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { LinkService } from 'src/app/_Services/link.service';
 import { CompletedProjectsDTO } from 'src/app/_Models/completed-projects-dto';
 //import { LoadingBarService } from '@ngx-loading-bar/core';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import * as _ from 'underscore';
@@ -67,7 +67,9 @@ Dateselectionrange: string = 'Date selection range';
     private router: Router,
     public BsService: BsServiceService,
     public approvalservice: ApprovalsService,
-    private notifyService: NotificationService) {
+    private notifyService: NotificationService,
+    private route:ActivatedRoute
+    ) {
     this.ObjUserDetails = new UserDetailsDTO();
     this._objDropdownDTO = new DropdownDTO();
     this.Obj_Portfolio_DTO = new PortfolioDTO();
@@ -86,57 +88,80 @@ Dateselectionrange: string = 'Date selection range';
   _raciDetails: boolean = true;
   approvalObj = new ApprovalDTO();
 
+
   ngOnInit() {
-// JQUERY
 
-this.getDropdownsDataFromDB()
-$(document).ready(function() {
-  // Action next
-  $('.btn-next').on('click', function() {
-    // Get value from data-to in button next
-    const n = $(this).attr('data-to');
-    // Action trigger click for tag a with id in value n
-    $(n).trigger('click');
-  });
-  // Action back
-  $('.btn-prev').on('click', function() {
-    // Get value from data-to in button prev
-    const n = $(this).attr('data-to');
-    // Action trigger click for tag a with id in value n
-    $(n).trigger('click');
-  });
-});
-$(document).ready(function(){
-  $('.card').click(function(){
-    $('.card').removeClass("active");
-    $(this).addClass("active");
-});
-
-});
-
-
-
-
-
-    this._raciDetails = true;
+    this.Current_user_ID = localStorage.getItem('EmpNo');
     this.A2Z = true;
     this.Z2A = false;
+    this._raciDetails = true;
     this._subtaskDiv = true;
-    this.Current_user_ID = localStorage.getItem('EmpNo');
-  //  alert(123)
-    // this.GetApplicationDetails();
     this.router.navigate(["/backend/ProjectsSummary/"]);
-    this.GetProjectsByUserName(this.type1);
-    //this.portfolioName = localStorage.getItem('_PortfolioName');
-
-
     this.BsService.ProjectCreatedEvent.subscribe(()=>{
       this.GetProjectsByUserName(this.type1);
-    })
+    });
+
+   let filterprjsby:any=sessionStorage.getItem('filterprjsby');
+   if(filterprjsby){   // show only standard type projects which are in delay.
+        filterprjsby=JSON.parse(filterprjsby);
+        this.emplyToselect=filterprjsby.EmpNo?[filterprjsby.EmpNo]:[];
+        this.projtypeToselect=filterprjsby.ProjectType?[filterprjsby.ProjectType]:[];
+        this.enterStatus=filterprjsby.Status?[filterprjsby.Status]:[];
+        this.comToselect=filterprjsby.Company?[filterprjsby.Company]:[];
+
+        this.EmpCountInFilter=filterprjsby.EmpNo?[{ Emp_No: filterprjsby.EmpNo }]:[];
+        this.TypeContInFilter=filterprjsby.ProjectType?[{ Block_No: filterprjsby.ProjectType }]:[];
+        this.StatusCountFilter=filterprjsby.Status?[{ Name: filterprjsby.Status }]:[];
+        this.CompanyCountFilter=filterprjsby.Company?[{Company_No:filterprjsby.Company}]:[];
+
+        this.Type=this.type1;
+        this.userFound=true;
+        sessionStorage.removeItem('filterprjsby');
+
+        this.getNewFilterResult();
+        this.applyFilters();
+   }
+   else{  //  show all projects without any filter.
+    this.GetProjectsByUserName(this.type1);
+   }
+
+    // this.getDropdownsDataFromDB();
+
+// JQUERY
+    $(document).ready(function() {
+      // Action next
+      $('.btn-next').on('click', function() {
+        // Get value from data-to in button next
+        const n = $(this).attr('data-to');
+        // Action trigger click for tag a with id in value n
+        $(n).trigger('click');
+      });
+      // Action back
+      $('.btn-prev').on('click', function() {
+        // Get value from data-to in button prev
+        const n = $(this).attr('data-to');
+        // Action trigger click for tag a with id in value n
+        $(n).trigger('click');
+      });
+    });
+    $(document).ready(function(){
+      $('.card').click(function(){
+        $('.card').removeClass("active");
+        $(this).addClass("active");
+    });
+
+    });
+
+
+  //  alert(123)
+    // this.GetApplicationDetails();
+   // this.GetProjectsByUserName(this.type1);
+    //this.portfolioName = localStorage.getItem('_PortfolioName');
 
    // dropdowns data
-    this.getDropdownsDataFromDB1();
+    // this.getDropdownsDataFromDB1();
     // this.changingdaysinweek(this.index)
+
   }
 
 
@@ -484,12 +509,6 @@ $(document).ready(function(){
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
         this._ProjectDataList = data;
 
-
-
-
-
-
-
          console.log("Summary Data---->",this._ProjectDataList);
 
         this.userFound = true
@@ -515,7 +534,7 @@ $(document).ready(function(){
           this.emptyspace=true;
         }
       this.getDropdownsDataFromDB();
-      debugger
+
 
       // this.changeDaysInWeek()
 
@@ -547,7 +566,7 @@ $(document).ready(function(){
       const weeks = Math.floor(delayDays / 7);
       delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
     } else {
-      delayText = delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
+      delayText = delayDays==0?'0 days':delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
     }
 
     return `${delayText} delay`;
@@ -797,7 +816,7 @@ dates:any
 
 
   getDropdownsDataFromDB1(){
-debugger
+
 
 
       this._objDropdownDTO.EmpNo = this.Current_user_ID;
@@ -1051,8 +1070,8 @@ debugger
   }
 
   applyFilters() {
-
-this.edited = true
+debugger
+    this.edited = true
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
     }).join(',');
@@ -1159,7 +1178,7 @@ this.edited = true
         });
 
      this.getDropdownsDataFromDB();
-    this.filterMegadropdownclose()
+    this.filterMegadropdownclose();
     }
 
   }
@@ -1418,7 +1437,7 @@ this.edited = true
   }else{
     document.getElementById("MemosSideBar").style.width = "0";
     document.getElementById("prtfloSideBar").style.width = "0";
-    this.notifyService.showInfo("",'No dms link in this project')
+    this.notifyService.showInfo("",'No Smail link in this project.')
   }
   }
 
@@ -1442,7 +1461,7 @@ this.edited = true
    }else{
         document.getElementById("prtfloSideBar").style.width = "0";
         document.getElementById("MemosSideBar").style.width = "0";
-      this.notifyService.showInfo("",'No portfolio link in this project')
+      this.notifyService.showInfo("",'No portfolio link in this project.')
    }
 
   }
@@ -1977,6 +1996,7 @@ onEmployeeSelected(e:any){
        }
   }
   this.openAutocompleteDrpDwn('employeeDDwn');
+  console.log('emplyToselect:',this.emplyToselect);
 }
 removeSelectedemployee(item){
   const index=this.emplyToselect.indexOf(item);
@@ -1986,8 +2006,11 @@ removeSelectedemployee(item){
 }
 
 getObjOf(arr, id, idName) {
-  const obj = arr.find(item => item[idName] == id);
-  return obj;
+  if(arr){
+    const obj = arr.find(item => item[idName] == id);
+    return obj?obj:'';
+  }
+  return '';
 }
 
 
@@ -2017,8 +2040,11 @@ removeSelectedproject(item){
 }
 
 getObjOfpro(arr, id, idName) {
-  const obj = arr.find(item => item[idName] == id);
-  return obj;
+  if(arr){
+    const obj = arr.find(item => item[idName] == id);
+    return obj?obj:'';
+  }
+  return '';
 }
 
 
@@ -2026,7 +2052,6 @@ getObjOfpro(arr, id, idName) {
 enterStatus:any=[];
 onstatusSelected(e:any){
   const statusChoosed=this.StatusCountFilter.find((p:any)=>p.Name===e.option.value);
-
   if(statusChoosed){
        const index=this.enterStatus.indexOf(statusChoosed.Name);
        if(index===-1){
@@ -2047,8 +2072,11 @@ removeSelectedstatus(item){
 }
 
 getObjOfstatus(arr, id, idName) {
-  const obj = arr.find(item => item[idName] == id);
-  return obj;
+  if(arr){
+    const obj = arr.find(item => item[idName] == id);
+    return obj?obj:'';
+  }
+  return '';
 }
 
 filterMegadropdown(){
@@ -2116,7 +2144,7 @@ isInvalidDate(date: moment.Moment) {
 // }
 
 closeOnOtherClick(id){
-  debugger
+
   const dropdowns= ['companyDDwn', 'employeeDDwn', 'proDDwn', 'statusDDwn'];
   dropdowns.forEach((dropdown)=>{
   if(dropdown !== `${id}DDwn` ){
@@ -2135,7 +2163,68 @@ this.closeAutocompleteDrpDwn('proDDwn')
 
  }
 
+ isaction = false;
+ isracis = false;
+ isstatus = true;
+ islastupdate = true;
+ isdeadline = true;
+ isrespon = true;
+ isprojtype = true
+ isdeleted = true
+ isrefer = true
+ iscost = true
+ isowner = false
+ isclient = false
+ isDepartment = false
 
+   togglevisibilityforClass(className: string, event: any): void {
+
+     // Mapping object for class names and their corresponding state variables
+     const classToStateMap: { [key: string]: string } = {
+       'action_class': 'isaction',
+       'racisClass': 'isracis',
+       'statusClass': 'isstatus',
+       'clas_lasup': 'islastupdate',
+       'class_deadline': 'isdeadline',
+       'responclass': 'isrespon',
+       'projtypeclass': 'isprojtype',
+       'isdeleteds': 'isdeleted',
+       'referClass':  'isrefer',
+       'classCost' :'iscost',
+       'owner_class' :'isowner',
+       'client_class': 'isclient',
+       'class_depart'  : 'isDepartment'
+     };
+
+     // Check if the className exists in the map and update the corresponding state variable
+     if (classToStateMap[className] !== undefined) {
+       this[classToStateMap[className]] = event.target.checked;
+     }
+
+   }
+
+
+
+   formatTime(input: string): string {
+    // Check if the input is already in the correct format
+    if (/^\d{2} Hr : \d{2} Mins$/.test(input)) {
+      return input; // If the format is correct, return it as-is
+    }
+
+    // Extract hours and minutes using regex for formatting if needed
+    const matches = input.match(/(\d+)Hr:(\d+)Mins/);
+
+    if (!matches) {
+      return 'Invalid Format'; // Handle unexpected format
+    }
+
+    // Extract hours and minutes
+    const hours = parseInt(matches[1], 10) || 0;
+    const minutes = parseInt(matches[2], 10) || 0;
+
+    // Format the string
+    return `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+  }
 
 
 }

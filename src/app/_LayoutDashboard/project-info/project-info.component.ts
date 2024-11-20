@@ -1524,7 +1524,7 @@ Prj_Code:any;
             this.forwardto = (this.revert_json[0]['Forwardedto']);
             this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
           }
-          if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved') {
+          if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved'||this.requestType == 'Project Audit') {
             this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
             this.completedoc = (this.complete_List[0]['Sourcefile']);
             this.iscloud = (this.complete_List[0]['IsCloud']);
@@ -2455,7 +2455,7 @@ getFormattedDelay(delayDays: any): string {
     const weeks = Math.floor(delayDays / 7);
     delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
   } else {
-    delayText = delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
+    delayText = delayDays==0?'0 days':delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
   }
 
   return `${delayText.toLowerCase()}`;

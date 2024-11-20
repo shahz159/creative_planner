@@ -2623,19 +2623,23 @@ color: #2786fb;
   color: #999999;
   margin-left: 5px;
 }
-
+    
 
 ._counts-square{
-  color:#b1b0b0;
+  /* color:#b1b0b0; */
+  color: #ffffff;
   font-weight: normal;
   font-family: Lucida Sans Unicode;
   font-size: 12px;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
+  background-color: #1956b3b5;
   padding: 0.1em 0.4em 0.1em 0.4em;
   border-radius: 3px;
+
+
 }
 
-.op-card:hover ._counts-square{
+/* .op-card:hover ._counts-square{
   color: #195ABC;
   font-weight: bold;
   font-family: Lucida Sans Unicode;
@@ -2643,9 +2647,8 @@ color: #2786fb;
   padding: 0.1em 0.4em 0.1em 0.4em;
   border-radius: 3px;
   box-shadow: 0px 0px 2px #195abc0f;
-  /* background-image: linear-gradient(359deg, #b5b5b526, #d1d3d51f); */
   background-color: #ffffff;
-}
+} */
 
 
 /*draft projects css end*/
@@ -2825,7 +2828,19 @@ color: #2786fb;
   border-radius: 4px;
 }
 
+.overutilization-notification {
+  background-color: #fdbc4a38;
+}
+
+.overutilization-notification .notif-img{
+  fill: #bc7204 !important;
+  margin-top: 4px;
+}
+.overutilization-notification .notif-msg{
+  color: #c57a05 !important;
+}
 
 /* .taskItemfocus{
  border:2px solid #8cabfa;
 } */
+

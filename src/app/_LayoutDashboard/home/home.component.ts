@@ -1297,7 +1297,7 @@ export class HomeComponent implements OnInit {
   messagefav: string;
 
   AddFavourites(portfolioId, isfav) {
-
+// debugger
     // this.LoadingBar_state.start();
     this.service.SetFavourite_Service(portfolioId, isfav, this.Current_user_ID).subscribe((data) => {
       //  console.log("retrun Data----->",data1)
@@ -1305,6 +1305,7 @@ export class HomeComponent implements OnInit {
       this._objStatusDTO.Emp_No = this.Current_user_ID;
       this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
         (data) => {
+          debugger
           this._ListProjStat = JSON.parse(data[0]['PortfolioList_Json']);
           this.Companylist_Json = JSON.parse(data[0]['Company_Json']);
           this.Employeelist_Json = JSON.parse(data[0]['Employee_Json']);
@@ -1369,6 +1370,7 @@ export class HomeComponent implements OnInit {
 
   Favourite_Portfolios() {
     // this.Portfolio_CurrentPage = 1;
+    debugger
     this.NoSharedmsg = true;
     this.activeClassFav = true;
     this.activeClassAll = false;
@@ -2114,21 +2116,20 @@ getNewFilterResult(){
   this.applyFilters()
   this.edited = true
 }
-
-ViewType : String = 'Grid View'
+currentview : string = 'grid'
 grid_open(){
   document.getElementById("grid-view").style.display = "inline-flex";
   document.getElementById("list-view").style.display = "none";
   document.getElementById("grid-view-div").style.display = "block";
   document.getElementById("list-view-div").style.display = "none";
-  this.ViewType = 'Grid View'
+this.currentview = 'grid'
 }
 list_open(){
   document.getElementById("grid-view").style.display = "none";
   document.getElementById("list-view").style.display = "inline-flex";
   document.getElementById("grid-view-div").style.display = "none";
   document.getElementById("list-view-div").style.display = "block";
-  this.ViewType = 'List View'
+  this.currentview = 'list'
 }
 
 getStatusClass(status: string): string {

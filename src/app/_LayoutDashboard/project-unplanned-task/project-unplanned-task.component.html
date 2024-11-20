@@ -538,13 +538,13 @@
                                                 <!-- End -->
                                             </div>
                                             <div class="kt-cat-action" [hidden]="hideMenuOfCategory" *ngIf="item.Category_ID!='2411' && item.Category_ID!='3595'">
-                                                <button class="btn btn-cat-action edit" title="Edit"
+                                                <button class="btn btn-cat-action edit" title="Click to edit category"
                                                     (click)="OnCategoryEdit_Click(item.Category_ID,item.Category_Name)">
                                                     <span><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.3em;height: 1.3em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M432.4 787.2c-24.1 27.6-34.7 34.2-68.4 46.6-51.9 19.4-147 55.1-208.9 78.3-11.7 4.6-55.9 2.3-37.4-41.1 21-60.4 51.8-149.6 69.4-200.5 12.8-35.9 17.9-45.2 43.7-69.3l266.5-266.5L686 523.4C686 523.4 506.6 710.1 432.4 787.2z"></path><path d="M726.5 482.9 537.9 294.3 578.3 253.8 767 442.5Z"></path><path d="M888.3 321.2l-80.8 80.9L618.8 213.4l80.9-80.8c29.8-29.8 78-29.8 107.8 0l80.9 80.8C918.1 243.1 918.1 291.4 888.3 321.2z"></path></svg></span>
 
                                                 </button>
 
-                                                <button  class="btn btn btn-cat-action delete" title="Delete"
+                                                <button  class="btn btn btn-cat-action delete" title="Click to delete category"
                                                     (click)="OnDeleteCategory(item.Category_ID,item.Category_Name)">
                                                     <span><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.3em;height: 1.3em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M223.595474 318.284043l24.022113 480.742089c0 54.376445 44.989657 98.456383 100.485599 98.456383l331.963601 0c55.494918 0 100.489692-44.078914 100.489692-98.456383l23.109324-480.742089L223.595474 318.284043zM831.749418 284.181341c0.099261-20.274766 0.158612-21.623483 0.158612-22.981411 0-52.871161-31.298843-81.888032-73.29533-81.888032l-116.892267 0.122797c0-27.751041-27.105335-50.245358-54.855352-50.245358L441.349917 129.189338c-27.744901 0-55.727209 22.494317-55.727209 50.245358l-117.013017-0.122797c-46.387493 0-73.29533 35.359322-73.29533 81.888032 0 1.363044 0.054235 2.706645 0.158612 22.981411l636.281561 0L831.749418 284.181341zM614.168937 444.615287c0-15.32708 12.421914-27.750017 27.744901-27.750017 15.32708 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.422937 27.751041-27.750017 27.751041-15.322987 0-27.744901-12.422937-27.744901-27.751041L614.168937 444.615287 614.168937 444.615287zM485.85862 444.615287c0-15.32708 12.42703-27.750017 27.751041-27.750017 15.32708 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.422937 27.751041-27.750017 27.751041-15.322987 0-27.751041-12.422937-27.751041-27.751041L485.85862 444.615287 485.85862 444.615287zM357.63733 444.615287c0-15.32708 12.422937-27.750017 27.751041-27.750017 15.321964 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.42703 27.751041-27.750017 27.751041-15.328104 0-27.751041-12.422937-27.751041-27.751041L357.63733 444.615287 357.63733 444.615287zM357.63733 444.615287"></path></svg></span>
 
@@ -618,7 +618,7 @@
                             <h4>{{_CategoryName}}</h4>
 
                           <div class="dropdown">
-                            <a class="kt-todo__icon" data-toggle="dropdown"  title="Filter">
+                            <a class="kt-todo__icon" data-toggle="dropdown"  title="Click to filter tasks">
                                 <i class="fas fa-ellipsis-h"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter" id="dropd">
@@ -785,7 +785,7 @@
                                                                 <input type="radio" name="Subtask" class="subtask-radio mx-4"
                                                                     (click)="OnRadioClick(item.Assign_Id)"
                                                                     [disabled]="item.TypeOfTask=='SUBTASK'" />
-                                                                <input class="inputforfocus" type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/>    
+                                                                <input class="inputforfocus" type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/>
                                                             </div>
                                                         </div>
 
@@ -820,7 +820,7 @@
                                                        <div>
                                                         <div class="d-flex align-items-center justify-content-end py-lg-0 py-2"
                                                         id="div_{{item.Assign_Id}}" *ngIf="item.TypeOfTask!='SUBTASK'">
-                                                        <span matTooltip="Re-Name"
+                                                        <span matTooltip="Click to rename task"
                                                             (click)="OnEditNameClick(item.Task_Name,item.Assign_Id)"
                                                             class="mr-2 cursor-pointer unassign-btn">
                                                             <mat-icon >edit</mat-icon>
@@ -828,7 +828,7 @@
                                                         <!-- <span class="mr-2" matTooltip="Create New Project">
                                                             <mat-icon color="primary">add</mat-icon>
                                                         </span> -->
-                                                        <span matTooltip="Delete Task"
+                                                        <span matTooltip="Click to delete task"
                                                             (click)="_Deletetask(item.Assign_Id,item.Task_Name)"
                                                             class="mr-2 cursor-pointer  unassign-btn">
                                                             <mat-icon>delete</mat-icon>

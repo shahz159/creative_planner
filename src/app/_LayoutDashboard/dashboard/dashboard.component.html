@@ -530,7 +530,7 @@
                         <!-- <div id="kt_calendar"></div> -->
                         <!-- <FullCalendar defaultView="dayGridMonth" header={{ left: 'prev,next', center: 'title', right: 'dayGridDay,dayGridWeek,dayGridMonth' }} plugins={[dayGridPlugin]}/> -->
                         <ng-container *ngIf="showsearch==false">
-                            <full-calendar [options]="calendarOptions"></full-calendar>
+                            <full-calendar #fullcalender [options]="calendarOptions"></full-calendar>
                         </ng-container>
                     </div>
                 </div>
@@ -570,13 +570,36 @@
                                 </div>
                             </div> -->
                             <div class="time-event flex-1">
-                                <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
+                                <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info pb-0"
                                     tabindex="0" (click)="GetClickEventPending_Calenders(item.Schedule_ID)">
                                     <div class="fc-daygrid-event-dot"></div>
                                     <!-- <div class="fc-event-time">4:30PM-5:00PM</div> -->
 
                                     <div class="fc-event-title ml-2"> {{item.Task_Name}}</div>
+                                    
                                 </a>
+                                <div class="pending-event-info">
+                                    <div  *ngIf="item.Schedule_date">Schedule on : {{item.Schedule_date | date:'EEEE, MMMM d, YYYY'}}</div>
+                                    <!-- Friday, November 15, 2024 -->
+                                    <div  *ngIf="item.Pending_date">Pending date : {{item.Pending_date | date:'EEEE, MMMM d, YYYY'}} </div>
+                                    <div class="pending-user-link">
+                                        <div  class="pending-user-link-item" *ngIf="item.AttendeeCount" title="{{item.Attendees}}">
+                                            <div class="pending-user-link-icon" >
+                                                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M22 21V19C22 17.1362 20.7252 15.5701 19 15.126M15.5 3.29076C16.9659 3.88415 18 5.32131 18 7C18 8.67869 16.9659 10.1159 15.5 10.7092M17 21C17 19.1362 17 18.2044 16.6955 17.4693C16.2895 16.4892 15.5108 15.7105 14.5307 15.3045C13.7956 15 12.8638 15 11 15H8C6.13623 15 5.20435 15 4.46927 15.3045C3.48915 15.7105 2.71046 16.4892 2.30448 17.4693C2 18.2044 2 19.1362 2 21M13.5 7C13.5 9.20914 11.7091 11 9.5 11C7.29086 11 5.5 9.20914 5.5 7C5.5 4.79086 7.29086 3 9.5 3C11.7091 3 13.5 4.79086 13.5 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+                                            </div>
+                                            +{{item.AttendeeCount}}
+                                        </div>
+                                        <div *ngIf="item.AttendeeCount && item.DmsCount + item.PortfolioCount + item.ProjectCount">|</div>
+                                        <div  class="pending-user-link-item" *ngIf="item.DmsCount + item.PortfolioCount + item.ProjectCount">
+                                            <div class="pending-user-link-icon">
+                                                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M9.16488 17.6505C8.92513 17.8743 8.73958 18.0241 8.54996 18.1336C7.62175 18.6695 6.47816 18.6695 5.54996 18.1336C5.20791 17.9361 4.87912 17.6073 4.22153 16.9498C3.56394 16.2922 3.23514 15.9634 3.03767 15.6213C2.50177 14.6931 2.50177 13.5495 3.03767 12.6213C3.23514 12.2793 3.56394 11.9505 4.22153 11.2929L7.04996 8.46448C7.70755 7.80689 8.03634 7.47809 8.37838 7.28062C9.30659 6.74472 10.4502 6.74472 11.3784 7.28061C11.7204 7.47809 12.0492 7.80689 12.7068 8.46448C13.3644 9.12207 13.6932 9.45086 13.8907 9.7929C14.4266 10.7211 14.4266 11.8647 13.8907 12.7929C13.7812 12.9825 13.6314 13.1681 13.4075 13.4078M10.5919 10.5922C10.368 10.8319 10.2182 11.0175 10.1087 11.2071C9.57284 12.1353 9.57284 13.2789 10.1087 14.2071C10.3062 14.5492 10.635 14.878 11.2926 15.5355C11.9502 16.1931 12.279 16.5219 12.621 16.7194C13.5492 17.2553 14.6928 17.2553 15.621 16.7194C15.9631 16.5219 16.2919 16.1931 16.9495 15.5355L19.7779 12.7071C20.4355 12.0495 20.7643 11.7207 20.9617 11.3787C21.4976 10.4505 21.4976 9.30689 20.9617 8.37869C20.7643 8.03665 20.4355 7.70785 19.7779 7.05026C19.1203 6.39267 18.7915 6.06388 18.4495 5.8664C17.5212 5.3305 16.3777 5.3305 15.4495 5.8664C15.2598 5.97588 15.0743 6.12571 14.8345 6.34955" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></g></svg>
+                                            </div>
+                                            +{{item.DmsCount + item.PortfolioCount + item.ProjectCount}}
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                
                                 <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
                                 <div class="delete-btn" title="Delete pending" (click)="onSinglePendingEventDelete(item.Schedule_ID)">
                                     <a><i class="fas fa-trash-alt"></i></a>
@@ -629,14 +652,39 @@
                             </div> -->
 
                             <div class="time-event flex-1">
-                                <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info"
-                                    tabindex="0" (click)="darft_click(item.Sno,item.project_type)">
+                                <a class="fc-daygrid-event fc-daygrid-dot-event fc-event fc-event-start fc-event-end fc-event-past fc-info pb-0"
+                                    tabindex="0" (click)="darft_click(item.Sno,item.project_type,item.attachments)">
                                     <!-- (click)="GetClickEventPending_Calenders(item.Schedule_ID)" -->
                                     <div class="fc-daygrid-event-dot"></div>
                                     <!-- <div class="fc-event-time">4:30PM-5:00PM</div> -->
 
                                     <div class="fc-event-title ml-2"> {{item.Task_name}}</div>
                                 </a>
+
+                                <div class="pending-event-info">
+                                    <div *ngIf="item.Draft_date">Created date : {{item.Draft_date | date:'EEEE, MMMM d, YYYY'}}</div>
+                                    <!-- Friday, November 15, 2024 -->
+                                    <div *ngIf="item.modified_date">Modified date : {{item.modified_date | date:'EEEE, MMMM d, YYYY'}} </div>
+                                    <div class="pending-user-link">
+                                        <div  class="pending-user-link-item" *ngIf="item.AttendeeCount" title="{{item.Attendees}}">
+                                            <div class="pending-user-link-icon" >
+                                                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M22 21V19C22 17.1362 20.7252 15.5701 19 15.126M15.5 3.29076C16.9659 3.88415 18 5.32131 18 7C18 8.67869 16.9659 10.1159 15.5 10.7092M17 21C17 19.1362 17 18.2044 16.6955 17.4693C16.2895 16.4892 15.5108 15.7105 14.5307 15.3045C13.7956 15 12.8638 15 11 15H8C6.13623 15 5.20435 15 4.46927 15.3045C3.48915 15.7105 2.71046 16.4892 2.30448 17.4693C2 18.2044 2 19.1362 2 21M13.5 7C13.5 9.20914 11.7091 11 9.5 11C7.29086 11 5.5 9.20914 5.5 7C5.5 4.79086 7.29086 3 9.5 3C11.7091 3 13.5 4.79086 13.5 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+                                            </div>
+                                            +{{item.AttendeeCount}}
+                                        </div>
+                                        <div *ngIf="item.AttendeeCount && item.DmsCount + item.PortfolioCount + item.ProjectCount">|</div>
+                                        <div  class="pending-user-link-item" *ngIf="item.DmsCount + item.PortfolioCount + item.ProjectCount">
+                                            <div class="pending-user-link-icon">
+                                                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M9.16488 17.6505C8.92513 17.8743 8.73958 18.0241 8.54996 18.1336C7.62175 18.6695 6.47816 18.6695 5.54996 18.1336C5.20791 17.9361 4.87912 17.6073 4.22153 16.9498C3.56394 16.2922 3.23514 15.9634 3.03767 15.6213C2.50177 14.6931 2.50177 13.5495 3.03767 12.6213C3.23514 12.2793 3.56394 11.9505 4.22153 11.2929L7.04996 8.46448C7.70755 7.80689 8.03634 7.47809 8.37838 7.28062C9.30659 6.74472 10.4502 6.74472 11.3784 7.28061C11.7204 7.47809 12.0492 7.80689 12.7068 8.46448C13.3644 9.12207 13.6932 9.45086 13.8907 9.7929C14.4266 10.7211 14.4266 11.8647 13.8907 12.7929C13.7812 12.9825 13.6314 13.1681 13.4075 13.4078M10.5919 10.5922C10.368 10.8319 10.2182 11.0175 10.1087 11.2071C9.57284 12.1353 9.57284 13.2789 10.1087 14.2071C10.3062 14.5492 10.635 14.878 11.2926 15.5355C11.9502 16.1931 12.279 16.5219 12.621 16.7194C13.5492 17.2553 14.6928 17.2553 15.621 16.7194C15.9631 16.5219 16.2919 16.1931 16.9495 15.5355L19.7779 12.7071C20.4355 12.0495 20.7643 11.7207 20.9617 11.3787C21.4976 10.4505 21.4976 9.30689 20.9617 8.37869C20.7643 8.03665 20.4355 7.70785 19.7779 7.05026C19.1203 6.39267 18.7915 6.06388 18.4495 5.8664C17.5212 5.3305 16.3777 5.3305 15.4495 5.8664C15.2598 5.97588 15.0743 6.12571 14.8345 6.34955" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></g></svg>
+                                            </div>
+                                            +{{item.DmsCount + item.PortfolioCount + item.ProjectCount}}
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+
+
+
                                 <!-- | online | Md Waseem Akram 👨&zwj;💼+1 | 1 Link -->
                                 <div class="delete-btn" title="Delete draft" (click)="delete_draft(item.Sno)">
                                     <a><i class="fas fa-trash-alt"></i></a>
@@ -1159,7 +1207,7 @@
                     </div>
 
 
-                    <div class="icons-right curser-pointer " [ngClass]="{'icon-active': AdminMeeting_Status==1,'live': Isadmin==true && AdminMeeting_Status==1,'join': Isadmin==false && AdminMeeting_Status==1}"  title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'" (click)="newMeetingDetails()">
+                    <div class="icons-right curser-pointer " [ngClass]="{'icon-active': AdminMeeting_Status==1,'live': Isadmin==true && AdminMeeting_Status==1,'join': Isadmin==false && AdminMeeting_Status==1}"  title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event' && pending_status==false" (click)="newMeetingDetails()">
                             <span class=" kt-meeting-status-icon">
                                     <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Media / Play_Circle"> <g id="Vector"> <path d="M3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12Z" stroke="#5f6368" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M10 15V9L15 12L10 15Z" stroke="#5f6368" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g> </g></svg>
                                     <ng-container  *ngIf="AdminMeeting_Status==1">
@@ -1243,7 +1291,7 @@
                     <div id="copy_data2" class="icons-right" style="display:block;" data-toggle="tooltip"
                         title="Pending!" *ngIf="Meeting_status==false && Isadmin==true && pending_status==false">
                         <span class="tool-span" (click)="sweet_pending()">
-                            <svg class="toolicns kt-p-ic-top" width="22" height="22"
+                            <!-- <svg class="toolicns kt-p-ic-top" width="22" height="22"
                                 xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
                                 xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
                                 xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg"
@@ -1277,7 +1325,9 @@
                                         </g>
                                     </g>
                                 </switch>
-                            </svg> </span>
+                            </svg>  -->
+                            <svg _ngcontent-wnc-c407="" width="17px" height="17px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g _ngcontent-wnc-c407="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-wnc-c407="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-wnc-c407="" id="SVGRepo_iconCarrier"><g _ngcontent-wnc-c407="" id="Free-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><g _ngcontent-wnc-c407="" transform="translate(-451.000000, -748.000000)" id="Group" stroke="currentColor" stroke-width="1.75"><g _ngcontent-wnc-c407="" transform="translate(449.000000, 746.000000)" id="Shape"><line _ngcontent-wnc-c407="" x1="17" y1="3" x2="17" y2="5"></line><line _ngcontent-wnc-c407="" x1="7" y1="3" x2="7" y2="5"></line><path _ngcontent-wnc-c407="" d="M18,11.5 L18,17.9933387 M18.0043926,21.0066613 L18,20.9933387"></path><path _ngcontent-wnc-c407="" d="M8.03064542,21 C7.42550126,21 6.51778501,21 5.30749668,21 C4.50512981,21 4.2141722,20.9218311 3.92083887,20.7750461 C3.62750553,20.6282612 3.39729582,20.4128603 3.24041943,20.1383964 C3.08354305,19.8639324 3,19.5916914 3,18.8409388 L3,7.15906122 C3,6.4083086 3.08354305,6.13606756 3.24041943,5.86160362 C3.39729582,5.58713968 3.62750553,5.37173878 3.92083887,5.22495386 C4.2141722,5.07816894 4.50512981,5 5.30749668,5 L18.6925033,5 C19.4948702,5 19.7858278,5.07816894 20.0791611,5.22495386 C20.3724945,5.37173878 20.6027042,5.58713968 20.7595806,5.86160362 C20.9164569,6.13606756 21,7.24671889 21,7.99747152"></path></g></g></g></g></svg>
+                        </span>
                     </div>
                     <div class="icons-right" id="hiddenedit" style="display:block;" data-toggle="tooltip" title="Edit">
                         <span class="tool-span" (click)="ReshudingTaskandEvent();updateCharacterCount()">
@@ -1288,7 +1338,7 @@
                             </svg>
                         </span>
                     </div>
-                    <div  class="icons-right" id="deleteendit" data-toggle="tooltip" title="Delete">
+                    <div  class="icons-right"  id="deleteendit" data-toggle="tooltip" title="Delete" >
                         <span *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0" class="tool-span" data-toggle="modal" data-target="#delevent">
                             <svg focusable="false" width="19" height="19" viewBox="0 0 24 24" class="toolicns">
                                 <path
@@ -1393,9 +1443,9 @@
                             </div>
                             <div class="box-cl" *ngIf="(Status1 =='Pending' || Status1 =='May be')" style="border:4px solid #9B30FF;">
                             </div>
-                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected'  && Isadmin==true" style="background-color: #3788d8;">
+                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected'  && Status1=='Owner'" style="background-color: #3788d8;">
                             </div>
-                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected' && Isadmin==false" style="background-color: #9B30FF;">
+                            <div class="box-cl" *ngIf="Status1 !='Pending' &&  Status1 !='May be' && Status1 !='Rejected' && Status1!='Owner'" style="background-color: #9B30FF;">
                             </div>
                          </ng-template>
 
@@ -1407,22 +1457,22 @@
                                     <span id="title1">{{item.Task_Name}}</span>
                                 </div>
                                 <div class="">
-                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==true" style="height: 18px;"
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Status1=='Owner'" style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         {{item.Schedule_Type}}
                                     </span>
                                     <span
-                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat' && Isadmin==true && Meeting_status==false"
+                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat' && Status1=='Owner' && Meeting_status==false"
                                         style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge--bold kt-badge--inline mb-1">
                                         {{item.Recurrence}}
                                     </span>
-                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==false" style="height: 18px;"
+                                    <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Status1!='Owner'" style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-purple kt-badge--bold kt-badge--inline mb-1 mr-2">
                                         {{item.Schedule_Type}}
                                     </span>
                                     <span
-                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Isadmin==false && Meeting_status==false"
+                                        *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Status1!='Owner' && Meeting_status==false"
                                         style="height: 18px;"
                                         class="kt-inbox__label kt-badge kt-badge--unified-purple kt-badge--bold kt-badge--inline mb-1">
                                         {{item.Recurrence}}
@@ -1452,7 +1502,7 @@
                                     </div>-
                                     <div class="title-day">
                                         <span *ngIf="item.Schedule_date!=item.SEndDate">
-                                            {{parseTime(item.SEndDate) | date: 'h:mm a'}}
+                                            {{item.SEndDate | date:'EEEE, MMMM d, YYYY'}}
                                         </span>
                                         <span *ngIf="item.Schedule_date!=item.SEndDate">,</span>
                                         {{parseTime(item.NewEd_Time) | date: 'h:mm a'}}
@@ -1465,7 +1515,7 @@
                     </div>
 
                     <!-- allAgendas here also -->
-              <div id="agendas" class="main-title"  *ngIf="item.Agendas&&item.Agendas.length>0">
+                   <div id="agendas" class="main-title"  *ngIf="item.Agendas&&item.Agendas.length>0">
                         <div class="boxcl-div">
                             <div class="kt-meeting-title-icon">
                             <svg stroke="#5f6368" xmlns="http://www.w3.org/2000/svg" width="25" height="19" viewBox="0 0 16 17">
@@ -1582,9 +1632,28 @@
                                 </div>
                             </div>
                         </div> -->
-                        <div class="rgt-des">
+
+
+                        <div class="rgt-des" *ngIf="item.Link_Details.includes('<a href=')">
                             <div class="" *ngIf="item.Link_Details">
                                 <div class="main-s" [innerHTML]="item.Link_Details"></div>
+                            </div>
+                        </div>
+
+
+                        <div class="rgt-des"  *ngIf="!item.Link_Details.includes('<a href=')">
+                            <div *ngIf="item.Link_Details">
+                                <div class="main-s" *ngIf="item.Link_Details.split(',')[0].replace('Meeting link:-', '').trim() && item.Link_Details.split(',')[0].replace('Meeting link:-', '').trim() != 'null' && item.Link_Details.split(',')[0].replace('Meeting link:-', '').trim() != 'undefined'">
+                                    <a [href]="item.Link_Details.split(',')[0].replace('Meeting link:-', '').trim()" target="_blank">
+                                        {{ item.Link_Details.split(',')[0].replace('Meeting link:-', '').trim() }}
+                                    </a>
+                                </div>
+                                <div class="main-s" *ngIf="item.Link_Details.split(',')[1].replace('Meeting Id:-', '').trim() && item.Link_Details.split(',')[1].replace('Meeting Id:-', '').trim() !='null' && item.Link_Details.split(',')[1].replace('Meeting Id:-', '').trim() !='undefined'">
+                                    UserId:- {{ item.Link_Details.split(',')[1].replace('Meeting Id:-', '').trim() }}
+                                </div>
+                                <div class="main-s" *ngIf="item.Link_Details.split(',')[2].replace('Meeting password:-', '').trim() && item.Link_Details.split(',')[2].replace('Meeting password:-', '').trim() !='null' && item.Link_Details.split(',')[2].replace('Meeting password:-', '').trim() !='undefined'">
+                                    Password:- {{ item.Link_Details.split(',')[2].replace('Meeting password:-', '').trim() }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1820,8 +1889,9 @@
                         </div>
                         <div class="rgt-des">
                             <div class="" *ngFor="let trt of Attachments_ary">
-                                <div class="main-s">
-                                    <a target=”_blank” href="{{trt.url}}">{{trt.File_Name}}</a>
+                                <div class="main-s"  (click)="LoadDocument(trt.Project_Code,true,trt.File_Name&&trt.File_Name,trt.url,trt.contenttype,trt.Created_by)">
+                                    <!-- <a target=”_blank” href="{{trt.url}}">{{trt.File_Name}}</a> -->
+                                   <span class="Attament-title"> {{trt.File_Name}}</span>
                                 </div>
                             </div>
                         </div>
@@ -2442,7 +2512,7 @@
             </div> -->
 
             <div class="foot-main " style="display: block;" id=""
-               *ngIf="Meeting_status==false && Isadmin==true && Schedule_type1=='Event'">
+               *ngIf="Meeting_status==false && AdminMeeting_Status!=1 && Status1=='Owner' && Schedule_type1=='Event'">
                 <div class="foot-body br-top secfootr" id="secfootr555">
                     <div class="ftbtns flex-1">
                         <div class="d-flex align-items-center justify-content-end gap-1">
@@ -2450,7 +2520,7 @@
                                href="#propse11" role="button" aria-expanded="false" aria-controls="propse11">
                                Repeat
                            </button>
-                           <button class="btn btn-sm btn-light-primary btn-pill footbtns" (click)="sweet_end()">End now</button>
+                           <button  class="btn btn-sm btn-light-primary btn-pill footbtns d-none" (click)="sweet_end()">End now</button>
 
                         </div>
                         <div class="mt-1 collapse" id="propse11">
@@ -2477,7 +2547,7 @@
                                         </div>
                                         <div class="date-menu-calender">
                                             <mat-card class="demo-inline-calendar-card">
-                                                <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
+                                                <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate"  [minDate]="disablePreviousDate"></mat-calendar>
                                               </mat-card>
                                         </div>
                                         <div class="date-menu-time">
@@ -2509,7 +2579,14 @@
                                 </div>
                             </div>
                             <span *ngIf="earlyDate==true" style="color:red">invalid date.</span>
+                            
 
+
+                            <div class="error-notification i-notification pt-3" >
+                                <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
+                               <span  class="notif-msg">A meeting cannot be scheduled more than once on the same day. To change the meeting time, please edit the existing meeting</span>
+                            </div>
+                           <!-- <span class="create-event-dt-text">Meeting can not be repeated on the same day if you want to change meeting time then edit the meeting?</span> -->
                             <div class="d-flex align-items-center justify-content-end gap-1 mt-5">
                                 <button class="btn btn-sm btn-info btn-pill footbtns" (click)="submitEventToRepeat()">Submit</button>
                                     <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
@@ -3405,7 +3482,7 @@
                 </div>
 
                 <div class="se-row" id="Descrip_Name12" style="display:none" >
-                    <div class="se-col-1">
+                    <!-- <div class="se-col-1">
                         <div class="label-icon">
                             <span aria-hidden="true" class="side-icns"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="svg-icn">
@@ -3421,9 +3498,40 @@
                         <div class="form-group">
                             <angular-editor  [placeholder]="editorPlaceholder" [(ngModel)]="Link_Details" [config]="config" ></angular-editor>
                         </div>
-                    </div>
+                    </div> -->
 
-                </div>
+
+                    <div class="se-col-1">
+                        <div class="label-icon">
+                            <span aria-hidden="true" class="side-icns"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="svg-icn">
+                                    <path
+                                        d="M17.6572 14.8282L16.2429 13.414L17.6572 11.9998C19.2193 10.4377 19.2193 7.90506 17.6572 6.34296C16.0951 4.78086 13.5624 4.78086 12.0003 6.34296L10.5861 7.75717L9.17188 6.34296L10.5861 4.92875C12.9292 2.5856 16.7282 2.5856 19.0714 4.92875C21.4145 7.27189 21.4145 11.0709 19.0714 13.414L17.6572 14.8282ZM14.8287 17.6567L13.4145 19.0709C11.0714 21.414 7.27238 21.414 4.92923 19.0709C2.58609 16.7277 2.58609 12.9287 4.92923 10.5856L6.34345 9.17139L7.75766 10.5856L6.34345 11.9998C4.78135 13.5619 4.78135 16.0946 6.34345 17.6567C7.90555 19.2188 10.4382 19.2188 12.0003 17.6567L13.4145 16.2425L14.8287 17.6567ZM14.8287 7.75717L16.2429 9.17139L9.17188 16.2425L7.75766 14.8282L14.8287 7.75717Z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                        <div class="se-col-11">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input class="form-control"  placeholder="Meeting link" type="text"  [(ngModel)]="Link_Details" >
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input class="form-control"  placeholder="Meeting Id" type="text" [(ngModel)]="Meeting_Id">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Meeting password" type="text" [(ngModel)]="Meeting_password">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                 </div> 
 
                 <div class="se-row" id="Location_Name" style="display:none">
                     <div class="se-col-1">
@@ -3494,7 +3602,7 @@
                           </div>
                           <ul class="schedule-file-list">
                             <li *ngFor='let url of _lstMultipleFiales'>
-                               <div class="schedule-file-list-item">
+                               <div class="schedule-file-list-item"  >
                                     <div class="file-info">
                                         <div class="file-svg">
                                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 9V17.8C19 18.9201 19 19.4802 18.782 19.908C18.5903 20.2843 18.2843 20.5903 17.908 20.782C17.4802 21 16.9201 21 15.8 21H8.2C7.07989 21 6.51984 21 6.09202 20.782C5.71569 20.5903 5.40973 20.2843 5.21799 19.908C5 19.4802 5 18.9201 5 17.8V6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.0799 3 8.2 3H13M19 9L13 3M19 9H14C13.4477 9 13 8.55228 13 8V3" stroke="#2684fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -3509,19 +3617,19 @@
 
 
                             <li *ngFor='let url of Attachment12_ary'>
-                                <div class="schedule-file-list-item">
-                                     <div class="file-info">
+                                <div class="schedule-file-list-item curser-pointer" (click)="LoadDocument(url.file_id,true,url.File_Name&&url.File_Name,url.url,url.contenttype,url.Created_by)">
+                                     <div class="file-info" >
                                          <div class="file-svg">
                                              <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 9V17.8C19 18.9201 19 19.4802 18.782 19.908C18.5903 20.2843 18.2843 20.5903 17.908 20.782C17.4802 21 16.9201 21 15.8 21H8.2C7.07989 21 6.51984 21 6.09202 20.782C5.71569 20.5903 5.40973 20.2843 5.21799 19.908C5 19.4802 5 18.9201 5 17.8V6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.0799 3 8.2 3H13M19 9L13 3M19 9H14C13.4477 9 13 8.55228 13 8V3" stroke="#2684fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                          </div>
                                          <div class="file-name">{{url.File_Name}}</div>
                                      </div>
-                                     <div  class="file-remove">
+                                     <!-- <div [ngClass]="{'d-none': editTask == true}" class="file-remove"> -->
+                                        <div  class="file-remove">
                                          <span (click)="RemoveExistingFile(url.file_id)" title="remove"  class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
                                      </div>
                                 </div>
                              </li>
-
                         </ul>
                     </div>
                 </div>
@@ -3542,7 +3650,8 @@
                         </div>
                         <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
                             <li *ngFor="let prj of projectsSelected">
-                               <div class="schedule-select-list-item">
+                               <div class="schedule-select-list-item curser-pointer" (click)="newDetails(prj.Project_Code)"
+                               >
                                 <span class="schedule-select-list-title">{{prj.Project_Name}}</span>
                                 <span (click)="discardChoosedItem('PROJECT',prj.Project_Code)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
                                </div>
@@ -3572,7 +3681,7 @@
                         </div>
                         <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
                             <li *ngFor="let prtfid of Portfolio">
-                               <div class="schedule-select-list-item">
+                               <div class="schedule-select-list-item curser-pointer"  (click)="OnCardClick(prtfid)">
                                 <span class="schedule-select-list-title">{{getObjOf(Portfoliolist_1,prtfid,'portfolio_id').Portfolio_Name}}</span>
                                 <span (click)="discardChoosedItem('PORTFOLIO',prtfid)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
                                </div>
@@ -5082,7 +5191,7 @@
 
                     <div class="date-menu-calender">
                         <mat-card class="demo-inline-calendar-card">
-                            <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
+                            <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate"  [minDate]="disablePreviousDate"></mat-calendar>
                           </mat-card>
                     </div>
                     <div class="date-menu-time">

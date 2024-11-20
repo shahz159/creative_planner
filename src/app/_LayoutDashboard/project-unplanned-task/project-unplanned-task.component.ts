@@ -1029,7 +1029,9 @@ selectedAttendeesList = new Set<any>();
     this.ObjUserDetails.PageSize = 30;
     this.ObjUserDetails.SearchText = this.filterText;
     this.ProjectTypeService.GetProjectsForRunwayTaskDropdown(this.ObjUserDetails).subscribe(data => {
-      this._ProjectDataList = JSON.parse(data[0]['DropdownProjects_Json']);
+      const all_projects_ofuser = JSON.parse(data[0]['DropdownProjects_Json']);
+      //for listdown only valid projects.
+      this._ProjectDataList=all_projects_ofuser.filter(p=>['Cancelled','Project Hold'].includes(p.Status)==false);
       this.dropdownSettings_Projects = {
         singleSelection: true,
         idField: 'Project_Code',
@@ -1991,7 +1993,7 @@ actionSubmit(){
 
 
   this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;  
-  this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
+  this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => { debugger
 
     this.Sub_ProjectCode = data['SubTask_ProjectCode'];
     this.EmpNo_Autho = data['Team_Autho'];

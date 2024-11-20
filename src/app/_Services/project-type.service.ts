@@ -174,7 +174,7 @@ export class ProjectTypeService {
     this.ObjUserDetails.startdate=obj.startdate;
     this.ObjUserDetails.enddate=obj.enddate;
     //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
-   
+
     return this.http.post(this.rootUrl + "TestAPI/NewGetProjectDetailsByUserName_ForSummary", this.ObjUserDetails);
   }
   GetProjectsByOwner_Service_ForSummary(obj: UserDetailsDTO) {
@@ -211,8 +211,8 @@ export class ProjectTypeService {
     this.ObjUserDetails.Emp_No = EmpNo;
     this.ObjUserDetails.PageNumber = obj.PageNumber;
     this.ObjUserDetails.PageSize = obj.PageSize;
-    this.ObjUserDetails.SearchText = obj.SearchText;  
-    //this.ObjUserDetails.PortfolioId = obj.PortfolioId;  
+    this.ObjUserDetails.SearchText = obj.SearchText;
+    //this.ObjUserDetails.PortfolioId = obj.PortfolioId;
     return this.http.post(this.rootUrl + "Projects/NewGetProjectsForRunwayTask", this.ObjUserDetails);
   }
   GetDeadlineByProjectCode(Project_Code) {
@@ -285,7 +285,6 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "TestAPI/NewGetCompanies", this.obj_CompanyDTO)
   }
   LoginCredentials(objLoginDetails) {
-
     return this.http.post(this.rootUrl + "TestAPI/NewGetLoginDetails", objLoginDetails);
     // .subscribe(data => {
     //   this.User_Details = data as LoginDTO[];
@@ -581,7 +580,10 @@ export class ProjectTypeService {
   }
 
 
-
+  GetEmployeePerformance(Emp_No: string){
+    this.ObjSubTaskDTO.Emp_No = Emp_No
+    return this.http.post(this.rootUrl + "TestAPI/NewGetEmployeePerformance", this.ObjSubTaskDTO);
+  }
 
 
 
@@ -1083,6 +1085,19 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.Emp_No=empno;
     this.ObjSubTaskDTO.submissionDate=submDate;
     return this.http.post(this.rootUrl+'ApprovalAPI/NewInsertTimelineReport',this.ObjSubTaskDTO);
+  }
+
+
+
+  NewGetEmployeePerformance(empno:string){
+    this.ObjSubTaskDTO.Emp_No=empno;
+    return this.http.post(this.rootUrl+'TestAPI/NewGetEmployeePerformance',this.ObjSubTaskDTO);
+  }
+
+  GetCPProjectCost(empno:string,allocatedHr:string){  debugger
+    this.ObjDto.Emp_No=empno;
+    this.ObjDto.Hours=allocatedHr;
+    return this.http.post('https://cswebapps.com/ProjectCostAPI/api/ProjectCost/GetCPProjectCost',this.ObjDto);
   }
 
 

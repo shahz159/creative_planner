@@ -1037,6 +1037,17 @@ button.Kt-Approval-btns {
   color: #ffffff;
 }
 
+.Add_Action_btn.disabled{
+  background-color: #A3B8E2;
+  border-color: #A3B8E2;
+  cursor: not-allowed;
+}
+
+
+
+
+
+
 .kt-p-box {
   padding: 10px 10px;
   background-color: #f6f6f6;
@@ -8938,11 +8949,11 @@ span.time-value {
 
 
 .audit-pending-notf {
-  background-color: #9c27b017;
+  background-color: #cafacc;
 }
 
 .audit-pending-notf .notif-msg {
-  color: #9C27B0;
+  color: #204d22;
   display: flex;
   flex-direction: column;
 }
@@ -8955,6 +8966,22 @@ span.time-value {
   display: flex;
   flex-direction: column;
 }
+
+
+
+.transfer-ownership-notf{
+  background-color: #faddff;
+}
+.transfer-ownership-notf .notif-msg {
+  color: #9c27b0;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+
 
 
 
@@ -9072,7 +9099,12 @@ span.time-value {
   background-color: #527ce2;
   background-clip: padding-box;
 }
-
+.user-msg-alert-body.addaction-shadow{
+  top: unset;
+  left: unset;
+  transform: translate3d(139px, -47px, 0px);
+  box-shadow: 3px 0px 5px -1px #00000033, 2px 0px 10px 0 #00000024, 0 1px 18px 0 #0000001f;
+}
 .user-msg-open{
     animation-name:user-msg-open-anim;
     animation-duration:0.5s;
@@ -9104,7 +9136,11 @@ span.time-value {
   height: 0;
   width: 0;
 }
-
+.user-msg-alert-body.addaction-shadow:before {
+  top: 45%;
+  left: -3%;
+  transform: rotate(-90deg);
+}
 .user-msg-alert-title {
   font-size: 16px;
   font-weight: 600;
@@ -9297,8 +9333,8 @@ span.time-value {
 
 /* Approval timeline css end */
 .Cancellation{
-  background-color: #F44336;
-  color: white;
+  background-color: #F44336 !important;
+  color: white !important;
 }
 .cancelled{
   color: #F44336;
@@ -9318,4 +9354,44 @@ span.time-value {
      font-weight: 700;
      text-decoration: underline;
      cursor: pointer;
+}
+
+
+
+.txt-expnd-btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  border-radius: 3px;
+  border: 0;
+  background-color:#edededc2; 
+}
+
+.txt-expnd-btn svg{
+  stroke: #898989;
+  stroke-width: 2px; 
+}
+
+.txt-expnd-btn:hover{
+  background-color: #eaeaea;
+}
+
+.txt-expnd-btn:hover svg{
+  stroke-width: 2.6px;
+}
+
+
+
+
+
+.Add_Action_btn.disabled:hover + .addaction-shadow{
+    display:block;
+}
+.size {
+  font-size: 24px; /* Adjust the size as needed */
+  margin-top: -5px; /* Adjust the value to move it up */
+}
+.size:hover {
+  display: none;
 }

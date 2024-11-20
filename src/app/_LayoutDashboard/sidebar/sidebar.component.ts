@@ -158,7 +158,7 @@ export class SidebarComponent implements OnInit {
       placement:'right'
     });
     tippy('#creative', {
-      content: "Creative Planner",
+      content: "Stream Planner",
       arrow: true,
       animation: 'scale-extreme',
       theme: 'gradient',

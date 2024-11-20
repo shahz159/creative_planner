@@ -564,14 +564,27 @@
 
                                                 </div>
                                                 <div class="kt-project-desc">
-                                                    <p>{{projectInfo&&projectInfo.Project_Description | slice:0:limit_data}}
+                                                    <!-- <p>{{projectInfo&&projectInfo.Project_Description | slice:0:limit_data}}
                                                      {{ isExpandeds ? (projectInfo&&projectInfo.Project_Description | slice:limit_data): ' ' }}
                                                            <ng-container *ngIf="projectInfo&&projectInfo.Project_Description.length>75">
                                                             <a href="javascript:void(0)"
                                                             (click)="_toggleReadMore()" >{{ isExpandeds ? 'less' : 'more...' }}</a>
                                                         </ng-container>
 
-                                                    </p>
+                                                    </p> -->
+
+                                                    <div class="d-flex">
+                                                        <div #prjDescBx class="compl-remarks-span">
+                                                            {{projectInfo&&projectInfo.Project_Description}}
+                                                        </div>
+                                                        <button title="show full" class="txt-expnd-btn align-self-end" *ngIf="prjDescBx.scrollHeight>prjDescBx.clientHeight" (click)="$event.stopPropagation(); prjDescBx.classList.remove('compl-remarks-span'); lessbtn.classList.remove('d-none'); ">
+                                                            <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                        </button>
+                                                        <button title="show less" #lessbtn class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); prjDescBx.classList.add('compl-remarks-span'); lessbtn.classList.add('d-none');">
+                                                            <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                                        </button>
+                                                    </div>
+
                                                 </div>
 
                                             </div>
@@ -735,6 +748,7 @@
                                                                                   (projectInfo.Status === 'Delay' ? projectInfo.Delaydays + ' days' + ' delay ': '') ||
                                                                                  (projectInfo.Project_Block=='003' ?  projectInfo.Status+' delay' : '')}}
                                                                             </span>
+                                                                          
                                                                          {{
                                                                           projectInfo.Status==='Project Hold'?'Hold until '+hold_upto:
                                                                           projectInfo.Status==='Delay'? getDelayText(projectInfo):
@@ -807,11 +821,11 @@
                                                     </div>
 
 
-                                                    <button *ngIf="(projectInfo.Status==='Project Hold')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"  class="btn-inside-notifi  release-now-shrtcut"  (click)="openPrjReleaseSideBar()">
+                                                    <button *ngIf="(projectInfo.Status==='Project Hold')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"  class="btn-inside-notifi  release-now-shrtcut"  (click)=" $event.stopPropagation();   openPrjReleaseSideBar()">
                                                         Project release
                                                       </button>
 
-                                                    <button  *ngIf="(projectInfo.Status==='New Project Rejected')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"    class="btn-inside-notifi  re-release-prj-shrtcut" (click)="openNewPrjReleaseSideBar()">
+                                                    <button  *ngIf="(projectInfo.Status==='New Project Rejected')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"    class="btn-inside-notifi  re-release-prj-shrtcut" (click)="$event.stopPropagation();  openNewPrjReleaseSideBar()">
                                                         New project release
                                                      </button>
 
@@ -1070,7 +1084,7 @@
                                                 </div>
                                                 <div class="kt-project-type curser-pointer d-flex">
 
-                                                  <div *ngIf="projectActionInfo&&projectActionInfo.length>0"  class="allactns-graph curser-pointer mr-1" data-toggle="modal" data-target="#actns-graphmodal" (click)="filterActionsOnGantt('All')">
+                                                  <div *ngIf="projectActionInfo&&projectActionInfo.length>0"  class="allactns-graph curser-pointer mr-1" data-toggle="modal" data-target="#actns-graphmodal" (click)="filterActionsOnGantt('All','All')">
                                                       <!-- <svg width="15px" height="15px" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg" style="fill: currentColor;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M0 0v7h8v-1h-7v-6h-1zm5 0v5h2v-5h-2zm-3 2v3h2v-3h-2z"></path></g></svg> -->
                                                       <i class="fas fa-chart-pie"></i>
                                                       <span class="allactns-label fs-7 fw-bold">&nbsp;All actions</span>
@@ -1078,9 +1092,26 @@
 
 
                                                     <!-- *ngIf="(projectInfo&&projectInfo.Status!='Completed')" -->
-                                                    <div class="Kt-Pd-Status Add_Action_btn" (click)="addNewAction()">
-                                                        <span class="add-act-plus-icon"></span><svg  xmlns="http://www.w3.org/2000/svg" width="13" height="18" fill="currentColor" viewBox="4 3 8 12" class="bi bi-plus"><path _ngcontent-vam-c142="" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path></svg> Add Action
-                                                    </div>
+                                                <ng-container *ngIf="projectInfo">
+                                                
+                                                    <ng-container *ngIf="['Cancelled','Project Hold'].includes(projectInfo.Status.trim()); else actionsCanBeAdded"> 
+                                                        <ng-container *ngIf="projectInfo.Status=='Project Hold'">
+                                                        <div  class="Kt-Pd-Status Add_Action_btn disabled">
+                                                            <span class="add-act-plus-icon"></span><svg  xmlns="http://www.w3.org/2000/svg" width="13" height="18" fill="currentColor" viewBox="4 3 8 12" class="bi bi-plus"><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path></svg> Add Action
+                                                        </div>
+                                                        <div class="user-msg-alert-body user-msg-open addaction-shadow ">
+                                                            <p class="user-msg-alert-title">Not Allowed</p>
+                                                            <p class="user-msg-alert-content">You cannot add actions on this project. Please release the project to proceed.</p>
+                                                        </div>
+                                                       </ng-container>
+                                                    </ng-container>
+                                                    <ng-template #actionsCanBeAdded>
+                                                        <div class="Kt-Pd-Status Add_Action_btn" (click)="addNewAction()">
+                                                            <span class="add-act-plus-icon"></span><svg  xmlns="http://www.w3.org/2000/svg" width="13" height="18" fill="currentColor" viewBox="4 3 8 12" class="bi bi-plus"><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path></svg> Add Action
+                                                        </div>
+                                                    </ng-template>
+
+                                                </ng-container>
 
                                                 </div>
 
@@ -1446,7 +1477,8 @@
                                                                                       <div class="fbx-actns-count fbx-usercount">{{item.count}}</div>
 
                                                                                         <div class="fil-lbl">
-                                                                                            {{item.Responsible}}</div>
+                                                                                            {{item.Responsible}}
+                                                                                          </div>
                                                                                         <span class="chck-icn ng-star-inserted"
                                                                                             *ngIf="filterConfig.sortby===item.Team_Res">
                                                                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -1463,13 +1495,14 @@
                                                                                 </button>
 
                                                                             </li>
-                                                                            <li class="mr-2"><button
+                                                                            <li  class="mr-2"><button
                                                                                     (click)="onFilterConfigChanged({filterBy:filterConfig.filterby,sortBy:'Assigned By me'})"
                                                                                     [ngClass]="{'active2':filterConfig.sortby==='Assigned By me'}"
                                                                                     class="btn btn-filtr"
-                                                                                    ng-reflect-ng-class="[object Object]">
+                                                                                    >
                                                                                     <div class="d-flex align-items-center"
-                                                                                        style="margin-left: -2px;"><svg
+                                                                                        style="margin-left: -2px;">
+                                                                                        <!-- <svg
                                                                                             xmlns="http://www.w3.org/2000/svg"
                                                                                             width="16" height="16"
                                                                                             fill="currentColor"
@@ -1478,7 +1511,8 @@
                                                                                             <path
                                                                                                 d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z">
                                                                                             </path>
-                                                                                        </svg>
+                                                                                        </svg> -->
+                                                                                        <div class="fbx-actns-count fbx-usercount">{{actionsAssignedByMe}}</div>
                                                                                         <div class="fil-lbl ml-1">Assigned by me
                                                                                         </div>
                                                                                         <span class="chck-icn ng-star-inserted"
@@ -2150,7 +2184,9 @@
                     (projectInfo.AuditStatus=='Audit Complete'||(projectInfo.AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId)||(projectInfo.AuditStatus=='Audit Pending' && Current_user_ID!=approvalEmpId))||
                     (projectInfo.NewOwner)||
                     (Current_user_ID==approvalEmpId && Current_user_ID==projectInfo.ResponsibleEmpNo)||
-                    (pageContentType=='ACTION_DETAILS')
+                    (pageContentType=='ACTION_DETAILS')||
+                    (hasNoActionMembers&&hasNoActionMembers.length>0)||
+                    (noActvySinceCreation)
                     ">
 
                 <div class="kt-Note-msg  d-flex">
@@ -2178,7 +2214,7 @@
                 </svg>
                 </div>
                 <div class="notifications-list">
-                    <div class="approval-timeline d-none">
+                    <!-- <div class="approval-timeline d-none">
                         <h5 class="text-dark" style="margin-bottom: 2rem;">Approval Process</h5>
                         <ol class="disc-list">
                             <div class="ap-ti"></div>
@@ -2218,9 +2254,9 @@
                               <p>Md Waseem Akram</p>
                             </li>
                           </ol>
-                    </div>
+                    </div> -->
                     <div class="notification audit-pending-notf" *ngIf="projectInfo.AuditStatus=='Audit Pending'&&Current_user_ID==approvalEmpId">
-                        <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #9c27b0;stroke: #a336b5;">
+                        <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #204d22;stroke: #204d22;">
                         <g><g>
                             <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
                             <path d="M114.585,138.558c32.776,0,57.236-30.539,57.794-81.752C172.734,21.268,155.809,0,114.585,0 C73.359,0,56.431,21.268,56.793,56.806C57.348,108.019,81.807,138.558,114.585,138.558z"></path>
@@ -2231,14 +2267,14 @@
                         </g>
                         </svg>
                         <span class="notif-msg">
-                        <span style="font-weight: bold">Project has been assigned to you for auditing by {{AuditRequestBY}}.</span>
-                        <span class="fs-7" *ngIf="projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{projectInfo.Owner_remarks}}</span>
+                        <span>Project has been assigned to you for auditing by {{AuditRequestBY}}.</span>
+                        <!-- <span class="fs-7" *ngIf="projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{projectInfo.Owner_remarks}}</span>
                         <span class="fs-7" *ngIf="!projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{requestComments}}</span>
-                        <span class="fs-7" style="text-decoration: underline">Next steps: </span>
-                            <span class="fs-7"> 1. You have to analyze the project and give your approval acceptance or rejection.
+                        <span class="fs-7" style="text-decoration: underline">Next steps: </span> -->
+                            <!-- <span class="fs-7"> 1. You have to analyze the project and give your approval acceptance or rejection.
                             <br>2. If you accept the project approval, then it will land to the project owner for the final approval.<br>
                             3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.
-                        </span>
+                        </span> -->
                         </span>
                     </div>
 
@@ -2276,7 +2312,7 @@
                     </div>
 
                     <div class="notification audit-pending-notf" *ngIf="projectInfo.AuditStatus=='Audit Pending'&&Current_user_ID!=approvalEmpId">
-                        <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #9c27b0;stroke: #a336b5;">
+                        <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #204d22;stroke: #204d22;">
                         <g><g>
                             <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
                             <path d="M114.585,138.558c32.776,0,57.236-30.539,57.794-81.752C172.734,21.268,155.809,0,114.585,0 C73.359,0,56.431,21.268,56.793,56.806C57.348,108.019,81.807,138.558,114.585,138.558z"></path>
@@ -2291,7 +2327,7 @@
                         </span>
                     </div>
 
-                    <div class="notification audit-pending-notf" *ngIf="projectInfo.NewOwner&&projectInfo.NewOwner===Current_user_ID">
+                    <div class="notification transfer-ownership-notf" *ngIf="projectInfo.NewOwner&&projectInfo.NewOwner===Current_user_ID">
                         <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #9c27b0;stroke: #a336b5;">
                         <g><g>
                             <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
@@ -2312,7 +2348,7 @@
                         </span>
                     </div>
 
-                    <div class="notification audit-pending-notf" *ngIf="projectInfo.NewOwner&&projectInfo.NewOwner!=Current_user_ID">
+                    <div class="notification transfer-ownership-notf" *ngIf="projectInfo.NewOwner&&projectInfo.NewOwner!=Current_user_ID">
                         <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #9c27b0;stroke: #a336b5;">
                         <g><g>
                             <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
@@ -2595,7 +2631,8 @@
                   </svg>
 
                   <span class="notif-msg">
-                      Project hold by {{lastactivity[0].Empname}} on {{lastactivity[0].Rec_date|date:'dd-MM-yyyy'}}.
+                      Project hold by {{lastactivity[0].Empname}} on {{lastactivity[0].Rec_date|date:'dd-MM-yyyy'}}.<br/>
+                      <span class="fs-7"><b>remarks: </b>{{lastactivity[0].Req_Coments}}</span>
                   </span>
                   <!-- <button class="btn-inside-notifi  release-now-shrtcut"  (click)="openPrjReleaseSideBar()">
                       Project Release
@@ -2690,7 +2727,7 @@
                  <ng-container *ngIf="pendingAprvls.length>1">
                       You have {{multiapproval_list.length}} pending approval(s).
                       <ng-container *ngFor="let aprvl of pendingAprvls; let i=index;">
-                          <span>{{aprvl.totalRequests}} for {{aprvl.request_type}}</span>{{i+1===pendingAprvls.length-1?' and':(i+1===pendingAprvls.length)?'':', '}}.
+                          <span>{{aprvl.totalRequests}} for {{aprvl.request_type}}</span>{{i+1===pendingAprvls.length-1?' and':(i+1===pendingAprvls.length)?'.':', '}}
                       </ng-container>
                  </ng-container>
 
@@ -2790,8 +2827,8 @@
                   <span class="notif-msg fs-6" style="color:#00a2eb">
                       {{totalPActns4Aprvls}} action(s) pending for approval, Assigned to
                       <ng-container *ngFor="let act of pendingActns4Aprvls; let i=index;">
-                          <span class="delayaction-of-emp curser-pointer" (click)="showPendingAprvlActnsOfEmp(act.empno)">{{act.name}}({{act.totalApprovals}})</span>{{i+1===pendingActns4Aprvls.length-1?' and':(i+1===pendingActns4Aprvls.length)?'':', '}}
-                      </ng-container><b>.</b>
+                          <span class="delayaction-of-emp curser-pointer" (click)="showPendingAprvlActnsOfEmp(act.empno)">{{act.name}}({{act.totalApprovals}})</span>{{i+1===pendingActns4Aprvls.length-1?' and':(i+1===pendingActns4Aprvls.length)?'.':', '}}
+                      </ng-container>
               </span>
               </div>
 
@@ -2814,7 +2851,29 @@
             </div>
 
 
+            <div *ngIf="hasNoActionMembers&&hasNoActionMembers.length>0"  class="notification overutilization-notification">
+                <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
+                <span class="notif-msg" style="color:#c57a05">
+                    <ng-container *ngIf="hasNoActionMembers.length>1">
+                      Project includes team members
+                      <ng-container *ngFor="let member of hasNoActionMembers; let i=index;">
+                        <span>{{member.Emp_Name}}</span>{{i+1===hasNoActionMembers.length-1?' and':(i+1===hasNoActionMembers.length)?'':', '}}
+                      </ng-container>
+                      with no actions assigned to them. It is recommended to assign actions for better workflow.
+                    </ng-container>
+                    <ng-container *ngIf="hasNoActionMembers.length==1">
+                      Project team member '{{hasNoActionMembers[0].Emp_Name}}' has no actions assigned in the project. Assigning actions is recommended for better workflow.
+                    </ng-container>
+                </span>
+             </div>
 
+
+             <div *ngIf="noActvySinceCreation" class="notification overutilization-notification">
+                <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
+                <span class="notif-msg" style="color:#c57a05">
+                    {{noActvy4NDays}} {{noActvy4NDays>1?'days':'day'}} have passed since the project started, and no activity has been seen yet.
+                </span>
+             </div>
 
               </ng-template>
 
@@ -2870,9 +2929,9 @@
                                                             class="Ct-btn Bt-hold ml-2"
                                                             (click)="openPrjReleaseSideBar()">Project
                                                             release</button>
-                                                        <ng-template #prHbtn><button class="Ct-btn Bt-hold ml-2"
-                                                                (click)="openPrjHoldSideBar()">Project
-                                                                hold</button></ng-template>
+                                                        <ng-template #prHbtn>
+                                                            <button     class="Ct-btn Bt-hold ml-2" (click)="openPrjHoldSideBar()">Project hold</button>
+                                                        </ng-template>
                                                         <ng-container
                                                             *ngIf="projectInfo&&projectInfo.Project_Type == 'Standard Tasks'">
                                                             <button class="Ct-btn Bt-Submit ml-2"
@@ -2914,19 +2973,19 @@
                                                                 <div class="dropdown-menu mbt-btn" *ngIf="projectInfo">
 
 
-                                                                    <button (click)="openDarSideBar()" class="Ct-btn ml-2"
-                                                                        *ngIf="projectInfo.Status!=='New Project Rejected'&&projectInfo.Status!=='Cancelled'">Add
-                                                                        timeline</button>
+                                                                    <button (click)="openDarSideBar()" class="Ct-btn ml-2" *ngIf="['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false">Add timeline</button>
 
                                                                     <button class="Ct-btn Bt-Submit ml-2"
                                                                         *ngIf="projectInfo.Project_Type == 'Standard Tasks'" (click)="OnStandardTaskSubmit()">Task
                                                                         completion</button>
 
                                                                     <button class="Ct-btn Bt-Submit ml-2"
-                                                                        *ngIf="(projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks')&&projectInfo.Status !=='Cancelled'&&
-                                                                        (!['New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval'].includes(projectInfo.Status.trim()))"
-                                                                        (click)="OnClickCheckboxProjectUpdate()">Project
-                                                                        completion</button>
+                                                                     *ngIf="
+                                                                       ['001','002','011'].includes(projectInfo.Project_Block)&&
+                                                                       ['Project Hold','Cancelled','New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval','Deadline Extend Under Approval'].includes(projectInfo.Status.trim())==false" 
+                                                                       (click)="OnClickCheckboxProjectUpdate()">
+                                                                       Project completion
+                                                                    </button>
 
                                                               <ng-container *ngIf="['001','002','011'].includes(projectInfo.Project_Block)">
 
@@ -3086,17 +3145,28 @@
                                                    </div>
 
                                                 </div>
-                                                <div class="kt-project-desc w-80">
-                                                 <p>{{projectInfo&&projectInfo.Project_Description | slice:0:limited_data}}
+                                                <div class="kt-project-desc w-100 mt-1">
+                                                 <!-- <p>{{projectInfo&&projectInfo.Project_Description | slice:0:limited_data}}
                                                     {{ isExpanded ? (projectInfo&&projectInfo.Project_Description | slice:limited_data): ' ' }}
                                                     <ng-container *ngIf="projectInfo&&projectInfo.Project_Description.length>98">
                                                         <a href="javascript:void(0)"
                                                         (click)="toggleReadMore()">{{ isExpanded ? 'less' : 'more...' }}</a>
                                                     </ng-container>
-                                                </p>
+                                                </p> -->
+
+
+                                                <div class="d-flex">
+                                                    <div #prjDescBx2 class="compl-remarks-span">
+                                                        {{projectInfo&&projectInfo.Project_Description}}
+                                                    </div>
+                                                    <button class="txt-expnd-btn align-self-end" *ngIf="prjDescBx2.scrollHeight>prjDescBx2.clientHeight" (click)="$event.stopPropagation(); prjDescBx2.classList.remove('compl-remarks-span'); lessbtn2.classList.remove('d-none'); ">
+                                                        <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                    </button>
+                                                    <button #lessbtn2 class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); prjDescBx2.classList.add('compl-remarks-span'); lessbtn2.classList.add('d-none');">
+                                                        <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                                    </button>
                                                 </div>
-
-
+                                                </div>
 
                                               <ng-container *ngIf="projectInfo&&projectInfo.Status=='Completed'&&pageContentType=='PROJECT_DETAILS'">
 
@@ -3112,7 +3182,23 @@
                                                                   <div class="meeting-attendance-count fs-6">{{projectInfo.CD|date:'d MMM, yyyy'}}</div>
                                                               </div>
                                                               <div class="d-flex gap-4">
-                                                                  <span id="sub-cmt-sec" class="text-muted fs-8  flex-grow-1 compl-remarks-span" *ngIf="projectInfo.Remarks"  (click)="expandRemarks('sub-cmt-sec')" >{{projectInfo.Remarks}}</span>
+                                                                  <!-- <span id="sub-cmt-sec" class="text-muted fs-8  flex-grow-1 compl-remarks-span" *ngIf="projectInfo.Remarks"  (click)="expandRemarks('sub-cmt-sec')" >{{projectInfo.Remarks}}</span> -->
+                                                                  
+                                                                  
+                                                                  <div *ngIf="projectInfo.Remarks" class="d-flex gap-1">
+                                                                    <div #submitbyRemarksBx class="compl-remarks-span  flex-grow-1  text-muted fs-8">
+                                                                        {{projectInfo.Remarks}}
+                                                                    </div>
+                                                                    <button class="txt-expnd-btn align-self-end" *ngIf="submitbyRemarksBx.scrollHeight>submitbyRemarksBx.clientHeight" (click)="$event.stopPropagation(); submitbyRemarksBx.classList.remove('compl-remarks-span'); lessbtn3.classList.remove('d-none'); ">
+                                                                        <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                    </button>
+                                                                    <button #lessbtn3 class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); submitbyRemarksBx.classList.add('compl-remarks-span'); lessbtn3.classList.add('d-none');">
+                                                                        <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                                                    </button>
+                                                                </div>
+                                                                  
+                                                                  
+                                                                  
                                                                   <span *ngIf="projectInfo.CompleteProofDoc" [title]="projectInfo.Sourcefile" (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" class="text-info fs-8 text-underline curser-pointer flex-shrink-0">
                                                                       <!-- <svg style="padding-top:1.5px; padding-bottom:1.5px;" width="25px" height="24px" fill="transparent" stroke="#527ce2" viewBox="-1.44 -1.44 26.88 26.88" xmlns="http://www.w3.org/2000/svg">
                                                                           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -3134,15 +3220,28 @@
                                                                 <div class="meeting-attendance-count fs-6">{{projectInfo.ApprovedDate|date:'d MMM, yyyy'}}</div>
                                                            </div>
                                                            <div class="d-flex flex-column" *ngIf="projectInfo.ApproveComments">
-                                                            <span id="aprv-cmt-sec" class="text-muted fs-8 compl-remarks-span" (click)="expandRemarks('aprv-cmt-sec')" >{{projectInfo.ApproveComments}}</span>
-                                                           </div>
+                                                            <!-- <span id="aprv-cmt-sec" class="text-muted fs-8 compl-remarks-span" (click)="expandRemarks('aprv-cmt-sec')" >{{projectInfo.ApproveComments}}</span> -->
+                                                          
+                                                            <div class="d-flex gap-1">
+                                                                <div #aprverRemarksBx class="compl-remarks-span  text-muted fs-8">
+                                                                    {{projectInfo.ApproveComments}}
+                                                                </div>
+                                                                <button class="txt-expnd-btn align-self-end" *ngIf="aprverRemarksBx.scrollHeight>aprverRemarksBx.clientHeight" (click)="$event.stopPropagation(); aprverRemarksBx.classList.remove('compl-remarks-span'); lessbtn4.classList.remove('d-none'); ">
+                                                                    <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                </button>
+                                                                <button #lessbtn4 class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); aprverRemarksBx.classList.add('compl-remarks-span'); lessbtn4.classList.add('d-none');">
+                                                                    <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                                                </button>
+                                                            </div>
+
+                                                          </div>
                                                           </fieldset>
 
                                                       </div>
                                                       <div class="meeting-attendance">
                                                           <div class="meeting-attendance-item "    [ngClass]="{'meeting-attendance-item-hover curser-pointer':projectActionInfo&&projectActionInfo.length>0}"
                                                           [attr.data-toggle]="(projectActionInfo&&projectActionInfo.length>0)?'modal':''"
-                                                          [attr.data-target]="(projectActionInfo&&projectActionInfo.length>0)?'#actns-graphmodal':''"  (click)="(projectActionInfo&&projectActionInfo.length>0)?filterActionsOnGantt('All'):''">
+                                                          [attr.data-target]="(projectActionInfo&&projectActionInfo.length>0)?'#actns-graphmodal':''"  (click)="(projectActionInfo&&projectActionInfo.length>0)?filterActionsOnGantt('All','All'):''">
                                                               <div class="meeting-attendance-count">{{projectActionInfo?projectActionInfo.length:0}}</div>
                                                               <div class="meeting-attendance-title">Actions</div>
                                                           </div>
@@ -3223,41 +3322,9 @@
                                                     <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!(isApprovalSection&&projectInfo.Status!=='Cancelled'&&(multiapproval_list.length+totalStdTskApvs==1))">
 
 
-                                                        <div class="col-lg-12 mb-3 p-3" *ngIf="projectInfo.AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId"
-                                                        style="    background-color: #e4e7f9;
-                                                        border-radius: 14px;
-                                                        border: 1px solid #6388e336;
-                                                        color: #4f4f4f;">
-                                                        <div class="d-flex justify-content-between">
-                                                            <h6 style="text-align:left;margin:0;font-weight: bold;">Project has been assigned to you for auditing by {{AuditRequestBY}}</h6>
-                                                            <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
-                                                        </div>
-                                                        <div>
-                                                            <span *ngIf="projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{projectInfo.Owner_remarks}}</span>
-                                                            <span *ngIf="!projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{requestComments}}</span>
-                                                        </div>
-                                                        <!-- <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
-                                                        <div>
-                                                            <span *ngIf="projectInfo.Owner_remarks">{{projectInfo.Owner_remarks}}</span>
-                                                            <span *ngIf="!projectInfo.Owner_remarks">{{requestComments}}</span>
-                                                                    <span> 1. You have to analyze the project and give your approval acceptance or rejection as per the above remarks.
-                                                                    <br>2. If you accept the project approval, then it will land to the project owner for the final approval.<br>
-                                                                    3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.
-                                                                </span>
-                                                        </div> -->
-                                                    </div>
+                                                   
 
-                                                    <div class="col-lg-12 mb-3 p-3" *ngIf="projectInfo.AuditStatus=='Audit Complete' && Current_user_ID==approvalEmpId"
-                                                    style="background-color:white;border-radius:2px;border:1px solid #6388e3;">
-                                                    <div class="d-flex justify-content-between">
-                                                        <h6 style="text-align:left;margin:0;">Project audit completed by {{projectAuditor.empName}}</h6>
-                                                        <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
-                                                    </div>
-                                                    <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Remarks:</h6>
-                                                    <div>
-                                                        <span *ngIf="projectInfo.Auditor_acceptremarks">{{projectInfo.Auditor_acceptremarks}}</span>
-                                                    </div>
-                                                   </div>
+                                                   
 
 
 
@@ -3275,7 +3342,47 @@
                                                                             </g>
                                                                         </svg>
                                                                     </span>
-                                                                </div> Approval
+                                                                </div> 
+                                                                
+                                                                <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status" class="text-nowrap">
+
+                                                                    <div class="kt-project-type " *ngSwitchCase="'Under Approval'">
+                                                                          <div class="Kt-Pd-Status new-project-under"> New approval </div>
+                                                                    </div>
+              
+                                                                    <div class="kt-project-type " *ngSwitchCase="'Completion Under Approval'">
+                                                                      <div *ngIf="projectInfo.AuditStatus=='Audit Pending'" class="Kt-Pd-Status AuditUnderApproval d-flex align-items-center">
+                                                                          Audit Approval
+                                                                      </div>
+                                                                      <div *ngIf="projectInfo.AuditStatus!='Audit Pending'" class="Kt-Pd-Status CompletionUnderApproval d-flex align-items-center">
+                                                                          Completion approval
+                                                                      </div>
+                                                                    </div>
+              
+                                                                    <div class="kt-project-type d-flex" *ngSwitchCase="'Forward Under Approval'">
+                                                                          <div class="Kt-Pd-Status ForwardUnderApproval d-flex text-nowrap">
+                                                                              Forward approval
+                                                                          </div>
+                                                                          <div *ngIf="projectInfo.Delaydays>0" class="extra-at-status" style="color:#d32f35; border-color:#9C27B0;  ">
+                                                                              <span>{{projectInfo.Delaydays}} {{projectInfo.Delaydays>1?'days':'day'}} delayed</span>
+                                                                          </div>
+                                                                    </div>
+              
+                                                                    <div class="kt-project-type" *ngSwitchCase="'Enactive Under Approval'">
+                                                                          <div class="Kt-Pd-Status EnactiveUnderApproval"> EnActive approval</div>
+                                                                    </div>
+              
+                                                                    <div class="kt-project-type" *ngSwitchCase="'Deadline Extend Under Approval'">
+                                                                          <div class="Kt-Pd-Status DeadlineExtend"> Deadline extend approval</div>
+                                                                    </div>
+        
+                                                                    <div class="kt-project-type " *ngSwitchCase="'Cancellation Under Approval'">
+                                                                          <div class="Kt-Pd-Status Delay"> Cancellation approval</div>
+                                                                    </div>
+              
+                                                                 </div>
+
+
                                                             </div>
                                                             <div class="kt-info-box border-0 w-100">
                                                                 <!-- <div class="d-flex align-items-center justify-content-end g-10">
@@ -3300,11 +3407,16 @@
 
 
                                                     <ng-container *ngIf="Current_user_ID==projectInfo.OwnerEmpNo">
-                                                          <div title="Forward the project for auditing, then it will return to you for approval."
-                                                              *ngIf="!projectAuditor&&requestType=='Project Complete'"  (click)="approvalClick('AUDIT')" class="kt-detail-link " [ngClass]="Audit_active ==true ? 'kt-detail-link active ':'kt-detail-link'" >
+                                                    
+                                                        <div title="Forward the project for auditing, then it will return to you for approval."
+                                                              *ngIf="(!projectAuditor&&requestType=='Project Complete') || (requestType=='Project Complete'&&projectAuditor&&projectInfo.AuditStatus=='')  "  (click)="approvalClick('AUDIT')" class="kt-detail-link " [ngClass]="Audit_active ==true ? 'kt-detail-link active ':'kt-detail-link'" >
                                                               <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.2em;height: 1.2em;vertical-align: middle;fill: #0086f1;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M296 250c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h384c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H296zM480 394H296c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8z"/><path d="M432 852H208V148h560v320c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V108c0-17.7-14.3-32-32-32H168c-17.7 0-32 14.3-32 32v784c0 17.7 14.3 32 32 32h264c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"/><path d="M872 764H728v-36.6c46.3-13.8 80-56.6 80-107.4 0-61.9-50.1-112-112-112s-112 50.1-112 112c0 50.7 33.7 93.6 80 107.4V764H520c-8.8 0-16 7.2-16 16v152c0 8.8 7.2 16 16 16h352c8.8 0 16-7.2 16-16V780c0-8.8-7.2-16-16-16zM646 620c0-27.6 22.4-50 50-50s50 22.4 50 50-22.4 50-50 50-50-22.4-50-50z m180 266H566v-60h260v60z"/></svg>
                                                             <span class="kt-detail-iconname">Audit</span>
                                                           </div>
+
+
+
+
 
                                                          <ng-container *ngIf="(!projectAuditor)||(approvalEmpId!=projectAuditor.empNo)">
                                                           <div title="Handover the project ownership, then new owner will takeover the control."
@@ -3356,6 +3468,46 @@
                                                                 <div class="clearfix"></div>
                                                             </div>
                                                         </div>
+
+
+                                                    <div class="col-lg-12 mb-3 p-3 mt-3" *ngIf="projectInfo.AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId"
+                                                        style="background-color: #e4e7f9;
+                                                        border-radius: 14px;
+                                                        border: 1px solid #6388e336;
+                                                        color: #4f4f4f;">
+                                                        <div class="d-flex justify-content-between">
+                                                            <h6 style="text-align:left;margin:0;font-weight: bold;">Project has been assigned to you for auditing by {{AuditRequestBY}}</h6>
+                                                            <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
+                                                        </div>
+                                                        <div>
+                                                            <span *ngIf="projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{projectInfo.Owner_remarks}}</span>
+                                                            <span *ngIf="!projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{requestComments}}</span>
+                                                        </div>
+                                                        <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
+                                                        <span class="fs-7"> 
+                                                            1. You have to analyze the project and give your approval acceptance or rejection.<br>
+                                                            2. If you accept the project approval, then it will land to the project owner for the final approval.<br>
+                                                            3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.
+                                                        </span>
+                                                    </div>
+
+
+                                                    <div class="col-lg-12 mb-3 p-3 mt-3" *ngIf="projectInfo.AuditStatus=='Audit Complete' && Current_user_ID==approvalEmpId"
+                                                    style="background-color:white;border-radius:2px;border:1px solid #6388e3;">
+                                                    <div class="d-flex justify-content-between">
+                                                        <h6 style="text-align:left;margin:0;">Project audit completed by {{projectAuditor.empName}}</h6>
+                                                        <h6 class="text-muted" style="margin:0;">{{requestDate|date:'dd-MM-yyyy'}}</h6>
+                                                    </div>
+                                                    <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Remarks:</h6>
+                                                    <div>
+                                                        <span *ngIf="projectInfo.Auditor_acceptremarks">{{projectInfo.Auditor_acceptremarks}}</span>
+                                                    </div>
+                                                   </div>
+
+
+
+
+
 
                                                         <div class="kt-reject-form-view aprovls-sectn-forms" [hidden]="!isTextAreaVisible">
 
@@ -3715,11 +3867,27 @@
 
 
 
-                                                            <div class="col-lg-12 mb-3">
+
+
+
+                                                         
+                                                            <div *ngIf="requestType!='Project Audit'" class="col-lg-12 mb-3">
                                                                 <div class="kt-info-lable-v">Remarks</div>
-                                                                <div class="kt-info-data-v p-2" data-toggle="tooltip"
-                                                                    title="{{requestComments}}">{{requestComments}}</div>
+                                                                <div class="kt-info-data-v p-2 " data-toggle="tooltip" style="overflow:unset; text-overflow: unset; white-space: unset;">
+                                                                    <div class="d-flex px-2">
+                                                                        <div #aprvlRemarksBx class="compl-remarks-span" title="{{requestComments}}">
+                                                                            {{requestComments}}
+                                                                        </div>
+                                                                        <button class="txt-expnd-btn align-self-end bg-transparent" style="border:2px solid #898989" *ngIf="aprvlRemarksBx.scrollHeight>aprvlRemarksBx.clientHeight" (click)="$event.stopPropagation(); aprvlRemarksBx.classList.remove('compl-remarks-span'); aprvRemarkslessbtn.classList.remove('d-none'); ">
+                                                                            <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                        </button>
+                                                                        <button #aprvRemarkslessbtn class="txt-expnd-btn align-self-end bg-transparent d-none" style="border:2px solid #898989"  (click)="$event.stopPropagation(); aprvlRemarksBx.classList.add('compl-remarks-span'); aprvRemarkslessbtn.classList.add('d-none');">
+                                                                            <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                                                        </button>
+                                                                    </div>                                                         
+                                                                </div>
                                                             </div>
+                                                     
 
                                                             <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'&&completedoc">
                                                                 <div class="kt-info-lable-v">Attachment</div>
@@ -3750,10 +3918,6 @@
                                                                 <!-- <div class="kt-info-data-v bg-light-shade curser-pointer" (click)="openPDF(iscloud,url)"  data-toggle="tooltip" title="{{completedoc}}"><a>{{completedoc}}</a></div> -->
                                                             </div>
 
-
-
-
-
                                                             <div class="col-lg-12 mb-2"
                                                                 *ngIf="requestType=='Task Complete' && completedoc">
                                                                 <div class="kt-info-lable-v">Task attachment</div>
@@ -3779,7 +3943,27 @@
                                                                 <!-- <div class="kt-info-data-v bg-light-shade curser-pointer" (click)="openPDF(iscloud,url)"  data-toggle="tooltip" title="{{completedoc}}"><a>{{completedoc}}</a></div> -->
                                                             </div>
 
-
+                                                            <div class="col-lg-12 mt-3 mb-2" *ngIf="requestType=='Project Audit'&&completedoc">
+                                                                <div class="kt-info-lable-v">Attachment</div>
+                                                                <div class="">
+                                                                    <div class="attachment-view">
+                                                                        <span>
+                                                                            <svg
+                                                                                xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                                height="16" fill="currentColor"
+                                                                                viewBox="0 0 16 16" class="bi bi-paperclip">
+                                                                                <path
+                                                                                    d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z">
+                                                                                </path>
+                                                                            </svg>
+                                                                        </span>
+                                                                        <span
+                                                                            (click)=" LoadDocument1(complete_List[0].IsCloud,complete_List[0].Sourcefile,complete_List[0].CompleteProofDoc,complete_List[0].contenttype,complete_List[0].Team_Res)"
+                                                                            data-toggle="tooltip" title="{{completedoc}}">
+                                                                            {{completedoc}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
                                                             <div class="col-lg-4">
                                                                 <div class="kt-info-lable-v text-center">Request type</div>
@@ -4657,7 +4841,8 @@
 
                                             <div class="notifications-list "
                                                 *ngIf="(projectActionInfo[currentActionView].Status==='Delay' && projectActionInfo[currentActionView].Team_Res===Current_user_ID)||
-                                                       (projectActionInfo[currentActionView].Project_Owner==projectActionInfo[currentActionView].Team_Res)
+                                                       (projectActionInfo[currentActionView].Project_Owner==projectActionInfo[currentActionView].Team_Res)||
+                                                       (noActvyOnActnSinceCreation)
                                                      ">
 
 
@@ -4675,8 +4860,15 @@
                                                   <span class="notif-msg fs-6" style="color:#00a2eb">This action has same owner and responsible. It will affect the evaluation of action responsible.</span>
                                                 </div>
 
+                                                <div *ngIf="noActvyOnActnSinceCreation" class="notification overutilization-notification">
+                                                    <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
+                                                    <span class="notif-msg" style="color:#c57a05">
+                                                        {{noActnActvy4NDays}} {{noActnActvy4NDays>1?'days':'day'}} have passed since this action started, and no activity has been seen yet.
+                                                    </span>
+                                                 </div>
 
-                                               </div>
+
+                                             </div>
 
 
                                             <div class="kt-info-box kt-info-action-box border-0">
@@ -4756,7 +4948,7 @@
 
 
                                                                 <button class="Ct-btn Bt-Submit ml-2" *ngIf="
-                                                                (!['Completion Under Approval','New Project Rejected','Cancelled','Completed','Under Approval','Project Hold','Cancellation Under Approval'].includes(projectActionInfo[currentActionView].Status))&&
+                                                                (['Completed','Project Hold','Cancelled','New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval','Deadline Extend Under Approval'].includes(projectActionInfo[currentActionView].Status.trim())==false)&&
                                                                 (
                                                                 projectActionInfo[currentActionView].Team_Res===Current_user_ID ||
                                                                 projectActionInfo[currentActionView].Project_Owner===Current_user_ID||
@@ -4767,11 +4959,8 @@
                                                                 (click)="markCompleted(projectActionInfo[currentActionView])">
                                                                 Action completion</button>
 
-
-
-
                                                                 <button *ngIf="
-                                                                 (!['Completed','Project Hold'].includes(projectActionInfo[currentActionView].Status))&&
+                                                                 (['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectActionInfo[currentActionView].Status)==false)&&
                                                                  (
                                                                 projectActionInfo[currentActionView].Team_Res===Current_user_ID||
                                                                 projectActionInfo[currentActionView].Project_Owner===Current_user_ID||
@@ -4951,7 +5140,7 @@
 
 
                                                             <div *ngSwitchDefault class="kt-project-type">
-                                                                <div class="Kt-Pd-Status Not_Started ">
+                                                                <div class="Kt-Pd-Status  ">
                                                                   {{projectActionInfo[currentActionView].Status=='Under Approval'?'New action approval':
                                                                   projectActionInfo[currentActionView].Status==='Forward Under Approval'?'Forward approval':
                                                                     projectActionInfo[currentActionView].Status=='InProcess'? 'In-process':
@@ -4969,7 +5158,7 @@
                                                     </p>
                                                 </div> -->
                                                     <div class="kt-project-desc w-80">
-                                                        <span>{{projectActionInfo[currentActionView].Project_Description |
+                                                        <!-- <span>{{projectActionInfo[currentActionView].Project_Description |
                                                             slice:0:limited_data}}
                                                             {{ isExpanded ?
                                                             (projectActionInfo[currentActionView].Project_Description |
@@ -4979,7 +5168,19 @@
                                                             *ngIf="projectActionInfo[currentActionView].Project_Description.length>98">
                                                             <a href="javascript:void(0)" (click)="toggleReadMore()">{{
                                                                 isExpanded ? ' less' : 'more...' }}</a>
-                                                        </ng-container>
+                                                        </ng-container> -->
+                                                        <div *ngIf="projectActionInfo&&projectActionInfo[currentActionView].Project_Description" class="d-flex">
+                                                            <div #actnDescBx class="compl-remarks-span">
+                                                                {{projectActionInfo[currentActionView].Project_Description}}
+                                                            </div>
+                                                            <button class="txt-expnd-btn align-self-end" *ngIf="actnDescBx.scrollHeight>actnDescBx.clientHeight" (click)="$event.stopPropagation(); actnDescBx.classList.remove('compl-remarks-span'); lessbtn5.classList.remove('d-none'); ">
+                                                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                            </button>
+                                                            <button #lessbtn5 class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); actnDescBx.classList.add('compl-remarks-span'); lessbtn5.classList.add('d-none');">
+                                                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                                            </button>
+                                                        </div>
+
                                                     </div>
                                                     <ng-container *ngIf="requestType && Current_user_ID  != approval_Emp">
                                                         <div class="d-flex justify-content-between mt-3">
@@ -5175,8 +5376,19 @@
                                                         <div class="row mt-3 px-3" id="kt_open_scroll">
                                                             <div class="col-lg-12 mb-3">
                                                                 <div class="kt-info-lable-v">Remarks</div>
-                                                                <div class="kt-info-data-v p-2" data-toggle="tooltip"
-                                                                    title="{{requestComments}}">{{requestComments}}</div>
+                                                                    <div class="kt-info-data-v p-2 " data-toggle="tooltip" style="overflow:unset; text-overflow: unset; white-space: unset;">
+                                                                        <div class="d-flex px-2">
+                                                                            <div #actnaprvlRemarksBx class="compl-remarks-span" title="{{requestComments}}">
+                                                                                {{requestComments}}
+                                                                            </div>
+                                                                            <button class="txt-expnd-btn align-self-end bg-transparent" style="border:2px solid #898989" *ngIf="actnaprvlRemarksBx.scrollHeight>actnaprvlRemarksBx.clientHeight" (click)="$event.stopPropagation(); actnaprvlRemarksBx.classList.remove('compl-remarks-span'); actnaprvRemarkslessbtn.classList.remove('d-none'); ">
+                                                                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                            </button>
+                                                                            <button #actnaprvRemarkslessbtn class="txt-expnd-btn align-self-end bg-transparent d-none" style="border:2px solid #898989"  (click)="$event.stopPropagation(); actnaprvlRemarksBx.classList.add('compl-remarks-span'); actnaprvRemarkslessbtn.classList.add('d-none');">
+                                                                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                                                            </button>
+                                                                        </div>                                                         
+                                                                    </div>
                                                             </div>
                                                             <div class="col-lg-4">
                                                                 <div class="kt-info-lable-v text-center ">Request type</div>
@@ -5899,7 +6111,7 @@
             <div class="pulsing-div">
                 <span class="pulsing-dot pulsing-dot-pending"></span>
             </div>
-        <span class="unprj-text-note">Note: You can view and create project from the "Create project --&gt; Assigned projects section".</span> <span class="openhere" (click)="openAssignedProject(task_assign_json[0].Assign_Id)">open here</span>
+        <span class="unprj-text-note">Note: You can view and create project from the "Create project --&gt; Assigned projects section".</span> <span class="openhere" (click)="openAssignedProject(task_assign_json[0].Assign_Id)">click to open</span>
         </div>
         <div *ngIf="Current_user_ID==task_assign_json[0].Createdby_EmpNo" class=" d-flex gap-2  text-info font-weight-bold fs-6 px-2 p-2 mt-4 ml-1">
             <div class="pulsing-div">
@@ -7486,7 +7698,7 @@
                        </span>
                        <span class="kt-chat__title"> List of attachments </span> <span
                           class="kt-at-count" *ngIf="_TotalDocs>0">{{_TotalDocs}}</span> </h4>
-                  <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+                          <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                       (click)="closedarBar()">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
                           fill="currentColor">
@@ -8184,7 +8396,7 @@
                                           </div>
                                         </div>
 
-                                       <ng-container *ngIf="Data.Role&&projectInfo">
+                                       <!-- <ng-container *ngIf="Data.Role&&projectInfo">
                                         <div *ngIf="Data.Role.includes('Auditor')&&(projectInfo.Status!='Completion Under Approval'&&projectInfo.Status!='Completed')" class="d-flex">
                                             <button  (click)="onChangeAuditorBtnClicked();" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted curser-pointer ">
                                                 <svg  width="14px" height="15px" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path></g></svg>
@@ -8195,18 +8407,53 @@
                                                 <span class="auditor-btn-text">&nbsp;remove</span>
                                             </button>
                                        </div>
-                                     </ng-container>
+                                     </ng-container> -->
 
-                                        <ng-container *ngIf="projectInfo">
-                                         <div *ngIf="Data.isRemovable&&(Current_user_ID == projectInfo.OwnerEmpNo || Current_user_ID == projectInfo.ResponsibleEmpNo || isHierarchy == true)" class="d-flex align-self-start">
-                                                <button (click)="openRemoveSADialog(i,'SUPPORT')" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted  curser-pointer ">
+                                   
+
+
+
+                                     <ng-container *ngIf="projectInfo&&Data.Role&&(Current_user_ID == projectInfo.OwnerEmpNo || Current_user_ID == projectInfo.ResponsibleEmpNo || isHierarchy == true)">
+
+                                        
+                                            <button *ngIf="Data.Role.includes('Auditor')&&(projectInfo.Status!='Completion Under Approval'&&projectInfo.Status!='Completed')" (click)="onChangeAuditorBtnClicked();" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted curser-pointer ">
+                                                <svg  width="14px" height="15px" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path></g></svg>
+                                                <span class="auditor-btn-text">&nbsp;change auditor</span>
+                                            </button>
+                                       
+
+
+                                           <ng-container *ngIf="Data.Role.includes('Auditor')&&Data.Role.includes('Support'); else notbothAuditorAndSupport">
+                                                <button data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle Auditor-edit-btn btn btn-sm  d-flex  text-muted curser-pointer">
                                                     <svg viewBox="0 0 24 24" height="18px" width="17px" role="img" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" ><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z" fill="currentColor"></path></svg>
-                                                    <span *ngIf="Data.Role=='Support';else alsoAsSupport" class="auditor-btn-text">&nbsp;remove</span>
-                                                    <ng-template #alsoAsSupport><span class="auditor-btn-text">&nbsp;remove support</span></ng-template>
+                                                    <span class="auditor-btn-text">&nbsp;remove</span>
                                                 </button>
-                                         </div>
+
+                                                <div class="dropdown-menu drop-cus">
+                                                    <a (click)="openRemoveSADialog(i,'AUDITOR')" class="dropdown-item">Remove as auditor</a>
+                                                    <a (click)="openRemoveSADialog(i,'SUPPORT')" class="dropdown-item">Remove as support</a>
+                                                </div>
+                                           </ng-container>
+                                           <ng-template #notbothAuditorAndSupport>
+
+                                                <div *ngIf="Data.Role.includes('Support')&&Data.isRemovable" class="d-flex align-self-start">
+                                                    <button (click)="openRemoveSADialog(i,'SUPPORT')" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted  curser-pointer ">
+                                                        <svg viewBox="0 0 24 24" height="18px" width="17px" role="img" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" ><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z" fill="currentColor"></path></svg>
+                                                        <span *ngIf="Data.Role=='Support';else alsoAsSupport" class="auditor-btn-text">&nbsp;remove</span>
+                                                        <ng-template #alsoAsSupport><span class="auditor-btn-text">&nbsp;remove support</span></ng-template>
+                                                    </button>
+                                                </div>
+
+                                                <button *ngIf="Data.Role.includes('Auditor')&&(projectInfo.Status!='Completion Under Approval'&&projectInfo.Status!='Completed')" (click)="openRemoveSADialog(i,'AUDITOR')"  class="Auditor-edit-btn btn btn-sm  d-flex  text-muted  curser-pointer ">
+                                                    <svg viewBox="0 0 24 24" height="18px" width="17px" role="img" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" ><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z" fill="currentColor"></path></svg>
+                                                    <span class="auditor-btn-text">&nbsp;remove auditor</span>
+                                                </button>
+
+                                           </ng-template>
+
                                         </ng-container>
-                                        <!--remarks on removing support/auditor-->
+
+                                        <!--( popup ) remarks on removing support/auditor-->
                                         <div class="mark-admin-drop" id="mark-admin-drop{{i}}">
                                             <div class="form-group mb-0">
                                                 <label *ngIf="typeUserRemove=='SUPPORT'" for="exampleFormControlTextarea1" class="fs-7" style="font-weight:600;">Remove as support</label>
@@ -8220,9 +8467,7 @@
                                                 <button class="btn btn-sm btn-secondary" (click)="closeRemoveSADialog(i)">Cancel</button>
                                             </div>
                                         </div>
-                                        <!--remarks on removing support/auditor-->
-
-
+                                        <!--( popup ) remarks on removing support/auditor-->
 
                                     </div>
 
@@ -9486,26 +9731,26 @@
                   <ul class="nav nav-tabs tabs-list mb-0 border-0 d-flex py-1 px-1">
                       <li class="nav-item">
                         <!-- data-toggle="tab"  href="#upcoming_meetings_tabpanel"   -->
-                          <a class="btn icon-btn icn-hvr fav-btn"  [ngClass]="{'active':mtg_section=='UPCOMING'}"  (click)="  toggleMtgsSection('UPCOMING');"
+                          <a class="btn icon-btn icn-hvr fav-btn"  [ngClass]="{'active':mtg_section=='UPCOMING'}"  (click)="toggleMtgsSection('UPCOMING');"
                              ><span class="lbl-hdn">upcoming </span><span
                                   class="total-meeting-count" *ngIf="upcMtgCnt">{{upcMtgCnt}}</span></a>
                       </li>
                       <li class="nav-item">
                         <!-- data-toggle="tab"  href="#today_meetings_tabpanel" -->
-                          <a class="btn icon-btn icn-hvr fav-btn"  [ngClass]="{'active':mtg_section=='TODAY'}"   (click)="  toggleMtgsSection('TODAY');"
+                          <a class="btn icon-btn icn-hvr fav-btn"  [ngClass]="{'active':mtg_section=='TODAY'}"   (click)="toggleMtgsSection('TODAY');"
                               ><span class="lbl-hdn"> Today
                               </span><span class="total-meeting-count" *ngIf="tdMtgCnt">{{tdMtgCnt}}</span></a>
                       </li>
                       <li class="nav-item">
                         <!-- data-toggle="tab" href="#last_7_days_meetings_tabpanel" -->
-                          <a class="btn icon-btn icn-hvr fav-btn" [ngClass]="{'active':mtg_section=='LAST7DAYS'}" (click)=" toggleMtgsSection('LAST7DAYS');"
+                          <a class="btn icon-btn icn-hvr fav-btn" [ngClass]="{'active':mtg_section=='LAST7DAYS'}" (click)="toggleMtgsSection('LAST7DAYS');"
                               ><span class="lbl-hdn"> last
                                   7 days </span><span class="total-meeting-count"
                                   *ngIf="lst7dCnt">{{lst7dCnt}}</span></a>
                       </li>
                       <li class="nav-item">
                         <!-- data-toggle="tab"   href="#last_month_meetings_tabpanel" -->
-                          <a class="btn icon-btn icn-hvr fav-btn"  [ngClass]="{'active':mtg_section=='LASTMONTH'}"  (click)=" toggleMtgsSection('LASTMONTH'); "
+                          <a class="btn icon-btn icn-hvr fav-btn"  [ngClass]="{'active':mtg_section=='LASTMONTH'}"  (click)="toggleMtgsSection('LASTMONTH'); "
                              ><span class="lbl-hdn"> last
                                   month </span><span class="total-meeting-count"
                                   *ngIf="lstMthCnt">{{lstMthCnt}}</span></a>
@@ -9527,36 +9772,27 @@
                           <div class="dropdown-menu pt-1 mt-2 dropdown_left_fix">
                               <div class="px-2 pt-0  d-inline-block" id="range-picker_header">
                                   <div (click)="$event.stopPropagation();">
-
                                       <div class="mt-1">
                                           <label class="cus-lbl form-label">Date range</label>
                                           <div class="d-flex-cen">
                                               <div class="">
-
                                                   <div
                                                       class="input-group input-date-dw border border-gray rounded-2">
                                                       <input type="date" placeholder="Select Start Date"
                                                           class="form-control border-0" name="date"
                                                           [(ngModel)]="mtgFromD" />
-
                                                   </div>
-
                                               </div>
                                               <div class="px-2">to</div>
-
-                                              <div class="">
-
+                                           <div class="">
                                                   <div
                                                       class="input-group input-date-dw border border-gray rounded-2  ">
                                                       <input type="date" placeholder="Select Start Date"
                                                           class="form-control  border-0" name="date"
                                                           [min]="mtgFromD|date:'yyyy-MM-dd'"
                                                           [(ngModel)]="mtgUptoD" />
-
                                                   </div>
-
-                                              </div>
-
+                                             </div>
                                               <div class="form-group  mb-0 ml-3">
                                                   <button [disabled]="mLdng||mtgFromD===''||mtgUptoD===''"
                                                   type="submit" class="btn btn-info w-110 ml-2"
@@ -9572,8 +9808,6 @@
                                                   <button type="submit"
                                                       class="btn w-110 btn-secondary  ml-2"
                                                       (click)="  mtgFromD=''; mtgUptoD='';  ">RESET</button>
-
-
                                               </div>
                                           </div>
                                       </div>
@@ -9641,14 +9875,14 @@
                                 *ngIf="upcomingMeetings&&upcomingMeetings.length>0; else no_meetings_Present">
                                 <ng-container *ngFor="let meetings of upcomingMeetings;let i=index">
 
-                                    <div [id]="'upcoming-mtg-'+i+'-btn'" data-toggle="collapse" aria-expanded="false"
-                                        class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
+                                    <div [id]="'upcoming-mtg-'+i+'-btn'" data-toggle="collapse" aria-expanded="true"
+                                        class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  "
                                         [attr.data-target]="'#upcoming-mtg-'+i">
                                         <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{meetings.date|date:'MMM d y'}}</span>
                                         <span class="Kt-replay-time"> Total Meetings :<small class="tlv-df" *ngIf="meetings.totalmeetings" >{{meetings.totalmeetings.length}}</small> </span>
                                     </div>
 
-                                    <div [id]="'upcoming-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse bounce-effect"
+                                    <div [id]="'upcoming-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 show collapse bounce-effect"
                                         [attr.aria-labelledby]="'upcoming-mtg-'+i" aria-hidden="true">
 
                                         <div class="met-card mb-3" *ngFor="let meeting of meetings.totalmeetings"  (click)="meetingReport(meeting.Schedule_ID)">
@@ -9834,14 +10068,14 @@
                             <ng-container *ngIf="todaymeetings&&todaymeetings.length>0;else no_meetings_Present">
                                 <ng-container *ngFor="let tmeetings of todaymeetings;let i=index">
 
-                                        <div [id]="'today-mtg-'+i+'-btn'" data-toggle="collapse" aria-expanded="false"
-                                            class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
+                                        <div [id]="'today-mtg-'+i+'-btn'" data-toggle="collapse" aria-expanded="true"
+                                            class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  "
                                             [attr.data-target]="'#today-mtg-'+i">
                                             <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{tmeetings.date|date:'MMM d y'}}</span>
                                             <span class="Kt-replay-time"> Total Meetings :<small class="tlv-df" *ngIf="tmeetings.totalmeetings" >{{tmeetings.totalmeetings.length}}</small> </span>
                                         </div>
 
-                                        <div [id]="'today-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse bounce-effect"
+                                        <div [id]="'today-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 show collapse bounce-effect"
                                             [attr.aria-labelledby]="'today-mtg-'+i" aria-hidden="true">
 
                                             <div class="met-card mb-3 cursor-pointer" *ngFor="let meeting of tmeetings.totalmeetings"   (click)="meetingReport(meeting.Schedule_ID)">
@@ -10051,14 +10285,14 @@
 
 
 
-                                <div [id]="'last7d-mtg-'+i+'-Btn'"  data-toggle="collapse" aria-expanded="false"
-                                    class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
+                                <div [id]="'last7d-mtg-'+i+'-Btn'"  data-toggle="collapse" aria-expanded="true"
+                                    class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0"
                                     [attr.data-target]="'#last7d-mtg-'+i">
                                     <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{lmeetings.date|date:'MMM d y'}}</span>
                                     <span class="Kt-replay-time"> Total meetings :<small class="tlv-df" *ngIf="lmeetings.totalmeetings" >{{lmeetings.totalmeetings.length}}</small> </span>
                                 </div>
 
-                                <div [id]="'last7d-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse bounce-effect"
+                                <div [id]="'last7d-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse show bounce-effect"
                                     [attr.aria-labelledby]="'last7d-mtg-'+i" aria-hidden="true">
 
 
@@ -10267,14 +10501,14 @@
                             <ng-container *ngIf="lastMonthMeetings&&lastMonthMeetings.length>0; else no_meetings_Present">
                                 <ng-container *ngFor="let lmmeetings of lastMonthMeetings;let i=index">
 
-                                    <div [id]="'lastmonth-mtg-'+i+'-Btn'" data-toggle="collapse" aria-expanded="false"
-                                        class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
+                                    <div [id]="'lastmonth-mtg-'+i+'-Btn'" data-toggle="collapse" aria-expanded="true"
+                                        class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  "
                                         [attr.data-target]="'#lastmonth-mtg-'+i">
                                         <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{lmmeetings.date|date:'MMM d y'}}</span>
                                         <span class="Kt-replay-time"> Total Meetings :<small class="tlv-df" *ngIf="lmmeetings.totalmeetings" >{{lmmeetings.totalmeetings.length}}</small> </span>
                                     </div>
 
-                                    <div [id]="'lastmonth-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse bounce-effect"
+                                    <div [id]="'lastmonth-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse show bounce-effect"
                                         [attr.aria-labelledby]="'lastmonth-mtg-'+i" aria-hidden="true">
 
                                         <div class="met-card mb-3" *ngFor="let lmmeeting of lmmeetings.totalmeetings"  (click)="meetingReport(lmmeeting.Schedule_ID)">
@@ -10493,14 +10727,14 @@
 
                                 <ng-container *ngFor="let omeetings of olderMeetings;let i=index">
 
-                                    <div data-toggle="collapse" aria-expanded="false"
-                                        class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0  collapsed"
+                                    <div data-toggle="collapse" aria-expanded="true"
+                                        class="mb-0 titlediv d-flex w-100 align-items-center  p-2 justify-content-between me-0"
                                         [attr.data-target]="'#older-mtg-'+i">
                                         <span class="kt-text-wrap"><i class="material-icons fs-2">expand_more</i>{{omeetings.date|date:'MMM d y'}}</span>
                                         <span class="Kt-replay-time"> Total Meetings :<small class="tlv-df" *ngIf="omeetings.totalmeetings" >{{omeetings.totalmeetings.length}}</small> </span>
                                     </div>
 
-                                    <div [id]="'older-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse bounce-effect"
+                                    <div [id]="'older-mtg-'+i" class="kt-widget__items mt-2 mx-0 px-2 collapse show bounce-effect"
                                         [attr.aria-labelledby]="'older-mtg-'+i" aria-hidden="true">
 
                                         <div class="met-card mb-3" *ngFor="let omeeting of omeetings.totalmeetings" (click)="meetingReport(omeeting.Schedule_ID)" >
@@ -11105,11 +11339,13 @@
                           <div class="se-col-1">
                               <div class="label-icon">
                                   <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 6V19M6 6H18" stroke="#717171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                              </div>
+                                  <!-- <span class="text-danger size">*</span> -->
+                                 </div>
                           </div>
                           <div class="se-col-11">
                               <div class="d-flex align-items-end">
                                   <div class="form-group w-100">
+                                    <!-- <span >Add title<span class="text-danger">*</span></span> -->
                                       <input id="dsb-evt-titleName" class="form-control" [ngClass]="{
                                           'error-borderbottom': ((!Title_Name||(Title_Name&&(Title_Name.trim().length<3||Title_Name.trim().length>100)))&&notProvided)
                                           ||( !MinLastNameLength||Title_Name&&(Title_Name.trim().length>100) )
@@ -11118,7 +11354,7 @@
                                           minlength="3" maxlength="250" (keyup)="LastLengthValidation11()">
                                       <div class="d-flex flex-column ">
                                       <span style="color:red" [hidden]="MinLastNameLength">Please enter min length 3.</span>
-                                      <span style="color:red" *ngIf="(!Title_Name || !Title_Name.trim() )&&notProvided">Please enter title name</span>
+                                      <span style="color:red" *ngIf="(!Title_Name || !Title_Name.trim() )&&notProvided">Please enter title name.</span>
                                       <span style="color:red" *ngIf="Title_Name&&(Title_Name.trim().length>100)">Title should not exceed 100 characters.</span>
                                      </div>
                                   </div>
@@ -11433,6 +11669,22 @@
           </div>
 
           <div class="se-row" id="Descrip_Name12" style="display:none" >
+            <!-- <div class="se-col-1">
+                <div class="label-icon">
+                    <span aria-hidden="true" class="side-icns"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="svg-icn">
+                            <path
+                                d="M17.6572 14.8282L16.2429 13.414L17.6572 11.9998C19.2193 10.4377 19.2193 7.90506 17.6572 6.34296C16.0951 4.78086 13.5624 4.78086 12.0003 6.34296L10.5861 7.75717L9.17188 6.34296L10.5861 4.92875C12.9292 2.5856 16.7282 2.5856 19.0714 4.92875C21.4145 7.27189 21.4145 11.0709 19.0714 13.414L17.6572 14.8282ZM14.8287 17.6567L13.4145 19.0709C11.0714 21.414 7.27238 21.414 4.92923 19.0709C2.58609 16.7277 2.58609 12.9287 4.92923 10.5856L6.34345 9.17139L7.75766 10.5856L6.34345 11.9998C4.78135 13.5619 4.78135 16.0946 6.34345 17.6567C7.90555 19.2188 10.4382 19.2188 12.0003 17.6567L13.4145 16.2425L14.8287 17.6567ZM14.8287 7.75717L16.2429 9.17139L9.17188 16.2425L7.75766 14.8282L14.8287 7.75717Z">
+                            </path>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <div class="se-col-11">
+                <div class="form-group">
+                    <angular-editor placeholder="Meeting link" [(ngModel)]="Link_Details" [config]="config"></angular-editor>
+                </div>
+            </div> -->
             <div class="se-col-1">
                 <div class="label-icon">
                     <span aria-hidden="true" class="side-icns"><svg
@@ -11440,17 +11692,29 @@
                             <path
                                 d="M17.6572 14.8282L16.2429 13.414L17.6572 11.9998C19.2193 10.4377 19.2193 7.90506 17.6572 6.34296C16.0951 4.78086 13.5624 4.78086 12.0003 6.34296L10.5861 7.75717L9.17188 6.34296L10.5861 4.92875C12.9292 2.5856 16.7282 2.5856 19.0714 4.92875C21.4145 7.27189 21.4145 11.0709 19.0714 13.414L17.6572 14.8282ZM14.8287 17.6567L13.4145 19.0709C11.0714 21.414 7.27238 21.414 4.92923 19.0709C2.58609 16.7277 2.58609 12.9287 4.92923 10.5856L6.34345 9.17139L7.75766 10.5856L6.34345 11.9998C4.78135 13.5619 4.78135 16.0946 6.34345 17.6567C7.90555 19.2188 10.4382 19.2188 12.0003 17.6567L13.4145 16.2425L14.8287 17.6567ZM14.8287 7.75717L16.2429 9.17139L9.17188 16.2425L7.75766 14.8282L14.8287 7.75717Z">
                             </path>
-                        </svg></span>
-
+                        </svg>
+                    </span>
                 </div>
             </div>
-
-            <div class="se-col-11">
-                <div class="form-group">
-                    <angular-editor placeholder="Meeting link" [(ngModel)]="Link_Details" [config]="config"></angular-editor>
+                <div class="se-col-11">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input class="form-control"  placeholder="Meeting link" type="text"  [(ngModel)]="Link_Details" >
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input class="form-control"  placeholder="Meeting Id" type="text" [(ngModel)]="Meeting_Id">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Meeting password" type="text" [(ngModel)]="Meeting_password">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
         </div>
 
         <div class="se-row" id="Location_Name" style="display:none">
@@ -11632,7 +11896,7 @@
         </div>
         <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
             <li *ngFor="let prj of projectsSelected">
-               <div class="schedule-select-list-item">
+               <div class="schedule-select-list-item curser-pointer" (click)="newDetails(prj.Project_Code)">
                 <span class="schedule-select-list-title">{{prj.Project_Name}}</span>
                 <span (click)="discardChoosedItem('PROJECT',prj.Project_Code)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
                </div>
@@ -11715,7 +11979,7 @@
       </div>
       <ul class="schedule-select-list" *ngIf="subtashDrpLoading==false">
           <li *ngFor="let prtfid of Portfolio">
-             <div class="schedule-select-list-item">
+             <div class="schedule-select-list-item curser-pointer"  (click)="OnCardClick(prtfid)">
               <span class="schedule-select-list-title">{{getObjOf(Portfoliolist_1,prtfid,'portfolio_id').Portfolio_Name}}</span>
               <span (click)="discardChoosedItem('PORTFOLIO',prtfid)" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
              </div>
@@ -12819,7 +13083,7 @@
                                       [(ngModel)]="ProjectDescription"   (input)="updateCharacterCount()" (paste)="updateCharacterCount()"></textarea>
                               </div>
                               <span *ngIf="characterCount > 0" >Max characters {{characterCount}}/500 </span>
-                              <span *ngIf="characterCount>=501"  style="color:red"> Description should be less than 500 characters.</span>
+                              <span *ngIf="characterCount>=501"  style="color:red"> Description should be less than or equal 500 characters.</span>
                               <span style="color:red" *ngIf="!(this.ProjectDescription&&this.ProjectDescription.trim()!='')&&formFieldsRequired" >project description required</span>
                           </div>
                       </div>
@@ -14217,13 +14481,15 @@
                               <div class="row mt-3 px-3" id="kt_open_scroll">
                                   <div class="col-lg-12 mb-3">
                                       <div class="kt-info-lable-v">Remarks</div>
-                                      <div class="kt-info-data-v p-2" data-toggle="tooltip"
-                                          title="{{requestComments}}">{{requestComments}}</div>
+                                        <div class="kt-info-data-v px-2 " data-toggle="tooltip"  style="overflow:unset; white-space:unset; text-overflow:unset;">
+                                            <div [id]="'standard-taskaprv-remark-'+i" (click)="expandRemarks('standard-taskaprv-remark-'+i)"  class="compl-remarks-span px-2 curser-pointer" title="Click to view more or collapse">
+                                                {{requestComments}}
+                                            </div>                                                     
+                                        </div>
                                   </div>
 
                                   <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'">
                                       <div class="kt-info-lable-v">Attachment</div>
-
                                       <div class="">
                                           <div class="attachment-view">
                                               <span>
@@ -14236,9 +14502,6 @@
                                                       </path>
                                                   </svg>
                                               </span>
-
-
-
                                               <span
                                                   (click)=" LoadDocument1(complete_List[0].IsCloud,complete_List[0].Sourcefile,complete_List[0].CompleteProofDoc,complete_List[0].contenttype,complete_List[0].Team_Res)"
                                                   data-toggle="tooltip" title="{{completedoc}}">
@@ -14567,7 +14830,7 @@
                   <div class="heading-AprvReq" [id]="'heading-AprvReqm-'+i">
                       <input type="checkbox" class="ml-1" style="accent-color: #527ce2;"  (change)="onMultipleAprvSel($event,[aprv])" [checked]="selectedmulAprvs.includes(aprv.SNo)" />
                       <h2 class="accordion-header mb-0 flex-grow-1">
-                      <a (click)="approvalClick('NOTSELECTED'); onPendingAprvlClicked(i); " class="accordion-button" type="button" data-toggle="collapse" [attr.data-target]="'#collapse-AprvReqm-'+i" aria-expanded="false" [attr.aria-controls]="'collapse-AprvReqm-'+i">
+                      <a (click)="  approvalClick('NOTSELECTED'); onPendingAprvlClicked(i); " class="accordion-button" type="button" data-toggle="collapse" [attr.data-target]="'#collapse-AprvReqm-'+i" aria-expanded="false" [attr.aria-controls]="'collapse-AprvReqm-'+i">
 
                          <div class="head-content flex-grow-1 d-flex  justify-content-between">
                             <span>{{aprv.Type == 'New Project' ? "New":aprv.Type}} approval</span>
@@ -14653,7 +14916,7 @@
                                       <div class=" d-flex align-items-center justify-content-end w-100">
 
                                         <ng-container *ngIf="Current_user_ID==projectInfo.OwnerEmpNo">
-                                        <div *ngIf="!projectAuditor&&aprv.Type=='Project Complete'" title="Forward the project for auditing, then it will return to you for approval."   (click)="approvalClick('AUDIT')" class="kt-detail-link " [ngClass]="Audit_active ==true ? 'kt-detail-link active ':'kt-detail-link'" >
+                                        <div *ngIf="(!projectAuditor&&aprv.Type=='Project Complete') || (aprv.Type=='Project Complete'&&projectAuditor&&projectInfo.AuditStatus=='') " title="Forward the project for auditing, then it will return to you for approval."   (click)="approvalClick('AUDIT')" class="kt-detail-link " [ngClass]="Audit_active ==true ? 'kt-detail-link active ':'kt-detail-link'" >
                                             <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.2em;height: 1.2em;vertical-align: middle;fill: #0086f1;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M296 250c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h384c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H296zM480 394H296c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8z"/><path d="M432 852H208V148h560v320c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V108c0-17.7-14.3-32-32-32H168c-17.7 0-32 14.3-32 32v784c0 17.7 14.3 32 32 32h264c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"/><path d="M872 764H728v-36.6c46.3-13.8 80-56.6 80-107.4 0-61.9-50.1-112-112-112s-112 50.1-112 112c0 50.7 33.7 93.6 80 107.4V764H520c-8.8 0-16 7.2-16 16v152c0 8.8 7.2 16 16 16h352c8.8 0 16-7.2 16-16V780c0-8.8-7.2-16-16-16zM646 620c0-27.6 22.4-50 50-50s50 22.4 50 50-22.4 50-50 50-50-22.4-50-50z m180 266H566v-60h260v60z"/></svg>
                                           <span class="kt-detail-iconname">Audit</span>
                                         </div>
@@ -14676,9 +14939,7 @@
                                           <span class="kt-detail-iconname">Next version</span>
                                         </div>
                                        </ng-container>
-
                                         </ng-container>
-
 
 
                                         <div title="Approve it, to appreciate project team for great work." [ngClass]="Accept_active ==true ? 'kt-detail-link active ':'kt-detail-link'" (click)="approvalClick('ACCEPT')">
@@ -14691,31 +14952,49 @@
                                           <span class="kt-detail-iconname">Reject</span>
                                         </div>
 
-
-
-                                          <!-- <div>
-                                              <button
-                                                  [ngClass]="Accept_active ==true ? 'Kt-Approval-btns Btn_Accpet active':'Kt-Approval-btns Btn_Accpet'"
-                                                  (click)="approvalClick('ACCEPT')">Accept</button>
-                                          </div> -->
-
-                                          <!-- <div *ngIf="requestType=='Project Complete'">
-                                              <button
-                                                  [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
-                                                  (click)="approvalClick('CONDITIONAL')">Conditional
-                                                  accept</button>
-                                          </div> -->
-                                          <!-- <div>
-                                              <button
-                                                  [ngClass]="Reject_active ==true ? 'Kt-Approval-btns Btn_Reject active' : 'Kt-Approval-btns Btn_Reject'"
-                                                  (click)="approvalClick('REJECT')">Reject</button>
-                                          </div> -->
-                                          <!---------- Reject Type html---------------->
-
                                       </div>
                                       <div class="clearfix"></div>
                                   </div>
                               </div>
+
+
+                              <div class="col-lg-12 mb-3 p-3 mt-3" *ngIf="projectInfo.AuditStatus=='Audit Pending'"
+                              style="background-color: #e4e7f9;
+                              border-radius: 14px;
+                              border: 1px solid #6388e336;
+                              color: #4f4f4f;">
+                              <div class="d-flex justify-content-between">
+                                  <h6 style="text-align:left;margin:0;font-weight: bold;">Project has been assigned to you for auditing by {{AuditRequestBY}}</h6>
+                                  <h6 class="text-muted" style="margin:0;">{{aprv.Rec_Date|date:'dd-MM-yyyy'}}</h6>
+                              </div>
+                              <div>
+                                  <span *ngIf="projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{projectInfo.Owner_remarks}}</span>
+                                  <span *ngIf="!projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{requestComments}}</span>
+                              </div>
+                              <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
+                              <span class="fs-7"> 
+                                  1. You have to analyze the project and give your approval acceptance or rejection.<br>
+                                  2. If you accept the project approval, then it will land to the project owner for the final approval.<br>
+                                  3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.
+                              </span>
+                          </div>
+
+
+                          <div class="col-lg-12 mb-3 p-3 mt-3" *ngIf="projectInfo.AuditStatus=='Audit Complete'"
+                          style="background-color:white;border-radius:2px;border:1px solid #6388e3;">
+                          <div class="d-flex justify-content-between">
+                              <h6 style="text-align:left;margin:0;">Project audit completed by {{projectAuditor.empName}}</h6>
+                              <h6 class="text-muted" style="margin:0;">{{aprv.Rec_Date|date:'dd-MM-yyyy'}}</h6>
+                          </div>
+                          <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Remarks:</h6>
+                          <div>
+                              <span *ngIf="projectInfo.Auditor_acceptremarks">{{projectInfo.Auditor_acceptremarks}}</span>
+                          </div>
+                         </div>
+ 
+
+
+
                               <div class="kt-reject-form-view aprovls-sectn-forms" [hidden]="!isTextAreaVisible">
 
                                 <div class="mb-2">
@@ -15040,10 +15319,13 @@
                                   </div>
                               </div>
                               <div class="row mt-3 px-3" id="kt_open_scroll">
-                                  <div class="col-lg-12 mb-3">
+                                  <div *ngIf="aprv.Type!='Project Audit'" class="col-lg-12 mb-3">
                                       <div class="kt-info-lable-v">Remarks</div>
-                                      <div class="kt-info-data-v p-2" data-toggle="tooltip"
-                                          title="{{aprv.Remarks}}">{{aprv.Remarks}}</div>
+                                        <div class="kt-info-data-v px-2 " data-toggle="tooltip"  style="overflow:unset; white-space:unset; text-overflow:unset;">
+                                                <div [id]="'pending-aprvl-remark-'+i" (click)="expandRemarks('pending-aprvl-remark-'+i)"  class="compl-remarks-span px-2 curser-pointer" title="Click to view more or collapse">
+                                                    {{requestComments}}
+                                                </div>                                                     
+                                        </div>
                                   </div>
 
                                   <div class="col-lg-12 mt-3" *ngIf="aprv.Type=='Project Complete'&&completedoc">
@@ -15069,6 +15351,31 @@
                                           </div>
                                       </div>
                                   </div>
+
+                                  
+                                  <div class="col-lg-12 mt-3" *ngIf="aprv.Type=='Project Audit'&&completedoc">
+                                    <div class="kt-info-lable-v">Attachment</div>
+
+                                    <div class="">
+                                        <div class="attachment-view">
+                                            <span>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="16"
+                                                    height="16" fill="currentColor"
+                                                    viewBox="0 0 16 16" class="bi bi-paperclip">
+                                                    <path
+                                                        d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+
+                                            <span
+                                                (click)=" LoadDocument1(complete_List[0].IsCloud,complete_List[0].Sourcefile,complete_List[0].CompleteProofDoc,complete_List[0].contenttype,complete_List[0].Team_Res)"
+                                                data-toggle="tooltip" title="{{completedoc}}">
+                                                {{completedoc}}</span>
+                                        </div>
+                                    </div>
+                                </div>
 
                                   <div class="col-lg-4">
                                       <div class="kt-info-lable-v text-center">Request type</div>
@@ -15146,15 +15453,11 @@
               <h4 class="m-0">
                   Reject approvals
               </h4>
-
-
               <!-- <button (click)=" closeInfo();   openDarSideBar();" class="Ct-btn">+ Create Timeline</button> -->
               <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                   (click)="multipleback()">
                   <svg width="20" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"><path d="M2.117 12l7.527 6.235-.644.765-9-7.521 9-7.479.645.764-7.529 6.236h21.884v1h-21.883z"/></svg>
               </a>
-
-
           </div>
       </div>
       <div class="kt-portlet__body pt-2  kt-portlet__body_scroll " >
@@ -15281,15 +15584,11 @@
                           </div>
                       </div>
                     </ng-container>
-
-
-
                       <div class="form-group" *ngIf="rejectType">
                         <label class="mb-2">Enter comments</label>
                         <span style="color: red;">*</span>
                         <textarea [(ngModel)]="comments" class="form-control h-100px ng-untouched ng-pristine ng-valid"></textarea>
                      </div>
-
                   </div>
               </div>
           </div>
@@ -15527,10 +15826,10 @@
 
 
 
-          <div class="modal-icon mr-1 curser-pointer" [ngClass]="{'filter-dot':isFilteredOn}" id="filter-icon" (click)="project_filter()">
+          <div class="modal-icon mr-1 curser-pointer" title="Filter" [ngClass]="{'filter-dot':isFilteredOn}" id="filter-icon" (click)="project_filter()">
               <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 4.6C3 4.03995 3 3.75992 3.10899 3.54601C3.20487 3.35785 3.35785 3.20487 3.54601 3.10899C3.75992 3 4.03995 3 4.6 3H19.4C19.9601 3 20.2401 3 20.454 3.10899C20.6422 3.20487 20.7951 3.35785 20.891 3.54601C21 3.75992 21 4.03995 21 4.6V6.33726C21 6.58185 21 6.70414 20.9724 6.81923C20.9479 6.92127 20.9075 7.01881 20.8526 7.10828C20.7908 7.2092 20.7043 7.29568 20.5314 7.46863L14.4686 13.5314C14.2957 13.7043 14.2092 13.7908 14.1474 13.8917C14.0925 13.9812 14.0521 14.0787 14.0276 14.1808C14 14.2959 14 14.4182 14 14.6627V17L10 21V14.6627C10 14.4182 10 14.2959 9.97237 14.1808C9.94787 14.0787 9.90747 13.9812 9.85264 13.8917C9.7908 13.7908 9.70432 13.7043 9.53137 13.5314L3.46863 7.46863C3.29568 7.29568 3.2092 7.2092 3.14736 7.10828C3.09253 7.01881 3.05213 6.92127 3.02763 6.81923C3 6.70414 3 6.58185 3 6.33726V4.6Z" stroke="#a3a4a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
           </div>
-          <div class="modal-icon curser-pointer" (click)="clearAppliedFiltered(); PrjInputSearch.value=null;   InputSearchRef.value=null; ">
+          <div class="modal-icon curser-pointer" title="Reset" (click)="clearAppliedFiltered(); PrjInputSearch.value=null;   InputSearchRef.value=null; ">
               <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4.52185 7H7C7.55229 7 8 7.44772 8 8C8 8.55229 7.55228 9 7 9H3C1.89543 9 1 8.10457 1 7V3C1 2.44772 1.44772 2 2 2C2.55228 2 3 2.44772 3 3V5.6754C4.26953 3.8688 6.06062 2.47676 8.14852 1.69631C10.6633 0.756291 13.435 0.768419 15.9415 1.73041C18.448 2.69239 20.5161 4.53782 21.7562 6.91897C22.9963 9.30013 23.3228 12.0526 22.6741 14.6578C22.0254 17.263 20.4464 19.541 18.2345 21.0626C16.0226 22.5842 13.3306 23.2444 10.6657 22.9188C8.00083 22.5931 5.54702 21.3041 3.76664 19.2946C2.20818 17.5356 1.25993 15.3309 1.04625 13.0078C0.995657 12.4579 1.45216 12.0088 2.00445 12.0084C2.55673 12.0079 3.00351 12.4566 3.06526 13.0055C3.27138 14.8374 4.03712 16.5706 5.27027 17.9625C6.7255 19.605 8.73118 20.6586 10.9094 20.9247C13.0876 21.1909 15.288 20.6513 17.0959 19.4075C18.9039 18.1638 20.1945 16.3018 20.7247 14.1724C21.2549 12.043 20.9881 9.79319 19.9745 7.8469C18.9608 5.90061 17.2704 4.3922 15.2217 3.6059C13.173 2.8196 10.9074 2.80968 8.8519 3.57803C7.11008 4.22911 5.62099 5.40094 4.57993 6.92229C4.56156 6.94914 4.54217 6.97505 4.52185 7Z" fill="#a3a4a5"></path> </g></svg>
           </div>
         </div>
@@ -15813,13 +16112,7 @@
 <!-- Feature Modal End -->
 
 
-
-
-
-
-
-
-
+ 
 
 
 <!--Actions List Graph Modal Start -->
@@ -15839,6 +16132,18 @@
                     <h6 class="sel-user fs-8" *ngIf="item.Team_Res==ganttActnsConfig.byuser">{{item.Responsible}}</h6>
                 </ng-container>
                 <h6 class="user-actns-cnt fs-8">{{total_userActns}} Actions</h6>
+                    <div [class]="'status-fltr fbx-actns-count px-2 ml-1 fs-8 '+(
+                        ganttActnsConfig.bystatus=='Completed'?'fbx-completed':
+                        ganttActnsConfig.bystatus=='InProcess'?'fbx-inprocess':
+                        ganttActnsConfig.bystatus=='Delay'?'fbx-delay':
+                        ganttActnsConfig.bystatus=='Under Approval'?'fbx-newaproval':
+                        ganttActnsConfig.bystatus=='Project Hold'?'fbx-hold':
+                        ganttActnsConfig.bystatus=='Cancelled'?'fbx-cancelled':
+                        ganttActnsConfig.bystatus=='Forward Under Approval'?'fbc-forward-apr':
+                        ganttActnsConfig.bystatus=='Completion Under Approval'?'fbc-completion-apr':
+                        ganttActnsConfig.bystatus=='New Project Rejected'?'fbx-newprj-rejected':
+                        'fbx-inprocess'
+                        )">{{ganttActnsConfig.bystatus}}</div>
             </div>
 
          </div>
@@ -15862,33 +16167,20 @@
                 <div id="dropd" aria-labelledby="Filter_btn"
                     class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter">
 
+
+
                     <ul class="drop-ul p-1 filtr-config-option ">
-
-                        <button (click)="filterActionsOnGantt('All')"    [ngClass]="{'active2':ganttActnsConfig.byuser==='All'}"   class="btn btn-filtr">
-                            <div class="d-flex align-items-center">
-                                <div class="fbx-actns-count fbx-usercount">{{TOTAL_ACTIONS}}</div>
-                                <div class="fil-lbl">All actions</div>
-                                <span class="chck-icn ng-star-inserted" *ngIf="ganttActnsConfig.byuser==='All'">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        width="16" height="16"
-                                        fill="currentColor"
-                                        viewBox="0 0 16 16"
-                                        class="bi bi-check2">
-                                        <path
-                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                        </path>
-                                    </svg>
-                                </span>
-                            </div>
-                        </button>
-
-                        <li *ngFor="let item of filteremployee">
-
-                            <button  (click)="filterActionsOnGantt(item.Team_Res)"   [ngClass]="{'active2':ganttActnsConfig.byuser===item.Team_Res}"  class="btn btn-filtr">
+                        <li class="dropdown-header">Filter by</li>
+                      <div class="actns-filtr-scroll">
+                        <li class="mr-2" >
+                            <button class="btn btn-filtr" (click)="filterActionsOnGantt('All',this.ganttActnsConfig.byuser)"
+                                [ngClass]="{'active2':ganttActnsConfig.bystatus=='All'}">
                                 <div class="d-flex align-items-center">
-                                    <div class="fbx-actns-count fbx-usercount">{{item.count}}</div>
-                                    <div class="fil-lbl">{{item.Responsible}}</div>
-                                    <span class="chck-icn ng-star-inserted" *ngIf="ganttActnsConfig.byuser===item.Team_Res">
+                                    <div class="status-fltr fbx-actns-count fbx-total">{{TOTAL_ACTIONS}}</div>
+                                    <div class="fil-lbl">All</div>
+                                    <span
+                                        *ngIf="ganttActnsConfig.bystatus==='All'"
+                                        class="chck-icn ng-star-inserted">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             width="16" height="16"
                                             fill="currentColor"
@@ -15901,10 +16193,78 @@
                                     </span>
                                 </div>
                             </button>
-
                         </li>
+                        <li class="filter-by-status mr-2" *ngFor="let item of filterstatus">
+                            <button (click)="filterActionsOnGantt(item.Status,this.ganttActnsConfig.byuser)" class="btn btn-filtr"  [ngClass]="{'active2':ganttActnsConfig.bystatus==item.Status}">
+                                <div class="d-flex align-items-center">
+                                      <div [class]="'status-fltr fbx-actns-count '+(
+                                           item.Status=='Completed'?'fbx-completed':
+                                           item.Status=='InProcess'?'fbx-inprocess':
+                                           item.Status=='Delay'?'fbx-delay':
+                                           item.Status=='Under Approval'?'fbx-newaproval':
+                                           item.Status=='Project Hold'?'fbx-hold':
+                                           item.Status=='Cancelled'?'fbx-cancelled':
+                                           item.Status=='Forward Under Approval'?'fbc-forward-apr':
+                                           item.Status=='Completion Under Approval'?'fbc-completion-apr':
+                                           item.Status=='New Project Rejected'?'fbx-newprj-rejected':
+                                           'fbx-inprocess'
+                                           )">{{item.count?item.count:'&nbsp;'}}</div>
+                                    <div class="fil-lbl">{{item.Status=='Under Approval'?'New approval':item.Status}}
+                                    </div>
+                                    <span *ngIf="ganttActnsConfig.bystatus==item.Status"
+                                        class="chck-icn ng-star-inserted">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            width="16" height="16"
+                                            fill="currentColor"
+                                            viewBox="0 0 16 16"
+                                            class="bi bi-check2">
+                                            <path
+                                                d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </button>
+                        </li>
+                      </div>
 
-                    </ul>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">Sort by employee</li>
+                    <div class="actns-filtr-scroll">
+                       
+                         <li class="mr-2">
+                            <button class="btn btn-filtr" (click)="filterActionsOnGantt(ganttActnsConfig.bystatus,'All')" [ngClass]="{'active2':ganttActnsConfig.byuser==='All'}">
+                                <div class="d-flex align-items-center">
+                                    <div class="fbx-actns-count fbx-usercount">{{TOTAL_ACTIONS}}</div>
+                                    <div class="fil-lbl ml-1">All</div>
+                                    <span *ngIf="ganttActnsConfig.byuser==='All'" class="chck-icn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2">
+                                            <path  d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </button>
+                        </li>
+                        <li class="mr-2" *ngFor="let item of filteremployee">
+                            <button class="btn btn-filtr" (click)="filterActionsOnGantt(ganttActnsConfig.bystatus,item.Team_Res)" [ngClass]="{'active2':ganttActnsConfig.byuser===item.Team_Res}">
+                                <div class="d-flex align-items-center">
+                                  <div class="fbx-actns-count fbx-usercount">{{item.count}}</div>
+                                    <div class="fil-lbl">{{item.Responsible}}</div>
+                                    <span class="chck-icn" *ngIf="ganttActnsConfig.byuser===item.Team_Res">
+                                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check2">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                          </path>
+                                       </svg>
+                                    </span>
+                                </div>
+                            </button>
+                        </li>
+                      
+                  </div>
+              </ul>
+
+
 
                 </div>
                 </div>
@@ -15918,8 +16278,9 @@
 
 
         <div class="modal-body actns-graph-dv" style=" display: flex; flex-direction: column;">
+         <div [ngClass]="{'d-none':total_userActns==0}">
             <div class="gantt-ctrls-btns"></div>
-            <div class="actns-gantt-dates" style=" background-color:#fff;  position: relative;top: 28px;z-index: 1;width: 100%;display: flex;justify-content: flex-end;padding-right: 25px;">
+            <div class="actns-gantt-dates" style=" background-color:#fff;  position: relative;top: 28px;z-index: 1;width: 100%;display: flex;justify-content: flex-end;padding-right: 17px;">
                 <div class="dates-label" style="background-color: #fff">
                         <svg  width="100%" height="30px">
                             <g id="SvgjsG1247" class="apexcharts-xaxis apexcharts-yaxis-inversed">
@@ -15931,8 +16292,19 @@
                 </div>
             </div>
           <div class="gantt-container">
-               <div class="actns-graph" id="actnsfull-graph"></div>
+               <div  class="actns-graph" id="actnsfull-graph"></div> 
           </div>
+        </div>
+        <div [ngClass]="{'d-none':total_userActns>0}" class="text-muted fs-6 text-center pt-5">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <svg xmlns:svg="http://www.w3.org/2000/svg" fill="#e2e2e2" width="8%" version="1.1" x="0px" y="0px" viewBox="0 0 100 125">
+                    <g xmlns="http://www.w3.org/2000/svg" transform="translate(0,-952.36218)"><path d="M 15.8125 6 A 2.0001999 2.0001999 0 0 0 14 8 L 14 78 A 2.0001999 2.0001999 0 0 0 16 80 L 41.8125 80 C 45.315901 88.237691 53.501014 94 63 94 C 72.157117 94 80.087984 88.61635 83.78125 80.84375 A 2.0059224 2.0059224 0 1 0 80.15625 79.125 C 77.107988 85.5402 70.595823 90 63 90 C 52.482909 90 44 81.5171 44 71 C 44 60.4829 52.482909 52 63 52 C 73.517102 52 82 60.4829 82 71 A 2.0001999 2.0001999 0 1 0 86 71 C 86 60.038034 78.283596 50.853014 68 48.5625 L 68 24 A 2.0001999 2.0001999 0 0 0 67.40625 22.5625 L 51.40625 6.5625 A 2.0001999 2.0001999 0 0 0 50 6 L 16 6 A 2.0001999 2.0001999 0 0 0 15.8125 6 z M 18 10 L 48 10 L 48 24 A 2.0001999 2.0001999 0 0 0 50 26 L 64 26 L 64 48.03125 C 63.669714 48.017096 63.333697 48 63 48 C 60.657104 48 58.381633 48.376638 56.25 49.03125 A 2.0001999 2.0001999 0 0 0 56 49 L 25 49 A 2.0001999 2.0001999 0 0 0 24.8125 49 A 2.0021961 2.0021961 0 1 0 25 53 L 48.71875 53 C 46.919488 54.428914 45.335787 56.103478 44.03125 58 L 25 58 A 2.0001999 2.0001999 0 0 0 24.8125 58 A 2.0021961 2.0021961 0 1 0 25 62 L 41.84375 62 C 41.16589 63.585758 40.651128 65.256302 40.34375 67 L 25 67 A 2.0001999 2.0001999 0 0 0 24.8125 67 A 2.0021961 2.0021961 0 1 0 25 71 L 40 71 C 40 72.710582 40.20632 74.394809 40.5625 76 L 18 76 L 18 10 z M 52 12.8125 L 61.1875 22 L 52 22 L 52 12.8125 z M 24.8125 40 A 2.0021961 2.0021961 0 1 0 25 44 L 57 44 A 2.0001999 2.0001999 0 1 0 57 40 L 25 40 A 2.0001999 2.0001999 0 0 0 24.8125 40 z M 62.78125 57.96875 A 2.0001999 2.0001999 0 0 0 61 60 L 61 62 A 2.0001999 2.0001999 0 1 0 65 62 L 65 60 A 2.0001999 2.0001999 0 0 0 62.78125 57.96875 z M 62.78125 66.96875 A 2.0001999 2.0001999 0 0 0 61 69 L 61 82 A 2.0001999 2.0001999 0 1 0 65 82 L 65 69 A 2.0001999 2.0001999 0 0 0 62.78125 66.96875 z " transform="translate(0,952.36218)"></path></g>
+                </svg>     
+                <div class="bnk-txt">
+                <a class="kt-blank-msg text-gray-400">Sorry, that filter combination has no results.<br><u style="cursor: pointer;" (click)="filterActionsOnGantt('All','All')">Clear filters</u></a>
+                </div>
+          </div>
+        </div>
       </div>
 
 
@@ -15954,7 +16326,7 @@
                     <div class="date-menu-close d-none" (click)="date_menu_close('date-menu')">Close</div>
                     <div class="date-menu-calender">
                         <mat-card class="demo-inline-calendar-card">
-                            <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
+                            <mat-calendar  (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="DisablePrevious"></mat-calendar>
                           </mat-card>
                     </div>
                     <div class="date-menu-time">
