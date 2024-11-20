@@ -6,7 +6,8 @@ import { ViewDashboardProjectsComponent } from '../_LayoutDashboard/view-dashboa
 export const DEFAULT_ROUTES: Routes = [
      {
           path: '',
-          loadChildren: () => import('../_LayoutDefault/login/login.module').then(m => m.LoginModule)
+          redirectTo: 'login',
+          pathMatch: 'full',
      },
      {
           path: 'login',

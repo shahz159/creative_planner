@@ -10508,6 +10508,7 @@ loadActionsGantt(){
 
       events: {
         updated: ()=>{
+   
 
         try{
 
@@ -10601,7 +10602,7 @@ loadActionsGantt(){
             }
 
 
-
+            console.log('update start and done.')
         },
 
 
@@ -10694,8 +10695,8 @@ loadActionsGantt(){
     tooltip: {
       custom: ({ series, seriesIndex, dataPointIndex, w }) => {
         const data = w.config.series[seriesIndex].data[dataPointIndex];
-        const index = data.index;
-        const actn_name = actions_list[index].Project_Name;
+        const index = data.index;  
+        const actn_name = actions_list[index].Project_Name;   
         const actn_descrp=actions_list[index].Project_Description;
         const actn_start = this.datepipe.transform(new Date(actions_list[index].StartDate), 'MMM d, y');
         const actn_end = this.datepipe.transform(new Date(actions_list[index].EndDate), 'MMM d, y');
@@ -10800,19 +10801,13 @@ loadActionsGantt(){
 
 
  if(this.ActnsGanttChart){
-    this.ActnsGanttChart.updateOptions(options);
+    this.ActnsGanttChart.updateOptions(options);    
  }
  else{
+ 
   this.ActnsGanttChart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
-
   this.ActnsGanttChart.render();
-
-
 console.log('apexchart gantt:',this.ActnsGanttChart);
-
-
-
-
 
  }
 
@@ -10837,6 +10832,7 @@ onActnsGanttClosed(){
     this.ActnsGanttChart=null;
     this.ganttActnsConfig={bystatus:'All',byuser:'All'};
     this.total_userActns=undefined;
+    
 }
 
 

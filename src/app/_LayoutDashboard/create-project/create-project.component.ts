@@ -894,7 +894,8 @@ onFileChanged(event: any) {
     $('.Project_details_tab').show();                    // open section 1 form.
     $('.action-left-view').addClass('d-none');           // close actions view of 3rd step.
     this.notificationMsg=0;
-    this.dontShowAgain=false;
+    this.okWithType=false;
+    // this.dontShowAgain=false;
   }
 
 
@@ -904,7 +905,7 @@ onFileChanged(event: any) {
      if(!hasRead){
           Swal.fire({
             title:'Before you begin',
-            text:"Read the guidelines to avoid setup issues and streamline your project creation. Click on the 'View Guidelines' button to view the guidelines.",
+            text:"Please read the guidelines to avoid project setup issues and streamline your project creation. Click on the 'View Guidelines' button to view the guidelines.",
             showConfirmButton:true,
             confirmButtonText:'View Guidelines',
             showCancelButton:true,
@@ -918,13 +919,6 @@ onFileChanged(event: any) {
            });
      }
   }
-
-
-
-
-
-
-
 
 
 
@@ -1448,7 +1442,7 @@ getActionsDetails(){
     this.PrjActionsInfo=[];
 
     this.detectMembersWithoutActions();   // update 'hasNoActionMembers' may needed since new action is added into the project.
-    setTimeout(()=>this.hasActnsMatchingPrjDeadline(),2000);   // warning dialog if more than 50% actns deadline same as the project deadline.
+    // setTimeout(()=>this.hasActnsMatchingPrjDeadline(),2000);   // warning dialog if more than 50% actns deadline same as the project deadline.
 
   });
 
@@ -2413,7 +2407,7 @@ this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((re
 // getting file attachment name if provided in the draft project. start
 
 this.detectMembersWithoutActions();   // update 'hasNoActionMembers' may needed since new action is added into the project.
-this.hasActnsMatchingPrjDeadline();   // warning dialog if more than 50% actns deadline same as the project deadline.
+// this.hasActnsMatchingPrjDeadline();   // warning dialog if more than 50% actns deadline same as the project deadline.
 });
 
 
@@ -3240,50 +3234,99 @@ alertMaxAllocations() {
 
 
 
-dontShowAgain:boolean=false;
-hasActnsMatchingPrjDeadline(){
- let totalActnsMatch=0;
- let totalActnsInPrj=this.PrjActionsInfo.length;
- if(totalActnsInPrj<4){
-    return;
- }
- const prj_deadline=new Date(this.projectInfo.EndDate);
- this.PrjActionsInfo.forEach((actn:any)=>{
-       const actn_deadline=new Date(actn.EndDate);
-       if(prj_deadline.getTime()==actn_deadline.getTime()){
-           totalActnsMatch++;
-       }
- });
+// dontShowAgain:boolean=false;
+// hasActnsMatchingPrjDeadline(){
+//  let totalActnsMatch=0;
+//  let totalActnsInPrj=this.PrjActionsInfo.length;
+//  if(totalActnsInPrj<4){
+//     return;
+//  }
+//  const prj_deadline=new Date(this.projectInfo.EndDate);
+//  this.PrjActionsInfo.forEach((actn:any)=>{
+//        const actn_deadline=new Date(actn.EndDate);
+//        if(prj_deadline.getTime()==actn_deadline.getTime()){
+//            totalActnsMatch++;
+//        }
+//  });
 
- const percent_val=(totalActnsMatch/totalActnsInPrj)*100;    // 0/10 ===>0 .  8/10==>80%.  0/0==>0    10/0==>infinity(impossible)
- if(percent_val>=50&&this.dontShowAgain==false){
-    Swal.fire({
-      title:'Confirm Action Deadlines',
-      html:`<div style="text-align: justify;"><b>${totalActnsMatch}/${totalActnsInPrj}</b> actions are currently planned to end with the main project.  Is this intentional? <br/> If not, consider adjusting deadlines using 'Edit' to optimize workflow.</div>`,
-      showCancelButton:true,
-      cancelButtonText:"OK",
-      cancelButtonColor:'#3085d6',
-      showConfirmButton:true,
-      confirmButtonText:"Don't Show Again",
-      confirmButtonColor:'#aaa'
-  }).then(choice=>{
-      if(choice.isConfirmed==true){
-          this.dontShowAgain=true;
-      }
-  })
+//  const percent_val=(totalActnsMatch/totalActnsInPrj)*100;    // 0/10 ===>0 .  8/10==>80%.  0/0==>0    10/0==>infinity(impossible)
+//  if(percent_val>=50&&this.dontShowAgain==false){
+//     Swal.fire({
+//       title:'Confirm Action Deadlines',
+//       html:`<div style="text-align: justify;"><b>${totalActnsMatch}/${totalActnsInPrj}</b> actions are currently planned to end with the main project.  Is this intentional? <br/> If not, consider adjusting deadlines using action 'Edit' to optimize workflow.</div>`,
+//       showCancelButton:true,
+//       cancelButtonText:"OK",
+//       cancelButtonColor:'#3085d6',
+//       showConfirmButton:true,
+//       confirmButtonText:"Don't Show Again",
+//       confirmButtonColor:'#aaa'
+//   }).then(choice=>{
+//       if(choice.isConfirmed==true){
+//           this.dontShowAgain=true;
+//       }
+//   })
 
- }
+//  }
 
 
+// }
+
+
+
+actnsMatchingPrjDeadline():number{
+  const prj_deadline=new Date(this.projectInfo.EndDate);
+  let totalActnsMatch=0;
+  this.PrjActionsInfo.forEach((actn:any)=>{
+           const actn_deadline=new Date(actn.EndDate);
+           if(prj_deadline.getTime()==actn_deadline.getTime()){
+               totalActnsMatch++;
+           }
+  });
+  return totalActnsMatch;
 }
 
 
 
+okWithType:boolean=false;
+promptIfNameTypeMismatch(){
 
+  if(this.PrjName&&this.PrjName.trim()&&this.Prjtype){
 
+    const words_003=[
+      'weekly','daily','monthly','yearly','annually','half yearly','quarterly','every week','every month','every year',
+       'annual','recurring', 'repetitive'
+    ];
+    const isincluded=words_003.some((wrd:string)=>{
+      const regex = new RegExp(`\\b${wrd}\\b`, 'i'); // Match exact word with word boundaries
+      return regex.test(this.PrjName.trim());
+    });
 
+    if(isincluded){
+      const typematched=['003','008'].includes(this.Prjtype);
+      if(typematched==false&&this.okWithType==false){
+        Swal.fire({
+            title:'Are You Sure About the Project Type?',
+            text:'The project name suggests a Standard or Routine type. View guidelines or proceed if correct.',
+            showConfirmButton:true,
+            showCancelButton:true,
+            confirmButtonText:'Continue Anyway',
+            cancelButtonText:'View Guidelines',
 
+        }).then((choice)=>{
+             if(choice.isConfirmed){
+                this.okWithType=true
+             }
+              if(choice.isConfirmed==false){
+                this.New_project_guideline();
+              }
 
+        });
+      }
+    }
+
+  }
+
+}
 
 
 

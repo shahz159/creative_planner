@@ -1350,8 +1350,11 @@ span.previous-dot {
 
 .end-timeline-modal-footer {
   display: flex;
-  align-items: center;
-  justify-content: end;
+  /* align-items: center;
+  justify-content: end; */
+  align-items: stretch;
+  justify-content: stretch;
+  flex-direction: column;
   gap: 10px;
   padding: .75rem 1.25rem;
   color: #3c4043;
@@ -1934,7 +1937,7 @@ span.timeline-time svg {
 
 
 .summary-report-table{
-  width:90%;
+  width:100%;
 }
 
 

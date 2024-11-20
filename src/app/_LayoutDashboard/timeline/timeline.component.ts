@@ -143,6 +143,7 @@ export class TimelineComponent implements OnInit {
     this.activeDate=true;
     this.sortType=this.sort1;
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
+    this.disablePreviousDate.setHours(0,0,0,0);
     this.current_Date = moment(new Date()).format("MM/DD/YYYY");
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
@@ -171,7 +172,7 @@ export class TimelineComponent implements OnInit {
 
   noTimeSpaceAvailable:boolean=false;
   setTimelineDate(val)
-  {   
+  {    
        this.current_Date = moment(val).format("MM/DD/YYYY");
        this.dateF = new FormControl(new Date(val));
        this.starttime = null;
@@ -1088,11 +1089,13 @@ submitTL(submDate:string)
 }
 
 
+tm4EndDate_msg:boolean=false;
+
 endDay(submDate:string)
 {
 
   if(this.tmReportTotalDuration==null){    // if there is no timeline has been entered by the user on the selected date.
-    this.notifyService.showError('Please enter a timeline for the selected date before ending the day.','Timeline Required');
+    this.tm4EndDate_msg=true;
     return;
   }
 
@@ -1133,17 +1136,6 @@ endDay(submDate:string)
    });
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1220,6 +1212,7 @@ tmReportStatus:any;
 tmSubmDate:any;
 tmReportLoading:boolean=false;
 getTimelineReportByDate(dateVal:'today'|'yesterday') {   debugger
+  if(dateVal){
     this.tmReportArr=[];
     this.tmReportStatus=null;
     this.tmReportTotalDuration=null;
@@ -1282,6 +1275,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {   debugger
 
       });
 
+  }
 }
 
 
@@ -1300,13 +1294,14 @@ endTimelineModal(){
   document.getElementById("endTimelineModalBackdrop").style.display = "block";
   document.getElementById("endTimelineModalBackdrop").classList.add("show");
   this.getDayReportSummary();
+  this.tm4EndDate_msg=false;
 }
 endTimelineModal_dismiss(){
   document.getElementById("endTimelineModal").style.display = "none";
   document.getElementById("endTimelineModal").classList.remove("show");
   document.getElementById("endTimelineModalBackdrop").style.display = "none";
   document.getElementById("endTimelineModalBackdrop").classList.remove("show");
-
+  this.tm4EndDate_msg=false;
 }
 
 

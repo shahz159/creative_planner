@@ -409,6 +409,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("week-date").style.display = "none";
     document.getElementById("month-date").style.display = "none";
     document.getElementById("schedule-date").style.display = "none";
+    document.getElementById("kt-calendar-quickactions").classList.remove("border-0");
   }
 
   week_div() {
@@ -424,6 +425,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("week-date").style.display = "block";
     document.getElementById("month-date").style.display = "none";
     document.getElementById("schedule-date").style.display = "none";
+    document.getElementById("kt-calendar-quickactions").classList.remove("border-0");
   }
 
   month_div() {
@@ -439,6 +441,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("week-date").style.display = "none";
     document.getElementById("month-date").style.display = "block";
     document.getElementById("schedule-date").style.display = "none";
+    document.getElementById("kt-calendar-quickactions").classList.add("border-0");
   }
 
   sch_div() {
@@ -454,6 +457,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("week-date").style.display = "none";
     document.getElementById("month-date").style.display = "none";
     document.getElementById("schedule-date").style.display = "block";
+    document.getElementById("kt-calendar-quickactions").classList.remove("border-0");
   }
   teams_icon(){
     document.getElementById("teams-icon").style.display = "inline-block";
@@ -636,7 +640,6 @@ export class StreamCalendarComponent implements OnInit {
   bookmark_list_close(){
     document.getElementById("bookmark-list").classList.remove("quickaction-open");
   }
-
 /////////////////////////////////////////// Create Event and Create Task sidebar start /////////////////////////////////////////////////////////
 
 
