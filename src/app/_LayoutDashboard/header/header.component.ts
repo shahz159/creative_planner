@@ -583,13 +583,27 @@ export class HeaderComponent implements OnInit {
     this.logout();
  }
 
-  logout() {
+ logout() {
+  // Stop loading bar if active
+  if (this.loadingBar_state) {
     this.loadingBar_state.stop();
-    this.authService.logout();
-    sessionStorage.clear();
-    localStorage.clear();
-    this.router.navigate(['login']);
   }
+
+  // Clear only authentication-related keys
+  sessionStorage.clear(); // Assuming all session storage is authentication-related
+  localStorage.removeItem('isLoggedIn');
+  localStorage.removeItem('EmpNo');
+  localStorage.removeItem('OrganizationId');
+  localStorage.removeItem('UserfullName');
+  localStorage.removeItem('_Currentuser');
+
+  // Call AuthService logout for any additional logic
+  this.authService.logout();
+
+  // Navigate to login page
+  this.router.navigate(['/login']);
+}
+
   featuremodel() {
     // document.getElementById("newfeatures").style.display = "block";
     document.getElementById("newfeatures").style.overflow = "auto";

@@ -905,7 +905,7 @@ onFileChanged(event: any) {
      if(!hasRead){
           Swal.fire({
             title:'Before you begin',
-            text:"Please read the guidelines to avoid project issues and streamline your project creation. Click on the 'View Guidelines' button to view the guidelines.",
+            text:"Please read the guidelines to avoid project setup issues and streamline your project creation. Click on the 'View Guidelines' button to view the guidelines.",
             showConfirmButton:true,
             confirmButtonText:'View Guidelines',
             showCancelButton:true,
