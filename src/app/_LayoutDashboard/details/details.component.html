@@ -581,7 +581,7 @@
                                                             <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                         </button>
                                                         <button title="show less" #lessbtn class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); prjDescBx.classList.add('compl-remarks-span'); lessbtn.classList.add('d-none');">
-                                                            <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                                            <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                         </button>
                                                     </div>
 
@@ -748,7 +748,7 @@
                                                                                   (projectInfo.Status === 'Delay' ? projectInfo.Delaydays + ' days' + ' delay ': '') ||
                                                                                  (projectInfo.Project_Block=='003' ?  projectInfo.Status+' delay' : '')}}
                                                                             </span>
-                                                                          
+
                                                                          {{
                                                                           projectInfo.Status==='Project Hold'?'Hold until '+hold_upto:
                                                                           projectInfo.Status==='Delay'? getDelayText(projectInfo):
@@ -1093,8 +1093,8 @@
 
                                                     <!-- *ngIf="(projectInfo&&projectInfo.Status!='Completed')" -->
                                                 <ng-container *ngIf="projectInfo">
-                                                
-                                                    <ng-container *ngIf="['Cancelled','Project Hold'].includes(projectInfo.Status.trim()); else actionsCanBeAdded"> 
+
+                                                    <ng-container *ngIf="['Cancelled','Project Hold'].includes(projectInfo.Status.trim()); else actionsCanBeAdded">
                                                         <ng-container *ngIf="projectInfo.Status=='Project Hold'">
                                                         <div  class="Kt-Pd-Status Add_Action_btn disabled">
                                                             <span class="add-act-plus-icon"></span><svg  xmlns="http://www.w3.org/2000/svg" width="13" height="18" fill="currentColor" viewBox="4 3 8 12" class="bi bi-plus"><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path></svg> Add Action
@@ -2982,7 +2982,7 @@
                                                                     <button class="Ct-btn Bt-Submit ml-2"
                                                                      *ngIf="
                                                                        ['001','002','011'].includes(projectInfo.Project_Block)&&
-                                                                       ['Project Hold','Cancelled','New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval','Deadline Extend Under Approval'].includes(projectInfo.Status.trim())==false" 
+                                                                       ['Project Hold','Cancelled','New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval','Deadline Extend Under Approval'].includes(projectInfo.Status.trim())==false"
                                                                        (click)="OnClickCheckboxProjectUpdate()">
                                                                        Project completion
                                                                     </button>
@@ -3163,7 +3163,7 @@
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                     </button>
                                                     <button #lessbtn2 class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); prjDescBx2.classList.add('compl-remarks-span'); lessbtn2.classList.add('d-none');">
-                                                        <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                                        <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                     </button>
                                                 </div>
                                                 </div>
@@ -3183,8 +3183,8 @@
                                                               </div>
                                                               <div class="d-flex gap-4">
                                                                   <!-- <span id="sub-cmt-sec" class="text-muted fs-8  flex-grow-1 compl-remarks-span" *ngIf="projectInfo.Remarks"  (click)="expandRemarks('sub-cmt-sec')" >{{projectInfo.Remarks}}</span> -->
-                                                                  
-                                                                  
+
+
                                                                   <div *ngIf="projectInfo.Remarks" class="d-flex gap-1">
                                                                     <div #submitbyRemarksBx class="compl-remarks-span  flex-grow-1  text-muted fs-8">
                                                                         {{projectInfo.Remarks}}
@@ -3193,12 +3193,12 @@
                                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                     </button>
                                                                     <button #lessbtn3 class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); submitbyRemarksBx.classList.add('compl-remarks-span'); lessbtn3.classList.add('d-none');">
-                                                                        <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                                                        <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                     </button>
                                                                 </div>
-                                                                  
-                                                                  
-                                                                  
+
+
+
                                                                   <span *ngIf="projectInfo.CompleteProofDoc" [title]="projectInfo.Sourcefile" (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" class="text-info fs-8 text-underline curser-pointer flex-shrink-0">
                                                                       <!-- <svg style="padding-top:1.5px; padding-bottom:1.5px;" width="25px" height="24px" fill="transparent" stroke="#527ce2" viewBox="-1.44 -1.44 26.88 26.88" xmlns="http://www.w3.org/2000/svg">
                                                                           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -3221,7 +3221,7 @@
                                                            </div>
                                                            <div class="d-flex flex-column" *ngIf="projectInfo.ApproveComments">
                                                             <!-- <span id="aprv-cmt-sec" class="text-muted fs-8 compl-remarks-span" (click)="expandRemarks('aprv-cmt-sec')" >{{projectInfo.ApproveComments}}</span> -->
-                                                          
+
                                                             <div class="d-flex gap-1">
                                                                 <div #aprverRemarksBx class="compl-remarks-span  text-muted fs-8">
                                                                     {{projectInfo.ApproveComments}}
@@ -3230,7 +3230,7 @@
                                                                     <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                 </button>
                                                                 <button #lessbtn4 class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); aprverRemarksBx.classList.add('compl-remarks-span'); lessbtn4.classList.add('d-none');">
-                                                                    <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                                                    <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                 </button>
                                                             </div>
 
@@ -3322,9 +3322,9 @@
                                                     <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!(isApprovalSection&&projectInfo.Status!=='Cancelled'&&(multiapproval_list.length+totalStdTskApvs==1))">
 
 
-                                                   
 
-                                                   
+
+
 
 
 
@@ -3342,14 +3342,14 @@
                                                                             </g>
                                                                         </svg>
                                                                     </span>
-                                                                </div> 
-                                                                
+                                                                </div>
+
                                                                 <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status" class="text-nowrap">
 
                                                                     <div class="kt-project-type " *ngSwitchCase="'Under Approval'">
                                                                           <div class="Kt-Pd-Status new-project-under"> New approval </div>
                                                                     </div>
-              
+
                                                                     <div class="kt-project-type " *ngSwitchCase="'Completion Under Approval'">
                                                                       <div *ngIf="projectInfo.AuditStatus=='Audit Pending'" class="Kt-Pd-Status AuditUnderApproval d-flex align-items-center">
                                                                           Audit Approval
@@ -3358,7 +3358,7 @@
                                                                           Completion approval
                                                                       </div>
                                                                     </div>
-              
+
                                                                     <div class="kt-project-type d-flex" *ngSwitchCase="'Forward Under Approval'">
                                                                           <div class="Kt-Pd-Status ForwardUnderApproval d-flex text-nowrap">
                                                                               Forward approval
@@ -3367,19 +3367,19 @@
                                                                               <span>{{projectInfo.Delaydays}} {{projectInfo.Delaydays>1?'days':'day'}} delayed</span>
                                                                           </div>
                                                                     </div>
-              
+
                                                                     <div class="kt-project-type" *ngSwitchCase="'Enactive Under Approval'">
                                                                           <div class="Kt-Pd-Status EnactiveUnderApproval"> EnActive approval</div>
                                                                     </div>
-              
+
                                                                     <div class="kt-project-type" *ngSwitchCase="'Deadline Extend Under Approval'">
                                                                           <div class="Kt-Pd-Status DeadlineExtend"> Deadline extend approval</div>
                                                                     </div>
-        
+
                                                                     <div class="kt-project-type " *ngSwitchCase="'Cancellation Under Approval'">
                                                                           <div class="Kt-Pd-Status Delay"> Cancellation approval</div>
                                                                     </div>
-              
+
                                                                  </div>
 
 
@@ -3407,7 +3407,7 @@
 
 
                                                     <ng-container *ngIf="Current_user_ID==projectInfo.OwnerEmpNo">
-                                                    
+
                                                         <div title="Forward the project for auditing, then it will return to you for approval."
                                                               *ngIf="(!projectAuditor&&requestType=='Project Complete') || (requestType=='Project Complete'&&projectAuditor&&projectInfo.AuditStatus=='')  "  (click)="approvalClick('AUDIT')" class="kt-detail-link " [ngClass]="Audit_active ==true ? 'kt-detail-link active ':'kt-detail-link'" >
                                                               <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.2em;height: 1.2em;vertical-align: middle;fill: #0086f1;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M296 250c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h384c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H296zM480 394H296c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8z"/><path d="M432 852H208V148h560v320c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V108c0-17.7-14.3-32-32-32H168c-17.7 0-32 14.3-32 32v784c0 17.7 14.3 32 32 32h264c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"/><path d="M872 764H728v-36.6c46.3-13.8 80-56.6 80-107.4 0-61.9-50.1-112-112-112s-112 50.1-112 112c0 50.7 33.7 93.6 80 107.4V764H520c-8.8 0-16 7.2-16 16v152c0 8.8 7.2 16 16 16h352c8.8 0 16-7.2 16-16V780c0-8.8-7.2-16-16-16zM646 620c0-27.6 22.4-50 50-50s50 22.4 50 50-22.4 50-50 50-50-22.4-50-50z m180 266H566v-60h260v60z"/></svg>
@@ -3484,7 +3484,7 @@
                                                             <span *ngIf="!projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{requestComments}}</span>
                                                         </div>
                                                         <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
-                                                        <span class="fs-7"> 
+                                                        <span class="fs-7">
                                                             1. You have to analyze the project and give your approval acceptance or rejection.<br>
                                                             2. If you accept the project approval, then it will land to the project owner for the final approval.<br>
                                                             3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.
@@ -3870,7 +3870,7 @@
 
 
 
-                                                         
+
                                                             <div *ngIf="requestType!='Project Audit'" class="col-lg-12 mb-3">
                                                                 <div class="kt-info-lable-v">Remarks</div>
                                                                 <div class="kt-info-data-v p-2 " data-toggle="tooltip" style="overflow:unset; text-overflow: unset; white-space: unset;">
@@ -3882,12 +3882,12 @@
                                                                             <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                         </button>
                                                                         <button #aprvRemarkslessbtn class="txt-expnd-btn align-self-end bg-transparent d-none" style="border:2px solid #898989"  (click)="$event.stopPropagation(); aprvlRemarksBx.classList.add('compl-remarks-span'); aprvRemarkslessbtn.classList.add('d-none');">
-                                                                            <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                                                            <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                         </button>
-                                                                    </div>                                                         
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                     
+
 
                                                             <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'&&completedoc">
                                                                 <div class="kt-info-lable-v">Attachment</div>
@@ -5177,7 +5177,7 @@
                                                                 <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                             </button>
                                                             <button #lessbtn5 class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); actnDescBx.classList.add('compl-remarks-span'); lessbtn5.classList.add('d-none');">
-                                                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                             </button>
                                                         </div>
 
@@ -5385,9 +5385,9 @@
                                                                                 <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                             </button>
                                                                             <button #actnaprvRemarkslessbtn class="txt-expnd-btn align-self-end bg-transparent d-none" style="border:2px solid #898989"  (click)="$event.stopPropagation(); actnaprvlRemarksBx.classList.add('compl-remarks-span'); actnaprvRemarkslessbtn.classList.add('d-none');">
-                                                                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                                                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                             </button>
-                                                                        </div>                                                         
+                                                                        </div>
                                                                     </div>
                                                             </div>
                                                             <div class="col-lg-4">
@@ -6395,7 +6395,7 @@
                 <div class="no-DMS-found">
                     <img src="./assets/images/noDMSFound.png" class="no-DMS-found-image" />
                     <div class="bnk-txt mt-2 d-flex justify-content-center">
-                        <h3 class="blank-txt no-DMS-found-label fs-3">Memo not found.</h3>
+                        <h3 class="blank-txt no-DMS-found-label fs-3">No memo found.</h3>
                     </div>
                 </div>
             </ng-template>
@@ -8409,18 +8409,18 @@
                                        </div>
                                      </ng-container> -->
 
-                                   
+
 
 
 
                                      <ng-container *ngIf="projectInfo&&Data.Role&&(Current_user_ID == projectInfo.OwnerEmpNo || Current_user_ID == projectInfo.ResponsibleEmpNo || isHierarchy == true)">
 
-                                        
+
                                             <button *ngIf="Data.Role.includes('Auditor')&&(projectInfo.Status!='Completion Under Approval'&&projectInfo.Status!='Completed')" (click)="onChangeAuditorBtnClicked();" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted curser-pointer ">
                                                 <svg  width="14px" height="15px" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path></g></svg>
                                                 <span class="auditor-btn-text">&nbsp;change auditor</span>
                                             </button>
-                                       
+
 
 
                                            <ng-container *ngIf="Data.Role.includes('Auditor')&&Data.Role.includes('Support'); else notbothAuditorAndSupport">
@@ -14484,7 +14484,7 @@
                                         <div class="kt-info-data-v px-2 " data-toggle="tooltip"  style="overflow:unset; white-space:unset; text-overflow:unset;">
                                             <div [id]="'standard-taskaprv-remark-'+i" (click)="expandRemarks('standard-taskaprv-remark-'+i)"  class="compl-remarks-span px-2 curser-pointer" title="Click to view more or collapse">
                                                 {{requestComments}}
-                                            </div>                                                     
+                                            </div>
                                         </div>
                                   </div>
 
@@ -14972,7 +14972,7 @@
                                   <span *ngIf="!projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{requestComments}}</span>
                               </div>
                               <h6 style="text-decoration:underline;margin-top:10px;margin-bottom:5px;">Next Steps:</h6>
-                              <span class="fs-7"> 
+                              <span class="fs-7">
                                   1. You have to analyze the project and give your approval acceptance or rejection.<br>
                                   2. If you accept the project approval, then it will land to the project owner for the final approval.<br>
                                   3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.
@@ -14991,7 +14991,7 @@
                               <span *ngIf="projectInfo.Auditor_acceptremarks">{{projectInfo.Auditor_acceptremarks}}</span>
                           </div>
                          </div>
- 
+
 
 
 
@@ -15324,7 +15324,7 @@
                                         <div class="kt-info-data-v px-2 " data-toggle="tooltip"  style="overflow:unset; white-space:unset; text-overflow:unset;">
                                                 <div [id]="'pending-aprvl-remark-'+i" (click)="expandRemarks('pending-aprvl-remark-'+i)"  class="compl-remarks-span px-2 curser-pointer" title="Click to view more or collapse">
                                                     {{requestComments}}
-                                                </div>                                                     
+                                                </div>
                                         </div>
                                   </div>
 
@@ -15352,7 +15352,7 @@
                                       </div>
                                   </div>
 
-                                  
+
                                   <div class="col-lg-12 mt-3" *ngIf="aprv.Type=='Project Audit'&&completedoc">
                                     <div class="kt-info-lable-v">Attachment</div>
 
@@ -16231,7 +16231,7 @@
                         <li role="separator" class="divider"></li>
                         <li class="dropdown-header">Sort by employee</li>
                     <div class="actns-filtr-scroll">
-                       
+
                          <li class="mr-2">
                             <button class="btn btn-filtr" (click)="filterActionsOnGantt(ganttActnsConfig.bystatus,'All')" [ngClass]="{'active2':ganttActnsConfig.byuser==='All'}">
                                 <div class="d-flex align-items-center">
@@ -16260,7 +16260,7 @@
                                 </div>
                             </button>
                         </li>
-                      
+
                   </div>
               </ul>
 
@@ -16292,14 +16292,14 @@
                 </div>
             </div>
           <div class="gantt-container">
-               <div  class="actns-graph" id="actnsfull-graph"></div> 
+               <div  class="actns-graph" id="actnsfull-graph"></div>
           </div>
         </div>
         <div [ngClass]="{'d-none':total_userActns>0}" class="text-muted fs-6 text-center pt-5">
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <svg xmlns:svg="http://www.w3.org/2000/svg" fill="#e2e2e2" width="8%" version="1.1" x="0px" y="0px" viewBox="0 0 100 125">
                     <g xmlns="http://www.w3.org/2000/svg" transform="translate(0,-952.36218)"><path d="M 15.8125 6 A 2.0001999 2.0001999 0 0 0 14 8 L 14 78 A 2.0001999 2.0001999 0 0 0 16 80 L 41.8125 80 C 45.315901 88.237691 53.501014 94 63 94 C 72.157117 94 80.087984 88.61635 83.78125 80.84375 A 2.0059224 2.0059224 0 1 0 80.15625 79.125 C 77.107988 85.5402 70.595823 90 63 90 C 52.482909 90 44 81.5171 44 71 C 44 60.4829 52.482909 52 63 52 C 73.517102 52 82 60.4829 82 71 A 2.0001999 2.0001999 0 1 0 86 71 C 86 60.038034 78.283596 50.853014 68 48.5625 L 68 24 A 2.0001999 2.0001999 0 0 0 67.40625 22.5625 L 51.40625 6.5625 A 2.0001999 2.0001999 0 0 0 50 6 L 16 6 A 2.0001999 2.0001999 0 0 0 15.8125 6 z M 18 10 L 48 10 L 48 24 A 2.0001999 2.0001999 0 0 0 50 26 L 64 26 L 64 48.03125 C 63.669714 48.017096 63.333697 48 63 48 C 60.657104 48 58.381633 48.376638 56.25 49.03125 A 2.0001999 2.0001999 0 0 0 56 49 L 25 49 A 2.0001999 2.0001999 0 0 0 24.8125 49 A 2.0021961 2.0021961 0 1 0 25 53 L 48.71875 53 C 46.919488 54.428914 45.335787 56.103478 44.03125 58 L 25 58 A 2.0001999 2.0001999 0 0 0 24.8125 58 A 2.0021961 2.0021961 0 1 0 25 62 L 41.84375 62 C 41.16589 63.585758 40.651128 65.256302 40.34375 67 L 25 67 A 2.0001999 2.0001999 0 0 0 24.8125 67 A 2.0021961 2.0021961 0 1 0 25 71 L 40 71 C 40 72.710582 40.20632 74.394809 40.5625 76 L 18 76 L 18 10 z M 52 12.8125 L 61.1875 22 L 52 22 L 52 12.8125 z M 24.8125 40 A 2.0021961 2.0021961 0 1 0 25 44 L 57 44 A 2.0001999 2.0001999 0 1 0 57 40 L 25 40 A 2.0001999 2.0001999 0 0 0 24.8125 40 z M 62.78125 57.96875 A 2.0001999 2.0001999 0 0 0 61 60 L 61 62 A 2.0001999 2.0001999 0 1 0 65 62 L 65 60 A 2.0001999 2.0001999 0 0 0 62.78125 57.96875 z M 62.78125 66.96875 A 2.0001999 2.0001999 0 0 0 61 69 L 61 82 A 2.0001999 2.0001999 0 1 0 65 82 L 65 69 A 2.0001999 2.0001999 0 0 0 62.78125 66.96875 z " transform="translate(0,952.36218)"></path></g>
-                </svg>     
+                </svg>
                 <div class="bnk-txt">
                 <a class="kt-blank-msg text-gray-400">Sorry, that filter combination has no results.<br><u style="cursor: pointer;" (click)="filterActionsOnGantt('All','All')">Clear filters</u></a>
                 </div>

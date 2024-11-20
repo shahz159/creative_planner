@@ -1064,7 +1064,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                   this.pendingActns4Aprvls.push({ name:actn.Responsible, empno:actn.Team_Res, totalApprovals:1   });
             }
 
-debugger    
+debugger
             if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno!=actn.Team_Res)){
               this.actionsAssignedByMe+=1;
             }
@@ -1138,7 +1138,7 @@ debugger
     this.noActvySinceCreation=(['Completed','Cancelled'].includes(this.projectInfo.Status)==false&&cr_date>prjs_date&&this.projectInfo.TotalHours==0);
     if(this.noActvySinceCreation){
       this.noActvy4NDays=moment(cr_date).diff(prjs_date,'days');
-    }   
+    }
     // when project has no activity done even after start date.
 
 
@@ -1204,7 +1204,7 @@ debugger
 
 
   getDelayText(action: any): string {
- 
+
     if (!action || action.Delaydays == null) return '';
 
     let delayText = '';
@@ -1295,13 +1295,13 @@ debugger
             this.projectAuditor={empName:prj_auditor.RACIS, empNo:prj_auditor.Emp_No};
           }
 // If project has project auditor
-          
+
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{
 
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', '), isActive:result[0].isActive};
             console.log(this.PeopleOnProject,"sssssssss")
-            if(this.Subtask_Res_List){  
+            if(this.Subtask_Res_List){
               const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
               if(p){
                   obj.contribution=p.RespDuration;
@@ -1539,7 +1539,7 @@ debugger
 
   showActionDetails(index: number | undefined) {
      this.currentActionView = index;
-  
+
     if (index>-1 && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval"||this.projectActionInfo[index].Status === "Cancellation Under Approval"))
       this.GetApproval(this.projectActionInfo[index].Project_Code);
 
@@ -1618,26 +1618,26 @@ debugger
         this.maxDuration = (data1[0]['ProjectMaxDuration']);
         this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
         // this.RemainingHours = (data1[0]['RemainingHours']);
-        
+
         // when action has no activity done even after start date.   calculation here.
           const actn_sdate=new Date(this.projectActionInfo[index].StartDate); actn_sdate.setHours(0,0,0,0);
           const cr_date=new Date(); cr_date.setHours(0,0,0,0);
           this.noActvyOnActnSinceCreation=(['Completed','Cancelled'].includes(this.projectActionInfo[index].Status)==false&&cr_date>actn_sdate&&this.UsedInDAR==0);
           if(this.noActvyOnActnSinceCreation){
             this.noActnActvy4NDays=moment(cr_date).diff(actn_sdate,'days');
-          }   
+          }
         // when action has no activity done even after start date.
-        
+
 
 
       // draw action bar chart.
-        this.drawActionBarChart(); 
+        this.drawActionBarChart();
      });
-          
+
 
   }
 
- 
+
 
 
   drawActionBarChart(){
@@ -1691,7 +1691,7 @@ debugger
     this.prjBARCHART = new ApexCharts(document.querySelector("#chart-container1"), options);
     this.prjBARCHART.render();
     // new code
-    
+
   }
 
 
@@ -4988,7 +4988,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
           this.mtg_section='UPCOMING';
         }
 
-        
+
       // by default today section is opened, below line set the first meeting to open if present.
       setTimeout(()=>{
          this.toggleMtgsSection(this.mtg_section);
@@ -5339,7 +5339,7 @@ config: AngularEditorConfig = {
       },
     ],
   };
- 
+
   Location_Type: any;
   Addressurl: string = "";
   Locationfulladd: string;
@@ -8677,7 +8677,7 @@ Insert_indraft() {
       }
       for (let index = 0; index < this.dayArr.length; index++) {
         if (this.dayArr[index].checked) {
-        
+
           const day = this.dayArr[index].value;
           _arraytext.push(day);
           var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
@@ -8722,7 +8722,7 @@ Insert_indraft() {
     this.ngEmployeeDropdown = [];
   }
   this._calenderDto.User_list = this.ngEmployeeDropdown.toString();
-  
+
   if (this.MasterCode == null) {
     this.MasterCode = [];
   }
@@ -8751,7 +8751,7 @@ Insert_indraft() {
 
       this.Attamentdraftid= data['draftid']
       frmData.append("draftid", this.Attamentdraftid);
- 
+
         if (_attachmentValue == 1) {
           this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
             (event: HttpEvent<any>) => {
@@ -8770,7 +8770,7 @@ Insert_indraft() {
                   console.log('User successfully created!', event.body);
 
                   // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                  
+
 
                   (<HTMLInputElement>document.getElementById("customFile")).value = "";
                   this._lstMultipleFiales = [];
@@ -9846,7 +9846,7 @@ Meeting_Id:any;
 Meeting_password:any;
 
 
-OnSubmitSchedule1() { 
+OnSubmitSchedule1() {
   if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
     this._subname1 = true;
     return false;
@@ -9920,7 +9920,7 @@ OnSubmitSchedule1() {
 
   if (finalarray.length > 0) {
     finalarray.forEach(element => {
-    
+
       const date1: Date = new Date(this._StartDate);
       // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
       //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
@@ -9998,7 +9998,7 @@ OnSubmitSchedule1() {
       var vOnlinelink = "Onlinelink";
       element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
       this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
-    
+
       var vLink_Details = "Link_Details";
       element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
 
@@ -10634,8 +10634,8 @@ loadActionsGantt(){
           fontWeight: 'bold'
         },
         datetimeFormatter: {
-          month: "MMM",  
-          day: "dd MMM",   
+          month: "MMM",
+          day: "dd MMM",
       },
 
       },
@@ -10646,7 +10646,7 @@ loadActionsGantt(){
         show: true
       },
       max:max_Xvalue.getTime(),
-   
+
 
     },
     yaxis: {
@@ -10968,7 +10968,7 @@ expandRemarks(id:string){
       remark_sec.classList.add('compl-remarks-span');
       document.getElementById('less-btn').classList.add('d-none');
      }
-        
+
 }
 
 
@@ -11084,18 +11084,18 @@ getFormattedDuration(totalDuration: number): string {
   hasNoActionMembers:any=[];
   detectMembersWithoutActions(){
       if(this.Project_List&&this.filteremployee)
-      {    // if we have info of all the peoples present in the project. and info of all the people who have actions.   
+      {    // if we have info of all the peoples present in the project. and info of all the people who have actions.
         const peopleWithActns=this.filteremployee.map(item=>item.Team_Res);
         const arr=[];
         this.Project_List.forEach((item)=>{
-                if(item.Role!='Owner'&&peopleWithActns.includes(item.Emp_No)==false)   
+                if(item.Role!='Owner'&&peopleWithActns.includes(item.Emp_No)==false)
                 {
                    if(arr.findIndex(ob=>ob.Emp_No==item.Emp_No)==-1)
                    arr.push({  Emp_No:item.Emp_No, Emp_Name:item.RACIS.slice(0,item.RACIS.indexOf('(')).trim() })
                 }
          });
-        this.hasNoActionMembers=arr; 
-      } 
+        this.hasNoActionMembers=arr;
+      }
   }
 
 

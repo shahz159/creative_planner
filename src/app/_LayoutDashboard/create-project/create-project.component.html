@@ -28,7 +28,7 @@
             <div class="Create_project_section">
               <div class="np-step-1 w-100 top_pading_view">
                 <div class="container">
-                  <div class="row">    
+                  <div class="row">
                     <div class="col-lg-12">
                       <div class="title-view-md">
                         <h2 class="text-primary">Let’s get started</h2>
@@ -1484,9 +1484,10 @@
                                     *ngIf="!PrjName&&notProvided">Please enter project name. </span>
 
 
-                                    <span *ngIf="isPrjNameValid==='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter at least 3 words, maximum 100 characters are allowed</span>
+                                    <span *ngIf="isPrjNameValid==='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter at least 3 words, maximum 100 characters are allowed.</span>
                                     <!-- <span *ngIf="isPrjNameValid==='TOOLONG'"  style="color:rgb(217,48,37)">Maximum 100 Words allowed</span> -->
-                                    <span *ngIf="PrjName&&PrjName.length>100" style="color:rgb(217,48,37)" >Maximum 100 characters are allowed</span>
+
+                                    <span *ngIf="PrjName&&PrjName.length>100" style="color:rgb(217,48,37)" >Maximum 100 characters are allowed.</span>
                                 </div>
                               </div>
                               <div class="col-lg-12 mb-3">
@@ -1497,10 +1498,10 @@
                                     (paste)="updateCharacterCount()"  [(ngModel)]="PrjDes" #prjDescr="ngModel"  (ngModelChange)="isPrjDesValid=isValidString(PrjDes,5)"  ></textarea>
                                     <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">Please enter project description. </span>
                                     <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOSHORT'">Please enter
-                                    at least 5 words, maximum 500 characters are allowed </span>
+                                    at least 5 words, maximum 500 characters are allowed. </span>
                                     <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500</span>
                                     <!-- <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOLONG'"> Maximum 200 words are allowed</span> -->
-                                   <span *ngIf="characterCount >500" style="color:rgb(217,48,37)">  Maximum 500 characters are allowed</span>
+                                   <span *ngIf="characterCount >500" style="color:rgb(217,48,37)">  Maximum 500 characters are allowed.</span>
                                 </div>
                               </div>
                               <div class="col-lg-4 mb-3">
@@ -1511,7 +1512,7 @@
                                     <ng-option *ngFor="let item of ProjectType_json"
                                       [value]="item.Typeid"  >{{item.ProjectType }} </ng-option>
                                   </ng-select>
-                                  <span style="color:rgb(217,48,37)" *ngIf="!Prjtype&&notProvided">Please select project type</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!Prjtype&&notProvided">Please select project type.</span>
                                 </div>
                               </div>
                               <div class="col-lg-4 mb-3">
@@ -1522,7 +1523,7 @@
                                     <ng-option *ngFor="let item of Client_json"
                                       [value]="item.ClientId">{{item.ClientName}}</ng-option>
                                   </ng-select>
-                                  <span style="color:rgb(217,48,37)" *ngIf="(!PrjClient)&&notProvided">Please select project client</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="(!PrjClient)&&notProvided">Please select project client.</span>
                                 </div>
                               </div>
                               <div class="col-lg-4 mb-3">
@@ -1533,7 +1534,7 @@
                                     <ng-option *ngFor="let item of Category_json"
                                       [value]="item.CategoryId">{{item.CategoryName}}</ng-option>
                                   </ng-select>
-                                  <span *ngIf="(!PrjCategory)&&notProvided" style="color:rgb(217,48,37)">Please select project category</span>
+                                  <span *ngIf="(!PrjCategory)&&notProvided" style="color:rgb(217,48,37)">Please select project category.</span>
                                 </div>
                               </div>
 
@@ -1554,7 +1555,7 @@
                                     </div>
                                   </div>
                                   <div *ngIf="Prjtype=='011'" style="color:grey">To do List not more than 3 Days </div>
-                                  <span *ngIf="!Prjstartdate&&notProvided" style="color:rgb(217,48,37)">Please select project start date</span>
+                                  <span *ngIf="!Prjstartdate&&notProvided" style="color:rgb(217,48,37)">Please select project start date.</span>
                                  <!-- <span *ngIf="['001', '002', '011'].includes(Prjtype)&&Prjstartdate && Prjenddate">Duration : {{this.durationInDays+1}} days </span>
                                    <span *ngIf="Allocated_Hours">{{Allocated_Hours}} hours</span> -->
                                 </div>
@@ -1572,7 +1573,7 @@
                                         <mat-datepicker #picker3></mat-datepicker>
                                       </div>
                                     </div>
-                                    <span *ngIf="!Prjenddate&&notProvided" style="color:rgb(217,48,37)">Please select project end date</span>
+                                    <span *ngIf="!Prjenddate&&notProvided" style="color:rgb(217,48,37)">Please select project end date.</span>
                                   </div>
                                 </div>
                                 <div class="col-lg-4 mb-3">
@@ -1598,7 +1599,7 @@
                                     <span *ngIf="Allocated_Hours > maxAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 10
                                       hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
                                     <span *ngIf="allocated.touched && allocated.invalid && (Allocated_Hours==0)" style="color:rgb(217,48,37)">Allocated hours cannot be 0 and decimal, please enter a
-                                      value </span>
+                                      value. </span>
                                     <span *ngIf="this.Prjstartdate == null || this.Prjenddate == null" style="color:rgb(217, 48, 37)">{{_message}}</span>
                                     <!-- <span *ngIf="allocated.value && !isNumeric(allocated.value)">Alphabet will not accept
                                       {{maxAllocation}}
@@ -1854,7 +1855,7 @@
                                   (change)="onProjectOwnerChanged();  PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo.trim()))?PrjInformer:Responsible_json[0].OwnerEmpNo.trim();  setRACIS(); "
                                   placeholder="Select owner" id="owner-drp-dwn" [searchable]="true" name="owner-drp-dwn"
                                   [(ngModel)]="PrjOwner"></ng-select>
-                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjOwner">Please select owner</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjOwner">Please select owner.</span>
 
                                 </div>
                               </div>
@@ -1868,7 +1869,7 @@
                                     <ng-option *ngIf="owner_json.length>1"
                                       [value]="Responsible_json[0].OwnerEmpNo.trim()">{{Responsible_json[0].OwnerName}}</ng-option>
                                   </ng-select>
-                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjResp">Please select responsible</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjResp">Please select responsible.</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
@@ -1880,7 +1881,7 @@
                                       *ngFor="let p of (PrjResp===Current_user_ID)?Authority_json:[{EmpNo:Responsible_json[0].ResponsibleNo,EmpName:Responsible_json[0].ResponsibleName}]"
                                       [value]="p.EmpNo">{{p.EmpName}}</ng-option>
                                   </ng-select>
-                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjAuth">Please select authority</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjAuth">Please select authority.</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
@@ -1891,7 +1892,7 @@
                                     <ng-option *ngFor="let p of allUser_json"
                                       [value]="p.Emp_No">{{p.Emp_Name}}</ng-option>
                                   </ng-select>
-                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjCrdtr">Please select coordinator</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjCrdtr">Please select coordinator.</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
@@ -1910,7 +1911,7 @@
                                   </ng-container>
 
                                   </ng-select>
-                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjInformer">Please select informer</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="!PrjInformer">Please select informer.</span>
                                 </div>
                               </div>
                               <div class="col-lg-6 mb-3">
@@ -1968,7 +1969,7 @@
                                       </ng-template>
                                     </mat-autocomplete>
                                   </mat-form-field>
-                                  <span style="color:rgb(217,48,37)" *ngIf="PrjSupport.length===0">Please select support</span>
+                                  <span style="color:rgb(217,48,37)" *ngIf="PrjSupport.length===0">Please select support.</span>
                                 </div>
                               </div>
 
@@ -2890,7 +2891,7 @@
 
                                     </ng-select>
 
-                                    <span *ngIf="!selectedOwnResp&&notProvided" style="color:rgb(217,48,37)">Please enter responsible</span>
+                                    <span *ngIf="!selectedOwnResp&&notProvided" style="color:rgb(217,48,37)">Please select responsible.</span>
 
                                 </ng-container>
                                     <ng-template #ownEdit>
@@ -2935,7 +2936,7 @@
                                       {{item.ReportType}}
                                   </ng-option>
                               </ng-select>
-                              <span *ngIf="!selectedcategory&&notProvided" style="color:rgb(217,48,37)">Please enter category</span>
+                              <span *ngIf="!selectedcategory&&notProvided" style="color:rgb(217,48,37)">Please select category.</span>
                       </div>
                   </div>
               </div>
@@ -2990,7 +2991,7 @@
                                   <a>{{item.Com_Name}}</a>
                               </ng-option>
                           </ng-select>
-                          <span *ngIf="!selectedclient&&notProvided" style="color:rgb(217,48,37)">Please enter client</span>
+                          <span *ngIf="!selectedclient&&notProvided" style="color:rgb(217,48,37)">Please select client.</span>
                       </div>
                   </div>
               </div>
@@ -3254,7 +3255,7 @@
                                      {{item.RACIS}}
                                   </ng-option>
                             </ng-select>
-                            <span *ngIf="!selectedOwnResp&&notProvided" style="color:red">Please enter responsible</span>
+                            <span *ngIf="!selectedOwnResp&&notProvided" style="color:red">Please select responsible.</span>
                     </div>
                 </div>
             </div>
@@ -3276,7 +3277,7 @@
                                   {{item.ReportType}}
                               </ng-option>
                           </ng-select>
-                          <span *ngIf="!selectedcategory&&notProvided" style="color:rgb(217,48,37)">Please enter category</span>
+                          <span *ngIf="!selectedcategory&&notProvided" style="color:rgb(217,48,37)">Please enter category.</span>
                   </div>
               </div>
           </div>
@@ -3333,7 +3334,7 @@
                                 <a>{{item.Com_Name}}</a>
                             </ng-option>
                         </ng-select>
-                        <span *ngIf="!selectedclient&&notProvided" style="color:red">Please enter client</span>
+                        <span *ngIf="!selectedclient&&notProvided" style="color:red">Please select client.</span>
                     </div>
                 </div>
             </div>
