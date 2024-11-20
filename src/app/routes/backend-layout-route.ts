@@ -6,69 +6,69 @@ export const BACKEND_ROUTES: Routes = [
 
     
      {
-          path: 'dashboard',canActivate:[AuthGuard],
+          path: 'dashboard',
           loadChildren: () => import('../_LayoutDashboard/dashboard/dashboard.module').then(m => m.DashboardModule)
      },
 
      {
-          path: 'Streamdashboard',canActivate:[AuthGuard],
+          path: 'Streamdashboard',
           loadChildren: () => import('../_LayoutDashboard/stream-dashboard/stream-dashboard.module').then(m => m.StreamDashboardModule)
      },
 
      {
-          path: 'StreamCalendar',canActivate:[AuthGuard],
+          path: 'StreamCalendar',
           loadChildren: () => import('../_LayoutDashboard/stream-calendar/stream-calendar.module').then(m => m.StreamCalendarModule)
      },
 
      {
-          path: 'Portfolio',canActivate: [AuthGuard],
+          path: 'Portfolio',
           loadChildren: () => import('../_LayoutDashboard/home/home.module').then(m => m.HomeModule)
      },
 
      {
-          path: 'portfolio',canActivate: [AuthGuard],
+          path: 'portfolio',
           loadChildren: () => import('../_LayoutDashboard/home/home.module').then(m => m.HomeModule)
      },
 
      {
-          path: 'ProjectsSummary',canActivate: [AuthGuard],
+          path: 'ProjectsSummary',
           loadChildren: () => import('../_LayoutDashboard/projects-summary/projects-summary.module').then(m => m.ProjectsSummaryModule),
 
      },
      {
-          path: 'createproject',canActivate: [AuthGuard],
+          path: 'createproject',
           loadChildren: () => import('../_LayoutDashboard/create-project/create-project.module').then(m => m.CreateProjectModule),
 
      },
      {
-          path: 'Timeline',canActivate: [AuthGuard],
+          path: 'Timeline',
           loadChildren: () => import('../_LayoutDashboard/timeline/timeline.module').then(m => m.TimelineModule),
 
      },
      {
-          path: 'PerformanceDashboard',canActivate: [AuthGuard],
+          path: 'PerformanceDashboard',
           loadChildren: () => import('../_LayoutDashboard/projects-chart/projects-chart.module').then(m => m.ProjectsChartModule)
      },
      {
-          path: 'performancedashboard',canActivate: [AuthGuard],
+          path: 'performancedashboard',
           loadChildren: () => import('../_LayoutDashboard/projects-chart/projects-chart.module').then(m => m.ProjectsChartModule)
      },
 
      {
-          path: 'DeleteHistory',canActivate: [AuthGuard],
+          path: 'DeleteHistory',
           loadChildren: () => import('../_LayoutDashboard/history/history.module').then(m => m.HistoryModule)
      },
     
      {
-          path: 'ToDoProjects',canActivate: [AuthGuard],
+          path: 'ToDoProjects',
           loadChildren: () => import('../_LayoutDashboard/to-do-projects/to-do-projects.module').then(m => m.ToDoProjectsModule)
      },
      {
-          path: 'settings',canActivate:[AuthGuard],
+          path: 'settings',
           loadChildren: () => import('../settings/setting.module').then(m => m.SettingModule)
      },
      {
-          path: 'userpolicy/:val',canActivate: [AuthGuard],
+          path: 'userpolicy/:val',
           loadChildren: () => import('../policy/policy.module').then(m => m.PolicyModule)
      }
 

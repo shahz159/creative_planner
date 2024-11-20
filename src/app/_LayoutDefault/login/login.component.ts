@@ -55,7 +55,10 @@ export class LoginComponent implements OnInit {
   User_FullName: string;
   //---end---
   ngOnInit() {
-    this.authService.logout();
+    // this.authService.logout();
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      this.router.navigate(['/backend/dashboard']);
+    }
 
     $('.showOrHide').on('click', function (e) {
       var target = e.currentTarget
