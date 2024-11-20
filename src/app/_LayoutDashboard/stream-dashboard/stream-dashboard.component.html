@@ -1159,7 +1159,7 @@
                                     </div>
 
                                     <div class="action-info-item" *ngIf="item.ProjectsDueToday>0" >
-                                      <div class="action-info-label">Projects Due</div>
+                                      <div class="action-info-label">Projects due today</div>
                                       <div class="action-info-status">{{item.ProjectsDueToday}}</div>
                                   </div>
 
@@ -1176,6 +1176,12 @@
                                 <div class="action-info-label">Standard Delayed</div>
                                 <div class="action-info-status">{{item.StandardDelayed}}</div>
                             </div>
+
+                            <div class="action-info-item"  *ngIf="item.StandardDueToday>0">
+                              <div class="action-info-label">Standard due today</div>
+                              <div class="action-info-status">{{item.StandardDueToday}}</div>
+                          </div>
+
                             <div class="action-info-item" *ngIf="item.StandardSubmittedToday>0">
                               <div class="action-info-label">Standard Submitted</div>
                               <div class="action-info-status">{{item.StandardSubmittedToday}}</div>

@@ -774,16 +774,19 @@
 
                                                           <div *ngIf="item.Status=='New Project Rejected'" class="attach-tippy-div">
                                                             <span class="New_Project_Rejected_color font-weight-400">New project rejected</span>
+
                                                             <span class="attach-tippy">
 
-                                                            <span class=" rej st-line curser-pointer" >
+                                                            <span class="st-line curser-pointer" >
                                                                <div style="width: max-content;">Rejected by: <h6>{{item.RejectedBy}} </h6></div>
-                                                                <div>on: {{item.RejectFromDate | date: 'dd-MM-yyyy'}}</div>
+                                                                <div>on: {{item.RejectFromDate| date: 'dd-MM-yyyy'}}  </div>
+                                                                <div *ngIf="item.RejectFromDate"> ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.RejectFromDate))}})  </div>
                                                                 <div>Comment : {{item.Rejectcomments}}</div></span>
-                                                            </span></div>
+
+                                                            </span>   <span class="New_Project_Rejected">{{item.RejectedBy}}</span></div>
 
 
-
+                                                            <!-- --{{this.currentDate -item.RejectedFromDate  }}  -->
 
 
                                                         <div *ngIf="item.Status=='Not Started'">

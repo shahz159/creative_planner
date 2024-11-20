@@ -30,27 +30,27 @@
         <span *ngIf ="_projcode == true||(action.touched&&!selectedProjectCodelist)"; style="color:red">Project required!</span>
     </div>
     <div class="form-group">
-        <label> Action name :<span class="text-danger">*</span></label>
+        <label> Action name<span class="text-danger">*</span></label>
         <input #name="ngModel" required type="text" class="form-control" [ngClass]="{'error-border': _subname == true&&(name&&!Sub_ProjectName)}" placeholder="Enter action name" [(ngModel)]="Sub_ProjectName"   (ngModelChange)="_subname=!Sub_ProjectName;onInputChange($event);isPrjNameValid=isValidString(Sub_ProjectName.trim(),2)" />
 
-        <span style="color:rgb(217,48,37)" class=""  *ngIf="!Sub_ProjectName&&_subname">Please enter action name </span>
-        <span  style="color:red" *ngIf ="Sub_ProjectName&&isPrjNameValid==='TOOSHORT'">Please enter atleast 2 words, Maximum 100 characters are allowed</span>
+        <span style="color:rgb(217,48,37)" class=""  *ngIf="!Sub_ProjectName&&_subname">Please enter action name. </span>
+        <span  style="color:red" *ngIf ="Sub_ProjectName&&isPrjNameValid==='TOOSHORT'">Please enter atleast 2 words, Maximum 100 characters are allowed.</span>
         <!-- <span *ngIf;="isPrjNameValid==='TOOSHORT'";  style="color:rgb(217,48,37)">Maximum; 3; Words; are; allowed</span> -->
-        <span *ngIf="Sub_ProjectName&&Sub_ProjectName.length>100"  style="color:rgb(217,48,37)">Maximum 100 characters are allowed</span>
+        <span *ngIf="Sub_ProjectName&&Sub_ProjectName.length>100"  style="color:rgb(217,48,37)">Maximum 100 characters are allowed.</span>
 
     </div>
     <div class="form-group">
-        <label>Description :<span class="text-danger">*</span></label>
+        <label>Description<span class="text-danger">*</span></label>
         <textarea #description="ngModel" required class="form-control"
          [ngClass]="{'error-border': _desbool == true&&(description&&!_Description)}" placeholder="Enter action description"
           [(ngModel)]="_Description"  (input)="updateCharacterCount()" (paste)="updateCharacterCount()"
            (ngModelChange)="_desbool=!_Description;onDescriptionChange($event);isPrjDesValid=isValidString(_Description.trim(),3)" style="height: 100px"></textarea>
-        <span style="color:rgb(217,48,37)" class=""  *ngIf="!_Description&&_desbool">Please enter description name </span>
+        <span style="color:rgb(217,48,37)" class=""  *ngIf="!_Description&&_desbool">Please enter description name. </span>
 
         <!-- <span *ngIf ="_desbool&&!_Description" style="color:red">Please enter description Maximum 200 characters are allowed</span> -->
-        <span *ngIf="_Description&&isPrjDesValid==='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter atleast 3 words, Maximum 500 characters are allowed</span>
+        <span *ngIf="_Description&&isPrjDesValid==='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter atleast 3 words, Maximum 500 characters are allowed.</span>
         <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500</span>
-        <span *ngIf="characterCount>=500" style="color:rgb(217,48,37)"> Maximum 500 characters are allowed</span>
+        <span *ngIf="characterCount>=500" style="color:rgb(217,48,37)"> Maximum 500 characters are allowed.</span>
       </div>
     <!-- <div; class="form-group">
         <label> Assign; To <span class="text-danger">*</span> : <strong></strong></label>
@@ -61,7 +61,7 @@
         </ng-multiselect-dropdown>
     </div> -->
     <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"   id="AssignedToEmp" >
-        <label> Assign to :<span class="text-danger">*</span> </label>
+        <label> Assign to<span class="text-danger">*</span> </label>
         <!-- <ng-select reuired; #assign="ngModel" (Change)="EmployeeOnSelect($event)" [(ngModel)]="selectedEmpNo"; placeholder="Select employee" >
             <ng-option [value];="item.Emp_No" [disabled]="item.Emp_No==Owner_Empno" *ngFor;="let item of _EmployeeListForDropdown">
                 {;{item.DisplayName;}}
@@ -94,7 +94,7 @@
                 </span>
               </ng-template>
         </ng-select>
-        <span *ngIf ="_selectemp !selectedEmpNo" style="color:red">Please select employee to assign</span>
+        <span *ngIf ="_selectemp !selectedEmpNo" style="color:red">Please select employee to assign.</span>
     </div>
     <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
         <label>Action owner  <strong >
@@ -202,7 +202,7 @@
     </div>-->
     <div class="d-flex gap-1">
       <div class="form-group flex-1 details-date">
-        <label>Start date : <span class="text-danger">*</span></label>
+        <label>Start date<span class="text-danger">*</span></label>
         <div class="d-flex date-border" [ngClass]="{'error-date': (_sdate == true&&!_StartDate)||_actbefore}" (click)="startdatechecker()">
             <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()" [min]="todayDate" (dateChange)="_StartDate=_StartDate<_curtd?null:_StartDate"
                 [(ngModel)]="_StartDate" placeholder="Start date" class="form-control" />
@@ -212,12 +212,12 @@
                 <mat-datepicker #picker1></mat-datepicker>
             </div>
         </div>
-        <div *ngIf="_sdate &&!_StartDate" style="color: red">Please select start date</div>
+        <div *ngIf="_sdate &&!_StartDate" style="color: red">Please select start date.</div>
         <div *ngIf="_actbefore" style="color: red">Action cannot start before the project.</div>
     </div>
 
         <div class="form-group flex-1 details-date" *ngIf="_StartDate!=null">
-            <label>End date :<span class="text-danger">*</span></label>
+            <label>End date<span class="text-danger">*</span></label>
             <div class="d-flex date-border" [ngClass]="{'error-date': (_edate && !_EndDate)}" >
                 <input matInput [matDatepicker]="picker2" required #Enddate="ngModel" (click)="picker2.open()" [min]="_StartDate"
                     [(ngModel)]="_EndDate" placeholder="End date" class="form-control"  (dateChange)="(this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null); hasSameDateActions();" (input)="_edate=!_EndDate" />
@@ -228,12 +228,12 @@
                 </div>
             </div>
             <span *ngIf="sameDateActions" style="color:orange">more than 3 actions ending on same date.</span>
-            <span *ngIf="_edate && !_EndDate" style="color:red">Please select end date</span>
+            <span *ngIf="_edate && !_EndDate" style="color:red">Please select end date.</span>
             <!-- <div *ngIf="_actafter" style="color: red">Action cannot end after the project.</div> -->
         </div>
          <!--when start date is provided-->
         <div class="form-group flex-1 details-date" *ngIf="_StartDate==null">
-            <label>End date :<span class="text-danger">*</span></label>
+            <label>End date<span class="text-danger">*</span></label>
             <div class="d-flex date-border" [ngClass]="{'error-date': _edate && !_EndDate}"  (click)="enddateChecker()">
                 <input matInput [matDatepicker]="picker2"  [matDatepickerFilter]="myFilter"
                 required #Enddate="ngModel" (click)="picker2.open()"
@@ -243,13 +243,13 @@
                     <mat-datepicker #picker2></mat-datepicker>
                 </div>
             </div>
-            <span *ngIf="_edate && !_EndDate" style="color:red">Please select end date</span>
+            <span *ngIf="_edate && !_EndDate" style="color:red">Please select end date.</span>
         </div>  <!--when start date is not provided-->
     </div>
 
 
     <div class="form-group">                          <!--*ngIf;="selectedEmpNo == Current_user_ID"-->
-        <label>Allocated hours :<span class="text-danger">*</span></label>
+        <label>Allocated hours<span class="text-danger">*</span></label>
         <!-- [ngClass];="{'form-control':maxlimit==true,'form-control-danger':maxlimit==false}" -->
         <input id="hour-input" #allocated="ngModel"   type="tel" class="form-control" pattern="[0-9]*" placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='')"
             (click)="alertMaxAllocation()"  (change)="_alchr=!_allocated"
@@ -261,7 +261,7 @@
         <!-- <span *ngIf;="allocated.touched&&!_allocated"; style="color:red">Allocated; hours; required!; Enter; non-decimal; value&nbsp;</span> -->
         <span *ngIf="_allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span>
         <span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
-        <span *ngIf="this._alchr==true&&!_allocated" style="color:red">Allocated hours required. Hours should not be in decimal </span>
+        <span *ngIf="this._alchr==true&&!_allocated" style="color:red">Allocated hours required. Hours should not be in decimal. </span>
         <span *ngIf="(_allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value, It accept only numeric and non-negative value. </span>
         <span *ngIf="this._StartDate == null || this._EndDate == null" >{{ _message}} </span>
 
