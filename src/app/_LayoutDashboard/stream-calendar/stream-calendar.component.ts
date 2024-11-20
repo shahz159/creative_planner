@@ -416,6 +416,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("week-date").style.display = "none";
     document.getElementById("month-date").style.display = "none";
     document.getElementById("schedule-date").style.display = "none";
+    document.getElementById("kt-calendar-quickactions").classList.remove("border-0");
   }
 
   week_div() {
@@ -431,6 +432,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("week-date").style.display = "block";
     document.getElementById("month-date").style.display = "none";
     document.getElementById("schedule-date").style.display = "none";
+    document.getElementById("kt-calendar-quickactions").classList.remove("border-0");
   }
 
   month_div() {
@@ -446,6 +448,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("week-date").style.display = "none";
     document.getElementById("month-date").style.display = "block";
     document.getElementById("schedule-date").style.display = "none";
+    document.getElementById("kt-calendar-quickactions").classList.add("border-0");
   }
 
   sch_div() {
@@ -461,6 +464,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("week-date").style.display = "none";
     document.getElementById("month-date").style.display = "none";
     document.getElementById("schedule-date").style.display = "block";
+    document.getElementById("kt-calendar-quickactions").classList.remove("border-0");
   }
   teams_icon(){
     document.getElementById("teams-icon").style.display = "inline-block";
@@ -608,8 +612,31 @@ export class StreamCalendarComponent implements OnInit {
   }
 
 
+  pending_list_open(){
+    document.getElementById("pending-list").classList.add("quickaction-open");
+  }
+  pending_list_close(){
+    document.getElementById("pending-list").classList.remove("quickaction-open");
+  }
 
-
+  draft_list_open(){
+    document.getElementById("draft-list").classList.add("quickaction-open");
+  }
+  draft_list_close(){
+    document.getElementById("draft-list").classList.remove("quickaction-open");
+  }
+  requestaccess_list_open(){
+    document.getElementById("requestaccess-list").classList.add("quickaction-open");
+  }
+  requestaccess_list_close(){
+    document.getElementById("requestaccess-list").classList.remove("quickaction-open");
+  }
+  bookmark_list_open(){
+    document.getElementById("bookmark-list").classList.add("quickaction-open");
+  }
+  bookmark_list_close(){
+    document.getElementById("bookmark-list").classList.remove("quickaction-open");
+  }
 /////////////////////////////////////////// Create Event and Create Task sidebar start /////////////////////////////////////////////////////////
 Title_Name: any;
 notProvided: boolean = false;

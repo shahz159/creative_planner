@@ -66,6 +66,10 @@ export class StreamDashboardComponent implements OnInit {
         ],
 
         responsive: {
+          556: {
+            items: 2,
+            slideBy: 2,
+           },
           992: {
             items: 3,
             slideBy: 3,
@@ -95,7 +99,7 @@ export class StreamDashboardComponent implements OnInit {
         ],
 
         responsive: {
-          992: { items: 1 }
+          356: { items: 1 }
         }
       });
     }, 2000);
