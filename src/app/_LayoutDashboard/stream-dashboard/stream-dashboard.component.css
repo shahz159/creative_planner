@@ -2387,9 +2387,9 @@ span.p-b-percent-count {
     margin-bottom: 1rem;
 }
 
-.week-report-item:last-child {
+/* .week-report-item:last-child {
     margin-bottom: 0rem;
-}
+} */
 
 .week-report-heading {
     color: #343434;
