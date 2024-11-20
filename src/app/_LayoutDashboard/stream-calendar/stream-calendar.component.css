@@ -4912,6 +4912,15 @@ ul.schedule-select-list li .slect-close:hover svg {
 .quickaction-li-actions-btn.q-approve {
     color: #0060de;
 }
+.quickaction-li-actions-btn.q-approve:hover {
+    background-color: #d6e7ff;
+}
+.quickaction-li-actions-btn.q-reject {
+    color: #ff0000;
+}
+.quickaction-li-actions-btn.q-reject:hover {
+    background-color: #ffd9d9;
+}
 
 .quickaction-li-actions-btn.q-approve:hover {
     background-color: #d6e7ff;
@@ -4939,5 +4948,28 @@ ul.schedule-select-list li .slect-close:hover svg {
     font-size: 12px;
     color: #848484;
 }
+/* Quick Actions Sidebar End */
+
+/* tab responsive start */
+@media only screen and (min-width: 481px) and (max-width: 1024px) {
+    .kt-header-action {
+        gap: 6px;
+    }
+    .kt-date-div {
+        font-size: 16px;
+        white-space: nowrap;
+    }
+    .kt-calendar-search {
+        width: auto;
+    }
+    .kt-header-logo span {
+        display: none;
+    }
+    .kt-list-nav-main-cal-scroll {
+        height: calc(100vh - 434px);
+        overflow: auto;
+    }
+}
+/* tab responsive end */
 
 /* Quick Actions Sidebar End */
