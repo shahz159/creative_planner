@@ -3297,7 +3297,8 @@ promptIfNameTypeMismatch(){
        'annual','recurring', 'repetitive'
     ];
     const isincluded=words_003.some((wrd:string)=>{
-      return this.PrjName.trim().toLowerCase().includes(wrd.toLowerCase().trim())
+      const regex = new RegExp(`\\b${wrd}\\b`, 'i'); // Match exact word with word boundaries
+      return regex.test(this.PrjName.trim());
     });
 
     if(isincluded){

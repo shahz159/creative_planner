@@ -995,7 +995,7 @@
                                         <mat-datepicker  (closed)="ddmibtn.click();" #TLdatePicker></mat-datepicker>
                                     </div>
                                     <div class="d-flex flex-column flex-grow-1">
-                                       <input [ngClass]="{'error-border': (fieldRequired&&!dateF.value)}" (dateChange)="setTimelineDate($event.value)"  [(ngModel)]="dateF.value" [matDatepicker]="TLdatePicker" id="d-date" required (click)="TLdatePicker.open()"
+                                       <input [ngClass]="{'error-border': (fieldRequired&&!dateF.value)}" (dateChange)="setTimelineDate(($event.value.toDate()<disablePreviousDate||$event.value.toDate()>todayDate)?current_Date:$event.value.toDate())"  [(ngModel)]="dateF.value" [matDatepicker]="TLdatePicker" id="d-date" required (click)="TLdatePicker.open()"
                                         [min]="disablePreviousDate"  [max]="todayDate" placeholder="Select Date" class="form-control" name="date" />
                                        <span *ngIf="fieldRequired&&!dateF.value" style="color:red">please select date.</span>    
                                    </div>

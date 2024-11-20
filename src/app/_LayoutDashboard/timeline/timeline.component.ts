@@ -143,6 +143,7 @@ export class TimelineComponent implements OnInit {
     this.activeDate=true;
     this.sortType=this.sort1;
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
+    this.disablePreviousDate.setHours(0,0,0,0);
     this.current_Date = moment(new Date()).format("MM/DD/YYYY");
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
@@ -171,7 +172,7 @@ export class TimelineComponent implements OnInit {
 
   noTimeSpaceAvailable:boolean=false;
   setTimelineDate(val)
-  {   
+  {    
        this.current_Date = moment(val).format("MM/DD/YYYY");
        this.dateF = new FormControl(new Date(val));
        this.starttime = null;
@@ -1211,6 +1212,7 @@ tmReportStatus:any;
 tmSubmDate:any;
 tmReportLoading:boolean=false;
 getTimelineReportByDate(dateVal:'today'|'yesterday') {   debugger
+  if(dateVal){
     this.tmReportArr=[];
     this.tmReportStatus=null;
     this.tmReportTotalDuration=null;
@@ -1273,6 +1275,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {   debugger
 
       });
 
+  }
 }
 
 
