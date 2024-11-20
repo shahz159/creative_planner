@@ -108,7 +108,7 @@ export class StreamDashboardComponent implements OnInit {
         loop: true,
         margin: 0,
         autoplay: true,
-        autoplayTimeout:2000,
+        autoplayTimeout:4000,
         autoplayHoverPause: false,
         nav: false,
         dots: true,
@@ -130,7 +130,10 @@ export class StreamDashboardComponent implements OnInit {
   close_graph_div() {
     document.getElementById("graph-div").style.display = "none";
   }
-
+  week_report_more_btn(){
+    document.getElementById("week-more").classList.toggle("d-none");
+    document.getElementById("week-less").classList.toggle("d-flex");
+  }
   page_Name: string = "ViewProjects";
   Current_user_ID: any;
   UserfullName: any
@@ -195,7 +198,7 @@ export class StreamDashboardComponent implements OnInit {
 
 
   Delay_Click(type) {
-    debugger
+
 
     if (type === 'Assigned Project') {
       let Mode: string = 'AssignedTask'
@@ -377,7 +380,7 @@ export class StreamDashboardComponent implements OnInit {
 
       const week_Arr = this.darArray[0].WeekSubmissionStatus;
       this.weekArr.forEach((item,index)=>{
-        debugger
+
         if(week_Arr[index]){
           item.SubmissionStatus=week_Arr[index].SubmissionStatus;
         }
