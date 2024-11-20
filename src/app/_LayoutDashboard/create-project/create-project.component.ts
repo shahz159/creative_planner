@@ -131,7 +131,7 @@ export class CreateProjectComponent implements OnInit {
   saveAsTemplate:boolean=false;
   notProvided:boolean=false;
   notificationMsg:number=0;
-  
+
 
   constructor(private router: Router,private location: Location,
     private createProjectService:CreateprojectService,
@@ -196,8 +196,8 @@ export class CreateProjectComponent implements OnInit {
     this.route.queryParamMap.subscribe((qparams)=>{
       const assignedPrjTask=qparams.get('AssignedProjectId');
       if(assignedPrjTask){
-          
-            const assignedTaskViewed=this.viewAssignedTaskById(assignedPrjTask);  
+
+            const assignedTaskViewed=this.viewAssignedTaskById(assignedPrjTask);
             if(assignedTaskViewed){
                const ob={...this.route.snapshot.queryParams};
                delete ob.AssignedProjectId;
@@ -227,14 +227,14 @@ export class CreateProjectComponent implements OnInit {
 
    if(e3){
     e3.classList.add('selected-anim');
-    e3.addEventListener('animationend',()=>{  
+    e3.addEventListener('animationend',()=>{
      e3.classList.remove('selected-anim');
     });
-    e4=e3.querySelector('.kt-act-no input'); 
+    e4=e3.querySelector('.kt-act-no input');
     setTimeout(()=>{ if(e4)e4.focus(); },300);
    }
 
-   isProcessDone=true;  
+   isProcessDone=true;
   }catch(e){
    isProcessDone=false;
   }
@@ -270,16 +270,16 @@ export class CreateProjectComponent implements OnInit {
          this.Client_json=JSON.parse(res[0].Client_json);
          this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
-         this.Team_json=JSON.parse(res[0].Team_json);  
-         this.allUser_json=JSON.parse(res[0].allUser_json); 
+         this.Team_json=JSON.parse(res[0].Team_json);
+         this.allUser_json=JSON.parse(res[0].allUser_json);
 
          let owner_values=JSON.parse(res[0].owner_json);
          owner_values=owner_values.map(ob=>({...ob,type:'Hierarchical'}));
-         const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo.trim()];  
+         const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo.trim()];
          let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob.Emp_No));
          otherusers=otherusers.map(ob=>({EmpNo:ob.Emp_No, EmpName:ob.Emp_Name, type:'Others'}));
          this.owner_json=[...owner_values,...otherusers];
-        
+
 
           this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
           this.PrjResp=this.Responsible_json[0].ResponsibleNo.trim();
@@ -456,14 +456,14 @@ debugger
   })
 
   this.service.GetRACISandNonRACISEmployeesforMoredetails(this.PrjCode).subscribe(
-    (data) => {  
+    (data) => {
       this.owner_dropdown = (JSON.parse(data[0]['RacisList']));
       this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));  console.log("this 3:",this.responsible_dropdown);
     });
 
 
   this.service.SubTaskDetailsService_ToDo_Page(prjCode, null, this.Current_user_ID).subscribe(
-      (data) => {  
+      (data) => {
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
         this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
         console.log(this.Category_List, "CategoryDropdown");
@@ -503,7 +503,7 @@ debugger
       this.maxAllocation=(Difference_In_Days+1)*10;
     }
     else
-    this._message = "Start Date/End date missing, It accept only numeric and non-negative value"
+    this._message = "Start Date/End date missing, It accept only numeric and non-negative value."
 
   }
 
@@ -667,7 +667,7 @@ createSRTProject(){
            if(res&&res.message==='Success'){
                this.PrjCode=res.Project_Code;
                this.getAddActionDetails();
-         
+
 
               //  this.notification.showSuccess("Saved successfully","");
                this.notification.showInfo("Please submit the project for approval","");
@@ -895,7 +895,7 @@ onFileChanged(event: any) {
     $('.action-left-view').addClass('d-none');           // close actions view of 3rd step.
     this.notificationMsg=0;
     this.okWithType=false;
-    // this.dontShowAgain=false; 
+    // this.dontShowAgain=false;
   }
 
 
@@ -913,9 +913,9 @@ onFileChanged(event: any) {
             allowOutsideClick: false
           }).then((decision)=>{
             if(decision.isConfirmed){
-              this.New_project_guideline(); 
+              this.New_project_guideline();
             }
-            localStorage.setItem('readPrjCreationGuidelines','true');   
+            localStorage.setItem('readPrjCreationGuidelines','true');
            });
      }
   }
@@ -1170,8 +1170,8 @@ onResponsibleChanged(){
 
 
 
-  
- 
+
+
 
   // const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.PrjResp];
   // let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob.Emp_No));
@@ -1228,7 +1228,7 @@ onProjectOwnerChanged(){
           ...task,
           Duration: duration
         };
-      });   
+      });
       this.template_json=JSON.parse(res[0].templates_json);
       this.conditional_List=JSON.parse(res[0].conditional_json);
 
@@ -1248,7 +1248,7 @@ onProjectOwnerChanged(){
       });
 
       console.log(this.conditional_List,'--conditional prjs------------->')
-      console.log(this.assigntask_json,'--assigntask_json--');  
+      console.log(this.assigntask_json,'--assigntask_json--');
  });
   }
 
@@ -1739,7 +1739,7 @@ setRACIS(){      debugger
      this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjInformer).Emp_Name);
      if(this.PrjAuditor)
      this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjAuditor).Emp_Name);
-    
+
 
      const e=this.PrjSupport.map((item)=>item.Emp_Name);
      this.RACIS=[...this.RACIS,...e];
@@ -1828,7 +1828,7 @@ detectMembersWithoutActions(){  debugger
     });
   }
   else{
-    _hasNoActionMembers=this.totalPeopleOnProject.filter(ob=>ob.Role!='Owner');   
+    _hasNoActionMembers=this.totalPeopleOnProject.filter(ob=>ob.Role!='Owner');
   }
   _hasNoActionMembers=_hasNoActionMembers.map(ob=>(ob.RACIS.slice(0,ob.RACIS.indexOf('('))).trim() );
   this.hasNoActionMembers=Array.from(new Set(_hasNoActionMembers));
@@ -1844,7 +1844,7 @@ detectMembersWithoutActions(){  debugger
 sendApproval=async()=>{
 
   const _sendApprovalToOwner=()=>{
-      
+
     this.ProjectDto.Emp_No=this.Current_user_ID;
     this.ProjectDto.isTemplate=this.saveAsTemplate;
     this.ProjectDto.Project_Code=this.PrjCode;
@@ -1881,7 +1881,7 @@ sendApproval=async()=>{
     _title='Invalid project start date';
     _msg='Please select new start date of the project before submitting it.';
   }
-  
+
   Swal.fire({
       title:_title,
       text:_msg,
@@ -1896,15 +1896,15 @@ sendApproval=async()=>{
           this.alertMaxAllocation();
         }
   });
-   
+
   return;
   }
-//  
+//
 
 
 // 2.validation: if project has no actions.
 const pdur=Math.abs(moment(_prjstrtd).diff(moment(_prjendd),'days'));
-if(this.PrjActionsInfo.length==0){  
+if(this.PrjActionsInfo.length==0){
 
   Swal.fire({
      title:'Actions required',
@@ -1917,9 +1917,9 @@ if(this.PrjActionsInfo.length==0){
       </svg>
       <span>Well-defined actions in project can help ensure better tracking and project success.</span>
       </div>
-    </div> 
+    </div>
      `,
-     showConfirmButton:true, 
+     showConfirmButton:true,
      confirmButtonText: 'OK',
    })
 
@@ -1945,17 +1945,17 @@ if(this.PrjActionsInfo.length==0){
    }).then(choice=>{
         if(choice.isConfirmed){
           this.showActionDetails(actn_index);
-        } 
+        }
    })
 
    return;
  }
-//  
+//
 
 
 // 3.validation: if any RACIS member doesn't have atleast one action in the project.
 this.detectMembersWithoutActions();
-if(this.hasNoActionMembers.length>0){  
+if(this.hasNoActionMembers.length>0){
  const choice=await Swal.fire({
     title:'Team members with no actions assigned',
     text:'Project includes team members with no actions assigned to them. Do you still want to proceed with this project?',
@@ -1979,9 +1979,9 @@ if(this.hasNoActionMembers.length>0){
                 You will be going to spend <b>"${this.PrjCost}.00 SAR"</b> on this project. Do you want to continue?
                 ${this.PrjCost>=3000?`<span style="display: flex;align-items: center;column-gap: 8px;font-size: 12px;margin-top: 8px;background-color: #fdbc4a38;color: #c57a05;border: 1px solid #cc922d63;padding: 10px;border-radius: 5px;font-weight: 500;">
                   <svg width="40px" height="20px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
-                  The project cost has reached 3000 SAR or more. Please ensure that the plan aligns with the annual business plan\'s budget.</span>`:''} 
+                  The project cost has reached 3000 SAR or more. Please ensure that the plan aligns with the annual business plan\'s budget.</span>`:''}
              </div>`,
-       
+
        showConfirmButton:true,
        showCancelButton:true,
        confirmButtonText: 'Yes, confirm',
@@ -2253,7 +2253,7 @@ if(['003','008'].includes(this.Prjtype)){
      const h=Number.parseInt(alhr.split(':')[0]);
      const m=Number.parseInt(alhr.split(':')[1]);
      alhr=h+'.'+m;
-}  
+}
   this.ProjectDto.Emp_No=this.Current_user_ID;
   this.ProjectDto.Hours=alhr;
   this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:{Status:boolean,Message:string,Data:number})=>{
@@ -3246,7 +3246,7 @@ alertMaxAllocations() {
 //        const actn_deadline=new Date(actn.EndDate);
 //        if(prj_deadline.getTime()==actn_deadline.getTime()){
 //            totalActnsMatch++;
-//        }   
+//        }
 //  });
 
 //  const percent_val=(totalActnsMatch/totalActnsInPrj)*100;    // 0/10 ===>0 .  8/10==>80%.  0/0==>0    10/0==>infinity(impossible)
@@ -3259,7 +3259,7 @@ alertMaxAllocations() {
 //       cancelButtonColor:'#3085d6',
 //       showConfirmButton:true,
 //       confirmButtonText:"Don't Show Again",
-//       confirmButtonColor:'#aaa'     
+//       confirmButtonColor:'#aaa'
 //   }).then(choice=>{
 //       if(choice.isConfirmed==true){
 //           this.dontShowAgain=true;
@@ -3268,7 +3268,7 @@ alertMaxAllocations() {
 
 //  }
 
- 
+
 // }
 
 
@@ -3280,7 +3280,7 @@ actnsMatchingPrjDeadline():number{
            const actn_deadline=new Date(actn.EndDate);
            if(prj_deadline.getTime()==actn_deadline.getTime()){
                totalActnsMatch++;
-           }   
+           }
   });
   return totalActnsMatch;
 }
@@ -3311,15 +3311,15 @@ promptIfNameTypeMismatch(){
             showCancelButton:true,
             confirmButtonText:'Continue Anyway',
             cancelButtonText:'View Guidelines',
-            
+
         }).then((choice)=>{
              if(choice.isConfirmed){
                 this.okWithType=true
              }
               if(choice.isConfirmed==false){
-                this.New_project_guideline(); 
+                this.New_project_guideline();
               }
-              
+
         });
       }
     }
@@ -3328,7 +3328,7 @@ promptIfNameTypeMismatch(){
 
 }
 
- 
+
 
 
 

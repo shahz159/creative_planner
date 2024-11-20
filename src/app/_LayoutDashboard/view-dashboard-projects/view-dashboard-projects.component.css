@@ -1607,3 +1607,8 @@ td:nth-child(4) {
   width: max-content;
   color: #979797;
 }
+.New_Project_Rejected{
+  display: flex;
+  width: max-content;
+  color: #979797;
+}
