@@ -344,7 +344,7 @@
     /* height: calc(100vh - 464px); */
     /* height: 536px; */
     /* height: 238px; */
-    height: 424px;
+    height: 356px;
     overflow: auto;
     /* padding: 0px 8px; */
 }
@@ -1587,9 +1587,9 @@ span.dar-dot {
 
 .dar-f {
     display: flex;
-    /* align-items: center; */
+    align-items: center;
     gap: 10px;
-    flex-direction: column;
+    /* flex-direction: column; */
 }
 
 .dar-item-b {
