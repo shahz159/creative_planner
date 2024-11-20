@@ -96,6 +96,7 @@ Dateselectionrange: string = 'Date selection range';
     this.Z2A = false;
     this._raciDetails = true;
     this._subtaskDiv = true;
+    this.Dateoftoday = this.getCurrentDate();
     this.router.navigate(["/backend/ProjectsSummary/"]);
     this.BsService.ProjectCreatedEvent.subscribe(()=>{
       this.GetProjectsByUserName(this.type1);
@@ -124,6 +125,8 @@ Dateselectionrange: string = 'Date selection range';
    else{  //  show all projects without any filter.
     this.GetProjectsByUserName(this.type1);
    }
+
+
 
     // this.getDropdownsDataFromDB();
 
@@ -510,6 +513,8 @@ Dateselectionrange: string = 'Date selection range';
         this._ProjectDataList = data;
 
          console.log("Summary Data---->",this._ProjectDataList);
+
+
 
         this.userFound = true
         this.ActualDataList = data;
@@ -2224,6 +2229,51 @@ this.closeAutocompleteDrpDwn('proDDwn')
 
     // Format the string
     return `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+  }
+
+
+
+
+  calculateDateDifference(date1: string, date2: string): number {
+    // Parse the dates from strings into Date objects
+    const date1Obj = new Date(date1.split('-').reverse().join('-'));
+    const date2Obj = new Date(date2.split('-').reverse().join('-'));
+
+    // Calculate the difference in milliseconds
+    const diffTime = Math.abs(date1Obj.getTime() - date2Obj.getTime());
+
+    // Convert milliseconds to days
+    const diffDays = Math.ceil(diffTime / (1000 * 3600 * 24));
+
+    return diffDays;
+  }
+
+  getFormattedforRejected(delayDays: any): string {
+    let delayText = '';
+
+    if (delayDays >= 365) {
+      const years = Math.floor(delayDays / 365);
+      delayText = years === 1 ? '01 year' : years < 10 ? `0${years} years` : `${years} years`;
+    } else if (delayDays >= 30) {
+      const months = Math.floor(delayDays / 30);
+      delayText = months === 1 ? '01 month' : months < 10 ? `0${months} months` : `${months} months`;
+    } else if (delayDays >= 7) {
+      const weeks = Math.floor(delayDays / 7);
+      delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
+    } else {
+      delayText = delayDays==0?'0 days':delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
+    }
+
+    return `${delayText.toLowerCase()} `;
+  }
+
+  Dateoftoday:any
+  getCurrentDate()  {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+    return `${day}-${month}-${year}`;
   }
 
 
