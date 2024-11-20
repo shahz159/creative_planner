@@ -268,7 +268,7 @@ export class CreateProjectComponent implements OnInit {
          this.Authority_json=JSON.parse(res[0].Authority_json);
          this.Category_json=JSON.parse(res[0].Category_json);
          this.Client_json=JSON.parse(res[0].Client_json);
-         this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
+         this.ProjectType_json=JSON.parse(res[0].ProjectType_json);   console.log('project type json:',this.ProjectType_json);
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
          this.Team_json=JSON.parse(res[0].Team_json);  
          this.allUser_json=JSON.parse(res[0].allUser_json); 
@@ -1904,10 +1904,13 @@ sendApproval=async()=>{
 
 // 2.validation: if project has no actions.
 const pdur=Math.abs(moment(_prjstrtd).diff(moment(_prjendd),'days'));
+let noactnDialogType:'MANDATORY'|'NOT_MANDATORY';
+noactnDialogType=pdur>=15?'MANDATORY':pdur<15?'NOT_MANDATORY':null;
+
 if(this.PrjActionsInfo.length==0){  
 
-  Swal.fire({
-     title:'Actions required',
+  const choice=await Swal.fire({
+     title:noactnDialogType=='MANDATORY'?'Actions required':'Continue Without Actions?',
      html:`
      <div style="text-align: justify;">
      No actions are defined in this project. Seems like the project hasn't been fully planned for the given duration.<br>
@@ -1920,10 +1923,14 @@ if(this.PrjActionsInfo.length==0){
     </div> 
      `,
      showConfirmButton:true, 
-     confirmButtonText: 'OK',
-   })
+     confirmButtonText: noactnDialogType=='MANDATORY'?'OK':'Continue',
+     showCancelButton:noactnDialogType=='NOT_MANDATORY'?true:false
+   });
 
-   return;
+  if((noactnDialogType=='MANDATORY')||(choice.isConfirmed==false&&noactnDialogType=='NOT_MANDATORY')){
+    return;
+  }
+
  }
 //
 
@@ -1956,9 +1963,18 @@ if(this.PrjActionsInfo.length==0){
 // 3.validation: if any RACIS member doesn't have atleast one action in the project.
 this.detectMembersWithoutActions();
 if(this.hasNoActionMembers.length>0){  
+
+const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)=>{
+        return members+`<b>'${new_member}'</b>${index==arr.length-2?' and ':index<arr.length-2?'<b> ,</b>':'<b>. </b>'}`;
+},'');
+
  const choice=await Swal.fire({
-    title:'Team members with no actions assigned',
-    text:'Project includes team members with no actions assigned to them. Do you still want to proceed with this project?',
+    title:'Project team with no actions assigned',
+    html:`<div class="text-justify">
+           No actions has been assigned to 
+           ${people_names}<br/>
+           <div class="mt-2">Do you still want to proceed with this project?</div> 
+    </div>`,
     showConfirmButton:true,
     showCancelButton:true,
     confirmButtonText: 'Yes, Proceed',
@@ -1974,7 +1990,7 @@ if(this.hasNoActionMembers.length>0){
 
 // 5.validation: project cost confirmation from user.
  const final_choice=await Swal.fire({
-       title:'Are you sure?',
+       title:'Project Budget',
        html:`<div style="text-align: justify;">
                 You will be going to spend <b>"${this.PrjCost}.00 SAR"</b> on this project. Do you want to continue?
                 ${this.PrjCost>=3000?`<span style="display: flex;align-items: center;column-gap: 8px;font-size: 12px;margin-top: 8px;background-color: #fdbc4a38;color: #c57a05;border: 1px solid #cc922d63;padding: 10px;border-radius: 5px;font-weight: 500;">
@@ -2644,80 +2660,64 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
   alterAction(){
 debugger
 
-
-if (this.Allocated <= this.maxAllocation){
-  this.notProvided = false
-}
-else{
-  this.notProvided = true
-  return
-}
-
-
-const dateone=new Date(this.projectInfo.EndDate)
-const datetwo= new Date(this.End_Date)
-
-if(dateone < datetwo){
-  Swal.fire({
-    title:"Invalid Action Date",
-    text:"Action date Can't be greater than project end date",
-    showCancelButton:true
-
-  })
-  return
-}
-// this.setactioneditAllocation()
+// v1. Action allocated hr must be <= max allocated hrs value.
+  if (this.Allocated <= this.maxAllocation){
+    this.notProvided = false
+  }
+  else{
+    this.notProvided = true
+    return
+  }
 
 
+// v2. Action date Can't be greater than project end date  
+  const dateone=new Date(this.projectInfo.EndDate)
+  const datetwo= new Date(this.End_Date)
+  if(dateone < datetwo){
+    Swal.fire({
+      title:"Invalid Action Date",
+      text:"Action date Can't be greater than project end date",
+      showCancelButton:true
 
+    })
+    return
+  }
+
+
+
+// v3. form input validations.
 this.isPrjNameValid=this.isValidString(this.ProjectName,2);
 this.isPrjDesValid=this.isValidString(this.ProjectDescription,3);
-
-
-
-
-        // check all mandatory field are provided.
-        if(!(this.ProjectName&&this.isPrjNameValid=='VALID'&&this.ProjectName.length<=100&&this.ProjectDescription&&this.isPrjDesValid==="VALID"&&this.ProjectDescription.length<=500&&
+  if(!(this.ProjectName&&this.isPrjNameValid=='VALID'&&this.ProjectName.length<=100&&this.ProjectDescription&&this.isPrjDesValid==="VALID"&&this.ProjectDescription.length<=500&&
           this.OGowner&&this.OGresponsible&&
           this.selectedcategory&&this.selectedclient&&
           this.Start_Date&&this.End_Date&&
           this.Allocated)){
             this.notProvided=true;
             return;
-        }else this.notProvided=false;   // back to initial value.
-        // check all mandatory field are provided.
+  }else this.notProvided=false;   // back to initial value.
 
 
-        //  const d1=new Date(this.Start_Date);
-        //  const d2=new Date(this.projectInfo.StartDate);
-        // if(d1<d2){
-        //   Swal.fire({
-        //     title:'Action start date is less than project start date',
-        //     text:'first change the project start date',
-        //     showCloseButton:true
-        //   })
-
-        //   return;
-        // }
-
-
-
-// const d5= new Date(this.End_Date)
-// const d6= new Date(this.projectInfo.EndDate)
-//         if(d5>d6){
-//           Swal.fire({
-//             title:'Action Deadline is Greater than Project Deadline',
-//             text:"First Change the Project Deadline",
-//             showCloseButton:true
-//           })
-//           return;
-//         }
+// v4.Action end date should be less than the project deadline
+const actn_deadline = new Date(this.End_Date);
+const prj_deadline = new Date(this.projectInfo.EndDate);
+if(actn_deadline.getTime()==prj_deadline.getTime()){
+      const already_matched=this.actnsMatchingPrjDeadline();
+      if(already_matched>=2){
+        Swal.fire({
+          title:'Invalid Action End Date',
+          html:'<div style="text-align:justify;">Action end date should be less than the project deadline. Please modify the action end date to continue</div>',
+          // icon:'error',
+          showConfirmButton:true,
+          confirmButtonText:'OK'
+       }); 
+       return;
+      }
+}
 
 
 
-
-
-
+  // action edit start.
       const datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");
       const datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");
       let jsonobj:any={
@@ -2741,13 +2741,6 @@ this.isPrjDesValid=this.isValidString(this.ProjectDescription,3);
       this.approvalObj.Project_Code = this.PrjActionsInfo[this.currentActionView].Project_Code;  // action code.
       this.approvalObj.json = jsonobj;            // action details
       this.approvalObj.Remarks = this._remarks?this._remarks:'';   // remark provided.
-
-
-// test
-
-
-
-      // test
 
       if (dateOne < dateTwo) {
         Swal.fire({
@@ -3296,17 +3289,22 @@ promptIfNameTypeMismatch(){
       'weekly','daily','monthly','yearly','annually','half yearly','quarterly','every week','every month','every year',
        'annual','recurring', 'repetitive'
     ];
-    const isincluded=words_003.some((wrd:string)=>{
+
+    const isincluded=words_003.find((wrd:string)=>{
       const regex = new RegExp(`\\b${wrd}\\b`, 'i'); // Match exact word with word boundaries
       return regex.test(this.PrjName.trim());
     });
 
     if(isincluded){
       const typematched=['003','008'].includes(this.Prjtype);
-      if(typematched==false&&this.okWithType==false){
+      if(typematched==false&&this.okWithType==false){ 
+       const sel_ptype=this.ProjectType_json.find(ob=>ob.Typeid==this.Prjtype).ProjectType.trim();
+
         Swal.fire({
             title:'Are You Sure About the Project Type?',
-            text:'The project name suggests a Standard or Routine type. View guidelines or proceed if correct.',
+            html:`<div class="text-justify">
+                   Project name contains word <b>'${isincluded}'</b> which suggests a standard or routine type project. You've selected <b>'${sel_ptype}'</b> as the project type. 
+                  </div>`,
             showConfirmButton:true,
             showCancelButton:true,
             confirmButtonText:'Continue Anyway',

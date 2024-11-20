@@ -490,6 +490,16 @@ export class StreamDashboardComponent implements OnInit {
   // }
 
 
+
+  page_Names: string = "backend";
+  gotoPortfolioPage(){
+    let Mode: string = "Portfolio";
+    var url = document.baseURI + this.page_Names;
+    var myurl = `${url}/${Mode}`;
+    var myWindow = window.open(myurl);
+    myWindow.focus();
+  }
+
 }
 
 

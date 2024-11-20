@@ -765,7 +765,7 @@
                         <ng-option value="lunch">Lunch</ng-option>
                         <ng-option value="personal">Personal</ng-option>
                     </ng-select>
-                    <span style="color:red" *ngIf="(fieldRequired&&!project_type)">Please select project type.</span>
+                    <span style="color:red" *ngIf="(fieldRequired&&!project_type)">Please select type.</span>
                             </div>
                         </div>
                     </div>
@@ -926,8 +926,8 @@
                         </div>
                         <div class="add-timeline-item-group">
                             <div class="form-group w-100 mb-0">
-                                <textarea #tlwdes="ngModel" type="text" name="work" class="form-control h-100px" [ngClass]="{'error-border': (fieldRequired&&!workdes)}" [(ngModel)]="workdes" placeholder="Define your achievement here (Work description)."></textarea>
-                                <span style="color:red" *ngIf="(fieldRequired&&!workdes)" >Work description is required.</span>
+                                <textarea #tlwdes="ngModel" type="text" name="work" class="form-control h-100px" [ngClass]="{'error-border': (fieldRequired&&!workdes)}" [(ngModel)]="workdes" placeholder="Define your achievement here."></textarea>
+                                <span style="color:red" *ngIf="(fieldRequired&&!workdes)" >Work achievement is required.</span>
                             </div>
                         </div>
                     </div>
@@ -1752,7 +1752,18 @@
      </div>
       </div>
       <div class="end-timeline-modal-footer">
-           <span *ngIf="tm4EndDate_msg==true" class="text-danger"><b>*</b> Please enter timeline for the selected date before ending the day.</span>
+        <!-- *ngIf="tm4EndDate_msg==true"   -->
+           <div id="endDay-not-allowed-box" class="not-allowed-error-box">
+                <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)">
+                        <circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle>
+                        <rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g>
+                        <defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs>
+                    </g>
+                </svg>
+                <span class="notif-text">Please enter timeline for the selected date before ending the day.</span> 
+            </div>
+          
            <div class="d-flex justify-content-end gap-1">
              <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" (click)="endTimelineModal_dismiss()">Close</button>
               <!--if user not entered timeline or if user entered timeline but not ended day-->

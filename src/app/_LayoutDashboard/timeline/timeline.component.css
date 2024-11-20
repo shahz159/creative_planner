@@ -2013,3 +2013,57 @@ span.timeline-time svg {
     opacity: 0;
   }
 }
+
+
+.not-allowed-error-box{
+  background-color: #f5e9e8;
+  display: none;
+  column-gap: 8px;
+  padding: 8px;
+  border: 1px solid #f5b9b9;
+  border-radius: 3px;
+ 
+}
+
+.not-allowed-error-box .notif-img{
+  min-width: 20px;
+  max-width: 20px;
+  min-height: 20px;
+  max-height: 20px;
+  fill: transparent;
+  stroke: #F44336;
+}
+
+.not-allowed-error-box .notif-text{
+  font-family: var(--font-family-sans-serif);
+  font-weight: 500;
+  font-size: 12px;
+  color: #F44336;
+}
+
+.not-allowed-error-box.anim-start{
+  display:flex;
+  animation-name: popup-error-anim;
+  animation-duration: 0.1s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  animation-delay: 0.2s;
+  visibility: hidden;
+}
+
+@keyframes popup-error-anim{
+  0% {
+    visibility: visible;
+    transform: scale(0.95);
+  }
+  
+  100% {
+    visibility: visible;
+    transform: scale(1);
+  }
+}
+
+
+
+
+

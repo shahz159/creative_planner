@@ -1057,8 +1057,8 @@ if(this._Urlid == 5){
         if(already_matched>=2){
           Swal.fire({
             title:'Invalid Action End Date',
-            html:'<div style="text-align:justify;">Action end date should be less than the main project deadline. Please modify the action end date to continue</div>',
-            icon:'error',
+            html:'<div style="text-align:justify;">Action end date should be less than the project deadline. Please modify the action end date to continue</div>',
+            // icon:'error',
             showConfirmButton:true,
             confirmButtonText:'OK'
          }); 

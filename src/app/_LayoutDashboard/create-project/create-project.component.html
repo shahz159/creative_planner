@@ -1087,7 +1087,7 @@
                                   <div class="kt-project-sts-data">
                                       <ng-container *ngIf="['001', '002', '011'].includes(Prjtype)">
                                           <ng-container *ngIf="projectInfo && projectInfo.Duration !== ''">
-                                              {{ projectInfo.Duration === 1 ? '1 day'   : projectInfo.Duration+1  + ' days' }}
+                                              {{ projectInfo.Duration === 1 ? '1 day'   : projectInfo.Duration  + ' days' }}
                                           </ng-container>
                                           <ng-container *ngIf="!(projectInfo && projectInfo.Duration !== '')">
                                               {{ durationInDays === 0 ? '1 day'  : (durationInDays + 1) + ' days' }}
@@ -1452,16 +1452,11 @@
                     <div *ngIf="hasNoActionMembers&&hasNoActionMembers.length>0"  class="notification overutilization-notification">
                       <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
                       <span class="notif-msg" style="color:#c57a05">
-                          <ng-container *ngIf="hasNoActionMembers.length>1">
-                            Project has team members
-                            <ng-container *ngFor="let member of hasNoActionMembers; let i=index;">
-                              <span>'{{member}}'</span>{{i+1===hasNoActionMembers.length-1?' and':(i+1===hasNoActionMembers.length)?'':', '}}
-                            </ng-container>
-                            with no actions assigned to them. It is recommended to assign actions for better workflow.
-                          </ng-container>
-                          <ng-container *ngIf="hasNoActionMembers.length==1">
-                            Project team member '{{hasNoActionMembers[0]}}' has no actions assigned in the project. Assigning actions is recommended for better workflow.
-                          </ng-container>
+                          No actions has been assigned to 
+                          <ng-container *ngFor="let member of hasNoActionMembers; let i=index;">
+                            <span>'{{member}}'</span>{{i+1===hasNoActionMembers.length-1?' and':(i+1===hasNoActionMembers.length)?'':', '}}
+                          </ng-container> 
+                          in this project. It is recommended to assign actions for better workflow. 
                       </span>
                    </div>
                   </ng-container>
@@ -1509,7 +1504,7 @@
                                   <ng-select class="kt-form-vd" placeholder="Select project type" [(ngModel)]="Prjtype" (change)="changeprojecttype();  promptIfNameTypeMismatch(); "
                                     #PrjTYPE="ngModel"  [ngClass]="{'error-vd': !Prjtype&&notProvided}" (ngModelChange)=" notificationMsg=(notificationMsg!==0)?((Prjtype==='001'||Prjtype==='002')?1:2):notificationMsg"    >
                                     <ng-option *ngFor="let item of ProjectType_json"
-                                      [value]="item.Typeid"  >{{item.ProjectType }} </ng-option>
+                                      [value]="item.Typeid" >{{item.ProjectType }} </ng-option>
                                   </ng-select>
                                   <span style="color:rgb(217,48,37)" *ngIf="!Prjtype&&notProvided">Please select project type</span>
                                 </div>
@@ -1829,7 +1824,7 @@
                                 <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
 
                                      <span  class="notif-msg">At least one or more of  the fields is incorrect, invalid, or empty (mandatory field). </span>
-                                    </div>
+                                    </div> 
                                   </div>
                             <div class="kt-ctv-btn mt-0">
                               <button type="button"
