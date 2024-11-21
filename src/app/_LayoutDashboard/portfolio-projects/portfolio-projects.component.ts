@@ -1475,7 +1475,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
   showDot : boolean = false
   filterProjectsOfEmp(filterbyEmp:string){
-
+debugger
     this.showDot = true
     this._FilterByEmp=filterbyEmp;
     this.hasFilterResult();
@@ -2088,7 +2088,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 nofilterResult:boolean = false;
 resultCount: number=0;
 hasFilterResult(){
-
+debugger
 let list;
 let result=[];
 
