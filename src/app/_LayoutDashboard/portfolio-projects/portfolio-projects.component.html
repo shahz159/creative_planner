@@ -1268,8 +1268,8 @@
                                           <ng-container
                                             *ngFor="let item1 of (showDeletedPrjOnly)?Deletedproject:_ProjectsListBy_Pid|filter:_SearchProjects;let i=index">
                                             <tr
-                                              *ngIf=" ((item1.Status.trim()==_PortProjStatus.trim())||(item1.Status.includes('Delay')&&_PortProjStatus=='Delay')||_PortProjStatus=='')&&
-                                                                                            ((!_FilterByEmp) || item1.Emp_No.trim()==_FilterByEmp||item1.OwnerEmpNo.trim()==_FilterByEmp) "
+                                              *ngIf=" ((item1.Status.trim()==_PortProjStatus?.trim())||(item1.Status.includes('Delay')&&_PortProjStatus=='Delay')||_PortProjStatus=='')&&
+                                                                                            ((!_FilterByEmp) || item1.Emp_No?.trim()==_FilterByEmp||item1.PendingapproverEmpNo?.trim() == this._FilterByEmp||item1.OwnerEmpNo?.trim()==_FilterByEmp) "
                                               class="odd project-list_AC" [class.active]="item1.active">
 
                                               <td class="icond">
