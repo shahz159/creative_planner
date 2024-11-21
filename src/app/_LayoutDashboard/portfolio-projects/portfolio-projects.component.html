@@ -1686,7 +1686,7 @@
                                                                 <span class="Hold font-weight-400">Hold</span>
                                                                 <span class="st-line curser-pointer" >
 
-                                                                  <div *ngIf="item1.approvalfromdate" >Pending approval since : {{item1.approvalfromdate | date: 'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item1.approvalfromdate))}})
+                                                                  <div *ngIf="item1.approvalfromdate" >Hold since : {{item1.approvalfromdate | date: 'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item1.approvalfromdate))}})
 
                                                                   </div></span>
                                                                                 </span>
