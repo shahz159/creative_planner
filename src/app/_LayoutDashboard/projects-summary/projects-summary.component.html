@@ -1706,7 +1706,7 @@
 
 
                                                           <div *ngIf="item.Status=='Project Hold'" class="attach-tippy">
-                                                            <span *ngIf="item.approvalfromdate"  class=" st-line">Pending approval since: {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
+                                                            <span *ngIf="item.approvalfromdate"  class=" st-line">Hold since: {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
                                                             </span>
                                                               <span class="Hold_color font-weight-400">
                                                                   Hold</span>
