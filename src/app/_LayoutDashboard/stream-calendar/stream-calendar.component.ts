@@ -316,8 +316,8 @@ export class StreamCalendarComponent implements OnInit {
      // this.calendar.updateTodaysDate();
      this._SEndDate = moment().format("YYYY-MM-DD").toString();
      // this.Event_requests();
-     this.GetTimeslabfordate()
-
+     this.GetTimeslabfordate();
+     this.GetPending_Request();
 
 
   }
@@ -3190,6 +3190,9 @@ End_meeting() {
   }
 }
 
+
+SearchOfPendingItem: any
+
 GetPending_Request() {
   this._calenderDto.Emp_No = this.Current_user_ID;
 
@@ -3197,11 +3200,43 @@ GetPending_Request() {
     ((data) => {
       this.Pending_request = data as [];
       this.pendingcount = this.Pending_request.length;
-      // alert(this.pendingcount)
-      // alert(this.Pending_request.length)
       console.log(this.Pending_request, "111100000")
     });
 }
+
+
+
+onSinglePendingEventDelete(id) {
+
+  Swal.fire({
+    title: `Delete ${this.Schedule_type1}`,
+    text: `Are you sure you want to delete this ${this.Schedule_type1}? This action cannot be undone.`,
+    showConfirmButton: true,
+    showCancelButton: true
+  }).then(choice => {
+    if (choice.isConfirmed) {
+      this.AllDelete_event(1);
+      this.PendingdeleteSchedule(id);
+    }
+  });
+}
+
+
+
+
+PendingdeleteSchedule(id) {
+
+  this._calenderDto.Schedule_ID = id;
+  this._calenderDto.flag_id = this.flagevent;
+  this.CalenderService.NewDelete_table(this._calenderDto).subscribe(text => {
+    this.notifyService.showSuccess("Deleted successfully", "Success");
+    this.GetScheduledJson();
+    this.GetPending_Request();
+  })
+}
+
+
+
 
 
 newMeetingDetails() {
