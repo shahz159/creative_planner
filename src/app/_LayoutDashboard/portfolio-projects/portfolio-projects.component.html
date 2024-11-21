@@ -587,12 +587,12 @@
 
 
 
-  <div  class="notification delay-notification "><span  class="notif-msg" > You have <span style="color: #ff2727;" *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0" (click)="labelDelay();filterProjectsOfEmp(Current_user_ID)"  class="delayaction-of-emp ">{{this.delayPrjsofPort.length}} delay projects</span><b *ngIf="this.forwardPrjPort.length>0" >,&nbsp;</b>
-   <span *ngIf="this.forwardPrjPort&&this.forwardPrjPort.length > 0"  class="delayaction-of-emp " (click)="labelForward();filterProjectsOfEmp(Current_user_ID)"  style="color:#81C784">{{this.forwardPrjPort.length}} forward approval project</span> <b *ngIf="this.completionPrjPort.length > 0" >,&nbsp;</b>
+  <div  class="notification delay-notification "><span  class="notif-msg" > Need your action on <span style="color: #ff2727;" *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0" (click)="labelDelay();filterProjectsOfEmp(Current_user_ID)"  class="delayaction-of-emp ">{{this.delayPrjsofPort.length}} delay project(s)</span><b *ngIf="this.forwardPrjPort.length>0" >,&nbsp;</b>
+   <span *ngIf="this.forwardPrjPort&&this.forwardPrjPort.length > 0"  class="delayaction-of-emp " (click)="labelForward();filterProjectsOfEmp(Current_user_ID)"  style="color:#81C784">{{this.forwardPrjPort.length}} forward approval(s)</span> <b *ngIf="this.completionPrjPort.length > 0" >,&nbsp;</b>
 
-  <span *ngIf="this.completionPrjPort&&this.completionPrjPort.length > 0"  style="color:#81C784" class="delayaction-of-emp " (click)="labelCompletionapproval();filterProjectsOfEmp(Current_user_ID)" >{{this.completionPrjPort.length}} Completion project</span><b *ngIf="newapprovalPrjport.length > 0&&this.delayPrjsofPort.length>0" class="">,&nbsp;</b>
+  <span *ngIf="this.completionPrjPort&&this.completionPrjPort.length > 0"  style="color:#81C784" class="delayaction-of-emp " (click)="labelCompletionapproval();filterProjectsOfEmp(Current_user_ID)" >{{this.completionPrjPort.length}} Completion approval(s)</span><b *ngIf="newapprovalPrjport.length > 0&&this.delayPrjsofPort.length>0" class="">,&nbsp;</b>
 
-<span *ngIf="this.newapprovalPrjport&&this.newapprovalPrjport.length > 0"  style="color:#9C27B0 " class="delayaction-of-emp " (click)="labelUA();filterProjectsOfEmp(Current_user_ID)">{{this.newapprovalPrjport.length}} New approval</span>
+<span *ngIf="this.newapprovalPrjport&&this.newapprovalPrjport.length > 0"  style="color:#9C27B0 " class="delayaction-of-emp " (click)="labelUA();filterProjectsOfEmp(Current_user_ID)">{{this.newapprovalPrjport.length}} New approval(s)</span>
 
 
 <!-- (109 days)<b  class="">,&nbsp;</b>
@@ -862,7 +862,7 @@
                                 <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                   <div class="row kt-filterdetails" *ngIf="_MessageIfNotOwner==''" >
                                     <div class="search-filter" >
-                                      <div *ngIf="getFilterLabel()">{{ getFilterLabel() }}  <span  *ngIf="resultCount>0"><span class="count">1</span><span> - </span> <span  class="count">{{resultCount}}</span> of <span  class="count">{{resultCount}}</span></span></div>
+                                      <div *ngIf="getFilterLabel()">{{ getFilterLabel() }}  <span class="count" *ngIf="resultCount>0">{{resultCount}}</span></div>
                                     </div>
                                   </div>
                                     <div class="row">
