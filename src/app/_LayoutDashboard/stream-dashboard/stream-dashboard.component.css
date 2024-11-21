@@ -471,9 +471,9 @@ tr.action-row:hover {
     border-radius: 0.5rem 0.5rem 0 0;
 }
 
-@media screen and (min-width : 1450px) {
+@media screen and (min-width : 1500px) {
     .picsum-img-wrapper img {
-        height: 240px;
+        height: 220px;
     }
 }
 
@@ -2187,6 +2187,12 @@ span.head-title-count {
     .upcoming-events-li .date {
         min-width: 60px;
     }
+    .action-tile-item-name-v1 {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 70px;
+    }
 }
 
 /* tab responsive end */
@@ -2482,4 +2488,18 @@ span.p-b-percent-count {
 
 .week-report-more-btn[aria-expanded="true"] .week-report-more-icon svg {
     transform: rotate(180deg);
+}
+.dar-label {
+    white-space: nowrap;
+}
+@media only screen and (min-width: 1024px) and (max-width: 1180px) {
+    .action-tile-item-name-v1 {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 70px;
+    }
+    .picsum-img-wrapper img {
+        height: 190px;
+    }
 }

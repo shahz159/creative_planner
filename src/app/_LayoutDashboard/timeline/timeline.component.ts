@@ -1089,13 +1089,21 @@ submitTL(submDate:string)
 }
 
 
-tm4EndDate_msg:boolean=false;
+// tm4EndDate_msg:boolean=false;
 
 endDay(submDate:string)
 {
-
   if(this.tmReportTotalDuration==null){    // if there is no timeline has been entered by the user on the selected date.
-    this.tm4EndDate_msg=true;
+    // this.tm4EndDate_msg=true;
+    const err_box=document.querySelector('#endDay-not-allowed-box');
+    err_box.classList.add('anim-start');
+    const onanimend=()=>{
+      setTimeout(()=>{
+        err_box.classList.remove('anim-start');
+        err_box.removeEventListener('animationend',onanimend);
+      },2000);
+    };
+    err_box.addEventListener('animationend',onanimend);
     return;
   }
 
@@ -1294,14 +1302,15 @@ endTimelineModal(){
   document.getElementById("endTimelineModalBackdrop").style.display = "block";
   document.getElementById("endTimelineModalBackdrop").classList.add("show");
   this.getDayReportSummary();
-  this.tm4EndDate_msg=false;
+  // this.tm4EndDate_msg=false;
 }
 endTimelineModal_dismiss(){
   document.getElementById("endTimelineModal").style.display = "none";
   document.getElementById("endTimelineModal").classList.remove("show");
   document.getElementById("endTimelineModalBackdrop").style.display = "none";
   document.getElementById("endTimelineModalBackdrop").classList.remove("show");
-  this.tm4EndDate_msg=false;
+  $('#endDay-not-allowed-box').removeClass('anim-start');
+  // this.tm4EndDate_msg=false;
 }
 
 
