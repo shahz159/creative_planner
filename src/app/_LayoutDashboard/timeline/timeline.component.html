@@ -1328,7 +1328,6 @@
                                         <div class="d-flex gap-1">
                                             <div #tlDescBx class="compl-remarks-span">
                                                 {{item.WorkAchieved}}
-                                                By using ngIf in combination with isAccordionOpen, the inner content is only rendered (and the overflow check only happens) when the accordion is open. This way, the buttons update automatically without relying on extra DOM events or manual detection adjustments, and the solution remains clean and reactive.
                                             </div>
                                             <button title="show full" class="txt-expnd-btn align-self-end" *ngIf="tlDescBx.scrollHeight>tlDescBx.clientHeight" (click)="$event.stopPropagation(); tlDescBx.classList.remove('compl-remarks-span'); lessbtn1.classList.remove('d-none'); ">
                                                 <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -1408,7 +1407,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 565px;">
     <div class="modal-content">
       <div class="end-timeline-modal-header">
-        <h5 class="end-timeline-modal-title" id="exampleModalLongTitle">Summary Report</h5>
+        <h5 class="end-timeline-modal-title" id="exampleModalLongTitle">Timeline Summary</h5>
         <span *ngIf="tmReportStatus" class="tl-status fs-7 font-weight-400"  [ngClass]="{
             'tl-submitted':tmReportStatus=='Accepted',
             'tl-notsubmitted':tmReportStatus=='Not Submitted',
