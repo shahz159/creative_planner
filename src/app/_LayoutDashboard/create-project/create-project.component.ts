@@ -131,7 +131,7 @@ export class CreateProjectComponent implements OnInit {
   saveAsTemplate:boolean=false;
   notProvided:boolean=false;
   notificationMsg:number=0;
-  
+
 
   constructor(private router: Router,private location: Location,
     private createProjectService:CreateprojectService,
@@ -196,8 +196,8 @@ export class CreateProjectComponent implements OnInit {
     this.route.queryParamMap.subscribe((qparams)=>{
       const assignedPrjTask=qparams.get('AssignedProjectId');
       if(assignedPrjTask){
-          
-            const assignedTaskViewed=this.viewAssignedTaskById(assignedPrjTask);  
+
+            const assignedTaskViewed=this.viewAssignedTaskById(assignedPrjTask);
             if(assignedTaskViewed){
                const ob={...this.route.snapshot.queryParams};
                delete ob.AssignedProjectId;
@@ -227,14 +227,14 @@ export class CreateProjectComponent implements OnInit {
 
    if(e3){
     e3.classList.add('selected-anim');
-    e3.addEventListener('animationend',()=>{  
+    e3.addEventListener('animationend',()=>{
      e3.classList.remove('selected-anim');
     });
-    e4=e3.querySelector('.kt-act-no input'); 
+    e4=e3.querySelector('.kt-act-no input');
     setTimeout(()=>{ if(e4)e4.focus(); },300);
    }
 
-   isProcessDone=true;  
+   isProcessDone=true;
   }catch(e){
    isProcessDone=false;
   }
@@ -268,18 +268,18 @@ export class CreateProjectComponent implements OnInit {
          this.Authority_json=JSON.parse(res[0].Authority_json);
          this.Category_json=JSON.parse(res[0].Category_json);
          this.Client_json=JSON.parse(res[0].Client_json);
-         this.ProjectType_json=JSON.parse(res[0].ProjectType_json);
+         this.ProjectType_json=JSON.parse(res[0].ProjectType_json);   console.log('project type json:',this.ProjectType_json);
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
-         this.Team_json=JSON.parse(res[0].Team_json);  
-         this.allUser_json=JSON.parse(res[0].allUser_json); 
+         this.Team_json=JSON.parse(res[0].Team_json);
+         this.allUser_json=JSON.parse(res[0].allUser_json);
 
          let owner_values=JSON.parse(res[0].owner_json);
          owner_values=owner_values.map(ob=>({...ob,type:'Hierarchical'}));
-         const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo.trim()];  
+         const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo.trim()];
          let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob.Emp_No));
          otherusers=otherusers.map(ob=>({EmpNo:ob.Emp_No, EmpName:ob.Emp_Name, type:'Others'}));
          this.owner_json=[...owner_values,...otherusers];
-        
+
 
           this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
           this.PrjResp=this.Responsible_json[0].ResponsibleNo.trim();
@@ -291,14 +291,6 @@ export class CreateProjectComponent implements OnInit {
                return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
           })
           this.PrjSupport=defaultvalue?[defaultvalue]:[];
-
-
-
-
-          
-
-
-
 
 
 
@@ -464,14 +456,14 @@ debugger
   })
 
   this.service.GetRACISandNonRACISEmployeesforMoredetails(this.PrjCode).subscribe(
-    (data) => {  
+    (data) => {
       this.owner_dropdown = (JSON.parse(data[0]['RacisList']));
       this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));  console.log("this 3:",this.responsible_dropdown);
     });
 
 
   this.service.SubTaskDetailsService_ToDo_Page(prjCode, null, this.Current_user_ID).subscribe(
-      (data) => {  
+      (data) => {
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
         this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
         console.log(this.Category_List, "CategoryDropdown");
@@ -511,7 +503,7 @@ debugger
       this.maxAllocation=(Difference_In_Days+1)*10;
     }
     else
-    this._message = "Start Date/End date missing, It accept only numeric and non-negative value"
+    this._message = "Start Date/End date missing, It accept only numeric and non-negative value."
 
   }
 
@@ -675,7 +667,7 @@ createSRTProject(){
            if(res&&res.message==='Success'){
                this.PrjCode=res.Project_Code;
                this.getAddActionDetails();
-         
+
 
               //  this.notification.showSuccess("Saved successfully","");
                this.notification.showInfo("Please submit the project for approval","");
@@ -887,6 +879,7 @@ onFileChanged(event: any) {
     $('.np-step-2').removeClass('d-none');        // visible proj creation section.
     $('.np-step-1').addClass('d-none');           // close let's start section.
     this.notificationMsg=0;
+    this.promptToReadGuidelines();
   }
 
   back_to_options(){
@@ -901,7 +894,33 @@ onFileChanged(event: any) {
     $('.Project_details_tab').show();                    // open section 1 form.
     $('.action-left-view').addClass('d-none');           // close actions view of 3rd step.
     this.notificationMsg=0;
+    this.okWithType=false;
+    // this.dontShowAgain=false;
   }
+
+
+
+  promptToReadGuidelines(){
+     const hasRead=localStorage.getItem('readPrjCreationGuidelines');
+     if(!hasRead){
+          Swal.fire({
+            title:'Before you begin',
+            text:"Please read the guidelines to avoid project setup issues and streamline your project creation. Click on the 'View Guidelines' button to view the guidelines.",
+            showConfirmButton:true,
+            confirmButtonText:'View Guidelines',
+            showCancelButton:true,
+            cancelButtonText:'Skip',
+            allowOutsideClick: false
+          }).then((decision)=>{
+            if(decision.isConfirmed){
+              this.New_project_guideline();
+            }
+            localStorage.setItem('readPrjCreationGuidelines','true');
+           });
+     }
+  }
+
+
 
 
   closeStep3Section(){
@@ -1151,8 +1170,8 @@ onResponsibleChanged(){
 
 
 
-  
- 
+
+
 
   // const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.PrjResp];
   // let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob.Emp_No));
@@ -1209,7 +1228,7 @@ onProjectOwnerChanged(){
           ...task,
           Duration: duration
         };
-      });   
+      });
       this.template_json=JSON.parse(res[0].templates_json);
       this.conditional_List=JSON.parse(res[0].conditional_json);
 
@@ -1229,7 +1248,7 @@ onProjectOwnerChanged(){
       });
 
       console.log(this.conditional_List,'--conditional prjs------------->')
-      console.log(this.assigntask_json,'--assigntask_json--');  
+      console.log(this.assigntask_json,'--assigntask_json--');
  });
   }
 
@@ -1423,6 +1442,8 @@ getActionsDetails(){
     this.PrjActionsInfo=[];
 
     this.detectMembersWithoutActions();   // update 'hasNoActionMembers' may needed since new action is added into the project.
+    // setTimeout(()=>this.hasActnsMatchingPrjDeadline(),2000);   // warning dialog if more than 50% actns deadline same as the project deadline.
+
   });
 
 }
@@ -1718,7 +1739,7 @@ setRACIS(){      debugger
      this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjInformer).Emp_Name);
      if(this.PrjAuditor)
      this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjAuditor).Emp_Name);
-    
+
 
      const e=this.PrjSupport.map((item)=>item.Emp_Name);
      this.RACIS=[...this.RACIS,...e];
@@ -1807,7 +1828,7 @@ detectMembersWithoutActions(){  debugger
     });
   }
   else{
-    _hasNoActionMembers=this.totalPeopleOnProject.filter(ob=>ob.Role!='Owner');   
+    _hasNoActionMembers=this.totalPeopleOnProject.filter(ob=>ob.Role!='Owner');
   }
   _hasNoActionMembers=_hasNoActionMembers.map(ob=>(ob.RACIS.slice(0,ob.RACIS.indexOf('('))).trim() );
   this.hasNoActionMembers=Array.from(new Set(_hasNoActionMembers));
@@ -1823,7 +1844,7 @@ detectMembersWithoutActions(){  debugger
 sendApproval=async()=>{
 
   const _sendApprovalToOwner=()=>{
-      
+
     this.ProjectDto.Emp_No=this.Current_user_ID;
     this.ProjectDto.isTemplate=this.saveAsTemplate;
     this.ProjectDto.Project_Code=this.PrjCode;
@@ -1853,20 +1874,20 @@ sendApproval=async()=>{
   let _title;
   let _msg;
   if(_prjendd<_curtd){   // when both startdate and enddate are invalid.
-   _title='Invalid Project Dates';
+   _title='Invalid project dates';
    _msg='Please select new start date and end date of the project before submitting it.';
   }
   else if(_prjstrtd<_curtd){  // when startdate is invalid.
-    _title='Invalid Project Start Date';
+    _title='Invalid project start date';
     _msg='Please select new start date of the project before submitting it.';
   }
-  
+
   Swal.fire({
       title:_title,
       text:_msg,
       showConfirmButton:true,
       showCancelButton:true,
-      confirmButtonText:'Select New Dates',
+      confirmButtonText:'Select new dates',
       cancelButtonText:'Cancel'
   }).then(choice=>{
         if(choice.isConfirmed){
@@ -1875,13 +1896,46 @@ sendApproval=async()=>{
           this.alertMaxAllocation();
         }
   });
-   
+
   return;
   }
-//  
+//
 
 
-// 2.validation: Check if any action's start date is before the project start date
+// 2.validation: if project has no actions.
+const pdur=Math.abs(moment(_prjstrtd).diff(moment(_prjendd),'days'));
+let noactnDialogType:'MANDATORY'|'NOT_MANDATORY';
+noactnDialogType=pdur>=15?'MANDATORY':pdur<15?'NOT_MANDATORY':null;
+
+if(this.PrjActionsInfo.length==0){  
+
+  const choice=await Swal.fire({
+     title:noactnDialogType=='MANDATORY'?'Actions required':'Continue Without Actions?',
+     html:`
+     <div style="text-align: justify;">
+     No actions are defined in this project. Seems like the project hasn't been fully planned for the given duration.<br>
+     <div style="font-size: 12px;color: #00a2eb;border: 1px solid #aae4ff;font-weight: 500;margin-top: 10px;background-color: #d8efff;padding: 5px;border-radius: 4px;display: flex; align-items: flex-start;column-gap: 7px;">
+      <svg width="30px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.00024000000000000003" style="min-width: 18px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z" fill="#1692df"></path></g>
+      </svg>
+      <span>Well-defined actions in project can help ensure better tracking and project success.</span>
+      </div>
+    </div>
+     `,
+     showConfirmButton:true, 
+     confirmButtonText: noactnDialogType=='MANDATORY'?'OK':'Continue',
+     showCancelButton:noactnDialogType=='NOT_MANDATORY'?true:false
+   });
+
+  if((noactnDialogType=='MANDATORY')||(choice.isConfirmed==false&&noactnDialogType=='NOT_MANDATORY')){
+    return;
+  }
+
+ }
+//
+
+
+// 3.validation: Check if any action's start date is before the project start date
   const inputdate = new Date(this.projectInfo.StartDate);
   const actn_index = this.PrjActionsInfo.findIndex((actn) => {
       const actdate = new Date(actn.StartDate);
@@ -1889,7 +1943,7 @@ sendApproval=async()=>{
   });
  if(actn_index>-1){
   Swal.fire({
-    title: 'Invalid Action Dates',
+    title: 'Invalid action dates',
     html: `Action <b>"${this.PrjActionsInfo[actn_index].Project_Name}"</b> cannot start before the project itself. Please revise the start date for this action to comply with the project timeline.`,
     showCancelButton:true,
     showConfirmButton:true,
@@ -1898,35 +1952,52 @@ sendApproval=async()=>{
    }).then(choice=>{
         if(choice.isConfirmed){
           this.showActionDetails(actn_index);
-        } 
+        }
    })
 
    return;
  }
-//  
+//
 
 
-// 3.warning: if any RACIS member doesn't have atleast one action in the project.
+// 3.validation: if any RACIS member doesn't have atleast one action in the project.
 this.detectMembersWithoutActions();
 if(this.hasNoActionMembers.length>0){  
+
+const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)=>{
+        return members+`<b>'${new_member}'</b>${index==arr.length-2?' and ':index<arr.length-2?'<b> ,</b>':'<b>. </b>'}`;
+},'');
+
  const choice=await Swal.fire({
-    title:'Team Members with No Actions Assigned',
-    text:'Project includes team members with no actions assigned to them. Do you still want to proceed with this project?',
+    title:'Project team with no actions assigned',
+    html:`<div class="text-justify">
+           No actions has been assigned to 
+           ${people_names}<br/>
+           <div class="mt-2">Do you still want to proceed with this project?</div> 
+    </div>`,
     showConfirmButton:true,
     showCancelButton:true,
     confirmButtonText: 'Yes, Proceed',
     cancelButtonText: 'Cancel'
   })
- if(choice.isConfirmed==false) 
- return;
+ if(choice.isConfirmed==false){
+  return;
+ }
 }
 //
 
 
-// 4.confirmation: project cost confirmation from user.
+
+// 5.validation: project cost confirmation from user.
  const final_choice=await Swal.fire({
-       title:'Are you sure?',
-       text:`You will be going to spend "${this.PrjCost}.00 SAR" on this project. Do you want to continue?`,
+       title:'Project Budget',
+       html:`<div style="text-align: justify;">
+                You will be going to spend <b>"${this.PrjCost}.00 SAR"</b> on this project. Do you want to continue?
+                ${this.PrjCost>=3000?`<span style="display: flex;align-items: center;column-gap: 8px;font-size: 12px;margin-top: 8px;background-color: #fdbc4a38;color: #c57a05;border: 1px solid #cc922d63;padding: 10px;border-radius: 5px;font-weight: 500;">
+                  <svg width="40px" height="20px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
+                  The project cost has reached 3000 SAR or more. Please ensure that the plan aligns with the annual business plan\'s budget.</span>`:''}
+             </div>`,
+
        showConfirmButton:true,
        showCancelButton:true,
        confirmButtonText: 'Yes, confirm',
@@ -2199,7 +2270,6 @@ if(['003','008'].includes(this.Prjtype)){
      const m=Number.parseInt(alhr.split(':')[1]);
      alhr=h+'.'+m;
 }
-
   this.ProjectDto.Emp_No=this.Current_user_ID;
   this.ProjectDto.Hours=alhr;
   this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:{Status:boolean,Message:string,Data:number})=>{
@@ -2353,7 +2423,7 @@ this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((re
 // getting file attachment name if provided in the draft project. start
 
 this.detectMembersWithoutActions();   // update 'hasNoActionMembers' may needed since new action is added into the project.
-
+// this.hasActnsMatchingPrjDeadline();   // warning dialog if more than 50% actns deadline same as the project deadline.
 });
 
 
@@ -2590,80 +2660,64 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
   alterAction(){
 debugger
 
-
-if (this.Allocated <= this.maxAllocation){
-  this.notProvided = false
-}
-else{
-  this.notProvided = true
-  return
-}
-
-
-const dateone=new Date(this.projectInfo.EndDate)
-const datetwo= new Date(this.End_Date)
-
-if(dateone < datetwo){
-  Swal.fire({
-    title:"Invalid Action Date",
-    text:"Action date Can't be greater than project end date",
-    showCancelButton:true
-
-  })
-  return
-}
-// this.setactioneditAllocation()
+// v1. Action allocated hr must be <= max allocated hrs value.
+  if (this.Allocated <= this.maxAllocation){
+    this.notProvided = false
+  }
+  else{
+    this.notProvided = true
+    return
+  }
 
 
+// v2. Action date Can't be greater than project end date  
+  const dateone=new Date(this.projectInfo.EndDate)
+  const datetwo= new Date(this.End_Date)
+  if(dateone < datetwo){
+    Swal.fire({
+      title:"Invalid Action Date",
+      text:"Action date Can't be greater than project end date",
+      showCancelButton:true
 
+    })
+    return
+  }
+
+
+
+// v3. form input validations.
 this.isPrjNameValid=this.isValidString(this.ProjectName,2);
 this.isPrjDesValid=this.isValidString(this.ProjectDescription,3);
-
-
-
-
-        // check all mandatory field are provided.
-        if(!(this.ProjectName&&this.isPrjNameValid=='VALID'&&this.ProjectName.length<=100&&this.ProjectDescription&&this.isPrjDesValid==="VALID"&&this.ProjectDescription.length<=500&&
+  if(!(this.ProjectName&&this.isPrjNameValid=='VALID'&&this.ProjectName.length<=100&&this.ProjectDescription&&this.isPrjDesValid==="VALID"&&this.ProjectDescription.length<=500&&
           this.OGowner&&this.OGresponsible&&
           this.selectedcategory&&this.selectedclient&&
           this.Start_Date&&this.End_Date&&
           this.Allocated)){
             this.notProvided=true;
             return;
-        }else this.notProvided=false;   // back to initial value.
-        // check all mandatory field are provided.
+  }else this.notProvided=false;   // back to initial value.
 
 
-        //  const d1=new Date(this.Start_Date);
-        //  const d2=new Date(this.projectInfo.StartDate);
-        // if(d1<d2){
-        //   Swal.fire({
-        //     title:'Action start date is less than project start date',
-        //     text:'first change the project start date',
-        //     showCloseButton:true
-        //   })
-
-        //   return;
-        // }
-
-
-
-// const d5= new Date(this.End_Date)
-// const d6= new Date(this.projectInfo.EndDate)
-//         if(d5>d6){
-//           Swal.fire({
-//             title:'Action Deadline is Greater than Project Deadline',
-//             text:"First Change the Project Deadline",
-//             showCloseButton:true
-//           })
-//           return;
-//         }
+// v4.Action end date should be less than the project deadline
+const actn_deadline = new Date(this.End_Date);
+const prj_deadline = new Date(this.projectInfo.EndDate);
+if(actn_deadline.getTime()==prj_deadline.getTime()){
+      const already_matched=this.actnsMatchingPrjDeadline();
+      if(already_matched>=2){
+        Swal.fire({
+          title:'Invalid Action End Date',
+          html:'<div style="text-align:justify;">Action end date should be less than the project deadline. Please modify the action end date to continue</div>',
+          // icon:'error',
+          showConfirmButton:true,
+          confirmButtonText:'OK'
+       }); 
+       return;
+      }
+}
 
 
 
-
-
-
+  // action edit start.
       const datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");
       const datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");
       let jsonobj:any={
@@ -2687,13 +2741,6 @@ this.isPrjDesValid=this.isValidString(this.ProjectDescription,3);
       this.approvalObj.Project_Code = this.PrjActionsInfo[this.currentActionView].Project_Code;  // action code.
       this.approvalObj.json = jsonobj;            // action details
       this.approvalObj.Remarks = this._remarks?this._remarks:'';   // remark provided.
-
-
-// test
-
-
-
-      // test
 
       if (dateOne < dateTwo) {
         Swal.fire({
@@ -3175,6 +3222,116 @@ alertMaxAllocations() {
     console.log(this.start_dt,this.end_dt,this.maxAllocations,"allcoation")
   }
 }
+
+
+
+
+
+// dontShowAgain:boolean=false;
+// hasActnsMatchingPrjDeadline(){
+//  let totalActnsMatch=0;
+//  let totalActnsInPrj=this.PrjActionsInfo.length;
+//  if(totalActnsInPrj<4){
+//     return;
+//  }
+//  const prj_deadline=new Date(this.projectInfo.EndDate);
+//  this.PrjActionsInfo.forEach((actn:any)=>{
+//        const actn_deadline=new Date(actn.EndDate);
+//        if(prj_deadline.getTime()==actn_deadline.getTime()){
+//            totalActnsMatch++;
+//        }
+//  });
+
+//  const percent_val=(totalActnsMatch/totalActnsInPrj)*100;    // 0/10 ===>0 .  8/10==>80%.  0/0==>0    10/0==>infinity(impossible)
+//  if(percent_val>=50&&this.dontShowAgain==false){
+//     Swal.fire({
+//       title:'Confirm Action Deadlines',
+//       html:`<div style="text-align: justify;"><b>${totalActnsMatch}/${totalActnsInPrj}</b> actions are currently planned to end with the main project.  Is this intentional? <br/> If not, consider adjusting deadlines using action 'Edit' to optimize workflow.</div>`,
+//       showCancelButton:true,
+//       cancelButtonText:"OK",
+//       cancelButtonColor:'#3085d6',
+//       showConfirmButton:true,
+//       confirmButtonText:"Don't Show Again",
+//       confirmButtonColor:'#aaa'
+//   }).then(choice=>{
+//       if(choice.isConfirmed==true){
+//           this.dontShowAgain=true;
+//       }
+//   })
+
+//  }
+
+
+// }
+
+
+
+actnsMatchingPrjDeadline():number{
+  const prj_deadline=new Date(this.projectInfo.EndDate);
+  let totalActnsMatch=0;
+  this.PrjActionsInfo.forEach((actn:any)=>{
+           const actn_deadline=new Date(actn.EndDate);
+           if(prj_deadline.getTime()==actn_deadline.getTime()){
+               totalActnsMatch++;
+           }
+  });
+  return totalActnsMatch;
+}
+
+
+
+okWithType:boolean=false;
+promptIfNameTypeMismatch(){
+
+  if(this.PrjName&&this.PrjName.trim()&&this.Prjtype){
+
+    const words_003=[
+      'weekly','daily','monthly','yearly','annually','half yearly','quarterly','every week','every month','every year',
+       'annual','recurring', 'repetitive'
+    ];
+
+    const isincluded=words_003.find((wrd:string)=>{
+      const regex = new RegExp(`\\b${wrd}\\b`, 'i'); // Match exact word with word boundaries
+      return regex.test(this.PrjName.trim());
+    });
+
+    if(isincluded){
+      const typematched=['003','008'].includes(this.Prjtype);
+      if(typematched==false&&this.okWithType==false){ 
+       const sel_ptype=this.ProjectType_json.find(ob=>ob.Typeid==this.Prjtype).ProjectType.trim();
+
+        Swal.fire({
+            title:'Are You Sure About the Project Type?',
+            html:`<div class="text-justify">
+                   Project name contains word <b>'${isincluded}'</b> which suggests a standard or routine type project. You've selected <b>'${sel_ptype}'</b> as the project type. 
+                  </div>`,
+            showConfirmButton:true,
+            showCancelButton:true,
+            confirmButtonText:'Continue Anyway',
+            cancelButtonText:'View Guidelines',
+
+        }).then((choice)=>{
+             if(choice.isConfirmed){
+                this.okWithType=true
+             }
+              if(choice.isConfirmed==false){
+                this.New_project_guideline();
+              }
+
+        });
+      }
+    }
+
+  }
+
+}
+
+
+
+
+
+
+
 
 
 }

@@ -415,6 +415,10 @@ export class NotificationComponent implements OnInit {
     document.getElementById("leave_requisition_form_slider_bar").classList.remove("kt-quick-panel--on");
     $('#leave_requisition_form_slider_bar').removeClass('open_requisition_sidebar_info');
 
+    
+    document.getElementById("acceptbar").classList.remove("kt-quick-panel--on");
+    this.approverComments=null;
+ 
   }
 
   LeaveDetail: any;
@@ -1042,11 +1046,17 @@ prjtypeCount:number=-1;
 reqtypeCount:number=-1;
 
 
-acceptSelectedValues() {
+acceptSelectedValues(_comments?:string) {
 
     console.log(this.selectedItems,"accept");
 
   if( this.selectedItems.length > 0){
+
+    let withCmts=false;
+    if(_comments&&_comments.trim()){
+        this.selectedItems.forEach(ob=>ob.sameRemarks=_comments);
+        withCmts=true;
+    }
 
      this.approvalservice.NewUpdateAcceptApprovalsService(this.selectedItems).subscribe(data =>{
       console.log(data,"accept-data");
@@ -1065,6 +1075,13 @@ acceptSelectedValues() {
         else {
           this.edited = true;
         }
+
+
+
+      if(withCmts){     // close the accept with comments sidebar if approving with comments is on.
+          this.closeInfo();
+      }
+
 
     });
 
@@ -1551,5 +1568,35 @@ openPDF_Standards(standardid, emp_no, cloud, repDate: Date, proofDoc, type, subm
 }
 
 
+
+// accept selected approvals with comments start.
+
+approverComments:string;
+
+submitAprvlsWithCmts(){
+  if(this.approverComments&&this.approverComments.trim()){
+    this.notProvided=false;
+    this.acceptSelectedValues(this.approverComments);
+  }
+  else{
+     this.notProvided=true;
+  }
+  
+}
+
+onAcceptWithCmtsBtnClicked(){
+  document.getElementById("acceptbar").classList.add("kt-quick-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+}
+
+
+
+
+
+
+
+
+// accept selected approvals with comments end.
 
 }

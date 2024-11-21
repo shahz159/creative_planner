@@ -1142,7 +1142,7 @@
 
 
 
-                                                        <svg viewBox="0 0 24 24" style="height:28px" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <svg viewBox="0 0 24 24" style="height:28px;cursor:pointer" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                                           <g id="SVGRepo_iconCarrier">
@@ -1535,12 +1535,14 @@
 
 
                                                  <!-- cost data start -->
-                                                    <td  *ngIf="item.Project_Cost" [ngClass]="{'d-none':!iscost}" class="classCost" ><div class="kt-widget__other">{{item.Project_Cost}}</div>
+                                                    <td  *ngIf="item.Project_Cost; else SAR" [ngClass]="{'d-none':!iscost}" class="classCost" ><div class="kt-widget__other">{{item.Project_Cost |currency:'SAR '}}</div>
 
                                                     </td>
-                                                    <td  *ngIf="!item.Project_Cost" [ngClass]="{'d-none':!iscost}" class="classCost" ><div class="kt-widget__other">0</div>
 
-                                                    </td>
+                                                    <ng-template  #SAR>
+                                                    <td  [ngClass]="{'d-none':!iscost}" class="classCost" ><div class="kt-widget__other">SAR 0.0</div>
+
+                                                    </td></ng-template>
 
                                          <!-- cost data end -->
 
@@ -1563,7 +1565,7 @@
                                                         <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                             <span class="kt-widget__other text-nowrap">{{item.SubmissionType1}}</span>
 
-   <div  class="text-nowrap font" *ngIf="item.SubmissionType === 'Weekly'||'Daily'|| 'Annually'||'Monthly'  ">{{item.StandardDuration}}</div>
+                          <div  class="text-nowrap font" *ngIf="item.SubmissionType === 'Weekly'||'Daily'|| 'Annually'||'Monthly'  ">{{formatTime(item.StandardDuration)}}</div>
                                                         </div>
                                                         <ng-template #Projecttype>
                                                             <span class="kt-widget__other text-nowrap">
@@ -1619,7 +1621,12 @@
                                                       </ng-container>
                                                       <ng-container  *ngIf="(item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks')">
                                                           <div *ngIf="item.Status=='Under Approval'" class="attach-tippy">
-                                                            <span class="pending_appr st-line">Pending approval since: {{item.approvalfromdate | date:'dd-MM-yyyy'}}</span>
+                                                            <span *ngIf="item.approvalfromdate"  class=" st-line">Pending approval since: {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
+                                                            </span>
+                                                            <!-- <span class="">  </span> -->
+
+
+
                                                               <span class="Under_Approval_color font-weight-400">New approval</span>
                                                               <div class="pulsing-div">
                                                                   <ng-container *ngIf="item.PendingapproverEmpNo">
@@ -1679,14 +1686,15 @@
                                                             <span class="New_Project_Rejected_color font-weight-400">New project rejected</span>
                                                             <span class="attach-tippy">
 
-                                                            <span class=" rej st-line curser-pointer" >
+                                                            <span class=" st-line curser-pointer" >
                                                                <div style="width: max-content;">Rejected by: <h6>{{item.RejectedBy}} </h6></div>
-                                                                <div>on: {{item.RejectFromDate | date: 'dd-MM-yyyy'}}</div>
+                                                                <div>on: {{item.RejectFromDate | date: 'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.RejectFromDate))}})</div>
+
                                                                 <div>Comment : {{item.Rejectcomments}}</div></span>
                                                             </span>
 
                                                             <span class="New_Approval_Project font-weight-400">
-                                                                {{item.Approvedby}}
+                                                                {{item.RejectedBy}}
                                                             </span>
 
                                                         </div>
@@ -1697,10 +1705,19 @@
 
 
 
-                                                          <div *ngIf="item.Status=='Project Hold'">
+                                                          <div *ngIf="item.Status=='Project Hold'" class="attach-tippy">
+                                                            <span *ngIf="item.approvalfromdate"  class=" st-line">Pending approval since: {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
+                                                            </span>
                                                               <span class="Hold_color font-weight-400">
                                                                   Hold</span>
+                                                                  <div class="pulsing-div">
+
+                                                                    <!-- <span *ngIf="item.Pendingapprover" class="pulsing-dot-label">{{item.Pendingapprover}}</span> -->
+                                                                </div>
                                                           </div>
+
+
+
                                                           <div *ngIf="item.Status=='ToDo Completed'">
                                                               <span class="ToDo_Completed_color font-weight-400">ToDo
                                                                   completed</span>
@@ -1735,7 +1752,9 @@
                                                           </div>
 
                                                           <div *ngIf="item.Status=='Cancellation Under Approval'" class="attach-tippy">
-                                                            <span class="can st-line status-text">Pending approval since : {{item.approvalfromdate | date :'dd-MM-yyyy'}}</span>
+                                                            <span *ngIf="item.approvalfromdate" class=" st-line status-text">Pending approval since : {{item.approvalfromdate | date :'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
+
+                                                            </span>
                                                               <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation approval
                                                               </span>
 
@@ -1762,8 +1781,12 @@
                                                               </span>
 
                                                           </div>
+
                                                           <div *ngIf="item.Status=='Forward Under Approval'" class="attach-tippy">
-                                                              <span class=" pending_appr st-line">Pending approval since : {{item.approvalfromdate | date:'dd-MM-yyyy'}}</span>
+                                                              <span class="  st-line">Pending approval since : {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
+
+
+                                                              </span>
                                                               <span class="Forward_Under_Approval_color font-weight-400">Forward approval
                                                               </span>
                                                               <div class="pulsing-div">
@@ -1771,6 +1794,7 @@
                                                                   <span class="pulsing-dot-label"> {{item.Pendingapprover}}</span>
                                                               </div>
                                                           </div>
+
                                                           <div *ngIf="item.Status=='Project Complete Rejected'">
                                                               <span class="Project_Complete_Rejected_color font-weight-400">Project
                                                                   complete
@@ -1791,7 +1815,10 @@
                                                               </span>
                                                           </div>
                                                           <div *ngIf="item.Status=='Deadline Extend Under Approval'" class="attach-tippy">
-                                                            <span class="deadline pending_appr st-line">Pending approval since : {{item.approvalfromdate | date:'dd-MM-yyyy'}}</span>
+                                                            <span *ngIf="item.approvalfromdate" class=" st-line">Pending approval since : {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
+
+
+                                                            </span>
                                                               <span class="Deadline_Extend_Under_Approval_color font-weight-400">Deadline extend approval
                                                               </span>
                                                               <div class="pulsing-div">

@@ -344,7 +344,7 @@ export class PortfolioProjectsComponent implements OnInit {
     // this.getusermeetings();
     this.updateListbyDetailsPage();
     // isprojtype=true
-
+    this.Dateoftoday = this.getCurrentDate();
 
 
 
@@ -2318,7 +2318,7 @@ Insert_indraft() {
       }
       for (let index = 0; index < this.dayArr.length; index++) {
         if (this.dayArr[index].checked) {
-        
+
           const day = this.dayArr[index].value;
           _arraytext.push(day);
           var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
@@ -2375,7 +2375,7 @@ Insert_indraft() {
     _attachmentValue = 1;
   else
     _attachmentValue = 0;
- 
+
     frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
     frmData.append("CreatedBy", this.Current_user_ID.toString());
     frmData.append("RemovedFile_id", this._calenderDto.file_ids='');
@@ -2388,7 +2388,7 @@ Insert_indraft() {
 
       this.Attamentdraftid= data['draftid']
       frmData.append("draftid", this.Attamentdraftid);
- 
+
         if (_attachmentValue == 1) {
           this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
             (event: HttpEvent<any>) => {
@@ -2407,7 +2407,7 @@ Insert_indraft() {
                   console.log('User successfully created!', event.body);
 
                   // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                  
+
 
                   (<HTMLInputElement>document.getElementById("customFile")).value = "";
                   this._lstMultipleFiales = [];
@@ -2543,7 +2543,7 @@ Insert_indraft() {
         console.log(this.upcomingMeetings,'linklkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')                                        // get upcoming meetings.
         this.upcMtgCnt = this.upcomingMeetings.length;                           // store totalno of meetings.
         this.upcomingMeetings = this.groupMeetingsByDate(this.upcomingMeetings);
-      
+
 
         this.todaymeetings = this.getMeetingsByDate(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));     // get todays meetings.
         this.tdMtgCnt = this.todaymeetings.length;                                                        // store totalno of meetings.
@@ -2588,8 +2588,8 @@ debugger
          }else if (this.upcomingMeetings.length>0){
            this.mtg_section='UPCOMING';
          }
- 
-        
+
+
        // by default today section is opened, below line set the first meeting to open if present.
        setTimeout(()=>{
           this.toggleMtgsSection(this.mtg_section);
@@ -2597,7 +2597,7 @@ debugger
        // by default today section is opened, below line set the first meeting to open if present.
       });
     //
-   
+
   }
 
 
@@ -6425,8 +6425,68 @@ isDepartment = false
   }
 
 
+  formatTime(input: string): string {
+    // Check if the input is already in the correct format
+    if (/^\d{2} Hr : \d{2} Mins$/.test(input)) {
+      return input; // If the format is correct, return it as-is
+    }
 
+    // Extract hours and minutes using regex for formatting if needed
+    const matches = input.match(/(\d+)Hr:(\d+)Mins/);
 
+    if (!matches) {
+      return 'Invalid Format'; // Handle unexpected format
+    }
+
+    // Extract hours and minutes
+    const hours = parseInt(matches[1], 10) || 0;
+    const minutes = parseInt(matches[2], 10) || 0;
+
+    // Format the string
+    return `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+  }
+
+  calculateDateDifference(date1: string, date2: string): number {
+    // Parse the dates from strings into Date objects
+    const date1Obj = new Date(date1.split('-').reverse().join('-'));
+    const date2Obj = new Date(date2.split('-').reverse().join('-'));
+
+    // Calculate the difference in milliseconds
+    const diffTime = Math.abs(date1Obj.getTime() - date2Obj.getTime());
+
+    // Convert milliseconds to days
+    const diffDays = Math.ceil(diffTime / (1000 * 3600 * 24));
+
+    return diffDays;
+  }
+
+  getFormattedforRejected(delayDays: any): string {
+    let delayText = '';
+
+    if (delayDays >= 365) {
+      const years = Math.floor(delayDays / 365);
+      delayText = years === 1 ? '01 year' : years < 10 ? `0${years} years` : `${years} years`;
+    } else if (delayDays >= 30) {
+      const months = Math.floor(delayDays / 30);
+      delayText = months === 1 ? '01 month' : months < 10 ? `0${months} months` : `${months} months`;
+    } else if (delayDays >= 7) {
+      const weeks = Math.floor(delayDays / 7);
+      delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
+    } else {
+      delayText = delayDays==0?'0 days':delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
+    }
+
+    return `${delayText.toLowerCase()} `;
+  }
+
+  Dateoftoday:any
+  getCurrentDate()  {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
 
 }
 

@@ -590,12 +590,11 @@
             </div> -->
             <div class="notifications-list">
         
-                    <div *ngIf="dueTodayTasksCount.length>0" class="notification overutilization-notification" style="cursor: pointer;">
-                        <svg width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <div *ngIf="dueTodayTasksCount.length>0" class="notification delay-notification">
+                        <svg width="24px" height="24px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                             <g id="SVGRepo_iconCarrier">
-                                <title>warning</title>
                                 <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd">
                                     <g id="add" transform="translate(32.000000, 42.666667)">
                                         <path
@@ -605,15 +604,15 @@
                                 </g>
                             </g>
                         </svg>
-                        <span class="notif-msg" style="color: #c57a05;">
+                        <span class="notif-msg">
                              You have 
                              <ng-container *ngFor="let item of dueTodayTasksCount; let i=index;">
                                 <span>
                                    {{item.count}} 
                                    {{
-                                      item.taskType=='ActionsDueToday'?'actions':   
-                                      item.taskType=='ProjectsDueToday'?'projects':
-                                      item.taskType=='AssignedTasksDue'?'assigned tasks':''          
+                                      item.taskType=='ActionsDueToday'?(item.count>1?'actions':'action'):   
+                                      item.taskType=='ProjectsDueToday'?(item.count>1?'projects':'project'):
+                                      item.taskType=='StandardDueToday'?(item.count>1?'standard tasks':'standard task'):''          
                                     }}</span>{{i+1===dueTodayTasksCount.length-1?' and':(i+1===dueTodayTasksCount.length)?'':', '}}
                              </ng-container>
                              due today. Please complete it to avoid delay.
@@ -766,7 +765,7 @@
                         <ng-option value="lunch">Lunch</ng-option>
                         <ng-option value="personal">Personal</ng-option>
                     </ng-select>
-                    <span style="color:red" *ngIf="(fieldRequired&&!project_type)">Please select project type.</span>
+                    <span style="color:red" *ngIf="(fieldRequired&&!project_type)">Please select type.</span>
                             </div>
                         </div>
                     </div>
@@ -787,40 +786,35 @@
                         </ng-option>
                     </ng-select>
 
-                        <div  class="txtm-cus mt-2 ml-1 ng-star-inserted  d-flex  align-items-center flex-wrap gap-1" *ngIf="master_code">
-                            
-                             <div *ngIf="p_loading;else p_details_sec" class="spinner-border" role="status" style="width: 14px; height: 14px; border-width: 2px; margin-left: 8px; color: #cccccc;">
-                                <span class="sr-only">Loading...</span>
-                              </div>
-                            <ng-template #p_details_sec>
-
+                        <div  class="txtm-cus mt-2 ml-1 ng-star-inserted  d-flex  align-items-center flex-wrap gap-1" *ngIf="master_code&&p_details&&p_loading==false">
+                            <div class="d-flex gap-1 flex-grow-1 flex-wrap">
                                 <ng-container *ngIf="['Core Tasks','Secondary Tasks','To do List'].includes(p_details.project_type); else stdrout_details">
                                     <div class="info-chip">
-                                            <div class="info-chip-label fs-9">Achieved hours :</div>
+                                            <div class="info-chip-label text-nowrap">Achieved hours :</div>
                                             <div class="info-chip-value">
-                                                <span title="used hours">{{p_details.usedHours}} hrs</span>
-                                                <span class="text-secondary">|</span> 
-                                                <span title="allocated hours">{{p_details.AllocatedHours>0?p_details.AllocatedHours:0}} hrs</span>
+                                                <span  class="text-nowrap" title="used hours" [ngClass]="{'text-red':p_details.usedHours==0}">{{p_details.usedHours>0?(p_details.usedHours+' hrs'):'0'}}</span>
+                                                <span class="hrs-by">/</span> 
+                                                <span class="text-nowrap" title="allocated hours">{{p_details.AllocatedHours>0?p_details.AllocatedHours:0}} hrs</span>
                                             </div>
                                     </div>
 
                                     <div *ngIf="!(p_details.extraHours>0)" class="info-chip">
-                                            <div class="info-chip-label fs-9">Remaining hours :</div>
-                                            <div class="info-chip-value">
-                                                {{p_details.remainingHours}} hrs
+                                            <div class="info-chip-label text-nowrap">Remaining hours :</div>
+                                            <div class="info-chip-value text-nowrap" [ngClass]="{'text-red':p_details.remainingHours==0}">
+                                                {{p_details.remainingHours>0?(p_details.remainingHours+' hrs'):'0'}}
                                             </div>
                                     </div>
 
                                     <div *ngIf="p_details.extraHours>0" class="info-chip">
-                                        <div class="info-chip-label fs-9">Overutilized by :</div>
-                                        <div class="info-chip-value">
+                                        <div class="info-chip-label text-nowrap">Overutilized by :</div>
+                                        <div class="info-chip-value text-nowrap">
                                             {{p_details.extraHours}} hrs
                                         </div>
                                     </div>
                                 
                                     <div class="info-chip">
-                                        <div class="info-chip-label fs-9">Deadline :</div>
-                                        <div class="info-chip-value">
+                                        <div class="info-chip-label text-nowrap">Deadline :</div>
+                                        <div class="info-chip-value text-nowrap" [ngClass]="{'text-red':p_details.Status=='Delay'}" [title]="p_details.Status=='Delay'?('Project is in delay by '+p_details.Delaydays+(p_details.Delaydays>1?' days.':'day.')):'project end date.'">
                                             {{p_details.EndDate|date:'dd-MM-yyyy'}}
                                         </div>
                                     </div>
@@ -828,26 +822,36 @@
                                <ng-template #stdrout_details>
 
                                 <div class="info-chip">
-                                    <div class="info-chip-label fs-9">Achieved hours :</div>
+                                    <div class="info-chip-label text-nowrap">Achieved hours :</div>
                                     <div class="info-chip-value">
-                                        <span title="used hours">{{p_details.usedHours}} hrs</span>
+                                        <span class="text-nowrap" title="used hours" [ngClass]="{'text-red':p_details.usedHours==0}">{{p_details.usedHours>0?(p_details.usedHours+' hrs'):'0'}}</span>
                                     </div>
                                 </div>
 
                                 
                                 <div class="info-chip">
-                                    <div class="info-chip-label fs-9">Allocated hours :</div>
-                                    <div class="info-chip-value">
+                                    <div class="info-chip-label text-nowrap">Allocated hours :</div>
+                                    <div class="info-chip-value text-nowrap">
                                         {{p_details.StandardAllocatedHours}}
+                                    </div>
+                                </div>
+
+                                <div class="info-chip">
+                                    <div class="info-chip-label text-nowrap">Submission type :</div>
+                                    <div class="info-chip-value text-nowrap">
                                         {{p_details.Submissiontype}}
                                     </div>
                                 </div>
+
                               </ng-template>
+                            </div>
 
-
-
-
-                            </ng-template>
+                              <div (click)="newDetails(master_code)" class="info-chip info-chip-redirect-btn">
+                                <div class="info-chip-label">
+                                  <svg stroke-width="0.00016" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="13px" width="13px" stroke="#383838"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>
+                                  View project
+                                </div>
+                              </div>
 
                         </div>
                         <span style="color:red" *ngIf="(fieldRequired&&!master_code)" >Please select a project.</span>
@@ -867,46 +871,50 @@
                                     </ng-option>
                                 </ng-select>
             
-                                <div class="txtm-cus mt-1 ml-1 ng-star-inserted d-flex align-items-center flex-wrap gap-1 "  *ngIf="a_details&&project_code">
+                                <div class="txtm-cus mt-1 ml-1 d-flex align-items-center flex-wrap"  *ngIf="project_code&&a_details&&a_loading==false">
                                    
-                                        <div *ngIf="a_loading;else a_details_sec" class="spinner-border" role="status" style="width: 14px; height: 14px; border-width: 2px; margin-left: 8px; color: #cccccc;">
-                                            <span class="sr-only">Loading...</span>
-                                          </div>
-                                        <ng-template #a_details_sec>
+                                      <div class="d-flex gap-1 flex-grow-1 flex-wrap">
                                            <div class="info-chip">
-                                                  <div class="info-chip-label fs-9">Achieved hours :</div>
+                                                  <div class="info-chip-label text-nowrap">Achieved hours :</div>
                                                   <div class="info-chip-value">
-                                                    <span title="used hours">{{a_details.usedHours}} hrs</span>
-                                                    <span class="text-secondary">|</span> 
-                                                    <span title="allocated hours">{{a_details.AllocatedHours>0?a_details.AllocatedHours:0}} hrs</span>
+                                                    <span  title="used hours" [ngClass]="{'text-red':a_details.usedHours==0}">{{a_details.usedHours>0?(a_details.usedHours+' hrs'):'0'}}</span>
+                                                    <span class="hrs-by">/</span> 
+                                                    <span class="text-nowrap" title="allocated hours">{{a_details.AllocatedHours>0?a_details.AllocatedHours:0}} hrs</span>
                                                   </div>
                                            </div>
             
                                            <div *ngIf="!(a_details.extraHours>0)" class="info-chip">
-                                                <div class="info-chip-label fs-9">Remaining hours :</div>
-                                                  <div class="info-chip-value">
-                                                    {{a_details.remainingHours}} hrs
+                                                <div class="info-chip-label text-nowrap">Remaining hours :</div>
+                                                  <div class="info-chip-value text-nowrap" [ngClass]="{'text-red':a_details.remainingHours==0}">
+                                                    {{a_details.remainingHours>0?(a_details.remainingHours+' hrs'):'0'}}
                                                  </div>
                                            </div>
             
                                            <div *ngIf="a_details.extraHours>0" class="info-chip">
-                                            <div class="info-chip-label fs-9">Overutilized by :</div>
-                                              <div class="info-chip-value">
+                                            <div class="info-chip-label text-nowrap">Overutilized by :</div>
+                                              <div class="info-chip-value text-nowrap">
                                                 {{a_details.extraHours}} hrs
                                              </div>
                                            </div>
                                        
                                            <div class="info-chip">
-                                            <div class="info-chip-label fs-9">Deadline :</div>
-                                              <div class="info-chip-value">
+                                            <div class="info-chip-label text-nowrap">Deadline :</div>
+                                              <div class="info-chip-value text-nowrap" [ngClass]="{'text-red':a_details.Status=='Delay'}" [title]="a_details.Status=='Delay'?('Action is in delay by '+a_details.Delaydays+(a_details.Delaydays>1?' days.':'day.')):'Action end date.'">
                                                 {{a_details.EndDate|date:'dd-MM-yyyy'}}
                                              </div>
                                            </div>
-                                        </ng-template>
-                                       
+                                     </div>
+
+                                           <div (click)="newDetailsaction(master_code,project_code)" class="info-chip info-chip-redirect-btn">
+                                            <div class="info-chip-label">
+                                              <svg stroke-width="0.00016" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="13px" width="13px" stroke="#383838"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>
+                                                 {{(a_details.Status=='Delay')?'View/complete action':'View action'}}
+                                            </div>
+                                          </div>
+  
                                 </div>
                                 <div class="d-flex flex-column">
-                                <span style="color:red" *ngIf="(fieldRequired&&!project_code)"   >Please select an action.</span>
+                                <span style="color:red" *ngIf="(fieldRequired&&!project_code)">Please select an action.</span>
                                 <span style="color:red" *ngIf="(noact_msg==true && project_type=='core')">You do not have any action assigned, Please create atleast one action to submit timeline</span>
                                </div>
                            </div>
@@ -918,8 +926,8 @@
                         </div>
                         <div class="add-timeline-item-group">
                             <div class="form-group w-100 mb-0">
-                                <textarea #tlwdes="ngModel" type="text" name="work" class="form-control h-100px" [ngClass]="{'error-border': (fieldRequired&&!workdes)}" [(ngModel)]="workdes" placeholder="Define your achievement here (Work description)."></textarea>
-                                <span style="color:red" *ngIf="(fieldRequired&&!workdes)" >Work description is required.</span>
+                                <textarea #tlwdes="ngModel" type="text" name="work" class="form-control h-100px" [ngClass]="{'error-border': (fieldRequired&&!workdes)}" [(ngModel)]="workdes" placeholder="Define your achievement here."></textarea>
+                                <span style="color:red" *ngIf="(fieldRequired&&!workdes)" >Work achievement is required.</span>
                             </div>
                         </div>
                     </div>
@@ -933,6 +941,7 @@
                                     <div class="form-group mb-0">
                                         <div class="curser-pointer">
                                             <div class="add-timeline-dt-tm">
+                                                <div class="d-flex align-items-center gap-1 flex-grow-1">
                                                 <div>
                                                     <span>{{current_Date|date:'EEEE, MMMM d, y'}}</span>
                                                 </div>
@@ -949,6 +958,23 @@
                                                         Complete time occupied
                                                     </span>
                                                 </div>
+                                               </div>
+
+                                               <div class="total-time-div d-flex gap-1 align-items-center total-hours-label">
+                                                <div class="total-time-title">Total hours :</div>
+                                                <div class="total-time-count">
+                                                    <ng-container *ngIf="tmReportTotalDuration">
+                                                    <span><span>{{tmReportTotalDuration.hours}}</span><span class="time-value"> Hrs</span></span>
+                                                    <span><span>{{tmReportTotalDuration.minutes}}</span><span class="time-value"> Min</span></span>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="!tmReportTotalDuration">
+                                                        <span><span>0</span><span class="time-value"> Hrs</span></span>
+                                                        <span><span>0</span><span class="time-value"> Min</span></span>
+                                                    </ng-container> 
+                                                </div>
+                                                <!--show blink when timeline on selected date is provided but not submitted-->
+                                                <i *ngIf="tmReportStatus=='Not Submitted'" class="fa fa-circle text-gray-glow blink"></i>
+                                               </div>
                                             </div>
                                        
                                             <div class="add-timeline-dt-text">
@@ -962,14 +988,14 @@
                                 </div>
                             </div>
                             <div class="dropdown-menu dropdown-timeline-menu" id="dropdown-timeline-menu" aria-labelledby="dropdownTimelineTimeMenuButton"  (click)="$event.stopPropagation()">
-                                <h6>Select Date & Time</h6>
+                                <h6>Select date & time</h6>
                                 <div class="input-group add-timeline-item-input-group my-4">
                                     <div class="input-group-text p-0 bg-white border-0 rounded-0">
                                         <mat-datepicker-toggle matSuffix [for]="TLdatePicker"></mat-datepicker-toggle>
                                         <mat-datepicker  (closed)="ddmibtn.click();" #TLdatePicker></mat-datepicker>
                                     </div>
                                     <div class="d-flex flex-column flex-grow-1">
-                                       <input [ngClass]="{'error-border': (fieldRequired&&!dateF.value)}" (dateChange)="setTimelineDate($event.value)"  [(ngModel)]="dateF.value" [matDatepicker]="TLdatePicker" id="d-date" required (click)="TLdatePicker.open()"
+                                       <input [ngClass]="{'error-border': (fieldRequired&&!dateF.value)}" (dateChange)="setTimelineDate(($event.value.toDate()<disablePreviousDate||$event.value.toDate()>todayDate)?current_Date:$event.value.toDate())"  [(ngModel)]="dateF.value" [matDatepicker]="TLdatePicker" id="d-date" required (click)="TLdatePicker.open()"
                                         [min]="disablePreviousDate"  [max]="todayDate" placeholder="Select Date" class="form-control" name="date" />
                                        <span *ngIf="fieldRequired&&!dateF.value" style="color:red">please select date.</span>    
                                    </div>
@@ -1008,11 +1034,11 @@
                         </div>
                     </div>
 
-                    <ng-container *ngIf="project_type==='core'&&project_code&&bothActTlSubm">
+                    <!-- timeline and action both completion start-->
+                    <!-- <ng-container *ngIf="project_type==='core'&&project_code&&bothActTlSubm">
                         <div class="complete-action-div">
                             <h6>
                                 <svg width="18px" height="18px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#008000" fill-rule="evenodd" d="M4,4 L9,4 C9.55228,4 10,3.55228 10,3 C10,2.44772 9.55228,2 9,2 L4,2 C2.89543,2 2,2.89543 2,4 L2,12 C2,13.1046 2.89543,14 4,14 L12,14 C13.1046,14 14,13.1046 14,12 L14,10 C14,9.44771 13.5523,9 13,9 C12.4477,9 12,9.44771 12,10 L12,12 L4,12 L4,4 Z M15.2071,2.29289 C14.8166,1.90237 14.1834,1.90237 13.7929,2.29289 L8.5,7.58579 L7.70711,6.79289 C7.31658,6.40237 6.68342,6.40237 6.29289,6.79289 C5.90237,7.18342 5.90237,7.81658 6.29289,8.20711 L7.79289,9.70711 C7.98043,9.89464 8.23478,10 8.5,10 C8.76522,10 9.01957,9.89464 9.20711,9.70711 L15.2071,3.70711 C15.5976,3.31658 15.5976,2.68342 15.2071,2.29289 Z"></path> </g></svg>
-                                <!-- <span>"Timeline submission for approval" action is completed.</span> -->
                                  <span>Action Completion</span>
                             </h6>
                             <div class="add-timeline-item">
@@ -1066,12 +1092,12 @@
                         </div>
                     </ng-container>
                     <ng-container *ngIf="project_type==='core'&&project_code">
-                        <div class="d-flex align-items-center px-4" >
+                        <div class="d-flex align-items-center px-4">
                                 <input type="checkbox" id="actioncompl" class="mr-2" [(ngModel)]="bothActTlSubm" style="accent-color: green; width:15px; height:15px;"/>
                                 <label for="actioncompl" class="mb-0 font-weight-normal"> Complete this action </label>
                         </div>
-                      </ng-container>
-                     
+                      </ng-container> -->
+                       <!-- timeline and action both completion end-->
                 </div>
 
 
@@ -1342,7 +1368,7 @@
                                 </ng-container> 
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-info ml-1 btn-fw curser-pointer"  (click)="endTimelineModal()">End Day</button>
+                        <button type="submit" class="btn btn-info ml-1 btn-fw curser-pointer"  (click)="endTimelineModal()">End day</button>
                     </div>
                 </div>
             </div> 
@@ -1356,7 +1382,7 @@
             <span *ngIf="tmReportTotalDuration">{{tmReportTotalDuration.hours}} Hrs : {{tmReportTotalDuration.minutes}} Mins</span>
             <span *ngIf="!tmReportTotalDuration">0 Hrs : 0 Mins</span>
         </button>
-        <button type="submit" class="btn btn-info btn-sm btn-fw curser-pointer"  (click)="endTimelineModal()">End Day</button>   
+        <button type="submit" class="btn btn-info btn-sm btn-fw curser-pointer"  (click)="endTimelineModal()">End day</button>   
         <button type="submit" class="btn btn-info btn-sm btn-fw curser-pointer  actnTl-submitbt" [disabled]="submittingDar" (click)="onTLSubmitBtnClick()">
             <ng-container *ngIf="bothActTlSubm==false">Add timeline</ng-container>
             <ng-container *ngIf="bothActTlSubm==true">Add Timeline & Complete Action</ng-container>
@@ -1499,8 +1525,8 @@
                         <td>
                             <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
                                 <span class="overalldelay-count">{{daySummaryReport.ActionsDelayed}}</span>
-                                <button (click)="viewActions('DELAYED')" *ngIf="daySummaryReport.ActionsDelayed>0" class="btn px-1 py-1 btn-outline-secondary fs-9">
-                                    <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#383838" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#9e9e9e" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
+                                <button (click)="viewActions('DELAYED')" *ngIf="daySummaryReport.ActionsDelayed>0" class="btn px-1 py-1 btn-outline-info fs-10">
+                                    <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
                                 </button>
                             </div>
                         </td>
@@ -1561,8 +1587,8 @@
                         <td>
                             <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
                                 <span class="overalldelay-count">{{daySummaryReport.ProjectsDelayed}}</span>
-                                <button (click)="viewProjects('DELAYED')"  *ngIf="daySummaryReport.ProjectsDelayed>0" class="btn px-1 py-1 btn-outline-secondary fs-9">
-                                    <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#383838" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#9e9e9e" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
+                                <button (click)="viewProjects('DELAYED')"  *ngIf="daySummaryReport.ProjectsDelayed>0" class="btn px-1 py-1 btn-outline-info fs-10">
+                                    <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
                                 </button>
                             </div>
                         </td>
@@ -1602,6 +1628,23 @@
                     <tr>
                         <td>
                             <div class="d-flex gap-1 align-items-center">
+                                <svg class="due-svg" version="1.1" id="designs" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .sketchy_een{fill:#e28936;} </style> <path class="sketchy_een" d="M29.879,27.345c-0.068-0.107-0.117-0.227-0.18-0.336c-0.094-0.164-0.193-0.326-0.287-0.49 c-0.201-0.354-0.389-0.713-0.582-1.07c-0.398-0.732-0.836-1.439-1.219-2.182c-0.387-0.754-0.768-1.512-1.15-2.268 c-0.398-0.785-0.85-1.541-1.281-2.311c-0.443-0.789-0.832-1.609-1.252-2.412c-0.408-0.781-0.818-1.564-1.219-2.35 c-0.414-0.812-0.836-1.621-1.258-2.428c-0.432-0.818-0.877-1.629-1.291-2.459c-0.406-0.816-0.826-1.627-1.24-2.439 c-0.465-0.918-0.965-1.824-1.496-2.705c-0.152-0.255-0.417-0.403-0.696-0.427c-0.083-0.025-0.168-0.041-0.255-0.041 c-0.077,0-0.154,0.01-0.229,0.03c-0.23,0.064-0.385,0.207-0.518,0.398c-0.287,0.412-0.561,0.83-0.826,1.258 c-0.217,0.35-0.416,0.713-0.641,1.057c-0.459,0.701-0.977,1.361-1.391,2.092c-0.432,0.756-0.885,1.5-1.328,2.25 c-0.432,0.732-0.816,1.49-1.238,2.229c-0.422,0.744-0.875,1.471-1.311,2.207c-0.434,0.732-0.822,1.488-1.25,2.225 c-0.42,0.727-0.836,1.457-1.268,2.176c-0.439,0.729-0.844,1.475-1.27,2.213c-0.514,0.893-1.004,1.799-1.564,2.664 c-0.254,0.395-0.512,0.783-0.758,1.182c-0.248,0.4-0.498,0.803-0.762,1.193c-0.162,0.24-0.137,0.541-0.012,0.791 c-0.02,0.072-0.043,0.143-0.043,0.219c0,0.215,0.086,0.424,0.238,0.576c0.162,0.162,0.352,0.217,0.576,0.238 c0.848,0.076,1.701,0.064,2.553,0.08c0.867,0.014,1.734,0.004,2.602,0.016c0.818,0.01,1.637,0.021,2.457,0.027 c0.842,0.004,1.684,0.041,2.525,0.031c0.842-0.012,1.684-0.045,2.525-0.035c0.447,0.004,0.895,0.014,1.34,0.043 c0.418,0.027,0.834,0.076,1.254,0.098c0.814,0.041,1.627,0.029,2.443,0.039c0.844,0.01,1.684,0.027,2.527,0.074 c0.98,0.053,1.959,0.129,2.941,0.164c0.461,0.018,0.922,0.023,1.385,0.031c0.422,0.008,0.842,0.016,1.262-0.018 c0.23-0.02,0.43-0.08,0.598-0.248c0.033-0.033,0.05-0.078,0.076-0.115c0.065-0.019,0.131-0.029,0.193-0.066 C29.967,28.31,30.131,27.751,29.879,27.345z M26.428,27.276c-0.812-0.02-1.627-0.09-2.441-0.129 c-0.404-0.021-0.811-0.059-1.217-0.072c-0.404-0.014-0.809-0.021-1.215-0.033c-0.844-0.023-1.688-0.031-2.533-0.037 c-0.848-0.006-1.691-0.098-2.537-0.125c-0.832-0.029-1.67-0.004-2.502,0.027c-0.852,0.033-1.701,0.027-2.553,0.021 c-0.846-0.008-1.689-0.006-2.535,0.01c-1,0.016-1.998,0.035-2.996,0.012c-0.651-0.015-1.304-0.042-1.955-0.08 c0.281-0.451,0.56-0.904,0.848-1.352c0.465-0.723,0.881-1.469,1.287-2.225c0.801-1.486,1.672-2.934,2.52-4.393 c0.439-0.756,0.896-1.5,1.326-2.264c0.402-0.711,0.85-1.396,1.273-2.094c0.443-0.73,0.848-1.479,1.27-2.221 c0.43-0.758,0.883-1.504,1.33-2.252c0.256-0.428,0.502-0.861,0.748-1.295c0.254-0.449,0.566-0.865,0.859-1.291 c0.275-0.4,0.531-0.814,0.791-1.225c0.096-0.151,0.202-0.296,0.3-0.446c0.31,0.527,0.627,1.051,0.922,1.586 c0.426,0.773,0.799,1.574,1.18,2.367c0.385,0.803,0.816,1.582,1.238,2.365c0.432,0.801,0.838,1.617,1.27,2.42 c0.854,1.592,1.646,3.217,2.496,4.812c0.408,0.766,0.854,1.512,1.26,2.279c0.404,0.766,0.803,1.535,1.195,2.307 c0.393,0.768,0.84,1.504,1.258,2.256c0.198,0.356,0.383,0.717,0.574,1.074C27.402,27.283,26.916,27.286,26.428,27.276z M16.968,18.518c0.021,0.545,0.064,1.088,0.066,1.633c0.002,0.457-0.383,0.838-0.838,0.838c-0.471,0-0.818-0.381-0.838-0.838 c-0.021-0.553-0.035-1.105-0.049-1.658c-0.014-0.562-0.027-1.133-0.006-1.695c0.021-0.555,0.055-1.109,0.07-1.666 c0.016-0.623,0.014-1.246,0.02-1.869c0.006-0.416,0.346-0.766,0.768-0.766c0.41,0,0.773,0.348,0.766,0.766 c-0.023,1.189-0.057,2.377-0.014,3.566C16.933,17.392,16.946,17.956,16.968,18.518z M16.969,23.753c0,0.451-0.377,0.828-0.828,0.828 s-0.828-0.377-0.828-0.828s0.377-0.828,0.828-0.828S16.969,23.302,16.969,23.753z"></path> </g></svg>
+                                <span class="due-label">Due today</span>
+                            </div>
+                        </td>
+                        <td>
+                        <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
+                            <span class="due-count">{{daySummaryReport.StandardDueToday}}</span>
+                            <!-- <button *ngIf="daySummaryReport.ProjectsDueToday>0" class="btn px-1 py-1 btn-outline-secondary fs-9">
+                                <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#383838" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#9e9e9e" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
+                            </button> -->
+                        </div>
+                    </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="d-flex gap-1 align-items-center">
                                 <svg class="overalldelay-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#000000" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
                                 <span class="overalldelay-label">Delayed</span>
                             </div>     
@@ -1609,8 +1652,8 @@
                         <td>
                             <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
                                 <span class="overalldelay-count">{{daySummaryReport.StandardDelayed}}</span>
-                                <button (click)="viewStandardTasks('DELAYED')"  *ngIf="daySummaryReport.StandardDelayed>0" class="btn px-1 py-1 btn-outline-secondary fs-9">
-                                    <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#383838" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#9e9e9e" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
+                                <button (click)="viewStandardTasks('DELAYED')"  *ngIf="daySummaryReport.StandardDelayed>0" class="btn px-1 py-1 btn-outline-info fs-10">
+                                    <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
                                 </button>
                             </div>
                         </td>
@@ -1638,14 +1681,14 @@
                         <td width="50%">
                             <div class="d-flex gap-1 align-items-center">
                                 <svg class="due-svg" version="1.1" id="designs" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .sketchy_een{fill:#e28936;} </style> <path class="sketchy_een" d="M29.879,27.345c-0.068-0.107-0.117-0.227-0.18-0.336c-0.094-0.164-0.193-0.326-0.287-0.49 c-0.201-0.354-0.389-0.713-0.582-1.07c-0.398-0.732-0.836-1.439-1.219-2.182c-0.387-0.754-0.768-1.512-1.15-2.268 c-0.398-0.785-0.85-1.541-1.281-2.311c-0.443-0.789-0.832-1.609-1.252-2.412c-0.408-0.781-0.818-1.564-1.219-2.35 c-0.414-0.812-0.836-1.621-1.258-2.428c-0.432-0.818-0.877-1.629-1.291-2.459c-0.406-0.816-0.826-1.627-1.24-2.439 c-0.465-0.918-0.965-1.824-1.496-2.705c-0.152-0.255-0.417-0.403-0.696-0.427c-0.083-0.025-0.168-0.041-0.255-0.041 c-0.077,0-0.154,0.01-0.229,0.03c-0.23,0.064-0.385,0.207-0.518,0.398c-0.287,0.412-0.561,0.83-0.826,1.258 c-0.217,0.35-0.416,0.713-0.641,1.057c-0.459,0.701-0.977,1.361-1.391,2.092c-0.432,0.756-0.885,1.5-1.328,2.25 c-0.432,0.732-0.816,1.49-1.238,2.229c-0.422,0.744-0.875,1.471-1.311,2.207c-0.434,0.732-0.822,1.488-1.25,2.225 c-0.42,0.727-0.836,1.457-1.268,2.176c-0.439,0.729-0.844,1.475-1.27,2.213c-0.514,0.893-1.004,1.799-1.564,2.664 c-0.254,0.395-0.512,0.783-0.758,1.182c-0.248,0.4-0.498,0.803-0.762,1.193c-0.162,0.24-0.137,0.541-0.012,0.791 c-0.02,0.072-0.043,0.143-0.043,0.219c0,0.215,0.086,0.424,0.238,0.576c0.162,0.162,0.352,0.217,0.576,0.238 c0.848,0.076,1.701,0.064,2.553,0.08c0.867,0.014,1.734,0.004,2.602,0.016c0.818,0.01,1.637,0.021,2.457,0.027 c0.842,0.004,1.684,0.041,2.525,0.031c0.842-0.012,1.684-0.045,2.525-0.035c0.447,0.004,0.895,0.014,1.34,0.043 c0.418,0.027,0.834,0.076,1.254,0.098c0.814,0.041,1.627,0.029,2.443,0.039c0.844,0.01,1.684,0.027,2.527,0.074 c0.98,0.053,1.959,0.129,2.941,0.164c0.461,0.018,0.922,0.023,1.385,0.031c0.422,0.008,0.842,0.016,1.262-0.018 c0.23-0.02,0.43-0.08,0.598-0.248c0.033-0.033,0.05-0.078,0.076-0.115c0.065-0.019,0.131-0.029,0.193-0.066 C29.967,28.31,30.131,27.751,29.879,27.345z M26.428,27.276c-0.812-0.02-1.627-0.09-2.441-0.129 c-0.404-0.021-0.811-0.059-1.217-0.072c-0.404-0.014-0.809-0.021-1.215-0.033c-0.844-0.023-1.688-0.031-2.533-0.037 c-0.848-0.006-1.691-0.098-2.537-0.125c-0.832-0.029-1.67-0.004-2.502,0.027c-0.852,0.033-1.701,0.027-2.553,0.021 c-0.846-0.008-1.689-0.006-2.535,0.01c-1,0.016-1.998,0.035-2.996,0.012c-0.651-0.015-1.304-0.042-1.955-0.08 c0.281-0.451,0.56-0.904,0.848-1.352c0.465-0.723,0.881-1.469,1.287-2.225c0.801-1.486,1.672-2.934,2.52-4.393 c0.439-0.756,0.896-1.5,1.326-2.264c0.402-0.711,0.85-1.396,1.273-2.094c0.443-0.73,0.848-1.479,1.27-2.221 c0.43-0.758,0.883-1.504,1.33-2.252c0.256-0.428,0.502-0.861,0.748-1.295c0.254-0.449,0.566-0.865,0.859-1.291 c0.275-0.4,0.531-0.814,0.791-1.225c0.096-0.151,0.202-0.296,0.3-0.446c0.31,0.527,0.627,1.051,0.922,1.586 c0.426,0.773,0.799,1.574,1.18,2.367c0.385,0.803,0.816,1.582,1.238,2.365c0.432,0.801,0.838,1.617,1.27,2.42 c0.854,1.592,1.646,3.217,2.496,4.812c0.408,0.766,0.854,1.512,1.26,2.279c0.404,0.766,0.803,1.535,1.195,2.307 c0.393,0.768,0.84,1.504,1.258,2.256c0.198,0.356,0.383,0.717,0.574,1.074C27.402,27.283,26.916,27.286,26.428,27.276z M16.968,18.518c0.021,0.545,0.064,1.088,0.066,1.633c0.002,0.457-0.383,0.838-0.838,0.838c-0.471,0-0.818-0.381-0.838-0.838 c-0.021-0.553-0.035-1.105-0.049-1.658c-0.014-0.562-0.027-1.133-0.006-1.695c0.021-0.555,0.055-1.109,0.07-1.666 c0.016-0.623,0.014-1.246,0.02-1.869c0.006-0.416,0.346-0.766,0.768-0.766c0.41,0,0.773,0.348,0.766,0.766 c-0.023,1.189-0.057,2.377-0.014,3.566C16.933,17.392,16.946,17.956,16.968,18.518z M16.969,23.753c0,0.451-0.377,0.828-0.828,0.828 s-0.828-0.377-0.828-0.828s0.377-0.828,0.828-0.828S16.969,23.302,16.969,23.753z"></path> </g></svg>
-                                <span class="due-label">Pending Tasks</span>
+                                <span class="due-label">Awaiting to create</span>
                             </div>
                         </td>
                         <td>
                         <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
                             <span class="due-count">{{daySummaryReport.AssignedTasksDue}}</span>
-                            <button (click)="viewTasks()" *ngIf="daySummaryReport.AssignedTasksDue>0" class="btn px-1 py-1 btn-outline-secondary fs-9">
-                                <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#383838" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#9e9e9e" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
+                            <button (click)="viewTasks()" *ngIf="daySummaryReport.AssignedTasksDue>0" class="btn px-1 py-1 btn-outline-info fs-10">
+                                <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>                    
                             </button>
                         </div>
                     </td>
@@ -1657,9 +1700,9 @@
             </div>
 
 
-            <div *ngIf="daySummaryReport" class="completion-ending-statement mx-2 mt-4 mb-2" [ngClass]="{'success':daySummaryReport.EmployeePerformance>=70, 'danger':daySummaryReport.EmployeePerformance<=30}">
+            <div *ngIf="daySummaryReport" class="completion-ending-statement mx-2 mt-4 mb-2" [ngClass]="{'success':daySummaryReport.EmployeePerformance>=70, 'danger':daySummaryReport.EmployeePerformance<70}">
                 <span *ngIf="daySummaryReport.EmployeePerformance>=70">You have achieved {{daySummaryReport.EmployeePerformance}}% of your tasks. Great progress so far—keep pushing forward!</span>
-                <span *ngIf="daySummaryReport.EmployeePerformance<70">You have achieved {{daySummaryReport.EmployeePerformance}}% of your tasks. Keep up the momentum and continue improving!</span>
+                <span *ngIf="daySummaryReport.EmployeePerformance<70">You have achieved {{daySummaryReport.EmployeePerformance}}% of your tasks but there’s still more to do. Finishing the rest is important to keep your performance on track."</span>
             </div>
         </div>
         <!--given <div class="end-timeline-ul mt-4  p-2 pt-3 ">
@@ -1709,9 +1752,23 @@
      </div>
       </div>
       <div class="end-timeline-modal-footer">
-            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" (click)="endTimelineModal_dismiss()">Close</button>
-            <!--if user not entered timeline or if user entered timeline but not ended day-->
-            <button *ngIf="tmReportStatus==null||tmReportStatus=='Not Submitted'" type="button" class="btn btn-sm btn-info" (click)="endDay(tmSubmDate)">End Day Now</button>
+        <!-- *ngIf="tm4EndDate_msg==true"   -->
+           <div id="endDay-not-allowed-box" class="not-allowed-error-box">
+                <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)">
+                        <circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle>
+                        <rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g>
+                        <defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs>
+                    </g>
+                </svg>
+                <span class="notif-text">Please enter timeline for the selected date before ending the day.</span> 
+            </div>
+          
+           <div class="d-flex justify-content-end gap-1">
+             <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" (click)="endTimelineModal_dismiss()">Close</button>
+              <!--if user not entered timeline or if user entered timeline but not ended day-->
+             <button *ngIf="tmReportStatus==null||tmReportStatus=='Not Submitted'" type="button" class="btn btn-sm btn-info" (click)="endDay(tmSubmDate)">End day now</button>
+           </div>
       </div>
     </div>
   </div>

@@ -39,7 +39,7 @@
                         <span id="month-date" style="display: none;">July 2024</span>
                         <span id="schedule-date" style="display: block;">{{firstDate|date :'MMM d'}} – {{lastDates | date :'MMM d y'}}</span>
                         <div (click)="getEventsForWeeks(3)" class="custom-button-today">
-                            <span>today</span>
+                            <span>Today</span>
                         </div>
                     </div>
                 </div>
@@ -4724,11 +4724,6 @@
 </div>
 <!-- Custom Event Modal End -->
 
-
-
-
-
-
 <!-- Project Modal Start -->
 <div class="modal-backdrop fade" id="schedule-event-modal-backdrop" style="display: none"></div>
 <div class="schedule-event-modal modal fade show" id="projectmodal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="projectmodalLabel" aria-hidden="true" style="display: none">
@@ -4919,12 +4914,10 @@
         </div>
       </div>
     </div>
-  </div>
-
-
+</div>
+<!-- Project Modal End -->
 
 <!-- Delete recurring event Start -->
-
   <div class="modal fade" id="delevent" tabindex="-1" role="dialog" aria-labelledby="delevent" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 300px;">
         <div class="modal-content">
@@ -4962,11 +4955,9 @@
         </div>
     </div>
 </div>
-
 <!-- Delete recurring event End -->
 
 <!-- Edit recurring event start -->
-
 <div class="modal fade" id="confirmpopup" tabindex="-1" role="dialog" aria-labelledby="delevent" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 300px;">
         <div class="modal-content">
@@ -5003,7 +4994,6 @@
 <!-- Edit recurring event End -->
 
 <!-- Action for event start -->
-
 <div class="modal fade" id="responsemodal" tabindex="-1" role="dialog" aria-labelledby="responsemodal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 300px;">
         <div class="modal-content">
@@ -5037,12 +5027,10 @@
         </div>
     </div>
 </div>
-
 <!-- Action for event end -->
 
 
 <!-- Action to Reject event start -->
-
 <div class="modal fade" id="responsemodal1" tabindex="-1" role="dialog" aria-labelledby="responsemodal1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 300px;">
         <div class="modal-content">
@@ -5076,30 +5064,27 @@
         </div>
     </div>
 </div>
-
 <!-- Action to Reject event end -->
 
-
+<!-- Loader start -->
 <ng-template #pleasewait>
     <div class="smart-glass">
         <h1></h1>
         <div class="logo">
-          <div class="circle">
             <div class="circle">
                 <div class="circle">
+                    <div class="circle"></div>
+                </div>
+            </div>
+            <div class="hold-loader">
+                <div class="loader-img">
+                    <img alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 100%;">
                 </div>
             </div>
         </div>
-        <div class="hold-loader">
-          <div class="loader-img">
-            <img alt="Logo" src="assets/icons/Artboard Copy.png" id="creative" style="width: 100%;">
-          </div>
-         </div>
-        </div>
-      </div>
-    </ng-template>
-<!-- Project Modal End -->
-
+    </div>
+</ng-template>
+<!-- Loader end -->
 
 <!-- Pending list sidebar start -->
 <div class="quickaction-sidebar" id="pending-list">

@@ -1094,7 +1094,11 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl+'TestAPI/NewGetEmployeePerformance',this.ObjSubTaskDTO);
   }
 
-
+  GetCPProjectCost(empno:string,allocatedHr:string){  debugger
+    this.ObjDto.Emp_No=empno;
+    this.ObjDto.Hours=allocatedHr;
+    return this.http.post('https://cswebapps.com/ProjectCostAPI/api/ProjectCost/GetCPProjectCost',this.ObjDto);
+  }
 
 
 }

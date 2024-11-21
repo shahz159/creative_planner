@@ -528,7 +528,8 @@ export class DashboardComponent implements OnInit {
         hour12: true
       },
       nowIndicator: true,
-      allDaySlot: false
+      allDaySlot: false,
+     
     };
 
     
@@ -4547,6 +4548,13 @@ debugger
   }
 
 
+
+
+
+
+
+  @ViewChild('dashboardcalender') dashboardcalender:any;
+
   fetchDataStartTime: number;
   fetchDataEndTime: number;
   dataBindStartTime: number;
@@ -4605,7 +4613,9 @@ debugger
           },
           nowIndicator: true,
           allDaySlot: false,
-          datesSet: () => { this.TwinEvent = []; }
+          datesSet: () => { 
+            this.TwinEvent = [];   
+          }
           // eventClick: function(info) {
           //   alert('Event: ' + info.event.title);
           //   alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
@@ -4619,7 +4629,7 @@ debugger
       });
   }
 
-
+   
 
 
 
@@ -4642,7 +4652,7 @@ debugger
     //   eventElement.style.opacity = '0.5';
     // }
 
-    const event = info.event;
+    const event = info.event; 
     const start = new Date(event.start);
     const end = new Date(event.end);
 

@@ -823,6 +823,10 @@ a.dropdown-item{
 #rejectbar.kt-quick-panel--on {
   width: 50% !important;
 }
+
+#acceptbar.kt-quick-panel--on {
+  width: 50% !important;
+}
 .event-main {
   flex: 1 1 auto;
   display: flex;

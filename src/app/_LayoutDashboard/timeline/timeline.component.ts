@@ -143,6 +143,7 @@ export class TimelineComponent implements OnInit {
     this.activeDate=true;
     this.sortType=this.sort1;
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
+    this.disablePreviousDate.setHours(0,0,0,0);
     this.current_Date = moment(new Date()).format("MM/DD/YYYY");
     this.currenthours = this.date.getHours();
     this.currentminutes = this.date.getMinutes();
@@ -171,7 +172,7 @@ export class TimelineComponent implements OnInit {
 
   noTimeSpaceAvailable:boolean=false;
   setTimelineDate(val)
-  {   
+  {    
        this.current_Date = moment(val).format("MM/DD/YYYY");
        this.dateF = new FormControl(new Date(val));
        this.starttime = null;
@@ -751,7 +752,6 @@ submitDar() {
   }
 
   newDetails(pcode) {
-    debugger
     let name: string = 'Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
@@ -761,7 +761,6 @@ submitDar() {
 
 
   newDetailsaction(pcode,acode:string|undefined) {
-    debugger
 let qparams='';
     if(acode!==undefined){
       qparams=`?actionCode=${acode}`;
@@ -827,16 +826,14 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
       if(of==='PROJECT'){
         this.p_details=null;
         this.a_details=null;
+        this.p_loading=true;
       }
       else{
         this.a_details=null;
+        this.a_loading=true;
       }
-
-      if(of=='PROJECT')
-      this.p_loading=true;
-      else if(of=='ACTION')
-      this.a_loading=true;
- 
+      
+      
       this.service.NewSubTaskDetailsService(prjcode).subscribe((res:any)=>{
       
                  console.log("|||=>",res[0].ProjectStates_Json);
@@ -845,7 +842,7 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
                   this.p_details=JSON.parse(res[0].ProjectStates_Json)[0];
                   this.p_details.project_type=JSON.parse(res[0].ProjectName_Json)[0].Project_Type;
                   this.projectMoreDetailsService.getProjectTimeLine(prjcode, '1', this.Current_user_ID).subscribe((res: any) => { 
-                      this.p_loading=false;
+                    
                       const tlTotalHrs:number = +JSON.parse(res[0].Totalhours);    
                       const remainingHrs:number=+((this.p_details.AllocatedHours-tlTotalHrs).toFixed(1));
                       this.p_details={
@@ -854,13 +851,13 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
                         remainingHours:remainingHrs<0?0:remainingHrs,
                         extraHours:remainingHrs<0?(Math.abs(remainingHrs)):0
                       };
+                      this.p_loading=false;     console.log('p_loading:',this.p_details);
                   });
 
                  }
                  else{
                   this.a_details=JSON.parse(res[0].ProjectStates_Json)[0];
                   this.service.DARGraphCalculations_Json(prjcode).subscribe((res:any)=>{
-                    this.a_loading=false; 
                     const actionAlhrs = (res[0]['ProjectMaxDuration']);  // action planned allocated hrs.
                     const usedhrs = (res[0]['TotalHoursUsedInDAR']);  // my timeline hrs on the action.
                     const remainingHrs:number=+((actionAlhrs-usedhrs).toFixed(1));
@@ -870,7 +867,8 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
                         remainingHours:remainingHrs<0?0:remainingHrs,
                         extraHours:remainingHrs<0?(Math.abs(remainingHrs)):0
                     }
-                           
+                    this.a_loading=false;
+                              console.log('a_loading:',this.a_details);
                    });
                  }
       });
@@ -1091,11 +1089,21 @@ submitTL(submDate:string)
 }
 
 
+// tm4EndDate_msg:boolean=false;
+
 endDay(submDate:string)
 {
-
   if(this.tmReportTotalDuration==null){    // if there is no timeline has been entered by the user on the selected date.
-    this.notifyService.showError('Please enter a timeline for the selected date before ending the day.','Timeline Required');
+    // this.tm4EndDate_msg=true;
+    const err_box=document.querySelector('#endDay-not-allowed-box');
+    err_box.classList.add('anim-start');
+    const onanimend=()=>{
+      setTimeout(()=>{
+        err_box.classList.remove('anim-start');
+        err_box.removeEventListener('animationend',onanimend);
+      },2000);
+    };
+    err_box.addEventListener('animationend',onanimend);
     return;
   }
 
@@ -1136,17 +1144,6 @@ endDay(submDate:string)
    });
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1223,6 +1220,7 @@ tmReportStatus:any;
 tmSubmDate:any;
 tmReportLoading:boolean=false;
 getTimelineReportByDate(dateVal:'today'|'yesterday') {   debugger
+  if(dateVal){
     this.tmReportArr=[];
     this.tmReportStatus=null;
     this.tmReportTotalDuration=null;
@@ -1285,6 +1283,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {   debugger
 
       });
 
+  }
 }
 
 
@@ -1303,13 +1302,15 @@ endTimelineModal(){
   document.getElementById("endTimelineModalBackdrop").style.display = "block";
   document.getElementById("endTimelineModalBackdrop").classList.add("show");
   this.getDayReportSummary();
+  // this.tm4EndDate_msg=false;
 }
 endTimelineModal_dismiss(){
   document.getElementById("endTimelineModal").style.display = "none";
   document.getElementById("endTimelineModal").classList.remove("show");
   document.getElementById("endTimelineModalBackdrop").style.display = "none";
   document.getElementById("endTimelineModalBackdrop").classList.remove("show");
-
+  $('#endDay-not-allowed-box').removeClass('anim-start');
+  // this.tm4EndDate_msg=false;
 }
 
 
@@ -1346,7 +1347,7 @@ getDayReportSummary(){
                this.daySummaryReport=JSON.parse(res.EmployeeReport)[0];
               console.log("daySummaryReport:",this.daySummaryReport);
               this.dueTodayTasksCount=[];
-              ['ActionsDueToday','ProjectsDueToday','AssignedTasksDue'].forEach((dkey)=>{
+              ['ActionsDueToday','ProjectsDueToday','StandardDueToday'].forEach((dkey)=>{
                 if(this.daySummaryReport[dkey]>0){
                       const ob={ taskType:dkey, count:this.daySummaryReport[dkey] };
                       this.dueTodayTasksCount.push(ob);

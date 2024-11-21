@@ -918,7 +918,7 @@
 
 
                                                           <th [ngClass]="{'d-none':!isowner}"  [appSort]="this._ProjectsListBy_Pid" data-order="desc"
-                                                          data-name="Exec_BlockName" tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                                                          data-name="Project_Owner" tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
                                                           aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other"><i
                                                               class="fas fa-sort"></i>Owner</span></th>
 
@@ -930,18 +930,36 @@
                                                           class="fas fa-sort"></i> Responsible</span></th>
 
 
-                                                  <th [ngClass]="{'d-none':!isclient}" [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="TM_DisplayName"
+                                                  <th [ngClass]="{'d-none':!isclient}" [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="Client_Name"
                                                   tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
                                                   aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other"><i
                                                       class="fas fa-sort"></i> Client</span></th>
 
-
+<!--
                                                 <th [ngClass]="{'d-none':!iscost}" ><span class="kt-widget__other"><i class="fas fa-sort"></i>
-                                                        Cost</span> </th>
+                                                        Cost</span> </th> -->
 
 
-                                              <th [ngClass]="{'d-none':!isDepartment}" ><span class="kt-widget__other"><i class="fas fa-sort"></i>
-                                                Company</span> </th>
+                                              <th [ngClass]="{'d-none':!iscost}" [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="Project_Cost"
+                                              tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                                              aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other"><i
+                                                  class="fas fa-sort"></i> Cost</span></th>
+
+
+
+
+
+
+                                              <!-- <th [ngClass]="{'d-none':!isDepartment}" ><span class="kt-widget__other"><i class="fas fa-sort"></i>
+                                                Company</span> </th> -->
+
+                                          <th [ngClass]="{'d-none':!isDepartment}" [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="Com_Name"
+                                          tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
+                                          aria-label="Project Type: activate to sort column ascending"><span class="kt-widget__other"><i
+                                              class="fas fa-sort"></i> Company</span></th>
+
+
+
 
 
                                                     <th [ngClass]="{'d-none':!isdeadline}" [appSort]="this._ProjectsListBy_Pid" data-order="desc" data-name="DeadLine"
@@ -963,20 +981,6 @@
                                                       data-name="Project_StartDate" tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
                                                       aria-label="Project Type: activate to sort column ascending" *ngIf="!showDeletedPrjOnly"><span
                                                         class="kt-widget__other"><i class="fas fa-sort"></i> Last update </span> </th>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1009,11 +1013,11 @@
                                                         <ng-container *ngIf="_MessageIfNotOwner == ''">
 
 
-                                                          <a class="kt-todo__icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                          <a class="kt-todo__icon"     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
 
 
-                                                            <svg viewBox="0 0 24 24" style="height:28px" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <svg class="cursor-pointer"  viewBox="0 0 24 24" style="height:28px;cursor:pointer" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                               <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                                               <g id="SVGRepo_iconCarrier">
@@ -1559,9 +1563,10 @@
 
                                                 <!-- <ng-container *ngIf="!showDeletedPrjOnly"> -->
 
-                                                  <td *ngIf="item1.Project_Cost"  [ngClass]="{'d-none': !iscost}"  class="classCost" >{{item1.Project_Cost}}</td>
-                                                  <td *ngIf="!item1.Project_Cost"  [ngClass]="{'d-none': !iscost}"  class="classCost" >0</td>
-
+                                                  <td *ngIf="item1.Project_Cost;else SAR"  [ngClass]="{'d-none': !iscost}"  class="classCost" >{{item1.Project_Cost |currency:'SAR '}}</td>
+                                                 <ng-template #SAR>
+                                                  <td  [ngClass]="{'d-none': !iscost}"  class="classCost" > SAR 0.0</td>
+                                                </ng-template>
 
                                                  <!-- </ng-container> -->
                                                  <!-- cost data end -->
@@ -1584,13 +1589,17 @@
                                                          <!-- Deadline data start                 -->
                                                 <ng-container *ngIf="!showDeletedPrjOnly">
                                                     <td  [ngClass]="{'d-none':!isdeadline}"  class="class_deadline">
-                                                        <span class="kt-widget__other text-nowrap ">
+                                                        <span class="kt-widget__other text-nowrap">
 
                                                          <div
                                                                 *ngIf="item1.Exec_BlockName=='Standard Tasks' || item1.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                                 <span
                                                                     class="kt-widget__other text-nowrap">{{item1.SubmissionType}}</span>
-                                                                       <div  class="text-nowrap font" *ngIf="item1.SubmissionType === 'Weekly'||'Daily'|| 'Annually'||'Monthly'  ">{{item1.StandardDuration}}</div>
+                                                                    <div
+                                                                    class="text-nowrap font light-font"
+                                                                    *ngIf="item1.SubmissionType === 'Weekly' || item1.SubmissionType === 'Daily' || item1.SubmissionType === 'Annually' || item1.SubmissionType === 'Monthly'">
+                                                                    {{ formatTime(item1.StandardDuration) }}
+                                                                  </div>
                                                             </div>
                                                           </span>
 
@@ -1615,7 +1624,7 @@
                                                          <ng-container *ngIf="!showDeletedPrjOnly">
                                                           <td   [ngClass]="{'d-none':!isstatus}"    class="statusClass">
                                                             <div *ngIf="item1.Status=='Delay'"  class="attach-tippy">
-                                                              <span class="vi  st-line" style="text-transform: lowercase;"> {{item1.Delaydays}} days delay</span>
+                                                              <span class="  st-line" style="text-transform: lowercase;"> {{item1.Delaydays}} days delay</span>
                                                               <span *ngIf="item1.Delaydays>=0" class=" Delay_color font-weight-400 " style="text-transform: lowercase;">
                                                                 {{getFormattedDelay(item1.Delaydays)}}
 
@@ -1626,7 +1635,7 @@
                                                               </span>
                                                             </div>
                                                             <div *ngIf="item1.SubmissionType && item1.Status.includes('Days')"  class="attach-tippy">
-                                                              <span class="vi  st-line" style="text-transform: lowercase;"> {{item1.Status}} delay </span>
+                                                              <span class=" st-line" style="text-transform: lowercase;"> {{item1.Status}} delay </span>
                                                               <span class=" Delay_color font-weight-400 " style="text-transform: lowercase;">
                                                                 {{getFormattedDelay(getStatusNumber(item1.Status))}} delay
                                                               </span>
@@ -1670,13 +1679,25 @@
                                                                 <span
                                                                     class="Project_Complete_Rejected_color font-weight-400">{{item1.Status}}</span>
                                                             </div>
+
+
                                                             <div *ngIf="item1.Status=='Project Hold'">
+                                                              <span class="attach-tippy">
                                                                 <span class="Hold font-weight-400">Hold</span>
+                                                                <span class="st-line curser-pointer" >
+
+                                                                  <div *ngIf="item1.approvalfromdate" >Pending approval since : {{item1.approvalfromdate | date: 'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item1.approvalfromdate))}})
+
+                                                                  </div></span>
+                                                                                </span>
                                                             </div>
+
+
                                                             <div *ngIf="item1.Status=='Project Holded'">
                                                                 <span class="Hold_color font-weight-400"
                                                                   >Hold</span>
                                                             </div>
+
                                                             <div *ngIf="item1.Status=='Under Approval'">
                                                               <span class="attach-tippy">
                                                                 <span class="new-project font-weight-400 ">New approval</span>
@@ -1687,7 +1708,9 @@
 
                                                                 <span class="st-line curser-pointer" >
 
-                                                             <div style="color:#9C27B0;">Pending approval since : {{item1.approvalfromdate | date: 'dd-MM-yyyy'}}</div></span>
+                                                             <div *ngIf="item1.approvalfromdate" >Pending approval since : {{item1.approvalfromdate | date: 'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item1.approvalfromdate))}})
+
+                                                             </div></span>
                                                                            </span>
 
                                                             </div>
@@ -1751,7 +1774,10 @@
 
                                                             </div>
                                                             <div *ngIf="item1.Status=='Forward Under Approval'" class="attach-tippy">
-                                                              <span class="pending_appr st-line">Pending approval since : {{item1.approvalfromdate | date: 'dd-MM-yyyy'}}</span>
+                                                              <span *ngIf="item1.approvalfromdate" class=" st-line">Pending approval since : {{item1.approvalfromdate | date: 'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item1.approvalfromdate))}})
+
+
+                                                              </span>
                                                                 <span
                                                                     class="font-weight-400 Forward_Under_Approval_color">{{item1.Status =="Forward Under Approval"? "Forward approval":item1.Status}}
                                                                 </span>
@@ -1781,11 +1807,15 @@
                                                               <span class="New_Project_Rejected_color font-weight-400">New project rejected</span>
                                                               <span class="attach-tippy">
 
-                                                              <span class=" rej st-line curser-pointer" >
+                                                              <span class=" st-line curser-pointer" >
                                                                  <div style="width: max-content;">Rejected by: <h6>{{item1.RejectedBy}} </h6></div>
                                                                   <div>on: {{item1.RejectFromDate | date: 'dd-MM-yyyy'}}</div>
+                                                                  <div> ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item1.RejectFromDate))}})  </div>
                                                                   <div>Comment : {{item1.Rejectcomments}}</div></span>
-                                                              </span></div>
+                                                              </span>
+
+                                                              <span class="New_Project_Rejected">{{item1.RejectedBy}}</span>
+                                                            </div>
 
 
 
@@ -1801,7 +1831,9 @@
                                                                   <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
                                                               </div>
                                                             </div>
-                                                            <div *ngIf="item1.Status=='Enactive Under Approval'">
+
+
+                                                            <div *ngIf="item1.Status=='Enactive Under Approval'" >
                                                                 <span class="font-weight-400 Enactive_Under_Approval_color">{{item1.Status=="Enactive Under Approval"? "Enactive approval":item1.Status}}
                                                                 </span>
                                                                 <div class="pulsing-div">
@@ -1809,15 +1841,22 @@
                                                                   <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
                                                               </div>
                                                             </div>
-                                                            <div *ngIf="item1.Status=='Project Hold Under Approval'">
+
+
+                                                            <div *ngIf="item1.Status=='Project Hold Under Approval'" >
+                                                              <!-- <span  *ngIf="item1.approvalfromdate" class="st-line">Pending approval since : {{item1.approvalfromdate | date :'dd-MM-yyyy'}}</span> -->
                                                                 <span class="font-weight-400"
                                                                     style="color: #a85098;">{{item1.Status=="Project Hold Under Approval" ? "Hold approval" : item1.Status}}
                                                                 </span>
-                                                                <div class="pulsing-div">
+                                                                <!-- <div class="pulsing-div">
                                                                   <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
                                                                   <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
-                                                              </div>
+                                                              </div> -->
                                                             </div>
+
+
+
+
                                                             <div *ngIf="item1.Status=='ToDo Achieved'">
                                                                 <span class="todoachieved font-weight-400
                                                                 ">{{item1.Status}}
@@ -1954,7 +1993,7 @@
                                              <td [ngClass]="{'d-none':!isstatus}" >
 
                                               <div *ngIf="item1.Status=='Delay'" class="attach-tippy">
-                                                <span *ngIf="item1.Delaydays>0" class="vi st-line status-text">{{(item1.Delaydays)}} days delay</span>
+                                                <span *ngIf="item1.Delaydays>0" class=" st-line status-text">{{(item1.Delaydays)}} days delay</span>
                                                 <span *ngIf="item1.Delaydays>0" class=" Delay_color font-weight-400 status-text">{{getFormattedDelay(item1.Delaydays)}}
                                                 <span class="lowercase">{{item1.Status}}</span>
                                                 </span>
@@ -2074,12 +2113,12 @@
                                             </div>
 
                                             <div *ngIf="item1.Project_Block=='003'&&item1.Status.includes('Delay')" class="attach-tippy">
-                                              <span class="vi st-line status-text">{{formatStatus(item1.Status)}}</span>
+                                              <span class=" st-line status-text">{{formatStatus(item1.Status)}}</span>
                                               <span class="Delay_color font-weight-400 status-text">{{getFormattedDelay(getStatusNumber(item1.Status))}} delay</span>
                                            </div>
 
                                            <div *ngIf="item1.Project_Block=='003' && item1.Status.endsWith('Days')" class="attach-tippy">
-                                            <span class="vi st-line status-text">{{item1.Status}} delay</span>
+                                            <span class=" st-line status-text">{{item1.Status}} delay</span>
                                             <span class="Delay_color font-weight-400 status-text">{{getFormattedDelay(getStatusNumber(item1.Status))}} delay</span>
                                         </div>
 

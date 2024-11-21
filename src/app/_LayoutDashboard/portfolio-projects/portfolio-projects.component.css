@@ -4926,9 +4926,9 @@ color: #121212;
 }
 
 /*new details page loading circle end*/
-.vi{
+/* .vi{
   color:#D32F2F !important ;
-}
+} */
 .pending_appr{
   color: #9C27B0 !important;
 
@@ -5506,4 +5506,14 @@ svg:not {
 }
 .rejs{
   color: #BA68C8 !important;
+}
+.light-font {
+  font-size:small; /* or use a specific value, e.g., 12px */
+  font-weight: 400; /* Makes the font weight lighter */
+  color: #666; /* Optional: Adjust color for a lighter appearance */
+}
+.New_Project_Rejected{
+  display: flex;
+  width: max-content;
+  color: #979797;
 }
