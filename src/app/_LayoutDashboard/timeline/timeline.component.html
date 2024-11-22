@@ -306,7 +306,10 @@
                                                     <span>{{ formatDuration(item.TotalDuration)}}</span>
                                                 </li>
                                             </ul>
-                                            <button *ngIf="(Type==type1)&&(item.DarStatus=='Not Submitted'&&item.submitable==true)" (click)="submitTL(item.SubmissionDate)" type="button" class="btn btn-info btn-sm btn-fw curser-pointer">Submit</button>
+                                            <!-- submitTL(item.SubmissionDate) -->
+                                             <!--if user not entered timeline or if user entered timeline but not ended day-->
+                                             <!-- *ngIf="tmReportStatus==null||tmReportStatus=='Not Submitted'" -->
+                                            <!-- <button *ngIf="(Type==type1)&&(item.DarStatus=='Not Submitted'&&item.submitable==true)" (click)="endTimelineModal()" type="button" class="btn btn-info btn-sm btn-fw curser-pointer">End day</button> -->
                                         </div>
                                     </div>
                                 </div>

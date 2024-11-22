@@ -2470,6 +2470,7 @@ reset(){
      // step2 form clear.   start
 
   // step3 info clear. start
+    this.projectInfo=null;
     this.PrjTemplActions=[];
     this.PrjActionsInfo=[];
     this.draftActionsLoading=false;

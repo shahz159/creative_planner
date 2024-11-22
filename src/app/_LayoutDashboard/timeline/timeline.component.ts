@@ -1029,64 +1029,64 @@ previous_filter() {
 
 
 
-submitTL(submDate:string)
-{
+// submitTL(submDate:string)
+// {
 
-  Swal.fire({
-    title: "Confirm End of Day",
-    text:'Are you sure you want to end the day?',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, End Day',
-    cancelButtonText: 'No'
-  })
-    .then((option) => {
-      if (option.isConfirmed) {  debugger
-         const empno=this.Current_user_ID;
-         const tmDate=moment(new Date(submDate)).format('MM/DD/YYYY');
-         this.service.NewInsertTimelineReport(empno,tmDate).subscribe((res:any)=>{
-               console.log(res);
+//   Swal.fire({
+//     title: "Confirm End of Day",
+//     text:'Are you sure you want to end the day?',
+//     showCancelButton: true,
+//     confirmButtonText: 'Yes, End Day',
+//     cancelButtonText: 'No'
+//   })
+//     .then((option) => {
+//       if (option.isConfirmed) {  debugger
+//          const empno=this.Current_user_ID;
+//          const tmDate=moment(new Date(submDate)).format('MM/DD/YYYY');
+//          this.service.NewInsertTimelineReport(empno,tmDate).subscribe((res:any)=>{
+//                console.log(res);
 
-          if(res&&res.message){
-               if(res.message=='1'){
-                    Swal.fire(
-                      'Timeline report submitted successfully.',
-                      `date : ${submDate}`,
-                      'success'
-                    );
-                   this.timelineLog(this.type1);
-                   this.getTimelineReportByDate(this.timeline_of);
-                    // rebind
-               }
-               else if(res.message=='2'||res.message!='2'){
-                Swal.fire(
-                  'Failed to submit timeline report.',
-                  `date : ${submDate}`,
-                  'error'
-                );
-               }
-          }
-          else{
-            Swal.fire({
-              icon: 'error',
-              title: 'Something went wrong!',
-              text: 'An issue occurred while processing your request. Please review the timeline before try again.',
-            });
-          }
+//           if(res&&res.message){
+//                if(res.message=='1'){
+//                     Swal.fire(
+//                       'Timeline report submitted successfully.',
+//                       `date : ${submDate}`,
+//                       'success'
+//                     );
+//                    this.timelineLog(this.type1);
+//                    this.getTimelineReportByDate(this.timeline_of);
+//                     // rebind
+//                }
+//                else if(res.message=='2'||res.message!='2'){
+//                 Swal.fire(
+//                   'Failed to submit timeline report.',
+//                   `date : ${submDate}`,
+//                   'error'
+//                 );
+//                }
+//           }
+//           else{
+//             Swal.fire({
+//               icon: 'error',
+//               title: 'Something went wrong!',
+//               text: 'An issue occurred while processing your request. Please review the timeline before try again.',
+//             });
+//           }
 
-         });
+//          });
 
-      }
-      else {
-        Swal.fire(
-          'Timeline report not submitted',
-          `date : ${submDate}`,
-          'error'
-        );
+//       }
+//       else {
+//         Swal.fire(
+//           'Timeline report not submitted',
+//           `date : ${submDate}`,
+//           'error'
+//         );
 
-      }
-    })
-    .catch(e => console.log(e));
-}
+//       }
+//     })
+//     .catch(e => console.log(e));
+// }
 
 
 // tm4EndDate_msg:boolean=false;

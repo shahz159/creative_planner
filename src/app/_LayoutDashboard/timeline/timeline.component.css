@@ -2063,7 +2063,9 @@ span.timeline-time svg {
   }
 }
 
-
+.modal-backdrop.fade.show {
+  display: block !important;
+}
 
 
 

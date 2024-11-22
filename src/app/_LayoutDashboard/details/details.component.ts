@@ -1129,7 +1129,7 @@ debugger
     }
 
 
-    this.detectMembersWithoutActions();  // calculate 'hasNoActionMembers';
+    // this.detectMembersWithoutActions();  // calculate 'hasNoActionMembers';
 
 
    // when project has no activity done even after start date.   calculation here.
@@ -1274,7 +1274,7 @@ debugger
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-
+debugger
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
           console.log(this.Project_List,"dddddd")
@@ -1297,7 +1297,7 @@ debugger
 // If project has project auditor
 
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{
-
+    
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', '), isActive:result[0].isActive};
             console.log(this.PeopleOnProject,"sssssssss")
@@ -1331,7 +1331,7 @@ debugger
 // sorting people based on active or inactive
 
 
-          this.detectMembersWithoutActions();  // calculate 'hasNoActionMembers';
+          // this.detectMembersWithoutActions();  // calculate 'hasNoActionMembers';
         }
       });
 
@@ -3258,7 +3258,7 @@ approvalSubmitting:boolean=false;
   getResponsibleActions() {
 
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
-      (data) => {
+      (data) => { debugger
         this.ProjectPercentage = data[0]['ProjectPercentage'];
         this.ProjectStatus = data[0]['ProjectStatus'];
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
@@ -3267,11 +3267,12 @@ approvalSubmitting:boolean=false;
         this.darArr=this.darArr.filter(acn=>['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(acn.SubProject_Status.trim())==false);
         this.Subtask_Res_List=JSON.parse(data[0]['SubTaskResponsibe_Json']);
         this.totalSubtaskHours = (data[0]['SubtaskHours']);
+        const pracis=JSON.parse(data[0]['RACIS_Count']);
         console.log('Subtask_Res_List:',this.Subtask_Res_List);
         console.log('totalSubtaskHours:',this.totalSubtaskHours);
 
         console.log('darArr:', this.darArr);
-try{
+      try{
         if (this.darArr.length == 0 && (this.projectInfo.OwnerEmpNo == this.Current_user_ID || this.projectInfo.ResponsibleEmpNo == this.Current_user_ID)) {
 // user is prj owner
 // user is prj resp + he does not contains any actions.
@@ -3297,6 +3298,24 @@ try{
       }catch(e){
           console.error(e);
       }
+
+
+
+      
+     // detect members without actions
+     this.hasNoActionMembers=[]; 
+     let pMemberwithActns=this.Subtask_Res_List.map(ob=>ob.Team_Res);
+     const arr=[];
+     pracis.forEach((tmember)=>{ 
+      if( tmember.Role!='Owner'&&pMemberwithActns.includes(tmember.Emp_No)==false){
+            if(arr.findIndex(ob=>ob.Emp_No==tmember.Emp_No)==-1)
+            arr.push({  Emp_No:tmember.Emp_No.trim(), Emp_Name:tmember.RACIS.trim() }); 
+      }
+     });
+     this.hasNoActionMembers=arr;
+    // detect members without actions
+
+
       });
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
@@ -11082,21 +11101,21 @@ getFormattedDuration(totalDuration: number): string {
 
 
   hasNoActionMembers:any=[];
-  detectMembersWithoutActions(){
-      if(this.Project_List&&this.filteremployee)
-      {    // if we have info of all the peoples present in the project. and info of all the people who have actions.
-        const peopleWithActns=this.filteremployee.map(item=>item.Team_Res);
-        const arr=[];
-        this.Project_List.forEach((item)=>{
-                if(item.Role!='Owner'&&peopleWithActns.includes(item.Emp_No)==false)
-                {
-                   if(arr.findIndex(ob=>ob.Emp_No==item.Emp_No)==-1)
-                   arr.push({  Emp_No:item.Emp_No, Emp_Name:item.RACIS.slice(0,item.RACIS.indexOf('(')).trim() })
-                }
-         });
-        this.hasNoActionMembers=arr;
-      }
-  }
+  // detectMembersWithoutActions(){  debugger
+  //     if(this.Project_List&&this.filteremployee)
+  //     {    // if we have info of all the peoples present in the project. and info of all the people who have actions.
+  //       const peopleWithActns=this.filteremployee.map(item=>item.Team_Res);
+  //       const arr=[];
+  //       this.Project_List.forEach((item)=>{
+  //               if(item.Role!='Owner'&&peopleWithActns.includes(item.Emp_No)==false)
+  //               {
+  //                  if(arr.findIndex(ob=>ob.Emp_No==item.Emp_No)==-1)
+  //                  arr.push({  Emp_No:item.Emp_No, Emp_Name:item.RACIS.slice(0,item.RACIS.indexOf('(')).trim() })
+  //               }
+  //        });
+  //       this.hasNoActionMembers=arr;
+  //     }
+  // }
 
 
 
