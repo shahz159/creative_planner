@@ -135,7 +135,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
   // }
 
 
- 
+
 
   ngOnInit(): void {
 
@@ -256,7 +256,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
     });
 
     if(category_Id&&taskToOpen){
-      this.newCatid=category_Id;  
+      this.newCatid=category_Id;
       this.GetTodoProjects();
       this.expandTask(taskToOpen);
     }
@@ -274,9 +274,9 @@ export class ProjectUnplannedTaskComponent implements OnInit{
 
 
   expandTask(taskId:number){
-       
+
     this.categoryTasksLoaded=new EventEmitter<any>();
-    this.categoryTasksLoaded.subscribe(()=>{   
+    this.categoryTasksLoaded.subscribe(()=>{
       // when all tasks of the category loaded.
       const listindex=[this._TodoList,this.ActionedAssigned_Josn,this._CompletedList,this.ActionedSubtask_Json].findIndex((list)=>{
         return list&&list.find((item)=>item.Assign_Id==taskId);
@@ -291,15 +291,15 @@ export class ProjectUnplannedTaskComponent implements OnInit{
              const e2=document.querySelector(`#${anchrId}Item-${taskId}`);
              const e3:any=e2.querySelector('.inputforfocus');
 
-                           
+
              e1.click();
              setTimeout(()=>e3.focus(),500);
              e2.classList.add('task-item-focus');
              e2.addEventListener('animationend',()=>e2.classList.remove('task-item-focus'));
              this.categoryTasksLoaded.unsubscribe();
-      }  
+      }
     });
-         
+
   }
 
 
@@ -459,7 +459,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
         // console.log("Data---->", data);
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
         console.log(this.CategoryList,"this.CategoryListthis.CategoryListthis.CategoryListthis.CategoryList")
-        this._TodoList = JSON.parse(data[0]['JsonData_Json']);   
+        this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
@@ -506,15 +506,15 @@ export class ProjectUnplannedTaskComponent implements OnInit{
         this.CountsAccepted= _Accepted;
         this.CountsPending= _Pending;
         this.CountsRejected= _Rejected;
-        
-         
+
+
         if(this.categoryTasksLoaded){
           setTimeout(()=>{
             this.categoryTasksLoaded.emit();
           },1000);
         }
-         
-        
+
+
       });
 
   }
@@ -536,7 +536,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
         let message: string = data['Message'];
         this.GetAssigned_SubtaskProjects();
           this._Demotext = "";
-        this.notifyService.showSuccess("", message);
+        this.notifyService.showSuccess("", 'To do meeting');
 
   //  if (message=='Todomeeting'){
   //   this.GetAssigned_SubtaskProjects();
@@ -564,7 +564,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
         let message: string = data['Message'];
         this.GetAssigned_SubtaskProjects();
         this._Demotext = "";
-        this.notifyService.showInfo("", message);
+        this.notifyService.showInfo("", 'To do meeting');
 
 
         // if( message =='Todomeeting'){
@@ -1919,7 +1919,7 @@ else{
   fd.append("ProjectType", this.selectedProjecttype);
   fd.append("AssignTo", this.employeSelect);
   fd.append("Portfolio_Id", this.port_id);
-  fd.append("StartDate", datestrStart); 
+  fd.append("StartDate", datestrStart);
   fd.append("EndDate", datestrEnd);
 
   fd.append("ProjectDays", ProjectDays.toString());
@@ -1992,7 +1992,7 @@ actionSubmit(){
 
 
 
-  this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;  
+  this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
   this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => { debugger
 
     this.Sub_ProjectCode = data['SubTask_ProjectCode'];
@@ -2030,7 +2030,7 @@ actionSubmit(){
     // alert(datestrEnd)
     console.log(datestrStart,this._StartDate,"startdate")
     console.log(datestrEnd,this._EndDate,"enddate")
-    const fd:any = new FormData(); 
+    const fd:any = new FormData();
     fd.append("Project_Code", this.Sub_ProjectCode);
     fd.append("Team_Autho", this.EmpNo_Autho);
     // fd.append('file', this._inputAttachments[0].Files);

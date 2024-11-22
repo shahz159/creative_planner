@@ -1918,7 +1918,7 @@ left: 38%;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  width: 200px;
+  width: 160px;
   margin-right: 0px;
 }
 
@@ -4286,7 +4286,14 @@ ul.schedule-select-user-list li {
   overflow: hidden;
   width: 140px;
 }
+
 @media screen and (min-width: 1440px) {
+  .kt-widget__title {
+    width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
   ul.schedule-select-user-list li {
       width: 240px;
   }

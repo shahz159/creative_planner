@@ -766,9 +766,9 @@
                                     <div class="kt-act-no">
                                       <p>{{i+1}}</p><span>Project</span>
                                     </div>
-                                    <div class="kt-act-info justify-content-start" title="Project name" >
+                                    <div class="kt-act-info justify-content-start"  >
                                       <div class="kt-act-ttl-v flex-grow-1" (click)="openDraft(i)">
-                                        <h6>{{draftp.Project_Name?draftp.Project_Name:''}}</h6>
+                                        <h6 title="Project name">{{draftp.Project_Name?draftp.Project_Name:''}}</h6>
                                         <div class="d-flex">
                                           <div class="kt-vi-act-dtl">
 
@@ -1452,11 +1452,11 @@
                     <div *ngIf="hasNoActionMembers&&hasNoActionMembers.length>0"  class="notification overutilization-notification">
                       <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
                       <span class="notif-msg" style="color:#c57a05">
-                          No actions has been assigned to 
+                          No actions has been assigned to
                           <ng-container *ngFor="let member of hasNoActionMembers; let i=index;">
                             <span>'{{member}}'</span>{{i+1===hasNoActionMembers.length-1?' and':(i+1===hasNoActionMembers.length)?'':', '}}
-                          </ng-container> 
-                          in this project. It is recommended to assign actions for better workflow. 
+                          </ng-container>
+                          in this project. It is recommended to assign actions for better workflow.
                       </span>
                    </div>
                   </ng-container>
@@ -1614,7 +1614,7 @@
 
                                       </ng-option>
                                     </ng-select>
-                                    <span *ngIf="(!prjsubmission)&&notProvided" style="color:rgb(217,48,37)">Please select submission type</span>
+                                    <span *ngIf="(!prjsubmission)&&notProvided" style="color:rgb(217,48,37)">Please select submission type.</span>
                                   </div>
                                 </div>
                               </div>
@@ -1626,7 +1626,7 @@
                                       <div class="">
                                         <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [ngClass]="{'error-vd': !Allocated_Hours&& notProvided}" [(ngModel)]="Allocated_Hours"  #Alloc="ngModel">
                                         </ng-select>
-                                        <span *ngIf="!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)">Please select allocated hour</span>
+                                        <span *ngIf="!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)">Please select allocated hour.</span>
                                       </div>
                                     </div>
                                     <div class="input-icon Sub_In_ed"  *ngSwitchCase="1">
@@ -1637,8 +1637,8 @@
                                           <ng-option *ngFor="let item of Daily_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
-                                        <span *ngIf="!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)" >Please select allocated hour</span>
-                                        <div style="color:#646c9a"> Max duration limit is 60 Minutes only</div>
+                                        <span *ngIf="!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)" >Please select allocated hour.</span>
+                                        <div style="color:#646c9a"> Max duration limit is 60 Minutes only.</div>
                                       </div>
                                     </div>
                                     <div class="input-icon Sub_In_ed" *ngSwitchCase="2">
@@ -1648,8 +1648,8 @@
                                         <ng-select placeholder="Select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}">
                                           <ng-option *ngFor="let item of Week_array" [value]="item">{{item}}</ng-option>
                                         </ng-select>
-                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours</div>
-                                        <span style="color:#646c9a"> Max duration limit is 2 hours only</span>
+                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours.</div>
+                                        <span style="color:#646c9a"> Max duration limit is 2 hours only.</span>
                                       </div>
                                     </div>
                                     <div class="" *ngSwitchCase="3">
@@ -1660,8 +1660,8 @@
                                           <ng-option *ngFor="let item of Month_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
-                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours</div>
-                                        <span style="color:#646c9a">Max duration limit is 4 hours only</span>
+                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours.</div>
+                                        <span style="color:#646c9a">Max duration limit is 4 hours only.</span>
                                       </div>
                                     </div>
                                     <div class="" *ngSwitchCase="4">
@@ -1672,8 +1672,8 @@
                                           <ng-option *ngFor="let item of Quarter_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
-                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours</div>
-                                        <span style="color:#646c9a"> Max duration limit is 8 hours only</span>
+                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours.</div>
+                                        <span style="color:#646c9a"> Max duration limit is 8 hours only.</span>
                                       </div>
                                     </div>
                                     <div class="" *ngSwitchCase="5">
@@ -1684,8 +1684,8 @@
                                           <ng-option *ngFor="let item of Halfyear_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
-                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours</div>
-                                        <span style="color:#646c9a"> Max duration limit is 10 hours only</span>
+                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours.</div>
+                                        <span style="color:#646c9a"> Max duration limit is 10 hours only.</span>
                                       </div>
                                     </div>
                                     <div class="" *ngSwitchCase="6">
@@ -1695,8 +1695,8 @@
                                           <ng-option *ngFor="let item of Annual_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
-                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours</div>
-                                        <span style="color:#646c9a"> Max duration limit is 16 hours only</span>
+                                        <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours.</div>
+                                        <span style="color:#646c9a"> Max duration limit is 16 hours only.</span>
                                       </div>
                                     </div>
                                   </div>
@@ -1719,7 +1719,7 @@
                                         <ng-option [value]="11">November</ng-option>
                                         <ng-option [value]="12">December</ng-option>
                                       </ng-select>
-                                      <span *ngIf="!Annual_date&&notProvided" style="color:rgb(217,48,37)">Please select recurrence</span>
+                                      <span *ngIf="!Annual_date&&notProvided" style="color:rgb(217,48,37)">Please select recurrence.</span>
                                     </div>
                                   </div>
                                 </div>
@@ -1825,7 +1825,7 @@
                                 <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
 
                                      <span  class="notif-msg">At least one or more of  the fields is incorrect, invalid, or empty (mandatory field). </span>
-                                    </div> 
+                                    </div>
                                   </div>
                             <div class="kt-ctv-btn mt-0">
                               <button type="button"
@@ -3043,7 +3043,7 @@
                                     <mat-datepicker #strtEditsPicker></mat-datepicker>
                                 </div>
                             </div>
-                            <span *ngIf="!End_Date&&notProvided" style="color:rgb(217,48,37)">Please select end date</span>
+                            <span *ngIf="!End_Date&&notProvided" style="color:rgb(217,48,37)">Please select end date.</span>
                       </div>
                   </div>
                   <div class="col-lg-4 text-left">
@@ -3272,7 +3272,7 @@
                                   {{item.ReportType}}
                               </ng-option>
                           </ng-select>
-                          <span *ngIf="!selectedcategory&&notProvided" style="color:rgb(217,48,37)">Please enter category.</span>
+                          <span *ngIf="!selectedcategory&&notProvided" style="color:rgb(217,48,37)">Please select category.</span>
                   </div>
               </div>
           </div>
@@ -3379,7 +3379,7 @@
                               </div>
 
                           </div>
-                          <span style="color:red" *ngIf="!End_Date&&notProvided">Please select end date</span>
+                          <span style="color:red" *ngIf="!End_Date&&notProvided">Please select end date.</span>
                     </div>
                 </div>
                 <div class="col-lg-4 text-left">
