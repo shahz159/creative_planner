@@ -2991,11 +2991,11 @@ approvalSubmitting:boolean=false;
 
     if (!fieldsprvided) { // when the user not provided the required fields then .
       this.formFieldsRequired=true;
-      this.notifyService.showInfo("Please fill in the mandatory fields", '');
+      this.notifyService.showInfo("Please fill in the mandatory fields.", '');
     }
     else if ((this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_IN_DELAY) === 1 && (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.Authority_EmpNo || this.isHierarchy === true)) {   // if user is O,R,A or is in heirarchy and there is only one action in inprocess or delay state.
       Swal.fire({
-        title: 'This is the last action to be completed',
+        title: 'This is the last action to be completed.',
         text: 'Do you want to proceed with main project submission?',
         showCancelButton: true,
         confirmButtonText: 'Yes',
@@ -3032,7 +3032,7 @@ approvalSubmitting:boolean=false;
                     this._Message = (JSON.parse(myJSON).body).Message;
                     if(this._Message==='Success')
                     {
-                      this.notifyService.showSuccess("Successfully updated", 'Action completed');
+                      this.notifyService.showSuccess("Successfully updated", 'Action completed.');
                       // after the action is successfully completed
                       this.closeInfo();
                       this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
@@ -10014,6 +10014,19 @@ OnSubmitSchedule1() {
       element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
 
 
+      if(this.Link_Details!=null){      
+        this.Link_Details = this.Link_Details.trim() == ''?null:this.Link_Details;
+      }
+      if(this.Meeting_Id!=null){ 
+        this.Meeting_Id = this.Meeting_Id.trim()  == ''?null:this.Meeting_Id;
+      }
+      if(this.Meeting_password!=null){  
+        this.Meeting_password = this.Meeting_password.trim() == ''?null:this.Meeting_password;
+      }
+      if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
+        this._onlinelink =false
+      }
+
       var vOnlinelink = "Onlinelink";
       element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
       this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
@@ -10527,7 +10540,7 @@ loadActionsGantt(){
 
       events: {
         updated: ()=>{
-   
+
 
         try{
 
@@ -10714,8 +10727,8 @@ loadActionsGantt(){
     tooltip: {
       custom: ({ series, seriesIndex, dataPointIndex, w }) => {
         const data = w.config.series[seriesIndex].data[dataPointIndex];
-        const index = data.index;  
-        const actn_name = actions_list[index].Project_Name;   
+        const index = data.index;
+        const actn_name = actions_list[index].Project_Name;
         const actn_descrp=actions_list[index].Project_Description;
         const actn_start = this.datepipe.transform(new Date(actions_list[index].StartDate), 'MMM d, y');
         const actn_end = this.datepipe.transform(new Date(actions_list[index].EndDate), 'MMM d, y');
@@ -10820,10 +10833,10 @@ loadActionsGantt(){
 
 
  if(this.ActnsGanttChart){
-    this.ActnsGanttChart.updateOptions(options);    
+    this.ActnsGanttChart.updateOptions(options);
  }
  else{
- 
+
   this.ActnsGanttChart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
   this.ActnsGanttChart.render();
 console.log('apexchart gantt:',this.ActnsGanttChart);
@@ -10851,7 +10864,7 @@ onActnsGanttClosed(){
     this.ActnsGanttChart=null;
     this.ganttActnsConfig={bystatus:'All',byuser:'All'};
     this.total_userActns=undefined;
-    
+
 }
 
 

@@ -8381,7 +8381,7 @@
                                           <div class="user-type">
                                             <span *ngIf="Data.isActive==false" class="inactv-label">
                                                 <span>In-active</span>
-                                            </span> 
+                                            </span>
                                             <span *ngFor="let role of Data.Role.split(', ')">
                                               <span >{{ role }}</span>
                                             </span>
@@ -9001,7 +9001,7 @@
 
               </div>
                 <div class="d-flex flex-column  ">
-                   <ng-container *ngIf="proState"><span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">Please provide attachment</span></ng-container>
+                   <ng-container *ngIf="proState"><span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">Please provide attachment.</span></ng-container>
                     <span class="text-info">Accept any type of file</span>
                 </div>
           </div>
@@ -9019,7 +9019,7 @@
               <label for="exampleFormControlFile1">Remark<span class="text-danger">*</span> </label>
               <textarea [ngClass]="{'error-border': !_remarks&&formFieldsRequired}" class="form-control" aria-label="With textarea" placeholder="Enter action remark if any"
                   [(ngModel)]="_remarks" style="margin-top: 0px; margin-bottom: 0px; height: 160px;"></textarea>
-              <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please enter remark</span>
+              <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please enter remark.</span>
           </div>
           <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
           <div class="form-group">
@@ -9114,7 +9114,7 @@
                       </div>
                   </div>
                   <div class="d-flex flex-column">
-                  <span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">Please provide attachment</span>
+                  <span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">Please provide attachment.</span>
                   <span class="text-info">Accept any type of file</span>
                   </div>
               </div>
@@ -9123,7 +9123,7 @@
                   <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks" [ngClass]="{'error-border': !(_remarks&&_remarks.trim())&&formFieldsRequired}"
                       placeholder="Enter project remark if any" style="height: 160px; margin: 0px;"></textarea>
                   <!-- <span class="text-danger mt-1">Note: (*) are mandatory!</span> -->
-                  <span *ngIf="!(_remarks&&_remarks.trim())&&formFieldsRequired" style="color:red">Please enter remark</span>
+                  <span *ngIf="!(_remarks&&_remarks.trim())&&formFieldsRequired" style="color:red">Please enter remark.</span>
               </div>
 
               <div class="form-group mb-1">
@@ -9226,7 +9226,7 @@
                               <label for="exampleFormControlFile1"> Remark<span
                                       class="text-danger">*</span></label>
                               <textarea class="form-control" aria-label="With textarea" style="height: 160px;"  [ngClass]="{'error-border': !_remarks&&formFieldsRequired}"
-                                  [(ngModel)]="_remarks" placeholder="Enter project remark if any"></textarea>
+                                  [(ngModel)]="_remarks" placeholder="Enter project(s) remark if any"></textarea>
                               <!-- <span class="text-danger mt-1">Note: (*) are mandatory!</span> -->
                               <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please provide remark</span>
                           </div>
@@ -9498,7 +9498,7 @@
                                                           placeholder="Enter reason to release the hold project"
                                                           style="height:170px;">
                                                                           </textarea>
-                                                       <span *ngIf="!hold_remarks&&formFieldsRequired" style="color:red">Please enter remark</span>
+                                                       <span *ngIf="!hold_remarks&&formFieldsRequired" style="color:red">Please enter remark.</span>
                                                   </div>
 
                                               </div>
@@ -9554,7 +9554,7 @@
                                                           placeholder="Enter reason to edit release date"
                                                           style="height:100px;">
                                                                           </textarea>
-                                                       <span *ngIf="!hold_remarks&&formFieldsRequired" style="color:red">Please enter remark</span>
+                                                       <span *ngIf="!hold_remarks&&formFieldsRequired" style="color:red">Please enter remark.</span>
                                                   </div>
                                               </div>
                                           </div>
@@ -16107,7 +16107,7 @@
 <!-- Feature Modal End -->
 
 
- 
+
 
 
 <!--Actions List Graph Modal Start -->

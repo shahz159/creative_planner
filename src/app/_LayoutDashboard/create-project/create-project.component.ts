@@ -719,7 +719,7 @@ createSRTProject(){
     else{
       // please provide all mandatory fields to create project.
       this.notProvided=true;
-      this.notification.showError('Please fill in all mandatory fields','Required information');
+      this.notification.showError('Please fill in all mandatory fields.','Required information');
     }
  }
 
@@ -1290,7 +1290,10 @@ onProjectOwnerChanged(){
     // this.duration=this.bind_Project[0].Duration;
 
     const cDate=new Date();
+    cDate.setHours(0, 0, 0, 0); // Set the time to 00:00:00
+
     const psdate=new Date(this.bind_Project[0].Start_Date);
+    psdate.setHours(0, 0, 0, 0); // Set the time to 00:00:00
 
     this.Prjstartdate = psdate<cDate?null:this.bind_Project[0].Start_Date
     this.Prjenddate = psdate<cDate?null:this.bind_Project[0].End_Date
@@ -1681,7 +1684,7 @@ return;
       }
       else if(data['message'] == '2')
       {
-        this.notifyService.showError("Not updated", "Failed");
+        this.notifyService.showError("Not updated.", "Failed");
       }
       else if (data['message'] == '8') {
         let sel_owner=this.owner_dropdown.find((item)=>item.Emp_No==this.selectedOwner);
@@ -1907,7 +1910,7 @@ const pdur=Math.abs(moment(_prjstrtd).diff(moment(_prjendd),'days'));
 let noactnDialogType:'MANDATORY'|'NOT_MANDATORY';
 noactnDialogType=pdur>=15?'MANDATORY':pdur<15?'NOT_MANDATORY':null;
 
-if(this.PrjActionsInfo.length==0){  
+if(this.PrjActionsInfo.length==0){
 
   const choice=await Swal.fire({
      title:noactnDialogType=='MANDATORY'?'Actions required':'Continue Without Actions?',
@@ -1922,7 +1925,7 @@ if(this.PrjActionsInfo.length==0){
       </div>
     </div>
      `,
-     showConfirmButton:true, 
+     showConfirmButton:true,
      confirmButtonText: noactnDialogType=='MANDATORY'?'OK':'Continue',
      showCancelButton:noactnDialogType=='NOT_MANDATORY'?true:false
    });
@@ -1962,7 +1965,7 @@ if(this.PrjActionsInfo.length==0){
 
 // 3.validation: if any RACIS member doesn't have atleast one action in the project.
 this.detectMembersWithoutActions();
-if(this.hasNoActionMembers.length>0){  
+if(this.hasNoActionMembers.length>0){
 
 const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)=>{
         return members+`<b>'${new_member}'</b>${index==arr.length-2?' and ':index<arr.length-2?'<b> ,</b>':'<b>. </b>'}`;
@@ -1971,9 +1974,9 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
  const choice=await Swal.fire({
     title:'Project team with no actions assigned',
     html:`<div class="text-justify">
-           No actions has been assigned to 
+           No actions has been assigned to
            ${people_names}<br/>
-           <div class="mt-2">Do you still want to proceed with this project?</div> 
+           <div class="mt-2">Do you still want to proceed with this project?</div>
     </div>`,
     showConfirmButton:true,
     showCancelButton:true,
@@ -2064,7 +2067,7 @@ removeTemplate(templateCode:string){
   this.ProjectDto.Project_Code=templateCode;
   this.createProjectService.NewDeleteProjectTemplate(this.ProjectDto).subscribe((res:any)=>{
         if(res&&res.message==='Success'){
-               this.notification.showSuccess('Template deleted','Success');
+               this.notification.showSuccess('Template deleted.','Success');
                this.GetAssignedTaskDetails();
         }
         else{
@@ -2292,7 +2295,7 @@ debugger
       showCancelButton:true,
       showConfirmButton:true,
       title:'Are you sure?',
-      text:`This action will permanently delete this '${this.draft_json[index].Project_Name}'`,
+      text:`This action will permanently delete this '${this.draft_json[index].Project_Name}'.`,
     }).then(choice=>{
          if(choice.isConfirmed){
 
@@ -2300,7 +2303,7 @@ debugger
           this.ProjectDto.Emp_No=this.Current_user_ID;
           this.createProjectService.NewDeleteDraft(this.ProjectDto).subscribe((res:any)=>{
                      if(res.message=='1'){
-                       this.notifyService.showSuccess(`'${this.draft_json[index].Project_Name}' draft is deleted`,"Deleted successfully");
+                       this.notifyService.showSuccess(`'${this.draft_json[index].Project_Name}' draft is deleted.`,"Deleted successfully");
                        this.GetAssignedTaskDetails();
                      }
                      else{
@@ -2671,7 +2674,7 @@ debugger
   }
 
 
-// v2. Action date Can't be greater than project end date  
+// v2. Action date Can't be greater than project end date
   const dateone=new Date(this.projectInfo.EndDate)
   const datetwo= new Date(this.End_Date)
   if(dateone < datetwo){
@@ -2711,7 +2714,7 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
           // icon:'error',
           showConfirmButton:true,
           confirmButtonText:'OK'
-       }); 
+       });
        return;
       }
 }
@@ -2760,7 +2763,7 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
                 this.closeAction_details_edit();
               }
               else if (data['message'] == '2') {
-                this.notifyService.showError("Not updated", "Failed");
+                this.notifyService.showError("Not updated.", "Failed");
               }
               else if (data['message'] == '5') {
                 this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===this.OGresponsible))["RACIS"], "Updated successfully");
@@ -2801,7 +2804,7 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
             this.closeAction_details_edit();
           }
           else if (data['message'] == '2') {
-            this.notifyService.showError("Not updated", "Failed");
+            this.notifyService.showError("Not updated.", "Failed");
           }
           else if (data['message'] == '5') {
             this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===this.OGresponsible))["RACIS"], "Updated successfully");
@@ -3298,13 +3301,13 @@ promptIfNameTypeMismatch(){
 
     if(isincluded){
       const typematched=['003','008'].includes(this.Prjtype);
-      if(typematched==false&&this.okWithType==false){ 
+      if(typematched==false&&this.okWithType==false){
        const sel_ptype=this.ProjectType_json.find(ob=>ob.Typeid==this.Prjtype).ProjectType.trim();
 
         Swal.fire({
             title:'Are You Sure About the Project Type?',
             html:`<div class="text-justify">
-                   Project name contains word <b>'${isincluded}'</b> which suggests a standard or routine type project. You've selected <b>'${sel_ptype}'</b> as the project type. 
+                   Project name contains word <b>'${isincluded}'</b> which suggests a standard or routine type project. You've selected <b>'${sel_ptype}'</b> as the project type.
                   </div>`,
             showConfirmButton:true,
             showCancelButton:true,
