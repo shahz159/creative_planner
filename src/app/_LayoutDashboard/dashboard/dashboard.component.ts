@@ -1387,7 +1387,28 @@ export class DashboardComponent implements OnInit {
 
 
           this.Location_Type = (this.EventScheduledjson[0]['Location']);
-          this._meetingroom = this.Location_Type?true:false;
+          this._meetingroom = this.Location_Type?true:false; 
+          this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
+
+          if(this.Link_Details != ''){
+            if(!this.Link_Details.includes('<a href=')){
+              var details = this.Link_Details.split(', ')
+              this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+              this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+              this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined' || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+              console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
+            }
+            else if(this.Link_Details.includes('<a href=')){
+              this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
+              this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
+              this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
+            
+              console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details ss69');
+            }
+           }
+
+
+
           this.Description_Type = (this.EventScheduledjson[0]['Description']);
           document.getElementById("subtaskid").style.display = "none";
           document.getElementById("Guest_Name").style.display = "flex";
@@ -2052,10 +2073,26 @@ export class DashboardComponent implements OnInit {
 
 
 
+ 
+        if(this.Link_Details!=null){      
+          this.Link_Details = this.Link_Details.trim() == ''?null:this.Link_Details;
+        }
+        if(this.Meeting_Id!=null){ 
+          this.Meeting_Id = this.Meeting_Id.trim()  == ''?null:this.Meeting_Id;
+        }
+        if(this.Meeting_password!=null){  
+          this.Meeting_password = this.Meeting_password.trim() == ''?null:this.Meeting_password;
+        }
+        if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
+          this._onlinelink =false
+        }
+
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
-        this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
-    
+        this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password;
+
+        console.log('this.Link_Details :->',this.Link_Details ,'this.Meeting_Id :->', this.Meeting_Id, 'this.Meeting_password :->',this.Meeting_password)
+      
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
         // var vLink_Details = "Link_Details";
@@ -2122,7 +2159,7 @@ export class DashboardComponent implements OnInit {
       else {
         this._calenderDto.Schedule_ID = 0;
       }
-      debugger
+
       
       const frmData = new FormData();
       for (var i = 0; i < this._lstMultipleFiales.length; i++) {
@@ -2455,7 +2492,18 @@ export class DashboardComponent implements OnInit {
           var vLocation_url = "Addressurl";
           element[vLocation_url] = this._meetingroom==true?(this.Addressurl==undefined?'':this.Addressurl):'';
 
-
+          if(this.Link_Details!=null){      
+            this.Link_Details = this.Link_Details.trim() == ''?null:this.Link_Details;
+          }
+          if(this.Meeting_Id!=null){ 
+            this.Meeting_Id = this.Meeting_Id.trim()  == ''?null:this.Meeting_Id;
+          }
+          if(this.Meeting_password!=null){  
+            this.Meeting_password = this.Meeting_password.trim() == ''?null:this.Meeting_password;
+          }
+          if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
+            this._onlinelink =false
+          }
 
           var vOnlinelink = "Onlinelink";
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
@@ -7176,6 +7224,25 @@ repeatEvent() {
 
 
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
+        this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
+
+        if(this.Link_Details != ''){
+          if(!this.Link_Details.includes('<a href=')){
+            var details = this.Link_Details.split(', ')
+            this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+            this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+            this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined' || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+            console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
+          }
+          else if(this.Link_Details.includes('<a href=')){
+            this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
+            this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
+            this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
+          
+            console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details 69');
+          }
+         }
+
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
         document.getElementById("subtaskid").style.display = "none";
         document.getElementById("Guest_Name").style.display = "flex";
@@ -7647,7 +7714,7 @@ parseTime(time: string): Date {
 
 
 LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-  debugger
+
   let FileUrl: string;
   
   FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
