@@ -172,7 +172,7 @@ export class TimelineComponent implements OnInit {
 
   noTimeSpaceAvailable:boolean=false;
   setTimelineDate(val)
-  {    
+  {    debugger
        this.current_Date = moment(val).format("MM/DD/YYYY");
        this.dateF = new FormControl(new Date(val));
        this.starttime = null;
