@@ -192,10 +192,11 @@ export class MeetingDetailsComponent implements OnInit {
       this.URL_ProjectCode = pcode;
       this._MasterCode = pcode;
     });
+    
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.CurrentUser_fullname = localStorage.getItem("UserfullName");
 
-
+    console.log(this.CurrentUser_fullname,'CurrentUser_fullname')
     this.MinLastNameLength = true;
     // this.getAttendeeTime();
 
@@ -571,7 +572,7 @@ export class MeetingDetailsComponent implements OnInit {
       var Schedule_date = this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
       this.Agendas_List = this.EventScheduledjson[0].Agendas;
-      console.log(this.Agendas_List,'new:');
+      console.log('new agendas_List:',this.Agendas_List);
       this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
       this.Startts = (this.EventScheduledjson[0]['St_Time']);
       this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
@@ -761,7 +762,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.hours = Math.floor(duration.asHours());
       this.minutes = duration.minutes();
       this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
-      //console.log(this.hours,'sdcscd')
+      console.log(this.Project_code,'Project_code')
     });
 
 
@@ -2659,6 +2660,7 @@ export class MeetingDetailsComponent implements OnInit {
   SelectedAttachmentFile: any
   EventNumber: any;
   progress: number = 0;
+  Attamentdraftid:any;
 
   OnSubmitAttachment() {
 
@@ -2674,13 +2676,12 @@ export class MeetingDetailsComponent implements OnInit {
       else
         _attachmentValue = 0;
 
-        debugger
+     
       frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID);
-      var Attamentdraftid= '';
-      frmData.append("draftid", Attamentdraftid);
-
-
+      frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
+      debugger
+      frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
 
       if (_attachmentValue == 1) {
         this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
@@ -2707,8 +2708,9 @@ export class MeetingDetailsComponent implements OnInit {
                   this.progress = 0;
                 }, 1500);
 
-                (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                //69 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
                 (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+          
                 // document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
                 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
 
@@ -2902,6 +2904,22 @@ export class MeetingDetailsComponent implements OnInit {
 
         var vLocation_url = "Addressurl";
         element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
+
+
+        if(this.Link_Details!=null){      
+          this.Link_Details = this.Link_Details.trim() == ''?null:this.Link_Details;
+        }
+        if(this.Meeting_Id!=null){ 
+          this.Meeting_Id = this.Meeting_Id.trim()  == ''?null:this.Meeting_Id;
+        }
+        if(this.Meeting_password!=null){  
+          this.Meeting_password = this.Meeting_password.trim() == ''?null:this.Meeting_password;
+        }
+        if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
+          this._onlinelink =false
+        }
+
+
 
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
@@ -6128,6 +6146,20 @@ if(this.editTask && this.selectedrecuvalue =='2'){
         var vLocation_url = "Addressurl";
         element[vLocation_url] = this.Addressurl;
 
+
+        if(this.Link_Details!=null){      
+          this.Link_Details = this.Link_Details.trim() == ''?null:this.Link_Details;
+        }
+        if(this.Meeting_Id!=null){ 
+          this.Meeting_Id = this.Meeting_Id.trim()  == ''?null:this.Meeting_Id;
+        }
+        if(this.Meeting_password!=null){  
+          this.Meeting_password = this.Meeting_password.trim() == ''?null:this.Meeting_password;
+        }
+        if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
+          this._onlinelink =false
+        }
+
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
         this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
@@ -7420,6 +7452,26 @@ onParticipantFilter(){
 
 
           this.Location_Type = (this.EventScheduledjson[0]['Location']);
+
+          this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
+
+          if(this.Link_Details != ''){
+            if(!this.Link_Details.includes('<a href=')){
+              var details = this.Link_Details.split(', ')
+              this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+              this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+              this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined' || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+              console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
+            }
+            else if(this.Link_Details.includes('<a href=')){
+              this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
+              this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
+              this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
+            
+              console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details 69');
+            }
+           }
+           
           this.Description_Type = (this.EventScheduledjson[0]['Description']);
           document.getElementById("subtaskid").style.display = "none";
           document.getElementById("Guest_Name").style.display = "flex";
