@@ -505,7 +505,8 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
   this.newapprovalPrjport = []
 
   this._ProjectsListBy_Pid.forEach((item)=>{
-    if (item.Status === 'Under Approval'  && item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+    debugger
+    if (item.Status === "Under Approval"  && item.PendingapproverEmpNo.trim() == this.Current_user_ID){
       const obj = {
         prjname : item.Project_Name,
         prjcode : item.Project_Code,
@@ -1475,7 +1476,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 
   showDot : boolean = false
   filterProjectsOfEmp(filterbyEmp:string){
-
+debugger
     this.showDot = true
     this._FilterByEmp=filterbyEmp;
     this.hasFilterResult();
@@ -2088,7 +2089,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
 nofilterResult:boolean = false;
 resultCount: number=0;
 hasFilterResult(){
-
+debugger
 let list;
 let result=[];
 
@@ -2101,8 +2102,8 @@ if(this.showDeletedPrjOnly){
 }else{
   list=[...this._ProjectsListBy_Pid];
   result=list.filter((p)=>{
-
-    return (((p.Status==this._PortProjStatus)||(p.Status.includes('Delay')&&this._PortProjStatus=='Delay')||this._PortProjStatus=='')&& ((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp ||  p.PendingapproverEmpNo == this._FilterByEmp || p.OwnerEmpNo==this._FilterByEmp  ||this._FilterByEmp=="All"));
+debugger
+    return (((p.Status==this._PortProjStatus)||(p.Status.includes('Delay')&&this._PortProjStatus=='Delay')||this._PortProjStatus=='')&& ((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp ||  p.PendingapproverEmpNo?.trim() == this._FilterByEmp || p.OwnerEmpNo==this._FilterByEmp  ||this._FilterByEmp=="All"));
   });
 
   console.log(result);
@@ -2604,7 +2605,7 @@ debugger
 
 
   toggleMtgsSection(sec:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'){
-    debugger
+
     this.mtg_section=sec;
     const bx=this.mtg_section=='UPCOMING'?'#upcoming_meetings_tabpanel div#upcoming-mtg-0-btn':
              this.mtg_section=='TODAY'?'#today_meetings_tabpanel div#today-mtg-0-btn':

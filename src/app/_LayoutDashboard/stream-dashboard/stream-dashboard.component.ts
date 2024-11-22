@@ -138,12 +138,14 @@ export class StreamDashboardComponent implements OnInit {
   Current_user_ID: any;
   UserfullName: any
   todayDate: any
-
+  getAll :any
   GetDashboardSummary() {
     this.Emp_No = localStorage.getItem('EmpNo');
     this.service._GetDashboardSummaryCount(this.Emp_No)
       .subscribe((data) => {
         console.log(data,"GetDashboardSummary()GetDashboardSummary()GetDashboardSummary()")
+
+
 
         this.DelayCount = data[0]['DelayCount'];
         sessionStorage.setItem('DelayCount', this.DelayCount);
@@ -175,6 +177,7 @@ export class StreamDashboardComponent implements OnInit {
 
         this.YesterdaysDAR_Status = data[0]['YesterdaysDAR_Status'];
         sessionStorage.setItem('YesterdaysDAR_Status', this.YesterdaysDAR_Status);
+        console.log(this.YesterdaysDAR_Status,"this.YesterdaysDAR_Statusthis.YesterdaysDAR_Status")
 
         this.RejectedCount = data[0]['RejectedCount'];
         sessionStorage.setItem('RejectedCount', this.RejectedCount);
@@ -379,6 +382,7 @@ export class StreamDashboardComponent implements OnInit {
       this.darArray = JSON.parse(data['DAR_Details_Json']);
 
       const week_Arr = this.darArray[0].WeekSubmissionStatus;
+      console.log(week_Arr,'week_Arrweek_Arrweek_Arr')
       this.weekArr.forEach((item,index)=>{
 
         if(week_Arr[index]){
@@ -387,6 +391,7 @@ export class StreamDashboardComponent implements OnInit {
 
       })
     console.log(this.darArray,'darArraydarArray')
+
 
     })
 

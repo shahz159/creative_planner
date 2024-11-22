@@ -1101,7 +1101,7 @@ endDay(submDate:string)
       setTimeout(()=>{
         err_box.classList.remove('anim-start');
         err_box.removeEventListener('animationend',onanimend);
-      },2000);
+      },3500);
     };
     err_box.addEventListener('animationend',onanimend);
     return;
