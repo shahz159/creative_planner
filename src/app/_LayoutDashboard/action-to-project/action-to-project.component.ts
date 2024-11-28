@@ -192,44 +192,39 @@ export class ActionToProjectComponent implements OnInit {
 
 
       //And disable the wheel default functionality:
-      input.addEventListener("wheel", function(event) {
+    input.addEventListener("wheel", function(event) {
         event.preventDefault();
-      });
+    });
 
 
-
-
-        this.BsService.bs_templAction.subscribe(ta=>{
-           this.Sub_ProjectName=ta.name;
-           this._Description=ta.description;
-            if(ta.assignedTo!==''){
+    this.BsService.bs_templAction.subscribe(ta=>{
+      this.Sub_ProjectName=ta.name;
+      this._Description=ta.description;
+         if(ta.assignedTo!==''){
                    this.selectedEmpNo=ta.assignedTo;
                    this.disableAssignedField=true;
-            }
-         })
+        }
+    });
 
 
-          this.BsService.bs_TaskName.subscribe(t => {
-            if(t){
-              this.Sub_ProjectName = t
-            }
-            console.log(this.Sub_ProjectName,'======>')
-          });
+    this.BsService.bs_TaskName.subscribe(t => {
+      if(t){
+          this.Sub_ProjectName = t
+      }
+      console.log(this.Sub_ProjectName,'======>')
+   });
 
+    tippy('#actattach', {
+      content: "If you select this checkbox, you need to attach a file when completing the action.",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'dark',
+      animateFill: true,
+      inertia: true,
+      placement:'left'
+    });
 
-
-
-         tippy('#actattach', {
-          content: "If you select this checkbox, you need to attach a file when completing the action.",
-          arrow: true,
-          animation: 'scale-extreme',
-          theme: 'dark',
-          animateFill: true,
-          inertia: true,
-          placement:'left'
-        });
-
-     this.getActionCount(this.pcode);
+    this.getActionCount(this.pcode);
 
   }
   allocatedHour:any
@@ -1030,7 +1025,7 @@ return false;        // please provide all mandatory fields value.
 // 4. Validation : only for project creation page.
 if(this._Urlid == 5){
 
-  //1. when provided allocated hrs exceeds main project planned allocated hr then confirm.
+  //i. when provided allocated hrs exceeds main project planned allocated hr then confirm.
   if(this.allocatedHour>0){
     const exceeds:boolean=this.createproject.hasExceededTotalAllocatedHr(this._allocated);
     if(exceeds)
@@ -1049,7 +1044,7 @@ if(this._Urlid == 5){
     }
   }
 
-  //2. when draft action deadline matches with main project deadline.
+  //ii. when draft action deadline matches with main project deadline.
   const actn_deadline = new Date(this._EndDate);
   const prj_deadline = new Date(this.ProjectDeadLineDate);
   if(actn_deadline.getTime()==prj_deadline.getTime()){
@@ -1237,6 +1232,7 @@ startActionCreation=async()=>{
        else if(this._Urlid == 4){
 
          this._details.getProjectDetails(this.selectedProjectCode);
+         this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
          this.closeInfo();
        }
        else if(this._Urlid == 5){
