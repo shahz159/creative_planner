@@ -427,7 +427,7 @@
 
                         <div class="kt-ctv-btn mt-0">
                           <button type="button" (click)="back_to_options()"
-                            class="btn btn-prv-w mr-0 bg-light y-ct-v-btn-back btn-prev">Back to options</button>
+                            class="btn btn-move-fws my-ct-v-btn">Back to options</button>
                         </div>
                       </div>
                       <div class="card mt-3">
@@ -634,7 +634,7 @@
                         </div>
                         <div class="kt-ctv-btn mt-0">
                           <button type="button" (click)="back_to_options()"
-                            class="btn btn-prv-w mr-0 bg-light y-ct-v-btn-back btn-prev">Back to options</button>
+                            class="btn btn-move-fws my-ct-v-btn">Back to options</button>
                         </div>
                       </div>
                       <div class="card mt-3">
@@ -748,7 +748,8 @@
                         </div>
                         <div class="kt-ctv-btn mt-0">
                           <button type="button" (click)="back_to_options()"
-                            class="btn btn-prv-w mr-0 bg-light y-ct-v-btn-back btn-prev">Back to options</button>
+                            class="btn btn-move-fws my-ct-v-btn">Back to options</button>
+                            <!-- btn btn-prv-w my-ct-v-btn-back btn-prev -->
                         </div>
                       </div>
                       <div class="card mt-3">
@@ -1776,9 +1777,9 @@
                                         <span class="formbold-browse"><i class="fa fa-paperclip" aria-hidden="true"></i> Attach File </span>
                                       </div> -->
                                       <div>
-                                        <span class="formbold-drop-file"> Drop file here </span>
+                                        <span class="for  mbold-drop-file"> Drop file here </span>
                                         <span class="formbold-or"> Or </span>
-                                        <span class="formbold-browse"><i class="fa fa-paperclip" aria-hidden="true"></i> Attach File </span>
+                                        <span   class="formbold-browse"><i class="fa fa-paperclip" aria-hidden="true"></i> Attach File </span>
                                       </div>
                                     </label>
                                   </div>
@@ -1833,7 +1834,7 @@
                                 class="btn btn-move-fw my-ct-v-btn btn-next mr-2" (click)="Move_to_add_team(); getPrjCost(Allocated_Hours);updateCharacterCount(); promptIfNameTypeMismatch();">Next
                               </button>
                               <button type="button" (click)="back_to_options();updateCharacterCount()"
-                                class="btn btn-prv-w my-ct-v-btn-back btn-prev">Back to options</button>
+                                class="btn btn-move-fws my-ct-v-btn">Back to options</button>
 
                               <!-- [disabled]="!(Prjtype&&(PrjName&&PrjName.trim().split(' ').length>=3)&&PrjClient&&(PrjDes&&PrjDes.trim().split(' ').length>=5)&&PrjCategory&&Prjstartdate&&Prjenddate&&Prjduration)" -->
                             </div>
@@ -2751,8 +2752,8 @@
                                   <input type="text"  [ngClass]="{'error-border':!ProjeditName&&notProvided}" class="form-control" [(ngModel)]="ProjeditName"
                                   placeholder="Enter project name" #ProjeditNameF="ngModel" (ngModelChange)="isPrjNameValids=isValidString(ProjeditName.trim(),3)" />
                                   <!-- <span *ngIf="!ProjectName&&notProvided"  style="color:rgb(217,48,37)">Please enter project name. </span> -->
-                                  <span  *ngIf="isPrjNameValids=='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter atleast 3 words, Maximum 100 characters are allowed </span>
-                                  <span *ngIf="ProjeditName&&ProjeditName.length > 100"  style="color:rgb(217,48,37)">Maximum 100 characters are allowed</span>
+                                  <span  *ngIf="isPrjNameValids=='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter atleast 3 words, Maximum 100 characters are allowed. </span>
+                                  <span *ngIf="ProjeditName&&ProjeditName.length > 100"  style="color:rgb(217,48,37)">Maximum 100 characters are allowed.</span>
                           </div>
                       </div>
                   </div>
@@ -2767,9 +2768,9 @@
                                 [(ngModel)]="ProjeditDescription"    (input)="updateCharacterCount_Desc()"
                                 (paste)="updateCharacterCount_Desc()" (ngModelChange)="isPrjDesValids=isValidString(ProjeditDescription,5)"></textarea>
                                 <!-- <span *ngIf="!ProjectDescription&&notProvided" style="color:rgb(217,48,37)">Please enter description</span> -->
-                                <span *ngIf="isPrjDesValids==='TOOSHORT'" style="color:rgb(217,48,37)">Please enter atleast 5 words, Maximum 500 characters are allowed </span>
+                                <span *ngIf="isPrjDesValids==='TOOSHORT'" style="color:rgb(217,48,37)">Please enter atleast 5 words, Maximum 500 characters are allowed. </span>
                                 <span *ngIf="characterCount_Desc > 0" >Max Characters {{characterCount_Desc}}/500</span>
-                                <span *ngIf="characterCount_Desc > 500" style="color:rgb(217,48,37)">  Maximum 500 characters are allowed</span>
+                                <span *ngIf="characterCount_Desc > 500" style="color:rgb(217,48,37)">  Maximum 500 characters are allowed.</span>
                           </div>
                       </div>
                   </div>
@@ -3015,7 +3016,7 @@
                           <mat-datepicker #startEditsPicker></mat-datepicker>
                       </div>
                       </div>
-                      <span *ngIf="!Start_Date&&notProvided"   style="color:rgb(217,48,37)">please select start date</span>
+                      <span *ngIf="!Start_Date&&notProvided"   style="color:rgb(217,48,37)">Please select start date.</span>
 
                     </div>
                 </div>
@@ -3141,8 +3142,8 @@
                                 <input [ngClass]="{'error-border':!ProjectName&&notProvided}"    type="text" class="form-control" [(ngModel)]="ProjectName"
                                 placeholder="Enter action name" (ngModelChange)="oninputchange($event);isPrjNameValid=isValidString(ProjectName.trim(),2);"     />
                               <span *ngIf="!ProjectName&&notProvided" style="color:red">Please enter action name </span>
-                              <span *ngIf="isPrjNameValid=='TOOSHORT'" style="color:red">Please enter atleast 2 words, Maximum 100 characters are allowed</span>
-                              <span *ngIf="ProjectName&&ProjectName.length>100" style="color:red">Maximum 100 characters are allowed</span>
+                              <span *ngIf="isPrjNameValid=='TOOSHORT'" style="color:red">Please enter atleast 2 words, Maximum 100 characters are allowed. </span>
+                              <span *ngIf="ProjectName&&ProjectName.length>100" style="color:red">Maximum 100 characters are allowed.</span>
                         </div>
                     </div>
                 </div>
@@ -3154,9 +3155,9 @@
                               [(ngModel)]="ProjectDescription"  (input)="updateCharacterCount_Action()"
                               (paste)="updateCharacterCount_Action()"   (ngModelChange)="isPrjDesValid=isValidString(ProjectDescription.trim(),3)" ></textarea>
                               <span *ngIf="!ProjectDescription&&notProvided" style="color:red">Please enter action description </span>
-                              <span *ngIf="isPrjDesValid==='TOOSHORT'" style="color:red">Please enter atleast 3 words, Maximum 500 characters are allowed </span>
+                              <span *ngIf="isPrjDesValid==='TOOSHORT'" style="color:red">Please enter atleast 3 words, Maximum 500 characters are allowed. </span>
                               <span *ngIf="characterCount_Action > 0" >Max Characters {{characterCount_Action}}/500</span>
-                              <span *ngIf="characterCount_Action>500" style="color:red">Maximum 500 characters are allowed</span>
+                              <span *ngIf="characterCount_Action>500" style="color:red">Maximum 500 characters are allowed.</span>
                         </div>
                     </div>
                 </div>
@@ -3358,7 +3359,7 @@
                         </div>
 
                         </div>
-                        <span *ngIf="!Start_Date&&notProvided" style="color:red">Please select start date</span>
+                        <span *ngIf="!Start_Date&&notProvided" style="color:red">Please select start date.</span>
                       </div>
 
 
@@ -3409,7 +3410,7 @@
                             <span *ngIf="this.Start_Date == null || this.End_Date == null" style="color:rgb(217, 48, 37)">{{_message}}</span>
                             <span *ngIf="Allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span>
                             <span *ngIf="Allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
-                            <span *ngIf="!Allocated" style="color:red">Allocated hours required. Hours should not be in decimal </span>
+                            <span *ngIf="!Allocated" style="color:red">Allocated hours required. Hours should not be in decimal. </span>
                             <span *ngIf="(Allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value, It accept only numeric and non-negative value. </span>
                             <span *ngIf="this.Start_Date == null || this.End_Date == null" >{{ _message}} </span>
                       </div>

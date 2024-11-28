@@ -757,7 +757,7 @@ console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeLi
         });
     }
     else {
-      this.notifyService.showInfo("Category name required", "");
+      this.notifyService.showInfo("Category name required.", "");
     }
     this.clearFeilds()
   }
@@ -2455,7 +2455,7 @@ else{
       (data) => {
         console.log(data,'atattachmeatattachmeatattachmeatattachme')
           let message: string = data['Message'];
-          this.notifyService.showSuccess("Task sent to assign projects", message);
+          this.notifyService.showSuccess("Task sent to assign projects",message);
           this.GetTodoProjects();
 
         });
