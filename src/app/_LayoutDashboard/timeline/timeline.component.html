@@ -1701,7 +1701,7 @@
 
 
             <div *ngIf="daySummaryReport" class="completion-ending-statement mx-2 mt-4 mb-2" [ngClass]="{'success':daySummaryReport.EmployeePerformance>=70, 'danger':daySummaryReport.EmployeePerformance<70}">
-                <span *ngIf="daySummaryReport.EmployeePerformance>=70">You have achieved {{daySummaryReport.EmployeePerformance}}% of your tasks. Great progress so far—keep pushing forward!</span>
+                <span *ngIf="daySummaryReport.EmployeePerformance>=70">You have achieved {{daySummaryReport.EmployeePerformance}}% of your tasks. Great progress so far.Keep pushing forward!</span>
                 <span *ngIf="daySummaryReport.EmployeePerformance<70">You have achieved {{daySummaryReport.EmployeePerformance}}% of your tasks but there’s still more to do. Finishing the rest is important to keep your performance on track."</span>
             </div>
         </div>

@@ -1802,7 +1802,7 @@ export class MeetingDetailsComponent implements OnInit {
   adminComments: any
 
   Updating_Adminmeeting(_emp) {
-
+    debugger
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = _emp;
