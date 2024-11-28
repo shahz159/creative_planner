@@ -275,8 +275,11 @@
                       </label>
                     </div> -->
                     <div class="kt-login__actions">
-                      <button id="kt_login_signin_submit" class="btn btn-primary kt-btn px-5" type="submit">Sign
-                        in</button>
+                      <button [disabled]="isLogginCredentails" id="kt_login_signin_submit" class="btn btn-primary kt-btn px-5" type="submit">
+                      
+                      <ng-container *ngIf="!isLogginCredentails">Sign in</ng-container>  
+                      <ng-container *ngIf="isLogginCredentails==true">Please wait...</ng-container> 
+                      </button>
 
                       <!-- <button id="kt_login_signin_submit" class="btn btn-success kt-btn px-5" style="height: 38px;"
                         (click)="AddArray()">AddArray</button> -->

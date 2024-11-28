@@ -75,7 +75,7 @@ export class CreateProjectComponent implements OnInit {
   SubmissionType:any
   Responsible_json:any;
   allUser_json:any;
-
+  heirarchical_owner:any;
 
 
 
@@ -273,6 +273,7 @@ export class CreateProjectComponent implements OnInit {
          this.Team_json=JSON.parse(res[0].Team_json);
          this.allUser_json=JSON.parse(res[0].allUser_json);
 
+         this.heirarchical_owner=JSON.parse(res[0].owner_json);
          let owner_values=JSON.parse(res[0].owner_json);
          owner_values=owner_values.map(ob=>({...ob,type:'Hierarchical'}));
          const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo.trim()];
@@ -751,14 +752,35 @@ createSRTProject(){
 //  }
 
 
+permittedFileFormats=[
+  "image/*", "application/pdf", "text/plain", "text/html", "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/json", "application/xml", "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+];
+invalidFileSelected:boolean=false;
+
   file: File | null = null;
 onFileChanged(event: any) {
-
+  debugger
   const files: File[] = event.target.files;
 
   if (files && files.length > 0) {
-    this.file = files[0];
-    this.fileAttachment = this.file;
+    
+    const filetype = files[0].type;
+    const isValidFile=this.permittedFileFormats.some((format)=>{
+          return (filetype==format)||(filetype.startsWith('image/')&&format=='image/*');
+    });
+
+    if(isValidFile){
+      this.invalidFileSelected=false;
+      this.file = files[0];
+      this.fileAttachment = this.file;
+    }else{
+      this.invalidFileSelected=true;
+    }
+   
     // this.determineFileType(this.file.name);
     console.log(this.fileAttachment,"testtestsetsetsetsetsettttt")
   } else {
@@ -1137,14 +1159,13 @@ isPrjSprtDrpDwnOpen:boolean=false;
 
 
 // responsible field start
-onResponsibleChanged(){
+onResponsibleChanged(){ 
   if(this.PrjResp){
     if(this.PrjResp.trim()===this.PrjOwner.trim())
     {
       const selectedowr=this.owner_json.find((item)=>item.EmpNo===this.PrjOwner);
       const newowr=this.owner_json[this.owner_json.indexOf(selectedowr)+1];
       this.PrjOwner=newowr.EmpNo;
-
 
        // if prj owner and selected auditor are same.  (project owner cannot be set as project auditor)
        if(this.PrjAuditor==this.PrjOwner){
@@ -1166,18 +1187,6 @@ onResponsibleChanged(){
          this.PrjAuditor=null;
       }
   //
-
-
-
-
-
-
-
-  // const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.PrjResp];
-  // let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob.Emp_No));
-  // otherusers=otherusers.map(ob=>({EmpNo:ob.Emp_No, EmpName:ob.Emp_Name, type:'Others'}));
-  // this.owner_json=[...owner_values,...otherusers];
-
 
   }
 }
@@ -2450,6 +2459,7 @@ reset(){
   this.Annual_date=null;
   this.ngDropdwonPort=[];
   this.fileAttachment=null;
+  this.invalidFileSelected=false;
     // step1 form clear.   end
 
     // step2 form clear.   start

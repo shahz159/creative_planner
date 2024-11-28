@@ -187,7 +187,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   pageContentType:'PROJECT_DETAILS'|'ACTION_DETAILS'='PROJECT_DETAILS';  // which content the page is display project or action. by default project.
   noActvySinceCreation:boolean=false;
   noActvy4NDays:number=-1;
-
+  prjResHasActions:boolean=false;   // project responsible has actions or not.
 
 
 
@@ -279,10 +279,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     // this.GetProjectAndsubtashDrpforCalender()
 
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
+    this.disablePreviousDate.setHours(0,0,0,0);
     this.DisablePrevious.setDate(this.DisablePrevious.getDate());
-    $(document).on('change', '.custom-file-input', function (event) {
-      $(this).next('.custom-file-label').html(event.target.files[0].name);
-    });
+    // $(document).on('change', '.custom-file-input', function (event) {
+    //   $(this).next('.custom-file-label').html(event.target.files[0].name);
+    // });
     // these minhold and maxhold are used in the project hold section,project release section
     this.minhold.setDate(this.minhold.getDate() + 1);
     this.maxhold.setDate(this.minhold.getDate() + 90);
@@ -1029,6 +1030,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
               this.delayActionsOfEmps.push({ name:emp.Responsible, emp_no:emp.Team_Res, delayActions:delayActionsOfEmp})
             }
           });
+       
+      this.prjResHasActions=this.filteremployee.some((ob)=>ob.Team_Res.trim()==this.projectInfo.ResponsibleEmpNo.trim());  // whether project responsible has actions in the project or not.    
      }
 
 
@@ -1073,7 +1076,9 @@ debugger
      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
      this.totalSelfAssignedActns=this.projectActionInfo.filter(item=>item.Project_Owner==item.Team_Res).length;
      this.totalPActns4Aprvls=this.projectActionInfo.filter(item=>['Under Approval','Forward Under Approval'].includes(item.Status)).length;
-     }
+     
+     
+    }
 
 
 
@@ -1737,6 +1742,13 @@ debugger
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     $("#mysideInfobar1").scrollTop(0);
+
+    // first action must belongs to the project responsible.
+    if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo.trim()&&this.prjResHasActions==false){
+      this.bsService.setSelectedTemplAction({...this.bsService._templAction.value,assignedTo:this.Current_user_ID});
+    }
+    // 
+
   }
 
 
@@ -1833,13 +1845,14 @@ multipleback(){
 
 
   closeInfo() {   debugger
-    this._remarks = ''
+    this._remarks = '';
     this.characterCount=0;
     this.characterCount_Action=0;
     this.selectedFile=null;
     this._inputAttachments='';
     this.formFieldsRequired=false;
     this.isLoadingData=undefined;
+    this.invalidFileSelected=false;
     document.getElementById("Action_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Project_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
@@ -1948,11 +1961,13 @@ multipleback(){
     this.endtime = null;
     this.isSelection=false;
     this.selectedEmployees=[];
-    this.dateF=new FormControl(new Date());
+    this.dateF=new Date();
     this._remarks='';
     this._inputAttachments='';
     this.selectedFile=null;
     this.notProvided=false;
+    this.a_details=null;
+    this.a_loading=false;
     document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
@@ -2944,11 +2959,41 @@ approvalSubmitting:boolean=false;
     console.log(e.target.files[0]);
     this._inputAttachments = e.target.files[0].name;
   }
-  onFileChange(e) {
-      this._inputAttachments = e.target.files[0].name;
-      this.selectedFile = <File>e.target.files[0];
-      e.target.files=null;
+
+  // permittedFileFormats='image/*,.pdf,.txt,.html,.htm,.doc,.docx,.json,.xml,.ppt,.pptx,.xlsx,.xls';
+  
+  permittedFileFormats=[
+    "image/*", "application/pdf", "text/plain", "text/html", "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/json", "application/xml", "application/vnd.ms-powerpoint",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  ];
+  invalidFileSelected:boolean=false;
+  
+  onFileChange(e){  
+    if(e.target.files.length>0){    
+      const filetype = e.target.files[0].type;
+      const isValidFile=this.permittedFileFormats.some((format)=>{
+            return (filetype==format)||(filetype.startsWith('image/')&&format=='image/*');
+      });
+      if (isValidFile) {
+        this.selectedFile = <File>e.target.files[0];
+        this._inputAttachments = e.target.files[0].name;
+        this.invalidFileSelected=false;
+      }
+      else {
+        this.invalidFileSelected=true;
+        this.selectedFile = null;
+        this._inputAttachments = '';
+        e.target.value='';
+      }
+      this.cdr.detectChanges();
+    }
   }
+
+
+
 
 
 
@@ -2976,6 +3021,8 @@ approvalSubmitting:boolean=false;
     this._inputAttachments = '';
     this._remarks = '';
     this.formFieldsRequired=false;
+    this.invalidFileSelected=false;
+
     $('#project-action-Checkbox').prop('checked', false);
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -2986,8 +3033,8 @@ approvalSubmitting:boolean=false;
 
   proState:boolean=false
   actionCompleted() {
-
-   const fieldsprvided:boolean=this._remarks&&(this.proState?this.selectedFile:true);
+debugger
+   const fieldsprvided:boolean=(this._remarks&&this._remarks.trim())&&(this.proState?this.selectedFile:true);
 
     if (!fieldsprvided) { // when the user not provided the required fields then .
       this.formFieldsRequired=true;
@@ -2995,11 +3042,15 @@ approvalSubmitting:boolean=false;
     }
     else if ((this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_IN_DELAY) === 1 && (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.Authority_EmpNo || this.isHierarchy === true)) {   // if user is O,R,A or is in heirarchy and there is only one action in inprocess or delay state.
       Swal.fire({
-        title: 'This is the last action to be completed.',
-        text: 'Do you want to proceed with main project submission?',
+        title: 'Proceed With Project Submission ?',
+        html: `<div class="text-justify">
+        This is the last action to be completed in the project. Would you like to submit the project along with this action as well?
+           </div>
+        `,
         showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No'
+        confirmButtonText: 'Yes, Complete Both',
+        cancelButtonText: 'Complete Action',
+        cancelButtonColor:'#3085d6'
       }).then((res: any) => {
 
         if (res.value) {   // when user proceed also with the main project submission.
@@ -3088,6 +3139,7 @@ approvalSubmitting:boolean=false;
                 this.selectedFile = null;
                 this._inputAttachments = '';
                 this._remarks = '';
+                this.invalidFileSelected=false;
                 this.closeInfo();
                 this.getProjectDetails(this.URL_ProjectCode);
                 this.getAttachments(1);
@@ -3115,6 +3167,7 @@ approvalSubmitting:boolean=false;
               this._remarks = "";
               this._inputAttachments = "";
               this.selectedFile = null;
+              this.invalidFileSelected=false;
               this.getProjectDetails(this.URL_ProjectCode);
               this.calculateProjectActions();     // recalculate the project actions.
               this.closeActCompSideBar();
@@ -3165,6 +3218,7 @@ approvalSubmitting:boolean=false;
                 this._remarks = "";
                 this._inputAttachments = "";
                 this.selectedFile = null;
+                this.invalidFileSelected=false;
                 // this.getProjectDetails(this.URL_ProjectCode);
                 this.calculateProjectActions();     // recalculate the project actions.
                 this.closeActCompSideBar();   // close action completion sidebar.
@@ -3201,13 +3255,25 @@ approvalSubmitting:boolean=false;
   showaction: boolean = false;
   workdes: string="";
   current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
-  dateF = new FormControl(new Date());
+  dateF:any=new Date();   
   todayDate = new Date();
   disablePreviousDate = new Date();
   DisablePrevious = new Date();
   starttime: any=null;
   timedata: any = [];
-  timedata1: any;
+  timedata1: any = ["08:00",
+    "08:15", "08:30", "08:45", "09:00",
+    "09:15", "09:30", "09:45", "10:00",
+    "10:15", "10:30", "10:45", "11:00",
+    "11:15", "11:30", "11:45", "12:00",
+    "12:15", "12:30", "12:45", "13:00",
+    "13:15", "13:30", "13:45", "14:00",
+    "14:15", "14:30", "14:45", "15:00",
+    "15:15", "15:30", "15:45", "16:00",
+    "16:15", "16:30", "16:45", "17:00",
+    "17:15", "17:30", "17:45", "18:00",
+    "18:15", "18:30", "18:45", "19:00",
+    "19:15", "19:30", "19:45", "20:00"];
   objProjectDto: ProjectDetailsDTO;
   date11: any;
   currenthours: any;
@@ -3233,7 +3299,6 @@ approvalSubmitting:boolean=false;
 
   openDarSideBar() {
     // opens the dar side bar
-
     document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -3241,6 +3306,7 @@ approvalSubmitting:boolean=false;
     // get all actions
     this.getResponsibleActions();
     //
+    this.setTimelineDate(this.current_Date);
     this.currenthours = this.date.getHours();
 
   }
@@ -3290,7 +3356,10 @@ approvalSubmitting:boolean=false;
                 if(this.currentActionView!==undefined){
                   const selectedActionOpt = this.darArr.find((item: any) => (item.Project_Code === this.projectActionInfo[this.currentActionView].Project_Code))
                   if (selectedActionOpt)
-                  this.actionCode = selectedActionOpt.Project_Code;
+                  {
+                    this.actionCode = selectedActionOpt.Project_Code;
+                    this.getADetails(this.actionCode);
+                  }
                 }
         }
 
@@ -3300,9 +3369,8 @@ approvalSubmitting:boolean=false;
       }
 
 
-
-      
      // detect members without actions
+     if(this.projectInfo&&['001','002'].includes(this.projectInfo.Project_Block)){
      this.hasNoActionMembers=[]; 
      let pMemberwithActns=this.Subtask_Res_List.map(ob=>ob.Team_Res);
      const arr=[];
@@ -3313,6 +3381,7 @@ approvalSubmitting:boolean=false;
       }
      });
      this.hasNoActionMembers=arr;
+    }
     // detect members without actions
 
 
@@ -3878,21 +3947,7 @@ debugger
 
   getDarTime() {
     this.timedata = [];
-    this.timedata1 = ["08:00",
-      "08:15", "08:30", "08:45", "09:00",
-      "09:15", "09:30", "09:45", "10:00",
-      "10:15", "10:30", "10:45", "11:00",
-      "11:15", "11:30", "11:45", "12:00",
-      "12:15", "12:30", "12:45", "13:00",
-      "13:15", "13:30", "13:45", "14:00",
-      "14:15", "14:30", "14:45", "15:00",
-      "15:15", "15:30", "15:45", "16:00",
-      "16:15", "16:30", "16:45", "17:00",
-      "17:15", "17:30", "17:45", "18:00",
-      "18:15", "18:30", "18:45", "19:00",
-      "19:15", "19:30", "19:45", "20:00"];
-
-
+    
     this.objProjectDto.Emp_No = this.Current_user_ID;
     this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
     this.date11 = moment(new Date()).format("MM/DD/YYYY");
@@ -3939,9 +3994,9 @@ debugger
       });
   }
 
-  orgValueChange(val) {
-    this.current_Date = moment(val.value).format("MM/DD/YYYY");
-  }
+  // orgValueChange(val) {
+  //   this.current_Date = moment(val.value).format("MM/DD/YYYY");
+  // }
 
   diff_minutes(dt2, dt1) {
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
@@ -3953,12 +4008,15 @@ debugger
  submitDar(){
 debugger
    const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
+
    if(
    ((isPrjCoreSecondary&&this.showaction)?this.actionCode:true)&&
    this.workdes&&
    this.starttime&&
    this.endtime&&
-   ((isPrjCoreSecondary&&this.actionCode&&this.bothActTlSubm)?(this._remarks&&(this.proState?this.selectedFile:true)):true)
+   this.dateF&&
+   (this.starttime<this.endtime)
+  // &&((isPrjCoreSecondary&&this.actionCode&&this.bothActTlSubm)?(this._remarks&&(this.proState?this.selectedFile:true)):true)
    ){
     // if all mandatory fields are provided.
 
@@ -4049,7 +4107,7 @@ debugger
 
 
     this.service._InsertDARServie(this.objProjectDto)
-      .subscribe(data => {
+      .subscribe(data => {   debugger
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "Success");
 
@@ -4077,6 +4135,8 @@ debugger
           this.bothActTlSubm=false;
           this._remarks='';
           this._inputAttachments='';
+          this.a_details=null;
+          this.a_loading=false;
         }
       });
       this.dar_details();
@@ -4091,11 +4151,16 @@ debugger
     // document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     // document.getElementById("rightbar-overlay").style.display = "none";
     // this.Clear_Feilds();
-
-
    }
    else // some mandatory field are missing.
-     this.notProvided=true;
+    { 
+      this.notProvided=true;
+    // if start time, end time or date if not provided.
+    if(!(this.starttime&&this.endtime&&this.dateF)){
+      setTimeout(()=>document.getElementById("dropdown-timeline-menu").classList.add("show"),0);
+    }
+    // 
+    }
  }
 
 
@@ -4109,6 +4174,7 @@ debugger
       this.currentActionView = i;
 
     this.prostate(this.projectActionInfo[this.currentActionView].proState);
+    this.getADetails(this.projectActionInfo[this.currentActionView].Project_Code);
   }   // whenever action is changed or selected.
 
 
@@ -4141,7 +4207,7 @@ debugger
       console.log("timeline data here:", res);
       this.timelineList = JSON.parse(res[0].Timeline_List);
       this.tlTotalHours = +JSON.parse(res[0].Totalhours);
-      console.log(Math.abs(this.tlTotalHours))
+
       if (this.timelineList && this.timelineList.length) {
         this.isTimelinePresent = true;
         this.timelineList = this.timelineList.map((timeline: any) => ({ ...timeline, JsonData: JSON.parse(timeline.JsonData) }));
@@ -4448,6 +4514,7 @@ debugger
     this._inputAttachments = '';
     this._remarks = '';
     this.selectedFile = null;
+    this.invalidFileSelected=false;
     this.formFieldsRequired=false;
     // $('#_file1').val('');
     // $('#upload').html('Select a file');
@@ -7486,7 +7553,7 @@ holdcontinue(Pcode:any){
 
   processingStd:boolean=false;
   achieveStandard() {
-    if(this._remarks==''||this.selectedFile==null){
+    if(!(this._remarks&&this._remarks.trim())||this.selectedFile==null){
         this.formFieldsRequired=true;
         return;
     }
@@ -8157,15 +8224,17 @@ displaymessagemain(){
 
 
 formatTimes(time: string): string {
-
-  const [hours, minutes] = time.split(':');
-  const date = new Date();
-  date.setHours(parseInt(hours, 10));
-  date.setMinutes(parseInt(minutes, 10));
-
-  const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
-  const x=date.toLocaleTimeString('en-US', options);
-  return x;
+  if(time){
+    const [hours, minutes] = time.split(':');
+    const date = new Date();
+    date.setHours(parseInt(hours, 10));
+    date.setMinutes(parseInt(minutes, 10));
+  
+    const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
+    const x=date.toLocaleTimeString('en-US', options);
+    return x;
+  }
+  return '';
 }
 
 
@@ -11150,6 +11219,179 @@ getFormattedDuration(totalDuration: number): string {
     var myWindow = window.open(myurl, P_id);
     myWindow.focus();
   }
+
+
+
+
+
+a_details:any;
+a_loading:boolean=false;
+getADetails(actncode){
+    if(actncode)
+    {
+        this.a_details=null;
+        this.a_loading=true;
+        const actnObj=this.projectActionInfo.find(actnobj=>actnobj.Project_Code==actncode);
+        let a_obj={
+          AllocatedHours:actnObj.AllocatedHours,
+          EndDate:actnObj.EndDate,
+          Status:actnObj.Status,
+          Delaydays:actnObj.Delaydays,
+          usedHours:0,
+          remainingHours:0,
+          extraHours:0 
+        }
+
+        this.service.DARGraphCalculations_Json(actncode).subscribe((res:any)=>{
+          const actionAlhrs = (res[0]['ProjectMaxDuration']);  // action planned allocated hrs.
+          const usedhrs = (res[0]['TotalHoursUsedInDAR']);  // my timeline hrs on the action.
+          const remainingHrs:number=+((actionAlhrs-usedhrs).toFixed(1));
+          this.a_details={
+            ...a_obj,
+            usedHours:usedhrs,
+            remainingHours:remainingHrs<0?0:remainingHrs,
+            extraHours:remainingHrs<0?(Math.abs(remainingHrs)):0
+          };
+
+          this.a_loading=false;
+         });
+
+    }
+}
+
+
+
+close_add_time() {
+  document.getElementById("dropdown-timeline-menu").classList.remove("show");
+}
+
+btn_timeline_table_accordion(){
+  document.getElementById("btn-timeline-table-accordion").classList.toggle("rotate");
+}
+
+
+
+tmReportArr:any[]=[];
+tmReportTotalDuration:{hours:string,minutes:string};
+// tmReportStatus:any;
+tmSubmDate:any;
+tmReportLoading:boolean=false;
+getTimelineReportByDate(dateVal:'today'|'yesterday') {  
+  if(dateVal){
+    this.tmReportArr=[];
+    // this.tmReportStatus=null;
+    this.tmReportTotalDuration=null;
+    this.tmSubmDate=null;
+    // erase prev data.
+
+    this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+    this.ObjSubTaskDTO.PageNumber = 1;
+    this.ObjSubTaskDTO.PageSize = 2;
+    this.ObjSubTaskDTO.sort = dateVal
+    this.ObjSubTaskDTO.Start_Date = null;
+    this.ObjSubTaskDTO.End_Date = null;
+    this.tmReportLoading=true;
+    this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+      (data => {    
+        this.tmReportLoading=false;
+        console.log(data);
+        if(data&&data[0].DAR_Details_Json){
+             const dar_json=JSON.parse(data[0].DAR_Details_Json);
+             if(dar_json&&dar_json[0]){
+                this.tmReportArr=dar_json[0].Dardata;     console.log('tmreportarr:',this.tmReportArr);
+                this.tmReportArr.forEach(ob=>{
+                  const k=/00:\d\d/.test(ob.Duration);
+                   ob.duration=k?(ob.Duration.split(':')[1]+' mins'):(ob.Duration+' hrs');   
+                   ob.starttime=this.formatTimes(ob.starttime);
+                   ob.endtime=this.formatTimes(ob.endtime);
+
+                });  // adding 'duration' property to show timing in more easy way on the view.
+
+                const [hrs,mins]=dar_json[0].TotalDuration.split(':'); 
+                this.tmReportTotalDuration={hours:hrs,minutes:mins};
+                this.tmSubmDate=dar_json[0].SubmissionDate;
+
+                // if(this.submission_json){
+
+                //     const d1=new Date(this.tmSubmDate);
+                //     d1.setHours(0,0,0,0);
+                //     const tm_submitted=this.submission_json.find(item=>{
+                //         const d2=new Date(item.SubmissionDate);
+                //         return d1.getTime()==d2.getTime();
+                //     });
+
+                   
+                //     if(tm_submitted)
+                //       this.tmReportStatus=tm_submitted.Status;
+                //     else{
+                //       this.tmReportStatus='Not Submitted';
+                //     }
+
+                // }
+            }
+        }
+      });
+
+  }
+}
+
+
+timeline_of:'today'|'yesterday';
+noTimeSpaceAvailable:boolean=false;
+setTimelineDate(val)
+{   
+     this.current_Date = moment(val).format("MM/DD/YYYY");
+     this.dateF=moment(val).toDate();
+     this.starttime = null;
+     this.endtime = null;
+     this.noTimeSpaceAvailable=false;
+     this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
+     .subscribe(data => { 
+      const _timeList=JSON.parse(data[0]['time_json']); 
+      let _lastEndtime;
+      if (_timeList.length != 0) {
+         // when some timeline submit done on the selected date.
+         const _endtimearr=_timeList.map(ob=>ob.endtime);
+         _lastEndtime=_endtimearr[_endtimearr.length-1];
+         const i=this.timedata1.indexOf(_lastEndtime);
+         if(i<this.timedata1.length-1){
+             this.starttime=_lastEndtime;
+             this.endtime=this.timedata1[i+1];
+         }
+         else{
+            this.starttime=null;
+            this.endtime=null;
+            this.noTimeSpaceAvailable=true;
+         }
+
+      }
+      else{
+           // when no timeline submit done on the selected date.
+           this.starttime=this.timedata1[0];
+           this.endtime=this.timedata1[1];
+      }
+     });
+
+     const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
+     const yesterdaystr=moment(this.disablePreviousDate).format("MM/DD/YYYY");
+     this.timeline_of=this.current_Date==todaystr?'today':this.current_Date==yesterdaystr?'yesterday':null;
+     this.getTimelineReportByDate(this.timeline_of);
+}  
+
+
+
+onTimelineDateInput(val){
+   if(val){  // user has input a value.
+    const tm4Date=(val.toDate()<this.disablePreviousDate||val.toDate()>this.todayDate)?this.current_Date:val.toDate();
+    this.setTimelineDate(tm4Date);
+   }
+   else{ // user has input null or undefined or val is falsy.
+       this.current_Date=null;
+   }      
+}
+
+
+
 
 }
 

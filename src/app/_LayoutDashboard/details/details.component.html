@@ -2278,7 +2278,7 @@
                         </span>
                     </div>
 
-                    <div class="notification audit-pending-notf" *ngIf="(Current_user_ID==approvalEmpId && Current_user_ID==projectInfo.ResponsibleEmpNo)">
+                    <div class="notification audit-pending-notf" *ngIf="(Current_user_ID==approvalEmpId && Current_user_ID==projectInfo.ResponsibleEmpNo)&&(projectInfo.Status=='Completion Under Approval')">
                         <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #9c27b0;stroke: #a336b5;">
                         <g><g>
                             <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
@@ -4961,7 +4961,7 @@
                                                                 projectActionInfo[currentActionView].Project_Owner===Current_user_ID||
                                                                 projectInfo.OwnerEmpNo===Current_user_ID||
                                                                 projectInfo.ResponsibleEmpNo===Current_user_ID
-                                                                )" (click)="openDarSideBar()" class="Ct-btn ml-2">Add timeline
+                                                                )" (click)="openDarSideBar();  " class="Ct-btn ml-2">Add timeline
                                                                 </button>
 
 
@@ -6666,161 +6666,398 @@
       </div>
       <div class="kt-portlet__body scroll-auto">
 
-          <div>
+<!-- new design -->
 
-          <ng-container *ngIf="projectInfo">
-              <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"
-               *ngIf="(['001','002'].includes(projectInfo.Project_Block)&& showaction)">
-                  <label>Action <span class="text-danger">*</span></label>
-                  <ng-select required #action="ngModel" name="action" placeholder="Select Action" id="actinName"
-                  [ngClass]="{'error-vd': (!actionCode)&&notProvided}"
-                  [ngClass]="{'error-vd': (noact_msg==true)}"
-                      [(ngModel)]="actionCode" (change)="onActionChanged($event)">
-                      <ng-option [value]="item.Project_Code" *ngFor="let item of darArr">
-                          {{item.Project_Name}}
-                      </ng-option>
-                  </ng-select>
-                  <span style="color:red" *ngIf="(!actionCode)&&notProvided" >Please select action</span>
-                  <span style="color:red" *ngIf="(noact_msg==true)">You do not have any action assigned, Please
-                      create
-                      atleast one action to submit timeline</span>
-              </div>
-          </ng-container>
+    <div class="timeline-item-div">
+    <div class="add-timeline-list">
 
+        <ng-container *ngIf="projectInfo">
+        <div class="add-timeline-item" *ngIf="(['001','002'].includes(projectInfo.Project_Block)&& showaction)">
+            <div class="add-timeline-item-icon">
+                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.2929 2.29289C11.6834 1.90237 12.3166 1.90237 12.7071 2.29289L16.7071 6.29289C17.0976 6.68342 17.0976 7.31658 16.7071 7.70711C16.3166 8.09763 15.6834 8.09763 15.2929 7.70711L13 5.41421V15C13 15.5523 12.5523 16 12 16C11.4477 16 11 15.5523 11 15V5.41421L8.70711 7.70711C8.31658 8.09763 7.68342 8.09763 7.29289 7.70711C6.90237 7.31658 6.90237 6.68342 7.29289 6.29289L11.2929 2.29289ZM5 13C5 11.3431 6.34315 10 8 10H9C9.55228 10 10 10.4477 10 11C10 11.5523 9.55228 12 9 12H8C7.44772 12 7 12.4477 7 13V19C7 19.5523 7.44772 20 8 20H16C16.5523 20 17 19.5523 17 19V13C17 12.4477 16.5523 12 16 12H15C14.4477 12 14 11.5523 14 11C14 10.4477 14.4477 10 15 10H16C17.6569 10 19 11.3431 19 13V19C19 20.6569 17.6569 22 16 22H8C6.34315 22 5 20.6569 5 19V13Z" fill="currentColor"></path></g></svg>
+            </div>
+            <div class="add-timeline-item-group">
+                <div class="form-group w-100 mb-0">
+                    <ng-select  required #action="ngModel" name="action" placeholder="Select Action" id="actinName"  [ngClass]="{'error-borderbottom': ((!actionCode)&&notProvided)||(noact_msg==true)}"
+                    [(ngModel)]="actionCode"  (change)="onActionChanged($event)">
+                    <ng-option [value]="item.Project_Code" *ngFor="let item of darArr">
+                        {{item.Project_Name}}
+                    </ng-option>
+                </ng-select>
 
-              <div class="form-group">
-                  <label>Work description<span class="text-danger">*</span></label>
-                  <textarea type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes" [ngClass]="{'error-border': workdes===''&&notProvided}"
-                      placeholder="Define your achievement here."></textarea>
-                  <span style="color:red" *ngIf="workdes===''&&notProvided" >Please provide description.</span>
-              </div>
+                    <div class="txtm-cus mt-1 ml-1 d-flex align-items-center flex-wrap" *ngIf="a_details&&a_loading==false">
+                    
+                        <div class="d-flex gap-1 flex-grow-1 flex-wrap">
+                            <div class="info-chip">
+                                <div class="info-chip-label text-nowrap">Achieved hours :</div>
+                                <div class="info-chip-value">
+                                    <span title="used hours" [ngClass]="{'text-red':a_details.usedHours==0}">{{a_details.usedHours>0?(a_details.usedHours+' hrs'):'0'}}</span>
+                                    <span class="hrs-by">/</span> 
+                                    <span class="text-nowrap" title="allocated hours">{{a_details.AllocatedHours>0?a_details.AllocatedHours:0}} hrs</span>
+                                </div>
+                            </div>
 
-              <div class="form-group">
-                  <label>Date<span class="text-danger">*</span></label>
+                            <div *ngIf="!(a_details.extraHours>0)" class="info-chip">
+                                <div class="info-chip-label text-nowrap">Remaining hours :</div>
+                                <div class="info-chip-value text-nowrap" [ngClass]="{'text-red':a_details.remainingHours==0}">
+                                    {{a_details.remainingHours>0?(a_details.remainingHours+' hrs'):'0'}}
+                                </div>
+                            </div>
 
-                  <div class="input-group details-date">
-                      <input matInput (dateChange)="orgValueChange($event)" [value]="dateF.value"
-                          [matDatepicker]="picker1" id="d-date" required (click)="picker1.open()"
-                          [min]="disablePreviousDate" [max]="todayDate" placeholder="Select Date" class="form-control"
-                          name="date">
-
-                      <div class="input-group-text p-0">
-                          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                          <mat-datepicker #picker1></mat-datepicker>
-                      </div>
-                  </div>
-              </div>
-              <div class="d-flex gap-1">
-                  <div class="form-group w-100">
-                      <label>Start time<span class="text-danger">*</span></label>
-                      <ng-select name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()"  [ngClass]="{'error-vd': starttime===null&&notProvided}"
-                          [(ngModel)]="starttime">
-                          <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
-                              [disabled]="item!=lastEndtime && bol==false">
-                              <a>{{item}}</a>
-                              <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> ok -->
-                          </ng-option>
-                      </ng-select>
-                      <span style="color:red" *ngIf="starttime===null&&notProvided">Please provide start time</span>
-                  </div>
-
-                  <div class="form-group w-100">
-                      <label>End Time<span class="text-danger">*</span></label>
-                      <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end"  [ngClass]="{'error-vd': endtime===null&&notProvided}"
-                      [ngClass]="{'error-vd': (endtime < starttime)}"
-                          (click)="getDarTime()" [(ngModel)]="endtime">
-                          <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
-                              [disabled]="item<=lastEndtime">
-                              <a>{{item}}</a>
-                              <!-- <a *ngIf="i==10 || i==11">{{item}}--&nbsp;&nbsp;(Lunch Break)</a> -->
-                          </ng-option>
-                      </ng-select>
-                      <span style="color:red" *ngIf="endtime===null&&notProvided">Please provide end time</span>
-                      <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than
-                          start
-                          time</span>
-                  </div>
-              </div>
+                            <div *ngIf="a_details.extraHours>0" class="info-chip">
+                            <div class="info-chip-label text-nowrap">Overutilized by :</div>
+                            <div class="info-chip-value text-nowrap">
+                                {{a_details.extraHours}} hrs
+                            </div>
+                            </div>
+                        
+                            <div class="info-chip">
+                            <div class="info-chip-label text-nowrap">Deadline :</div>
+                            <div class="info-chip-value text-nowrap" [ngClass]="{'text-red':a_details.Status=='Delay'}" [title]="a_details.Status=='Delay'?('Action is in delay by '+a_details.Delaydays+(a_details.Delaydays>1?' days.':'day.')):'Action end date.'">
+                                {{a_details.EndDate|date:'dd-MM-yyyy'}}
+                            </div>
+                            </div>
+                    </div>
 
 
 
+                    </div>
+                    <div class="d-flex flex-column">
+                        <span style="color:red" *ngIf="(!actionCode)&&notProvided">Please select action</span>
+                        <span style="color:red" *ngIf="(noact_msg==true)">You do not have any action assigned, Please create atleast one action to submit timeline</span>
+                    </div>
+            </div>
+            </div>
+        </div>
+        </ng-container>
+
+        <div class="add-timeline-item">
+            <div class="add-timeline-item-icon">
+                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M4 12H20M4 8H20M4 16H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+            </div>
+            <div class="add-timeline-item-group">
+                <div class="form-group w-100 mb-0">
+                    <textarea type="text" name="work" class="form-control h-100px" [(ngModel)]="workdes" placeholder="Define your achievement here." [ngClass]="{'error-borderbottom':(workdes===''&&notProvided)}"></textarea>
+                    <span style="color:red" *ngIf="workdes===''&&notProvided" >Work achievement is required.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="add-timeline-item">
+            <div class="add-timeline-item-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none"><path d="M39.2729 55.2725C48.1095 55.2725 55.2729 48.109 55.2729 39.2725C55.2729 30.4359 48.1095 23.2725 39.2729 23.2725C30.4364 23.2725 23.2729 30.4359 23.2729 39.2725C23.2729 48.109 30.4364 55.2725 39.2729 55.2725Z" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><path d="M39.2729 33.001V39.2727L43.6366 43.6363" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><path d="M43.6362 2.90918V8.72736" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14.5454 2.90918V8.72736" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><path d="M17.5438 55.273C15.7834 55.273 13.1427 55.273 9.6219 55.273C7.28774 55.273 6.44132 55.0456 5.58798 54.6186C4.73465 54.1916 4.06495 53.565 3.60858 52.7665C3.15221 51.9681 2.90918 51.1761 2.90918 48.9921V15.0084C2.90918 12.8244 3.15221 12.0325 3.60858 11.234C4.06495 10.4356 4.73465 9.80896 5.58798 9.38195C6.44132 8.95494 7.28774 8.72754 9.6219 8.72754H48.5601C50.8943 8.72754 51.7407 8.95494 52.594 9.38195C53.4473 9.80896 54.117 10.4356 54.5734 11.234C55.0298 12.0325 55.2728 15.2634 55.2728 17.4475" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><rect x="11" y="19" width="8" height="8" rx="2" fill="currentColor"></rect></svg>
+            </div>
+            <div class="add-timeline-item-group dropdown">
+                <div class="add-timeline-date-time-div" #ddmibtn  type="button" id="dropdownTimelineTimeMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="add-timeline-date-time">
+                        <div class="form-group mb-0">
+                            <div class="curser-pointer">
+                                <div class="add-timeline-dt-tm">
+                                    <div class="d-flex align-items-center gap-1 flex-grow-1">
+                                    <div>
+                                        <span>{{current_Date|date:'EEEE, MMMM d, y'}}</span>
+                                        <div *ngIf="!current_Date" class="TLdate-not-selected">Select date</div>
+                                    </div>
+                                    <div *ngIf="starttime&&endtime" class="d-flex">
+                                        <span class="add-timeline-picktime-box">{{formatTimes(starttime)}}</span>
+                                        <span class="add-timeline-dt-muted mx-2">-</span>
+                                        <span class="add-timeline-picktime-box">{{formatTimes(endtime)}}</span>
+                                        <span class="add-timeline-picktime-box ml-2 fs-7 time-duration text-center ">{{formatTimes(starttime)|timeDiff:formatTimes(endtime)}}</span>
+                                    </div>
+                                    <div *ngIf="noTimeSpaceAvailable" class="d-flex">
+                                        <span class="tl-status fs-7 font-weight-400 tl-submitted">
+                                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style=" width: 20px;height: 20px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.1" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="#388e3c"></path> <path d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" stroke="#388e3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 12L10.8189 13.8189V13.8189C10.9189 13.9189 11.0811 13.9189 11.1811 13.8189V13.8189L15 10" stroke="#388e3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g>
+                                            </svg>
+                                            Complete time occupied
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="total-time-div d-flex gap-1 align-items-center total-hours-label">
+                                    <div class="total-time-title">Total hours :</div>
+                                    <div class="total-time-count">
+                                        <ng-container *ngIf="tmReportTotalDuration">
+                                        <span><span>{{tmReportTotalDuration.hours}}</span><span class="_time-value"> Hrs</span></span>
+                                        <span><span>{{tmReportTotalDuration.minutes}}</span><span class="_time-value"> Min</span></span>
+                                        </ng-container>
+                                        <ng-container *ngIf="!tmReportTotalDuration">
+                                            <span><span>0</span><span class="_time-value"> Hrs</span></span>
+                                            <span><span>0</span><span class="_time-value"> Min</span></span>
+                                        </ng-container> 
+                                    </div>
+                                    
+                                    <!-- <i *ngIf="tmReportStatus=='Not Submitted'" class="fa fa-circle text-gray-glow blink"></i> -->
+                                </div> 
+                                </div>
+                        
+                                <div class="add-timeline-dt-text">
+                                    <span style="line-height: 1;">
+                                        <svg width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 6L8 12V16H12L18 10M14 6L17 3L21 7L18 10M14 6L18 10M10 4L4 4L4 20L20 20V14" stroke="#858585" stroke-width="1.6799999999999997" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                    </span>
+                                    <span>Click here to select the date and time.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdown-menu dropdown-timeline-menu" id="dropdown-timeline-menu" aria-labelledby="dropdownTimelineTimeMenuButton"  (click)="$event.stopPropagation()">
+                    <h6>Select date & time</h6>
+                    <div class="input-group add-timeline-item-input-group my-4">
+
+                        <div class="input-group-text p-0 bg-white border-0 rounded-0">
+                            <mat-datepicker-toggle matSuffix [for]="TLdatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker  (closed)="ddmibtn.click();" #TLdatePicker></mat-datepicker>
+                        </div>
+                        <div class="d-flex flex-column flex-grow-1">
+                        <input [matDatepicker]="TLdatePicker" 
+                        (dateChange)="onTimelineDateInput($event.value)" 
+                        [(ngModel)]="dateF"  id="d-date" required (click)="TLdatePicker.open()"
+                            [min]="disablePreviousDate"  [max]="todayDate" placeholder="Select Date" class="form-control" name="date" 
+                            [ngClass]="{'error-borderbottom': (notProvided&&!dateF)}"
+                            /> 
+                            <span *ngIf="notProvided&&!dateF" style="color:red">please select date.</span>  
+                    </div>
+                    </div>
+                    <div class="d-flex gap-1 mb-3 datetime-ngselect">
+                        <div class="form-group w-100 mb-0"> 
+                            <ng-select  name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()" [ngClass]="{'error-borderbottom': starttime===null&&notProvided}"
+                                [(ngModel)]="starttime">
+                                <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
+                                    [disabled]="item!=lastEndtime && bol==false">
+                                    <a>{{formatTimes(item)}}</a>
+                                </ng-option>
+                            </ng-select>
+                            <span style="color:red" *ngIf="starttime===null&&notProvided">Start time is required.</span>
+                        </div>
+
+                        <div class="form-group w-100 mb-0">                                        
+                            <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end" [ngClass]="{'error-borderbottom': (endtime===null&&notProvided)||(endtime < starttime)}"
+                                (click)="getDarTime()" [(ngModel)]="endtime">
+                                <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
+                                    [disabled]="item<=lastEndtime">
+                                    <a>{{formatTimes(item)}}</a>
+                                    <ng-container *ngIf="starttime">
+                                        ({{ formatTimes(starttime)|timeDiff:formatTimes(item) }})
+                                    </ng-container>
+                                </ng-option>
+                            </ng-select>
+                            <span style="color:red" *ngIf="endtime===null&&notProvided">Please provide end time</span>
+                            <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than start time</span>
+                        </div>
+                    </div>
+                    <div class="text-right w-100">
+                        <button class="btn btn-sm btn-outline-secondary mr-2" (click)="close_add_time()">Close</button>
+                    </div>
+                </div> 
+            </div>
+        </div>
+
+    
+    </div>
+    </div>
+
+                   <!-- <ng-container *ngIf="bothActTlSubm">
+                        <div class="complete-action-div">
+                            <h6>
+                                <svg width="18px" height="18px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#008000" fill-rule="evenodd" d="M4,4 L9,4 C9.55228,4 10,3.55228 10,3 C10,2.44772 9.55228,2 9,2 L4,2 C2.89543,2 2,2.89543 2,4 L2,12 C2,13.1046 2.89543,14 4,14 L12,14 C13.1046,14 14,13.1046 14,12 L14,10 C14,9.44771 13.5523,9 13,9 C12.4477,9 12,9.44771 12,10 L12,12 L4,12 L4,4 Z M15.2071,2.29289 C14.8166,1.90237 14.1834,1.90237 13.7929,2.29289 L8.5,7.58579 L7.70711,6.79289 C7.31658,6.40237 6.68342,6.40237 6.29289,6.79289 C5.90237,7.18342 5.90237,7.81658 6.29289,8.20711 L7.79289,9.70711 C7.98043,9.89464 8.23478,10 8.5,10 C8.76522,10 9.01957,9.89464 9.20711,9.70711 L15.2071,3.70711 C15.5976,3.31658 15.5976,2.68342 15.2071,2.29289 Z"></path> </g></svg>
+                                 <span>Action Completion</span>
+                            </h6>
+                            <div class="add-timeline-item">
+                                <div class="add-timeline-item-icon">
+                                    <svg fill="currentColor" height="64px" width="64px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g><g><path d="M359.784,103.784v262.919c0,57.226-46.557,103.784-103.784,103.784s-103.784-46.557-103.784-103.784V103.784 c0-34.336,27.934-62.27,62.27-62.27c34.336,0,62.27,27.934,62.27,62.27v262.919c0,11.445-9.312,20.757-20.757,20.757 s-20.757-9.311-20.757-20.757V103.784H193.73v262.919c0,34.336,27.934,62.27,62.27,62.27s62.27-27.934,62.27-62.27V103.784 C318.27,46.557,271.713,0,214.487,0S110.703,46.557,110.703,103.784v262.919C110.703,446.82,175.883,512,256,512 s145.297-65.18,145.297-145.297V103.784H359.784z"></path></g></g></g></svg>
+                                </div>
+                                <div class="add-timeline-item-group">
+                                    <div class="form-group w-100 mb-0">
+                                        <div class="input-group" #uploadFile  [ngClass]="{'error-border':(proState&&notProvided&&!selectedFile)}" >
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                        class="bi bi-upload" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                                                        <path
+                                                            d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="custom-file">                             
+                                                <input
+                                                type="file"
+                                                [accept]="permittedFileFormats.join(',')"
+                                                [title]="_inputAttachments?_inputAttachments:'no file selected'"
+                                                (change)="onFileChange($event)"
+                                                 id="tm_actn_uploadFile"
+                                                 class="custom-file-input"
+                                                />
+                                                <label class="custom-file-label" id="_upload" for="tm_actn_uploadFile">
+                                                    <ng-container *ngIf="_inputAttachments==='';else fileprovided">
+                                                        Select a file
+                                                    </ng-container>
+                                                    <ng-template #fileprovided>
+                                                        {{_inputAttachments}}
+                                                    </ng-template>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <span class="text-info">* Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span><br/>
+                                        <span *ngIf="invalidFileSelected" style="color:red">The selected file type is not supported. Please choose a valid file.</span>
+                                        <span style="color:red" *ngIf="(proState&&notProvided&&!selectedFile)">please provide file attachment.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-timeline-item">
+                                <div class="add-timeline-item-icon">
+                                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M4 12H20M4 8H20M4 16H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+                                </div>
+                                <div class="add-timeline-item-group">
+                                    <div class="form-group w-100 mb-0">
+                                        <textarea class="form-control" [ngClass]="{'error-border': _remarks===''&&notProvided}" aria-label="With textarea" placeholder="Define your exact reason here (Remarks)."
+                                        [(ngModel)]="_remarks" style="margin-top: 0px; margin-bottom: 0px; height: 100px;"></textarea>
+                                        <span style="color:red" *ngIf="_remarks===''&&notProvided">remarks required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="projectActionInfo&&projectActionInfo[currentActionView]">
+                        <div class="d-flex align-items-center px-4" *ngIf="['Delay','InProcess'].includes(projectActionInfo[currentActionView].Status)">
+                                <input type="checkbox" id="actioncompl" class="mr-2" [(ngModel)]="bothActTlSubm" style="accent-color: green; width:15px; height:15px;"/>
+                                <label for="actioncompl" class="mb-0 font-weight-normal"> Complete this action </label>
+                        </div>
+                  </ng-container>  -->
+               
+<!-- new design end -->
+
+
+          <div class="timeline-table-accordion collapse" id="collapseTimeline">
+            <div class="card">
+                <div class="card-body">
+                    <div class="timeline-header sticky-header d-flex justify-content-between">
+                        <h4 class="header-date p-0 mb-0" style="font-size: 16px;">
+                            <span class="text-uppercase">{{timeline_of}}</span>
+                            <span class="text-muted fs-8 d-block">{{current_Date|date:'EEEE, MMMM d, y'}}</span>
+                            <!-- <span *ngIf="tmReportStatus" class="d-inline-block mt-1 tl-status fs-7 font-weight-400"  [ngClass]="{
+                                'tl-submitted':tmReportStatus=='Accepted',
+                                'tl-notsubmitted':tmReportStatus=='Not Submitted',
+                                'tl-underaprvl':tmReportStatus=='Under Approval',
+                                'tl-suspend':tmReportStatuss=='Suspend'
+                                }">
+                                <svg *ngIf="tmReportStatus=='Accepted'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style=" width: 20px;height: 20px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.1" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="#388e3c"></path> <path d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" stroke="#388e3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 12L10.8189 13.8189V13.8189C10.9189 13.9189 11.0811 13.9189 11.1811 13.8189V13.8189L15 10" stroke="#388e3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                {{tmReportStatus}}
+                            </span> -->
+                        </h4>
+
+                        <a (click)="btn_timeline_table_accordion();"  type="button" data-toggle="collapse" data-target="#collapseTimeline" aria-expanded="false" aria-controls="collapseTimeline" href="javascript:void(0)" class="collapseTimeline-closeBtn btn btn-xs btn-icon btn-hover-info" >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="mt-3">
+                        <ng-container *ngIf="(tmReportArr&&tmReportArr.length>0); else noTimelinePresentOnDate">
+                         <table class="time-table collapseTimeline-table  mb-1 border">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%; font-size: 12px;">S.No.</th>
+                                    <th style="width: 30%; font-size: 12px;">Type</th>
+                                    <th style="width:35%; font-size: 12px;">Achievement</th>
+                                    <th style="width: 10%; font-size: 12px;">Start</th>
+                                    <th style="width: 10%; font-size: 12px;">End</th>
+                                    <th style="width: 10%; font-size: 12px;">Time</th>
+                                </tr>
+                            </thead>  
+                            <tbody>
+                                <tr *ngFor="let item of tmReportArr; let i=index;">
+                                    <td>{{i+1}}</td>
+                                    <td>
+                                        <span *ngIf="item.ProjectName && item.Tasktype!='Lunch' && item.Tasktype!='Personal'" class="prj-name fs-6"  (click)="goToProject(item.project_code)">{{item.ProjectName}}</span>
+                                        <span class="d-block" *ngIf="item.ActionName && item.ActionName!=item.ProjectName">
+                                          <span class="fs-9 action-label">action</span>
+                                          <a href="javascript:void(0)"  class="pro-link fs-8 actn-name" (click)="goToProject(item.project_code,item.ActionCode)">{{item.ActionName}}</a>
+                                        </span>
+                                         <span *ngIf="item.Tasktype=='Lunch'" >Lunch</span>
+                                         <span *ngIf="item.Tasktype=='Personal'">Personal</span>
+                                    </td>
+                                     <td>
+                                        <div class="d-flex gap-1">
+                                            <div #tlDescBx class="compl-remarks-span">
+                                                {{item.WorkAchieved}}
+                                            </div>
+                                            <button title="show full" class="txt-expnd-btn align-self-end" *ngIf="tlDescBx.scrollHeight>tlDescBx.clientHeight" (click)="$event.stopPropagation(); tlDescBx.classList.remove('compl-remarks-span'); lessbtn1.classList.remove('d-none'); ">
+                                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                            </button>
+                                            <button title="show less" #lessbtn1 class="txt-expnd-btn align-self-end d-none"   (click)="$event.stopPropagation(); tlDescBx.classList.add('compl-remarks-span'); lessbtn1.classList.add('d-none');">
+                                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                            </button>
+                                        </div> 
+                                     </td>
+                                    <td>{{item.starttime}}</td>
+                                    <td>{{item.endtime}}</td>
+                                    <td>{{item.duration}}</td>
+                                </tr>
+                            </tbody>
+                        </table> 
+                       </ng-container>
+                        <ng-template #noTimelinePresentOnDate>
+                            <div class="notimelineondate-present">
+                                <img src="./assets/images/noTimelinePresent.png" class="notimeline-presentondate-img" />
+                                <div class="bnk-txt mt-3 d-flex justify-content-center">
+                                    <h3 class="blank-txt fs-6 notimeline-presentondate-label">No timeline found.</h3>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="time-totals mb-3 mt-3">
+                        <div class="total-time-div d-flex gap-1 align-items-center">
+                            <div class="total-time-title">Total hours :</div>
+                            <div class="total-time-count">
+                                <ng-container *ngIf="tmReportTotalDuration">
+                                <span><span>{{tmReportTotalDuration.hours}}</span><span class="_time-value"> Hrs</span></span>
+                                <span><span>{{tmReportTotalDuration.minutes}}</span><span class="_time-value"> Min</span></span>
+                                </ng-container>
+                                <ng-container *ngIf="!tmReportTotalDuration">
+                                    <span><span>0</span><span class="_time-value"> Hrs</span></span>
+                                    <span><span>0</span><span class="_time-value"> Min</span></span>
+                                </ng-container> 
+                            </div>
+                        </div>
+                        <!-- <button type="submit" class="btn btn-info ml-1 btn-fw curser-pointer"  (click)="endTimelineModal()">End day</button> -->
+                    </div>
+                </div>
+            </div> 
+        </div>
 
 
 
-                <ng-container *ngIf="bothActTlSubm">
-                  <div class="form-group mt-3">
-                      <label>Attachments</label><span *ngIf="proState" style="color:red">*</span>
-                      <div class="input-group mb-3"  [ngClass]="{'error-border':(proState&&notProvided&&!selectedFile)}" #uploadFile>
-                          <div class="input-group-prepend">
-                              <span class="input-group-text">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                      class="bi bi-upload" viewBox="0 0 16 16">
-                                      <path
-                                          d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                                      <path
-                                          d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
-                                  </svg>
-                              </span>
-                          </div>
-                          <div class="custom-file">
-                              <input  type="file" class="custom-file-input" id="uploadFile" (change)="onFileChange($event)" />
-                              <label class="custom-file-label" id="_upload" for="uploadFile">
-                                  <ng-container *ngIf="_inputAttachments==='';else fileprovided">
-                                      Select a file
-                                  </ng-container>
-                                  <ng-template #fileprovided>
-                                      {{_inputAttachments}}
-                                  </ng-template>
-
-                              </label>
-                          </div>
-                      </div>
-                      <span class="text-info"> *Accept only pdf files</span><br/>
-                      <span style="color:red" *ngIf="(proState&&notProvided&&!selectedFile)">please provide file attachment.</span>
-                  </div>
-                  <div class="form-group">
-                      <label for="exampleFormControlFile1">Remarks<span class="text-danger">*</span> </label>
-                      <textarea class="form-control" aria-label="With textarea" placeholder="Define your exact reason here." [ngClass]="{'error-border': _remarks===''&&notProvided}"
-                          [(ngModel)]="_remarks" style="margin-top: 0px; margin-bottom: 0px; height: 160px;"></textarea>
-                      <span style="color:red" *ngIf="_remarks===''&&notProvided">Please provide remarks</span>
-                  </div>
-               </ng-container>
 
 
-                 <ng-container *ngIf="projectActionInfo&&projectActionInfo[currentActionView]">
-                  <div class="d-flex align-items-center"   *ngIf="['Delay','InProcess'].includes(projectActionInfo[currentActionView].Status)">
-                          <input [(ngModel)]="bothActTlSubm" type="checkbox" id="actioncompl" class="mr-2"
-                              style="accent-color: green; width:15px; height:15px;"/>
-                          <label for="actioncompl" class="mb-0 font-weight-normal"> Complete this action </label>
-                  </div>
-                </ng-container>
 
 
-              <!-- <div class="form-group">
-              <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="coresecondary==true"
-                  [disabled]="!actionCode || !workdes || !starttime || !endtime || endtime < starttime">
-                  Submit</button>
-              <button type="submit" class="btn btn-primary" (click)="submitDar()" *ngIf="coresecondary==false"
-                  [disabled]=" !workdes  || !starttime || !endtime || endtime < starttime">
-                  Submit</button>
-              <button type="reset" class="btn btn-secondary ml-2"        >Reset</button>
-              <button type="submit" class="btn btn-secondary ml-2"       >Cancel</button>
-          </div> -->
 
 
-          </div>
-      </div>
+
+
+      
+     </div>
       <div class="kt-footer-edit">
           <div class="kt-portlet__foot">
               <div class="row pt-2 pb-2">
                   <div class="col-lg-12">
-                      <div class="form-group mb-0">
+                      <div class="form-group mb-0 text-end">
 
-                              <button type="submit" class="btn w-110 btn-info ml-2" (click)="submitDar()">Submit</button>
-                          <button type="reset" class="btn w-110 btn-secondary  ml-2"
-                              (click)="starttime=null; endtime=null; workdes=''; actionCode=null; bothActTlSubm=false; _remarks=''; _inputAttachments=''; selectedFile=null; ">Reset</button>
-                              <button type="submit" class="btn w-110 btn-secondary  ml-2"
-                              (click)="closedarBar()">Cancel</button>
+                            <button class="btn btn-timeline-table-accordion btn-sm" id="btn-timeline-table-accordion" (click)="btn_timeline_table_accordion();" type="button" data-toggle="collapse" data-target="#collapseTimeline" aria-expanded="false" aria-controls="collapseTimeline">
+                                <span><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Caret_Up_MD"> <path id="Vector" d="M8 14L12 10L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg></span>
+                                <span *ngIf="tmReportTotalDuration">{{tmReportTotalDuration.hours}} Hrs : {{tmReportTotalDuration.minutes}} Mins</span>
+                                <span *ngIf="!tmReportTotalDuration">0 Hrs : 0 Mins</span>
+                            </button>
+
+                            <button type="reset" class="btn w-110 btn-secondary  ml-2"
+                            (click)="starttime=null; endtime=null; workdes=''; actionCode=null; bothActTlSubm=false; _remarks=''; _inputAttachments=''; selectedFile=null; ">Reset</button>
+
+                            <button type="submit" class="btn btn-info ml-2" (click)="submitDar()">Add timeline</button>
+                              
+                              <!-- <button type="submit" class="btn w-110 btn-secondary  ml-2"
+                              (click)="closedarBar()">Cancel</button> -->
                       </div>
                   </div>
               </div>
@@ -6839,18 +7076,18 @@
 
               <h4 class="m-0">
                   <span class="svg-icv-hd">
-                      <svg _ngcontent-tsq-c391="" width="17" height="17" tittle="timeline" viewBox="0 0 24 24"
+                      <svg  width="17" height="17" tittle="timeline" viewBox="0 0 24 24"
                           version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                           fill="#a3a3a3" stroke="#a3a3a3">
-                          <g _ngcontent-tsq-c391="" id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                          <g _ngcontent-tsq-c391="" id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
                               stroke-linejoin="round"></g>
-                          <g _ngcontent-tsq-c391="" id="SVGRepo_iconCarrier">
-                              <g _ngcontent-tsq-c391="" id="🔍-Product-Icons" stroke="none" stroke-width="1"
+                          <g id="SVGRepo_iconCarrier">
+                              <g  id="🔍-Product-Icons" stroke="none" stroke-width="1"
                                   fill="none" fill-rule="evenodd">
-                                  <g _ngcontent-tsq-c391="" id="ic_fluent_timeline_24_regular" fill="#a3a3a3"
+                                  <g id="ic_fluent_timeline_24_regular" fill="#a3a3a3"
                                       fill-rule="nonzero">
-                                      <path _ngcontent-tsq-c391=""
+                                      <path
                                           d="M15.2496718,13 C16.2161701,13 16.9996718,13.7835017 16.9996718,14.75 L16.9996718,19.25 C16.9996718,20.2164983 16.2161701,21 15.2496718,21 L3.74967178,21 C2.78317347,21 1.99967178,20.2164983 1.99967178,19.25 L1.99967178,14.75 C1.99967178,13.7835017 2.78317347,13 3.74967178,13 L15.2496718,13 Z M20.9999472,14.8988691 L20.9996863,20.25 C20.9996863,20.6642136 20.6638999,21 20.2496863,21 C19.8699905,21 19.5561953,20.7178461 19.5065329,20.3517706 L19.4996863,20.25 L19.499308,14.9117103 C19.7315928,14.9693895 19.9745687,15 20.2246942,15 C20.4927784,15 20.7526497,14.9648361 20.9999472,14.8988691 Z M15.2496718,14.5 L3.74967178,14.5 C3.6116006,14.5 3.49967178,14.6119288 3.49967178,14.75 L3.49967178,19.25 C3.49967178,19.3880712 3.6116006,19.5 3.74967178,19.5 L15.2496718,19.5 C15.387743,19.5 15.4996718,19.3880712 15.4996718,19.25 L15.4996718,14.75 C15.4996718,14.6119288 15.387743,14.5 15.2496718,14.5 Z M20.2494639,10.0919271 C21.3032635,10.0919271 22.1575368,10.9462004 22.1575368,12 C22.1575368,13.0537996 21.3032635,13.9080729 20.2494639,13.9080729 C19.1956643,13.9080729 18.341391,13.0537996 18.341391,12 C18.341391,10.9462004 19.1956643,10.0919271 20.2494639,10.0919271 Z M15.2452829,3 C16.2117813,3 16.9952829,3.78350169 16.9952829,4.75 L16.9952829,9.25 C16.9952829,10.2164983 16.2117813,11 15.2452829,11 L3.74528294,11 C2.77878463,11 1.99528294,10.2164983 1.99528294,9.25 L1.99528294,4.75 C1.99528294,3.8318266 2.70239322,3.07880766 3.60175573,3.0058012 L3.74528294,3 L15.2452829,3 Z M15.2452829,4.5 L3.74528294,4.5 L3.68796024,4.50660268 C3.57751636,4.53251318 3.49528294,4.63165327 3.49528294,4.75 L3.49528294,9.25 C3.49528294,9.38807119 3.60721176,9.5 3.74528294,9.5 L15.2452829,9.5 C15.3833541,9.5 15.4952829,9.38807119 15.4952829,9.25 L15.4952829,4.75 C15.4952829,4.61192881 15.3833541,4.5 15.2452829,4.5 Z M20.2496863,3 C20.6293821,3 20.9431773,3.28215388 20.9928397,3.64822944 L20.9996863,3.75 L20.9999472,9.10113095 C20.7526497,9.0351639 20.4927784,9 20.2246942,9 C19.9745687,9 19.7315928,9.03061049 19.499308,9.0882897 L19.4996863,3.75 C19.4996863,3.33578644 19.8354727,3 20.2496863,3 Z"
                                           id="🎨Color"></path>
                                   </g>
@@ -6880,9 +7117,11 @@
       <div class="d-flex align-items-center justify-content-between kt-tm-hd">
           <div class="kt-total-ac-hr">
               <h4>Total achivement hours :
-                  <span *ngIf="tlTotalHours>=1000">{{tlTotalHours|number:'1.2-2'.toLocaleString()}} hrs</span>
-                  <span *ngIf="tlTotalHours<1000">{{getFormattedHours(tlTotalHours)}} min</span>
+                  <!-- <span *ngIf="tlTotalHours>=1000">{{tlTotalHours|number:'1.2-2'.toLocaleString()}} hrs</span>
+                  <span *ngIf="tlTotalHours<1000">{{getFormattedHours(tlTotalHours)}} min</span> -->
                   <!-- <span *ngIf="tlTotalHours<1000">{{tlTotalHours|number:'1.2-2'}} hrs</span> -->
+                  <span>{{getFormattedHours(tlTotalHours)}} hrs</span>
+                
               </h4>
           </div>
           <div class="sort-view">
@@ -8976,12 +9215,17 @@
                       </span>
                   </div>
 
-    <div class="custom-file">
-        <input type="file" class="custom-file-input" id="_pdf" accept="application/pdf"
-            (change)="onFileChange($event)" [value]="selectedFile">
-        <label class="custom-file-label" id="upload" for="_pdf">
-            <ng-container
-                *ngIf="_inputAttachments;else selFileFrMprj">{{_inputAttachments}}</ng-container>
+    <div class="custom-file">   
+        <input 
+         type="file"
+        [accept]="permittedFileFormats.join(',')"
+        [title]="_inputAttachments?_inputAttachments:'no file selected'"
+        (change)="onFileChange($event)" 
+         id="action_attachment_file" 
+        class="custom-file-input"
+        />
+        <label class="custom-file-label" id="action_attch_upload" for="action_attachment_file">
+            <ng-container *ngIf="_inputAttachments;else selFileFrMprj">{{_inputAttachments}}</ng-container>
             <ng-template #selFileFrMprj> Select a file</ng-template>
         </label>
 
@@ -9000,9 +9244,10 @@
 
 
               </div>
-                <div class="d-flex flex-column  ">
-                   <ng-container *ngIf="proState"><span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">Please provide attachment.</span></ng-container>
-                    <span class="text-info">Accept any type of file</span>
+                <div class="d-flex flex-column ">
+                   <ng-container *ngIf="proState"><span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">please provide attachment.</span></ng-container>
+                    <span *ngIf="invalidFileSelected" style="color:red">File type is not supported. Please choose a valid file.</span>
+                    <span class="text-info">* Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
                 </div>
           </div>
 
@@ -9017,9 +9262,9 @@
        -->
           <div class="form-group">
               <label for="exampleFormControlFile1">Remark<span class="text-danger">*</span> </label>
-              <textarea [ngClass]="{'error-border': !_remarks&&formFieldsRequired}" class="form-control" aria-label="With textarea" placeholder="Enter action remark if any"
+              <textarea [ngClass]="{'error-border': !(_remarks&&_remarks.trim())&&formFieldsRequired}" class="form-control" aria-label="With textarea" placeholder="Enter action remark if any"
                   [(ngModel)]="_remarks" style="margin-top: 0px; margin-bottom: 0px; height: 160px;"></textarea>
-              <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please enter remark.</span>
+              <span *ngIf="!(_remarks&&_remarks.trim())&&formFieldsRequired" style="color:red">Please enter remark.</span>
           </div>
           <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
           <div class="form-group">
@@ -9103,19 +9348,24 @@
                           </span>
                       </div>
                       <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="_pdf" accept="application/pdf"
-                              (change)="onFileChange($event)" [value]="selectedFile">
-                          <label class="custom-file-label" id="upload" for="_pdf">
-                              <ng-container
-                                  *ngIf="selectedFile;else selFileFrMprj">{{_inputAttachments}}
-                              </ng-container>
+                          <input
+                            type="file"
+                            [accept]="permittedFileFormats.join(',')"
+                            [title]="_inputAttachments?_inputAttachments:'no file selected'"
+                            (change)="onFileChange($event)" 
+                             id="prj_attch_file"
+                             class="custom-file-input"
+                           />
+                          <label class="custom-file-label" for="prj_attch_file">
+                              <ng-container *ngIf="selectedFile;else selFileFrMprj">{{_inputAttachments}}</ng-container>
                               <ng-template #selFileFrMprj> Select a file</ng-template>
                           </label>
                       </div>
                   </div>
                   <div class="d-flex flex-column">
-                  <span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">Please provide attachment.</span>
-                  <span class="text-info">Accept any type of file</span>
+                  <span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">please provide attachment.</span>
+                  <span *ngIf="invalidFileSelected" style="color:red">File type is not supported. Please choose a valid file.</span>
+                  <span class="text-info">* Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
                   </div>
               </div>
               <div class="form-group">
@@ -9188,28 +9438,35 @@
                                           </svg>
                                       </span>
                                   </div>
-                                  <div class="custom-file">
-                                      <input type="file" class="" id="_file1"
-                                          accept="application/pdf" (change)="onFileChange($event)" />
-                                      <label class="custom-file-label"  for="_file1">
+                                  <div class="custom-file">                                   
+                                     <input
+                                        type="file"
+                                        [accept]="permittedFileFormats.join(',')"
+                                        [title]="_inputAttachments?_inputAttachments:'no file selected'"
+                                        (change)="onFileChange($event)"
+                                        id="std_achv_attch"
+                                        class="custom-file-input"
+                                      />
+                                      <label class="custom-file-label"  for="std_achv_attch">
                                           <ng-container *ngIf="_inputAttachments;else selectfile">{{_inputAttachments}}</ng-container>
-                                              <ng-template #selectfile>Select a file</ng-template>
+                                          <ng-template #selectfile>Select a file</ng-template>
                                       </label>
 
                                   </div>
                               </div>
                               <div class="d-flex flex-column">
                                     <span *ngIf="!selectedFile&&formFieldsRequired" style="color:red">Please provide the attachment</span>
-                                    <span class="text-info">Accept any type of file</span>
+                                    <span *ngIf="invalidFileSelected" style="color:red">File type is not supported. Please choose a valid file.</span>
+                                   <span class="text-info">* Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
                               </div>
                           </div>
 
                           <div class="form-group">
                               <label for="exampleFormControlFile1"> Remark<span
                                       class="text-danger">*</span></label>
-                              <textarea class="form-control" aria-label="With textarea" style="height: 160px;" [ngClass]="{'error-border': !_remarks&&formFieldsRequired}"
+                              <textarea class="form-control" aria-label="With textarea" style="height: 160px;" [ngClass]="{'error-border': !(_remarks&&_remarks.trim())&&formFieldsRequired}"
                                   [(ngModel)]="_remarks" placeholder="Enter remark if any"></textarea>
-                              <span *ngIf="!_remarks&&formFieldsRequired" style="color:red">Please provide remark</span>
+                              <span *ngIf="!(_remarks&&_remarks.trim())&&formFieldsRequired" style="color:red">Please provide remark</span>
                               <!-- <span class="text-danger mt-1">Note: (*) are mandatory!</span> -->
                           </div>
 
@@ -13045,10 +13302,10 @@
               <div data-bs-dismiss="modal" class="btn btn-sm btn-icon btn-hover-info btn-active-color-primary"
                   (click)="closeInfo()">
                   <div class="btn btn-icon">
-                      <svg _ngcontent-uyr-c401="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
                           height="24" fill="#ccc">
-                          <path _ngcontent-uyr-c401="" fill="none" d="M0 0h24v24H0z"></path>
-                          <path _ngcontent-uyr-c401=""
+                          <path fill="none" d="M0 0h24v24H0z"></path>
+                          <path 
                               d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
                           </path>
                       </svg>

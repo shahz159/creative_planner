@@ -172,7 +172,7 @@ export class TimelineComponent implements OnInit {
 
   noTimeSpaceAvailable:boolean=false;
   setTimelineDate(val)
-  {    debugger
+  {    
        this.current_Date = moment(val).format("MM/DD/YYYY");
        this.dateF = new FormControl(new Date(val));
        this.starttime = null;
@@ -210,11 +210,18 @@ export class TimelineComponent implements OnInit {
        this.timeline_of=this.current_Date==todaystr?'today':this.current_Date==yesterdaystr?'yesterday':null;
        this.getTimelineReportByDate(this.timeline_of);
 
-  }  
-
-
-
-
+  } 
+  
+  
+  onTimelineDateInput(val){
+    if(val){  // user has input a value.
+     const tm4Date=(val.toDate()<this.disablePreviousDate||val.toDate()>this.todayDate)?this.current_Date:val.toDate();
+     this.setTimelineDate(tm4Date);
+    }
+    else{ // user has input null or undefined or val is falsy.
+        this.current_Date=null;
+    }      
+ }
 
 
 
@@ -337,7 +344,7 @@ export class TimelineComponent implements OnInit {
     }
     else if(this.Type=='RACIS Timeline'){
       this.showtimeline=true;
-debugger
+
       this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
       this.ObjSubTaskDTO.PageNumber = 1;
       this.ObjSubTaskDTO.PageSize = 30;
@@ -458,7 +465,7 @@ getTimelineProjects(){
   this.ObjSubTaskDTO.Emp_No=this.Current_user_ID;
   this.ObjSubTaskDTO.ProjectBlock=this.project_type;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
-  (data=>{ debugger
+  (data=>{ 
     this.loadingTimelineProjects=false;
     this.projectList=JSON.parse(data[0]['ProjectList']); 
     this.projectList=this.projectList.filter(p=>['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(p.Status.trim())==false)
@@ -573,7 +580,7 @@ getDarTime() {
 
   this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
     .subscribe(data => {
- debugger
+
       this.timeList = JSON.parse(data[0]['time_json']); 
       if (this.timeList.length != 0) {
         this.bol = false;
@@ -953,7 +960,7 @@ filterconfig: {
 } = { filterby: 'Date', sortby: 'Employees' };
 
 setFilterInfo(filterby:  'Date' |'Project' | 'Employees' , sortby: string | undefined) {
-  debugger
+
   // this.activeAgendaIndex = 0
   if(this.filterconfig.filterby!=filterby){
      sortby=undefined;
@@ -988,7 +995,7 @@ previous_filter() {
     edited:boolean = false
 
     getTimelineOfEmployee(empno:string,pageNo:number=1){
-      debugger
+     
       this.showtimeline=true;
       this.ObjSubTaskDTO.Emp_No = empno;
       this.ObjSubTaskDTO.PageNumber = pageNo;
@@ -1165,7 +1172,6 @@ addStatusIntoDarArr(){
             if(tm_submitted)
               tm.DarStatus=tm_submitted.Status;
             else{
-              debugger
               tm.DarStatus='Not Submitted';
               const crtdate=new Date();
               const daysDiff=Math.abs(moment(d1).diff(moment(crtdate),'days'));
@@ -1219,7 +1225,7 @@ tmReportTotalDuration:{hours:string,minutes:string};
 tmReportStatus:any;
 tmSubmDate:any;
 tmReportLoading:boolean=false;
-getTimelineReportByDate(dateVal:'today'|'yesterday') {   debugger
+getTimelineReportByDate(dateVal:'today'|'yesterday') {  
   if(dateVal){
     this.tmReportArr=[];
     this.tmReportStatus=null;
@@ -1235,7 +1241,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {   debugger
     this.ObjSubTaskDTO.End_Date = null;
     this.tmReportLoading=true;
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-      (data => {    debugger
+      (data => {    
         this.tmReportLoading=false;
         console.log(data);
         if(data&&data[0].DAR_Details_Json){
@@ -1362,7 +1368,7 @@ getDayReportSummary(){
 viewActions(type:'COMPLETED'|'DUE'|'DELAYED'){
   if(type=='DELAYED')
   {
-    let myurl = document.baseURI+'/ViewProjects/DelayProjects?section=Actions';
+    let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Actions&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
     let myWindow = window.open(myurl,'_blank');
     myWindow.focus(); 
   } 
@@ -1371,7 +1377,7 @@ viewActions(type:'COMPLETED'|'DUE'|'DELAYED'){
 viewProjects(type:'COMPLETED'|'DUE'|'DELAYED'){
   if(type=='DELAYED')
   {
-    let myurl = document.baseURI+'/ViewProjects/DelayProjects?section=Projects';
+    let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Projects&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
     let myWindow = window.open(myurl,'_blank');
     myWindow.focus(); 
   } 

@@ -210,6 +210,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  isLogginCredentails:boolean=false;
   login() {
   
     this.submitted = true;
@@ -222,9 +223,11 @@ export class LoginComponent implements OnInit {
       this.Obj_ILoginDTO.UserName = this.f.userid.value;
       this.Obj_ILoginDTO.Password = this.f.password.value;
       //alert("One");
+      this.isLogginCredentails=true;  // logging credentials process started.
       this.service.LoginCredentials(this.Obj_ILoginDTO)
         .subscribe(
-          (data) => {    
+          (data) => {  
+            this.isLogginCredentails=false;  // logging credentials process ended. 
             this.UserDetails_List = data as UserDetailsDTO[];
            // console.log("Data---->", this.UserDetails_List);
             this.message = this.UserDetails_List[0]['Message'];

@@ -1769,7 +1769,7 @@
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Reference attachment</label>
                                   <div class="formbold-mb-5 formbold-file-input">
-                                    <input type="file" class="form-control-file curser-pointer" id="uploadFile"
+                                    <input type="file" class="form-control-file curser-pointer" id="uploadFile" [accept]="permittedFileFormats.join(',')"
                                       (change)="onFileChanged($event)" />
                                     <label for="uploadFile">
                                       <!-- <div>
@@ -1781,6 +1781,8 @@
                                         <span class="formbold-browse"><i class="fa fa-paperclip" aria-hidden="true"></i> Attach File </span>
                                       </div>
                                     </label>
+                                    <div class="text-info">* Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</div>
+                                    <div *ngIf="invalidFileSelected" style="color:red">File type is not supported. Please choose a valid file..</div>
                                   </div>
                                   <div *ngIf="fileAttachment" id="" class="dropzone dropzone-multi form-group">
                                     <div id="div_exixtingfiles" class="dropzone-items">
@@ -1861,7 +1863,7 @@
                                     [(ngModel)]="PrjResp" (change)="onResponsibleChanged(); PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo.trim()))?PrjInformer:Responsible_json[0].OwnerEmpNo.trim(); setRACIS();">
                                     <ng-option
                                       [value]="Responsible_json[0].ResponsibleNo.trim()">{{Responsible_json[0].ResponsibleName}}</ng-option>
-                                    <ng-option *ngIf="owner_json.length>1"
+                                    <ng-option *ngIf="heirarchical_owner.length>1"
                                       [value]="Responsible_json[0].OwnerEmpNo.trim()">{{Responsible_json[0].OwnerName}}</ng-option>
                                   </ng-select>
                                   <span style="color:rgb(217,48,37)" *ngIf="!PrjResp">Please select responsible.</span>
