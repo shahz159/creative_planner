@@ -1025,9 +1025,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
        this.delayActionsOfEmps=[];   // must be empty before calculation.
           this.filteremployee.forEach((emp)=>{
             let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
-            if(delayActionsOfEmp.length>0){
+            if(delayActionsOfEmp.length>0){  debugger
               delayActionsOfEmp=delayActionsOfEmp.sort((a,b)=>b.Delaydays-a.Delaydays)
-              this.delayActionsOfEmps.push({ name:emp.Responsible, emp_no:emp.Team_Res, delayActions:delayActionsOfEmp})
+              const percentInDelay=((delayActionsOfEmp[0].Delaydays/this.projectInfo.Delaydays)*100).toFixed(1);
+              this.delayActionsOfEmps.push({ name:emp.Responsible, emp_no:emp.Team_Res, delayActions:delayActionsOfEmp, percentInDelay:percentInDelay})
+              this.delayActionsOfEmps=this.delayActionsOfEmps.sort((a,b)=>b.delayActions[0].Delaydays-a.delayActions[0].Delaydays);
             }
           });
 

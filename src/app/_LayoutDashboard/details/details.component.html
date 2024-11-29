@@ -2534,10 +2534,16 @@
                       {{TOTAL_ACTIONS_IN_DELAY}} {{TOTAL_ACTIONS_IN_DELAY>1?'Actions':'Action'}} delay, max
                       {{projectInfo&&projectInfo.Delaydays}} days. Notable delays by
                       <ng-container *ngFor="let action of delayActionsOfEmps;let i=index;">
+
                           <span (click)="onFilterConfigChanged({filterBy:'Delay',sortBy:action.emp_no.trim()})"  class="delayaction-of-emp">{{action.name}}</span>
                           ({{action.delayActions[0].Delaydays+(action.delayActions[0].Delaydays>1?'
-                          days':' day')}})<b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b><span
-                              *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span></ng-container><b>.</b>
+                          days':' day')}} ~<b>{{action.percentInDelay}}%</b>)
+                           
+                          <b *ngIf="i<delayActionsOfEmps.length-2;">,&nbsp;</b>
+                          <span *ngIf="i+1===delayActionsOfEmps.length-1">&nbsp;and&nbsp;</span>
+                              
+                       </ng-container>
+                       <b>.</b>
                   </span>
 
                   </div>
