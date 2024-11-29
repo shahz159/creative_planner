@@ -701,7 +701,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.ModifiedJson=this.EventScheduledjson[0].ModifiedJson
 
 
-      console.log('this.ModifiedJson:',this.ModifiedJson);
+      console.log('this.User_Scheduledjson:',this.User_Scheduledjson);
       // var x = this.User_Scheduledjson.map(obj=>obj.TM_DisplayName);
       console.log(this.Project_code,'<-------Project_code---->', this.portfolio_Scheduledjson)
 
