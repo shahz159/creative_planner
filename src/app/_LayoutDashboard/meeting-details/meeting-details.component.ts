@@ -8054,4 +8054,8 @@ newDetails(ProjectCode) {
   myWindow.focus();
 }
 
+hasValidOldValue(item: any): boolean {
+  return item?.Old_Value?.some((data: any) => data.name && data.name.trim() !== '') ?? false;
+}
+
 }
