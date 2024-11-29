@@ -2931,7 +2931,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
       this.AdminMeeting_Status = data['AdminMeeting_Status'];
       this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
       this.propose_date=Schedule_date;
-      console.log(this.EventScheduledjson, "Testing12");
+      console.log(data, "Testing12");
       this.Link_Detail = this.EventScheduledjson[0].Link_Details;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
       this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;

@@ -701,13 +701,30 @@ export class DashboardComponent implements OnInit {
 
 
   onFileChange(event) {
-    debugger
+ 
     if (event.target.files.length > 0) {
+      const allowedTypes = [
+        "image/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/json", "application/xml", "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ];
+
       const length = event.target.files.length;
       for (let index = 0; index < length; index++) {
         const file = event.target.files[index];
         const fileName = file.name;
         const contentType = file.type;
+        if (!allowedTypes.some(type => file.type.match(type))) {
+          // Show a sweet alert popup for unsupported file types
+          Swal.fire({
+            title: `This File "${fileName}" cannot be accepted!`,
+            text: `Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+            });
+          continue;
+        }
+
 
         // Skip file if its name already exists in either array
         const fileAlreadyExists =
@@ -1024,11 +1041,12 @@ export class DashboardComponent implements OnInit {
             jsonData[columnName] = element;
             this.dmsIdjson.push(jsonData);
           });
+         
           this.dmsIdjson = JSON.stringify(this.dmsIdjson);
           this._LinkService._GetMemosSubject(this.dmsIdjson).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              console.log("Subject Name ------------>", this._MemosSubjectList);
+              console.log("Subject Name 1------------>", this._MemosSubjectList);
             });
         }
 
@@ -1870,11 +1888,17 @@ export class DashboardComponent implements OnInit {
   }
 
 
+  
+isValidURL = true;
+
   onSubmitBtnClicked() {
+    if(this.Link_Details){
+    this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
+    }
 
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
-      (this.Description_Type?(this.characterCount<=500):true)&&
+      (this.Description_Type?(this.characterCount<=500):true)&& this.isValidURL &&  
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
@@ -2289,10 +2313,15 @@ export class DashboardComponent implements OnInit {
 
   OnSubmitReSchedule(type: number) {
 
+    if(this.Link_Details){
+      this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
+      }
+
+
     if (
       this.Title_Name &&
       this.Startts &&
-      this.Endtms &&
+      this.Endtms && this.isValidURL &&
       this.MinLastNameLength
       && (this.ScheduleType === 'Event' ?  this.allAgendas.length > 0 : true)
       && (this.Description_Type?(this.characterCount<=500):true)
@@ -4084,7 +4113,7 @@ debugger
   RecurrenceValue:any
 
   GetClickEventJSON_Calender(arg) {
-    console.log(arg,'testing process of popup box')
+   
     this.EventScheduledjson = [];
     this.loading = true;
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -4094,7 +4123,7 @@ debugger
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.loading = false;
-
+debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         var Schedule_date =this.EventScheduledjson[0].Schedule_date
         this.meetingRestriction(Schedule_date);
@@ -4199,11 +4228,13 @@ debugger
             jsonData[columnName] = element;
             this.dmsIdjson.push(jsonData);
           });
+
+         
           this.dmsIdjson = JSON.stringify(this.dmsIdjson);
           this._LinkService._GetMemosSubject(this.dmsIdjson).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              console.log("Subject Name ------------>", this._MemosSubjectList);
+              console.log("Subject Name 2------------>", this._MemosSubjectList);
             });
         }
 
@@ -4302,7 +4333,7 @@ debugger
           this._LinkService._GetMemosSubject(this.dmsIdjson).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              console.log("Subject Name ------------>", this._MemosSubjectList);
+              console.log("Subject Name 3------------>", this._MemosSubjectList);
             });
         }
 
@@ -4392,7 +4423,7 @@ debugger
           this._LinkService._GetMemosSubject(this.dmsIdjson).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              console.log("Subject Name ------------>", this._MemosSubjectList);
+              console.log("Subject Name 4------------>", this._MemosSubjectList);
             });
         }
 
@@ -4684,7 +4715,7 @@ debugger
 
   TwinEvent = [];
   customizeEvent = (info) => {
-    debugger
+
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
@@ -5912,6 +5943,7 @@ debugger
     this._lstMultipleFiales = [];
     this.RemovedFile_id = [];
     this.maxDate = null;
+    this.EventNumber=null;
     this.selected = null;
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
@@ -5928,6 +5960,7 @@ debugger
     this.selectDay = null;
     this.St_date = "";
     this.Ed_date = null;
+    this.isValidURL=true
     this._subname = false;
     this.draftid = 0;
     // this.Recurr_arr = [];
@@ -7751,6 +7784,17 @@ LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, ty
     myWindow.focus();
   }
 }
+
+
+validateURL(value: string): void {
+  if(value){
+    this.isValidURL = /^(https?:\/\/)/.test(value);
+  }else{
+    this.isValidURL=true
+  }
+  
+}
+
 
 
 }

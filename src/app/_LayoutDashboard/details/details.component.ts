@@ -5978,43 +5978,123 @@ getChangeSubtaskDetais(Project_Code) {
   }
 
 
-  onFileChange1(event) {
+  // onFileChange1(event) {
 
+  //   if (event.target.files.length > 0) {
+  //     var length = event.target.files.length;
+  //     for (let index = 0; index < length; index++) {
+  //       const file = event.target.files[index];
+  //       var contentType = file.type;
+  //       if (contentType === "application/pdf") {
+  //         contentType = ".pdf";
+  //       }
+  //       else if (contentType === "image/png") {
+  //         contentType = ".png";
+  //       }
+  //       else if (contentType === "image/jpeg") {
+  //         contentType = ".jpeg";
+  //       }
+  //       else if (contentType === "image/jpg") {
+  //         contentType = ".jpg";
+  //       }
+  //       this.myFiles.push(event.target.files[index].name);
+  //       // alert(this.myFiles.length);
+  //       console.log(this.myFiles, "attach")
+  //       //_lstMultipleFiales
+  //       var d = new Date().valueOf();
+  //       this._lstMultipleFiales = [...this._lstMultipleFiales, {
+  //         UniqueId: d,
+  //         FileName: event.target.files[index].name,
+  //         Size: event.target.files[index].size,
+  //         Files: event.target.files[index]
+  //       }];
+  //     }
+  //   }
+
+  //   const uploadFileInput = (<HTMLInputElement>document.getElementById("uploadFile"));
+  //   uploadFileInput.value = null;
+  //   uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+  // }
+
+
+  onFileChange1(event) {
+ 
     if (event.target.files.length > 0) {
-      var length = event.target.files.length;
+      const allowedTypes = [
+        "image/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/json", "application/xml", "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ];
+
+      const length = event.target.files.length;
       for (let index = 0; index < length; index++) {
         const file = event.target.files[index];
-        var contentType = file.type;
+        const fileName = file.name;
+        const contentType = file.type;
+        if (!allowedTypes.some(type => file.type.match(type))) {
+          // Show a sweet alert popup for unsupported file types
+          Swal.fire({
+            title: `This File "${fileName}" cannot be accepted!`,
+            text: `Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+            });
+          continue;
+        }
+
+
+        // Skip file if its name already exists in either array
+        const fileAlreadyExists =
+          this.Attachment12_ary.some(att => att.File_Name === fileName) ||
+          this._lstMultipleFiales.some(existingFile => existingFile.FileName === fileName);
+
+        if (fileAlreadyExists) {
+          Swal.fire({
+            title: `File "${fileName}" Already Exists`,
+            text: `The file "${fileName}" was not added to avoid duplication.`
+          })
+          continue; // Skip this file
+        }
+  
+        // Determine file extension
+        let fileExtension = '';
         if (contentType === "application/pdf") {
-          contentType = ".pdf";
+          fileExtension = ".pdf";
+        } else if (contentType === "image/png") {
+          fileExtension = ".png";
+        } else if (contentType === "image/jpeg") {
+          fileExtension = ".jpeg";
+        } else if (contentType === "image/jpg") {
+          fileExtension = ".jpg";
         }
-        else if (contentType === "image/png") {
-          contentType = ".png";
-        }
-        else if (contentType === "image/jpeg") {
-          contentType = ".jpeg";
-        }
-        else if (contentType === "image/jpg") {
-          contentType = ".jpg";
-        }
-        this.myFiles.push(event.target.files[index].name);
-        // alert(this.myFiles.length);
-        console.log(this.myFiles, "attach")
-        //_lstMultipleFiales
-        var d = new Date().valueOf();
-        this._lstMultipleFiales = [...this._lstMultipleFiales, {
-          UniqueId: d,
-          FileName: event.target.files[index].name,
-          Size: event.target.files[index].size,
-          Files: event.target.files[index]
-        }];
+  
+        // Add file to _lstMultipleFiales array
+        this.myFiles.push(fileName);
+        const uniqueId = new Date().valueOf();
+  
+        this._lstMultipleFiales.push({
+          UniqueId: uniqueId,
+          FileName: fileName,
+          Size: file.size,
+          Files: file
+        });
       }
     }
-
-    const uploadFileInput = (<HTMLInputElement>document.getElementById("uploadFile"));
-    uploadFileInput.value = null;
-    uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+  
+    // Reset the input value and styling
+    const uploadFileInput = document.getElementById("uploadFile") as HTMLInputElement;
+    if (uploadFileInput) {
+      uploadFileInput.value = null;
+      uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+    }
+    (event.target as HTMLInputElement).value = '';
   }
+
+
+
+
+
+
 
   RemoveSelectedFile(_id) {
     var removeIndex = this._lstMultipleFiales.map(function (item) { return item.UniqueId; }).indexOf(_id);
@@ -6523,6 +6603,7 @@ getChangeSubtaskDetais(Project_Code) {
     this.Description_Type = null;
     this.SelectDms = [];
     this.MasterCode = null;
+    this.EventNumber=null;
     this.Subtask = null;
     this.characterCount_Meeting=0;
     this.Description_Type=null;
