@@ -9801,12 +9801,22 @@
                                         <div class="fs-6 mb-1 txtm-def"></div>
                                         <div class="fs-6 mb-2">
                                            {{item.Value}}
-                                        <ng-container *ngFor="let data of item.Old_Value">
-                                        <br *ngIf="data.name !=='' && data.name !==undefined"> <span *ngIf="data.name !=='' && data.name !==undefined">From : {{data.name}}</span>
-                                        </ng-container>
-                                        <ng-container *ngFor="let new_data of item.New_Value">
-                                            <br *ngIf="new_data.name !=='' &&  new_data.name !==undefined"> <span *ngIf="new_data.name !=='' &&  new_data.name !==undefined">To : {{new_data.name}}</span>
-                                        </ng-container>   
+                                           <ng-container *ngIf="hasValidOldValue(item); else newValueOnly">
+                                                <ng-container *ngFor="let data of item.Old_Value">
+                                                <br *ngIf="data.name !=='' && data.name !==undefined"> <span *ngIf="data.name !=='' && data.name !==undefined">From : {{data.name}}</span>
+                                                </ng-container>
+                                                <ng-container *ngFor="let new_data of item.New_Value">
+                                                    <br *ngIf="new_data.name !=='' &&  new_data.name !==undefined"> <span *ngIf="new_data.name !=='' &&  new_data.name !==undefined">To : {{new_data.name}}</span>
+                                                </ng-container> 
+                                            </ng-container>   
+
+                                            <ng-template #newValueOnly>
+                                                <ng-container *ngFor="let new_data of item.New_Value">
+                                                    <br *ngIf="new_data.name !=='' &&  new_data.name !==undefined"> <span *ngIf="new_data.name !=='' &&  new_data.name !==undefined"><b>{{new_data.name}}</b></span>
+                                                </ng-container>
+                                            </ng-template>
+
+
                                         </div>
                                         <div class="d-flex align-items-center mt-1 fs-6">
                                             <div class="d-flex align-items-center flex-1">
