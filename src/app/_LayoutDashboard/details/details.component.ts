@@ -3033,7 +3033,7 @@ approvalSubmitting:boolean=false;
 
   proState:boolean=false
   actionCompleted() {
-debugger
+
    const fieldsprvided:boolean=(this._remarks&&this._remarks.trim())&&(this.proState?this.selectedFile:true);
 
     if (!fieldsprvided) { // when the user not provided the required fields then .

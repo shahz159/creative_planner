@@ -1334,6 +1334,9 @@ onProjectOwnerChanged(){
   }
 
 
+
+
+
 onRejectButtonClick(value:any,id:number){
     this.bind_Project = [value];
     console.log(this.bind_Project,'+++++++++++>')
@@ -1347,7 +1350,10 @@ onRejectButtonClick(value:any,id:number){
     this.Prjenddate = this.bind_Project[0].End_Date;
   }
 
-
+onRejectProjectDialogClosed(){
+    this.notProvided=false;
+    this.reason4PrjRejection=null;
+}
 
 
 
@@ -2026,18 +2032,25 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
 
 
 // remove assigned/conditional project start
+reason4PrjRejection:string;
 removeACPrj(index:number){
+  
+  if(!(this.reason4PrjRejection&&this.reason4PrjRejection.trim())){
+      this.notProvided=true;
+      return;
+  }  // when mandatory field not provided.
+
   // Emp_No, assignid ,Remarks
   this.ProjectDto.Emp_No=this.Current_user_ID;
   this.ProjectDto.assignid=+this.assigntask_json[index-1].Assign_Id;
-  this.ProjectDto.Remarks=' sample testing remarks';
-  // this.ProjectDto.assignid=
+  this.ProjectDto.Remarks=this.reason4PrjRejection;
+ 
   this.createProjectService.NewDeleteRejectAssignTask(this.ProjectDto).subscribe((res:any)=>{
 
         if(res&&res.message==='Success'){
-             this.notification.showSuccess(this.assigntask_json[index-1].Task_Name+" removed","Success");
+             this.notification.showSuccess(`"${this.assigntask_json[index-1].Task_Name}" removed.`,"Success");
              this.GetAssignedTaskDetails();
-             document.getElementById('ACPrjRemovalbtn').click();
+             document.getElementById('ACPrjRemovalbtn').click();    // closes and clear values also.
         }
         else{
            this.notification.showError("Something went wrong!","Failed");
@@ -2045,7 +2058,6 @@ removeACPrj(index:number){
   });
 }
 // remove assigned/conditional project end
-
 
 // delete template code start
 onTmpRmvDialogOpen(index:number){

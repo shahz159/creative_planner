@@ -6012,9 +6012,11 @@ svg>g[class^="raphael-group-fjUjWDEW"]>text {
 .myactions-underaprv-notif .myunderaprvactns-open-btn,
 .reqaccess-approval-notification .reqaccess-open-btn,
 .stdtask-underapproval-notification .stdtaskaprv-open-btn {
-  display: none;
+  /* display:none; */
   border: 0;
   background-color: transparent;
+
+  display:inline;
 }
 
 .mydelay-action-notf .mydelayactns-open-btn svg {
@@ -6030,10 +6032,17 @@ svg>g[class^="raphael-group-fjUjWDEW"]>text {
   display: inline;
 }
 
-.mydelay-action-notf:hover,
+/* .mydelay-action-notf:hover,
 .myactions-underaprv-notif:hover,
 .reqaccess-approval-notification:hover,
 .stdtask-underapproval-notification:hover {
+  padding: 7px 0px 7px 15px;
+} */
+
+.mydelay-action-notf,
+.myactions-underaprv-notif,
+.reqaccess-approval-notification,
+.stdtask-underapproval-notification{
   padding: 7px 0px 7px 15px;
 }
 
