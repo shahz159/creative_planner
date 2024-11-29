@@ -247,11 +247,11 @@ export class ActionToProjectComponent implements OnInit {
         this.ProjectsDropdownBoolean = true;
         this.selectedProjectCode = p;
         this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
-          
+
           this.ProjectDeadLineDate = data["DeadLine"];
           this.ProjectStartDate = data["StartDate"];
           this.owner=data["Owner_empno"];
-          this.Owner_Empno = data['Owner_empno'];     
+          this.Owner_Empno = data['Owner_empno'];
           this.Resp_empno = data['Resp_empno'];
           this.Autho_empno = data['Autho_empno'];
           if(this.createproject.projectInfo){
@@ -383,7 +383,7 @@ debugger
     this.ObjUserDetails.SearchText = this.filterText;
     this.service.GetProjectsForRunwayTaskDropdown(this.ObjUserDetails).subscribe(data => {
       this._ProjectDataList = JSON.parse(data[0]['DropdownProjects_Json']);
-      this.Owner_Empno = this._ProjectDataList[0]['Owner_EmpNo'];   
+      this.Owner_Empno = this._ProjectDataList[0]['Owner_EmpNo'];
       this.dropdownSettings_Projects = {
         singleSelection: true,
         idField: 'Project_Code',
@@ -446,7 +446,7 @@ debugger
 
   alertMaxAllocation() {
     if (this._StartDate == null || this._EndDate == null) {
-      this._message = "Start Date/End date missing!!"
+      this._message = "Start Date/End date missing!"
     }
     else {
       // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
@@ -558,10 +558,10 @@ debugger
 //       this.notifyService.showError('','Internal server error');
 //       console.error('Unable to get action cost value.')
 //       return;
-//     } 
+//     }
 //   // Action cost calculate.
-    
-    
+
+
 //     if(this.owner==null || this.owner==undefined || this.owner==''){
 //       this.owner=this.Owner_Empno;
 //     }
@@ -710,7 +710,7 @@ debugger
 //         }
 //         else if(this._Urlid == 5){
 //           this.createproject.getActionsDetails();
-//           this.createproject.newProjectDetails(this._MasterCode); 
+//           this.createproject.newProjectDetails(this._MasterCode);
 //           this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
 //           this.closeInfo();
 //         }
@@ -737,7 +737,7 @@ debugger
 
 
 
-   
+
 
 
 
@@ -781,15 +781,15 @@ debugger
 //       //           icon:'error',
 //       //           showConfirmButton:true,
 //       //           confirmButtonText:'OK'
-//       //        }); 
+//       //        });
 //       //        return;
 //       //       }
 //       // }
-  
-  
+
+
 
 //     continueNext();
-      
+
 //     }
 //     else
 //     {  // details page, runway ...
@@ -901,8 +901,8 @@ debugger
 // sweet alert method new
 
 sweetAlert2=async()=>{
-    
-// 1. Validation : Action owner and responsible are same.  
+
+// 1. Validation : Action owner and responsible are same.
   if(this.owner==this.selectedEmpNo){
      const choice = await Swal.fire({
         title: 'Action owner and responsible are same.',
@@ -913,7 +913,7 @@ sweetAlert2=async()=>{
       });
     if(choice.isConfirmed==false){
        return;
-    }  
+    }
   }
 
 //2. Validation : Action deadline is greater than main project deadline.
@@ -922,7 +922,7 @@ var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
 const dateOne = new Date(this._EndDate);
 const dateTwo = new Date(this.ProjectDeadLineDate);
 if ((dateTwo < dateOne) && (this.Current_user_ID==this.Owner_Empno || this.Current_user_ID==this.Resp_empno || this.Current_user_ID==this.Autho_empno || this.isHierarchy==true)) {
- 
+
   const choice = await Swal.fire({
     title: 'Action deadline is greater than main project deadline ?',
     text: 'Do you want to continue for selection of date after main project deadline!',
@@ -930,7 +930,7 @@ if ((dateTwo < dateOne) && (this.Current_user_ID==this.Owner_Empno || this.Curre
     confirmButtonText: 'Yes',
     cancelButtonText: 'No'
   });
-  
+
   if(choice.isConfirmed==false){
     Swal.fire(
       'Cancelled',
@@ -1024,7 +1024,7 @@ return false;        // please provide all mandatory fields value.
 
 // 4. Validation : only for project creation page.
 if(this._Urlid == 5){
-  
+
   //i. when provided allocated hrs exceeds main project planned allocated hr then confirm.
   if(this.allocatedHour>0){
     const exceeds:boolean=this.createproject.hasExceededTotalAllocatedHr(this._allocated);
@@ -1056,7 +1056,7 @@ if(this._Urlid == 5){
             // icon:'error',
             showConfirmButton:true,
             confirmButtonText:'OK'
-         }); 
+         });
          return;
         }
   }
@@ -1084,10 +1084,10 @@ startActionCreation=async()=>{
      this.notifyService.showError('','Internal server error');
      console.error('Unable to get action cost value.')
      return;
-   } 
+   }
  // Action cost calculate.
-   
-   
+
+
    if(this.owner==null || this.owner==undefined || this.owner==''){
      this.owner=this.Owner_Empno;
    }
@@ -1237,7 +1237,7 @@ startActionCreation=async()=>{
        }
        else if(this._Urlid == 5){
          this.createproject.getActionsDetails();
-         this.createproject.newProjectDetails(this._MasterCode); 
+         this.createproject.newProjectDetails(this._MasterCode);
          this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
          this.closeInfo();
        }

@@ -1869,7 +1869,7 @@ export class HomeComponent implements OnInit {
     });
     }
      else {
-      this.notifyService.showError("Can't delete shared portfolio", 'Permission Denied');
+      this.notifyService.showError("Can't delete shared portfolio.", 'Permission Denied');
      }
   }
   //Sorting.....

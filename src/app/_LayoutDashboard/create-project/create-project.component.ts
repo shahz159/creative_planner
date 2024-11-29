@@ -671,7 +671,7 @@ createSRTProject(){
 
 
               //  this.notification.showSuccess("Saved successfully","");
-               this.notification.showInfo("Please submit the project for approval","");
+               this.notification.showInfo("Please submit the project for approval.","");
 
                //2. file attachment uploading  if present
                if(this.fileAttachment)
@@ -682,7 +682,7 @@ createSRTProject(){
                {    // when core, secondary
                 if(this.savePrjAsDraft==true)
                 {
-                  this.notification.showSuccess("Project saved as draft","Success");
+                  this.notification.showSuccess("Project saved as draft.","Success");
                   this.back_to_options();
                   this.GetAssignedTaskDetails();
                 }
@@ -735,11 +735,11 @@ createSRTProject(){
            this.createProjectService.NewUpdateFileUploadsByProjectCode(fd).subscribe((fres:any)=>{
             console.log("file attachment:",fres)
             if(fres&&fres.Message==='Success'){
-              this.notification.showSuccess('Successfully uploaded the file attachment','File attachment uploaded');
+              this.notification.showSuccess('Successfully uploaded the file attachment.','File attachment uploaded');
               this.isFileUploaded=true;
             }
             else{
-               this.notification.showError('Unable to upload the file attachment','File uploading failed');
+               this.notification.showError('Unable to upload the file attachment.','File uploading failed');
                this.isFileUploaded=false;
             }
         });
@@ -1318,6 +1318,7 @@ onProjectOwnerChanged(){
     this.Allocated_Hours=this.bind_Project[0].Allocated;
     this.prjsubmission=this.bind_Project[0].Submission_Type;
     this.fileAttachment = this.bind_Project[0].FileName;
+    // this._remarks = this.bind_Project[0].__remarks
     console.log(this.fileAttachment,"fileAttachmentfileAttachmentfileAttachmentfileAttachmentfileAttachment")
     const portfolios_ = this.bind_Project[0].Portfolio_Id;
 
@@ -1556,7 +1557,7 @@ initializeSelectedValue() {
     this.Allocated_Hours = this.projectInfo.StandardAllocatedHours
     this.Allocated = this.projectInfo.AllocatedHours
     this.End_Date = this.projectInfo.EndDate;
-
+    this._remarks = this.projectInfo.Remarks
 }
 
 projectEdit(val) {
@@ -1694,7 +1695,7 @@ return;
 
       if(['1','5','6'].includes(data['message']))
       {
-        this.notifyService.showSuccess("Updated successfully", "Success");
+        this.notifyService.showSuccess("Updated successfully.", "Success");
         this.closeInfos();
       }
       else if(data['message'] == '2')
@@ -2678,7 +2679,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
       this.Allocated = this.PrjActionsInfo[this.currentActionView].AllocatedHours;    // action alloc hrs.
       this.End_Date = this.PrjActionsInfo[this.currentActionView].EndDate;          // action end date.
       this.ActionDuration=this.PrjActionsInfo[this.currentActionView].Duration;     // action duration.
-
+      this._remarks = this.PrjActionsInfo[this.currentActionView].Remarks;
 
   }
 
@@ -2780,7 +2781,7 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
             this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
               console.log(data['message'], "edit response");
               if (data['message'] == '1') {
-                this.notifyService.showSuccess("Updated successfully", "Success");
+                this.notifyService.showSuccess("Updated successfully.", "Success");
                 this.getActionsDetails();
                 this.closeAction_details_edit();
               }
@@ -2793,12 +2794,12 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
                 this.closeAction_details_edit();
               }
               else if (data['message'] == '6') {
-                this.notifyService.showSuccess("Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+                this.notifyService.showSuccess("Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
                 this.getActionsDetails();
                 this.closeAction_details_edit();
               }
               else if (data['message'] == '8') {
-                this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
+                this.notifyService.showError("Selected action owner cannot be updated.", "Not updated");
                 this.closeAction_details_edit();
 
               }
@@ -2821,7 +2822,7 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
         this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
           console.log(data['message'], "edit response");
           if (data['message'] == '1') {
-            this.notifyService.showSuccess("Updated successfully", "Success");
+            this.notifyService.showSuccess("Updated successfully.", "Success");
             this.getActionsDetails();
             this.closeAction_details_edit();
           }
@@ -2839,7 +2840,7 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
             this.closeAction_details_edit();
           }
           else if (data['message'] == '8') {
-            this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
+            this.notifyService.showError("Selected action owner cannot be updated.", "Not updated");
             this.closeAction_details_edit();
           }
 
@@ -3043,19 +3044,19 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
 editable(value:string){
  const messages = {
     Owner:{
-      message:"Action owner can't be changed",
+      message:"Action owner can't be changed.",
       title:'Not editable'
     },
     duration:{
-    message:"Action duration can't be changed",
+    message:"Action duration can't be changed.",
     title:'Not editable'
   },
   cost:{
-    message:"Action cost can't be changed",
+    message:"Action cost can't be changed.",
     title:"Not editable"
   },
   Allocated:{
-    message:"Action allocated hours can't be changed",
+    message:"Action allocated hours can't be changed.",
     title:"Not editable"
 
   }

@@ -1030,8 +1030,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
               this.delayActionsOfEmps.push({ name:emp.Responsible, emp_no:emp.Team_Res, delayActions:delayActionsOfEmp})
             }
           });
-       
-      this.prjResHasActions=this.filteremployee.some((ob)=>ob.Team_Res.trim()==this.projectInfo.ResponsibleEmpNo.trim());  // whether project responsible has actions in the project or not.    
+
+      this.prjResHasActions=this.filteremployee.some((ob)=>ob.Team_Res.trim()==this.projectInfo.ResponsibleEmpNo.trim());  // whether project responsible has actions in the project or not.
      }
 
 
@@ -1076,8 +1076,8 @@ debugger
      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
      this.totalSelfAssignedActns=this.projectActionInfo.filter(item=>item.Project_Owner==item.Team_Res).length;
      this.totalPActns4Aprvls=this.projectActionInfo.filter(item=>['Under Approval','Forward Under Approval'].includes(item.Status)).length;
-     
-     
+
+
     }
 
 
@@ -1302,7 +1302,7 @@ debugger
 // If project has project auditor
 
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{
-    
+
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', '), isActive:result[0].isActive};
             console.log(this.PeopleOnProject,"sssssssss")
@@ -1747,7 +1747,7 @@ debugger
     if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo.trim()&&this.prjResHasActions==false){
       this.bsService.setSelectedTemplAction({...this.bsService._templAction.value,assignedTo:this.Current_user_ID});
     }
-    // 
+    //
 
   }
 
@@ -1763,15 +1763,18 @@ debugger
     document.getElementById("rightbar-overlay").style.display = "block";
     this.getResponsibleActions();
     this.initializeSelectedValue()
+    this.formFieldsRequired = false
     // this.isStartDateEditable=new Date().getTime()<=new Date(this.projectInfo.StartDate).getTime();
   }
 
   Action_details_edit() {
+
     document.getElementById("Action_Details_Edit_form").classList.add("kt-quick-Project_edit_form--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.getResponsibleActions();
     this.initializeSelectedValues()
+    this.formFieldsRequired = false
 
   }
   ApprovalSideBar() {
@@ -2203,7 +2206,7 @@ multipleback(){
 
         this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => {
           console.log("Response=>", res);
-          if (res.Message === "Updated Successfully") {
+          if (res.Message === "Updated Successfully.") {
             this.notifyService.showSuccess("", "SMail successfully added.");
             this.GetDMS_Memos();
           }
@@ -2254,7 +2257,7 @@ multipleback(){
             totalmemos.splice(index, 1);
             let memosAfterDeletion: string = JSON.stringify(totalmemos.map((item: any) => ({ MailId: item.MailId }))) // [{MailId:123,Subject:'asd'},{MailId:234,Subject:'hdf'}]->[{MailId:123},{MailId:234}]->'[{MailId:123},{MailId:234}]'
             this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, memosAfterDeletion, userid).subscribe((res: any) => {
-              if (res.Message === 'Updated Successfully') {
+              if (res.Message === 'Updated Successfully.') {
                 this.notifyService.showInfo("", "Memo removed.");
                 this._linkedMemos--;
                 this.GetDMS_Memos();
@@ -2267,7 +2270,7 @@ multipleback(){
         }
       }
       else {   // when deletion operation has cancelled.
-        this.notifyService.showInfo("Action cancelled ", '');
+        this.notifyService.showInfo("Action cancelled. ", '');
       }
     });
 
@@ -2800,7 +2803,7 @@ approvalSubmitting:boolean=false;
               this.approvalSubmitting=false;
               this._Message = (data['message']);
               if (this._Message == 'Not Authorized' || this._Message == '0') {
-                this.notifyService.showError("project not approved", 'Failed.');
+                this.notifyService.showError("project not approved.", 'Failed');
               }
               else {
                 this.Close_Approval();
@@ -2961,7 +2964,7 @@ approvalSubmitting:boolean=false;
   }
 
   // permittedFileFormats='image/*,.pdf,.txt,.html,.htm,.doc,.docx,.json,.xml,.ppt,.pptx,.xlsx,.xls';
-  
+
   permittedFileFormats=[
     "image/*", "application/pdf", "text/plain", "text/html", "application/msword",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -2970,9 +2973,9 @@ approvalSubmitting:boolean=false;
     "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
   ];
   invalidFileSelected:boolean=false;
-  
-  onFileChange(e){  
-    if(e.target.files.length>0){    
+
+  onFileChange(e){
+    if(e.target.files.length>0){
       const filetype = e.target.files[0].type;
       const isValidFile=this.permittedFileFormats.some((format)=>{
             return (filetype==format)||(filetype.startsWith('image/')&&format=='image/*');
@@ -3255,7 +3258,7 @@ approvalSubmitting:boolean=false;
   showaction: boolean = false;
   workdes: string="";
   current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
-  dateF:any=new Date();   
+  dateF:any=new Date();
   todayDate = new Date();
   disablePreviousDate = new Date();
   DisablePrevious = new Date();
@@ -3371,13 +3374,13 @@ approvalSubmitting:boolean=false;
 
      // detect members without actions
      if(this.projectInfo&&['001','002'].includes(this.projectInfo.Project_Block)){
-     this.hasNoActionMembers=[]; 
+     this.hasNoActionMembers=[];
      let pMemberwithActns=this.Subtask_Res_List.map(ob=>ob.Team_Res);
      const arr=[];
-     pracis.forEach((tmember)=>{ 
+     pracis.forEach((tmember)=>{
       if( tmember.Role!='Owner'&&pMemberwithActns.includes(tmember.Emp_No)==false){
             if(arr.findIndex(ob=>ob.Emp_No==tmember.Emp_No)==-1)
-            arr.push({  Emp_No:tmember.Emp_No.trim(), Emp_Name:tmember.RACIS.trim() }); 
+            arr.push({  Emp_No:tmember.Emp_No.trim(), Emp_Name:tmember.RACIS.trim() });
       }
      });
      this.hasNoActionMembers=arr;
@@ -3491,12 +3494,16 @@ approvalSubmitting:boolean=false;
 
   // isStartDateEditable:boolean=false;
   onAction_updateProject(val) {
+    this.isPrjNameValid=this.isValidString(this.ProjectName,3);
+    this.isPrjDesValid=this.isValidString(this.ProjectDescription,5);
 
+debugger
 // check all mandatory fields are provided or not
    if(!(
-        (this.ProjectName&&this.ProjectName.trim()!='')&&
+        (this.ProjectName&&this.ProjectName.trim()!=''&&(this.ProjectName&&this.isPrjNameValid==='VALID'&&this.ProjectName.length <=100)  )&&
         // (this.ProjectDescription&&this.ProjectDescription.trim()!='')
-        (this.ProjectDescription?(this.characterCount<=500):true)
+        (this.ProjectDescription&&this.ProjectDescription.trim()!=''&&this.ProjectDescription?(this.characterCount<=500)&&(this.ProjectDescription&&this.isPrjDesValid==='VALID'&&this.ProjectDescription.length <=500) :false)
+
       ))
    {
       this.formFieldsRequired=true;
@@ -3599,19 +3606,19 @@ approvalSubmitting:boolean=false;
       this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
         console.log(data['message'], "edit response");
         if (data['message'] == '1') {
-          this.notifyService.showSuccess("Updated successfully", "Success");
+          this.notifyService.showSuccess("Updated successfully.", "Success");
         }
         else if (data['message'] == '2') {
-          this.notifyService.showError("Not updated", "Failed");
+          this.notifyService.showError("Not updated.", "Failed");
         }
         else if (data['message'] == '5') {
-          this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully");
+          this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully.");
         }
         else if (data['message'] == '6') {
-          this.notifyService.showSuccess("Updated successfully,"+" Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+          this.notifyService.showSuccess("Updated successfully,"+" Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
         }
         else if (data['message'] == '8') {
-          this.notifyService.showError("Selected project owner cannot be updated", "Not updated");
+          this.notifyService.showError("Selected project owner cannot be updated.", "Not updated");
         }
         this.getProjectDetails(this.URL_ProjectCode);
         this.closeInfo();
@@ -3627,11 +3634,11 @@ approvalSubmitting:boolean=false;
       this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
         console.log(data['message'], "edit response");
         if (data['message'] == '3') {
-          this.notifyService.showSuccess("Project updated and Approved successfully", "Success");
+          this.notifyService.showSuccess("Project updated and Approved successfully.", "Success");
           this.Close_Approval();
         }
         else if (data['message'] == '2') {
-          this.notifyService.showError("Not updated", "Failed");
+          this.notifyService.showError("Not updated.", "Failed");
         }
         this.getProjectDetails(this.URL_ProjectCode);
         this.getapprovalStats();
@@ -3713,11 +3720,22 @@ approvalSubmitting:boolean=false;
 
   updatingAction: boolean = false;
 
+  isactionValid:'TOOSHORT'|'VALID'='VALID';
+  isactdesValid:'TOOSHORT'|'VALID'='VALID';
+
+
 
   onAction_update() {
+    debugger
     this.updatingAction = true;
 // check all mandatory field are provided.
-    if(!(this.ActionName&&(this.ActionDescription?(this.characterCount_Action<=500):true)&&
+this.isactionValid=this.isValidString(this.ActionName,2);
+this.isactdesValid=this.isValidString(this.ActionDescription,3);
+
+    if(!( (this.ActionName.trim() != '' && this.ActionName&&this.ActionName.length<=100&&this.ActionName&&this.isactionValid=='VALID')
+
+      &&(this.ActionDescription?(this.characterCount_Action<=500)&&(this.ActionDescription&&this.isactdesValid==='VALID')&&this.ActionDescription.trim()!='' :false)&&
+
          this.ActionOwner&&this.ActionResponsible&&
          this.selectedcategory&&this.ActionClient&&
          this.ActionstartDate&&this.ActionendDate&&
@@ -3817,20 +3835,20 @@ approvalSubmitting:boolean=false;
         this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
           console.log(data['message'], "edit response");
           if (data['message'] == '1') {
-            this.notifyService.showSuccess("Updated successfully", "Success");
+            this.notifyService.showSuccess("Updated successfully.", "Success");
             this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
           }
           else if (data['message'] == '2') {
-            this.notifyService.showError("Not updated", "Failed");
+            this.notifyService.showError("Not updated.", "Failed");
           }
           else if (data['message'] == '5') {
-            this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
+            this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully.");
           }
           else if (data['message'] == '6') {
-            this.notifyService.showSuccess("Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+            this.notifyService.showSuccess("Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
           }
           else if (data['message'] == '8') {
-            this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
+            this.notifyService.showError("Selected action owner cannot be updated.", "Not updated");
           }
           this.getProjectDetails(this.URL_ProjectCode);
           this.closeInfo();
@@ -3856,17 +3874,17 @@ approvalSubmitting:boolean=false;
     this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
       console.log(data['message'], "edit response");
       if (data['message'] == '1') {
-        this.notifyService.showSuccess("Updated successfully", "Success");
+        this.notifyService.showSuccess("Updated successfully.", "Success");
         this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
       }
       else if (data['message'] == '2') {
         this.notifyService.showError("Not updated", "Failed");
       }
       else if (data['message'] == '5') {
-        this.notifyService.showSuccess("Project transfer request sent to the new responsible "+ this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
+        this.notifyService.showSuccess("Project transfer request sent to the new responsible "+ this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully.");
       }
       else if (data['message'] == '6') {
-        this.notifyService.showSuccess("Updated successfully"+"Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+        this.notifyService.showSuccess("Updated successfully"+"Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
       }
       else if (data['message'] == '8') {
         this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
@@ -3947,7 +3965,7 @@ debugger
 
   getDarTime() {
     this.timedata = [];
-    
+
     this.objProjectDto.Emp_No = this.Current_user_ID;
     this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
     this.date11 = moment(new Date()).format("MM/DD/YYYY");
@@ -4153,13 +4171,13 @@ debugger
     // this.Clear_Feilds();
    }
    else // some mandatory field are missing.
-    { 
+    {
       this.notProvided=true;
     // if start time, end time or date if not provided.
     if(!(this.starttime&&this.endtime&&this.dateF)){
       setTimeout(()=>document.getElementById("dropdown-timeline-menu").classList.add("show"),0);
     }
-    // 
+    //
     }
  }
 
@@ -4358,12 +4376,12 @@ debugger
 
           this._Message = (data['message']);
           debugger
-          if (this._Message == 'Updated Successfully') {
+          if (this._Message == 'Updated Successfully.') {
             this.getPortfoliosDetails();
             this.Portfolio=[];
-            this.notifyService.showSuccess("Project successfully added to selected portfolio(s)", this._Message);
+            this.notifyService.showSuccess("Project successfully added to selected portfolio(s).", this._Message);
           } else {
-            this.notifyService.showInfo("Please select atleast one portfolio and try again", "");
+            this.notifyService.showInfo("Please select atleast one portfolio and try again.", "");
           }
         });
 
@@ -4402,11 +4420,11 @@ debugger
 
           this.getPortfoliosDetails();
           this.getPortfolios();
-          this.notifyService.showSuccess("Deleted successfully ", '');
+          this.notifyService.showSuccess("Deleted successfully. ", '');
         });
       }
       else {
-        this.notifyService.showInfo("Action cancelled ", '');
+        this.notifyService.showInfo("Action cancelled. ", '');
       }
     });
   }
@@ -7235,7 +7253,7 @@ holdcontinue(Pcode:any){
                       this.HprocessDone--;
                       console.log(data['message'], "edit response");
                       if (data['message'] == '1') {
-                        this.notifyService.showSuccess("Updated successfully", "Success");
+                        this.notifyService.showSuccess("Updated successfully.", "Success");
                       }
                       else if (data['message'] == '2') {
                         this.notifyService.showError("Not updated", "Failed");
@@ -7497,7 +7515,7 @@ holdcontinue(Pcode:any){
             this.closePrjCancelSb();
             this._Message = (data['message']);
             if (this._Message == '1') {
-              this.notifyService.showSuccess("Project cancel request sent to the project owner", "Success");
+              this.notifyService.showSuccess("Project cancel request sent to the project owner.", "Success");
               this.getProjectDetails(this.URL_ProjectCode);
               this.getapproval_actiondetails();
             }
@@ -8211,15 +8229,15 @@ releasenewProject(){
 
 displaymessage(){
   if(this.projectInfo.Status=='Completion Under Approval'){
-    this.notifyService.showInfo("Please reject the project first and then you can change the project responsible as the project is in completion under approval","Not editable");
+    this.notifyService.showInfo("Please reject the project first and then you can change the project responsible as the project is in completion under approval.","Not editable");
   }
   else{
-    this.notifyService.showInfo("Please complete the approval process and change the project responsible","Not editable");
+    this.notifyService.showInfo("Please complete the approval process and change the project responsible.","Not editable");
   }
 }
 
 displaymessagemain(){
-  this.notifyService.showInfo("Project Owner cannot be changed","Not editable");
+  this.notifyService.showInfo("Project owner cannot be changed.","Not editable");
 }
 
 
@@ -8229,7 +8247,7 @@ formatTimes(time: string): string {
     const date = new Date();
     date.setHours(parseInt(hours, 10));
     date.setMinutes(parseInt(minutes, 10));
-  
+
     const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
     const x=date.toLocaleTimeString('en-US', options);
     return x;
@@ -10083,13 +10101,13 @@ OnSubmitSchedule1() {
       element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
 
 
-      if(this.Link_Details!=null){      
+      if(this.Link_Details!=null){
         this.Link_Details = this.Link_Details.trim() == ''?null:this.Link_Details;
       }
-      if(this.Meeting_Id!=null){ 
+      if(this.Meeting_Id!=null){
         this.Meeting_Id = this.Meeting_Id.trim()  == ''?null:this.Meeting_Id;
       }
-      if(this.Meeting_password!=null){  
+      if(this.Meeting_password!=null){
         this.Meeting_password = this.Meeting_password.trim() == ''?null:this.Meeting_password;
       }
       if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
@@ -10216,7 +10234,7 @@ OnSubmitSchedule1() {
         //UploadCalendarAttachmenst
         // console.log(data, "m");
         this._Message = data['message'];
-        if (this._Message == "Updated Successfully") {
+        if (this._Message == "Updated Successfully.") {
           if (this.draftid != 0) {
             this.Getdraft_datalistmeeting();
             this.draftid = 0
@@ -11222,6 +11240,28 @@ getFormattedDuration(totalDuration: number): string {
 
 
 
+  isPrjNameValid:'TOOSHORT'|'VALID'='VALID';
+  isPrjDesValid:'TOOSHORT'|'VALID'='VALID';
+
+
+
+  isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
+   if(inputString){
+
+    // let rg = new RegExp('^(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+');
+    let rg = new RegExp('^(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+');
+  // let rg = new RegExp('^\\s*(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+(?:\\s+\\S+)*\\s*$');
+
+
+   const x=rg.test(inputString.trim());
+
+  return x ? 'VALID' : 'TOOSHORT';
+
+   }
+  return 'TOOSHORT'
+
+  }
+
 
 
 a_details:any;
@@ -11239,7 +11279,7 @@ getADetails(actncode){
           Delaydays:actnObj.Delaydays,
           usedHours:0,
           remainingHours:0,
-          extraHours:0 
+          extraHours:0
         }
 
         this.service.DARGraphCalculations_Json(actncode).subscribe((res:any)=>{
@@ -11276,7 +11316,7 @@ tmReportTotalDuration:{hours:string,minutes:string};
 // tmReportStatus:any;
 tmSubmDate:any;
 tmReportLoading:boolean=false;
-getTimelineReportByDate(dateVal:'today'|'yesterday') {  
+getTimelineReportByDate(dateVal:'today'|'yesterday') {
   if(dateVal){
     this.tmReportArr=[];
     // this.tmReportStatus=null;
@@ -11292,7 +11332,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
     this.ObjSubTaskDTO.End_Date = null;
     this.tmReportLoading=true;
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-      (data => {    
+      (data => {
         this.tmReportLoading=false;
         console.log(data);
         if(data&&data[0].DAR_Details_Json){
@@ -11301,13 +11341,13 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
                 this.tmReportArr=dar_json[0].Dardata;     console.log('tmreportarr:',this.tmReportArr);
                 this.tmReportArr.forEach(ob=>{
                   const k=/00:\d\d/.test(ob.Duration);
-                   ob.duration=k?(ob.Duration.split(':')[1]+' mins'):(ob.Duration+' hrs');   
+                   ob.duration=k?(ob.Duration.split(':')[1]+' mins'):(ob.Duration+' hrs');
                    ob.starttime=this.formatTimes(ob.starttime);
                    ob.endtime=this.formatTimes(ob.endtime);
 
                 });  // adding 'duration' property to show timing in more easy way on the view.
 
-                const [hrs,mins]=dar_json[0].TotalDuration.split(':'); 
+                const [hrs,mins]=dar_json[0].TotalDuration.split(':');
                 this.tmReportTotalDuration={hours:hrs,minutes:mins};
                 this.tmSubmDate=dar_json[0].SubmissionDate;
 
@@ -11320,7 +11360,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
                 //         return d1.getTime()==d2.getTime();
                 //     });
 
-                   
+
                 //     if(tm_submitted)
                 //       this.tmReportStatus=tm_submitted.Status;
                 //     else{
@@ -11339,15 +11379,15 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
 timeline_of:'today'|'yesterday';
 noTimeSpaceAvailable:boolean=false;
 setTimelineDate(val)
-{   
+{
      this.current_Date = moment(val).format("MM/DD/YYYY");
      this.dateF=moment(val).toDate();
      this.starttime = null;
      this.endtime = null;
      this.noTimeSpaceAvailable=false;
      this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
-     .subscribe(data => { 
-      const _timeList=JSON.parse(data[0]['time_json']); 
+     .subscribe(data => {
+      const _timeList=JSON.parse(data[0]['time_json']);
       let _lastEndtime;
       if (_timeList.length != 0) {
          // when some timeline submit done on the selected date.
@@ -11376,7 +11416,7 @@ setTimelineDate(val)
      const yesterdaystr=moment(this.disablePreviousDate).format("MM/DD/YYYY");
      this.timeline_of=this.current_Date==todaystr?'today':this.current_Date==yesterdaystr?'yesterday':null;
      this.getTimelineReportByDate(this.timeline_of);
-}  
+}
 
 
 
@@ -11387,7 +11427,7 @@ onTimelineDateInput(val){
    }
    else{ // user has input null or undefined or val is falsy.
        this.current_Date=null;
-   }      
+   }
 }
 
 
