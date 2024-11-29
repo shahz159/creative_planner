@@ -75,7 +75,7 @@ export class CreateProjectComponent implements OnInit {
   SubmissionType:any
   Responsible_json:any;
   allUser_json:any;
-
+  heirarchical_owner:any;
 
 
 
@@ -273,6 +273,7 @@ export class CreateProjectComponent implements OnInit {
          this.Team_json=JSON.parse(res[0].Team_json);
          this.allUser_json=JSON.parse(res[0].allUser_json);
 
+         this.heirarchical_owner=JSON.parse(res[0].owner_json);
          let owner_values=JSON.parse(res[0].owner_json);
          owner_values=owner_values.map(ob=>({...ob,type:'Hierarchical'}));
          const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo.trim()];
@@ -670,7 +671,7 @@ createSRTProject(){
 
 
               //  this.notification.showSuccess("Saved successfully","");
-               this.notification.showInfo("Please submit the project for approval","");
+               this.notification.showInfo("Please submit the project for approval.","");
 
                //2. file attachment uploading  if present
                if(this.fileAttachment)
@@ -681,7 +682,7 @@ createSRTProject(){
                {    // when core, secondary
                 if(this.savePrjAsDraft==true)
                 {
-                  this.notification.showSuccess("Project saved as draft","Success");
+                  this.notification.showSuccess("Project saved as draft.","Success");
                   this.back_to_options();
                   this.GetAssignedTaskDetails();
                 }
@@ -719,7 +720,7 @@ createSRTProject(){
     else{
       // please provide all mandatory fields to create project.
       this.notProvided=true;
-      this.notification.showError('Please fill in all mandatory fields','Required information');
+      this.notification.showError('Please fill in all mandatory fields.','Required information');
     }
  }
 
@@ -734,11 +735,11 @@ createSRTProject(){
            this.createProjectService.NewUpdateFileUploadsByProjectCode(fd).subscribe((fres:any)=>{
             console.log("file attachment:",fres)
             if(fres&&fres.Message==='Success'){
-              this.notification.showSuccess('Successfully uploaded the file attachment','File attachment uploaded');
+              this.notification.showSuccess('Successfully uploaded the file attachment.','File attachment uploaded');
               this.isFileUploaded=true;
             }
             else{
-               this.notification.showError('Unable to upload the file attachment','File uploading failed');
+               this.notification.showError('Unable to upload the file attachment.','File uploading failed');
                this.isFileUploaded=false;
             }
         });
@@ -751,14 +752,35 @@ createSRTProject(){
 //  }
 
 
+permittedFileFormats=[
+  "image/*", "application/pdf", "text/plain", "text/html", "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/json", "application/xml", "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+];
+invalidFileSelected:boolean=false;
+
   file: File | null = null;
 onFileChanged(event: any) {
-
+  debugger
   const files: File[] = event.target.files;
 
   if (files && files.length > 0) {
-    this.file = files[0];
-    this.fileAttachment = this.file;
+    
+    const filetype = files[0].type;
+    const isValidFile=this.permittedFileFormats.some((format)=>{
+          return (filetype==format)||(filetype.startsWith('image/')&&format=='image/*');
+    });
+
+    if(isValidFile){
+      this.invalidFileSelected=false;
+      this.file = files[0];
+      this.fileAttachment = this.file;
+    }else{
+      this.invalidFileSelected=true;
+    }
+   
     // this.determineFileType(this.file.name);
     console.log(this.fileAttachment,"testtestsetsetsetsetsettttt")
   } else {
@@ -1137,14 +1159,13 @@ isPrjSprtDrpDwnOpen:boolean=false;
 
 
 // responsible field start
-onResponsibleChanged(){
+onResponsibleChanged(){ 
   if(this.PrjResp){
     if(this.PrjResp.trim()===this.PrjOwner.trim())
     {
       const selectedowr=this.owner_json.find((item)=>item.EmpNo===this.PrjOwner);
       const newowr=this.owner_json[this.owner_json.indexOf(selectedowr)+1];
       this.PrjOwner=newowr.EmpNo;
-
 
        // if prj owner and selected auditor are same.  (project owner cannot be set as project auditor)
        if(this.PrjAuditor==this.PrjOwner){
@@ -1166,18 +1187,6 @@ onResponsibleChanged(){
          this.PrjAuditor=null;
       }
   //
-
-
-
-
-
-
-
-  // const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.PrjResp];
-  // let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob.Emp_No));
-  // otherusers=otherusers.map(ob=>({EmpNo:ob.Emp_No, EmpName:ob.Emp_Name, type:'Others'}));
-  // this.owner_json=[...owner_values,...otherusers];
-
 
   }
 }
@@ -1290,7 +1299,10 @@ onProjectOwnerChanged(){
     // this.duration=this.bind_Project[0].Duration;
 
     const cDate=new Date();
+    cDate.setHours(0, 0, 0, 0); // Set the time to 00:00:00
+
     const psdate=new Date(this.bind_Project[0].Start_Date);
+    psdate.setHours(0, 0, 0, 0); // Set the time to 00:00:00
 
     this.Prjstartdate = psdate<cDate?null:this.bind_Project[0].Start_Date
     this.Prjenddate = psdate<cDate?null:this.bind_Project[0].End_Date
@@ -1306,6 +1318,7 @@ onProjectOwnerChanged(){
     this.Allocated_Hours=this.bind_Project[0].Allocated;
     this.prjsubmission=this.bind_Project[0].Submission_Type;
     this.fileAttachment = this.bind_Project[0].FileName;
+    // this._remarks = this.bind_Project[0].__remarks
     console.log(this.fileAttachment,"fileAttachmentfileAttachmentfileAttachmentfileAttachmentfileAttachment")
     const portfolios_ = this.bind_Project[0].Portfolio_Id;
 
@@ -1322,6 +1335,9 @@ onProjectOwnerChanged(){
   }
 
 
+
+
+
 onRejectButtonClick(value:any,id:number){
     this.bind_Project = [value];
     console.log(this.bind_Project,'+++++++++++>')
@@ -1335,7 +1351,10 @@ onRejectButtonClick(value:any,id:number){
     this.Prjenddate = this.bind_Project[0].End_Date;
   }
 
-
+onRejectProjectDialogClosed(){
+    this.notProvided=false;
+    this.reason4PrjRejection=null;
+}
 
 
 
@@ -1538,7 +1557,7 @@ initializeSelectedValue() {
     this.Allocated_Hours = this.projectInfo.StandardAllocatedHours
     this.Allocated = this.projectInfo.AllocatedHours
     this.End_Date = this.projectInfo.EndDate;
-
+    this._remarks = this.projectInfo.Remarks
 }
 
 projectEdit(val) {
@@ -1676,12 +1695,12 @@ return;
 
       if(['1','5','6'].includes(data['message']))
       {
-        this.notifyService.showSuccess("Updated successfully", "Success");
+        this.notifyService.showSuccess("Updated successfully.", "Success");
         this.closeInfos();
       }
       else if(data['message'] == '2')
       {
-        this.notifyService.showError("Not updated", "Failed");
+        this.notifyService.showError("Not updated.", "Failed");
       }
       else if (data['message'] == '8') {
         let sel_owner=this.owner_dropdown.find((item)=>item.Emp_No==this.selectedOwner);
@@ -1907,7 +1926,7 @@ const pdur=Math.abs(moment(_prjstrtd).diff(moment(_prjendd),'days'));
 let noactnDialogType:'MANDATORY'|'NOT_MANDATORY';
 noactnDialogType=pdur>=15?'MANDATORY':pdur<15?'NOT_MANDATORY':null;
 
-if(this.PrjActionsInfo.length==0){  
+if(this.PrjActionsInfo.length==0){
 
   const choice=await Swal.fire({
      title:noactnDialogType=='MANDATORY'?'Actions required':'Continue Without Actions?',
@@ -1922,7 +1941,7 @@ if(this.PrjActionsInfo.length==0){
       </div>
     </div>
      `,
-     showConfirmButton:true, 
+     showConfirmButton:true,
      confirmButtonText: noactnDialogType=='MANDATORY'?'OK':'Continue',
      showCancelButton:noactnDialogType=='NOT_MANDATORY'?true:false
    });
@@ -1962,7 +1981,7 @@ if(this.PrjActionsInfo.length==0){
 
 // 3.validation: if any RACIS member doesn't have atleast one action in the project.
 this.detectMembersWithoutActions();
-if(this.hasNoActionMembers.length>0){  
+if(this.hasNoActionMembers.length>0){
 
 const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)=>{
         return members+`<b>'${new_member}'</b>${index==arr.length-2?' and ':index<arr.length-2?'<b> ,</b>':'<b>. </b>'}`;
@@ -1971,9 +1990,9 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
  const choice=await Swal.fire({
     title:'Project team with no actions assigned',
     html:`<div class="text-justify">
-           No actions has been assigned to 
+           No actions has been assigned to
            ${people_names}<br/>
-           <div class="mt-2">Do you still want to proceed with this project?</div> 
+           <div class="mt-2">Do you still want to proceed with this project?</div>
     </div>`,
     showConfirmButton:true,
     showCancelButton:true,
@@ -2014,18 +2033,25 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
 
 
 // remove assigned/conditional project start
+reason4PrjRejection:string;
 removeACPrj(index:number){
+  
+  if(!(this.reason4PrjRejection&&this.reason4PrjRejection.trim())){
+      this.notProvided=true;
+      return;
+  }  // when mandatory field not provided.
+
   // Emp_No, assignid ,Remarks
   this.ProjectDto.Emp_No=this.Current_user_ID;
   this.ProjectDto.assignid=+this.assigntask_json[index-1].Assign_Id;
-  this.ProjectDto.Remarks=' sample testing remarks';
-  // this.ProjectDto.assignid=
+  this.ProjectDto.Remarks=this.reason4PrjRejection;
+ 
   this.createProjectService.NewDeleteRejectAssignTask(this.ProjectDto).subscribe((res:any)=>{
 
         if(res&&res.message==='Success'){
-             this.notification.showSuccess(this.assigntask_json[index-1].Task_Name+" removed","Success");
+             this.notification.showSuccess(`"${this.assigntask_json[index-1].Task_Name}" removed.`,"Success");
              this.GetAssignedTaskDetails();
-             document.getElementById('ACPrjRemovalbtn').click();
+             document.getElementById('ACPrjRemovalbtn').click();    // closes and clear values also.
         }
         else{
            this.notification.showError("Something went wrong!","Failed");
@@ -2033,7 +2059,6 @@ removeACPrj(index:number){
   });
 }
 // remove assigned/conditional project end
-
 
 // delete template code start
 onTmpRmvDialogOpen(index:number){
@@ -2064,7 +2089,7 @@ removeTemplate(templateCode:string){
   this.ProjectDto.Project_Code=templateCode;
   this.createProjectService.NewDeleteProjectTemplate(this.ProjectDto).subscribe((res:any)=>{
         if(res&&res.message==='Success'){
-               this.notification.showSuccess('Template deleted','Success');
+               this.notification.showSuccess('Template deleted.','Success');
                this.GetAssignedTaskDetails();
         }
         else{
@@ -2292,7 +2317,7 @@ debugger
       showCancelButton:true,
       showConfirmButton:true,
       title:'Are you sure?',
-      text:`This action will permanently delete this '${this.draft_json[index].Project_Name}'`,
+      text:`This action will permanently delete this '${this.draft_json[index].Project_Name}'.`,
     }).then(choice=>{
          if(choice.isConfirmed){
 
@@ -2300,7 +2325,7 @@ debugger
           this.ProjectDto.Emp_No=this.Current_user_ID;
           this.createProjectService.NewDeleteDraft(this.ProjectDto).subscribe((res:any)=>{
                      if(res.message=='1'){
-                       this.notifyService.showSuccess(`'${this.draft_json[index].Project_Name}' draft is deleted`,"Deleted successfully");
+                       this.notifyService.showSuccess(`'${this.draft_json[index].Project_Name}' draft is deleted.`,"Deleted successfully");
                        this.GetAssignedTaskDetails();
                      }
                      else{
@@ -2447,6 +2472,7 @@ reset(){
   this.Annual_date=null;
   this.ngDropdwonPort=[];
   this.fileAttachment=null;
+  this.invalidFileSelected=false;
     // step1 form clear.   end
 
     // step2 form clear.   start
@@ -2470,6 +2496,7 @@ reset(){
      // step2 form clear.   start
 
   // step3 info clear. start
+    this.projectInfo=null;
     this.PrjTemplActions=[];
     this.PrjActionsInfo=[];
     this.draftActionsLoading=false;
@@ -2652,7 +2679,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
       this.Allocated = this.PrjActionsInfo[this.currentActionView].AllocatedHours;    // action alloc hrs.
       this.End_Date = this.PrjActionsInfo[this.currentActionView].EndDate;          // action end date.
       this.ActionDuration=this.PrjActionsInfo[this.currentActionView].Duration;     // action duration.
-
+      this._remarks = this.PrjActionsInfo[this.currentActionView].Remarks;
 
   }
 
@@ -2670,7 +2697,7 @@ debugger
   }
 
 
-// v2. Action date Can't be greater than project end date  
+// v2. Action date Can't be greater than project end date
   const dateone=new Date(this.projectInfo.EndDate)
   const datetwo= new Date(this.End_Date)
   if(dateone < datetwo){
@@ -2710,7 +2737,7 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
           // icon:'error',
           showConfirmButton:true,
           confirmButtonText:'OK'
-       }); 
+       });
        return;
       }
 }
@@ -2754,12 +2781,12 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
             this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
               console.log(data['message'], "edit response");
               if (data['message'] == '1') {
-                this.notifyService.showSuccess("Updated successfully", "Success");
+                this.notifyService.showSuccess("Updated successfully.", "Success");
                 this.getActionsDetails();
                 this.closeAction_details_edit();
               }
               else if (data['message'] == '2') {
-                this.notifyService.showError("Not updated", "Failed");
+                this.notifyService.showError("Not updated.", "Failed");
               }
               else if (data['message'] == '5') {
                 this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===this.OGresponsible))["RACIS"], "Updated successfully");
@@ -2767,12 +2794,12 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
                 this.closeAction_details_edit();
               }
               else if (data['message'] == '6') {
-                this.notifyService.showSuccess("Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+                this.notifyService.showSuccess("Project Transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
                 this.getActionsDetails();
                 this.closeAction_details_edit();
               }
               else if (data['message'] == '8') {
-                this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
+                this.notifyService.showError("Selected action owner cannot be updated.", "Not updated");
                 this.closeAction_details_edit();
 
               }
@@ -2795,12 +2822,12 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
         this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
           console.log(data['message'], "edit response");
           if (data['message'] == '1') {
-            this.notifyService.showSuccess("Updated successfully", "Success");
+            this.notifyService.showSuccess("Updated successfully.", "Success");
             this.getActionsDetails();
             this.closeAction_details_edit();
           }
           else if (data['message'] == '2') {
-            this.notifyService.showError("Not updated", "Failed");
+            this.notifyService.showError("Not updated.", "Failed");
           }
           else if (data['message'] == '5') {
             this.notifyService.showSuccess("Project Transfer request sent to the new responsible "+ this.responsible_dropdown.filter((element)=>(element.Emp_No===this.OGresponsible))["RACIS"], "Updated successfully");
@@ -2813,7 +2840,7 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
             this.closeAction_details_edit();
           }
           else if (data['message'] == '8') {
-            this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
+            this.notifyService.showError("Selected action owner cannot be updated.", "Not updated");
             this.closeAction_details_edit();
           }
 
@@ -3017,19 +3044,19 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
 editable(value:string){
  const messages = {
     Owner:{
-      message:"Action owner can't be changed",
+      message:"Action owner can't be changed.",
       title:'Not editable'
     },
     duration:{
-    message:"Action duration can't be changed",
+    message:"Action duration can't be changed.",
     title:'Not editable'
   },
   cost:{
-    message:"Action cost can't be changed",
+    message:"Action cost can't be changed.",
     title:"Not editable"
   },
   Allocated:{
-    message:"Action allocated hours can't be changed",
+    message:"Action allocated hours can't be changed.",
     title:"Not editable"
 
   }
@@ -3297,13 +3324,13 @@ promptIfNameTypeMismatch(){
 
     if(isincluded){
       const typematched=['003','008'].includes(this.Prjtype);
-      if(typematched==false&&this.okWithType==false){ 
+      if(typematched==false&&this.okWithType==false){
        const sel_ptype=this.ProjectType_json.find(ob=>ob.Typeid==this.Prjtype).ProjectType.trim();
 
         Swal.fire({
             title:'Are You Sure About the Project Type?',
             html:`<div class="text-justify">
-                   Project name contains word <b>'${isincluded}'</b> which suggests a standard or routine type project. You've selected <b>'${sel_ptype}'</b> as the project type. 
+                   Project name contains word <b>'${isincluded}'</b> which suggests a standard or routine type project. You've selected <b>'${sel_ptype}'</b> as the project type.
                   </div>`,
             showConfirmButton:true,
             showCancelButton:true,

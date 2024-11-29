@@ -2063,7 +2063,17 @@ span.timeline-time svg {
   }
 }
 
+.modal-backdrop.fade.show {
+  display: block !important;
+}
 
 
-
-
+.TLdate-not-selected{
+  border: 2px solid #d3d3d3e0;
+  border-radius: 7px;
+  display: inline-block;
+  min-width: 150px;
+  padding: 0.07em 0.5em;
+  color: #a3a3a3;
+  font-weight: 400;
+}

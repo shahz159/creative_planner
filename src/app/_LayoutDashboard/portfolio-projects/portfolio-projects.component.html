@@ -92,7 +92,9 @@
 
 
                                     <a class="kt-todo__icon" title="Click to share the portfolio" *ngIf="Project_Graph=='Graphs'"  (click)="share_Users()">
-                                        <i class="fas fa-share-alt"></i>
+                                        <!-- <i class="fas fa-share-alt"></i>
+                                          -->
+                                          <svg viewBox="0 0 16 16" fill="currentColor" height="19" width="19" xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi"><path  d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"></path></svg>
                                     </a>
 
 
@@ -988,7 +990,7 @@
 
 
 
-                                                    <th [ngClass]="{'d-none':!isracis}" class="racisid" *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i
+                                                    <th [ngClass]="{'d-none':!isracis}"  *ngIf="!showDeletedPrjOnly"><span class="kt-widget__other"><i
                                                           class="fas fa-sort"></i> Racis</span> </th>
 
 
@@ -1544,7 +1546,7 @@
                                    <!-- responsible data start -->
                                                     <td [ngClass]="{'d-none':!isrespon}" class="responclass">
                                                         <span class="kt-widget__other">{{item1.TM_DisplayName}}</span>
-                                                        <div class="d-flex align-items-center" *ngIf="item1.Status=='Forward Under Approval'">
+                                                        <div class="d-flex align-items-center" *ngIf="item1.Status=='Forward Under Approval' && item1.ForwardTo">
                                                           <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Arrow_Sub_Down_Right"> <path id="Vector" d="M13 11L18 16M18 16L13 21M18 16H10.1969C9.07899 16 8.5192 16 8.0918 15.7822C7.71547 15.5905 7.40973 15.2839 7.21799 14.9076C7 14.4798 7 13.9201 7 12.8V3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
                                                           <div  class="New_Approval_Project font-weight-400" style="line-height: 1;">{{item1.ForwardTo}}</div>
                                                       </div>
