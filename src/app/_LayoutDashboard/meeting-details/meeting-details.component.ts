@@ -199,7 +199,7 @@ export class MeetingDetailsComponent implements OnInit {
     console.log(this.CurrentUser_fullname,'CurrentUser_fullname')
     this.MinLastNameLength = true;
     // this.getAttendeeTime();
-
+   
     this.meeting_details();
     // this.GetDMSList();
     this.addAgenda();
@@ -457,9 +457,11 @@ export class MeetingDetailsComponent implements OnInit {
 
   
   View_Activity() {
+    this.GetDMSList();
     document.getElementById("Activity_Log").classList.add("kt-quick-panel--on");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "block";
+
     this.GetMeetingActivity();
   }
 
@@ -483,6 +485,7 @@ export class MeetingDetailsComponent implements OnInit {
   EventScheduledjson: any = [];
   Schedule_ID: any;
   User_Scheduledjson: any = [];
+  user_linkedOnMtg:any=[];
   portfolio_Scheduledjson: any = []
   Project_code: any
   Employeelist: any = []
@@ -557,7 +560,7 @@ export class MeetingDetailsComponent implements OnInit {
   Status1: any;
   Meeting_Id:any;
   Meeting_password:any;
-
+  ModifiedJson:any;
 
   
 
@@ -572,14 +575,16 @@ export class MeetingDetailsComponent implements OnInit {
       var Schedule_date = this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
       this.Agendas_List = this.EventScheduledjson[0].Agendas;
-      console.log('new agendas_List:',this.Agendas_List);
+     
       this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
       this.Startts = (this.EventScheduledjson[0]['St_Time']);
       this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
 
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
-      this.totalUser_Scheduledjson=this.User_Scheduledjson.length
-      console.log("User_Scheduledjson", this.User_Scheduledjson);
+      this.totalUser_Scheduledjson=this.User_Scheduledjson.length;
+      this.user_linkedOnMtg=this.User_Scheduledjson?this.User_Scheduledjson.map(user => user.stringval):[];
+
+
       this.orderedItems = this.User_Scheduledjson.sort((a, b) => {
         const statusOrder = { "Accepted": 1, "Pending": 2, "May be": 3, "Rejected": 4 };
         return statusOrder[a.Status] - statusOrder[b.Status];
@@ -693,8 +698,12 @@ export class MeetingDetailsComponent implements OnInit {
       this.Guestcount = this.checkedusers.length;
 
 
-      // var x = this.User_Scheduledjson.map(obj=>obj.TM_DisplayName);
+      this.ModifiedJson=this.EventScheduledjson[0].ModifiedJson
 
+
+      console.log('this.ModifiedJson:',this.ModifiedJson);
+      // var x = this.User_Scheduledjson.map(obj=>obj.TM_DisplayName);
+      console.log(this.Project_code,'<-------Project_code---->', this.portfolio_Scheduledjson)
 
       this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
 
@@ -762,7 +771,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.hours = Math.floor(duration.asHours());
       this.minutes = duration.minutes();
       this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
-      console.log(this.Project_code,'Project_code')
+    
     });
 
 
@@ -1407,7 +1416,7 @@ export class MeetingDetailsComponent implements OnInit {
         var recordparticipants = this.User_Scheduledjson.map(item => item.stringval)
         // this._EmployeeListForDropdown=this._EmployeeListForDropdown.filter(item=> !recordparticipants.includes(item.Emp_No))
         this.originalparticipants = this._EmployeeListForDropdown;
-
+       console.log(this._EmployeeListForDropdown,'_EmployeeListForDropdown')
       });
   }
 
@@ -1802,7 +1811,7 @@ export class MeetingDetailsComponent implements OnInit {
   adminComments: any
 
   Updating_Adminmeeting(_emp) {
-
+debugger
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = _emp;
@@ -2213,7 +2222,8 @@ export class MeetingDetailsComponent implements OnInit {
 
       const agenda = {
         id: AgendaId,
-        name: this.agendaInput,
+        name:this.AgendasName,
+       
       };
       this.allAgendas.push(agenda);
       const mtgAgendas = JSON.stringify(this.allAgendas.length > 0 ? agenda : []);
@@ -2548,41 +2558,70 @@ export class MeetingDetailsComponent implements OnInit {
   myFiles: string[] = [];
 
 
-  onFileChange(event) {
 
-    if (event.target.files.length > 0) {
-      var length = event.target.files.length;
-      for (let index = 0; index < length; index++) {
-        const file = event.target.files[index];
-        var contentType = file.type;
-        if (contentType === "application/pdf") {
-          contentType = ".pdf";
-        }
-        else if (contentType === "image/png") {
-          contentType = ".png";
-        }
-        else if (contentType === "image/jpeg") {
-          contentType = ".jpeg";
-        }
-        else if (contentType === "image/jpg") {
-          contentType = ".jpg";
-        }
-        this.myFiles.push(event.target.files[index].name);
-        // alert(this.myFiles.length);
-        // console.log(this.myFiles, "attach")
-        //_lstMultipleFiales
-        var d = new Date().valueOf();
-        this._lstMultipleFiales = [...this._lstMultipleFiales, {
-          UniqueId: d,
-          FileName: event.target.files[index].name,
-          Size: event.target.files[index].size,
-          Files: event.target.files[index]
-        }];
+
+onFileChange(event) {
+  if (event.target.files.length > 0) {
+    const allowedTypes = [
+      "image/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/json", "application/xml", "application/vnd.ms-powerpoint",
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ];
+
+    var length = event.target.files.length;
+    for (let index = 0; index < length; index++) {
+      const file = event.target.files[index];
+      const fileName = file.name;
+      const contentType = file.type;
+      if (!allowedTypes.some(type => file.type.match(type))) {
+        // Show a sweet alert popup for unsupported file types
+        Swal.fire({
+          title: `This File "${fileName}" cannot be accepted!`,
+          text: `Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+          //  "This file cannot be accepted!"
+          });
+        continue;
       }
-    }
-    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
-  }
 
+      // Skip file if its name already exists in either array
+      const fileAlreadyExists =
+        this.Attachments_ary.some(att => att.File_Name === fileName) ||
+        this._lstMultipleFiales.some(existingFile => existingFile.FileName === fileName);
+
+      if (fileAlreadyExists) {
+        Swal.fire({
+          title: `File "${fileName}" Already Exists`,
+          text: `The file "${fileName}" was not added to avoid duplication.`
+        })
+        continue; // Skip this file
+      }
+
+      // Determine file extension
+      let fileExtension = '';
+      if (contentType === "application/pdf") {
+        fileExtension = ".pdf";
+      } else if (contentType === "image/png") {
+        fileExtension = ".png";
+      } else if (contentType === "image/jpeg") {
+        fileExtension = ".jpeg";
+      } else if (contentType === "image/jpg") {
+        fileExtension = ".jpg";
+      }
+      this.myFiles.push(file.name);
+
+      var d = new Date().valueOf();
+      this._lstMultipleFiales = [...this._lstMultipleFiales, {
+        UniqueId: d,
+        FileName: file.name,
+        Size: file.size,
+        Files: file
+      }];
+    }
+  }
+  (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+}
 
 
 
@@ -2590,11 +2629,28 @@ export class MeetingDetailsComponent implements OnInit {
 
   onFileChange1(event) {
     if (event.target.files.length > 0) {
+      const allowedTypes = [
+        "image/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/json", "application/xml", "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ];
+
       const length = event.target.files.length;
       for (let index = 0; index < length; index++) {
         const file = event.target.files[index];
         const fileName = file.name;
         const contentType = file.type;
+
+        if (!allowedTypes.some(type => file.type.match(type))) {
+          // Show a sweet alert popup for unsupported file types
+          Swal.fire({
+            title: `This File "${fileName}" cannot be accepted!`,
+            text: `Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+            });
+          continue;
+        }
 
         // Skip file if its name already exists in either array
         const fileAlreadyExists =
@@ -2680,7 +2736,6 @@ export class MeetingDetailsComponent implements OnInit {
       frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID);
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
-      debugger
       frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
 
       if (_attachmentValue == 1) {
@@ -5875,6 +5930,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     this.Attachment12_ary = [];
     this._lstMultipleFiales = [];
     this.maxDate = null;
+    this.EventNumber=null;
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
@@ -7772,9 +7828,9 @@ GetMeetingActivity(){
   this.approvalObj.Schedule_Id=this.Scheduleid;
 
   this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
-    console.log(data,'data321')
+
     this.allActivityList=JSON.parse(data[0].ActivityList)
-    console.log(this.allActivityList,'allActivityList321')
+    // console.log(this.allActivityList,'allActivityList321')
 
     this.allActivityList = this.allActivityList.map(item => ({
       ...item,
@@ -7806,6 +7862,22 @@ this.allActivityList.forEach(item => {
     item.New_Value = item.New_Value[0];
   }
 });
+
+
+this.allActivityList.forEach(activity => {
+  if (activity.Value.includes("SM link(s)")) {
+    ['Old_Value', 'New_Value'].forEach(key => {
+      if (activity[key] && activity[key][0]?.name) {
+        const mailIds = activity[key][0].name.split(',').map(id => id.trim());
+        activity[key][0].name = mailIds
+          .map(id => this._MemosSubjectList.find(memo => memo.MailId === Number(id))?.Subject)
+          .filter(subject => subject) // Exclude undefined subjects
+          .join(',');
+      }
+    });
+  }
+});
+
 
 console.log(this.allActivityList,'allActivityList')
   })

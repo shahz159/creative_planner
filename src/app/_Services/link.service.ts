@@ -48,11 +48,13 @@ _GetOnlyMemoIdsByProjectCode(projectCode) {
     
   }
   _GetMemosSubject(JsonString) {
+    
     this.ObjLinkDTO.MemosJSON = JsonString;
     this.ObjLinkDTO.EmployeeCode = localStorage.getItem('EmpNo');
    // console.log("Sending JsonFormat----->",this.ObjLinkDTO.EmployeeCode);
     //  console.log("ObjLinkDTO----->",this.ObjLinkDTO);
     //let Url="https://cswebapps.com/dmsapi/api/LatestCommunicationAPI/NewGetMemosSubject"
+    console.log(  this.ObjLinkDTO,'JsonString')
     return this.http.post(this.DMS_URL + "LatestCommunicationAPI/NewGetMemosSubject", this.ObjLinkDTO);
   }
   
