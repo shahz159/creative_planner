@@ -5840,6 +5840,16 @@ a.kt-inbox__icon.active i {
     fill: #858190;
 }
 
+
+.iconify--mdim {
+    font-size: 22px;
+    height: 22px;
+    width: 22px;
+    color: #a0a0a1;
+    color: #0034b2 !important;
+    fill: #858190;
+}
+
 .dropdown-menu.dropdown-filter {
     margin: 16px 0 0;
 }

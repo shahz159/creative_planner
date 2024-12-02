@@ -11920,7 +11920,10 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input class="form-control"  placeholder="Meeting link" type="text"  [(ngModel)]="Link_Details" >
+                                <input class="form-control"  placeholder="Meeting link" type="text"  (blur)="validateURL(Link_Details)"  [(ngModel)]="Link_Details" >
+                                <div *ngIf="!isValidURL" class="text-danger">
+                                    Please enter a valid URL.
+                                  </div>
                             </div>
                         </div>
                         <div class="col-md-3">

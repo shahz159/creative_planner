@@ -561,8 +561,9 @@ export class MeetingDetailsComponent implements OnInit {
   Meeting_Id:any;
   Meeting_password:any;
   ModifiedJson:any;
-
-  
+  _AllEventAttachment: number = 0;
+  _FutureEventAttachment: number = 0;
+  AdminName:any;
 
   meeting_details() {
  
@@ -614,7 +615,11 @@ export class MeetingDetailsComponent implements OnInit {
       this.totalActiontask = this.Actiontask.length;
       this.Todotask = this.EventScheduledjson[0].Todotasks;
 
-      console.log('this.Todotask',this.AssignedTask , this.Actiontask , this.Todotask);
+      this._AllEventAttachment = this.EventScheduledjson[0]['AllEventsCount'];
+      this._FutureEventAttachment = this.EventScheduledjson[0]['FutureCount'];
+      this.AdminName=this.EventScheduledjson[0].AdminName
+
+      console.log('this.EventScheduledjson',this.EventScheduledjson[0].AdminName);
 
       this.totalTodotask = this.Todotask.length;
       this.totalCountAssign = this.totalAssign + this.totalActiontask + this.totalTodotask;
@@ -2713,6 +2718,32 @@ onFileChange(event) {
 
 
 
+
+
+  RemoveExistingAttachment(_id) {
+  
+    // this.Attachment12_ary.forEach(element => {
+    //   if (element.file_id == _id) {     
+    //   // this.RemovedAttach.push(element.Cloud_Name)
+    //     this.RemovedFile_id.push(element.file_id);  
+    //   }
+    // });
+    debugger
+    this.Attachments_ary.forEach(element => {
+      if (_id == element.file_id)
+        // this.AttachmentName = element.File_Name;
+      this.RemovedFile_id.push(element.file_id);  
+
+    });
+    // var removeIndex = this.Attachments_ary.map(function (item) { return item.file_id; }).indexOf(_id);
+    // this.Attachments_ary.splice(removeIndex, 1);
+  }
+
+
+
+
+
+
   SelectedAttachmentFile: any
   EventNumber: any;
   progress: number = 0;
@@ -2720,26 +2751,32 @@ onFileChange(event) {
 
   OnSubmitAttachment() {
 
-    if (this.SelectedAttachmentFile != undefined) {
+
+  debugger
+    if (this.SelectedAttachmentFile != undefined || this.RemovedFile_id.length > 0) {
       this.EventNumber = this.EventScheduledjson[0].EventNumber;
       let _attachmentValue = 0;
       const frmData = new FormData();
       for (var i = 0; i < this._lstMultipleFiales.length; i++) {
         frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
       }
-      if (this._lstMultipleFiales.length > 0)
+      if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
         _attachmentValue = 1;
       else
         _attachmentValue = 0;
 
      
+       this._calenderDto.flagid = this._PopupConfirmedValue;
       frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID);
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
       frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
+      frmData.append("flag_id", this._calenderDto.flagid.toString());
+      frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
+      frmData.append("Schedule_date",this._StartDate.toString());
 
       if (_attachmentValue == 1) {
-        this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+        this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
           (event: HttpEvent<any>) => {
             switch (event.type) {
               case HttpEventType.Sent:
@@ -2764,14 +2801,11 @@ onFileChange(event) {
                 }, 1500);
 
                 //69 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
-          
+                (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";         
                 // document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
                 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
-
             }
             this.meeting_details()
-
           }
         )
       }
@@ -4997,11 +5031,11 @@ bindCustomRecurrenceValues(){
   RemovedFile_id:any = [];
 
   RemoveExistingFile(_id) {
+  
     this.Attachment12_ary.forEach(element => {
-      if (element.file_id == _id) {
-        // this.RemovedAttach.push(element.Cloud_Name)
-        this.RemovedFile_id.push(element.file_id);
-
+      if (element.file_id == _id) {     
+      // this.RemovedAttach.push(element.Cloud_Name)
+        this.RemovedFile_id.push(element.file_id);  
       }
     });
     var removeIndex = this.Attachment12_ary.map(function (item) { return item.file_id; }).indexOf(_id);
@@ -5930,6 +5964,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     this.Attachment12_ary = [];
     this._lstMultipleFiales = [];
     this.maxDate = null;
+    this.isValidURL=true
     this.EventNumber=null;
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
@@ -6004,6 +6039,9 @@ if(this.editTask && this.selectedrecuvalue =='2'){
   selected: Date | null;
 
   OnSubmitReSchedule(type: number) {
+     if(this.Link_Details){
+    this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
+    }
 
     if (
       this.Title_Name &&
@@ -6011,7 +6049,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
       this.Endtms &&
       this.MinLastNameLength
       && (this.ScheduleType === 'Event' ?  this.allAgendas.length > 0  : true)
-      && (this.Description_Type?(this.characterCount<=500):true)
+      && (this.Description_Type?(this.characterCount<=500):true) &&   this.isValidURL 
     ) {
 
     this._calenderDto.flagid = this._PopupConfirmedValue;
@@ -6278,10 +6316,6 @@ if(this.editTask && this.selectedrecuvalue =='2'){
       }
 
 
-debugger
-
-
-
       this._attachmentValue = 0;
       
       const frmData = new FormData();
@@ -6292,7 +6326,7 @@ debugger
         this._attachmentValue = 1;
       else
         this._attachmentValue = 0;
-
+debugger
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
@@ -6324,7 +6358,7 @@ debugger
                     console.log('User successfully created!', event.body);
 
                     // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+                    // (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
                     this._lstMultipleFiales = [];
                     // empty(this._lstMultipleFiales);
                     // alert(this._lstMultipleFiales.length);
@@ -6332,10 +6366,10 @@ debugger
                       this.progress = 0;
                     }, 1500);
 
-                    (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                    (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                    // (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                    // (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
                     // document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                    document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+                    // document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
                 }
               }
             )
@@ -7554,7 +7588,7 @@ onParticipantFilter(){
   }
 
 
-
+  isValidURL = true;
 
   onSubmitBtnClicked() {
 
@@ -7921,7 +7955,7 @@ viewconfirm() {
   // alert(this._OldRecurranceValues+"-    Old values" +_arraytext.toString()+ "-   New values");
   // alert(this._OldRecurranceValues+"-    Old values" +this.maxDate+ "-   New values");
 
-debugger
+
   if (this._OldRecurranceId != this.selectedrecuvalue || this._OldRecurranceValues != _arraytext.toString()) {
 
     //   Swal.fire({
@@ -8057,5 +8091,25 @@ newDetails(ProjectCode) {
 hasValidOldValue(item: any): boolean {
   return item?.Old_Value?.some((data: any) => data.name && data.name.trim() !== '') ?? false;
 }
+
+
+
+
+
+
+validateURL(value: string): void {
+  if(value){
+    this.isValidURL = /^(https?:\/\/)/.test(value);
+  }else{
+    this.isValidURL=true
+  }
+  
+}
+
+
+
+
+
+
 
 }
