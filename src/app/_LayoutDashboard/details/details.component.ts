@@ -8893,8 +8893,6 @@ Insert_indraft() {
     }
 
 
-    debugger
-
   this._calenderDto.Portfolio = this.Portfolio.toString();
   this._calenderDto.location = this.Location_Type;
   this._calenderDto.loc_status = this._onlinelink;
@@ -9956,11 +9954,17 @@ Meeting_method(event){
     this.onInputSearch('');
 }
 
+isValidURL = true;
+
+
 onSubmitBtnClicked() {
-debugger
+  if(this.Link_Details){
+    this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
+  }
+
   if (
     (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
-    (this.Description_Type?(this.Description_Type.trim().length<=500):true)&&
+    (this.Description_Type?(this.Description_Type.trim().length<=500):true)&& this.isValidURL &&
     this.Startts &&
     this.Endtms &&
     this.MinLastNameLength
@@ -11514,7 +11518,14 @@ onTimelineDateInput(val){
 }
 
 
-
+validateURL(value: string): void {
+  if(value){
+    this.isValidURL = /^(https?:\/\/)/.test(value);
+  }else{
+    this.isValidURL=true
+  }
+  
+}
 
 }
 
