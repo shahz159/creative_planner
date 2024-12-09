@@ -8667,3 +8667,8 @@ svg.asseticn.prim-icn.memo_attachment_img {
     background-color: #e9ebee;
     border-radius: 50px;
 }
+
+.kt-badge.kt-badge--unifieds{
+    color: #282a3c;
+    background: rgb(166 167 180 / 10%);
+}

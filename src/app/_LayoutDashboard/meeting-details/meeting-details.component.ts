@@ -619,7 +619,6 @@ export class MeetingDetailsComponent implements OnInit {
       this._FutureEventAttachment = this.EventScheduledjson[0]['FutureCount'];
       this.AdminName=this.EventScheduledjson[0].AdminName
 
-      console.log('this.EventScheduledjson',this.EventScheduledjson[0].AdminName);
 
       this.totalTodotask = this.Todotask.length;
       this.totalCountAssign = this.totalAssign + this.totalActiontask + this.totalTodotask;
@@ -680,7 +679,7 @@ export class MeetingDetailsComponent implements OnInit {
         this.urlUserID_Password = UserID_Password.trim();
       }
 
-      console.log(this.urlUserID_Password,'Link_Detail');
+      // console.log(this.urlUserID_Password,'Link_Detail');
 
       let str = this.Link_Detail;
       let regexp = /href="https:\/\/[^"]+"/;
@@ -690,7 +689,7 @@ export class MeetingDetailsComponent implements OnInit {
 
    
 
-     console.log(this.Link_Detail,'Link_Detail2')
+    //  console.log(this.Link_Detail,'Link_Detail2')
 
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
       this.totalguest = this.User_Scheduledjson.length;
@@ -702,13 +701,7 @@ export class MeetingDetailsComponent implements OnInit {
 
       this.Guestcount = this.checkedusers.length;
 
-
       this.ModifiedJson=this.EventScheduledjson[0].ModifiedJson
-
-
-      console.log('this.User_Scheduledjson:',this.User_Scheduledjson);
-      // var x = this.User_Scheduledjson.map(obj=>obj.TM_DisplayName);
-      console.log(this.Project_code,'<-------Project_code---->', this.portfolio_Scheduledjson)
 
       this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
 
@@ -718,11 +711,17 @@ export class MeetingDetailsComponent implements OnInit {
         element.isChecked = true;
       });
 
+       this.portfolio_Scheduledjson = this.mergeObjects(
+       this.portfolio_Scheduledjson || [], 
+       this.ModifiedJson || [], 
+      'numberval'
+       );
+    
 
       this.portfoliocount = this.checkedportfolio.length;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
       this._TotalAttachment = this.Attachments_ary.length;
-      console.log('Attachments_ary',this.Attachments_ary);
+      // console.log('Attachments_ary',this.Attachments_ary);
 
       this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
       this.Project_code = JSON.parse(this.EventScheduledjson[0].Project_code);
@@ -731,8 +730,15 @@ export class MeetingDetailsComponent implements OnInit {
       this.Project_code.forEach(element => {
         element.isChecked = true;
         this.checkedproject.push(element.stringval);
-
       });
+
+
+      this.Project_code = this.mergeObjects(
+        this.Project_code || [], 
+        this.ModifiedJson || [], 
+        'stringval'
+      );
+
       this.projectcount = this.checkedproject.length;
 
       this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
@@ -780,10 +786,48 @@ export class MeetingDetailsComponent implements OnInit {
     });
 
 
+ 
+      
+
+        console.log(this.Project_code,'<3-------Project_code----2>', this.portfolio_Scheduledjson);
+
   }
 
 
 
+
+
+  mergeObjects(targetArray: any[], sourceArray: any[], matchField: string) {
+      if (!Array.isArray(targetArray) || !Array.isArray(sourceArray)) {
+        console.error("One of the provided arrays is not valid:", { targetArray, sourceArray });
+        return [];
+      }
+    
+      const result: any[] = [];
+    
+      targetArray.forEach(item => {
+        sourceArray.forEach(src => {
+          // Handle multiple values in `New_Value`
+          const values = String(src.New_Value).split(',');
+          if (values.includes(String(item[matchField]))) {
+            // Clone the target item and merge with the matched source object
+            result.push({ ...item, ...src });
+          }
+        });
+      });
+    
+      return result;
+  }
+
+
+
+
+
+
+
+
+
+  
   meetingRestriction(actualMeeting) {
 
     const today = new Date();
@@ -1127,7 +1171,7 @@ export class MeetingDetailsComponent implements OnInit {
     this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
       if (data) {
         this._MemosSubjectList = JSON.parse(data['JsonData']);
-        console.log( this._MemosSubjectList ,' this._MemosSubjectList ')
+       
       }
       this.checkeddms=[];
 
@@ -1138,10 +1182,27 @@ export class MeetingDetailsComponent implements OnInit {
 
       this.checkeddms = this.checkeddms.map((num) => num.toString());
       this.dmscount = this.checkeddms.length;
+     
+      debugger
+      if(this._MemosSubjectList[0].Subject!=undefined &&  this.ModifiedJson){
+        this._MemosSubjectList = this.mergeObjects(
+          this._MemosSubjectList || [], 
+          this.ModifiedJson || [], 
+          'MailId'
+        );
+      }
+      
 
-    });
+      console.log( this._MemosSubjectList ,' this._MemosSubjectList ');
+     });
+
+      
     this.loadingDMS = true;
   }
+
+
+
+
 
   GetMemosByEmployeeId() {
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
@@ -2101,7 +2162,7 @@ debugger
         }
 
         this.attendeesLists = JSON.parse(data['attendeesList'])
-        console.log(this.attendeesLists,'this.attendeesLists')
+        // console.log(this.attendeesLists,'this.attendeesLists')
         this.Emp_Number = 0
       });
 
@@ -3290,7 +3351,7 @@ onFileChange(event) {
       (data => {
 
         this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
-        console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
+        // console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
         this.meeting_details();
         if (this.CompletedMeeting_notes != null && this.CompletedMeeting_notes != undefined && this.CompletedMeeting_notes != '') {
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
@@ -7912,6 +7973,33 @@ this.allActivityList.forEach(activity => {
   }
 });
 
+// Link details undefined subjects start
+this.allActivityList.forEach(activity => {
+  if (activity.Value === "Link details changed") {
+    ["Old_Value", "New_Value"].forEach(key => {
+      activity[key] = activity[key].map(item => {
+        if (item.name) {
+          item.name = item.name
+            .split(", ")
+            .filter(part => !part.includes("undefined") && !part.includes("null"))
+            .join(", ");
+        }
+        return item;
+      });
+    });
+  }
+});
+
+// Link details undefined subjects end
+
+this.allActivityList.forEach(obj => {
+  if (["Joined meeting", "Meeting Started"].includes(obj.Value)) {
+    obj.New_Value[0].name = obj.New_Value[0].name.replace(
+      /\bat: (\d{2}):(\d{2}):(\d{2})\b/,
+      (_, h, m) => `at: ${(h % 12 || 12)}:${m} ${+h < 12 ? "AM" : "PM"}`
+    );
+  }
+});
 
 console.log(this.allActivityList,'allActivityList')
   })
@@ -8022,8 +8110,9 @@ getFileType(fileName: string): string {
 copied = false;
 
   copyLink() {
+    debugger
     const textarea = document.createElement('textarea');
-    textarea.value = this.Link_Detail;
+    textarea.value = this.Link_Detail.split('Meeting link:- ')[1].split(',')[0];
     document.body.appendChild(textarea);
     textarea.select();
     document.execCommand('copy');
@@ -8091,9 +8180,6 @@ newDetails(ProjectCode) {
 hasValidOldValue(item: any): boolean {
   return item?.Old_Value?.some((data: any) => data.name && data.name.trim() !== '') ?? false;
 }
-
-
-
 
 
 

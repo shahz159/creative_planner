@@ -54,7 +54,7 @@ _GetOnlyMemoIdsByProjectCode(projectCode) {
    // console.log("Sending JsonFormat----->",this.ObjLinkDTO.EmployeeCode);
     //  console.log("ObjLinkDTO----->",this.ObjLinkDTO);
     //let Url="https://cswebapps.com/dmsapi/api/LatestCommunicationAPI/NewGetMemosSubject"
-    console.log(  this.ObjLinkDTO,'JsonString')
+    // console.log(  this.ObjLinkDTO,'JsonString')
     return this.http.post(this.DMS_URL + "LatestCommunicationAPI/NewGetMemosSubject", this.ObjLinkDTO);
   }
   

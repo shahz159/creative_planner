@@ -2806,13 +2806,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="meeting-type-link-input">
-                                                        <input class="form-control curser-pointer"  type="text" [(ngModel)]="Link_Details"  placeholder="Add Meeting Link" />
+                                                        <input class="form-control curser-pointer"  type="text" [(ngModel)]="Link_Details"  (blur)="validateURL(Link_Details)" placeholder="Add Meeting Link" />
+                                                        <div *ngIf="!isValidURL" class="text-danger">Please enter a valid URL.</div>
                                                     </div>
                                                     <div class="meeting-type-link-input">
-                                                        <input class="form-control curser-pointer"  type="text"  placeholder="Add Meeting ID" />
+                                                        <input class="form-control curser-pointer"  type="text" placeholder="Add Meeting ID" [(ngModel)]="Meeting_Id"  />
                                                     </div>
                                                     <div class="meeting-type-link-input">
-                                                        <input class="form-control curser-pointer"  type="text"  placeholder="Add Meeting Password" />
+                                                        <input class="form-control curser-pointer"  type="text"  placeholder="Add Meeting Password" [(ngModel)]="Meeting_password" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -3008,7 +3009,7 @@
                                 <div class="create-event-file-main">
                                     <div id="create-event-file-inner" class="create-event-file-inner">
 
-                                        <input (change)="onFileChange($event)" accept="application/pdf" id="customFile" type="file" multiple="multiple" name="files[]" 
+                                        <input (change)="onFileChange($event)" accept="image/*, .pdf, .txt, .html, .htm, .doc, .docx, .json, .xml, .ppt, .pptx, .xlsx, .xls" id="customFile" type="file" multiple="multiple" name="files[]" 
                                         class="create-event-file-input">
 
                                         <label for="customFile" class="create-event-file-input-label">
@@ -3017,6 +3018,9 @@
                                             </span>
                                         </label>
                                     </div>
+                                </div>
+                                <div class="error-notification mt-1" >
+                                    <span  class="notif-massage">*Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
                                 </div>
                                 <ul class="create-event-file-list">
                                     <li  *ngFor='let url of _lstMultipleFiales'>
@@ -3034,9 +3038,28 @@
                                             </div>
                                         </div>
                                     </li>
+
+
+
+                                    <li *ngFor='let url of Attachment12_ary'>
+                                        <div class="create-event-file-list-item curser-pointer" (click)="LoadDocument(url.file_id,true,url.File_Name&&url.File_Name,url.url,url.contenttype,url.Created_by)">
+                                             <div class="create-event-file-info" >
+                                                 <div class="create-event-file-svg">
+                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 9V17.8C19 18.9201 19 19.4802 18.782 19.908C18.5903 20.2843 18.2843 20.5903 17.908 20.782C17.4802 21 16.9201 21 15.8 21H8.2C7.07989 21 6.51984 21 6.09202 20.782C5.71569 20.5903 5.40973 20.2843 5.21799 19.908C5 19.4802 5 18.9201 5 17.8V6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.0799 3 8.2 3H13M19 9L13 3M19 9H14C13.4477 9 13 8.55228 13 8V3" stroke="#2684fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                 </div>
+                                                 <div class="create-event-file-name">{{url.File_Name}}</div>
+                                             </div>
+                                             <!-- <div [ngClass]="{'d-none': editTask == true}" class="file-remove"> -->
+                                                <div  class="create-event-file-remove">
+                                                 <span (click)="RemoveExistingFile(url.file_id)" title="remove"  class="slect-close">
+                                                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg>
+                                                </span>
+                                             </div>
+                                        </div>
+                                     </li>
                                 </ul>
-                            </div>
-                        </div>
+                          </div>
+                    </div>
                     </div>
                     <div class="tab-pane fade" id="nav-event-time" role="tabpanel" aria-labelledby="nav-event-time-tab">
                         <div class="create-event-item">
@@ -3703,8 +3726,7 @@
                             </div>
                         </div> 
                     </div>
-                  </div>
-                
+                  </div>     
             </div>
         </div>
         <div class="modal-footer" *ngIf=" copyTask==true || create==true">

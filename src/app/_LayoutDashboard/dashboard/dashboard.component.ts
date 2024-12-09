@@ -2196,11 +2196,11 @@ isValidURL = true;
 
       frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
-      console.log(JSON.stringify(finalarray), "finalarray")
+  
       this._calenderDto.draftid = this.draftid? this.draftid : 0;
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
 
-      console.log('_calenderDto obj:', frmData);
+     
       this._calenderDto.attachment =this._attachmentValue.toString();
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
@@ -3562,7 +3562,6 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     this.CalenderService.GetTimeslabcalender(this._calenderDto).subscribe
       ((data) => {
 
-
         this._arrayObj = data as [];
         this.Alltimes = [];
         this.EndTimearr = [];
@@ -4446,6 +4445,7 @@ debugger
       ((data) => {
         this.Pending_request = data as [];
         this.pendingcount = this.Pending_request.length;
+        this.filterPending('date');
         console.log(this.Pending_request, "111100000")
       });
   }
@@ -5685,6 +5685,7 @@ debugger
         if (data['Draft_meetingdata'] != "" && data['Draft_meetingdata'] != null && data['Draft_meetingdata'] != undefined) {
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
           this.draftcount = this.draftdata_meet.length;
+          this.filterDraft('date');
           console.log(this.draftdata_meet,'testing process')
         }
         else {
@@ -6746,7 +6747,6 @@ onProjectSearch(inputtext:any){
     }
     else if(this.projectmodaltype=='SMail')
     {
-      debugger
       keyname='Subject';
       arrtype=this.Memos_List;
       selectedinto='SelectDms';
@@ -7794,6 +7794,47 @@ validateURL(value: string): void {
   }
   
 }
+
+previous_filter() {
+  document.getElementById("dropd").classList.toggle("show");
+}
+
+draft_filter() {
+  document.getElementById("dropds").classList.toggle("show");
+}
+
+
+activePendingMeeting:any;
+
+filterPending(type: 'date' | 'meeting'): void {
+  this.Pending_request.sort((a, b) => {
+    if (type === 'date') {
+      this.activePendingMeeting ='date';
+      return new Date(b.Schedule_date).getTime() - new Date(a.Schedule_date).getTime();
+      
+    }
+    this.activePendingMeeting ='meeting';
+    return a.Task_Name.trim().localeCompare(b.Task_Name.trim());
+   
+  });
+}
+
+activeDraftMeeting:any;
+
+filterDraft(type : 'date'|'meeting'):void{
+  this.draftdata_meet.sort((a,b)=>{
+    if(type ==='date'){
+      this.activeDraftMeeting ='date';
+      return new Date(b.Draft_date).getTime() - new Date(a.Draft_date).getTime();
+    }
+    this.activeDraftMeeting ='meeting';
+    return a.Task_name.trim().localeCompare(b.Task_name.trim());
+  })
+}
+
+
+
+
 
 
 
