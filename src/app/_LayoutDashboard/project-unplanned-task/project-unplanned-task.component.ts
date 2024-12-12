@@ -1840,7 +1840,7 @@ assignTasksub(){
         console.log(data,'atattachmeatattachmeatattachmeatattachme')
 
           let message: string = data['Message'];
-          this.notifyService.showSuccess("Task sent to assign projects", message);
+          this.notifyService.showSuccess("Task sent to assign projects.", message);
 
           this.clearFeilds();
           this.closeInfo();
@@ -1944,7 +1944,7 @@ else{
     (data) => {
       console.log(data,'atattachmeatattachmeatattachmeatattachme')
         let message: string = data['Message'];
-        this.notifyService.showSuccess("Task sent to assign projects", message);
+        this.notifyService.showSuccess("Task sent to assign projects.", message);
         this.GetTodoProjects();
 
       });
@@ -2351,11 +2351,6 @@ this.vart = d
 isReadOnly: boolean = true;
 pendingUpdatesection(){
 
-
-  debugger
-
-
-
   if(this.employeSelect ===null || this.employeSelect === undefined &&this.task__name==null|| this.task__name == undefined || this.task__name.trim() ==""){
     this.formFieldsRequired = true
 return
@@ -2363,8 +2358,6 @@ return
 else{
   this.formFieldsRequired = false
 }
-
-
 
       var datestrStart;
       var datestrEnd;
@@ -2388,10 +2381,6 @@ else{
       //   datestrEnd = moment(new Date()).format();
       // }
 
-
-
-
-
       var ProjectDays;
       if (this.Start__Date instanceof Date && this.End__Date instanceof Date) {
         const differenceInTime = this.End__Date.getTime() - this.Start__Date.getTime();
@@ -2402,24 +2391,26 @@ else{
         ProjectDays = 0;
       }
 
-
       if(this.employeSelect!=null && this.employeSelect!=undefined && this.employeSelect!=''){
         this.employeSelect =  this.employeSelect
       }
       else{
         this.employeSelect=0;
       }
+      debugger
+
+      // if(this.port_id!=null && this.port_id!=undefined && this.port_id!=''){
+      //   this.port_id =  this.port_id
+      // }
+      // else{
+      //   this.port_id=0;
+      // }
 
 
-      if(this.port_id!=null && this.port_id!=undefined && this.port_id!=''){
-        this.port_id =  this.port_id
-      }
-      else{
-        this.port_id=0;
-      }
+const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
 
 
-    const fd = new FormData();
+  const fd = new FormData();
     fd.append("TaskName", this.task__name.trim());
     fd.append("Desc", '');
     fd.append("ProjectType", this.Proj_type);
@@ -2428,7 +2419,7 @@ else{
     fd.append("StartDate", datestrStart);
     fd.append("EndDate", datestrEnd);
     fd.append("assignid",this.assign_Id)
-    fd.append("Portfolio_Id", this.port_id);
+    fd.append("Portfolio_Id", portfoliosSelected);
     fd.append("ProjectDays", ProjectDays.toString());
     fd.append("Remarks", this.__remarks);
     fd.append("attachment",this.fileAttachment);
@@ -2446,23 +2437,16 @@ else{
       fd.append('file', "");
     }
 
-
-
-
-
-
     this.ProjectTypeService.updatePendingtask(fd).subscribe(
       (data) => {
         console.log(data,'atattachmeatattachmeatattachmeatattachme')
-          let message: string = data['Message'];
-          this.notifyService.showSuccess("Task sent to assign projects",message);
-          this.GetTodoProjects();
 
-        });
+          let message: string = data['Message'];
+          this.notifyService.showSuccess("Task sent to assign projects.",message);
+          this.GetTodoProjects();
+    });
 
         this.closeditassignPending()
-
-
 
   }
 

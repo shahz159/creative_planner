@@ -2204,7 +2204,8 @@
     text-align: center;
     padding-left: 10px;
     padding-right: 10px;
-    color: #4377ff;
+    /* color: #4377ff; */
+    color: rgb(176, 217, 241);
   }
 
   .p-b-name {
@@ -2471,3 +2472,6 @@
     background-color: #005eff;
     color: white;
   }
+.pointer{
+  cursor: pointer !important;
+}

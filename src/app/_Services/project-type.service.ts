@@ -256,6 +256,7 @@ export class ProjectTypeService {
       this.objPortfolioDTO.Modified_By = this.ObjUserDetails.Emp_No;
       this.objPortfolioDTO.Created_By = this.ObjUserDetails.Emp_No;
     }
+    console.log(objFromComp.SelectedProjects,"home portfoli")
     return this.http.post(this.rootUrl + "/TestAPI/NewInsertPortfolio", objFromComp);
     // .subscribe(data => {
     //   this.objPortfolioDTO = data as PortfolioDTO;
@@ -263,6 +264,23 @@ export class ProjectTypeService {
     // });
 
   }
+
+
+
+  createPortfolioOfProjects(ob:PortfolioDTO) {
+
+    const _objPortfolioDTO = new PortfolioDTO();
+    _objPortfolioDTO.Created_By = ob.Created_By;
+    _objPortfolioDTO.Modified_By = ob.Modified_By;
+    _objPortfolioDTO.Portfolio_ID = ob.Portfolio_ID;
+    _objPortfolioDTO.Portfolio_Name = ob.Portfolio_Name;
+    _objPortfolioDTO.SelectedProjects = ob.SelectedProjects;
+    console.log(ob.SelectedProjects,"createPortfolioOfProjects")
+    return this.http.post(this.rootUrl + "/TestAPI/NewInsertPortfolio", _objPortfolioDTO);
+  }
+
+
+
 
   InsertPortfolioIdsByProjectCode(objFromComp: PortfolioDTO) {
     this.objPortfolioDTO.SelectedPortIdsJson = objFromComp.SelectedPortIdsJson;
