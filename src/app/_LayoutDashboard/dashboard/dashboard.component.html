@@ -555,13 +555,83 @@
                 </div>
                 <div class="result-card kt-portlet__body_scroll">
                     <div class="list-1">
-                        <div _ngcontent-gjg-c397="" class="position-relative m-1 w-95">
-                            <div _ngcontent-gjg-c397="" class="prjact-search-field">
-                                <svg _ngcontent-gjg-c397="" width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-gjg-c397="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-gjg-c397="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-gjg-c397="" id="SVGRepo_iconCarrier"><path _ngcontent-gjg-c397="" fill-rule="evenodd" clip-rule="evenodd" d="M4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11ZM11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C13.125 20 15.078 19.2635 16.6177 18.0319L20.2929 21.7071C20.6834 22.0976 21.3166 22.0976 21.7071 21.7071C22.0976 21.3166 22.0976 20.6834 21.7071 20.2929L18.0319 16.6177C19.2635 15.078 20 13.125 20 11C20 6.02944 15.9706 2 11 2Z" fill="#000000"></path></g></svg>
-                                <input _ngcontent-gjg-c397=""   [(ngModel)]="SearchOfPendingItem" type="search" autocomplete="off" name="search" placeholder="Search..." ng-reflect-name="search" class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched border-0">
+                       <div class="d-flex align-items-center mx-2 my-2">
+                        <div  class="position-relative w-100">
+                            <div  class="prjact-search-field">
+                                <svg  width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-gjg-c397="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-gjg-c397="" id="SVGRepo_iconCarrier"><path _ngcontent-gjg-c397="" fill-rule="evenodd" clip-rule="evenodd" d="M4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11ZM11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C13.125 20 15.078 19.2635 16.6177 18.0319L20.2929 21.7071C20.6834 22.0976 21.3166 22.0976 21.7071 21.7071C22.0976 21.3166 22.0976 20.6834 21.7071 20.2929L18.0319 16.6177C19.2635 15.078 20 13.125 20 11C20 6.02944 15.9706 2 11 2Z" fill="#000000"></path></g></svg>
+                                <input  [(ngModel)]="SearchOfPendingItem" type="search" autocomplete="off" name="search" placeholder="Search..." ng-reflect-name="search" class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched border-0">
                             </div>
                         </div>
+                        <div class="d-flex">
+                            <div class="kt-flter-ic-b br-0">
+                              <div class="dropdown">
+                                  <a type="button" id="Filter_btn" (click)="previous_filter()">
+                                    <ng-container >
+                                      <span class="previous-dots active" id="previous-dots"></span>
+                                  </ng-container>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" aria-hidden="true" role="img"
+                                    font-size="1.5rem" width="1em" height="1em"
+                                    viewBox="0 -1 17 17" class="iconify iconify--mdi">
+                                    <path
+                                        d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z">
+                                    </path>
+                                  </svg>
+                                  </a>
+                                  <div id="dropd" aria-labelledby="Filter_btn" class="dropdown-previous-filter">
+                                   <ul class="drop-ul p-1 filtr-config-option ">
+                                    <li class="dropdown-header">Filter by</li>
+                                      <li>
+                                        <button [ngClass]="{'active' : activePendingMeeting == 'date'}"  class="btn btn-filtr"   (click)="previous_filter();this.filterPending('date');" >
+                                            <div class="d-flex align-items-center">
 
+                                                    <span aria-hidden="true" class="side-icns" >
+                                                      <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A3,3,0,0,0,2,7V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V7A3,3,0,0,0,19,4Zm1,15a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V12H20Zm0-9H4V7A1,1,0,0,1,5,6H7V7A1,1,0,0,0,9,7V6h6V7a1,1,0,0,0,2,0V6h2a1,1,0,0,1,1,1Z"></path></g></svg>
+                                                     </span>
+                                                    <div class="fil-lbl">{{'Date'}}</div>
+                                                    <span
+                                                    class="chck-icn ng-star-inserted">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="16" height="16"
+                                                        fill="currentColor"
+                                                        viewBox="0 0 16 16"
+                                                        class="bi bi-check2">
+                                                        <path
+                                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                        </path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button [ngClass]="{'active' : activePendingMeeting == 'meeting'}"  class="btn btn-filtr"    (click)="previous_filter();this.filterPending('meeting');">
+                                            <div class="d-flex align-items-center">
+                                                    <span aria-hidden="true" class="side-icns" >
+                                                      <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A3,3,0,0,0,2,7V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V7A3,3,0,0,0,19,4Zm1,15a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V12H20Zm0-9H4V7A1,1,0,0,1,5,6H7V7A1,1,0,0,0,9,7V6h6V7a1,1,0,0,0,2,0V6h2a1,1,0,0,1,1,1Z"></path></g></svg>
+                                                     </span>
+                                                    <div class="fil-lbl">{{'Meeting'}}</div>
+                                                    <span
+                                                    class="chck-icn ng-star-inserted">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="16" height="16"
+                                                        fill="currentColor"
+                                                        viewBox="0 0 16 16"
+                                                        class="bi bi-check2">
+                                                        <path
+                                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                        </path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </button>
+                                    </li>
+                                 </ul>
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                       </div>
                         <div class="item-1" *ngFor="let item of Pending_request | filter : SearchOfPendingItem">
                             <!-- <div class="date-1">
 
@@ -621,10 +691,10 @@
 
                         </div>
                         <ng-container *ngIf="(Pending_request | filter : SearchOfPendingItem).length==0">
-                            <div _ngcontent-ecl-c397="" class="d-flex flex-column align-items-center justify-content-center" style="width: 50%; height: 50%; margin-left: 6em;">
-                               <svg _ngcontent-ecl-c397="" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-ecl-c397="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-ecl-c397="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-ecl-c397="" id="SVGRepo_iconCarrier"><path _ngcontent-ecl-c397="" fill-rule="evenodd" clip-rule="evenodd" d="M5.5 11.493C5.50364 8.39226 7.69698 5.72579 10.7388 5.12416C13.7807 4.52253 16.8239 6.15327 18.0077 9.0192C19.1915 11.8851 18.186 15.1881 15.6063 16.9085C13.0265 18.6288 9.59077 18.2874 7.4 16.093C6.18148 14.8725 5.49799 13.2177 5.5 11.493Z" stroke="#dfdfdf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path _ngcontent-ecl-c397="" d="M16.062 16.568L19.5 19.993" stroke="#dfdfdf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path _ngcontent-ecl-c397="" d="M10.5303 8.96271C10.2374 8.66982 9.76256 8.66982 9.46967 8.96271C9.17678 9.25561 9.17678 9.73048 9.46967 10.0234L10.5303 8.96271ZM11.4697 12.0234C11.7626 12.3163 12.2374 12.3163 12.5303 12.0234C12.8232 11.7305 12.8232 11.2556 12.5303 10.9627L11.4697 12.0234ZM12.5303 10.9627C12.2374 10.6698 11.7626 10.6698 11.4697 10.9627C11.1768 11.2556 11.1768 11.7305 11.4697 12.0234L12.5303 10.9627ZM13.4697 14.0234C13.7626 14.3163 14.2374 14.3163 14.5303 14.0234C14.8232 13.7305 14.8232 13.2556 14.5303 12.9627L13.4697 14.0234ZM12.5303 12.0234C12.8232 11.7305 12.8232 11.2556 12.5303 10.9627C12.2374 10.6698 11.7626 10.6698 11.4697 10.9627L12.5303 12.0234ZM9.46967 12.9627C9.17678 13.2556 9.17678 13.7305 9.46967 14.0234C9.76256 14.3163 10.2374 14.3163 10.5303 14.0234L9.46967 12.9627ZM11.4697 10.9627C11.1768 11.2556 11.1768 11.7305 11.4697 12.0234C11.7626 12.3163 12.2374 12.3163 12.5303 12.0234L11.4697 10.9627ZM14.5303 10.0234C14.8232 9.73048 14.8232 9.25561 14.5303 8.96271C14.2374 8.66982 13.7626 8.66982 13.4697 8.96271L14.5303 10.0234ZM9.46967 10.0234L11.4697 12.0234L12.5303 10.9627L10.5303 8.96271L9.46967 10.0234ZM11.4697 12.0234L13.4697 14.0234L14.5303 12.9627L12.5303 10.9627L11.4697 12.0234ZM11.4697 10.9627L9.46967 12.9627L10.5303 14.0234L12.5303 12.0234L11.4697 10.9627ZM12.5303 12.0234L14.5303 10.0234L13.4697 8.96271L11.4697 10.9627L12.5303 12.0234Z" fill="#b2bcc4"></path></g>
+                            <div  class="d-flex flex-column align-items-center justify-content-center" style="width: 50%; height: 50%; margin-left: 6em;">
+                               <svg  viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  fill-rule="evenodd" clip-rule="evenodd" d="M5.5 11.493C5.50364 8.39226 7.69698 5.72579 10.7388 5.12416C13.7807 4.52253 16.8239 6.15327 18.0077 9.0192C19.1915 11.8851 18.186 15.1881 15.6063 16.9085C13.0265 18.6288 9.59077 18.2874 7.4 16.093C6.18148 14.8725 5.49799 13.2177 5.5 11.493Z" stroke="#dfdfdf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M16.062 16.568L19.5 19.993" stroke="#dfdfdf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M10.5303 8.96271C10.2374 8.66982 9.76256 8.66982 9.46967 8.96271C9.17678 9.25561 9.17678 9.73048 9.46967 10.0234L10.5303 8.96271ZM11.4697 12.0234C11.7626 12.3163 12.2374 12.3163 12.5303 12.0234C12.8232 11.7305 12.8232 11.2556 12.5303 10.9627L11.4697 12.0234ZM12.5303 10.9627C12.2374 10.6698 11.7626 10.6698 11.4697 10.9627C11.1768 11.2556 11.1768 11.7305 11.4697 12.0234L12.5303 10.9627ZM13.4697 14.0234C13.7626 14.3163 14.2374 14.3163 14.5303 14.0234C14.8232 13.7305 14.8232 13.2556 14.5303 12.9627L13.4697 14.0234ZM12.5303 12.0234C12.8232 11.7305 12.8232 11.2556 12.5303 10.9627C12.2374 10.6698 11.7626 10.6698 11.4697 10.9627L12.5303 12.0234ZM9.46967 12.9627C9.17678 13.2556 9.17678 13.7305 9.46967 14.0234C9.76256 14.3163 10.2374 14.3163 10.5303 14.0234L9.46967 12.9627ZM11.4697 10.9627C11.1768 11.2556 11.1768 11.7305 11.4697 12.0234C11.7626 12.3163 12.2374 12.3163 12.5303 12.0234L11.4697 10.9627ZM14.5303 10.0234C14.8232 9.73048 14.8232 9.25561 14.5303 8.96271C14.2374 8.66982 13.7626 8.66982 13.4697 8.96271L14.5303 10.0234ZM9.46967 10.0234L11.4697 12.0234L12.5303 10.9627L10.5303 8.96271L9.46967 10.0234ZM11.4697 12.0234L13.4697 14.0234L14.5303 12.9627L12.5303 10.9627L11.4697 12.0234ZM11.4697 10.9627L9.46967 12.9627L10.5303 14.0234L12.5303 12.0234L11.4697 10.9627ZM12.5303 12.0234L14.5303 10.0234L13.4697 8.96271L11.4697 10.9627L12.5303 12.0234Z" fill="#b2bcc4"></path></g>
                                </svg>
-                               <a _ngcontent-ecl-c397="" class="kt-blank-msg text-gray-400">Search result not found<br _ngcontent-ecl-c397="">
+                               <a  class="kt-blank-msg text-gray-400">Search result not found<br >
                                </a>
                            </div>
                          </ng-container>
@@ -648,13 +718,175 @@
                 </div>
                 <div class="result-card kt-portlet__body_scroll">
                     <div class="list-1">
-
-                        <div class="position-relative m-1 w-95">
+                        <div class="d-flex align-items-center mx-2 my-2">
+                        <div class="position-relative w-100">
                             <div class="prjact-search-field">
                                 <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11ZM11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C13.125 20 15.078 19.2635 16.6177 18.0319L20.2929 21.7071C20.6834 22.0976 21.3166 22.0976 21.7071 21.7071C22.0976 21.3166 22.0976 20.6834 21.7071 20.2929L18.0319 16.6177C19.2635 15.078 20 13.125 20 11C20 6.02944 15.9706 2 11 2Z" fill="#000000"></path></g></svg>
                                 <input [(ngModel)]="SearchOfDraftItem" type="search" autocomplete="off" name="search" placeholder="Search..." ng-reflect-name="search" class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched border-0">
                             </div>
                         </div>
+
+
+
+
+
+
+                        <div class="d-flex">
+                            <div class="kt-flter-ic-b br-0">
+                              <div class="dropdown">
+                                  <a type="button" id="Filter_btn" (click)="draft_filter()">
+                                    <ng-container >
+                                      <span class="previous-dots active" id="previous-dots"></span>
+                                  </ng-container>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" aria-hidden="true" role="img"
+                                    font-size="1.5rem" width="1em" height="1em"
+                                    viewBox="0 -1 17 17" class="iconify iconify--mdi">
+                                    <path
+                                        d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z">
+                                    </path>
+                                  </svg>
+                                  </a>
+                                  <div id="dropds" aria-labelledby="Filter_btn" class="dropdown-previous-filter">
+                                   <ul class="drop-ul p-1 filtr-config-option ">
+                                    <li class="dropdown-header">Filter by</li>
+                                      <li>
+                                        <button [ngClass]="{'active' : activeDraftMeeting == 'date'}"  class="btn btn-filtr" (click)="draft_filter();filterDraft('date')">
+                                            <div class="d-flex align-items-center">
+
+                                                    <span aria-hidden="true" class="side-icns" >
+                                                      <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A3,3,0,0,0,2,7V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V7A3,3,0,0,0,19,4Zm1,15a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V12H20Zm0-9H4V7A1,1,0,0,1,5,6H7V7A1,1,0,0,0,9,7V6h6V7a1,1,0,0,0,2,0V6h2a1,1,0,0,1,1,1Z"></path></g></svg>
+                                                     </span>
+                                                    <div class="fil-lbl">{{'Date'}}</div>
+                                                    <span
+                                                    class="chck-icn ng-star-inserted">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="16" height="16"
+                                                        fill="currentColor"
+                                                        viewBox="0 0 16 16"
+                                                        class="bi bi-check2">
+                                                        <path
+                                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                        </path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button [ngClass]="{'active' : activeDraftMeeting == 'meeting'}"    class="btn btn-filtr"    (click)="draft_filter();filterDraft('meeting')" >
+                                            <div class="d-flex align-items-center">
+
+                                                    <span aria-hidden="true" class="side-icns" >
+                                                      <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A3,3,0,0,0,2,7V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V7A3,3,0,0,0,19,4Zm1,15a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V12H20Zm0-9H4V7A1,1,0,0,1,5,6H7V7A1,1,0,0,0,9,7V6h6V7a1,1,0,0,0,2,0V6h2a1,1,0,0,1,1,1Z"></path></g></svg>
+                                                     </span>
+                                                    <div class="fil-lbl">{{'Meeting'}}</div>
+                                                    <span
+                                                    class="chck-icn ng-star-inserted">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="16" height="16"
+                                                        fill="currentColor"
+                                                        viewBox="0 0 16 16"
+                                                        class="bi bi-check2">
+                                                        <path
+                                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                        </path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </button>
+                                    </li>
+                                 
+                                    <!--   <li>
+                                      <ng-container *ngIf="Type =='My Timeline'">
+                                      <button [ngClass]="{'active':filterconfig.filterby=='Project'}"   class="btn btn-filtr" (click)="toggleDropdowns();previous_filter();sortTimeline(sort2);setFilterInfo('Project',filterconfig.sortby);"                                              >
+                                          <div class="d-flex align-items-center">
+
+                                                  <span aria-hidden="true" class="side-icns"  >
+                                                    <svg id="summary" fill="currentColor" width="64px" height="64px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="m 13,2.15688 0,9.68624 C 13,12.49386 12.491071,13 11.842857,13 L 2.1571429,13 C 1.5169643,12.99732 1,12.49922 1,11.84044 L 1,2.15688 C 1,1.51149 1.5035714,1 2.1571429,1 L 11.845536,1 C 12.488393,1 13,1.50346 13,2.15688 Z m -0.999107,9.68356 0,-9.68356 c 0,-0.0803 -0.06964,-0.15532 -0.155357,-0.15532 l -0.249107,0 L 8.6419643,3.99933 7,2.66302 5.3607143,3.99933 2.40625,1.99888 l -0.2491071,0 c -0.085714,0 -0.1553572,0.075 -0.1553572,0.15533 l 0,9.68623 c 0,0.0803 0.069643,0.15532 0.1553572,0.15532 l 9.6883931,0 c 0.08571,0.003 0.155357,-0.0723 0.155357,-0.15532 z m -6.9776787,-6.71636 0,0.99085 -1.96875,0 0,-0.99085 1.96875,0 z m 0,1.99241 0,0.99889 -1.96875,0 0,-0.99889 1.96875,0 z m 0.2973214,-3.94465 1.4464286,-1.17028 -3.1741072,0 1.7276786,1.17028 z m 5.6250003,1.95224 0,0.99085 -5.2500003,0 0,-0.99085 5.2500003,0 z m 0,1.99241 0,0.99889 -5.2500003,0 0,-0.99889 5.2500003,0 z M 8.6794643,3.17184 10.407143,2.00156 l -3.1714287,0 1.44375,1.17028 z m 2.2660717,5.94242 0,0.99888 -2.6625003,0 0,-0.99888 2.6625003,0 z"></path></g></svg>
+                                                   </span>
+                                                  <div class="fil-lbl">{{'Project'}}</div>
+                                                  <span
+                                                  class="chck-icn ng-star-inserted">
+                                                  <svg xmlns="http://www.w3.org/2000/svg"
+                                                      width="16" height="16"
+                                                      fill="currentColor"
+                                                      viewBox="0 0 16 16"
+                                                      class="bi bi-check2">
+                                                      <path
+                                                          d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                      </path>
+                                                  </svg>
+                                              </span>
+                                          </div>
+                                      </button>
+                                    </ng-container>
+                                  </li>
+                                   <ng-container *ngIf="Type !=='My Timeline'">
+                                    <li>
+                                      <button [ngClass]="{'active':filterconfig.filterby=='Employees'}" class="btn btn-filtr "  (click)="toggleDropdown();setFilterInfo('Employees',filterconfig.sortby);"                                               >
+                                          <div class="d-flex align-items-center">
+                                                  <svg
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                  width="16" height="16"
+                                                  fill="currentColor"
+                                                  viewBox="0 0 16 16"
+                                                  class="bi bi-people">
+                                                  <path
+                                                      d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z">
+                                                  </path>
+                                              </svg>
+                                              <div class="fil-lbl">{{'Employees'}}</div>
+                                              <span
+                                              class="chck-icn ng-star-inserted">
+                                              <svg xmlns="http://www.w3.org/2000/svg"
+                                                  width="16" height="16"
+                                                  fill="currentColor"
+                                                  viewBox="0 0 16 16"
+                                                  class="bi bi-check2">
+                                                  <path
+                                                      d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                  </path>
+                                              </svg>
+                                          </span>
+                                          </div>
+                                      </button>
+                                  </li>
+                                </ng-container>
+                                    <ng-container *ngIf="showDropdown">
+                                    <li role="separator" class="divider"></li>
+                                    <li class="dropdown-header">Sort by employee</li>
+                                    <li>               
+                                    </li>
+                                    <div class=" actns-filtr-scroll">
+                                        <li *ngFor="let item of racisemplFilter;let i=index">
+                                            <button  [ngClass]="{'active':item.EmpId==filterconfig.sortby}"    class="btn btn-filtr" (click)=" timelineLog1(type2,item.EmpId); setFilterInfo(filterconfig.filterby,item.EmpId); previous_filter();" >
+                                                <div class="d-flex align-items-center">
+                                                      <span class="count tot">{{item.count}}</span>
+                                                       <div  class="fil-lbl">
+                                                        {{item.EmpName}}</div>
+                                                    <span *ngIf="item.EmpId==filterconfig.sortby" class="chck-icn ng-star-inserted">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            width="16" height="16"
+                                                            fill="currentColor"
+                                                            viewBox="0 0 16 16"
+                                                            class="bi bi-check2">
+                                                            <path
+                                                                d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                            </path>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </button>
+                                        </li>
+                                    </div>
+                                </ng-container> -->
+                                 </ul>
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
                         <ng-container *ngIf="draftdata_meet">
                         <div class="item-1" *ngFor="let item of draftdata_meet | filter : SearchOfDraftItem">
                             <!-- <div class="date-1">
@@ -2595,10 +2827,10 @@
                             
 
 
-                            <div class="error-notification i-notification pt-3" >
+                            <!-- <div class="error-notification i-notification pt-3" >
                                 <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
                                <span  class="notif-msg">A meeting cannot be scheduled more than once on the same day. To change the meeting time, please edit the existing meeting</span>
-                            </div>
+                            </div> -->
                            <!-- <span class="create-event-dt-text">Meeting can not be repeated on the same day if you want to change meeting time then edit the meeting?</span> -->
                             <div class="d-flex align-items-center justify-content-end gap-1 mt-5">
                                 <button class="btn btn-sm btn-info btn-pill footbtns" (click)="submitEventToRepeat()">Submit</button>
@@ -3528,9 +3760,18 @@
                         <div class="se-col-11">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <input class="form-control"  placeholder="Meeting link" type="text"  [(ngModel)]="Link_Details" >
-                                    </div>
+                                    </div> -->
+
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Meeting link" type="text" 
+                                               [(ngModel)]="Link_Details" 
+                                               (blur)="validateURL(Link_Details)">
+                                        <div *ngIf="!isValidURL" class="text-danger">
+                                          Please enter a valid URL.
+                                        </div>
+                                      </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
@@ -3604,7 +3845,7 @@
                     <div class="se-col-11 ">
                         <div class="schedule-file ">
                             <div class="file-input " id="file__input">
-                              <input (change)="onFileChange($event)" class="file-input-file" accept="application/pdf" id="customFile" type="file" multiple="multiple" name="files[]"/>
+                              <input (change)="onFileChange($event)" class="file-input-file" accept="image/*, .pdf, .txt, .html, .htm, .doc, .docx, .json, .xml, .ppt, .pptx, .xlsx, .xls" id="customFile" type="file" multiple="multiple" name="files[]"/>
                               <label class="file-input-label " for="customFile">
                                 <span class="file-input-button ">
 
@@ -3613,6 +3854,11 @@
                               </label>
                             </div>
                           </div>
+                          <div class="error-notification mt-1" >
+                            <!-- <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-image"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg> -->
+                          
+                            <span  class="notif-massage">*Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
+                        </div>
                           <ul class="schedule-file-list">
                             <li *ngFor='let url of _lstMultipleFiales'>
                                <div class="schedule-file-list-item"  >

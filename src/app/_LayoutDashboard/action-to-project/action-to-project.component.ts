@@ -1130,7 +1130,7 @@ startActionCreation=async()=>{
 
      this.maxAllocation = this.maxAllocation * 8 / 1;
      this.ObjSubTaskDTO.Emp_No = this.CurrentUser_ID;
-     this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
+     this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;    
      this.ObjSubTaskDTO.Remarks = this._remarks;
      this.ObjSubTaskDTO.Duration = this._allocated;
      // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
@@ -1165,7 +1165,7 @@ startActionCreation=async()=>{
      fd.append("EndDate", datestrEnd);
      // fd.append("Allocated", this.maxAllocation.toString());
      fd.append("Emp_No", this.CurrentUser_ID);
-     fd.append("AssignTo", this.selectedEmpNo);
+     fd.append("AssignTo", this.selectedEmpNo.trim());
      fd.append("Remarks", this._remarks);
      fd.append("EmployeeName", localStorage.getItem('UserfullName'));
      fd.append("AssignId", this.task_id.toString());

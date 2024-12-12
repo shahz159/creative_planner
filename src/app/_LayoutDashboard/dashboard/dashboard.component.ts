@@ -701,13 +701,30 @@ export class DashboardComponent implements OnInit {
 
 
   onFileChange(event) {
-    debugger
+ 
     if (event.target.files.length > 0) {
+      const allowedTypes = [
+        "image/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/json", "application/xml", "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ];
+
       const length = event.target.files.length;
       for (let index = 0; index < length; index++) {
         const file = event.target.files[index];
         const fileName = file.name;
         const contentType = file.type;
+        if (!allowedTypes.some(type => file.type.match(type))) {
+          // Show a sweet alert popup for unsupported file types
+          Swal.fire({
+            title: `This File "${fileName}" cannot be accepted!`,
+            text: `Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+            });
+          continue;
+        }
+
 
         // Skip file if its name already exists in either array
         const fileAlreadyExists =
@@ -1024,11 +1041,12 @@ export class DashboardComponent implements OnInit {
             jsonData[columnName] = element;
             this.dmsIdjson.push(jsonData);
           });
+         
           this.dmsIdjson = JSON.stringify(this.dmsIdjson);
           this._LinkService._GetMemosSubject(this.dmsIdjson).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              console.log("Subject Name ------------>", this._MemosSubjectList);
+              console.log("Subject Name 1------------>", this._MemosSubjectList);
             });
         }
 
@@ -1870,11 +1888,17 @@ export class DashboardComponent implements OnInit {
   }
 
 
+  
+isValidURL = true;
+
   onSubmitBtnClicked() {
+    if(this.Link_Details){
+    this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
+    }
 
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
-      (this.Description_Type?(this.characterCount<=500):true)&&
+      (this.Description_Type?(this.characterCount<=500):true)&& this.isValidURL &&  
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
@@ -2172,11 +2196,11 @@ export class DashboardComponent implements OnInit {
 
       frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
-      console.log(JSON.stringify(finalarray), "finalarray")
+  
       this._calenderDto.draftid = this.draftid? this.draftid : 0;
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
 
-      console.log('_calenderDto obj:', frmData);
+     
       this._calenderDto.attachment =this._attachmentValue.toString();
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
@@ -2289,10 +2313,15 @@ export class DashboardComponent implements OnInit {
 
   OnSubmitReSchedule(type: number) {
 
+    if(this.Link_Details){
+      this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
+      }
+
+
     if (
       this.Title_Name &&
       this.Startts &&
-      this.Endtms &&
+      this.Endtms && this.isValidURL &&
       this.MinLastNameLength
       && (this.ScheduleType === 'Event' ?  this.allAgendas.length > 0 : true)
       && (this.Description_Type?(this.characterCount<=500):true)
@@ -3533,7 +3562,6 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     this.CalenderService.GetTimeslabcalender(this._calenderDto).subscribe
       ((data) => {
 
-
         this._arrayObj = data as [];
         this.Alltimes = [];
         this.EndTimearr = [];
@@ -4084,7 +4112,7 @@ debugger
   RecurrenceValue:any
 
   GetClickEventJSON_Calender(arg) {
-    console.log(arg,'testing process of popup box')
+   
     this.EventScheduledjson = [];
     this.loading = true;
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -4094,7 +4122,7 @@ debugger
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.loading = false;
-
+debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         var Schedule_date =this.EventScheduledjson[0].Schedule_date
         this.meetingRestriction(Schedule_date);
@@ -4199,11 +4227,13 @@ debugger
             jsonData[columnName] = element;
             this.dmsIdjson.push(jsonData);
           });
+
+         
           this.dmsIdjson = JSON.stringify(this.dmsIdjson);
           this._LinkService._GetMemosSubject(this.dmsIdjson).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              console.log("Subject Name ------------>", this._MemosSubjectList);
+              console.log("Subject Name 2------------>", this._MemosSubjectList);
             });
         }
 
@@ -4302,7 +4332,7 @@ debugger
           this._LinkService._GetMemosSubject(this.dmsIdjson).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              console.log("Subject Name ------------>", this._MemosSubjectList);
+              console.log("Subject Name 3------------>", this._MemosSubjectList);
             });
         }
 
@@ -4392,7 +4422,7 @@ debugger
           this._LinkService._GetMemosSubject(this.dmsIdjson).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              console.log("Subject Name ------------>", this._MemosSubjectList);
+              console.log("Subject Name 4------------>", this._MemosSubjectList);
             });
         }
 
@@ -4415,6 +4445,7 @@ debugger
       ((data) => {
         this.Pending_request = data as [];
         this.pendingcount = this.Pending_request.length;
+        this.filterPending('date');
         console.log(this.Pending_request, "111100000")
       });
   }
@@ -4684,7 +4715,7 @@ debugger
 
   TwinEvent = [];
   customizeEvent = (info) => {
-    debugger
+
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
@@ -5654,6 +5685,7 @@ debugger
         if (data['Draft_meetingdata'] != "" && data['Draft_meetingdata'] != null && data['Draft_meetingdata'] != undefined) {
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
           this.draftcount = this.draftdata_meet.length;
+          this.filterDraft('date');
           console.log(this.draftdata_meet,'testing process')
         }
         else {
@@ -5912,6 +5944,7 @@ debugger
     this._lstMultipleFiales = [];
     this.RemovedFile_id = [];
     this.maxDate = null;
+    this.EventNumber=null;
     this.selected = null;
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
@@ -5928,6 +5961,7 @@ debugger
     this.selectDay = null;
     this.St_date = "";
     this.Ed_date = null;
+    this.isValidURL=true
     this._subname = false;
     this.draftid = 0;
     // this.Recurr_arr = [];
@@ -6713,7 +6747,6 @@ onProjectSearch(inputtext:any){
     }
     else if(this.projectmodaltype=='SMail')
     {
-      debugger
       keyname='Subject';
       arrtype=this.Memos_List;
       selectedinto='SelectDms';
@@ -7751,6 +7784,58 @@ LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, ty
     myWindow.focus();
   }
 }
+
+
+validateURL(value: string): void {
+  if(value){
+    this.isValidURL = /^(https?:\/\/)/.test(value);
+  }else{
+    this.isValidURL=true
+  }
+  
+}
+
+previous_filter() {
+  document.getElementById("dropd").classList.toggle("show");
+}
+
+draft_filter() {
+  document.getElementById("dropds").classList.toggle("show");
+}
+
+
+activePendingMeeting:any;
+
+filterPending(type: 'date' | 'meeting'): void {
+  this.Pending_request.sort((a, b) => {
+    if (type === 'date') {
+      this.activePendingMeeting ='date';
+      return new Date(b.Schedule_date).getTime() - new Date(a.Schedule_date).getTime();
+      
+    }
+    this.activePendingMeeting ='meeting';
+    return a.Task_Name.trim().localeCompare(b.Task_Name.trim());
+   
+  });
+}
+
+activeDraftMeeting:any;
+
+filterDraft(type : 'date'|'meeting'):void{
+  this.draftdata_meet.sort((a,b)=>{
+    if(type ==='date'){
+      this.activeDraftMeeting ='date';
+      return new Date(b.Draft_date).getTime() - new Date(a.Draft_date).getTime();
+    }
+    this.activeDraftMeeting ='meeting';
+    return a.Task_name.trim().localeCompare(b.Task_name.trim());
+  })
+}
+
+
+
+
+
 
 
 }

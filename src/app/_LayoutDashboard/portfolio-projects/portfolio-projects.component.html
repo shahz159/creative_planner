@@ -5181,7 +5181,10 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <input class="form-control"  placeholder="Meeting link" type="text"  [(ngModel)]="Link_Details" >
+                        <input class="form-control"  placeholder="Meeting link" type="text" (blur)="validateURL(Link_Details)"  [(ngModel)]="Link_Details" >
+                        <div *ngIf="!isValidURL" class="text-danger">
+                            Please enter a valid URL.
+                          </div>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -5271,7 +5274,7 @@
     <div class="se-col-11">
         <div class="schedule-file">
             <div class="file-input" id="file__input">
-              <input (change)="onFileChange($event)" class="file-input-file" accept="application/pdf" id="customFile" type="file" multiple="multiple" name="files[]"/>
+              <input (change)="onFileChange($event)" class="file-input-file" accept="image/*, .pdf, .txt, .html, .htm, .doc, .docx, .json, .xml, .ppt, .pptx, .xlsx, .xls" id="customFile" type="file" multiple="multiple" name="files[]"/>
               <label class="file-input-label" for="customFile">
                 <span class="file-input-button">
 
@@ -5280,6 +5283,11 @@
               </label>
             </div>
           </div>
+
+          <div class="error-notification  mt-1" >
+            <!-- <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg> -->
+           <span  class="notif-msg">*Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
+        </div>
           <ul class="schedule-file-list">
             <li *ngFor='let url of _lstMultipleFiales'>
                <div class="schedule-file-list-item">
