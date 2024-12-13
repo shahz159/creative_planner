@@ -778,11 +778,45 @@
 
 
 
-                                                              <div class="extra-at-status" *ngIf="projectInfo.Status==='Delay'&&(deadlineExtendlist&&deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
+                                                              <div class="extra-at-status deadline-main" *ngIf="projectInfo.Status==='Delay'&&(deadlineExtendlist&&deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
+                                                              
                                                                 <span style="color: #d32f2f;">{{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} deadline changed</span>
+                                                                <span class="deadline-count">
+                                                                    <div class="dropdown-menu">
+                                                                     <ul class="deadline-timeline">
+                                                                        <!-- loop this li part only -->
+                                                                        <li class="deadline-timeline-item" *ngFor="let item of deadlineExtendlist;let i = index">
+                                                                            <div class="deadline-timeline-item-title">{{item.Value}}</div>
+                                                                            <div class="deadline-timeline-item-by"><b>By</b> {{item.Modifiedby}}  </div>
+                                                                            <div class="deadline-timeline-item-from"><b>From</b> {{item.oldValue }} <b>To</b> {{item.NewValue }}</div>
+                                                                            <div class="deadline-timeline-item-on">
+                                                                                <div class="d-flex align-items-center">
+                                                                                    <span class="svg-icon">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                                                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                                                                            <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z"></path>
+                                                                                        </svg>
+                                                                                    </span>
+                                                                                    <span>{{item.ModifiedDate |date :'dd-MM-YYYY'}}</span>
+                                                                                </div>
+                                                                                <div class="d-flex align-items-center">
+                                                                                    <span class="svg-icon">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                                                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                                                                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-8h4v2h-6V7h2v5z"></path>
+                                                                                        </svg>
+                                                                                    </span>
+                                                                                    <span>{{item.sortdate | date:'h:mm a'}}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                     </ul>
+                                                                    </div>
+                                                                 </span>
+                                                            
                                                               </div>
 
-
+                                                              
 
                                                             </div>
 
@@ -839,55 +873,17 @@
                                                                     Start date
                                                                 </div>
                                                                 <div class="kt-project-sts-data">
-
                                                                     {{projectInfo.StartDate|date:'dd-MM-YYYY'}}
-
                                                                 </div>
                                                             </div>
 
                                                             <div class="col text-center" style="display: flex; align-items: center; justify-content: center; flex-direction: column;"
                                                                 *ngIf="(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type=='Secondary Tasks'||projectInfo.Project_Type==='To do List'); else submission">
-                                                                <div class="kt-info-lable-v deadline-main">
+                                                                <div class="kt-info-lable-v">
                                                                     <span>Deadline</span>
-                                                                    <span class="deadline-count" *ngIf="totaldeadlineExtend>0">
-                                                                      <span class="deadline-count-btn">
-                                                                         {{totaldeadlineExtend}}
-                                                                      </span>
-                                                                      <div class="dropdown-menu">
-                                                                       <ul class="deadline-timeline" >
-                                                                          <!-- loop this li part only -->
-                                                                          <li class="deadline-timeline-item" *ngFor="let item of deadlineExtendlist;let i = index">
-                                                                              <div class="deadline-timeline-item-title">{{item.Value}}</div>
-                                                                              <div class="deadline-timeline-item-by"><b>By</b> {{item.Modifiedby}}  </div>
-                                                                              <div class="deadline-timeline-item-from"><b>From</b> {{item.oldValue }} <b>To</b> {{item.NewValue }}</div>
-                                                                              <div class="deadline-timeline-item-on">
-                                                                                  <div class="d-flex align-items-center">
-                                                                                      <span class="svg-icon">
-                                                                                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                                                                              <path fill="none" d="M0 0h24v24H0z"></path>
-                                                                                              <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z"></path>
-                                                                                          </svg>
-                                                                                      </span>
-                                                                                      <span>{{item.ModifiedDate |date :'dd-MM-YYYY'}}</span>
-                                                                                  </div>
-                                                                                  <div class="d-flex align-items-center">
-                                                                                      <span class="svg-icon">
-                                                                                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                                                                              <path fill="none" d="M0 0h24v24H0z"></path>
-                                                                                              <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-8h4v2h-6V7h2v5z"></path>
-                                                                                          </svg>
-                                                                                      </span>
-                                                                                      <span>{{item.sortdate | date:'h:mm a'}}</span>
-                                                                                  </div>
-                                                                              </div>
-                                                                          </li>
-                                                                       </ul>
-                                                                      </div>
-                                                                </span>
                                                                 </div>
                                                                 <div class="kt-project-sts-data">
                                                                    {{projectInfo.EndDate|date:'dd-MM-yyyy'}}
-
                                                                 </div>
                                                             </div>
                                                             <ng-template #submission>
@@ -959,7 +955,7 @@
                                                                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
                                                                     </div>
 
-                                                                    <div class="progress-bar P_Completion_under_Approval"
+                                                                    <div class="progress-bar P_ForwardUnderApproval"
                                                                         role="progressbar"
                                                                         [ngStyle]="{width: (TOTAL_ACTIONS_IN_FUA/TOTAL_ACTIONS)*100+'%'}"
                                                                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
@@ -973,6 +969,10 @@
                                                                     <div class="progress-bar P_Hold" role="progressbar"
                                                                         [ngStyle]="{width: (TOTAL_ACTIONS_IN_HOLD/TOTAL_ACTIONS)*100+'%'}"
                                                                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                                    </div>
+                                                                    <div class="progress-bar P_Project_cancellation_Approval" role="progressbar"
+                                                                      [ngStyle]="{width: (TOTAL_ACTIONS_IN_CNUA/TOTAL_ACTIONS)*100+'%'}"
+                                                                       aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
                                                                     </div>
 
                                                                 </div>
@@ -1011,6 +1011,10 @@
                                                                         <li *ngIf="TOTAL_ACTIONS_IN_HOLD"><span
                                                                                 class="B-Bot P_Hold"></span>
                                                                             Hold <b>({{TOTAL_ACTIONS_IN_HOLD}})</b> </li>
+
+                                                                        <li *ngIf="TOTAL_ACTIONS_IN_CNUA"><span
+                                                                                class="B-Bot P_Project_cancellation_Approval"></span>
+                                                                            Cancellation approval <b>({{TOTAL_ACTIONS_IN_CNUA}})</b> </li>
 
                                                                     </ul>
                                                                 </div>
@@ -1165,33 +1169,17 @@
                                                                         <ul class="drop-ul p-1 filtr-config-option ">
                                                                             <li class="dropdown-header">Filter by</li>
                                                                           <div class="actns-filtr-scroll">
-                                                                            <li class="mr-2" >
-                                                                                <button class="btn btn-filtr"
-                                                                                    (click)="onFilterConfigChanged({filterBy:'All',sortBy:filterConfig.sortby})"
-                                                                                    [ngClass]="{'active2':filterConfig.filterby==='All'}">
+                                                                            <li class="mr-2">
+                                                                                <button class="btn btn-filtr" (click)="onActnFilterOptionClicked('filterby','All')">
                                                                                     <div class="d-flex align-items-center">
                                                                                         <div class="status-fltr fbx-actns-count fbx-total">{{TOTAL_ACTIONS}}</div>
                                                                                         <div class="fil-lbl">All</div>
-                                                                                        <span
-                                                                                            *ngIf="filterConfig.filterby==='All'"
-                                                                                            class="chck-icn ng-star-inserted">
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                                width="16" height="16"
-                                                                                                fill="currentColor"
-                                                                                                viewBox="0 0 16 16"
-                                                                                                class="bi bi-check2">
-                                                                                                <path
-                                                                                                    d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                                                </path>
-                                                                                            </svg>
-                                                                                        </span>
+                                                                                        <input class="multi-select-checkbox" type="checkbox" [checked]="filterConfig.filterby.includes('All')"/>
                                                                                     </div>
                                                                                 </button>
                                                                             </li>
                                                                             <li class="filter-by-status mr-2" *ngFor="let item of filterstatus">
-                                                                                <button class="btn btn-filtr"
-                                                                                    (click)="onFilterConfigChanged({filterBy:item.Status,sortBy:filterConfig.sortby})"
-                                                                                    [ngClass]="{'active2':filterConfig.filterby===item.Status}">
+                                                                                <button class="btn btn-filtr" (click)="onActnFilterOptionClicked('filterby',item.Status)">
                                                                                     <div class="d-flex align-items-center">
                                                                                           <div [class]="'status-fltr fbx-actns-count '+(
                                                                                                item.Status=='Completed'?'fbx-completed':
@@ -1205,328 +1193,48 @@
                                                                                                item.Status=='New Project Rejected'?'fbx-newprj-rejected':
                                                                                                'fbx-inprocess'
                                                                                                )">{{item.count?item.count:'&nbsp;'}}</div>
-                                                                                       <!-- <ng-container [ngSwitch]="item.Status">
-
-                                                                                            <svg *ngSwitchCase="'Completed'"
-                                                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                                                width="16" height="16"
-                                                                                                fill="currentColor"
-                                                                                                viewBox="0 0 19 19">
-                                                                                                <path
-                                                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                                                    d="M10,1 C14.9682329,1.00562018 18.9943798,5.03176707 19,10 C19,14.9705627 14.9705627,19 10,19 C5.02943725,19 1,14.9705627 1,10 C1,5.02943725 5.02943725,1 10,1 Z M9.99773756,2.99999872 C6.13400675,2.99999872 3,6.13400675 3,9.99999872 C3,13.8659932 6.13400675,16.9999987 10,16.9999987 C13.8659932,16.9999987 17,13.8659932 17,10.0022624 C16.9957197,6.21736145 13.9923299,3.13520869 10.2383509,3.00432339 L9.99773756,2.99999872 Z M14.7071311,6.79289322 C15.067615,7.15337718 15.0953446,7.72060824 14.7903197,8.11289944 L14.7071311,8.20710678 L8.98000123,13.9342366 L5.73275407,10.0492796 C5.37856063,9.62552792 5.43494869,8.99487882 5.85870033,8.64068538 C6.24985569,8.31373759 6.81730237,8.3366344 7.18087006,8.67538372 L7.2672945,8.76663165 L9.11102428,10.973056 L13.2929175,6.79289322 C13.6834418,6.40236893 14.3166068,6.40236893 14.7071311,6.79289322 Z" />
-                                                                                            </svg>
-
-                                                                                            <svg *ngSwitchCase="'Delay'"
-                                                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                                                width="16" height="16"
-                                                                                                fill="currentColor"
-                                                                                                viewBox="5 5 28 28"
-                                                                                                class="bi bi-people">
-                                                                                                <path
-                                                                                                    d="M22.1348518,9.29226367 C23.2267866,7.46985556 25.220937,6.25 27.5,6.25 C30.9517797,6.25 33.75,9.04822031 33.75,12.5 C33.75,14.9447742 32.3463033,17.0616975 30.3008937,18.0887861 C30.496635,18.9487754 30.6,19.8438955 30.6,20.7631579 C30.6,27.3905749 25.227417,32.7631579 18.6,32.7631579 C11.972583,32.7631579 6.6,27.3905749 6.6,20.7631579 C6.6,14.1357409 11.972583,8.76315789 18.6,8.76315789 C19.830309,8.76315789 21.017374,8.94830757 22.1348518,9.29226367 Z M21.5207369,10.6747277 C20.5935222,10.40676 19.6135311,10.2631579 18.6,10.2631579 C12.8010101,10.2631579 8.1,14.964168 8.1,20.7631579 C8.1,26.5621478 12.8010101,31.2631579 18.6,31.2631579 C24.3989899,31.2631579 29.1,26.5621478 29.1,20.7631579 C29.1,20.0209066 29.0229827,19.2966436 28.8765035,18.5979246 C28.4336158,18.6974694 27.9729425,18.75 27.5,18.75 C24.0482203,18.75 21.25,15.9517797 21.25,12.5 C21.25,11.8650079 21.3446962,11.2521333 21.5207369,10.6747277 Z M18,23 C17.4477153,23 17,22.5522847 17,22 L17,16.75 C17,16.3357864 17.3357864,16 17.75,16 C18.1642136,16 18.5,16.3357864 18.5,16.75 L18.5,21.5 L22.25,21.5 C22.6642136,21.5 23,21.8357864 23,22.25 C23,22.6642136 22.6642136,23 22.25,23 L22.25,23 L18,23 Z M27.0117493,21.6315789 C26.6251499,21.6315789 26.3117493,21.3134655 26.3117493,20.9210526 C26.3117493,20.5286398 26.6251499,20.2105263 27.0117493,20.2105263 C27.3983486,20.2105263 27.7117493,20.5286398 27.7117493,20.9210526 C27.7117493,21.3134655 27.3983486,21.6315789 27.0117493,21.6315789 Z M10.2117493,21.6315789 C9.82514994,21.6315789 9.51174927,21.3134655 9.51174927,20.9210526 C9.51174927,20.5286398 9.82514994,20.2105263 10.2117493,20.2105263 C10.5983486,20.2105263 10.9117493,20.5286398 10.9117493,20.9210526 C10.9117493,21.3134655 10.5983486,21.6315789 10.2117493,21.6315789 Z M24.045587,27.4609192 C23.77222,27.1875522 23.7755524,26.7410043 24.0530302,26.4635265 C24.330508,26.1860487 24.7770559,26.1827163 25.0504229,26.4560833 C25.3237899,26.7294503 25.3204575,27.1759982 25.0429797,27.453476 C24.7655019,27.7309538 24.318954,27.7342862 24.045587,27.4609192 Z M12.166193,15.4028878 C11.892826,15.1295208 11.8961585,14.6829729 12.1736363,14.4054951 C12.4511141,14.1280173 12.897662,14.1246849 13.171029,14.3980519 C13.444396,14.6714189 13.4410636,15.1179668 13.1635858,15.3954446 C12.886108,15.6729224 12.4395601,15.6762548 12.166193,15.4028878 Z M13.171029,27.4440534 C12.897662,27.7174204 12.4511141,27.714088 12.1736363,27.4366102 C11.8961585,27.1591324 11.892826,26.7125845 12.166193,26.4392174 C12.4395601,26.1658504 12.886108,26.1691829 13.1635858,26.4466607 C13.4410636,26.7241385 13.444396,27.1706864 13.171029,27.4440534 Z M18.6117493,30.1578947 C18.2251499,30.1578947 17.9117493,29.8397813 17.9117493,29.4473684 C17.9117493,29.0549556 18.2251499,28.7368421 18.6117493,28.7368421 C18.9983486,28.7368421 19.3117493,29.0549556 19.3117493,29.4473684 C19.3117493,29.8397813 18.9983486,30.1578947 18.6117493,30.1578947 Z M18.6117493,13.1052632 C18.2251499,13.1052632 17.9117493,12.7871497 17.9117493,12.3947368 C17.9117493,12.002324 18.2251499,11.6842105 18.6117493,11.6842105 C18.9983486,11.6842105 19.3117493,12.002324 19.3117493,12.3947368 C19.3117493,12.7871497 18.9983486,13.1052632 18.6117493,13.1052632 Z M27.5,16.75 C28.1903559,16.75 28.75,16.1903559 28.75,15.5 C28.75,14.8096441 28.1903559,14.25 27.5,14.25 C26.8096441,14.25 26.25,14.8096441 26.25,15.5 C26.25,16.1903559 26.8096441,16.75 27.5,16.75 Z M27,8 C26.7238576,8 26.5,8.22385763 26.5,8.5 L26.5,12.5 C26.5,12.7761424 26.7238576,13 27,13 L28,13 C28.2761424,13 28.5,12.7761424 28.5,12.5 L28.5,12.5 L28.5,8.5 C28.5,8.22385763 28.2761424,8 28,8 L28,8 L27,8 Z" />
-                                                                                            </svg>
-
-                                                                                            <svg *ngSwitchCase="'Project Hold'" width="10px" height="10px" viewBox="0 0 24 24"
-                                                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                                                                                <g id="SVGRepo_iconCarrier">
-                                                                                                    <path
-                                                                                                        d="M2 6C2 4.11438 2 3.17157 2.58579 2.58579C3.17157 2 4.11438 2 6 2C7.88562 2 8.82843 2 9.41421 2.58579C10 3.17157 10 4.11438 10 6V18C10 19.8856 10 20.8284 9.41421 21.4142C8.82843 22 7.88562 22 6 22C4.11438 22 3.17157 22 2.58579 21.4142C2 20.8284 2 19.8856 2 18V6Z"
-                                                                                                        fill="#acacac"></path>
-                                                                                                    <path
-                                                                                                        d="M14 6C14 4.11438 14 3.17157 14.5858 2.58579C15.1716 2 16.1144 2 18 2C19.8856 2 20.8284 2 21.4142 2.58579C22 3.17157 22 4.11438 22 6V18C22 19.8856 22 20.8284 21.4142 21.4142C20.8284 22 19.8856 22 18 22C16.1144 22 15.1716 22 14.5858 21.4142C14 20.8284 14 19.8856 14 18V6Z"
-                                                                                                        fill="#acacac"></path>
-                                                                                                </g>
-                                                                                            </svg>
-
-                                                                                            <svg *ngSwitchCase="'Cancelled'"
-                                                                                                class="bi bi-border-all"
-                                                                                                fill="currentColor" width="16"
-                                                                                                height="16" viewBox="0 0 24 24"
-                                                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                                                <g id="SVGRepo_bgCarrier"
-                                                                                                    stroke-width="0"></g>
-                                                                                                <g id="SVGRepo_tracerCarrier"
-                                                                                                    stroke-linecap="round"
-                                                                                                    stroke-linejoin="round"></g>
-                                                                                                <g id="SVGRepo_iconCarrier">
-                                                                                                    <defs>
-                                                                                                        <style>
-                                                                                                            .cls-1 {
-                                                                                                                fill-rule: evenodd;
-                                                                                                            }
-                                                                                                        </style>
-                                                                                                    </defs>
-                                                                                                    <path id="cancel"
-                                                                                                        class="cls-1"
-                                                                                                        d="M936,120a12,12,0,1,1,12-12A12,12,0,0,1,936,120Zm0-22a10,10,0,1,0,10,10A10,10,0,0,0,936,98Zm4.706,14.706a0.951,0.951,0,0,1-1.345,0l-3.376-3.376-3.376,3.376a0.949,0.949,0,1,1-1.341-1.342l3.376-3.376-3.376-3.376a0.949,0.949,0,1,1,1.341-1.342l3.376,3.376,3.376-3.376a0.949,0.949,0,1,1,1.342,1.342l-3.376,3.376,3.376,3.376A0.95,0.95,0,0,1,940.706,112.706Z"
-                                                                                                        transform="translate(-924 -96)">
-                                                                                                    </path>
-                                                                                                </g>
-                                                                                            </svg>
-
-                                                                                            <svg *ngSwitchCase="'InProcess'"
-                                                                                                class="bi bi-border-all"
-                                                                                                fill="currentColor" width="16"
-                                                                                                height="16" viewBox="0 0 24 24"
-                                                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                                                <g id="SVGRepo_bgCarrier"
-                                                                                                    stroke-width="0"></g>
-                                                                                                <g id="SVGRepo_tracerCarrier"
-                                                                                                    stroke-linecap="round"
-                                                                                                    stroke-linejoin="round"></g>
-                                                                                                <g id="SVGRepo_iconCarrier">
-                                                                                                    <path
-                                                                                                        d="M8 6.5H16M7.70502 8.70919L12.2826 15.3034M4.6 9H6.4C6.96005 9 7.24008 9 7.45399 8.89101C7.64215 8.79513 7.79513 8.64215 7.89101 8.45399C8 8.24008 8 7.96005 8 7.4V5.6C8 5.03995 8 4.75992 7.89101 4.54601C7.79513 4.35785 7.64215 4.20487 7.45399 4.10899C7.24008 4 6.96005 4 6.4 4H4.6C4.03995 4 3.75992 4 3.54601 4.10899C3.35785 4.20487 3.20487 4.35785 3.10899 4.54601C3 4.75992 3 5.03995 3 5.6V7.4C3 7.96005 3 8.24008 3.10899 8.45399C3.20487 8.64215 3.35785 8.79513 3.54601 8.89101C3.75992 9 4.03995 9 4.6 9ZM13.6 20H15.4C15.9601 20 16.2401 20 16.454 19.891C16.6422 19.7951 16.7951 19.6422 16.891 19.454C17 19.2401 17 18.9601 17 18.4V16.6C17 16.0399 17 15.7599 16.891 15.546C16.7951 15.3578 16.6422 15.2049 16.454 15.109C16.2401 15 15.9601 15 15.4 15H13.6C13.0399 15 12.7599 15 12.546 15.109C12.3578 15.2049 12.2049 15.3578 12.109 15.546C12 15.7599 12 16.0399 12 16.6V18.4C12 18.9601 12 19.2401 12.109 19.454C12.2049 19.6422 12.3578 19.7951 12.546 19.891C12.7599 20 13.0399 20 13.6 20ZM17.6 9H19.4C19.9601 9 20.2401 9 20.454 8.89101C20.6422 8.79513 20.7951 8.64215 20.891 8.45399C21 8.24008 21 7.96005 21 7.4V5.6C21 5.03995 21 4.75992 20.891 4.54601C20.7951 4.35785 20.6422 4.20487 20.454 4.10899C20.2401 4 19.9601 4 19.4 4H17.6C17.0399 4 16.7599 4 16.546 4.10899C16.3578 4.20487 16.2049 4.35785 16.109 4.54601C16 4.75992 16 5.03995 16 5.6V7.4C16 7.96005 16 8.24008 16.109 8.45399C16.2049 8.64215 16.3578 8.79513 16.546 8.89101C16.7599 9 17.0399 9 17.6 9Z"
-                                                                                                        stroke="#d0d0d1"
-                                                                                                        stroke-width="2"
-                                                                                                        stroke-linecap="round"
-                                                                                                        stroke-linejoin="round">
-                                                                                                    </path>
-                                                                                                </g>
-                                                                                            </svg>
-
-                                                                                            <svg *ngSwitchDefault
-                                                                                                xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
-                                                                                                version="1.1" x="0px" y="0px"
-                                                                                                viewBox="0 0 100 100"
-                                                                                                style="enable-background:new 0 0 100 100;"
-                                                                                                xml:space="preserve" width="16"
-                                                                                                height="16" fill="currentColor">
-                                                                                                <switch>
-                                                                                                    <foreignObject
-                                                                                                        requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/"
-                                                                                                        x="0" y="0" width="1"
-                                                                                                        height="1" />
-                                                                                                    <g i:extraneous="self">
-                                                                                                        <g>
-                                                                                                            <path
-                                                                                                                d="M5273.1,2400.1v-2c0-2.8-5-4-9.7-4s-9.7,1.3-9.7,4v2c0,1.8,0.7,3.6,2,4.9l5,4.9c0.3,0.3,0.4,0.6,0.4,1v6.4     c0,0.4,0.2,0.7,0.6,0.8l2.9,0.9c0.5,0.1,1-0.2,1-0.8v-7.2c0-0.4,0.2-0.7,0.4-1l5.1-5C5272.4,2403.7,5273.1,2401.9,5273.1,2400.1z      M5263.4,2400c-4.8,0-7.4-1.3-7.5-1.8v0c0.1-0.5,2.7-1.8,7.5-1.8c4.8,0,7.3,1.3,7.5,1.8C5270.7,2398.7,5268.2,2400,5263.4,2400z" />
-                                                                                                            <path
-                                                                                                                d="M5268.4,2410.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1c0-0.6-0.4-1-1-1H5268.4z" />
-                                                                                                            <path
-                                                                                                                d="M5272.7,2413.7h-4.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1C5273.7,2414.1,5273.3,2413.7,5272.7,2413.7z" />
-                                                                                                            <path
-                                                                                                                d="M5272.7,2417h-4.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1C5273.7,2417.5,5273.3,2417,5272.7,2417z" />
-                                                                                                        </g>
-                                                                                                        <g>
-                                                                                                            <path
-                                                                                                                d="M93.4,8.5c-2.3,0-4.1,1.9-4.1,4.1v9.8l-5.9-5.9C74.4,7.6,62.5,2.7,49.9,2.7S25.3,7.6,16.4,16.6C6.8,26.1,1.8,39.4,2.6,53     c0.1,2.2,2,3.9,4.1,3.9c0.1,0,0.2,0,0.3,0c2.3-0.1,4-2.1,3.9-4.4c-0.7-11.2,3.5-22.1,11.4-30C37,7.6,62.7,7.6,77.5,22.4l5.9,5.9     h-9.8c-2.3,0-4.1,1.9-4.1,4.1s1.9,4.1,4.1,4.1h19.8c2.3,0,4.1-1.9,4.1-4.1V12.6C97.5,10.3,95.6,8.5,93.4,8.5z" />
-                                                                                                            <path
-                                                                                                                d="M65.1,52.6l-11.3-5.2V28.3c0-2.3-1.9-4.1-4.1-4.1s-4.1,1.9-4.1,4.1V50c0,1.6,0.9,3.1,2.4,3.8l13.8,6.3     c0.6,0.3,1.1,0.4,1.7,0.4c1.6,0,3.1-0.9,3.8-2.4C68.1,56,67.2,53.5,65.1,52.6z" />
-                                                                                                            <path
-                                                                                                                d="M37.5,87.1c-2.5-0.8-4.9-1.9-7.2-3.2c-2-1.1-4.5-0.5-5.7,1.5c-1.1,2-0.5,4.5,1.5,5.7c2.7,1.6,5.7,2.9,8.7,3.9     c0.4,0.1,0.9,0.2,1.3,0.2c1.7,0,3.4-1.1,3.9-2.8C40.9,90.2,39.7,87.9,37.5,87.1z" />
-                                                                                                            <path
-                                                                                                                d="M60,87.8c-2.5,0.7-5.1,1.1-7.8,1.3c-2.3,0.1-4,2.1-3.9,4.4c0.1,2.2,2,3.9,4.1,3.9c0.1,0,0.2,0,0.3,0     c3.2-0.2,6.3-0.7,9.4-1.5c2.2-0.6,3.5-2.9,2.9-5.1C64.5,88.5,62.2,87.2,60,87.8z" />
-                                                                                                            <path
-                                                                                                                d="M14.9,67.6c-1-2-3.5-2.9-5.6-1.8s-2.9,3.5-1.8,5.6c1.4,2.8,3.1,5.5,5.1,8c0.8,1,2,1.6,3.3,1.6c0.9,0,1.8-0.3,2.6-0.9     c1.8-1.4,2.1-4,0.7-5.8C17.5,72.1,16.1,69.9,14.9,67.6z" />
-                                                                                                            <path
-                                                                                                                d="M93.2,51.9c-2.2-0.4-4.4,1.3-4.7,3.5c-0.4,2.6-1,5.2-1.9,7.6c-0.8,2.2,0.4,4.5,2.5,5.3c0.5,0.2,0.9,0.2,1.4,0.2     c1.7,0,3.3-1.1,3.9-2.8c1.1-3,1.8-6.1,2.3-9.2C97.1,54.4,95.5,52.3,93.2,51.9z" />
-                                                                                                            <path
-                                                                                                                d="M79.2,75.9c-0.5,0.6-1.1,1.2-1.7,1.8c-1.3,1.3-2.7,2.5-4.1,3.6c-1.8,1.4-2.2,4-0.8,5.8c0.8,1.1,2.1,1.6,3.3,1.6     c0.9,0,1.7-0.3,2.5-0.8c1.7-1.3,3.4-2.7,5-4.3c0.7-0.7,1.4-1.4,2-2.1c1.5-1.7,1.4-4.3-0.4-5.8C83.3,74,80.7,74.2,79.2,75.9z" />
-                                                                                                        </g>
-                                                                                                    </g>
-                                                                                                </switch>
-                                                                                            </svg>
-
-                                                                                        </ng-container> -->
-
                                                                                         <div class="fil-lbl">{{item.Status=='Under Approval'?'New approval':item.Status}}
                                                                                         </div>
-                                                                                        <span
-                                                                                            *ngIf="filterConfig.filterby===item.Status"
-                                                                                            class="chck-icn ng-star-inserted">
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                                width="16" height="16"
-                                                                                                fill="currentColor"
-                                                                                                viewBox="0 0 16 16"
-                                                                                                class="bi bi-check2">
-                                                                                                <path
-                                                                                                    d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                                                </path>
-                                                                                            </svg>
-                                                                                        </span>
+                                                                                        <input class="multi-select-checkbox" type="checkbox"  [checked]="filterConfig.filterby.includes(item.Status)" />
                                                                                     </div>
                                                                                 </button>
                                                                             </li>
                                                                           </div>
-                                                                            <!-- <li>
-                                                                    <button class="btn btn-filtr">
-                                                                        <div class="d-flex align-items-center">
-                                                                            <svg xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
-                                                                                version="1.1" x="0px" y="0px" viewBox="0 0 100 100"
-                                                                                style="enable-background:new 0 0 100 100;"
-                                                                                xml:space="preserve" width="16" height="16"
-                                                                                fill="currentColor">
-                                                                                <switch>
-                                                                                    <foreignObject
-                                                                                        requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/"
-                                                                                        x="0" y="0" width="1" height="1" />
-                                                                                    <g i:extraneous="self">
-                                                                                        <g>
-                                                                                            <path
-                                                                                                d="M5273.1,2400.1v-2c0-2.8-5-4-9.7-4s-9.7,1.3-9.7,4v2c0,1.8,0.7,3.6,2,4.9l5,4.9c0.3,0.3,0.4,0.6,0.4,1v6.4     c0,0.4,0.2,0.7,0.6,0.8l2.9,0.9c0.5,0.1,1-0.2,1-0.8v-7.2c0-0.4,0.2-0.7,0.4-1l5.1-5C5272.4,2403.7,5273.1,2401.9,5273.1,2400.1z      M5263.4,2400c-4.8,0-7.4-1.3-7.5-1.8v0c0.1-0.5,2.7-1.8,7.5-1.8c4.8,0,7.3,1.3,7.5,1.8C5270.7,2398.7,5268.2,2400,5263.4,2400z" />
-                                                                                            <path
-                                                                                                d="M5268.4,2410.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1c0-0.6-0.4-1-1-1H5268.4z" />
-                                                                                            <path
-                                                                                                d="M5272.7,2413.7h-4.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1C5273.7,2414.1,5273.3,2413.7,5272.7,2413.7z" />
-                                                                                            <path
-                                                                                                d="M5272.7,2417h-4.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1C5273.7,2417.5,5273.3,2417,5272.7,2417z" />
-                                                                                        </g>
-                                                                                        <g>
-                                                                                            <path
-                                                                                                d="M93.4,8.5c-2.3,0-4.1,1.9-4.1,4.1v9.8l-5.9-5.9C74.4,7.6,62.5,2.7,49.9,2.7S25.3,7.6,16.4,16.6C6.8,26.1,1.8,39.4,2.6,53     c0.1,2.2,2,3.9,4.1,3.9c0.1,0,0.2,0,0.3,0c2.3-0.1,4-2.1,3.9-4.4c-0.7-11.2,3.5-22.1,11.4-30C37,7.6,62.7,7.6,77.5,22.4l5.9,5.9     h-9.8c-2.3,0-4.1,1.9-4.1,4.1s1.9,4.1,4.1,4.1h19.8c2.3,0,4.1-1.9,4.1-4.1V12.6C97.5,10.3,95.6,8.5,93.4,8.5z" />
-                                                                                            <path
-                                                                                                d="M65.1,52.6l-11.3-5.2V28.3c0-2.3-1.9-4.1-4.1-4.1s-4.1,1.9-4.1,4.1V50c0,1.6,0.9,3.1,2.4,3.8l13.8,6.3     c0.6,0.3,1.1,0.4,1.7,0.4c1.6,0,3.1-0.9,3.8-2.4C68.1,56,67.2,53.5,65.1,52.6z" />
-                                                                                            <path
-                                                                                                d="M37.5,87.1c-2.5-0.8-4.9-1.9-7.2-3.2c-2-1.1-4.5-0.5-5.7,1.5c-1.1,2-0.5,4.5,1.5,5.7c2.7,1.6,5.7,2.9,8.7,3.9     c0.4,0.1,0.9,0.2,1.3,0.2c1.7,0,3.4-1.1,3.9-2.8C40.9,90.2,39.7,87.9,37.5,87.1z" />
-                                                                                            <path
-                                                                                                d="M60,87.8c-2.5,0.7-5.1,1.1-7.8,1.3c-2.3,0.1-4,2.1-3.9,4.4c0.1,2.2,2,3.9,4.1,3.9c0.1,0,0.2,0,0.3,0     c3.2-0.2,6.3-0.7,9.4-1.5c2.2-0.6,3.5-2.9,2.9-5.1C64.5,88.5,62.2,87.2,60,87.8z" />
-                                                                                            <path
-                                                                                                d="M14.9,67.6c-1-2-3.5-2.9-5.6-1.8s-2.9,3.5-1.8,5.6c1.4,2.8,3.1,5.5,5.1,8c0.8,1,2,1.6,3.3,1.6c0.9,0,1.8-0.3,2.6-0.9     c1.8-1.4,2.1-4,0.7-5.8C17.5,72.1,16.1,69.9,14.9,67.6z" />
-                                                                                            <path
-                                                                                                d="M93.2,51.9c-2.2-0.4-4.4,1.3-4.7,3.5c-0.4,2.6-1,5.2-1.9,7.6c-0.8,2.2,0.4,4.5,2.5,5.3c0.5,0.2,0.9,0.2,1.4,0.2     c1.7,0,3.3-1.1,3.9-2.8c1.1-3,1.8-6.1,2.3-9.2C97.1,54.4,95.5,52.3,93.2,51.9z" />
-                                                                                            <path
-                                                                                                d="M79.2,75.9c-0.5,0.6-1.1,1.2-1.7,1.8c-1.3,1.3-2.7,2.5-4.1,3.6c-1.8,1.4-2.2,4-0.8,5.8c0.8,1.1,2.1,1.6,3.3,1.6     c0.9,0,1.7-0.3,2.5-0.8c1.7-1.3,3.4-2.7,5-4.3c0.7-0.7,1.4-1.4,2-2.1c1.5-1.7,1.4-4.3-0.4-5.8C83.3,74,80.7,74.2,79.2,75.9z" />
-                                                                                        </g>
-                                                                                    </g>
-                                                                                </switch>
-                                                                            </svg>
-                                                                            <div class="fil-lbl">Under Approval</div>
-                                                                        </div>
-                                                                    </button>
-                                                                </li>
-                                                                <li>
-                                                                    <button class="btn btn-filtr">
-                                                                        <div class="d-flex align-items-center"><svg
-                                                                                xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                                height="16" fill="currentColor" viewBox="5 5 28 28"
-                                                                                class="bi bi-people">
-                                                                                <path
-                                                                                    d="M22.1348518,9.29226367 C23.2267866,7.46985556 25.220937,6.25 27.5,6.25 C30.9517797,6.25 33.75,9.04822031 33.75,12.5 C33.75,14.9447742 32.3463033,17.0616975 30.3008937,18.0887861 C30.496635,18.9487754 30.6,19.8438955 30.6,20.7631579 C30.6,27.3905749 25.227417,32.7631579 18.6,32.7631579 C11.972583,32.7631579 6.6,27.3905749 6.6,20.7631579 C6.6,14.1357409 11.972583,8.76315789 18.6,8.76315789 C19.830309,8.76315789 21.017374,8.94830757 22.1348518,9.29226367 Z M21.5207369,10.6747277 C20.5935222,10.40676 19.6135311,10.2631579 18.6,10.2631579 C12.8010101,10.2631579 8.1,14.964168 8.1,20.7631579 C8.1,26.5621478 12.8010101,31.2631579 18.6,31.2631579 C24.3989899,31.2631579 29.1,26.5621478 29.1,20.7631579 C29.1,20.0209066 29.0229827,19.2966436 28.8765035,18.5979246 C28.4336158,18.6974694 27.9729425,18.75 27.5,18.75 C24.0482203,18.75 21.25,15.9517797 21.25,12.5 C21.25,11.8650079 21.3446962,11.2521333 21.5207369,10.6747277 Z M18,23 C17.4477153,23 17,22.5522847 17,22 L17,16.75 C17,16.3357864 17.3357864,16 17.75,16 C18.1642136,16 18.5,16.3357864 18.5,16.75 L18.5,21.5 L22.25,21.5 C22.6642136,21.5 23,21.8357864 23,22.25 C23,22.6642136 22.6642136,23 22.25,23 L22.25,23 L18,23 Z M27.0117493,21.6315789 C26.6251499,21.6315789 26.3117493,21.3134655 26.3117493,20.9210526 C26.3117493,20.5286398 26.6251499,20.2105263 27.0117493,20.2105263 C27.3983486,20.2105263 27.7117493,20.5286398 27.7117493,20.9210526 C27.7117493,21.3134655 27.3983486,21.6315789 27.0117493,21.6315789 Z M10.2117493,21.6315789 C9.82514994,21.6315789 9.51174927,21.3134655 9.51174927,20.9210526 C9.51174927,20.5286398 9.82514994,20.2105263 10.2117493,20.2105263 C10.5983486,20.2105263 10.9117493,20.5286398 10.9117493,20.9210526 C10.9117493,21.3134655 10.5983486,21.6315789 10.2117493,21.6315789 Z M24.045587,27.4609192 C23.77222,27.1875522 23.7755524,26.7410043 24.0530302,26.4635265 C24.330508,26.1860487 24.7770559,26.1827163 25.0504229,26.4560833 C25.3237899,26.7294503 25.3204575,27.1759982 25.0429797,27.453476 C24.7655019,27.7309538 24.318954,27.7342862 24.045587,27.4609192 Z M12.166193,15.4028878 C11.892826,15.1295208 11.8961585,14.6829729 12.1736363,14.4054951 C12.4511141,14.1280173 12.897662,14.1246849 13.171029,14.3980519 C13.444396,14.6714189 13.4410636,15.1179668 13.1635858,15.3954446 C12.886108,15.6729224 12.4395601,15.6762548 12.166193,15.4028878 Z M13.171029,27.4440534 C12.897662,27.7174204 12.4511141,27.714088 12.1736363,27.4366102 C11.8961585,27.1591324 11.892826,26.7125845 12.166193,26.4392174 C12.4395601,26.1658504 12.886108,26.1691829 13.1635858,26.4466607 C13.4410636,26.7241385 13.444396,27.1706864 13.171029,27.4440534 Z M18.6117493,30.1578947 C18.2251499,30.1578947 17.9117493,29.8397813 17.9117493,29.4473684 C17.9117493,29.0549556 18.2251499,28.7368421 18.6117493,28.7368421 C18.9983486,28.7368421 19.3117493,29.0549556 19.3117493,29.4473684 C19.3117493,29.8397813 18.9983486,30.1578947 18.6117493,30.1578947 Z M18.6117493,13.1052632 C18.2251499,13.1052632 17.9117493,12.7871497 17.9117493,12.3947368 C17.9117493,12.002324 18.2251499,11.6842105 18.6117493,11.6842105 C18.9983486,11.6842105 19.3117493,12.002324 19.3117493,12.3947368 C19.3117493,12.7871497 18.9983486,13.1052632 18.6117493,13.1052632 Z M27.5,16.75 C28.1903559,16.75 28.75,16.1903559 28.75,15.5 C28.75,14.8096441 28.1903559,14.25 27.5,14.25 C26.8096441,14.25 26.25,14.8096441 26.25,15.5 C26.25,16.1903559 26.8096441,16.75 27.5,16.75 Z M27,8 C26.7238576,8 26.5,8.22385763 26.5,8.5 L26.5,12.5 C26.5,12.7761424 26.7238576,13 27,13 L28,13 C28.2761424,13 28.5,12.7761424 28.5,12.5 L28.5,12.5 L28.5,8.5 C28.5,8.22385763 28.2761424,8 28,8 L28,8 L27,8 Z" />
-                                                                            </svg>
-                                                                            <div class="fil-lbl">Delay</div>
-                                                                        </div>
-                                                                    </button>
-                                                                </li> -->
+                                                                            
                                                                             <li role="separator" class="divider"></li>
                                                                             <li class="dropdown-header">Sort by employee</li>
                                                                       <div class="actns-filtr-scroll">
                                                                             <li class="mr-2">
                                                                                 <button class="btn btn-filtr"
-                                                                                    (click)="onFilterConfigChanged({filterBy:filterConfig.filterby,sortBy:'All'}) "
-                                                                                    [ngClass]="{'active2':filterConfig.sortby==='All'}"
-                                                                                    ng-reflect-ng-class="[object Object]">
+                                                                                    (click)="onActnFilterOptionClicked('sortby','All')">
                                                                                     <div class="d-flex align-items-center">
                                                                                         <div class="fbx-actns-count fbx-usercount">{{TOTAL_ACTIONS}}</div>
                                                                                         <div class="fil-lbl ml-1">All</div>
-
-                                                                                        <span
-                                                                                            *ngIf="filterConfig.sortby==='All'"
-                                                                                            class="chck-icn ng-star-inserted">
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                                width="16" height="16"
-                                                                                                fill="currentColor"
-                                                                                                viewBox="0 0 16 16"
-                                                                                                class="bi bi-check2">
-                                                                                                <path
-                                                                                                    d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                                                </path>
-                                                                                            </svg>
-                                                                                        </span>
+                                                                                        <input class="multi-select-checkbox" type="checkbox" [checked]="filterConfig.sortby.includes('All')"/>
                                                                                     </div>
                                                                                 </button>
                                                                             </li>
 
                                                                             <li class="mr-2" *ngFor="let item of filteremployee">
-
-
-                                                                                <!-- <button class="btn btn-filtr"
-                                                                                    (click)="onFilterConfigChanged({filterBy:filterConfig.filterby,sortBy:item.Team_Res})"
-                                                                                    [ngClass]="{'active2':filterConfig.sortby===item.Team_Res}"
-                                                                                    *ngIf="item.Team_Res==Current_user_ID"
-                                                                                    ng-reflect-ng-class="[object Object]">
+                                                                                <button class="btn btn-filtr" (click)="onActnFilterOptionClicked('sortby',item.Team_Res);">
                                                                                     <div class="d-flex align-items-center">
-
-                                                                                      <div class="fbx-actns-count">{{item.count}}</div>
-
-                                                                                        <div class="fil-lbl">My actions</div>
-                                                                                        <span class="chck-icn ng-star-inserted"
-                                                                                            *ngIf="filterConfig.sortby===item.Responsible">
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                                width="16" height="16"
-                                                                                                fill="currentColor"
-                                                                                                viewBox="0 0 16 16"
-                                                                                                class="bi bi-check2">
-                                                                                                <path
-                                                                                                    d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                                                </path>
-                                                                                            </svg>
-                                                                                        </span>
-                                                                                    </div>
-                                                                                </button> -->
-
-                                                                                <button class="btn btn-filtr"
-                                                                                    (click)="onFilterConfigChanged({filterBy:filterConfig.filterby,sortBy:item.Team_Res})"
-
-                                                                                    [ngClass]="{'active2':filterConfig.sortby===item.Team_Res}">
-                                                                                    <div class="d-flex align-items-center">
-
                                                                                       <div class="fbx-actns-count fbx-usercount">{{item.count}}</div>
-
                                                                                         <div class="fil-lbl">
                                                                                             {{item.Responsible}}
                                                                                           </div>
-                                                                                        <span class="chck-icn ng-star-inserted"
-                                                                                            *ngIf="filterConfig.sortby===item.Team_Res">
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                                width="16" height="16"
-                                                                                                fill="currentColor"
-                                                                                                viewBox="0 0 16 16"
-                                                                                                class="bi bi-check2">
-                                                                                                <path
-                                                                                                    d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                                                </path>
-                                                                                            </svg>
-                                                                                        </span>
+                                                                                          <input class="multi-select-checkbox" type="checkbox" [checked]="filterConfig.sortby.includes(item.Team_Res)" />  
                                                                                     </div>
                                                                                 </button>
-
                                                                             </li>
-                                                                            <li *ngIf="actionsAssignedByMe&&actionsAssignedByMe>0" class="mr-2"><button
-                                                                                    (click)="onFilterConfigChanged({filterBy:filterConfig.filterby,sortBy:'Assigned By me'})"
-                                                                                    [ngClass]="{'active2':filterConfig.sortby==='Assigned By me'}"
-                                                                                    class="btn btn-filtr"
-                                                                                    >
+                                                                            <li *ngIf="actionsAssignedByMe&&actionsAssignedByMe>0" class="mr-2">
+                                                                                <button (click)="onActnFilterOptionClicked('sortby','Assigned By me')"
+                                                                                     class="btn btn-filtr">
                                                                                     <div class="d-flex align-items-center"
                                                                                         style="margin-left: -2px;">
-                                                                                        <!-- <svg
-                                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                                            width="16" height="16"
-                                                                                            fill="currentColor"
-                                                                                            viewBox="0 0 16 16"
-                                                                                            class="bi bi-send">
-                                                                                            <path
-                                                                                                d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z">
-                                                                                            </path>
-                                                                                        </svg> -->
                                                                                         <div class="fbx-actns-count fbx-usercount">{{actionsAssignedByMe}}</div>
                                                                                         <div class="fil-lbl ml-1">Assigned by me
                                                                                         </div>
-                                                                                        <span class="chck-icn ng-star-inserted"
-                                                                                            *ngIf="filterConfig.sortby==='Assigned By me'">
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                                width="16" height="16"
-                                                                                                fill="currentColor"
-                                                                                                viewBox="0 0 16 16"
-                                                                                                class="bi bi-check2">
-                                                                                                <path
-                                                                                                    d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                                                </path>
-                                                                                            </svg>
-                                                                                        </span>
+                                                                                        <input class="multi-select-checkbox" type="checkbox"  [checked]="filterConfig.sortby.includes('Assigned By me')"/>
                                                                                     </div>
                                                                                 </button>
                                                                             </li>
@@ -1537,12 +1245,12 @@
                                                             </div>
                                                             <span (click)="clearFilterConfigs()" title="Clear Filters"
                                                                 class="kt-user-list-ic">
-                                                                <svg _ngcontent-kgj-c465="" xmlns="http://www.w3.org/2000/svg"
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
                                                                     xmlns:xlink="http://www.w3.org/1999/xlink"
                                                                     aria-hidden="true" role="img" font-size="1.5rem"
                                                                     width="20px" height="20px" viewBox="0 0 24 24"
                                                                     class="iconify iconify--mdi">
-                                                                    <path _ngcontent-kgj-c465="" fill="#b6b6b6"
+                                                                    <path fill="#b6b6b6"
                                                                         d="M2 12a9 9 0 0 0 9 9c2.39 0 4.68-.94 6.4-2.6l-1.5-1.5A6.706 6.706 0 0 1 11 19c-6.24 0-9.36-7.54-4.95-11.95C10.46 2.64 18 5.77 18 12h-3l4 4h.1l3.9-4h-3a9 9 0 0 0-18 0Z">
                                                                     </path>
                                                                 </svg>
@@ -1587,8 +1295,8 @@
 
                                                                                 <div class="kt-p-action-Status">
 
-
-                                                                                    <span [ngSwitch]="action.Status">
+                                                                                    <span class="d-flex align-items-center gap-1">
+                                                                                        <ng-container [ngSwitch]="action.Status">
                                                                                         <span *ngSwitchCase="'Completed'" class="Status-done">Completed</span>
                                                                                         <span *ngSwitchCase="'Delay'" class="Status-Delay">{{getDelayText(action)}}</span>
                                                                                         <span *ngSwitchCase="'InProcess'" class="in_pro">In-process</span>
@@ -1600,6 +1308,14 @@
                                                                                         <span *ngSwitchCase="'Completion Under Approval'" class="completion">Completion approval</span>
                                                                                         <span *ngSwitchCase="'Cancellation Under Approval'" class="cancelled">Cancellation approval</span>
                                                                                         <span *ngSwitchDefault class="Status-In-progress">{{action&&action.Status}}</span>
+                                                                                       </ng-container>
+                                                                                       
+                                                                                       <span [title]="action.Sourcefile" *ngIf="action.Sourcefile" class="text-info actn-attch-btn" (click)="$event.stopPropagation();  LoadDocument1(action.IsCloud,action.Sourcefile,action.CompleteProofDoc,action.contenttype,action.Responsible)">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                                                                            <path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path>
+                                                                                        </svg>
+                                                                                       </span>
+
                                                                                     </span>
                                                                                     <!-- (projectInfo.Status === 'Under Approval') ? 'New' : projectInfo.Status -->
 
@@ -2185,8 +1901,9 @@
                     (projectInfo.NewOwner)||
                     (Current_user_ID==approvalEmpId && Current_user_ID==projectInfo.ResponsibleEmpNo)||
                     (pageContentType=='ACTION_DETAILS')||
-                    (hasNoActionMembers&&hasNoActionMembers.length>0)||
-                    (noActvySinceCreation)
+                    (hasNoActionMembers&&hasNoActionMembers.length>0&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false)||
+                    (noActvySinceCreation&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false)||
+                    (actnsWithoutProgress&&actnsWithoutProgress.length>0&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false)
                     ">
 
                 <div class="kt-Note-msg  d-flex">
@@ -2439,7 +2156,7 @@
                   new actions'):(myUnderApprvActions.length+' new action') }} approval.</span>
 
 
-              <button title="show actions" class="myunderaprvactns-open-btn  curser-pointer " (click)="onFilterConfigChanged({filterBy:'Under Approval',sortBy:Current_user_ID});  showActionDetails(this.myUnderApprvActions[0].IndexId-1)">
+              <button title="show actions" class="myunderaprvactns-open-btn  curser-pointer " (click)="onFilterConfigChanged({filterBy:['Under Approval'],sortBy:[Current_user_ID]});  showActionDetails(this.myUnderApprvActions[0].IndexId-1)">
                   <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                       <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -2476,7 +2193,7 @@
                       days'):(myDelayPrjActions[0].Delaydays+' day') }}</span>
 
 
-              <button title="show actions" class="mydelayactns-open-btn  curser-pointer " (click)="onFilterConfigChanged({filterBy:'Delay',sortBy:Current_user_ID});   showActionDetails(this.myDelayPrjActions[0].IndexId-1); ">
+              <button title="show actions" class="mydelayactns-open-btn  curser-pointer " (click)="onFilterConfigChanged({filterBy:['Delay'],sortBy:[Current_user_ID]});   showActionDetails(this.myDelayPrjActions[0].IndexId-1); ">
                   <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                       <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -2535,7 +2252,7 @@
                       {{projectInfo&&projectInfo.Delaydays}} days. Notable delays by
                       <ng-container *ngFor="let action of delayActionsOfEmps;let i=index;">
 
-                          <span (click)="onFilterConfigChanged({filterBy:'Delay',sortBy:action.emp_no.trim()})"  class="delayaction-of-emp">{{action.name}}</span>
+                          <span (click)="onFilterConfigChanged({filterBy:['Delay'],sortBy:[action.emp_no.trim()]})"  class="delayaction-of-emp">{{action.name}}</span>
                           ({{action.delayActions[0].Delaydays+(action.delayActions[0].Delaydays>1?'
                           days':' day')}} ~<b>{{action.percentInDelay}}%</b>)
                            
@@ -2857,7 +2574,7 @@
             </div>
 
 
-            <div *ngIf="hasNoActionMembers&&hasNoActionMembers.length>0"  class="notification overutilization-notification">
+            <div *ngIf="hasNoActionMembers&&hasNoActionMembers.length>0&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false"  class="notification overutilization-notification">
                 <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
                 <span class="notif-msg" style="color:#c57a05">
                         No actions assigned to 
@@ -2868,14 +2585,34 @@
                 </span>
              </div>
 
-
-             <div *ngIf="noActvySinceCreation" class="notification  delay-notification">
+             <div *ngIf="noActvySinceCreation&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false" class="notification  delay-notification">
                 <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#ff2727" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
                 <span class="notif-msg" style="color: #ff2727;">
                     No progress for {{noActvy4NDays}} {{noActvy4NDays>1?'days':'day'}} since start date of this project, Start recording activities to make this project back in progress.
                 </span>
              </div>
 
+             <div *ngIf="actnsWithoutProgress&&actnsWithoutProgress.length>0&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false" class="notification delay-notification  mydelay-action-notf">
+                <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#ff2727" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g>
+                </svg>
+                <span class="notif-msg" style="color: #ff2727;">
+                    {{actnsWithoutProgress.length}} {{actnsWithoutProgress.length>1?'Actions':'Action'}} found with no progress since their start date in the project.
+                </span>
+
+                <button (click)="showActionsWithNoProgress()" title="show actions" class="mydelayactns-open-btn  curser-pointer " >
+                    <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M12 22.4199C17.5228 22.4199 22 17.9428 22 12.4199C22 6.89707 17.5228 2.41992 12 2.41992C6.47715 2.41992 2 6.89707 2 12.4199C2 17.9428 6.47715 22.4199 12 22.4199Z"
+                                stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path class="arrow" d="M8 13.8599L10.87 10.8C11.0125 10.6416 11.1868 10.5149 11.3815 10.4282C11.5761 10.3415 11.7869 10.2966 12 10.2966C12.2131 10.2966 12.4239 10.3415 12.6185 10.4282C12.8132 10.5149 12.9875 10.6416 13.13 10.8L16 13.8599"
+                                stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </svg>
+                </button>
+            </div>
+             
               </ng-template>
 
                  </div>
@@ -3048,8 +2785,43 @@
                                                            <div class="Kt-Pd-Status Delay text-nowrap">
                                                               {{getDelayText(projectInfo&&projectInfo)}}
                                                             </div>
-                                                            <div class="extra-at-status" *ngIf="(deadlineExtendlist&&deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
+                                                            <div class="extra-at-status deadline-main" *ngIf="(deadlineExtendlist&&deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
                                                                 <span style="color: #d32f2f;">{{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} deadline changed</span>
+                                                                <span class="deadline-count">
+                                                                    <div class="dropdown-menu onleft">
+                                                                     <ul class="deadline-timeline">
+                                                                        <!-- loop this li part only -->
+                                                                        <li class="deadline-timeline-item" *ngFor="let item of deadlineExtendlist;let i = index">
+                                                                            <div class="deadline-timeline-item-title">{{item.Value}}</div>
+                                                                            <div class="deadline-timeline-item-by"><b>By</b> {{item.Modifiedby}}  </div>
+                                                                            <div class="deadline-timeline-item-from"><b>From</b> {{item.oldValue }} <b>To</b> {{item.NewValue }}</div>
+                                                                            <div class="deadline-timeline-item-on">
+                                                                                <div class="d-flex align-items-center">
+                                                                                    <span class="svg-icon">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                                                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                                                                            <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z"></path>
+                                                                                        </svg>
+                                                                                    </span>
+                                                                                    <span>{{item.ModifiedDate |date :'dd-MM-YYYY'}}</span>
+                                                                                </div>
+                                                                                <div class="d-flex align-items-center">
+                                                                                    <span class="svg-icon">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                                                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                                                                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-8h4v2h-6V7h2v5z"></path>
+                                                                                        </svg>
+                                                                                    </span>
+                                                                                    <span>{{item.sortdate | date:'h:mm a'}}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                     </ul>
+                                                                    </div>
+                                                                 </span>
+
+
+
                                                             </div>
                                                           </div>
                                                       </div>
@@ -4670,103 +4442,7 @@
                                                                             {{((tlTotalHours/projectInfo.AllocatedHours)*100)>100?'100%':((tlTotalHours/projectInfo.AllocatedHours)*100).toFixed(1)+'%'}}
                                                                         </span>
                                                                     </div>
-
                                                                 </div>
-
-
-
-                                                                <!-- <div class="d-flex flex-column ml-3 w-100"
-                                                                *ngIf="projectInfo&&projectInfo.Status != 'Completed' && projectInfo.Project_Type != 'Standard Tasks' && projectInfo.Project_Type != 'Routine Tasks'">
-
-                                                                <div *ngIf="ProjectStatus=='Not Started'">
-                                                                    <div class="d-flex align-items-center">
-
-                                                                        <div class="progress h-6px w-100 bg-light-warning">
-                                                                            <div class="progress-bar bg-warning"
-                                                                                role="progressbar"
-                                                                                [ngStyle]='{ width : ProjectPercentage>100?"100%":ProjectPercentage+"%"}'
-                                                                                aria-valuenow="50" aria-valuemin="0"
-                                                                                aria-valuemax="100">
-                                                                            </div>
-                                                                        </div>
-                                                                        <span
-                                                                            class="text-muted fs-7 fw-bold pl-2">{{ProjectPercentage>100?"100%":ProjectPercentage+"%"}}</span>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div *ngIf="ProjectStatus=='Just Started'">
-                                                                    <div class="d-flex align-items-center">
-                                                                        <div class="progress h-6px w-100 bg-light-warning">
-                                                                            <div class="progress-bar bg-warning"
-                                                                                role="progressbar"
-                                                                                [ngStyle]='{ width : ProjectPercentage>100?"100%":ProjectPercentage+"%"}'
-                                                                                aria-valuenow="50" aria-valuemin="0"
-                                                                                aria-valuemax="100">
-                                                                            </div>
-                                                                        </div>
-                                                                        <span
-                                                                            class="text-muted fs-7 fw-bold pl-2">{{ProjectPercentage>100?"100%":ProjectPercentage+"%"}}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div *ngIf="ProjectStatus=='InProcess'">
-                                                                    <div class="d-flex align-items-center">
-                                                                        <div class="progress h-6px w-100 bg-light-warning">
-                                                                            <div class="progress-bar bg-warning"
-                                                                                role="progressbar"
-                                                                                [ngStyle]='{ width : ProjectPercentage>100?"100%":ProjectPercentage+"%"}'
-                                                                                aria-valuenow="50" aria-valuemin="0"
-                                                                                aria-valuemax="100">
-                                                                            </div>
-                                                                        </div>
-                                                                        <span
-                                                                            class="text-muted fs-7 fw-bold pl-2">{{ProjectPercentage>100?"100%":ProjectPercentage+"%"}}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div *ngIf="ProjectStatus=='UnderCompletion'">
-                                                                    <div class="d-flex align-items-center">
-                                                                        <div class="progress h-6px w-100 bg-light-warning">
-                                                                            <div class="progress-bar bg-warning"
-                                                                                role="progressbar"
-                                                                                [ngStyle]='{ width : ProjectPercentage>100?"100%":ProjectPercentage+"%"}'
-                                                                                aria-valuenow="50" aria-valuemin="0"
-                                                                                aria-valuemax="100">
-                                                                            </div>
-                                                                        </div>
-                                                                        <span
-                                                                            class="text-muted fs-7 fw-bold pl-2">{{ProjectPercentage>100?"100%":ProjectPercentage+"%"}}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div *ngIf="ProjectStatus=='Completed'">
-                                                                    <div class="d-flex align-items-center">
-                                                                        <div class="progress h-6px w-100 bg-light-warning">
-                                                                            <div class="progress-bar bg-warning"
-                                                                                role="progressbar"
-                                                                                [ngStyle]='{ width : ProjectPercentage>100?"100%":ProjectPercentage+"%"}'
-                                                                                aria-valuenow="50" aria-valuemin="0"
-                                                                                aria-valuemax="100">
-                                                                            </div>
-                                                                        </div>
-                                                                        <span
-                                                                            class="text-muted fs-7 fw-bold pl-2">{{ProjectPercentage>100?"100%":ProjectPercentage+"%"}}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div *ngIf="ProjectStatus=='Continuos-InProcess'">
-                                                                    <div class="d-flex align-items-center ">
-                                                                        <div class="progress h-6px w-100 bg-light-warning">
-                                                                            <div class="progress-bar bg-warning"
-                                                                                role="progressbar"
-                                                                                [ngStyle]='{ width : ProjectPercentage>100?"100%":ProjectPercentage+"%"}'
-                                                                                aria-valuenow="50" aria-valuemin="0"
-                                                                                aria-valuemax="100">
-                                                                            </div>
-                                                                        </div>
-                                                                        <span
-                                                                            class="text-muted fs-7 fw-bold pl-2">{{ProjectPercentage>100?"100%":ProjectPercentage+"%"}}</span>
-                                                                    </div>
-                                                                </div>
-
-                                                               </div> -->
-
                                                             </div>
 
 
@@ -6749,7 +6425,75 @@
             </div>
         </div>
 
-        <div class="add-timeline-item">
+        <div class="add-timeline-item mt-4">
+            <div class="add-timeline-item-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none"><path d="M39.2729 55.2725C48.1095 55.2725 55.2729 48.109 55.2729 39.2725C55.2729 30.4359 48.1095 23.2725 39.2729 23.2725C30.4364 23.2725 23.2729 30.4359 23.2729 39.2725C23.2729 48.109 30.4364 55.2725 39.2729 55.2725Z" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><path d="M39.2729 33.001V39.2727L43.6366 43.6363" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><path d="M43.6362 2.90918V8.72736" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14.5454 2.90918V8.72736" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><path d="M17.5438 55.273C15.7834 55.273 13.1427 55.273 9.6219 55.273C7.28774 55.273 6.44132 55.0456 5.58798 54.6186C4.73465 54.1916 4.06495 53.565 3.60858 52.7665C3.15221 51.9681 2.90918 51.1761 2.90918 48.9921V15.0084C2.90918 12.8244 3.15221 12.0325 3.60858 11.234C4.06495 10.4356 4.73465 9.80896 5.58798 9.38195C6.44132 8.95494 7.28774 8.72754 9.6219 8.72754H48.5601C50.8943 8.72754 51.7407 8.95494 52.594 9.38195C53.4473 9.80896 54.117 10.4356 54.5734 11.234C55.0298 12.0325 55.2728 15.2634 55.2728 17.4475" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><rect x="11" y="19" width="8" height="8" rx="2" fill="currentColor"></rect></svg>
+            </div>
+            <div class="add-timeline-item-group">
+                <div class="row">
+
+                     <div class="col-lg-6 input-group">
+                         <div class="input-group-text p-0 bg-white border-0 rounded-0">
+                             <mat-datepicker #TLdatePicker></mat-datepicker>
+                         </div>
+                         <div class="d-flex flex-column flex-grow-1">
+
+                            <input [matDatepicker]="TLdatePicker" 
+                            (dateChange)="onTimelineDateInput($event.value)" 
+                            [(ngModel)]="dateF"  id="d-date" required (click)="TLdatePicker.open()"
+                            [min]="disablePreviousDate"  [max]="todayDate" placeholder="Select Date" class="form-control" name="date" 
+                            [ngClass]="{'error-borderbottom': (notProvided&&!dateF)}"
+                            /> 
+                            <span *ngIf="notProvided&&!dateF" style="color:red">please select date.</span>  
+
+                            <div *ngIf="noTimeSpaceAvailable" class="mt-1">
+                                <span class="fs-7 font-weight-400 d-flex gap-1" style="color: #388e3c; font-weight: 500;">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style=" width: 20px;height: 20px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.1" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="#388e3c"></path> <path d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" stroke="#388e3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 12L10.8189 13.8189V13.8189C10.9189 13.9189 11.0811 13.9189 11.1811 13.8189V13.8189L15 10" stroke="#388e3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g>
+                                    </svg>
+                                    Complete time occupied
+                                </span>
+                            </div>  
+
+                         </div>
+                     </div>
+
+                     <div class="col-lg-6 d-flex gap-1 datetime-ngselect">
+                         <div class="mt-2">
+                             <svg width="25px" height="25px" viewBox="0 0 24 24" fill="#828282" xmlns="http://www.w3.org/2000/svg" stroke-width="0"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11.0055 2H12.9945C14.3805 1.99999 15.4828 1.99999 16.3716 2.0738C17.2819 2.14939 18.0575 2.30755 18.7658 2.67552C19.8617 3.24477 20.7552 4.13829 21.3245 5.23415C21.6925 5.94253 21.8506 6.71811 21.9262 7.62839C22 8.51722 22 9.6195 22 11.0055V12.9945C22 14.3805 22 15.4828 21.9262 16.3716C21.8506 17.2819 21.6925 18.0575 21.3245 18.7658C20.7552 19.8617 19.8617 20.7552 18.7658 21.3245C18.0575 21.6925 17.2819 21.8506 16.3716 21.9262C15.4828 22 14.3805 22 12.9945 22H11.0055C9.6195 22 8.51722 22 7.62839 21.9262C6.71811 21.8506 5.94253 21.6925 5.23415 21.3245C4.13829 20.7552 3.24477 19.8617 2.67552 18.7658C2.30755 18.0575 2.14939 17.2819 2.0738 16.3716C1.99999 15.4828 1.99999 14.3805 2 12.9945V11.0055C1.99999 9.61949 1.99999 8.51721 2.0738 7.62839C2.14939 6.71811 2.30755 5.94253 2.67552 5.23415C3.24477 4.13829 4.13829 3.24477 5.23415 2.67552C5.94253 2.30755 6.71811 2.14939 7.62839 2.0738C8.51721 1.99999 9.61949 1.99999 11.0055 2ZM7.79391 4.06694C7.00955 4.13207 6.53142 4.25538 6.1561 4.45035C5.42553 4.82985 4.82985 5.42553 4.45035 6.1561C4.25538 6.53142 4.13207 7.00955 4.06694 7.79391C4.0008 8.59025 4 9.60949 4 11.05V12.95C4 14.3905 4.0008 15.4097 4.06694 16.2061C4.13207 16.9905 4.25538 17.4686 4.45035 17.8439C4.82985 18.5745 5.42553 19.1702 6.1561 19.5497C6.53142 19.7446 7.00955 19.8679 7.79391 19.9331C8.59025 19.9992 9.60949 20 11.05 20H12.95C14.3905 20 15.4097 19.9992 16.2061 19.9331C16.9905 19.8679 17.4686 19.7446 17.8439 19.5497C18.5745 19.1702 19.1702 18.5745 19.5497 17.8439C19.7446 17.4686 19.8679 16.9905 19.9331 16.2061C19.9992 15.4097 20 14.3905 20 12.95V11.05C20 9.60949 19.9992 8.59025 19.9331 7.79391C19.8679 7.00955 19.7446 6.53142 19.5497 6.1561C19.1702 5.42553 18.5745 4.82985 17.8439 4.45035C17.4686 4.25538 16.9905 4.13207 16.2061 4.06694C15.4097 4.0008 14.3905 4 12.95 4H11.05C9.60949 4 8.59025 4.0008 7.79391 4.06694ZM11.8284 6.75736C12.3807 6.75736 12.8284 7.20507 12.8284 7.75736V12.7245L16.3553 14.0653C16.8716 14.2615 17.131 14.8391 16.9347 15.3553C16.7385 15.8716 16.1609 16.131 15.6447 15.9347L11.4731 14.349C11.085 14.2014 10.8284 13.8294 10.8284 13.4142V7.75736C10.8284 7.20507 11.2761 6.75736 11.8284 6.75736Z"></path> </g></svg>
+                         </div> 
+                         <div class="form-group w-100 mb-0">                                     
+                                <ng-select  name="time" placeholder="Select Start Time" id="time-start" (click)="getDarTime()" [ngClass]="{'error-borderbottom': starttime===null&&notProvided}"
+                                    [(ngModel)]="starttime">
+                                    <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
+                                        [disabled]="item!=lastEndtime && bol==false">
+                                        <a>{{formatTimes(item)}}</a>
+                                    </ng-option>
+                                </ng-select>
+                                <span style="color:red" *ngIf="starttime===null&&notProvided">Start time is required.</span>
+                         </div>
+
+                         <div class="form-group w-100 mb-0">                                        
+                            <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end" [ngClass]="{'error-borderbottom': (endtime===null&&notProvided)||(endtime < starttime)}"
+                                (click)="getDarTime()" [(ngModel)]="endtime">
+                                <ng-option [value]="item" *ngFor="let item of timedata; let i=index"
+                                    [disabled]="item<=lastEndtime">
+                                    <a>{{formatTimes(item)}}</a>
+                                    <ng-container *ngIf="starttime">
+                                        ({{ formatTimes(starttime)|timeDiff:formatTimes(item) }})
+                                    </ng-container>
+                                </ng-option>
+                            </ng-select>
+                            <span style="color:red" *ngIf="endtime===null&&notProvided">Please provide end time</span>
+                            <span style="color:red" id="err1" *ngIf="(endtime < starttime)">End time cannot be less than start time</span>
+                        </div>
+
+                     </div>
+
+                </div>
+           </div>
+        </div> 
+
+        <!--old <div class="add-timeline-item"> 
             <div class="add-timeline-item-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none"><path d="M39.2729 55.2725C48.1095 55.2725 55.2729 48.109 55.2729 39.2725C55.2729 30.4359 48.1095 23.2725 39.2729 23.2725C30.4364 23.2725 23.2729 30.4359 23.2729 39.2725C23.2729 48.109 30.4364 55.2725 39.2729 55.2725Z" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><path d="M39.2729 33.001V39.2727L43.6366 43.6363" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><path d="M43.6362 2.90918V8.72736" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14.5454 2.90918V8.72736" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><path d="M17.5438 55.273C15.7834 55.273 13.1427 55.273 9.6219 55.273C7.28774 55.273 6.44132 55.0456 5.58798 54.6186C4.73465 54.1916 4.06495 53.565 3.60858 52.7665C3.15221 51.9681 2.90918 51.1761 2.90918 48.9921V15.0084C2.90918 12.8244 3.15221 12.0325 3.60858 11.234C4.06495 10.4356 4.73465 9.80896 5.58798 9.38195C6.44132 8.95494 7.28774 8.72754 9.6219 8.72754H48.5601C50.8943 8.72754 51.7407 8.95494 52.594 9.38195C53.4473 9.80896 54.117 10.4356 54.5734 11.234C55.0298 12.0325 55.2728 15.2634 55.2728 17.4475" stroke="currentColor" stroke-width="4.94545" stroke-linecap="round" stroke-linejoin="round"></path><rect x="11" y="19" width="8" height="8" rx="2" fill="currentColor"></rect></svg>
             </div>
@@ -6791,8 +6535,7 @@
                                             <span><span>0</span><span class="_time-value"> Min</span></span>
                                         </ng-container> 
                                     </div>
-                                    
-                                    <!-- <i *ngIf="tmReportStatus=='Not Submitted'" class="fa fa-circle text-gray-glow blink"></i> -->
+                                
                                 </div> 
                                 </div>
                         
@@ -6856,9 +6599,8 @@
                     </div>
                 </div> 
             </div>
-        </div>
+        </div> -->
 
-    
     </div>
     </div>
 

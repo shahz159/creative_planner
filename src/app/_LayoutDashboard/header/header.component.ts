@@ -400,7 +400,6 @@ export class HeaderComponent implements OnInit {
   }
 
   customTimeline() {
-
     this.selectedSort = 'custom';
     this.showtimeline = true;
 

@@ -1098,6 +1098,22 @@ span.Status-Delay {
   font-size: 14px;
 }
 
+.kt-p-action-Status .actn-attch-btn{
+  padding: 6px;
+  line-height: 0;
+  border-radius: 5px;
+}
+
+.kt-p-action-Status .actn-attch-btn svg{
+  width: 17px;
+  height: 17px;
+}
+.kt-p-action-Status .actn-attch-btn:hover{
+  background-color: #e5eaf8;
+}
+
+
+
 .kt-projcect-act-list {
   margin: 0px 10px;
   margin-bottom: 10px;
@@ -1802,6 +1818,12 @@ span.B-Bot {
 .P_Project_complete_rejected {
   background-color: #F44336 !important;
 }
+
+.P_Project_cancellation_Approval{
+  background-color: #F44336 !important;
+}
+
+
 
 .g-10 {
   gap: 10px;
@@ -6140,7 +6162,7 @@ svg>g[class^="raphael-group-fjUjWDEW"]>text {
 
 /* new btn at notification & prj hold validation  end*/
 
-.deadline-count-btn {
+/* .deadline-count-btn {
   background: #d5e0f9;
   color: #1e5bf1;
   font-weight: 600;
@@ -6150,12 +6172,12 @@ svg>g[class^="raphael-group-fjUjWDEW"]>text {
   cursor: pointer;
   font-size: 12px;
   display: inline-flex;
-}
+} */
 
-.deadline-count-btn:hover {
+/* .deadline-count-btn:hover {
   background: #c6d7ff;
   color: #013ed3;
-}
+} */
 
 .deadline-count {
   position: relative;
@@ -6169,7 +6191,7 @@ svg>g[class^="raphael-group-fjUjWDEW"]>text {
   top: 0px;
   left: 0px;
   /* transform: translate3d(4px, 20px, 0px); */
-  transform: translate3d(24px, -24px, 0px);
+  transform: translate3d(14px, -8px, 0px);
   font-size: 1rem;
   color: #212529;
   text-align: left;
@@ -6181,6 +6203,11 @@ svg>g[class^="raphael-group-fjUjWDEW"]>text {
   transition: all .15s ease-in-out, color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
   display: none;
 }
+
+.deadline-count .dropdown-menu.onleft{
+  transform: translate3d(-350px, 26px, 0px)
+}
+
 
 .deadline-count:hover .dropdown-menu {
   display: block;
@@ -9908,8 +9935,10 @@ span.time-value {
   gap: 2px;
 }
 
-
-
-
-
 /*new timeline design css*/
+
+.actns-filtr-scroll .multi-select-checkbox{
+  transform: scale(1.2);
+}
+
+

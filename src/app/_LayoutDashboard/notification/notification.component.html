@@ -86,7 +86,7 @@
             </div>
            <!-- <button class="btn btn-outline-success btn-sm mr-2" (click)="leaveform(Current_user_ID,Leave_Code.trim())">sample</button>  -->
            <!-- style="display: none;" -->
-             <div class="kt-portlet__head-label" style="display: none">
+             <div class="kt-portlet__head-label" >
 
               <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -349,7 +349,7 @@
 
       <div class="kt-portlet">
 
-        <div class="kt-portlet__body kt-portlet__body_scroll px-1 py-3">
+        <div class="kt-portlet__body kt-portlet__body_scroll px-0 py-0">
 
 
           <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"  [ngClass]="{'d-none':notificationsLoading}">
@@ -359,20 +359,19 @@
                 <span class="d-none">About ({{_CurrentpageRecords}}) results found</span>
 
 
-
                 <!--Project aprv list start-->
                 <div id="prj-aprv-list" class="table-responsive">
                   <table class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
                     <thead>
                       <tr role="row">
-                        <th style="width: 50px;" tabindex="0" aria-controls="project-4" class="text-center" rowspan="1"
+                        <th style="width: 50px; height:30px;" tabindex="0" aria-controls="project-4" class="text-center" rowspan="1"
                           colspan="1">
-                          <input type="checkbox" id="snocheck" title="Click to select all" [(ngModel)]="selectAllCheckbox"
+                          <input type="checkbox" id="snocheck" [title]="selectAllCheckbox?'Unselect all projects':'Select all projects'" [(ngModel)]="selectAllCheckbox"
                             (change)="selectall($event)" class="form-check-input ps-1 btn px-0">
-
                         </th>
                         <th style="width: 100px;" tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
                           aria-sort="ascending" aria-label=": activate to sort column descending">
+                          <span style="position:relative; left:-15%; ">Select all</span>
                         </th>
                         <th [appSort]="_NotificationActivity" data-order="desc" data-name="Project_Name" tabindex="0"
                           aria-controls="project-4" class="curser-pointer" rowspan="1" colspan="1" style="width: 0px;"
@@ -792,7 +791,7 @@
                               <!-- <th style="width: 50px;" tabindex="0" aria-controls="leave-4" class="text-center" rowspan="1" colspan="1">
                                 <input type="checkbox" id="leave-snocheck" title="Select All" class="form-check-input ps-1 btn px-0"/>
                               </th> -->
-                              <th style="width: 100px;" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" >
+                              <th style="width: 100px; height:30px;" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" >
                               </th>
                               <th data-name="Leave_Name" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
                                 Leave
@@ -2325,7 +2324,7 @@
                   <path d="m 13,4.1974 q 0,0.3097 -0.21677,0.5265 l -5.60517,5.6051 -1.0529,1.0529 q -0.21677,0.2168 -0.52645,0.2168 -0.30968,0 -0.52645,-0.2168 L 4.01935,10.329 1.21677,7.5264 Q 1,7.3097 1,7 1,6.6903 1.21677,6.4735 L 2.26968,5.4206 q 0.21677,-0.2167 0.52645,-0.2167 0.30968,0 0.52645,0.2167 l 2.27613,2.2839 5.07871,-5.0864 q 0.21677,-0.2168 0.52645,-0.2168 0.30968,0 0.52645,0.2168 L 12.78323,3.671 Q 13,3.8877 13,4.1974 z"></path>
                 </svg>
               </div>
-              <div class="fs-9 fw-bold text-nowrap">Approved</div>
+              <div class="fs-9 fw-bold text-nowrap">Submitted</div>
             </div>
             <div class="flex-grow-1 mt-3 line-aprved" style="border-width:1px;"></div>
             <div *ngIf="managerApproval" class="d-flex flex-column align-items-center" style="max-width: 75px; overflow-x: visible;">
