@@ -5840,6 +5840,16 @@ a.kt-inbox__icon.active i {
     fill: #858190;
 }
 
+
+.iconify--mdim {
+    font-size: 22px;
+    height: 22px;
+    width: 22px;
+    color: #a0a0a1;
+    color: #0034b2 !important;
+    fill: #858190;
+}
+
 .dropdown-menu.dropdown-filter {
     margin: 16px 0 0;
 }
@@ -8656,4 +8666,9 @@ svg.asseticn.prim-icn.memo_attachment_img {
 .kt-meeting-content p::-webkit-scrollbar-track {
     background-color: #e9ebee;
     border-radius: 50px;
+}
+
+.kt-badge.kt-badge--unifieds{
+    color: #282a3c;
+    background: rgb(166 167 180 / 10%);
 }

@@ -1591,11 +1591,37 @@
 
                                                                   <span class="Completed_color font-weight-400" *ngSwitchCase="'Completed'">{{item.Status}}</span>
                                                                   <span class="Under_Approval_color font-weight-400" *ngSwitchCase="'Under Approval'">New approval</span>
-                                                                  <span class="New_Project_Rejected_color font-weight-400" *ngSwitchCase="'New Project Rejected'">New project rejected</span>
+                                                                  <span class="font-weight-400" *ngSwitchCase="'New Project Rejected'">
+
+
+                                                                    <div  class="attach-tippy-div">
+                                                                      <span class="New_Project_Rejected_color font-weight-400">New project rejected</span>
+                                                                      <span class="attach-tippy">
+
+                                                                      <span class=" st-line curser-pointer" >
+                                                                         <div style="width: max-content;">Rejected by: <h6>{{item.RejectedBy}} </h6></div>
+                                                                          <div>on: {{item.RejectFromDate | date: 'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.RejectFromDate))}})</div>
+
+                                                                          <div>Comment : {{item.Rejectcomments}}</div></span>
+                                                                      </span>
+
+                                                                      <span class="New_Approval_Project font-weight-400">
+                                                                          {{item.RejectedBy}}
+                                                                      </span>
+
+                                                                  </div>
+
+
+
+                                                                    </span>
                                                                   <span class="Not_Started font-weight-400" *ngSwitchCase="'Not Started'">Not Started</span>
                                                                   <span class="Cancelled_color font-weight-400" *ngSwitchCase="'Cancelled'">Cancelled</span>
                                                                   <span class="Cancellation_Under_Approval_color font-weight-400" *ngSwitchCase="'Cancellation Under Approval'">Cancellation approval</span>
-                                                                  <span class="Forward_Under_Approval_color font-weight-400"  *ngSwitchCase="'Forward Under Approval'">Forward approval</span>
+                                                                  <span class="attach-tippy font-weight-400"  *ngSwitchCase="'Forward Under Approval'">
+                                                                    <span class="Forward_Under_Approval_color font-weight-400">Forward approval</span>
+                                                                    <span *ngIf="item.approvalfromdate"  class=" st-line">Pending approval since: {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
+                                                                    </span>
+                                                                  </span>
                                                                   <span class="Hold_color font-weight-400" *ngSwitchCase="'Project Hold'">Hold</span>
                                                                   <span class="Completion_Under_Approval_color font-weight-400" *ngSwitchCase="'Completion Under Approval'">Completion Under Approval</span>
                                                                   <div *ngIf="item.Pendingapprover" class="pulsing-div">

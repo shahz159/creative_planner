@@ -86,6 +86,7 @@ export class ProjectTypeService {
     this.aprvDtoObj= new ApprovalDTO();
   }
   readonly rootUrl = this.commonUrl.apiurl;
+  readonly rootUrlcore = this.commonUrl.apiurlcore;
 
   GetProjectTypeList() {
     let EmpNo = localStorage.getItem('EmpNo');
@@ -256,6 +257,7 @@ export class ProjectTypeService {
       this.objPortfolioDTO.Modified_By = this.ObjUserDetails.Emp_No;
       this.objPortfolioDTO.Created_By = this.ObjUserDetails.Emp_No;
     }
+    console.log(objFromComp.SelectedProjects,"home portfoli")
     return this.http.post(this.rootUrl + "/TestAPI/NewInsertPortfolio", objFromComp);
     // .subscribe(data => {
     //   this.objPortfolioDTO = data as PortfolioDTO;
@@ -263,6 +265,23 @@ export class ProjectTypeService {
     // });
 
   }
+
+
+
+  createPortfolioOfProjects(ob:PortfolioDTO) {
+
+    const _objPortfolioDTO = new PortfolioDTO();
+    _objPortfolioDTO.Created_By = ob.Created_By;
+    _objPortfolioDTO.Modified_By = ob.Modified_By;
+    _objPortfolioDTO.Portfolio_ID = ob.Portfolio_ID;
+    _objPortfolioDTO.Portfolio_Name = ob.Portfolio_Name;
+    _objPortfolioDTO.SelectedProjects = ob.SelectedProjects;
+    console.log(ob.SelectedProjects,"createPortfolioOfProjects")
+    return this.http.post(this.rootUrl + "/TestAPI/NewInsertPortfolio", _objPortfolioDTO);
+  }
+
+
+
 
   InsertPortfolioIdsByProjectCode(objFromComp: PortfolioDTO) {
     this.objPortfolioDTO.SelectedPortIdsJson = objFromComp.SelectedPortIdsJson;
@@ -751,6 +770,32 @@ export class ProjectTypeService {
     // this.ObjSubTaskDTO.Remarks = obj.Remarks;
     // this.ObjSubTaskDTO.Attachments = obj.Attachments;
     return this.http.post(this.rootUrl + "Notification/NewInsertSubTaskByProjectCode", data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
+    //Notification/NewInsertSubTaskByProjectCode
+
+
+  }
+
+  _InsertNewSubtaskcore(data) {
+   
+    return this.http.post(this.rootUrlcore + "Notification/NewInsertSubTaskByProjectCodeCore", data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
+    //Notification/NewInsertSubTaskByProjectCode
+
+
+  }
+
+  _AzureUploadNewAction(data) {
+   
+    return this.http.post(this.rootUrlcore + "Azure/NewInsertSubTaskByProjectCodeCore", data, {
       reportProgress: true,
       observe: 'events'
     }).pipe(

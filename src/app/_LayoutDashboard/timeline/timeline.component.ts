@@ -202,7 +202,7 @@ export class TimelineComponent implements OnInit {
   //   this.endtime = null;
   //   // this.getTimelineReportByDate(sel_date=='TODAY'?'today':'yesterday');
 
-     
+
 
   // }
 
@@ -210,15 +210,15 @@ export class TimelineComponent implements OnInit {
   noTimeSpaceAvailable:boolean=false;
 
   setTimelineDate(val)
-  {    debugger
+  {
        this.current_Date = moment(val).format("MM/DD/YYYY");
        this.dateF = new FormControl(new Date(val));
        this.starttime = null;
        this.endtime = null;
        this.noTimeSpaceAvailable=false;
        this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
-       .subscribe(data => { 
-        const _timeList=JSON.parse(data[0]['time_json']); 
+       .subscribe(data => {
+        const _timeList=JSON.parse(data[0]['time_json']);
         let _lastEndtime;
         if (_timeList.length != 0) {
            // when some timeline submit done on the selected date.
@@ -248,9 +248,9 @@ export class TimelineComponent implements OnInit {
        this.timeline_of=this.current_Date==todaystr?'today':this.current_Date==yesterdaystr?'yesterday':null;
        this.getTimelineReportByDate(this.timeline_of);
 
-  } 
-  
-  
+  }
+
+
   onTimelineDateInput(val){
     if(val){  // user has input a value.
      const tm4Date=(val.toDate()<this.disablePreviousDate||val.toDate()>this.todayDate)?this.current_Date:val.toDate();
@@ -258,7 +258,7 @@ export class TimelineComponent implements OnInit {
     }
     else{ // user has input null or undefined or val is falsy.
         this.current_Date=null;
-    }      
+    }
  }
 
 
@@ -324,7 +324,7 @@ export class TimelineComponent implements OnInit {
         this.userFound=true;
         this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
         this.racisemplFilter = JSON.parse(data[0]['RacisEmployee_Json'])
-
+console.log(this.racisemplFilter,"this.racisemplFilterthis.racisemplFilter")
         this.darArray=this.timelineList;
         console.log(this.darArray,"startdatastartdatastartdatastartdatastartdata")
         this._CurrentpageRecords=this.timelineList.length;
@@ -507,9 +507,9 @@ getTimelineProjects(){
   this.ObjSubTaskDTO.Emp_No=this.Current_user_ID;
   this.ObjSubTaskDTO.ProjectBlock=this.project_type;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
-  (data=>{ 
+  (data=>{
     this.loadingTimelineProjects=false;
-    this.projectList=JSON.parse(data[0]['ProjectList']); 
+    this.projectList=JSON.parse(data[0]['ProjectList']);
     this.projectList=this.projectList.filter(p=>['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(p.Status.trim())==false)
     console.log(this.projectList);
   });
@@ -540,12 +540,12 @@ getTimelineActions(){
   this.project_code=null;
   this.noact_msg=false;
   this.actionList=null;
-  
+
   this.ObjSubTaskDTO.Emp_No=this.Current_user_ID;
   this.ObjSubTaskDTO.Project_Code=this.master_code;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
   (data=>{
-   
+
     this.actionList=JSON.parse(data[0]['ActionList']); console.log('actions here:',this.actionList);
     this.owner_empno=(data[0]['Project_Owner']);
     this.resp_empno=(data[0]['Team_Res']);
@@ -712,7 +712,7 @@ submitDar() {
 
   this.service._InsertDARServie(this.objProjectDto)
     .subscribe(data => {
-    
+
       this._Message = data['message'];
       this.notifyService.showSuccess(this._Message, "Success");
       // after timeline submission success then complete the action also if needed. start
@@ -884,18 +884,18 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
         this.a_details=null;
         this.a_loading=true;
       }
-      
-      
+
+
       this.service.NewSubTaskDetailsService(prjcode).subscribe((res:any)=>{
-      
+
                  console.log("|||=>",res[0].ProjectStates_Json);
                  if(of==='PROJECT'){
 
                   this.p_details=JSON.parse(res[0].ProjectStates_Json)[0];
                   this.p_details.project_type=JSON.parse(res[0].ProjectName_Json)[0].Project_Type;
-                  this.projectMoreDetailsService.getProjectTimeLine(prjcode, '1', this.Current_user_ID).subscribe((res: any) => { 
-                    
-                      const tlTotalHrs:number = +JSON.parse(res[0].Totalhours);    
+                  this.projectMoreDetailsService.getProjectTimeLine(prjcode, '1', this.Current_user_ID).subscribe((res: any) => {
+
+                      const tlTotalHrs:number = +JSON.parse(res[0].Totalhours);
                       const remainingHrs:number=+((this.p_details.AllocatedHours-tlTotalHrs).toFixed(1));
                       this.p_details={
                         ...this.p_details,
@@ -955,7 +955,7 @@ onTLSubmitBtnClick(){
       // when all mandatory fields are provided.
          this.submitDar();
          }
-         else{ 
+         else{
         // when some mandatory fields are not provided.
         this.fieldRequired=true;
 
@@ -965,7 +965,7 @@ onTLSubmitBtnClick(){
         // }
 
 
-        // 
+        //
       }
 }
 
@@ -995,6 +995,7 @@ prostate(actioncode:any){
 showDropdown = false;
 activeAgendaIndex: number = 0
 toggleDropdown() {
+  debugger
   this.activeAgendaIndex = 0
   this.showDropdown = !this.showDropdown;
 }
@@ -1040,7 +1041,7 @@ previous_filter() {
     edited:boolean = false
 
     getTimelineOfEmployee(empno:string,pageNo:number=1){
-     
+
       this.showtimeline=true;
       this.ObjSubTaskDTO.Emp_No = empno;
       this.ObjSubTaskDTO.PageNumber = pageNo;
@@ -1169,9 +1170,9 @@ endDay(submDate:string)
             'Timeline report submitted successfully.',
             `date : ${submDate}`,
             'success'
-          );   
-          this.timelineLog(this.type1); 
-          this.service.GetTimelineSubmissionStatus(this.Current_user_ID).subscribe((res:any)=>{  // get new latest submission list 
+          );
+          this.timelineLog(this.type1);
+          this.service.GetTimelineSubmissionStatus(this.Current_user_ID).subscribe((res:any)=>{  // get new latest submission list
               this.submission_json=JSON.parse(res[0].submission_json);
               this.getTimelineReportByDate(this.timeline_of);
            });
@@ -1329,13 +1330,13 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
               // adding 'duration' property to show timing in more easy way on the view.
                 this.tmReportArr.forEach(ob=>{
                   const k=/00:\d\d/.test(ob.Duration);
-                   ob.duration=k?(ob.Duration.split(':')[1]+' mins'):(ob.Duration+' hrs');   
+                   ob.duration=k?(ob.Duration.split(':')[1]+' mins'):(ob.Duration+' hrs');
                    ob.starttime=this.formatTimes(ob.starttime);
                    ob.endtime=this.formatTimes(ob.endtime);
                 }); 
 
 
-                const [hrs,mins]=dar_json[0].TotalDuration.split(':'); 
+                const [hrs,mins]=dar_json[0].TotalDuration.split(':');
                 this.tmReportTotalDuration={hours:hrs,minutes:mins};
                 this.tmSubmDate=dar_json[0].SubmissionDate;
                 if(this.submission_json){
@@ -1347,7 +1348,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
                         return d1.getTime()==d2.getTime();
                     });
 
-                   
+
                     if(tm_submitted)
                       this.tmReportStatus=tm_submitted.Status;
                     else{
@@ -1423,7 +1424,7 @@ dueTodayTasksCount:{taskType:string,count:number}[]=[];
 getDayReportSummary(){
     this.service.NewGetEmployeePerformance(this.Current_user_ID).subscribe((res:any)=>{
       console.log("daySummaryReport res:",res);
-        if(res&&res.EmployeeReport){   
+        if(res&&res.EmployeeReport){
                this.daySummaryReport=JSON.parse(res.EmployeeReport)[0];
               console.log("daySummaryReport:",this.daySummaryReport);
               this.dueTodayTasksCount=[];
@@ -1444,8 +1445,8 @@ viewActions(type:'COMPLETED'|'DUE'|'DELAYED'){
   {
     let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Actions&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
     let myWindow = window.open(myurl,'_blank');
-    myWindow.focus(); 
-  } 
+    myWindow.focus();
+  }
 }
 
 viewProjects(type:'COMPLETED'|'DUE'|'DELAYED'){
@@ -1453,8 +1454,8 @@ viewProjects(type:'COMPLETED'|'DUE'|'DELAYED'){
   {
     let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Projects&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
     let myWindow = window.open(myurl,'_blank');
-    myWindow.focus(); 
-  } 
+    myWindow.focus();
+  }
 }
 
 
@@ -1472,12 +1473,12 @@ viewStandardTasks(type:'COMPLETED'|'DELAYED'){
     let myurl = document.baseURI+'/backend/ProjectsSummary';
     let myWindow = window.open(myurl,'_blank');
     const obj={
-      EmpNo:this.Current_user_ID, 
+      EmpNo:this.Current_user_ID,
       ProjectType:'003',
       Status:'InProcess',
     };
     myWindow.sessionStorage.setItem('filterprjsby',JSON.stringify(obj));
-    myWindow.focus(); 
+    myWindow.focus();
 
    }
 }

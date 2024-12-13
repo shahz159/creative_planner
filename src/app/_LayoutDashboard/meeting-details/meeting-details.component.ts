@@ -561,8 +561,9 @@ export class MeetingDetailsComponent implements OnInit {
   Meeting_Id:any;
   Meeting_password:any;
   ModifiedJson:any;
-
-  
+  _AllEventAttachment: number = 0;
+  _FutureEventAttachment: number = 0;
+  AdminName:any;
 
   meeting_details() {
  
@@ -614,7 +615,10 @@ export class MeetingDetailsComponent implements OnInit {
       this.totalActiontask = this.Actiontask.length;
       this.Todotask = this.EventScheduledjson[0].Todotasks;
 
-      console.log('this.Todotask',this.AssignedTask , this.Actiontask , this.Todotask);
+      this._AllEventAttachment = this.EventScheduledjson[0]['AllEventsCount'];
+      this._FutureEventAttachment = this.EventScheduledjson[0]['FutureCount'];
+      this.AdminName=this.EventScheduledjson[0].AdminName
+
 
       this.totalTodotask = this.Todotask.length;
       this.totalCountAssign = this.totalAssign + this.totalActiontask + this.totalTodotask;
@@ -675,7 +679,7 @@ export class MeetingDetailsComponent implements OnInit {
         this.urlUserID_Password = UserID_Password.trim();
       }
 
-      console.log(this.urlUserID_Password,'Link_Detail');
+      // console.log(this.urlUserID_Password,'Link_Detail');
 
       let str = this.Link_Detail;
       let regexp = /href="https:\/\/[^"]+"/;
@@ -685,7 +689,7 @@ export class MeetingDetailsComponent implements OnInit {
 
    
 
-     console.log(this.Link_Detail,'Link_Detail2')
+    //  console.log(this.Link_Detail,'Link_Detail2')
 
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
       this.totalguest = this.User_Scheduledjson.length;
@@ -697,13 +701,7 @@ export class MeetingDetailsComponent implements OnInit {
 
       this.Guestcount = this.checkedusers.length;
 
-
       this.ModifiedJson=this.EventScheduledjson[0].ModifiedJson
-
-
-      console.log('this.User_Scheduledjson:',this.User_Scheduledjson);
-      // var x = this.User_Scheduledjson.map(obj=>obj.TM_DisplayName);
-      console.log(this.Project_code,'<-------Project_code---->', this.portfolio_Scheduledjson)
 
       this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
 
@@ -713,11 +711,17 @@ export class MeetingDetailsComponent implements OnInit {
         element.isChecked = true;
       });
 
+       this.portfolio_Scheduledjson = this.mergeObjects(
+       this.portfolio_Scheduledjson || [], 
+       this.ModifiedJson || [], 
+      'numberval'
+       );
+    
 
       this.portfoliocount = this.checkedportfolio.length;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
       this._TotalAttachment = this.Attachments_ary.length;
-      console.log('Attachments_ary',this.Attachments_ary);
+      // console.log('Attachments_ary',this.Attachments_ary);
 
       this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
       this.Project_code = JSON.parse(this.EventScheduledjson[0].Project_code);
@@ -726,8 +730,15 @@ export class MeetingDetailsComponent implements OnInit {
       this.Project_code.forEach(element => {
         element.isChecked = true;
         this.checkedproject.push(element.stringval);
-
       });
+
+
+      this.Project_code = this.mergeObjects(
+        this.Project_code || [], 
+        this.ModifiedJson || [], 
+        'stringval'
+      );
+
       this.projectcount = this.checkedproject.length;
 
       this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
@@ -775,10 +786,48 @@ export class MeetingDetailsComponent implements OnInit {
     });
 
 
+ 
+      
+
+        console.log(this.Project_code,'<3-------Project_code----2>', this.portfolio_Scheduledjson);
+
   }
 
 
 
+
+
+  mergeObjects(targetArray: any[], sourceArray: any[], matchField: string) {
+      if (!Array.isArray(targetArray) || !Array.isArray(sourceArray)) {
+        console.error("One of the provided arrays is not valid:", { targetArray, sourceArray });
+        return [];
+      }
+    
+      const result: any[] = [];
+    
+      targetArray.forEach(item => {
+        sourceArray.forEach(src => {
+          // Handle multiple values in `New_Value`
+          const values = String(src.New_Value).split(',');
+          if (values.includes(String(item[matchField]))) {
+            // Clone the target item and merge with the matched source object
+            result.push({ ...item, ...src });
+          }
+        });
+      });
+    
+      return result;
+  }
+
+
+
+
+
+
+
+
+
+  
   meetingRestriction(actualMeeting) {
 
     const today = new Date();
@@ -1122,7 +1171,7 @@ export class MeetingDetailsComponent implements OnInit {
     this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
       if (data) {
         this._MemosSubjectList = JSON.parse(data['JsonData']);
-        console.log( this._MemosSubjectList ,' this._MemosSubjectList ')
+       
       }
       this.checkeddms=[];
 
@@ -1133,10 +1182,27 @@ export class MeetingDetailsComponent implements OnInit {
 
       this.checkeddms = this.checkeddms.map((num) => num.toString());
       this.dmscount = this.checkeddms.length;
+     
+      debugger
+      if(this._MemosSubjectList[0].Subject!=undefined &&  this.ModifiedJson){
+        this._MemosSubjectList = this.mergeObjects(
+          this._MemosSubjectList || [], 
+          this.ModifiedJson || [], 
+          'MailId'
+        );
+      }
+      
 
-    });
+      console.log( this._MemosSubjectList ,' this._MemosSubjectList ');
+     });
+
+      
     this.loadingDMS = true;
   }
+
+
+
+
 
   GetMemosByEmployeeId() {
     this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
@@ -2096,7 +2162,7 @@ debugger
         }
 
         this.attendeesLists = JSON.parse(data['attendeesList'])
-        console.log(this.attendeesLists,'this.attendeesLists')
+        // console.log(this.attendeesLists,'this.attendeesLists')
         this.Emp_Number = 0
       });
 
@@ -2713,6 +2779,32 @@ onFileChange(event) {
 
 
 
+
+
+  RemoveExistingAttachment(_id) {
+  
+    // this.Attachment12_ary.forEach(element => {
+    //   if (element.file_id == _id) {     
+    //   // this.RemovedAttach.push(element.Cloud_Name)
+    //     this.RemovedFile_id.push(element.file_id);  
+    //   }
+    // });
+    debugger
+    this.Attachments_ary.forEach(element => {
+      if (_id == element.file_id)
+        // this.AttachmentName = element.File_Name;
+      this.RemovedFile_id.push(element.file_id);  
+
+    });
+    // var removeIndex = this.Attachments_ary.map(function (item) { return item.file_id; }).indexOf(_id);
+    // this.Attachments_ary.splice(removeIndex, 1);
+  }
+
+
+
+
+
+
   SelectedAttachmentFile: any
   EventNumber: any;
   progress: number = 0;
@@ -2720,26 +2812,32 @@ onFileChange(event) {
 
   OnSubmitAttachment() {
 
-    if (this.SelectedAttachmentFile != undefined) {
+
+  debugger
+    if (this.SelectedAttachmentFile != undefined || this.RemovedFile_id.length > 0) {
       this.EventNumber = this.EventScheduledjson[0].EventNumber;
       let _attachmentValue = 0;
       const frmData = new FormData();
       for (var i = 0; i < this._lstMultipleFiales.length; i++) {
         frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
       }
-      if (this._lstMultipleFiales.length > 0)
+      if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
         _attachmentValue = 1;
       else
         _attachmentValue = 0;
 
      
+       this._calenderDto.flagid = this._PopupConfirmedValue;
       frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID);
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
       frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
+      frmData.append("flag_id", this._calenderDto.flagid.toString());
+      frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
+      frmData.append("Schedule_date",this._StartDate.toString());
 
       if (_attachmentValue == 1) {
-        this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+        this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
           (event: HttpEvent<any>) => {
             switch (event.type) {
               case HttpEventType.Sent:
@@ -2764,14 +2862,11 @@ onFileChange(event) {
                 }, 1500);
 
                 //69 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
-          
+                (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";         
                 // document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
                 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
-
             }
             this.meeting_details()
-
           }
         )
       }
@@ -3256,7 +3351,7 @@ onFileChange(event) {
       (data => {
 
         this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
-        console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
+        // console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
         this.meeting_details();
         if (this.CompletedMeeting_notes != null && this.CompletedMeeting_notes != undefined && this.CompletedMeeting_notes != '') {
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
@@ -4997,11 +5092,11 @@ bindCustomRecurrenceValues(){
   RemovedFile_id:any = [];
 
   RemoveExistingFile(_id) {
+  
     this.Attachment12_ary.forEach(element => {
-      if (element.file_id == _id) {
-        // this.RemovedAttach.push(element.Cloud_Name)
-        this.RemovedFile_id.push(element.file_id);
-
+      if (element.file_id == _id) {     
+      // this.RemovedAttach.push(element.Cloud_Name)
+        this.RemovedFile_id.push(element.file_id);  
       }
     });
     var removeIndex = this.Attachment12_ary.map(function (item) { return item.file_id; }).indexOf(_id);
@@ -5930,6 +6025,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     this.Attachment12_ary = [];
     this._lstMultipleFiales = [];
     this.maxDate = null;
+    this.isValidURL=true
     this.EventNumber=null;
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
@@ -6004,6 +6100,9 @@ if(this.editTask && this.selectedrecuvalue =='2'){
   selected: Date | null;
 
   OnSubmitReSchedule(type: number) {
+     if(this.Link_Details){
+    this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
+    }
 
     if (
       this.Title_Name &&
@@ -6011,7 +6110,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
       this.Endtms &&
       this.MinLastNameLength
       && (this.ScheduleType === 'Event' ?  this.allAgendas.length > 0  : true)
-      && (this.Description_Type?(this.characterCount<=500):true)
+      && (this.Description_Type?(this.characterCount<=500):true) &&   this.isValidURL 
     ) {
 
     this._calenderDto.flagid = this._PopupConfirmedValue;
@@ -6278,10 +6377,6 @@ if(this.editTask && this.selectedrecuvalue =='2'){
       }
 
 
-debugger
-
-
-
       this._attachmentValue = 0;
       
       const frmData = new FormData();
@@ -6292,7 +6387,7 @@ debugger
         this._attachmentValue = 1;
       else
         this._attachmentValue = 0;
-
+debugger
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
@@ -6324,7 +6419,7 @@ debugger
                     console.log('User successfully created!', event.body);
 
                     // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+                    // (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
                     this._lstMultipleFiales = [];
                     // empty(this._lstMultipleFiales);
                     // alert(this._lstMultipleFiales.length);
@@ -6332,10 +6427,10 @@ debugger
                       this.progress = 0;
                     }, 1500);
 
-                    (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                    (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                    // (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                    // (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
                     // document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                    document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+                    // document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
                 }
               }
             )
@@ -7554,7 +7649,7 @@ onParticipantFilter(){
   }
 
 
-
+  isValidURL = true;
 
   onSubmitBtnClicked() {
 
@@ -7878,6 +7973,33 @@ this.allActivityList.forEach(activity => {
   }
 });
 
+// Link details undefined subjects start
+this.allActivityList.forEach(activity => {
+  if (activity.Value === "Link details changed") {
+    ["Old_Value", "New_Value"].forEach(key => {
+      activity[key] = activity[key].map(item => {
+        if (item.name) {
+          item.name = item.name
+            .split(", ")
+            .filter(part => !part.includes("undefined") && !part.includes("null"))
+            .join(", ");
+        }
+        return item;
+      });
+    });
+  }
+});
+
+// Link details undefined subjects end
+
+this.allActivityList.forEach(obj => {
+  if (["Joined meeting", "Meeting Started"].includes(obj.Value)) {
+    obj.New_Value[0].name = obj.New_Value[0].name.replace(
+      /\bat: (\d{2}):(\d{2}):(\d{2})\b/,
+      (_, h, m) => `at: ${(h % 12 || 12)}:${m} ${+h < 12 ? "AM" : "PM"}`
+    );
+  }
+});
 
 console.log(this.allActivityList,'allActivityList')
   })
@@ -7921,7 +8043,7 @@ viewconfirm() {
   // alert(this._OldRecurranceValues+"-    Old values" +_arraytext.toString()+ "-   New values");
   // alert(this._OldRecurranceValues+"-    Old values" +this.maxDate+ "-   New values");
 
-debugger
+
   if (this._OldRecurranceId != this.selectedrecuvalue || this._OldRecurranceValues != _arraytext.toString()) {
 
     //   Swal.fire({
@@ -7988,8 +8110,9 @@ getFileType(fileName: string): string {
 copied = false;
 
   copyLink() {
+    debugger
     const textarea = document.createElement('textarea');
-    textarea.value = this.Link_Detail;
+    textarea.value = this.Link_Detail.split('Meeting link:- ')[1].split(',')[0];
     document.body.appendChild(textarea);
     textarea.select();
     document.execCommand('copy');
@@ -8057,5 +8180,22 @@ newDetails(ProjectCode) {
 hasValidOldValue(item: any): boolean {
   return item?.Old_Value?.some((data: any) => data.name && data.name.trim() !== '') ?? false;
 }
+
+
+
+validateURL(value: string): void {
+  if(value){
+    this.isValidURL = /^(https?:\/\/)/.test(value);
+  }else{
+    this.isValidURL=true
+  }
+  
+}
+
+
+
+
+
+
 
 }

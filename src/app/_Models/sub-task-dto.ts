@@ -28,7 +28,7 @@ export class SubTaskDTO {
   Formdata:FormData;
   Attachments2:string;
   Remarks:string;
-
+  file:any;
   SubtaskDescription:string;
   Duration:number;
   Emp_No:string;
