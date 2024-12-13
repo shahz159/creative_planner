@@ -549,9 +549,6 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
   console.log(this.cancellationPort,"this.cancellationPort.cancellationPort")
 
 
-
-
-
     // this.checking = this._ProjectsListBy_Pid.some((emp) => {
 
     // return emp.Team_Res === this.UserfullName || emp.Project_Owner===this.UserfullName ;
@@ -6641,18 +6638,9 @@ isDepartment = false
 
   isAllPrjSelected : boolean = false
 
-
-
-
-
-
-
-
-
-
-
   selectUnselectPagePrjs(evt){
 debugger
+
 this.isAllPrjSelected = evt.checked
 if(this.isAllPrjSelected){
   const selprjs = this.allSelectedProjects.map(x=>x.Project_Code)
@@ -6668,6 +6656,7 @@ else{
            return !curPagePrjs.includes(item.Project_Code)
     });
 }
+this.isapprovlFound=this.allSelectedProjects.some((ob)=>ob.PendingapproverEmpNo&&ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
   }
 
 
@@ -6715,52 +6704,30 @@ validateURL(value: string): void {
 
 
 
-// Displayprojectlist() {
-//   if (this._portfolioName != "") {
-//     this._portfolioName = this._portfolioName.trim();
-//     localStorage.setItem("_PortfolioName", this._portfolioName);
-//     let portId: any = 0;
-//     localStorage.setItem('Pid', portId);
-
-//     this.service.AlreadyExistsPortfolioService(this._portfolioName).
-//       subscribe(data => {
-//         if (data['result'] == 0) {
-//           this.notifyService.showError("Portfolio With this Name ", "Already Exists");
-//           this.alreadyExists = "! Portfolio already exists with this name";
-//         }
-//         else {
-//           this.addPrjsToPortflio()
-
-//         }
-//       });
-//     }}
-
-// code of making new portfolio end
-
-
-
-
-
-
 // starting portfolio creating
 
-
+isapprovlFound:boolean = false
+found : boolean= false;
 allSelectedProjects = [];
 selectUnSelectProject(e, item) {
-  debugger
+
     if (e.checked) {
       this.allSelectedProjects.push(item)
       const allselec = this._ProjectsListBy_Pid.every(item => {
         return this.allSelectedProjects.map(p => p.Project_Code).includes(item.Project_Code)
       })
       this.isAllPrjSelected = allselec
+
     }
     else {   // when unchecked
       let index = this.allSelectedProjects.findIndex(obj => obj.Project_Code == item.Project_Code)
       if (index != -1)
         this.allSelectedProjects.splice(index, 1);
       this.isAllPrjSelected = false;
+
     }
+
+    this.isapprovlFound=this.allSelectedProjects.some((ob)=>ob.PendingapproverEmpNo&&ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
 
 }
 
@@ -6770,10 +6737,6 @@ isProjectSelected(prjcode: any): boolean {
   return   this.allSelectedProjects.map(x => x.Project_Code).includes(prjcode);
 
 }
-
-
-
-
 
 
 createNewPortfolio(){
@@ -6801,19 +6764,11 @@ createNewPortfolio(){
 
 
 addPrjsToPortflio() {
-  // this.alreadyExists = "";
-  // let name: string = 'AddProjectsToPortfolio';
-  // var url = document.baseURI + name;
-  // var myurl = `${url}/${this._portfolioName}`;
-  // var myWindow = window.open(myurl, this._portfolioName);
-  // myWindow.focus();
 
     if(this.allSelectedProjects.length>0){
 
       const selectedPrjs=this.allSelectedProjects;
       let LengthOfSelectedItems = JSON.stringify(selectedPrjs.length);
-
-
       this.Obj_Portfolio_DTO.Created_By =this.Current_user_ID;
       this.Obj_Portfolio_DTO.Modified_By = this.Current_user_ID;
       this.Obj_Portfolio_DTO.Portfolio_ID = 0;
@@ -6833,8 +6788,6 @@ addPrjsToPortflio() {
             var myurl = `${url}/${Mode}`;
             var myWindow = window.open(myurl);
             myWindow.focus();
-            // this.router.navigate(["../portfolioprojects/" + this.Portfolio_ID+"/"]);
-
             this.allSelectedProjects=[];
             this.isAllPrjSelected = false
             this.value()
@@ -6890,28 +6843,8 @@ submitAprvlsWithCmts(){
 approvingRequest = []
 acceptSelectedValues(_comments?:string) {
 debugger
-  // this.allSelectedProjects.forEach((item)=>{
-  //   if( item.PendingapproverEmpNo.trim() == this.Current_user_ID){
-  //     this.approvingRequest.push(item)
-  //     console.log(this.approvingRequest,'this.approvingRequestthis.approvingRequest')
-  //   }
-
-  // })
-
-
-
-
-
-
-debugger
-  console.log(this.allSelectedProjects,"accept");
 
 if( this.approvingRequest.length > 0 ){
-
-
-
-
-
 
   let withCmts=false;
   if(_comments&&_comments.trim()){
@@ -6924,30 +6857,17 @@ if( this.approvingRequest.length > 0 ){
     // ob.Duration = 0;
   });
 
-
-
   this.approvalservice.NewUpdateAcceptApprovalsService(this.approvingRequest).subscribe(data =>{
     console.log(data,"accept-data");
       const checkbox = document.getElementById('snocheck') as HTMLInputElement;
       checkbox.checked = false;
       this.notifyService.showSuccess("Project(s) approved successfully.",'Success');
 
-      // this.applyFilters();
-
       this.approvingRequest=[];
       this.allSelectedProjects=[];
 
-      // this.selectedItem_Emp=[];
-      // if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
-      //   && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
-      //   this.edited = false;
-      // }
-      // else {
-      //   this.edited = true;
-      // }
-
       this.GetPortfolioProjectsByPid()
-
+      this.isapprovlFound = false
     if(withCmts){     // close the accept with comments sidebar if approving with comments is on.
         this.closeInfo();
     }
@@ -7081,7 +7001,6 @@ rejectApproval() {
 
 }
 
-
 resetReject(){
   this.noRejectType = false;
   this.comments = "";
@@ -7098,19 +7017,18 @@ submitReject(){
   console.log(this.allSelectedProjects,"reject1");
   if( this.allSelectedProjects.length > 0){
 
-
-
     this.approvalservice.NewUpdateRejectApprovalsService(this.approvingRequest).subscribe(data =>{
       console.log(data,"reject-data");
 
       this.allSelectedProjects=[];
       this.approvingRequest = []
+      this.GetPortfolioProjectsByPid()
+      this.isapprovlFound = false
     });
     const checkbox = document.getElementById('snocheck') as HTMLInputElement;
     checkbox.checked = false;
     this.allSelectedProjects=[];
     this.notifyService.showSuccess("Project(s) rejected successfully.",'Success');
-    this.GetPortfolioProjectsByPid()
   }
   else{
     this.notifyService.showInfo("Please select atleast one project to reject.",'');

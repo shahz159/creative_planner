@@ -2072,7 +2072,7 @@
             </div>
         </div>
         <div *ngIf="selectedProjecttype=='011'" style="color:grey">To do list not more than 3 Days </div>
-        <span *ngIf="noStartDate==true" style="color:red">Please select start date</span>
+        <span *ngIf="noStartDate==true" style="color:red">Please select start date.</span>
     </div>
 
 <div class="form-group flex-1" *ngIf="_StartDate!=null">
@@ -2086,7 +2086,7 @@
                 <mat-datepicker #picker2></mat-datepicker>
             </div>
         </div>
-        <span *ngIf ="!_EndDate" style="color:red">Please select end date</span>
+        <span *ngIf ="!_EndDate" style="color:red">Please select end date.</span>
     </div>
     <div class="form-group flex-1" *ngIf="_StartDate==null">
         <label>End date :</label>
@@ -2115,7 +2115,7 @@
 
 <div class="form-group  mb-2">
 <div class="custom-file pl-1">
-    <button type="button" class="btn btn-primary cursor-pointer" (click)="selectFile()">Choose file</button>
+    <button type="button" class="btn btn-primary cursor-pointer btn btn-sm" (click)="selectFile()">Choose file</button>
     <span *ngIf="file" class="selected-file">{{ file.name }}</span>
     <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
     <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
@@ -2146,7 +2146,7 @@
 
 
       </ng-select>
-      <span *ngIf ="!selectedEmpNo&&formFieldsRequired" style="color:red">Please select employee to assign</span>
+      <span *ngIf ="!selectedEmpNo&&formFieldsRequired" style="color:red">Please select employee to assign.</span>
   </div>
 
 
@@ -2173,7 +2173,7 @@
               <span>{{item.Project_Name}} </span>
           </ng-option>
       </ng-select>
-      <span *ngIf="!selectedProjectCode && formFieldsRequired"  style="color:red" >Please select project</span>
+      <span *ngIf="!selectedProjectCode && formFieldsRequired"  style="color:red" >Please select project.</span>
 
 
 
@@ -2218,7 +2218,7 @@
                 </div>
 
             </div>
-            <span *ngIf="!_StartDate&&formFieldsRequired" class="text-danger">Please select start date</span>
+            <span *ngIf="!_StartDate&&formFieldsRequired" class="text-danger">Please select start date.</span>
         </div>
         <div class="form-group flex-1 details-date">
             <label>End Date :<span class="text-danger">*</span></label>
@@ -2231,7 +2231,7 @@
                 </div>
 
             </div>
-            <span *ngIf="!_EndDate&&formFieldsRequired" class="text-danger">Please select end date</span>
+            <span *ngIf="!_EndDate&&formFieldsRequired" class="text-danger">Please select end date.</span>
         </div>
  </div>
 
@@ -2250,7 +2250,7 @@
   <!-- <span *ngIf;="allocated.touched&&!_allocated"; style="color:red">Allocated; hours; required!; Enter; non-decimal; value&nbsp;</span> -->
   <span *ngIf="_allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span>
   <span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
-  <span *ngIf="this.formFieldsRequired&&!_allocated" style="color:red">Allocated hours required. Hours should not be in decimal </span>
+  <span *ngIf="this.formFieldsRequired&&!_allocated" style="color:red">Allocated hours required. Hours should not be in decimal. </span>
   <span *ngIf="(_allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value, It accept only numeric and non-negative value. </span>
   <span *ngIf="this._StartDate == null || this._EndDate == null" >{{ _message}} </span>
   <!-- <span *ngIf="formFieldsRequired&&!_allocated" style="color:red"> Please enter allocated hour</span> -->
@@ -2273,7 +2273,7 @@
 
     <div class="form-group  mb-2">
       <div class="custom-file pl-1">
-          <button type="button" class="btn btn-primary cursor-pointer" (click)="selectFile()">Choose file</button>
+          <button type="button" class="btn btn-primary cursor-pointer btn btn-sm" (click)="selectFile()">Choose file</button>
           <span *ngIf="file" class="selected-file">{{ file.name }}</span>
           <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
           <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
@@ -2294,14 +2294,14 @@
   </div>
   <div class="unassign-editsidebar-footer" *ngIf="selectedOption === 'option1'">
       <div class="footicon cls" (click)="unassign_closeInfo()">
-          <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M7.774 5.263a.7.7 0 11.952-1.026l3.5 3.25a.7.7 0 010 1.026l-3.5 3.25a.7.7 0 01-.952-1.026L10.72 8 7.774 5.263z"></path> <path fill-rule="evenodd" d="M1 3.25A2.25 2.25 0 013.25 1h9.5A2.25 2.25 0 0115 3.25v9.5A2.25 2.25 0 0112.75 15h-9.5A2.25 2.25 0 011 12.75v-9.5zm2.25-.75a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.3v-11h-1.3zm9.5 11h-6.8v-11h6.8a.75.75 0 01.75.75v9.5a.75.75 0 01-.75.75z" clip-rule="evenodd"></path> </g> </g></svg>
-          <span class="lbl-hdn">Close</span>
+          <!-- <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M7.774 5.263a.7.7 0 11.952-1.026l3.5 3.25a.7.7 0 010 1.026l-3.5 3.25a.7.7 0 01-.952-1.026L10.72 8 7.774 5.263z"></path> <path fill-rule="evenodd" d="M1 3.25A2.25 2.25 0 013.25 1h9.5A2.25 2.25 0 0115 3.25v9.5A2.25 2.25 0 0112.75 15h-9.5A2.25 2.25 0 011 12.75v-9.5zm2.25-.75a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.3v-11h-1.3zm9.5 11h-6.8v-11h6.8a.75.75 0 01.75.75v9.5a.75.75 0 01-.75.75z" clip-rule="evenodd"></path> </g> </g></svg> -->
+          <span class="btn btn-secondary btn-sm ml-2">Close</span>
         </div>
       <div class="foottext">Created on {{selected_date  | date:'dd-MM-yyyy'}}</div>
       <div class="sub-act">
           <div class="footicon save" (click)="assignTasksub1()"  >
-              <svg width="64px" height="64px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="currentColor"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z" fill="currentColor"></path></g></svg>
-              <span class="lbl-hdn">Assign</span>
+              <!-- <svg width="64px" height="64px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="currentColor"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z" fill="currentColor"></path></g></svg> -->
+              <span class="btn btn-info btn-sm">Assign</span>
             </div>
           <!-- <div class="footicon delete">
               <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -2313,14 +2313,14 @@
   <div class="unassign-editsidebar-footer">
     <div class="footicon cls" (click)="unassign_closeInfo();
     resetActionvalue()">
-        <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M7.774 5.263a.7.7 0 11.952-1.026l3.5 3.25a.7.7 0 010 1.026l-3.5 3.25a.7.7 0 01-.952-1.026L10.72 8 7.774 5.263z"></path> <path fill-rule="evenodd" d="M1 3.25A2.25 2.25 0 013.25 1h9.5A2.25 2.25 0 0115 3.25v9.5A2.25 2.25 0 0112.75 15h-9.5A2.25 2.25 0 011 12.75v-9.5zm2.25-.75a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.3v-11h-1.3zm9.5 11h-6.8v-11h6.8a.75.75 0 01.75.75v9.5a.75.75 0 01-.75.75z" clip-rule="evenodd"></path> </g> </g></svg>
-        <span class="lbl-hdn">Close</span>
+        <!-- <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M7.774 5.263a.7.7 0 11.952-1.026l3.5 3.25a.7.7 0 010 1.026l-3.5 3.25a.7.7 0 01-.952-1.026L10.72 8 7.774 5.263z"></path> <path fill-rule="evenodd" d="M1 3.25A2.25 2.25 0 013.25 1h9.5A2.25 2.25 0 0115 3.25v9.5A2.25 2.25 0 0112.75 15h-9.5A2.25 2.25 0 011 12.75v-9.5zm2.25-.75a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.3v-11h-1.3zm9.5 11h-6.8v-11h6.8a.75.75 0 01.75.75v9.5a.75.75 0 01-.75.75z" clip-rule="evenodd"></path> </g> </g></svg> -->
+        <span class="btn btn-secondary btn-sm ml-2">Close</span>
       </div>
     <div class="foottext">Created today</div>
     <div class="sub-act">
         <div class="footicon save" (click)="sweetAlert()"  >
-            <svg width="64px" height="64px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="currentColor"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z" fill="currentColor"></path></g></svg>
-            <span class="lbl-hdn">Submit</span>
+            <!-- <svg width="64px" height="64px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="currentColor"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z" fill="currentColor"></path></g></svg> -->
+            <span class="btn btn-info btn-sm">Submit</span>
           </div>
         <!-- <div class="footicon delete">
             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -2536,7 +2536,7 @@
 
 <div class="form-group  mb-2 " *ngIf="ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].FileName">
 <div class="custom-file pl-1">
-<span class="non-clickable">  <button type="button" class="btn btn-primary cursor-pointer" (click)="selectFile()">Choose file</button></span>
+<span class="non-clickable">  <button type="button" class="btn btn-primary cursor-pointer btn btn-sm" (click)="selectFile()">Choose file</button></span>
   <!-- <span *ngIf="file" class="selected-file">{{ file.name }}</span> -->
   <a class="text-primary" (click)="LoadDocument(ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Reference)" ><i class="fas text-muted mr-1"></i>{{ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].FileName}}</a>
   <!-- <span *ngIf="file" class="selected-file">{{ file.name }}</span> -->
@@ -2718,7 +2718,7 @@
           </div>
       </div>
       <div *ngIf="Proj_type=='011'" style="color:grey">To do list not more than 3 Days </div>
-      <span *ngIf="noStartDate==true" style="color:red">Please select start date</span>
+      <span *ngIf="noStartDate==true" style="color:red">Please select start date.</span>
   </div>
 
 <div class="form-group flex-1" *ngIf="Start__Date!=null">
@@ -2732,7 +2732,7 @@
               <mat-datepicker #picker2></mat-datepicker>
           </div>
       </div>
-      <span *ngIf ="!End__Date " style="color:red">Please select end date</span>
+      <span *ngIf ="!End__Date " style="color:red">Please select end date.</span>
   </div>
   <div class="form-group flex-1" *ngIf="Start__Date==null">
       <label>End date :</label>
@@ -2762,7 +2762,7 @@
 
 <div class="form-group  mb-2">
 <div class="custom-file pl-1">
-  <button type="button" class="btn btn-primary cursor-pointer" (click)="selectFile()">Choose file</button>
+  <button type="button" class="btn btn-primary cursor-pointer btn btn-sm" (click)="selectFile()">Choose file</button>
   <span *ngIf="file" class="selected-file">{{ file.name }}</span>
   <a (click)="LoadDocument(ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Reference)" ><i class="fas text-muted mr-1"></i></a>
   <span  *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null;ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].FileName=null">✖</span>
@@ -2779,14 +2779,14 @@
   <div class="unassign-editsidebar-footer">
     <div class="footicon cls" (click)="closeditassignPending();
     resetActionvalue()">
-        <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M7.774 5.263a.7.7 0 11.952-1.026l3.5 3.25a.7.7 0 010 1.026l-3.5 3.25a.7.7 0 01-.952-1.026L10.72 8 7.774 5.263z"></path> <path fill-rule="evenodd" d="M1 3.25A2.25 2.25 0 013.25 1h9.5A2.25 2.25 0 0115 3.25v9.5A2.25 2.25 0 0112.75 15h-9.5A2.25 2.25 0 011 12.75v-9.5zm2.25-.75a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.3v-11h-1.3zm9.5 11h-6.8v-11h6.8a.75.75 0 01.75.75v9.5a.75.75 0 01-.75.75z" clip-rule="evenodd"></path> </g> </g></svg>
-        <span class="lbl-hdn">Close</span>
+        <!-- <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M7.774 5.263a.7.7 0 11.952-1.026l3.5 3.25a.7.7 0 010 1.026l-3.5 3.25a.7.7 0 01-.952-1.026L10.72 8 7.774 5.263z"></path> <path fill-rule="evenodd" d="M1 3.25A2.25 2.25 0 013.25 1h9.5A2.25 2.25 0 0115 3.25v9.5A2.25 2.25 0 0112.75 15h-9.5A2.25 2.25 0 011 12.75v-9.5zm2.25-.75a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.3v-11h-1.3zm9.5 11h-6.8v-11h6.8a.75.75 0 01.75.75v9.5a.75.75 0 01-.75.75z" clip-rule="evenodd"></path> </g> </g></svg> -->
+        <span class="btn btn-secondary btn-sm ml-2">Close</span>
       </div>
     <div  title="Created date" class="foottext">{{ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Creation_Date | date: 'd MMM, y'}} </div>
     <div class="sub-act">
         <div class="footicon save"   (click)="pendingUpdatesection()" *ngIf="ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status=='Pending'"  >
-            <svg width="64px" height="64px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="currentColor"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z" fill="currentColor"></path></g></svg>
-            <span class="lbl-hdn">Update</span>
+            <!-- <svg width="64px" height="64px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="currentColor"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z" fill="currentColor"></path></g></svg> -->
+            <span class="btn btn-info btn-sm">Update</span>
           </div>
     </div>
 </div>
@@ -2969,7 +2969,7 @@ class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline ho
                </div>
 
            </div>
-           <span *ngIf="formFieldsRequired" class="text-danger">Please select start date</span>
+           <span *ngIf="formFieldsRequired" class="text-danger">Please select start date.</span>
        </div>
        <div class="form-group flex-1 details-date">
            <label>End Date :<span class="text-danger">*</span></label>
@@ -2982,7 +2982,7 @@ class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline ho
                </div>
 
            </div>
-           <span *ngIf="formFieldsRequired" class="text-danger">Please select end date</span>
+           <span *ngIf="formFieldsRequired" class="text-danger">Please select end date.</span>
        </div>
 </div>
 
@@ -3004,7 +3004,7 @@ class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline ho
 
 <div class="form-group mb-2" *ngIf="ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].FileName"  >
  <div class="custom-file pl-1">
-  <span class="non-clickable">   <button type="button" class="btn btn-primary " (click)="selectFile()">Choose file</button></span>
+  <span class="non-clickable">   <button type="button" class="btn btn-primary btn btn-sm" (click)="selectFile()">Choose file</button></span>
      <span *ngIf="selectedFileName" class="selected-file">{{ selectedFileName }}</span>
      <a   class="text-primary" (click)="LoadDocument(ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].Reference)" ><i class="fas text-muted mr-1"></i>{{ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].FileName}}</a>
      <!-- <span *ngIf="ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].FileName" class="delete-icon cursor-pointer" (click)="thisFileName=null">✖</span>
@@ -3137,14 +3137,14 @@ class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline ho
  <div class="unassign-editsidebar-footer">
    <div class="footicon cls" (click)="closedActionassign();
    resetActionvalue()">
-       <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M7.774 5.263a.7.7 0 11.952-1.026l3.5 3.25a.7.7 0 010 1.026l-3.5 3.25a.7.7 0 01-.952-1.026L10.72 8 7.774 5.263z"></path> <path fill-rule="evenodd" d="M1 3.25A2.25 2.25 0 013.25 1h9.5A2.25 2.25 0 0115 3.25v9.5A2.25 2.25 0 0112.75 15h-9.5A2.25 2.25 0 011 12.75v-9.5zm2.25-.75a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.3v-11h-1.3zm9.5 11h-6.8v-11h6.8a.75.75 0 01.75.75v9.5a.75.75 0 01-.75.75z" clip-rule="evenodd"></path> </g> </g></svg>
-       <span class="lbl-hdn">Close</span>
+       <!-- <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M7.774 5.263a.7.7 0 11.952-1.026l3.5 3.25a.7.7 0 010 1.026l-3.5 3.25a.7.7 0 01-.952-1.026L10.72 8 7.774 5.263z"></path> <path fill-rule="evenodd" d="M1 3.25A2.25 2.25 0 013.25 1h9.5A2.25 2.25 0 0115 3.25v9.5A2.25 2.25 0 0112.75 15h-9.5A2.25 2.25 0 011 12.75v-9.5zm2.25-.75a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.3v-11h-1.3zm9.5 11h-6.8v-11h6.8a.75.75 0 01.75.75v9.5a.75.75 0 01-.75.75z" clip-rule="evenodd"></path> </g> </g></svg> -->
+       <span class="btn btn-secondary btn-sm ml-2">Close</span>
      </div>
    <div  title="Created date" class="foottext">{{ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].Creation_Date | date: 'd MMM, y'}} </div>
    <div class="sub-act">
        <div class="footicon save" *ngIf="ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].Status=='Pending'"  >
-           <svg width="64px" height="64px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="currentColor"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z" fill="currentColor"></path></g></svg>
-           <span class="lbl-hdn">Update</span>
+           <!-- <svg width="64px" height="64px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="currentColor"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z" fill="currentColor"></path></g></svg> -->
+           <span class="btn btn-info btn-sm">Update</span>
          </div>
        <!-- <div class="footicon delete">
            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>

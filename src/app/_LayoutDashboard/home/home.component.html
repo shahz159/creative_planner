@@ -392,12 +392,13 @@
                 <div class="kt-portlet__head portfolio-tool-head">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            <strong *ngIf="activeClassAll==true">All portfolio list <span class="head-title-count">{{countAll}}</span></strong>
-                            <strong *ngIf="activeClassFav==true">Favorite portfolio list<span class="head-title-count">{{countFav}}</span></strong>
-                            <strong *ngIf="activeClassOwners==true">Owner portfolio list<span class="head-title-count">{{countOwners}}</span></strong>
-                            <strong *ngIf="activeClassShare==true">Shared portfolio list<span class="head-title-count">{{countShare}}</span></strong>
+                            <strong *ngIf="activeClassAll==true">All portfolio list </strong>
+                            <strong *ngIf="activeClassFav==true">Favorite portfolio list</strong>
+                            <strong *ngIf="activeClassOwners==true">Owner portfolio list</strong>
+                            <strong *ngIf="activeClassShare==true">Shared portfolio list</strong>
                             <!-- <strong> Portfolio List</strong> -->
                         </h3>
+                        <!-- <span class="head-title-count"></span></strong> -->
                         <!-- <span *ngIf="searchResult == true" style="color:gray"> About (<b>{{_CurrentpageRecords}}</b>) results
                             found of page {{Portfolio_CurrentPage}}. </span> -->
                     </div>
@@ -474,11 +475,24 @@
                          (click)="Portfolio_CurrentPage = Portfolio_CurrentPage + 1;getPortfolio_List()" >
                          <i class="fas fa-angle-right mr-0"></i>
                      </button> -->
-                     <label class="mx-1" *ngIf="activeClassAll==true">{{this._ListProjStat&&this._ListProjStat.length * Portfolio_CurrentPage - (this._ListProjStat&&this._ListProjStat.length) + 1}} - {{this._ListProjStat&&this._ListProjStat.length  * Portfolio_CurrentPage}}   of {{countAll}}</label>
-                     <label class="mx-1" *ngIf="activeClassFav==true">{{this._ListProjStat&&this._ListProjStat.length * Portfolio_FavoritePage - (this._ListProjStat&&this._ListProjStat.length) + 1}} - {{this._ListProjStat&&this._ListProjStat.length  * Portfolio_FavoritePage}} of {{countFav}}</label>
-                     <label class="mx-1" *ngIf="activeClassOwners==true">{{this._ListProjStat&&this._ListProjStat.length * Portfolio_OwnerPage - (this._ListProjStat&&this._ListProjStat.length) + 1}} - {{this._ListProjStat&&this._ListProjStat.length  * Portfolio_OwnerPage}} of {{countOwners}} </label>
-                     <label class="mx-1" *ngIf="activeClassShare==true">{{this._ListProjStat&&this._ListProjStat.length * Portfolio_SharedPage - (this._ListProjStat&&this._ListProjStat.length) + 1}} - {{this._ListProjStat&&this._ListProjStat.length  * Portfolio_SharedPage}} of {{countShare}} </label>
-                         <!-- Pagenation End -->
+                     <label class="mx-1" *ngIf="activeClassAll==true&&this._ListProjStat&&_ListProjStat.length == 30">{{this._ListProjStat&&this._ListProjStat.length * Portfolio_CurrentPage - (this._ListProjStat&&this._ListProjStat.length) + 1}} - {{this._ListProjStat&&this._ListProjStat.length  * Portfolio_CurrentPage}}   of {{countAll}}</label>
+                     <label class="mx-1" *ngIf="activeClassAll==true&&this._ListProjStat&&_ListProjStat.length < 30">{{countAll  - (this._ListProjStat&&this._ListProjStat.length) +1 }}  - {{countAll}}   of {{countAll}}</label>
+
+
+                     <label class="mx-1" *ngIf="activeClassFav==true&&this._ListProjStat&&_ListProjStat.length == 30">{{this._ListProjStat&&this._ListProjStat.length * Portfolio_FavoritePage - (this._ListProjStat&&this._ListProjStat.length) + 1}} - {{this._ListProjStat&&this._ListProjStat.length  * Portfolio_FavoritePage}} of {{countFav}}</label>
+                     <label  class="mx-1" *ngIf="activeClassFav==true&&this._ListProjStat&&_ListProjStat.length < 30"> {{countFav  - (this._ListProjStat&&this._ListProjStat.length) +1 }}  - {{countFav}}   of {{countFav}}</label>
+
+
+                     <label class="mx-1" *ngIf="activeClassOwners==true&&this._ListProjStat&&_ListProjStat.length == 30">{{this._ListProjStat&&this._ListProjStat.length * Portfolio_OwnerPage - (this._ListProjStat&&this._ListProjStat.length) + 1}} - {{this._ListProjStat&&this._ListProjStat.length  * Portfolio_OwnerPage}} of {{countOwners}} </label>
+                     <label class="mx-1" *ngIf="activeClassOwners==true&&this._ListProjStat&&_ListProjStat.length < 30">{{countOwners  - (this._ListProjStat&&this._ListProjStat.length) +1 }}  - {{countOwners}}   of {{countOwners}}</label>
+
+
+                     <label class="mx-1" *ngIf="activeClassShare==true&&this._ListProjStat&&_ListProjStat.length == 30">{{this._ListProjStat&&this._ListProjStat.length * Portfolio_SharedPage - (this._ListProjStat&&this._ListProjStat.length) + 1}} - {{this._ListProjStat&&this._ListProjStat.length  * Portfolio_SharedPage}} of {{countShare}} </label>
+                     <label class="mx-1" *ngIf="activeClassShare==true&&this._ListProjStat&&_ListProjStat.length < 30">{{countShare  - (this._ListProjStat&&this._ListProjStat.length) +1 }}  - {{countShare}}   of {{countShare}}</label>
+
+
+
+                     <!-- Pagenation End -->
                            </div>
                            <div class="dropdown">
                             <button class="btn btn-view-portfolio dropdown-toggle" type="button" id="dropdownviewportfolioMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -951,7 +965,7 @@
                                             </div>
                                             <div class="n-portfolio-action">
                                                 <div class="p-g-more btn-group">
-                                                    <div data-toggle="dropdown" title="Click to delete portfolio" class="btn btn-more" aria-haspopup="true" aria-expanded="false" (click)="_deletePortfolio(item.Portfolio_ID,item.Portfolio_Name,item.Created_By,item.Created_DT,item.ProjectsCount,item.Status)">
+                                                    <div data-toggle="dropdown" title="Click to delete the portfolio" class="btn btn-more" aria-haspopup="true" aria-expanded="false" (click)="_deletePortfolio(item.Portfolio_ID,item.Portfolio_Name,item.Created_By,item.Created_DT,item.ProjectsCount,item.Status)">
                                                         <!-- <svg fill="currentColor" height="64px" width="64px" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path class="cls-1" d="M8,6.5A1.5,1.5,0,1,1,6.5,8,1.5,1.5,0,0,1,8,6.5ZM.5,8A1.5,1.5,0,1,0,2,6.5,1.5,1.5,0,0,0,.5,8Zm12,0A1.5,1.5,0,1,0,14,6.5,1.5,1.5,0,0,0,12.5,8Z"></path> </g></svg> -->
                                                         <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M18.8332 8.5L18.3732 15.3991C18.1962 18.054 18.1077 19.3815 17.2427 20.1907C16.3777 21 15.0473 21 12.3865 21H11.6132C8.95235 21 7.62195 21 6.75694 20.1907C5.89194 19.3815 5.80344 18.054 5.62644 15.3991L5.1665 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M9.5 11L10 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M14.5 11L14 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6" stroke="currentColor" stroke-width="1.5"></path> </g></svg>
 
