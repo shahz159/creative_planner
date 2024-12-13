@@ -86,6 +86,7 @@ export class ProjectTypeService {
     this.aprvDtoObj= new ApprovalDTO();
   }
   readonly rootUrl = this.commonUrl.apiurl;
+  readonly rootUrlcore = this.commonUrl.apiurlcore;
 
   GetProjectTypeList() {
     let EmpNo = localStorage.getItem('EmpNo');
@@ -751,6 +752,32 @@ export class ProjectTypeService {
     // this.ObjSubTaskDTO.Remarks = obj.Remarks;
     // this.ObjSubTaskDTO.Attachments = obj.Attachments;
     return this.http.post(this.rootUrl + "Notification/NewInsertSubTaskByProjectCode", data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
+    //Notification/NewInsertSubTaskByProjectCode
+
+
+  }
+
+  _InsertNewSubtaskcore(data) {
+   
+    return this.http.post(this.rootUrlcore + "Notification/NewInsertSubTaskByProjectCodeCore", data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
+    //Notification/NewInsertSubTaskByProjectCode
+
+
+  }
+
+  _AzureUploadNewAction(data) {
+   
+    return this.http.post(this.rootUrlcore + "Azure/NewInsertSubTaskByProjectCodeCore", data, {
       reportProgress: true,
       observe: 'events'
     }).pipe(

@@ -1,7 +1,13 @@
 <ng-container *ngIf="projectInfo;else pleasewait">
   <ng-container *ngIf="(projectInfo.isProject==undefined&&projectInfo.isTask==undefined); else noproject">
         <ng-container *ngIf="(userFound!==undefined&&isHierarchy!==undefined);else pleasewait">
-
+            <div class="col-md-12 progress_container mt-mc-20" *ngIf="ShowProgress">
+                <div class="progress form-group" *ngIf="progress > 0">
+                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress">
+                        File upload status: {{progress}}%
+                    </div>
+                </div>
+            </div>
             <ng-container *ngIf="(userFound===true||isHierarchy===true)else accessdenied">
                 <div class="kt-container-fluid kt-grid__item kt-grid__item--fluid margin-height side_view m-0 pt-3 p-3 w-100"
                     id="newdetails">

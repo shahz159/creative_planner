@@ -804,7 +804,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   Pid: any;
 
   calculateProjectActions() {
-    debugger
+    
     if (this.projectActionInfo) {
       // all must be zero before calculation.
       this.TOTAL_ACTIONS_DONE = 0;
@@ -1025,7 +1025,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
        this.delayActionsOfEmps=[];   // must be empty before calculation.
           this.filteremployee.forEach((emp)=>{
             let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
-            if(delayActionsOfEmp.length>0){  debugger
+            if(delayActionsOfEmp.length>0){  
               delayActionsOfEmp=delayActionsOfEmp.sort((a,b)=>b.Delaydays-a.Delaydays)
               const percentInDelay=((delayActionsOfEmp[0].Delaydays/this.projectInfo.Delaydays)*100).toFixed(1);
               this.delayActionsOfEmps.push({ name:emp.Responsible, emp_no:emp.Team_Res, delayActions:delayActionsOfEmp, percentInDelay:percentInDelay})
@@ -1069,7 +1069,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                   this.pendingActns4Aprvls.push({ name:actn.Responsible, empno:actn.Team_Res, totalApprovals:1   });
             }
 
-debugger
+
             if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno!=actn.Team_Res)){
               this.actionsAssignedByMe+=1;
             }
@@ -1281,7 +1281,7 @@ debugger
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-debugger
+
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
           console.log(this.Project_List,"dddddd")
@@ -1849,7 +1849,7 @@ multipleback(){
 }
 
 
-  closeInfo() {   debugger
+  closeInfo() {   
     this._remarks = '';
     this.characterCount=0;
     this.characterCount_Action=0;
@@ -2342,7 +2342,7 @@ multipleback(){
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
       this.approvalsFetching=false;    // fetched approvals or processing end.
       this.requestDetails = data as [];
-      console.log(this.requestDetails, "approvals");  debugger
+      console.log(this.requestDetails, "approvals");  
       if (this.requestDetails.length > 0) {
         this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
         this.requestType = (this.requestDetails[0]['Request_type']);
@@ -2375,7 +2375,7 @@ multipleback(){
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
         //this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
         this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
-        debugger
+        
         this.AuditRequestBY = (this.requestDetails[0]['AuditRequestBY']);   console.log('AuditRequestBY:',this.AuditRequestBY);
         const fullName = this.Submitted_By.split(' ');
         this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
@@ -2403,7 +2403,7 @@ multipleback(){
           this.newResponsible = (this.revert_json[0]['newResp']);
           this.forwardto = (this.revert_json[0]['Forwardedto']);
           this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
-        }  debugger
+        }  
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved'||this.requestType == 'Project Audit') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
@@ -3203,6 +3203,7 @@ approvalSubmitting:boolean=false;
             case HttpEventType.ResponseHeader:console.log('Response header has been received!');break;
             case HttpEventType.UploadProgress:
               this.progress = Math.round(event.loaded / event.total * 100);
+              console.log(this.progress, "progress");
               if (this.progress == 100) console.log('progress completed');
               break;
             case HttpEventType.Response:{
@@ -3329,7 +3330,7 @@ approvalSubmitting:boolean=false;
   getResponsibleActions() {
 
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
-      (data) => { debugger
+      (data) => { 
         this.ProjectPercentage = data[0]['ProjectPercentage'];
         this.ProjectStatus = data[0]['ProjectStatus'];
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
@@ -3499,7 +3500,7 @@ approvalSubmitting:boolean=false;
     this.isPrjNameValid=this.isValidString(this.ProjectName,3);
     this.isPrjDesValid=this.isValidString(this.ProjectDescription,5);
 
-debugger
+
 // check all mandatory fields are provided or not
    if(!(
         (this.ProjectName&&this.ProjectName.trim()!=''&&(this.ProjectName&&this.isPrjNameValid==='VALID'&&this.ProjectName.length <=100)  )&&
@@ -3728,7 +3729,7 @@ debugger
 
 
   onAction_update() {
-    debugger
+    
     this.updatingAction = true;
 // check all mandatory field are provided.
 this.isactionValid=this.isValidString(this.ActionName,2);
@@ -3947,7 +3948,7 @@ check_allocation() {
     this.ObjSubTaskDTO.PageSize = 10;
     this.service._GetDARbyMasterCode(this.ObjSubTaskDTO)
       .subscribe(data1 => {
-debugger
+
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
         this.darArray = this.darList;
         // console.log("bhai this is your DAR array:", this.darArray);
@@ -4026,7 +4027,7 @@ debugger
 
 
  submitDar(){
-debugger
+
    const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
 
    if(
@@ -4127,7 +4128,7 @@ debugger
 
 
     this.service._InsertDARServie(this.objProjectDto)
-      .subscribe(data => {   debugger
+      .subscribe(data => {   
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "Success");
 
@@ -4377,7 +4378,7 @@ debugger
         subscribe((data) => {
 
           this._Message = (data['message']);
-          debugger
+          
           if (this._Message == 'Updated Successfully.') {
             this.getPortfoliosDetails();
             this.Portfolio=[];
@@ -5251,7 +5252,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
   }
 
   toggleMtgsSection(sec:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'){
-    debugger
+    
     this.mtg_section=sec;
     const bx=this.mtg_section=='UPCOMING'?'#upcoming_meetings_tabpanel div#upcoming-mtg-0-btn':
              this.mtg_section=='TODAY'?'#today_meetings_tabpanel div#today-mtg-0-btn':
@@ -5663,7 +5664,7 @@ Task_type(value:number){
   }
 
   GetScheduledJson() {
-debugger
+
     this._calenderDto.EmpNo = this.Current_user_ID;
 
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
@@ -7651,7 +7652,7 @@ holdcontinue(Pcode:any){
   }
 
   // project cancel section end
-
+  ShowProgress: boolean = false;
   processingStd:boolean=false;
   achieveStandard() {
     if(!(this._remarks&&this._remarks.trim())||this.selectedFile==null){
@@ -7681,11 +7682,12 @@ holdcontinue(Pcode:any){
             console.log('Response header has been received!');
             break;
           case HttpEventType.UploadProgress:
+            this.ShowProgress=true;
             this.progress = Math.round(event.loaded / event.total * 100);
             console.log(this.progress, "progress");
             if (this.progress == 100) {
+              this.ShowProgress=false;
               this.notifyService.showInfo("File uploaded successfully", "Project updated");
-
             }
             break;
           case HttpEventType.Response:
@@ -7956,7 +7958,7 @@ filterConfig:{filterby:string,sortby:string}={
          sortby:'All'
 };
 onFilterConfigChanged({filterBy,sortBy}){
-  debugger
+  
   if(filterBy&&sortBy){
     this.filterConfig.filterby=filterBy;
     this.filterConfig.sortby=sortBy;
@@ -7979,7 +7981,7 @@ clearFilterConfigs(){
 
 count:any
 getFilteredPrjActions(filterby:string='All',sortby:string='All'){
-  debugger
+  
 if(['001','002'].includes(this.projectInfo.Project_Block)){
 
   let arr=this.projectActionInfo?this.projectActionInfo:[];
@@ -8233,7 +8235,7 @@ rejectactivity1: any;
 
 getActionRejectType(actioncode:any) {
   this.approvalObj.Project_Code = actioncode;
-  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => { debugger
+  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => { 
     this.activity1 = data[0]["activity"];
     this.send_from1 = data[0]["sendFrom"];
     this.rejectactivity1 = data[0]["rejectactivity"];
@@ -8642,7 +8644,7 @@ cancelAction(index) {
         this.approvalObj.Remarks = this.hold_remarks;
 
         this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-          debugger
+          
           this.closePrjCancelSb();
           this._Message = (data['message']);
           if (this._Message == '1') {
@@ -8791,7 +8793,7 @@ showPendingAprvlActnsOfEmp(userno:string){
 // start meeting feature start
 
 meetingReport(mtgScheduleId:any) {
-  debugger
+  
   let name: string = 'Meeting-Details';
   var url = document.baseURI + name;
   var myurl = `${url}/${mtgScheduleId}`;
@@ -9590,7 +9592,7 @@ bindCustomRecurrenceValues(){
   }
 
   customrecurrencemodal() {
-    debugger
+    
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("customrecurrence").style.display = "block";
 
@@ -9666,7 +9668,7 @@ FilteredAttendees:any;
     let property_name;
     if(this.projectmodaltype=='participant')
      {
-      debugger
+      
        keyname='DisplayName';
        arrtype=this._EmployeeListForDropdown;
        selectedinto='ngEmployeeDropdown';
@@ -9758,7 +9760,7 @@ FilteredAttendees:any;
       this.isFilteredOn=false;
   }
   onPortfolioFilter(){
-    debugger
+    
     const fresult=this.Portfoliolist_1.filter((prtf:any)=>{
          const x=(prtf.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
          const y=(prtf.Created_By===this.basedOnFilter.byuser||!this.basedOnFilter.byuser);
@@ -9861,7 +9863,7 @@ discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:strin
 }
 
 keepChoosedItems(){
-  debugger
+  
   switch(this.projectmodaltype)
   {
       case 'project':{
@@ -10423,7 +10425,7 @@ empAuditor_remarks:string|undefined;
 
 
 
-onAuditorSelected(e){ debugger
+onAuditorSelected(e){ 
   if(e.option.value){
     const selected_emp=e.option.value;
     this.selectedAuditor=selected_emp;
@@ -11288,7 +11290,7 @@ getFormattedDuration(totalDuration: number): string {
 
 
   hasNoActionMembers:any=[];
-  // detectMembersWithoutActions(){  debugger
+  // detectMembersWithoutActions(){  
   //     if(this.Project_List&&this.filteremployee)
   //     {    // if we have info of all the peoples present in the project. and info of all the people who have actions.
   //       const peopleWithActns=this.filteremployee.map(item=>item.Team_Res);
