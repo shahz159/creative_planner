@@ -105,6 +105,7 @@ export class ProjectsAddComponent implements OnInit {
   _PortfolioDetailsById: any;
   public _PortFolio_Namecardheader: string;
   ngOnInit() {
+
     this.portfolioName = localStorage.getItem('_PortfolioName');
     // console.log("----Currrent Portfolio Name----->", this.portfolioName, this.Current_user_ID);
     this._portfolioId = localStorage.getItem('Pid');
@@ -117,6 +118,7 @@ export class ProjectsAddComponent implements OnInit {
     this.router.navigate(["../AddProjectsToPortfolio/" + this.Url_portfolioId]);
     this.service.GetProjectsBy_portfolioId(this.Url_portfolioId)
       .subscribe((data) => {
+
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);
         if (this.portfolioName == "" || this.portfolioName == undefined || this.portfolioName == null) {
           this.portfolioName = this._PortfolioDetailsById[0]['Portfolio_Name'];
@@ -146,7 +148,7 @@ export class ProjectsAddComponent implements OnInit {
         this._CurrentpageRecords = this._ProjectDataList.length;
         // this._totalProjectsCount = this._ProjectDataList.length;
         console.log("ProjectList----------->", this._ProjectDataList.length);
-        console.log("ProjectListssssssssss----------->", this._ProjectDataList);
+        console.log("ProjectListssssssssss-------->", this._ProjectDataList);
         this.userFound = true
       }
     });
@@ -996,6 +998,7 @@ selectUnSelectProject(e,item){ debugger
 
 
 addPrjsToPortflio() {
+  debugger
   if(this.allSelectedProjects.length>0){
       this.Obj_Portfolio_DTO.Portfolio_Name = this.portfolioName;
       const selectedPrjs=this.allSelectedProjects;
@@ -1026,7 +1029,7 @@ addPrjsToPortflio() {
 
   }
   else{
-    this.notifyService.showInfo("please select atleast one project to add","");
+    this.notifyService.showInfo("please select atleast one project to add.","");
   }
 
 }
@@ -1041,7 +1044,7 @@ removePrjFromPortfolio(element:any){
 
   this.service.DeleteProject(prid,poid,pCode,Projname,Createdby,this.deletedBy).subscribe((data) => {
 
-     this.notifyService.showSuccess("Project removed successfully","");
+     this.notifyService.showSuccess("Project removed successfully.","");
 
      const index=this._ProjectDataList.findIndex(p=>p.Project_Code==pCode);
      if(index!=-1){

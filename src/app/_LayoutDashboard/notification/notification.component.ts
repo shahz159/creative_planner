@@ -415,10 +415,10 @@ export class NotificationComponent implements OnInit {
     document.getElementById("leave_requisition_form_slider_bar").classList.remove("kt-quick-panel--on");
     $('#leave_requisition_form_slider_bar').removeClass('open_requisition_sidebar_info');
 
-    
+
     document.getElementById("acceptbar").classList.remove("kt-quick-panel--on");
     this.approverComments=null;
- 
+
   }
 
   LeaveDetail: any;
@@ -952,6 +952,7 @@ console.log( this._NotificationActivity," this._NotificationActivity")
   selectAllCheckbox: boolean = false;
 
   selectall(ev){
+    debugger
     if (this.selectAllCheckbox) {
       this.selectedItems = [...this._NotificationActivity];
 
@@ -1014,6 +1015,7 @@ console.log( this._NotificationActivity," this._NotificationActivity")
 
 
 select(ev,item){
+
    if(ev.target.checked)
    {  // select
       this.selectedItems.push(item);
@@ -1581,7 +1583,7 @@ submitAprvlsWithCmts(){
   else{
      this.notProvided=true;
   }
-  
+
 }
 
 onAcceptWithCmtsBtnClicked(){
