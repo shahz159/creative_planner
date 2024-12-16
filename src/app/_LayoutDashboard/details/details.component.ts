@@ -127,6 +127,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   TOTAL_ACTIONS_IN_CUA: number = 0;
   TOTAL_ACTIONS_IN_FUA: number = 0;
   TOTAL_ACTIONS_IN_HOLD: number = 0;
+  TOTAL_ACTIONS_IN_CNUA:number=0;
   TOTAL_ACTIONS: number = 0;
 
 
@@ -188,6 +189,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   noActvySinceCreation:boolean=false;
   noActvy4NDays:number=-1;
   prjResHasActions:boolean=false;   // project responsible has actions or not.
+  actnsWithoutProgress:any[]=[];   // actions with no progress since their start date in the project. 
 
 
 
@@ -517,10 +519,22 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 //   }
 
+  darOfEmpl=[];
+
   drawStatisticsNew(){
     if(this.currentActionView===undefined){
 
          // 1. bar chart start.
+
+         this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, "3", this.Current_user_ID).subscribe((res: any) => {
+          const tml = JSON.parse(res[0].Timeline_List);
+          console.log("timeline data here11111:", tml);
+          this.darOfEmpl=tml.map((ob)=>{
+               return { member:ob.Value, totalTimeline:(+ob.TotalDuration).toFixed(2)}
+          });
+          this.darOfEmpl.sort((a,b)=>b.totalTimeline-a.totalTimeline);
+        });
+
 
 
                let tlTotalHrs:number = this.projectInfo.TotalHours;
@@ -550,7 +564,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
                  }
                  //standard graph cal end
-
 
 
 
@@ -594,7 +607,36 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                  },
                  colors:['003', '008'].includes(this.projectInfo.Project_Block)?
                        ['#7dbeff', '#7da1ff',(AL-this.tlTotalHours)<0?'#757575':'#dbe1e4']:
-                       ['#7dbeff', '#7da1ff',((+this.projectInfo.AllocatedHours) - this.tlTotalHours)<0?'#757575':'#dbe1e4']
+                       ['#7dbeff', '#7da1ff',((+this.projectInfo.AllocatedHours) - this.tlTotalHours)<0?'#757575':'#dbe1e4'],
+                 
+                tooltip: {
+                    enabled: true, 
+                    custom: ({ series, seriesIndex, dataPointIndex, w })=> {
+                          const value = series[seriesIndex][dataPointIndex];
+                          const category = w.globals.labels[dataPointIndex];
+     
+                     return `${
+                       category=='Used'?`<div style=""><div style="border-radius: 4px;padding: 4px;font-family: monospace;box-shadow: 0px 0px 0px 1px #527ce2;">
+                             <div style="padding: 5px;border-radius: 5px; background-color: #527ce2;color: white;font-size: 11px;">Total used: ${value} hrs</div>
+                              <table>
+                                ${ this.darOfEmpl.map((ob)=>{
+                                          return `<tr>
+                                                  <td style="padding: 7px 2px 0px 2px; font-size: 10px;">${ob.member}:</td>
+                                                  <td style="padding: 7px 2px 0px 2px;font-family: 'Lucida Sans Unicode';font-weight: 600;font-size: 9px;">
+                                                    ${ob.totalTimeline} hrs
+                                                  </td>
+                                                </tr>`;
+                                      }).join('')
+                                  }
+                          </table>
+                        </div>`:
+                      `<div style="padding: 10px; background-color: #f4f4f4; border-radius: 5px;">
+                         <strong>${category}</strong>: ${value} hrs
+                      </div></div>`
+                      
+                      }`;
+                        }
+                      }       
 
                };
 
@@ -630,7 +672,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
                  let totalactions=0;
                  this.filterstatus.forEach(st=>{
-                   const actns=this.getFilteredPrjActions(st.Status,item.Team_Res);
+                   const actns=this.getFilteredPrjActions([st.Status],[item.Team_Res]);
                    if(actns.length>0){
                        obj[st.Status]=actns.length;
                        totalactions+=actns.length;
@@ -816,6 +858,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.TOTAL_ACTIONS_IN_PROCESS = 0;
       this.TOTAL_ACTIONS_REJECTED = 0;
       this.TOTAL_ACTIONS_UNDER_APPROVAL = 0;
+      this.TOTAL_ACTIONS_IN_CNUA=0;
       //
       this.projectActionInfo.forEach(action => {
         switch (action.Status) {
@@ -827,6 +870,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           case 'Completion Under Approval': this.TOTAL_ACTIONS_IN_CUA += 1; break;
           case 'Forward Under Approval': this.TOTAL_ACTIONS_IN_FUA += 1; break;
           case 'Project Hold': this.TOTAL_ACTIONS_IN_HOLD += 1; break;
+          case 'Cancellation Under Approval':this.TOTAL_ACTIONS_IN_CNUA+=1; break;
           default: { };
         }
       })
@@ -834,7 +878,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     }
     else
       this.projectActionInfo = null;
-    this.TOTAL_ACTIONS = this.TOTAL_ACTIONS_DONE + this.TOTAL_ACTIONS_IN_DELAY + this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_UNDER_APPROVAL + this.TOTAL_ACTIONS_REJECTED + this.TOTAL_ACTIONS_IN_CUA + this.TOTAL_ACTIONS_IN_FUA + this.TOTAL_ACTIONS_IN_HOLD;
+
+    this.TOTAL_ACTIONS = this.TOTAL_ACTIONS_DONE + this.TOTAL_ACTIONS_IN_DELAY + this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_UNDER_APPROVAL + this.TOTAL_ACTIONS_REJECTED + this.TOTAL_ACTIONS_IN_CUA + this.TOTAL_ACTIONS_IN_FUA + this.TOTAL_ACTIONS_IN_HOLD+this.TOTAL_ACTIONS_IN_CNUA;
   }
 
   isDMS:any
@@ -979,34 +1024,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       }
 
 
-      // this.projectActionDelay = this.projectActionInfo.map((action) => {
-      //   let delayText = '';
-
-      //   if (action.Delaydays >= 365) {
-      //     const years = Math.floor(action.Delaydays / 365);
-      //     delayText = years === 1 ? '1 year' : `${years} years`;
-      //   } else if (action.Delaydays >= 30) {
-      //     const months = Math.floor(action.Delaydays / 30);
-      //     delayText = months === 1 ? '1 month' : `${months} months`;
-      //   } else if (action.Delaydays >= 7) {
-      //     const weeks = Math.floor(action.Delaydays / 7);
-      //     delayText = weeks === 1 ? '1 week' : `${weeks} weeks`;
-      //   } else {
-      //     delayText = `${action.Delaydays} days`;
-      //   }
-
-      //   return {
-      //     ...action,
-      //     Delaydays: delayText
-      //   };
-      // });
-
-
       console.log("projectInfo:", this.projectInfo, "projectActionInfossssssssssssssss:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
 
-        this.filteredPrjAction=this.getFilteredPrjActions('All','All');
+        this.filteredPrjAction=this.getFilteredPrjActions(['All'],['All']);
         this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
         this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
         console.log('Now After Sorting:',this.filteremployee);
@@ -1014,8 +1036,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       }
       this.calculateProjectActions();    // calculate project actions details.
 
-      this.myUnderApprvActions=this.getFilteredPrjActions('Under Approval',this.Current_user_ID);   // get all my underapproval actions.
-      this.myDelayPrjActions=this.getFilteredPrjActions('Delay',this.Current_user_ID);   // get all my delay actions .
+      this.myUnderApprvActions=this.getFilteredPrjActions(['Under Approval'],[this.Current_user_ID]);   // get all my underapproval actions.
+      this.myDelayPrjActions=this.getFilteredPrjActions(['Delay'],[this.Current_user_ID]);   // get all my delay actions .
       this.myDelayPrjActions=this.myDelayPrjActions.sort((a,b)=>{
             return b.Delaydays-a.Delaydays;
       });
@@ -1024,8 +1046,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
      {
        this.delayActionsOfEmps=[];   // must be empty before calculation.
           this.filteremployee.forEach((emp)=>{
-            let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
-            if(delayActionsOfEmp.length>0){  
+            let delayActionsOfEmp=this.getFilteredPrjActions(['Delay'],[emp.Team_Res]);
+            if(delayActionsOfEmp.length>0){ 
               delayActionsOfEmp=delayActionsOfEmp.sort((a,b)=>b.Delaydays-a.Delaydays)
               const percentInDelay=((delayActionsOfEmp[0].Delaydays/this.projectInfo.Delaydays)*100).toFixed(1);
               this.delayActionsOfEmps.push({ name:emp.Responsible, emp_no:emp.Team_Res, delayActions:delayActionsOfEmp, percentInDelay:percentInDelay})
@@ -1038,11 +1060,15 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
-
+debugger
      if(this.projectActionInfo){
       this.actionsWith0hrs=[];   // must be empty before calculation.
       this.selfAssignedActns=[];  // must be empty before calculation.
       this.pendingActns4Aprvls=[];   // must be empty before calculation.
+      this.actnsWithoutProgress=[];   // must be empty before calculation.
+      
+     const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+
      this.projectActionInfo.forEach((actn)=>{
             if(Number.parseInt(actn.AllocatedHours)===0){
               const temp=this.actionsWith0hrs.find(item=>item.name===actn.Responsible);
@@ -1061,7 +1087,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             }
 
             if(['Under Approval','Forward Under Approval'].includes(actn.Status)){
-
                   const temp=this.pendingActns4Aprvls.find(item=>item.empno==actn.Team_Res);
                   if(temp)
                   temp.totalApprovals+=1;
@@ -1069,6 +1094,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                   this.pendingActns4Aprvls.push({ name:actn.Responsible, empno:actn.Team_Res, totalApprovals:1   });
             }
 
+
+            const actn_sdate=new Date(actn.StartDate); actn_sdate.setHours(0,0,0,0);
+            const no_progessOnActn=(['Completed','Cancelled'].includes(actn.Status)==false&&cr_date>actn_sdate&&actn.TotalHours==0);
+            if(no_progessOnActn){
+              this.actnsWithoutProgress.push(actn.Project_Code);
+            }
 
             if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno!=actn.Team_Res)){
               this.actionsAssignedByMe+=1;
@@ -1307,7 +1338,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', '), isActive:result[0].isActive};
-            console.log(this.PeopleOnProject,"sssssssss")
             if(this.Subtask_Res_List){
               const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
               if(p){
@@ -1335,6 +1365,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           const active_emp=this.PeopleOnProject.filter(item=>item.isActive);
           const inactive_emp=this.PeopleOnProject.filter(item=>!item.isActive)
           this.PeopleOnProject=[...active_emp,...inactive_emp];
+          console.log(this.PeopleOnProject,"sssssssss")
 // sorting people based on active or inactive
 
 
@@ -1545,27 +1576,45 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   }
 
   showActionDetails(index: number | undefined) {
-     this.currentActionView = index;
-
-    if (index>-1 && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval"||this.projectActionInfo[index].Status === "Cancellation Under Approval"))
-      this.GetApproval(this.projectActionInfo[index].Project_Code);
-
+    this.currentActionView = index;  
     if(index!=undefined){
+
       this.requestType = null;
       this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
-
       this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
-      $(document).ready(() =>this.getDarInfoOfAction(index));
 
-       if(this.projectActionInfo[this.currentActionView].Status=='New Project Rejected'){
-         this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
-       }
-       this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectActionInfo[index].Project_Code).subscribe(
+      if (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval"||this.projectActionInfo[index].Status === "Cancellation Under Approval"){
+        this.GetApproval(this.projectActionInfo[index].Project_Code);
+      }
+      else if(this.projectActionInfo[this.currentActionView].Status=='New Project Rejected'){
+        this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
+      }
+      
+      // draw action's bar chart.
+      this.maxDuration = (+this.projectActionInfo[this.currentActionView].AllocatedHours);
+      this.UsedInDAR = this.projectActionInfo[this.currentActionView].TotalHours||0;
+       $(document).ready(()=>{
+        this.drawActionBarChart();
+      });
+
+
+      // when action has no activity done even after start date. 
+      const actn_sdate=new Date(this.projectActionInfo[index].StartDate); actn_sdate.setHours(0,0,0,0);
+      const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+      this.noActvyOnActnSinceCreation=(['Completed','Cancelled'].includes(this.projectActionInfo[index].Status)==false&&cr_date>actn_sdate&&this.UsedInDAR==0);
+      if(this.noActvyOnActnSinceCreation){
+        this.noActnActvy4NDays=moment(cr_date).diff(actn_sdate,'days');
+      }
+     
+     
+      // action owner drpdwn and action resp drpdwn.
+      this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectActionInfo[index].Project_Code).subscribe(
         (data) => {
           console.log(data, "action racis");
           this.actionowner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
           this.actionresponsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
-        });
+      });
+
     }
 
   }
@@ -1617,32 +1666,32 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   noActvyOnActnSinceCreation:boolean=false;
   noActnActvy4NDays:number=0;
 
-  getDarInfoOfAction(index) {
-    const actionCode:string=this.projectActionInfo[index].Project_Code;
-    this.service.DARGraphCalculations_Json(actionCode)
-      .subscribe(data1 => {
-        console.log("drawstatistics data1:",data1)
-        this.maxDuration = (data1[0]['ProjectMaxDuration']);
-        this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
-        // this.RemainingHours = (data1[0]['RemainingHours']);
+  // getDarInfoOfAction(index) {
+  //   const actionCode:string=this.projectActionInfo[index].Project_Code;
+  //   this.service.DARGraphCalculations_Json(actionCode)
+  //     .subscribe(data1 => {
+  //       console.log("drawstatistics data1:",data1)
+  //       this.maxDuration = (data1[0]['ProjectMaxDuration']);
+  //       this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
+  //       // this.RemainingHours = (data1[0]['RemainingHours']);
 
-        // when action has no activity done even after start date.   calculation here.
-          const actn_sdate=new Date(this.projectActionInfo[index].StartDate); actn_sdate.setHours(0,0,0,0);
-          const cr_date=new Date(); cr_date.setHours(0,0,0,0);
-          this.noActvyOnActnSinceCreation=(['Completed','Cancelled'].includes(this.projectActionInfo[index].Status)==false&&cr_date>actn_sdate&&this.UsedInDAR==0);
-          if(this.noActvyOnActnSinceCreation){
-            this.noActnActvy4NDays=moment(cr_date).diff(actn_sdate,'days');
-          }
-        // when action has no activity done even after start date.
-
-
-
-      // draw action bar chart.
-        this.drawActionBarChart();
-     });
+  //       // when action has no activity done even after start date.   calculation here.
+  //         const actn_sdate=new Date(this.projectActionInfo[index].StartDate); actn_sdate.setHours(0,0,0,0);
+  //         const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+  //         this.noActvyOnActnSinceCreation=(['Completed','Cancelled'].includes(this.projectActionInfo[index].Status)==false&&cr_date>actn_sdate&&this.UsedInDAR==0);
+  //         if(this.noActvyOnActnSinceCreation){
+  //           this.noActnActvy4NDays=moment(cr_date).diff(actn_sdate,'days');
+  //         }
+  //       // when action has no activity done even after start date.
 
 
-  }
+
+  //     // draw action bar chart.
+  //       this.drawActionBarChart();
+  //    });
+
+
+  // }
 
 
 
@@ -3045,7 +3094,10 @@ approvalSubmitting:boolean=false;
       this.formFieldsRequired=true;
       this.notifyService.showInfo("Please fill in the mandatory fields.", '');
     }
-    else if ((this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_IN_DELAY) === 1 && (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.Authority_EmpNo || this.isHierarchy === true)) {   // if user is O,R,A or is in heirarchy and there is only one action in inprocess or delay state.
+    else if (
+      (this.TOTAL_ACTIONS_UNDER_APPROVAL+this.TOTAL_ACTIONS_IN_FUA+this.TOTAL_ACTIONS_IN_CNUA+this.TOTAL_ACTIONS_IN_CUA+this.TOTAL_ACTIONS_IN_HOLD)==0&&
+      (this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_IN_DELAY) === 1&&
+      (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.Authority_EmpNo || this.isHierarchy === true)) {   // if user is O,R,A or is in heirarchy and there is only one action in inprocess or delay state.
       Swal.fire({
         title: 'Proceed With Project Submission ?',
         html: `<div class="text-justify">
@@ -3340,17 +3392,18 @@ approvalSubmitting:boolean=false;
         this.Subtask_Res_List=JSON.parse(data[0]['SubTaskResponsibe_Json']);
         this.totalSubtaskHours = (data[0]['SubtaskHours']);
         const pracis=JSON.parse(data[0]['RACIS_Count']);
+        const projectinfo_=JSON.parse(data[0]['ProjectInfo'])[0];
         console.log('Subtask_Res_List:',this.Subtask_Res_List);
         console.log('totalSubtaskHours:',this.totalSubtaskHours);
 
         console.log('darArr:', this.darArr);
       try{
-        if (this.darArr.length == 0 && (this.projectInfo.OwnerEmpNo == this.Current_user_ID || this.projectInfo.ResponsibleEmpNo == this.Current_user_ID)) {
+        if (this.darArr.length == 0 && (projectinfo_.OwnerEmpNo == this.Current_user_ID || projectinfo_.Responsible == this.Current_user_ID)) {
 // user is prj owner
 // user is prj resp + he does not contains any actions.
           this.showaction = false;
         }
-        else if (this.darArr.length == 0 && this.projectInfo.OwnerEmpNo != this.Current_user_ID && this.projectInfo.ResponsibleEmpNo != this.Current_user_ID) {
+        else if (this.darArr.length == 0 && projectinfo_.OwnerEmpNo != this.Current_user_ID && projectinfo_.Responsible != this.Current_user_ID) {
 // user is authority/support  + he does not contain any actions.
           this.showaction = true;
           this.noact_msg = true;
@@ -3376,12 +3429,13 @@ approvalSubmitting:boolean=false;
 
 
      // detect members without actions
-     if(this.projectInfo&&['001','002'].includes(this.projectInfo.Project_Block)){
+     if(['001','002'].includes(projectinfo_.Project_Block)){
      this.hasNoActionMembers=[];
      let pMemberwithActns=this.Subtask_Res_List.map(ob=>ob.Team_Res);
      const arr=[];
+     
      pracis.forEach((tmember)=>{
-      if( tmember.Role!='Owner'&&pMemberwithActns.includes(tmember.Emp_No)==false){
+      if( tmember.Emp_No!=projectinfo_.OwnerEmpNo&&pMemberwithActns.includes(tmember.Emp_No)==false){
             if(arr.findIndex(ob=>ob.Emp_No==tmember.Emp_No)==-1)
             arr.push({  Emp_No:tmember.Emp_No.trim(), Emp_Name:tmember.RACIS.trim() });
       }
@@ -7953,60 +8007,101 @@ removeSelectedMemo(item){
 actionsNotFound:boolean=false;
 filteredPrjAction:any=[];
 filterConfigChanged:boolean=false;
-filterConfig:{filterby:string,sortby:string}={
-         filterby:'All',
-         sortby:'All'
+filterConfig:{ filterby:string[], sortby:string[] }={ 
+    filterby:['All'],
+    sortby:['All']
 };
-onFilterConfigChanged({filterBy,sortBy}){
-  
+
+
+
+onFilterConfigChanged(ob:{ filterBy:string[], sortBy:string[]}){
+  const {filterBy,sortBy}=ob;
   if(filterBy&&sortBy){
     this.filterConfig.filterby=filterBy;
     this.filterConfig.sortby=sortBy;
     this.filterConfigChanged=true;
-    // if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno!=actn.Team_Res)){
-    //   this.actionsAssignedByMe+=1;
-    //            }
-
     this.filteredPrjAction=this.getFilteredPrjActions(this.filterConfig.filterby,this.filterConfig.sortby);
   }
 }
 
 clearFilterConfigs(){
-  this.filterConfig.filterby='All';
-  this.filterConfig.sortby='All';
+  this.filterConfig.filterby=['All'];
+  this.filterConfig.sortby=['All'];
   this.filteredPrjAction=this.getFilteredPrjActions(this.filterConfig.filterby,this.filterConfig.sortby);
   this.filterConfigChanged=false;
 }
 
 
-count:any
-getFilteredPrjActions(filterby:string='All',sortby:string='All'){
+
+onActnFilterOptionClicked(section:'filterby'|'sortby',item:string){
+  if(item=='All'){
+      if(this.filterConfig[section].length==1&&this.filterConfig[section][0]=='All')
+      this.filterConfig[section]=[];
+      else  
+      this.filterConfig[section]=this.filterConfig[section]=[item];
+  }else{
+    
+    if(this.filterConfig[section].length==1&&this.filterConfig[section][0]=='All'){
+       this.filterConfig[section]=[];
+    }
+     
+    if(this.filterConfig[section].includes(item)==false){
+      this.filterConfig[section].push(item);
+     }
+     else{
+       const i=this.filterConfig[section].indexOf(item);
+       this.filterConfig[section].splice(i,1);
+     }
+  }
+
+  console.log(this.filterConfig);
+  
+  this.onFilterConfigChanged({filterBy:this.filterConfig.filterby, sortBy:this.filterConfig.sortby});  
+}
+
+
+
+
+// count:any
+getFilteredPrjActions(filterby:string[]=['All'],sortby:string[]=['All']){
   
 if(['001','002'].includes(this.projectInfo.Project_Block)){
+  let arr=this.projectActionInfo||[];
 
-  let arr=this.projectActionInfo?this.projectActionInfo:[];
-  if(!(filterby==='All'&&sortby==='All'))
-  {
-    if(sortby!=='All'){
-     if(sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....
-      arr=arr.filter((action)=>{
-        return action.Team_Res.trim()===sortby;
-       });
-     }
-     else{  // when sortby is 'Assigned By me'
-        arr=arr.filter((action)=>{
-              return (action.AssignedbyEmpno.trim()==this.Current_user_ID&&action.AssignedbyEmpno!=action.Team_Res);
-        });
-     }
-    }
+  const isAssignedbyme=sortby.includes('Assigned By me');
 
-    if(filterby!=='All'){
-      arr=arr.filter((action)=>{
-         return action.Status===filterby;
-       })
+  arr=arr.filter((action)=>{
+    const x=(filterby[0]=='All'||filterby.includes(action.Status));
+    const y=(sortby[0]=='All'||sortby.includes(action.Team_Res.trim())|| (isAssignedbyme?(action.AssignedbyEmpno.trim()==this.Current_user_ID&&action.AssignedbyEmpno!=action.Team_Res):false));
+    return x&&y;
+  })
+ 
 
-    }
-  }
+ 
+
+  
+  // if(!(filterby.includes('All')&&sortby.includes('All')))
+  // {
+  //   if(sortby!=='All'){
+  //    if(sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....
+  //     arr=arr.filter((action)=>{
+  //       return action.Team_Res.trim()===sortby;
+  //      });
+  //    }
+  //    else{  // when sortby is 'Assigned By me'
+  //       arr=arr.filter((action)=>{
+  //             return (action.AssignedbyEmpno.trim()==this.Current_user_ID&&action.AssignedbyEmpno!=action.Team_Res);
+  //       });
+  //    }
+  //   }
+
+  //   if(filterby!=='All'){
+  //     arr=arr.filter((action)=>{
+  //        return action.Status===filterby;
+  //      })
+
+  //   }
+  // }
 
   return arr;
 
@@ -8789,6 +8884,12 @@ showPendingAprvlActnsOfEmp(userno:string){
     });
   }
 }
+
+
+showActionsWithNoProgress(){
+  this.filteredPrjAction=this.projectActionInfo.filter(item=>this.actnsWithoutProgress.includes(item.Project_Code));
+}
+
 
 // start meeting feature start
 
@@ -11236,12 +11337,14 @@ getNotificationsAnnouncements():string[]{
   allnotif=[...allnotif,'totalPActns4Aprvls'];
   if(this.pageContentType=='ACTION_DETAILS')
   allnotif=[...allnotif,'action_details'];
-  if(this.hasNoActionMembers&&this.hasNoActionMembers.length>0)
+  if(this.hasNoActionMembers&&this.hasNoActionMembers.length>0&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(this.projectInfo.Status.trim())==false)
   allnotif=[...allnotif,'hasNoActionMembers'];
-  if(this.noActvySinceCreation)
+  if(this.noActvySinceCreation&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(this.projectInfo.Status.trim())==false)
   allnotif=[...allnotif,'noActvySinceCreation'];
+  if(this.actnsWithoutProgress&&this.actnsWithoutProgress.length>0&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(this.projectInfo.Status.trim())==false)
+  allnotif=[...allnotif,'actnsWithoutProgress'];
 
-   return allnotif;
+  return allnotif;
 }
 
 //get notifications list.    end

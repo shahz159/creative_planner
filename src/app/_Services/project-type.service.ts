@@ -906,7 +906,7 @@ export class ProjectTypeService {
   }
 
 
-  _InsertDARServie(obj: ProjectDetailsDTO) {
+  _InsertDARServie(obj: ProjectDetailsDTO) {  debugger
     this.ObjDto.Emp_No = obj.Emp_No;
     this.ObjDto.Exec_BlockName = obj.Exec_BlockName;
     this.ObjDto.Project_Name = obj.Project_Name;
