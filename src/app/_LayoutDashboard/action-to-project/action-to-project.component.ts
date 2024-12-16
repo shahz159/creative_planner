@@ -1200,7 +1200,6 @@ startActionCreation=async()=>{
           this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
             console.log(event1,"azure data");
             var myJSON = JSON.stringify(event1);
-         alert(JSON.parse(myJSON).body);
           //  this._Message = (JSON.parse(myJSON).body);
 
           });
