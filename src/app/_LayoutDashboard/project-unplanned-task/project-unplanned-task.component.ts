@@ -16,7 +16,7 @@ import { CategoryDTO } from 'src/app/_Models/category-dto';
 import { CreateProjectComponent } from '../create-project/create-project.component';
 import Swal from 'sweetalert2';
 
-import {  HttpEventType } from '@angular/common/http';
+import {  HttpEvent, HttpEventType } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { string } from '@amcharts/amcharts4/core';
 import { pluginService } from 'chart.js';
@@ -1636,6 +1636,8 @@ selectFile() {
   this.fileInput.nativeElement.click();
 }
 
+
+contentType:any="";
 onFileChanged(event: any) {
 
   const files: File[] = event.target.files;
@@ -1644,8 +1646,10 @@ onFileChanged(event: any) {
     this.file = files[0];
     this.fileAttachment = this.file;
     this.selectedFileName = this.file.name;
-
-  } else {
+    console.log('File Object:', this.file);
+    this.contentType=this.getFileExtension(this.fileAttachment.name);
+  } 
+  else {
     this.file = null;
     this.fileAttachment = null;
     this.selectedFileName = null;
@@ -1898,7 +1902,7 @@ else{
     if (this._StartDate instanceof Date && this._EndDate instanceof Date) {
       const differenceInTime = this._EndDate.getTime() - this._StartDate.getTime();
       const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-      ProjectDays = -differenceInDays;
+      ProjectDays = differenceInDays;
     }
     else {
       ProjectDays = 0;
@@ -1924,15 +1928,13 @@ else{
 
   fd.append("ProjectDays", ProjectDays.toString());
   fd.append("Remarks", this._remarks);
-  fd.append("attachment",this.fileAttachment);
+  // fd.append("attachment",this.fileAttachment);
   fd.append("AssignedBy", this.CurrentUser_ID);
   fd.append("AssignId", this.selected_taskId.toString());
   fd.append("TypeofTask", this.typeoftask);
-  if (this.fileAttachment != null) {
-    if (this.fileAttachment.length > 0) {
+  fd.append("contentType",this.contentType);
+  if (this.fileAttachment) {
       fd.append("Attachment", "true");
-      fd.append('file', this.fileAttachment[0].Files);
-    }
   }
   else {
     fd.append("Attachment", "false");
@@ -1940,10 +1942,21 @@ else{
   }
 
 
-  this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
+ // this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
+  this.ProjectTypeService._InsertAssignTaskServieCore(fd).subscribe(
     (data) => {
+      alert(data['message'])
+      if(data['message']=="Assigned Successfully" && this.fileAttachment){
+        fd.append('file', this.fileAttachment);
+        fd.append('TaskName',data['taskName']);
+        fd.append("contentType",data['contentType']);
+        this.ProjectTypeService._AzureAssigntaskCore(fd).subscribe((event1: HttpEvent<any>) => {
+          console.log(event1,"azure data");
+          var myJSON = JSON.stringify(event1);
+        });
+      }
       console.log(data,'atattachmeatattachmeatattachmeatattachme')
-        let message: string = data['Message'];
+        let message: string = data['message'];
         this.notifyService.showSuccess("Task sent to assign projects.", message);
         this.GetTodoProjects();
 
@@ -1952,11 +1965,15 @@ else{
       this.resetAssign()
       this.unassign_closeInfo()
 
-
-
 }
 
-
+getFileExtension(fileName: any): string | null {
+  if (!fileName) {
+    return null;
+  }
+  const lastDotIndex = fileName.lastIndexOf('.');
+  return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : null;
+}
 
 resetAssign(){
   this.selectedProjecttype = null
@@ -1985,11 +2002,24 @@ Sub_ProjectCode: any;
 EmpNo_Autho: any;
 ProjectBlock: string = null;
 selectedEmpNo: string = null;
-completionattachment:boolean=true
+completionattachment:boolean=true;
+actionCost:any;
 
-actionSubmit(){
+actionSubmit=async()=>{
 
-
+// Action cost calculate.
+this.actionCost=null;  // must be empty before calculating.
+const res:any=await this.service.GetCPProjectCost(this.selectedEmpNo,this._allocated.toString()).toPromise();
+if(res&&res.Status){
+      this.actionCost=res.Data;
+      console.log("action cost:",this.actionCost);
+}
+else{
+  this.notifyService.showError('','Internal server error');
+  console.error('Unable to get action cost value.')
+  return;
+}
+// Action cost calculate.
 
 
   this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
@@ -2020,9 +2050,9 @@ actionSubmit(){
     this.ObjSubTaskDTO.Duration = this._allocated;
     // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
     console.log( this.fileAttachment)
-   if (this.fileAttachment&& this.fileAttachment.length > 0) {
-      this.ObjSubTaskDTO.Attachments =  this.fileAttachment;
-    }
+  //  if (this.fileAttachment&& this.fileAttachment.length > 0) {
+  //     this.ObjSubTaskDTO.Attachments =  this.fileAttachment;
+  //   }
 
     var datestrStart = moment(this._StartDate).format("MM/DD/YYYY");
     var datestrEnd = moment(this._EndDate).format("MM/DD/YYYY");
@@ -2036,7 +2066,6 @@ actionSubmit(){
     // fd.append('file', this._inputAttachments[0].Files);
     if ( this.fileAttachment) {
       fd.append("Attachment", "true");
-      fd.append('file',  this.fileAttachment);
     }
     else {
       fd.append("Attachment", "false");
@@ -2053,9 +2082,11 @@ actionSubmit(){
     fd.append("AssignTo", this.selectedEmpNo);
     fd.append("Remarks", this._remarks);
     fd.append("EmployeeName", localStorage.getItem('UserfullName'));
-    fd.append("AssignId", this.task_id.toString());
+    fd.append("AssignId", this.selected_taskId.toString());
     fd.append("Owner", this.owner);
-    fd.append("isattachment",this.completionattachment.toString());
+    fd.append("proState",this.completionattachment.toString());
+    fd.append("actionCost",this.actionCost);
+    fd.append("contentType",this.contentType);
 
     if (this.ObjSubTaskDTO.Duration != null) {
       fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
@@ -2067,16 +2098,32 @@ actionSubmit(){
     for (let [key, value] of fd.entries()) {
       console.log(`${key}: ${value}`);
     }
-    this.service._InsertNewSubtask(fd).subscribe(event => {
-
+    // this.service._InsertNewSubtask(fd).subscribe(event => {
+      this.service._InsertNewSubtaskcore(fd).subscribe((event: HttpEvent<any>) => {
       if (event.type === HttpEventType.Response){
         var myJSON = JSON.stringify(event);
-        this._Message = (JSON.parse(myJSON).body).Message;
+        this._Message = (JSON.parse(myJSON).body).message;
         // console.log(event,myJSON,this._Message,"action data");
         if(this._Message=='1'){
+          if ( this.fileAttachment) {
+            fd.append('file',  this.fileAttachment);
+            this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
+              console.log(event1,"azure data");
+              var myJSON = JSON.stringify(event1);
+            //  this._Message = (JSON.parse(myJSON).body);
+  
+            });}
           this.notifyService.showSuccess("Action created successfully", "Success");
         }
         else if(this._Message=='2'){
+          if ( this.fileAttachment) {
+            fd.append('file',  this.fileAttachment);
+            this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
+              console.log(event1,"azure data");
+              var myJSON = JSON.stringify(event1);
+            //  this._Message = (JSON.parse(myJSON).body);
+  
+            });}
           this.notifyService.showInfo("Request submitted to the Assigned employee","Action Under Approval");
         }
         else if(this._Message=='3'){
@@ -2089,7 +2136,9 @@ actionSubmit(){
           this.notifyService.showError("Something went wrong", "Action not created");
         }
       }
-      // this.GetTodoProjects();
+      this.GetTodoProjects();
+      this.resetAssign()
+      this.unassign_closeInfo()
     });
 
 
@@ -2417,25 +2466,33 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
     fd.append("Portfolio_Id", portfoliosSelected);
     fd.append("ProjectDays", ProjectDays.toString());
     fd.append("Remarks", this.__remarks);
-    fd.append("attachment",this.fileAttachment);
+    // fd.append("attachment",this.fileAttachment);
     fd.append("AssignedBy", this.CurrentUser_ID);
     // fd.append("AssignId", this.selected_taskId.toString());
     fd.append("TypeofTask", this.typeoftask);
+    fd.append("contentType",this.contentType);
+
     if (this.fileAttachment != null) {
-      if (this.fileAttachment.length > 0) {
         fd.append("Attachment", "true");
-        fd.append('file', this.fileAttachment[0].Files);
-      }
     }
     else {
       fd.append("Attachment", "false");
       fd.append('file', "");
     }
 
-    this.ProjectTypeService.updatePendingtask(fd).subscribe(
+    // this.ProjectTypeService.updatePendingtask(fd).subscribe(
+      this.ProjectTypeService.updatePendingtaskCore(fd).subscribe(
       (data) => {
         console.log(data,'atattachmeatattachmeatattachmeatattachme')
-
+        if(data['message']=="Assigned Successfully" && this.fileAttachment){
+          fd.append('file', this.fileAttachment);
+          fd.append('TaskName',data['taskName']);
+          fd.append("contentType",data['contentType']);
+          this.ProjectTypeService._AzureAssigntaskCore(fd).subscribe((event1: HttpEvent<any>) => {
+            console.log(event1,"azure data");
+            var myJSON = JSON.stringify(event1);
+          });
+        }
           let message: string = data['Message'];
           this.notifyService.showSuccess("Task sent to assign projects.",message);
           this.GetTodoProjects();

@@ -86,6 +86,7 @@ export class ProjectTypeService {
     this.aprvDtoObj= new ApprovalDTO();
   }
   readonly rootUrl = this.commonUrl.apiurl;
+  readonly rootUrlcore = this.commonUrl.apiurlcore;
 
   GetProjectTypeList() {
     let EmpNo = localStorage.getItem('EmpNo');
@@ -778,6 +779,32 @@ export class ProjectTypeService {
 
 
   }
+
+  _InsertNewSubtaskcore(data) {
+   
+    return this.http.post(this.rootUrlcore + "Notification/NewInsertSubTaskByProjectCodeCore", data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
+    //Notification/NewInsertSubTaskByProjectCode
+
+
+  }
+
+  _AzureUploadNewAction(data) {
+   
+    return this.http.post(this.rootUrlcore + "Azure/NewInsertSubTaskByProjectCodeCore", data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
+    //Notification/NewInsertSubTaskByProjectCode
+
+
+  }
   // _UpdateMainProjectByProjectCode(objsubtask) {
   //   this.ObjSubTaskDTO.MasterCode = objsubtask.MasterCode;
   //   this.ObjSubTaskDTO.Attachments = objsubtask.Attachments;
@@ -872,14 +899,27 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewInsertAssignTask", fd);
   }
 
+  _InsertAssignTaskServieCore(fd) {
+    return this.http.post(this.rootUrlcore + "Notification/NewInsertAssignTaskCore", fd);
+  }
+
+  _AzureAssigntaskCore(fd) {
+    return this.http.post(this.rootUrlcore + "Azure/NewInsertAssignTaskCore", fd);
+  }
+
 
   updatePendingtask(fd) {
 
     return this.http.post(this.rootUrl + "Notification/NewUpdateAssignTask", fd);
   }
 
+  updatePendingtaskCore(fd) {
 
-  _InsertDARServie(obj: ProjectDetailsDTO) {
+    return this.http.post(this.rootUrlcore + "Notification/NewInsertAssignTaskCore", fd);
+  }
+
+
+  _InsertDARServie(obj: ProjectDetailsDTO) {  debugger
     this.ObjDto.Emp_No = obj.Emp_No;
     this.ObjDto.Exec_BlockName = obj.Exec_BlockName;
     this.ObjDto.Project_Name = obj.Project_Name;

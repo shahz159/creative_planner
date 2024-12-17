@@ -2037,7 +2037,7 @@
     <mat-option *ngFor="let prt of (EmployeeList|filter:PortfolioTF.value)?.slice(0,1000)" [value]="prt.Emp_No">
 
       <mat-checkbox  color="primary" [checked]="employeSelect?employeSelect.indexOf(prt.Emp_No)!==-1:false"></mat-checkbox>
-          {{prt.TM_DisplayName}} - {{prt.DisplayName}}
+          {{prt.DisplayName}}
   </mat-option>
   </mat-autocomplete>
   </mat-form-field>

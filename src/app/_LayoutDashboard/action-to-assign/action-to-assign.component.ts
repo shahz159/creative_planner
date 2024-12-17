@@ -22,6 +22,7 @@ import {
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/core';
 import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
+import { HttpEvent } from '@angular/common/http';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -295,17 +296,7 @@ else {
       console.log("Sending Obj..",this._ObjAssigntaskDTO)
       const fd = new FormData();
       fd.append("AssignTo", this._ObjAssigntaskDTO.AssignTo);
-      if (this.fileAttachment != null) {
-        if (this.fileAttachment.length > 0) {
-          fd.append("Attachment", "true");
-          fd.append('file', this.fileAttachment[0].Files);
-          console.log(this.fileAttachment, 'files')
-        }
-      }
-      else {
-        fd.append("Attachment", "false");
-        fd.append('file', "");
-      }
+      
       fd.append("TaskName", this._taskName);
       fd.append("Desc", this._description);
       fd.append("StartDate", datestrStart);
@@ -327,9 +318,30 @@ else {
         this.port_id=0;
       }
       fd.append("Portfolio_Id", this.port_id);
+      if (this.fileAttachment != null) {
+        if (this.fileAttachment.length > 0) {
+          fd.append("Attachment", "true");
+          
+          console.log(this.fileAttachment, 'files')
+        }
+      }
+      else {
+        fd.append("Attachment", "false");
+        fd.append('file', "");
+      }
 
-      this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
+      // this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
+      this.ProjectTypeService._InsertAssignTaskServieCore(fd).subscribe(
         (data) => {
+          if(data['Message']=="Assigned Successfully" && this.fileAttachment.length > 0){
+            fd.append('file', this.fileAttachment[0].Files);
+            this.ProjectTypeService._AzureAssigntaskCore(fd).subscribe((event1: HttpEvent<any>) => {
+              console.log(event1,"azure data");
+              var myJSON = JSON.stringify(event1);
+            //  this._Message = (JSON.parse(myJSON).body);
+  
+            });
+          }
           console.log(data,'atattachmeatattachmeatattachmeatattachme')
           if (this._Urlid == 1) {
             this._projectunplanned.getCatid();
