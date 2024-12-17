@@ -719,6 +719,28 @@
                               </div>
                           </div>
                           </div>
+
+
+                          <div class="position-relative w-100 mt-3 ">
+                            <div class="form-control cat-search-field">
+                                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                        stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11ZM11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C13.125 20 15.078 19.2635 16.6177 18.0319L20.2929 21.7071C20.6834 22.0976 21.3166 22.0976 21.7071 21.7071C22.0976 21.3166 22.0976 20.6834 21.7071 20.2929L18.0319 16.6177C19.2635 15.078 20 13.125 20 11C20 6.02944 15.9706 2 11 2Z"
+                                            fill="#000000"></path>
+                                    </g>
+                                </svg>
+                                <input type="search" autocomplete="off" name="search"
+                                    placeholder="Search"   [(ngModel)]="_SearchTask"
+                                    class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched  border-0" />
+                            </div>
+                        </div>
+
+
                         <div class="count-list p-3 grid gap-1 grid-template-columns-7 bg-gray-400 rounded-xl my-2 d-none">
                             <label class="d-flex align-items-start p-2 shad rounded-xl overflow-hidden bg-white" >
                                 <div class="lead"><span class="kt-badge kt-badge--primary kt-badge--inline mr-2 count-num" >{{(ActionedSubtask_Json&&ActionedSubtask_Json.length) + (ActionedAssigned_Josn&&ActionedAssigned_Josn.length) + (_CompletedList&&_CompletedList.length) + (_TodoList&&_TodoList.length)}}</span>Total </div>
@@ -759,7 +781,6 @@
 
 
 
-
                 <div   class="kt-container--fluid kt-grid__item kt-grid__item--fluid">
                     <div  id="kt_inbox" class=" kt-inbox">
                         <!-- Inprocess -->
@@ -775,18 +796,29 @@
                                           </a>
                                       </div>
 
-                                      <div id="collapseUnassign" class="collapse" aria-labelledby="headingOne" data-parent="#accordionRunway">
+                                      <div id="collapseUnassign"  class="collapse" aria-labelledby="headingOne" data-parent="#accordionRunway">
                                         <div class="runway-card-body scrollbar1">
-                                            <div [id]="'UnassigntaskItem-'+item.Assign_Id"  class="mb-2 card  Replied_border_left_true_NewProject" *ngFor="let item of _TodoList; let i=index">
+                                            <div [id]="'UnassigntaskItem-'+item.Assign_Id"  class="mb-2 card  Replied_border_left_true_NewProject" *ngFor="let item of _TodoList|filter:_SearchTask; let i=index">
                                                 <div class="card-body p-2" >
                                                     <div data-type="inbox" class="d-flex align-items-center my-1">
                                                         <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
                                                             <div class="kt-inbox__actions">
-                                                                <input type="radio" name="Subtask" class="subtask-radio mx-4"
+                                                                <!-- <input type="radio" name="Subtask" class="subtask-radio mx-4"
                                                                     (click)="OnRadioClick(item.Assign_Id)"
                                                                     [disabled]="item.TypeOfTask=='SUBTASK'" />
-                                                                <input class="inputforfocus" type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/>
-                                                            </div>
+                                                                <input class="inputforfocus" type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/> -->
+
+
+                                                                <mat-list-item class="subtask-radio mx-4">
+
+                                                                  <mat-checkbox color="primary" (change)="selectunSelect($event,item)"
+
+                                                                 ></mat-checkbox>
+                                                                </mat-list-item>
+
+
+
+                                                              </div>
                                                         </div>
 
                                                         <!-- Working Now -->
@@ -818,13 +850,42 @@
                                                         </div>
 
                                                        <div>
+
+
+
+
+
+
+
+
+
                                                         <div class="d-flex align-items-center justify-content-end py-lg-0 py-2"
+
+
+
                                                         id="div_{{item.Assign_Id}}" *ngIf="item.TypeOfTask!='SUBTASK'">
+
+
+
+                                                        <span class="">
+                                                          <input type="radio" name="Subtask" class="subtask-radio mx-4" (click)="OnRadioClick(item.Assign_Id)"
+                                                            [disabled]="item.TypeOfTask=='SUBTASK'" />
+                                                          <input class="inputforfocus" type="text"
+                                                            style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;" />
+                                                        </span>
+
+
                                                         <span matTooltip="Click to rename task"
                                                             (click)="OnEditNameClick(item.Task_Name,item.Assign_Id)"
                                                             class="mr-2 cursor-pointer unassign-btn">
                                                             <mat-icon >edit</mat-icon>
                                                         </span>
+
+
+
+
+
+
                                                         <!-- <span class="mr-2" matTooltip="Create New Project">
                                                             <mat-icon color="primary">add</mat-icon>
                                                         </span> -->
@@ -905,14 +966,14 @@
 
                                     <div class="runway-card d-none" id="Completed">
                                       <div class="runway-card-header" id="headingTwo" *ngIf="_CompletedList&&_CompletedList.length>0">
-                                          <a id="CompletedBtn" class="collapsed" type="button" data-toggle="collapse" data-target="#collapseCompleted" aria-expanded="false" aria-controls="collapseCompleted">
+                                          <a id="CompletedBtn" class=" collapsed" type="button" data-toggle="collapse" data-target="#collapseCompleted" aria-expanded="false" aria-controls="collapseCompleted">
                                             <span>Completed &nbsp;<span class="task-count cou-com">{{_CompletedList&&_CompletedList.length}}</span></span>
                                             <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                                           </a>
                                       </div>
                                       <div id="collapseCompleted" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionRunway">
                                         <div class="runway-card-body scrollbar1">
-                                            <div [id]="'CompletedItem-'+item.Assign_Id"  class="card mb-2  Replied_border_left_true_success" *ngFor="let item of _CompletedList">
+                                            <div [id]="'CompletedItem-'+item.Assign_Id"  class="card mb-2  Replied_border_left_true_success" *ngFor="let item of _CompletedList|filter:_SearchTask;">
                                                 <div class="card-body p-2">
                                                     <div data-type="inbox" class="d-flex align-items-center my-1">
                                                         <div class="symbol symbol-60 symbol-2by3 flex-shrink-0">
@@ -963,7 +1024,7 @@
                                       </div>
                                       <div id="collapseActionproject" class="collapse" aria-labelledby="headingThree" data-parent="#accordionRunway">
                                         <div class="runway-card-body scrollbar1">
-                                            <div [id]="'ActiontoprojectsItem-'+item.Assign_Id"   class="mb-2 card  Replied_border_left_true_underApprovals" *ngFor="let item of ActionedSubtask_Json;let i = index">
+                                            <div [id]="'ActiontoprojectsItem-'+item.Assign_Id"   class="mb-2 card  Replied_border_left_true_underApprovals" *ngFor="let item of ActionedSubtask_Json|filter:_SearchTask;let i = index">
                                                 <div class="card-body p-2">
                                                     <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
 
@@ -1249,7 +1310,7 @@
                                       <div id="collapseActiontask" class="collapse" aria-labelledby="headingThree" data-parent="#accordionRunway">
                                         <div class="runway-card-body scrollbar1">
 
-                                            <div [id]="'AssignedTaskProjectItem-'+item.Assign_Id"  class="mb-2 card Replied_border_left_true_warning" *ngFor="let item of ActionedAssigned_Josn;let i=index;">
+                                            <div [id]="'AssignedTaskProjectItem-'+item.Assign_Id"  class="mb-2 card Replied_border_left_true_warning" *ngFor="let item of ActionedAssigned_Josn|filter:_SearchTask;;let i=index;">
                                                 <!-- <div class="overlay-card"   ></div> -->
                                                 <div class="card-body p-2">
                                                     <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
@@ -1855,6 +1916,7 @@
 <!-- </div> -->
 
  <!-- unassign edit side bar start -->
+
  <div id="unassign-editsidebar" class="sideInfobar animate-right offcanvas">
   <div class="unassign-editsidebar-body">
       <div class="unassign-editsidebar-head mb-0" style="align-items: flex-start;">

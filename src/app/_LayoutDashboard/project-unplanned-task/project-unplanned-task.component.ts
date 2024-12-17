@@ -47,6 +47,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
     file: File | null = null;
     selectedOption: string = 'option1';
     selectedFileName: string | null = null;
+    _SearchTask:string
 
   _ObjAssigntaskDTO: AssigntaskDTO;
   _ObjCompletedProj: CompletedProjectsDTO;
@@ -217,6 +218,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
     //   });
     // }
     this.totalproject();
+    this.openTab()
     // this.initAutosize();
   }
 
@@ -414,7 +416,6 @@ export class ProjectUnplannedTaskComponent implements OnInit{
   acceptCount: any;
   pendingCount:any;
   rejectCount:any;
-
 
   getrunwayCount(){
     this.isCountsDataLoaded=false;
@@ -774,7 +775,7 @@ console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeLi
   OnCategoryClick(C_id, C_Name) {
     // _Id = C_id;
     // _Name = C_Name;
-debugger
+
     this._selectedcatname = C_Name;
     this._selectedcatid = C_id;
     this.BsService.setNewCategoryID(this._selectedcatid);
@@ -803,6 +804,7 @@ debugger
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        this.openTab()
         console.log(this.ActionedAssigned_Josn,"accept,pend")
 
         let _Accepted =0;
@@ -1184,7 +1186,7 @@ renameTask(task_id:any,new_name:any){
 
 
   OnTask_Rename() {
-    debugger
+
     if (this._taskName != "") {
       this._ObjAssigntaskDTO.TypeOfTask = "Rename";
       this._ObjAssigntaskDTO.TaskName = this._taskName;
@@ -1208,7 +1210,7 @@ renameTask(task_id:any,new_name:any){
 
 
   OnTask_Renameofnew() {
-    debugger
+
     if (this.selected_taskName != "") {
       this._ObjAssigntaskDTO.TypeOfTask = "Rename";
       this._ObjAssigntaskDTO.TaskName = this.selected_taskName;
@@ -1233,7 +1235,7 @@ renameTask(task_id:any,new_name:any){
 
   Emp_No:any
   OnTask_Renameofpending() {
-    debugger
+
     if (this.task__name != "") {
       this._ObjAssigntaskDTO.TypeOfTask = "Rename";
       this._ObjAssigntaskDTO.TaskName = this.task__name;
@@ -1449,13 +1451,16 @@ showassign(){
   document.getElementById('Completed').classList.add('d-none')
   document.getElementById('taskdd').classList.add('d-none')
 }
+
 selected_date:any
 selected_taskId:any;
 selected_taskName:any;
 unassign_edit(id:any,taskname:any,date:any){
+  const taskNames = this.checkedTaskNames.join(', ');
   this.selected_taskId=id;
-  this.selected_taskName=taskname.trim();
+  this.selected_taskName=taskNames
   this.selected_date = date
+
   document.getElementById('unassign-editsidebar').classList.add('kt-action-panel--on');
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
@@ -1487,7 +1492,7 @@ assign_Id:any
 editTaskat:number|undefined= undefined;
 
 editassignPending(i:any){
-  debugger
+
   this.editTaskat=i;
   this.task__name = this.ActionedAssigned_Josn[i].Task_Name.trim();
   this.employeSelect=(this.ActionedAssigned_Josn[i].Emp_No)?this.ActionedAssigned_Josn[i].Emp_No.split(','):[];
@@ -1632,7 +1637,7 @@ selectFile() {
 }
 
 onFileChanged(event: any) {
-  debugger
+
   const files: File[] = event.target.files;
 
   if (files && files.length > 0) {
@@ -1651,7 +1656,7 @@ onFileChanged(event: any) {
 }
 FileName:any
 removeFile() {
-  debugger
+
   this.file = null;
   this.fileAttachment = null;
   this.selectedFileName = null;
@@ -1867,8 +1872,6 @@ setMaxDate(dateField){
 
 assignTasksub1(){
 
-debugger
-
 
   if(this.employeSelect ==null || this.employeSelect == undefined &&this.selected_taskName==null|| this.selected_taskName == undefined || this.selected_taskName.trim() ==""){
     this.formFieldsRequired = true
@@ -1877,9 +1880,6 @@ return
 else{
   this.formFieldsRequired = false
 }
-
-
-
 
 
     var datestrStart;
@@ -1913,7 +1913,7 @@ else{
     }
 
 
-  const fd = new FormData(); debugger
+  const fd = new FormData();
   fd.append("TaskName", this.selected_taskName.trim());
   fd.append("Desc", '');
   fd.append("ProjectType", this.selectedProjecttype);
@@ -1993,7 +1993,7 @@ actionSubmit(){
 
 
   this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
-  this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => { debugger
+  this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
 
     this.Sub_ProjectCode = data['SubTask_ProjectCode'];
     this.EmpNo_Autho = data['Team_Autho'];
@@ -2162,7 +2162,7 @@ actionSubmit(){
   isemployeeDrpDwnOpen : boolean = false
   employeSelect:any
   onEmployeeselected(e: any) {
-debugger
+
     const employeeChoosed: any = this.EmployeeList.find((p: any) => p.Emp_No === e.option.value);
     console.log(employeeChoosed);
     if (employeeChoosed) {
@@ -2220,7 +2220,7 @@ debugger
 
 
   sweetAlert() {
-debugger
+
 if(this._allocated &&this.selectedProjectCode&&this.selectedEmpNo&&this._StartDate &&this._EndDate&&this.selected_taskName&&this._allocated <= this.maxAllocation){
   this.formFieldsRequired = false
 }
@@ -2228,10 +2228,6 @@ else{
   this.formFieldsRequired = true
   return
 }
-
-
-
-
 
 
         const dateOne = new Date(this._EndDate);
@@ -2341,7 +2337,7 @@ enddateChecker(){
 
 vart:any = null
 todo(type,datefields) {
-  debugger
+
   if (type === '011') {
 const  d = new Date(datefields)
 this.vart = d
@@ -2397,7 +2393,7 @@ else{
       else{
         this.employeSelect=0;
       }
-      debugger
+
 
       // if(this.port_id!=null && this.port_id!=undefined && this.port_id!=''){
       //   this.port_id =  this.port_id
@@ -2405,7 +2401,6 @@ else{
       // else{
       //   this.port_id=0;
       // }
-
 
 const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
 
@@ -2454,7 +2449,7 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
 
  initAutosize(area:string): void {
     function autosize() {
-      debugger
+
       var $text = $(`#${area}`);
 
       $text.each(function () {
@@ -2476,6 +2471,64 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
     }
     autosize();
   }
+
+  openTab() {
+   // Now, check which condition matches and add 'show' to the appropriate element
+   document.getElementById('collapseUnassign').classList.remove('show');
+   document.getElementById('collapseCompleted').classList.remove('show');
+   document.getElementById('collapseActionproject').classList.remove('show');
+   document.getElementById('collapseActiontask').classList.remove('show');
+
+    if (this._TodoList.length > 0) {
+      document.getElementById('collapseUnassign').classList.add('show');
+    } else if (this._CompletedList.length > 0) {
+      document.getElementById('collapseCompleted').classList.add('show');
+    } else if (this.ActionedSubtask_Json.length > 0) {
+      document.getElementById('collapseActionproject').classList.add('show');
+    }
+    else if (this.ActionedAssigned_Josn.length > 0){
+      document.getElementById('collapseActiontask').classList.add('show');
+    }
+// this.openTab()
+}
+
+
+
+checkedItem = []
+// this._TodoList
+// selectunSelect(e, item){
+//   if(e.checked){
+//     this.checkedItem.push(item)
+//     const allselected = this._TodoList.every(item=>{
+//       return this.checkedItem.map(p => p.Project_Code).includes(item.Project_Code)
+//     })
+
+//     console.log(this.checkedItem,"ThisCheckedItem")
+
+//   }
+//   else{
+//     let index = this.checkedItem.findIndex(obj => obj.Project_Code == item.Project_Code)
+//     if (index != -1)
+//       this.checkedItem.splice(index, 1);
+//     console.log(this.checkedItem,"ThisCheckedItem Remove")
+//         }
+// }
+checkedTaskNames: string[] = [];
+selectunSelect(e, item) {
+  if (e.checked) {
+    // Add task name to checkedTaskNames array
+    this.checkedTaskNames.push(item.Task_Name);
+    console.log(this.checkedTaskNames, "ThisCheckedTaskNames");
+  } else {
+    // Remove task name from checkedTaskNames array
+    let index = this.checkedTaskNames.indexOf(item.Task_Name);
+    if (index !== -1) {
+      this.checkedTaskNames.splice(index, 1);
+    }
+    console.log(this.checkedTaskNames, "ThisCheckedTaskNames Remove");
+  }
+}
+
 }
 
 // new Date(this.todayDate.getFullYear(),this.todayDate.getMonth(),this.todayDate.getDate(),0,0,0,0)
