@@ -899,10 +899,23 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewInsertAssignTask", fd);
   }
 
+  _InsertAssignTaskServieCore(fd) {
+    return this.http.post(this.rootUrlcore + "Notification/NewInsertAssignTaskCore", fd);
+  }
+
+  _AzureAssigntaskCore(fd) {
+    return this.http.post(this.rootUrlcore + "Azure/NewInsertAssignTaskCore", fd);
+  }
+
 
   updatePendingtask(fd) {
 
     return this.http.post(this.rootUrl + "Notification/NewUpdateAssignTask", fd);
+  }
+
+  updatePendingtaskCore(fd) {
+
+    return this.http.post(this.rootUrlcore + "Notification/NewInsertAssignTaskCore", fd);
   }
 
 
