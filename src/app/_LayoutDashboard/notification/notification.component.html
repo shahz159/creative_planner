@@ -566,7 +566,9 @@
                         </td>
                         <td>
                           <p class="kt-widget__title mb-0">
-                            {{item.Project_Name}}
+                            {{item.Project_Name | slice : 0 :70}}
+                                <ng-container *ngIf="item.Project_Name.length > 70"  >...</ng-container>
+
 
                           </p>
                           <span class="kt-widget__other d-block st-line" title="Main Project name"

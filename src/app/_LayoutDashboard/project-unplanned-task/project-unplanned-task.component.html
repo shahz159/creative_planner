@@ -617,111 +617,133 @@
                           <div class="kt-cat-name d-flex align-items-center justify-content-between">
                             <h4>{{_CategoryName}}</h4>
 
-                          <div class="dropdown">
-                            <a class="kt-todo__icon" data-toggle="dropdown"  title="Click to filter tasks">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter" id="dropd">
 
-                                <ul class="drop-ul">
-                                    <li class="dropdown-header">Filter by</li>
-                                    <li>
-                                        <button class="btn btn-filtr "[class.active]="activeButton === 'totalProjects'" (click)="setActiveButton('totalProjects');totalproject()">
-                                            <div class="d-flex align-items-center">
-                                                <span class="count total-project">{{(ActionedSubtask_Json && ActionedSubtask_Json.length) + (ActionedAssigned_Josn && ActionedAssigned_Josn.length) + (_CompletedList && _CompletedList.length) + (_TodoList && _TodoList.length)}}</span>
-                                                <div class="fil-lbl"    >Total Projects</div>
-                                                <span class="chck-icn">
-                                                  <svg xmlns="http://www.w3.org/2000/svg"
-                                                        width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check2"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                        </path>
-                                                    </svg>
-                                               </span>
-                                            </div>
-                                        </button>
-                                    </li>
-                                    <li  *ngIf="_TodoList.length>0" >
-                                        <button class="btn btn-filtr"  [class.active]="activeButton === 'todoList'" (click)="setActiveButton('todoList');taskside()"  >
-                                            <div    class="d-flex align-items-center">
-                                                <span class="count untask"> {{_TodoList.length}}</span>
-                                                <div   class="fil-lbl">Unassign task</div>
-                                                <span class="chck-icn">
+
+                            <div class="d-flex align-items-center justify-content-end">
+                              <div class="kt-portfolio-search mr-2 w-100" >
+                                <div  style="background-color:white;" class="portfolio-search-field">
+                                    <svg    width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11ZM11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C13.125 20 15.078 19.2635 16.6177 18.0319L20.2929 21.7071C20.6834 22.0976 21.3166 22.0976 21.7071 21.7071C22.0976 21.3166 22.0976 20.6834 21.7071 20.2929L18.0319 16.6177C19.2635 15.078 20 13.125 20 11C20 6.02944 15.9706 2 11 2Z"
+                                                fill="#000000"></path>
+                                        </g>
+                                    </svg>
+                                    <input type="text" autocomplete="off" name="PortfolioSearch" placeholder="Search task" [(ngModel)]="_SearchTask"  (ngModelChange)="filterLists()"
+                                        class="form-control right-flter-b border-0" />
+                                </div>
+                                </div>
+
+
+
+                            <div class="dropdown">
+                              <a class="kt-todo__icon" data-toggle="dropdown"  title="Click to filter tasks">
+                                  <i class="fas fa-ellipsis-h"></i>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter" id="dropd">
+
+                                  <ul class="drop-ul">
+                                      <li class="dropdown-header">Filter by</li>
+                                      <li>
+                                          <button class="btn btn-filtr "[class.active]="activeButton === 'totalProjects'" (click)="setActiveButton('totalProjects');totalproject()">
+                                              <div class="d-flex align-items-center">
+                                                  <span class="count total-project">{{(ActionedSubtask_Json && ActionedSubtask_Json.length) + (ActionedAssigned_Josn && ActionedAssigned_Josn.length) + (_CompletedList && _CompletedList.length) + (_TodoList && _TodoList.length)}}</span>
+                                                  <div class="fil-lbl"    >Total Projects</div>
+                                                  <span class="chck-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                        width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check2"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                        </path>
-                                                    </svg>
-                                                </span>
-                                            </div>
-                                        </button>
-                                    </li>
-                                    <li  *ngIf="_CompletedList.length>0">
-                                        <button class="btn btn-filtr"  [class.active]="activeButton === 'completed'" (click)="setActiveButton('completed');completed()" >
-                                            <div class="d-flex align-items-center">
-                                                <span class="count compl">{{_CompletedList&&_CompletedList.length}}</span>
-                                                <div  class="fil-lbl">Completed</div>
-                                                <span class="chck-icn">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check2"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                        </path>
-                                                    </svg>
-                                                </span>
-                                            </div>
-                                        </button>
-                                    </li>
-                                    <li *ngIf="ActionedSubtask_Json.length>0"  >
-                                        <button class="btn btn-filtr" [class.active]="activeButton === 'actionedSubtask'" (click)="setActiveButton('actionedSubtask');showactprj()">
-                                            <div class="d-flex align-items-center">
-                                                <span class="count actio">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span>
-                                                <div   class="fil-lbl"    >Action to projects</div>
-                                                <span class="chck-icn">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check2"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                        </path>
-                                                    </svg>
-                                                </span>
-                                            </div>
-                                        </button>
-                                    </li>
-                                    <li *ngIf="ActionedAssigned_Josn.length>0"  >
-                                        <button class="btn btn-filtr " [class.active]="activeButton === 'actionedAssigned'" (click)="setActiveButton('actionedAssigned');showassign()" >
-                                            <div class="d-flex align-items-center">
-                                                <span class="count task-ass">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span>
-                                                <div class="fil-lbl">Assign task</div>
-                                                <span class="chck-icn">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        width="16" height="16"
-                                                        fill="currentColor" class="bi bi-check2"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                        </path>
-                                                    </svg>
-                                                </span>
-                                            </div>
-                                        </button>
-                                    </li>
-                              </ul>
-                              </div>
+                                                          width="16" height="16"
+                                                          fill="currentColor" class="bi bi-check2"
+                                                          viewBox="0 0 16 16">
+                                                          <path
+                                                              d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                          </path>
+                                                      </svg>
+                                                 </span>
+                                              </div>
+                                          </button>
+                                      </li>
+                                      <li  *ngIf="_TodoList.length>0" >
+                                          <button class="btn btn-filtr"  [class.active]="activeButton === 'todoList'" (click)="setActiveButton('todoList');taskside()"  >
+                                              <div    class="d-flex align-items-center">
+                                                  <span class="count untask"> {{_TodoList.length}}</span>
+                                                  <div   class="fil-lbl">Unassign task</div>
+                                                  <span class="chck-icn">
+                                                      <svg xmlns="http://www.w3.org/2000/svg"
+                                                          width="16" height="16"
+                                                          fill="currentColor" class="bi bi-check2"
+                                                          viewBox="0 0 16 16">
+                                                          <path
+                                                              d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                          </path>
+                                                      </svg>
+                                                  </span>
+                                              </div>
+                                          </button>
+                                      </li>
+                                      <li  *ngIf="_CompletedList.length>0">
+                                          <button class="btn btn-filtr"  [class.active]="activeButton === 'completed'" (click)="setActiveButton('completed');completed()" >
+                                              <div class="d-flex align-items-center">
+                                                  <span class="count compl">{{_CompletedList&&_CompletedList.length}}</span>
+                                                  <div  class="fil-lbl">Completed</div>
+                                                  <span class="chck-icn">
+                                                      <svg xmlns="http://www.w3.org/2000/svg"
+                                                          width="16" height="16"
+                                                          fill="currentColor" class="bi bi-check2"
+                                                          viewBox="0 0 16 16">
+                                                          <path
+                                                              d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                          </path>
+                                                      </svg>
+                                                  </span>
+                                              </div>
+                                          </button>
+                                      </li>
+                                      <li *ngIf="ActionedSubtask_Json.length>0"  >
+                                          <button class="btn btn-filtr" [class.active]="activeButton === 'actionedSubtask'" (click)="setActiveButton('actionedSubtask');showactprj()">
+                                              <div class="d-flex align-items-center">
+                                                  <span class="count actio">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span>
+                                                  <div   class="fil-lbl"    >Action to projects</div>
+                                                  <span class="chck-icn">
+                                                      <svg xmlns="http://www.w3.org/2000/svg"
+                                                          width="16" height="16"
+                                                          fill="currentColor" class="bi bi-check2"
+                                                          viewBox="0 0 16 16">
+                                                          <path
+                                                              d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                          </path>
+                                                      </svg>
+                                                  </span>
+                                              </div>
+                                          </button>
+                                      </li>
+                                      <li *ngIf="ActionedAssigned_Josn.length>0"  >
+                                          <button class="btn btn-filtr " [class.active]="activeButton === 'actionedAssigned'" (click)="setActiveButton('actionedAssigned');showassign()" >
+                                              <div class="d-flex align-items-center">
+                                                  <span class="count task-ass">{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span>
+                                                  <div class="fil-lbl">Assign task</div>
+                                                  <span class="chck-icn">
+                                                      <svg xmlns="http://www.w3.org/2000/svg"
+                                                          width="16" height="16"
+                                                          fill="currentColor" class="bi bi-check2"
+                                                          viewBox="0 0 16 16">
+                                                          <path
+                                                              d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                          </path>
+                                                      </svg>
+                                                  </span>
+                                              </div>
+                                          </button>
+                                      </li>
+                                </ul>
+                                </div>
+                            </div>
+                            </div>
                           </div>
-                          </div>
 
 
-                          <div class="position-relative w-100 mt-3 ">
+                          <!-- <div class="position-relative w-100 mt-3 ">
                             <div class="form-control cat-search-field">
                                 <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -738,7 +760,14 @@
                                     placeholder="Search"   [(ngModel)]="_SearchTask"
                                     class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched  border-0" />
                             </div>
-                        </div>
+                        </div> -->
+
+
+
+
+
+
+
 
 
                         <div class="count-list p-3 grid gap-1 grid-template-columns-7 bg-gray-400 rounded-xl my-2 d-none">
@@ -788,7 +817,7 @@
                         <div class="row" >
                             <div class="col-lg-12" >
                                 <div class="accordion accordion-runway" [ngClass]="getAccordionClass()" id="accordionRunway">
-                                    <div class="runway-card d-none"  id="taskdd">
+                                    <div  class="runway-card d-none"  id="taskdd">
                                       <div class="runway-card-header" id="headingOne" *ngIf="_TodoList.length>0">
                                           <a id="UnassigntaskBtn" class="" type="button" data-toggle="collapse" data-target="#collapseUnassign" aria-expanded="false" aria-controls="collapseUnassign">
                                             <span>Unassign task &nbsp;<span class="task-count unass">{{_TodoList.length}}</span></span>
@@ -797,8 +826,8 @@
                                       </div>
 
                                       <div id="collapseUnassign"  class="collapse" aria-labelledby="headingOne" data-parent="#accordionRunway">
-                                        <div class="runway-card-body scrollbar1">
-                                            <div [id]="'UnassigntaskItem-'+item.Assign_Id"  class="mb-2 card  Replied_border_left_true_NewProject" *ngFor="let item of _TodoList|filter:_SearchTask; let i=index">
+                                        <div  class="runway-card-body scrollbar1">
+                                            <div  [id]="'UnassigntaskItem-'+item.Assign_Id"  class="mb-2 card  Replied_border_left_true_NewProject" *ngFor="let item of this._TodoList|filter:_SearchTask; let i=index">
                                                 <div class="card-body p-2" >
                                                     <div data-type="inbox" class="d-flex align-items-center my-1">
                                                         <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
@@ -808,13 +837,18 @@
                                                                     [disabled]="item.TypeOfTask=='SUBTASK'" />
                                                                 <input class="inputforfocus" type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/> -->
 
-
+<!--
                                                                 <mat-list-item class="subtask-radio mx-4">
 
                                                                   <mat-checkbox color="primary" (change)="selectunSelect($event,item)"
 
                                                                  ></mat-checkbox>
-                                                                </mat-list-item>
+                                                                </mat-list-item> -->
+
+                                                                <span class="mr-2 cursor-pointer unassign-btn" (click)="OnRadioClick(item.Assign_Id)"
+                                                                [disabled]="item.TypeOfTask=='SUBTASK'">
+                                                                  <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L12.0243 14.3899C11.4586 14.9556 10.5414 14.9556 9.97568 14.3899L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z" fill="currentColor"></path> </g></svg>
+                                                                </span>
 
 
 
@@ -825,7 +859,7 @@
                                                         <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75"  [ngStyle]="{ 'cursor': 'pointer' }" >
                                                             <div
                                                                 class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg" >
-                                                                <span class="kt-inbox__subject" style="width: 100%; display: flex; height: 50px; align-items: center;" (click)="unassign_edit(item.Assign_Id,item.Task_Name,item.Creation_Date);"
+                                                                <span class="kt-inbox__subject" style="width: 100%; display: flex; height: 50px; align-items: center;" (click)="unassign_edit(item.Task_Name,item.Assign_Id,item.Creation_Date);"
                                                                     id="spnLabel_{{item.Assign_Id}}">
                                                                     {{item.Task_Name}}</span>
                                                                 <span class="kt-inbox__subject" style="display:none;"
@@ -867,13 +901,16 @@
 
 
 
-                                                        <span class="">
+                                                        <!-- <span class="">
                                                           <input type="radio" name="Subtask" class="subtask-radio mx-4" (click)="OnRadioClick(item.Assign_Id)"
                                                             [disabled]="item.TypeOfTask=='SUBTASK'" />
                                                           <input class="inputforfocus" type="text"
                                                             style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;" />
-                                                        </span>
-
+                                                        </span> -->
+                                                        <!-- <span class="mr-2 cursor-pointer unassign-btn" (click)="OnRadioClick(item.Assign_Id)"
+                                                        [disabled]="item.TypeOfTask=='SUBTASK'">
+                                                          <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L12.0243 14.3899C11.4586 14.9556 10.5414 14.9556 9.97568 14.3899L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z" fill="currentColor"></path> </g></svg>
+                                                        </span> -->
 
                                                         <span matTooltip="Click to rename task"
                                                             (click)="OnEditNameClick(item.Task_Name,item.Assign_Id)"
@@ -964,55 +1001,7 @@
                                     </div>
 
 
-                                    <div class="runway-card d-none" id="Completed">
-                                      <div class="runway-card-header" id="headingTwo" *ngIf="_CompletedList&&_CompletedList.length>0">
-                                          <a id="CompletedBtn" class=" collapsed" type="button" data-toggle="collapse" data-target="#collapseCompleted" aria-expanded="false" aria-controls="collapseCompleted">
-                                            <span>Completed &nbsp;<span class="task-count cou-com">{{_CompletedList&&_CompletedList.length}}</span></span>
-                                            <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
-                                          </a>
-                                      </div>
-                                      <div id="collapseCompleted" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionRunway">
-                                        <div class="runway-card-body scrollbar1">
-                                            <div [id]="'CompletedItem-'+item.Assign_Id"  class="card mb-2  Replied_border_left_true_success" *ngFor="let item of _CompletedList|filter:_SearchTask;">
-                                                <div class="card-body p-2">
-                                                    <div data-type="inbox" class="d-flex align-items-center my-1">
-                                                        <div class="symbol symbol-60 symbol-2by3 flex-shrink-0">
-                                                            <div class="kt-inbox__actions">
-                                                                <input type="radio" class="subtask-radio mx-4"
-                                                                    (click)="On_Uncheck(item.Assign_Id)" checked>
-                                                                    <input class="inputforfocus" type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/>
-                                                                <span></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex align-items-center justify-content-between my-lg-0 my-2 w-100" >
-                                                            <div
-                                                                class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg">
-                                                                <span
-                                                                    class="kt-inbox__subject"><s>{{item.Task_Name}}</s></span>
-                                                            </div>
-                                                            <div class="">
-                                                                <span
-                                                                    class="">
-                                                                    <div>
-                                                                        {{item.Modified_DT|date:'d MMM, y'}}
-                                                                    </div>
-                                                                </span>
-                                                                <!-- <span
-                                                                    class="kt-inbox__label kt-badge kt-badge done kt-badge-light-bold kt-badge--inline">
-                                                                    {{item.ToDo_Status}}
-                                                                </span> -->
-                                                            </div>
-                                                        </div>
-                                                        <div class="kt-inbox__datetime">
-                                                        </div>
-                                                        <div class="delete-btn">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                      </div>
-                                    </div>
+
 
 
                                     <div class="runway-card d-none" id='ActionToProjects'>
@@ -1147,13 +1136,19 @@
                                                              </svg>
                                                                </a> -->
                                                             </div>
-                                                            <div class="action-right" (click)="openActionassign(i)" [ngStyle]="{ 'cursor': 'pointer' }">
+                                                            <div class="action-right"  [ngStyle]="{ 'cursor': 'pointer' }">
                                                                 <div class="action-div-item-content">
-                                                                    <div class="kt-inbox__subject  h5 mb-0">{{item.Task_Name}}</div>
-                                                                    <div class="desc">{{item.Task_Description}}</div>
-                                                                    <div>{{item.Project_type }} | {{item.Assigned_Name}}</div>
+                                                                    <span  (click)="openActionassign(i)" class="kt-inbox__subject  h5 mb-0">{{item.Task_Name}}
+
+                                                                    </span>
+
+                                                                    <span *ngIf="item.FileName" class="fa fa-paperclip text-info attachment fa-lg cursor-pointer"  [style.height.px]="10"
+                                                                    [style.width.px]="10" title="Reference attachment" (click)="LoadDocument1(item.IsCloud=true,item.FileName,item.Reference,getContentType(item),item.Assigned_Name)"></span>
+
+                                                                    <div (click)="openActionassign(i)" class="desc">{{item.Task_Description}}</div>
+                                                                    <div (click)="openActionassign(i)">{{item.Project_type }} | {{item.Assigned_Name}}</div>
                                                                 </div>
-                                                                <div  class="action-div-item-content-end">
+                                                                <div  (click)="openActionassign(i)" class="action-div-item-content-end">
                                                                     <div class="mb-1">
                                                                         {{item.Creation_Date| date:'d MMM, y' }}
                                                                     </div>
@@ -1300,6 +1295,10 @@
                                       </div>
                                     </div>
 
+                                    <div id="noSearchFoundMessage" style="display:none;">
+                                      <h1  style="color:white">No search found</h1>
+                                    </div>
+
                                     <div class="runway-card d-none" id="AssignedTask">
                                       <div class="runway-card-header" id="headingFour"    *ngIf="ActionedAssigned_Josn.length>0">
                                           <a id="AssignedTaskProjectBtn" class="collapsed" type="button" data-toggle="collapse" data-target="#collapseActiontask" aria-expanded="false" aria-controls="collapseActiontask">
@@ -1324,175 +1323,30 @@
                                                                 <a    class="btn px-0 info-btn curser-pointer run-info mr-2"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 <svg  (click)="editassignPending(i)"  xmlns="http://www.w3.org/2000/svg"  class="svg-icon"  style="width: 28px; height: 28px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M506.231111 65.009619c-246.822478 0-446.911586 200.090131-446.911586 446.912609 0 246.823502 200.090131 446.912609 446.911586 446.912609 246.823502 0 446.912609-200.089108 446.912609-446.912609C953.144744 265.098727 753.054613 65.009619 506.231111 65.009619zM810.142819 704.729489 598.136288 781.818215l-192.736653-77.088726-212.009601 77.088726L193.390034 319.270511l212.009601-77.088726 192.736653 77.088726 212.007555-77.088726L810.143842 704.729489z"/><path d="M771.597945 297.214169 617.40719 353.262696 617.40719 733.788316 771.597945 677.735695Z"/><path d="M424.670537 670.923546 578.862315 732.583884 578.862315 353.075431 424.670537 291.417139Z"/><path d="M231.939001 726.785831 386.126686 670.736281 386.126686 290.214754 231.939001 346.262258Z"/></svg>
 
-                                                               <!-- <div class="dropdown-menu run-info-hover-menu" >
-                                                                    <div class="heading">
-                                                                        <div>
-                                                                            <small>Assigned Task/Project</small>
-                                                                            <h6 class="mb-0">{{item.Task_Name}}</h6>
-                                                                        </div>
-                                                                        <div>
-                                                                            <button class="btn btn-sm btn-outline-info" *ngIf="item.Project_Code != null && item.Status !='Pending'" (click)="newDetails(item.Project_Code)">View Project</button>
-                                                                        </div>
-                                                                    </div>
-                                                                    <hr>
-                                                                    <div class="run-details">
-                                                                        <div class="run-item">
-                                                                            <div class="run-label">Created date</div>
-                                                                            <div class="run-control">{{item.Creation_Date|  date:'d MMM, y'}}</div>
-                                                                        </div>
-                                                                        <div class="run-item">
-                                                                            <div class="run-label">Assigned to</div>
-                                                                            <div class="run-control">{{item.AssignedTo}} | {{item.Modified_DT|date :'d MMM, y'}} </div>
-                                                                        </div>
-                                                                        <div class="run-item">
-                                                                            <div class="run-label">Assigned Status</div>
-                                                                            <div class="run-control">
-                                                                                <span  data-toggle="tooltip" title="Assigned Status!"
-                                                                                class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
-                                                                                [ngClass]="{'rejecteds':item.Status=='Rejected',
-                                                                                    'accepteds':item.Status=='Accepted',
-                                                                                     'pendings':item.Status=='Pending'}">
-                                                                                <span> {{item.Status=='Under Approval'?'New Project Under Approval':item.Status}}</span>
-                                                                                 </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="run-item">
-                                                                            <div class="run-label">Project type</div>
-                                                                            <div class="run-control">
-                                                                                <span *ngIf="item.Project_type">
-                                                                                {{item.Project_type==='Under Approval'?'New project under approval':item.Project_type}}</span>
-                                                                             </div>
-                                                                        </div>
 
-
-                                                                        <div class="run-item">
-                                                                          <div class="run-label">Portfolio</div>
-                                                                          <div class="run-control">
-                                                                              <span >
-                                                                              {{item.Portfolio_Id}}</span>
-
-                                                                            </div>
-                                                                      </div>
-
-
-
-                                                                        <div class="run-item">
-                                                                            <div class="run-label">Project status</div>
-                                                                            <div class="run-control">
-                                                                                <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status!='Delay' && item.Project_status!='Project Hold'"
-                                                                        class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline"
-                                                                        [ngClass]="{
-                                                                          'kt-badge completed ': item.Project_status === 'Completed',
-                                                                          'kt-badge in-process': item.Project_status === 'InProcess',
-                                                                          'kt-badge rejecteds': item.Project_status === 'Rejected',
-                                                                          'kt-badge project-complete-rejected': item.Project_status === 'Project Complete Rejected',
-                                                                          'kt-badge new-project-reject': item.Project_status === 'New Project Rejected',
-
-                                                                          ' kt-badge completion-under-approval': item.Project_status === 'Completion Under Approval',
-                                                                          'kt-badge deadline-extend-under-approval': item.Project_status === 'Deadline Extend Under Approval',
-                                                                          'kt-badge deadline-extend-under-approval': item.Project_status === 'Cancellation Under Approval',
-                                                                          'kt-badge cancelled': item.Project_status === 'Cancelled',
-                                                                          'kt-badge new-project-under':item.Project_status==='Under Approval'
-                                                                        }">
-                                                                        <div>{{item.Project_status=='Under Approval'?'New approval':item.Project_status=='Enactive Under Approval'?'Enactive approval'
-                                                                          :item.Project_status=="Cancellation Under Approval"?"Cancellation approval" :item.Project_status== "Completion Under Approval" ?
-                                                                          "Completion approval" :item.Project_status=='Forward Under Approval'? "Forward approval" :
-                                                                          item.Project_status=='Deadline Extend Under Approval'?"Deadline Extend Approval"
-                                                                          :item.Project_status=='InProcess'?'In-process':item.Project_status}}
-                                                                        </div>
-                                                                 </span>
-                                                                 <span data-toggle="tooltip" title="Project status!" *ngIf="item.Project_status && item.Project_status=='Delay'"
-                                                                        class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline delay">
-                                                                        <div> {{item.Project_status}} {{item.Delaydays}} days</div>
-                                                                 </span>
-                                                                 <span data-toggle="tooltip" title="Project Status!" *ngIf="item.Project_status && item.Project_status=='Project Hold'"
-                                                                        class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline hold">
-                                                                        <div> Hold </div>
-                                                                 </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="run-item">
-                                                                            <div class="run-label">Start date</div>
-                                                                            <div class="run-control">{{item.Start_Date|date : 'd MMM, y'}} </div>
-                                                                        </div>
-                                                                        <div class="run-item">
-                                                                            <div class="run-label">End date</div>
-                                                                            <div class="run-control">{{item.End_Date|date: 'd MMM, y'}}</div>
-                                                                        </div>
-                                                                        <div class="run-item" *ngIf="item.FileName !==''" >
-                                                                            <div class="run-label">Attachment</div>
-                                                                            <div class="run-control">
-                                                                                <a (click)="LoadDocument(item.Reference)" href="javascript(void:0)"><i class="fas fa-file-pdf text-muted mr-1"></i>{{item.FileName}}</a>
-                                                                                </div>
-                                                                        </div>
-                                                                        <div class="run-item" *ngIf="item.Remarks != '' && item.Remarks!= 'undefined' && item.Remarks != 'null'">
-                                                                            <div class="run-label">Remarks</div>
-                                                                            <div class="run-control">{{item.Remarks}}</div>
-                                                                        </div>
-                                                                    </div>
-                                                              </div> -->
                                                             </a>
                                                             <input class="inputforfocus" type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/>
                                                         </div>
-                                                             <!--more details-->
-                                                                <!-- <div>
-                                                                    <a data-toggle="tooltip" title="Project Details!" class="info-btn curser-pointer" *ngIf="item.Project_Code != null && item.Status !='Pending'"
-                                                                    (click)="openInfo(item.Project_Code,item.Project_Name)">
-                                                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                                                    viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
-                                                               <g>
-                                                                   <circle fill="currentColor" cx="10" cy="10.024" r="9.295"/>
-                                                                   <g>
-                                                                       <path fill="#FFFFFF" d="M16.674,10.017c0.008,1.031-0.763,1.823-1.778,1.825c-1.004,0.002-1.818-0.805-1.819-1.804
-                                                                           c-0.002-0.981,0.785-1.775,1.774-1.793C15.879,8.227,16.666,8.992,16.674,10.017z"/>
-                                                                       <path fill="#FFFFFF" d="M10.053,8.245c1.017-0.004,1.818,0.787,1.814,1.795c-0.003,1.006-0.809,1.806-1.815,1.802
-                                                                           c-0.989-0.004-1.77-0.782-1.783-1.778C8.256,9.045,9.036,8.25,10.053,8.245z"/>
-                                                                       <path fill="#FFFFFF" d="M3.447,10.019c0.006-1.013,0.809-1.791,1.828-1.774c0.994,0.017,1.769,0.803,1.769,1.791
-                                                                           c-0.001,1.004-0.809,1.81-1.812,1.806C4.224,11.838,3.44,11.038,3.447,10.019z"/>
-                                                                   </g>
-                                                                   <path fill="currentColor" d="M14.864,8.959c0.595-0.011,1.084,0.451,1.104,1.043c0.02,0.6-0.435,1.089-1.029,1.107
-                                                                       c-0.63,0.019-1.125-0.444-1.129-1.058C13.805,9.457,14.275,8.97,14.864,8.959z"/>
-                                                                   <path fill="currentColor" d="M10.085,11.109C9.477,11.117,9,10.668,8.983,10.071C8.967,9.455,9.45,8.958,10.065,8.959
-                                                                       c0.598,0,1.065,0.467,1.072,1.071C11.144,10.64,10.694,11.101,10.085,11.109z"/>
-                                                                   <path fill="currentColor" d="M5.236,11.112c-0.599-0.004-1.083-0.48-1.085-1.066C4.149,9.443,4.662,8.944,5.268,8.959
-                                                                       C5.851,8.973,6.34,9.48,6.326,10.056C6.312,10.657,5.838,11.117,5.236,11.112z"/>
-                                                               </g>
-                                                               </svg>
-                                                                    </a>
-                                                                    <a tabindex="0" *ngIf="item.Project_Code != null && item.Status !='Pending'" (click)="newDetails(item.Project_Code)"
-                                                                        role="button" placement="right" data-trigger="focus" data-toggle="tooltip" title="Project dashboard" class="info-btn curser-pointer">
-                                                                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                                                viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
-                                                             <g>
-                                                               <path fill="currentColor" d="M19.293,9.976c0.13,4.913-4.07,9.247-9.273,9.223c-5.177-0.024-9.292-4.078-9.315-9.196
-                                                                 c-0.023-5.076,4.231-9.302,9.506-9.201C15.246,0.899,19.38,5.07,19.293,9.976z"/>
-                                                               <path fill="#FFFFFF" d="M10.79,10.029c0,1.046,0.003,2.092-0.001,3.138c-0.002,0.523-0.3,0.858-0.756,0.874
-                                                                 c-0.476,0.016-0.819-0.333-0.82-0.868c-0.005-2.108-0.005-4.216,0-6.325c0.001-0.559,0.297-0.856,0.816-0.846
-                                                                 c0.513,0.01,0.757,0.27,0.76,0.84C10.794,7.905,10.79,8.967,10.79,10.029z"/>
-                                                               <path fill="#FFFFFF" d="M14.048,8.587c0,0.545,0.007,1.09-0.002,1.635c-0.009,0.581-0.318,0.922-0.816,0.923
-                                                                 c-0.499,0.001-0.817-0.34-0.821-0.917c-0.008-1.122-0.009-2.245,0.001-3.367c0.005-0.556,0.306-0.859,0.814-0.858
-                                                                 c0.511,0,0.809,0.298,0.821,0.853C14.057,7.432,14.048,8.01,14.048,8.587z"/>
-                                                               <path fill="#FFFFFF" d="M6.008,11.424c0-0.579-0.006-1.159,0.002-1.738c0.007-0.515,0.323-0.844,0.789-0.839
-                                                                 c0.457,0.005,0.784,0.347,0.787,0.854c0.007,1.159,0.007,2.317,0,3.476c-0.003,0.519-0.314,0.854-0.775,0.864
-                                                                 c-0.477,0.01-0.796-0.333-0.801-0.879C6.004,12.583,6.008,12.003,6.008,11.424z"/>
-                                                               <path fill="#FFFFFF" d="M14.045,13.203c0.011,0.431-0.382,0.836-0.815,0.838c-0.421,0.002-0.797-0.355-0.821-0.778
-                                                                 c-0.025-0.438,0.344-0.84,0.788-0.859C13.637,12.386,14.034,12.76,14.045,13.203z"/>
-                                                               <path fill="#FFFFFF" d="M6.008,6.756c0.012-0.492,0.296-0.759,0.8-0.754C7.28,6.007,7.594,6.326,7.587,6.79
-                                                                 C7.58,7.273,7.237,7.597,6.75,7.582C6.292,7.567,5.996,7.238,6.008,6.756z"/>
-                                                             </g>
 
-                                                             </svg>
-                                                                    </a>
-                                                                </div> -->
 
-                                                            <div class="action-right" (click)="editassignPending(i)" [ngStyle]="{ 'cursor': 'pointer' }">
+                                                            <div class="action-right"  [ngStyle]="{ 'cursor': 'pointer' }">
                                                                 <div class="action-div-item-content">
-                                                                    <div class="kt-inbox__subject  h5 mb-0">{{item.Task_Name}}</div>
-                                                                    <div class="desc">{{item.Task_Description}}</div>
-                                                                    <div><span *ngIf="item.Project_type">
+                                                                    <span class="kt-inbox__subject  h5 mb-0" (click)="editassignPending(i)">{{item.Task_Name}} </span>
+
+
+                                                                      <span *ngIf="item.FileName" class="fa fa-paperclip  attachment text-info fa-lg cursor-pointer"
+                                                                       title="Reference attachment" (click)="LoadDocument1(item.IsCloud=true,item.FileName,item.Reference,getContentType(item),item.AssignedTo)"></span>
+
+
+                                                                    <div (click)="editassignPending(i)" class="desc">{{item.Task_Description}}</div>
+                                                                    <div (click)="editassignPending(i)"><span *ngIf="item.Project_type">
                                                                         {{item.Project_type==='Under Approval'?'New project under approval':item.Project_type}}</span> | {{item.AssignedTo}}</div>
                                                                 </div>
-                                                                <div  class="action-div-item-content-end">
+
+
+
+
+                                                                <div (click)="editassignPending(i)" class="action-div-item-content-end">
                                                                     <div class="mb-1">
                                                                         {{item.Modified_DT|  date:'d MMM, y'}}
                                                                     </div>
@@ -1507,13 +1361,9 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <!-- <span class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>
-                                                            <span class="desc ml-2 mb-2">{{item.Task_Description}}</span> -->
+
                                                             <div class="my-2   d-none">
-                                                                <!-- <span  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
-                                                                    <div><img src="../assets/icons/action-info.png" alt="actiondate" class="badge-img"></div>
-                                                                    <div> {{item.Creation_Date}}</div>
-                                                                </span> -->
+
                                                                 <span data-toggle="tooltip" title="Created date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                                     <div><img src="https://cswebapps.com/creativeplanner/assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
                                                                     <div>
@@ -1634,6 +1484,60 @@
                                         </div>
                                       </div>
                                     </div>
+
+                                    <div   class="runway-card d-none" id="Completed">
+                                      <div  class="runway-card-header" id="headingTwo" *ngIf="_CompletedList&&_CompletedList.length>0">
+                                          <a id="CompletedBtn" class=" collapsed" type="button" data-toggle="collapse" data-target="#collapseCompleted" aria-expanded="false" aria-controls="collapseCompleted">
+                                            <span>Completed &nbsp;<span class="task-count cou-com">{{_CompletedList&&_CompletedList.length}}</span></span>
+                                            <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                                          </a>
+                                      </div>
+                                      <div id="collapseCompleted" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionRunway">
+                                        <div   class="runway-card-body scrollbar1">
+                                            <div  [id]="'CompletedItem-'+item.Assign_Id"  class="card mb-2  Replied_border_left_true_success" *ngFor="let item of _CompletedList|filter:_SearchTask;">
+                                                <div class="card-body p-2">
+                                                    <div data-type="inbox" class="d-flex align-items-center my-1">
+                                                        <div class="symbol symbol-60 symbol-2by3 flex-shrink-0">
+                                                            <div class="kt-inbox__actions">
+                                                                <!-- <input type="radio" class="subtask-radio mx-4"
+                                                                    (click)="On_Uncheck(item.Assign_Id)" checked>
+                                                                    <input class="inputforfocus" type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/>
+                                                                <span></span> -->
+                                                                <span class="mr-2 cursor-pointer unassign-btn unassign-btn-completed" (click)="On_Uncheck(item.Assign_Id)">
+                                                          <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L12.0243 14.3899C11.4586 14.9556 10.5414 14.9556 9.97568 14.3899L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z" fill="currentColor"></path> </g></svg>
+                                                        </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-between my-lg-0 my-2 w-100" >
+                                                            <div
+                                                                class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg">
+                                                                <span
+                                                                    class="kt-inbox__subject"><s>{{item.Task_Name}}</s></span>
+                                                            </div>
+                                                            <div class="">
+                                                                <span
+                                                                    class="">
+                                                                    <div>
+                                                                        {{item.Modified_DT|date:'d MMM, y'}}
+                                                                    </div>
+                                                                </span>
+                                                                <!-- <span
+                                                                    class="kt-inbox__label kt-badge kt-badge done kt-badge-light-bold kt-badge--inline">
+                                                                    {{item.ToDo_Status}}
+                                                                </span> -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="kt-inbox__datetime">
+                                                        </div>
+                                                        <div class="delete-btn">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
 
                                   </div>
                             </div>
@@ -1984,7 +1888,9 @@
                 Project/Task
               </label>
             </div>
-            <div class="form-check">
+
+            <!-- *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length<=1" -->
+            <div class="form-check"  >
               <input class="form-check-input" type="radio" name="projectOption" id="projectRadio2" (change)="toggleProjectoptions('option2')">
               <label class="form-check-label" for="projectRadio2">
                 Action to project
@@ -2181,6 +2087,7 @@
     <span *ngIf="file" class="selected-file">{{ file.name }}</span>
     <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
     <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
+    <!-- <div class="text-info">Add any attachment for reference.</div> -->
 </div>
 </div>
   </div>
@@ -2339,7 +2246,8 @@
           <span *ngIf="file" class="selected-file">{{ file.name }}</span>
           <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
           <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
-      </div>
+          <!-- <div class="text-info">Add any attachment for reference.</div> -->
+        </div>
   </div>
 </div>
 </div>
@@ -2445,40 +2353,9 @@
       </mat-chip>
 
     </mat-chip-list>
-  <!-- </mat-form-field> -->
-
- <!-- <div class="d-flex">
-      <input class="flex-1" [matChipInputFor]="selectedPortfolios"
-          [matAutocomplete]="PortfoliosDrpDwn" #PortfolioTF />
-
-      <button *ngIf="isemployeeDrpDwnOpen"
-          class="bg-transparent border-0 "  (click)="this.isemployeeDrpDwnOpen=false; closeAutocompleteDrpDwn('employeeDrpDwn');">
-          <mat-icon class="close-icon save-mat-selection">done</mat-icon></button>
-
-          <button *ngIf="!isemployeeDrpDwnOpen"
-          class="bg-transparent border-0" (click)="this.isemployeeDrpDwnOpen=true; openAutocompleteDrpDwn('employeeDrpDwn');">
-          <mat-icon class="add-icon"
-              >add</mat-icon></button>
-      </div>
-
-
-  <mat-autocomplete aria-label="employeeDrpDwn" #PortfoliosDrpDwn="matAutocomplete"
-  (optionSelected)="onEmployeeselected($event); PortfolioTF.value=''; "
-  (opened)="isemployeeDrpDwnOpen=true" (closed)="isemployeeDrpDwnOpen=false; ">
-
-  <mat-option *ngFor="let prt of (EmployeeList|filter:PortfolioTF.value)?.slice(0,1000)" [value]="prt.Emp_No">
-
-    <mat-checkbox  color="primary" [checked]="employeSelect?employeSelect.indexOf(prt.Emp_No)!==-1:false"></mat-checkbox>
-        {{prt.TM_DisplayName}} - {{prt.DisplayName}}
-</mat-option>
-</mat-autocomplete> -->
-
-
 
 </div>
 </div>
-
-
 
 </div>
 &nbsp;
@@ -2600,7 +2477,14 @@
 <div class="custom-file pl-1">
 <span class="non-clickable">  <button type="button" class="btn btn-primary cursor-pointer btn btn-sm" (click)="selectFile()">Choose file</button></span>
   <!-- <span *ngIf="file" class="selected-file">{{ file.name }}</span> -->
-  <a class="text-primary" (click)="LoadDocument(ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Reference)" ><i class="fas text-muted mr-1"></i>{{ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].FileName}}</a>
+  <a class="text-primary" (click)="LoadDocument1(
+    ActionedAssigned_Josn[editTaskat] && ActionedAssigned_Josn[editTaskat].IsCloud = true,
+    ActionedAssigned_Josn[editTaskat] && ActionedAssigned_Josn[editTaskat].FileName,
+    ActionedAssigned_Josn[editTaskat] && ActionedAssigned_Josn[editTaskat].Reference,
+    forAssignFile(ActionedAssigned_Josn[editTaskat]),
+    ActionedAssigned_Josn[editTaskat] && ActionedAssigned_Josn[editTaskat].AssignedTo
+  )"><i class="fas text-muted mr-1"></i>{{ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].FileName}}</a>
+  <!-- LoadDocument1(item.IsCloud=true,item.FileName,item.Reference,getContentType(item),item.Assigned_Name) -->
   <!-- <span *ngIf="file" class="selected-file">{{ file.name }}</span> -->
   <!-- <span *ngIf="file||ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].FileName"   class="delete-icon cursor-pointer" (click)="this.file=null;ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].FileName=null">✖</span> -->
   <!-- <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" /> -->
@@ -2823,17 +2707,39 @@
 </div>
 
 <div class="form-group  mb-2">
-<div class="custom-file pl-1">
+<!-- <div class="custom-file pl-1">
   <button type="button" class="btn btn-primary cursor-pointer btn btn-sm" (click)="selectFile()">Choose file</button>
   <span *ngIf="file" class="selected-file">{{ file.name }}</span>
   <a (click)="LoadDocument(ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Reference)" ><i class="fas text-muted mr-1"></i></a>
   <span  *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null;ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].FileName=null">✖</span>
   <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
+  <div class="text-info">Add any attachment for reference.</div>
+</div> -->
+
+
+<span class="">  <button type="button" class="btn btn-primary cursor-pointer btn btn-sm" (click)="selectFile();this.ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].FileName=null">Choose file</button></span>
+  <!-- <span *ngIf="file" class="selected-file">{{ file.name }}</span> -->
+  <a  class="text-primary" (click)="LoadDocument1(
+    ActionedAssigned_Josn[editTaskat] && ActionedAssigned_Josn[editTaskat].IsCloud = true,
+    ActionedAssigned_Josn[editTaskat] && ActionedAssigned_Josn[editTaskat].FileName,
+    ActionedAssigned_Josn[editTaskat] && ActionedAssigned_Josn[editTaskat].Reference,
+    forAssignFile(ActionedAssigned_Josn[editTaskat]),
+    ActionedAssigned_Josn[editTaskat] && ActionedAssigned_Josn[editTaskat].AssignedTo
+  )"> <i    class="fas text-muted mr-1"></i>{{ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].FileName}}  </a>
+ <span *ngIf="ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].FileName" class="delete-icon cursor-pointer" (click)="this.ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].FileName=null">✖</span>
+ <span *ngIf="file" class="selected-file"  >{{ file.name }} </span>
+ <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null"> ✖</span>
+ <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
+ <!-- <div class="text-info">Add any attachment for reference.</div> -->
 </div>
+
+
+
+
 </div>
 </div>
 <!-- <span *ngIf="file" class="selected-file">{{ file.name }}</span> -->
-</div>
+<!-- </div> -->
 </ng-container>
 
 
@@ -3067,13 +2973,14 @@ class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline ho
 <div class="form-group mb-2" *ngIf="ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].FileName"  >
  <div class="custom-file pl-1">
   <span class="non-clickable">   <button type="button" class="btn btn-primary btn btn-sm" (click)="selectFile()">Choose file</button></span>
-     <span *ngIf="selectedFileName" class="selected-file">{{ selectedFileName }}</span>
-     <a   class="text-primary" (click)="LoadDocument(ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].Reference)" ><i class="fas text-muted mr-1"></i>{{ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].FileName}}</a>
+     <!-- <span *ngIf="selectedFileName" class="selected-file">{{ selectedFileName }}</span> -->
+     <a   class="text-primary" (click)="LoadDocument1(ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].IsCloud=true,ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].FileName,ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].Reference,forActionType(ActionedSubtask_Json[bindvalue]),ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].Assigned_Name)" ><i class="fas text-muted mr-1"></i>{{ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].FileName}}</a>
      <!-- <span *ngIf="ActionedSubtask_Json[bindvalue]&&ActionedSubtask_Json[bindvalue].FileName" class="delete-icon cursor-pointer" (click)="thisFileName=null">✖</span>
      <span *ngIf="selectedFileName" class="delete-icon cursor-pointer" (click)="removeFile();thisFileName=null">✖</span> -->
 
      <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
- </div>
+ <!-- <div class="text-info">Add any attachment for reference.</div> -->
+    </div>
 </div>
 
 
@@ -3322,7 +3229,7 @@ class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline ho
 
 
 
-<div id="rightbar-overlay" (click)="closeInfo()"></div>
+<div id="rightbar-overlay"></div>
 <!--
 <div id="mysideInfobar" class="sideInfobar animate-right">
     <router-outlet></router-outlet>

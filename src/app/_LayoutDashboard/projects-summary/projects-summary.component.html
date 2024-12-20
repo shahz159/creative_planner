@@ -1471,13 +1471,27 @@
                                                         </ng-template>
                                                         </div>
                                                     </td>
-                                                    <td>
+
+
+                                                    <!-- <td>
                                                         <p class="kt-widget__title mb-0" title="{{item.Project_Name}}">
                                                             {{item.Project_Name| slice:0:limit}}
-                                                            <ng-container *ngIf="item.Project_Name.length>35">...
+                                                            <ng-container *ngIf="item.Project_Name.length>71">...
                                                             </ng-container>
                                                         </p>
-                                                    </td>
+                                                    </td> -->
+
+
+
+                                                    <td>
+                                                      <p #prjtextcBx class="kt-widget__title mb-0 compl-remarks-span" title="{{item.Project_Name}}"
+                                                      (click)="$event.stopPropagation(); prjtextcBx.classList.contains('compl-remarks-span')?prjtextcBx.classList.remove('compl-remarks-span'):prjtextcBx.classList.add('compl-remarks-span')" >
+                                                          {{item.Project_Name}}
+                                                      </p>
+                                                  </td>
+
+
+
                                                     <td>
                                                       <span class="count2" title="Completed/All" *ngIf="item.Actioncount > 0">
                                                             {{item.CompletedActioncount}}/{{ item.Actioncount }}
@@ -1513,7 +1527,37 @@
 
 
 
-                                                    <td  [ngClass]="{'d-none':!isrespon}"  class="responclass"  ><div class="kt-widget__other">{{item.Team_Res}}</div>
+                                                    <td  [ngClass]="{'d-none':!isrespon}"  class="responclass"  >
+                                                      <div class="kt-widget__other"   title="{{item.Com_Name}}{{item.Emp_First_Name}}"
+                                                     >
+                                                   {{ item.Team_Res }}
+                                                 </div>
+
+
+
+
+                                                      <!-- <div  class="attach-tippy-div">
+                                                        <span class="kt-widget__other">{{item.Team_Res}}</span>
+                                                        <span class="attach-tippy">
+
+                                                        <span class=" st-line curser-pointer" >
+                                                           <div style="width: max-content;">Company name: <h6>{{item.Com_Name}} </h6></div>
+
+
+                                                            <div>Designation : {{item.Emp_First_Name}}</div></span>
+                                                        </span>
+
+
+
+                                                    </div> -->
+
+<!-- <span class="New_Approval_Project font-weight-400">
+                                                            {{item.RejectedBy}}
+                                                        </span> -->
+
+
+
+
                                                    <span *ngIf="item.Status=='Forward Under Approval'">
                                                       <div *ngIf="item.ForwardTo" class="d-flex align-items-center">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Arrow_Sub_Down_Right"> <path id="Vector" d="M13 11L18 16M18 16L13 21M18 16H10.1969C9.07899 16 8.5192 16 8.0918 15.7822C7.71547 15.5905 7.40973 15.2839 7.21799 14.9076C7 14.4798 7 13.9201 7 12.8V3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
