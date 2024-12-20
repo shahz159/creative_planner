@@ -472,9 +472,9 @@
                                                 <path
                                                   d="M341.3 277.3c-23.6 0-42.7-19.1-42.7-42.7V85.3c0-23.6 19.1-42.7 42.7-42.7S384 61.8 384 85.3v149.3c0 23.6-19.1 42.7-42.7 42.7zM682.7 277.3c-23.6 0-42.7-19.1-42.7-42.7V85.3c0-23.6 19.1-42.7 42.7-42.7s42.7 19.1 42.7 42.7v149.3c-0.1 23.6-19.2 42.7-42.7 42.7zM810.7 490.7H213.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h597.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.6 42.7zM810.7 704H213.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h597.3c23.6 0 42.7 19.1 42.7 42.7S834.2 704 810.7 704z"
                                                   fill="#5F6379"></path>
-                                              </svg></span><span class="kt-act-ic-info" >{{record.Start_Date|date:'dd-MM-YYYY' }}
+                                              </svg></span><span class="kt-act-ic-info" >{{record.Start_Date|date:'dd-MM-yyyy' }}
                                               -
-                                              {{record.End_Date|date:'dd-MM-YYYY' }}</span></div>
+                                              {{record.End_Date|date:'dd-MM-yyyy' }}</span></div>
                                           <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic" ><svg width="15px" height="15px"
                                                 viewBox="0 0 1024.00 1024.00" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                                 fill="#3688ff" stroke="#3688ff" stroke-width="0.01024" class="icon">
@@ -589,8 +589,8 @@
                                                 <path
                                                   d="M341.3 277.3c-23.6 0-42.7-19.1-42.7-42.7V85.3c0-23.6 19.1-42.7 42.7-42.7S384 61.8 384 85.3v149.3c0 23.6-19.1 42.7-42.7 42.7zM682.7 277.3c-23.6 0-42.7-19.1-42.7-42.7V85.3c0-23.6 19.1-42.7 42.7-42.7s42.7 19.1 42.7 42.7v149.3c-0.1 23.6-19.2 42.7-42.7 42.7zM810.7 490.7H213.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h597.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.6 42.7zM810.7 704H213.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h597.3c23.6 0 42.7 19.1 42.7 42.7S834.2 704 810.7 704z"
                                                   fill="#5F6379"></path>
-                                              </svg></span><span class="kt-act-ic-info">{{item.DPG|date:'dd-MM-YYYY' }} -
-                                              {{item.DeadLine |date:'dd-MM-YYYY' }}</span></div>
+                                              </svg></span><span class="kt-act-ic-info">{{item.DPG|date:'dd-MM-yyyy' }} -
+                                              {{item.DeadLine |date:'dd-MM-yyyy' }}</span></div>
                                         </div>
                                       </div>
                                       <div class="kt-act-btns">
@@ -1064,11 +1064,11 @@
                                   <div class="kt-info-lable-v"> Start date</div>
                                   <div class="kt-project-sts-data">
                                     <ng-container *ngIf="projectInfo&&projectInfo.StartDate !=''; else Start">
-                                      {{projectInfo&&projectInfo.StartDate|date:'dd-MM-YYYY'}}
+                                      {{projectInfo&&projectInfo.StartDate|date:'dd-MM-yyyy'}}
                                     </ng-container>
 
                                     <ng-template #Start>
-                                      {{Prjstartdate|date:'dd-MM-YYYY'}}
+                                      {{Prjstartdate|date:'dd-MM-yyyy'}}
                                     </ng-template>
 
                                   </div>
@@ -1077,10 +1077,10 @@
                                   <div class="kt-info-lable-v"> Deadline </div>
                                   <div class="kt-project-sts-data">
                                     <ng-container *ngIf="projectInfo&&projectInfo.EndDate !=''; else Deadline">
-                                      {{projectInfo&&projectInfo.EndDate | date:'dd-MM-YYYY'}}
+                                      {{projectInfo&&projectInfo.EndDate | date:'dd-MM-yyyy'}}
                                     </ng-container>
                                     <ng-template #Deadline>
-                                      {{Prjenddate | date:'dd-MM-YYYY'}}
+                                      {{Prjenddate | date:'dd-MM-yyyy'}}
                                     </ng-template>
                                   </div>
                                 </div>
@@ -1587,9 +1587,7 @@
                                   </div>
                                 </div>
                                 <div class="col-lg-4 mb-3">
-                                    <label>Allocated hours
-                                      <span class="text-danger"  *ngIf="Prjtype=='011'">*</span>
-                                    </label>
+                                    <label>Allocated hours<span class="text-danger"  *ngIf="Prjtype=='011'">*</span></label>
 
                                     <input id="hour-input" #allocated="ngModel"  required class="form-control" placeholder="Enter action duration in hrs"
                                     [ngClass]="{
@@ -1846,10 +1844,7 @@
                                     </div>
                                   </div>
                             <div class="kt-ctv-btn mt-0">
-                              <button type="button"
-
-                                class="btn btn-move-fw my-ct-v-btn btn-next mr-2" (click)="Move_to_add_team(); getPrjCost(Allocated_Hours);updateCharacterCount(); promptIfNameTypeMismatch();">Next
-                              </button>
+                              <button type="button" class="btn btn-move-fw my-ct-v-btn btn-next mr-2" (click)="Move_to_add_team(); updateCharacterCount(); promptIfNameTypeMismatch();">Next</button>
                               <button type="button" (click)="back_to_options();updateCharacterCount()"
                                 class="btn btn-move-fws my-ct-v-btn">Back to options</button>
 

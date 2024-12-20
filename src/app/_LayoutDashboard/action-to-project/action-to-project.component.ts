@@ -1183,9 +1183,9 @@ startActionCreation=async()=>{
        this.ObjSubTaskDTO.Duration = 0;
      }
 
-    //  this.service._InsertNewSubtask(fd).subscribe(event => {
+     this.service._InsertNewSubtask(fd).subscribe(event => {
 
-     this.service._InsertNewSubtaskcore(fd).subscribe((event: HttpEvent<any>) => {
+    //  this.service._InsertNewSubtaskcore(fd).subscribe((event: HttpEvent<any>) => {
 
       debugger
        if (event.type === HttpEventType.Response){
@@ -1196,14 +1196,14 @@ startActionCreation=async()=>{
         //  alert(this._Message);
           
          if(this._Message=='1'){
-          fd.append('file',  this.fileAttachment);
-          this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
-            console.log(event1,"azure data");
-            var myJSON = JSON.stringify(event1);
-         alert(JSON.parse(myJSON).body);
-          //  this._Message = (JSON.parse(myJSON).body);
+        //   fd.append('file',  this.fileAttachment);
+        //   this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
+        //     console.log(event1,"azure data");
+        //     var myJSON = JSON.stringify(event1);
+        //  alert(JSON.parse(myJSON).body);
+        //   //  this._Message = (JSON.parse(myJSON).body);
 
-          });
+        //   });
            this.notifyService.showSuccess("Action created successfully", "Success");
          }
          else if(this._Message=='2'){
