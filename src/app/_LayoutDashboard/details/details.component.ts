@@ -526,18 +526,33 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
          // 1. bar chart start.
 
-         this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, "3", this.Current_user_ID).subscribe((res: any) => {
-          const tml = JSON.parse(res[0].Timeline_List);
-          console.log("timeline data here11111:", tml);
-          this.darOfEmpl=tml.map((ob)=>{
-               return { member:ob.Value, totalTimeline:(+ob.TotalDuration).toFixed(2)}
-          });
-          this.darOfEmpl.sort((a,b)=>b.totalTimeline-a.totalTimeline);
-        });
+            this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, "3", this.Current_user_ID).subscribe((res: any) => {
+              const tml = JSON.parse(res[0].Timeline_List);
+              console.log("timeline data here11111:", tml);
+              this.darOfEmpl=tml.map((ob)=>{
+                  return { member:ob.Value, totalTimeline:(+ob.TotalDuration).toFixed(2)}
+              });
+              this.darOfEmpl.sort((a,b)=>b.totalTimeline-a.totalTimeline);
+            });
+
+            let tlTotalHrs:number = this.projectInfo.TotalHours;
 
 
 
-               let tlTotalHrs:number = this.projectInfo.TotalHours;
+            let includeExpectedhrs:boolean=false;
+            let alloc4Ndays=0;
+            const crd=new Date();                                          // current date.
+            const ped=new Date(this.projectInfo.EndDate.split('T')[0]);    // project end date.
+            const psd=new Date(this.projectInfo.StartDate.split('T')[0]);  // project start date.
+
+            if(['Completed','New Project Rejected','Cancelled'].includes(this.projectInfo.Status)==false&&crd>=psd&&crd<=ped){
+                const K=this.projectInfo.AllocatedHours/(this.projectInfo.Duration+1);
+                const N=(Math.abs(moment(psd).diff(crd,'days'))+1);
+                alloc4Ndays=N*K;
+                alloc4Ndays=(+alloc4Ndays.toFixed(2));
+                includeExpectedhrs=true;
+            }
+
 
                  //standard  graph cal start    may need updation.
                  let x=0;
@@ -561,16 +576,19 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                    let t=timestr.split(':');
                    let prjAlHrs=+(Number.parseInt(t[0].trim())+'.'+Number.parseInt(t[1].trim()));
                    AL=+(prjAlHrs*Math.abs(x)).toFixed(2);
-
                  }
                  //standard graph cal end
 
 
+              let r_Hrs=['001', '002','011'].includes(this.projectInfo.Project_Block)?((+this.projectInfo.AllocatedHours)-tlTotalHrs):(AL - tlTotalHrs);
+              r_Hrs=(+r_Hrs.toFixed(2));
+              
 
                var options = {
                  series: [{
-                   data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, tlTotalHrs, ((+this.projectInfo.AllocatedHours) - tlTotalHrs).toFixed(2)]
-                     : [AL, tlTotalHrs, (AL - tlTotalHrs).toFixed(2)]
+                   data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ? 
+                         ( includeExpectedhrs?[+this.projectInfo.AllocatedHours,alloc4Ndays,tlTotalHrs,r_Hrs<0?0:r_Hrs]:[+this.projectInfo.AllocatedHours,tlTotalHrs,r_Hrs<0?0:r_Hrs] )  
+                        : [AL, tlTotalHrs, r_Hrs]
                  }],
                  chart: {
                    type: 'bar',
@@ -586,8 +604,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                  dataLabels: {
                    enabled: true,
                    style:{
-                     colors:['#3a81c9','#3e6be0','#303031'],
-                     fontFamily:'Lucida Sans Unicode'
+                     colors:includeExpectedhrs?['#3a81c9','#8d48d7','#3e6be0','#303031']:['#3a81c9','#3e6be0','#303031'],
+                     fontFamily:'Lucida Sans Unicode',
+                     fontSize:'10px'
                    },
                    formatter: function (v) {
                      return v + ' hrs';
@@ -600,14 +619,17 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                    labels: {}
                  },
                  xaxis: {
-                   categories: ['Allocated', 'Used', 'Remaining'],
+                   categories: includeExpectedhrs?['Planned', 'Expected', 'Used', 'Remaining']:['Allocated','Used','Remaining'],
                    labels: {
-                     rotate: -90
+                     rotate: -90,
+                     style: {
+                      fontSize: '10px'
+                    }
                    }
                  },
                  colors:['003', '008'].includes(this.projectInfo.Project_Block)?
-                       ['#7dbeff', '#7da1ff',(AL-this.tlTotalHours)<0?'#757575':'#dbe1e4']:
-                       ['#7dbeff', '#7da1ff',((+this.projectInfo.AllocatedHours) - this.tlTotalHours)<0?'#757575':'#dbe1e4'],
+                       ['#7dbeff', '#7da1ff',r_Hrs<0?'#757575':'#dbe1e4']:
+                       ( includeExpectedhrs?['#7dbeff','#c187ff','#7da1ff',r_Hrs<0?'#757575':'#dbe1e4']:['#7dbeff','#7da1ff',r_Hrs<0?'#757575':'#dbe1e4'] ),
                  
                 tooltip: {
                     enabled: true, 
@@ -640,20 +662,20 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
                };
 
+
                if (this.prjBARCHART)
-                 this.prjBARCHART.destroy();
+               this.prjBARCHART.destroy();
 
-               let bchr=document.querySelector("#Bar-chart");
-               if(bchr)
-               {
-                 this.prjBARCHART = new ApexCharts(bchr, options);
-                 this.prjBARCHART.render();
-               }
-
-
-
-
-
+           
+                let bchr=document.querySelector("#Bar-chart");
+                if(bchr)
+                {  
+                  this.prjBARCHART = new ApexCharts(bchr, options);
+                  this.prjBARCHART.render();
+                }
+            
+              
+              
 
          //  bar chart end.
 
@@ -752,10 +774,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
                };
 
-               var chart = new ApexCharts(document.querySelector("#Pie-chart"), options123);
-               chart.render();
 
-
+                  let _piechartsec=document.querySelector("#Pie-chart");
+                  if(_piechartsec){
+                    let pchart = new ApexCharts(_piechartsec, options123);
+                    pchart.render();
+                  }
+              
              }
          }
 
@@ -1138,10 +1163,11 @@ debugger
     if(actionIndex!==undefined){
       this.showActionDetails(actionIndex);
     }
-    // this.onTLSrtOrdrChanged('Date');  //for utilization bar 'tlTotalHours'
-    // setTimeout(() => this.drawStatistics(), 5000);
-    setTimeout(()=>this.drawStatisticsNew(),3000);
-
+ 
+    setTimeout(()=>{
+      this.drawStatisticsNew();
+    },3000)
+    
 
 
     if(this.projectInfo&&this.projectInfo.Status=='Completed'){
@@ -1167,7 +1193,7 @@ debugger
     }
 
 
-    // this.detectMembersWithoutActions();  // calculate 'hasNoActionMembers';
+    
 
 
    // when project has no activity done even after start date.   calculation here.
@@ -1369,7 +1395,7 @@ debugger
 // sorting people based on active or inactive
 
 
-          // this.detectMembersWithoutActions();  // calculate 'hasNoActionMembers';
+         
         }
       });
 
@@ -1697,13 +1723,30 @@ debugger
 
 
   drawActionBarChart(){
+
+    let includeExpectedhrs:boolean=false;
+    let alloc4Ndays=0;
+    const crd=new Date();                                          // current date.
+    const aed=new Date(this.projectActionInfo[this.currentActionView].EndDate.split('T')[0]);    // action end date.
+    const asd=new Date(this.projectActionInfo[this.currentActionView].StartDate.split('T')[0]);  // action start date.
+
+    if(['Completed','New Project Rejected','Cancelled'].includes(this.projectActionInfo[this.currentActionView].Status)==false&&crd>=asd&&crd<=aed){
+        const K=this.maxDuration/(this.projectActionInfo[this.currentActionView].Duration+1);
+        const N=(Math.abs(moment(asd).diff(crd,'days'))+1);
+        alloc4Ndays=N*K;
+        alloc4Ndays=(+alloc4Ndays.toFixed(2));
+        includeExpectedhrs=true;
+    }
+
+    const r_hrs=this.maxDuration-this.UsedInDAR;
     var options = {
       series: [{
-        data: [
+        data: includeExpectedhrs?[
           this.maxDuration,
+          alloc4Ndays,
           this.UsedInDAR,
-          this.maxDuration-this.UsedInDAR
-          ]
+          r_hrs<0?0:r_hrs
+          ]:[this.maxDuration, this.UsedInDAR, r_hrs<0?0:r_hrs]
       }],
       chart: {
         type: 'bar',
@@ -1719,8 +1762,9 @@ debugger
       dataLabels: {
         enabled: true,
         style:{
-          colors:['#3a81c9','#3e6be0','#303031'],
-          fontFamily:'Lucida Sans Unicode'
+          colors:includeExpectedhrs?['#3a81c9','#8d48d7','#3e6be0','#303031']:['#3a81c9','#3e6be0','#303031'],
+          fontFamily:'Lucida Sans Unicode',
+          fontSize:'10px'
         },
         formatter: function (v) {
           return v + ' hrs';
@@ -1733,12 +1777,14 @@ debugger
         labels: {}
       },
       xaxis: {
-        categories: ['Allocated', 'Used', 'Remaining'],
+        categories: includeExpectedhrs?['Planned','Expected', 'Used', 'Remaining']:['Allocated', 'Used', 'Remaining'],
         labels: {
           rotate: -90
         }
       },
-      colors:['#7dbeff', '#7da1ff',(this.maxDuration-this.UsedInDAR)<0?'#757575':'#dbe1e4']
+  
+      colors:includeExpectedhrs?['#7dbeff','#c187ff','#7da1ff',r_hrs<0?'#757575':'#dbe1e4']:
+                                ['#7dbeff','#7da1ff',r_hrs<0?'#757575':'#dbe1e4']
 
     };
 
@@ -3478,7 +3524,7 @@ debugger
   getResponsibleActions() {
 
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
-      (data) => { 
+      (data) => {    
         this.ProjectPercentage = data[0]['ProjectPercentage'];
         this.ProjectStatus = data[0]['ProjectStatus'];
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
@@ -3524,14 +3570,14 @@ debugger
       }
 
 
-     // detect members without actions
+     // detect members without actions. excluding inactive members also.
      if(['001','002'].includes(projectinfo_.Project_Block)){
      this.hasNoActionMembers=[];
      let pMemberwithActns=this.Subtask_Res_List.map(ob=>ob.Team_Res);
      const arr=[];
      
      pracis.forEach((tmember)=>{
-      if( tmember.Emp_No!=projectinfo_.OwnerEmpNo&&pMemberwithActns.includes(tmember.Emp_No)==false){
+      if( tmember.Emp_No!=projectinfo_.OwnerEmpNo&&pMemberwithActns.includes(tmember.Emp_No)==false&&tmember.Emp_Active==true){
             if(arr.findIndex(ob=>ob.Emp_No==tmember.Emp_No)==-1)
             arr.push({  Emp_No:tmember.Emp_No.trim(), Emp_Name:tmember.RACIS.trim() });
       }
@@ -11507,21 +11553,7 @@ getFormattedDuration(totalDuration: number): string {
 
 
   hasNoActionMembers:any=[];
-  // detectMembersWithoutActions(){  
-  //     if(this.Project_List&&this.filteremployee)
-  //     {    // if we have info of all the peoples present in the project. and info of all the people who have actions.
-  //       const peopleWithActns=this.filteremployee.map(item=>item.Team_Res);
-  //       const arr=[];
-  //       this.Project_List.forEach((item)=>{
-  //               if(item.Role!='Owner'&&peopleWithActns.includes(item.Emp_No)==false)
-  //               {
-  //                  if(arr.findIndex(ob=>ob.Emp_No==item.Emp_No)==-1)
-  //                  arr.push({  Emp_No:item.Emp_No, Emp_Name:item.RACIS.slice(0,item.RACIS.indexOf('(')).trim() })
-  //               }
-  //        });
-  //       this.hasNoActionMembers=arr;
-  //     }
-  // }
+
 
 
 

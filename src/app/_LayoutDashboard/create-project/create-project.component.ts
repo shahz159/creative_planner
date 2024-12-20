@@ -448,12 +448,8 @@ export class CreateProjectComponent implements OnInit {
   newProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
 
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
-
        this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
        this.ProjectType = this.projectInfo.Project_Type;
-
-       this.getPrjCost(this.projectInfo.AllocatedHours);
-
       console.log(this.projectInfo, "projectInfo");
   })
 
@@ -587,20 +583,49 @@ export class CreateProjectComponent implements OnInit {
     this.Annual_array = this.generateTimeIntervals(64, 15, 16);
   }
 
-createSRTProject(){
-   Swal.fire({
-     title:"Are you sure?",
-     text:`You will be going to spend "${this.PrjCost}.00 SAR" on this Project. Do you want to Continue?`,
-     showConfirmButton:true,
-     showCancelButton:true,
-     confirmButtonText: 'Yes, confirm',
-     cancelButtonText: 'Cancel'
-   })
-   .then(choice=>{
-      if(choice.isConfirmed){
-        this.createProject();
+createSRTProject=async()=>{
+debugger
+  // 1. project cost calculate.
+  let alhr:number|null=null;
+  if(['003','008'].includes(this.Prjtype)){
+    const h=Number.parseInt(this.Allocated_Hours.split(':')[0]);
+    const m=Number.parseInt(this.Allocated_Hours.split(':')[1]);
+    alhr=h+(m/60);
+  }
+  else if(this.Prjtype=='011')
+  alhr=this.Allocated_Hours;
+
+  if(alhr!=null){
+      this.ProjectDto.Emp_No=this.Current_user_ID;
+      this.ProjectDto.Hours=alhr.toString();
+      const rescost:any=await this.createProjectService.GetCPProjectCost(this.ProjectDto).toPromise();
+      if(rescost&&rescost.Status){
+        this.PrjCost=rescost.Data;
+        console.log(this.PrjCost);
       }
-   });
+      else{
+        console.log('ERROR WHILE CALCULATING PROJECT COST.');
+        return;
+      }
+  }
+  else 
+  return;
+ //
+
+ // 2. confirm with user and create project.
+  const choice=await Swal.fire({
+    title:"Are you sure?",
+    text:`You will be going to spend "${this.PrjCost}.00 SAR" on this Project. Do you want to Continue?`,
+    showConfirmButton:true,
+    showCancelButton:true,
+    confirmButtonText: 'Yes, confirm',
+    cancelButtonText: 'Cancel'
+  });
+  if(choice.isConfirmed){
+    this.createProject();
+  }
+ //
+
 }
 
 
@@ -623,8 +648,8 @@ createSRTProject(){
            ProjectName:this.PrjName,
            Description:this.PrjDes,
            Category:this.PrjCategory,
-           StartDate:['003','008'].includes(this.Prjtype)?this.datepipe.transform(new Date(),'dd-MM-YYYY'):this.datepipe.transform(this.Prjstartdate,'dd-MM-YYYY'),
-           EndDate:['003','008'].includes(this.Prjtype)?this.datepipe.transform(enddateofRS,'dd-MM-YYYY'):this.datepipe.transform(this.Prjenddate,'dd-MM-YYYY'),
+           StartDate:['003','008'].includes(this.Prjtype)?this.datepipe.transform(new Date(),'dd-MM-yyyy'):this.datepipe.transform(this.Prjstartdate,'dd-MM-yyyy'),
+           EndDate:['003','008'].includes(this.Prjtype)?this.datepipe.transform(enddateofRS,'dd-MM-yyyy'):this.datepipe.transform(this.Prjenddate,'dd-MM-yyyy'),
            Owner:this.PrjOwner,
            Responsible:this.PrjResp,
            Authority:this.PrjAuth,
@@ -2008,8 +2033,52 @@ if(this.PrjActionsInfo.length==0){
  }
 //
 
+debugger
 
-// 3.validation: if any RACIS member doesn't have atleast one action in the project.
+// 4.validation: Confirm Project Allocated hours
+  const hrsToActns=this.PrjActionsInfo.reduce((sum,acn)=>(sum+Number.parseFloat(acn.AllocatedHours)),0);
+  const hrsUnallocated=this.projectInfo.AllocatedHours-hrsToActns;
+  if(hrsUnallocated>0){
+       const choice=await Swal.fire({
+          title:'Confirm Project Hours Allocation',
+          html:` <div style="text-align: justify;">
+                   You have planned <b>${this.projectInfo.AllocatedHours} hrs</b> for the project. <br/>However, <b>${hrsUnallocated} hrs</b> remain unassigned. Continue or assign remaining hours?
+                  ${this.PrjActionsInfo.length>0?` 
+                    <fieldset style="border: 2px solid #b2b3b4; border-radius: 6px; margin-top:15px; padding: 4px; padding-bottom: 6px; overflow-y: auto; max-height: 126px; scrollbar-width: thin; font-size: 13px;">
+                      <legend style="width: 40px;font-size: 9px;font-weight: 500;color: #ffffff;margin-left: 3px;letter-spacing: 0.45px;border: 1px solid #3085d6;border-radius: 4px;background-color: #3085d6;padding: 2px;text-align: -webkit-center;">Actions</legend> 
+                      <table width="100%" cellpadding="5px" style="">
+                              ${
+                                    this.PrjActionsInfo.map((acn,i)=>{
+                                    return `<tr> <td width="10%">${i+1}.</td><td width="70%"><div style="display:-webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden !important;">${acn.Project_Name}</div></td> <td width="20%" style="font-weight: 500; text-wrap-mode: nowrap;">${acn.AllocatedHours} hrs</td> </tr>`
+                                    }).join('')
+                              }
+                      </table>
+                    </fieldset>
+                    <span style="font-size: 11px;font-weight: 500;color: #838484;display: flex;column-gap: 2px;align-items: center;margin-top: 3px;">
+                    <svg width="18px" height="18px" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="4.8"> <circle cx="12" cy="12" r="9" stroke="#147137" stroke-width="1.152"></circle> <path d="M8 12L11 15L16 9" stroke="#147137" stroke-width="1.152"></path> </g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="9" stroke="#147137" stroke-width="1.608"></circle> <path d="M8 12L11 15L16 9" stroke="#147137" stroke-width="1.608"></path> </g></svg>
+                     Assigned ${hrsToActns} / ${this.projectInfo.AllocatedHours} hours
+                    </span>
+                  `:''}
+                </div> `,
+          showConfirmButton:true,
+          showCancelButton:true,
+          cancelButtonColor:'#3085d6',
+          confirmButtonText: 'Continue',
+          cancelButtonText: 'Create actions'
+      });
+
+    if(choice.dismiss==Swal.DismissReason.cancel){
+        this.openActionSideBar();
+        return;
+     }else if(choice.dismiss==Swal.DismissReason.backdrop) { return; }  
+
+  }
+
+//
+
+
+
+// 5.validation: if any RACIS member doesn't have atleast one action in the project.
 this.detectMembersWithoutActions();
 if(this.hasNoActionMembers.length>0){
 
@@ -2037,15 +2106,66 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
 
 
 
-// 5.validation: project cost confirmation from user.
+
+//6. calculate project cost.
+  this.PrjCost=0;
+  let alhrVal:number|null=null;
+   
+  if(this.PrjActionsInfo.length>0)  // if there are actions then calculate cost using those actions.
+  {
+    alhrVal=this.PrjActionsInfo.reduce((sum,_actn)=>{
+      return sum+Number.parseFloat(_actn.AllocatedHours)
+     },0);
+  }
+  else if(noactnDialogType=='NOT_MANDATORY'){
+      alhrVal=this.projectInfo.AllocatedHours;   // take project allocated hrs set by user.
+  }
+
+  if(alhrVal!=null){
+    this.ProjectDto.Emp_No=this.Current_user_ID;
+    this.ProjectDto.Hours=alhrVal.toString();
+    const costres:any=await this.createProjectService.GetCPProjectCost(this.ProjectDto).toPromise();    // wait for project cost.  
+    if(costres&&costres.Status){
+      this.PrjCost=costres.Data;
+      console.log('project_cost:',this.PrjCost);
+    }
+    else{
+      console.log('ERROR WHILE CALCULATING PROJECT COST.')
+      return;   // if any failure occur during the project cost calculation.
+    }
+  }
+  else
+  return;
+  
+// 
+
+
+// 7.validation: project cost confirmation from user.
  const final_choice=await Swal.fire({
        title:'Project Budget',
-       html:`<div style="text-align: justify;">
-                You will be going to spend <b>"${this.PrjCost}.00 SAR"</b> on this project. Do you want to continue?
-                ${this.PrjCost>=3000?`<span style="display: flex;align-items: center;column-gap: 8px;font-size: 12px;margin-top: 8px;background-color: #fdbc4a38;color: #c57a05;border: 1px solid #cc922d63;padding: 10px;border-radius: 5px;font-weight: 500;">
+       html:`
+        <div style="text-align: justify;">
+          You will be going to spend <b>"${this.PrjCost}.00 SAR"</b> on this project. Do you want to continue?
+
+          ${this.PrjActionsInfo.length>0?` 
+            <fieldset style="border: 2px solid #b2b3b4; border-radius: 6px; margin-bottom: 15px; margin-top:10px; padding: 4px; padding-bottom: 6px; overflow-y: auto; max-height: 126px; scrollbar-width: thin; font-size: 13px;">
+              <legend style="width: 77px;font-size: 9px;font-weight: 500;color: #ffffff;margin-left: 3px;letter-spacing: 0.45px;border: 1px solid #3085d6;border-radius: 4px;background-color: #3085d6;padding: 2px;text-align: -webkit-center;">Actions Budget</legend> 
+              <table width="100%" cellpadding="5px" style="">
+                      ${
+                             this.PrjActionsInfo.map((acn,i)=>{
+                             return `<tr> <td width="10%">${i+1}.</td><td width="70%"><div style="display:-webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden !important;">${acn.Project_Name}</div></td> <td width="20%" style="font-weight: 500; text-wrap-mode: nowrap;">${acn.Project_Cost}.00 SAR</td> </tr>`
+                            }).join('')
+                       }
+              </table>
+            </fieldset>
+          `:''}
+         
+          ${this.PrjCost>=3000?` 
+                 <span style="display: flex;align-items: center;column-gap: 8px;font-size: 12px;margin-top: 8px;background-color: #fdbc4a38;color: #c57a05;border: 1px solid #cc922d63;padding: 10px;border-radius: 5px;font-weight: 500;">
                   <svg width="40px" height="20px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
-                  The project cost has reached 3000 SAR or more. Please ensure that the plan aligns with the annual business plan\'s budget.</span>`:''}
-             </div>`,
+                  The project cost has reached 3000 SAR or more. Please ensure that the plan aligns with the annual business plan\'s budget.</span>
+          `:''}
+        </div> `,
 
        showConfirmButton:true,
        showCancelButton:true,
@@ -2316,24 +2436,24 @@ newpfl_massage(){
 
 // CALCULATE PROJECT COST START.
 
-getPrjCost(alchr:string):void{
-console.log("input allocated hr:",alchr);
-let alhr=alchr;
-if(['003','008'].includes(this.Prjtype)){
-     //eg: '00 Hr : 15 Mins'
-     const h=Number.parseInt(alhr.split(':')[0]);
-     const m=Number.parseInt(alhr.split(':')[1]);
-     alhr=h+'.'+m;
-}
-  this.ProjectDto.Emp_No=this.Current_user_ID;
-  this.ProjectDto.Hours=alhr;
-  this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:{Status:boolean,Message:string,Data:number})=>{
-    if(res.Status){
-       this.PrjCost=res.Data;
-       console.log(this.PrjCost);
-    }
-  })
-}
+// getPrjCost(alchr:string):void{
+// console.log("input allocated hr:",alchr);
+// let alhr=alchr;
+// if(['003','008'].includes(this.Prjtype)){
+//      //eg: '00 Hr : 15 Mins'
+//      const h=Number.parseInt(alhr.split(':')[0]);
+//      const m=Number.parseInt(alhr.split(':')[1]);
+//      alhr=h+'.'+m;
+// }
+//   this.ProjectDto.Emp_No=this.Current_user_ID;
+//   this.ProjectDto.Hours=alhr;
+//   this.createProjectService.GetCPProjectCost(this.ProjectDto).subscribe((res:{Status:boolean,Message:string,Data:number})=>{
+//     if(res.Status){
+//        this.PrjCost=res.Data;
+//        console.log(this.PrjCost);
+//     }
+//   })
+// }
 
 
 // CALCULATE PROJECT COST END.
@@ -2484,7 +2604,6 @@ this.detectMembersWithoutActions();   // update 'hasNoActionMembers' may needed 
 
 // lock sidebar and header
 this.BsService.ConfirmBeforeRoute.emit('AT-3RD-STEP-PC'); // we are on step3 screen.
-
 // lock sidebar and header
 
 }
@@ -2532,6 +2651,7 @@ reset(){
     this.draftActionsLoading=false;
     this.hasNoActionMembers=[];
     this.totalPeopleOnProject=[];
+    this.PrjCost=0;
   // step3 info clear. end
 
 }
@@ -3367,13 +3487,12 @@ promptIfNameTypeMismatch(){
             confirmButtonText:'Continue Anyway',
             cancelButtonText:'View Guidelines',
 
-        }).then((choice)=>{
+        }).then((choice)=>{ 
              if(choice.isConfirmed){
-                this.okWithType=true
-             }
-              if(choice.isConfirmed==false){
+                this.okWithType=true;
+             }else if(choice.dismiss==Swal.DismissReason.cancel){
                 this.New_project_guideline();
-              }
+             }
 
         });
       }
