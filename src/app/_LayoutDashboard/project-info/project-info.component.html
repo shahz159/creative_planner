@@ -120,7 +120,7 @@
                                 <div class="kt-project-type d-flex">
 
                                     <div class="Kt-Pd-Status Delay black-text attach-tippy" *ngIf="item.Status=='Delay'">
-                                      <span class="vi st-line" style="text-transform: lowercase;"> {{item.Delaydays}} days delay</span>
+                                      <span class=" st-line" style="text-transform: lowercase;"> {{item.Delaydays}} days delay</span>
                                          {{getFormattedDelay(item.Delaydays)}} delay
                                     </div>
 
@@ -201,9 +201,9 @@
                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                     </button>
                     <button title="show less" #lessbtn1 class="txt-expnd-btn align-self-end d-none"   (click)="$event.stopPropagation(); prjDescBx.classList.add('compl-remarks-span'); lessbtn1.classList.add('d-none');">
-                        <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                        <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                     </button>
-                </div> 
+                </div>
             </div>
         </div>
 
@@ -841,9 +841,9 @@
                                 <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                             </button>
                             <button #aprvRemarkslessbtn class="txt-expnd-btn align-self-end bg-transparent d-none" style="border:2px solid #898989"  (click)="$event.stopPropagation(); aprvlRemarksBx.classList.add('compl-remarks-span'); aprvRemarkslessbtn.classList.add('d-none');">
-                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                                                        
+                                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                             </button>
-                        </div>                                                         
+                        </div>
                     </div>
                 </div>
                 <!-- <div class="col-lg-4">
@@ -1783,6 +1783,12 @@
                             <div *ngIf="completed>0" class="progress-bar bg-done" role="progressbar"
                                 [ngStyle]="{'width': (completed / total) * 100 + '%'}" aria-valuenow="20"
                                 aria-valuemin="0" aria-valuemax="100"></div>
+                            <div *ngIf="Project_Hold>0" class="progress-bar P_Hold" role="progressbar"
+                                [ngStyle]="{'width': (Project_Hold / total) * 100 + '%'}" aria-valuenow="20"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                            <div *ngIf="actn_cancellation_under>0" class="progress-bar P_cancellation_under_Approval" role="progressbar"
+                                 [ngStyle]="{'width': (actn_cancellation_under / total) * 100 + '%'}" aria-valuenow="20"
+                                 aria-valuemin="0" aria-valuemax="100"></div>    
                         </div>
                     </div>
                     <div class="col-lg-1">
@@ -1798,7 +1804,7 @@
                               <li *ngIf="Under_Approval > 0" >
                                 <span class="B-Bot P_Not_Started  new-project "></span> <span class=""> New approval</span>
                                 <b>({{Under_Approval}})</b>
-                            </li>
+                             </li>
                                 <li *ngIf="inprogress>0"><span class="B-Bot P_In_Progress"></span>In-processs
                                     <b>({{inprogress}})</b></li>
                                 <li *ngIf="delay>0"><span class="B-Bot P_Delay"></span> Delay <b>({{delay}})</b></li>
@@ -1814,6 +1820,8 @@
                                     <b>({{completed}})</b></li>
                                 <li *ngIf="Project_Hold>0"><span class="B-Bot P_Hold"></span> Hold
                                     <b>({{Project_Hold}})</b> </li>
+                                <li *ngIf="actn_cancellation_under>0"><span class="B-Bot P_cancellation_under_Approval"></span>Cancellation Approval
+                                    <b>({{actn_cancellation_under}})</b> </li>    
 
                                 <!-- <li><span class="B-Bot P_Active"></span> Active</li> -->
                                 <!-- <li><span class="B-Bot P_Slow"></span> Slow <b>(5)</b></li> -->

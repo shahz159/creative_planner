@@ -14,6 +14,8 @@ export class CalenderService {
     this.obj_CalenderDTO = new CalenderDTO;
   }
   readonly rootUrl = this.commonUrl.apiurl;
+  readonly rootUrlcore = this.commonUrl.apiurlcore;
+  
   GetCalenderProjectandsubList(obj: CalenderDTO) {
     let EmpNo = localStorage.getItem('EmpNo');
     this.obj_CalenderDTO.EmpNo = EmpNo;
@@ -293,8 +295,44 @@ NewPending_table(obj:CalenderDTO){
       );
   }
 
+  UploadCalendarAttachmenstCore(data) {
+    return this.http.post(this.rootUrlcore + "Notification/NewAddCalendarAttachmentCore", data
+      , {
+        reportProgress: true,
+        observe: 'events'
+      }).pipe(
+      );
+  }
+
+  _AzureUploadCalendarAttachments(data) {
+    return this.http.post(this.rootUrlcore + "Azure/NewAddCalendarAttachmentCore", data
+      , {
+        reportProgress: true,
+        observe: 'events'
+      }).pipe(
+      );
+  }
+
   EditUploadCalendarAttachmenst(data) {
     return this.http.post(this.rootUrl + "TestAPI/NewAddNewfileCalendarDocuments", data
+      , {
+        reportProgress: true,
+        observe: 'events'
+      }).pipe(
+      );
+  }
+
+  EditUploadCalendarAttachmenstCore(data) {
+    return this.http.post(this.rootUrlcore + "Notification/NewEditCalendarAttachmentCore", data
+      , {
+        reportProgress: true,
+        observe: 'events'
+      }).pipe(
+      );
+  }
+
+  _AzureUpdateCalendarAttachments(data) {
+    return this.http.post(this.rootUrlcore + "Azure/NewEditCalendarAttachmentCore", data
       , {
         reportProgress: true,
         observe: 'events'

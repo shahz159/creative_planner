@@ -3,6 +3,7 @@
 export class PortfolioDTO {
     Portfolio_ID: number;
     Project_ID: number;
+    _portfolioName:any;
     Portfolio_Name: string;
     Project_Code: string;
     Project_Name: string;

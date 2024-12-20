@@ -227,7 +227,9 @@ export class LoginComponent implements OnInit {
       this.service.LoginCredentials(this.Obj_ILoginDTO)
         .subscribe(
           (data) => {  
-            this.isLogginCredentails=false;  // logging credentials process ended. 
+            debugger
+            try{
+
             this.UserDetails_List = data as UserDetailsDTO[];
            // console.log("Data---->", this.UserDetails_List);
             this.message = this.UserDetails_List[0]['Message'];
@@ -281,6 +283,16 @@ export class LoginComponent implements OnInit {
               // alert("Invalid");
               // this.message = "Please check your UserName and Password";
             }
+            
+            this.isLogginCredentails=false;  // logging credentials process ended. 
+          }
+          catch(e){
+             console.error(e);
+             this.isLogginCredentails=false;  // logging credentials process ended. 
+          }
+              
+           
+            
           });
     }
   }

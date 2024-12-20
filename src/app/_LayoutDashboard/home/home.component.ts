@@ -224,7 +224,8 @@ export class HomeComponent implements OnInit {
   Companylist_Json: any;
   Statuslist_Json: any;
   Employeelist_Json: any;
-
+  portfolioName:any
+  _portfolioId:any
   ngOnInit() {
     this.Companylist_Json
     this._raciDetails = true;
@@ -259,6 +260,10 @@ export class HomeComponent implements OnInit {
     this._CurrentUserFullName = localStorage.getItem('UserfullName');
     this.Current_user = localStorage.getItem('_Currentuser');
     this.Current_user_ID = localStorage.getItem('EmpNo');
+    debugger
+    this.portfolioName = localStorage.getItem('portfolioName');
+    // console.log("----Currrent Portfolio Name----->", this.portfolioName, this.Current_user_ID);
+    this._portfolioId = localStorage.getItem('Pid');
     this.searchText = '';
     this.search_Team = [];
     this.search_Type = [];
@@ -724,8 +729,8 @@ export class HomeComponent implements OnInit {
 
         if (this._ListProjStat.length == 0) {
 
-          this._filtersMessage = "No Portfolio Found";
-          this._filtersMessage2 = "Please use clear for clearing filters & try again";
+          this._filtersMessage = "No Portfolio found.";
+          this._filtersMessage2 = "Please use clear for clearing filters & try again.";
         }
         else {
           this._filtersMessage = "";
@@ -783,6 +788,7 @@ export class HomeComponent implements OnInit {
 }
 
   Displayprojectlist() {
+    debugger
     if (this._portfolioName != "") {
       this._portfolioName = this._portfolioName.trim();
       localStorage.setItem("_PortfolioName", this._portfolioName);
@@ -792,7 +798,7 @@ export class HomeComponent implements OnInit {
       this.service.AlreadyExistsPortfolioService(this._portfolioName).
         subscribe(data => {
           if (data['result'] == 0) {
-            this.notifyService.showError("Portfolio With this Name ", "Already Exists");
+            this.notifyService.showError("Portfolio with this name ", "Already exists");
             this.alreadyExists = "! Portfolio already exists with this name";
           }
           else {
@@ -1354,10 +1360,10 @@ export class HomeComponent implements OnInit {
               }
             })
         })
-      this.notifyService.showSuccess("Removed Successfully", '')
+      this.notifyService.showSuccess("Removed Successfully.", '')
     }
     else {
-      this.notifyService.showInfo("Action Cancelled", '');
+      this.notifyService.showInfo("Action Cancelled.", '');
     }
   }
 
@@ -1861,10 +1867,10 @@ export class HomeComponent implements OnInit {
               // this.cdr.detectChanges();
             });
         })
-        this.notifyService.showSuccess("Deleted ", 'Successfully');
+        this.notifyService.showSuccess("Portfolio deleted.", 'Successfully');
       }
       else {
-        this.notifyService.showInfo("Delete Cancelled ", '');
+        this.notifyService.showInfo("Delete Cancelled. ", '');
       }
     });
     }

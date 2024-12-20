@@ -86,7 +86,7 @@
             </div>
            <!-- <button class="btn btn-outline-success btn-sm mr-2" (click)="leaveform(Current_user_ID,Leave_Code.trim())">sample</button>  -->
            <!-- style="display: none;" -->
-             <div class="kt-portlet__head-label">
+             <div class="kt-portlet__head-label" >
 
               <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -282,7 +282,7 @@
 
 
       <div *ngIf="sendtype=='Req' && selectedItems.length >0" class=" bg-white p-2 px-3 rounded d-flex align-items-center justify-content-between">
-        
+
         <div class="">
 
 
@@ -328,7 +328,7 @@
             <svg fill="currentColor" width="17px" height="17px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.093,1.293l-11.2,11.2a.99.99,0,0,0-.242.391l-1.6,4.8A1,1,0,0,0,5,19a1.014,1.014,0,0,0,.316-.051l4.8-1.6a1.006,1.006,0,0,0,.391-.242l11.2-11.2a1,1,0,0,0,0-1.414l-3.2-3.2A1,1,0,0,0,17.093,1.293ZM9.26,15.526l-2.679.893.893-2.679L17.8,3.414,19.586,5.2ZM3,21H20a1,1,0,0,1,0,2H3a1,1,0,0,1,0-2Z"></path></g></svg>
             <span class="fs-8" style="font-weight:500">Accept with Comments</span>
           </button> -->
-        
+
       </div>
       <span class="fs-6 text-muted font-weight-bold">{{selectedItems.length}} selected</span>
     </div>
@@ -349,7 +349,7 @@
 
       <div class="kt-portlet">
 
-        <div class="kt-portlet__body kt-portlet__body_scroll px-1 py-3">
+        <div class="kt-portlet__body kt-portlet__body_scroll px-0 py-0">
 
 
           <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"  [ngClass]="{'d-none':notificationsLoading}">
@@ -359,20 +359,19 @@
                 <span class="d-none">About ({{_CurrentpageRecords}}) results found</span>
 
 
-
                 <!--Project aprv list start-->
                 <div id="prj-aprv-list" class="table-responsive">
                   <table class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
                     <thead>
                       <tr role="row">
-                        <th style="width: 50px;" tabindex="0" aria-controls="project-4" class="text-center" rowspan="1"
+                        <th style="width: 50px; height:30px;" tabindex="0" aria-controls="project-4" class="text-center" rowspan="1"
                           colspan="1">
-                          <input type="checkbox" id="snocheck" title="Click to select all" [(ngModel)]="selectAllCheckbox"
+                          <input type="checkbox" id="snocheck" [title]="selectAllCheckbox?'Unselect all projects':'Select all projects'" [(ngModel)]="selectAllCheckbox"
                             (change)="selectall($event)" class="form-check-input ps-1 btn px-0">
-
                         </th>
                         <th style="width: 100px;" tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
                           aria-sort="ascending" aria-label=": activate to sort column descending">
+                          <span style="position:relative; left:-15%; ">Select all</span>
                         </th>
                         <th [appSort]="_NotificationActivity" data-order="desc" data-name="Project_Name" tabindex="0"
                           aria-controls="project-4" class="curser-pointer" rowspan="1" colspan="1" style="width: 0px;"
@@ -567,7 +566,9 @@
                         </td>
                         <td>
                           <p class="kt-widget__title mb-0">
-                            {{item.Project_Name}}
+                            {{item.Project_Name | slice : 0 :70}}
+                                <ng-container *ngIf="item.Project_Name.length > 70"  >...</ng-container>
+
 
                           </p>
                           <span class="kt-widget__other d-block st-line" title="Main Project name"
@@ -792,7 +793,7 @@
                               <!-- <th style="width: 50px;" tabindex="0" aria-controls="leave-4" class="text-center" rowspan="1" colspan="1">
                                 <input type="checkbox" id="leave-snocheck" title="Select All" class="form-check-input ps-1 btn px-0"/>
                               </th> -->
-                              <th style="width: 100px;" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" >
+                              <th style="width: 100px; height:30px;" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" >
                               </th>
                               <th data-name="Leave_Name" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
                                 Leave
@@ -1569,13 +1570,13 @@
                                                         'text-completed mb-0':item.Status=='Completion Under Approval',
                                                         'text-completeRejected mb-0':item.Status=='Project Complete Rejected',
                                                         'text-Todo mb-0':item.Status=='ToDo Completed'}"
-                          data-toggle="tooltip" title="Project Status!">
+                          data-toggle="tooltip" title="Project status">
 
 
  {{item.Status=='Under Approval'?'New approval':item.Status=='Enactive Under Approval'?'Enactive approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
 
                         </h6>
-                        <h6 class=" text-danger mb-0" data-toggle="tooltip" title="Project Status!"
+                        <h6 class=" text-danger mb-0" data-toggle="tooltip" title="Project status"
                           *ngIf="item.Status=='Delay'">
                           {{item.Status==='Under Approval'?'New Approval':item.Status}}
                           {{item.Delaydays}} days
@@ -2325,7 +2326,7 @@
                   <path d="m 13,4.1974 q 0,0.3097 -0.21677,0.5265 l -5.60517,5.6051 -1.0529,1.0529 q -0.21677,0.2168 -0.52645,0.2168 -0.30968,0 -0.52645,-0.2168 L 4.01935,10.329 1.21677,7.5264 Q 1,7.3097 1,7 1,6.6903 1.21677,6.4735 L 2.26968,5.4206 q 0.21677,-0.2167 0.52645,-0.2167 0.30968,0 0.52645,0.2167 l 2.27613,2.2839 5.07871,-5.0864 q 0.21677,-0.2168 0.52645,-0.2168 0.30968,0 0.52645,0.2168 L 12.78323,3.671 Q 13,3.8877 13,4.1974 z"></path>
                 </svg>
               </div>
-              <div class="fs-9 fw-bold text-nowrap">Approved</div>
+              <div class="fs-9 fw-bold text-nowrap">Submitted</div>
             </div>
             <div class="flex-grow-1 mt-3 line-aprved" style="border-width:1px;"></div>
             <div *ngIf="managerApproval" class="d-flex flex-column align-items-center" style="max-width: 75px; overflow-x: visible;">
@@ -2611,10 +2612,10 @@
                                                         'text-completed mb-0':item.Status=='Completion Under Approval',
                                                         'text-completeRejected mb-0':item.Status=='Project Complete Rejected',
                                                         'text-Todo mb-0':item.Status=='ToDo Completed'}"
-                          data-toggle="tooltip" title="Project Status!">
+                          data-toggle="tooltip" title="Project status">
                       {{item.Status=='Under Approval'?'New approval':item.Status=='Enactive Under Approval'?'Enactive approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
                         </h6>
-                        <h6 class=" text-danger mb-0" data-toggle="tooltip" title="Project Status!"
+                        <h6 class=" text-danger mb-0" data-toggle="tooltip" title="Project status"
                           *ngIf="item.Status=='Delay'">
                           {{item.Status==='Under Approval'?'New Approval':item.Status}}
                           {{item.Delaydays}} days
@@ -2668,7 +2669,7 @@
             <div class="form-group">
               <label class="mb-2">Enter comments</label><span style="color:red">*</span>
               <textarea class="form-control h-100px" [(ngModel)]="approverComments" [ngClass]="{'error-border':(!approverComments||!approverComments.trim())&&notProvided}"   placeholder="Enter your comments here."></textarea>
-              <span *ngIf="(!approverComments||!approverComments.trim())&&notProvided" style="color:red;">comments required.</span>
+              <span *ngIf="(!approverComments||!approverComments.trim())&&notProvided" style="color:red;">Please enter comment.</span>
             </div>
           </div>
         </div>
@@ -2680,17 +2681,6 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!--accept approvals with comment sidebar end-->

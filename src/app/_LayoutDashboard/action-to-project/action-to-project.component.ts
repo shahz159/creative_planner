@@ -1,7 +1,7 @@
 
 import { Component, OnInit,ViewChild ,ViewChildren,QueryList } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpEventType,HttpEvent } from '@angular/common/http';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
@@ -324,7 +324,7 @@ export class ActionToProjectComponent implements OnInit {
   selectedProjectCode: any;
 
   ProjectOnSelect() {
-debugger
+
     let obj: any = {
       pagenumber: 1,
       Emp_No: this.CurrentUser_ID,
@@ -332,7 +332,7 @@ debugger
     }
     // this.selectedProjectCode = obj['Project_Code'];
     this.selectedProjectCode=this.selectedProjectCodelist;
-    this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => { debugger
+    this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => { 
       this.ProjectDeadLineDate = data["DeadLine"];
       this.ProjectStartDate = data["StartDate"];
       this.Owner_Empno = data['Owner_empno'];
@@ -580,7 +580,7 @@ debugger
 //     // console.log(this.owner,"selected owner")
 
 //     this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
-// debugger
+// 
 //       this.Sub_ProjectCode = data['SubTask_ProjectCode'];
 //       this.EmpNo_Autho = data['Team_Autho'];
 //       this.ProjectBlock = data['ProjectBlock'];
@@ -744,7 +744,7 @@ debugger
 
 //     if(this._Urlid == 5){
 //       // only for project creation page.
-//   debugger
+//   
 //       //1. when provided allocated hrs exceeds main project planned allocated hr then confirm.
 //       if(this.allocatedHour>0){
 //         const exceeds:boolean=this.createproject.hasExceededTotalAllocatedHr(this._allocated);
@@ -822,9 +822,9 @@ debugger
   }
 
 //   sweetAlert() {
-//   debugger
+//   
 //    const processContinue=()=>{
-// debugger
+// 
 
 // //     if (this.actionCount.DeadLine==this._EndDate&&this.actionCount.count>3){
 // //   Swal.fire({
@@ -1071,6 +1071,10 @@ this.startActionCreation();
 
 }
 
+azuremessage: any;
+IsFile:boolean=false;
+contentType:string="";
+
 startActionCreation=async()=>{
 
   // Action cost calculate.
@@ -1135,9 +1139,9 @@ startActionCreation=async()=>{
      this.ObjSubTaskDTO.Duration = this._allocated;
      // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
      console.log( this.fileAttachment)
-    if (this.fileAttachment&& this.fileAttachment.length > 0) {
-       this.ObjSubTaskDTO.Attachments =  this.fileAttachment;
-     }
+    // if (this.fileAttachment&& this.fileAttachment.length > 0) {
+    //    this.ObjSubTaskDTO.Attachments =  this.fileAttachment;
+    //  }
 
      var datestrStart = moment(this._StartDate).format("MM/DD/YYYY");
      var datestrEnd = moment(this._EndDate).format("MM/DD/YYYY");
@@ -1151,7 +1155,6 @@ startActionCreation=async()=>{
      // fd.append('file', this._inputAttachments[0].Files);
      if ( this.fileAttachment) {
        fd.append("Attachment", "true");
-       fd.append('file',  this.fileAttachment);
      }
      else {
        fd.append("Attachment", "false");
@@ -1170,8 +1173,9 @@ startActionCreation=async()=>{
      fd.append("EmployeeName", localStorage.getItem('UserfullName'));
      fd.append("AssignId", this.task_id.toString());
      fd.append("Owner", this.owner);
-     fd.append("isattachment",this.completionattachment.toString());
+     fd.append("proState",this.completionattachment.toString());
      fd.append("actionCost",this.actionCost);
+     fd.append("contentType",this.contentType);
 
      if (this.ObjSubTaskDTO.Duration != null) {
        fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
@@ -1180,16 +1184,38 @@ startActionCreation=async()=>{
        this.ObjSubTaskDTO.Duration = 0;
      }
 
-     this.service._InsertNewSubtask(fd).subscribe(event => {
+    //  this.service._InsertNewSubtask(fd).subscribe(event => {
 
+     this.service._InsertNewSubtaskcore(fd).subscribe((event: HttpEvent<any>) => {
+
+      debugger
        if (event.type === HttpEventType.Response){
          var myJSON = JSON.stringify(event);
-         this._Message = (JSON.parse(myJSON).body).Message;
-         // console.log(event,myJSON,this._Message,"action data");
+         
+         this._Message = (JSON.parse(myJSON).body).message;
+         console.log(event,myJSON,this._Message,"action data");
+        //  alert(this._Message);
+          
          if(this._Message=='1'){
+          if ( this.fileAttachment) {
+          fd.append('file',  this.fileAttachment);
+          this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
+            console.log(event1,"azure data");
+            var myJSON = JSON.stringify(event1);
+          //  this._Message = (JSON.parse(myJSON).body);
+
+          });}
            this.notifyService.showSuccess("Action created successfully", "Success");
          }
          else if(this._Message=='2'){
+          if ( this.fileAttachment) {
+            fd.append('file',  this.fileAttachment);
+            this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
+              console.log(event1,"azure data");
+              var myJSON = JSON.stringify(event1);
+            //  this._Message = (JSON.parse(myJSON).body);
+  
+            });}
            this.notifyService.showInfo("Request submitted to the Assigned employee","Action Under Approval");
          }
          else if(this._Message=='3'){
@@ -1242,18 +1268,26 @@ startActionCreation=async()=>{
          this.closeInfo();
        }
        else {
-         this._MoreDetails.GetProjectDetails();
-         this._MoreDetails.GetSubtask_Details();
-         this._MoreDetails.getapproval_actiondetails();
-         this._MoreDetails.getRejectType();
-         this.Clear_Feilds();
-         this.closeInfo();
-         this._inputAttachments = [];
+        //  this._MoreDetails.GetProjectDetails();
+        //  this._MoreDetails.GetSubtask_Details();
+        //  this._MoreDetails.getapproval_actiondetails();
+        //  this._MoreDetails.getRejectType();
+        //  this.Clear_Feilds();
+        //  this.closeInfo();
+        //  this._inputAttachments = [];
        }
 
      });
 
      });
+}
+
+getFileExtension(fileName: any): string | null {
+  if (!fileName) {
+    return null;
+  }
+  const lastDotIndex = fileName.lastIndexOf('.');
+  return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : null;
 }
 
 // sweet alert method new
@@ -1264,7 +1298,7 @@ startActionCreation=async()=>{
      this.characterCount=0;
     // alert(this._Urlid);
     if(this._Urlid==2){
-      debugger
+      
       this.router.navigate(["UnplannedTask/"]);
     document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
 
@@ -1307,7 +1341,7 @@ startActionCreation=async()=>{
     document.getElementById("rightbar-overlay").style.display = "none";
   }
 
-  Clear_Feilds() {   debugger
+  Clear_Feilds() {   
     this.selectedProjectCodelist = [];
     this.Sub_ProjectCode = null;
     this.Sub_ProjectName = null;
@@ -1394,10 +1428,15 @@ onFileChanged(event: any) {
     this.file = null;
     this.fileAttachment = null;
   }
+  console.log('File Object:', this.file);
+  this.contentType=this.getFileExtension(this.fileAttachment.name);
   // Reset file input value to allow selecting the same file again
   this.fileInput.nativeElement.value = '';
 }
 
+// testfiletype(){
+//   alert(this.contentType);
+// }
 
 onInputChange(value: string) {
   this.Sub_ProjectName = value.trim();
