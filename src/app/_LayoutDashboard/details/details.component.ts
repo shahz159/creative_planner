@@ -3042,12 +3042,21 @@ approvalSubmitting:boolean=false;
         this._inputAttachments = '';
         e.target.value='';
       }
+      console.log('File Object:', this.file);
+      this.contentType=this.getFileExtension(this.selectedFile.name);
       this.cdr.detectChanges();
     }
   }
 
-
-
+  contentType:any="";
+  
+  getFileExtension(fileName: any): string | null {
+    if (!fileName) {
+      return null;
+    }
+    const lastDotIndex = fileName.lastIndexOf('.');
+    return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : null;
+  }
 
 
 
@@ -3085,9 +3094,10 @@ approvalSubmitting:boolean=false;
     $('#upload').html('Select a file');
   }  // for temp we are using this.
 
-  proState:boolean=false
-  actionCompleted() {
+  proState:boolean=false;
 
+  actionCompleted() {
+debugger
    const fieldsprvided:boolean=(this._remarks&&this._remarks.trim())&&(this.proState?this.selectedFile:true);
 
     if (!fieldsprvided) { // when the user not provided the required fields then .
@@ -3123,9 +3133,16 @@ approvalSubmitting:boolean=false;
             fd.append("Team_Autho", this.Sub_Autho);
             fd.append("Projectblock", this.projectInfo.Project_Block);
             fd.append("Remarks", this._remarks);
-            fd.append('file', this.selectedFile);
             fd.append("Project_Name", this._Subtaskname);
-            this.service._UpdateSubtaskByProjectCode(fd)
+            fd.append("contentType",this.contentType);
+            if(this.selectedFile){
+              fd.append("Attachment","true");
+            }
+            else{
+              fd.append("Attachment","false")
+            }
+            // this.service._UpdateSubtaskByProjectCode(fd)
+            this.service._UpdateSubtaskByProjectCodeCore(fd)
               .subscribe((event: HttpEvent<any>) => {
 
                 switch (event.type) {
@@ -3137,7 +3154,8 @@ approvalSubmitting:boolean=false;
                     break;
                   case HttpEventType.Response:{
                     var myJSON = JSON.stringify(event);
-                    this._Message = (JSON.parse(myJSON).body).Message;
+                    this._Message = (JSON.parse(myJSON).body).message;
+                    console.log(myJSON,"acitonproject")
                     if(this._Message==='Success')
                     {
                       this.notifyService.showSuccess("Successfully updated", 'Action completed.');
@@ -3153,6 +3171,18 @@ approvalSubmitting:boolean=false;
                   };break;
 
                 }
+                if ( this.selectedFile) {
+                  fd.append("Project_Code", this.Sub_ProjectCode);
+                  fd.append("Team_Autho", this.Sub_Autho);
+                  fd.append("Project_Name", this._Subtaskname);
+                  fd.append('file',  this.selectedFile);
+                  this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+                    console.log(event1,"azure data");
+                    var myJSON = JSON.stringify(event1);
+                  //  this._Message = (JSON.parse(myJSON).body);
+        
+                  });
+                }
               });
 
             // ACTION SUBMITTED
@@ -3165,11 +3195,18 @@ approvalSubmitting:boolean=false;
             fd1.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
             fd1.append("Remarks", this._remarks);
             fd1.append("Projectblock", this.projectInfo.Project_Block);
-            fd1.append('file', this.selectedFile);
             fd1.append("Emp_No", this.Current_user_ID);
             fd1.append("Project_Name", this.projectInfo.Project_Name);
+            fd1.append("contentType",this.contentType);
+            if(this.selectedFile){
+              fd1.append("Attachment","true");
+            }
+            else{
+              fd1.append("Attachment","false")
+            }
             console.log(fd1, "complete");
-            this.service._fileuploadService(fd1).
+            // this.service._fileuploadService(fd1).
+            this.service._UpdateProjectCompleteCore(fd1).
               subscribe((event: HttpEvent<any>) => {
                 switch (event.type) {
                   case HttpEventType.Sent:
@@ -3183,29 +3220,42 @@ approvalSubmitting:boolean=false;
                     console.log(this.progress, "progress");
                     if (this.progress == 100) {
                       this.notifyService.showInfo("File uploaded successfully", "Project updated");
-
                     }
                     break;
                   case HttpEventType.Response:
                     console.log('File upload done!', event.body);
                     var myJSON = JSON.stringify(event);
-                    this._Message = (JSON.parse(myJSON).body).Message;
+                    this._Message = (JSON.parse(myJSON).body).message;
+                    // if(this._Message){
+                    //   fd1.append('file',  this.selectedFile);
+                    //   this.service._AzureUploadProjectComplete(fd1).subscribe((event1: HttpEvent<any>) => {
+                    //     console.log(event1,"azure data");
+                    //     var myJSON = JSON.stringify(event1);
+                    //   //  this._Message = (JSON.parse(myJSON).body);
+            
+                    //   });
+                    // }
                     this.notifyService.showSuccess(this._Message, 'Success');
+                    if(this.selectedFile){
+                      fd1.append('file',  this.selectedFile);
+                      this.service._AzureUploadProjectComplete(fd1).subscribe((event1: HttpEvent<any>) => {
+                        console.log(event1,"azure data");
+                        var myJSON = JSON.stringify(event1);
+                      //  this._Message = (JSON.parse(myJSON).body);
+            
+                      });
+                    }
                 }
-
-                this.selectedFile = null;
-                this._inputAttachments = '';
-                this._remarks = '';
-                this.invalidFileSelected=false;
-                this.closeInfo();
-                this.getProjectDetails(this.URL_ProjectCode);
-                this.getAttachments(1);
-                this.calculateProjectActions();
-                // this.GetSubtask_Details();
-                // this.GetProjectDetails();
-                // this.getapprovalStats();
-                // this._projectSummary.GetProjectsByUserName('RACIS Projects');
               });
+              
+              this.selectedFile = null;
+              this._inputAttachments = '';
+              this._remarks = '';
+              this.invalidFileSelected=false;
+              this.closeInfo();
+              this.getProjectDetails(this.URL_ProjectCode);
+              this.getAttachments(1);
+              this.calculateProjectActions();
           }
         }
         else if (res.dismiss === Swal.DismissReason.cancel) {
@@ -3215,12 +3265,40 @@ approvalSubmitting:boolean=false;
           fd.append("Team_Autho", this.Sub_Autho);
           fd.append("Projectblock", this.projectInfo.Project_Block);
           fd.append("Remarks", this._remarks);
-          fd.append('file', this.selectedFile);
           fd.append("Project_Name", this._Subtaskname);
+          fd.append("contentType",this.contentType);
+          if(this.selectedFile){
+            fd.append("Attachment","true");
+          }
+          else{
+            fd.append("Attachment","false")
+          }
           console.log(this.selectedFile, "action file")
 
-          this.service._UpdateSubtaskByProjectCode(fd)
-            .subscribe(data => {
+          // this.service._UpdateSubtaskByProjectCode(fd)
+          //   .subscribe(data => {
+            this.service._UpdateSubtaskByProjectCodeCore(fd)
+            .subscribe((event: HttpEvent<any>) => {
+
+              debugger
+               if (event.type === HttpEventType.Response){
+                 var myJSON = JSON.stringify(event);
+                 
+                 this._Message = (JSON.parse(myJSON).body).message;
+                 console.log(event,myJSON,this._Message,"action data");
+                //  alert(this._Message);
+                  
+                 if(this._Message=='Success'){
+                  if ( this.selectedFile) {
+                  fd.append('file',  this.selectedFile);
+                  this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+                    console.log(event1,"azure data");
+                    var myJSON = JSON.stringify(event1);
+                  //  this._Message = (JSON.parse(myJSON).body);
+        
+                  });
+                }
+              }
               this._remarks = "";
               this._inputAttachments = "";
               this.selectedFile = null;
@@ -3228,11 +3306,13 @@ approvalSubmitting:boolean=false;
               this.getProjectDetails(this.URL_ProjectCode);
               this.calculateProjectActions();     // recalculate the project actions.
               this.closeActCompSideBar();
-              this.getAttachments(1);      // close action completion sidebar.
+              this.getAttachments(1);
+              }      // close action completion sidebar.
             });
           this.notifyService.showSuccess("Successfully updated", 'Action completed');
           this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
         }
+        
       });   //swal end
 
     }
@@ -3245,9 +3325,16 @@ approvalSubmitting:boolean=false;
       fd.append("Team_Autho", this.Sub_Autho);
       fd.append("Projectblock", this.projectInfo.Project_Block);
       fd.append("Remarks", this._remarks);
-      fd.append('file', this.selectedFile);
       fd.append("Project_Name", this._Subtaskname);
-      this.service._UpdateSubtaskByProjectCode(fd)
+      fd.append("contentType",this.contentType);
+      if(this.selectedFile){
+        fd.append("Attachment","true");
+      }
+      else{
+        fd.append("Attachment","false")
+      }
+      // this.service._UpdateSubtaskByProjectCode(fd)
+      this.service._UpdateSubtaskByProjectCodeCore(fd)
         .subscribe((event: HttpEvent<any>) => {
 
           switch (event.type) {
@@ -3260,9 +3347,18 @@ approvalSubmitting:boolean=false;
               break;
             case HttpEventType.Response:{
               var myJSON = JSON.stringify(event);
-              this._Message = (JSON.parse(myJSON).body).Message;
+              this._Message = (JSON.parse(myJSON).body).message;
               if(this._Message==='Success')
               {
+                if(this.selectedFile){
+                  fd.append('file', this.selectedFile);
+                  this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+                    console.log(event1,"azure data");
+                    var myJSON = JSON.stringify(event1);
+                  //  this._Message = (JSON.parse(myJSON).body);
+        
+                  });
+                }
                 this.notifyService.showSuccess("Successfully updated", 'Action completed');
                 // after the action is successfully completed
                 let prjAction = this.projectActionInfo.find((prjAct: any) => prjAct.Project_Code === this.Sub_ProjectCode)
@@ -4628,10 +4724,18 @@ check_allocation() {
       fd.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
       fd.append("Remarks", this._remarks);
       fd.append("Projectblock", this.projectInfo.Project_Block);
-      fd.append('file', this.selectedFile);
       fd.append("Emp_No", this.Current_user_ID);
       fd.append("Project_Name", this.projectInfo.Project_Name);
-      this.service._fileuploadService(fd).
+      fd.append("contentType",this.contentType);
+      if(this.selectedFile){
+        fd.append("Attachment","true");
+      }
+      else{
+        fd.append("Attachment","false")
+      }
+      // this.service._fileuploadService(fd).
+      
+      this.service._UpdateProjectCompleteCore(fd).
         subscribe((event: HttpEvent<any>) => {
           switch (event.type) {
             case HttpEventType.Sent:
@@ -4647,7 +4751,7 @@ check_allocation() {
             case HttpEventType.Response:
               console.log('File upload done!', event.body);
               var myJSON = JSON.stringify(event);
-              this._Message = (JSON.parse(myJSON).body).Message;
+              this._Message = (JSON.parse(myJSON).body).message;
               if(this._Message=='Actions are in Under Approval'){
                 this.notifyService.showError(this._Message, 'Failed');
               }
@@ -4655,17 +4759,25 @@ check_allocation() {
                 if (this.progress == 100) {
                   this.notifyService.showInfo("File uploaded successfully", "Project updated");
                 }
+                
                 this.notifyService.showSuccess(this._Message, 'Success');
+                debugger
+                if(this.selectedFile){
+                  fd.append('file',  this.selectedFile);
+                  this.service._AzureUploadProjectComplete(fd).subscribe((event1: HttpEvent<any>) => {
+                    console.log(event1,"azure data");
+                    var myJSON = JSON.stringify(event1);
+                  //  this._Message = (JSON.parse(myJSON).body);
+        
+                  });
+                }
+                this.GetActivityDetails();
+                this.closeInfoProject();
+                this.getProjectDetails(this.URL_ProjectCode);
+                this.getapprovalStats();
               }
           }
-          this.GetActivityDetails();
-          this.closeInfoProject();
-          this.getProjectDetails(this.URL_ProjectCode);
-          // this.getapproval_actiondetails();
-          // this.GetSubtask_Details();
-          // this.GetProjectDetails();
-          this.getapprovalStats();
-          // this._projectSummary.GetProjectsByUserName('RACIS Projects');
+
         });
     }
     else if (this.isAction == true) {
@@ -7708,6 +7820,7 @@ holdcontinue(Pcode:any){
   // project cancel section end
   ShowProgress: boolean = false;
   processingStd:boolean=false;
+  
   achieveStandard() {
     if(!(this._remarks&&this._remarks.trim())||this.selectedFile==null){
         this.formFieldsRequired=true;
@@ -7719,13 +7832,21 @@ holdcontinue(Pcode:any){
     fd.append("Team_Autho", this.Authority);
     fd.append("Remarks", this._remarks);
     fd.append("Projectblock", this.ProjectBlock);
-    fd.append('file', this.selectedFile);
     fd.append("Emp_No", this.Current_user_ID);
     fd.append("Project_Name", this.projectInfo.Project_Name);
+    fd.append("contentType",this.contentType);
+    fd.append("achievetype","1");
+    if(this.selectedFile){
+      fd.append("Attachment","true");
+    }
+    else{
+      fd.append("Attachment","false")
+    }
 
     console.log(this._MasterCode, this._remarks, this.selectedFile, this.Current_user_ID, "fd");
     this.processingStd=true;
-    this.service._UpdateStandardTaskSubmission(fd).
+    // this.service._UpdateStandardTaskSubmission(fd).
+    this.service._UpdateStandardTaskSubmissionCore(fd).
       subscribe((event: HttpEvent<any>) => {
         this.processingStd=false;
         switch (event.type) {
@@ -7747,24 +7868,21 @@ holdcontinue(Pcode:any){
           case HttpEventType.Response:
             console.log('File upload done!', event.body);
             var myJSON = JSON.stringify(event);
-            this._Message = (JSON.parse(myJSON).body).Message;
+            this._Message = (JSON.parse(myJSON).body).message;
             this.notifyService.showSuccess(this._Message, 'Success');
         }
-        // if (event.type == HttpEventType.UploadProgress) {
-        //   this.progress = Math.round(event.loaded / event.total * 100);
-        //   console.log(this.progress, "progress")
-        //   this.notifyService.showInfo("File uploaded successfully", "Project Updated");
-        // }
-        // else if (event.type === HttpEventType.Response) {
-        //   alert(1)
-        //   var myJSON = JSON.stringify(event);
-        //   this._Message = (JSON.parse(myJSON).body).Message;
-        //   this.notifyService.showSuccess(this._Message, 'Success');
-        // }
+        if (this.selectedFile) {
+          fd.append('file',  this.selectedFile);
+          this.service._AzureUploadStandardTaskComplete(fd).subscribe((event1: HttpEvent<any>) => {
+            console.log(event1,"azure data");
+            var myJSON = JSON.stringify(event1);
+          //  this._Message = (JSON.parse(myJSON).body);
+          });
+        }
         this.closeInfo();
         this.getProjectDetails(this.URL_ProjectCode);
         this.getapprovalStats();
-        this._projectSummary.GetProjectsByUserName('RACIS Projects');
+        // this._projectSummary.GetProjectsByUserName('RACIS Projects');
       });
   }
 
@@ -7773,7 +7891,6 @@ holdcontinue(Pcode:any){
       this.formFieldsRequired=true;
       return;
     }
-
 
     this.selectedFile = null;
     const fd = new FormData();
@@ -7784,18 +7901,15 @@ holdcontinue(Pcode:any){
     fd.append('file', this.selectedFile);
     fd.append("Emp_No", this.Current_user_ID);
     fd.append("Project_Name", this.ProjectName);
-    // console.log(this._MasterCode,this._remarks,this.selectedFile,this.Current_user_ID,"fd");
+    fd.append("achievetype","0");
     this.processingStd=true;
-    this.service._UpdateStandardTaskSubmission(fd).
+    // this.service._UpdateStandardTaskSubmission(fd).
+    this.service._UpdateStandardTaskSubmissionCore(fd).
       subscribe(event => {
         this.processingStd=false;
-        if (event.type == HttpEventType.UploadProgress) {
-          this.progress = Math.round(event.loaded / event.total * 100);
-          this.notifyService.showInfo("File uploaded successfully", "Project updated");
-        }
-        else if (event.type === HttpEventType.Response) {
+        if (event.type === HttpEventType.Response) {
           var myJSON = JSON.stringify(event);
-          this._Message = (JSON.parse(myJSON).body).Message;
+          this._Message = (JSON.parse(myJSON).body).message;
           this.notifyService.showSuccess(this._Message, 'Success');
         }
         this.closeInfo();
@@ -7803,7 +7917,7 @@ holdcontinue(Pcode:any){
       });
       this.getProjectDetails(this.URL_ProjectCode);
       this.getapprovalStats();
-      this._projectSummary.GetProjectsByUserName('RACIS Projects');
+      // this._projectSummary.GetProjectsByUserName('RACIS Projects');
   }
 
   //  $('#_file1').val('');

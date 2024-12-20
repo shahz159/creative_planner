@@ -9,6 +9,7 @@ import { ProjectDetailsDTO } from '../_Models/project-details-dto';
 })
 export class CreateprojectService {
   readonly rootUrl = this.commonUrl.apiurl;
+  readonly rootUrlcore = this.commonUrl.apiurlcore;
   ObjSubTaskDTO: SubTaskDTO;
   constructor(private http:HttpClient,private commonUrl: ApiurlService) {
     this.ObjSubTaskDTO=new SubTaskDTO();
@@ -34,7 +35,13 @@ export class CreateprojectService {
        return this.http.post(this.rootUrl+'Notification/NewUpdateFileUploadsByProjectCode',formData);
   }
 
+  NewUpdateFileUploadsByProjectCodeCore(formData:FormData){
+    return this.http.post(this.rootUrlcore+'Notification/NewUpdateFileUploadsByProjectCodeCore',formData);
+  }
 
+  _AzureUpdateFileUploadsByProjectCode(formData:FormData){
+    return this.http.post(this.rootUrlcore+'Azure/NewUpdateFileUploadsByProjectCodeCore',formData);
+  }
 
   NewUpdateNewProjectApproval(prjDTO:ProjectDetailsDTO){
        return this.http.post(this.rootUrl+'Projects/NewUpdateNewProjectApproval',prjDTO);

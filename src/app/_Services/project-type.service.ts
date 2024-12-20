@@ -718,7 +718,6 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.Start_Date = obj.Start_Date;
     this.ObjSubTaskDTO.End_Date = obj.End_Date;
     this.ObjSubTaskDTO.selected_emp = obj.selected_emp;
-
     return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineDurationforRACIS", this.ObjSubTaskDTO);
   }
 
@@ -726,7 +725,6 @@ export class ProjectTypeService {
     this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
     this.ObjSubTaskDTO.ProjectBlock = obj.ProjectBlock;
     this.ObjSubTaskDTO.Project_Code = obj.Project_Code;
-
     return this.http.post(this.rootUrl + "TestAPI/NewGetTimelineProjects", this.ObjSubTaskDTO);
   }
 
@@ -746,38 +744,12 @@ export class ProjectTypeService {
   }
 
   _InsertNewSubtask(data) {
-    // let _fullname = localStorage.getItem('UserfullName');
-    // this.ObjSubTaskDTO.AssignId = obj.AssignId;
-    // this.ObjSubTaskDTO.MasterCode = obj.MasterCode;
-    // // this.ObjSubTaskDTO.SubTask_ProjectCode = obj.SubTask_ProjectCode;
-    // this.ObjSubTaskDTO.SubProject_Name = obj.SubProject_Name;
-    // this.ObjSubTaskDTO.ProjectBlock = obj.ProjectBlock;
-
-    // this.ObjSubTaskDTO.SubtaskDescription = obj.SubtaskDescription;
-    // this.ObjSubTaskDTO.StartDate = obj.StartDate;
-    // this.ObjSubTaskDTO.SubProject_DeadLine = obj.SubProject_DeadLine;
-    // this.ObjSubTaskDTO.Duration = obj.Duration;
-    // this.ObjSubTaskDTO.Emp_No = obj.Emp_No;
-    // this.ObjSubTaskDTO.EmployeeName = _fullname;
-    // this.ObjSubTaskDTO.Comp_No = obj.Comp_No;
-    // this.ObjSubTaskDTO.Team_Res = obj.Team_Res;
-    // this.ObjSubTaskDTO.Team_Autho = obj.Team_Autho;
-    // this.ObjSubTaskDTO.Team_Coor = obj.Team_Coor;
-    // this.ObjSubTaskDTO.Team_Informer = obj.Team_Informer;
-    // this.ObjSubTaskDTO.Team_Support = obj.Team_Support;
-    // this.ObjSubTaskDTO.Project_Owner = obj.Project_Owner;
-    // this.ObjSubTaskDTO.AssignTo = obj.AssignTo;
-    // this.ObjSubTaskDTO.Remarks = obj.Remarks;
-    // this.ObjSubTaskDTO.Attachments = obj.Attachments;
     return this.http.post(this.rootUrl + "Notification/NewInsertSubTaskByProjectCode", data, {
       reportProgress: true,
       observe: 'events'
     }).pipe(
       catchError(this.errorMgmt)
     );
-    //Notification/NewInsertSubTaskByProjectCode
-
-
   }
 
   _InsertNewSubtaskcore(data) {
@@ -788,33 +760,37 @@ export class ProjectTypeService {
     }).pipe(
       catchError(this.errorMgmt)
     );
-    //Notification/NewInsertSubTaskByProjectCode
-
-
   }
 
   _AzureUploadNewAction(data) {
-   
     return this.http.post(this.rootUrlcore + "Azure/NewInsertSubTaskByProjectCodeCore", data, {
       reportProgress: true,
       observe: 'events'
     }).pipe(
       catchError(this.errorMgmt)
     );
-    //Notification/NewInsertSubTaskByProjectCode
-
-
   }
-  // _UpdateMainProjectByProjectCode(objsubtask) {
-  //   this.ObjSubTaskDTO.MasterCode = objsubtask.MasterCode;
-  //   this.ObjSubTaskDTO.Attachments = objsubtask.Attachments;
-  //   this.ObjSubTaskDTO.Attachments2 = objsubtask.Attachments2;
-  //   this.ObjSubTaskDTO.Remarks = objsubtask.Remarks;
-  //   return this.http.post(this.rootUrl + "Notification/UploadToAzureAsyn", this.ObjSubTaskDTO);
-  // }
 
   _fileuploadService(data) {
     return this.http.post(this.rootUrl + "Notification/UpdateMainProject_ByProjectCode", data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
+  }
+
+  _UpdateProjectCompleteCore(data) {
+    return this.http.post(this.rootUrlcore + "Notification/NewUpdateMainProjectCore", data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
+  }
+
+  _AzureUploadProjectComplete(data) {
+    return this.http.post(this.rootUrlcore + "Azure/NewUpdateprojectCompleteCore", data, {
       reportProgress: true,
       observe: 'events'
     }).pipe(
@@ -829,20 +805,27 @@ export class ProjectTypeService {
     }).pipe(
       catchError(this.errorMgmt)
     );
+  }
 
-    // return this.http.post(this.rootUrl + "Notification/UpdateStandardTaskSubmission", data, {
-    //   reportProgress: true,
-    //   observe: 'events'
-    // }).pipe(
-    //   catchError(this.errorMgmt)
-    // );
+  _UpdateStandardTaskSubmissionCore(data) {
+    return this.http.post(this.rootUrlcore + "Notification/NewUpdateStandardTaskSubmissionCore", data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
+  }
+
+  _AzureUploadStandardTaskComplete(data) {
+    return this.http.post(this.rootUrlcore + "Azure/NewUpdateStandardTaskSubmissionCore", data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
   }
 
   _UpdateSubtaskByProjectCode(fd) {
-    // this.ObjSubTaskDTO.MasterCode = objsubtask.MasterCode;
-    // this.ObjSubTaskDTO.SubTask_ProjectCode = objsubtask.SubTask_ProjectCode;
-    // this.ObjSubTaskDTO.Attachments = objsubtask.Attachments;
-    // this.ObjSubTaskDTO.Remarks = objsubtask.Remarks;
     return this.http.post(this.rootUrl + "Notification/NewUpdateSubTaskByProjectCode", fd, {
       reportProgress: true,
       observe: 'events'
@@ -850,6 +833,27 @@ export class ProjectTypeService {
       catchError(this.errorMgmt)
     );
   }
+
+
+  _UpdateSubtaskByProjectCodeCore(fd) {
+    return this.http.post(this.rootUrlcore + "Notification/NewUpdateSubTaskByProjectCodeCore", fd, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
+  }
+
+  _AzureUploadActionComplete(data) {
+   
+    return this.http.post(this.rootUrlcore + "Azure/NewUpdateActionCompleteCore", data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      catchError(this.errorMgmt)
+    );
+  }
+
   _InsertOnlyTaskServie(_ObjAssigntaskDTO) {
 
     this._ObjAssigntaskDTO.TypeOfTask = _ObjAssigntaskDTO.TypeOfTask;
