@@ -284,6 +284,7 @@ NewPending_table(obj:CalenderDTO){
   }
 
   UploadCalendarAttachmenst(data) {
+    console.log(this.rootUrl + "TestAPI/NewAddCalendarAttachment",'url')
     return this.http.post(this.rootUrl + "TestAPI/NewAddCalendarAttachment", data
       , {
         reportProgress: true,

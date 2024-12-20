@@ -1964,7 +1964,6 @@ isValidURL = true;
         + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       this.EventNumber = timestamp;
     }
- 
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -2052,6 +2051,8 @@ isValidURL = true;
 
         var vEndTime = "EndTime";
         element[vEndTime] = this.Endtms;
+
+debugger
 
         var vEnd_date = "End_date";
         element[vEnd_date] = this._EndDate;
@@ -2184,7 +2185,7 @@ isValidURL = true;
         this._calenderDto.Schedule_ID = 0;
       }
 
-      
+    
       const frmData = new FormData();
       for (var i = 0; i < this._lstMultipleFiales.length; i++) {
         frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
@@ -2228,7 +2229,7 @@ isValidURL = true;
                     console.log('User successfully created!', event.body);
 
                     // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+                    // (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
                     this._lstMultipleFiales = [];
                     // empty(this._lstMultipleFiales);
                     // alert(this._lstMultipleFiales.length);
@@ -2605,6 +2606,7 @@ isValidURL = true;
         
         const frmData = new FormData();
         for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+          console.log(this._lstMultipleFiales,'this._lstMultipleFiales')
           frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
         }
         if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
@@ -2621,7 +2623,7 @@ isValidURL = true;
         
         this._calenderDto.attachment =this._attachmentValue.toString();
 
-        
+ 
 
         this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
           (data => {
@@ -2897,7 +2899,7 @@ isValidURL = true;
   Task_type(value) {
  
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-    document.getElementById("rightbar-overlay").style.display = "block";
+    // document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
 
@@ -3573,7 +3575,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
           this.AllEndtime.push(element.TSEnd);
           this.StartTimearr.push(element.TSStart);
           this.Alltimes.push(element.TSStart);
-          // console.log("Arraydxxdd", this.EndTimearr);
+          
         });
 
 
@@ -3586,6 +3588,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
         const result=t>=ct;
         return result;
       });
+      debugger
       this.validStartTimearr=this.StartTimearr.slice(index);
 
 
@@ -5615,7 +5618,7 @@ debugger
       const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
       this._calenderDto.DraftAgendas=mtgAgendas;
 
-   
+    console.log(this._calenderDto,'this._calenderDto Draft')
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
       (data => {
            
@@ -5681,7 +5684,7 @@ debugger
     this.CalenderService.NewGetMeeting_darftdata(this._calenderDto).subscribe
       (data => {
    
-        console.log(data, "ssdddd")
+       
         if (data['Draft_meetingdata'] != "" && data['Draft_meetingdata'] != null && data['Draft_meetingdata'] != undefined) {
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
           this.draftcount = this.draftdata_meet.length;

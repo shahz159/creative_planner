@@ -8110,9 +8110,15 @@ getFileType(fileName: string): string {
 copied = false;
 
   copyLink() {
-    debugger
+    console.log(this.Link_Detail,'dwn')
     const textarea = document.createElement('textarea');
-    textarea.value = this.Link_Detail.split('Meeting link:- ')[1].split(',')[0];
+    if(this.Link_Detail.includes('Meeting link:- ')){
+      textarea.value = this.Link_Detail.split('Meeting link:- ')[1].split(',')[0];
+    }else{
+      textarea.value = this.Link_Detail;
+    }
+  
+
     document.body.appendChild(textarea);
     textarea.select();
     document.execCommand('copy');
