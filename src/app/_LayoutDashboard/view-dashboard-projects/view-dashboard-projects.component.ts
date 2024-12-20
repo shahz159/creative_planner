@@ -112,7 +112,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
 
       const isFilterapplied=Object.keys(filterconfig).length>0;
      //
-     
+
       if (section) {
         // Handle the case when you are coming from the dashboard
         if (section === 'Projects') {
@@ -124,8 +124,8 @@ export class ViewDashboardProjectsComponent implements OnInit {
           this.getAssignedProjects(this.type1);
           this.router.navigate(["../ViewProjects/" + this.Mode]);
         }
-      
-       
+
+
       } else {
         // Handle the case when you are on this page or coming from another page
         this.Mode = this.activatedRoute.snapshot.params['Mode'];
@@ -173,6 +173,8 @@ export class ViewDashboardProjectsComponent implements OnInit {
   ProjectPercentage: any; ProjectStatus: string;
   MoreDetailsList: any;
 
+
+  limit= 71
 
 
   getCurrentDate()  {
@@ -318,11 +320,11 @@ debugger
     this._ObjCompletedProj.PageSize = 30;
 
 
-//if sort by filter applied. 
+//if sort by filter applied.
 if(filterconfig){
   this.edited = true;
-  this._ObjCompletedProj.Project_SearchText=undefined;   
-  this._ObjCompletedProj.SelectedBlock_No=filterconfig.type;            
+  this._ObjCompletedProj.Project_SearchText=undefined;
+  this._ObjCompletedProj.SelectedBlock_No=filterconfig.type;
   this._ObjCompletedProj.SelectedEmp_No=filterconfig.emp;
   this._ObjCompletedProj.SelectedStatus=filterconfig.status;
 }
@@ -349,7 +351,7 @@ if(filterconfig){
           }
           else {
             this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
-            console.log(  this._ProjectDataList,'_ProjectDataList')
+            console.log(  this._ProjectDataList,'_ProjectDataListvv')
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
@@ -357,7 +359,7 @@ if(filterconfig){
             this._CurrentpageRecords = this._ProjectDataList.length;
             this._totalProjectsCount = data[0]['delaycount'];
 
-            
+
 
             if(filterconfig){
                if(filterconfig.emp)
@@ -375,7 +377,7 @@ if(filterconfig){
 
             // this.portfolio_List=JSON.parse(this._ProjectDataList['availableports'])
 
-             console.log(this._ProjectDataList,"portfolio_List")
+             console.log(this._ProjectDataList,"portfolio_Listsssss")
           }
         });
   }
@@ -578,7 +580,7 @@ debugger
       }).join(',');
       this.selectedStatus_String = this.checkedItems_Status.map(select => {
         return select.Status;
-      }).join(','); 
+      }).join(',');
       //console.log(this.checkedItems_Status, this.checkedItems_Type, this.checkedItems_Emp);
       this._ObjCompletedProj.SelectedStatus = this.selectedStatus_String;
       this._ObjCompletedProj.SelectedEmp_No = this.selectedEmp_String;
@@ -589,7 +591,7 @@ debugger
       //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
       this.service._GetCompletedProjects(this._ObjCompletedProj)
         .subscribe(data => {
-  
+
           this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
           this._CurrentpageRecords = this._ProjectDataList.length;
           if (this._ProjectDataList.length == 0) {

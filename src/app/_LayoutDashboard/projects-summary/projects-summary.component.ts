@@ -1656,7 +1656,7 @@ debugger
   }
 
 
-  limit =  35;
+  limit =  71;
 
 
 
@@ -2235,7 +2235,7 @@ this.closeAutocompleteDrpDwn('proDDwn')
     }
 
     return '';
- 
+
   }
 
 
@@ -2281,6 +2281,11 @@ this.closeAutocompleteDrpDwn('proDDwn')
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const year = today.getFullYear();
     return `${day}-${month}-${year}`;
+  }
+
+
+  getTooltipText() {
+    return `Company name: ${this.CountDelay} <br> Designation: ${this.CountDelay}`;
   }
 
 

@@ -404,7 +404,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
 
   GetPortfolioProjectsByPid() {
-    debugger
+
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
     this._Pid = this.Url_portfolioId;
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -6639,7 +6639,7 @@ isDepartment = false
   isAllPrjSelected : boolean = false
 
   selectUnselectPagePrjs(evt){
-debugger
+
 
 this.isAllPrjSelected = evt.checked
 if(this.isAllPrjSelected){
@@ -6842,7 +6842,7 @@ submitAprvlsWithCmts(){
 
 approvingRequest = []
 acceptSelectedValues(_comments?:string) {
-debugger
+
 
 if( this.approvingRequest.length > 0 ){
 
@@ -7000,6 +7000,7 @@ rejectApproval() {
   });
 
 }
+limit =  71;
 
 resetReject(){
   this.noRejectType = false;

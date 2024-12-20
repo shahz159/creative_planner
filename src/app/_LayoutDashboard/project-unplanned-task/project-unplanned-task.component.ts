@@ -117,6 +117,8 @@ export class ProjectUnplannedTaskComponent implements OnInit{
     this.isTodoProjectsLoaded=false;
     this.isDropdownDataLoaded=false;
     this.isCountsDataLoaded=false;
+    this._FilteredTodoList = this._TodoList,
+    this._FilteredCompletedList = this._CompletedList;
   }
 
   IfNoCategoryFound: string;
@@ -139,7 +141,6 @@ export class ProjectUnplannedTaskComponent implements OnInit{
 
 
   ngOnInit(): void {
-
     this.getRACISandNonRACIS();
     this.GetProjectsByUserName();
     // this.totalproject()
@@ -464,9 +465,11 @@ export class ProjectUnplannedTaskComponent implements OnInit{
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-
-        console.log(this._TodoList,this.ActionedAssigned_Josn,this._CompletedList,this.ActionedSubtask_Json);
-
+this.openTab()
+        console.log(this._TodoList,"this._TodoList");
+        console.log(this.ActionedAssigned_Josn,"this.ActionedAssigned_Josn");
+        console.log(this._CompletedList,"this._CompletedList");
+        console.log(this.ActionedSubtask_Json,"ActionedSubtask_Json");
 
         if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
 
@@ -1346,8 +1349,8 @@ renameTask(task_id:any,new_name:any){
   closeInfo() {
     this.clearFeilds();
     document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
-    document.getElementById('unassign-editsidebar').classList.remove('kt-action-panel--on');
-    document.getElementById('ProjectAssignpending').classList.remove('kt-action-panel--on');
+    // document.getElementById('unassign-editsidebar').classList.remove('kt-action-panel--on');
+    // document.getElementById('ProjectAssignpending').classList.remove('kt-action-panel--on');
     document.getElementById('openactionassign').classList.remove('kt-action-panel--on');
     // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
@@ -1455,12 +1458,12 @@ showassign(){
 selected_date:any
 selected_taskId:any;
 selected_taskName:any;
-unassign_edit(id:any,taskname:any,date:any){
-  const taskNames = this.checkedTaskNames.join(', ');
-  this.selected_taskId=id;
-  this.selected_taskName=taskNames
-  this.selected_date = date
+unassign_edit(tsk:any,id:any,date:any){
+  debugger
 
+  this.selected_taskId=id;
+  this.selected_taskName=tsk
+  this.selected_date = date
   document.getElementById('unassign-editsidebar').classList.add('kt-action-panel--on');
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
@@ -1468,10 +1471,15 @@ unassign_edit(id:any,taskname:any,date:any){
   this.port_id = []
   this.employeSelect = null
   this.selectedProjecttype = null
-
-
-  // this.toggleProjectoptions('option1')
+  this.selectedOption = 'option1'
+  const radioButton = document.getElementById('projectRadio1') as HTMLInputElement;
+  if (radioButton) {
+    radioButton.checked = true;
+  }
 }
+ // const taskNames = this.checkedTaskNames.map(task=>task.Task_Name).join(', ');
+  // const assignids = this.checkedTaskNames.map(task=>task.Assign_Id).join(', ')
+
 
 unassign_closeInfo(){
   document.getElementById('unassign-editsidebar').classList.remove('kt-action-panel--on');
@@ -1492,7 +1500,7 @@ assign_Id:any
 editTaskat:number|undefined= undefined;
 
 editassignPending(i:any){
-
+debugger
   this.editTaskat=i;
   this.task__name = this.ActionedAssigned_Josn[i].Task_Name.trim();
   this.employeSelect=(this.ActionedAssigned_Josn[i].Emp_No)?this.ActionedAssigned_Josn[i].Emp_No.split(','):[];
@@ -1544,6 +1552,7 @@ closedActionassign(){
 
 
 toggleProjectoptions(option: string) {
+  debugger
   this.selectedOption = option;
   this.formFieldsRequired = false;
   this._StartDate = null
@@ -1644,11 +1653,13 @@ onFileChanged(event: any) {
 
   if (files && files.length > 0) {
     this.file = files[0];
+    this.fileAttachment =  this.FileName
+    this.selectedFileName =  this.FileName
     this.fileAttachment = this.file;
     this.selectedFileName = this.file.name;
     console.log('File Object:', this.file);
     this.contentType=this.getFileExtension(this.fileAttachment.name);
-  } 
+  }
   else {
     this.file = null;
     this.fileAttachment = null;
@@ -2111,7 +2122,7 @@ else{
               console.log(event1,"azure data");
               var myJSON = JSON.stringify(event1);
             //  this._Message = (JSON.parse(myJSON).body);
-  
+
             });}
           this.notifyService.showSuccess("Action created successfully", "Success");
         }
@@ -2122,7 +2133,7 @@ else{
               console.log(event1,"azure data");
               var myJSON = JSON.stringify(event1);
             //  this._Message = (JSON.parse(myJSON).body);
-  
+
             });}
           this.notifyService.showInfo("Request submitted to the Assigned employee","Action Under Approval");
         }
@@ -2395,7 +2406,7 @@ this.vart = d
 
 isReadOnly: boolean = true;
 pendingUpdatesection(){
-
+debugger
   if(this.employeSelect ===null || this.employeSelect === undefined &&this.task__name==null|| this.task__name == undefined || this.task__name.trim() ==""){
     this.formFieldsRequired = true
 return
@@ -2531,59 +2542,285 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
   openTab() {
    // Now, check which condition matches and add 'show' to the appropriate element
    document.getElementById('collapseUnassign').classList.remove('show');
-   document.getElementById('collapseCompleted').classList.remove('show');
    document.getElementById('collapseActionproject').classList.remove('show');
    document.getElementById('collapseActiontask').classList.remove('show');
+   document.getElementById('collapseCompleted').classList.remove('show');
 
     if (this._TodoList.length > 0) {
       document.getElementById('collapseUnassign').classList.add('show');
-    } else if (this._CompletedList.length > 0) {
-      document.getElementById('collapseCompleted').classList.add('show');
+
     } else if (this.ActionedSubtask_Json.length > 0) {
       document.getElementById('collapseActionproject').classList.add('show');
     }
     else if (this.ActionedAssigned_Josn.length > 0){
       document.getElementById('collapseActiontask').classList.add('show');
-    }
+
+    } else if (this._CompletedList.length > 0) {
+      document.getElementById('collapseCompleted').classList.add('show');
 // this.openTab()
-}
+}}
 
 
 
 checkedItem = []
-// this._TodoList
-// selectunSelect(e, item){
-//   if(e.checked){
-//     this.checkedItem.push(item)
-//     const allselected = this._TodoList.every(item=>{
-//       return this.checkedItem.map(p => p.Project_Code).includes(item.Project_Code)
-//     })
 
-//     console.log(this.checkedItem,"ThisCheckedItem")
+checkedTaskNames: { Task_Name: string, Assign_Id: any }[] = [];
 
-//   }
-//   else{
-//     let index = this.checkedItem.findIndex(obj => obj.Project_Code == item.Project_Code)
-//     if (index != -1)
-//       this.checkedItem.splice(index, 1);
-//     console.log(this.checkedItem,"ThisCheckedItem Remove")
-//         }
-// }
-checkedTaskNames: string[] = [];
 selectunSelect(e, item) {
   if (e.checked) {
-    // Add task name to checkedTaskNames array
-    this.checkedTaskNames.push(item.Task_Name);
+    // Add task name and assign id to checkedTaskNames array
+    this.checkedTaskNames.push({
+      Task_Name: item.Task_Name,
+      Assign_Id: item.Assign_Id
+    });
     console.log(this.checkedTaskNames, "ThisCheckedTaskNames");
   } else {
-    // Remove task name from checkedTaskNames array
-    let index = this.checkedTaskNames.indexOf(item.Task_Name);
+    // Remove task name and assign id from checkedTaskNames array
+    let index = this.checkedTaskNames.findIndex(task => task.Task_Name === item.Task_Name && task.Assign_Id === item.Assign_Id);
     if (index !== -1) {
       this.checkedTaskNames.splice(index, 1);
     }
     console.log(this.checkedTaskNames, "ThisCheckedTaskNames Remove");
   }
 }
+
+
+
+projectInfo: any;
+URL_ProjectCode: any;
+projectCode:any
+
+LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+debugger
+  let FileUrl: string;
+  // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
+  FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
+
+  if (iscloud == false) {
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
+
+    if (this.projectInfo.AuthorityEmpNo == this.projectInfo.ResponsibleEmpNo) {
+      // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
+      FileUrl = (FileUrl +  this.projectInfo.ResponsibleEmpNo + "/" + this.URL_ProjectCode + "/" + url1);
+    }
+    else if (this.projectInfo.AuthorityEmpNo != this.projectInfo.ResponsibleEmpNo) {
+      FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + this.URL_ProjectCode + "/" + url1);
+    }
+
+    let name = "ArchiveView/" + this.URL_ProjectCode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(FileUrl);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+
+  else if (iscloud == true) {
+    let name = "ArchiveView/" + this.projectCode;
+    var rurl = document.baseURI + name;
+    var encoder = new TextEncoder();
+    let url = encoder.encode(url1);
+    let encodeduserid = encoder.encode(this.Current_user_ID.toString());
+    filename = filename.replace(/#/g, "%23");
+    filename = filename.replace(/&/g, "%26");
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myWindow = window.open(myurl, url.toString());
+    myWindow.focus();
+  }
+}
+
+
+_FilteredTodoList = [];
+_FilteredCompletedList = [];
+_FilteredActionList = [];
+_FilteredAssignList = [];
+
+filterLists() {
+  let noResultsFound = true;  // Flag to check if no results are found in any list
+
+  // If there is a search term
+  if (this._SearchTask) {
+    // Filter Todo List based on search term
+    this._FilteredTodoList = this._TodoList.filter(item =>
+      item.Task_Name.toLowerCase().includes(this._SearchTask.toLowerCase())
+    );
+
+    // Filter Completed List based on search term
+    this._FilteredCompletedList = this._CompletedList.filter(item =>
+      item.Task_Name.toLowerCase().includes(this._SearchTask.toLowerCase())
+    );
+
+    // Filter Actioned Subtasks based on search term
+    this._FilteredActionList = this.ActionedSubtask_Json.filter(item =>
+      item.Task_Name.toLowerCase().includes(this._SearchTask.toLowerCase())
+    );
+
+    // Filter Assigned Tasks based on search term
+    this._FilteredAssignList = this.ActionedAssigned_Josn.filter(item =>
+      item.Task_Name.toLowerCase().includes(this._SearchTask.toLowerCase())
+    );
+
+    // Check if any list has results
+    if (this._FilteredTodoList.length > 0) {
+      document.getElementById("taskdd").style.display = "block";  // Show ToDoList
+      noResultsFound = false;
+    } else {
+      document.getElementById("taskdd").style.display = "none";   // Hide ToDoList
+    }
+
+    if (this._FilteredCompletedList.length > 0) {
+      document.getElementById("Completed").style.display = "block"; // Show CompletedList
+      noResultsFound = false;
+    } else {
+      document.getElementById("Completed").style.display = "none"; // Hide CompletedList
+    }
+
+    if (this._FilteredActionList.length > 0) {
+      document.getElementById("ActionToProjects").style.display = "block"; // Show Action List
+      noResultsFound = false;
+    } else {
+      document.getElementById("ActionToProjects").style.display = "none"; // Hide Action List
+    }
+
+    if (this._FilteredAssignList.length > 0) {
+      document.getElementById("AssignedTask").style.display = "block"; // Show Assigned Task List
+      noResultsFound = false;
+    } else {
+      document.getElementById("AssignedTask").style.display = "none"; // Hide Assigned Task List
+    }
+
+  } else {
+    // If search term is empty, reset and show all lists
+    this._FilteredTodoList = this._TodoList;
+    this._FilteredCompletedList = this._CompletedList;
+    this._FilteredActionList = this.ActionedSubtask_Json;
+    this._FilteredAssignList = this.ActionedAssigned_Josn;
+
+    // Show all lists when there's no search term
+    document.getElementById("taskdd").style.display = "block";  // Show ToDoList
+    document.getElementById("Completed").style.display = "block"; // Show CompletedList
+    document.getElementById("ActionToProjects").style.display = "block"; // Show Action List
+    document.getElementById("AssignedTask").style.display = "block"; // Show Assigned Task List
+
+    noResultsFound = false;  // Since no search term, lists are visible by default
+  }
+
+  // If no results were found in any of the filtered lists, show the "No search found" message
+  if (noResultsFound) {
+    document.getElementById("noSearchFoundMessage").style.display = "block"; // Show message
+  } else {
+    document.getElementById("noSearchFoundMessage").style.display = "none"; // Hide message
+  }
+}
+
+getContentType(item: any): string {
+  // Check if 'item' has the 'Reference' or 'FileName' property
+  debugger
+  if (item.Reference) {
+    if (item.Reference.endsWith('.pdf')) {
+      return 'pdf';
+    } else if (item.Reference.endsWith('.png')) {
+      return 'png';
+    } else if (item.Reference.endsWith('.svg')) {
+      return 'svg';
+    }
+  }
+
+  // Proceed to check 'FileName' if no match in 'Reference'
+  if (item.FileName) {
+    if (item.FileName.endsWith('.pdf')) {
+      return 'pdf';
+    } else if (item.FileName.endsWith('.png')) {
+      return 'png';
+    } else if (item.FileName.endsWith('.svg')) {
+      return 'svg';
+    } else if (item.FileName.endsWith('.jpg')) {
+      return 'jpg';
+    } else if (item.FileName.endsWith('.jpeg')) {
+      return 'jpeg';
+    }
+  }
+
+  // Return default value if no conditions match
+  return ''; // Default value if no valid file extension is found
+}
+
+
+forActionType(item: any): string {
+  // First check 'FileName' for valid extension
+  if (item && item.FileName) {
+    if (item.FileName.endsWith('.pdf')) {
+      return 'pdf';
+    } else if (item.FileName.endsWith('.png')) {
+      return 'png';
+    } else if (item.FileName.endsWith('.svg')) {
+      return 'svg';
+    } else if (item.FileName.endsWith('.jpg')) {
+      return 'jpg';
+    } else if (item.FileName.endsWith('.jpeg')) {
+      return 'jpeg';
+    }
+  }
+
+  // If no valid extension is found in 'FileName', check 'Reference'
+  if (item && item.Reference) {
+    if (item.Reference.endsWith('.pdf')) {
+      return 'pdf';
+    } else if (item.Reference.endsWith('.png')) {
+      return 'png';
+    } else if (item.Reference.endsWith('.svg')) {
+      return 'svg';
+    } else if (item.Reference.endsWith('.jpg')) {
+      return 'jpg';
+    } else if (item.Reference.endsWith('.jpeg')) {
+      return 'jpeg';
+    }
+  }
+
+  // Return default value if no conditions match
+  return ''; // Default value if no valid file extension is found
+}
+
+forAssignFile(item: any): string {
+  // First check 'FileName' for valid extension
+
+  if (item && item.FileName) {
+    if (item.FileName.endsWith('.pdf')) {
+      return 'pdf';
+    } else if (item.FileName.endsWith('.png')) {
+      return 'png';
+    } else if (item.FileName.endsWith('.svg')) {
+      return 'svg';
+    } else if (item.FileName.endsWith('.jpg')) {
+      return 'jpg';
+    } else if (item.FileName.endsWith('.jpeg')) {
+      return 'jpeg';
+    }
+  }
+
+  // If no valid extension is found in 'FileName', check 'Reference'
+  if (item && item.Reference) {
+    if (item.Reference.endsWith('.pdf')) {
+      return 'pdf';
+    } else if (item.Reference.endsWith('.png')) {
+      return 'png';
+    } else if (item.Reference.endsWith('.svg')) {
+      return 'svg';
+    } else if (item.Reference.endsWith('.jpg')) {
+      return 'jpg';
+    } else if (item.Reference.endsWith('.jpeg')) {
+      return 'jpeg';
+    }
+  }
+
+  // Return default value if no conditions match
+  return ''; // Default value if no valid file extension is found
+}
+
 
 }
 

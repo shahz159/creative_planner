@@ -1612,3 +1612,16 @@ td:nth-child(4) {
   width: max-content;
   color: #979797;
 }
+
+
+.compl-remarks-span {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  max-height: 3em;
+  line-height: 1.5em;
+  cursor: default;
+
+}
