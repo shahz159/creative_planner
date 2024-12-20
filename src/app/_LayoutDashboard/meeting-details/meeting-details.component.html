@@ -2504,7 +2504,7 @@
                                                             </path>
                                                         </svg>
                                                        </span>
-                                                        <span class="title-muted" style="margin-left: 6px;"> <a class="title-muted ml-0" (click)="LoadDocument(item.file_id,true,item.File_Name&&item.File_Name,item.url,item.contenttype,item.Created_by)"> {{item.File_Name}}</a></span>
+                                                        <span class="title-muted cursor-pointer" style="margin-left: 6px;"> <a class="title-muted ml-0" (click)="LoadDocument(item.file_id,true,item.File_Name&&item.File_Name,item.url,item.contenttype,item.Created_by)"> {{item.File_Name}}</a></span>
                                                     </div>
                                                     
                                                     <ng-template #NoAttachments_ary>
@@ -4036,8 +4036,8 @@
                                                             </div>                                                        
                                                         </span>
                                                         <span class="kt-inbox__label kt-badge kt-badge--unifieds kt-badge.kt-badge-light-bold kt-badge--inline">
-                                                          <div>
-                                                             Res: {{memo.Name}}
+                                                          <div title="Responsible">
+                                                             {{memo.Name}}
                                                           </div>                                                        
                                                     </span>
                                                     </div>                                                                                                                                                                   
@@ -4267,8 +4267,8 @@
                                                </span>
                                                 <span
                                                     class="kt-inbox__label kt-badge kt-badge--unifieds kt-badge.kt-badge-light-bold kt-badge--inline">
-                                                    <div>
-                                                        Res: {{data.Name}}
+                                                    <div title="Responsible">
+                                                       {{data.Name}}
                                                     </div>
                                                 </span>
                                              
@@ -5052,8 +5052,8 @@
                                                 </span>
                                                 <span
                                                 class="kt-inbox__label kt-badge kt-badge--unifieds kt-badge.kt-badge-light-bold kt-badge--inline">
-                                                <div>
-                                                    Res: {{item.Name}}
+                                                <div title="Responsible">
+                                                   {{item.Name}}
                                                 </div>
                                             </span>
                                             </div>
@@ -8814,7 +8814,7 @@
                                     <label class="file-input-label" for="customFile">
                                         <span class="file-input-button">
         
-                                            <span>Add attachment</span>
+                                            <span>Add any attachment for reference</span>
                                         </span>
                                     </label>
                                     </div>

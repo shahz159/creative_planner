@@ -18,6 +18,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { Directive, HostListener } from '@angular/core';
 import { Location } from '@angular/common';
+import { HttpEvent } from '@angular/common/http';
 
 
 export const MY_DATE_FORMATS = {
@@ -152,7 +153,7 @@ export class CreateProjectComponent implements OnInit {
   ngOnInit(): void {
 
     // this.deletingDraftactions()
-    debugger
+    
     const navigatingToCreateProject = localStorage.getItem('navigatingToCreateProject');
     if (navigatingToCreateProject === 'true') {
     setTimeout(()=>{ this.Assigned_projects();    },1500);
@@ -389,7 +390,7 @@ export class CreateProjectComponent implements OnInit {
 
 
   displaymessagemain(value: string): void {
-debugger
+
     // this.notifyService.showInfo("Project Owner cannot be changed","Not editable");
     const messages = {
       'Duration': {
@@ -754,12 +755,28 @@ debugger
            const fd=new FormData();
            fd.append('Project_Code',this.PrjCode);
            fd.append('Project_Name',this.PrjName);
-           fd.append('Emp_No',this.Current_user_ID);
-           fd.append('file',this.fileAttachment);
+           fd.append('Emp_No',this.Current_user_ID);           
            fd.append('Remarks',this._remarks);
-           this.createProjectService.NewUpdateFileUploadsByProjectCode(fd).subscribe((fres:any)=>{
+           if(this.fileAttachment){
+            fd.append("Attachment","true");
+           }
+           else{
+            fd.append("Attachment","false");
+            
+           }
+          //  this.createProjectService.NewUpdateFileUploadsByProjectCode(fd).subscribe((fres:any)=>{
+            this.createProjectService.NewUpdateFileUploadsByProjectCodeCore(fd).subscribe((fres:any)=>{
             console.log("file attachment:",fres)
             if(fres&&fres.Message==='Success'){
+              if(this.fileAttachment){
+                fd.append('file',this.fileAttachment);
+                this.createProjectService._AzureUpdateFileUploadsByProjectCode(fd).subscribe((event1: HttpEvent<any>) => {
+                                    console.log(event1,"azure data");
+                                    var myJSON = JSON.stringify(event1);
+                                  //  this._Message = (JSON.parse(myJSON).body);
+                        
+                                  });
+               }
               this.notification.showSuccess('Successfully uploaded the file attachment.','File attachment uploaded');
               this.isFileUploaded=true;
             }
@@ -787,8 +804,9 @@ permittedFileFormats=[
 invalidFileSelected:boolean=false;
 
   file: File | null = null;
+
 onFileChanged(event: any) {
-  debugger
+  
   const files: File[] = event.target.files;
 
   if (files && files.length > 0) {
@@ -812,8 +830,20 @@ onFileChanged(event: any) {
     this.file = null;
     this.fileAttachment = null;
   }
+  console.log('File Object:', this.file);
+  this.contentType=this.getFileExtension(this.fileAttachment.name);
   event.target.value=''
 }
+
+contentType:any="";
+
+  getFileExtension(fileName: any): string | null {
+    if (!fileName) {
+      return null;
+    }
+    const lastDotIndex = fileName.lastIndexOf('.');
+    return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : null;
+  }
 
 // removeFile() {
 //   this.file = null;
@@ -995,7 +1025,7 @@ onFileChanged(event: any) {
   }
 
   scrollToTaskById(id){
-    debugger
+    
       //  const el:any=document.querySelector(`.Assigned-projects-list .tab-content .kt-action-list input#task-${id}`);
         const el=document.getElementById('task-11736');
         el.focus();
@@ -1318,7 +1348,7 @@ onProjectOwnerChanged(){
   // allocated:any
 
   onButtonClick(value:any,id:number){
- debugger
+ 
     this.bind_Project = [value];
     console.log('bind project:',this.bind_Project);
     // this.duration=this.bind_Project[0].Duration;
@@ -1557,7 +1587,7 @@ ProjeditDescription:any
 
 
 initializeSelectedValue() {
-   debugger
+   
     this.OGownerid = this.projectInfo['OwnerEmpNo'];
     this.OGresponsibleid = this.projectInfo['ResponsibleEmpNo'];
     this.OGselectedcategoryid = this.projectInfo['Reportid'];
@@ -1768,7 +1798,7 @@ return;
 RACIS:any=[];
 
 
-setRACIS(){      debugger
+setRACIS(){      
     this.RACIS=[];
   try{
      if(this.PrjOwner)
@@ -1863,7 +1893,7 @@ addreschange() {
 
 
 hasNoActionMembers:any=[];
-detectMembersWithoutActions(){  debugger
+detectMembersWithoutActions(){  
   let _hasNoActionMembers=[];
   if(this.PrjActionsInfo&&this.PrjActionsInfo.length>0){
     const actns_resps=this.PrjActionsInfo.map(pact=>pact.Team_Res);
@@ -2431,7 +2461,7 @@ newpfl_massage(){
 // DRAFT PROJECT CODE START.
 
 deleteDraft(index:number){
-debugger
+
     Swal.fire({
 
       showCancelButton:true,
@@ -2541,7 +2571,7 @@ this.newProjectDetails(this.draft_json[index].Project_Code);
 
 this.draftActionsLoading=true;
 this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((res)=>{
-  console.log("after after openDraft method:",res);   debugger
+  console.log("after after openDraft method:",res);   
   this.draftActionsLoading=false;
 
   if(res[0].Action_Json)
@@ -2805,7 +2835,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
 
 
   alterAction(){
-debugger
+
 
 // v1. Action allocated hr must be <= max allocated hrs value.
   if (this.Allocated <= this.maxAllocation){
@@ -3022,7 +3052,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
    ///////////////////////////////////////// Action Edit End /////////////////////////////
 
   //  onPrjStrtDateChanged() {
-  //   debugger
+  //   
   //   const inputdate=new Date(this.Start_Date);
   //   const isvalid=this.PrjActionsInfo.every((actn:any)=>{
   //         const actdate=new Date(actn.StartDate);
@@ -3046,7 +3076,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
   //   }
 
   // onPrjStrtDateChanged() {
-    // debugger;
+    // ;
 
 
 
@@ -3075,7 +3105,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
 
 //     reseting() {
 
-// debugger
+// 
 //       const f= new Date(this.projectInfo.StartDate)
 
 //       const a= new Date(this.projectInfo.EndDate)
@@ -3096,7 +3126,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
 
 // actionPastDate() {
 
-// debugger
+// 
 // const f= new Date(this.Start_Date)
 
 // const a= new Date(this.End_Date)
@@ -3148,7 +3178,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
     }
 
 
-    // text(){debugger
+    // text(){
     //   this.Prjstartdate=  this.Prjstartdate<this.todayDate?null:this.Prjstartdate
     // }
 
@@ -3238,7 +3268,7 @@ updateCharacterCount_Action(): void {
 
 
 check_Enddate(){
-  debugger
+  
   this.End_Date = moment(this.Start_Date)<=moment(this.End_Date)?this.End_Date:null;
 }
 
@@ -3246,7 +3276,7 @@ check_Enddate(){
 
 
 newDetails(pcode: string, source: string) {
-  debugger;
+  ;
 
   // Determine the name based on the source
   let name: string;
@@ -3345,7 +3375,7 @@ alertMaxAllocation() {
 
 maxAllocations: number;
 alertMaxAllocations() {
-  debugger
+  
   if (this.Start_Date == null || this.End_Date == null) {
     this._message = "Start Date/End date missing!!"
   }
@@ -3483,7 +3513,7 @@ promptIfNameTypeMismatch(){
 }
 
 // calculateDateDifference(): void {
-//   debugger
+//   
 
 //   if (this.assigntask_json) {
 

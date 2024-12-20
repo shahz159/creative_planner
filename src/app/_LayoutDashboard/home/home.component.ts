@@ -729,8 +729,8 @@ export class HomeComponent implements OnInit {
 
         if (this._ListProjStat.length == 0) {
 
-          this._filtersMessage = "No Portfolio Found";
-          this._filtersMessage2 = "Please use clear for clearing filters & try again";
+          this._filtersMessage = "No Portfolio found.";
+          this._filtersMessage2 = "Please use clear for clearing filters & try again.";
         }
         else {
           this._filtersMessage = "";

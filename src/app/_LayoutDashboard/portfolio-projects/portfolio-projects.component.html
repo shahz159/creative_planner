@@ -867,14 +867,16 @@
                                 <!--begin: Datatable -->
                                 <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                   <div class="kt-filterdetails" *ngIf="_MessageIfNotOwner==''" >
-                                    <div class="search-filter" >
-                                      <div *ngIf="getFilterLabel()">{{ getFilterLabel() }}  <span class="count" *ngIf="resultCount>0">{{resultCount}}</span></div>
-                                    </div>
+
+                                  <div class="d-flex align-items-center">
                                     <div  class="dropdown show">
-                                      <a  *ngIf="this.allSelectedProjects.length>0"  class="kt-filter-plus" data-toggle="dropdown" id="test1" title="Click to create new portfolio"
+                                      <button  *ngIf="this.allSelectedProjects.length>0"  class="btn btn-sm btn-outline-primary" data-toggle="dropdown" id="test1" title="Click to create new portfolio"
                                       [ngClass]="{'active': activeClass_NewPortfolio}" (click)="DropdownOpen();_portfolioName = ''">
-                                      <svg width="44px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12H18M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                                  </a>
+                                      <!-- <svg width="44px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12H18M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> -->
+
+                                      <span class="fs-14" style="font-size: 12px;" >New portfolio</span>
+
+                                    </button>
                                   <div  class="dropdown-menu dropdown-menu-fit dropdown-menu-md bg-ground"
                                       aria-labelledby="test1">
 
@@ -882,10 +884,6 @@
                                       <div>
                                           <ul class="kt-nav">
 
-                                              <!-- <li class="kt-nav__head">
-
-                                          </li> -->
-                                              <!-- <li class="kt-nav__separator"></li> -->
 
                                               <li class="kt-nav__item px-3">
 
@@ -947,10 +945,18 @@
                                   </div>
 
                                   <button *ngIf="isapprovlFound"  (click)="rejectpros()" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
-                                    <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="stroke: currentColor; stroke-width: 3px; stroke-linecap: butt;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="cross"> <line class="cls-1" x1="7" x2="25" y1="7" y2="25"></line> <line class="cls-1" x1="7" x2="25" y1="25" y2="7"></line> </g> </g></svg>
+                                    <!-- <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="stroke: currentColor; stroke-width: 3px; stroke-linecap: butt;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="cross"> <line class="cls-1" x1="7" x2="25" y1="7" y2="25"></line> <line class="cls-1" x1="7" x2="25" y1="25" y2="7"></line> </g> </g></svg> -->
                                     <span class="fs-8" style="font-weight:500">Reject</span>
                                   </button>
+                                  </div>
 
+
+                                    <div   class="search-filter" >
+                                      <div *ngIf="getFilterLabel()">
+                                        {{ getFilterLabel() }}
+                                        <span class="count" *ngIf="resultCount > 0">{{ resultCount }}</span>
+                                      </div>
+                                    </div>
 
 
                                   </div>
@@ -964,16 +970,12 @@
                                             <table class="brdr kt-pot-ttls table table-hover dataTable no-footer dtr-inline" style="border-collapse: collapse !important;">
                                                 <thead class="position-relative">
 
-                                                  <th tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
-                                                  aria-sort="ascending"
-                                                   aria-label=": activate to sort column descending">
 
-                                                     <span class="d-flex align-items-center"  id="snocheck"    style="padding-left: 16px!important"><mat-checkbox  [checked]="isAllPrjSelected"   title="Select All" (change)="selectUnselectPagePrjs($event);value()" color="primary"></mat-checkbox>
-                                                       <label class="fs-7 ml-2">{{Value}}</label></span>
 
-                                               </th>
-
-                                                     <th class="icond" style="z-index: 12 !important;"></th>
+                                                     <th class="icond" style="z-index: 12 !important;">
+                                                      <span class="d-flex align-items-center"  id="snocheck"    style="padding-left: 16px!important"><mat-checkbox  [checked]="isAllPrjSelected"   title="Select All" (change)="selectUnselectPagePrjs($event);value()" color="primary"></mat-checkbox>
+                                                        <label class="fs-7 ml-2">{{Value}}</label></span>
+                                                     </th>
 
 
 
@@ -1324,33 +1326,13 @@
                                                                 </button>
                                                               </li>
                                                             </ng-container>
-
-
-
-
-
                                                           </ul>
 
-
-
                                                         </div>
-
-                                                      </div>
+                                                        </div>
                                                     </th>
 
-
-
-
-
-
-
-
-
-
-
                                                     </thead>
-
-
 
 
 
@@ -1361,6 +1343,7 @@
                                               *ngIf=" ((item1.Status.trim()==_PortProjStatus?.trim())||(item1.Status.includes('Delay')&&_PortProjStatus=='Delay')||_PortProjStatus=='')&&
                                                                                             ((!_FilterByEmp) || item1.Emp_No?.trim()==_FilterByEmp||item1.PendingapproverEmpNo?.trim() == this._FilterByEmp||item1.OwnerEmpNo?.trim()==_FilterByEmp) "
                                               class="odd project-list_AC" [class.active]="item1.active">
+
                                               <td tabindex="0" class="icond" style="    padding-left: 28px;">
                                                 <span class="table-card brdr success" [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
 
@@ -1382,65 +1365,16 @@
                                                 }">
     </span>
 
-                                                <mat-list-item>
-
-                                                  <mat-checkbox color="primary"
-                                                  [checked]="isProjectSelected(item1.Project_Code)"
-                                                  (change)="selectUnSelectProject($event,item1)"></mat-checkbox>
-                                                </mat-list-item>
-                                              </td>
-                                              <td>
 
 
+                                     <div class="d-flex align-items-center ">
+                                      <mat-list-item class="mr-2">
 
-<!-- <div class="kt-Note-msg d-flex" *ngIf="UserfullName == item1.Team_Res || item1.Project_Owner == UserfullName" >
-  <div class="kt-note-icon" style="align-self: flex-start;"><svg xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px"
-      viewBox="0 0 66 65" xml:space="preserve" style="enable-background: new 0 0 66 66;">
-      <path
-        d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z">
-      </path>
-      <path
-        d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z">
-      </path>
-      <path
-        d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z">
-      </path>
-      <path
-        d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z">
-      </path>
-      <path
-        d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z">
-      </path>
-      <path
-        d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z">
-      </path>
-      <path
-        d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z">
-      </path>
-      <path
-        d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z">
-      </path>
-    </svg></div>
-  <div  class="notifications-list">
-
-<div class="notification audit-pending-notf ">
-    <span  class="notif-msg"><span  style="font-weight: bold;">You have {{this.delayPrjsofPort.length}} delay projects</span></span></div>
-</div>
-</div> -->
-
-
-
-
-
-                                                        <div class="d-flex align-items-center ">
-
-
-
-
-
-
-                                                            <a tabindex="0" class="btn px-0 mb-0 info-btn" role="button"
+                                        <mat-checkbox color="primary"
+                                        [checked]="isProjectSelected(item1.Project_Code)"
+                                        (change)="selectUnSelectProject($event,item1)"></mat-checkbox>
+                                      </mat-list-item>
+                                            <a tabindex="0" class="btn px-0 mb-0 info-btn ml-2" role="button"
                                                             placement="right" data-trigger="focus" title="Click to view the project info" (click)="openInfo2(item1.Project_Code);info_active_btn(item1)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                             viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
@@ -1587,7 +1521,11 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <p class="kt-widget__title mb-0 kt-project-name "  title="{{item1.Project_Name}}"> {{item1.Project_Name}}
+                                                        <p #prjtextcBx class="kt-widget__title1 mb-0  compl-remarks-span"
+                                                        (click)="$event.stopPropagation(); prjtextcBx.classList.contains('compl-remarks-span')?prjtextcBx.classList.remove('compl-remarks-span'):prjtextcBx.classList.add('compl-remarks-span')"
+                                                        title="{{item1.Project_Name}}"> {{item1.Project_Name }}
+                                                          <!-- <ng-container *ngIf="item1.Project_Name.length>71">...
+                                                          </ng-container> -->
                                                          <!-- <span class="count2">{{item1.Actioncount}}</span> -->
                                                         </p>
 
@@ -1645,7 +1583,7 @@
 
                                    <!-- responsible data start -->
                                                     <td [ngClass]="{'d-none':!isrespon}" class="responclass">
-                                                        <span class="kt-widget__other">{{item1.TM_DisplayName}}</span>
+                                                        <span class="kt-widget__other"  title="{{item1.Com_Name}} {{item1.Emp_First_Name}}">{{item1.TM_DisplayName}}</span>
                                                         <div class="d-flex align-items-center" *ngIf="item1.Status=='Forward Under Approval' && item1.ForwardTo">
                                                           <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Arrow_Sub_Down_Right"> <path id="Vector" d="M13 11L18 16M18 16L13 21M18 16H10.1969C9.07899 16 8.5192 16 8.0918 15.7822C7.71547 15.5905 7.40973 15.2839 7.21799 14.9076C7 14.4798 7 13.9201 7 12.8V3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
                                                           <div  class="New_Approval_Project font-weight-400" style="line-height: 1;">{{item1.ForwardTo}}</div>
@@ -5278,7 +5216,7 @@
               <label class="file-input-label" for="customFile">
                 <span class="file-input-button">
 
-                    <span>Add attachment</span>
+                    <span>Add any attachment for reference</span>
                 </span>
               </label>
             </div>

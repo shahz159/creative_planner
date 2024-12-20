@@ -1073,6 +1073,7 @@ this.startActionCreation();
 
 azuremessage: any;
 IsFile:boolean=false;
+contentType:string="";
 
 startActionCreation=async()=>{
 
@@ -1138,9 +1139,9 @@ startActionCreation=async()=>{
      this.ObjSubTaskDTO.Duration = this._allocated;
      // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
      console.log( this.fileAttachment)
-    if (this.fileAttachment&& this.fileAttachment.length > 0) {
-       this.ObjSubTaskDTO.Attachments =  this.fileAttachment;
-     }
+    // if (this.fileAttachment&& this.fileAttachment.length > 0) {
+    //    this.ObjSubTaskDTO.Attachments =  this.fileAttachment;
+    //  }
 
      var datestrStart = moment(this._StartDate).format("MM/DD/YYYY");
      var datestrEnd = moment(this._EndDate).format("MM/DD/YYYY");
@@ -1172,9 +1173,9 @@ startActionCreation=async()=>{
      fd.append("EmployeeName", localStorage.getItem('UserfullName'));
      fd.append("AssignId", this.task_id.toString());
      fd.append("Owner", this.owner);
-     fd.append("isattachment",this.completionattachment.toString());
+     fd.append("proState",this.completionattachment.toString());
      fd.append("actionCost",this.actionCost);
-     fd.append("contentType",'pdf');
+     fd.append("contentType",this.contentType);
 
      if (this.ObjSubTaskDTO.Duration != null) {
        fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
@@ -1196,17 +1197,25 @@ startActionCreation=async()=>{
         //  alert(this._Message);
           
          if(this._Message=='1'){
-        //   fd.append('file',  this.fileAttachment);
-        //   this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
-        //     console.log(event1,"azure data");
-        //     var myJSON = JSON.stringify(event1);
-        //  alert(JSON.parse(myJSON).body);
-        //   //  this._Message = (JSON.parse(myJSON).body);
+          if ( this.fileAttachment) {
+          fd.append('file',  this.fileAttachment);
+          this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
+            console.log(event1,"azure data");
+            var myJSON = JSON.stringify(event1);
+          //  this._Message = (JSON.parse(myJSON).body);
 
-        //   });
+          });}
            this.notifyService.showSuccess("Action created successfully", "Success");
          }
          else if(this._Message=='2'){
+          if ( this.fileAttachment) {
+            fd.append('file',  this.fileAttachment);
+            this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
+              console.log(event1,"azure data");
+              var myJSON = JSON.stringify(event1);
+            //  this._Message = (JSON.parse(myJSON).body);
+  
+            });}
            this.notifyService.showInfo("Request submitted to the Assigned employee","Action Under Approval");
          }
          else if(this._Message=='3'){
@@ -1271,6 +1280,14 @@ startActionCreation=async()=>{
      });
 
      });
+}
+
+getFileExtension(fileName: any): string | null {
+  if (!fileName) {
+    return null;
+  }
+  const lastDotIndex = fileName.lastIndexOf('.');
+  return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : null;
 }
 
 // sweet alert method new
@@ -1411,10 +1428,15 @@ onFileChanged(event: any) {
     this.file = null;
     this.fileAttachment = null;
   }
+  console.log('File Object:', this.file);
+  this.contentType=this.getFileExtension(this.fileAttachment.name);
   // Reset file input value to allow selecting the same file again
   this.fileInput.nativeElement.value = '';
 }
 
+// testfiletype(){
+//   alert(this.contentType);
+// }
 
 onInputChange(value: string) {
   this.Sub_ProjectName = value.trim();
