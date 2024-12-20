@@ -140,8 +140,8 @@ export class TimelineComponent implements OnInit {
   
 
   date11: any;
-  starttime: any;
-  endtime: any;
+  starttime: {time:string, value:number}|null;
+  endtime: {time:string, value:number}|null;
   timecount: any;
   releaseDate: any;
   timeList: any;
@@ -209,46 +209,46 @@ export class TimelineComponent implements OnInit {
 
   noTimeSpaceAvailable:boolean=false;
 
-  setTimelineDate(val)
-  {
-       this.current_Date = moment(val).format("MM/DD/YYYY");
-       this.dateF = new FormControl(new Date(val));
-       this.starttime = null;
-       this.endtime = null;
-       this.noTimeSpaceAvailable=false;
-       this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
-       .subscribe(data => {
-        const _timeList=JSON.parse(data[0]['time_json']);
-        let _lastEndtime;
-        if (_timeList.length != 0) {
-           // when some timeline submit done on the selected date.
-           const _endtimearr=_timeList.map(ob=>ob.endtime);
-           _lastEndtime=_endtimearr[_endtimearr.length-1];
-           const i=this.timedata1.indexOf(_lastEndtime);
-           if(i<this.timedata1.length-1){
-               this.starttime=_lastEndtime;
-               this.endtime=this.timedata1[i+1];
-           }
-           else{
-              this.starttime=null;
-              this.endtime=null;
-              this.noTimeSpaceAvailable=true;
-           }
+  // setTimelineDate(val)
+  // {
+  //      this.current_Date = moment(val).format("MM/DD/YYYY");
+  //      this.dateF = new FormControl(new Date(val));
+  //      this.starttime = null;
+  //      this.endtime = null;
+  //      this.noTimeSpaceAvailable=false;
+  //      this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
+  //      .subscribe(data => {
+  //       const _timeList=JSON.parse(data[0]['time_json']);
+  //       let _lastEndtime;
+  //       if (_timeList.length != 0) {
+  //          // when some timeline submit done on the selected date.
+  //          const _endtimearr=_timeList.map(ob=>ob.endtime);
+  //          _lastEndtime=_endtimearr[_endtimearr.length-1];
+  //          const i=this.timedata1.indexOf(_lastEndtime);
+  //          if(i<this.timedata1.length-1){
+  //              this.starttime=_lastEndtime;
+  //              this.endtime=this.timedata1[i+1];
+  //          }
+  //          else{
+  //             this.starttime=null;
+  //             this.endtime=null;
+  //             this.noTimeSpaceAvailable=true;
+  //          }
 
-        }
-        else{
-             // when no timeline submit done on the selected date.
-             this.starttime=this.timedata1[0];
-             this.endtime=this.timedata1[1];
-        }
-       });
+  //       }
+  //       else{
+  //            // when no timeline submit done on the selected date.
+  //            this.starttime=this.timedata1[0];
+  //            this.endtime=this.timedata1[1];
+  //       }
+  //      });
 
-       const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
-       const yesterdaystr=moment(this.disablePreviousDate).format("MM/DD/YYYY");
-       this.timeline_of=this.current_Date==todaystr?'today':this.current_Date==yesterdaystr?'yesterday':null;
-       this.getTimelineReportByDate(this.timeline_of);
+  //      const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
+  //      const yesterdaystr=moment(this.disablePreviousDate).format("MM/DD/YYYY");
+  //      this.timeline_of=this.current_Date==todaystr?'today':this.current_Date==yesterdaystr?'yesterday':null;
+  //      this.getTimelineReportByDate(this.timeline_of);
 
-  }
+  // }
 
 
   onTimelineDateInput(val){
@@ -507,11 +507,24 @@ getTimelineProjects(){
   this.ObjSubTaskDTO.Emp_No=this.Current_user_ID;
   this.ObjSubTaskDTO.ProjectBlock=this.project_type;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
-  (data=>{
+  (data=>{ 
     this.loadingTimelineProjects=false;
-    this.projectList=JSON.parse(data[0]['ProjectList']);
-    this.projectList=this.projectList.filter(p=>['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(p.Status.trim())==false)
-    console.log(this.projectList);
+    this.projectList=JSON.parse(data[0]['ProjectList']); console.log(this.projectList);
+    
+    let arr:any=[];
+    this.projectList.forEach((p)=>{
+         if(p.Team_Res.trim()==this.Current_user_ID){
+            p.possession='My responsible projects';
+            arr.unshift(p);
+         }
+         else{
+            p.possession='RACIS projects';
+            arr.push(p);
+         }
+    });
+    this.projectList=arr;
+
+    
   });
 }
 
@@ -655,11 +668,11 @@ submitDar() {
 
   this.submittingDar=true;   // submitting dar process start.
 
-  if (this.starttime != null && this.endtime != null) {
-    const [shours, sminutes] = this.starttime.split(":");
-    const [ehours, eminutes] = this.endtime.split(":");
-    var dt1 = new Date(2014, 10, 2, shours, sminutes);
-    var dt2 = new Date(2014, 10, 2, ehours, eminutes);
+  if (this.starttime&&this.endtime) {
+    const [shours, sminutes] = this.starttime.time.split(":");
+    const [ehours, eminutes] = this.endtime.time.split(":");
+    var dt1 = new Date(2014, 10, 2, +shours, +sminutes);
+    var dt2 = new Date(2014, 10, 2, +ehours, +eminutes);
     // // Adjust for crossing midnight
     if (dt2 <= dt1) {
       dt2.setDate(dt2.getDate() + 1); // Move dt2 to the next day
@@ -678,8 +691,8 @@ submitDar() {
 
   this.objProjectDto.Emp_No = this.Current_user_ID;
   if (this.starttime != undefined && this.endtime != undefined && this.timecount != undefined) {
-    this.objProjectDto.StartTime = this.starttime;
-    this.objProjectDto.EndTime = this.endtime;
+    this.objProjectDto.StartTime = this.starttime.time;
+    this.objProjectDto.EndTime = this.endtime.time;
     this.objProjectDto.TimeCount = this.timecount;
   }
   this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
@@ -771,36 +784,36 @@ submitDar() {
 
 
   darcreate() {
-    document.getElementById("timepage").classList.add("position-fixed");
-    document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
+    document.getElementById("timepage")!.classList.add("position-fixed");
+    document.getElementById("rightbar-overlay")!.style.display = "block";
+    document.getElementById("darsidebar")!.classList.add("kt-quick-panel--on");
     this.clear();
     this.selectDateForTimeline(this.current_Date);    
     this.getDayReportSummary();
   }
 
   closedarBar() {
-    document.getElementById("timepage").classList.remove("position-fixed");
-    document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("timepage")!.classList.remove("position-fixed");
+    document.getElementById("rightbar-overlay")!.style.display = "none";
+    document.getElementById("darsidebar")!.classList.remove("kt-quick-panel--on");
     this.notifyService.showError("Cancelled", '');
     this.clear();
   }
 
-  closeInfo(){
-    document.getElementById("timepage").classList.remove("position-fixed");
-    document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-    document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
-    this.clear();
-  }
+  // closeInfo(){
+  //   document.getElementById("timepage")!.classList.remove("position-fixed");
+  //   document.getElementById("rightbar-overlay")!.style.display = "none";
+  //   document.getElementById("darsidebar")!.classList.remove("kt-quick-panel--on");
+  //   document.getElementById("actyInfobar_header")!.classList.remove("open_sidebar");
+  //   this.clear();
+  // }
 
   moreDetails(pcode) {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
     var myWindow = window.open(myurl,pcode);
-    myWindow.focus();
+    myWindow?.focus();
   }
 
   newDetails(pcode) {
@@ -808,7 +821,7 @@ submitDar() {
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
     var myWindow = window.open(myurl,pcode);
-    myWindow.focus();
+    myWindow?.focus();
   }
 
 
@@ -821,7 +834,7 @@ let qparams='';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}${qparams}`;
     var myWindow = window.open(myurl,pcode);
-    myWindow.focus();
+    myWindow?.focus();
   }
 
   notinAction() {
@@ -937,6 +950,12 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
 // form validation new start.
 fieldRequired:boolean=false;
 onTLSubmitBtnClick(){
+  
+ const invalidEndtime=(this.starttime&&this.endtime&&(  
+ (this.project_type=='corporate'&&((this.endtime.value-this.starttime.value)/(1000*60))>60)||
+ (this.project_type=='lunch'&&((this.endtime.value-this.starttime.value)/(1000*60))>60)||
+ (this.endtime.value<this.starttime.value)) );
+
  const lunchPersonalCorporate:boolean=['lunch','personal','corporate'].includes(this.project_type);
 
        if(
@@ -946,7 +965,7 @@ onTLSubmitBtnClick(){
            this.starttime&&
            this.endtime&&
            this.dateF.value &&
-          //  (this.endTimeArr.indexOf(this.starttime)<this.endTimeArr.indexOf(this.endtime))&&
+           (!invalidEndtime)&&
            (
             lunchPersonalCorporate?true:
               ((this.showAction&&this.bothActTlSubm)?(this._remarks&&(this.ProState?this.selectedFile:true)):true)
@@ -1002,7 +1021,7 @@ toggleDropdown() {
 
 filterconfig: {
   filterby: 'Date' | 'Project' | 'Employees' ,
-  sortby: string
+  sortby: string|undefined
 } = { filterby: 'Date', sortby: 'Employees' };
 
 setFilterInfo(filterby:  'Date' |'Project' | 'Employees' , sortby: string | undefined) {
@@ -1017,7 +1036,7 @@ setFilterInfo(filterby:  'Date' |'Project' | 'Employees' , sortby: string | unde
 }
 
 previous_filter() {
-  document.getElementById("dropd").classList.toggle("show");
+  document.getElementById("dropd")!.classList.toggle("show");
 
 }
 
@@ -1149,14 +1168,14 @@ endDay(submDate:string)
   if(this.tmReportTotalDuration==null){    // if there is no timeline has been entered by the user on the selected date.
     // this.tm4EndDate_msg=true;
     const err_box=document.querySelector('#endDay-not-allowed-box');
-    err_box.classList.add('anim-start');
+    err_box?.classList.add('anim-start');
     const onanimend=()=>{
       setTimeout(()=>{
-        err_box.classList.remove('anim-start');
-        err_box.removeEventListener('animationend',onanimend);
+        err_box?.classList.remove('anim-start');
+        err_box?.removeEventListener('animationend',onanimend);
       },3500);
     };
-    err_box.addEventListener('animationend',onanimend);
+    err_box?.addEventListener('animationend',onanimend);
     return;
   }
 
@@ -1264,7 +1283,7 @@ formatHoursToHHMM(hours: number): string {
 
 
 tmReportArr:any[]=[];
-tmReportTotalDuration:{hours:string,minutes:string};
+tmReportTotalDuration:{hours:string,minutes:string}|null;
 tmReportStatus:any;
 tmSubmDate:any;
 tmReportLoading:boolean=false;
@@ -1282,6 +1301,8 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
     this.noTimeSpaceAvailable=false;
     this.starttime=null;
     this.endtime=null;
+    this.disabledLunchOption=false;
+    this.disabledCorporateOption=false;
     // erase prev data.
 
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
@@ -1294,7 +1315,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
     this.ObjSubTaskDTO.sort = 'custom';
     this.tmReportLoading=true;
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-      (data => {        
+      (data => {          
         this.tmReportLoading=false;
         console.log(data);
         if(data&&data[0].DAR_Details_Json){
@@ -1322,8 +1343,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
                 this.noTimeSpaceAvailable=(this.lastEndtime.time==list[list.length-1].time);
                 if(this.noTimeSpaceAvailable==false){
                   const li=list.findIndex((obj)=>obj.time==this.lastEndtime.time);
-
-                  this.starttime=list[li].time;   this.endtime=list[li+1].time;   
+                  this.starttime=list[li];   this.endtime=list[li+1];   
                 }
               
                 
@@ -1336,6 +1356,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
                 }); 
 
 
+              // calculate status.
                 const [hrs,mins]=dar_json[0].TotalDuration.split(':');
                 this.tmReportTotalDuration={hours:hrs,minutes:mins};
                 this.tmSubmDate=dar_json[0].SubmissionDate;
@@ -1360,6 +1381,32 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
 
                 }
 
+
+              // calculate whether lunch option is allowed or not on the selected date.
+               console.log('tmreport arr:',this.tmReportArr);
+               const totallnchInMins=this.tmReportArr.reduce((sum,_tm)=>{   
+                   if(_tm.Tasktype=='Lunch'){
+                      const [h,m]=_tm.Duration.split(':').map(Number);
+                      return sum+(h*60+m);
+                   } 
+                   else 
+                   return sum;
+               },0);
+               this.disabledLunchOption=totallnchInMins>=60;
+
+
+
+             // calculate whether corporate responsibility option is allowed or not on the selected date. 
+             const totalCorporateInMins=this.tmReportArr.reduce((sum,_tm)=>{    
+              if(_tm.Tasktype=='Corporate Responsibility'){
+                 const [h,m]=_tm.Duration.split(':').map(Number);
+                 return sum+(h*60+m);
+              } 
+              else 
+              return sum;
+             },0);
+            this.disabledCorporateOption=totalCorporateInMins>=60;
+          
             }
             console.log('submitted timelines:',this.submittedTimelines,'last end time was:',this.lastEndtime);
         }
@@ -1374,23 +1421,23 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
 /* timeline submit end */
 
 close_add_time() {
-  document.getElementById("dropdown-timeline-menu").classList.remove("show");
+  document.getElementById("dropdown-timeline-menu")!.classList.remove("show");
 }
 btn_timeline_table_accordion(){
-  document.getElementById("btn-timeline-table-accordion").classList.toggle("rotate");
+  document.getElementById("btn-timeline-table-accordion")!.classList.toggle("rotate");
 }
 endTimelineModal(){
-  document.getElementById("endTimelineModal").style.display = "block";
-  document.getElementById("endTimelineModal").classList.add("show");
-  document.getElementById("endTimelineModalBackdrop").style.display = "block";
-  document.getElementById("endTimelineModalBackdrop").classList.add("show");
+  document.getElementById("endTimelineModal")!.style.display = "block";
+  document.getElementById("endTimelineModal")!.classList.add("show");
+  document.getElementById("endTimelineModalBackdrop")!.style.display = "block";
+  document.getElementById("endTimelineModalBackdrop")!.classList.add("show");
   this.getDayReportSummary();
 }
 endTimelineModal_dismiss(){
-  document.getElementById("endTimelineModal").style.display = "none";
-  document.getElementById("endTimelineModal").classList.remove("show");
-  document.getElementById("endTimelineModalBackdrop").style.display = "none";
-  document.getElementById("endTimelineModalBackdrop").classList.remove("show");
+  document.getElementById("endTimelineModal")!.style.display = "none";
+  document.getElementById("endTimelineModal")!.classList.remove("show");
+  document.getElementById("endTimelineModalBackdrop")!.style.display = "none";
+  document.getElementById("endTimelineModalBackdrop")!.classList.remove("show");
   $('#endDay-not-allowed-box').removeClass('anim-start');
 }
 
@@ -1411,10 +1458,12 @@ formatTimes(time: string): string {
 
 expandDescription(id:string){
   const workachvsec=document.querySelector(id);
-  if(workachvsec.classList.contains('collapse'))
-  workachvsec.classList.remove('collapse');
-  else
-  workachvsec.classList.add('collapse');
+  if(workachvsec){
+    if(workachvsec.classList.contains('collapse'))
+      workachvsec.classList.remove('collapse');
+      else
+      workachvsec.classList.add('collapse');
+  }
 }
 
 
@@ -1445,7 +1494,7 @@ viewActions(type:'COMPLETED'|'DUE'|'DELAYED'){
   {
     let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Actions&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
     let myWindow = window.open(myurl,'_blank');
-    myWindow.focus();
+    myWindow?.focus();
   }
 }
 
@@ -1454,7 +1503,7 @@ viewProjects(type:'COMPLETED'|'DUE'|'DELAYED'){
   {
     let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Projects&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
     let myWindow = window.open(myurl,'_blank');
-    myWindow.focus();
+    myWindow?.focus();
   }
 }
 
@@ -1462,7 +1511,7 @@ viewProjects(type:'COMPLETED'|'DUE'|'DELAYED'){
 viewTasks(){
   let myurl = document.baseURI+'/backend/createproject?AssignedProjectId=none';
   let myWindow = window.open(myurl,'_blank');
-  myWindow.focus();
+  myWindow?.focus();
 }
 
 
@@ -1477,8 +1526,8 @@ viewStandardTasks(type:'COMPLETED'|'DELAYED'){
       ProjectType:'003',
       Status:'InProcess',
     };
-    myWindow.sessionStorage.setItem('filterprjsby',JSON.stringify(obj));
-    myWindow.focus();
+    myWindow?.sessionStorage.setItem('filterprjsby',JSON.stringify(obj));
+    myWindow?.focus();
 
    }
 }
@@ -1514,20 +1563,27 @@ timeArr: any = [
 ];
 
 tmCapacity=49;  // per day 12 hrs limit.
+timedata3:any[]=[];  
+disabledLunchOption:boolean=false;
+disabledCorporateOption:boolean=false;
 
-timedata3:Object[]=[];
-
-selectDateForTimeline(inputDate){   debugger
+selectDateForTimeline(inputDate){   
   this.current_Date = moment(inputDate).format("MM/DD/YYYY");
   this.dateF = new FormControl(new Date(inputDate));
   const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
   const yesterdaystr=moment(this.disablePreviousDate).format("MM/DD/YYYY");
-  this.timeline_of=this.current_Date==todaystr?'today':this.current_Date==yesterdaystr?'yesterday':null;
+  if(this.current_Date==todaystr)
+  this.timeline_of='today';
+  else if(this.current_Date==yesterdaystr)
+  this.timeline_of='yesterday';   
+
+
+  this.timedata3=this.getTimeStamps(moment(inputDate).format("YYYY-MM-DD"),this.timeArr);   // initializing with default values.
   this.getTimelineReportByDate(this.timeline_of); 
 }
 
-getStartTiming1(){  
-  let list=[]; 
+getStartTiming1(){   debugger
+  let list:any=[]; 
 
   let from;
   let to;
@@ -1562,14 +1618,16 @@ getStartTiming1(){
   
 
   this.timedata3=list;
+
+ 
 }
 
 
 getEndTiming1(){
-  let list=[];
+  let list:any=[];
 
   // based on start time decide endtime.  if: no timeline found on selected date.
-  const from=this.timeArr.indexOf(this.bol?this.starttime:this.submittedTimelines[0].starttime);
+  const from=this.timeArr.indexOf(this.bol?this.starttime!.time:this.submittedTimelines[0].starttime);
   const to=from+this.tmCapacity;
   let choosed_date:any=moment(this.current_Date,'MM/DD/YYYY').toDate();
   let next_date:any=new Date(choosed_date);  next_date.setDate(next_date.getDate()+1);
@@ -1611,19 +1669,14 @@ getTimeStamps(dateVal:string,timeVals:string[]):{time:string,value:number}[]{
 }
 
 
-validateTimings(){
-
-    
 
 
+ngmodelObjCompare(obj1,obj2):boolean{
+  return obj1 && obj2 && obj1.time === obj2.time;
+}  // it is used in starttime and endtime ngmodel comparision.  since we are storing objects as ngmodel value.
 
-    //  this.starttime 
-    //  this.endtime
-    //  // 1. End time cannot be less than start time.
-    //  if(this.starttime&&this.endtime){
 
-    //  }
-}
+
 
 // test3
 

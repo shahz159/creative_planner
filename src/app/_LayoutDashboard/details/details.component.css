@@ -9967,4 +9967,6 @@ span.time-value {
   transform: scale(1.2);
 }
 
-
+.custom-file .custom-file-label .placeholder-text{
+   color:#ccc !important;
+}

@@ -803,7 +803,7 @@
                                                                                             <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z"></path>
                                                                                         </svg>
                                                                                     </span>
-                                                                                    <span>{{item.ModifiedDate |date :'dd-MM-YYYY'}}</span>
+                                                                                    <span>{{item.ModifiedDate |date :'dd-MM-yyyy'}}</span>
                                                                                 </div>
                                                                                 <div class="d-flex align-items-center">
                                                                                     <span class="svg-icon">
@@ -879,7 +879,7 @@
                                                                     Start date
                                                                 </div>
                                                                 <div class="kt-project-sts-data">
-                                                                    {{projectInfo.StartDate|date:'dd-MM-YYYY'}}
+                                                                    {{projectInfo.StartDate|date:'dd-MM-yyyy'}}
                                                                 </div>
                                                             </div>
 
@@ -2809,7 +2809,7 @@
                                                                                             <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z"></path>
                                                                                         </svg>
                                                                                     </span>
-                                                                                    <span>{{item.ModifiedDate |date :'dd-MM-YYYY'}}</span>
+                                                                                    <span>{{item.ModifiedDate |date :'dd-MM-yyyy'}}</span>
                                                                                 </div>
                                                                                 <div class="d-flex align-items-center">
                                                                                     <span class="svg-icon">
@@ -2960,9 +2960,8 @@
                                                                   <div class="meeting-attendance-count fs-7">{{projectInfo.Submittedby}}</div>
                                                                   <div class="meeting-attendance-count fs-6">{{projectInfo.CD|date:'d MMM, yyyy'}}</div>
                                                               </div>
-                                                              <div class="d-flex gap-4">
+                                                              <div class="d-flex justify-content-between gap-2">
                                                                   <!-- <span id="sub-cmt-sec" class="text-muted fs-8  flex-grow-1 compl-remarks-span" *ngIf="projectInfo.Remarks"  (click)="expandRemarks('sub-cmt-sec')" >{{projectInfo.Remarks}}</span> -->
-
 
                                                                   <div *ngIf="projectInfo.Remarks" class="d-flex gap-1">
                                                                     <div #submitbyRemarksBx class="compl-remarks-span  flex-grow-1  text-muted fs-8">
@@ -2976,8 +2975,6 @@
                                                                     </button>
                                                                 </div>
 
-
-
                                                                   <span *ngIf="projectInfo.CompleteProofDoc" [title]="projectInfo.Sourcefile" (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" class="text-info fs-8 text-underline curser-pointer flex-shrink-0">
                                                                       <!-- <svg style="padding-top:1.5px; padding-bottom:1.5px;" width="25px" height="24px" fill="transparent" stroke="#527ce2" viewBox="-1.44 -1.44 26.88 26.88" xmlns="http://www.w3.org/2000/svg">
                                                                           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -2987,10 +2984,33 @@
                                                                                 stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
                                                                           </g>
                                                                       </svg> -->
-                                                                      <span class="fs-9 text-info">Attachment</span>
+                                                                      <span class="fs-9 text-info">attachment</span>
                                                                   </span>
                                                              </div>
                                                           </fieldset>
+
+
+
+                                                          <fieldset *ngIf="projectAuditor" class="meeting-attendance-item mt-2" style=" padding-top: 0;">
+                                                            <legend style=" font-size: 10px;max-width: fit-content; color: #9a9a9a;">Audited by</legend>
+                                                            <div class="d-flex justify-content-between">
+                                                                <div class="meeting-attendance-count fs-7">{{projectInfo.Auditor}}</div>
+                                                                <div class="meeting-attendance-count fs-6">{{projectInfo.audit_date|date:'d MMM, yyyy'}}</div>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between gap-2">
+                                                                <div *ngIf="projectInfo.Auditor_acceptremarks" class="d-flex gap-1">
+                                                                  <div #auditbyRemarksBx class="compl-remarks-span  flex-grow-1  text-muted fs-8">
+                                                                      {{projectInfo.Auditor_acceptremarks}}
+                                                                  </div>
+                                                                  <button class="txt-expnd-btn align-self-end" *ngIf="auditbyRemarksBx.scrollHeight>auditbyRemarksBx.clientHeight" (click)="$event.stopPropagation(); auditbyRemarksBx.classList.remove('compl-remarks-span'); audtlessbtn.classList.remove('d-none'); ">
+                                                                      <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                  </button>
+                                                                  <button #audtlessbtn class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); auditbyRemarksBx.classList.add('compl-remarks-span'); audtlessbtn.classList.add('d-none');">
+                                                                      <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                  </button>
+                                                              </div>
+                                                           </div>
+                                                        </fieldset>
 
                                                           <fieldset class="meeting-attendance-item mt-2" style="padding-top: 0;">
                                                             <legend style=" max-width: fit-content; font-size: 10px;color: #9a9a9a; ">Approved by</legend>
@@ -3099,12 +3119,6 @@
                                                 <!-- Request type start  -->
                                                 <ng-container *ngIf="Current_user_ID  == approvalEmpId || requestDetails&&requestDetails.length>2 ">
                                                     <div class="kt-info-box mt-2 border-0 diff-div" [hidden]="!(isApprovalSection&&projectInfo.Status!=='Cancelled'&&(multiapproval_list.length+totalStdTskApvs==1))">
-
-
-
-
-
-
 
 
                                                         <div class="d-flex justify-content-between align-items-center">
@@ -3643,13 +3657,6 @@
                                                             <!-- projectInfo.AuditStatus=='Audit Pending'&&Current_user_ID==approvalEmpId -->
                                                             <!-- projectInfo.AuditStatus=='Audit Complete'&&Current_user_ID==approvalEmpId -->
 
-
-
-
-
-
-
-
                                                             <div *ngIf="requestType!='Project Audit'" class="col-lg-12 mb-3">
                                                                 <div class="kt-info-lable-v">Remarks</div>
                                                                 <div class="kt-info-data-v p-2 " data-toggle="tooltip" style="overflow:unset; text-overflow: unset; white-space: unset;">
@@ -3669,7 +3676,7 @@
 
 
                                                             <div class="col-lg-12 mt-3" *ngIf="requestType=='Project Complete'&&completedoc">
-                                                                <div class="kt-info-lable-v">Attachment</div>
+                                                                <div class="kt-info-lable-v">Completion attachment</div>
 
                                                                 <div class="">
                                                                     <div class="attachment-view">
@@ -3699,7 +3706,7 @@
 
                                                             <div class="col-lg-12 mb-2"
                                                                 *ngIf="requestType=='Task Complete' && completedoc">
-                                                                <div class="kt-info-lable-v">Task attachment</div>
+                                                                <div class="kt-info-lable-v">Task completion attachment</div>
 
                                                                 <div class="curser-pointer">
                                                                     <div class="attachment-view">
@@ -3723,7 +3730,7 @@
                                                             </div>
 
                                                             <div class="col-lg-12 mt-3 mb-2" *ngIf="requestType=='Project Audit'&&completedoc">
-                                                                <div class="kt-info-lable-v">Attachment</div>
+                                                                <div class="kt-info-lable-v">Completion Attachment</div>
                                                                 <div class="">
                                                                     <div class="attachment-view">
                                                                         <span>
@@ -3969,8 +3976,7 @@
                                                             Start date
                                                         </div>
                                                         <div class="kt-info-data-v">
-                                                            <!-- StartDate|date:'dd-MM-YYYY' -->
-                                                            {{projectInfo&&projectInfo.StartDate|date:'dd-MM-YYYY'}}
+                                                            {{projectInfo&&projectInfo.StartDate|date:'dd-MM-yyyy'}}
                                                         </div>
                                                     </div>
 
@@ -3984,8 +3990,6 @@
                                                         </div>
                                                     </div>
 
-
-
                                                     <ng-template #submission1>
                                                         <div class="col text-center">
                                                             <div class="kt-info-lable-v">
@@ -3998,12 +4002,6 @@
                                                             </div>
                                                         </div>
                                                     </ng-template>
-
-
-
-
-
-
 
                                                     <div class="col text-center">
                                                         <div class="kt-info-lable-v">
@@ -4439,13 +4437,17 @@
                                                                         <div class="progress h-6px w-100 bg-light-warning">
                                                                             <div class="progress-bar bg-warning"
                                                                                 role="progressbar"
-                                                                                [ngStyle]='{ width : ((tlTotalHours/projectInfo.AllocatedHours)*100).toFixed(1)>100?"100%":((tlTotalHours/projectInfo.AllocatedHours)*100).toFixed(1)+"%"}'
+                                                                                [ngStyle]="{'width': ((projectInfo.TotalHours/projectInfo.AllocatedHours)*100).toFixed(1)>100?'100%': ((projectInfo.TotalHours/projectInfo.AllocatedHours)*100).toFixed(1)+'%'}"
                                                                                 aria-valuenow="50" aria-valuemin="0"
                                                                                 aria-valuemax="100">
                                                                             </div>
                                                                         </div>
-                                                                        <span class="text-muted fs-7 fw-bold pl-2" *ngIf="projectInfo&&tlTotalHours">
-                                                                            {{((tlTotalHours/projectInfo.AllocatedHours)*100)>100?'100%':((tlTotalHours/projectInfo.AllocatedHours)*100).toFixed(1)+'%'}}
+                                                                        <span class="text-muted fs-7 fw-bold pl-2" *ngIf="projectInfo">
+                                                                            {{
+                                                                              ((projectInfo.TotalHours/projectInfo.AllocatedHours)*100)==0?'0%':
+                                                                              ((projectInfo.TotalHours/projectInfo.AllocatedHours)*100)>100?'100%':
+                                                                              ((projectInfo.TotalHours/projectInfo.AllocatedHours)*100).toFixed(1)+'%'
+                                                                            }}
                                                                         </span>
                                                                     </div>
                                                                 </div>
@@ -5091,7 +5093,7 @@
                                                             </div>
                                                             <div class="col-lg-12 mt-3"
                                                                 *ngIf="requestType=='Project Complete'">
-                                                                <div class="kt-info-lable-v">Attachment</div>
+                                                                <div class="kt-info-lable-v">Completion attachment</div>
 
                                                                 <div class="">
                                                                     <div class="attachment-view">
@@ -5306,7 +5308,7 @@
                                                             </div>
                                                             <div class="kt-info-data-v">
 
-                                                                {{projectActionInfo[currentActionView].StartDate|date:'dd-MM-YYYY'}}
+                                                                {{projectActionInfo[currentActionView].StartDate|date:'dd-MM-yyyy'}}
                                                             </div>
                                                         </div>
 
@@ -5392,7 +5394,8 @@
                                                             class="col-lg-3  text-center"
                                                             title=" {{projectActionInfo[currentActionView].Sourcefile}}">
                                                             <div class="kt-info-lable-v">
-                                                                Attachment
+                                                                <ng-container *ngIf="projectActionInfo[currentActionView].Status!='Completed'">Reference Attachment</ng-container>
+                                                                <ng-container *ngIf="projectActionInfo[currentActionView].Status=='Completed'">Completion Attachment</ng-container>
                                                             </div>
                                                             <div class="kt-info-data-v"
                                                                 (click)="LoadDocument1(projectActionInfo[currentActionView].IsCloud,projectActionInfo[currentActionView].Sourcefile,projectActionInfo[currentActionView].CompleteProofDoc,projectActionInfo[currentActionView].contenttype,projectActionInfo[currentActionView].Responsible)">
@@ -5724,7 +5727,7 @@
         <div class="container">
             <div class="d-flex align-items-md-center flex-column">
                 <div class="text-center acc-section">
-                    <h1 class="text-primary main_acc fs-1">New Project Version Unavailable</h1>
+                    <h1 class="text-primary main_acc fs-1">The next version of the project still not created.</h1>
                     <h5 *ngIf="Current_user_ID!=task_assign_json[0].Assignto_EmpNo" class="acc-desc  user-not-found-msg  hide-content">
                         The new version of the project is not yet available. It hasn't been created or started by the assigned employee.
                     </h5>
@@ -7062,7 +7065,7 @@
                                               </div>
                                               <div class="date-view-rt">
                                                   <div class="time-line-date">
-                                                      <h4>{{item.date|date:'dd-MM-YYYY'}}</h4>
+                                                      <h4>{{item.date|date:'dd-MM-yyyy'}}</h4>
                                                   </div>
                                               </div>
                                           </div>
@@ -7626,7 +7629,7 @@
                                         <div class="text-muted fs-8">{{data.Modifiedby}}</div>
                                     </div>
                                     <div class="text-muted ml-2 fs-8 d-flex align-items-center gap-1">
-                                        <span>{{data.ModifiedDate |date:'dd-MM-YYYY'}}</span>
+                                        <span>{{data.ModifiedDate |date:'dd-MM-yyyy'}}</span>
                                         <span>at {{formatTimes(data.ModifiedTime)}}</span>
                                     </div>
                                 </div>
@@ -8017,7 +8020,7 @@
                                                   </span>
                                                   {{file.Remarks}}
                                               </div>
-                                              <div class="text-muted ml-1 fs-7">{{file.date|date:'dd-MM-YYYY'}}
+                                              <div class="text-muted ml-1 fs-7">{{file.date|date:'dd-MM-yyyy'}}
                                               </div>
                                           </div>
                                       </div>
@@ -8068,7 +8071,7 @@
                                                   </span>
                                                   {{file.Remarks}}
                                               </div>
-                                              <div class="text-muted ml-1 fs-7">{{file.date|date:'dd-MM-YYYY'}}
+                                              <div class="text-muted ml-1 fs-7">{{file.date|date:'dd-MM-yyyy'}}
                                               </div>
                                           </div>
                                       </div>
@@ -8980,7 +8983,7 @@
         />
         <label class="custom-file-label" id="action_attch_upload" for="action_attachment_file">
             <ng-container *ngIf="_inputAttachments;else selFileFrMprj">{{_inputAttachments}}</ng-container>
-            <ng-template #selFileFrMprj> Select a file</ng-template>
+            <ng-template #selFileFrMprj><span class="placeholder-text">Add any attachment for reference</span></ng-template>
         </label>
 
     </div>
@@ -9080,7 +9083,7 @@
                            />
                           <label class="custom-file-label" for="prj_attch_file">
                               <ng-container *ngIf="selectedFile;else selFileFrMprj">{{_inputAttachments}}</ng-container>
-                              <ng-template #selFileFrMprj> Select a file</ng-template>
+                              <ng-template #selFileFrMprj><span class="placeholder-text">Add any attachment for reference</span></ng-template>
                           </label>
                       </div>
                   </div>
@@ -9171,7 +9174,7 @@
                                       />
                                       <label class="custom-file-label"  for="std_achv_attch">
                                           <ng-container *ngIf="_inputAttachments;else selectfile">{{_inputAttachments}}</ng-container>
-                                          <ng-template #selectfile>Select a file</ng-template>
+                                          <ng-template #selectfile><span class="placeholder-text">Add any attachment for reference</span></ng-template>
                                       </label>
 
                                   </div>
@@ -11816,8 +11819,7 @@
                 <input (change)="onFileChange1($event)" class="file-input-file" accept="image/*, .pdf, .txt, .html, .htm, .doc, .docx, .json, .xml, .ppt, .pptx, .xlsx, .xls" id="customFile" type="file" multiple="multiple" name="files[]"/>
                 <label class="file-input-label" for="customFile">
                   <span class="file-input-button">
-
-                      <span>Add attachment</span>
+                      <span>Add any attachment for reference</span>
                   </span>
                 </label>
               </div>
@@ -14505,13 +14507,8 @@
                                   </div>
 
 
-
-
-
-                                  <div class="col-lg-12 mb-2"
-                                      *ngIf="requestType=='Task Complete' && completedoc">
-                                      <div class="kt-info-lable-v">Task attachment</div>
-
+                                  <div class="col-lg-12 mb-2" *ngIf="requestType=='Task Complete' && completedoc">
+                                      <div class="kt-info-lable-v">Task completion attachment</div>
                                       <div class="curser-pointer">
                                           <div class="attachment-view">
                                               <span>
@@ -15322,7 +15319,7 @@
                                   </div>
 
                                   <div class="col-lg-12 mt-3" *ngIf="aprv.Type=='Project Complete'&&completedoc">
-                                      <div class="kt-info-lable-v">Attachment</div>
+                                      <div class="kt-info-lable-v">Completion attachment</div>
 
                                       <div class="">
                                           <div class="attachment-view">
@@ -15347,7 +15344,7 @@
 
 
                                   <div class="col-lg-12 mt-3" *ngIf="aprv.Type=='Project Audit'&&completedoc">
-                                    <div class="kt-info-lable-v">Attachment</div>
+                                    <div class="kt-info-lable-v">Completion attachment</div>
 
                                     <div class="">
                                         <div class="attachment-view">
