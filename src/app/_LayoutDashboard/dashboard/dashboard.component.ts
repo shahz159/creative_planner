@@ -1892,6 +1892,7 @@ export class DashboardComponent implements OnInit {
 isValidURL = true;
 
   onSubmitBtnClicked() {
+    debugger
     if(this.Link_Details){
     this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
     }
@@ -1947,7 +1948,7 @@ isValidURL = true;
 
 
   OnSubmitSchedule() {
-
+debugger
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -1964,7 +1965,6 @@ isValidURL = true;
         + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       this.EventNumber = timestamp;
     }
- 
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -2052,6 +2052,8 @@ isValidURL = true;
 
         var vEndTime = "EndTime";
         element[vEndTime] = this.Endtms;
+
+debugger
 
         var vEnd_date = "End_date";
         element[vEnd_date] = this._EndDate;
@@ -2183,16 +2185,82 @@ isValidURL = true;
       else {
         this._calenderDto.Schedule_ID = 0;
       }
-
       
       const frmData = new FormData();
-      for (var i = 0; i < this._lstMultipleFiales.length; i++) {
-        frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
-      }
-      if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
-       this._attachmentValue = 1;
-      else
+   
+      
+      if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
+        frmData.append("Attachment", "true");
+        this._attachmentValue = 1;
+
+        for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+          frmData.append("files", this._lstMultipleFiales[i].Files);
+        }
+        const xmlDoc = document.implementation.createDocument('', '', null);
+const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+
+// Iterate over the file groups
+this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+  console.log(`Processing group ${groupIndex}:`, fileGroup);
+
+  // Normalize Files to an array
+  const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+
+  files.forEach((file, fileIndex) => {
+    if (!file || !file.name || !file.type) {
+      console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+      return;
+    }
+
+    console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+
+    const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+    const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+    const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+    const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+
+    // Populate <FileName> element
+    nameElement.textContent = file.name;
+
+    // Generate a random ID and sanitize the file name for CloudName
+    const randomId = this.generateRandomId();
+    const sanitizedFileName = this.sanitizeFileName(file.name);
+    cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
+
+    // Populate <ContentType> element
+    const contentType = this.getContentType(file.type);
+    contentTypeElement.textContent = contentType;
+
+    // Append child elements to the <Row>
+    rowElement.appendChild(nameElement);
+    rowElement.appendChild(cloudNameElement);
+    rowElement.appendChild(contentTypeElement);
+
+    // Append the <Row> to the root element
+    parentElement.appendChild(rowElement);
+    });
+  });
+
+// Append the root <MultiDocument> element to the XML document
+  xmlDoc.appendChild(parentElement);
+
+  // Serialize the XML document to a string
+  const serializer = new XMLSerializer();
+  const xmlString = serializer.serializeToString(xmlDoc);
+
+  // Append the XML string to FormData
+  frmData.append("docs_multiple_xml", xmlString);
+
+  // Log the XML string for debugging
+  console.log("Generated XML:", xmlString);
+
+      } 
+      else {
         this._attachmentValue = 0;
+        frmData.append("Attachment", "false");
+      }
+
+      
 
       frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
@@ -2200,7 +2268,6 @@ isValidURL = true;
       this._calenderDto.draftid = this.draftid? this.draftid : 0;
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
 
-     
       this._calenderDto.attachment =this._attachmentValue.toString();
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
@@ -2211,8 +2278,12 @@ isValidURL = true;
           frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
 
           if (this._attachmentValue == 1) {
-            this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+            // this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+            this.CalenderService.UploadCalendarAttachmenstCore(frmData).subscribe(
+
               (event: HttpEvent<any>) => {
+             
+
                 switch (event.type) {
                   case HttpEventType.Sent:
                     console.log('Request has been made!');
@@ -2226,20 +2297,31 @@ isValidURL = true;
                     break;
                   case HttpEventType.Response:
                     console.log('User successfully created!', event.body);
+                    var myJSON = JSON.stringify(event);
+                    this._azureMessage = (JSON.parse(myJSON).body).message;
+
+                    if(this._azureMessage=="1"){
+                      this.CalenderService._AzureUploadCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
+                        console.log(event1,"azure data");
+                        var myJSON = JSON.stringify(event1);
+                      //  this._Message = (JSON.parse(myJSON).body);
+            
+                      });
+                    }
 
                     // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
-                    this._lstMultipleFiales = [];
-                    // empty(this._lstMultipleFiales);
-                    // alert(this._lstMultipleFiales.length);
-                    setTimeout(() => {
-                      this.progress = 0;
-                    }, 1500);
+                    // (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+                    // this._lstMultipleFiales = [];
+                    // // empty(this._lstMultipleFiales);
+                    // // alert(this._lstMultipleFiales.length);
+                    // setTimeout(() => {
+                    //   this.progress = 0;
+                    // }, 1500);
 
-                    (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                    (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                    // (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                    // (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
                     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                    document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+                    // document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
                 }
               }
             )
@@ -2309,6 +2391,58 @@ isValidURL = true;
       alert('Please Select Valid Date and Time');
     }
 
+  }
+
+
+  _azureMessage:any="";
+  
+  generateRandomId(): string {
+    return Math.random().toString().substr(2, 6).padStart(6, '0');
+  }
+
+  // Sanitize file name
+  sanitizeFileName(fileName: string): string {
+    return fileName
+      .replace(/</g, '%3C')
+      .replace(/>/g, '%3E')
+      .replace(/#/g, '%23')
+      .replace(/\+/g, '%2B')
+      .replace(/{/g, '%7B')
+      .replace(/}/g, '%7D')
+      .replace(/\|/g, '%7C')
+      .replace(/\^/g, '%5E')
+      .replace(/~/g, '%7E')
+      .replace(/\[/g, '%5B')
+      .replace(/]/g, '%5D')
+      .replace(/;/g, '%3B')
+      .replace(/\//g, '%2F')
+      .replace(/\?/g, '%3F')
+      .replace(/:/g, '%3A')
+      .replace(/@/g, '%40')
+      .replace(/=/g, '%3D')
+      .replace(/&/g, '%26')
+      .replace(/\$/g, '%24'); // Leave spaces as-is
+  }
+  // Map file content type
+  // private getContentType(contentType: string): string {
+  //   switch (contentType) {
+  //     case 'application/pdf':
+  //       return '.pdf';
+  //     case 'image/png':
+  //       return '.png';
+  //     case 'image/jpeg':
+  //       return '.jpg';
+  //     default:
+  //       return '.' + contentType.split('/')[1]; // Default to file extension
+  //   }
+  // }
+
+  getContentType(fileName: any): string | null {
+    if (!fileName) {
+      return null;
+    }
+    const lastDotIndex = fileName.lastIndexOf('.');
+    return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : null;
   }
 
   OnSubmitReSchedule(type: number) {
@@ -2604,16 +2738,80 @@ isValidURL = true;
 
         
         const frmData = new FormData();
-        for (var i = 0; i < this._lstMultipleFiales.length; i++) {
-          frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
-        }
-        if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
+
+        if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
+          frmData.append("Attachment", "true");
           this._attachmentValue = 1;
-        else
-         this. _attachmentValue = 0;
+    
+          for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+            frmData.append("files", this._lstMultipleFiales[i].Files);
+          }
+    const xmlDoc = document.implementation.createDocument('', '', null);
+    const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+    
+    // Iterate over the file groups
+    this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+    console.log(`Processing group ${groupIndex}:`, fileGroup);
+    
+    // Normalize Files to an array
+    const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+    
+    files.forEach((file, fileIndex) => {
+      if (!file || !file.name || !file.type) {
+        console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+        return;
+      }
+    
+      console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+    
+      const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+      const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+      const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+      const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+    
+      // Populate <FileName> element
+      nameElement.textContent = file.name;
+    
+      // Generate a random ID and sanitize the file name for CloudName
+      const randomId = this.generateRandomId();
+      const sanitizedFileName = this.sanitizeFileName(file.name);
+      cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
+    
+      // Populate <ContentType> element
+      const contentType = this.getContentType(file.type);
+      contentTypeElement.textContent = contentType;
+    
+      // Append child elements to the <Row>
+      rowElement.appendChild(nameElement);
+      rowElement.appendChild(cloudNameElement);
+      rowElement.appendChild(contentTypeElement);
+    
+      // Append the <Row> to the root element
+      parentElement.appendChild(rowElement);
+    });
+    });
+    
+    // Append the root <MultiDocument> element to the XML document
+    xmlDoc.appendChild(parentElement);
+    
+    // Serialize the XML document to a string
+    const serializer = new XMLSerializer();
+    const xmlString = serializer.serializeToString(xmlDoc);
+    
+    // Append the XML string to FormData
+    frmData.append("docs_multiple_xml", xmlString);
+    
+    // Log the XML string for debugging
+    console.log("Generated XML:", xmlString);
+    
+    } 
+    else {
+      this._attachmentValue = 0;
+      frmData.append("Attachment", "false");
+    }
 
       
-         frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+        frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
         frmData.append("CreatedBy", this.Current_user_ID.toString());
         frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
         frmData.append("flag_id", this._calenderDto.flagid.toString());
@@ -2621,7 +2819,7 @@ isValidURL = true;
         
         this._calenderDto.attachment =this._attachmentValue.toString();
 
-        
+ 
 
         this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
           (data => {
@@ -2632,7 +2830,8 @@ isValidURL = true;
 
             frmData.append("Schedule_date", data['Schedule_date'].toString());
             if (this._attachmentValue == 1) {
-              this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
+              // this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
+                this.CalenderService.EditUploadCalendarAttachmenstCore(frmData).subscribe(
                 (event: HttpEvent<any>) => {
                   switch (event.type) {
                     case HttpEventType.Sent:
@@ -2647,20 +2846,23 @@ isValidURL = true;
                       break;
                     case HttpEventType.Response:
                       console.log('User successfully created!', event.body);
+                      var myJSON = JSON.stringify(event);
+                      this._azureMessage = (JSON.parse(myJSON).body).message;
+    
+                      if(this._azureMessage=="1"){
+                        this.CalenderService._AzureUpdateCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
+                          console.log(event1,"azure data");
+                          var myJSON = JSON.stringify(event1);
+                        //  this._Message = (JSON.parse(myJSON).body);
+              
+                        });
+                      }
+               
 
-                      // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                      (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
-                      this._lstMultipleFiales = [];
-                      // empty(this._lstMultipleFiales);
-                      // alert(this._lstMultipleFiales.length);
-                      setTimeout(() => {
-                        this.progress = 0;
-                      }, 1500);
-
-                      (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                      (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                      // (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                      // (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
                       document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                      document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+                      // document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
                   }
                 }
               )
@@ -2897,7 +3099,7 @@ isValidURL = true;
   Task_type(value) {
  
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-    document.getElementById("rightbar-overlay").style.display = "block";
+    // document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
 
@@ -3573,7 +3775,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
           this.AllEndtime.push(element.TSEnd);
           this.StartTimearr.push(element.TSStart);
           this.Alltimes.push(element.TSStart);
-          // console.log("Arraydxxdd", this.EndTimearr);
+          
         });
 
 
@@ -3586,6 +3788,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
         const result=t>=ct;
         return result;
       });
+      debugger
       this.validStartTimearr=this.StartTimearr.slice(index);
 
 
@@ -5598,33 +5801,97 @@ debugger
 
     let _attachmentValue = 0;
     const frmData = new FormData();
-    for (var i = 0; i < this._lstMultipleFiales.length; i++) {
-      frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
-    }
-    if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
-      _attachmentValue = 1;
-    else
-      _attachmentValue = 0;
+    debugger
 
-      ;
+    if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
+      frmData.append("Attachment", "true");
+      this._attachmentValue = 1;
+
+      for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+        frmData.append("files", this._lstMultipleFiales[i].Files);
+      }
+      const xmlDoc = document.implementation.createDocument('', '', null);
+const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+
+// Iterate over the file groups
+this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+console.log(`Processing group ${groupIndex}:`, fileGroup);
+
+// Normalize Files to an array
+const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+
+files.forEach((file, fileIndex) => {
+  if (!file || !file.name || !file.type) {
+    console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+    return;
+  }
+
+  console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+
+  const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+  const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+  const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+  const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+
+  // Populate <FileName> element
+  nameElement.textContent = file.name;
+
+  // Generate a random ID and sanitize the file name for CloudName
+  const randomId = this.generateRandomId();
+  const sanitizedFileName = this.sanitizeFileName(file.name);
+  cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
+
+  // Populate <ContentType> element
+  const contentType = this.getContentType(file.type);
+  contentTypeElement.textContent = contentType;
+
+  // Append child elements to the <Row>
+  rowElement.appendChild(nameElement);
+  rowElement.appendChild(cloudNameElement);
+  rowElement.appendChild(contentTypeElement);
+
+  // Append the <Row> to the root element
+  parentElement.appendChild(rowElement);
+});
+});
+
+// Append the root <MultiDocument> element to the XML document
+xmlDoc.appendChild(parentElement);
+
+// Serialize the XML document to a string
+const serializer = new XMLSerializer();
+const xmlString = serializer.serializeToString(xmlDoc);
+
+// Append the XML string to FormData
+frmData.append("docs_multiple_xml", xmlString);
+
+// Log the XML string for debugging
+console.log("Generated XML:", xmlString);
+
+    } 
+    else {
+      this._attachmentValue = 0;
+      frmData.append("Attachment", "false");
+    }
+    
       frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
       
-      debugger
       const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
       this._calenderDto.DraftAgendas=mtgAgendas;
 
-   
+    console.log(this._calenderDto,'this._calenderDto Draft')
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
       (data => {
-           
+           debugger
    
       this.Attamentdraftid= data['draftid']
       frmData.append("draftid", this.Attamentdraftid);
  
-        if (_attachmentValue == 1) {
-          this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+        if (this._attachmentValue == 1) {
+          // this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+            this.CalenderService.UploadCalendarAttachmenstCore(frmData).subscribe(
             (event: HttpEvent<any>) => {
               switch (event.type) {
                 case HttpEventType.Sent:
@@ -5639,6 +5906,17 @@ debugger
                   break;
                 case HttpEventType.Response:
                   console.log('User successfully created!', event.body);
+                  var myJSON = JSON.stringify(event);
+                  this._azureMessage = (JSON.parse(myJSON).body).message;
+
+                  if(this._azureMessage=="1"){
+                    this.CalenderService._AzureUploadCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
+                      console.log(event1,"azure data");
+                      var myJSON = JSON.stringify(event1);
+                    //  this._Message = (JSON.parse(myJSON).body);
+          
+                    });
+                  }
 
                   // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
                   
@@ -5681,7 +5959,7 @@ debugger
     this.CalenderService.NewGetMeeting_darftdata(this._calenderDto).subscribe
       (data => {
    
-        console.log(data, "ssdddd")
+       
         if (data['Draft_meetingdata'] != "" && data['Draft_meetingdata'] != null && data['Draft_meetingdata'] != undefined) {
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
           this.draftcount = this.draftdata_meet.length;

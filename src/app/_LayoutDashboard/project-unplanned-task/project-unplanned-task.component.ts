@@ -1956,7 +1956,7 @@ else{
  // this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
   this.ProjectTypeService._InsertAssignTaskServieCore(fd).subscribe(
     (data) => {
-      alert(data['message'])
+      // alert(data['message'])
       if(data['message']=="Assigned Successfully" && this.fileAttachment){
         fd.append('file', this.fileAttachment);
         fd.append('TaskName',data['taskName']);
@@ -2483,14 +2483,13 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
     fd.append("TypeofTask", this.typeoftask);
     fd.append("contentType",this.contentType);
 
-    if (this.fileAttachment != null) {
-        fd.append("Attachment", "true");
+    if ( this.fileAttachment) {
+      fd.append("Attachment", "true");
     }
     else {
       fd.append("Attachment", "false");
       fd.append('file', "");
     }
-
     // this.ProjectTypeService.updatePendingtask(fd).subscribe(
       this.ProjectTypeService.updatePendingtaskCore(fd).subscribe(
       (data) => {

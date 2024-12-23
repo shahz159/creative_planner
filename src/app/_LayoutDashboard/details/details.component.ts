@@ -526,18 +526,33 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
          // 1. bar chart start.
 
-         this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, "3", this.Current_user_ID).subscribe((res: any) => {
-          const tml = JSON.parse(res[0].Timeline_List);
-          console.log("timeline data here11111:", tml);
-          this.darOfEmpl=tml.map((ob)=>{
-               return { member:ob.Value, totalTimeline:(+ob.TotalDuration).toFixed(2)}
-          });
-          this.darOfEmpl.sort((a,b)=>b.totalTimeline-a.totalTimeline);
-        });
+            this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, "3", this.Current_user_ID).subscribe((res: any) => {
+              const tml = JSON.parse(res[0].Timeline_List);
+              console.log("timeline data here11111:", tml);
+              this.darOfEmpl=tml.map((ob)=>{
+                  return { member:ob.Value, totalTimeline:(+ob.TotalDuration).toFixed(2)}
+              });
+              this.darOfEmpl.sort((a,b)=>b.totalTimeline-a.totalTimeline);
+            });
+
+            let tlTotalHrs:number = this.projectInfo.TotalHours;
 
 
 
-               let tlTotalHrs:number = this.projectInfo.TotalHours;
+            let includeExpectedhrs:boolean=false;
+            let alloc4Ndays=0;
+            const crd=new Date();                                          // current date.
+            const ped=new Date(this.projectInfo.EndDate.split('T')[0]);    // project end date.
+            const psd=new Date(this.projectInfo.StartDate.split('T')[0]);  // project start date.
+
+            if(['Completed','New Project Rejected','Cancelled'].includes(this.projectInfo.Status)==false&&crd>=psd&&crd<=ped){
+                const K=this.projectInfo.AllocatedHours/(this.projectInfo.Duration+1);
+                const N=(Math.abs(moment(psd).diff(crd,'days'))+1);
+                alloc4Ndays=N*K;
+                alloc4Ndays=(+alloc4Ndays.toFixed(2));
+                includeExpectedhrs=true;
+            }
+
 
                  //standard  graph cal start    may need updation.
                  let x=0;
@@ -561,16 +576,19 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                    let t=timestr.split(':');
                    let prjAlHrs=+(Number.parseInt(t[0].trim())+'.'+Number.parseInt(t[1].trim()));
                    AL=+(prjAlHrs*Math.abs(x)).toFixed(2);
-
                  }
                  //standard graph cal end
 
 
+              let r_Hrs=['001', '002','011'].includes(this.projectInfo.Project_Block)?((+this.projectInfo.AllocatedHours)-tlTotalHrs):(AL - tlTotalHrs);
+              r_Hrs=(+r_Hrs.toFixed(2));
+              
 
                var options = {
                  series: [{
-                   data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, tlTotalHrs, ((+this.projectInfo.AllocatedHours) - tlTotalHrs).toFixed(2)]
-                     : [AL, tlTotalHrs, (AL - tlTotalHrs).toFixed(2)]
+                   data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ? 
+                         ( includeExpectedhrs?[+this.projectInfo.AllocatedHours,alloc4Ndays,tlTotalHrs,r_Hrs<0?0:r_Hrs]:[+this.projectInfo.AllocatedHours,tlTotalHrs,r_Hrs<0?0:r_Hrs] )  
+                        : [AL, tlTotalHrs, r_Hrs]
                  }],
                  chart: {
                    type: 'bar',
@@ -586,8 +604,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                  dataLabels: {
                    enabled: true,
                    style:{
-                     colors:['#3a81c9','#3e6be0','#303031'],
-                     fontFamily:'Lucida Sans Unicode'
+                     colors:includeExpectedhrs?['#3a81c9','#8d48d7','#3e6be0','#303031']:['#3a81c9','#3e6be0','#303031'],
+                     fontFamily:'Lucida Sans Unicode',
+                     fontSize:'10px'
                    },
                    formatter: function (v) {
                      return v + ' hrs';
@@ -600,14 +619,17 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                    labels: {}
                  },
                  xaxis: {
-                   categories: ['Allocated', 'Used', 'Remaining'],
+                   categories: includeExpectedhrs?['Planned', 'Expected', 'Used', 'Remaining']:['Allocated','Used','Remaining'],
                    labels: {
-                     rotate: -90
+                     rotate: -90,
+                     style: {
+                      fontSize: '10px'
+                    }
                    }
                  },
                  colors:['003', '008'].includes(this.projectInfo.Project_Block)?
-                       ['#7dbeff', '#7da1ff',(AL-this.tlTotalHours)<0?'#757575':'#dbe1e4']:
-                       ['#7dbeff', '#7da1ff',((+this.projectInfo.AllocatedHours) - this.tlTotalHours)<0?'#757575':'#dbe1e4'],
+                       ['#7dbeff', '#7da1ff',r_Hrs<0?'#757575':'#dbe1e4']:
+                       ( includeExpectedhrs?['#7dbeff','#c187ff','#7da1ff',r_Hrs<0?'#757575':'#dbe1e4']:['#7dbeff','#7da1ff',r_Hrs<0?'#757575':'#dbe1e4'] ),
                  
                 tooltip: {
                     enabled: true, 
@@ -640,20 +662,20 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
                };
 
+
                if (this.prjBARCHART)
-                 this.prjBARCHART.destroy();
+               this.prjBARCHART.destroy();
 
-               let bchr=document.querySelector("#Bar-chart");
-               if(bchr)
-               {
-                 this.prjBARCHART = new ApexCharts(bchr, options);
-                 this.prjBARCHART.render();
-               }
-
-
-
-
-
+           
+                let bchr=document.querySelector("#Bar-chart");
+                if(bchr)
+                {  
+                  this.prjBARCHART = new ApexCharts(bchr, options);
+                  this.prjBARCHART.render();
+                }
+            
+              
+              
 
          //  bar chart end.
 
@@ -752,10 +774,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
                };
 
-               var chart = new ApexCharts(document.querySelector("#Pie-chart"), options123);
-               chart.render();
 
-
+                  let _piechartsec=document.querySelector("#Pie-chart");
+                  if(_piechartsec){
+                    let pchart = new ApexCharts(_piechartsec, options123);
+                    pchart.render();
+                  }
+              
              }
          }
 
@@ -1138,10 +1163,11 @@ debugger
     if(actionIndex!==undefined){
       this.showActionDetails(actionIndex);
     }
-    // this.onTLSrtOrdrChanged('Date');  //for utilization bar 'tlTotalHours'
-    // setTimeout(() => this.drawStatistics(), 5000);
-    setTimeout(()=>this.drawStatisticsNew(),3000);
-
+ 
+    setTimeout(()=>{
+      this.drawStatisticsNew();
+    },3000)
+    
 
 
     if(this.projectInfo&&this.projectInfo.Status=='Completed'){
@@ -1167,7 +1193,7 @@ debugger
     }
 
 
-    // this.detectMembersWithoutActions();  // calculate 'hasNoActionMembers';
+    
 
 
    // when project has no activity done even after start date.   calculation here.
@@ -1369,7 +1395,7 @@ debugger
 // sorting people based on active or inactive
 
 
-          // this.detectMembersWithoutActions();  // calculate 'hasNoActionMembers';
+         
         }
       });
 
@@ -1697,13 +1723,30 @@ debugger
 
 
   drawActionBarChart(){
+
+    let includeExpectedhrs:boolean=false;
+    let alloc4Ndays=0;
+    const crd=new Date();                                          // current date.
+    const aed=new Date(this.projectActionInfo[this.currentActionView].EndDate.split('T')[0]);    // action end date.
+    const asd=new Date(this.projectActionInfo[this.currentActionView].StartDate.split('T')[0]);  // action start date.
+
+    if(['Completed','New Project Rejected','Cancelled'].includes(this.projectActionInfo[this.currentActionView].Status)==false&&crd>=asd&&crd<=aed){
+        const K=this.maxDuration/(this.projectActionInfo[this.currentActionView].Duration+1);
+        const N=(Math.abs(moment(asd).diff(crd,'days'))+1);
+        alloc4Ndays=N*K;
+        alloc4Ndays=(+alloc4Ndays.toFixed(2));
+        includeExpectedhrs=true;
+    }
+
+    const r_hrs=this.maxDuration-this.UsedInDAR;
     var options = {
       series: [{
-        data: [
+        data: includeExpectedhrs?[
           this.maxDuration,
+          alloc4Ndays,
           this.UsedInDAR,
-          this.maxDuration-this.UsedInDAR
-          ]
+          r_hrs<0?0:r_hrs
+          ]:[this.maxDuration, this.UsedInDAR, r_hrs<0?0:r_hrs]
       }],
       chart: {
         type: 'bar',
@@ -1719,8 +1762,9 @@ debugger
       dataLabels: {
         enabled: true,
         style:{
-          colors:['#3a81c9','#3e6be0','#303031'],
-          fontFamily:'Lucida Sans Unicode'
+          colors:includeExpectedhrs?['#3a81c9','#8d48d7','#3e6be0','#303031']:['#3a81c9','#3e6be0','#303031'],
+          fontFamily:'Lucida Sans Unicode',
+          fontSize:'10px'
         },
         formatter: function (v) {
           return v + ' hrs';
@@ -1733,12 +1777,14 @@ debugger
         labels: {}
       },
       xaxis: {
-        categories: ['Allocated', 'Used', 'Remaining'],
+        categories: includeExpectedhrs?['Planned','Expected', 'Used', 'Remaining']:['Allocated', 'Used', 'Remaining'],
         labels: {
           rotate: -90
         }
       },
-      colors:['#7dbeff', '#7da1ff',(this.maxDuration-this.UsedInDAR)<0?'#757575':'#dbe1e4']
+  
+      colors:includeExpectedhrs?['#7dbeff','#c187ff','#7da1ff',r_hrs<0?'#757575':'#dbe1e4']:
+                                ['#7dbeff','#7da1ff',r_hrs<0?'#757575':'#dbe1e4']
 
     };
 
@@ -3042,12 +3088,21 @@ approvalSubmitting:boolean=false;
         this._inputAttachments = '';
         e.target.value='';
       }
+      console.log('File Object:', this.file);
+      this.contentType=this.getFileExtension(this.selectedFile.name);
       this.cdr.detectChanges();
     }
   }
 
-
-
+  contentType:any="";
+  
+  getFileExtension(fileName: any): string | null {
+    if (!fileName) {
+      return null;
+    }
+    const lastDotIndex = fileName.lastIndexOf('.');
+    return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : null;
+  }
 
 
 
@@ -3085,9 +3140,10 @@ approvalSubmitting:boolean=false;
     $('#upload').html('Select a file');
   }  // for temp we are using this.
 
-  proState:boolean=false
-  actionCompleted() {
+  proState:boolean=false;
 
+  actionCompleted() {
+debugger
    const fieldsprvided:boolean=(this._remarks&&this._remarks.trim())&&(this.proState?this.selectedFile:true);
 
     if (!fieldsprvided) { // when the user not provided the required fields then .
@@ -3123,9 +3179,16 @@ approvalSubmitting:boolean=false;
             fd.append("Team_Autho", this.Sub_Autho);
             fd.append("Projectblock", this.projectInfo.Project_Block);
             fd.append("Remarks", this._remarks);
-            fd.append('file', this.selectedFile);
             fd.append("Project_Name", this._Subtaskname);
-            this.service._UpdateSubtaskByProjectCode(fd)
+            fd.append("contentType",this.contentType);
+            if(this.selectedFile){
+              fd.append("Attachment","true");
+            }
+            else{
+              fd.append("Attachment","false")
+            }
+            // this.service._UpdateSubtaskByProjectCode(fd)
+            this.service._UpdateSubtaskByProjectCodeCore(fd)
               .subscribe((event: HttpEvent<any>) => {
 
                 switch (event.type) {
@@ -3137,7 +3200,8 @@ approvalSubmitting:boolean=false;
                     break;
                   case HttpEventType.Response:{
                     var myJSON = JSON.stringify(event);
-                    this._Message = (JSON.parse(myJSON).body).Message;
+                    this._Message = (JSON.parse(myJSON).body).message;
+                    console.log(myJSON,"acitonproject")
                     if(this._Message==='Success')
                     {
                       this.notifyService.showSuccess("Successfully updated", 'Action completed.');
@@ -3153,6 +3217,18 @@ approvalSubmitting:boolean=false;
                   };break;
 
                 }
+                if ( this.selectedFile) {
+                  fd.append("Project_Code", this.Sub_ProjectCode);
+                  fd.append("Team_Autho", this.Sub_Autho);
+                  fd.append("Project_Name", this._Subtaskname);
+                  fd.append('file',  this.selectedFile);
+                  this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+                    console.log(event1,"azure data");
+                    var myJSON = JSON.stringify(event1);
+                  //  this._Message = (JSON.parse(myJSON).body);
+        
+                  });
+                }
               });
 
             // ACTION SUBMITTED
@@ -3165,11 +3241,18 @@ approvalSubmitting:boolean=false;
             fd1.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
             fd1.append("Remarks", this._remarks);
             fd1.append("Projectblock", this.projectInfo.Project_Block);
-            fd1.append('file', this.selectedFile);
             fd1.append("Emp_No", this.Current_user_ID);
             fd1.append("Project_Name", this.projectInfo.Project_Name);
+            fd1.append("contentType",this.contentType);
+            if(this.selectedFile){
+              fd1.append("Attachment","true");
+            }
+            else{
+              fd1.append("Attachment","false")
+            }
             console.log(fd1, "complete");
-            this.service._fileuploadService(fd1).
+            // this.service._fileuploadService(fd1).
+            this.service._UpdateProjectCompleteCore(fd1).
               subscribe((event: HttpEvent<any>) => {
                 switch (event.type) {
                   case HttpEventType.Sent:
@@ -3183,29 +3266,42 @@ approvalSubmitting:boolean=false;
                     console.log(this.progress, "progress");
                     if (this.progress == 100) {
                       this.notifyService.showInfo("File uploaded successfully", "Project updated");
-
                     }
                     break;
                   case HttpEventType.Response:
                     console.log('File upload done!', event.body);
                     var myJSON = JSON.stringify(event);
-                    this._Message = (JSON.parse(myJSON).body).Message;
+                    this._Message = (JSON.parse(myJSON).body).message;
+                    // if(this._Message){
+                    //   fd1.append('file',  this.selectedFile);
+                    //   this.service._AzureUploadProjectComplete(fd1).subscribe((event1: HttpEvent<any>) => {
+                    //     console.log(event1,"azure data");
+                    //     var myJSON = JSON.stringify(event1);
+                    //   //  this._Message = (JSON.parse(myJSON).body);
+            
+                    //   });
+                    // }
                     this.notifyService.showSuccess(this._Message, 'Success');
+                    if(this.selectedFile){
+                      fd1.append('file',  this.selectedFile);
+                      this.service._AzureUploadProjectComplete(fd1).subscribe((event1: HttpEvent<any>) => {
+                        console.log(event1,"azure data");
+                        var myJSON = JSON.stringify(event1);
+                      //  this._Message = (JSON.parse(myJSON).body);
+            
+                      });
+                    }
                 }
-
-                this.selectedFile = null;
-                this._inputAttachments = '';
-                this._remarks = '';
-                this.invalidFileSelected=false;
-                this.closeInfo();
-                this.getProjectDetails(this.URL_ProjectCode);
-                this.getAttachments(1);
-                this.calculateProjectActions();
-                // this.GetSubtask_Details();
-                // this.GetProjectDetails();
-                // this.getapprovalStats();
-                // this._projectSummary.GetProjectsByUserName('RACIS Projects');
               });
+              
+              this.selectedFile = null;
+              this._inputAttachments = '';
+              this._remarks = '';
+              this.invalidFileSelected=false;
+              this.closeInfo();
+              this.getProjectDetails(this.URL_ProjectCode);
+              this.getAttachments(1);
+              this.calculateProjectActions();
           }
         }
         else if (res.dismiss === Swal.DismissReason.cancel) {
@@ -3215,12 +3311,40 @@ approvalSubmitting:boolean=false;
           fd.append("Team_Autho", this.Sub_Autho);
           fd.append("Projectblock", this.projectInfo.Project_Block);
           fd.append("Remarks", this._remarks);
-          fd.append('file', this.selectedFile);
           fd.append("Project_Name", this._Subtaskname);
+          fd.append("contentType",this.contentType);
+          if(this.selectedFile){
+            fd.append("Attachment","true");
+          }
+          else{
+            fd.append("Attachment","false")
+          }
           console.log(this.selectedFile, "action file")
 
-          this.service._UpdateSubtaskByProjectCode(fd)
-            .subscribe(data => {
+          // this.service._UpdateSubtaskByProjectCode(fd)
+          //   .subscribe(data => {
+            this.service._UpdateSubtaskByProjectCodeCore(fd)
+            .subscribe((event: HttpEvent<any>) => {
+
+              debugger
+               if (event.type === HttpEventType.Response){
+                 var myJSON = JSON.stringify(event);
+                 
+                 this._Message = (JSON.parse(myJSON).body).message;
+                 console.log(event,myJSON,this._Message,"action data");
+                //  alert(this._Message);
+                  
+                 if(this._Message=='Success'){
+                  if ( this.selectedFile) {
+                  fd.append('file',  this.selectedFile);
+                  this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+                    console.log(event1,"azure data");
+                    var myJSON = JSON.stringify(event1);
+                  //  this._Message = (JSON.parse(myJSON).body);
+        
+                  });
+                }
+              }
               this._remarks = "";
               this._inputAttachments = "";
               this.selectedFile = null;
@@ -3228,11 +3352,13 @@ approvalSubmitting:boolean=false;
               this.getProjectDetails(this.URL_ProjectCode);
               this.calculateProjectActions();     // recalculate the project actions.
               this.closeActCompSideBar();
-              this.getAttachments(1);      // close action completion sidebar.
+              this.getAttachments(1);
+              }      // close action completion sidebar.
             });
           this.notifyService.showSuccess("Successfully updated", 'Action completed');
           this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
         }
+        
       });   //swal end
 
     }
@@ -3245,9 +3371,16 @@ approvalSubmitting:boolean=false;
       fd.append("Team_Autho", this.Sub_Autho);
       fd.append("Projectblock", this.projectInfo.Project_Block);
       fd.append("Remarks", this._remarks);
-      fd.append('file', this.selectedFile);
       fd.append("Project_Name", this._Subtaskname);
-      this.service._UpdateSubtaskByProjectCode(fd)
+      fd.append("contentType",this.contentType);
+      if(this.selectedFile){
+        fd.append("Attachment","true");
+      }
+      else{
+        fd.append("Attachment","false")
+      }
+      // this.service._UpdateSubtaskByProjectCode(fd)
+      this.service._UpdateSubtaskByProjectCodeCore(fd)
         .subscribe((event: HttpEvent<any>) => {
 
           switch (event.type) {
@@ -3260,9 +3393,18 @@ approvalSubmitting:boolean=false;
               break;
             case HttpEventType.Response:{
               var myJSON = JSON.stringify(event);
-              this._Message = (JSON.parse(myJSON).body).Message;
+              this._Message = (JSON.parse(myJSON).body).message;
               if(this._Message==='Success')
               {
+                if(this.selectedFile){
+                  fd.append('file', this.selectedFile);
+                  this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+                    console.log(event1,"azure data");
+                    var myJSON = JSON.stringify(event1);
+                  //  this._Message = (JSON.parse(myJSON).body);
+        
+                  });
+                }
                 this.notifyService.showSuccess("Successfully updated", 'Action completed');
                 // after the action is successfully completed
                 let prjAction = this.projectActionInfo.find((prjAct: any) => prjAct.Project_Code === this.Sub_ProjectCode)
@@ -3382,7 +3524,7 @@ approvalSubmitting:boolean=false;
   getResponsibleActions() {
 
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
-      (data) => { 
+      (data) => {    
         this.ProjectPercentage = data[0]['ProjectPercentage'];
         this.ProjectStatus = data[0]['ProjectStatus'];
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
@@ -3428,14 +3570,14 @@ approvalSubmitting:boolean=false;
       }
 
 
-     // detect members without actions
+     // detect members without actions. excluding inactive members also.
      if(['001','002'].includes(projectinfo_.Project_Block)){
      this.hasNoActionMembers=[];
      let pMemberwithActns=this.Subtask_Res_List.map(ob=>ob.Team_Res);
      const arr=[];
      
      pracis.forEach((tmember)=>{
-      if( tmember.Emp_No!=projectinfo_.OwnerEmpNo&&pMemberwithActns.includes(tmember.Emp_No)==false){
+      if( tmember.Emp_No!=projectinfo_.OwnerEmpNo&&pMemberwithActns.includes(tmember.Emp_No)==false&&tmember.Emp_Active==true){
             if(arr.findIndex(ob=>ob.Emp_No==tmember.Emp_No)==-1)
             arr.push({  Emp_No:tmember.Emp_No.trim(), Emp_Name:tmember.RACIS.trim() });
       }
@@ -4628,10 +4770,18 @@ check_allocation() {
       fd.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
       fd.append("Remarks", this._remarks);
       fd.append("Projectblock", this.projectInfo.Project_Block);
-      fd.append('file', this.selectedFile);
       fd.append("Emp_No", this.Current_user_ID);
       fd.append("Project_Name", this.projectInfo.Project_Name);
-      this.service._fileuploadService(fd).
+      fd.append("contentType",this.contentType);
+      if(this.selectedFile){
+        fd.append("Attachment","true");
+      }
+      else{
+        fd.append("Attachment","false")
+      }
+      // this.service._fileuploadService(fd).
+      
+      this.service._UpdateProjectCompleteCore(fd).
         subscribe((event: HttpEvent<any>) => {
           switch (event.type) {
             case HttpEventType.Sent:
@@ -4647,7 +4797,7 @@ check_allocation() {
             case HttpEventType.Response:
               console.log('File upload done!', event.body);
               var myJSON = JSON.stringify(event);
-              this._Message = (JSON.parse(myJSON).body).Message;
+              this._Message = (JSON.parse(myJSON).body).message;
               if(this._Message=='Actions are in Under Approval'){
                 this.notifyService.showError(this._Message, 'Failed');
               }
@@ -4655,17 +4805,25 @@ check_allocation() {
                 if (this.progress == 100) {
                   this.notifyService.showInfo("File uploaded successfully", "Project updated");
                 }
+                
                 this.notifyService.showSuccess(this._Message, 'Success');
+                debugger
+                if(this.selectedFile){
+                  fd.append('file',  this.selectedFile);
+                  this.service._AzureUploadProjectComplete(fd).subscribe((event1: HttpEvent<any>) => {
+                    console.log(event1,"azure data");
+                    var myJSON = JSON.stringify(event1);
+                  //  this._Message = (JSON.parse(myJSON).body);
+        
+                  });
+                }
+                this.GetActivityDetails();
+                this.closeInfoProject();
+                this.getProjectDetails(this.URL_ProjectCode);
+                this.getapprovalStats();
               }
           }
-          this.GetActivityDetails();
-          this.closeInfoProject();
-          this.getProjectDetails(this.URL_ProjectCode);
-          // this.getapproval_actiondetails();
-          // this.GetSubtask_Details();
-          // this.GetProjectDetails();
-          this.getapprovalStats();
-          // this._projectSummary.GetProjectsByUserName('RACIS Projects');
+
         });
     }
     else if (this.isAction == true) {
@@ -7708,6 +7866,7 @@ holdcontinue(Pcode:any){
   // project cancel section end
   ShowProgress: boolean = false;
   processingStd:boolean=false;
+  
   achieveStandard() {
     if(!(this._remarks&&this._remarks.trim())||this.selectedFile==null){
         this.formFieldsRequired=true;
@@ -7719,13 +7878,21 @@ holdcontinue(Pcode:any){
     fd.append("Team_Autho", this.Authority);
     fd.append("Remarks", this._remarks);
     fd.append("Projectblock", this.ProjectBlock);
-    fd.append('file', this.selectedFile);
     fd.append("Emp_No", this.Current_user_ID);
     fd.append("Project_Name", this.projectInfo.Project_Name);
+    fd.append("contentType",this.contentType);
+    fd.append("achievetype","1");
+    if(this.selectedFile){
+      fd.append("Attachment","true");
+    }
+    else{
+      fd.append("Attachment","false")
+    }
 
     console.log(this._MasterCode, this._remarks, this.selectedFile, this.Current_user_ID, "fd");
     this.processingStd=true;
-    this.service._UpdateStandardTaskSubmission(fd).
+    // this.service._UpdateStandardTaskSubmission(fd).
+    this.service._UpdateStandardTaskSubmissionCore(fd).
       subscribe((event: HttpEvent<any>) => {
         this.processingStd=false;
         switch (event.type) {
@@ -7747,24 +7914,21 @@ holdcontinue(Pcode:any){
           case HttpEventType.Response:
             console.log('File upload done!', event.body);
             var myJSON = JSON.stringify(event);
-            this._Message = (JSON.parse(myJSON).body).Message;
+            this._Message = (JSON.parse(myJSON).body).message;
             this.notifyService.showSuccess(this._Message, 'Success');
         }
-        // if (event.type == HttpEventType.UploadProgress) {
-        //   this.progress = Math.round(event.loaded / event.total * 100);
-        //   console.log(this.progress, "progress")
-        //   this.notifyService.showInfo("File uploaded successfully", "Project Updated");
-        // }
-        // else if (event.type === HttpEventType.Response) {
-        //   alert(1)
-        //   var myJSON = JSON.stringify(event);
-        //   this._Message = (JSON.parse(myJSON).body).Message;
-        //   this.notifyService.showSuccess(this._Message, 'Success');
-        // }
+        if (this.selectedFile) {
+          fd.append('file',  this.selectedFile);
+          this.service._AzureUploadStandardTaskComplete(fd).subscribe((event1: HttpEvent<any>) => {
+            console.log(event1,"azure data");
+            var myJSON = JSON.stringify(event1);
+          //  this._Message = (JSON.parse(myJSON).body);
+          });
+        }
         this.closeInfo();
         this.getProjectDetails(this.URL_ProjectCode);
         this.getapprovalStats();
-        this._projectSummary.GetProjectsByUserName('RACIS Projects');
+        // this._projectSummary.GetProjectsByUserName('RACIS Projects');
       });
   }
 
@@ -7773,7 +7937,6 @@ holdcontinue(Pcode:any){
       this.formFieldsRequired=true;
       return;
     }
-
 
     this.selectedFile = null;
     const fd = new FormData();
@@ -7784,18 +7947,15 @@ holdcontinue(Pcode:any){
     fd.append('file', this.selectedFile);
     fd.append("Emp_No", this.Current_user_ID);
     fd.append("Project_Name", this.ProjectName);
-    // console.log(this._MasterCode,this._remarks,this.selectedFile,this.Current_user_ID,"fd");
+    fd.append("achievetype","0");
     this.processingStd=true;
-    this.service._UpdateStandardTaskSubmission(fd).
+    // this.service._UpdateStandardTaskSubmission(fd).
+    this.service._UpdateStandardTaskSubmissionCore(fd).
       subscribe(event => {
         this.processingStd=false;
-        if (event.type == HttpEventType.UploadProgress) {
-          this.progress = Math.round(event.loaded / event.total * 100);
-          this.notifyService.showInfo("File uploaded successfully", "Project updated");
-        }
-        else if (event.type === HttpEventType.Response) {
+        if (event.type === HttpEventType.Response) {
           var myJSON = JSON.stringify(event);
-          this._Message = (JSON.parse(myJSON).body).Message;
+          this._Message = (JSON.parse(myJSON).body).message;
           this.notifyService.showSuccess(this._Message, 'Success');
         }
         this.closeInfo();
@@ -7803,7 +7963,7 @@ holdcontinue(Pcode:any){
       });
       this.getProjectDetails(this.URL_ProjectCode);
       this.getapprovalStats();
-      this._projectSummary.GetProjectsByUserName('RACIS Projects');
+      // this._projectSummary.GetProjectsByUserName('RACIS Projects');
   }
 
   //  $('#_file1').val('');
@@ -11393,21 +11553,7 @@ getFormattedDuration(totalDuration: number): string {
 
 
   hasNoActionMembers:any=[];
-  // detectMembersWithoutActions(){  
-  //     if(this.Project_List&&this.filteremployee)
-  //     {    // if we have info of all the peoples present in the project. and info of all the people who have actions.
-  //       const peopleWithActns=this.filteremployee.map(item=>item.Team_Res);
-  //       const arr=[];
-  //       this.Project_List.forEach((item)=>{
-  //               if(item.Role!='Owner'&&peopleWithActns.includes(item.Emp_No)==false)
-  //               {
-  //                  if(arr.findIndex(ob=>ob.Emp_No==item.Emp_No)==-1)
-  //                  arr.push({  Emp_No:item.Emp_No, Emp_Name:item.RACIS.slice(0,item.RACIS.indexOf('(')).trim() })
-  //               }
-  //        });
-  //       this.hasNoActionMembers=arr;
-  //     }
-  // }
+
 
 
 
@@ -11631,7 +11777,7 @@ validateURL(value: string): void {
   }
   
 }
-
+      
 }
 
 
