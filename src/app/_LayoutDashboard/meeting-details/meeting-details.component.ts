@@ -2913,7 +2913,6 @@ onFileChange(event) {
               case HttpEventType.UploadProgress:
                 this.progress = Math.round(event.loaded / event.total * 100);
                 console.log(`Uploaded! ${this.progress}%`);
-                this.notifyService.showSuccess("Uploaded successfully ", '');
                 break;
               case HttpEventType.Response:
                 console.log('User successfully created!', event.body);
@@ -2921,6 +2920,7 @@ onFileChange(event) {
                 this._azureMessage = (JSON.parse(myJSON).body).message;
 
                 if(this._azureMessage=="1"){
+                  this.notifyService.showSuccess("Uploaded successfully ", '');
                   this.CalenderService._AzureUpdateCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
                     console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);

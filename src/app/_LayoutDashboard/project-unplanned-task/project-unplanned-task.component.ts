@@ -1956,7 +1956,7 @@ else{
  // this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
   this.ProjectTypeService._InsertAssignTaskServieCore(fd).subscribe(
     (data) => {
-      alert(data['message'])
+      // alert(data['message'])
       if(data['message']=="Assigned Successfully" && this.fileAttachment){
         fd.append('file', this.fileAttachment);
         fd.append('TaskName',data['taskName']);
