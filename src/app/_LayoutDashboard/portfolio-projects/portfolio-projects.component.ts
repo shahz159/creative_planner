@@ -394,19 +394,11 @@ export class PortfolioProjectsComponent implements OnInit {
   UserAccessType : 'Full Access' | 'View Only'
   uniqueid:any
   counting:number=0
-<<<<<<< HEAD
-  delayPrjsofPort :any
-  forwardPrjPort:any
-  completionPrjPort:any
-  newapprovalPrjport : any
-  cancellationPort:any[] =[]
-=======
   delayPrjsofPort :any=[]
   forwardPrjPort:any=[]
   completionPrjPort:any=[]
   newapprovalPrjport : any=[]
   cancellationPort:any=[]
->>>>>>> ef94a511e8846d52c788884b90022fe34b7146cb
   checking: boolean = false;
   isPendingChecked : boolean = false
 
