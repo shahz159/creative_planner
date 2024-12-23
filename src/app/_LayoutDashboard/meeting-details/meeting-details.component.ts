@@ -2812,8 +2812,6 @@ onFileChange(event) {
 
   OnSubmitAttachment() {
 
-
-  debugger
     if (this.SelectedAttachmentFile != undefined || this.RemovedFile_id.length > 0) {
       this.EventNumber = this.EventScheduledjson[0].EventNumber;
       let _attachmentValue = 0;
