@@ -952,8 +952,8 @@ fieldRequired:boolean=false;
 onTLSubmitBtnClick(){
   
  const invalidEndtime=(this.starttime&&this.endtime&&(  
- (this.project_type=='corporate'&&((this.endtime.value-this.starttime.value)/(1000*60))>60)||
- (this.project_type=='lunch'&&((this.endtime.value-this.starttime.value)/(1000*60))>60)||
+ (this.project_type=='corporate'&&((this.endtime.value-this.starttime.value)/(1000*60))>this.remainingCorporateTime)||
+ (this.project_type=='lunch'&&((this.endtime.value-this.starttime.value)/(1000*60))>this.remainingLunchTime)||
  (this.endtime.value<this.starttime.value)) );
 
  const lunchPersonalCorporate:boolean=['lunch','personal','corporate'].includes(this.project_type);
@@ -1303,6 +1303,8 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
     this.endtime=null;
     this.disabledLunchOption=false;
     this.disabledCorporateOption=false;
+    this.remainingLunchTime=this.allocatedTimeForLunch;   // default
+    this.remainingCorporateTime=this.allocatedTimeForCorporate;   // default
     // erase prev data.
 
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
@@ -1321,8 +1323,8 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
         if(data&&data[0].DAR_Details_Json){
              const dar_json=JSON.parse(data[0].DAR_Details_Json);
              if(dar_json&&dar_json[0]){ 
-                // all timelines submitted on selected date.   
-                this.tmReportArr=dar_json[0].Dardata;   
+                // all timelines submitted on selected date.     
+                this.tmReportArr=dar_json[0].Dardata;    debugger
                 this.submittedTimelines=this.tmReportArr.map((obj)=>({ starttime:obj.starttime, endtime:obj.endtime }));
                 this.submittedTimelines.reverse();
                 this.bol = false;
@@ -1392,8 +1394,9 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
                    else 
                    return sum;
                },0);
-               this.disabledLunchOption=totallnchInMins>=60;
-
+               this.disabledLunchOption=totallnchInMins>=this.allocatedTimeForLunch;
+               this.remainingLunchTime=this.allocatedTimeForLunch-totallnchInMins;
+               
 
 
              // calculate whether corporate responsibility option is allowed or not on the selected date. 
@@ -1405,8 +1408,8 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
               else 
               return sum;
              },0);
-            this.disabledCorporateOption=totalCorporateInMins>=60;
-          
+            this.disabledCorporateOption=totalCorporateInMins>=this.allocatedTimeForCorporate;
+            this.remainingCorporateTime=this.allocatedTimeForCorporate-totalCorporateInMins;
             }
             console.log('submitted timelines:',this.submittedTimelines,'last end time was:',this.lastEndtime);
         }
@@ -1565,9 +1568,13 @@ timeArr: any = [
 tmCapacity=49;  // per day 12 hrs limit.
 timedata3:any[]=[];  
 disabledLunchOption:boolean=false;
+remainingLunchTime:number=0;
 disabledCorporateOption:boolean=false;
+remainingCorporateTime:number=0;
+allocatedTimeForLunch:number=60;   // atmost 1 hour.   (in minutes)
+allocatedTimeForCorporate:number=60; // atmost 1 hour. (in minutes)
 
-selectDateForTimeline(inputDate){   
+selectDateForTimeline(inputDate){     debugger
   this.current_Date = moment(inputDate).format("MM/DD/YYYY");
   this.dateF = new FormControl(new Date(inputDate));
   const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
