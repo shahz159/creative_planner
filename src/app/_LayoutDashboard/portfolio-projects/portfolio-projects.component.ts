@@ -394,11 +394,11 @@ export class PortfolioProjectsComponent implements OnInit {
   UserAccessType : 'Full Access' | 'View Only'
   uniqueid:any
   counting:number=0
-  delayPrjsofPort :any
-  forwardPrjPort:any
-  completionPrjPort:any
-  newapprovalPrjport : any
-  cancellationPort:any
+  delayPrjsofPort :any=[]
+  forwardPrjPort:any=[]
+  completionPrjPort:any=[]
+  newapprovalPrjport : any=[]
+  cancellationPort:any=[]
   checking: boolean = false;
   isPendingChecked : boolean = false
 
@@ -424,6 +424,7 @@ export class PortfolioProjectsComponent implements OnInit {
     //this.LoadingBar_state.start();
     this.service.GetProjectsBy_portfolioId(this._Pid)
       .subscribe((data) => {
+        debugger
         this._MessageIfNotOwner = data[0]['message'];
         console.log(this._MessageIfNotOwner,'this._MessageIfNotOwner')
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);
