@@ -398,7 +398,7 @@ export class PortfolioProjectsComponent implements OnInit {
   forwardPrjPort:any
   completionPrjPort:any
   newapprovalPrjport : any
-  cancellationPort:any
+  cancellationPort:any[] =[]
   checking: boolean = false;
   isPendingChecked : boolean = false
 
