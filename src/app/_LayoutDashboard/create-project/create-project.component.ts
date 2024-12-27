@@ -451,7 +451,7 @@ export class CreateProjectComponent implements OnInit {
        this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];
        this.ProjectType = this.projectInfo.Project_Type;
       console.log(this.projectInfo, "projectInfo");
-  })
+   })
 
   this.service.GetRACISandNonRACISEmployeesforMoredetails(this.PrjCode).subscribe(
     (data) => {
@@ -1893,16 +1893,17 @@ addreschange() {
 
 
 hasNoActionMembers:any=[];
-detectMembersWithoutActions(){  
-  let _hasNoActionMembers=[];
-  if(this.PrjActionsInfo&&this.PrjActionsInfo.length>0){
-    const actns_resps=this.PrjActionsInfo.map(pact=>pact.Team_Res);
-    _hasNoActionMembers=this.totalPeopleOnProject.filter(ob=>{
-         return ob.Role!='Owner'&&actns_resps.includes(ob.Emp_No)==false;
+detectMembersWithoutActions(){    
+  let _hasNoActionMembers=[];  
+  const ownerObj=this.totalPeopleOnProject.find((ob)=>ob.Role=='Owner');
+  if(this.PrjActionsInfo&&this.PrjActionsInfo.length>0){   
+     const actns_resps=this.PrjActionsInfo.map(pact=>pact.Team_Res);
+     _hasNoActionMembers=this.totalPeopleOnProject.filter(ob=>{     
+         return (ob.Emp_No!=ownerObj.Emp_No)&&actns_resps.includes(ob.Emp_No)==false;
     });
   }
   else{
-    _hasNoActionMembers=this.totalPeopleOnProject.filter(ob=>ob.Role!='Owner');
+    _hasNoActionMembers=this.totalPeopleOnProject.filter(ob=>ob.Emp_No!=ownerObj.Emp_No);
   }
   _hasNoActionMembers=_hasNoActionMembers.map(ob=>(ob.RACIS.slice(0,ob.RACIS.indexOf('('))).trim() );
   this.hasNoActionMembers=Array.from(new Set(_hasNoActionMembers));
