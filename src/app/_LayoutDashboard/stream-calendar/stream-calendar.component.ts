@@ -3196,7 +3196,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
       this.AdminMeeting_Status = data['AdminMeeting_Status'];
       this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
       this.propose_date=Schedule_date;
-      console.log(data, "Testing12");
+      console.log(this.EventScheduledjson, "Testing12");
       this.Link_Detail = this.EventScheduledjson[0].Link_Details;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
       this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -3301,7 +3301,12 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
 
 copyLink() {
     const textarea = document.createElement('textarea');
-    textarea.value = this.Link_Detail;
+    if(this.Link_Detail.includes('Meeting link:- ')){
+      textarea.value = this.Link_Detail.split('Meeting link:- ')[1].split(',')[0];
+    }else{
+      textarea.value = this.Link_Detail;
+    }
+  
     document.body.appendChild(textarea);
     textarea.select();
     document.execCommand('copy');
@@ -3859,7 +3864,7 @@ ReshudingTaskandEvent() {
       this.maxDate = this.EventScheduledjson[0]['End_date'];
       this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
       if ((this.EventScheduledjson[0]['Onlinelink']) == true) {
-        document.getElementById("Descrip_Name12").style.display = "flex";
+        // document.getElementById("Descrip_Name12").style.display = "flex";
       }
       if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
         this.selectedrecuvalue = '0';
@@ -5160,7 +5165,7 @@ filterPending(type: 'date' | 'meeting'): void {
       ((data) => {
 
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-        console.log(this.EventScheduledjson, "Testing");
+        console.log(this.EventScheduledjson, "Pending list popup box Testing ");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
@@ -5169,41 +5174,41 @@ filterPending(type: 'date' | 'meeting'): void {
         this.PropStart = this.EventScheduledjson[0].St_Time;
         this.PurposeEnd = this.EventScheduledjson[0].Ed_Time;
         this.pro_date = this.EventScheduledjson[0].Purposedate;
+        this.Link_Detail = this.EventScheduledjson[0].Link_Details;
         this.pro_sttime = this.EventScheduledjson[0].PurposeStarttime;
         this.pro_edtime = this.EventScheduledjson[0].PurposeEndtime;
         this.pro_enddate = this.EventScheduledjson[0].SEndDate;
         this.creation_date = this.EventScheduledjson[0].Created_date;
         this.pending_status = this.EventScheduledjson[0].Pending_meeting;
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
-        console.log(this.Attachments_ary, "Attachments_ary");
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
 
         // console.log(this.EventScheduledjson, "Testing12");
-
+debugger
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
-          // document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':"flex";
-          // document.getElementById("deleteendit").style.display = "flex";
-          // document.getElementById("main-foot").style.display = "none";
+          document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':"flex";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "none";
      
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
-          // document.getElementById("hiddenedit").style.display = "none";
-          // document.getElementById("deleteendit").style.display = "flex";
-          // document.getElementById("main-foot").style.display = "flex";
+          document.getElementById("hiddenedit").style.display = "none";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "flex";
       
 
         }
         else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
-          // document.getElementById("hiddenedit").style.display = "flex";
-          // document.getElementById("deleteendit").style.display = "flex";
-          // document.getElementById("main-foot").style.display = "none";
+          document.getElementById("hiddenedit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "none";
         
         }
         else {
-          // document.getElementById("hiddenedit").style.display = "none";
-          // document.getElementById("deleteendit").style.display = "flex";
-          // document.getElementById("main-foot").style.display = "flex";
+          document.getElementById("hiddenedit").style.display = "none";
+          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("main-foot").style.display = "flex";
    
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);

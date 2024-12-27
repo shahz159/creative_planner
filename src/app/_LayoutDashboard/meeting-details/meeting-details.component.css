@@ -8672,3 +8672,64 @@ svg.asseticn.prim-icn.memo_attachment_img {
     color: #282a3c;
     background: rgb(166 167 180 / 10%);
 }
+
+.search-o-c-div{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
+}
+.search-head-open {
+    color: #666666;
+    width: 30px;
+    height: 30px;
+    background-color: #e0edff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.search-head-open svg {
+    width: 18px;
+    height: 18px;
+}
+.search-head-filter {
+    background-color: #e0edff;
+    color: #666666;
+    border-radius: 30px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    width: 0px;
+    transition: all 0.3s ease 0s !important;
+    overflow: hidden;
+}
+.search-head-filter.search-head-filter-open{
+    width: 250px;
+}
+
+.search-head-filter .form-control {
+    background-color: transparent;
+    border: 0;
+    height: calc(1.5em + 1.3rem + -6px);
+}
+.search-head-close {
+    color: #666666;
+    width: 30px;
+    height: 30px;
+    background-color: #e0edff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding-right: 0.75rem;
+}
+.search-head-close svg {
+    width: 14px;
+    height: 14px;
+}

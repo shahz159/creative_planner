@@ -2678,10 +2678,11 @@ onFileChange(event) {
       this.myFiles.push(file.name);
 
       var d = new Date().valueOf();
+      debugger
       this._lstMultipleFiales = [...this._lstMultipleFiales, {
         UniqueId: d,
         FileName: file.name,
-        Size: file.size,
+        Size: `${Math.ceil(file.size / 1024)}`,
         Files: file
       }];
     }
@@ -2825,69 +2826,69 @@ onFileChange(event) {
         for (var i = 0; i < this._lstMultipleFiales.length; i++) {
           frmData.append("files", this._lstMultipleFiales[i].Files);
         }
-  const xmlDoc = document.implementation.createDocument('', '', null);
-  const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
-  
-  // Iterate over the file groups
-  this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
-  console.log(`Processing group ${groupIndex}:`, fileGroup);
-  
-  // Normalize Files to an array
-  const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
-  
-  files.forEach((file, fileIndex) => {
-    if (!file || !file.name || !file.type) {
-      console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
-      return;
-    }
-  
-    console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
-  
-    const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
-    const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
-    const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
-    const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
-  
-    // Populate <FileName> element
-    nameElement.textContent = file.name;
-  
-    // Generate a random ID and sanitize the file name for CloudName
-    const randomId = this.generateRandomId();
-    const sanitizedFileName = this.sanitizeFileName(file.name);
-    cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
-  
-    // Populate <ContentType> element
-    const contentType = this.getContentType(file.type);
-    contentTypeElement.textContent = contentType;
-  
-    // Append child elements to the <Row>
-    rowElement.appendChild(nameElement);
-    rowElement.appendChild(cloudNameElement);
-    rowElement.appendChild(contentTypeElement);
-  
-    // Append the <Row> to the root element
-    parentElement.appendChild(rowElement);
-  });
-  });
-  
-  // Append the root <MultiDocument> element to the XML document
-  xmlDoc.appendChild(parentElement);
-  
-  // Serialize the XML document to a string
-  const serializer = new XMLSerializer();
-  const xmlString = serializer.serializeToString(xmlDoc);
-  
-  // Append the XML string to FormData
-  frmData.append("docs_multiple_xml", xmlString);
-  
-  // Log the XML string for debugging
-  console.log("Generated XML:", xmlString);
-  
-  } 
-  else {
-    this._attachmentValue = 0;
-    frmData.append("Attachment", "false");
-  }
+        const xmlDoc = document.implementation.createDocument('', '', null);
+        const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+        
+        // Iterate over the file groups
+        this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+        console.log(`Processing group ${groupIndex}:`, fileGroup);
+        
+        // Normalize Files to an array
+        const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+        
+        files.forEach((file, fileIndex) => {
+          if (!file || !file.name || !file.type) {
+            console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+            return;
+          }
+        
+          console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+        
+          const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+          const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+          const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+          const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+        
+          // Populate <FileName> element
+          nameElement.textContent = file.name;
+        
+          // Generate a random ID and sanitize the file name for CloudName
+          const randomId = this.generateRandomId();
+          const sanitizedFileName = this.sanitizeFileName(file.name);
+          cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
+        
+          // Populate <ContentType> element
+          const contentType = this.getContentType(file.type);
+          contentTypeElement.textContent = contentType;
+        
+          // Append child elements to the <Row>
+          rowElement.appendChild(nameElement);
+          rowElement.appendChild(cloudNameElement);
+          rowElement.appendChild(contentTypeElement);
+        
+          // Append the <Row> to the root element
+          parentElement.appendChild(rowElement);
+        });
+        });
+        
+        // Append the root <MultiDocument> element to the XML document
+        xmlDoc.appendChild(parentElement);
+        
+        // Serialize the XML document to a string
+        const serializer = new XMLSerializer();
+        const xmlString = serializer.serializeToString(xmlDoc);
+        
+        // Append the XML string to FormData
+        frmData.append("docs_multiple_xml", xmlString);
+        
+        // Log the XML string for debugging
+        console.log("Generated XML:", xmlString);
+        
+        } 
+        else {
+          this._attachmentValue = 0;
+          frmData.append("Attachment", "false");
+        }
 
      
        this._calenderDto.flagid = this._PopupConfirmedValue;
@@ -2945,6 +2946,7 @@ onFileChange(event) {
           }
         )
       }
+      this._lstMultipleFiales = [];
     }
     else {
       this.notifyService.showInfo("Request Cancelled", "Please select Attachment(s) to link");
@@ -8309,7 +8311,6 @@ getFileType(fileName: string): string {
 copied = false;
 
   copyLink() {
-    console.log(this.Link_Detail,'dwn')
     const textarea = document.createElement('textarea');
     if(this.Link_Detail.includes('Meeting link:- ')){
       textarea.value = this.Link_Detail.split('Meeting link:- ')[1].split(',')[0];
@@ -8398,9 +8399,14 @@ validateURL(value: string): void {
 }
 
 
+SrearchingAgendaItem:any;
 
-
-
+open_search() {
+  document.getElementById("search-head-filter-open").classList.add("search-head-filter-open");
+}
+close_search() {
+  document.getElementById("search-head-filter-open").classList.remove("search-head-filter-open");
+}
 
 
 }

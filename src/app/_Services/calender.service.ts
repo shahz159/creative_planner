@@ -225,6 +225,7 @@ export class CalenderService {
     this.obj_CalenderDTO.Rec_values=obj.Rec_values;
     this.obj_CalenderDTO.Rec_EndDate=obj.Rec_EndDate;
   
+    console.log(this.obj_CalenderDTO,'obj_CalenderDTO 3123')
     return this.http.post(this.rootUrl + "CalenderAPI/Newinsertdarft_meetingco", this.obj_CalenderDTO);
   }
   NewGetrequeat_Accpect(obj:CalenderDTO){
@@ -296,6 +297,7 @@ NewPending_table(obj:CalenderDTO){
   }
 
   UploadCalendarAttachmenstCore(data) {
+  
     return this.http.post(this.rootUrlcore + "Notification/NewAddCalendarAttachmentCore", data
       , {
         reportProgress: true,
@@ -305,6 +307,9 @@ NewPending_table(obj:CalenderDTO){
   }
 
   _AzureUploadCalendarAttachments(data) {
+    console.log(data,'attachment data')
+
+    console.log(this.rootUrlcore + "Azure/NewAddCalendarAttachmentCore",'attachment url')
     return this.http.post(this.rootUrlcore + "Azure/NewAddCalendarAttachmentCore", data
       , {
         reportProgress: true,
