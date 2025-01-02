@@ -95,17 +95,9 @@ export class NotificationComponent implements OnInit {
     this.router.navigate(["Notifications"]);
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.Current_user_Name=localStorage.getItem('UserfullName');
-    this.viewAll(this.sendtype);
-    this.showPrjAprv();
-    this.newNotificationLeave()
-    this.newNotificationLeaveRequests()
-    this.Leaveapprovaltab()
-    this.selectedDropdown = 'ProjectApproval';
-
-
-
-
-    // this.GetEmployeeLeaveDetail()
+    this.newNotificationLeave();     // fetch all leave responses.
+    this.newNotificationLeaveRequests();  // fetch all leave requests.
+    this.setPageContent('PROJECT APPROVALS');   // show project approval by default on the page.
   }
 
 
@@ -269,8 +261,6 @@ export class NotificationComponent implements OnInit {
           this.lastPagerecords=20;
         }
     }
-
-
   }
 
   loadMore() {
@@ -298,33 +288,40 @@ export class NotificationComponent implements OnInit {
   showLeaveAprv() {
     document.getElementById('prj-aprv-list').classList.add('d-none');
     document.getElementById('leave-aprv-list').classList.remove('d-none');
-
   }
 
-  titleapp() {
-    document.getElementById("titlepro").style.display = "block";
-    document.getElementById("titleinfo").style.display = "none";
-    document.getElementById("titlereq").style.display = "none";
-    document.getElementById("titleres").style.display = "none";
+  currentPageContent:'PROJECT APPROVALS'|'INFORMATION'|'LEAVE REQUESTS'|'LEAVE RESPONSES'='PROJECT APPROVALS';
+  setPageContent(contenttype:'PROJECT APPROVALS'|'INFORMATION'|'LEAVE REQUESTS'|'LEAVE RESPONSES'){
+      switch(contenttype)
+      {
+          case 'PROJECT APPROVALS':{
+               this.currentPageContent='PROJECT APPROVALS';
+               this.showPrjAprv();     // shows the project approval list table. and hide the leave approvals list if opened.
+               this.viewAll(this.type1);    // fetch prj approvals.
+          };break;
+          case 'INFORMATION':{
+               this.currentPageContent='INFORMATION';
+               this.showPrjAprv();    // shows the project approval list table. and hide the leave approvals list if opened.
+               this.viewAll(this.type2);   //fetch informations.
+               
+          };break;
+          case 'LEAVE REQUESTS':{
+               this.currentPageContent='LEAVE REQUESTS';
+               this.leavePanel='REQUESTS';
+               this.showLeaveAprv();  // shows the leaves list table. and hide the projects approvals list if opened.
+               this.newNotificationLeaveRequests(); // fetch leave requests.
+  
+          };break;
+          case 'LEAVE RESPONSES':{
+               this.currentPageContent='LEAVE RESPONSES';
+               this.leavePanel='RESPONSES';
+               this.showLeaveAprv();  // shows the leaves list table. and hide the projects approvals list if opened.
+               this.newNotificationLeave();  // fetch leave responses.
+          };break;
+          default:{};
+      }
   }
-  titleinfo() {
-    document.getElementById("titleinfo").style.display = "block";
-    document.getElementById("titlepro").style.display = "none";
-    document.getElementById("titlereq").style.display = "none";
-    document.getElementById("titleres").style.display = "none";
-  }
-  titlereq() {
-    document.getElementById("titlereq").style.display = "block";
-    document.getElementById("titlepro").style.display = "none";
-    document.getElementById("titleinfo").style.display = "none";
-    document.getElementById("titleres").style.display = "none";
-  }
-  titleres() {
-    document.getElementById("titleres").style.display = "block";
-    document.getElementById("titlepro").style.display = "none";
-    document.getElementById("titleinfo").style.display = "none";
-    document.getElementById("titlereq").style.display = "none";
-  }
+
 
   openInfo1(pcode,sid) {
     this.BsService.SetNewStandardId(sid);
@@ -358,27 +355,7 @@ export class NotificationComponent implements OnInit {
     myWindow.focus();
   }
 
-  // newDetails1(prjcode,actcode) {
-  //   let name: string = 'Details';
-  //   let qparams='?actionCode='+actcode;
-  //   var url = document.baseURI + name;
-  //   var myurl = `${url}/${prjcode}${qparams}`;
-  //   var myWindow = window.open(myurl);
-  //   myWindow.focus();
-  // }
-
-  // newDetails(prjcode) {
-
-  //   let name: string = 'Details';
-  //   var url = document.baseURI + name;
-  //   var myurl = `${url}/${prjcode}`;
-  //   var myWindow = window.open(myurl);
-  //   myWindow.focus();
-
-
-  // }
-
-
+ 
   openDetails(p1,p2){
     let name: string = 'Details';
     var url = document.baseURI + name;
@@ -470,27 +447,6 @@ export class NotificationComponent implements OnInit {
     document.getElementById('prj-aprv-list').classList.remove('d-none');
     document.getElementById('leave-aprv-list').classList.add('d-none');
   }
-
-
-  // leaveform(index,currentuser,leavecode){
-
-  //   this.currentResIndex=index;
-
-
-
-  //   this.approvalservice.GetEmployeeLeaveDetail(currentuser, leavecode).subscribe((data) => {
-  //       console.log("responssesse:",data);
-  //       // this.myLeaveDetails=JSON.parse(data[0].LeaveResponsedetails);
-  //       // console.log("leave deatils asdf:",this.myLeaveDetails);
-
-  //     });
-
-  //   document.getElementById("rightbar-overlay").style.display = "block";
-  //   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-  //   document.getElementById("leave_requisition_form_slider_bar").classList.add("kt-quick-panel--on");
-  //   $('#leave_requisition_form_slider_bar').addClass('open_requisition_sidebar_info');
-  // }
-
 
 
   viewLeaveResponseDetails(index:number,leaveCode:string,requestType:string){
@@ -964,56 +920,6 @@ console.log( this._NotificationActivity," this._NotificationActivity")
 
 
 
-//   select(ev,item){
-
-//     if(ev.target.checked==false){
-//       // const checkbox = document.getElementById('snocheck') as HTMLInputElement;
-//       // checkbox.checked = false;
-//     }
-//     else if(ev.target.checked==true){
-
-
-
-//     //   // Assuming you have checkboxes with a common class name 'checkbox'
-//     //   const checkboxes = document.querySelectorAll('.form-check-input');   // this includes both subcheckboxes + maincheckbox.
-//     //   const selectAllCheckbox = document.getElementById('snocheck') as HTMLInputElement;  // maincheckbox
-
-//     //   // Add event listeners to each checkbox
-//     //   checkboxes.forEach((checkbox: HTMLInputElement) => {
-//     //     checkbox.addEventListener('change', updateSelectAllCheckbox);
-//     //   });
-
-//     //   // Function to update the "Select All" checkbox state
-//     //   function updateSelectAllCheckbox() {
-//     //     const allChecked = Array.from(checkboxes).every((checkbox: HTMLInputElement) => checkbox.checked);
-//     //     selectAllCheckbox.checked = allChecked;
-//     //   }
-
-//     //   // Add event listener to the "Select All" checkbox
-//     //   selectAllCheckbox.addEventListener('change', toggleAllCheckboxes);
-
-//     //   // Function to toggle the state of all checkboxes based on the "Select All" checkbox
-//     //   function toggleAllCheckboxes() {
-//     //     const isChecked = selectAllCheckbox.checked;
-//     //     checkboxes.forEach((checkbox: HTMLInputElement) => {
-//     //       checkbox.checked = isChecked;
-//     //     });
-//     // }
-//     }
-
-//   const checkbox = ev.target as HTMLInputElement;
-//   if (checkbox.checked) {
-//     this.selectedItems.push(item);
-//   } else {
-//     const index = this.selectedItems.findIndex((selectedItem) => selectedItem === item);
-//     if (index > -1) {
-//       this.selectedItems.splice(index, 1);
-//     }
-//   }
-//   console.log(this.selectedItems,"single");
-// }
-
-
 select(ev,item){
 
    if(ev.target.checked)
@@ -1270,30 +1176,9 @@ acceptSelectedValues(_comments?:string) {
     this.notifyService.showError("Development Under Maintainance", 'Failed');
   }
 
-  dropdown = true;
-  leavePanelTitle: string = 'Leave Approval';
-  leavePanel: "REQUESTS" | "RESPONSES" = "REQUESTS";
-  selectedLeaveApproval: string = '';
-  selectedDropdown: string = 'none';
-
-  changeLeavePanel(panel: "REQUESTS" | "RESPONSES") {
-    this.leavePanel = panel;
-    this.leavePanelTitle = panel === 'REQUESTS' ? 'Leave Requests' : 'Leave Responses';
-    this.selectedDropdown = 'none';
-    this.dropdown = true;
-    this.isSelectedBlue = true;
-  }
-
-  isSelectedBlue: boolean = true;
-   Leaveapprovaltab() {
-    this.isSelectedBlue = false;
-  }
-
-  // leaveapp:"Project Approval"| "information"="Project Approval"
-  // projectapp(app:"Project Approval"| "information"){
-  //   this.leaveapp=app
-  // }
-
+  
+leavePanel: "REQUESTS" | "RESPONSES" = "REQUESTS";
+ 
 //  leave requests approval start
 leaveDecision:"APPROVE"|"APPROVEBUT"|"REJECTED"|undefined=undefined;
 aprv_cmts:string|undefined;
@@ -1303,7 +1188,7 @@ previousCmts:any=[];
 cmts_Loading:boolean=false;
 today:Date=new Date();
 
-onSubmitLRbtn(){debugger
+onSubmitLRbtn(){
 
   if(  (this.aprv_cmts&&this.aprv_cmts.trim())&&
        (this.leaveDecision=='APPROVEBUT'?(this.lv_startdate&&this.lv_enddate):true)
@@ -1403,21 +1288,6 @@ putCmts(cmt:string)
    if(!this.aprv_cmts)
       this.aprv_cmts='';
    this.aprv_cmts=this.aprv_cmts+cmt;
-}
-
-
-// leave requests approval end
-onButtonClick(buttonId: string) {
-  const elements = document.getElementsByClassName('btn-filtr');
-  for (let i = 0; i < elements.length; i++) {
-    elements[i].classList.remove('active');
-  }
-
-
-  if(buttonId=='tot')
-    document.getElementById('tot').classList.add('active');
-  else if(buttonId=='inn')
-    document.getElementById('inn').classList.add('active');
 }
 
 Team_Autho:any
@@ -1591,13 +1461,6 @@ onAcceptWithCmtsBtnClicked(){
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
 }
-
-
-
-
-
-
-
 
 // accept selected approvals with comments end.
 

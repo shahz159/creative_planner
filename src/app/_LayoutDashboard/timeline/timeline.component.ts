@@ -26,7 +26,7 @@ export const MY_DATE_FORMATS = {
     dateInput: 'DD-MM-YYYY',
   },
   display: {
-    dateInput: 'DD-MM-YYYY',
+    dateInput: 'dddd, MMMM DD, YYYY',
     monthYearLabel: 'MMMM YYYY',
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MMMM YYYY'
@@ -952,8 +952,8 @@ fieldRequired:boolean=false;
 onTLSubmitBtnClick(){
   
  const invalidEndtime=(this.starttime&&this.endtime&&(  
- (this.project_type=='corporate'&&((this.endtime.value-this.starttime.value)/(1000*60))>60)||
- (this.project_type=='lunch'&&((this.endtime.value-this.starttime.value)/(1000*60))>60)||
+ (this.project_type=='corporate'&&((this.endtime.value-this.starttime.value)/(1000*60))>this.remainingCorporateTime)||
+ (this.project_type=='lunch'&&((this.endtime.value-this.starttime.value)/(1000*60))>this.remainingLunchTime)||
  (this.endtime.value<this.starttime.value)) );
 
  const lunchPersonalCorporate:boolean=['lunch','personal','corporate'].includes(this.project_type);
@@ -1303,6 +1303,8 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
     this.endtime=null;
     this.disabledLunchOption=false;
     this.disabledCorporateOption=false;
+    this.remainingLunchTime=this.allocatedTimeForLunch;   // default
+    this.remainingCorporateTime=this.allocatedTimeForCorporate;   // default
     // erase prev data.
 
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
@@ -1315,14 +1317,14 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
     this.ObjSubTaskDTO.sort = 'custom';
     this.tmReportLoading=true;
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-      (data => {          
+      (data => {           
         this.tmReportLoading=false;
         console.log(data);
         if(data&&data[0].DAR_Details_Json){
              const dar_json=JSON.parse(data[0].DAR_Details_Json);
              if(dar_json&&dar_json[0]){ 
-                // all timelines submitted on selected date.   
-                this.tmReportArr=dar_json[0].Dardata;   
+                // all timelines submitted on selected date.     
+                this.tmReportArr=dar_json[0].Dardata;    
                 this.submittedTimelines=this.tmReportArr.map((obj)=>({ starttime:obj.starttime, endtime:obj.endtime }));
                 this.submittedTimelines.reverse();
                 this.bol = false;
@@ -1392,8 +1394,9 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
                    else 
                    return sum;
                },0);
-               this.disabledLunchOption=totallnchInMins>=60;
-
+               this.disabledLunchOption=totallnchInMins>=this.allocatedTimeForLunch;
+               this.remainingLunchTime=this.allocatedTimeForLunch-totallnchInMins;
+               
 
 
              // calculate whether corporate responsibility option is allowed or not on the selected date. 
@@ -1405,8 +1408,8 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
               else 
               return sum;
              },0);
-            this.disabledCorporateOption=totalCorporateInMins>=60;
-          
+            this.disabledCorporateOption=totalCorporateInMins>=this.allocatedTimeForCorporate;
+            this.remainingCorporateTime=this.allocatedTimeForCorporate-totalCorporateInMins;
             }
             console.log('submitted timelines:',this.submittedTimelines,'last end time was:',this.lastEndtime);
         }
@@ -1562,12 +1565,16 @@ timeArr: any = [
   "23:00", "23:15", "23:30", "23:45"
 ];
 
-tmCapacity=49;  // per day 12 hrs limit.
+tmCapacity=93;  // 23 hrs per day limit.   
 timedata3:any[]=[];  
 disabledLunchOption:boolean=false;
+remainingLunchTime:number=0;
 disabledCorporateOption:boolean=false;
+remainingCorporateTime:number=0;
+allocatedTimeForLunch:number=60;   // atmost 1 hour.   (in minutes)
+allocatedTimeForCorporate:number=60; // atmost 1 hour. (in minutes)
 
-selectDateForTimeline(inputDate){   
+selectDateForTimeline(inputDate){     
   this.current_Date = moment(inputDate).format("MM/DD/YYYY");
   this.dateF = new FormControl(new Date(inputDate));
   const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
@@ -1577,12 +1584,11 @@ selectDateForTimeline(inputDate){
   else if(this.current_Date==yesterdaystr)
   this.timeline_of='yesterday';   
 
-
   this.timedata3=this.getTimeStamps(moment(inputDate).format("YYYY-MM-DD"),this.timeArr);   // initializing with default values.
   this.getTimelineReportByDate(this.timeline_of); 
 }
 
-getStartTiming1(){   debugger
+getStartTiming1(){   
   let list:any=[]; 
 
   let from;
@@ -1619,21 +1625,23 @@ getStartTiming1(){   debugger
 
   this.timedata3=list;
 
- 
 }
 
 
 getEndTiming1(){
   let list:any=[];
-
+debugger
   // based on start time decide endtime.  if: no timeline found on selected date.
-  const from=this.timeArr.indexOf(this.bol?this.starttime!.time:this.submittedTimelines[0].starttime);
+  let from=0;
+  if(this.starttime){
+  from=this.timeArr.indexOf(this.bol?this.starttime.time:this.submittedTimelines[0].starttime);
+  }
   const to=from+this.tmCapacity;
   let choosed_date:any=moment(this.current_Date,'MM/DD/YYYY').toDate();
   let next_date:any=new Date(choosed_date);  next_date.setDate(next_date.getDate()+1);
   choosed_date=moment(choosed_date).format("YYYY-MM-DD");
   next_date=moment(next_date).format("YYYY-MM-DD");
-  list=[...this.getTimeStamps(choosed_date,this.timeArr),...this.getTimeStamps(next_date,this.timeArr)].slice(from,to);
+  list=[...this.getTimeStamps(choosed_date,this.timeArr),...this.getTimeStamps(next_date,this.timeArr)].slice(from+1,to);
 
  
      // show time values till current time only. if: selected date==current date.
@@ -1676,7 +1684,13 @@ ngmodelObjCompare(obj1,obj2):boolean{
 }  // it is used in starttime and endtime ngmodel comparision.  since we are storing objects as ngmodel value.
 
 
-
+getTimeDiff(time1:number,time2:number):string{
+   if(time1&&time2){
+        const dfInMins=((time2-time1)/60000);
+        return dfInMins<60?`${dfInMins} mins`:`${(dfInMins/60).toFixed(1)} hrs`;
+   }
+   return '';
+}
 
 // test3
 

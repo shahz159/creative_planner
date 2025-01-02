@@ -41,6 +41,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ThisReceiver } from '@angular/compiler';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
+import { object } from '@amcharts/amcharts5';
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -1531,12 +1532,11 @@ export class DashboardComponent implements OnInit {
         // alert(this.scstartdate)
         // this.Attachment12_ary=this.EventScheduledjson[0]['Attachmentsjson']
         this.Addressurl = this.EventScheduledjson[0]['Addressurl']
-        // alert( this.Addressurl);
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
         this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
         this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
 
-  
+  debugger
        if(this.Link_Details != ''){
         if(!this.Link_Details.includes('<a href=')){
           var details = this.Link_Details.split(', ')
@@ -1892,7 +1892,7 @@ export class DashboardComponent implements OnInit {
 isValidURL = true;
 
   onSubmitBtnClicked() {
-    debugger
+
     if(this.Link_Details){
     this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
     }
@@ -1944,11 +1944,11 @@ isValidURL = true;
 
   Meeting_Id:any;
   Meeting_password:any;
-
+  rapeatLink_Details:boolean=true;
 
 
   OnSubmitSchedule() {
-debugger
+
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
       return false;
@@ -2053,8 +2053,6 @@ debugger
         var vEndTime = "EndTime";
         element[vEndTime] = this.Endtms;
 
-debugger
-
         var vEnd_date = "End_date";
         element[vEnd_date] = this._EndDate;
 
@@ -2097,8 +2095,7 @@ debugger
         var vLocation_url = "Addressurl";
         element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
 
-
-
+    
  
         if(this.Link_Details!=null){      
           this.Link_Details = this.Link_Details.trim() == ''?null:this.Link_Details;
@@ -2113,11 +2110,15 @@ debugger
           this._onlinelink =false
         }
 
+
+        debugger
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+        if(this.rapeatLink_Details==true){
         this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password;
-
-        console.log('this.Link_Details :->',this.Link_Details ,'this.Meeting_Id :->', this.Meeting_Id, 'this.Meeting_password :->',this.Meeting_password)
+        this.rapeatLink_Details=false;
+      }
+        // console.log('this.Link_Details :->',this.Link_Details ,'this.Meeting_Id :->', this.Meeting_Id, 'this.Meeting_password :->',this.Meeting_password)
       
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
@@ -2197,70 +2198,70 @@ debugger
           frmData.append("files", this._lstMultipleFiales[i].Files);
         }
         const xmlDoc = document.implementation.createDocument('', '', null);
-const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+      const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
 
-// Iterate over the file groups
-this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
-  console.log(`Processing group ${groupIndex}:`, fileGroup);
+      // Iterate over the file groups
+      this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+        console.log(`Processing group ${groupIndex}:`, fileGroup);
 
-  // Normalize Files to an array
-  const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+        // Normalize Files to an array
+        const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
 
-  files.forEach((file, fileIndex) => {
-    if (!file || !file.name || !file.type) {
-      console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
-      return;
-    }
+        files.forEach((file, fileIndex) => {
+          if (!file || !file.name || !file.type) {
+            console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+            return;
+          }
 
-    console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+          console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
 
-    const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
-    const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
-    const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
-    const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+          const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+          const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+          const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+          const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
 
-    // Populate <FileName> element
-    nameElement.textContent = file.name;
+          // Populate <FileName> element
+          nameElement.textContent = file.name;
 
-    // Generate a random ID and sanitize the file name for CloudName
-    const randomId = this.generateRandomId();
-    const sanitizedFileName = this.sanitizeFileName(file.name);
-    cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
+          // Generate a random ID and sanitize the file name for CloudName
+          const randomId = this.generateRandomId();
+          const sanitizedFileName = this.sanitizeFileName(file.name);
+          cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
 
-    // Populate <ContentType> element
-    const contentType = this.getContentType(file.type);
-    contentTypeElement.textContent = contentType;
+          // Populate <ContentType> element
+          const contentType = this.getContentType(file.type);
+          contentTypeElement.textContent = contentType;
 
-    // Append child elements to the <Row>
-    rowElement.appendChild(nameElement);
-    rowElement.appendChild(cloudNameElement);
-    rowElement.appendChild(contentTypeElement);
+          // Append child elements to the <Row>
+          rowElement.appendChild(nameElement);
+          rowElement.appendChild(cloudNameElement);
+          rowElement.appendChild(contentTypeElement);
 
-    // Append the <Row> to the root element
-    parentElement.appendChild(rowElement);
-    });
-  });
+          // Append the <Row> to the root element
+          parentElement.appendChild(rowElement);
+          });
+        });
 
-// Append the root <MultiDocument> element to the XML document
-  xmlDoc.appendChild(parentElement);
+      // Append the root <MultiDocument> element to the XML document
+        xmlDoc.appendChild(parentElement);
 
-  // Serialize the XML document to a string
-  const serializer = new XMLSerializer();
-  const xmlString = serializer.serializeToString(xmlDoc);
+        // Serialize the XML document to a string
+        const serializer = new XMLSerializer();
+        const xmlString = serializer.serializeToString(xmlDoc);
 
-  // Append the XML string to FormData
-  frmData.append("docs_multiple_xml", xmlString);
+        // Append the XML string to FormData
+        frmData.append("docs_multiple_xml", xmlString);
 
-  // Log the XML string for debugging
-  console.log("Generated XML:", xmlString);
+        // Log the XML string for debugging
+        console.log("Generated XML:", xmlString);
 
-      } 
-      else {
-        this._attachmentValue = 0;
-        frmData.append("Attachment", "false");
-      }
+          } 
+          else {
+            this._attachmentValue = 0;
+            frmData.append("Attachment", "false");
+          }
 
-      
+          
 
       frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
@@ -2269,6 +2270,12 @@ this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
 
       this._calenderDto.attachment =this._attachmentValue.toString();
+
+     
+      frmData.forEach((value, key) => {
+        console.log("Start", `${key} : ${value}, = ${typeof value}` ,"End");
+      });
+
 
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
@@ -2282,8 +2289,7 @@ this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
             this.CalenderService.UploadCalendarAttachmenstCore(frmData).subscribe(
 
               (event: HttpEvent<any>) => {
-             
-
+            
                 switch (event.type) {
                   case HttpEventType.Sent:
                     console.log('Request has been made!');
@@ -2400,42 +2406,13 @@ this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
     return Math.random().toString().substr(2, 6).padStart(6, '0');
   }
 
-  // Sanitize file name
   sanitizeFileName(fileName: string): string {
     return fileName
-      .replace(/</g, '%3C')
-      .replace(/>/g, '%3E')
-      .replace(/#/g, '%23')
-      .replace(/\+/g, '%2B')
-      .replace(/{/g, '%7B')
-      .replace(/}/g, '%7D')
-      .replace(/\|/g, '%7C')
-      .replace(/\^/g, '%5E')
-      .replace(/~/g, '%7E')
-      .replace(/\[/g, '%5B')
-      .replace(/]/g, '%5D')
-      .replace(/;/g, '%3B')
-      .replace(/\//g, '%2F')
-      .replace(/\?/g, '%3F')
-      .replace(/:/g, '%3A')
-      .replace(/@/g, '%40')
-      .replace(/=/g, '%3D')
-      .replace(/&/g, '%26')
-      .replace(/\$/g, '%24'); // Leave spaces as-is
+      .replace(/[^a-zA-Z0-9. ]/g, '_') // Allow dots by including '.' in the regex
+      .replace(/ /g, '_')              // Replace spaces with _
+      .replace(/_+/g, '_');            // Replace multiple underscores with a single _
   }
-  // Map file content type
-  // private getContentType(contentType: string): string {
-  //   switch (contentType) {
-  //     case 'application/pdf':
-  //       return '.pdf';
-  //     case 'image/png':
-  //       return '.png';
-  //     case 'image/jpeg':
-  //       return '.jpg';
-  //     default:
-  //       return '.' + contentType.split('/')[1]; // Default to file extension
-  //   }
-  // }
+  
 
   getContentType(fileName: any): string | null {
     if (!fileName) {
@@ -2445,6 +2422,9 @@ this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
     return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : null;
   }
 
+
+
+  
   OnSubmitReSchedule(type: number) {
 
     if(this.Link_Details){
@@ -2485,7 +2465,7 @@ this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
       // alert(end);
       const format2 = "YYYY-MM-DD";
       const d1 = new Date(moment(start).format(format2));
-
+debugger
       const d2 = new Date(moment(end).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = [];
@@ -3099,6 +3079,7 @@ this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
   Task_type(value) {
  
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
+    document.getElementById("rightbar-overlay-et").style.display = "block";
     // document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
@@ -4687,6 +4668,7 @@ debugger
     $('.bg-ovr1').removeClass('d-block');
     document.getElementsByClassName("bg-ovr1")[0].classList.remove("d-block");
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
+    document.getElementById("rightbar-overlay-et").style.display = "block";
     // document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("div_recurrence").style.display = "block";
@@ -4978,7 +4960,7 @@ debugger
     //
     let is12am: boolean = (end.getHours() == 0 && end.getMinutes() == 0 && end.getSeconds() == 0);
     if (eventIsWithinView && (startMidnight !== endMidnight) && !is12am) {
-debugger
+
       if (start < viewStart) {
         this.TwinEvent.push(event._def.extendedProps.Schedule_ID);
       }
@@ -4990,7 +4972,6 @@ debugger
         dayLabel = 'Day (2/2)';
         const index = this.TwinEvent.indexOf(event._def.extendedProps.Schedule_ID);
         this.TwinEvent.splice(index, 1);
-
       }
       else {
         dayLabel = 'Day (1/2)';
@@ -5005,7 +4986,6 @@ debugger
         const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
         const newTitle = `${titleWithoutDay} - ${dayLabel}`;
 
-
         if (info.view.type === 'listWeek') {
 
           info.el.children[2].innerText = newTitle;
@@ -5014,15 +4994,8 @@ debugger
           event.setProp('title', event.title);
           this.TwinEvent = [];
         }
-
-
-
       }
     }
-
-
-
-
   }
 
 
@@ -5091,6 +5064,7 @@ debugger
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
+    document.getElementById("rightbar-overlay-et").style.display = "none";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
@@ -6207,6 +6181,7 @@ debugger
     // this.Insert_indraft();
     // document.getElementById('date-menu').classList.remove("show");
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
+    document.getElementById("rightbar-overlay-et").style.display = "none";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
@@ -6233,6 +6208,7 @@ debugger
     this.projectsSelected = [];
     this.Subtask = null;
     this.Startts = null;
+    this.rapeatLink_Details=true;
     this.Endtms = null;
     this.SelectStartdate = null;
     this.Selectenddate = null;

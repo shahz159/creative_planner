@@ -2503,8 +2503,10 @@
                       </div>
                   </div>
 
-                  <div *ngIf="(!projectInfo.Status.toLowerCase().includes('delay'))&&projectInfo.totaltaskcount>0" class="notification underapproval-notification">
-                          <svg fill="#00a2eb" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                  <div *ngIf="(!projectInfo.Status.toLowerCase().includes('delay'))&&projectInfo.totaltaskcount>0" class="notification"  [ngClass]="{'delay-notification':(projectInfo.submissioncount<projectInfo.totaltaskcount), 'audit-complete-notf':(projectInfo.submissioncount==projectInfo.totaltaskcount) }">
+                         
+                       
+                          <svg *ngIf="projectInfo.submissioncount==projectInfo.totaltaskcount" fill="#388E3C" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                               xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 47 47" xml:space="preserve">
                               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                               <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -2532,7 +2534,11 @@
                                   </g>
                               </g>
                           </svg>
-                          <span class="notif-msg" style="color : #00a2eb;">Total submissions till date: {{projectInfo.submissioncount}} / {{projectInfo.totaltaskcount}}.</span>
+
+                          <svg *ngIf="projectInfo.submissioncount<projectInfo.totaltaskcount"  class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#ff2727" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
+
+
+                          <span class="notif-msg" [ngStyle]="{'color':projectInfo.submissioncount==projectInfo.totaltaskcount?'':'#ff2727'}" >Total submissions till date: {{projectInfo.submissioncount}} / {{projectInfo.totaltaskcount}}.</span>
                   </div>
               </ng-container>
 
@@ -2953,92 +2959,119 @@
                                                       <div class="meeting-attendance-heading">Completion Report</div>
                                                       <div class="d-flex gap-1">
 
+                                                         <ng-container *ngIf="projectInfo.selfApproved; else completionbyOther">
+                                                            <fieldset class="meeting-attendance-item mt-2" style=" padding-top: 0;">
+                                                                <legend style=" font-size: 10px;max-width: fit-content; color: #9a9a9a;">Submitted and approved by</legend>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div class="meeting-attendance-count fs-7">{{projectInfo.selfApproved}}</div>
+                                                                    <div class="meeting-attendance-count fs-6">{{projectInfo.CD|date:'d MMM, yyyy'}}</div>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between gap-2">
+                                                                   
+                                                                    <div *ngIf="projectInfo.ApproveComments" class="d-flex gap-1">
+                                                                      <div #submitbyRemarksBx1 class="compl-remarks-span  flex-grow-1  text-muted fs-8">
+                                                                          {{projectInfo.ApproveComments}}
+                                                                      </div>
+                                                                      <button class="txt-expnd-btn align-self-end" *ngIf="submitbyRemarksBx1.scrollHeight>submitbyRemarksBx1.clientHeight" (click)="$event.stopPropagation(); submitbyRemarksBx1.classList.remove('compl-remarks-span'); lessbtn6.classList.remove('d-none'); ">
+                                                                          <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                      </button>
+                                                                      <button #lessbtn6 class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); submitbyRemarksBx1.classList.add('compl-remarks-span'); lessbtn6.classList.add('d-none');">
+                                                                          <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                      </button>
+                                                                    </div>
+  
+                                                                    <span *ngIf="projectInfo.CompleteProofDoc" [title]="projectInfo.Sourcefile" (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" class="text-info fs-8 text-underline curser-pointer flex-shrink-0">
+                                                                        <span class="fs-9 text-info">attachment</span>
+                                                                    </span>
+                                                               </div>
+                                                            </fieldset>
+                                                         </ng-container>
+                                                         <ng-template #completionbyOther>
 
-                                                          <fieldset class="meeting-attendance-item mt-2" style=" padding-top: 0;">
-                                                              <legend style=" font-size: 10px;max-width: fit-content; color: #9a9a9a;">Submitted by</legend>
+                                                            <fieldset class="meeting-attendance-item mt-2" style=" padding-top: 0;">
+                                                                <legend style=" font-size: 10px;max-width: fit-content; color: #9a9a9a;">Submitted by</legend>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div class="meeting-attendance-count fs-7">{{projectInfo.Submittedby}}</div>
+                                                                    <div class="meeting-attendance-count fs-6">{{projectInfo.CD|date:'d MMM, yyyy'}}</div>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between gap-2">
+                                                                    <!-- <span id="sub-cmt-sec" class="text-muted fs-8  flex-grow-1 compl-remarks-span" *ngIf="projectInfo.Remarks"  (click)="expandRemarks('sub-cmt-sec')" >{{projectInfo.Remarks}}</span> -->
+  
+                                                                    <div *ngIf="projectInfo.Remarks" class="d-flex gap-1">
+                                                                      <div #submitbyRemarksBx class="compl-remarks-span  flex-grow-1  text-muted fs-8">
+                                                                          {{projectInfo.Remarks}}
+                                                                      </div>
+                                                                      <button class="txt-expnd-btn align-self-end" *ngIf="submitbyRemarksBx.scrollHeight>submitbyRemarksBx.clientHeight" (click)="$event.stopPropagation(); submitbyRemarksBx.classList.remove('compl-remarks-span'); lessbtn3.classList.remove('d-none'); ">
+                                                                          <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                      </button>
+                                                                      <button #lessbtn3 class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); submitbyRemarksBx.classList.add('compl-remarks-span'); lessbtn3.classList.add('d-none');">
+                                                                          <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                      </button>
+                                                                  </div>
+  
+                                                                    <span *ngIf="projectInfo.CompleteProofDoc" [title]="projectInfo.Sourcefile" (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" class="text-info fs-8 text-underline curser-pointer flex-shrink-0">
+                                                                        <!-- <svg style="padding-top:1.5px; padding-bottom:1.5px;" width="25px" height="24px" fill="transparent" stroke="#527ce2" viewBox="-1.44 -1.44 26.88 26.88" xmlns="http://www.w3.org/2000/svg">
+                                                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                                            <g id="SVGRepo_iconCarrier">
+                                                                                <path  d="M20 7V6.8C20 5.11984 20 4.27976 19.673 3.63803C19.3854 3.07354 18.9265 2.6146 18.362 2.32698C17.7202 2 16.8802 2 15.2 2H8.8C7.11984 2 6.27976 2 5.63803 2.32698C5.07354 2.6146 4.6146 3.07354 4.32698 3.63803C4 4.27976 4 5.11984 4 6.8V17.2C4 18.8802 4 19.7202 4.32698 20.362C4.6146 20.9265 5.07354 21.3854 5.63803 21.673C6.27976 22 7.11984 22 8.8 22H12.5M12.5 11H8M11.5 15H8M16 7H8M18 18V12.5C18 11.6716 18.6716 11 19.5 11C20.3284 11 21 11.6716 21 12.5V18C21 19.6569 19.6569 21 18 21C16.3431 21 15 19.6569 15 18V14"
+                                                                                  stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                            </g>
+                                                                        </svg> -->
+                                                                        <span class="fs-9 text-info">attachment</span>
+                                                                    </span>
+                                                               </div>
+                                                            </fieldset>
+  
+                                                            <fieldset *ngIf="projectAuditor" class="meeting-attendance-item mt-2" style=" padding-top: 0;">
+                                                              <legend style=" font-size: 10px;max-width: fit-content; color: #9a9a9a;">Audited by</legend>
                                                               <div class="d-flex justify-content-between">
-                                                                  <div class="meeting-attendance-count fs-7">{{projectInfo.Submittedby}}</div>
-                                                                  <div class="meeting-attendance-count fs-6">{{projectInfo.CD|date:'d MMM, yyyy'}}</div>
+                                                                  <div class="meeting-attendance-count fs-7">{{projectInfo.Auditor}}</div>
+                                                                  <div class="meeting-attendance-count fs-6">{{projectInfo.audit_date|date:'d MMM, yyyy'}}</div>
                                                               </div>
                                                               <div class="d-flex justify-content-between gap-2">
-                                                                  <!-- <span id="sub-cmt-sec" class="text-muted fs-8  flex-grow-1 compl-remarks-span" *ngIf="projectInfo.Remarks"  (click)="expandRemarks('sub-cmt-sec')" >{{projectInfo.Remarks}}</span> -->
-
-                                                                  <div *ngIf="projectInfo.Remarks" class="d-flex gap-1">
-                                                                    <div #submitbyRemarksBx class="compl-remarks-span  flex-grow-1  text-muted fs-8">
-                                                                        {{projectInfo.Remarks}}
+                                                                  <div *ngIf="projectInfo.Auditor_acceptremarks" class="d-flex gap-1">
+                                                                    <div #auditbyRemarksBx class="compl-remarks-span  flex-grow-1  text-muted fs-8">
+                                                                        {{projectInfo.Auditor_acceptremarks}}
                                                                     </div>
-                                                                    <button class="txt-expnd-btn align-self-end" *ngIf="submitbyRemarksBx.scrollHeight>submitbyRemarksBx.clientHeight" (click)="$event.stopPropagation(); submitbyRemarksBx.classList.remove('compl-remarks-span'); lessbtn3.classList.remove('d-none'); ">
+                                                                    <button class="txt-expnd-btn align-self-end" *ngIf="auditbyRemarksBx.scrollHeight>auditbyRemarksBx.clientHeight" (click)="$event.stopPropagation(); auditbyRemarksBx.classList.remove('compl-remarks-span'); audtlessbtn.classList.remove('d-none'); ">
                                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                     </button>
-                                                                    <button #lessbtn3 class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); submitbyRemarksBx.classList.add('compl-remarks-span'); lessbtn3.classList.add('d-none');">
+                                                                    <button #audtlessbtn class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); auditbyRemarksBx.classList.add('compl-remarks-span'); audtlessbtn.classList.add('d-none');">
                                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                     </button>
                                                                 </div>
-
-                                                                  <span *ngIf="projectInfo.CompleteProofDoc" [title]="projectInfo.Sourcefile" (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" class="text-info fs-8 text-underline curser-pointer flex-shrink-0">
-                                                                      <!-- <svg style="padding-top:1.5px; padding-bottom:1.5px;" width="25px" height="24px" fill="transparent" stroke="#527ce2" viewBox="-1.44 -1.44 26.88 26.88" xmlns="http://www.w3.org/2000/svg">
-                                                                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                                                          <g id="SVGRepo_iconCarrier">
-                                                                              <path  d="M20 7V6.8C20 5.11984 20 4.27976 19.673 3.63803C19.3854 3.07354 18.9265 2.6146 18.362 2.32698C17.7202 2 16.8802 2 15.2 2H8.8C7.11984 2 6.27976 2 5.63803 2.32698C5.07354 2.6146 4.6146 3.07354 4.32698 3.63803C4 4.27976 4 5.11984 4 6.8V17.2C4 18.8802 4 19.7202 4.32698 20.362C4.6146 20.9265 5.07354 21.3854 5.63803 21.673C6.27976 22 7.11984 22 8.8 22H12.5M12.5 11H8M11.5 15H8M16 7H8M18 18V12.5C18 11.6716 18.6716 11 19.5 11C20.3284 11 21 11.6716 21 12.5V18C21 19.6569 19.6569 21 18 21C16.3431 21 15 19.6569 15 18V14"
-                                                                                stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                                          </g>
-                                                                      </svg> -->
-                                                                      <span class="fs-9 text-info">attachment</span>
-                                                                  </span>
                                                              </div>
-                                                          </fieldset>
-
-
-
-                                                          <fieldset *ngIf="projectAuditor" class="meeting-attendance-item mt-2" style=" padding-top: 0;">
-                                                            <legend style=" font-size: 10px;max-width: fit-content; color: #9a9a9a;">Audited by</legend>
-                                                            <div class="d-flex justify-content-between">
-                                                                <div class="meeting-attendance-count fs-7">{{projectInfo.Auditor}}</div>
-                                                                <div class="meeting-attendance-count fs-6">{{projectInfo.audit_date|date:'d MMM, yyyy'}}</div>
-                                                            </div>
-                                                            <div class="d-flex justify-content-between gap-2">
-                                                                <div *ngIf="projectInfo.Auditor_acceptremarks" class="d-flex gap-1">
-                                                                  <div #auditbyRemarksBx class="compl-remarks-span  flex-grow-1  text-muted fs-8">
-                                                                      {{projectInfo.Auditor_acceptremarks}}
+                                                           </fieldset>
+  
+                                                            <fieldset class="meeting-attendance-item mt-2" style="padding-top: 0;">
+                                                              <legend style=" max-width: fit-content; font-size: 10px;color: #9a9a9a; ">Approved by</legend>
+                                                             <div class="d-flex justify-content-between">
+                                                                  <div class="meeting-attendance-count fs-7">{{projectInfo.Approvedby}}</div>
+                                                                  <div class="meeting-attendance-count fs-6">{{projectInfo.ApprovedDate|date:'d MMM, yyyy'}}</div>
+                                                             </div>
+                                                             <div class="d-flex flex-column" *ngIf="projectInfo.ApproveComments">
+                                                              <!-- <span id="aprv-cmt-sec" class="text-muted fs-8 compl-remarks-span" (click)="expandRemarks('aprv-cmt-sec')" >{{projectInfo.ApproveComments}}</span> -->
+  
+                                                              <div class="d-flex gap-1">
+                                                                  <div #aprverRemarksBx class="compl-remarks-span  text-muted fs-8">
+                                                                      {{projectInfo.ApproveComments}}
                                                                   </div>
-                                                                  <button class="txt-expnd-btn align-self-end" *ngIf="auditbyRemarksBx.scrollHeight>auditbyRemarksBx.clientHeight" (click)="$event.stopPropagation(); auditbyRemarksBx.classList.remove('compl-remarks-span'); audtlessbtn.classList.remove('d-none'); ">
+                                                                  <button class="txt-expnd-btn align-self-end" *ngIf="aprverRemarksBx.scrollHeight>aprverRemarksBx.clientHeight" (click)="$event.stopPropagation(); aprverRemarksBx.classList.remove('compl-remarks-span'); lessbtn4.classList.remove('d-none'); ">
                                                                       <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                   </button>
-                                                                  <button #audtlessbtn class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); auditbyRemarksBx.classList.add('compl-remarks-span'); audtlessbtn.classList.add('d-none');">
+                                                                  <button #lessbtn4 class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); aprverRemarksBx.classList.add('compl-remarks-span'); lessbtn4.classList.add('d-none');">
                                                                       <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                   </button>
                                                               </div>
-                                                           </div>
-                                                        </fieldset>
-
-                                                          <fieldset class="meeting-attendance-item mt-2" style="padding-top: 0;">
-                                                            <legend style=" max-width: fit-content; font-size: 10px;color: #9a9a9a; ">Approved by</legend>
-                                                           <div class="d-flex justify-content-between">
-                                                                <div class="meeting-attendance-count fs-7">{{projectInfo.Approvedby}}</div>
-                                                                <div class="meeting-attendance-count fs-6">{{projectInfo.ApprovedDate|date:'d MMM, yyyy'}}</div>
-                                                           </div>
-                                                           <div class="d-flex flex-column" *ngIf="projectInfo.ApproveComments">
-                                                            <!-- <span id="aprv-cmt-sec" class="text-muted fs-8 compl-remarks-span" (click)="expandRemarks('aprv-cmt-sec')" >{{projectInfo.ApproveComments}}</span> -->
-
-                                                            <div class="d-flex gap-1">
-                                                                <div #aprverRemarksBx class="compl-remarks-span  text-muted fs-8">
-                                                                    {{projectInfo.ApproveComments}}
-                                                                </div>
-                                                                <button class="txt-expnd-btn align-self-end" *ngIf="aprverRemarksBx.scrollHeight>aprverRemarksBx.clientHeight" (click)="$event.stopPropagation(); aprverRemarksBx.classList.remove('compl-remarks-span'); lessbtn4.classList.remove('d-none'); ">
-                                                                    <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                                                                </button>
-                                                                <button #lessbtn4 class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); aprverRemarksBx.classList.add('compl-remarks-span'); lessbtn4.classList.add('d-none');">
-                                                                    <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                                                                </button>
+  
                                                             </div>
-
-                                                          </div>
-                                                          </fieldset>
+                                                            </fieldset>
+                                                         </ng-template>
 
                                                       </div>
                                                       <div class="meeting-attendance">
-                                                          <div class="meeting-attendance-item "    [ngClass]="{'meeting-attendance-item-hover curser-pointer':projectActionInfo&&projectActionInfo.length>0}"
+                                                          <div class="meeting-attendance-item " [ngClass]="{'meeting-attendance-item-hover curser-pointer':projectActionInfo&&projectActionInfo.length>0}"
                                                           [attr.data-toggle]="(projectActionInfo&&projectActionInfo.length>0)?'modal':''"
                                                           [attr.data-target]="(projectActionInfo&&projectActionInfo.length>0)?'#actns-graphmodal':''"  (click)="(projectActionInfo&&projectActionInfo.length>0)?filterActionsOnGantt('All','All'):''">
                                                               <div class="meeting-attendance-count">{{projectActionInfo?projectActionInfo.length:0}}</div>

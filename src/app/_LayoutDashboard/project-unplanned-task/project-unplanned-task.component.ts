@@ -280,7 +280,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
   expandTask(taskId:number){
 
     this.categoryTasksLoaded=new EventEmitter<any>();
-    this.categoryTasksLoaded.subscribe(()=>{
+    this.categoryTasksLoaded.subscribe(()=>{    
       // when all tasks of the category loaded.
       const listindex=[this._TodoList,this.ActionedAssigned_Josn,this._CompletedList,this.ActionedSubtask_Json].findIndex((list)=>{
         return list&&list.find((item)=>item.Assign_Id==taskId);

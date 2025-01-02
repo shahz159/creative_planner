@@ -523,7 +523,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   drawStatisticsNew(){
     if(this.currentActionView===undefined){
-
+debugger
          // 1. bar chart start.
 
             this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, "3", this.Current_user_ID).subscribe((res: any) => {
@@ -537,22 +537,20 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
             let tlTotalHrs:number = this.projectInfo.TotalHours;
 
-
-
             let includeExpectedhrs:boolean=false;
             let alloc4Ndays=0;
-            const crd=new Date();                                          // current date.
-            const ped=new Date(this.projectInfo.EndDate.split('T')[0]);    // project end date.
             const psd=new Date(this.projectInfo.StartDate.split('T')[0]);  // project start date.
+            const ped=new Date(this.projectInfo.EndDate.split('T')[0]);    // project end date.
+            const crd=new Date();
+            const uptod=crd<=ped?crd:ped;
 
-            if(['Completed','New Project Rejected','Cancelled'].includes(this.projectInfo.Status)==false&&crd>=psd&&crd<=ped){
+            if(['001','002','011'].includes(this.projectInfo.Project_Block)&&['Completed','New Project Rejected','Cancelled'].includes(this.projectInfo.Status)==false&&crd>=psd){
                 const K=this.projectInfo.AllocatedHours/(this.projectInfo.Duration+1);
-                const N=(Math.abs(moment(psd).diff(crd,'days'))+1);
+                const N=(Math.abs(moment(psd).diff(uptod,'days'))+1);
                 alloc4Ndays=N*K;
                 alloc4Ndays=(+alloc4Ndays.toFixed(2));
                 includeExpectedhrs=true;
             }
-
 
                  //standard  graph cal start    may need updation.
                  let x=0;
@@ -635,7 +633,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                     enabled: true,
                     custom: ({ series, seriesIndex, dataPointIndex, w })=> {
                           const value = series[seriesIndex][dataPointIndex];
-                          const category = w.globals.labels[dataPointIndex];
+                          let category = w.globals.labels[dataPointIndex];
+                          category=category=='Expected'?'Expected till today':category;
 
                      return `${
                        category=='Used'?`<div style=""><div style="border-radius: 4px;padding: 4px;font-family: monospace;box-shadow: 0px 0px 0px 1px #527ce2;">
@@ -2434,7 +2433,7 @@ multipleback(){
     // this.approvalEmpId = null;
     this.approvalsFetching=true;   // fetching approvals or processing start.
     this.approvalObj.Project_Code = this.URL_ProjectCode;
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {  debugger
       this.approvalsFetching=false;    // fetched approvals or processing end.
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");
@@ -2446,7 +2445,7 @@ multipleback(){
         this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']));
         this.pendingAprvls=[];  // must be empty before calculation.
         if(this.multiapproval_list){
-          this.multiapproval_list=this.multiapproval_list.filter((_aprvl)=>_aprvl.Emp_No==this.Current_user_ID);
+          this.multiapproval_list=this.multiapproval_list.filter((_aprvl)=>_aprvl.Emp_No.trim()==this.Current_user_ID);
           console.log('multiapproval_list my approvals:',this.multiapproval_list);
           this.multiapproval_list.forEach((item)=>{
                const temp=this.pendingAprvls.find((item1)=>item1.request_type==item.Type);
