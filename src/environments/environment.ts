@@ -7,7 +7,9 @@ export const environment = {
   //localServer
    baseUrl:'http://localhost:1221/api/',
   //  baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/'
-   baseUrlCore:'http://localhost:5201/api/'
+
+  baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/'
+  //  baseUrlCore:'http://localhost:5201/api/'
   //  baseUrlCore:'http://localhost:5201/api/'
   // SignalUrl: 'http://localhost:1221/signalr'
   // baseUrl:'https://cswebapps.com/PortfolioAPI/api/'

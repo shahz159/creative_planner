@@ -6637,27 +6637,27 @@ isDepartment = false
 
 
 
-  isAllPrjSelected : boolean = false
+  isAllPrjSelected: boolean = false
 
-  selectUnselectPagePrjs(evt){
+  selectUnselectPagePrjs(evt) {
 
 
-this.isAllPrjSelected = evt.checked
-if(this.isAllPrjSelected){
-  const selprjs = this.allSelectedProjects.map(x=>x.Project_Code)
-  const PageunselPrjs = this._ProjectsListBy_Pid.filter(item=>{
-    return !selprjs.includes(item.Project_Code);
-  })
-  this.allSelectedProjects=[...PageunselPrjs,...this.allSelectedProjects];
-}
-else{
-    // unchecked
-    const curPagePrjs=this._ProjectsListBy_Pid.map(x=>x.Project_Code);
-    this.allSelectedProjects=this.allSelectedProjects.filter(item=>{
-           return !curPagePrjs.includes(item.Project_Code)
-    });
-}
-this.isapprovlFound=this.allSelectedProjects.some((ob)=>ob.PendingapproverEmpNo&&ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
+    this.isAllPrjSelected = evt.checked
+    if (this.isAllPrjSelected) {
+      const selprjs = this.allSelectedProjects.map(x => x.Project_Code)
+      const PageunselPrjs = this._ProjectsListBy_Pid.filter(item => {
+        return !selprjs.includes(item.Project_Code);
+      })
+      this.allSelectedProjects = [...PageunselPrjs, ...this.allSelectedProjects];
+    }
+    else {
+      // unchecked
+      const curPagePrjs = this._ProjectsListBy_Pid.map(x => x.Project_Code);
+      this.allSelectedProjects = this.allSelectedProjects.filter(item => {
+        return !curPagePrjs.includes(item.Project_Code)
+      });
+    }
+    this.isapprovlFound = this.allSelectedProjects.some((ob) => ob.PendingapproverEmpNo && ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
   }
 
 

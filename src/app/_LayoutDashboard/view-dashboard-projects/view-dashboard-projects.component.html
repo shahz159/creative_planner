@@ -694,7 +694,8 @@
 
 
                                                     <td *ngIf="Mode!='DelayActions'&&Mode!='AssignedActions'">
-                                                      <p class="kt-widget__title mb-0 compl-remarks-span" title="{{item.Project_Name}}">
+                                                      <p #prjtextcBx class="kt-widget__title mb-0 compl-remarks-span" title="{{item.Project_Name}}"
+                                                      (click)="$event.stopPropagation(); prjtextcBx.classList.contains('compl-remarks-span')?prjtextcBx.classList.remove('compl-remarks-span'):prjtextcBx.classList.add('compl-remarks-span')">
                                                         {{item.Project_Name }}
 
 

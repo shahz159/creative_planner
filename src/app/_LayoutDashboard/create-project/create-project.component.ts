@@ -153,7 +153,7 @@ export class CreateProjectComponent implements OnInit {
   ngOnInit(): void {
 
     // this.deletingDraftactions()
-    
+
     const navigatingToCreateProject = localStorage.getItem('navigatingToCreateProject');
     if (navigatingToCreateProject === 'true') {
     setTimeout(()=>{ this.Assigned_projects();    },1500);
@@ -608,7 +608,7 @@ debugger
         return;
       }
   }
-  else 
+  else
   return;
  //
 
@@ -630,7 +630,7 @@ debugger
 
 
  createProject(){
-
+debugger
   this.Client_json.forEach(element => {
     if(element.ClientName==this.PrjClient){
       this.PrjClient=element.ClientId;
@@ -755,14 +755,14 @@ debugger
            const fd=new FormData();
            fd.append('Project_Code',this.PrjCode);
            fd.append('Project_Name',this.PrjName);
-           fd.append('Emp_No',this.Current_user_ID);           
+           fd.append('Emp_No',this.Current_user_ID);
            fd.append('Remarks',this._remarks);
            if(this.fileAttachment){
             fd.append("Attachment","true");
            }
            else{
             fd.append("Attachment","false");
-            
+
            }
           //  this.createProjectService.NewUpdateFileUploadsByProjectCode(fd).subscribe((fres:any)=>{
             this.createProjectService.NewUpdateFileUploadsByProjectCodeCore(fd).subscribe((fres:any)=>{
@@ -774,7 +774,7 @@ debugger
                                     console.log(event1,"azure data");
                                     var myJSON = JSON.stringify(event1);
                                   //  this._Message = (JSON.parse(myJSON).body);
-                        
+
                                   });
                }
               this.notification.showSuccess('Successfully uploaded the file attachment.','File attachment uploaded');
@@ -806,11 +806,11 @@ invalidFileSelected:boolean=false;
   file: File | null = null;
 
 onFileChanged(event: any) {
-  
+
   const files: File[] = event.target.files;
 
   if (files && files.length > 0) {
-    
+
     const filetype = files[0].type;
     const isValidFile=this.permittedFileFormats.some((format)=>{
           return (filetype==format)||(filetype.startsWith('image/')&&format=='image/*');
@@ -823,7 +823,7 @@ onFileChanged(event: any) {
     }else{
       this.invalidFileSelected=true;
     }
-   
+
     // this.determineFileType(this.file.name);
     console.log(this.fileAttachment,"testtestsetsetsetsetsettttt")
   } else {
@@ -1025,7 +1025,7 @@ contentType:any="";
   }
 
   scrollToTaskById(id){
-    
+
       //  const el:any=document.querySelector(`.Assigned-projects-list .tab-content .kt-action-list input#task-${id}`);
         const el=document.getElementById('task-11736');
         el.focus();
@@ -1214,7 +1214,7 @@ isPrjSprtDrpDwnOpen:boolean=false;
 
 
 // responsible field start
-onResponsibleChanged(){ 
+onResponsibleChanged(){
   if(this.PrjResp){
     if(this.PrjResp.trim()===this.PrjOwner.trim())
     {
@@ -1348,7 +1348,7 @@ onProjectOwnerChanged(){
   // allocated:any
 
   onButtonClick(value:any,id:number){
- 
+
     this.bind_Project = [value];
     console.log('bind project:',this.bind_Project);
     // this.duration=this.bind_Project[0].Duration;
@@ -1587,7 +1587,7 @@ ProjeditDescription:any
 
 
 initializeSelectedValue() {
-   
+
     this.OGownerid = this.projectInfo['OwnerEmpNo'];
     this.OGresponsibleid = this.projectInfo['ResponsibleEmpNo'];
     this.OGselectedcategoryid = this.projectInfo['Reportid'];
@@ -1798,7 +1798,7 @@ return;
 RACIS:any=[];
 
 
-setRACIS(){      
+setRACIS(){
     this.RACIS=[];
   try{
      if(this.PrjOwner)
@@ -1893,7 +1893,7 @@ addreschange() {
 
 
 hasNoActionMembers:any=[];
-detectMembersWithoutActions(){  
+detectMembersWithoutActions(){
   let _hasNoActionMembers=[];
   if(this.PrjActionsInfo&&this.PrjActionsInfo.length>0){
     const actns_resps=this.PrjActionsInfo.map(pact=>pact.Team_Res);
@@ -2043,9 +2043,9 @@ debugger
           title:'Confirm Project Hours Allocation',
           html:` <div style="text-align: justify;">
                    You have planned <b>${this.projectInfo.AllocatedHours} hrs</b> for the project. <br/>However, <b>${hrsUnallocated} hrs</b> remain unassigned. Continue or assign remaining hours?
-                  ${this.PrjActionsInfo.length>0?` 
+                  ${this.PrjActionsInfo.length>0?`
                     <fieldset style="border: 2px solid #b2b3b4; border-radius: 6px; margin-top:15px; padding: 4px; padding-bottom: 6px; overflow-y: auto; max-height: 126px; scrollbar-width: thin; font-size: 13px;">
-                      <legend style="width: 40px;font-size: 9px;font-weight: 500;color: #ffffff;margin-left: 3px;letter-spacing: 0.45px;border: 1px solid #3085d6;border-radius: 4px;background-color: #3085d6;padding: 2px;text-align: -webkit-center;">Actions</legend> 
+                      <legend style="width: 40px;font-size: 9px;font-weight: 500;color: #ffffff;margin-left: 3px;letter-spacing: 0.45px;border: 1px solid #3085d6;border-radius: 4px;background-color: #3085d6;padding: 2px;text-align: -webkit-center;">Actions</legend>
                       <table width="100%" cellpadding="5px" style="">
                               ${
                                     this.PrjActionsInfo.map((acn,i)=>{
@@ -2070,7 +2070,7 @@ debugger
     if(choice.dismiss==Swal.DismissReason.cancel){
         this.openActionSideBar();
         return;
-     }else if(choice.dismiss==Swal.DismissReason.backdrop) { return; }  
+     }else if(choice.dismiss==Swal.DismissReason.backdrop) { return; }
 
   }
 
@@ -2110,7 +2110,7 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
 //6. calculate project cost.
   this.PrjCost=0;
   let alhrVal:number|null=null;
-   
+
   if(this.PrjActionsInfo.length>0)  // if there are actions then calculate cost using those actions.
   {
     alhrVal=this.PrjActionsInfo.reduce((sum,_actn)=>{
@@ -2124,7 +2124,7 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
   if(alhrVal!=null){
     this.ProjectDto.Emp_No=this.Current_user_ID;
     this.ProjectDto.Hours=alhrVal.toString();
-    const costres:any=await this.createProjectService.GetCPProjectCost(this.ProjectDto).toPromise();    // wait for project cost.  
+    const costres:any=await this.createProjectService.GetCPProjectCost(this.ProjectDto).toPromise();    // wait for project cost.
     if(costres&&costres.Status){
       this.PrjCost=costres.Data;
       console.log('project_cost:',this.PrjCost);
@@ -2136,8 +2136,8 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
   }
   else
   return;
-  
-// 
+
+//
 
 
 // 7.validation: project cost confirmation from user.
@@ -2147,9 +2147,9 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
         <div style="text-align: justify;">
           You will be going to spend <b>"${this.PrjCost}.00 SAR"</b> on this project. Do you want to continue?
 
-          ${this.PrjActionsInfo.length>0?` 
+          ${this.PrjActionsInfo.length>0?`
             <fieldset style="border: 2px solid #b2b3b4; border-radius: 6px; margin-bottom: 15px; margin-top:10px; padding: 4px; padding-bottom: 6px; overflow-y: auto; max-height: 126px; scrollbar-width: thin; font-size: 13px;">
-              <legend style="width: 77px;font-size: 9px;font-weight: 500;color: #ffffff;margin-left: 3px;letter-spacing: 0.45px;border: 1px solid #3085d6;border-radius: 4px;background-color: #3085d6;padding: 2px;text-align: -webkit-center;">Actions Budget</legend> 
+              <legend style="width: 77px;font-size: 9px;font-weight: 500;color: #ffffff;margin-left: 3px;letter-spacing: 0.45px;border: 1px solid #3085d6;border-radius: 4px;background-color: #3085d6;padding: 2px;text-align: -webkit-center;">Actions Budget</legend>
               <table width="100%" cellpadding="5px" style="">
                       ${
                              this.PrjActionsInfo.map((acn,i)=>{
@@ -2159,8 +2159,8 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
               </table>
             </fieldset>
           `:''}
-         
-          ${this.PrjCost>=3000?` 
+
+          ${this.PrjCost>=3000?`
                  <span style="display: flex;align-items: center;column-gap: 8px;font-size: 12px;margin-top: 8px;background-color: #fdbc4a38;color: #c57a05;border: 1px solid #cc922d63;padding: 10px;border-radius: 5px;font-weight: 500;">
                   <svg width="40px" height="20px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
                   The project cost has reached 3000 SAR or more. Please ensure that the plan aligns with the annual business plan\'s budget.</span>
@@ -2185,7 +2185,7 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
 // remove assigned/conditional project start
 reason4PrjRejection:string;
 removeACPrj(index:number){
-  
+
   if(!(this.reason4PrjRejection&&this.reason4PrjRejection.trim())){
       this.notProvided=true;
       return;
@@ -2195,7 +2195,7 @@ removeACPrj(index:number){
   this.ProjectDto.Emp_No=this.Current_user_ID;
   this.ProjectDto.assignid=+this.assigntask_json[index-1].Assign_Id;
   this.ProjectDto.Remarks=this.reason4PrjRejection;
- 
+
   this.createProjectService.NewDeleteRejectAssignTask(this.ProjectDto).subscribe((res:any)=>{
 
         if(res&&res.message==='Success'){
@@ -2571,7 +2571,7 @@ this.newProjectDetails(this.draft_json[index].Project_Code);
 
 this.draftActionsLoading=true;
 this.projectMoreDetailsService.getProjectMoreDetails(this.PrjCode).subscribe((res)=>{
-  console.log("after after openDraft method:",res);   
+  console.log("after after openDraft method:",res);
   this.draftActionsLoading=false;
 
   if(res[0].Action_Json)
@@ -3052,7 +3052,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
    ///////////////////////////////////////// Action Edit End /////////////////////////////
 
   //  onPrjStrtDateChanged() {
-  //   
+  //
   //   const inputdate=new Date(this.Start_Date);
   //   const isvalid=this.PrjActionsInfo.every((actn:any)=>{
   //         const actdate=new Date(actn.StartDate);
@@ -3105,7 +3105,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
 
 //     reseting() {
 
-// 
+//
 //       const f= new Date(this.projectInfo.StartDate)
 
 //       const a= new Date(this.projectInfo.EndDate)
@@ -3126,7 +3126,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
 
 // actionPastDate() {
 
-// 
+//
 // const f= new Date(this.Start_Date)
 
 // const a= new Date(this.End_Date)
@@ -3268,7 +3268,7 @@ updateCharacterCount_Action(): void {
 
 
 check_Enddate(){
-  
+
   this.End_Date = moment(this.Start_Date)<=moment(this.End_Date)?this.End_Date:null;
 }
 
@@ -3375,7 +3375,7 @@ alertMaxAllocation() {
 
 maxAllocations: number;
 alertMaxAllocations() {
-  
+
   if (this.Start_Date == null || this.End_Date == null) {
     this._message = "Start Date/End date missing!!"
   }
@@ -3487,7 +3487,7 @@ promptIfNameTypeMismatch(){
             confirmButtonText:'Continue Anyway',
             cancelButtonText:'View Guidelines',
 
-        }).then((choice)=>{ 
+        }).then((choice)=>{
              if(choice.isConfirmed){
                 this.okWithType=true;
              }else if(choice.dismiss==Swal.DismissReason.cancel){
@@ -3513,7 +3513,7 @@ promptIfNameTypeMismatch(){
 }
 
 // calculateDateDifference(): void {
-//   
+//
 
 //   if (this.assigntask_json) {
 
