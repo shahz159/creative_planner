@@ -586,8 +586,73 @@ label.kt-list-nav-item-label {
 
 .kt-list-nav-item-check .form-check-input:checked[type=checkbox] {
     background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2020%2020'%3E%3Cpath%20fill='none'%20stroke='%23fff'%20stroke-linecap='round'%20stroke-linejoin='round'%20stroke-width='3'%20d='M6%2010l3%203l6-6'/%3E%3C/svg%3E");
-
 }
+
+.kt-list-nav-item-check .form-check-input#checkallmeetings {
+    border-color: #5f6368;
+}
+
+
+.kt-list-nav-item-check .form-check-input#checkmymeetings {
+    border-color: #3788d8;
+}
+
+.kt-list-nav-item-check .form-check-input#checkconmeetings {
+    border-color: #9b30ff;
+}
+
+.kt-list-nav-item-check .form-check-input#checkpenmeetings {
+    border-color: #9b30ff;
+}
+
+.kt-list-nav-item-check .form-check-input#checkrejmeetings {
+    border-color: #cf052d;
+}
+
+.kt-list-nav-item-check .form-check-input#checkdomeetings {
+    border-color: #06ab34;
+}
+
+.kt-list-nav-item-check .form-check-input#checkdomeetings {
+    border-color: #06ab34;
+}
+
+.kt-list-nav-item-check .form-check-input:checked#checkallmeetings {
+    background-color: #5f6368;
+    border-color: #5f6368;
+}
+
+
+.kt-list-nav-item-check .form-check-input:checked#checkmymeetings {
+    background-color: #3788d8;
+    border-color: #3788d8;
+}
+
+.kt-list-nav-item-check .form-check-input:checked#checkconmeetings {
+    background-color: #9b30ff;
+    border-color: #9b30ff;
+}
+
+.kt-list-nav-item-check .form-check-input:checked#checkpenmeetings {
+    background-color: #9b30ff;
+    border-color: #9b30ff;
+}
+
+.kt-list-nav-item-check .form-check-input:checked#checkrejmeetings {
+    background-color: #cf052d;
+    border-color: #cf052d;
+}
+
+.kt-list-nav-item-check .form-check-input:checked#checkdomeetings {
+    background-color: #06ab34;
+    border-color: #06ab34;
+}
+
+.kt-list-nav-item-check .form-check-input:checked#checkdomeetings {
+    background-color: #06ab34;
+    border-color: #06ab34;
+}
+
 
 .kt-create-list-dropdown-menu {
     box-shadow: 0 3px 5px -1px #00000033, 0 6px 10px 0 #00000024, 0 1px 18px 0 #0000001f;

@@ -225,7 +225,7 @@ export class CalenderService {
     this.obj_CalenderDTO.Rec_values=obj.Rec_values;
     this.obj_CalenderDTO.Rec_EndDate=obj.Rec_EndDate;
   
-    console.log(this.obj_CalenderDTO,'obj_CalenderDTO 3123')
+    console.log(this.rootUrl + "CalenderAPI/Newinsertdarft_meetingco",'url')
     return this.http.post(this.rootUrl + "CalenderAPI/Newinsertdarft_meetingco", this.obj_CalenderDTO);
   }
   NewGetrequeat_Accpect(obj:CalenderDTO){

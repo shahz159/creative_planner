@@ -1647,7 +1647,7 @@ export class DashboardComponent implements OnInit {
           document.getElementById("Recurrence_hide").style.display = "block";
           document.getElementById("weekly_121_new").style.display = "block";
           this.selectedrecuvalue = '2';
-          let Recc = [];
+          let Recc = [];  
           var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
           Recc = ret1.split(",");
 
@@ -5715,6 +5715,8 @@ debugger
 
   Insert_indraft() {
 
+
+
     if (this.draftid != 0) {
       this._calenderDto.draftid = this.draftid;
     }
@@ -5887,7 +5889,7 @@ console.log("Generated XML:", xmlString);
     console.log(this._calenderDto,'this._calenderDto Draft')
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
       (data => {
-           debugger
+          
    
       this.Attamentdraftid= data['draftid']
       frmData.append("draftid", this.Attamentdraftid);
@@ -8105,14 +8107,19 @@ filterPending(type: 'date' | 'meeting'): void {
 activeDraftMeeting:any;
 
 filterDraft(type : 'date'|'meeting'):void{
+  this.activeDraftMeeting=type;
   this.draftdata_meet.sort((a,b)=>{
     if(type ==='date'){
-      this.activeDraftMeeting ='date';
+      if (a.Draft_date === undefined) return 1; // Place undefined at the end
+      if (b.Draft_date === undefined) return -1; // Place undefined at the end
       return new Date(b.Draft_date).getTime() - new Date(a.Draft_date).getTime();
     }
-    this.activeDraftMeeting ='meeting';
-    return a.Task_name.trim().localeCompare(b.Task_name.trim());
+    else if(type==='meeting'){
+      return a.Task_name.trim().localeCompare(b.Task_name.trim());
+    }
+  
   })
+  console.log(this.draftdata_meet,'checking draft functionality')
 }
 
 

@@ -2466,8 +2466,7 @@ debugger
       }
  
 
-      
-     if(this.currentAgendaView != undefined && this.currentAgendaView != null  ){
+     if(this.currentAgendaView != undefined && this.currentAgendaView != null && this.CurrentNotesCount[this.currentAgendaView]){
       this.Notes_Type.trim();
       if (this.Notes_Type) {
         this.CurrentNotesCount[this.currentAgendaView].NotesCount = 1;
@@ -2493,8 +2492,6 @@ debugger
           // this.GetMeetingnotes_data();
           // window.close();
         });
-
-    // }
 
   }
 
@@ -2810,10 +2807,24 @@ onFileChange(event) {
   EventNumber: any;
   progress: number = 0;
   Attamentdraftid:any;
+  showFileUpload = false; // Controls visibility
+  filesUploadingCount = 0; // Number of files uploading
+  processingFile = false; // Processing state
+  processingComplete = false; // Processing complete state
+  uploadingFileName:any;
 
   OnSubmitAttachment() {
 
+
     if (this.SelectedAttachmentFile != undefined || this.RemovedFile_id.length > 0) {
+
+      this.showFileUpload = true; // Show upload elements
+      this.filesUploadingCount = this._lstMultipleFiales.length;
+      if(this.filesUploadingCount === 1){
+        this.uploadingFileName = this._lstMultipleFiales[0].FileName
+      }
+
+
       this.EventNumber = this.EventScheduledjson[0].EventNumber;
       let _attachmentValue = 0;
       
@@ -2911,7 +2922,7 @@ onFileChange(event) {
               case HttpEventType.ResponseHeader:
                 console.log('Response header has been received!');
                 break;
-              case HttpEventType.UploadProgress:
+              case HttpEventType.UploadProgress:              
                 this.progress = Math.round(event.loaded / event.total * 100);
                 console.log(`Uploaded! ${this.progress}%`);
                 break;
@@ -2919,14 +2930,29 @@ onFileChange(event) {
                 console.log('User successfully created!', event.body);
                 var myJSON = JSON.stringify(event);
                 this._azureMessage = (JSON.parse(myJSON).body).message;
-
-                if(this._azureMessage=="1"){
-                  this.notifyService.showSuccess("Uploaded successfully ", '');
+               
+                if(this._azureMessage=="1"){         
+                  this.filesUploadingCount = 0;
+                  this.processingFile = true;
                   this.CalenderService._AzureUpdateCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
-                    console.log(event1,"azure data");
+                   
                     var myJSON = JSON.stringify(event1);
+                    let responseBody = JSON.parse(myJSON).body; 
+                    if (responseBody === 1) { 
+                      this.processingFile = false;                
+                      this.processingComplete = true;
+                                  
+                      setTimeout(() => {
+                        this.processingComplete = false; 
+                        this.notifyService.showSuccess("Uploaded successfully ", '');                
+                        this.meeting_details();
+                        this.showFileUpload = false;    
+                      }, 2000);
+                         
+                  
+                  }
                   //  this._Message = (JSON.parse(myJSON).body);
-        
+                 
                   });
                 }
 
@@ -2942,7 +2968,6 @@ onFileChange(event) {
                 document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
                 // document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
             }
-            this.meeting_details()
           }
         )
       }
@@ -3369,7 +3394,7 @@ onFileChange(event) {
       if (result === true) {
         this.CalenderService.DeleteAttachmentOfMeeting(this._calenderDto).subscribe((data) => {
           this.meeting_details()
-          this.notifyService.showSuccess("Deleted successfully ", '');
+          this.notifyService.showSuccess("Deleted successfully ada ", '');
         });
       }
       else {
