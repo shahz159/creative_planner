@@ -2504,8 +2504,8 @@
                   </div>
 
                   <div *ngIf="(!projectInfo.Status.toLowerCase().includes('delay'))&&projectInfo.totaltaskcount>0" class="notification"  [ngClass]="{'delay-notification':(projectInfo.submissioncount<projectInfo.totaltaskcount), 'audit-complete-notf':(projectInfo.submissioncount==projectInfo.totaltaskcount) }">
-                         
-                       
+
+
                           <svg *ngIf="projectInfo.submissioncount==projectInfo.totaltaskcount" fill="#388E3C" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                               xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 47 47" xml:space="preserve">
                               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -2967,7 +2967,7 @@
                                                                     <div class="meeting-attendance-count fs-6">{{projectInfo.CD|date:'d MMM, yyyy'}}</div>
                                                                 </div>
                                                                 <div class="d-flex justify-content-between gap-2">
-                                                                   
+
                                                                     <div *ngIf="projectInfo.ApproveComments" class="d-flex gap-1">
                                                                       <div #submitbyRemarksBx1 class="compl-remarks-span  flex-grow-1  text-muted fs-8">
                                                                           {{projectInfo.ApproveComments}}
@@ -2979,7 +2979,7 @@
                                                                           <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                       </button>
                                                                     </div>
-  
+
                                                                     <span *ngIf="projectInfo.CompleteProofDoc" [title]="projectInfo.Sourcefile" (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" class="text-info fs-8 text-underline curser-pointer flex-shrink-0">
                                                                         <span class="fs-9 text-info">attachment</span>
                                                                     </span>
@@ -2996,7 +2996,7 @@
                                                                 </div>
                                                                 <div class="d-flex justify-content-between gap-2">
                                                                     <!-- <span id="sub-cmt-sec" class="text-muted fs-8  flex-grow-1 compl-remarks-span" *ngIf="projectInfo.Remarks"  (click)="expandRemarks('sub-cmt-sec')" >{{projectInfo.Remarks}}</span> -->
-  
+
                                                                     <div *ngIf="projectInfo.Remarks" class="d-flex gap-1">
                                                                       <div #submitbyRemarksBx class="compl-remarks-span  flex-grow-1  text-muted fs-8">
                                                                           {{projectInfo.Remarks}}
@@ -3008,7 +3008,7 @@
                                                                           <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                       </button>
                                                                   </div>
-  
+
                                                                     <span *ngIf="projectInfo.CompleteProofDoc" [title]="projectInfo.Sourcefile" (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" class="text-info fs-8 text-underline curser-pointer flex-shrink-0">
                                                                         <!-- <svg style="padding-top:1.5px; padding-bottom:1.5px;" width="25px" height="24px" fill="transparent" stroke="#527ce2" viewBox="-1.44 -1.44 26.88 26.88" xmlns="http://www.w3.org/2000/svg">
                                                                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -3022,7 +3022,7 @@
                                                                     </span>
                                                                </div>
                                                             </fieldset>
-  
+
                                                             <fieldset *ngIf="projectAuditor" class="meeting-attendance-item mt-2" style=" padding-top: 0;">
                                                               <legend style=" font-size: 10px;max-width: fit-content; color: #9a9a9a;">Audited by</legend>
                                                               <div class="d-flex justify-content-between">
@@ -3043,7 +3043,7 @@
                                                                 </div>
                                                              </div>
                                                            </fieldset>
-  
+
                                                             <fieldset class="meeting-attendance-item mt-2" style="padding-top: 0;">
                                                               <legend style=" max-width: fit-content; font-size: 10px;color: #9a9a9a; ">Approved by</legend>
                                                              <div class="d-flex justify-content-between">
@@ -3052,7 +3052,7 @@
                                                              </div>
                                                              <div class="d-flex flex-column" *ngIf="projectInfo.ApproveComments">
                                                               <!-- <span id="aprv-cmt-sec" class="text-muted fs-8 compl-remarks-span" (click)="expandRemarks('aprv-cmt-sec')" >{{projectInfo.ApproveComments}}</span> -->
-  
+
                                                               <div class="d-flex gap-1">
                                                                   <div #aprverRemarksBx class="compl-remarks-span  text-muted fs-8">
                                                                       {{projectInfo.ApproveComments}}
@@ -3064,7 +3064,7 @@
                                                                       <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                   </button>
                                                               </div>
-  
+
                                                             </div>
                                                             </fieldset>
                                                          </ng-template>
@@ -3906,7 +3906,7 @@
                                                         <div class="kt-info-data-v cursor-pointer"   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             {{projectInfo&&projectInfo.Owner}}
                                                         </div>
-                                                        <div class="dropdown-menu user-detail-hover">
+                                                        <!-- <div class="dropdown-menu user-detail-hover">
                                                           <div class="user-info">
                                                               <div class="icon">
                                                                   <img src="https://cswebapps.com/dmsweb/assets/media/icons/user2.png" class="" alt="">
@@ -3943,7 +3943,7 @@
                                                                   </div>
                                                               </div>
                                                           </div>
-                                                      </div>
+                                                      </div> -->
                                                     </div>
 
                                                     <div class="col text-center">

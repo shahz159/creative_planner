@@ -504,7 +504,7 @@
                                                 </div>
                                             </span>
                                             <div class="kt-main-list-item w-100" id="LabelCat_{{item.Category_ID}}"
-                                            (click)="OnCategoryClick(item.Category_ID,item.Category_Name)" >
+                                            (click)="OnCategoryClick(item.Category_ID,item.Category_Name);_SearchTask='';filterLists()" >
                                                 <div class="kt-main-list-item-icon">
                                                     <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 35 35" data-name="Layer 2" id="e73e2821-510d-456e-b3bd-9363037e93e3" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11.933,15.055H3.479A3.232,3.232,0,0,1,.25,11.827V3.478A3.232,3.232,0,0,1,3.479.25h8.454a3.232,3.232,0,0,1,3.228,3.228v8.349A3.232,3.232,0,0,1,11.933,15.055ZM3.479,2.75a.73.73,0,0,0-.729.728v8.349a.73.73,0,0,0,.729.728h8.454a.729.729,0,0,0,.728-.728V3.478a.729.729,0,0,0-.728-.728Z"></path><path d="M11.974,34.75H3.52A3.233,3.233,0,0,1,.291,31.521V23.173A3.232,3.232,0,0,1,3.52,19.945h8.454A3.232,3.232,0,0,1,15.2,23.173v8.348A3.232,3.232,0,0,1,11.974,34.75ZM3.52,22.445a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M31.522,34.75H23.068a3.233,3.233,0,0,1-3.229-3.229V23.173a3.232,3.232,0,0,1,3.229-3.228h8.454a3.232,3.232,0,0,1,3.228,3.228v8.348A3.232,3.232,0,0,1,31.522,34.75Zm-8.454-12.3a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M27.3,15.055a7.4,7.4,0,1,1,7.455-7.4A7.437,7.437,0,0,1,27.3,15.055Zm0-12.3a4.9,4.9,0,1,0,4.955,4.9A4.935,4.935,0,0,0,27.3,2.75Z"></path></g></svg>
                                                 </div>
@@ -513,7 +513,7 @@
                                                     <div class="kt-main-list-item-count">{{item.TaskCount}}</div>
                                                 </div>
                                             </div>
-                                            <div class="d-flex flex-column align-items-cente py-2 w-100" style="display: none!important;">
+                                            <div   class="d-flex flex-column align-items-cente py-2 w-100" style="display: none!important;">
                                                 <div id="LabelCat_{{item.Category_ID}}"
                                                     (click)="OnCategoryClick(item.Category_ID,item.Category_Name)">
                                                     <div class="kt-category-p-tittle">
@@ -631,10 +631,17 @@
                                                 fill="#000000"></path>
                                         </g>
                                     </svg>
-                                    <input type="text" autocomplete="off" name="PortfolioSearch" placeholder="Search task" [(ngModel)]="_SearchTask"  (ngModelChange)="filterLists()"
+                                    <input type="search" autocomplete="off" name="PortfolioSearch" placeholder="Search task" [(ngModel)]="_SearchTask"  (ngModelChange)="filterLists()"
                                         class="form-control right-flter-b border-0" />
+
                                 </div>
+
+
                                 </div>
+
+                                <!-- <span   class="mr-2" style="background-color: white;"  (click)="_SearchTask='';filterLists()">
+                                  <svg fill="#000000" viewBox="0 0 200 200" style="width:40px;height:40px" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title></title><path d="M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z"></path></g></svg>
+                                </span> -->
 
 
 
@@ -1011,7 +1018,7 @@
                                                             <div class="position-relative dropright" >
 
                                                             <a     class="btn px-0 info-btn curser-pointer run-info mr-2"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    <svg  (click)="openActionassign(i)"     xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 28px; height: 28px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M506.231111 65.009619c-246.822478 0-446.911586 200.090131-446.911586 446.912609 0 246.823502 200.090131 446.912609 446.911586 446.912609 246.823502 0 446.912609-200.089108 446.912609-446.912609C953.144744 265.098727 753.054613 65.009619 506.231111 65.009619zM810.142819 704.729489 598.136288 781.818215l-192.736653-77.088726-212.009601 77.088726L193.390034 319.270511l212.009601-77.088726 192.736653 77.088726 212.007555-77.088726L810.143842 704.729489z"/><path d="M771.597945 297.214169 617.40719 353.262696 617.40719 733.788316 771.597945 677.735695Z"/><path d="M424.670537 670.923546 578.862315 732.583884 578.862315 353.075431 424.670537 291.417139Z"/><path d="M231.939001 726.785831 386.126686 670.736281 386.126686 290.214754 231.939001 346.262258Z"/></svg>
+                                                                    <svg  (click)="openActionassign(item.Assign_Id)"     xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 28px; height: 28px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M506.231111 65.009619c-246.822478 0-446.911586 200.090131-446.911586 446.912609 0 246.823502 200.090131 446.912609 446.911586 446.912609 246.823502 0 446.912609-200.089108 446.912609-446.912609C953.144744 265.098727 753.054613 65.009619 506.231111 65.009619zM810.142819 704.729489 598.136288 781.818215l-192.736653-77.088726-212.009601 77.088726L193.390034 319.270511l212.009601-77.088726 192.736653 77.088726 212.007555-77.088726L810.143842 704.729489z"/><path d="M771.597945 297.214169 617.40719 353.262696 617.40719 733.788316 771.597945 677.735695Z"/><path d="M424.670537 670.923546 578.862315 732.583884 578.862315 353.075431 424.670537 291.417139Z"/><path d="M231.939001 726.785831 386.126686 670.736281 386.126686 290.214754 231.939001 346.262258Z"/></svg>
 <!--
                                                                <div class="dropdown-menu run-info-hover-menu" >
                                                                     <div class="heading">
@@ -1120,7 +1127,7 @@
                                                              </svg>
                                                                </a> -->
                                                             </div>
-                                                            <div class="action-right" (click)="openActionassign(i)" [ngStyle]="{ 'cursor': 'pointer' }">
+                                                            <div class="action-right" (click)="openActionassign(item.Assign_Id)" [ngStyle]="{ 'cursor': 'pointer' }">
                                                                 <div class="action-div-item-content">
                                                                     <span class="kt-inbox__subject  h5 mb-0">{{item.Task_Name}}
 
@@ -1279,9 +1286,26 @@
                                       </div>
                                     </div>
 
-                                    <div id="noSearchFoundMessage" style="display:none;">
+                                    <!-- <div id="noSearchFoundMessage" style="display:none;">
                                       <h1  style="color:white">No search found</h1>
+
+
+
+                                    </div> -->
+
+                                    <div id="noSearchFoundMessage"  style="display:none;" class="smart-images">
+
+                                      <div class="no-c">
+                                        <img   style="width: 380px;height:380px" src="https://cswebapps.com/creativeplanner/assets/images/noActionPresent.png">
+                                      <h1 class="space">No search found.</h1>
+                                      </div>
                                     </div>
+
+
+
+
+
+
 
                                     <div class="runway-card d-none" id="AssignedTask">
                                       <div class="runway-card-header" id="headingFour"    *ngIf="ActionedAssigned_Josn.length>0">
@@ -1305,7 +1329,7 @@
                                                             <div class="action-div-item w-100" >
                                                             <div class="position-relative dropright">
                                                                 <a    class="btn px-0 info-btn curser-pointer run-info mr-2"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <svg  (click)="editassignPending(i)"  xmlns="http://www.w3.org/2000/svg"  class="svg-icon"  style="width: 28px; height: 28px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M506.231111 65.009619c-246.822478 0-446.911586 200.090131-446.911586 446.912609 0 246.823502 200.090131 446.912609 446.911586 446.912609 246.823502 0 446.912609-200.089108 446.912609-446.912609C953.144744 265.098727 753.054613 65.009619 506.231111 65.009619zM810.142819 704.729489 598.136288 781.818215l-192.736653-77.088726-212.009601 77.088726L193.390034 319.270511l212.009601-77.088726 192.736653 77.088726 212.007555-77.088726L810.143842 704.729489z"/><path d="M771.597945 297.214169 617.40719 353.262696 617.40719 733.788316 771.597945 677.735695Z"/><path d="M424.670537 670.923546 578.862315 732.583884 578.862315 353.075431 424.670537 291.417139Z"/><path d="M231.939001 726.785831 386.126686 670.736281 386.126686 290.214754 231.939001 346.262258Z"/></svg>
+                                                                <svg  (click)="editassignPending(item.Assign_Id)"  xmlns="http://www.w3.org/2000/svg"  class="svg-icon"  style="width: 28px; height: 28px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M506.231111 65.009619c-246.822478 0-446.911586 200.090131-446.911586 446.912609 0 246.823502 200.090131 446.912609 446.911586 446.912609 246.823502 0 446.912609-200.089108 446.912609-446.912609C953.144744 265.098727 753.054613 65.009619 506.231111 65.009619zM810.142819 704.729489 598.136288 781.818215l-192.736653-77.088726-212.009601 77.088726L193.390034 319.270511l212.009601-77.088726 192.736653 77.088726 212.007555-77.088726L810.143842 704.729489z"/><path d="M771.597945 297.214169 617.40719 353.262696 617.40719 733.788316 771.597945 677.735695Z"/><path d="M424.670537 670.923546 578.862315 732.583884 578.862315 353.075431 424.670537 291.417139Z"/><path d="M231.939001 726.785831 386.126686 670.736281 386.126686 290.214754 231.939001 346.262258Z"/></svg>
 
 
                                                             </a>
@@ -1313,7 +1337,7 @@
                                                         </div>
 
 
-                                                            <div class="action-right" (click)="editassignPending(i)" [ngStyle]="{ 'cursor': 'pointer' }">
+                                                            <div class="action-right" (click)="editassignPending(item.Assign_Id)" [ngStyle]="{ 'cursor': 'pointer' }">
                                                                 <div class="action-div-item-content">
                                                                     <span class="kt-inbox__subject  h5 mb-0" >{{item.Task_Name}} </span>
 
@@ -1806,7 +1830,28 @@
  <!-- unassign edit side bar start -->
 
  <div id="unassign-editsidebar" class="sideInfobar animate-right offcanvas">
+
+
+
+
+
   <div class="unassign-editsidebar-body">
+    <div class="d-flex align-items-center mb-2" style="gap: 20px;">
+      <div class="form-check">
+          <input class="form-check-input" type="radio" name="projectOption" id="projectRadio1" (change)="toggleProjectoptions('option1')" checked>
+          <label class="form-check-label" for="projectRadio1">
+           <h5>Project/Task</h5>
+          </label>
+        </div>
+
+        <!-- *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length<=1" -->
+        <div class="form-check"  *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length<=1" >
+          <input class="form-check-input" type="radio" name="projectOption" id="projectRadio2" (change)="toggleProjectoptions('option2')">
+          <label class="form-check-label" for="projectRadio2">
+            <h5> Action to project</h5>
+          </label>
+        </div>
+   </div>
     <span>Selected task(s)<span class="text-danger">*</span></span>
       <div class="unassign-editsidebar-head mb-0" style="align-items: flex-start;">
           <div class="radiotitle"  [ngClass]="{'error-vd': !selected_taskName&&formFieldsRequired}" style="margin-top: 5px;">
@@ -1837,7 +1882,7 @@
           <!-- <textarea id="unassigneditside1" class="runway-textarea" (input)="initAutosize('unassigneditside1')" style="height: 34px !important;"  placeholder="Enter title" (keydown.enter)="OnTask_Renameofnew()"   [(ngModel)]="this.selected_taskName" ></textarea> -->
           </div>
       </div>
-      <span *ngIf="!selected_taskName&&formFieldsRequired" class="text-danger" >Please enter title</span>
+      <span *ngIf="!selected_taskName&&formFieldsRequired" class="text-danger" >Please select task from unassign.</span>
 
 
 
@@ -1881,22 +1926,7 @@
 
       <div class="unassign-editsidebar-radio">
       <!-- Radio buttons group -->
-       <div class="d-flex align-items-center mb-2" style="gap: 20px;">
-          <div class="form-check">
-              <input class="form-check-input" type="radio" name="projectOption" id="projectRadio1" (change)="toggleProjectoptions('option1')" checked>
-              <label class="form-check-label" for="projectRadio1">
-                Project/Task
-              </label>
-            </div>
 
-            <!-- *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length<=1" -->
-            <div class="form-check"  *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length<=1" >
-              <input class="form-check-input" type="radio" name="projectOption" id="projectRadio2" (change)="toggleProjectoptions('option2')">
-              <label class="form-check-label" for="projectRadio2">
-                Action to project
-              </label>
-            </div>
-       </div>
 
   <div *ngIf="selectedOption === 'option1'">
     <!-- <div class="form-group mb-0">
@@ -1948,7 +1978,7 @@
   </mat-autocomplete>
   </mat-form-field>
 
-<span *ngIf="!employeSelect&&formFieldsRequired" class="text-danger">Please select assign</span>
+<span *ngIf="!employeSelect&&formFieldsRequired" class="text-danger">Please select assign.</span>
   </div>
   &nbsp;
         <!-- Divs that will be conditionally displayed -->
@@ -2089,7 +2119,7 @@
     <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
     <!-- <div class="text-info">Add any attachment for reference.</div> -->
 </div>
-<span class="text-muted">Add any attachment for reference</span>
+<!-- <span class="text-muted">Add any attachment for reference</span> -->
 </div>
   </div>
 
@@ -2249,7 +2279,7 @@
           <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
           <!-- <div class="text-info">Add any attachment for reference.</div> -->
         </div>
-        <span class="text-muted">Add any attachment for reference</span>
+        <!-- <span class="text-muted">Add any attachment for reference</span> -->
   </div>
 </div>
 </div>
@@ -2525,7 +2555,7 @@
 
     </div>
     <div style="margin-bottom: 1.5rem;">
-      <span *ngIf="!task__name&&formFieldsRequired" class="text-danger">Please enter title</span>
+      <span *ngIf="!task__name&&formFieldsRequired" class="text-danger">Please enter title.</span>
     </div>
     <div class="unassign-editsidebar-radio">
 
@@ -2804,7 +2834,7 @@
 
 
   <div style="margin-bottom: 1.5rem;">
-    <span *ngIf="!selected_taskName&&formFieldsRequired" class="text-danger">Please enter title</span>
+    <span *ngIf="!selected_taskName&&formFieldsRequired" class="text-danger">Please enter title.</span>
   </div>
 
 
