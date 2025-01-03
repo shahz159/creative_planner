@@ -3861,7 +3861,7 @@
 
 
                                                 <div class="row mt-4 px-3">
-                                                    <div class="col text-center">
+                                                    <div class="col text-center dropdown">
                                                         <div class="kt-info-lable-v">
                                                             <span class="kt-info-lable-icon"><svg width="24px" height="24px"
                                                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
@@ -3903,9 +3903,47 @@
                                                                     </g>
                                                                 </svg></span> Owner
                                                         </div>
-                                                        <div class="kt-info-data-v">
+                                                        <div class="kt-info-data-v cursor-pointer"   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             {{projectInfo&&projectInfo.Owner}}
                                                         </div>
+                                                        <div class="dropdown-menu user-detail-hover">
+                                                          <div class="user-info">
+                                                              <div class="icon">
+                                                                  <img src="https://cswebapps.com/dmsweb/assets/media/icons/user2.png" class="" alt="">
+                                                              </div>
+                                                              <div class="user-name-email">
+                                                                  <p class="name">DisplayName</p>
+                                                                  <div class="user-i">
+                                                                      <div class="user-i-icon">
+                                                                          <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 6C9 4.89543 9.89543 4 11 4H13C14.1046 4 15 4.89543 15 6V8H9V6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <rect x="4" y="8" width="16" height="11" rx="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></rect> </g></svg>
+                                                                      </div>
+                                                                      <div class="user-i-control">
+                                                                          <div class="user-i-label">Designation</div>
+                                                                          <div class="user-i-form">item.DesignationName/item.DepartmentName</div>
+                                                                      </div>
+                                                                  </div>
+
+                                                                  <div class="user-i">
+                                                                      <div class="user-i-icon">
+                                                                          <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 20H21V10C21 8.89543 20.1046 8 19 8H15M11 16H11.01M17 16H17.01M7 16H7.01M11 12H11.01M17 12H17.01M7 12H7.01M11 8H11.01M7 8H7.01M15 20V6C15 4.89543 14.1046 4 13 4H5C3.89543 4 3 4.89543 3 6V20H15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                      </div>
+                                                                      <div class="user-i-control">
+                                                                          <div class="user-i-label">Company</div>
+                                                                          <div class="user-i-form">item.CompanyName</div>
+                                                                      </div>
+                                                                  </div>
+                                                                  <div class="user-i">
+                                                                      <div class="user-i-icon">
+                                                                          <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12.1303 13C13.8203 13 15.1903 11.63 15.1903 9.94C15.1903 8.25001 13.8203 6.88 12.1303 6.88C10.4403 6.88 9.07031 8.25001 9.07031 9.94C9.07031 11.63 10.4403 13 12.1303 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M17 3H7C4.79086 3 3 4.79086 3 7V17C3 19.2091 4.79086 21 7 21H17C19.2091 21 21 19.2091 21 17V7C21 4.79086 19.2091 3 17 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6.30969 20.52C6.27753 19.7534 6.40079 18.9882 6.67199 18.2704C6.94319 17.5526 7.35674 16.8971 7.88781 16.3433C8.41888 15.7894 9.05649 15.3488 9.76226 15.0477C10.468 14.7467 11.2274 14.5916 11.9947 14.5916C12.762 14.5916 13.5214 14.7467 14.2272 15.0477C14.9329 15.3488 15.5705 15.7894 16.1016 16.3433C16.6326 16.8971 17.0462 17.5526 17.3174 18.2704C17.5886 18.9882 17.7118 19.7534 17.6797 20.52" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                      </div>
+                                                                      <div class="user-i-control">
+                                                                          <div class="user-i-label">Reporting user</div>
+                                                                      <div class="user-i-form">item.ReportingUserName</div>
+                                                                      </div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                      </div>
                                                     </div>
 
                                                     <div class="col text-center">
@@ -13250,7 +13288,7 @@
                               </span> Category </div>
                           <div class="input-icon Sub_In_ed">
                               <ng-select class="curser-pointer" [(ngModel)]="selectedcategory"    [ngClass]="{'error-vd': !selectedcategory&&formFieldsRequired}"
-                                  placeholder="Select Category">
+                                  placeholder="Select category">
                                   <ng-option [value]="item.ReportID" *ngFor="let item of Category_List"
                                       [disabled]="Category==item.ReportType">
                                       {{item.ReportType}}
@@ -13262,7 +13300,7 @@
                       </div>
                   </div>
 
-                  <div class="col-lg-4 text-left">
+                  <div class="col-lg-4 text-left d-none">
                       <div class="form-group Ic_ed">
                           <div class="kt-info-lable-v"><span class="kt-info-lable-icon"><svg width="24px"
                                       height="24px" xmlns="http://www.w3.org/2000/svg" fill="#898989"
@@ -13321,7 +13359,7 @@
                           <div class="kt-info-lable-v"> Start date</div>
                           <div class="input-icon Sub_In_ed">
                               <input type="text" class="form-control readonly"
-                                  [value]="Start_Date | date : 'dd-MM-yyyy'" placeholder="Select start date" readonly="" />
+                                  [value]="Start_Date | date : 'dd-MM-yyyy'" placeholder="Select start date"  readonly/>
                           </div>
                       </div>
                       <!-- <div class="form-group">
@@ -13346,7 +13384,7 @@
                           <div class="input-icon Sub_In_ed date-border-v d-flex">
                               <input id="prj-edit-deadline-input" class="form-control curser-pointer" [(ngModel)]="End_Date"
                                   [min]="todayDate|date:'YYYY-MM-dd'" matInput [matDatepicker]="strtEditsPicker"
-                                  (click)="strtEditsPicker.open();" placeholder="select deadline date"
+                                  (click)="strtEditsPicker.open();" placeholder="Select deadline date"
                                   class="form-control border-0 " name="date" />
                               <div class="input-group-append h-2">
                                   <mat-datepicker-toggle matSuffix [for]="strtEditsPicker"
@@ -13363,12 +13401,12 @@
                           <div class="kt-info-lable-v"> Duration</div>
                           <div class="input-icon Sub_In_ed"
                               *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else continue">
-                              <input type="text" class="form-control readonly" value="{{projectInfo.Duration +1}} days "
-                                  placeholder="Duration..." readonly />
+                              <input type="text" class="form-control readonly" value="{{projectInfo.Duration +1}}   days "
+                                  placeholder="Please enter duration" readonly  />
                           </div>
                           <ng-template #continue>
-                              <div class="input-icon Sub_In_ed readonly">
-                                  <input type="text" class="form-control readonly" value=" Continuous" readonly>
+                              <div class="input-icon Sub_In_ed ">
+                                  <input type="text" class="form-control readonly" value=" Continuous"  readonly>
                               </div>
                           </ng-template>
                       </div>
@@ -13431,9 +13469,9 @@
                   <div class="col-lg-4 text-left"
                       *ngIf="ProjectType == '001' || ProjectType =='Core Tasks' || ProjectType=='002' || ProjectType =='Secondary Tasks' ||ProjectType=='011' || ProjectType =='To do List'">
                       <div class="form-group mb-2 Ic_ed">
-                          <div class="kt-info-lable-v"> Allocated hours
+                          <div class="kt-info-lable-v"  > Allocated hours
                               <div class="input-icon Sub_In_ed">
-                                  <input type="text" class="form-control readonly" [(ngModel)]="Allocated" readonly />
+                                  <input type="text" class="form-control readonly"  placeholder="Please enter allocated hour" [(ngModel)]="Allocated"  readonly/>
                               </div>
                           </div>
                       </div>
@@ -13537,13 +13575,20 @@
                   <div class="form-group mb-0">
 
                       <button type="submit" class="btn btn-info w-110 ml-2"
-                          (click)="onAction_updateProject(0)" *ngIf="(projectInfo&&projectInfo.Status!='Under Approval')">
+                          (click)="onAction_updateProject(0)" *ngIf="(projectInfo&&projectInfo.Status!='Under Approval'  )">
                           Update</button>
                       <ng-container *ngIf="(projectInfo&&projectInfo.Status==='Under Approval') && ((Current_user_ID==approvalEmpId && projectInfo&&projectInfo.OwnerEmpNo===Current_user_ID) || isHierarchy==true) ">
                           <button type="submit" class="btn btn-info w-110 ml-2"
                               (click)="onAction_updateProject(1)">
-                              Update & Approve</button>
-                      </ng-container>
+                              Update & Approve</button> </ng-container>
+
+                    <!-- <ng-container *ngIf="(projectInfo&&projectInfo.Status==='New Project Rejected') && ((Current_user_ID==approvalEmpId && projectInfo&&projectInfo.OwnerEmpNo===Current_user_ID) || isHierarchy==true) ">
+                    <button type="submit" class="btn btn-info w-110 ml-2"
+                    (click)="onAction_updateProject(2)">
+                    Update & release</button></ng-container> -->
+
+
+
                       <button type="Cancel" class="btn w-110 btn-secondary  ml-2"
                           (click)="closeInfo()">Cancel</button>
                   </div>
@@ -13791,7 +13836,7 @@
                               </svg>
                           </span> Category </div>
                       <div class="input-icon Sub_In_ed">
-                          <ng-select [(ngModel)]="selectedcategory" placeholder="Select Category"
+                          <ng-select [(ngModel)]="selectedcategory" placeholder="Select category"
                           [ngClass]="{'error-vd': !selectedcategory&&formFieldsRequired}"
                               >
                               <ng-option [value]="item.ReportID" *ngFor="let item of Category_List"
@@ -13895,7 +13940,7 @@
                           <input class="form-control" [(ngModel)]="ActionendDate"
                               [min]="(ActionstartDate > todayDate ? ActionstartDate : todayDate)" matInput
                               [matDatepicker]="ActionsEditsPicker" (click)="ActionsEditsPicker.open();"
-                              placeholder="Deadline Date..." class="form-control border-0 " name="date" (ngModelChange)="onActionDateChanged()"/>
+                              placeholder="Select deadline date" class="form-control border-0 " name="date" (ngModelChange)="onActionDateChanged()"/>
                           <div class="input-group-append h-2">
                               <mat-datepicker-toggle matSuffix [for]="ActionsEditsPicker"
                                   class="btn-secondary border-0">
@@ -13911,7 +13956,7 @@
                       <div class="form-group mb-2 Ic_ed">
                           <div class="kt-info-lable-v">Submission</div>
                           <div class="input-icon Sub_In_ed">
-                              <ng-select [(ngModel)]="Submission_Name" placeholder="Select Submission Type">
+                              <ng-select [(ngModel)]="Submission_Name" placeholder="Select submission type">
                                   <ng-option [value]="item.SubmissionId" *ngFor="let item of Submission">
                                       {{item.SubmissionName}}
                                   </ng-option>

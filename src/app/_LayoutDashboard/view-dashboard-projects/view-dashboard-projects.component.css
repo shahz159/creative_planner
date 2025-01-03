@@ -1530,7 +1530,7 @@ td:nth-child(4) {
 @media (max-width: 1300px) {
   .kt-widget__title {
       width: 160px;
-      white-space: nowrap;
+      /* white-space: nowrap; */
       overflow: hidden;
       text-overflow: ellipsis;
   }
