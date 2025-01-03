@@ -635,7 +635,7 @@ export class MeetingDetailsComponent implements OnInit {
       }
 
 
-    
+     setTimeout(()=>{
       this.taskcount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
       this.notescount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
       
@@ -643,6 +643,8 @@ export class MeetingDetailsComponent implements OnInit {
       this.CurrentNotesCount = this.Agendas_List.map(item => ({ NotesCount: item.CurrentNotesCount, agendaid: item.AgendaId }));
       this.CurrentTaskCount = this.Agendas_List.map(item => ({ TaskCount: item.CurrentTaskCount, agendaid: item.AgendaId }));
 
+     },2000)
+ 
 
     
       if (this.Agendas_List.every(obj => obj.Status == 1)) {
@@ -1183,7 +1185,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.checkeddms = this.checkeddms.map((num) => num.toString());
       this.dmscount = this.checkeddms.length;
      
-      debugger
+      
       if(this._MemosSubjectList[0].Subject!=undefined &&  this.ModifiedJson){
         this._MemosSubjectList = this.mergeObjects(
           this._MemosSubjectList || [], 
@@ -2467,8 +2469,8 @@ debugger
  
 
       
-     if(this.currentAgendaView != undefined && this.currentAgendaView != null  ){
-      this.Notes_Type.trim();
+     if(this.currentAgendaView != undefined && this.currentAgendaView != null&&this.CurrentNotesCount[this.currentAgendaView]){
+      this.Notes_Type.trim(); 
       if (this.Notes_Type) {
         this.CurrentNotesCount[this.currentAgendaView].NotesCount = 1;
       } else {
