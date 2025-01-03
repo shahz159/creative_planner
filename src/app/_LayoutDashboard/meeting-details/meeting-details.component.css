@@ -8557,15 +8557,16 @@ svg.asseticn.prim-icn.memo_attachment_img {
     display: flex;
     align-items: center;
     gap: 4px;
-    color: #c7c0c0;
+    color: #527ce2;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.15s ease-in-out;
 }
 
-.add-s:hover {
+/* .add-s:hover {
     color: #527ce2;
-}
+    #736f6f
+} */
 .add-s svg {
     width: 18px;
     height: 18px;
@@ -8732,4 +8733,68 @@ svg.asseticn.prim-icn.memo_attachment_img {
 .search-head-close svg {
     width: 14px;
     height: 14px;
+}
+
+.file-upload-backdrop {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #000000;
+    z-index: 8;
+    opacity: 0.2;
+}
+
+.file-upload-progress {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    z-index: 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.file-upload-progress .progress {
+    width: 30%;
+    height: 30px;
+    border-radius: 16px;
+    background-color: #347bb1;
+    position: relative;
+}
+
+.file-upload-progress .progress-bar {
+    background-color: #1164a3;
+}
+
+.file-upload-progress .progress-bar-striped {
+    background-size: 3rem 3rem;
+}
+
+.file-upload-progress .progress-bar-control {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    color: #fff;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    font-size: 14px;
+    font-weight: 500;
+    gap: 2rem;
+    height: 30px;
+    line-height: 2;
+}
+.file-upload-progress .progress-bar-label {
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
 }
