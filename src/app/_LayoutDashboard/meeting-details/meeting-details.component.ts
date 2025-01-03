@@ -711,11 +711,11 @@ export class MeetingDetailsComponent implements OnInit {
         element.isChecked = true;
       });
 
-       this.portfolio_Scheduledjson = this.mergeObjects(
-       this.portfolio_Scheduledjson || [], 
-       this.ModifiedJson || [], 
-      'numberval'
-       );
+      //  this.portfolio_Scheduledjson = this.mergeObjects(
+      //  this.portfolio_Scheduledjson || [], 
+      //  this.ModifiedJson || [], 
+      // 'numberval'
+      //  );
     
 
       this.portfoliocount = this.checkedportfolio.length;
@@ -733,11 +733,11 @@ export class MeetingDetailsComponent implements OnInit {
       });
 
 
-      this.Project_code = this.mergeObjects(
-        this.Project_code || [], 
-        this.ModifiedJson || [], 
-        'stringval'
-      );
+      // this.Project_code = this.mergeObjects(
+      //   this.Project_code || [], 
+      //   this.ModifiedJson || [], 
+      //   'stringval'
+      // );
 
       this.projectcount = this.checkedproject.length;
 
@@ -1184,16 +1184,16 @@ export class MeetingDetailsComponent implements OnInit {
       this.dmscount = this.checkeddms.length;
      
       debugger
-      if(this._MemosSubjectList[0].Subject!=undefined &&  this.ModifiedJson){
-        this._MemosSubjectList = this.mergeObjects(
-          this._MemosSubjectList || [], 
-          this.ModifiedJson || [], 
-          'MailId'
-        );
-      }
+      // if(this._MemosSubjectList[0].Subject!=undefined &&  this.ModifiedJson){
+      //   this._MemosSubjectList = this.mergeObjects(
+      //     this._MemosSubjectList || [], 
+      //     this.ModifiedJson || [], 
+      //     'MailId'
+      //   );
+      // }
       
 
-      console.log( this._MemosSubjectList ,' this._MemosSubjectList ');
+      console.log( this._MemosSubjectList, this.ModifiedJson ,' this._MemosSubjectList ');
      });
 
       

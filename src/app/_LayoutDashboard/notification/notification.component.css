@@ -1275,6 +1275,7 @@ span.count {
   height: 20px;
   line-height: 2;
 }
+
 .btn-filtr svg {
   fill: #5c5b5a;
   width: 16px;
@@ -1291,6 +1292,19 @@ span.count {
   margin-top: 18px;
 }
 
+.btn-filtr .count.pj-aprvls{
+  background-color: #35A79C;
+}
+
+.btn-filtr .count.infors{
+  background-color: #64B5F6;
+}
+.btn-filtr .count.lv-reqs{
+  background-color: #9C27B0;
+}
+.btn-filtr .count.lv-resps{
+  background-color: #795548;
+}
 
 .kt-detail-link:first-child {
   border-top-left-radius: 4px;
@@ -1485,14 +1499,14 @@ display: inline-block; */
 /*new details page loading circle start*/
 
 .smart-glass {
-  position: absolute;
+  /* position: absolute; */
   margin: auto;
-  left: 0;
+  /* left: 0;
   top: 0;
   right: 0;
-  bottom: 0;
-  width: 288px;
-  height: 388px;
+  bottom: 0; */
+  /* width: 288px;
+  height: 388px; */
 }
 
 .logo {
@@ -1525,6 +1539,24 @@ display: inline-block; */
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+
+
+.notifloading_spinner .logo{
+  width: 200px;
+  height: 200px;
+}
+
+.notifloading_spinner .circle{
+  padding: 11px;
+  border-width:4px;
+  animation-duration: 2.2s;
+}
+
+.notifloading_spinner .loader-img {
+  width: 65px;
+  height: 50px;
 }
 
 

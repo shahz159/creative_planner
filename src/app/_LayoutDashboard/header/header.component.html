@@ -892,7 +892,7 @@
                 <div class="col-md-6">
                       <div class="form-group">
                         <label for="leavetype">Leave Type<span style="color:red">*</span></label>
-                        <ng-select [ngClass]="{'error-vd':(!selectedLeaveType&&notProvided)}" placeholder="Select leave type" [(ngModel)]="selectedLeaveType" class="selectpicker form-control" title="Select leave type"  (change)="onLeaveTypeChanged($event)">
+                        <ng-select [ngClass]="{'error-vd':(!selectedLeaveType&&notProvided)}" placeholder="Select leave type" [(ngModel)]="selectedLeaveType" class="selectpicker" title="Select leave type"  (change)="onLeaveTypeChanged($event)">
                             <ng-option *ngFor="let item of allLeavesTypes" [value]="item.LeaveId">{{item.LeaveType}}</ng-option>
                         </ng-select>
                         <span *ngIf="selectedLeaveType==1">Max 6 months and Min 3 months before</span>

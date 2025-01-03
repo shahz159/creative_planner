@@ -1423,7 +1423,7 @@ a.dropdown-item {
 @media (max-width: 1440px) {
   .kt-widget__title {
     width: 160px;
-    white-space: nowrap;
+    /* white-space: nowrap; */
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -3226,7 +3226,7 @@ td:nth-child(4) {
 @media (max-width: 1300px) {
   .kt-widget__title {
       width: 160px;
-      white-space: nowrap;
+      /* white-space: nowrap; */
       overflow: hidden;
       text-overflow: ellipsis;
   }
@@ -3724,3 +3724,119 @@ input:checked + .slider:before {
   font-size: 12px;
    padding: 8px;
 } */
+
+
+.eve-area {
+  width: 100%;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  min-height: 32px;
+  padding-right: 16px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-align-items: center;
+  align-items: center;
+  outline: none;
+  -webkit-transition: background-color 100ms linear;
+  transition: background-color 100ms linear;
+}
+.event-main {
+  flex: 1 1 auto;
+  display: flex;
+  position: relative;
+  align-items: center;
+
+}
+.event-color {
+  margin-right: 10px;
+  background-color: transparent;
+  flex: 0 0 auto;
+  border-radius: 40px;
+  height: 10px;
+  width: 10px;
+  margin-left: 3px;
+}
+
+.event-color--info {
+  background-color: #4d87ff;
+}
+
+.event-color--transparent {
+  border: 1px solid #ddd;
+}
+.event-title {
+  color: #555;
+  font-weight: 600;
+  display: flex;
+  flex-direction: row;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -webkit-hyphens: manual;
+  -ms-hyphens: manual;
+  hyphens: manual;
+}
+
+.event-title a {
+  color: #007bff;
+  color: #555;
+}
+.meetdt {
+  padding: 0.8rem 1.25rem;
+  border-bottom: 1px solid #ddd;
+}
+.Kt-pp-list .card-header {
+  border-bottom: 0px solid #ebedf2;
+}
+.card.brdr .card-body>div {
+  flex: 0.5;
+  text-align: left;
+}
+.cus-scroll {
+  max-height: 200px;
+  overflow-y: auto;
+}
+.btm-des {
+  display: flex;
+  align-items: center;
+}
+.status-d h6 {
+  margin-bottom: 0;
+}
+.cmts-svg svg {
+  width: 20px;
+  height: 20px;
+  fill: #8d95a5;
+}
+
+.cmts-items:hover .cmts-svg svg {
+  transform: scale(1.1);
+  fill: #2786fb;
+}
+
+.cmts-svg {
+  cursor: pointer;
+}
+.cmts-items {
+  display: flex;
+  align-items: center;
+  padding: 5px 15px;
+  border-bottom: 1px solid #e4e7e8;
+}
+.appr-comts h6 {
+  margin: 0;
+  flex: 1;
+}
+.exs-cmts .crd-bdy {
+  overflow: auto;
+  max-height: 200px;
+}
+
+.exs-cmts {
+  margin-bottom: 10px;
+  color: #4b4343;
+}

@@ -694,7 +694,8 @@
 
 
                                                     <td *ngIf="Mode!='DelayActions'&&Mode!='AssignedActions'">
-                                                      <p class="kt-widget__title mb-0 compl-remarks-span" title="{{item.Project_Name}}">
+                                                      <p #prjtextcBx class="kt-widget__title mb-0 compl-remarks-span" title="{{item.Project_Name}}"
+                                                      (click)="$event.stopPropagation(); prjtextcBx.classList.contains('compl-remarks-span')?prjtextcBx.classList.remove('compl-remarks-span'):prjtextcBx.classList.add('compl-remarks-span')">
                                                         {{item.Project_Name }}
 
 
@@ -870,7 +871,6 @@
                                                     <div class="kt-widget__details">
                                                         <div class="kt-section__content kt-section__content--solid">
                                                           <div class="kt-media-group">
-
                                                             <ng-container *ngIf="item.ProjectOwner">
                                                             <a *ngIf="item.ProjectOwner!=item.TeamSupport" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner:{{item.ProjectOwner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                               <span>{{ item.ProjectOwner.split(' ')[0].charAt(0) }}{{ item.ProjectOwner.split(' ')[item.ProjectOwner.split(' ').length - 1].charAt(0) }}</span>
@@ -881,6 +881,7 @@
                                                               <span>{{ item.ProjectOwner.split(' ')[0].charAt(0) }}{{ item.ProjectOwner.split(' ')[item.ProjectOwner.split(' ').length - 1].charAt(0) }}</span>
                                                             </a></ng-container>
 
+                                                            
                                                             <ng-container *ngIf="item.TeamRes">
                                                             <a *ngIf="item.TeamRes!=item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible: {{item.TeamRes}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                 <span>{{item.TeamRes.split(' ')[0].charAt(0)}}{{item.TeamRes.split(' ')[item.TeamRes.split(' ').length -1].charAt(0)}}</span>
@@ -890,9 +891,13 @@
                                                             <a *ngIf="item.TeamRes!=item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Authority: {{item.TeamAutho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                               <span>{{item.TeamAutho.split(' ')[0].charAt(0)}}{{item.TeamAutho.split(' ')[item.TeamAutho.split(' ').length -1].charAt(0)}}</span>
                                                             </a></ng-container>
-                                                            <a *ngIf="item.TeamRes==item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.TeamRes}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+
+                                                            <ng-container *ngIf="item.TeamRes&&item.TeamAutho">
+                                                             <a *ngIf="item.TeamRes==item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.TeamRes}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                 <span>{{item.TeamAutho.split(' ')[0].charAt(0)}}{{item.TeamAutho.split(' ')[item.TeamAutho.split(' ').length-1].charAt(0)}}</span>
-                                                              </a>
+                                                              </a> 
+                                                            </ng-container>
+
                                                               <ng-container *ngIf="item.TeamSupport">
                                                               <a *ngIf="item.ProjectOwner!=item.TeamSupport" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Support: {{item.TeamSupport}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                 <span>{{item.TeamSupport&&item.TeamSupport.split(' ')[0].charAt(0)}}{{item.TeamSupport&&item.TeamSupport.split(' ')[item.TeamSupport&&item.TeamSupport.split(' ').length-1].charAt(0)}}</span>

@@ -2094,3 +2094,14 @@ span.timeline-time svg {
   color: #a3a3a3;
   font-weight: 400;
 }
+
+
+.tmdiff-chip{
+    background-color: #e4e4dc4a;
+    padding: 0em 0.2em 0em 0.2em;
+    border-radius: 5px;
+    border: 1px solid #dfdddd;
+    font-size: 1rem;
+    color: #666667;
+    z-index: 1;
+}

@@ -2406,42 +2406,13 @@ isValidURL = true;
     return Math.random().toString().substr(2, 6).padStart(6, '0');
   }
 
-  // Sanitize file name
   sanitizeFileName(fileName: string): string {
     return fileName
-      .replace(/</g, '%3C')
-      .replace(/>/g, '%3E')
-      .replace(/#/g, '%23')
-      .replace(/\+/g, '%2B')
-      .replace(/{/g, '%7B')
-      .replace(/}/g, '%7D')
-      .replace(/\|/g, '%7C')
-      .replace(/\^/g, '%5E')
-      .replace(/~/g, '%7E')
-      .replace(/\[/g, '%5B')
-      .replace(/]/g, '%5D')
-      .replace(/;/g, '%3B')
-      .replace(/\//g, '%2F')
-      .replace(/\?/g, '%3F')
-      .replace(/:/g, '%3A')
-      .replace(/@/g, '%40')
-      .replace(/=/g, '%3D')
-      .replace(/&/g, '%26')
-      .replace(/\$/g, '%24'); // Leave spaces as-is
+      .replace(/[^a-zA-Z0-9. ]/g, '_') // Allow dots by including '.' in the regex
+      .replace(/ /g, '_')              // Replace spaces with _
+      .replace(/_+/g, '_');            // Replace multiple underscores with a single _
   }
-  // Map file content type
-  // private getContentType(contentType: string): string {
-  //   switch (contentType) {
-  //     case 'application/pdf':
-  //       return '.pdf';
-  //     case 'image/png':
-  //       return '.png';
-  //     case 'image/jpeg':
-  //       return '.jpg';
-  //     default:
-  //       return '.' + contentType.split('/')[1]; // Default to file extension
-  //   }
-  // }
+  
 
   getContentType(fileName: any): string | null {
     if (!fileName) {
