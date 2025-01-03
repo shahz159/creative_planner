@@ -1380,6 +1380,8 @@ debugger
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("sumdet").classList.remove("position-fixed");
+    document.getElementById("acceptbar").classList.remove("kt-quick-panel--on");
+    document.getElementById("rejectbar").classList.remove("kt-quick-panel--on");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["/backend/ProjectsSummary/"]);
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
@@ -2288,5 +2290,245 @@ this.closeAutocompleteDrpDwn('proDDwn')
     return `Company name: ${this.CountDelay} <br> Designation: ${this.CountDelay}`;
   }
 
+  Value='Select All'
 
+
+
+  rejectpros() {
+    this.approvalObj.Project_Code = null;
+    this.approvalservice.GetGlobalRejectList(this.approvalObj).subscribe((data) => {
+      this.reject_list = JSON.parse(data[0]['reject_list']);
+    });
+    document.getElementById("rejectbar").classList.add("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+    this.approvingRequest = []
+    this.allSelectedProjects.forEach((item)=>{
+      if( item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+        this.approvingRequest.push(item)
+        console.log(this.approvingRequest,'this.approvingRequestthis.approvingRequest')
+      }
+
+    })
+  }
+
+
+  isAllPrjSelected: boolean = false
+
+  selectUnselectPagePrjs(evt) {
+
+
+    this.isAllPrjSelected = evt.checked
+    if (this.isAllPrjSelected) {
+      const selprjs = this.allSelectedProjects.map(x => x.Project_Code)
+      const PageunselPrjs = this._ProjectDataList.filter(item => {
+        return !selprjs.includes(item.Project_Code);
+      })
+      this.allSelectedProjects = [...PageunselPrjs, ...this.allSelectedProjects];
+    }
+    else {
+      // unchecked
+      const curPagePrjs = this._ProjectDataList.map(x => x.Project_Code);
+      this.allSelectedProjects = this.allSelectedProjects.filter(item => {
+        return !curPagePrjs.includes(item.Project_Code)
+      });
+    }
+    this.isapprovlFound = this.allSelectedProjects.some((ob) => ob.PendingapproverEmpNo && ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
+  }
+
+
+  selectUnSelectProject(e, item) {
+
+    if (e.checked) {
+      this.allSelectedProjects.push(item)
+      const allselec = this._ProjectsListBy_Pid.every(item => {
+        return this.allSelectedProjects.map(p => p.Project_Code).includes(item.Project_Code)
+      })
+      this.isAllPrjSelected = allselec
+
+    }
+    else {   // when unchecked
+      let index = this.allSelectedProjects.findIndex(obj => obj.Project_Code == item.Project_Code)
+      if (index != -1)
+        this.allSelectedProjects.splice(index, 1);
+      this.isAllPrjSelected = false;
+
+    }
+
+    this.isapprovlFound=this.allSelectedProjects.some((ob)=>ob.PendingapproverEmpNo&&ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
+
+}
+
+
+isProjectSelected(prjcode: any): boolean {
+
+  return   this.allSelectedProjects.map(x => x.Project_Code).includes(prjcode);
+
+}
+
+
+
+
+  value(){
+    if( this.isAllPrjSelected == true){
+      this.Value = 'Unselect all'
+    }
+    else{
+      this.Value = 'Select all'
+    }
+
+  }
+
+
+
+
+  approverComments:string;
+  notProvided:any;
+  approvingRequest = []
+  submitAprvlsWithCmts(){
+
+
+    if(this.approverComments&&this.approverComments.trim()){
+      this.notProvided=false;
+      // this.acceptSelectedValues(this.approverComments);
+    }
+    else{
+       this.notProvided=true;
+    }
+
+  }
+
+  onAcceptWithCmtsBtnClicked(){
+    document.getElementById("acceptbar").classList.add("kt-quick-panel--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+   this.approvingRequest = []
+    this.allSelectedProjects.forEach((item)=>{
+      if( item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+        this.approvingRequest.push(item)
+        console.log(this.approvingRequest,'this.approvingRequestthis.approvingRequest')
+      }
+
+    })
+
+  }
+
+  rejectType: any;
+  noRejectType: boolean = false;
+  rejectype: any;
+  rejDesc: any;
+  rejectcommentsList: any;
+  // comments: string;
+  exist_comment: any[] = [];
+  rejectcomments:any;
+  reject_list: any;
+  allSelectedProjects = [];
+  isapprovlFound:boolean = false
+
+
+
+  resetReject(){
+    this.noRejectType = false;
+    this.comments = "";
+    this.exist_comment =[];
+    this.rejectType=null;
+  }
+
+  rejectApproval() {
+    this.noRejectType = false;
+    this.reject_list.forEach(element => {
+      if (this.rejectType == element.TypeID) {
+        this.rejDesc = element.Reject_Description;
+      }
+    });
+
+    if(this.allSelectedProjects.length==1){
+      this.approvalObj.Project_Code=(this.allSelectedProjects[0]['Project_Code1'])
+      if ((this.allSelectedProjects[0]['Req_Type']) == 'New Project')
+        this.approvalObj.Status = 'New Project Rejected';
+      else if ((this.allSelectedProjects[0]['Req_Type']) == 'New Project Reject Release')
+        this.approvalObj.Status = 'New Project Rejected';
+      else if ((this.allSelectedProjects[0]['Req_Type']) == 'New Project Hold')
+        this.approvalObj.Status = 'New Project Rejected';
+      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Complete')
+        this.approvalObj.Status = 'Project Complete Rejected';
+      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Complete Reject Release')
+        this.approvalObj.Status = 'Project Complete Rejected';
+      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Complete Hold')
+        this.approvalObj.Status = 'Project Complete Rejected';
+      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Deadline Extend')
+        this.approvalObj.Status = 'Rejected';
+      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Deadline Extend Hold')
+        this.approvalObj.Status = 'Rejected';
+      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Standardtask Enactive')
+        this.approvalObj.Status = 'Enactive-Reject';
+      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Forward')
+        this.approvalObj.Status = 'Forward Reject';
+      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Hold')
+        this.approvalObj.Status = 'Project Hold Reject';
+      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Revert Back')
+        this.approvalObj.Status = 'Revert Reject';
+        else if ((this.allSelectedProjects[0]['Req_Type']) == 'Task Complete')
+        this.approvalObj.Status = 'Task-Reject';
+      else{
+        this.approvalObj.Status = 'Rejected';
+      }
+    }
+
+
+    this.approvalObj.Emp_no = this.Current_user_ID;
+    this.approvalObj.rejectType = this.rejectType;
+      this.approvalservice.GetGlobalRejectComments(this.approvalObj).subscribe(data => {
+      this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
+      this.rejectcomments=this.rejectcommentsList.length;
+    });
+
+  }
+
+  submitReject(){
+    console.log(this.allSelectedProjects,"reject");
+    this.allSelectedProjects.forEach(element => {
+      element.RejectType=this.rejectType;
+      element.Remarks=this.comments;
+    });
+    console.log(this.allSelectedProjects,"reject1");
+    if( this.allSelectedProjects.length > 0){
+
+      this.approvalservice.NewUpdateRejectApprovalsService(this.approvingRequest).subscribe(data =>{
+        console.log(data,"reject-data");
+
+        this.allSelectedProjects=[];
+        this.approvingRequest = []
+        // this.GetPortfolioProjectsByPid()
+        this.isapprovlFound = false
+      });
+      const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+      checkbox.checked = false;
+      this.allSelectedProjects=[];
+      this.notifyService.showSuccess("Project(s) rejected successfully.",'Success');
+    }
+    else{
+      this.notifyService.showInfo("Please select atleast one project to reject.",'');
+    }
+    this.resetReject();
+    this.closeInfo();
+  }
+
+  clickonselect(com) {
+    if (this.comments == null) {
+      this.comments = com;
+      this.exist_comment.push(com);
+    }
+    else {
+      this.comments = this.comments + " " + com;
+      this.exist_comment.push(com);
+    }
+  }
+
+  clickondeselect(com, id) {
+    this.exist_comment = this.exist_comment.filter((comment) => comment != com);
+    this.comments = this.comments.replace(com, "");
+    console.log(this.exist_comment, "deselect");
+
+  }
 }

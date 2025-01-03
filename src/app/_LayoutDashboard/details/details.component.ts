@@ -189,7 +189,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   noActvySinceCreation:boolean=false;
   noActvy4NDays:number=-1;
   prjResHasActions:boolean=false;   // project responsible has actions or not.
-  actnsWithoutProgress:any[]=[];   // actions with no progress since their start date in the project. 
+  actnsWithoutProgress:any[]=[];   // actions with no progress since their start date in the project.
 
 
 
@@ -541,7 +541,7 @@ debugger
             let alloc4Ndays=0;
             const psd=new Date(this.projectInfo.StartDate.split('T')[0]);  // project start date.
             const ped=new Date(this.projectInfo.EndDate.split('T')[0]);    // project end date.
-            const crd=new Date();  
+            const crd=new Date();
             const uptod=crd<=ped?crd:ped;
 
             if(['001','002','011'].includes(this.projectInfo.Project_Block)&&['Completed','New Project Rejected','Cancelled'].includes(this.projectInfo.Status)==false&&crd>=psd){
@@ -580,12 +580,12 @@ debugger
 
               let r_Hrs=['001', '002','011'].includes(this.projectInfo.Project_Block)?((+this.projectInfo.AllocatedHours)-tlTotalHrs):(AL - tlTotalHrs);
               r_Hrs=(+r_Hrs.toFixed(2));
-              
+
 
                var options = {
                  series: [{
-                   data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ? 
-                         ( includeExpectedhrs?[+this.projectInfo.AllocatedHours,alloc4Ndays,tlTotalHrs,r_Hrs<0?0:r_Hrs]:[+this.projectInfo.AllocatedHours,tlTotalHrs,r_Hrs<0?0:r_Hrs] )  
+                   data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ?
+                         ( includeExpectedhrs?[+this.projectInfo.AllocatedHours,alloc4Ndays,tlTotalHrs,r_Hrs<0?0:r_Hrs]:[+this.projectInfo.AllocatedHours,tlTotalHrs,r_Hrs<0?0:r_Hrs] )
                         : [AL, tlTotalHrs, r_Hrs]
                  }],
                  chart: {
@@ -628,14 +628,14 @@ debugger
                  colors:['003', '008'].includes(this.projectInfo.Project_Block)?
                        ['#7dbeff', '#7da1ff',r_Hrs<0?'#757575':'#dbe1e4']:
                        ( includeExpectedhrs?['#7dbeff','#c187ff','#7da1ff',r_Hrs<0?'#757575':'#dbe1e4']:['#7dbeff','#7da1ff',r_Hrs<0?'#757575':'#dbe1e4'] ),
-                 
+
                 tooltip: {
-                    enabled: true, 
+                    enabled: true,
                     custom: ({ series, seriesIndex, dataPointIndex, w })=> {
                           const value = series[seriesIndex][dataPointIndex];
                           let category = w.globals.labels[dataPointIndex];
                           category=category=='Expected'?'Expected till today':category;
-     
+
                      return `${
                        category=='Used'?`<div style=""><div style="border-radius: 4px;padding: 4px;font-family: monospace;box-shadow: 0px 0px 0px 1px #527ce2;">
                              <div style="padding: 5px;border-radius: 5px; background-color: #527ce2;color: white;font-size: 11px;">Total used: ${value} hrs</div>
@@ -654,10 +654,10 @@ debugger
                       `<div style="padding: 10px; background-color: #f4f4f4; border-radius: 5px;">
                          <strong>${category}</strong>: ${value} hrs
                       </div></div>`
-                      
+
                       }`;
                         }
-                      }       
+                      }
 
                };
 
@@ -665,16 +665,16 @@ debugger
                if (this.prjBARCHART)
                this.prjBARCHART.destroy();
 
-           
+
                 let bchr=document.querySelector("#Bar-chart");
                 if(bchr)
-                {  
+                {
                   this.prjBARCHART = new ApexCharts(bchr, options);
                   this.prjBARCHART.render();
                 }
-            
-              
-              
+
+
+
 
          //  bar chart end.
 
@@ -779,7 +779,7 @@ debugger
                     let pchart = new ApexCharts(_piechartsec, options123);
                     pchart.render();
                   }
-              
+
              }
          }
 
@@ -870,7 +870,7 @@ debugger
   Pid: any;
 
   calculateProjectActions() {
-    
+
     if (this.projectActionInfo) {
       // all must be zero before calculation.
       this.TOTAL_ACTIONS_DONE = 0;
@@ -1090,7 +1090,7 @@ debugger
       this.selfAssignedActns=[];  // must be empty before calculation.
       this.pendingActns4Aprvls=[];   // must be empty before calculation.
       this.actnsWithoutProgress=[];   // must be empty before calculation.
-      
+
      const cr_date=new Date(); cr_date.setHours(0,0,0,0);
 
      this.projectActionInfo.forEach((actn)=>{
@@ -1162,11 +1162,11 @@ debugger
     if(actionIndex!==undefined){
       this.showActionDetails(actionIndex);
     }
- 
+
     setTimeout(()=>{
       this.drawStatisticsNew();
     },3000)
-    
+
 
 
     if(this.projectInfo&&this.projectInfo.Status=='Completed'){
@@ -1192,7 +1192,7 @@ debugger
     }
 
 
-    
+
 
 
    // when project has no activity done even after start date.   calculation here.
@@ -1337,7 +1337,7 @@ debugger
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-
+debugger
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
           console.log(this.Project_List,"dddddd")
@@ -1394,7 +1394,7 @@ debugger
 // sorting people based on active or inactive
 
 
-         
+
         }
       });
 
@@ -1601,7 +1601,7 @@ debugger
   }
 
   showActionDetails(index: number | undefined) {
-    this.currentActionView = index;  
+    this.currentActionView = index;
     if(index!=undefined){
 
       this.requestType = null;
@@ -1614,7 +1614,7 @@ debugger
       else if(this.projectActionInfo[this.currentActionView].Status=='New Project Rejected'){
         this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
       }
-      
+
       // draw action's bar chart.
       this.maxDuration = (+this.projectActionInfo[this.currentActionView].AllocatedHours);
       this.UsedInDAR = this.projectActionInfo[this.currentActionView].TotalHours||0;
@@ -1623,15 +1623,15 @@ debugger
       });
 
 
-      // when action has no activity done even after start date. 
+      // when action has no activity done even after start date.
       const actn_sdate=new Date(this.projectActionInfo[index].StartDate); actn_sdate.setHours(0,0,0,0);
       const cr_date=new Date(); cr_date.setHours(0,0,0,0);
       this.noActvyOnActnSinceCreation=(['Completed','Cancelled'].includes(this.projectActionInfo[index].Status)==false&&cr_date>actn_sdate&&this.UsedInDAR==0);
       if(this.noActvyOnActnSinceCreation){
         this.noActnActvy4NDays=moment(cr_date).diff(actn_sdate,'days');
       }
-     
-     
+
+
       // action owner drpdwn and action resp drpdwn.
       this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectActionInfo[index].Project_Code).subscribe(
         (data) => {
@@ -1781,7 +1781,7 @@ debugger
           rotate: -90
         }
       },
-  
+
       colors:includeExpectedhrs?['#7dbeff','#c187ff','#7da1ff',r_hrs<0?'#757575':'#dbe1e4']:
                                 ['#7dbeff','#7da1ff',r_hrs<0?'#757575':'#dbe1e4']
 
@@ -1943,7 +1943,7 @@ multipleback(){
 }
 
 
-  closeInfo() {   
+  closeInfo() {
     this._remarks = '';
     this.characterCount=0;
     this.characterCount_Action=0;
@@ -2436,7 +2436,7 @@ multipleback(){
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {  debugger
       this.approvalsFetching=false;    // fetched approvals or processing end.
       this.requestDetails = data as [];
-      console.log(this.requestDetails, "approvals");  
+      console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
         this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
         this.requestType = (this.requestDetails[0]['Request_type']);
@@ -2469,7 +2469,7 @@ multipleback(){
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
         //this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
         this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
-        
+
         this.AuditRequestBY = (this.requestDetails[0]['AuditRequestBY']);   console.log('AuditRequestBY:',this.AuditRequestBY);
         const fullName = this.Submitted_By.split(' ');
         this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
@@ -2497,7 +2497,7 @@ multipleback(){
           this.newResponsible = (this.revert_json[0]['newResp']);
           this.forwardto = (this.revert_json[0]['Forwardedto']);
           this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
-        }  
+        }
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved'||this.requestType == 'Project Audit') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
@@ -3094,7 +3094,7 @@ approvalSubmitting:boolean=false;
   }
 
   contentType:any="";
-  
+
   getFileExtension(fileName: any): string | null {
     if (!fileName) {
       return null;
@@ -3225,7 +3225,7 @@ debugger
                     console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                   //  this._Message = (JSON.parse(myJSON).body);
-        
+
                   });
                 }
               });
@@ -3277,7 +3277,7 @@ debugger
                     //     console.log(event1,"azure data");
                     //     var myJSON = JSON.stringify(event1);
                     //   //  this._Message = (JSON.parse(myJSON).body);
-            
+
                     //   });
                     // }
                     this.notifyService.showSuccess(this._Message, 'Success');
@@ -3287,12 +3287,12 @@ debugger
                         console.log(event1,"azure data");
                         var myJSON = JSON.stringify(event1);
                       //  this._Message = (JSON.parse(myJSON).body);
-            
+
                       });
                     }
                 }
               });
-              
+
               this.selectedFile = null;
               this._inputAttachments = '';
               this._remarks = '';
@@ -3328,11 +3328,11 @@ debugger
               debugger
                if (event.type === HttpEventType.Response){
                  var myJSON = JSON.stringify(event);
-                 
+
                  this._Message = (JSON.parse(myJSON).body).message;
                  console.log(event,myJSON,this._Message,"action data");
                 //  alert(this._Message);
-                  
+
                  if(this._Message=='Success'){
                   if ( this.selectedFile) {
                   fd.append('file',  this.selectedFile);
@@ -3340,7 +3340,7 @@ debugger
                     console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                   //  this._Message = (JSON.parse(myJSON).body);
-        
+
                   });
                 }
               }
@@ -3357,7 +3357,7 @@ debugger
           this.notifyService.showSuccess("Successfully updated", 'Action completed');
           this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
         }
-        
+
       });   //swal end
 
     }
@@ -3401,7 +3401,7 @@ debugger
                     console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                   //  this._Message = (JSON.parse(myJSON).body);
-        
+
                   });
                 }
                 this.notifyService.showSuccess("Successfully updated", 'Action completed');
@@ -3525,7 +3525,7 @@ debugger
   getResponsibleActions() {
 
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
-      (data) => {    
+      (data) => {
         this.ProjectPercentage = data[0]['ProjectPercentage'];
         this.ProjectStatus = data[0]['ProjectStatus'];
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
@@ -3576,7 +3576,7 @@ debugger
      this.hasNoActionMembers=[];
      let pMemberwithActns=this.Subtask_Res_List.map(ob=>ob.Team_Res);
      const arr=[];
-     
+
      pracis.forEach((tmember)=>{
       if( tmember.Emp_No!=projectinfo_.OwnerEmpNo&&pMemberwithActns.includes(tmember.Emp_No)==false&&tmember.Emp_Active==true){
             if(arr.findIndex(ob=>ob.Emp_No==tmember.Emp_No)==-1)
@@ -3694,6 +3694,7 @@ debugger
 
   // isStartDateEditable:boolean=false;
   onAction_updateProject(val) {
+    debugger
     this.isPrjNameValid=this.isValidString(this.ProjectName,3);
     this.isPrjDesValid=this.isValidString(this.ProjectDescription,5);
 
@@ -3845,7 +3846,27 @@ debugger
         this.closeInfo();
       });
     }
+    // else if (val == 2) {
+    //   this.approvalObj.Emp_no = this.Current_user_ID;
+    //   this.approvalObj.Project_Code = this.URL_ProjectCode;
+    //   this.approvalObj.json = jsonvalue;
+    //   this.approvalObj.Remarks = this._remarks;
+    //   this.approvalObj.isApproval = val;
 
+    //   this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+    //     console.log(data['message'], "edit response");
+    //     if (data['message'] == '3') {
+    //       this.notifyService.showSuccess("Project updated and Approved successfully.", "Success");
+    //       this.Close_Approval();
+    //     }
+    //     else if (data['message'] == '2') {
+    //       this.notifyService.showError("Not updated.", "Failed");
+    //     }
+    //     this.getProjectDetails(this.URL_ProjectCode);
+    //     this.getapprovalStats();
+    //     this.closeInfo();
+    //   });
+    // }
 
 
 
@@ -3926,7 +3947,7 @@ debugger
 
 
   onAction_update() {
-    
+
     this.updatingAction = true;
 // check all mandatory field are provided.
 this.isactionValid=this.isValidString(this.ActionName,2);
@@ -4334,7 +4355,7 @@ debugger
 
 
     this.service._InsertDARServie(this.objProjectDto)
-      .subscribe(data => {   
+      .subscribe(data => {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "Success");
         // this.selectDateForTimeline(this.timeline_of=='today'?this.todayDate:this.disablePreviousDate);
@@ -4584,7 +4605,7 @@ debugger
         subscribe((data) => {
 
           this._Message = (data['message']);
-          
+
           if (this._Message == 'Updated Successfully.') {
             this.getPortfoliosDetails();
             this.Portfolio=[];
@@ -4790,7 +4811,7 @@ debugger
         fd.append("Attachment","false")
       }
       // this.service._fileuploadService(fd).
-      
+
       this.service._UpdateProjectCompleteCore(fd).
         subscribe((event: HttpEvent<any>) => {
           switch (event.type) {
@@ -4815,7 +4836,7 @@ debugger
                 if (this.progress == 100) {
                   this.notifyService.showInfo("File uploaded successfully", "Project updated");
                 }
-                
+
                 this.notifyService.showSuccess(this._Message, 'Success');
                 debugger
                 if(this.selectedFile){
@@ -4824,7 +4845,7 @@ debugger
                     console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                   //  this._Message = (JSON.parse(myJSON).body);
-        
+
                   });
                 }
                 this.GetActivityDetails();
@@ -5474,7 +5495,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
   }
 
   toggleMtgsSection(sec:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'){
-    
+
     this.mtg_section=sec;
     const bx=this.mtg_section=='UPCOMING'?'#upcoming_meetings_tabpanel div#upcoming-mtg-0-btn':
              this.mtg_section=='TODAY'?'#today_meetings_tabpanel div#today-mtg-0-btn':
@@ -6241,10 +6262,10 @@ getChangeSubtaskDetais(Project_Code) {
 
 
   onFileChange1(event) {
- 
+
     if (event.target.files.length > 0) {
       const allowedTypes = [
-        "image/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+        "image/*", "application/pdf", "text/plain", "text/html", "application/msword",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "application/json", "application/xml", "application/vnd.ms-powerpoint",
         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
@@ -6278,7 +6299,7 @@ getChangeSubtaskDetais(Project_Code) {
           })
           continue; // Skip this file
         }
-  
+
         // Determine file extension
         let fileExtension = '';
         if (contentType === "application/pdf") {
@@ -6290,11 +6311,11 @@ getChangeSubtaskDetais(Project_Code) {
         } else if (contentType === "image/jpg") {
           fileExtension = ".jpg";
         }
-  
+
         // Add file to _lstMultipleFiales array
         this.myFiles.push(fileName);
         const uniqueId = new Date().valueOf();
-  
+
         this._lstMultipleFiales.push({
           UniqueId: uniqueId,
           FileName: fileName,
@@ -6303,7 +6324,7 @@ getChangeSubtaskDetais(Project_Code) {
         });
       }
     }
-  
+
     // Reset the input value and styling
     const uploadFileInput = document.getElementById("uploadFile") as HTMLInputElement;
     if (uploadFileInput) {
@@ -7876,7 +7897,7 @@ holdcontinue(Pcode:any){
   // project cancel section end
   ShowProgress: boolean = false;
   processingStd:boolean=false;
-  
+
   achieveStandard() {
     if(!(this._remarks&&this._remarks.trim())||this.selectedFile==null){
         this.formFieldsRequired=true;
@@ -8177,7 +8198,7 @@ removeSelectedMemo(item){
 actionsNotFound:boolean=false;
 filteredPrjAction:any=[];
 filterConfigChanged:boolean=false;
-filterConfig:{ filterby:string[], sortby:string[] }={ 
+filterConfig:{ filterby:string[], sortby:string[] }={
     filterby:['All'],
     sortby:['All']
 };
@@ -8207,14 +8228,14 @@ onActnFilterOptionClicked(section:'filterby'|'sortby',item:string){
   if(item=='All'){
       if(this.filterConfig[section].length==1&&this.filterConfig[section][0]=='All')
       this.filterConfig[section]=[];
-      else  
+      else
       this.filterConfig[section]=this.filterConfig[section]=[item];
   }else{
-    
+
     if(this.filterConfig[section].length==1&&this.filterConfig[section][0]=='All'){
        this.filterConfig[section]=[];
     }
-     
+
     if(this.filterConfig[section].includes(item)==false){
       this.filterConfig[section].push(item);
      }
@@ -8225,8 +8246,8 @@ onActnFilterOptionClicked(section:'filterby'|'sortby',item:string){
   }
 
   console.log(this.filterConfig);
-  
-  this.onFilterConfigChanged({filterBy:this.filterConfig.filterby, sortBy:this.filterConfig.sortby});  
+
+  this.onFilterConfigChanged({filterBy:this.filterConfig.filterby, sortBy:this.filterConfig.sortby});
 }
 
 
@@ -8234,7 +8255,7 @@ onActnFilterOptionClicked(section:'filterby'|'sortby',item:string){
 
 // count:any
 getFilteredPrjActions(filterby:string[]=['All'],sortby:string[]=['All']){
-  
+
 if(['001','002'].includes(this.projectInfo.Project_Block)){
   let arr=this.projectActionInfo||[];
 
@@ -8245,11 +8266,11 @@ if(['001','002'].includes(this.projectInfo.Project_Block)){
     const y=(sortby[0]=='All'||sortby.includes(action.Team_Res.trim())|| (isAssignedbyme?(action.AssignedbyEmpno.trim()==this.Current_user_ID&&action.AssignedbyEmpno!=action.Team_Res):false));
     return x&&y;
   })
- 
 
- 
 
-  
+
+
+
   // if(!(filterby.includes('All')&&sortby.includes('All')))
   // {
   //   if(sortby!=='All'){
@@ -8500,7 +8521,7 @@ rejectactivity1: any;
 
 getActionRejectType(actioncode:any) {
   this.approvalObj.Project_Code = actioncode;
-  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => { 
+  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {
     this.activity1 = data[0]["activity"];
     this.send_from1 = data[0]["sendFrom"];
     this.rejectactivity1 = data[0]["rejectactivity"];
@@ -8909,7 +8930,7 @@ cancelAction(index) {
         this.approvalObj.Remarks = this.hold_remarks;
 
         this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-          
+
           this.closePrjCancelSb();
           this._Message = (data['message']);
           if (this._Message == '1') {
@@ -9064,7 +9085,7 @@ showActionsWithNoProgress(){
 // start meeting feature start
 
 meetingReport(mtgScheduleId:any) {
-  
+
   let name: string = 'Meeting-Details';
   var url = document.baseURI + name;
   var myurl = `${url}/${mtgScheduleId}`;
@@ -9863,7 +9884,7 @@ bindCustomRecurrenceValues(){
   }
 
   customrecurrencemodal() {
-    
+
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("customrecurrence").style.display = "block";
 
@@ -9939,7 +9960,7 @@ FilteredAttendees:any;
     let property_name;
     if(this.projectmodaltype=='participant')
      {
-      
+
        keyname='DisplayName';
        arrtype=this._EmployeeListForDropdown;
        selectedinto='ngEmployeeDropdown';
@@ -10031,7 +10052,7 @@ FilteredAttendees:any;
       this.isFilteredOn=false;
   }
   onPortfolioFilter(){
-    
+
     const fresult=this.Portfoliolist_1.filter((prtf:any)=>{
          const x=(prtf.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
          const y=(prtf.Created_By===this.basedOnFilter.byuser||!this.basedOnFilter.byuser);
@@ -10134,7 +10155,7 @@ discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:strin
 }
 
 keepChoosedItems(){
-  
+
   switch(this.projectmodaltype)
   {
       case 'project':{
@@ -10696,7 +10717,7 @@ empAuditor_remarks:string|undefined;
 
 
 
-onAuditorSelected(e){ 
+onAuditorSelected(e){
   if(e.option.value){
     const selected_emp=e.option.value;
     this.selectedAuditor=selected_emp;
@@ -11725,7 +11746,7 @@ validateURL(value: string): void {
   }else{
     this.isValidURL=true
   }
-  
+
 }
 
 
@@ -11968,6 +11989,171 @@ getTimeDiff(time1:number,time2:number):string{
 }
 
 // full time availability in timeline end.
+on_Update_and_Released(val) {
+  this.isPrjNameValid=this.isValidString(this.ProjectName,3);
+  this.isPrjDesValid=this.isValidString(this.ProjectDescription,5);
+
+
+// check all mandatory fields are provided or not
+ if(!(
+      (this.ProjectName&&this.ProjectName.trim()!=''&&(this.ProjectName&&this.isPrjNameValid==='VALID'&&this.ProjectName.length <=100)  )&&
+      // (this.ProjectDescription&&this.ProjectDescription.trim()!='')
+      (this.ProjectDescription&&this.ProjectDescription.trim()!=''&&this.ProjectDescription?(this.characterCount<=500)&&(this.ProjectDescription&&this.isPrjDesValid==='VALID'&&this.ProjectDescription.length <=500) :false)
+
+    ))
+ {
+    this.formFieldsRequired=true;
+    return;
+ }
+ else this.formFieldsRequired=false;  // back to initial value.
+// check all mandatory fields are provided or not
+
+  this._remarks = '';
+  if (this.OGProjectType != this.ProjectType) {
+    var type = this.ProjectType
+    this.ProjectType = this.ProjectType;
+  }
+  else {
+    var type: string = this.OGProjectTypeid;
+  }
+
+  if (this.OGowner != this.selectedOwner) {
+    var owner = this.selectedOwner
+    this.selectedOwner = this.selectedOwner;
+  }
+  else {
+    var owner = this.OGownerid;
+  }
+
+  if (this.OGresponsible != this.selectedOwnResp) {
+    var resp = this.selectedOwnResp;
+    this.selectedOwnResp = this.selectedOwnResp;
+  }
+  else {
+    var resp = this.OGresponsibleid;
+  }
+
+  if (this.OGcategory != this.selectedcategory) {
+    var category = this.selectedcategory;
+    this.selectedcategory = this.selectedcategory;
+  }
+  else {
+    var category = this.OGselectedcategoryid;
+  }
+
+  if (this.OGclient != this.selectedclient) {
+    var client = this.selectedclient;
+    this.selectedclient = this.selectedclient;
+  }
+  else {
+    var client: string = this.OGselectedclientid;
+  }
+
+  if (this.OGSubmission != this.Submission_Name) {
+    var Submission = this.Submission_Name;
+    this.Submission_Name = this.Submission_Name;
+  }
+  else {
+    var Submission: string = this.OGSubmission_Nameid;
+  }
+
+  if (this.OGSubmission != this.Submission_Name) {
+    var Submission = this.Submission_Name;
+    this.Submission_Name = this.Submission_Name;
+  }
+  else {
+    var Submission: string = this.OGSubmission_Nameid;
+  }
+
+  if (type == '003' || type == '008') {
+    var allocation = this.Allocated_Hours["$ngOptionLabel"];
+  }
+  else {
+    var allocation = this.Allocated;
+  }
+
+  var datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");
+  var datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");
+
+  const jsonobj = {
+    Project_Type: type,
+    Project_Name: this.ProjectName,
+    Project_Description: this.ProjectDescription,
+    Owner: owner,
+    Responsible: resp,
+    Category: category,
+    Client: client,
+    StartDate: datestrStart,
+    EndDate: datestrEnd,
+    SubmissionName: Submission,
+    AllocatedHours: allocation,
+    Recurrence:this.Annual_date
+  }
+  const jsonvalue = JSON.stringify(jsonobj)
+  console.log(jsonvalue, 'json');
+
+  if (val == 0) {
+    this.approvalObj.Emp_no = this.Current_user_ID;
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
+    this.approvalObj.json = jsonvalue;
+    this.approvalObj.Remarks = this._remarks;
+    this.approvalObj.isApproval = val;
+
+    this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+      console.log(data['message'], "edit response");
+      if (data['message'] == '1') {
+        this.notifyService.showSuccess("Updated successfully.", "Success");
+      }
+      else if (data['message'] == '2') {
+        this.notifyService.showError("Not updated.", "Failed");
+      }
+      else if (data['message'] == '5') {
+        this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully.");
+      }
+      else if (data['message'] == '6') {
+        this.notifyService.showSuccess("Updated successfully,"+" Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
+      }
+      else if (data['message'] == '8') {
+        this.notifyService.showError("Selected project owner cannot be updated.", "Not updated");
+      }
+      this.getProjectDetails(this.URL_ProjectCode);
+      this.closeInfo();
+    });
+  }
+  else if (val == 1) {
+    this.approvalObj.Emp_no = this.Current_user_ID;
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
+    this.approvalObj.json = jsonvalue;
+    this.approvalObj.Remarks = this._remarks;
+    this.approvalObj.isApproval = val;
+
+    this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+      console.log(data['message'], "edit response");
+      if (data['message'] == '3') {
+        this.notifyService.showSuccess("Project updated and Approved successfully.", "Success");
+        this.Close_Approval();
+      }
+      else if (data['message'] == '2') {
+        this.notifyService.showError("Not updated.", "Failed");
+      }
+      this.getProjectDetails(this.URL_ProjectCode);
+      this.getapprovalStats();
+      this.closeInfo();
+    });
+  }
+
+
+
+
+}
+
+
+
+
+
+
+
+
 
 }
 

@@ -9,8 +9,8 @@
                 <span>Stream Brew</span>
             </div>
             <div class="kt-calendar-search" id="calendar-search">
-                <div class="calendar-search-field">
-                    <svg (click)="filterMeetings($event)" width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div class="calendar-search-field">    
+                    <svg (click)="filterMeetingsOnIconClick()" width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -3979,7 +3979,7 @@
               <div class="custom-evt-tsk-head">
                   <div class="custom-evt-tsk-label">
                     <div class="date-info">Created On</div>
-                    <div class="date-value">{{creation_date|date:'EEEE, MMMM d, YYYY'}}</div>
+                    <div class="date-value">{{creation_date|date:'EEEE, MMMM d, yyyy'}}</div>
                   </div>
                   <div class="custom-evt-tsk-action">
                     <div class="custom-evt-tsk-action-icon" title="Copy" (click)="changeScheduleType(1);DublicateTaskandEvent(1)">
@@ -4028,7 +4028,7 @@
                             </svg>
                       </div>
                       <div class="custom-evt-tsk-item-control">
-                          <div class="custom-evt-tsk-item-date">{{item.Schedule_date| date:'EEEE, MMMM d, YYYY'}}</div>
+                          <div class="custom-evt-tsk-item-date">{{item.Schedule_date| date:'EEEE, MMMM d, yyyy'}}</div>
                           <div class="custom-evt-tsk-item-time">{{ parseTime(item.NewSt_Time) | date: 'h:mm a' }} - {{ parseTime(item.NewEd_Time) | date: 'h:mm a' }} ({{ getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time) }})
                                      
                        <span *ngIf="Status1 !='Rejected'  && Meeting_status==false" class="info item-badge">
@@ -4093,11 +4093,11 @@
                     </div>
                     <div class="custom-evt-tsk-item-control">
                         <div class="custom-evt-tsk-item-taskfile-main">
-                            <div class="custom-evt-tsk-item-taskfile"  *ngFor="let trt of Attachments_ary">
-                                <span class="custom-evt-tsk-item-taskfile-icon">
+                            <div class="custom-evt-tsk-item-taskfile curser-pointer"  *ngFor="let trt of Attachments_ary" (click)="LoadDocument(trt.Project_Code,true,trt.File_Name&&trt.File_Name,trt.url,trt.contenttype,trt.Created_by)">
+                                <span class="custom-evt-tsk-item-taskfile-icon"  >
                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19 9V17.8C19 18.9201 19 19.4802 18.782 19.908C18.5903 20.2843 18.2843 20.5903 17.908 20.782C17.4802 21 16.9201 21 15.8 21H8.2C7.07989 21 6.51984 21 6.09202 20.782C5.71569 20.5903 5.40973 20.2843 5.21799 19.908C5 19.4802 5 18.9201 5 17.8V6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.0799 3 8.2 3H13M19 9L13 3M19 9H14C13.4477 9 13 8.55228 13 8V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
                                 </span>
-                                <a href="{{trt.url}}" target="_blank">{{trt.File_Name}}</a>
+                                <a >{{trt.File_Name}}</a>
                             </div>
                         </div>
                     </div>
@@ -4148,7 +4148,7 @@
                 <div class="custom-evt-tsk-head">
                     <div class="custom-evt-tsk-label">
                       <div class="date-info">Created On</div>
-                      <div class="date-value">{{creation_date|date:'EEEE, MMMM d, YYYY'}}</div>
+                      <div class="date-value">{{creation_date|date:'EEEE, MMMM d, yyyy'}}</div>
                       <div [ngClass]="{'icon-active': AdminMeeting_Status==1,'live': Isadmin==true && AdminMeeting_Status==1,'join': Isadmin==false && AdminMeeting_Status==1}"  title="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'"  (click)="newMeetingDetails()">
                            <ng-container  *ngIf="AdminMeeting_Status==1">
                             <span  *ngIf="Isadmin==true" class="meet-blink">Meeting started.</span>
@@ -4233,7 +4233,7 @@
                                 </svg>
                         </div>
                         <div class="custom-evt-tsk-item-control">
-                            <div class="custom-evt-tsk-item-date">{{item.Schedule_date| date:'EEEE, MMMM d, YYYY'}}</div>
+                            <div class="custom-evt-tsk-item-date">{{item.Schedule_date| date:'EEEE, MMMM d, yyyy'}}</div>
                             <div class="custom-evt-tsk-item-time">
                                 <span>{{ parseTime(item.NewSt_Time) | date: 'h:mm a' }} - {{ parseTime(item.NewEd_Time) | date: 'h:mm a' }} ({{ getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time) }})</span>
                                 <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==true" class="event item-badge" >
@@ -4548,11 +4548,11 @@
                     </div>
                     <div class="custom-evt-tsk-item-control">
                         <div class="custom-evt-tsk-item-taskfile-main">
-                            <div class="custom-evt-tsk-item-taskfile" *ngFor="let trt of Attachments_ary">
-                                <span class="custom-evt-tsk-item-taskfile-icon">
+                            <div class="custom-evt-tsk-item-taskfile curser-pointer" *ngFor="let trt of Attachments_ary" (click)="LoadDocument(trt.Project_Code,true,trt.File_Name&&trt.File_Name,trt.url,trt.contenttype,trt.Created_by)">
+                                <span class="custom-evt-tsk-item-taskfile-icon" >
                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19 9V17.8C19 18.9201 19 19.4802 18.782 19.908C18.5903 20.2843 18.2843 20.5903 17.908 20.782C17.4802 21 16.9201 21 15.8 21H8.2C7.07989 21 6.51984 21 6.09202 20.782C5.71569 20.5903 5.40973 20.2843 5.21799 19.908C5 19.4802 5 18.9201 5 17.8V6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.0799 3 8.2 3H13M19 9L13 3M19 9H14C13.4477 9 13 8.55228 13 8V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
                                 </span>
-                                <a href="{{trt.url}}" target="_blank">{{trt.File_Name}}</a>
+                                <a>{{trt.File_Name}}</a>
                             </div>
                         </div>
                     </div>
@@ -4601,7 +4601,7 @@
                                     <div class="curser-pointer" (click)="Propose_date_time_menu()">
                                         <div class="propose-dt-tm">
                                             <div>
-                                                <span>{{propose_date | date:'EEEE, MMMM d, YYYY'}}</span>
+                                                <span>{{propose_date | date:'EEEE, MMMM d, yyyy'}}</span>
                                                 <!-- <span>Wednesday, August 7, 2024</span> -->
                                             </div>
                                             <div class="d-flex">
@@ -4612,7 +4612,7 @@
                                         </div>
                                         <div class="propose-dt-text">
                                             <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
-                                            <span>The proposed event on {{propose_date | date:'MMMM d, YYYY'}} from {{ proposeStartTimes}} until {{ proposeEndTimes}}</span>
+                                            <span>The proposed event on {{propose_date | date:'MMMM d, yyyy'}} from {{ proposeStartTimes}} until {{ proposeEndTimes}}</span>
                                         </div>                       
                                     </div>
                                     <div class="propose-date-time-menu" id="propose-date-time-menu">
@@ -4657,13 +4657,13 @@
                     </div>
 
 
-                    <div class="custom-evt-tsk-footer" id=""   *ngIf="Meeting_status==false && Isadmin==true && Schedule_type1=='Event'">     
+                    <div class="custom-evt-tsk-footer" id=""   *ngIf="Meeting_status==false && AdminMeeting_Status!=1 && Status1=='Owner' && Schedule_type1=='Event'">     
                         <div><span>Repeat Event?</span></div>      
                         <div class="custom-evt-tsk-footer-action">
                             <div class="action-btns">
                                 <button class="btn btn-evt-foot"  data-toggle="collapse"
                                 href="#propse11" role="button" aria-expanded="false" aria-controls="propse11">Repeat</button>
-                                <button class="btn btn-evt-foot" (click)="sweet_end()">End now</button>
+                                <button class="btn btn-evt-foot d-none" (click)="sweet_end()">End now</button>
                             </div>
                         </div>
                     </div>
@@ -4675,7 +4675,7 @@
                                 <div class="curser-pointer" (click)="Repeat_date_time_menu()">
                                     <div class="repeat-dt-tm">
                                         <div>
-                                            <span>{{repeatStartDate | date:'EEEE, MMMM d, YYYY'}}</span>
+                                            <span>{{repeatStartDate | date:'EEEE, MMMM d, yyyy'}}</span>
                                         </div>
                                         <div class="d-flex">
                                             <span class="picktime-box">{{repeatStartts}}</span>
@@ -4685,7 +4685,7 @@
                                     </div>
                                     <div class="repeat-dt-text">
                                         <span style="line-height: 1;"><svg fill="#000000" width="12px" height="12px" viewBox="0 0 24 24" id="check-mark-circle-2" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline id="primary" points="21 5 12 14 8 10" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline><path id="primary-2" data-name="primary" d="M20.94,11A8.26,8.26,0,0,1,21,12a9,9,0,1,1-9-9,8.83,8.83,0,0,1,4,1" style="fill: none; stroke: #13b254; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></g></svg></span>
-                                        <span>The repeated event on {{repeatStartDate | date:'EEEE, MMMM d, YYYY'}} from {{repeatStartts}} until {{repeatEndtms}}</span>
+                                        <span>The repeated event on {{repeatStartDate | date:'EEEE, MMMM d, yyyy'}} from {{repeatStartts}} until {{repeatEndtms}}</span>
                                     </div>                       
                                 </div>
                                 <div class="repeat-date-time-menu" id="repeat-date-time-menu">
@@ -5218,18 +5218,18 @@
                         <div class="quickaction-li-title curser-pointer" (click)="GetClickEventPending_Calenders(item.Schedule_ID)">{{item.Task_Name}}</div>
                   
                     <div class="pending-event-info">
-                        <div class="pending-user-link" *ngIf="item.Schedule_date" title="Schedule on : {{item.Schedule_date | date:'EEEE, MMMM d, YYYY'}}">
+                        <div class="pending-user-link" *ngIf="item.Schedule_date" title="Schedule on : {{item.Schedule_date | date:'EEEE, MMMM d, yyyy'}}">
                             <div class="pending-user-link-icon" style=" width: 24px; height: 24px;">
                                 <svg style="    width: 20px;
                                 height: 20px;" width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M4 9V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V9M4 9V7C4 5.89543 4.89543 5 6 5H8M4 9H20M20 9V7C20 5.89543 19.1046 5 18 5H16M16 5V3M16 5H8M8 3V5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></g></svg>
                             </div>
-                            <span>{{item.Schedule_date | date:'EEEE, MMMM d, YYYY'}}</span>
+                            <span>{{item.Schedule_date | date:'EEEE, MMMM d, yyyy'}}</span>
                         </div>
-                        <div class="pending-user-link" *ngIf="item.Pending_date" title="Pending since : {{item.Pending_date | date:'EEEE, MMMM d, YYYY'}}">
+                        <div class="pending-user-link" *ngIf="item.Pending_date" title="Pending since : {{item.Pending_date | date:'EEEE, MMMM d, yyyy'}}">
                             <div class="pending-user-link-icon" style=" width: 24px; height: 24px;">
                                 <svg width="17px" height="17px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g id="Free-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><g transform="translate(-451.000000, -748.000000)" id="Group" stroke="currentColor" stroke-width="1.75"><g transform="translate(449.000000, 746.000000)" id="Shape"><line x1="17" y1="3" x2="17" y2="5"></line><line x1="7" y1="3" x2="7" y2="5"></line><path d="M18,11.5 L18,17.9933387 M18.0043926,21.0066613 L18,20.9933387"></path><path d="M8.03064542,21 C7.42550126,21 6.51778501,21 5.30749668,21 C4.50512981,21 4.2141722,20.9218311 3.92083887,20.7750461 C3.62750553,20.6282612 3.39729582,20.4128603 3.24041943,20.1383964 C3.08354305,19.8639324 3,19.5916914 3,18.8409388 L3,7.15906122 C3,6.4083086 3.08354305,6.13606756 3.24041943,5.86160362 C3.39729582,5.58713968 3.62750553,5.37173878 3.92083887,5.22495386 C4.2141722,5.07816894 4.50512981,5 5.30749668,5 L18.6925033,5 C19.4948702,5 19.7858278,5.07816894 20.0791611,5.22495386 C20.3724945,5.37173878 20.6027042,5.58713968 20.7595806,5.86160362 C20.9164569,6.13606756 21,7.24671889 21,7.99747152"></path></g></g></g></g></svg>
                             </div>
-                            <span>{{item.Pending_date | date:'EEEE, MMMM d, YYYY'}}</span>   
+                            <span>{{item.Pending_date | date:'EEEE, MMMM d, yyyy'}}</span>   
                         </div>
                   
                         <div class="pending-user-link">
@@ -5426,9 +5426,9 @@
                         <div class="quickaction-li-title curser-pointer" (click)="darft_click(item.Sno,item.project_type,item.attachments)">{{item.Task_name}}</div>
                    
                     <div class="pending-event-info">
-                        <div *ngIf="item.Draft_date">Created date : {{item.Draft_date | date:'EEEE, MMMM d, YYYY'}}</div>
+                        <div *ngIf="item.Draft_date">Created date : {{item.Draft_date | date:'EEEE, MMMM d, yyyy'}}</div>
                         <!-- Friday, November 15, 2024 -->
-                        <div *ngIf="item.modified_date">Modified date : {{item.modified_date | date:'EEEE, MMMM d, YYYY'}} </div>
+                        <div *ngIf="item.modified_date">Modified date : {{item.modified_date | date:'EEEE, MMMM d, yyyy'}} </div>
                         <div class="pending-user-link">
                             <div  class="pending-user-link-item" *ngIf="item.AttendeeCount" title="{{item.Attendees}}">
                                 <div class="pending-user-link-icon" >
@@ -5538,7 +5538,7 @@
                         <div class="quickaction-li-title">{{item.Task_Name}}</div>
                         <div class="quickaction-li-company">{{item.Com_Name}}</div>
                         <div class="quickaction-li-user">{{item.TM_DisplayName}} </div>
-                        <div class="quickaction-li-date">{{item.Req_DL|date :'dd-MM-YYYY'}}</div>
+                        <div class="quickaction-li-date">{{item.Req_DL|date :'dd-MM-yyyy'}}</div>
                     </div>
                     <div class="quickaction-li-actions">
                        <div class="quickaction-li-actions-btn q-approve" (click)="UpdateMeetingRequestAccess(item.Sno,item.Schedule_ID,'Accept')">

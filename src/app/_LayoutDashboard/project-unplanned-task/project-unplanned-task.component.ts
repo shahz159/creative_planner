@@ -221,6 +221,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
     this.totalproject();
     this.openTab()
     // this.initAutosize();
+
   }
 
 
@@ -279,7 +280,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
   expandTask(taskId:number){
 
     this.categoryTasksLoaded=new EventEmitter<any>();
-    this.categoryTasksLoaded.subscribe(()=>{    
+    this.categoryTasksLoaded.subscribe(()=>{
       // when all tasks of the category loaded.
       const listindex=[this._TodoList,this.ActionedAssigned_Josn,this._CompletedList,this.ActionedSubtask_Json].findIndex((list)=>{
         return list&&list.find((item)=>item.Assign_Id==taskId);
@@ -1213,7 +1214,12 @@ renameTask(task_id:any,new_name:any){
 
 
   OnTask_Renameofnew() {
-
+    debugger
+    // const tf: any = document.getElementById(`agenda-text-field-${index}`);
+    // if(tf.value.trim().length > 0 && tf.value.trim().length < 100){
+    // this.checkedTaskNames[index].Task_Name = tf.value;
+    // this.selected_taskName[index].Task_Name =   this.checkedTaskNames[index].Task_Name
+    // }
     if (this.selected_taskName != "") {
       this._ObjAssigntaskDTO.TypeOfTask = "Rename";
       this._ObjAssigntaskDTO.TaskName = this.selected_taskName;
@@ -1227,6 +1233,7 @@ renameTask(task_id:any,new_name:any){
           // (<HTMLInputElement>document.getElementById("spanTextbox_" + this._AssignId)).style.display = "none";
           // (<HTMLInputElement>document.getElementById("spnLabel_" + this._AssignId)).style.display = "block";
           // (<HTMLInputElement>document.getElementById("div_" + this._AssignId)).style.display = "block";
+          // this.checkedTaskNames = []
           this.showedit()
           // this._taskName = this.selected_taskName
         });
@@ -1457,27 +1464,30 @@ showassign(){
 
 selected_date:any
 selected_taskId:any;
-selected_taskName:any;
-unassign_edit(tsk:any,id:any,date:any){
-  debugger
+selected_taskName:any= [];
+formattedTaskNames :any;
 
-  this.selected_taskId=id;
-  this.selected_taskName=tsk
-  this.selected_date = date
+
+unassign_edit1(){
   document.getElementById('unassign-editsidebar').classList.add('kt-action-panel--on');
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-  // this.initAutosize('unassigneditside1')
-  this.port_id = []
-  this.employeSelect = null
-  this.selectedProjecttype = null
-  this.selectedOption = 'option1'
   const radioButton = document.getElementById('projectRadio1') as HTMLInputElement;
-  if (radioButton) {
-    radioButton.checked = true;
-  }
+  if (radioButton) { radioButton.checked = true;}
+  this.selectedOption = 'option1'; // Set the default radio button checked
+  this.port_id = [];
+  this.employeSelect = null;
+  this.selectedProjecttype = null;
+  this.selectedtaskNames=null;  // Clear  previous seletion
+
+  this.selectedtaskNames=JSON.parse(JSON.stringify(this.checkedTaskNames));   // copy of selected items.
+  this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ');
 }
- // const taskNames = this.checkedTaskNames.map(task=>task.Task_Name).join(', ');
+
+
+
+
+
   // const assignids = this.checkedTaskNames.map(task=>task.Assign_Id).join(', ')
 
 
@@ -1499,20 +1509,21 @@ Portfolio_Id:any
 assign_Id:any
 editTaskat:number|undefined= undefined;
 
-editassignPending(i:any){
+editassignPending(id:any){
 debugger
-  this.editTaskat=i;
-  this.task__name = this.ActionedAssigned_Josn[i].Task_Name.trim();
-  this.employeSelect=(this.ActionedAssigned_Josn[i].Emp_No)?this.ActionedAssigned_Josn[i].Emp_No.split(','):[];
+const selectedindex=this.ActionedAssigned_Josn.findIndex((ob)=>ob.Assign_Id==id);
+  this.editTaskat=selectedindex;
+  this.task__name = this.ActionedAssigned_Josn[selectedindex].Task_Name.trim();
+  this.employeSelect=(this.ActionedAssigned_Josn[selectedindex].Emp_No)?this.ActionedAssigned_Josn[selectedindex].Emp_No.split(','):[];
   // Portfolio_Id
-  this.Start__Date  =this.ActionedAssigned_Josn[i].Start_Date;
-  this.End__Date =this.ActionedAssigned_Josn[i].End_Date
-  this.__remarks= this.ActionedAssigned_Josn[i].Remarks || '';
-  this.port_id=(this.ActionedAssigned_Josn[i].Portfolio_Id)?this.ActionedAssigned_Josn[i].Portfolio_Id.split(','):[];
-  this.assign_Id = this.ActionedAssigned_Josn[i].Assign_Id
+  this.Start__Date  =this.ActionedAssigned_Josn[selectedindex].Start_Date;
+  this.End__Date =this.ActionedAssigned_Josn[selectedindex].End_Date
+  this.__remarks= this.ActionedAssigned_Josn[selectedindex].Remarks || '';
+  this.port_id=(this.ActionedAssigned_Josn[selectedindex].Portfolio_Id)?this.ActionedAssigned_Josn[selectedindex].Portfolio_Id.split(','):[];
+  this.assign_Id = this.ActionedAssigned_Josn[selectedindex].Assign_Id
   this.fileAttachment = this.ActionedAssigned_Josn[this.editTaskat]&&this.ActionedAssigned_Josn[this.editTaskat].FileName;
-  if(this.ActionedAssigned_Josn[i].Project_type){
-    const prjTypeObj=this.ProjectTypelist.find(obj=>obj.Exec_BlockName==this.ActionedAssigned_Josn[i].Project_type.trim());
+  if(this.ActionedAssigned_Josn[selectedindex].Project_type){
+    const prjTypeObj=this.ProjectTypelist.find(obj=>obj.Exec_BlockName==this.ActionedAssigned_Josn[selectedindex].Project_type.trim());
     this.Proj_type=prjTypeObj.Exec_BlockNo;
   }
   else
@@ -1536,8 +1547,9 @@ closeditassignPending(){
 }
 
 bindvalue :number | undefined = undefined
-openActionassign(i:any){
-  this.bindvalue = i;
+openActionassign(id:any){
+    const selectedaction = this.ActionedSubtask_Json.findIndex((ob)=>ob.Assign_Id==id)
+  this.bindvalue = selectedaction;
   document.getElementById('openactionassign').classList.add('kt-action-panel--on');
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
@@ -1552,7 +1564,7 @@ closedActionassign(){
 
 
 toggleProjectoptions(option: string) {
-  debugger
+
   this.selectedOption = option;
   this.formFieldsRequired = false;
   this._StartDate = null
@@ -1886,15 +1898,18 @@ setMaxDate(dateField){
 
 
 assignTasksub1(){
+debugger
+    this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ');
+    this.selected_taskId =  this.selectedtaskNames.map(task=>task.Assign_Id).join(', ');
+    console.log( this.selected_taskName,"pending")
 
-
-  if(this.employeSelect ==null || this.employeSelect == undefined &&this.selected_taskName==null|| this.selected_taskName == undefined || this.selected_taskName.trim() ==""){
-    this.formFieldsRequired = true
-return
-  }
-else{
-  this.formFieldsRequired = false
-}
+    if (this.employeSelect == null || this.employeSelect == undefined && this.selected_taskName == null || this.selected_taskName == undefined || this.selected_taskName.trim() == "") {
+      this.formFieldsRequired = true
+      return
+    }
+    else {
+      this.formFieldsRequired = false
+    }
 
 
     var datestrStart;
@@ -1928,6 +1943,9 @@ else{
     }
 
 
+
+
+
   const fd = new FormData();
   fd.append("TaskName", this.selected_taskName.trim());
   fd.append("Desc", '');
@@ -1941,7 +1959,7 @@ else{
   fd.append("Remarks", this._remarks);
   // fd.append("attachment",this.fileAttachment);
   fd.append("AssignedBy", this.CurrentUser_ID);
-  fd.append("AssignId", this.selected_taskId.toString());
+  fd.append("AssignIds", this.selected_taskId.toString());
   fd.append("TypeofTask", this.typeoftask);
   fd.append("contentType",this.contentType);
   if (this.fileAttachment) {
@@ -1957,6 +1975,7 @@ else{
   this.ProjectTypeService._InsertAssignTaskServieCore(fd).subscribe(
     (data) => {
       // alert(data['message'])
+      console.log(data,"checking")
       if(data['message']=="Assigned Successfully" && this.fileAttachment){
         fd.append('file', this.fileAttachment);
         fd.append('TaskName',data['taskName']);
@@ -1972,7 +1991,7 @@ else{
         this.GetTodoProjects();
 
       });
-
+ this.checkedTaskNames = []
       this.resetAssign()
       this.unassign_closeInfo()
 
@@ -1989,12 +2008,17 @@ getFileExtension(fileName: any): string | null {
 resetAssign(){
   this.selectedProjecttype = null
   this.employeSelect  = null
+
+  // this.selected
   this.port_id  = null
   this._remarks  = null
   this.file=null
 
   this._StartDate = null
   this._EndDate = null
+
+  this.selectedtaskNames=null;
+  this.selected_taskName = null;
 
 }
 
@@ -2406,7 +2430,7 @@ this.vart = d
 
 isReadOnly: boolean = true;
 pendingUpdatesection(){
-debugger
+
   if(this.employeSelect ===null || this.employeSelect === undefined &&this.task__name==null|| this.task__name == undefined || this.task__name.trim() ==""){
     this.formFieldsRequired = true
 return
@@ -2539,6 +2563,8 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
     autosize();
   }
 
+
+
   openTab() {
    // Now, check which condition matches and add 'show' to the appropriate element
    document.getElementById('collapseUnassign').classList.remove('show');
@@ -2565,8 +2591,10 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
 checkedItem = []
 
 checkedTaskNames: { Task_Name: string, Assign_Id: any }[] = [];
+selectedtaskNames: { Task_Name: string, Assign_Id: any }[] = [];
 
 selectunSelect(e, item) {
+  debugger
   if (e.checked) {
     // Add task name and assign id to checkedTaskNames array
     this.checkedTaskNames.push({
@@ -2592,6 +2620,7 @@ projectCode:any
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
 debugger
+
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -2617,6 +2646,7 @@ debugger
     var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
+
   }
 
   else if (iscloud == true) {
@@ -2630,7 +2660,9 @@ debugger
     var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
+
   }
+
 }
 
 
@@ -2719,7 +2751,7 @@ filterLists() {
 
 getContentType(item: any): string {
   // Check if 'item' has the 'Reference' or 'FileName' property
-  debugger
+debugger
   if (item.Reference) {
     if (item.Reference.endsWith('.pdf')) {
       return 'pdf';
@@ -2819,6 +2851,48 @@ forAssignFile(item: any): string {
 
   // Return default value if no conditions match
   return ''; // Default value if no valid file extension is found
+}
+
+
+
+editTaskname(index: number) {
+  $(`#agenda-label-${index}`).addClass('d-none');
+  $(`#agenda-text-field-${index}`).removeClass('d-none');
+  $(`#agenda-text-field-${index}`).focus();
+  $(`#edit-cancel-${index}`).removeClass('d-none');   // cancel btn is visible.
+  $(`#editing-save-${index}`).removeClass('d-none');   // save btn is visible.
+  $(`#edit-agendaname-btn-${index}`).addClass('d-none');  // edit btn is invisible.
+}
+
+canceleditTaskname(index: number) {
+  const tf: any = document.getElementById(`agenda-text-field-${index}`);
+  tf.value = this.selectedtaskNames[index].Task_Name;
+
+  $(`#agenda-label-${index}`).removeClass('d-none');   // label is visible.
+  $(`#agenda-text-field-${index}`).addClass('d-none');   // textfield is invisible.
+  $(`#edit-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
+  $(`#editing-save-${index}`).addClass('d-none');   // save btn is visible.
+  $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
+
+}
+
+updateAgenda(index: number) {
+  const tf: any = document.getElementById(`agenda-text-field-${index}`);
+  if(tf.value.trim().length > 0 && tf.value.trim().length < 100){
+  this.selectedtaskNames[index].Task_Name = tf.value;
+
+  $(`#agenda-label-${index}`).removeClass('d-none'); // label is visible.
+  $(`#agenda-text-field-${index}`).addClass('d-none');  // textfield is invisible.
+  $(`#edit-cancel-${index}`).addClass('d-none');   // cancel btn is visible.
+  $(`#editing-save-${index}`).addClass('d-none');   // save btn is visible.
+  $(`#edit-agendaname-btn-${index}`).removeClass('d-none');  // edit btn is visible.
+  $(`#remove-agenda-btn-${index}`).removeClass('d-none');   // delete btn is visible.
+} else if (tf.value.trim().length == 0){
+  this.notifyService.showInfo("Please enter atleast one word","");
+}else {
+  this.notifyService.showInfo("Maximum 100 characters are allowed", 'Please shorten it.');
+}
+
 }
 
 
