@@ -1428,11 +1428,28 @@ openPDF_Standards(standardid, emp_no, cloud, repDate: Date, proofDoc, type, subm
       else {
         this._month = Month;
       }
-      if (Day < 10) {
-        this._day = Day;
-      }
-      else {
-        this._day = Day;
+      // if (Day < 10) {
+      //   this._day = Day;
+      // }
+      // else {
+      //   this._day = Day;
+      // }
+       // Compare the date with 21-12-2024
+      const comparisonDate = new Date(2024, 11, 21); // Months are 0-indexed in JavaScript
+      if (repDate >= comparisonDate) {
+        // Logic for dates greater than or equal to 21-12-2024
+        if (Day < 10) {
+          this._day = "0" + Day;
+        } else {
+          this._day = Day;
+        }
+      } else {
+        // Logic for dates less than 21-12-2024
+        if (Day < 10) {
+          this._day = Day;
+        } else {
+          this._day = Day;
+        }
       }
       var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
 
