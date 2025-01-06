@@ -280,7 +280,7 @@ export class ProjectUnplannedTaskComponent implements OnInit{
   expandTask(taskId:number){
 
     this.categoryTasksLoaded=new EventEmitter<any>();
-    this.categoryTasksLoaded.subscribe(()=>{    
+    this.categoryTasksLoaded.subscribe(()=>{
       // when all tasks of the category loaded.
       const listindex=[this._TodoList,this.ActionedAssigned_Josn,this._CompletedList,this.ActionedSubtask_Json].findIndex((list)=>{
         return list&&list.find((item)=>item.Assign_Id==taskId);
@@ -1509,20 +1509,21 @@ Portfolio_Id:any
 assign_Id:any
 editTaskat:number|undefined= undefined;
 
-editassignPending(i:any){
-
-  this.editTaskat=i;
-  this.task__name = this.ActionedAssigned_Josn[i].Task_Name.trim();
-  this.employeSelect=(this.ActionedAssigned_Josn[i].Emp_No)?this.ActionedAssigned_Josn[i].Emp_No.split(','):[];
+editassignPending(id:any){
+debugger
+const selectedindex=this.ActionedAssigned_Josn.findIndex((ob)=>ob.Assign_Id==id);
+  this.editTaskat=selectedindex;
+  this.task__name = this.ActionedAssigned_Josn[selectedindex].Task_Name.trim();
+  this.employeSelect=(this.ActionedAssigned_Josn[selectedindex].Emp_No)?this.ActionedAssigned_Josn[selectedindex].Emp_No.split(','):[];
   // Portfolio_Id
-  this.Start__Date  =this.ActionedAssigned_Josn[i].Start_Date;
-  this.End__Date =this.ActionedAssigned_Josn[i].End_Date
-  this.__remarks= this.ActionedAssigned_Josn[i].Remarks || '';
-  this.port_id=(this.ActionedAssigned_Josn[i].Portfolio_Id)?this.ActionedAssigned_Josn[i].Portfolio_Id.split(','):[];
-  this.assign_Id = this.ActionedAssigned_Josn[i].Assign_Id
+  this.Start__Date  =this.ActionedAssigned_Josn[selectedindex].Start_Date;
+  this.End__Date =this.ActionedAssigned_Josn[selectedindex].End_Date
+  this.__remarks= this.ActionedAssigned_Josn[selectedindex].Remarks || '';
+  this.port_id=(this.ActionedAssigned_Josn[selectedindex].Portfolio_Id)?this.ActionedAssigned_Josn[selectedindex].Portfolio_Id.split(','):[];
+  this.assign_Id = this.ActionedAssigned_Josn[selectedindex].Assign_Id
   this.fileAttachment = this.ActionedAssigned_Josn[this.editTaskat]&&this.ActionedAssigned_Josn[this.editTaskat].FileName;
-  if(this.ActionedAssigned_Josn[i].Project_type){
-    const prjTypeObj=this.ProjectTypelist.find(obj=>obj.Exec_BlockName==this.ActionedAssigned_Josn[i].Project_type.trim());
+  if(this.ActionedAssigned_Josn[selectedindex].Project_type){
+    const prjTypeObj=this.ProjectTypelist.find(obj=>obj.Exec_BlockName==this.ActionedAssigned_Josn[selectedindex].Project_type.trim());
     this.Proj_type=prjTypeObj.Exec_BlockNo;
   }
   else
@@ -1546,8 +1547,9 @@ closeditassignPending(){
 }
 
 bindvalue :number | undefined = undefined
-openActionassign(i:any){
-  this.bindvalue = i;
+openActionassign(id:any){
+    const selectedaction = this.ActionedSubtask_Json.findIndex((ob)=>ob.Assign_Id==id)
+  this.bindvalue = selectedaction;
   document.getElementById('openactionassign').classList.add('kt-action-panel--on');
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");

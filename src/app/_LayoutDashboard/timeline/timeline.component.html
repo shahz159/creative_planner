@@ -244,7 +244,7 @@
                         <div class="timeline-scroll">
                             <ng-container *ngIf="!darArrayLoading;else darLoadingspinner">
                             <div class="" *ngIf="showtimeline==true">
-                                <div class="px-4 timeline-px-4" *ngFor="let item of darArray;let i =index">
+                                <div [id]="'Dar-Record-'+i" class="px-4 timeline-px-4" *ngFor="let item of darArray;let i =index">
                                     <div class="timeline-header sticky-header d-flex justify-content-between">
                                         <h4 class="header-date p-0 mb-0">
                                             {{item.SubmissionDate | date: 'fullDate'}}
@@ -275,7 +275,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr *ngFor="let item1 of item.Dardata;let j=index">
+                                                <tr [id]="'tm-record-item-'+j" class="dar-record-item" *ngFor="let item1 of item.Dardata;let j=index; let isFirstRecord=first">
                                                     <td>{{j+1}}</td>
                                                     <td>
                                                         <div class="d-flex">
@@ -291,10 +291,34 @@
                                                         <a *ngIf="!item1.ProjectName && item1.Tasktype!='Lunch' && item1.Tasktype!='Personal'">{{item1.Tasktype }}</a>
                                                         <a class="pro-link fs-6 cursor-pointer" href="javascript:void(0)" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"  (click)=" newDetailsaction(item1.project_code.trim(),item1.ActionCode.trim())" ><div class="desp-txt fs-7 actlabel-at-type">Action</div>{{item1.ActionName }}</a>
                                                     </td>
-                                                    <td>{{item1.WorkAchieved}}</td>
+                                                    <td>
+                                                       <div class="wrk-des-editbx d-none">
+                                                        <textarea [value]="item1.WorkAchieved" class="w-100" placeholder="Define your work achievement here."></textarea>
+                                                        <div class="d-flex justify-content-end gap-1">
+                                                            <button class="btn btn-secondary btn-sm btn-fw fs-7" (click)="cancelEditTimelineRecord(i,j)">Cancel</button>
+                                                            <button class="btn btn-info btn-sm btn-fw fs-7" (click)="updateWorkdesOfTR(i,j)">Update</button>
+                                                        </div>
+                                                       </div>
+                                                        <div class="wrk-des-bx">
+                                                        {{item1.WorkAchieved}} 
+                                                        <div class="dar-wrk-edit" *ngIf="([todayDate |date:'yyyy-MM-dd',disablePreviousDate |date:'yyyy-MM-dd'].includes(item.SubmissionDate))&&item.DarStatus=='Not Submitted'">
+                                                            <!-- <button title="edit achievement." class="wrk-editbtn" (click)="editTimelineRecord(i,j)">
+                                                                 <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 20H20.5M18 10L21 7L17 3L14 6M18 10L8 20H4V16L14 6M18 10L14 6" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                            </button> -->
+                                                        </div>
+                                                       </div>
+                                                    </td>
                                                     <td>{{item1.starttime}}</td>
                                                     <td>{{item1.endtime}}</td>
                                                     <td>{{item1.Duration}}</td>
+                                                 
+                                                     <div *ngIf="([todayDate |date:'yyyy-MM-dd',disablePreviousDate |date:'yyyy-MM-dd'].includes(item.SubmissionDate))&&item.DarStatus=='Not Submitted'&&isFirstRecord" class="dar-record-delete-btn">
+                                                        <!-- <button title="delete timeline." class="dar-rm-btn">
+                                                        <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                                             <path d="M6 5H18M9 5V5C10.5769 3.16026 13.4231 3.16026 15 5V5M9 20H15C16.1046 20 17 19.1046 17 18V9C17 8.44772 16.5523 8 16 8H8C7.44772 8 7 8.44772 7 9V18C7 19.1046 7.89543 20 9 20Z" stroke-linecap="round" stroke-linejoin="round" ></path> </g>
+                                                        </svg>
+                                                       </button> -->
+                                                    </div> 
                                                 </tr>
                                             </tbody>
                                         </table>

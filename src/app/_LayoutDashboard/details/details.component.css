@@ -9965,6 +9965,18 @@ span.time-value {
   gap: 2px;
 }
 
+.tmdiff-chip{
+  background-color: #e4e4dc4a;
+  padding: 0em 0.2em 0em 0.2em;
+  border-radius: 5px;
+  border: 1px solid #dfdddd;
+  font-size: 1rem;
+  color: #666667;
+  z-index: 1;
+}
+
+/*new timeline design css*/
+
 #progress {
   margin-top: 50px;
   width: 100px;
@@ -9987,6 +9999,14 @@ span.time-value {
   max-width: 100%;
   background-color: #3f51b5;
   transition: .5s width;
+}
+
+.actns-filtr-scroll .multi-select-checkbox{
+  transform: scale(1.2);
+}
+
+.custom-file .custom-file-label .placeholder-text{
+   color:#ccc !important;
 }
 
 

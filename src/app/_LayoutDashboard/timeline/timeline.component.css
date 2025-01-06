@@ -2105,3 +2105,154 @@ span.timeline-time svg {
     color: #666667;
     z-index: 1;
 }
+
+
+/*timeline record edit / delete start*/
+tr.dar-record-item {
+  position: relative;
+}
+
+.dar-record-delete-btn {
+  display: none;
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #ffffff;
+  color: grey;
+  line-height: 59px;
+  padding: 0;
+  width: 5%;
+  transition: all 2s ease !important;
+  height: 100%;
+  border: 1px solid #e8e8e8;
+}
+
+
+.dar-record-delete-btn i {
+  background: none;
+  font-size: 16px;
+  outline: none !important;
+  box-shadow: none;
+  outline: none !important;
+  height: 30px;
+  width: 30px;
+  background-color: #f5f6fc;
+  border: 1px solid #b3bcff;
+  color: #5867dd;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin: 10px 8px 0 0;
+  border-radius: 0;
+  border-radius: 4px;
+  padding: 5px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+
+
+/* .dar-record-item:hover .dar-record-delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation-name: tm-del-Open;
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards; 
+  
+} */
+
+.dar-record-delete-btn i:hover {
+  background-color: #5867dd;
+  color: #fff;
+}
+
+
+.dar-record-item .dar-record-delete-btn .dar-rm-btn{
+  display: flex;
+  border: 0;
+  background-color: transparent;
+  padding: 5px;
+}
+
+.dar-record-item .dar-record-delete-btn .dar-rm-btn svg{
+  fill: none;
+  stroke: #e53f3f;
+  stroke-width: 1.5;
+}
+
+.dar-record-item .dar-record-delete-btn .dar-rm-btn:hover{
+  background-color: #ff000008;
+  border-radius: 5px;
+}
+
+.dar-record-item .dar-record-delete-btn .dar-rm-btn:hover svg{
+  stroke: #e13737;
+  stroke-width: 1.7;
+}
+
+
+
+
+.dar-record-item .dar-wrk-edit{
+  display: inline-flex;
+  border: 0;
+  background-color: transparent;
+  padding: 3px;
+  border-radius: 5px;
+}
+.dar-record-item .dar-wrk-edit svg{
+  stroke: #4377ff;
+  stroke-width: 1.6;
+}
+
+/* wrk-editbtn */
+.dar-record-item .dar-wrk-edit .wrk-editbtn{
+  border: 0;
+  background: transparent;
+  padding: 1px;
+  line-height: 0;
+}
+
+.dar-record-item .dar-wrk-edit:hover{
+  background-color: #4377ff17;
+}
+
+
+
+.wrk-des-editbx textarea{
+  height: 150px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+
+.wrk-des-editbx textarea::-webkit-scrollbar{
+   width:10px;
+}
+
+.wrk-des-editbx textarea::-webkit-scrollbar-track{
+   background-color: #4377ff0d;
+}
+
+.wrk-des-editbx textarea::-webkit-scrollbar-thumb{
+  background-color: #aaa7a7cc;
+  border-radius: 25px;
+  cursor: default;
+}
+
+.wrk-des-editbx textarea:focus-visible{
+   outline:0;
+}
+
+@keyframes tm-del-Open{
+    0%{
+       right:-5%;
+    }
+    100%{
+       right:0%
+    }
+}
+
+/*timeline record edit / delete end*/

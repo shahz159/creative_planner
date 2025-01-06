@@ -635,7 +635,7 @@ export class MeetingDetailsComponent implements OnInit {
       }
 
 
-    
+     setTimeout(()=>{
       this.taskcount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
       this.notescount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
       
@@ -643,6 +643,8 @@ export class MeetingDetailsComponent implements OnInit {
       this.CurrentNotesCount = this.Agendas_List.map(item => ({ NotesCount: item.CurrentNotesCount, agendaid: item.AgendaId }));
       this.CurrentTaskCount = this.Agendas_List.map(item => ({ TaskCount: item.CurrentTaskCount, agendaid: item.AgendaId }));
 
+     },2000)
+ 
 
     
       if (this.Agendas_List.every(obj => obj.Status == 1)) {
