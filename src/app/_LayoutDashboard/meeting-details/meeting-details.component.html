@@ -1104,14 +1104,14 @@
                                                 <span class="kt-meeting-title-name">Agenda</span>
                                             </div>
                                             <div class="search-o-c-div mb-2">
-                                                <div class="search-head-open open-search" (click)="open_search()">
+                                                <div class="search-head-open open-search" >
                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                                     </svg>
                                                 </div>
                                                 <div class="search-head-filter search-head-filter-open" id="search-head-filter-open">
-                                                    <input id="status-search-input" [(ngModel)]="SrearchingAgendaItem" type="text" autocomplete="off" class="form-control" placeholder="Search agenda">
-                                                    <span class="search-head-close close-search" (click)="close_search()">
+                                                    <input id="status-search-input" [(ngModel)]="SearchingAgendaItem" type="text" autocomplete="off" class="form-control" placeholder="Search agenda">
+                                                    <span *ngIf="SearchingAgendaItem" class="search-head-close close-search" (click)="clear_search()">
                                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M20.7457 3.32851C20.3552 2.93798 19.722 2.93798 19.3315 3.32851L12.0371 10.6229L4.74275 3.32851C4.35223 2.93798 3.71906 2.93798 3.32854 3.32851C2.93801 3.71903 2.93801 4.3522 3.32854 4.74272L10.6229 12.0371L3.32856 19.3314C2.93803 19.722 2.93803 20.3551 3.32856 20.7457C3.71908 21.1362 4.35225 21.1362 4.74277 20.7457L12.0371 13.4513L19.3315 20.7457C19.722 21.1362 20.3552 21.1362 20.7457 20.7457C21.1362 20.3551 21.1362 19.722 20.7457 19.3315L13.4513 12.0371L20.7457 4.74272C21.1362 4.3522 21.1362 3.71903 20.7457 3.32851Z" fill="currentColor"></path>
                                                         </svg>
@@ -1200,8 +1200,8 @@
                                                     <h6>No agenda created</h6>
                                             </div>
                                                 <div class="kt-agenda-scroll flipped">
-                                                    <ul class="kt-agenda-content kt-agenda-list">
-                                                        <li  [ngClass]="{'agenda-participant':Isadmin==false}" *ngFor="let item of Agendas_List | filter : SrearchingAgendaItem; let i = index;"
+                                                    <ul class="kt-agenda-content kt-agenda-list" *ngIf="(Agendas_List | filter : SearchingAgendaItem).length > 0; else NoAgendaFound">
+                                                        <li  [ngClass]="{'agenda-participant':Isadmin==false}" *ngFor="let item of Agendas_List | filter : SearchingAgendaItem; let i = index;"
                                                             (click)="showAgendaDetails(item,i);GetMeetingnotes_data()">
                                                             <div  *ngIf="item.Status==undefined  || item.Status==0" class="kt-agenda-item "
                                                                 [ngClass]="{'Active':currentAgendaView===i, 'kt-agendas-item': Isadmin ===true} ">
@@ -1440,6 +1440,12 @@
                                                             </div>
                                                         </li> -->
                                                     </ul>
+                                                    <ng-template #NoAgendaFound>
+                                                    <div class="no-agenda-found">
+                                                        <img src="./assets/images/noActionPresent.png">
+                                                        <h6>No agenda found</h6>
+                                                    </div>
+                                                    </ng-template>
                                                 </div>
                                             </div>
                                         </div>
@@ -6997,7 +7003,7 @@
                                     <span *ngIf="processingFile">Processing uploaded file...</span>
                                     <span *ngIf="processingComplete">Processing uploaded file... complete!</span>
                                 </div>
-                                <div *ngIf="!processingFile" class="progress-bar-count">{{ progress }}%</div>
+                                <div *ngIf="!(processingFile || processingComplete)" class="progress-bar-count">{{ progress }}%</div>
                             </div>
                         </div>
                     </div>
@@ -7193,7 +7199,7 @@
                                         </ng-container>
                                     
                                         <ng-container *ngIf="_AllEventAttachment == 1 && _FutureEventAttachment == 0 && SelectedAttachmentFile!=undefined ">
-                                            <button class="btn btn-sm btn-info mr-2 w-15" (click)="OnSubmitAttachment();attach_btn()">
+                                            <button class="btn btn-sm btn-info mr-2 w-15" (click)="OnSubmitAttachment()">
                                                 Upload</button>
                                             </ng-container>
 
@@ -7254,15 +7260,14 @@
                         <div class="rescontent" style="color: #3c4043;">
                             <div id="div_thisevent" class="form-check mb-3">
                                 <label class="form-check-label">
-                                    <input type="radio" id="r1" [(ngModel)]="selectedValue" [value]="1"  name="optradio"><span class="ml-2">This
-                                        Event
-                                        Only</span>
+                                    <input type="radio" id="r1" [(ngModel)]="selectedValue" [value]="1"  name="optradio"><span class="ml-2">
+                                        This Event Only</span>
                                 </label>
                             </div>
                             <div class="form-check mb-3">
                                 <label class="form-check-label">
-                                    <input type="radio" id="r2" [(ngModel)]="selectedValue" [value]="2"  name="optradio"><span class="ml-2">This
-                                        and Following Events</span>
+                                    <input type="radio" id="r2" [(ngModel)]="selectedValue" [value]="2"  name="optradio"><span class="ml-2">
+                                        This and Following Events</span>
                                 </label>
                             </div>
                         </div>

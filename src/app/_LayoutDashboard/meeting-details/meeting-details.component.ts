@@ -2815,15 +2815,16 @@ onFileChange(event) {
 
   OnSubmitAttachment() {
 
-
     if (this.SelectedAttachmentFile != undefined || this.RemovedFile_id.length > 0) {
 
-      this.showFileUpload = true; // Show upload elements
-      this.filesUploadingCount = this._lstMultipleFiales.length;
-      if(this.filesUploadingCount === 1){
-        this.uploadingFileName = this._lstMultipleFiales[0].FileName
+      if(this.RemovedFile_id.length == 0){
+        this.showFileUpload = true; // Show upload elements
+        this.filesUploadingCount = this._lstMultipleFiales.length;
+        if(this.filesUploadingCount === 1){
+          this.uploadingFileName = this._lstMultipleFiales[0].FileName
+        }
       }
-
+    
 
       this.EventNumber = this.EventScheduledjson[0].EventNumber;
       let _attachmentValue = 0;
@@ -2903,18 +2904,21 @@ onFileChange(event) {
 
      
        this._calenderDto.flagid = this._PopupConfirmedValue;
-      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
-      frmData.append("CreatedBy", this.Current_user_ID);
-      frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
+      
+         
       frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
-      frmData.append("flag_id", this._calenderDto.flagid.toString());
+      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+      frmData.append("CreatedBy", this.Current_user_ID); 
       frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
+      frmData.append("flag_id", this._calenderDto.flagid.toString());
+      frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
       frmData.append("Schedule_date",this._StartDate.toString());
-
+  
       if (this._attachmentValue == 1) {
         // this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
           this.CalenderService.EditUploadCalendarAttachmenstCore(frmData).subscribe(
           (event: HttpEvent<any>) => {
+           
             switch (event.type) {
               case HttpEventType.Sent:
                 console.log('Request has been made!');
@@ -2935,24 +2939,27 @@ onFileChange(event) {
                   this.filesUploadingCount = 0;
                   this.processingFile = true;
                   this.CalenderService._AzureUpdateCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
-                   
+                    console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                     let responseBody = JSON.parse(myJSON).body; 
+
+                    console.log('User successfully created!', responseBody);
                     if (responseBody === 1) { 
                       this.processingFile = false;                
                       this.processingComplete = true;
                                   
                       setTimeout(() => {
                         this.processingComplete = false; 
+                        this.attach_btn();
                         this.notifyService.showSuccess("Uploaded successfully ", '');                
                         this.meeting_details();
-                        this.showFileUpload = false;    
-                      }, 2000);
-                         
-                  
-                  }
-                  //  this._Message = (JSON.parse(myJSON).body);
-                 
+                        this.showFileUpload = false;                            
+                      }, 2000);     
+                  }else if (responseBody === 0) { 
+                    this.notifyService.showSuccess("Deleted successfully", '');                            
+                      this.meeting_details();                                                                 
+                }
+                  //  this._Message = (JSON.parse(myJSON).body);         
                   });
                 }
 
@@ -3394,7 +3401,7 @@ onFileChange(event) {
       if (result === true) {
         this.CalenderService.DeleteAttachmentOfMeeting(this._calenderDto).subscribe((data) => {
           this.meeting_details()
-          this.notifyService.showSuccess("Deleted successfully ada ", '');
+          this.notifyService.showSuccess("Deleted successfully", '');
         });
       }
       else {
@@ -6552,7 +6559,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     this._attachmentValue = 0;
     frmData.append("Attachment", "false");
   }
-debugger
+
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
@@ -6560,9 +6567,10 @@ debugger
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id);
 
        this._calenderDto.attachment = this._attachmentValue.toString();
-
+      
       this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
         (data => {
+          debugger
           this.RemovedAttach = [];
           // alert(data['Schedule_date'])
           frmData.append("Schedule_date", data['Schedule_date'].toString());
@@ -8424,14 +8432,14 @@ validateURL(value: string): void {
 }
 
 
-SrearchingAgendaItem:any;
+SearchingAgendaItem:any;
 
-open_search() {
-  document.getElementById("search-head-filter-open").classList.add("search-head-filter-open");
+clear_search() {
+ this.SearchingAgendaItem=null;
 }
-close_search() {
-  document.getElementById("search-head-filter-open").classList.remove("search-head-filter-open");
-}
+// close_search() {
+//   document.getElementById("search-head-filter-open").classList.remove("search-head-filter-open");
+// }
 
 
 }

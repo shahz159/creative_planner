@@ -4020,6 +4020,22 @@ span.lbl-hdn {
     color: #979797;
 }
 
+
+
+.no-agenda-found {
+    text-align: center;
+}
+
+.no-agenda-found img {
+    width: 40%;
+    height: auto;
+}
+
+.no-agenda-found h6 {
+    font-size: 14px;
+    color: #979797;
+}
+
 .editing-save-Event {
     border: 0;
     background-color: transparent;
