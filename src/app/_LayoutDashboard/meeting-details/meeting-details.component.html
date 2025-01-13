@@ -1110,6 +1110,10 @@
                                                     </svg>
                                                 </div>
                                                 <div class="search-head-filter search-head-filter-open" id="search-head-filter-open">
+
+                                                    <svg _ngcontent-sta-c396="" width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-sta-c396="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-sta-c396="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-sta-c396="" id="SVGRepo_iconCarrier"><path _ngcontent-sta-c396="" fill-rule="evenodd" clip-rule="evenodd" d="M4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11ZM11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C13.125 20 15.078 19.2635 16.6177 18.0319L20.2929 21.7071C20.6834 22.0976 21.3166 22.0976 21.7071 21.7071C22.0976 21.3166 22.0976 20.6834 21.7071 20.2929L18.0319 16.6177C19.2635 15.078 20 13.125 20 11C20 6.02944 15.9706 2 11 2Z" fill="#000000"></path></g></svg>
+
+
                                                     <input id="status-search-input" [(ngModel)]="SearchingAgendaItem" type="text" autocomplete="off" class="form-control" placeholder="Search agenda">
                                                     <span *ngIf="SearchingAgendaItem" class="search-head-close close-search" (click)="clear_search()">
                                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1216,21 +1220,21 @@
                                                                     <div class="item-details">
                                                                     
                                                                         <div class="d-flex align-items-center justify-content-between">
-                                                                            <div class="agenda-count" >Agenda {{i+1}}</div>
+                                                                            <div class="agenda-count" >Agenda {{i+1}}</div> 
                                                                             <div class="agenda-details" style="gap: 5px">
-                                                                                <div class="agenda-details-item "  [ngClass]="{'active': CurrentTaskCount[i]?.TaskCount > 0}">
+                                                                                <div class="agenda-details-item "  [ngClass]="{'active': CurrentTaskCount &&  CurrentTaskCount[i] && CurrentTaskCount[i].TaskCount > 0}">
                                                                                     <span class="a-icon">                                
                                                                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 6L21 6.00072M11 12L21 12.0007M11 18L21 18.0007M3 11.9444L4.53846 13.5L8 10M3 5.94444L4.53846 7.5L8 4M4.5 18H4.51M5 18C5 18.2761 4.77614 18.5 4.5 18.5C4.22386 18.5 4 18.2761 4 18C4 17.7239 4.22386 17.5 4.5 17.5C4.77614 17.5 5 17.7239 5 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                                 </span>
-                                                                                    <span  class="agenda-details-item-count">{{taskcount[i].count}}</span>
+                                                                                    <span *ngIf="taskcount && taskcount[i]" class="agenda-details-item-count">{{taskcount[i].count}}</span>
                                                                                 </div>
                                                                                 <!-- <div class="a-v-line" [[ngClass]="{'active': notescount[i].count > 0}"></div> -->
-                                                                                <div class="agenda-details-item" [ngClass]="{'active': CurrentNotesCount[i]?.NotesCount > 0}" >
+                                                                                <div class="agenda-details-item" [ngClass]="{'active': CurrentNotesCount && CurrentNotesCount[i] && CurrentNotesCount[i].NotesCount > 0}" >
                                                                                     <span class="a-icon">
                                                                                         <svg  xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16"><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path>
                                                                                         </svg>
                                                                                 </span>
-                                                                                    <span  class="agenda-details-item-count">{{notescount[i].count}}</span>
+                                                                                    <span *ngIf="notescount && notescount[i]" class="agenda-details-item-count">{{notescount[i].count}}</span>
                                                                                 </div>
                                                                         <div  *ngIf="(Status1=='Owner' || item.Created_by == CurrentUser_fullname) && Meetingstatuscom!='Completed'"  class="a-v-line"></div>
                                                                         <button  *ngIf="(Status1=='Owner' || item.Created_by == CurrentUser_fullname) && Meetingstatuscom!='Completed'"  [id]="'edit-agendaname-btn-'+i" class="edit-agendaname-btn" title="Edit" (click)="unnecessarynotify();editAgenda(i)">
@@ -1314,7 +1318,7 @@
                                                                         <div class="d-flex align-items-center justify-content-between">
                                                                             <div class="agenda-count">Agenda {{i+1}}</div>
                                                                             <div class="agenda-details" style="gap: 5px">
-                                                                                <div class="agenda-details-item"  [ngClass]="{'active': CurrentTaskCount[i]?.TaskCount > 0}">
+                                                                                <div class="agenda-details-item"  [ngClass]="{'active': CurrentTaskCount && CurrentTaskCount[i].TaskCount > 0}">
                                                                                     <span class="a-icon">                                
                                                                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 6L21 6.00072M11 12L21 12.0007M11 18L21 18.0007M3 11.9444L4.53846 13.5L8 10M3 5.94444L4.53846 7.5L8 4M4.5 18H4.51M5 18C5 18.2761 4.77614 18.5 4.5 18.5C4.22386 18.5 4 18.2761 4 18C4 17.7239 4.22386 17.5 4.5 17.5C4.77614 17.5 5 17.7239 5 18Z" stroke="#858190" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                                 
@@ -1322,7 +1326,7 @@
                                                                                     <span  class="agenda-details-item-count">{{item.TaskCount}}</span>
                                                                                 </div>
                                                                                 <!-- <div class="a-v-line"></div> -->
-                                                                                <div class="agenda-details-item" [ngClass]="{'active': CurrentNotesCount[i]?.NotesCount == 1}">
+                                                                                <div class="agenda-details-item" [ngClass]="{'active': CurrentNotesCount && CurrentNotesCount[i].NotesCount == 1}">
                                                                                     <span class="a-icon">
                                                                                         <svg  xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16" class="iconify iconify--mdi"><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>   
                                                                                 </span>
@@ -2651,7 +2655,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div  class="row">
                                             <div class="col-md-3 details-bg">
                                                 <div class="details-label">
                                                     <span class="label-icon active">
@@ -5416,28 +5420,20 @@
                                     </span>                                
                                     </span>
                                     <span class="menu-title">{{meeting.Schedule_date | date: 'dd-MM-yyyy'}} 
-                                        <span class="ml-2" style="    display: flex;
-                                        align-items: center;
-                                        gap: 4px;
-                                        border-left: 1px solid #757575;
-                                        padding-left: 4px;">
-                                            <span style="    display: inline-flex;
-                                            align-items: center;
-                                            gap: 3px;"> 
+                                        <span class="ml-2" style="display: flex;align-items: center;gap: 4px;border-left: 1px solid #757575;padding-left: 4px;">
+                                            <span style="display: inline-flex;align-items: center;gap: 3px;"> 
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="#979797" width="13" height="13" viewBox="0 0 1024 1024" version="1.1" class="svg-icon"><path d="M222.342629 491.601594 201.944223 491.601594c-11.264 0-20.398406 9.134406-20.398406 20.398406 0 11.264 9.134406 20.398406 20.398406 20.398406l20.398406 0c11.264 0 20.398406-9.134406 20.398406-20.398406C242.741036 500.736 233.606629 491.601594 222.342629 491.601594z"></path><path d="M67.314741 728.223108l22.438247 0c11.264 0 20.398406-9.134406 20.398406-20.398406 0-11.264-9.134406-20.398406-20.398406-20.398406L67.314741 687.426295c-11.264 0-20.398406 9.134406-20.398406 20.398406C46.916335 719.088701 56.050741 728.223108 67.314741 728.223108z"></path><path d="M222.342629 687.426295 199.904382 687.426295c-11.264 0-20.398406 9.134406-20.398406 20.398406 0 11.264 9.134406 20.398406 20.398406 20.398406l22.438247 0c11.264 0 20.398406-9.134406 20.398406-20.398406C242.741036 696.560701 233.606629 687.426295 222.342629 687.426295z"></path><path d="M793.498008 338.613546c11.264 0 20.398406-9.134406 20.398406-20.398406L813.896414 97.912351c0-11.264-9.134406-20.398406-20.398406-20.398406-11.264 0-20.398406 9.134406-20.398406 20.398406l0 220.302789C773.099602 329.479139 782.234008 338.613546 793.498008 338.613546z"></path><path d="M793.498008 477.322709c11.264 0 20.398406-9.134406 20.398406-20.398406l0-48.956175c0-11.264-9.134406-20.398406-20.398406-20.398406-11.264 0-20.398406 9.134406-20.398406 20.398406l0 48.956175C773.099602 468.188303 782.234008 477.322709 793.498008 477.322709z"></path><path d="M977.083665 122.335363C977.083665 82.997036 945.082645 50.996016 905.744319 50.996016L888.350598 50.996016 888.350598 20.398406c0-11.264-9.134406-20.398406-20.398406-20.398406l-724.143426 0c-11.264 0-20.398406 9.134406-20.398406 20.398406l0 79.553785L67.314741 99.952191c-11.264 0-20.398406 9.134406-20.398406 20.398406s9.134406 20.398406 20.398406 20.398406l56.095618 0 0 155.027888L67.314741 295.776892c-11.264 0-20.398406 9.134406-20.398406 20.398406 0 11.264 9.134406 20.398406 20.398406 20.398406l56.095618 0 0 155.027888L67.314741 491.601594c-11.264 0-20.398406 9.134406-20.398406 20.398406 0 11.264 9.134406 20.398406 20.398406 20.398406l56.095618 0 0 350.85259L67.314741 883.250996c-11.264 0-20.398406 9.134406-20.398406 20.398406 0 11.264 9.134406 20.398406 20.398406 20.398406l56.095618 0 0 79.553785c0 11.264 9.134406 20.398406 20.398406 20.398406l724.143426 0c11.264 0 20.398406-9.134406 20.398406-20.398406L888.350598 611.952191l17.393721 0C945.082645 611.952191 977.083665 579.951171 977.083665 540.612845l0-71.506614c0-19.939442-8.230757-37.981833-21.463203-50.94094 13.232446-12.957068 21.463203-31.001498 21.463203-50.94094l0-71.506614c0-19.939442-8.230757-37.981833-21.463203-50.94094 13.232446-12.952988 21.463203-30.997418 21.463203-50.936861L977.083665 122.335363zM847.553785 983.203187l-683.346614 0 0-59.155378L222.342629 924.047809c11.264 0 20.398406-9.134406 20.398406-20.398406 0-11.264-9.134406-20.398406-20.398406-20.398406L164.207171 883.250996 164.207171 336.573705 222.342629 336.573705c11.264 0 20.398406-9.134406 20.398406-20.398406 0-11.264-9.134406-20.398406-20.398406-20.398406L164.207171 295.776892 164.207171 140.749004 222.342629 140.749004c11.264 0 20.398406-9.134406 20.398406-20.398406 0-11.264-9.134406-20.398406-20.398406-20.398406L164.207171 99.952191 164.207171 40.796813l683.346614 0L847.553785 983.203187zM936.286853 540.614884c0 16.840924-13.70161 30.542534-30.542534 30.542534L888.350598 571.157418l0-132.589641 17.393721 0C922.585243 438.565737 936.286853 452.267347 936.286853 469.108271L936.286853 540.614884zM936.286853 367.22843c0 16.840924-13.70161 30.542534-30.542534 30.542534L888.350598 397.770964l0-132.589641 17.393721 0C922.585243 265.179283 936.286853 278.880892 936.286853 295.721817L936.286853 367.22843zM936.286853 193.841976c0 16.840924-13.70161 30.542534-30.542534 30.542534L888.350598 224.38451 888.350598 224.38247 888.350598 91.792829l17.393721 0C922.585243 91.792829 936.286853 105.494438 936.286853 122.335363L936.286853 193.841976z"></path></svg>
 
                                         {{meeting.TotalAgendas}}
                                             </span>
-                                        <span style="    display: inline-flex;
-                                        align-items: center;
-                                        gap: 3px;">
+                                        <span style="display: inline-flex;align-items: center;gap: 3px;">
                                             <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16" ><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>                                
                                         {{meeting.TotalNotes}}
                                         </span>
                                         </span>
 
                                     </span>
-                                    <span class="menu-arrow "  [class.rotate]="activeAgendaIndex === i" id="agendaarrow-{{i}}">
+                                    <span class="menu-arrow"  [class.rotate]="activeAgendaIndex === i" id="agendaarrow-{{i}}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
                                             viewBox="0 0 15 9" fill="none">
                                             <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
@@ -5446,14 +5442,6 @@
                                         </svg>
                                     </span>
                                 </span>
-
-
-
-
-
-
-
-
 
 
                                 <ng-container *ngIf="fiterDataOfEmployee==false">
@@ -5488,11 +5476,6 @@
                                     </div>
                                 </div>
                             </ng-container>
-
-
-
-
-
 
 
 
@@ -5531,11 +5514,35 @@
                             </ng-container>
 
 
-
-
-
                             </div>
                         </ng-container>
+                     
+
+
+
+                      
+                        <div *ngIf="this.filterconfig.filterby=='Attendees' && this.filterconfig.sortby == 'All'" class="menu-item">
+                            <span class="menu-link" (click)="toggleMenu(19)">
+                                <span class="menu-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16"><path  d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect  x="16.37" y="37.13" width="44.1" height="8"></rect><rect  x="16.37" y="53.09" width="30.8" height="8"></rect><rect  x="16.37" y="22.13" width="44.1" height="8"></rect><path  d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
+                                </span>
+                                <span class="menu-title">No contribution</span>
+                                <span class="menu-arrow" [class.rotate]="activeAgendaIndexAttendees === 19">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
+                                    viewBox="0 0 15 9" fill="none">
+                                    <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
+                                        stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                </span>
+                            </span>
+                            <ng-container  *ngIf="activeAgendaIndexAttendees === 19">
+                            <ul *ngFor="let attendees of remainingUsers">
+                               <span> {{attendees.TM_DisplayName}} </span>
+                            </ul>
+                        </ng-container>
+                        </div>
+                        
                             <!-- <div class="menu-item menu-accordion collapsed">
                                 <span class="menu-link" >
                                     <span class="menu-icon">
@@ -5543,13 +5550,13 @@
                                         <span class="svg-icon svg-icon-2">
 
                                             <span class="svg-icon svg-icon-2">
-                                                <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A3,3,0,0,0,2,7V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V7A3,3,0,0,0,19,4Zm1,15a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V12H20Zm0-9H4V7A1,1,0,0,1,5,6H7V7A1,1,0,0,0,9,7V6h6V7a1,1,0,0,0,2,0V6h2a1,1,0,0,1,1,1Z"></path></g></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16"><path  d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect  x="16.37" y="37.13" width="44.1" height="8"></rect><rect  x="16.37" y="53.09" width="30.8" height="8"></rect><rect  x="16.37" y="22.13" width="44.1" height="8"></rect><path  d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
                                             </span>
                                         </span>
                                         
                                     </span>
-                                    <span class="menu-title">26-05-2024</span>
-                                    <span class="menu-arrow" id="agendaarrow">
+                                    <span class="menu-title">No contribution</span>
+                                    <span class="menu-arrow"  [class.rotate]="activeAgendaIndex === i" id="agendaarrow-{{i}}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
                                             viewBox="0 0 15 9" fill="none">
                                             <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
@@ -5557,9 +5564,17 @@
                                                 stroke-linejoin="round" />
                                         </svg>
                                     </span>
-                                </span>
-                            
+
+                                    <span>
+                                       <span> 1 </span>
+                                       <span> 2 </span>
+                                       <span> 3 </span>                                     
+                                    </span>
+                                </span>                           
                             </div> -->
+
+
+
                         </div>     
                     </div>
                 </div>   
@@ -7099,6 +7114,11 @@
                                             </path>
                                         </svg>
                                        </span>
+
+
+
+
+                                       <!-- <img [src]="item.url" alt="file icon" width="24" height="24" /> -->
                                     </div>
                                 </a>
                                     <div class="kt-notification__item-details">

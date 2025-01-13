@@ -8727,6 +8727,7 @@ svg.asseticn.prim-icn.memo_attachment_img {
 }
 .search-head-filter.search-head-filter-open{
     width: 250px;
+    padding-left: 10px;
 }
 
 .search-head-filter .form-control {
