@@ -401,9 +401,12 @@ export class MeetingDetailsComponent implements OnInit {
     this.GetMeetingnotes_data();
   }
   Repeat_Meeting() {
+    
     document.getElementById("repeatModal").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    this._StartDate = this.disablePreviousTodayDate;
+    this.disablePreviousDate = this.disablePreviousTodayDate;
     //  this.meeting_details();
   }
   Close_Repeat_Meeting() {
@@ -7574,13 +7577,14 @@ onParticipantFilter(){
   
 
   date_menu(dialogId: string) {
+   
     document.getElementById(dialogId).classList.add("show");
     // document.getElementById('date-menu').classList.add("show");
     // document.getElementById('drop-overlay').classList.add("show");
     $('#date-menu').addClass('show');
     $('#drop-overlay').addClass('show');
 
-   
+    this._StartDate = this.disablePreviousTodayDate;
   }
   date_menu_close(dialogId: string) {
     document.getElementById(dialogId).classList.remove("show");
@@ -7590,9 +7594,15 @@ onParticipantFilter(){
 
 
   date_menu_modal() {
+   
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("datemenu").style.display = "block";
-   
+    debugger
+    if(this.eventRepeat==true){
+      this._StartDate = this.disablePreviousTodayDate;
+      this.disablePreviousDate = this.disablePreviousTodayDate;
+    }
+    
   }
   date_menu_modal_close() {
     document.getElementById("schedule-event-modal-backdrop").style.display = "none";
@@ -7790,14 +7800,14 @@ onParticipantFilter(){
         // continue; // Skip this file
       // }
     }) 
-  
-  
-  
-  
   }
 
 
+
+
+
   repeatEvent() {
+  
     document.getElementById("div_endDate_new").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
 
@@ -7810,12 +7820,12 @@ onParticipantFilter(){
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-
+      
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.Schedule_ID = 0;   // schedule id.
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];  // event or task
         this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
-
+        debugger
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
@@ -7823,7 +7833,7 @@ onParticipantFilter(){
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
         this.Addressurl = this.EventScheduledjson[0]['Addressurl'];             // url
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];   // file attachment
-
+     
         // if (this._FutureEventTasksCount > 0) {
 
         // }
@@ -7835,7 +7845,8 @@ onParticipantFilter(){
         document.getElementById("Monthly_121_new").style.display = "none";
         document.getElementById("weekly_121_new").style.display = "none";
         document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-
+     
+       
 
         this.AllDatesSDandED = [];
         var jsonData = {};
@@ -7971,6 +7982,8 @@ onParticipantFilter(){
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "flex";
           document.getElementById("core_Dms").style.display = "flex";
+          this._StartDate = this.disablePreviousTodayDate;
+          
 
           const TEsb = document.getElementById('TaskEvent-Sidebar')
           TEsb.addEventListener('scroll', () => {
