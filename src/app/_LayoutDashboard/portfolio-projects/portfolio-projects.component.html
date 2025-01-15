@@ -999,7 +999,7 @@
 
 
 
-                                                    <th></th>
+                                                    <th>Actions</th>
 
                                                     <th [ngClass]="{'d-none':!isprojtype}" id="prjType" [appSort]="this._ProjectsListBy_Pid" data-order="desc"
                                                       data-name="Exec_BlockName" tabindex="0" class="curser-pointer" aria-controls="project-4" rowspan="1" colspan="1"
@@ -1097,7 +1097,7 @@
                                                         class="fas fa-sort"></i> References</th>
 
                                                     <th [ngClass]="{'d-none':!isaction}"   *ngIf="!showDeletedPrjOnly&&UserAccessType === 'Full Access'">
-                                                      <span class="act_id" class="kt-widget__other tb-w-45"> Actions</span>
+                                                      <span class="act_id" class="kt-widget__other tb-w-45"> Trash</span>
                                                     </th>
 
                                                     <th class="custom-view-dropdown">
@@ -1287,7 +1287,7 @@
                                                               <button class="btn btn-filtr">
                                                                 <div class="d-flex align-items-center">
                                                                   <!-- <span class="count com-appr">{{CountCompletionUA}}</span> -->
-                                                                  <div class="fil-lbl">Actions</div>
+                                                                  <div class="fil-lbl">Trash</div>
                                                                   <label class="switch">
                                                                     <input type="checkbox" (change)="togglevisibilityforClass('action_class', $event);">
                                                                     <span class="slider"></span>

@@ -447,6 +447,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
       this.filteredEmployees = [];
       this._ProjectsListBy_Pid.forEach(item=>{
+debugger
         const x=this.filteredEmployees.find(emp=>item.Emp_No === emp.Emp_No)
         if(x){
             x.totalProjects+=1;
@@ -483,7 +484,7 @@ export class PortfolioProjectsComponent implements OnInit {
         this.forwardPrjPort = []
 
         this._ProjectsListBy_Pid.forEach((item=>{
-          if(item.Status =='Forward Under Approval' && item.PendingapproverEmpNo == this.Current_user_ID){
+          if(item.Status =='Forward Under Approval' && item.PendingapproverEmpNo&&item.PendingapproverEmpNo == this.Current_user_ID){
             const obj = {
               prjname : item.Project_Name,
               prjcode : item.Project_Code,
@@ -499,7 +500,7 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
   this.completionPrjPort = []
 
   this._ProjectsListBy_Pid.forEach((item)=>{
-    if (item.Status === 'Completion Under Approval'  && item.PendingapproverEmpNo === this.Current_user_ID){
+    if (item.Status === 'Completion Under Approval'  && item.PendingapproverEmpNo&&item.PendingapproverEmpNo === this.Current_user_ID){
       const obj = {
         prjname : item.Project_Name,
         prjcode : item.Project_Code,
@@ -519,7 +520,7 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
 
   this._ProjectsListBy_Pid.forEach((item)=>{
 
-    if (item.Status === "Under Approval"  && item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+    if (item.Status === "Under Approval"  &&item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
       const obj = {
         prjname : item.Project_Name,
         prjcode : item.Project_Code,
@@ -536,7 +537,7 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
 
   this._ProjectsListBy_Pid.forEach((item)=>{
 
-    if (item.Status === "Cancellation Under Approval"  && item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+    if (item.Status === "Cancellation Under Approval"  && item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
       const obj = {
         prjname : item.Project_Name,
         prjcode : item.Project_Code,
@@ -558,13 +559,8 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
 
 
     this.isPendingChecked = this._ProjectsListBy_Pid.some((emp)=>{
-
-      return emp.PendingapproverEmpNo === this.Current_user_ID
+      return emp.PendingapproverEmpNo&&emp.PendingapproverEmpNo == this.Current_user_ID
     })
-
-
-
-
 
 
 

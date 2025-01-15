@@ -287,36 +287,48 @@ export class NotificationComponent implements OnInit {
 
   showLeaveAprv() {
     document.getElementById('prj-aprv-list').classList.add('d-none');
+    document.getElementById('darReqRes-list').classList.add('d-none');
     document.getElementById('leave-aprv-list').classList.remove('d-none');
   }
 
-  currentPageContent:'PROJECT APPROVALS'|'INFORMATION'|'LEAVE REQUESTS'|'LEAVE RESPONSES'='PROJECT APPROVALS';
-  setPageContent(contenttype:'PROJECT APPROVALS'|'INFORMATION'|'LEAVE REQUESTS'|'LEAVE RESPONSES'){
+  currentPageContent:'PROJECT APPROVALS'|'INFORMATION'|'LEAVE REQUESTS'|'LEAVE RESPONSES'|'DAR REQUESTS'|'DAR RESPONSES'='PROJECT APPROVALS';
+  setPageContent(contenttype:'PROJECT APPROVALS'|'INFORMATION'|'LEAVE REQUESTS'|'LEAVE RESPONSES'|'DAR REQUESTS'|'DAR RESPONSES'){
       switch(contenttype)
       {
           case 'PROJECT APPROVALS':{
                this.currentPageContent='PROJECT APPROVALS';
-               this.showPrjAprv();     // shows the project approval list table. and hide the leave approvals list if opened.
+               this.showPrjAprv();     // shows the project approval list table. and hide other list if opened.
                this.viewAll(this.type1);    // fetch prj approvals.
           };break;
           case 'INFORMATION':{
                this.currentPageContent='INFORMATION';
-               this.showPrjAprv();    // shows the project approval list table. and hide the leave approvals list if opened.
+               this.showPrjAprv();    // shows the project approval list table. and hide other list if opened.
                this.viewAll(this.type2);   //fetch informations.
                
           };break;
           case 'LEAVE REQUESTS':{
                this.currentPageContent='LEAVE REQUESTS';
                this.leavePanel='REQUESTS';
-               this.showLeaveAprv();  // shows the leaves list table. and hide the projects approvals list if opened.
+               this.showLeaveAprv();  // shows the leaves list table. and hide other list if opened.
                this.newNotificationLeaveRequests(); // fetch leave requests.
   
           };break;
           case 'LEAVE RESPONSES':{
                this.currentPageContent='LEAVE RESPONSES';
                this.leavePanel='RESPONSES';
-               this.showLeaveAprv();  // shows the leaves list table. and hide the projects approvals list if opened.
+               this.showLeaveAprv();  // shows the leaves list table. and hide other list if opened.
                this.newNotificationLeave();  // fetch leave responses.
+          };break;
+          case 'DAR REQUESTS':{
+               this.currentPageContent='DAR REQUESTS';
+               this.darPanelType='REQUESTS'
+               this.showDarPanel(); // shows the dar list table. and hide other list if opened.
+              
+          };break;
+          case 'DAR RESPONSES':{
+               this.currentPageContent='DAR RESPONSES';
+               this.darPanelType='RESPONSES';
+               this.showDarPanel();  // shows the dar list table. and hide other list if opened.
           };break;
           default:{};
       }
@@ -393,6 +405,10 @@ export class NotificationComponent implements OnInit {
     $('#leave_requisition_form_slider_bar').removeClass('open_requisition_sidebar_info');
 
 
+    document.getElementById("dar-req_slider_bar").classList.remove("kt-quick-panel--on");
+    $('#dar-req_slider_bar').removeClass('open_sidebar');
+
+
     document.getElementById("acceptbar").classList.remove("kt-quick-panel--on");
     this.approverComments=null;
 
@@ -446,6 +462,7 @@ export class NotificationComponent implements OnInit {
   showPrjAprv(){
     document.getElementById('prj-aprv-list').classList.remove('d-none');
     document.getElementById('leave-aprv-list').classList.add('d-none');
+    document.getElementById('darReqRes-list').classList.add('d-none');
   }
 
 
@@ -1411,11 +1428,28 @@ openPDF_Standards(standardid, emp_no, cloud, repDate: Date, proofDoc, type, subm
       else {
         this._month = Month;
       }
-      if (Day < 10) {
-        this._day = Day;
-      }
-      else {
-        this._day = Day;
+      // if (Day < 10) {
+      //   this._day = Day;
+      // }
+      // else {
+      //   this._day = Day;
+      // }
+       // Compare the date with 21-12-2024
+      const comparisonDate = new Date(2024, 11, 21); // Months are 0-indexed in JavaScript
+      if (repDate >= comparisonDate) {
+        // Logic for dates greater than or equal to 21-12-2024
+        if (Day < 10) {
+          this._day = "0" + Day;
+        } else {
+          this._day = Day;
+        }
+      } else {
+        // Logic for dates less than 21-12-2024
+        if (Day < 10) {
+          this._day = Day;
+        } else {
+          this._day = Day;
+        }
       }
       var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
 
@@ -1463,5 +1497,45 @@ onAcceptWithCmtsBtnClicked(){
 }
 
 // accept selected approvals with comments end.
+
+
+// dar req/res start.
+
+darPanelType:'REQUESTS'|'RESPONSES';  // dar view currently opened.
+darRequests:Object[]=[{}];      // all dar requests on the user.
+darResponses:Object[]=[{}];    // all dar responses of the user.
+currentDarReqIndex:number=-1;   // current  selected.
+selectedDarReqs:any=[];      // multiple dar req aprvls selected.
+
+showDarPanel() {
+  document.getElementById('darReqRes-list').classList.remove('d-none');
+  document.getElementById('prj-aprv-list').classList.add('d-none');
+  document.getElementById('leave-aprv-list').classList.add('d-none');
+}
+
+
+openDarReqSidebar(crntIndex:number){
+  this.currentDarReqIndex=crntIndex;
+
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  document.getElementById("dar-req_slider_bar").classList.add("kt-quick-panel--on");
+  $('#dar-req_slider_bar').addClass('open_sidebar');
+}
+
+closeDarReqSidebar() {
+    this.currentDarReqIndex=-1;
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("dar-req_slider_bar").classList.remove("kt-quick-panel--on");
+    $('#dar-req_slider_bar').removeClass('open_sidebar');
+}
+
+
+
+
+
+
+// dar req/res end.
 
 }

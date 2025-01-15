@@ -1072,10 +1072,10 @@ debugger
        this.delayActionsOfEmps=[];   // must be empty before calculation.
           this.filteremployee.forEach((emp)=>{
             let delayActionsOfEmp=this.getFilteredPrjActions(['Delay'],[emp.Team_Res]);
-            if(delayActionsOfEmp.length>0){
+            if(delayActionsOfEmp.length>0){  debugger
               delayActionsOfEmp=delayActionsOfEmp.sort((a,b)=>b.Delaydays-a.Delaydays)
               const percentInDelay=((delayActionsOfEmp[0].Delaydays/this.projectInfo.Delaydays)*100).toFixed(1);
-              this.delayActionsOfEmps.push({ name:emp.Responsible, emp_no:emp.Team_Res, delayActions:delayActionsOfEmp, percentInDelay:percentInDelay})
+              this.delayActionsOfEmps.push({ name:emp.Responsible, emp_no:emp.Team_Res, delayActions:delayActionsOfEmp, percentInDelay:(+percentInDelay)})
               this.delayActionsOfEmps=this.delayActionsOfEmps.sort((a,b)=>b.delayActions[0].Delaydays-a.delayActions[0].Delaydays);
             }
           });
@@ -1602,7 +1602,7 @@ debugger
   }
 
   showActionDetails(index: number | undefined) {
-    this.currentActionView = index;
+    this.currentActionView = index;   // if index is number: an action is selected.  if index is undefined : project view is selected.
     if(index!=undefined){
 
       this.requestType = null;
@@ -1611,6 +1611,7 @@ debugger
 
       if (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval"||this.projectActionInfo[index].Status === "Cancellation Under Approval"){
         this.GetApproval(this.projectActionInfo[index].Project_Code);
+
       }
       else if(this.projectActionInfo[this.currentActionView].Status=='New Project Rejected'){
         this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
@@ -1642,7 +1643,6 @@ debugger
       });
 
     }
-
   }
 
   prostate(pstate){
@@ -2255,9 +2255,6 @@ multipleback(){
   @ViewChild('DMSDROPDOWN') dmsDD:MatAutocompleteTrigger;
 
 
-
-
-
   linkSMail:boolean=false;
   linkPort:boolean=false;
 
@@ -2835,6 +2832,7 @@ fetchingStdTaskAprvls:boolean=false;
   Close_Approval() {
     this.comments=null;
     this.isApprovalSection = false;
+    this.isTextAreaVisible=false;
     $(".Btn_Accpet").removeClass('active');
     $(".Btn_Conditional_Accept").removeClass('active');
     $(".Btn_Reject").removeClass('active');
@@ -2860,6 +2858,7 @@ approvalSubmitting:boolean=false;
       this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
         subscribe((data) => {
           this.Close_Approval();
+          this.removeCommit();
           this.approvalSubmitting=false;
           this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Approved successfully by - " + this._fullname, "Success");
           this.getapprovalStats();
@@ -2904,6 +2903,7 @@ approvalSubmitting:boolean=false;
               }
               else {
                 this.Close_Approval();
+                this.removeCommit();
                 this.notifyService.showSuccess("Project Approved Successfully", this._Message);
                 this.getapprovalStats();
                 this.getProjectDetails(this.URL_ProjectCode);
@@ -2928,6 +2928,7 @@ approvalSubmitting:boolean=false;
           subscribe((data) => {
             // if success
             this.Close_Approval();
+            this.removeCommit();
             this.approvalSubmitting=false;
             this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Rejected successfully by - " + this._fullname, "Success");
             this.getapprovalStats();
@@ -3141,9 +3142,8 @@ approvalSubmitting:boolean=false;
   }  // for temp we are using this.
 
   proState:boolean=false;
-
   actionCompleted() {
-debugger
+
    const fieldsprvided:boolean=(this._remarks&&this._remarks.trim())&&(this.proState?this.selectedFile:true);
 
     if (!fieldsprvided) { // when the user not provided the required fields then .
@@ -3169,14 +3169,14 @@ debugger
         if (res.value) {   // when user proceed also with the main project submission.
           if (this.selectedFile == null) {
             this.notifyService.showInfo("Please attach the completion file to complete the main project", "Note");
-            }
-
+          }
           else {
             // 1.  ACTION SUBMISSION
             const fd = new FormData();
             fd.append("Project_Code", this.Sub_ProjectCode);
             fd.append("Master_Code", this._MasterCode);
             fd.append("Team_Autho", this.Sub_Autho);
+            fd.append("Emp_No", this.Current_user_ID);
             fd.append("Projectblock", this.projectInfo.Project_Block);
             fd.append("Remarks", this._remarks);
             fd.append("Project_Name", this._Subtaskname);
@@ -3218,11 +3218,52 @@ debugger
 
                 }
                 if ( this.selectedFile) {
+
+                  this.setFilesUploadingBarVisible(true);
+                  const fid=this.selectedFile.name+(new Date().getTime());
+                  const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Action complete file attachment -'+this._Subtaskname};
+                  this.filesInUpload.push(ob);
+
+
                   fd.append("Project_Code", this.Sub_ProjectCode);
                   fd.append("Team_Autho", this.Sub_Autho);
+                  fd.append("Emp_No", this.Current_user_ID);
                   fd.append("Project_Name", this._Subtaskname);
                   fd.append('file',  this.selectedFile);
                   this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+
+                    switch (event1.type) {
+                      case HttpEventType.Sent:
+                        console.log('Request sent!');
+                        break;
+                      case HttpEventType.ResponseHeader:
+                        console.log('Response header received!');
+                        break;
+                      case HttpEventType.UploadProgress:
+                        const progress = Math.round(event1.loaded / event1.total * 100);
+                        ob.uploaded=progress;
+                        if(ob.uploaded==100){
+                          setTimeout(()=>{
+                            ob.processingUploadFile=true; //when server processing the file upload. 
+                          },1000);
+                        }
+                        console.log(`Upload progress: ${ob.uploaded}%`);
+                        break;
+                      case HttpEventType.Response:{
+                        console.log('Response received:', event1.body);
+                        if(event1.body==1){
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                          const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                          this.filesInUpload.splice(fi,1);
+                          if(this.filesInUpload.length==0){
+                            this.setFilesUploadingBarVisible(false);
+                          }
+                          
+                        }
+                      };break;
+                    }
+
+
                     console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                   //  this._Message = (JSON.parse(myJSON).body);
@@ -3283,12 +3324,49 @@ debugger
                     // }
                     this.notifyService.showSuccess(this._Message, 'Success');
                     if(this.selectedFile){
+
+                      this.setFilesUploadingBarVisible(true);
+                      const fid=this.selectedFile.name+(new Date().getTime());
+                      const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Project complete file attachment -'+this.projectInfo.Project_Name};
+                      this.filesInUpload.push(ob);
+
                       fd1.append('file',  this.selectedFile);
                       this.service._AzureUploadProjectComplete(fd1).subscribe((event1: HttpEvent<any>) => {
+                        switch (event1.type) {
+                          case HttpEventType.Sent:
+                            console.log('Request sent!');
+                            break;
+                          case HttpEventType.ResponseHeader:
+                            console.log('Response header received!');
+                            break;
+                          case HttpEventType.UploadProgress:
+                            const progress = Math.round(event1.loaded / event1.total * 100);
+                            ob.uploaded=progress;
+                            if(ob.uploaded==100){
+                              setTimeout(()=>{
+                                ob.processingUploadFile=true; //when server processing the file upload. 
+                              },1000);
+                            }
+                            console.log(`Upload progress: ${ob.uploaded}%`);
+                            break;
+                          case HttpEventType.Response:{
+                            console.log('Response received:', event1.body);
+                            if(event1.body==1){
+                              this.notifyService.showSuccess(ob.filename,"Uploaded successfully ");  
+                              const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                              if(fi>-1){
+                                this.filesInUpload.splice(fi,1);
+                              }
+                              if(this.filesInUpload.length==0){
+                                this.setFilesUploadingBarVisible(false);
+                              }
+                              
+                            }
+                          };break;
+                        }
                         console.log(event1,"azure data");
                         var myJSON = JSON.stringify(event1);
                       //  this._Message = (JSON.parse(myJSON).body);
-
                       });
                     }
                 }
@@ -3309,6 +3387,7 @@ debugger
           fd.append("Project_Code", this.Sub_ProjectCode);
           fd.append("Master_Code", this._MasterCode);
           fd.append("Team_Autho", this.Sub_Autho);
+          fd.append("Emp_No", this.Current_user_ID);
           fd.append("Projectblock", this.projectInfo.Project_Block);
           fd.append("Remarks", this._remarks);
           fd.append("Project_Name", this._Subtaskname);
@@ -3325,8 +3404,6 @@ debugger
           //   .subscribe(data => {
             this.service._UpdateSubtaskByProjectCodeCore(fd)
             .subscribe((event: HttpEvent<any>) => {
-
-              debugger
                if (event.type === HttpEventType.Response){
                  var myJSON = JSON.stringify(event);
 
@@ -3336,8 +3413,44 @@ debugger
 
                  if(this._Message=='Success'){
                   if ( this.selectedFile) {
+                  this.setFilesUploadingBarVisible(true);
+                  const fid=this.selectedFile.name+(new Date().getTime());
+                  const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Action complete file attachment -'+this._Subtaskname};
+                  this.filesInUpload.push(ob);
+
                   fd.append('file',  this.selectedFile);
                   this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+                    switch (event1.type) {
+                      case HttpEventType.Sent:
+                        console.log('Request sent!');
+                        break;
+                      case HttpEventType.ResponseHeader:
+                        console.log('Response header received!');
+                        break;
+                      case HttpEventType.UploadProgress:
+                        const progress = Math.round(event1.loaded / event1.total * 100);
+                        ob.uploaded=progress;
+                        if(ob.uploaded==100){
+                          setTimeout(()=>{
+                            ob.processingUploadFile=true; //when server processing the file upload. 
+                          },1000);
+                        }
+                        console.log(`Upload progress: ${ob.uploaded}%`);
+                        break;
+                      case HttpEventType.Response:{
+                        console.log('Response received:', event1.body);
+                        if(event1.body==1){
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully ");  
+                          const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                          this.filesInUpload.splice(fi,1);
+                          if(this.filesInUpload.length==0){
+                            this.setFilesUploadingBarVisible(false);
+                          }
+                          
+                        }
+                      };break;
+                    }
+
                     console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                   //  this._Message = (JSON.parse(myJSON).body);
@@ -3369,6 +3482,7 @@ debugger
       fd.append("Project_Code", this.Sub_ProjectCode);
       fd.append("Master_Code", this._MasterCode);
       fd.append("Team_Autho", this.Sub_Autho);
+      fd.append("Emp_No", this.Current_user_ID);
       fd.append("Projectblock", this.projectInfo.Project_Block);
       fd.append("Remarks", this._remarks);
       fd.append("Project_Name", this._Subtaskname);
@@ -3387,18 +3501,55 @@ debugger
             case HttpEventType.Sent:console.log('Request has been made!');break;
             case HttpEventType.ResponseHeader:console.log('Response header has been received!');break;
             case HttpEventType.UploadProgress:
-              this.progress = Math.round(event.loaded / event.total * 100);
-              console.log(this.progress, "progress");
-              if (this.progress == 100) console.log('progress completed');
+              const actnprogress = Math.round(event.loaded / event.total * 100);
+              console.log(actnprogress, "progress");
+              if (actnprogress == 100) console.log('progress completed');
               break;
             case HttpEventType.Response:{
               var myJSON = JSON.stringify(event);
               this._Message = (JSON.parse(myJSON).body).message;
               if(this._Message==='Success')
               {
-                if(this.selectedFile){
+                if(this.selectedFile){  console.log("selectedFile:",this.selectedFile);
+                 
+                  this.setFilesUploadingBarVisible(true);   // show the file uploading bar. 
+                  const fid=this.selectedFile.name+(new Date().getTime());
+                  const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Action complete file attachment -'+this._Subtaskname};
+                  this.filesInUpload.push(ob);
                   fd.append('file', this.selectedFile);
                   this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+
+                    switch (event1.type) {
+                      case HttpEventType.Sent:
+                        console.log('Request sent!');
+                        break;
+                      case HttpEventType.ResponseHeader:
+                        console.log('Response header received!');
+                        break;
+                      case HttpEventType.UploadProgress:
+                        const progress = Math.round(event1.loaded / event1.total * 100);
+                        ob.uploaded=progress;
+                        if(ob.uploaded==100){
+                          setTimeout(()=>{
+                            ob.processingUploadFile=true; //when server processing the file upload. 
+                          },1000);
+                        }
+                        console.log(`Upload progress: ${ob.uploaded}%`);
+                        break;
+                      case HttpEventType.Response:{
+                        console.log('Response received:', event1.body);
+                        if(event1.body==1){
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                          const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                          this.filesInUpload.splice(fi,1);
+                          if(this.filesInUpload.length==0){
+                            this.setFilesUploadingBarVisible(false);   // hide the uploading bar.
+                          }
+                          
+                        }
+                      };break;
+                    }
+
                     console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                   //  this._Message = (JSON.parse(myJSON).body);
@@ -3439,6 +3590,8 @@ debugger
 
 
 
+  
+
 
 
   // Action completion sidebar code end at here.
@@ -3460,23 +3613,23 @@ debugger
   disablePreviousDate = new Date();
   DisablePrevious = new Date();
   starttime: any=null;
-  timedata: any = [];
-  timedata1: any = ["08:00",
-    "08:15", "08:30", "08:45", "09:00",
-    "09:15", "09:30", "09:45", "10:00",
-    "10:15", "10:30", "10:45", "11:00",
-    "11:15", "11:30", "11:45", "12:00",
-    "12:15", "12:30", "12:45", "13:00",
-    "13:15", "13:30", "13:45", "14:00",
-    "14:15", "14:30", "14:45", "15:00",
-    "15:15", "15:30", "15:45", "16:00",
-    "16:15", "16:30", "16:45", "17:00",
-    "17:15", "17:30", "17:45", "18:00",
-    "18:15", "18:30", "18:45", "19:00",
-    "19:15", "19:30", "19:45", "20:00"];
+  // timedata: any = [];
+  // timedata1: any = ["08:00",
+  //   "08:15", "08:30", "08:45", "09:00",
+  //   "09:15", "09:30", "09:45", "10:00",
+  //   "10:15", "10:30", "10:45", "11:00",
+  //   "11:15", "11:30", "11:45", "12:00",
+  //   "12:15", "12:30", "12:45", "13:00",
+  //   "13:15", "13:30", "13:45", "14:00",
+  //   "14:15", "14:30", "14:45", "15:00",
+  //   "15:15", "15:30", "15:45", "16:00",
+  //   "16:15", "16:30", "16:45", "17:00",
+  //   "17:15", "17:30", "17:45", "18:00",
+  //   "18:15", "18:30", "18:45", "19:00",
+  //   "19:15", "19:30", "19:45", "20:00"];
   objProjectDto: ProjectDetailsDTO;
   date11: any;
-  currenthours: any;
+  // currenthours: any;
   timeList: any;
   bol: boolean = true;
   starttimearr: any = [];
@@ -3506,8 +3659,10 @@ debugger
     // get all actions
     this.getResponsibleActions();
     //
-    this.setTimelineDate(this.current_Date);
-    this.currenthours = this.date.getHours();
+
+    this.selectDateForTimeline(this.current_Date);
+    // this.setTimelineDate(this.current_Date);
+    // this.currenthours = this.date.getHours();
 
   }
   closeDarSideBar() {
@@ -4183,54 +4338,54 @@ check_allocation() {
 
 
 
-  getDarTime() {
-    this.timedata = [];
+  // getDarTime() {
+  //   this.timedata = [];
 
-    this.objProjectDto.Emp_No = this.Current_user_ID;
-    this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
-    this.date11 = moment(new Date()).format("MM/DD/YYYY");
-    this.objProjectDto.date = this.current_Date;
+  //   this.objProjectDto.Emp_No = this.Current_user_ID;
+  //   this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
+  //   this.date11 = moment(new Date()).format("MM/DD/YYYY");
+  //   this.objProjectDto.date = this.current_Date;
 
 
-    if (this.current_Date == this.date11) {
+  //   if (this.current_Date == this.date11) {
 
-      this.timedata1.forEach(element => {
-        const [shours, sminutes] = element.split(":");
-        if (shours <= this.currenthours)
-          this.timedata.push(element);
-      });
-      console.log('check this:', this.timedata);
+  //     this.timedata1.forEach(element => {
+  //       const [shours, sminutes] = element.split(":");
+  //       if (shours <= this.currenthours)
+  //         this.timedata.push(element);
+  //     });
+  //     console.log('check this:', this.timedata);
 
-    }
-    else {
-      this.timedata1.forEach(element => {
-        this.timedata.push(element);
-      });
-    }
-    console.log("timedata:", this.timedata);
-    this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
-      .subscribe(data => {
-        this.timeList = JSON.parse(data[0]['time_json']);
-        console.log(this.timeList, "time");
-        if (this.timeList.length != 0) {
-          this.bol = false;
-          this.timeList.forEach(element => {
-            this.starttimearr.push(element.starttime);
-          });
-          this.timeList.forEach(element => {
-            this.endtimearr.push(element.endtime);
-          });
-          let l = this.endtimearr.length;
-          this.lastEndtime = this.endtimearr[l - 1];
-        }
-        else if (this.timeList.length == 0) {
-          this.bol = true;
-          this.lastEndtime = 0;
-          this.starttimearr = [];
-          this.endtimearr = [];
-        }
-      });
-  }
+  //   }
+  //   else {
+  //     this.timedata1.forEach(element => {
+  //       this.timedata.push(element);
+  //     });
+  //   }
+  //   console.log("timedata:", this.timedata);
+  //   this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
+  //     .subscribe(data => {
+  //       this.timeList = JSON.parse(data[0]['time_json']);
+  //       console.log(this.timeList, "time");
+  //       if (this.timeList.length != 0) {
+  //         this.bol = false;
+  //         this.timeList.forEach(element => {
+  //           this.starttimearr.push(element.starttime);
+  //         });
+  //         this.timeList.forEach(element => {
+  //           this.endtimearr.push(element.endtime);
+  //         });
+  //         let l = this.endtimearr.length;
+  //         this.lastEndtime = this.endtimearr[l - 1];
+  //       }
+  //       else if (this.timeList.length == 0) {
+  //         this.bol = true;
+  //         this.lastEndtime = 0;
+  //         this.starttimearr = [];
+  //         this.endtimearr = [];
+  //       }
+  //     });
+  // }
 
   // orgValueChange(val) {
   //   this.current_Date = moment(val.value).format("MM/DD/YYYY");
@@ -4243,8 +4398,15 @@ check_allocation() {
   }
 
 
- submitDar(){
 
+
+
+
+
+
+
+ submitDar(){
+debugger
    const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
 
    if(
@@ -4253,17 +4415,21 @@ check_allocation() {
    this.starttime&&
    this.endtime&&
    this.dateF&&
-   (this.starttime<this.endtime)
+   (this.starttime.value<this.endtime.value)
   // &&((isPrjCoreSecondary&&this.actionCode&&this.bothActTlSubm)?(this._remarks&&(this.proState?this.selectedFile:true)):true)
    ){
     // if all mandatory fields are provided.
 
-
-    if (this.starttime != null && this.endtime != null) {
-      const [shours, sminutes] = this.starttime.split(":");
-      const [ehours, eminutes] = this.endtime.split(":");
-      var dt1 = new Date(2014, 10, 2, shours, sminutes);
-      var dt2 = new Date(2014, 10, 2, ehours, eminutes);
+ 
+    if (this.starttime&&this.endtime) {
+      const [shours, sminutes] = this.starttime.time.split(":");
+      const [ehours, eminutes] = this.endtime.time.split(":");
+      var dt1 = new Date(2014, 10, 2, +shours, +sminutes);
+      var dt2 = new Date(2014, 10, 2, +ehours, +eminutes);
+      // Adjust for crossing midnight
+      if (dt2 <= dt1) {
+            dt2.setDate(dt2.getDate() + 1); // Move dt2 to the next day
+      }
       this.minutes = this.diff_minutes(dt1, dt2) % 60;
       if (this.minutes < 10) {
         this.minutes = "0" + this.minutes
@@ -4278,8 +4444,8 @@ check_allocation() {
     this.objProjectDto.Emp_No = this.Current_user_ID;                  // setting the current user id.
     this.objProjectDto.Exec_BlockName = this.projectInfo.Project_Type;  // setting the project type.
     if (this.starttime != undefined && this.endtime != undefined && this.timecount != undefined) {
-      this.objProjectDto.StartTime = this.starttime;
-      this.objProjectDto.EndTime = this.endtime;
+      this.objProjectDto.StartTime = this.starttime.time;
+      this.objProjectDto.EndTime = this.endtime.time;
       this.objProjectDto.TimeCount = this.timecount;
     }
     this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
@@ -4288,39 +4454,37 @@ check_allocation() {
     this.objProjectDto.Emp_Comp_No = this.Comp_No;
 
 
-   // new start
-
-   if(['003','008','011'].includes(this.projectInfo.Project_Block)){
-    // std, routine or todo
-    this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
-    this.objProjectDto.Master_code = this.URL_ProjectCode;
-    this.objProjectDto.Project_Code = this.URL_ProjectCode;
-   }
-   else{
-      // core, secondary
-
-
-     if(this.Current_user_ID==this.projectInfo.OwnerEmpNo){
-       // user is project owner.
+    if(['003','008','011'].includes(this.projectInfo.Project_Block)){
+      // std, routine or todo
       this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
-     }
-     else if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
-      // user is project responsible.
-      this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
-      this.objProjectDto.Master_code = this.URL_ProjectCode;
-      this.objProjectDto.Project_Code=this.showaction?this.actionCode:this.URL_ProjectCode; // If resp have action then provide that action code else provide prj code.
-     }
-     else{
-           // user is authority/support.
-           this.objProjectDto.Master_code = this.URL_ProjectCode;
-           this.objProjectDto.Project_Code = this.actionCode;
-     }
+    }
+    else{
+        // core, secondary
 
-   }
 
-   // new end
+      if(this.Current_user_ID==this.projectInfo.OwnerEmpNo){
+        // user is project owner.
+        this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+        this.objProjectDto.Master_code = this.URL_ProjectCode;
+        this.objProjectDto.Project_Code = this.URL_ProjectCode;
+      }
+      else if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
+        // user is project responsible.
+        this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+        this.objProjectDto.Master_code = this.URL_ProjectCode;
+        this.objProjectDto.Project_Code=this.showaction?this.actionCode:this.URL_ProjectCode; // If resp have action then provide that action code else provide prj code.
+      }
+      else{
+            // user is authority/support.
+            this.objProjectDto.Master_code = this.URL_ProjectCode;
+            this.objProjectDto.Project_Code = this.actionCode;
+      }
+
+    }
+
+  
 
 
     // if (this.projectInfo.Project_Type == 'Standard Tasks' || this.projectInfo.Project_Type == 'Routine Tasks' || this.projectInfo.Project_Type == 'To do List') {
@@ -4348,11 +4512,11 @@ check_allocation() {
       .subscribe(data => {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "Success");
-
+        // this.selectDateForTimeline(this.timeline_of=='today'?this.todayDate:this.disablePreviousDate);
 
         if(this.currentActionView!==undefined)
         this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);   // get action activities update.
-       else
+        else
         this.GetActivityDetails();     // get project activities update.
 
 
@@ -4378,7 +4542,7 @@ check_allocation() {
         }
       });
       this.dar_details();
-      this.getDarTime();
+      // this.getDarTime();
       this.actionCode=null
       this.workdes = "";
       this.starttime = null;
@@ -4394,9 +4558,9 @@ check_allocation() {
     {
       this.notProvided=true;
     // if start time, end time or date if not provided.
-    if(!(this.starttime&&this.endtime&&this.dateF)){
-      setTimeout(()=>document.getElementById("dropdown-timeline-menu").classList.add("show"),0);
-    }
+    // if(!(this.starttime&&this.endtime&&this.dateF)){
+    //   setTimeout(()=>document.getElementById("dropdown-timeline-menu").classList.add("show"),0);
+    // }
     //
     }
  }
@@ -4828,10 +4992,48 @@ check_allocation() {
                 }
 
                 this.notifyService.showSuccess(this._Message, 'Success');
-                debugger
+         
                 if(this.selectedFile){
+
+                  this.setFilesUploadingBarVisible(true);
+                  const fid=this.selectedFile.name+(new Date().getTime());
+                  const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Project complete file attachment -'+this.projectInfo.Project_Name};
+                  this.filesInUpload.push(ob);
+
                   fd.append('file',  this.selectedFile);
                   this.service._AzureUploadProjectComplete(fd).subscribe((event1: HttpEvent<any>) => {
+
+                    switch (event1.type) {
+                      case HttpEventType.Sent:
+                        console.log('Request sent!');
+                        break;
+                      case HttpEventType.ResponseHeader:
+                        console.log('Response header received!');
+                        break;
+                      case HttpEventType.UploadProgress:
+                        const progress = Math.round(event1.loaded / event1.total * 100);
+                        ob.uploaded=progress;
+                        if(ob.uploaded==100){
+                          setTimeout(()=>{
+                            ob.processingUploadFile=true; //when server processing the file upload. 
+                          },1000);
+                        }
+                        console.log(`Upload progress: ${ob.uploaded}%`);
+                        break;
+                      case HttpEventType.Response:{
+                        console.log('Response received:', event1.body);
+                        if(event1.body==1){
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                          const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                          this.filesInUpload.splice(fi,1);
+                          if(this.filesInUpload.length==0){
+                            this.setFilesUploadingBarVisible(false);
+                          }
+                          
+                        }
+                      };break;
+                    }
+
                     console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                   //  this._Message = (JSON.parse(myJSON).body);
@@ -5003,12 +5205,23 @@ $('#acts-attachments-tab-btn').removeClass('active');
         else {
           this._month = Month;
         }
+        // Compare the date with 21-12-2024
+      const comparisonDate = new Date(2024, 11, 21); // Months are 0-indexed in JavaScript
+      if (repDate >= comparisonDate) {
+        // Logic for dates greater than or equal to 21-12-2024
+        if (Day < 10) {
+          this._day = "0" + Day;
+        } else {
+          this._day = Day;
+        }
+      } else {
+        // Logic for dates less than 21-12-2024
         if (Day < 10) {
           this._day = Day;
-        }
-        else {
+        } else {
           this._day = Day;
         }
+      }
         var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
 
         // if (this.Authority_EmpNo == this.Responsible_EmpNo) {
@@ -5096,13 +5309,14 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
 
-
+  fetchingActionApproval:boolean=false;     
   GetApproval(code) {
 
+    this.fetchingActionApproval=true;   // getting approval on the action if present start.
     this.approvalObj = new ApprovalDTO();
     this.approvalObj.Project_Code = code;
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
-
+      this.fetchingActionApproval=false;   // fetching approval on the action if present end.
       this.requestDetails = data as [];
       console.log(data,'jjj----------->')
       if (this.requestDetails.length > 0) {
@@ -7939,8 +8153,46 @@ holdcontinue(Pcode:any){
             this.notifyService.showSuccess(this._Message, 'Success');
         }
         if (this.selectedFile) {
+
+          this.setFilesUploadingBarVisible(true);
+          const fid=this.selectedFile.name+(new Date().getTime());
+          const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Standard task complete file attachment -'+this.projectInfo.Project_Name};
+          this.filesInUpload.push(ob);
+
           fd.append('file',  this.selectedFile);
           this.service._AzureUploadStandardTaskComplete(fd).subscribe((event1: HttpEvent<any>) => {
+
+            switch (event1.type) {
+              case HttpEventType.Sent:
+                console.log('Request sent!');
+                break;
+              case HttpEventType.ResponseHeader:
+                console.log('Response header received!');
+                break;
+              case HttpEventType.UploadProgress:
+                const progress = Math.round(event1.loaded / event1.total * 100);
+                ob.uploaded=progress;
+                if(ob.uploaded==100){
+                  setTimeout(()=>{
+                    ob.processingUploadFile=true; //when server processing the file upload. 
+                  },1000);
+                }
+                console.log(`Upload progress: ${ob.uploaded}%`);
+                break;
+              case HttpEventType.Response:{
+                console.log('Response received:', event1.body);
+                if(event1.body==1){
+                  this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                  const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                  this.filesInUpload.splice(fi,1);
+                  if(this.filesInUpload.length==0){
+                    this.setFilesUploadingBarVisible(false);
+                  }
+                  
+                }
+              };break;
+            }
+
             console.log(event1,"azure data");
             var myJSON = JSON.stringify(event1);
           //  this._Message = (JSON.parse(myJSON).body);
@@ -11670,119 +11922,59 @@ btn_timeline_table_accordion(){
 
 
 
-tmReportArr:any[]=[];
-tmReportTotalDuration:{hours:string,minutes:string};
-// tmReportStatus:any;
-tmSubmDate:any;
-tmReportLoading:boolean=false;
-getTimelineReportByDate(dateVal:'today'|'yesterday') {
-  if(dateVal){
-    this.tmReportArr=[];
-    // this.tmReportStatus=null;
-    this.tmReportTotalDuration=null;
-    this.tmSubmDate=null;
-    // erase prev data.
-
-    this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
-    this.ObjSubTaskDTO.PageNumber = 1;
-    this.ObjSubTaskDTO.PageSize = 2;
-    this.ObjSubTaskDTO.sort = dateVal
-    this.ObjSubTaskDTO.Start_Date = null;
-    this.ObjSubTaskDTO.End_Date = null;
-    this.tmReportLoading=true;
-    this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-      (data => {
-        this.tmReportLoading=false;
-        console.log(data);
-        if(data&&data[0].DAR_Details_Json){
-             const dar_json=JSON.parse(data[0].DAR_Details_Json);
-             if(dar_json&&dar_json[0]){
-                this.tmReportArr=dar_json[0].Dardata;     console.log('tmreportarr:',this.tmReportArr);
-                this.tmReportArr.forEach(ob=>{
-                  const k=/00:\d\d/.test(ob.Duration);
-                   ob.duration=k?(ob.Duration.split(':')[1]+' mins'):(ob.Duration+' hrs');
-                   ob.starttime=this.formatTimes(ob.starttime);
-                   ob.endtime=this.formatTimes(ob.endtime);
-
-                });  // adding 'duration' property to show timing in more easy way on the view.
-
-                const [hrs,mins]=dar_json[0].TotalDuration.split(':');
-                this.tmReportTotalDuration={hours:hrs,minutes:mins};
-                this.tmSubmDate=dar_json[0].SubmissionDate;
-
-                // if(this.submission_json){
-
-                //     const d1=new Date(this.tmSubmDate);
-                //     d1.setHours(0,0,0,0);
-                //     const tm_submitted=this.submission_json.find(item=>{
-                //         const d2=new Date(item.SubmissionDate);
-                //         return d1.getTime()==d2.getTime();
-                //     });
-
-
-                //     if(tm_submitted)
-                //       this.tmReportStatus=tm_submitted.Status;
-                //     else{
-                //       this.tmReportStatus='Not Submitted';
-                //     }
-
-                // }
-            }
-        }
-      });
-
-  }
-}
-
-
-timeline_of:'today'|'yesterday';
-noTimeSpaceAvailable:boolean=false;
-setTimelineDate(val)
-{
-     this.current_Date = moment(val).format("MM/DD/YYYY");
-     this.dateF=moment(val).toDate();
-     this.starttime = null;
-     this.endtime = null;
-     this.noTimeSpaceAvailable=false;
-     this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
-     .subscribe(data => {
-      const _timeList=JSON.parse(data[0]['time_json']);
-      let _lastEndtime;
-      if (_timeList.length != 0) {
-         // when some timeline submit done on the selected date.
-         const _endtimearr=_timeList.map(ob=>ob.endtime);
-         _lastEndtime=_endtimearr[_endtimearr.length-1];
-         const i=this.timedata1.indexOf(_lastEndtime);
-         if(i<this.timedata1.length-1){
-             this.starttime=_lastEndtime;
-             this.endtime=this.timedata1[i+1];
-         }
-         else{
-            this.starttime=null;
-            this.endtime=null;
-            this.noTimeSpaceAvailable=true;
-         }
-
-      }
-      else{
-           // when no timeline submit done on the selected date.
-           this.starttime=this.timedata1[0];
-           this.endtime=this.timedata1[1];
-      }
-     });
-
-     const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
-     const yesterdaystr=moment(this.disablePreviousDate).format("MM/DD/YYYY");
-     this.timeline_of=this.current_Date==todaystr?'today':this.current_Date==yesterdaystr?'yesterday':null;
-     this.getTimelineReportByDate(this.timeline_of);
-}
 
 
 
-onTimelineDateInput(val){
+
+// setTimelineDate(val)
+// {
+//      this.current_Date = moment(val).format("MM/DD/YYYY");
+//      this.dateF=moment(val).toDate();
+//      this.starttime = null;
+//      this.endtime = null;
+//      this.noTimeSpaceAvailable=false;
+//      this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
+//      .subscribe(data => {
+//       const _timeList=JSON.parse(data[0]['time_json']);
+//       let _lastEndtime;
+//       if (_timeList.length != 0) {
+//          // when some timeline submit done on the selected date.
+//          const _endtimearr=_timeList.map(ob=>ob.endtime);
+//          _lastEndtime=_endtimearr[_endtimearr.length-1];
+//          const i=this.timedata1.indexOf(_lastEndtime);
+//          if(i<this.timedata1.length-1){
+//              this.starttime=_lastEndtime;
+//              this.endtime=this.timedata1[i+1];
+//          }
+//          else{
+//             this.starttime=null;
+//             this.endtime=null;
+//             this.noTimeSpaceAvailable=true;
+//          }
+
+//       }
+//       else{
+//            // when no timeline submit done on the selected date.
+//            this.starttime=this.timedata1[0];
+//            this.endtime=this.timedata1[1];
+//       }
+//      });
+
+//      const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
+//      const yesterdaystr=moment(this.disablePreviousDate).format("MM/DD/YYYY");
+//      this.timeline_of=this.current_Date==todaystr?'today':this.current_Date==yesterdaystr?'yesterday':null;
+//      this.getTimelineReportByDate(this.timeline_of);
+// }
+
+
+
+
+
+onTimelineDateInput(val){ debugger
    if(val){  // user has input a value.
     const tm4Date=(val.toDate()<this.disablePreviousDate||val.toDate()>this.todayDate)?this.current_Date:val.toDate();
-    this.setTimelineDate(tm4Date);
+    this.selectDateForTimeline(tm4Date);
+    // this.setTimelineDate(tm4Date);
    }
    else{ // user has input null or undefined or val is falsy.
        this.current_Date=null;
@@ -11799,6 +11991,246 @@ validateURL(value: string): void {
 
 }
 
+
+
+// full time availability in timeline start.
+
+timeArr: any = [
+  "00:00", "00:15", "00:30", "00:45",
+  "01:00", "01:15", "01:30", "01:45",
+  "02:00", "02:15", "02:30", "02:45",
+  "03:00", "03:15", "03:30", "03:45",
+  "04:00", "04:15", "04:30", "04:45",
+  "05:00", "05:15", "05:30", "05:45",
+  "06:00", "06:15", "06:30", "06:45",
+  "07:00", "07:15", "07:30", "07:45",
+  "08:00", "08:15", "08:30", "08:45",
+  "09:00", "09:15", "09:30", "09:45",
+  "10:00", "10:15", "10:30", "10:45",
+  "11:00", "11:15", "11:30", "11:45",
+  "12:00", "12:15", "12:30", "12:45",
+  "13:00", "13:15", "13:30", "13:45",
+  "14:00", "14:15", "14:30", "14:45",
+  "15:00", "15:15", "15:30", "15:45",
+  "16:00", "16:15", "16:30", "16:45",
+  "17:00", "17:15", "17:30", "17:45",
+  "18:00", "18:15", "18:30", "18:45",
+  "19:00", "19:15", "19:30", "19:45",
+  "20:00", "20:15", "20:30", "20:45",
+  "21:00", "21:15", "21:30", "21:45",
+  "22:00", "22:15", "22:30", "22:45",
+  "23:00", "23:15", "23:30", "23:45"
+];
+
+tmCapacity=93;  // 23 hrs per day limit.   
+timedata3:any[]=[]; 
+timeline_of:'today'|'yesterday';
+noTimeSpaceAvailable:boolean=false;
+
+selectDateForTimeline(inputDate){    debugger   
+  this.current_Date = moment(inputDate).format("MM/DD/YYYY");
+  this.dateF = moment(inputDate).toDate();
+  const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
+  const yesterdaystr=moment(this.disablePreviousDate).format("MM/DD/YYYY");
+  if(this.current_Date==todaystr)
+  this.timeline_of='today';
+  else if(this.current_Date==yesterdaystr)
+  this.timeline_of='yesterday';   
+
+  this.timedata3=this.getTimeStamps(moment(inputDate).format("YYYY-MM-DD"),this.timeArr);   // initializing with default values.
+  this.getTimelineReportByDate(this.timeline_of); 
+}
+
+
+
+
+tmReportArr:any[]=[];
+tmReportTotalDuration:{hours:string,minutes:string}|null;
+// tmReportStatus:any;
+// tmSubmDate:any;
+tmReportLoading:boolean=false;
+submittedTimelines:any[]=[];
+getTimelineReportByDate(dateVal:'today'|'yesterday') {
+
+  if(dateVal){
+ 
+    this.tmReportArr=[];
+    // this.tmReportStatus=null;
+    this.tmReportTotalDuration=null;
+    // this.tmSubmDate=null;
+    this.submittedTimelines=[];
+    this.lastEndtime = 0;
+    this.bol = true;
+    this.noTimeSpaceAvailable=false;
+    this.starttime=null;
+    this.endtime=null;
+   // erase prev data.
+
+
+    this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+    this.ObjSubTaskDTO.PageNumber = 1;
+    this.ObjSubTaskDTO.PageSize = 2;
+    const _dateob=dateVal=='today'?this.todayDate:this.disablePreviousDate;
+    const _datestr=moment(_dateob).format('YYYY-MM-DD');
+    this.ObjSubTaskDTO.Start_Date = _datestr;
+    this.ObjSubTaskDTO.End_Date = _datestr;
+    this.ObjSubTaskDTO.sort = 'custom';
+    this.tmReportLoading=true;
+    this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+      (data => { 
+        this.tmReportLoading=false;
+        console.log(data);
+        if(data&&data[0].DAR_Details_Json){
+             const dar_json=JSON.parse(data[0].DAR_Details_Json);
+             if(dar_json&&dar_json[0]){
+
+              // all timelines submitted on selected date.     
+              this.tmReportArr=dar_json[0].Dardata;    
+              this.submittedTimelines=this.tmReportArr.map((obj)=>({ starttime:obj.starttime, endtime:obj.endtime }));
+              this.submittedTimelines.reverse();
+              this.bol = false;
+
+              // calculate last time of timeline submission on selected date.
+              const _lastendtm=this.submittedTimelines[this.submittedTimelines.length - 1].endtime;
+              const from=this.timeArr.indexOf(this.submittedTimelines[0].starttime);
+              const to=from+this.tmCapacity;
+              let choosed_date:any=new Date(_datestr);
+              let next_date:any=new Date(choosed_date);  next_date.setDate(next_date.getDate()+1);
+              choosed_date=moment(choosed_date).format("YYYY-MM-DD");
+              next_date=moment(next_date).format("YYYY-MM-DD");
+              const list=[...this.getTimeStamps(choosed_date,this.timeArr),...this.getTimeStamps(next_date,this.timeArr)].slice(from,to);
+              this.lastEndtime=list.find((ob)=>ob.time==_lastendtm);  
+            
+
+              // Check whether timespace available or not. and setting default values to starttime and endtime.
+              this.noTimeSpaceAvailable=(this.lastEndtime.time==list[list.length-1].time);
+              if(this.noTimeSpaceAvailable==false){
+                const li=list.findIndex((obj)=>obj.time==this.lastEndtime.time);
+                this.starttime=list[li];   this.endtime=list[li+1];   
+              }
+            
+              // calculate total timeline entered.
+              const [hrs,mins]=dar_json[0].TotalDuration.split(':');
+              this.tmReportTotalDuration={hours:hrs,minutes:mins};
+            
+
+
+            // adding 'duration' property to show timing in more easy way on the view.
+              this.tmReportArr.forEach(ob=>{
+                const k=/00:\d\d/.test(ob.Duration);
+                ob.duration=k?(ob.Duration.split(':')[1]+' mins'):(ob.Duration+' hrs');
+                ob.starttime=this.formatTimes(ob.starttime);
+                ob.endtime=this.formatTimes(ob.endtime);
+              }); 
+
+            }
+        }
+      });
+  }
+}
+
+
+getStartTiming1(){   
+  let list:any=[]; 
+
+  let from;
+  let to;
+  // modify start time list.  if: timeline found on selected date.
+  if(this.bol){
+      const choosed_date = moment(this.current_Date,'MM/DD/YYYY').format("YYYY-MM-DD");
+      list=this.getTimeStamps(choosed_date,this.timeArr);
+  }
+  else{
+    from=this.timeArr.indexOf(this.submittedTimelines[0].starttime);
+    to=from+this.tmCapacity;
+    let choosed_date:any=moment(this.current_Date,'MM/DD/YYYY').toDate();
+    let next_date:any=new Date(choosed_date);  next_date.setDate(next_date.getDate()+1);
+    choosed_date=moment(choosed_date).format("YYYY-MM-DD");
+    next_date=moment(next_date).format("YYYY-MM-DD");
+    list=[...this.getTimeStamps(choosed_date,this.timeArr),...this.getTimeStamps(next_date,this.timeArr)].slice(from,to);
+  }
+
+  // show time values till current time only. if: selected date==current date.
+  const c_date=new Date();   // fetches system current date and time. 
+  this.date11 = moment(c_date).format("MM/DD/YYYY");   
+  if (this.current_Date == this.date11||to>this.timeArr.length) {
+       const k=list.findIndex((tm)=>{  
+          const ct=c_date.getTime(); 
+          const r=tm.value>ct;
+          return r;
+       });
+
+       if(k>-1)
+       list=list.slice(0,k);
+  }
+  
+
+  this.timedata3=list;
+
+}
+
+
+getEndTiming1(){
+  let list:any=[];
+
+  // based on start time decide endtime.  if: no timeline found on selected date.
+  let from=0;
+  if(this.starttime){
+  from=this.timeArr.indexOf(this.bol?this.starttime.time:this.submittedTimelines[0].starttime);
+  }
+  const to=from+this.tmCapacity;
+  let choosed_date:any=moment(this.current_Date,'MM/DD/YYYY').toDate();
+  let next_date:any=new Date(choosed_date);  next_date.setDate(next_date.getDate()+1);
+  choosed_date=moment(choosed_date).format("YYYY-MM-DD");
+  next_date=moment(next_date).format("YYYY-MM-DD");
+  list=[...this.getTimeStamps(choosed_date,this.timeArr),...this.getTimeStamps(next_date,this.timeArr)].slice(from+1,to);
+
+ 
+     // show time values till current time only. if: selected date==current date.
+    const c_date=new Date();   // fetches system current date and time.
+    this.date11 = moment(c_date).format("MM/DD/YYYY");
+    if (this.current_Date == this.date11||to>this.timeArr.length) {
+        const k=list.findIndex((tm)=>{
+            const r=tm.value>c_date.getTime();
+            return r;
+        });
+
+        if(k>-1)
+        list=list.slice(0,k);
+    }
+   
+  this.timedata3=list;
+}
+
+
+
+getTimeStamps(dateVal:string,timeVals:string[]):{time:string,value:number}[]{
+  const _date=new Date(dateVal);
+  const _timestamps=timeVals.map((_time)=>{
+     const [shours,sminutes]=_time.split(':');
+     _date.setHours(+shours,+sminutes,0,0);
+     return {
+           time:_time,
+           value:_date.getTime()
+           };
+    });
+  return _timestamps;  
+}
+
+
+ngmodelObjCompare(obj1,obj2):boolean{
+  return obj1 && obj2 && obj1.time === obj2.time;
+}  // it is used in starttime and endtime ngmodel comparision.  since we are storing objects as ngmodel value.
+
+getTimeDiff(time1:number,time2:number):string{
+  if(time1&&time2){
+       const dfInMins=((time2-time1)/60000);
+       return dfInMins<60?`${dfInMins} mins`:`${(dfInMins/60).toFixed(1)} hrs`;
+  }
+  return '';
+}
+
+// full time availability in timeline end.
 on_Update_and_Released(val) {
   this.isPrjNameValid=this.isValidString(this.ProjectName,3);
   this.isPrjDesValid=this.isValidString(this.ProjectDescription,5);
@@ -11961,9 +12393,36 @@ on_Update_and_Released(val) {
 
 
 
+// file uploading progress bar start.
+filesInUpload:{id:string, filename:string, uploaded:number, processingUploadFile:boolean, message:string }[]=[];   // info of files are currently in uploading process.
+isFilesUploadingBarVisible:boolean=false;  // whether files uploading bar is visible or not.
+setFilesUploadingBarVisible(_visible:boolean){
+     this.isFilesUploadingBarVisible=_visible;
+     if(this.isFilesUploadingBarVisible){
+      document.getElementById("file-upload-modal-backdrop").style.display = "block";
+      document.getElementsByClassName('file-upload-progress')[0].classList.remove('d-none');
+     }
+     else{
+      document.getElementById("file-upload-modal-backdrop").style.display = "none";
+      document.getElementsByClassName('file-upload-progress')[0].classList.add('d-none');
+     }
+}
 
 
+getOverallFilesUploadProgress():number{
+  if(this.filesInUpload&&this.filesInUpload.length>0){
+    const filesProgressSum=this.filesInUpload.reduce((sum,item)=>sum+item.uploaded,0);
+    const totalfiles=this.filesInUpload.length;
+    const totalProgressVal=Math.round(filesProgressSum/totalfiles);
+    return totalProgressVal;
+  }
+  return 0;
+} 
 
+
+showFilesUploadingBar:boolean=false;  // whether files uploading bar is visible or not.
+
+// file uploading progress bar end.
 
 }
 
