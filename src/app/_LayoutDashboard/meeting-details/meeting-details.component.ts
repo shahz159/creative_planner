@@ -216,6 +216,8 @@ export class MeetingDetailsComponent implements OnInit {
     this.GetPreviousdate_meetingdata();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
+
+    this.disablePreviousTodayDate.setDate(this.disablePreviousTodayDate.getDate() + 1);
     //   this.signalRService.startConnection();
     //   this.signalRService.addBroadcastMessageListener((name, message) => {
     //   console.log(`Received: ${name}: ${message}`);
@@ -2549,8 +2551,8 @@ debugger
     // if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true || event.type === 'paste' || event.keyCode === 8) {
     //   debugger
       // Replace newline characters with <br> tags
-      if(event.type === 'paste'){
-
+   
+      if(event.type === 'paste'){     
         this.savePastedText(event);
         // const pastedText = event.clipboardData?.getData('text/plain') || '';
         // this.Notes_Type= this.Notes_Type + pastedText ;
@@ -2612,7 +2614,7 @@ debugger
 
     this.CalenderService.InsertAgendameeting_notes(this._calenderDto).subscribe
       (data => {
-        console.log(data, 'Private notes');
+       
         this.GetNotedata();
         // this.GetAttendeesnotes();
         // this.GetMeetingnotes_data();
@@ -4154,6 +4156,7 @@ onFileChange(event) {
   Attachment12_ary: any = [];
   _labelName: string;
   disablePreviousDate = new Date();
+  disablePreviousTodayDate = new Date();
   _StartDate: any;
   Startts: any;
   StartTimearr: any = [];

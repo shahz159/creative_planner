@@ -10380,7 +10380,7 @@
                             </div>
                                 <div class="date-menu-calender">
                                     <mat-card class="demo-inline-calendar-card">
-                                        <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
+                                        <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousTodayDate"></mat-calendar>
                                         </mat-card>
                                 </div>
                                 <div class="date-menu-time">
