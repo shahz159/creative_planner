@@ -4007,12 +4007,15 @@ OnSubmitReSchedule(type: number) {
 
 ////test start ///////////////////////////////////////////
 
-if(this.editTask && this.selectedrecuvalue =='2'){
+if((this.editTask || this.create ) && this.selectedrecuvalue =='2'){
   debugger
 // uncheck prev date.
+if(this._Oldstart_date){
   let d=new Date(this._Oldstart_date);
   const index=d.getDay();
   this.dayArr[index].checked=false;
+}
+
 //uncheck prev date.
 
 this.dayArr.forEach(item => item.checked = false);
@@ -4032,12 +4035,15 @@ console.log(this.dayArr,'sdcsadcasdcssad')
     }
  });
 // update new
-} else if(this.editTask && this.selectedrecuvalue == "3"){
+} else if((this.editTask || this.create ) && this.selectedrecuvalue == "3"){
 
     // uncheck prev date.
-    let d=new Date(this._Oldstart_date);
-    const index=d.getDate();
-    this.MonthArr[index].checked=false;
+    if(this._Oldstart_date){
+      let d=new Date(this._Oldstart_date);
+      const index=d.getDate();
+      this.MonthArr[index].checked=false;
+    }
+
     // uncheck prev date.
 
     this.MonthArr.forEach(item => item.checked = false);
