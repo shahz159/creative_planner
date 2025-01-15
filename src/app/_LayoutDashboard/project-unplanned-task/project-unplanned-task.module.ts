@@ -26,13 +26,19 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCardModule } from '@angular/material/card';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MY_FORMATS } from './project-unplanned-task.component';
+
 
 
 //import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-';
 @NgModule({
   declarations: [
     ProjectUnplannedTaskComponent,
-    TaskDateAgoPipe,
+    TaskDateAgoPipe
     //MatMomentDateModule
   ],
   imports: [
@@ -40,10 +46,12 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     FormsModule,
     ProjectUnplannedTaskRoutingModule,
     MatMenuModule,
+    GooglePlaceModule,
     MatIconModule,
     MatExpansionModule,
     MatButtonModule,
     MatDatepickerModule,
+    AngularEditorModule,
     MatTooltipModule,
     MatSelectModule,
     NgMultiSelectDropDownModule,
@@ -51,6 +59,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatCheckboxModule,
     NgSelectModule,
     MatChipsModule,
+    MatCardModule,
     MatAutocompleteModule
   ],
   exports:[
@@ -58,7 +67,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
   ],
     providers: [
       NotificationService, ToDoProjectsComponent, MoreDetailsComponent, DatePipe,
-      MeetingDetailsComponent, ProjectsSummaryComponent,MeetingReportComponent, DetailsComponent,CreateProjectComponent
+      MeetingDetailsComponent, ProjectsSummaryComponent,MeetingReportComponent, DetailsComponent,CreateProjectComponent,DatePipe,{provide:MAT_DATE_FORMATS,useValue:MY_FORMATS}
   ]
 })
 export class ProjectUnplannedTaskModule { }

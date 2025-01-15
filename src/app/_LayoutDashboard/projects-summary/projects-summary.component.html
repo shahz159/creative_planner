@@ -102,12 +102,12 @@
                         </div> -->
 
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters();this.edited=false" [disabled]="CurrentPageNo==1">
+                            (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters();this.edited=false;clearAllCheckboxes()" [disabled]="CurrentPageNo==1">
                             <i class="fas fa-angle-left mr-0"></i>
                         </button>
                         <!-- [ngClass]="_CurrentpageRecords<30 ? 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1 not-allowed' : 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1'" -->
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters();this.edited=false"
+                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters();this.edited=false;clearAllCheckboxes()"
                             [disabled]="_CurrentpageRecords<30||(_CurrentpageRecords*CurrentPageNo)>_totalProjectsCount">
                             <i class="fas fa-angle-right mr-0"></i></button>
                         <div class="mr-1">
@@ -995,8 +995,8 @@
                                 </div> -->
                               </div>
 
-
-                              <!-- <div  style="margin-left:8px" class="btn-group mr-2" role="group">
+<ng-container *ngIf="isapprovlFound">
+                              <div  style="margin-left:8px" class="btn-group mr-2" role="group">
                                 <button type="button" class="btn btn-outline-success btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                   <span class="fs-8" style="font-weight:500">Accept</span>
                                 </button>
@@ -1010,12 +1010,12 @@
                                       <svg style="fill:rgb(63 67 70);" width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.093,1.293l-11.2,11.2a.99.99,0,0,0-.242.391l-1.6,4.8A1,1,0,0,0,5,19a1.014,1.014,0,0,0,.316-.051l4.8-1.6a1.006,1.006,0,0,0,.391-.242l11.2-11.2a1,1,0,0,0,0-1.414l-3.2-3.2A1,1,0,0,0,17.093,1.293ZM9.26,15.526l-2.679.893.893-2.679L17.8,3.414,19.586,5.2ZM3,21H20a1,1,0,0,1,0,2H3a1,1,0,0,1,0-2Z"></path></g></svg>
                                     </a>
                                 </div>
-                            </div> -->
+                            </div>
 
-                            <!-- <button   (click)="rejectpros()" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
+                            <button   (click)="rejectpros()" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
                               <span class="fs-8" style="font-weight:500">Reject</span>
-                            </button> -->
-
+                            </button>
+                          </ng-container>
 
 
                                 <div class="row mt-2">
