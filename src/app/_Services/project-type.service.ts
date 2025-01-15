@@ -1163,4 +1163,13 @@ export class ProjectTypeService {
   }
 
 
+  NewUpdateTimelineActivity(empno:string,recordId:number,newworkdes:string,operationType:1|2){  debugger
+     this.ObjDto.Emp_No=empno;
+     this.ObjDto.id=recordId;
+     this.ObjDto.flagid=operationType;  
+     this.ObjDto.achievement=newworkdes;
+     return this.http.post(this.rootUrl+'TestAPI/NewUpdateTimelineActivity',this.ObjDto);
+  }
+
+
 }

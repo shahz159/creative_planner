@@ -10105,3 +10105,66 @@ span.time-value {
 .cursor-pointer {
   cursor: pointer;
 }
+
+
+
+
+/* file uploading loader */
+
+.file-upload-progress {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-upload-progress .progress {
+  width: 30%;
+  height: 30px;
+  border-radius: 16px;
+  background-color: #347bb1;
+  position: relative;
+}
+
+.file-upload-progress .progress-bar {
+  background-color: #1164a3;
+}
+
+.file-upload-progress .progress-bar-striped {
+  background-size: 3rem 3rem;
+}
+
+.file-upload-progress .progress-bar-control {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  color: #fff;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 2rem;
+  height: 30px;
+  line-height: 2;
+}
+.file-upload-progress .progress-bar-label {
+  flex: 1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+
+
+
+/*file uploading loader*/

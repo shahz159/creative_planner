@@ -572,6 +572,8 @@ export class DashboardComponent implements OnInit {
     this.Getdraft_datalistmeeting();
     this.GetPending_Request();
     this.getMeetingApprovals();
+
+
     // this.GetDelay_Actions();
     //Setting recurance max date
     //start
@@ -2441,7 +2443,7 @@ isValidURL = true;
       && (this.Description_Type?(this.characterCount<=500):true)
     ) {
       this.notProvided = false;
-
+debugger
       // update code below
 
       this._calenderDto.flagid = this._PopupConfirmedValue;
@@ -2465,7 +2467,6 @@ isValidURL = true;
       // alert(end);
       const format2 = "YYYY-MM-DD";
       const d1 = new Date(moment(start).format(format2));
-debugger
       const d2 = new Date(moment(end).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = [];
@@ -3412,8 +3413,26 @@ debugger
 
 
 ////test start ///////////////////////////////////////////
-
+debugger
 if(this.editTask && this.selectedrecuvalue =='2'){
+
+// new test
+  this.dayArr.forEach(element => element.checked = false);
+
+  let Recc = [];  
+  var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
+  Recc = ret1.split(",");
+
+  for (var i = 0; i < Recc.length; i++) {
+        this.dayArr.forEach(element => {
+          if (element.value == Recc[i]) {
+                element.checked = true;
+          }
+      });
+   }
+
+// new test
+
 
 // uncheck prev date.
   let d=new Date(this._Oldstart_date);

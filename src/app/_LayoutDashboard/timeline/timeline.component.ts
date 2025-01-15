@@ -72,6 +72,7 @@ export class TimelineComponent implements OnInit {
   Type:string;
   type1:string='My Timeline';
   type2:string='RACIS Timeline';
+  type3:string='DAR Inbox';
   CurrentPageNo: number = 1;
   _CurrentpageRecords: number;
   darArray: any = [];
@@ -280,7 +281,7 @@ export class TimelineComponent implements OnInit {
     this.ObjSubTaskDTO.PageNumber = 1;
     this.ObjSubTaskDTO.PageSize = 30;
     // this.ObjSubTaskDTO.selected_emp = 0
-    this.ObjSubTaskDTO.sort = null
+    this.ObjSubTaskDTO.sort = null;
     this.darArrayLoading=true;
       this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
       (data=>{
@@ -765,7 +766,7 @@ submitDar() {
           });
       }
       // after timeline submission success then complete the action also if needed.  end
-      this.timelineLog(this.Type);   // rebind page timeline reports list.
+      this.timelineLog(this.type1);   // rebind page timeline reports list.
       this.clear();   // clear all fields. project_code, master_code, ....
       this.submittingDar=false;       // dar submitting process end.
       this.selectDateForTimeline(this.timeline_of=='today'?this.todayDate:this.disablePreviousDate);
@@ -961,7 +962,7 @@ onTLSubmitBtnClick(){
        if(
            (lunchPersonalCorporate?true:this.master_code)&&
            (lunchPersonalCorporate?true:(this.showAction?this.project_code:true))&&
-           this.workdes&&
+           (this.workdes&&this.workdes.trim())&&
            this.starttime&&
            this.endtime&&
            this.dateF.value &&
@@ -1059,30 +1060,30 @@ previous_filter() {
 
     edited:boolean = false
 
-    getTimelineOfEmployee(empno:string,pageNo:number=1){
+    // getTimelineOfEmployee(empno:string,pageNo:number=1){
 
-      this.showtimeline=true;
-      this.ObjSubTaskDTO.Emp_No = empno;
-      this.ObjSubTaskDTO.PageNumber = pageNo;
-      this.ObjSubTaskDTO.PageSize = 30;
-        this.darArrayLoading=true;
-        this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-        (data=>{
-          this.darArrayLoading=false;
-          this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
-          console.log(this.timelineList,"timelinedata")
-          this.timelineDuration=(data[0]['TotalTime']);
-          this.darArray=this.timelineList;  console.log('dar arry list:',this.darArray);
-          this.userFound = true
-          this.edited = true
-          this._CurrentpageRecords=this.timelineList.length;
-          if(this.timelineList.length == 0){
-            this.showtimeline=false;
-            this.timelineDuration=0;
-          }
-        });
-        // this.hideloadmore()
-    }
+    //   this.showtimeline=true;
+    //   this.ObjSubTaskDTO.Emp_No = empno;
+    //   this.ObjSubTaskDTO.PageNumber = pageNo;
+    //   this.ObjSubTaskDTO.PageSize = 30;
+    //     this.darArrayLoading=true;
+    //     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+    //     (data=>{
+    //       this.darArrayLoading=false;
+    //       this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+    //       console.log(this.timelineList,"timelinedata")
+    //       this.timelineDuration=(data[0]['TotalTime']);
+    //       this.darArray=this.timelineList;  console.log('dar arry list:',this.darArray);
+    //       this.userFound = true
+    //       this.edited = true
+    //       this._CurrentpageRecords=this.timelineList.length;
+    //       if(this.timelineList.length == 0){
+    //         this.showtimeline=false;
+    //         this.timelineDuration=0;
+    //       }
+    //     });
+    //     // this.hideloadmore()
+    // }
 
 
 // hideloadmore(){
@@ -1317,12 +1318,12 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
     this.ObjSubTaskDTO.sort = 'custom';
     this.tmReportLoading=true;
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-      (data => {           
+      (data => {              
         this.tmReportLoading=false;
         console.log(data);
-        if(data&&data[0].DAR_Details_Json){
+        if(data&&data[0].DAR_Details_Json){   
              const dar_json=JSON.parse(data[0].DAR_Details_Json);
-             if(dar_json&&dar_json[0]){ 
+             if(dar_json&&dar_json[0]){     
                 // all timelines submitted on selected date.     
                 this.tmReportArr=dar_json[0].Dardata;    
                 this.submittedTimelines=this.tmReportArr.map((obj)=>({ starttime:obj.starttime, endtime:obj.endtime }));
@@ -1345,11 +1346,11 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
                 this.noTimeSpaceAvailable=(this.lastEndtime.time==list[list.length-1].time);
                 if(this.noTimeSpaceAvailable==false){
                   const li=list.findIndex((obj)=>obj.time==this.lastEndtime.time);
-                  this.starttime=list[li];   this.endtime=list[li+1];   
+                  this.starttime=list[li];   this.endtime=list[li+1];  
                 }
               
                 
-              // adding 'duration' property to show timing in more easy way on the view.
+              // adding 'duration'and formating 'starttime' and 'endtime' property to show timing in more easy way on the view.
                 this.tmReportArr.forEach(ob=>{
                   const k=/00:\d\d/.test(ob.Duration);
                    ob.duration=k?(ob.Duration.split(':')[1]+' mins'):(ob.Duration+' hrs');
@@ -1628,9 +1629,10 @@ getStartTiming1(){
 }
 
 
+@ViewChild('endtimeselect') endtimesel:any;
+
 getEndTiming1(){
   let list:any=[];
-debugger
   // based on start time decide endtime.  if: no timeline found on selected date.
   let from=0;
   if(this.starttime){
@@ -1657,10 +1659,22 @@ debugger
         list=list.slice(0,k);
     }
    
-
   this.timedata3=list;
 
+
+  // manually scroll to option.    THIS IS JUST TO MANUALLY SCROLL TO CORRECT OPTION OF ENDTIME NGSELECT.
+    if(this.endtime){     
+          const dropdownPanel=this.endtimesel.dropdownPanel._dropdown;     // endtime dropdown.
+          const optionHeight=dropdownPanel.querySelector('.ng-dropdown-panel-items .ng-option')?.offsetHeight||0;  // height of each option view in ng select.
+          const optionIndex=this.timedata3.findIndex(op=>op.value==this.endtime?.value);    // option index where we need to focus. 
+          const scrollToOption=optionHeight*optionIndex;
+          dropdownPanel.querySelector('.ng-dropdown-panel-items').scrollTop=scrollToOption;    // scroll to option.
+    }
+  // manually scroll to option.
+
 }
+
+
 
 
 getTimeStamps(dateVal:string,timeVals:string[]):{time:string,value:number}[]{
@@ -1696,43 +1710,271 @@ getTimeDiff(time1:number,time2:number):string{
 
 // timeline record edit/delete start.
 
-
-editTimelineRecord(i:number,j:number){
-    $(`#Dar-Record-${i} #tm-record-item-${j} .wrk-des-bx`).addClass('d-none');
-    $(`#Dar-Record-${i} #tm-record-item-${j} .wrk-des-editbx`).removeClass('d-none');
-    $(`#Dar-Record-${i} #tm-record-item-${j} .wrk-des-editbx textarea`).focus();
-    $(`#Dar-Record-${i} #tm-record-item-${j} .dar-record-delete-btn`).addClass('d-none');
+editTimelineRecord(recordIdstr:string){
+  $(`${recordIdstr} .wrk-des-bx`).addClass('d-none');
+  $(`${recordIdstr} .wrk-des-editbx`).removeClass('d-none');
+  $(`${recordIdstr} .wrk-des-editbx textarea`).focus();
+  $(`${recordIdstr} .dar-record-delete-btn`).addClass('d-none');
 }
 
-cancelEditTimelineRecord(i:number,j:number){  
-  $(`#Dar-Record-${i} #tm-record-item-${j} .wrk-des-bx`).removeClass('d-none');
-  $(`#Dar-Record-${i} #tm-record-item-${j} .wrk-des-editbx textarea`).val(this.darArray[i].Dardata[j].WorkAchieved);
-  $(`#Dar-Record-${i} #tm-record-item-${j} .wrk-des-editbx`).addClass('d-none');
-  $(`#Dar-Record-${i} #tm-record-item-${j} .dar-record-delete-btn`).removeClass('d-none');
+
+cancelEditTimelineRecord(recordIdstr:string,prevVal:string){
+  $(`${recordIdstr} .wrk-des-bx`).removeClass('d-none');
+  $(`${recordIdstr} .wrk-des-editbx textarea`).val(prevVal);
+  $(`${recordIdstr} .wrk-des-editbx`).addClass('d-none');
+  $(`${recordIdstr} .dar-record-delete-btn`).removeClass('d-none');
+  $(`${recordIdstr} .wrk-des-editbx .wrk-des-required-msg`).addClass('d-none');
+  $(`${recordIdstr} .wrk-des-editbx textarea`).css('border-color','#ccc');
 }
 
-updateWorkdesOfTR(i:number,j:number){
 
-  const _txtarea=$(`#Dar-Record-${i} #tm-record-item-${j} .wrk-des-editbx textarea`);
-  if(_txtarea){
-    const newWorkDes=_txtarea[0].value;
-    console.log('new work description:', newWorkDes);
+updateWorkdesOfTR(recordIdstr:string,recordId:number,newWorkAchv:string,updateTMReportArr?:boolean){
 
-    this.notifyService.showSuccess("Updated successfully", '');
 
-    $(`#Dar-Record-${i} #tm-record-item-${j} .wrk-des-bx`).removeClass('d-none');
-    $(`#Dar-Record-${i} #tm-record-item-${j} .wrk-des-editbx`).addClass('d-none');
-    $(`#Dar-Record-${i} #tm-record-item-${j} .wrk-des-editbx textarea`).val(newWorkDes);
-    $(`#Dar-Record-${i} #tm-record-item-${j} .dar-record-delete-btn`).removeClass('d-none');
+  if(newWorkAchv&&newWorkAchv.trim()){
+
+   const empno=this.Current_user_ID;   
+   const r_id=recordId;
+   const newWorkDes=newWorkAchv;
+   const operation=1;
+   this.service.NewUpdateTimelineActivity(empno,r_id,newWorkDes,operation).subscribe((res:any)=>{
+    console.log('timeline edit resp:',res); 
+    if(res&&res.message)
+    {  
+        if(res.message=='1'){
+           
+          // update dar array.
+            let record_obj;
+            for(let ob of this.darArray)
+            {
+                const result=ob.Dardata.find(ob2=>ob2.id==res.id);
+                if(result){
+                    record_obj=result;
+                    break;
+                }
+            }
+            if(record_obj){
+              record_obj.WorkAchieved=res.achievement;
+            }
+         
+
+          // update tmreport array.
+            if(updateTMReportArr){
+               for(let ob of this.tmReportArr){
+                   if(ob.id==res.id){
+                    ob.WorkAchieved=res.achievement; 
+                    break;
+                   }
+               }
+            }
+
+           
+             this.notifyService.showSuccess("Updated successfully", '');
+             $(`${recordIdstr} .wrk-des-bx`).removeClass('d-none');
+             $(`${recordIdstr} .wrk-des-editbx`).addClass('d-none');
+             $(`${recordIdstr} .wrk-des-editbx textarea`).val(res.achievement);
+             $(`${recordIdstr} .dar-record-delete-btn`).removeClass('d-none');
+
+        }else if(res.message=='2') {
+             this.notifyService.showError("Work description not updated.", 'Failed');
+        }
+    }
+    else{
+         this.notifyService.showError("Internal server error", 'Failed');
+    }
+   });
+
   }
-
+  else{
+    $(`${recordIdstr} .wrk-des-editbx .wrk-des-required-msg`).removeClass('d-none');  
+    $(`${recordIdstr} .wrk-des-editbx textarea`).css('border-color','red');   
+  }
 }
 
-deleteTimelineRecord(){
 
+isWorkdesValid(wrkdes,recordidstr){   
+   if(!(wrkdes&&wrkdes.trim())){
+    $(`${recordidstr} .wrk-des-editbx .wrk-des-required-msg`).removeClass('d-none');
+    $(`${recordidstr} .wrk-des-editbx textarea`).css('border-color','red');
+   }
+   else{
+    $(`${recordidstr} .wrk-des-editbx .wrk-des-required-msg`).addClass('d-none');
+    $(`${recordidstr} .wrk-des-editbx textarea`).css('border-color','#ccc');
+   }
+}
+
+
+deleteTimelineRecord(tmRecord:any,updateTMReportArr?:boolean){  
+  let {date,Tasktype,ProjectName,ActionName,starttime,endtime,Duration,id}=tmRecord;
+  let formatteddate=this.datepipe.transform(date, 'EEEE, MMMM d, yyyy');
+  const k=/00:\d\d/.test(Duration);
+  let formattedduration=k?(Duration.split(':')[1]+' mins'):(Duration+' hrs');
+  let taskName=(['Lunch','Personal','Corporate Responsibility'].includes(Tasktype)==false&&ProjectName)?ProjectName:Tasktype;
+     Swal.fire({
+       title: "Delete Timeline Confirmation",
+       html:`
+       <div style="text-align: justify;">
+        
+     <label class="fs-7" style="color: #79797a; font-weight: 400;">${formatteddate}</label>
+     <div class="border rounded">
+          <table cellpadding="10px">
+             <tr>
+
+              <td width="100%" colspan="4" class="fs-7" style="text-align: left;font-weight: 500;">
+                 ${taskName}
+               ${(ActionName&&ActionName!=ProjectName)?`<div class="fs-9 text-muted d-flex mt-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="15" class="svg-icn"><path fill="none" d="M0 0h24v24H0z"></path><path d="M16 12l-6 6V6z"></path></svg>
+                  <div>${ActionName}</div>    
+               </div>`:''}
+              </td>
+            </tr>
+             <tr>
+              <td width="10%" class="fs-7 text-nowrap" style="font-weight: 400;color: #79797a;">Duration :</td>
+              <td width="20%" class="fs-7 text-nowrap">${starttime}</td><td width="20%" class="fs-7 text-nowrap">${endtime}</td>
+              <td width="50%" class="fs-7 text-nowrap font-weight-bold">${formattedduration}</td>
+             </tr>
+          </table>
+     </div>
+
+        <div class="text-danger fs-7 mt-3">Delete this timeline? This action cannot be undone.</div>   
+      </div>
+       `,
+       showCancelButton: true,
+       confirmButtonText: 'Delete Timeline',
+       cancelButtonText: 'Cancel'
+     }).then((choice)=>{
+           if(choice.isConfirmed){
+             
+             const empno=this.Current_user_ID;   
+             const r_id=id;
+             const operation=2;
+             this.service.NewUpdateTimelineActivity(empno,r_id,'',operation).subscribe((res:any)=>{
+             console.log('timeline record delete resp:',res);
+               if(res&&res.message)
+               {
+                   if(res.message=='1'){   
+                       
+                     // update the dar array.
+            debugger
+                    
+                    if(this.Type==this.type1&&this.sortType==this.sort1){
+
+                          //1. approach
+                      this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+                      this.ObjSubTaskDTO.PageNumber = 1;
+                      this.ObjSubTaskDTO.PageSize = 2;
+                      const _datestr=this.datepipe.transform(date, 'yyyy-MM-dd');
+                      this.ObjSubTaskDTO.Start_Date = _datestr;
+                      this.ObjSubTaskDTO.End_Date = _datestr;
+                      this.ObjSubTaskDTO.sort = 'custom';
+                      this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+                         (data => {       
+                           console.log(data);  
+                           if(data&&data[0].DAR_Details_Json){   
+                                const dar_json=JSON.parse(data[0].DAR_Details_Json);
+                                if(dar_json){    
+                                 if(dar_json.length==0){
+                                     const k=this.darArray.findIndex(_ob=>_ob.SubmissionDate==_datestr);
+                                     this.darArray.splice(k,1);
+                                 }
+                                 else{
+                                    for(let ob of this.darArray)
+                                    {
+                                        const k=ob.Dardata.findIndex(ob2=>ob2.id==r_id);
+                                        if(k>-1){
+                                            ob.Dardata=dar_json[0].Dardata;
+                                            ob.Total=dar_json[0].Total;
+                                            ob.TotalDuration=dar_json[0].TotalDuration;
+                                            break;
+                                        }
+                                    }
+                                 }
+                                } 
+                           }
+                   
+                      });
+
+
+                        // 2. approach 
+                     // let isEmptyRecord:boolean=false;
+                     // for (let ob of this.darArray) {
+                     //   const k = ob.Dardata.findIndex(ob2 => ob2.id == r_id);
+                     //   if (k > -1) {
+                     //     ob.Dardata.splice(k, 1);
+                     //     ob.Total = ob.Dardata.length;
+                     //     ob.TotalDuration;
+                     //     isEmptyRecord=ob.Total==0;
+                     //     break;
+                     //   }
+                     // }
+                     // if(isEmptyRecord){
+                     //   const _datestr=this.datepipe.transform(date, 'yyyy-MM-dd');
+                     //   const k=this.darArray.findIndex(_ob=>_ob.SubmissionDate==_datestr);
+                     //   if(k>-1)
+                     //   this.darArray.splice(k,1);
+                     // }  
+                    }
+                    else if(this.Type==this.type1&&this.sortType==this.sort2){
+                        this.sortTimeline(this.sortType);
+                    }
+
+                     // update tmreport array.  if needed
+                     if(updateTMReportArr){
+                        this.selectDateForTimeline(this.current_Date);   
+                     }
+                     
+                     if(this.Type==this.type1){    // update timelineDuration value only when user is on My Timeline screen.
+                      this.timelineDuration=res.TotalTime;
+                      if(this.timelineDuration==0)
+                      this.showtimeline=false;
+                     }
+                     
+                    
+                     this.notifyService.showSuccess("Deleted successfully", '');
+                   }
+                   else if(res.message=='2'){
+                     this.notifyService.showError("Unable to delete the timeline.", 'Failed');
+                   } 
+               }
+               else{
+                 this.notifyService.showError("Internal server error", 'Failed');
+               }
+              });
+
+           }
+     });
 }
 
 // timeline record edit/delete end.
 
+
+
+// dar inbox start.
+
+
+openDarInbox(){
+   this.Type=this.type3;   
+}
+
+
+
+openDarReqSidebar(crntIndex:number){
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementById("timepage")!.classList.add("position-fixed");
+  document.getElementById("dar-req_slider_bar").classList.add("kt-quick-panel--on");
+  $('#dar-req_slider_bar').addClass('open_sidebar');
+}
+
+closeDarReqSidebar() {
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("timepage")!.classList.remove("position-fixed");
+    document.getElementById("dar-req_slider_bar").classList.remove("kt-quick-panel--on");
+    $('#dar-req_slider_bar').removeClass('open_sidebar');
+}
+
+
+
+
+// dar inbox end.
 
 }

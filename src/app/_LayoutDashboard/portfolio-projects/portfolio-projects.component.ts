@@ -447,6 +447,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
       this.filteredEmployees = [];
       this._ProjectsListBy_Pid.forEach(item=>{
+debugger
         const x=this.filteredEmployees.find(emp=>item.Emp_No === emp.Emp_No)
         if(x){
             x.totalProjects+=1;
