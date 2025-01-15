@@ -518,7 +518,7 @@
 
 
             <div class="kt-category-action-list-view mt-3">
-              <span class="ml-2 font-weight-bold  ">System generated category</span>
+              <span class="ml-2 font-weight-bold  ">System generated categories</span>
                     <ul class="kt-category-acion-content side-bar-box">
                         <!-- [ngClass]="{'bg-secondary': }" id="SelectedCat_{{item.Category_ID}} -->
                         <li *ngFor="let item of userCategory|filter:categorySearch;" class="kt-category-list" [ngClass]="{'active': item.Category_ID==_Categoryid}">
@@ -593,7 +593,7 @@
 
 
             <div class="kt-category-action-list-view mt-3">
-              <span class="ml-2 font-weight-bold">Users category</span>
+              <span class="ml-2 font-weight-bold">User categories</span>
               <ul class="kt-category-acion-content side-bar-box">
                   <!-- [ngClass]="{'bg-secondary': }" id="SelectedCat_{{item.Category_ID}} -->
                   <li *ngFor="let item of SystemCategory|filter:categorySearch;" class="kt-category-list" [ngClass]="{'active': item.Category_ID==_Categoryid}">
