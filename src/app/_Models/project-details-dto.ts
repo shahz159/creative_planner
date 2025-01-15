@@ -62,4 +62,7 @@ export class ProjectDetailsDTO {
     MeetingCount:any;
     Hours:string;
 
+    flagid:number;
+    achievement:string;
+
 }

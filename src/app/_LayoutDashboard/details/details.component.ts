@@ -1601,7 +1601,7 @@ debugger
   }
 
   showActionDetails(index: number | undefined) {
-    this.currentActionView = index;
+    this.currentActionView = index;   // if index is number: an action is selected.  if index is undefined : project view is selected.
     if(index!=undefined){
 
       this.requestType = null;
@@ -1610,6 +1610,7 @@ debugger
 
       if (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval"||this.projectActionInfo[index].Status === "Cancellation Under Approval"){
         this.GetApproval(this.projectActionInfo[index].Project_Code);
+
       }
       else if(this.projectActionInfo[this.currentActionView].Status=='New Project Rejected'){
         this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
@@ -1641,7 +1642,6 @@ debugger
       });
 
     }
-
   }
 
   prostate(pstate){
@@ -2254,9 +2254,6 @@ multipleback(){
   @ViewChild('DMSDROPDOWN') dmsDD:MatAutocompleteTrigger;
 
 
-
-
-
   linkSMail:boolean=false;
   linkPort:boolean=false;
 
@@ -2834,6 +2831,7 @@ fetchingStdTaskAprvls:boolean=false;
   Close_Approval() {
     this.comments=null;
     this.isApprovalSection = false;
+    this.isTextAreaVisible=false;
     $(".Btn_Accpet").removeClass('active');
     $(".Btn_Conditional_Accept").removeClass('active');
     $(".Btn_Reject").removeClass('active');
@@ -2859,6 +2857,7 @@ approvalSubmitting:boolean=false;
       this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
         subscribe((data) => {
           this.Close_Approval();
+          this.removeCommit();
           this.approvalSubmitting=false;
           this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Approved successfully by - " + this._fullname, "Success");
           this.getapprovalStats();
@@ -2903,6 +2902,7 @@ approvalSubmitting:boolean=false;
               }
               else {
                 this.Close_Approval();
+                this.removeCommit();
                 this.notifyService.showSuccess("Project Approved Successfully", this._Message);
                 this.getapprovalStats();
                 this.getProjectDetails(this.URL_ProjectCode);
@@ -2927,6 +2927,7 @@ approvalSubmitting:boolean=false;
           subscribe((data) => {
             // if success
             this.Close_Approval();
+            this.removeCommit();
             this.approvalSubmitting=false;
             this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Rejected successfully by - " + this._fullname, "Success");
             this.getapprovalStats();
@@ -3140,9 +3141,8 @@ approvalSubmitting:boolean=false;
   }  // for temp we are using this.
 
   proState:boolean=false;
-
   actionCompleted() {
-debugger
+
    const fieldsprvided:boolean=(this._remarks&&this._remarks.trim())&&(this.proState?this.selectedFile:true);
 
     if (!fieldsprvided) { // when the user not provided the required fields then .
@@ -3168,8 +3168,7 @@ debugger
         if (res.value) {   // when user proceed also with the main project submission.
           if (this.selectedFile == null) {
             this.notifyService.showInfo("Please attach the completion file to complete the main project", "Note");
-            }
-
+          }
           else {
             // 1.  ACTION SUBMISSION
             const fd = new FormData();
@@ -3217,11 +3216,51 @@ debugger
 
                 }
                 if ( this.selectedFile) {
+
+                  this.setFilesUploadingBarVisible(true);
+                  const fid=this.selectedFile.name+(new Date().getTime());
+                  const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Action complete file attachment -'+this._Subtaskname};
+                  this.filesInUpload.push(ob);
+
+
                   fd.append("Project_Code", this.Sub_ProjectCode);
                   fd.append("Team_Autho", this.Sub_Autho);
                   fd.append("Project_Name", this._Subtaskname);
                   fd.append('file',  this.selectedFile);
                   this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+
+                    switch (event1.type) {
+                      case HttpEventType.Sent:
+                        console.log('Request sent!');
+                        break;
+                      case HttpEventType.ResponseHeader:
+                        console.log('Response header received!');
+                        break;
+                      case HttpEventType.UploadProgress:
+                        const progress = Math.round(event1.loaded / event1.total * 100);
+                        ob.uploaded=progress;
+                        if(ob.uploaded==100){
+                          setTimeout(()=>{
+                            ob.processingUploadFile=true; //when server processing the file upload. 
+                          },1000);
+                        }
+                        console.log(`Upload progress: ${ob.uploaded}%`);
+                        break;
+                      case HttpEventType.Response:{
+                        console.log('Response received:', event1.body);
+                        if(event1.body==1){
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                          const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                          this.filesInUpload.splice(fi,1);
+                          if(this.filesInUpload.length==0){
+                            this.setFilesUploadingBarVisible(false);
+                          }
+                          
+                        }
+                      };break;
+                    }
+
+
                     console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                   //  this._Message = (JSON.parse(myJSON).body);
@@ -3282,12 +3321,49 @@ debugger
                     // }
                     this.notifyService.showSuccess(this._Message, 'Success');
                     if(this.selectedFile){
+
+                      this.setFilesUploadingBarVisible(true);
+                      const fid=this.selectedFile.name+(new Date().getTime());
+                      const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Project complete file attachment -'+this.projectInfo.Project_Name};
+                      this.filesInUpload.push(ob);
+
                       fd1.append('file',  this.selectedFile);
                       this.service._AzureUploadProjectComplete(fd1).subscribe((event1: HttpEvent<any>) => {
+                        switch (event1.type) {
+                          case HttpEventType.Sent:
+                            console.log('Request sent!');
+                            break;
+                          case HttpEventType.ResponseHeader:
+                            console.log('Response header received!');
+                            break;
+                          case HttpEventType.UploadProgress:
+                            const progress = Math.round(event1.loaded / event1.total * 100);
+                            ob.uploaded=progress;
+                            if(ob.uploaded==100){
+                              setTimeout(()=>{
+                                ob.processingUploadFile=true; //when server processing the file upload. 
+                              },1000);
+                            }
+                            console.log(`Upload progress: ${ob.uploaded}%`);
+                            break;
+                          case HttpEventType.Response:{
+                            console.log('Response received:', event1.body);
+                            if(event1.body==1){
+                              this.notifyService.showSuccess(ob.filename,"Uploaded successfully ");  
+                              const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                              if(fi>-1){
+                                this.filesInUpload.splice(fi,1);
+                              }
+                              if(this.filesInUpload.length==0){
+                                this.setFilesUploadingBarVisible(false);
+                              }
+                              
+                            }
+                          };break;
+                        }
                         console.log(event1,"azure data");
                         var myJSON = JSON.stringify(event1);
                       //  this._Message = (JSON.parse(myJSON).body);
-
                       });
                     }
                 }
@@ -3324,8 +3400,6 @@ debugger
           //   .subscribe(data => {
             this.service._UpdateSubtaskByProjectCodeCore(fd)
             .subscribe((event: HttpEvent<any>) => {
-
-              debugger
                if (event.type === HttpEventType.Response){
                  var myJSON = JSON.stringify(event);
 
@@ -3335,8 +3409,44 @@ debugger
 
                  if(this._Message=='Success'){
                   if ( this.selectedFile) {
+                  this.setFilesUploadingBarVisible(true);
+                  const fid=this.selectedFile.name+(new Date().getTime());
+                  const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Action complete file attachment -'+this._Subtaskname};
+                  this.filesInUpload.push(ob);
+
                   fd.append('file',  this.selectedFile);
                   this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+                    switch (event1.type) {
+                      case HttpEventType.Sent:
+                        console.log('Request sent!');
+                        break;
+                      case HttpEventType.ResponseHeader:
+                        console.log('Response header received!');
+                        break;
+                      case HttpEventType.UploadProgress:
+                        const progress = Math.round(event1.loaded / event1.total * 100);
+                        ob.uploaded=progress;
+                        if(ob.uploaded==100){
+                          setTimeout(()=>{
+                            ob.processingUploadFile=true; //when server processing the file upload. 
+                          },1000);
+                        }
+                        console.log(`Upload progress: ${ob.uploaded}%`);
+                        break;
+                      case HttpEventType.Response:{
+                        console.log('Response received:', event1.body);
+                        if(event1.body==1){
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully ");  
+                          const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                          this.filesInUpload.splice(fi,1);
+                          if(this.filesInUpload.length==0){
+                            this.setFilesUploadingBarVisible(false);
+                          }
+                          
+                        }
+                      };break;
+                    }
+
                     console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                   //  this._Message = (JSON.parse(myJSON).body);
@@ -3386,18 +3496,55 @@ debugger
             case HttpEventType.Sent:console.log('Request has been made!');break;
             case HttpEventType.ResponseHeader:console.log('Response header has been received!');break;
             case HttpEventType.UploadProgress:
-              this.progress = Math.round(event.loaded / event.total * 100);
-              console.log(this.progress, "progress");
-              if (this.progress == 100) console.log('progress completed');
+              const actnprogress = Math.round(event.loaded / event.total * 100);
+              console.log(actnprogress, "progress");
+              if (actnprogress == 100) console.log('progress completed');
               break;
             case HttpEventType.Response:{
               var myJSON = JSON.stringify(event);
               this._Message = (JSON.parse(myJSON).body).message;
               if(this._Message==='Success')
               {
-                if(this.selectedFile){
+                if(this.selectedFile){  console.log("selectedFile:",this.selectedFile);
+                 
+                  this.setFilesUploadingBarVisible(true);   // show the file uploading bar. 
+                  const fid=this.selectedFile.name+(new Date().getTime());
+                  const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Action complete file attachment -'+this._Subtaskname};
+                  this.filesInUpload.push(ob);
                   fd.append('file', this.selectedFile);
                   this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+
+                    switch (event1.type) {
+                      case HttpEventType.Sent:
+                        console.log('Request sent!');
+                        break;
+                      case HttpEventType.ResponseHeader:
+                        console.log('Response header received!');
+                        break;
+                      case HttpEventType.UploadProgress:
+                        const progress = Math.round(event1.loaded / event1.total * 100);
+                        ob.uploaded=progress;
+                        if(ob.uploaded==100){
+                          setTimeout(()=>{
+                            ob.processingUploadFile=true; //when server processing the file upload. 
+                          },1000);
+                        }
+                        console.log(`Upload progress: ${ob.uploaded}%`);
+                        break;
+                      case HttpEventType.Response:{
+                        console.log('Response received:', event1.body);
+                        if(event1.body==1){
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                          const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                          this.filesInUpload.splice(fi,1);
+                          if(this.filesInUpload.length==0){
+                            this.setFilesUploadingBarVisible(false);   // hide the uploading bar.
+                          }
+                          
+                        }
+                      };break;
+                    }
+
                     console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                   //  this._Message = (JSON.parse(myJSON).body);
@@ -3437,6 +3584,8 @@ debugger
   }
 
 
+
+  
 
 
 
@@ -4838,10 +4987,48 @@ debugger
                 }
 
                 this.notifyService.showSuccess(this._Message, 'Success');
-                debugger
+         
                 if(this.selectedFile){
+
+                  this.setFilesUploadingBarVisible(true);
+                  const fid=this.selectedFile.name+(new Date().getTime());
+                  const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Project complete file attachment -'+this.projectInfo.Project_Name};
+                  this.filesInUpload.push(ob);
+
                   fd.append('file',  this.selectedFile);
                   this.service._AzureUploadProjectComplete(fd).subscribe((event1: HttpEvent<any>) => {
+
+                    switch (event1.type) {
+                      case HttpEventType.Sent:
+                        console.log('Request sent!');
+                        break;
+                      case HttpEventType.ResponseHeader:
+                        console.log('Response header received!');
+                        break;
+                      case HttpEventType.UploadProgress:
+                        const progress = Math.round(event1.loaded / event1.total * 100);
+                        ob.uploaded=progress;
+                        if(ob.uploaded==100){
+                          setTimeout(()=>{
+                            ob.processingUploadFile=true; //when server processing the file upload. 
+                          },1000);
+                        }
+                        console.log(`Upload progress: ${ob.uploaded}%`);
+                        break;
+                      case HttpEventType.Response:{
+                        console.log('Response received:', event1.body);
+                        if(event1.body==1){
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                          const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                          this.filesInUpload.splice(fi,1);
+                          if(this.filesInUpload.length==0){
+                            this.setFilesUploadingBarVisible(false);
+                          }
+                          
+                        }
+                      };break;
+                    }
+
                     console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                   //  this._Message = (JSON.parse(myJSON).body);
@@ -5117,13 +5304,14 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
 
-
+  fetchingActionApproval:boolean=false;     
   GetApproval(code) {
 
+    this.fetchingActionApproval=true;   // getting approval on the action if present start.
     this.approvalObj = new ApprovalDTO();
     this.approvalObj.Project_Code = code;
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
-
+      this.fetchingActionApproval=false;   // fetching approval on the action if present end.
       this.requestDetails = data as [];
       console.log(data,'jjj----------->')
       if (this.requestDetails.length > 0) {
@@ -7960,8 +8148,46 @@ holdcontinue(Pcode:any){
             this.notifyService.showSuccess(this._Message, 'Success');
         }
         if (this.selectedFile) {
+
+          this.setFilesUploadingBarVisible(true);
+          const fid=this.selectedFile.name+(new Date().getTime());
+          const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Standard task complete file attachment -'+this.projectInfo.Project_Name};
+          this.filesInUpload.push(ob);
+
           fd.append('file',  this.selectedFile);
           this.service._AzureUploadStandardTaskComplete(fd).subscribe((event1: HttpEvent<any>) => {
+
+            switch (event1.type) {
+              case HttpEventType.Sent:
+                console.log('Request sent!');
+                break;
+              case HttpEventType.ResponseHeader:
+                console.log('Response header received!');
+                break;
+              case HttpEventType.UploadProgress:
+                const progress = Math.round(event1.loaded / event1.total * 100);
+                ob.uploaded=progress;
+                if(ob.uploaded==100){
+                  setTimeout(()=>{
+                    ob.processingUploadFile=true; //when server processing the file upload. 
+                  },1000);
+                }
+                console.log(`Upload progress: ${ob.uploaded}%`);
+                break;
+              case HttpEventType.Response:{
+                console.log('Response received:', event1.body);
+                if(event1.body==1){
+                  this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                  const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                  this.filesInUpload.splice(fi,1);
+                  if(this.filesInUpload.length==0){
+                    this.setFilesUploadingBarVisible(false);
+                  }
+                  
+                }
+              };break;
+            }
+
             console.log(event1,"azure data");
             var myJSON = JSON.stringify(event1);
           //  this._Message = (JSON.parse(myJSON).body);
@@ -12162,9 +12388,36 @@ on_Update_and_Released(val) {
 
 
 
+// file uploading progress bar start.
+filesInUpload:{id:string, filename:string, uploaded:number, processingUploadFile:boolean, message:string }[]=[];   // info of files are currently in uploading process.
+isFilesUploadingBarVisible:boolean=false;  // whether files uploading bar is visible or not.
+setFilesUploadingBarVisible(_visible:boolean){
+     this.isFilesUploadingBarVisible=_visible;
+     if(this.isFilesUploadingBarVisible){
+      document.getElementById("file-upload-modal-backdrop").style.display = "block";
+      document.getElementsByClassName('file-upload-progress')[0].classList.remove('d-none');
+     }
+     else{
+      document.getElementById("file-upload-modal-backdrop").style.display = "none";
+      document.getElementsByClassName('file-upload-progress')[0].classList.add('d-none');
+     }
+}
 
 
+getOverallFilesUploadProgress():number{
+  if(this.filesInUpload&&this.filesInUpload.length>0){
+    const filesProgressSum=this.filesInUpload.reduce((sum,item)=>sum+item.uploaded,0);
+    const totalfiles=this.filesInUpload.length;
+    const totalProgressVal=Math.round(filesProgressSum/totalfiles);
+    return totalProgressVal;
+  }
+  return 0;
+} 
 
+
+showFilesUploadingBar:boolean=false;  // whether files uploading bar is visible or not.
+
+// file uploading progress bar end.
 
 }
 
