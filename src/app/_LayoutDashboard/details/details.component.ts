@@ -1056,6 +1056,7 @@ debugger
         this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
         this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
         console.log('Now After Sorting:',this.filteremployee);
+        console.log('Action count:',this.filteredPrjAction);
 
       }
       this.calculateProjectActions();    // calculate project actions details.
@@ -3844,27 +3845,27 @@ debugger
         this.closeInfo();
       });
     }
-    // else if (val == 2) {
-    //   this.approvalObj.Emp_no = this.Current_user_ID;
-    //   this.approvalObj.Project_Code = this.URL_ProjectCode;
-    //   this.approvalObj.json = jsonvalue;
-    //   this.approvalObj.Remarks = this._remarks;
-    //   this.approvalObj.isApproval = val;
+    else if (val == 2) {
+      this.approvalObj.Emp_no = this.Current_user_ID;
+      this.approvalObj.Project_Code = this.URL_ProjectCode;
+      this.approvalObj.json = jsonvalue;
+      this.approvalObj.Remarks = this._remarks;
+      this.approvalObj.isApproval = val;
 
-    //   this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
-    //     console.log(data['message'], "edit response");
-    //     if (data['message'] == '3') {
-    //       this.notifyService.showSuccess("Project updated and Approved successfully.", "Success");
-    //       this.Close_Approval();
-    //     }
-    //     else if (data['message'] == '2') {
-    //       this.notifyService.showError("Not updated.", "Failed");
-    //     }
-    //     this.getProjectDetails(this.URL_ProjectCode);
-    //     this.getapprovalStats();
-    //     this.closeInfo();
-    //   });
-    // }
+      this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+        console.log(data['message'], "edit response");
+        if (data['message'] == '3') {
+          this.notifyService.showSuccess("Project updated and released successfully.", "Success");
+          this.Close_Approval();
+        }
+        else if (data['message'] == '2') {
+          this.notifyService.showError("Not updated.", "Failed");
+        }
+        this.getProjectDetails(this.URL_ProjectCode);
+        // this.getapprovalStats();
+        this.closeInfo();
+      });
+    }
 
 
 

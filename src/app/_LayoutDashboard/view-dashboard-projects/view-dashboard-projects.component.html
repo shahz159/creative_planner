@@ -881,7 +881,7 @@
                                                               <span>{{ item.ProjectOwner.split(' ')[0].charAt(0) }}{{ item.ProjectOwner.split(' ')[item.ProjectOwner.split(' ').length - 1].charAt(0) }}</span>
                                                             </a></ng-container>
 
-                                                            
+
                                                             <ng-container *ngIf="item.TeamRes">
                                                             <a *ngIf="item.TeamRes!=item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible: {{item.TeamRes}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                 <span>{{item.TeamRes.split(' ')[0].charAt(0)}}{{item.TeamRes.split(' ')[item.TeamRes.split(' ').length -1].charAt(0)}}</span>
@@ -895,7 +895,7 @@
                                                             <ng-container *ngIf="item.TeamRes&&item.TeamAutho">
                                                              <a *ngIf="item.TeamRes==item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.TeamRes}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                 <span>{{item.TeamAutho.split(' ')[0].charAt(0)}}{{item.TeamAutho.split(' ')[item.TeamAutho.split(' ').length-1].charAt(0)}}</span>
-                                                              </a> 
+                                                              </a>
                                                             </ng-container>
 
                                                               <ng-container *ngIf="item.TeamSupport">

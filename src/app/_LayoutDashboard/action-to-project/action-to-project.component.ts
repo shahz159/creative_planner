@@ -332,7 +332,7 @@ export class ActionToProjectComponent implements OnInit {
     }
     // this.selectedProjectCode = obj['Project_Code'];
     this.selectedProjectCode=this.selectedProjectCodelist;
-    this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => { 
+    this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
       this.ProjectDeadLineDate = data["DeadLine"];
       this.ProjectStartDate = data["StartDate"];
       this.Owner_Empno = data['Owner_empno'];
@@ -580,7 +580,7 @@ export class ActionToProjectComponent implements OnInit {
 //     // console.log(this.owner,"selected owner")
 
 //     this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
-// 
+//
 //       this.Sub_ProjectCode = data['SubTask_ProjectCode'];
 //       this.EmpNo_Autho = data['Team_Autho'];
 //       this.ProjectBlock = data['ProjectBlock'];
@@ -744,7 +744,7 @@ export class ActionToProjectComponent implements OnInit {
 
 //     if(this._Urlid == 5){
 //       // only for project creation page.
-//   
+//
 //       //1. when provided allocated hrs exceeds main project planned allocated hr then confirm.
 //       if(this.allocatedHour>0){
 //         const exceeds:boolean=this.createproject.hasExceededTotalAllocatedHr(this._allocated);
@@ -822,9 +822,9 @@ export class ActionToProjectComponent implements OnInit {
   }
 
 //   sweetAlert() {
-//   
+//
 //    const processContinue=()=>{
-// 
+//
 
 // //     if (this.actionCount.DeadLine==this._EndDate&&this.actionCount.count>3){
 // //   Swal.fire({
@@ -1013,7 +1013,12 @@ if(this._Urlid==5){
   //  this._actafter=this._EndDate>d2;
   //  console.log("asdf eeeeee:",this._actbefore,this._actafter);
 }
-
+debugger
+if(this._Urlid==4){
+  const d1=new Date(this.ProjectStartDate);
+  const d2=new Date(this.ProjectDeadLineDate);
+  this._actbefore=this._StartDate<d1;
+}
 
 const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._actbefore ,this._alchr].some(item=>item);
 if(fieldsRequired)
@@ -1134,7 +1139,7 @@ startActionCreation=async()=>{
 
      this.maxAllocation = this.maxAllocation * 8 / 1;
      this.ObjSubTaskDTO.Emp_No = this.CurrentUser_ID;
-     this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;    
+     this.ObjSubTaskDTO.AssignTo = this.selectedEmpNo;
      this.ObjSubTaskDTO.Remarks = this._remarks;
      this.ObjSubTaskDTO.Duration = this._allocated;
      // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
@@ -1191,11 +1196,11 @@ startActionCreation=async()=>{
       debugger
        if (event.type === HttpEventType.Response){
          var myJSON = JSON.stringify(event);
-         
+
          this._Message = (JSON.parse(myJSON).body).message;
          console.log(event,myJSON,this._Message,"action data");
         //  alert(this._Message);
-          
+
          if(this._Message=='1'){
           if ( this.fileAttachment) {
           fd.append('file',  this.fileAttachment);
@@ -1214,7 +1219,7 @@ startActionCreation=async()=>{
               console.log(event1,"azure data");
               var myJSON = JSON.stringify(event1);
             //  this._Message = (JSON.parse(myJSON).body);
-  
+
             });}
            this.notifyService.showInfo("Request submitted to the Assigned employee","Action Under Approval");
          }
@@ -1298,7 +1303,7 @@ getFileExtension(fileName: any): string | null {
      this.characterCount=0;
     // alert(this._Urlid);
     if(this._Urlid==2){
-      
+
       this.router.navigate(["UnplannedTask/"]);
     document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
 
@@ -1341,7 +1346,7 @@ getFileExtension(fileName: any): string | null {
     document.getElementById("rightbar-overlay").style.display = "none";
   }
 
-  Clear_Feilds() {   
+  Clear_Feilds() {
     this.selectedProjectCodelist = [];
     this.Sub_ProjectCode = null;
     this.Sub_ProjectName = null;

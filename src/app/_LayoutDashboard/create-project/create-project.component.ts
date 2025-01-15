@@ -156,9 +156,18 @@ export class CreateProjectComponent implements OnInit {
 
     const navigatingToCreateProject = localStorage.getItem('navigatingToCreateProject');
     if (navigatingToCreateProject === 'true') {
-    setTimeout(()=>{ this.Assigned_projects();    },1500);
+
+    setTimeout(()=>{ this.Assigned_projects();   },2000);
     localStorage.removeItem('navigatingToCreateProject');
     }
+debugger
+const navigatingfromrunway = JSON.parse(localStorage.getItem('combinedobj'));
+if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true'){
+ this.PrjName = navigatingfromrunway.task
+  setTimeout(()=>{this.Scratech_btn()},2000)
+  localStorage.removeItem('combinedobj');
+
+}
 
     this.ProjectDto=new ProjectDetailsDTO();
     this.Current_user_ID = localStorage.getItem('EmpNo');

@@ -2486,9 +2486,6 @@ Insert_indraft() {
 
 
 
-
-// meeting side bar code start
-
   // meeting section code starts here
   meetingList: any;
   meeting_arry: any;
@@ -6649,6 +6646,7 @@ isDepartment = false
         return !selprjs.includes(item.Project_Code);
       })
       this.allSelectedProjects = [...PageunselPrjs, ...this.allSelectedProjects];
+      this.value()
     }
     else {
       // unchecked
@@ -6656,6 +6654,7 @@ isDepartment = false
       this.allSelectedProjects = this.allSelectedProjects.filter(item => {
         return !curPagePrjs.includes(item.Project_Code)
       });
+      this.value()
     }
     this.isapprovlFound = this.allSelectedProjects.some((ob) => ob.PendingapproverEmpNo && ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
   }
@@ -6718,6 +6717,7 @@ selectUnSelectProject(e, item) {
         return this.allSelectedProjects.map(p => p.Project_Code).includes(item.Project_Code)
       })
       this.isAllPrjSelected = allselec
+      this.value()
 
     }
     else {   // when unchecked
@@ -6725,7 +6725,7 @@ selectUnSelectProject(e, item) {
       if (index != -1)
         this.allSelectedProjects.splice(index, 1);
       this.isAllPrjSelected = false;
-
+      this.value()
     }
 
     this.isapprovlFound=this.allSelectedProjects.some((ob)=>ob.PendingapproverEmpNo&&ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
@@ -6734,9 +6734,7 @@ selectUnSelectProject(e, item) {
 
 
 isProjectSelected(prjcode: any): boolean {
-
-  return   this.allSelectedProjects.map(x => x.Project_Code).includes(prjcode);
-
+return   this.allSelectedProjects.map(x => x.Project_Code).includes(prjcode);
 }
 
 

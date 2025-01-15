@@ -2325,6 +2325,7 @@ this.closeAutocompleteDrpDwn('proDDwn')
         return !selprjs.includes(item.Project_Code);
       })
       this.allSelectedProjects = [...PageunselPrjs, ...this.allSelectedProjects];
+      this.value()
     }
     else {
       // unchecked
@@ -2332,19 +2333,21 @@ this.closeAutocompleteDrpDwn('proDDwn')
       this.allSelectedProjects = this.allSelectedProjects.filter(item => {
         return !curPagePrjs.includes(item.Project_Code)
       });
+     this.value()
     }
     this.isapprovlFound = this.allSelectedProjects.some((ob) => ob.PendingapproverEmpNo && ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
   }
 
 
   selectUnSelectProject(e, item) {
-
+debugger
     if (e.checked) {
       this.allSelectedProjects.push(item)
-      const allselec = this._ProjectsListBy_Pid.every(item => {
+      const allselec = this._ProjectDataList.every(item => {
         return this.allSelectedProjects.map(p => p.Project_Code).includes(item.Project_Code)
       })
       this.isAllPrjSelected = allselec
+      this.value()
 
     }
     else {   // when unchecked
@@ -2352,6 +2355,7 @@ this.closeAutocompleteDrpDwn('proDDwn')
       if (index != -1)
         this.allSelectedProjects.splice(index, 1);
       this.isAllPrjSelected = false;
+      this.value()
 
     }
 
@@ -2361,7 +2365,6 @@ this.closeAutocompleteDrpDwn('proDDwn')
 
 
 isProjectSelected(prjcode: any): boolean {
-
   return   this.allSelectedProjects.map(x => x.Project_Code).includes(prjcode);
 
 }
@@ -2380,23 +2383,77 @@ isProjectSelected(prjcode: any): boolean {
   }
 
 
+  acceptfunction(){
+    this.approvingRequest =[]
+    this.allSelectedProjects.forEach((item)=>{
+      if( item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+        this.approvingRequest.push(item)
+        console.log(this.approvingRequest,'this.approvingRequestthis.approvingRequest')
+      }
+
+    })
+    this.acceptSelectedValues()
+  }
 
 
   approverComments:string;
   notProvided:any;
   approvingRequest = []
   submitAprvlsWithCmts(){
-
+debugger
 
     if(this.approverComments&&this.approverComments.trim()){
       this.notProvided=false;
-      // this.acceptSelectedValues(this.approverComments);
+      this.acceptSelectedValues(this.approverComments);
     }
     else{
        this.notProvided=true;
     }
 
   }
+
+  // approvingRequest = []
+acceptSelectedValues(_comments?:string) {
+debugger
+
+if( this.approvingRequest.length > 0 ){
+
+  let withCmts=false;
+  if(_comments&&_comments.trim()){
+      this.approvingRequest.forEach(ob=>ob.sameRemarks=_comments);
+      withCmts=true;
+  }
+
+  this.approvingRequest.forEach(ob => {
+    ob.ReportType = ob.ReportType1;
+    // ob.Duration = 0;
+  });
+
+  this.approvalservice.NewUpdateAcceptApprovalsService(this.approvingRequest).subscribe(data =>{
+    console.log(data,"accept-data");
+      const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+      checkbox.checked = false;
+      this.notifyService.showSuccess("Project(s) approved successfully.",'Success');
+
+      this.approvingRequest=[];
+      this.allSelectedProjects=[];
+
+      this.GetProjectsByUserName(this.type1);
+      this.isapprovlFound = false
+    if(withCmts){     // close the accept with comments sidebar if approving with comments is on.
+        this.closeInfo();
+    }
+
+
+  });
+
+}
+else{
+  this.notifyService.showInfo("Please select atleast one project to approve",'');
+}
+
+}
+
 
   onAcceptWithCmtsBtnClicked(){
     document.getElementById("acceptbar").classList.add("kt-quick-panel--on");
@@ -2499,7 +2556,7 @@ isProjectSelected(prjcode: any): boolean {
 
         this.allSelectedProjects=[];
         this.approvingRequest = []
-        // this.GetPortfolioProjectsByPid()
+        this.GetProjectsByUserName(this.type1);
         this.isapprovlFound = false
       });
       const checkbox = document.getElementById('snocheck') as HTMLInputElement;
@@ -2529,6 +2586,18 @@ isProjectSelected(prjcode: any): boolean {
     this.exist_comment = this.exist_comment.filter((comment) => comment != com);
     this.comments = this.comments.replace(com, "");
     console.log(this.exist_comment, "deselect");
-
-  }
 }
+
+  clearAllCheckboxes(){
+
+  const curPagePrjs = this._ProjectDataList.map(x => x.Project_Code);
+  this.allSelectedProjects = this.allSelectedProjects.filter(item => {
+    return !curPagePrjs.includes(item.Project_Code)
+  });
+  this.isAllPrjSelected=false;
+  this.isapprovlFound = false
+  this.value()
+}
+}
+
+
