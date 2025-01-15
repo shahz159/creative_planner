@@ -1482,7 +1482,7 @@
 
                                             <!-- <div class="br-line"></div> -->
 
-                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalportfolios}" (click)="AddPortfolio()" title="View or link portfolio">
+                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalportfolios}" (click)="AddPortfolio()" title="View or link portfolio(s)">
                                                 <svg xmlns="http://www.w3.org/2000/svg"   width="16"
                                                 height="16" class="iconify iconify--mdi" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
                                                     <defs></defs>
@@ -1501,7 +1501,7 @@
 
 
 
-                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalproject}"  title="View or link Projects" (click)="AddProjects()">
+                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalproject}"  title="View or link project(s)" (click)="AddProjects()">
                                                 <i _ngcontent-pre-c394="" class="fab fa-wpforms "
                                                     style="font-size: 1.4em;"></i>
                                             </a>
@@ -1534,7 +1534,7 @@
                                             </a> -->
 
                                             <!-- <div class="br-line"></div> -->
-                                            <a (click)="Attachment_views()"  class="kt-inbox__icon" [ngClass]="{'active':_TotalAttachment}" title="View or link Attachments">
+                                            <a (click)="Attachment_views()"  class="kt-inbox__icon" [ngClass]="{'active':_TotalAttachment}" title="View or link Attachment(s)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16"
                                                     height="16" fill="currentColor" class="iconify iconify--mdi">
                                                     <path
@@ -1576,7 +1576,7 @@
 
                                             <!-- <div class="br-line"></div> -->
 
-                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalguest}" title="Add Users" (click)="View_Meeting_Attendees();">
+                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalguest}" title="Add attendee(s)" (click)="View_Meeting_Attendees();">
                                                 <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16"
                                                     xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi">
                                                     <path
@@ -1593,7 +1593,7 @@
                                                 </svg>
                                             </a> -->
 
-                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalPreviousdata_meeting}" title="Previous Meeting Notes" (click)="Slide_meeting()">
+                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalPreviousdata_meeting}" title="Previous meeting notes" (click)="Slide_meeting()">
                                                 <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                                                     viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16"
                                                     width="16" class="iconify iconify--mdi">
@@ -2309,7 +2309,7 @@
                                                     
                                                 </ng-container>
                                                 <ng-container  *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
-                                                    <div class="dark-title">No SMail link
+                                                    <div (click)="addNewDMS()" class="dark-title SMail cursor-pointer">click to link SMail
 
                                                         <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" title="Link SMail" (click)="addNewDMS()">
                                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
@@ -2344,10 +2344,10 @@
                                                     
                                                 </ng-container>
                                                 <ng-container  *ngIf="portfolio_Scheduledjson&&portfolio_Scheduledjson.length==0">
-                                                    <div class="dark-title">No Portfolio link
+                                                    <div (click)="AddPortfolio()" class="dark-title SMail cursor-pointer">click to link portfolio(s)
 
 
-                                                        <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" title="Link portfolio" (click)="AddPortfolio()" >
+                                                        <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" title="Link portfolio(s)" (click)="AddPortfolio()" >
                                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
                                                             <!-- <span>Add More</span> -->
                                                         </div>
@@ -2383,9 +2383,9 @@
                                                     
                                                 </ng-container>
                                                 <ng-template #NoProject_code>
-                                                    <div class="dark-title">No project link
+                                                    <div (click)="AddProjects()" class="dark-title SMail cursor-pointer">click to link project(s)
 
-                                                        <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" title="Link project" (click)="AddProjects()">
+                                                        <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" title="Link project(s)" (click)="AddProjects()">
                                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
                                                             <!-- <span>Add More</span> -->
                                                         </div>
@@ -2538,8 +2538,8 @@
                                                     </div>
                                                     
                                                     <ng-template #NoAttachments_ary>
-                                                        <span class="dark-title">No attachment link
-                                                            <div *ngIf="Meetingstatuscom!='Completed'" class="add-s" title="Link attachment" (click)="Attachment_views()">
+                                                        <span (click)="Attachment_views()" class="dark-title  SMail cursor-pointer ">click to link attachment(s) 
+                                                            <div *ngIf="Meetingstatuscom!='Completed'" class="add-s" title="Link attachment(s)" (click)="Attachment_views()">
                                                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
                                                                 <!-- <span>Add More</span> -->
                                                             </div>
@@ -2655,7 +2655,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div  class="row">
+                                        <div *ngIf="item.Created_by != AdminName" class="row">
                                             <div class="col-md-3 details-bg">
                                                 <div class="details-label">
                                                     <span class="label-icon active">
@@ -2738,8 +2738,8 @@
                                                         </div> -->
                                                     </div>
                                                     <ng-template #NoUser>
-                                                        <div class="dark-title">No attendees link
-                                                            <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" title="Link Attendees" (click)="View_Meeting_Attendees();">
+                                                        <div (click)="View_Meeting_Attendees();" class="dark-title SMail cursor-pointer ">click to add attendee(s)
+                                                            <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" title="Link attendee(s)" (click)="View_Meeting_Attendees();">
                                                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
                                                                 <!-- <span>Add More</span> -->
                                                             </div>
@@ -3550,7 +3550,7 @@
 
                                                                             <span  data-toggle="tooltip" title="Attachment!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !=''"  (click)="LoadDocument(item.Reference)"><i
                                                                                 class="fas fa-file-pdf text-muted mr-1"></i>
-                                                                            <a class="text-info curser-pointer" title="Click To Open File"
+                                                                            <a class="text-info curser-pointer" title="click To Open File"
                                                                                 ><b>{{item.FileName}}</b></a></span>
 
                                                                             <span  data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !='' && item.Remarks!= 'undefined'">
@@ -4175,7 +4175,7 @@
                             </g>
                         </svg>
                         <h4 class="m-0">
-                            Link portfolio
+                            Link portfolio(s)
                         </h4>
                         <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                             (click)="closeLinkSideBar()">
@@ -4959,7 +4959,7 @@
                         <h4 class="mb-0 project_icon"  [ngClass]="{'active':totalproject}" >
                             <i _ngcontent-pre-c394="" class="fab fa-wpforms mr-2 "
                             style="font-size: 1.4em;"></i>
-                                <span class="kt-chat__title">Link projects </span>
+                                <span class="kt-chat__title">Link project(s) </span>
                         </h4>
                         <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                             (click)="closeLinkSideBar()">
@@ -5171,7 +5171,7 @@
                         </span>
                             
 
-                        <h4 class="mb-0">Previous Meeting Notes
+                        <h4 class="mb-0">Previous meeting notes
                         </h4>
                         <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                             (click)="closeInfo()">
@@ -6920,7 +6920,7 @@
 
                                                                             <span  data-toggle="tooltip" title="Attachment!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !=''"  (click)="LoadDocument(item.Reference)"><i
                                                                                 class="fas fa-file-pdf text-muted mr-1"></i>
-                                                                            <a class="text-info curser-pointer" title="Click To Open File"
+                                                                            <a class="text-info curser-pointer" title="click To open file"
                                                                                 ><b>{{item.FileName}}</b></a></span>
 
                                                                             <span  data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !='' && item.Remarks!= 'undefined'">
@@ -7057,11 +7057,11 @@
                                             <span></span>
                                         </label>
                                     </div>     -->
-                                    <!-- <span class="mr-4" title="Click to download">
+                                    <!-- <span class="mr-4" title="click to download">
                                         <input type="checkbox" (change)="onCheckboxChanges($event, item.url, item.File_Name)">
                                     </span> -->
                                     <div class="attach-check">
-                                        <label class="checkbox checkbox-outline checkbox-success mb-0 mr-2">
+                                        <label class="checkbox checkbox-outline checkbox-success mb-0 mr-2 ">
                                             <input type="checkbox" name="Checkboxes15" (change)="onCheckboxChanges($event, item.url, item.File_Name)" id="checkbox{{i}}">
                                             <span></span>
                                         </label>
@@ -7124,7 +7124,7 @@
                                     <div class="kt-notification__item-details">
                                         <div class="d-flex-center">
                                     
-                                        <div class="kt-notification__item-title fw-bold">
+                                        <div class="kt-notification__item-title fw-bold cursor-pointer">
                                             <a (click)="LoadDocument(item.file_id,true,item.File_Name&&item.File_Name,item.url,item.contenttype,item.Created_by)"> {{item.File_Name}}</a>
                                         </div>
                                         <div>
