@@ -3631,6 +3631,10 @@ span.admin-check-svg {
     cursor: pointer;
 }
 
+.SMail:hover{
+    color: #2786fb !important;
+}
+
 .ast-kt-dw {
     position: relative;
     top: 4px;
