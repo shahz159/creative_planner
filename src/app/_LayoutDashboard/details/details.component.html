@@ -5030,10 +5030,17 @@
 
                                                             <div class="mb-2">
                                                                 <span class="text-info fw-medium" *ngIf="Accept_active">
-                                                                    * Appreciated for great work.
+                                                                    
+                                                                    <ng-container *ngIf="projectActionInfo[currentActionView].Status=='Under Approval'">* This action is assigned to you, and you will hold accountability for completing it.</ng-container>
+                                                                    <ng-container *ngIf="projectActionInfo[currentActionView].Status=='Forward Under Approval'">* Forward action for managing and completing the task.</ng-container>
+                                                                    <ng-container *ngIf="projectActionInfo[currentActionView].Status=='Cancellation Under Approval'">* This will remove the action from the project, and clear the accountability for its completion.</ng-container>
 
                                                                 </span>
-                                                                <span class="text-info fw-medium" *ngIf="Reject_active">* Reject as to type of rejection, which help user to modify this action accordingly.</span>
+                                                                <span class="text-info fw-medium" *ngIf="Reject_active">
+                                                                    <ng-container *ngIf="projectActionInfo[currentActionView].Status=='Under Approval'">* Reject if unsuitable or needs changes. Provide a reason to assist the assignee.</ng-container>
+                                                                    <ng-container *ngIf="projectActionInfo[currentActionView].Status=='Forward Under Approval'">* Reject if unsuitable or unclear. Provide a reason to guide the forwarder.</ng-container>
+                                                                    <ng-container *ngIf="projectActionInfo[currentActionView].Status=='Cancellation Under Approval'">* Reject as to type of rejection if it's not justified.</ng-container>
+                                                                </span>
                                                             </div>
 
                                                             <div class="kt-pdv">

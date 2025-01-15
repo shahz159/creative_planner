@@ -3552,20 +3552,23 @@ approvalSubmitting:boolean=false;
                   });
                 }
                 this.notifyService.showSuccess("Successfully updated", 'Action completed');
+
+
+
                 // after the action is successfully completed
-                let prjAction = this.projectActionInfo.find((prjAct: any) => prjAct.Project_Code === this.Sub_ProjectCode)
-                const prjActionindex = this.projectActionInfo.indexOf(prjAction)
-                if (prjActionindex !== -1) {
-                  const prjActionComp = { ...prjAction,CD:new Date(), Status: 'Completed', Remarks: fd.get('Remarks'), IndexId: prjAction.IndexId };
-                  this.projectActionInfo.splice(prjActionindex, 1, prjActionComp);
-                  this.clearFilterConfigs();
-                }  // updated project action.
+                // let prjAction = this.projectActionInfo.find((prjAct: any) => prjAct.Project_Code === this.Sub_ProjectCode)
+                // const prjActionindex = this.projectActionInfo.indexOf(prjAction)
+                // if (prjActionindex !== -1) {
+                //   const prjActionComp = { ...prjAction,CD:new Date(), Status: 'Completed', Remarks: fd.get('Remarks'), IndexId: prjAction.IndexId };
+                //   this.projectActionInfo.splice(prjActionindex, 1, prjActionComp);
+                //   this.clearFilterConfigs();
+                // }  // updated project action.
 
                 this._remarks = "";
                 this._inputAttachments = "";
                 this.selectedFile = null;
                 this.invalidFileSelected=false;
-                // this.getProjectDetails(this.URL_ProjectCode);
+                this.getProjectDetails(this.URL_ProjectCode);
                 this.calculateProjectActions();     // recalculate the project actions.
                 this.closeActCompSideBar();   // close action completion sidebar.
                 this.getAttachments(1);
