@@ -488,23 +488,8 @@
                                     <a>
                                         <div class="d-flex justify-content-between align-items-center flex-wrap">
                                             <!--Textbox Category Rename -->
-                                            <span class="kt-inbox__subject w-100" id="TextboxCat_{{item.Category_ID}}"
-                                                style="display: none;">
-                                                <div class="d-flex align-items-center">
-                                                    <input type="text" class="form-control" [(ngModel)]="Cat_Name"
-                                                        (keydown.enter)="OnCategoryRename(item.Category_ID)">
-                                                    <div class="d-flex ml-3" id="button-addon4">
-                                                        <button class=" btn btn-input-cat-action edit btn-sm py-0 px-2 mr-2"
-                                                            (click)="OnCategoryRename(item.Category_ID)"><i
-                                                                class="fas fa-check mr-0"></i></button>
-                                                        <button class=" btn btn-input-cat-action delete btn-sm py-0 px-2"
-                                                            (click)="OnCat_Cancel(item.Category_ID)"><i
-                                                                class="fas fa-times mr-0"></i></button>
-                                                    </div>
-                                                </div>
-                                            </span>
                                             <div class="kt-main-list-item w-100" id="LabelCat_{{item.Category_ID}}"
-                                            (click)="OnCategoryClick(item.Category_ID,item.Category_Name);_SearchTask='';filterLists()" >
+                                                (click)="OnCategoryClick(item.Category_ID,item.Category_Name)" >
                                                 <div class="kt-main-list-item-icon">
                                                     <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 35 35" data-name="Layer 2" id="e73e2821-510d-456e-b3bd-9363037e93e3" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11.933,15.055H3.479A3.232,3.232,0,0,1,.25,11.827V3.478A3.232,3.232,0,0,1,3.479.25h8.454a3.232,3.232,0,0,1,3.228,3.228v8.349A3.232,3.232,0,0,1,11.933,15.055ZM3.479,2.75a.73.73,0,0,0-.729.728v8.349a.73.73,0,0,0,.729.728h8.454a.729.729,0,0,0,.728-.728V3.478a.729.729,0,0,0-.728-.728Z"></path><path d="M11.974,34.75H3.52A3.233,3.233,0,0,1,.291,31.521V23.173A3.232,3.232,0,0,1,3.52,19.945h8.454A3.232,3.232,0,0,1,15.2,23.173v8.348A3.232,3.232,0,0,1,11.974,34.75ZM3.52,22.445a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M31.522,34.75H23.068a3.233,3.233,0,0,1-3.229-3.229V23.173a3.232,3.232,0,0,1,3.229-3.228h8.454a3.232,3.232,0,0,1,3.228,3.228v8.348A3.232,3.232,0,0,1,31.522,34.75Zm-8.454-12.3a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M27.3,15.055a7.4,7.4,0,1,1,7.455-7.4A7.437,7.437,0,0,1,27.3,15.055Zm0-12.3a4.9,4.9,0,1,0,4.955,4.9A4.935,4.935,0,0,0,27.3,2.75Z"></path></g></svg>
                                                 </div>
@@ -513,30 +498,7 @@
                                                     <div class="kt-main-list-item-count">{{item.TaskCount}}</div>
                                                 </div>
                                             </div>
-                                            <div   class="d-flex flex-column align-items-cente py-2 w-100" style="display: none!important;">
-                                                <div id="LabelCat_{{item.Category_ID}}"
-                                                    (click)="OnCategoryClick(item.Category_ID,item.Category_Name)">
-                                                    <div class="kt-category-p-tittle">
-                                                        <h4>
-                                                            {{item.Category_Name}}
-                                                        </h4>
-                                                    </div>
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <div class="labelcat-task">
-                                                            Total Tasks: <b>{{item.TaskCount}}</b>
-                                                        </div>
-                                                        <!-- <div class="labelcat-date">
-                                                            {{ item.Created_DT | date:'d MMM, y' }}
-                                                       </div> -->
-                                                       <!-- <span class="kt-badge kt-badge--primary  kt-badge--inline w-content">
-                                                           {{item.Created_DT|taskDateAgo}}
-                                                       </span> -->
-
-                                                    </div>
-
-                                                </div>
-                                                <!-- End -->
-                                            </div>
+                                            
                                             <div class="kt-cat-action" [hidden]="hideMenuOfCategory" *ngIf="item.Category_ID!='2411' && item.Category_ID!='3595'">
                                                 <button class="btn btn-cat-action edit" title="Click to edit category"
                                                     (click)="OnCategoryEdit_Click(item.Category_ID,item.Category_Name)">
@@ -631,17 +593,10 @@
                                                 fill="#000000"></path>
                                         </g>
                                     </svg>
-                                    <input type="search" autocomplete="off" name="PortfolioSearch" placeholder="Search task" [(ngModel)]="_SearchTask"  (ngModelChange)="filterLists()"
+                                    <input type="text" autocomplete="off" name="PortfolioSearch" placeholder="Search task" [(ngModel)]="_SearchTask"  (ngModelChange)="filterLists()"
                                         class="form-control right-flter-b border-0" />
-
                                 </div>
-
-
                                 </div>
-
-                                <!-- <span   class="mr-2" style="background-color: white;"  (click)="_SearchTask='';filterLists()">
-                                  <svg fill="#000000" viewBox="0 0 200 200" style="width:40px;height:40px" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title></title><path d="M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z"></path></g></svg>
-                                </span> -->
 
 
 
@@ -843,17 +798,30 @@
                                                                     (click)="OnRadioClick(item.Assign_Id)"
                                                                     [disabled]="item.TypeOfTask=='SUBTASK'" />
                                                                 <input class="inputforfocus" type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/> -->
+
+<!--
                                                                 <mat-list-item class="subtask-radio mx-4">
-                                                                  <mat-checkbox color="primary" (change)="selectunSelect($event,item)"></mat-checkbox>
-                                                                </mat-list-item>
+
+                                                                  <mat-checkbox color="primary" (change)="selectunSelect($event,item)"
+
+                                                                 ></mat-checkbox>
+                                                                </mat-list-item> -->
+
+                                                                <span class="mr-2 cursor-pointer unassign-btn" (click)="OnRadioClick(item.Assign_Id)"
+                                                                [disabled]="item.TypeOfTask=='SUBTASK'">
+                                                                  <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L12.0243 14.3899C11.4586 14.9556 10.5414 14.9556 9.97568 14.3899L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z" fill="currentColor"></path> </g></svg>
+                                                                </span>
+
+
 
                                                               </div>
                                                         </div>
 
                                                         <!-- Working Now -->
                                                         <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75"  [ngStyle]="{ 'cursor': 'pointer' }" >
-                                                            <div class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg" >
-                                                                <span class="kt-inbox__subject" style="width: 100%; display: flex; height: 50px; align-items: center;" (click)="unassign_edit1();"
+                                                            <div
+                                                                class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg" >
+                                                                <span class="kt-inbox__subject" style="width: 100%; display: flex; height: 50px; align-items: center;" (click)="unassign_edit(item.Task_Name,item.Assign_Id,item.Creation_Date);"
                                                                     id="spnLabel_{{item.Assign_Id}}">
                                                                     {{item.Task_Name}}</span>
                                                                 <span class="kt-inbox__subject" style="display:none;"
@@ -872,7 +840,9 @@
                                                                     </div>
                                                                 </span>
                                                             </div>
+
                                                             <!-- Rename Model -->
+
                                                         </div>
 
                                                        <div>
@@ -880,7 +850,16 @@
 
 
 
-                                                        <div class="d-flex align-items-center justify-content-end py-lg-0 py-2" id="div_{{item.Assign_Id}}" *ngIf="item.TypeOfTask!='SUBTASK'">
+
+
+
+
+
+                                                        <div class="d-flex align-items-center justify-content-end py-lg-0 py-2"
+
+
+
+                                                        id="div_{{item.Assign_Id}}" *ngIf="item.TypeOfTask!='SUBTASK'">
 
 
 
@@ -894,14 +873,6 @@
                                                         [disabled]="item.TypeOfTask=='SUBTASK'">
                                                           <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L12.0243 14.3899C11.4586 14.9556 10.5414 14.9556 9.97568 14.3899L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z" fill="currentColor"></path> </g></svg>
                                                         </span> -->
-
-
-
-                                                        <span class="mr-2 cursor-pointer unassign-btn" (click)="OnRadioClick(item.Assign_Id)"
-                                                        [disabled]="item.TypeOfTask=='SUBTASK'">
-                                                          <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L12.0243 14.3899C11.4586 14.9556 10.5414 14.9556 9.97568 14.3899L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z" fill="currentColor"></path> </g></svg>
-                                                        </span>
-
 
                                                         <span matTooltip="Click to rename task"
                                                             (click)="OnEditNameClick(item.Task_Name,item.Assign_Id)"
@@ -1018,7 +989,7 @@
                                                             <div class="position-relative dropright" >
 
                                                             <a     class="btn px-0 info-btn curser-pointer run-info mr-2"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    <svg  (click)="openActionassign(item.Assign_Id)"     xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 28px; height: 28px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M506.231111 65.009619c-246.822478 0-446.911586 200.090131-446.911586 446.912609 0 246.823502 200.090131 446.912609 446.911586 446.912609 246.823502 0 446.912609-200.089108 446.912609-446.912609C953.144744 265.098727 753.054613 65.009619 506.231111 65.009619zM810.142819 704.729489 598.136288 781.818215l-192.736653-77.088726-212.009601 77.088726L193.390034 319.270511l212.009601-77.088726 192.736653 77.088726 212.007555-77.088726L810.143842 704.729489z"/><path d="M771.597945 297.214169 617.40719 353.262696 617.40719 733.788316 771.597945 677.735695Z"/><path d="M424.670537 670.923546 578.862315 732.583884 578.862315 353.075431 424.670537 291.417139Z"/><path d="M231.939001 726.785831 386.126686 670.736281 386.126686 290.214754 231.939001 346.262258Z"/></svg>
+                                                                    <svg  (click)="openActionassign(i)"     xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 28px; height: 28px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M506.231111 65.009619c-246.822478 0-446.911586 200.090131-446.911586 446.912609 0 246.823502 200.090131 446.912609 446.911586 446.912609 246.823502 0 446.912609-200.089108 446.912609-446.912609C953.144744 265.098727 753.054613 65.009619 506.231111 65.009619zM810.142819 704.729489 598.136288 781.818215l-192.736653-77.088726-212.009601 77.088726L193.390034 319.270511l212.009601-77.088726 192.736653 77.088726 212.007555-77.088726L810.143842 704.729489z"/><path d="M771.597945 297.214169 617.40719 353.262696 617.40719 733.788316 771.597945 677.735695Z"/><path d="M424.670537 670.923546 578.862315 732.583884 578.862315 353.075431 424.670537 291.417139Z"/><path d="M231.939001 726.785831 386.126686 670.736281 386.126686 290.214754 231.939001 346.262258Z"/></svg>
 <!--
                                                                <div class="dropdown-menu run-info-hover-menu" >
                                                                     <div class="heading">
@@ -1127,19 +1098,19 @@
                                                              </svg>
                                                                </a> -->
                                                             </div>
-                                                            <div class="action-right" (click)="openActionassign(item.Assign_Id)" [ngStyle]="{ 'cursor': 'pointer' }">
+                                                            <div class="action-right"  [ngStyle]="{ 'cursor': 'pointer' }">
                                                                 <div class="action-div-item-content">
-                                                                    <span class="kt-inbox__subject  h5 mb-0">{{item.Task_Name}}
+                                                                    <span  (click)="openActionassign(i)" class="kt-inbox__subject  h5 mb-0">{{item.Task_Name}}
 
                                                                     </span>
 
                                                                     <span *ngIf="item.FileName" class="fa fa-paperclip text-info attachment fa-lg cursor-pointer"  [style.height.px]="10"
-                                                                    [style.width.px]="10" title="Reference attachment" (click)="LoadDocument1(item.IsCloud=true,item.FileName,item.Reference,getContentType(item),item.Assigned_Name);$event.stopPropagation()"></span>
+                                                                    [style.width.px]="10" title="Reference attachment" (click)="LoadDocument1(item.IsCloud=true,item.FileName,item.Reference,getContentType(item),item.Assigned_Name)"></span>
 
-                                                                    <div class="desc">{{item.Task_Description}}</div>
-                                                                    <div>{{item.Project_type }} | {{item.Assigned_Name}}</div>
+                                                                    <div (click)="openActionassign(i)" class="desc">{{item.Task_Description}}</div>
+                                                                    <div (click)="openActionassign(i)">{{item.Project_type }} | {{item.Assigned_Name}}</div>
                                                                 </div>
-                                                                <div  class="action-div-item-content-end">
+                                                                <div  (click)="openActionassign(i)" class="action-div-item-content-end">
                                                                     <div class="mb-1">
                                                                         {{item.Creation_Date| date:'d MMM, y' }}
                                                                     </div>
@@ -1286,26 +1257,9 @@
                                       </div>
                                     </div>
 
-                                    <!-- <div id="noSearchFoundMessage" style="display:none;">
+                                    <div id="noSearchFoundMessage" style="display:none;">
                                       <h1  style="color:white">No search found</h1>
-
-
-
-                                    </div> -->
-
-                                    <div id="noSearchFoundMessage"  style="display:none;" class="smart-images">
-
-                                      <div class="no-c">
-                                        <img   style="width: 380px;height:380px" src="https://cswebapps.com/creativeplanner/assets/images/noActionPresent.png">
-                                      <h1 class="space">No search found.</h1>
-                                      </div>
                                     </div>
-
-
-
-
-
-
 
                                     <div class="runway-card d-none" id="AssignedTask">
                                       <div class="runway-card-header" id="headingFour"    *ngIf="ActionedAssigned_Josn.length>0">
@@ -1329,7 +1283,7 @@
                                                             <div class="action-div-item w-100" >
                                                             <div class="position-relative dropright">
                                                                 <a    class="btn px-0 info-btn curser-pointer run-info mr-2"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <svg  (click)="editassignPending(item.Assign_Id)"  xmlns="http://www.w3.org/2000/svg"  class="svg-icon"  style="width: 28px; height: 28px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M506.231111 65.009619c-246.822478 0-446.911586 200.090131-446.911586 446.912609 0 246.823502 200.090131 446.912609 446.911586 446.912609 246.823502 0 446.912609-200.089108 446.912609-446.912609C953.144744 265.098727 753.054613 65.009619 506.231111 65.009619zM810.142819 704.729489 598.136288 781.818215l-192.736653-77.088726-212.009601 77.088726L193.390034 319.270511l212.009601-77.088726 192.736653 77.088726 212.007555-77.088726L810.143842 704.729489z"/><path d="M771.597945 297.214169 617.40719 353.262696 617.40719 733.788316 771.597945 677.735695Z"/><path d="M424.670537 670.923546 578.862315 732.583884 578.862315 353.075431 424.670537 291.417139Z"/><path d="M231.939001 726.785831 386.126686 670.736281 386.126686 290.214754 231.939001 346.262258Z"/></svg>
+                                                                <svg  (click)="editassignPending(i)"  xmlns="http://www.w3.org/2000/svg"  class="svg-icon"  style="width: 28px; height: 28px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M506.231111 65.009619c-246.822478 0-446.911586 200.090131-446.911586 446.912609 0 246.823502 200.090131 446.912609 446.911586 446.912609 246.823502 0 446.912609-200.089108 446.912609-446.912609C953.144744 265.098727 753.054613 65.009619 506.231111 65.009619zM810.142819 704.729489 598.136288 781.818215l-192.736653-77.088726-212.009601 77.088726L193.390034 319.270511l212.009601-77.088726 192.736653 77.088726 212.007555-77.088726L810.143842 704.729489z"/><path d="M771.597945 297.214169 617.40719 353.262696 617.40719 733.788316 771.597945 677.735695Z"/><path d="M424.670537 670.923546 578.862315 732.583884 578.862315 353.075431 424.670537 291.417139Z"/><path d="M231.939001 726.785831 386.126686 670.736281 386.126686 290.214754 231.939001 346.262258Z"/></svg>
 
 
                                                             </a>
@@ -1337,24 +1291,24 @@
                                                         </div>
 
 
-                                                            <div class="action-right" (click)="editassignPending(item.Assign_Id)" [ngStyle]="{ 'cursor': 'pointer' }">
+                                                            <div class="action-right"  [ngStyle]="{ 'cursor': 'pointer' }">
                                                                 <div class="action-div-item-content">
-                                                                    <span class="kt-inbox__subject  h5 mb-0" >{{item.Task_Name}} </span>
+                                                                    <span class="kt-inbox__subject  h5 mb-0" (click)="editassignPending(i)">{{item.Task_Name}} </span>
 
 
                                                                       <span *ngIf="item.FileName" class="fa fa-paperclip  attachment text-info fa-lg cursor-pointer"
-                                                                       title="Reference attachment" (click)="LoadDocument1(item.IsCloud=true,item.FileName,item.Reference,getContentType(item),item.AssignedTo);$event.stopPropagation()"></span>
+                                                                       title="Reference attachment" (click)="LoadDocument1(item.IsCloud=true,item.FileName,item.Reference,getContentType(item),item.AssignedTo)"></span>
 
 
-                                                                    <div  class="desc">{{item.Task_Description}}</div>
-                                                                    <div ><span *ngIf="item.Project_type">
+                                                                    <div (click)="editassignPending(i)" class="desc">{{item.Task_Description}}</div>
+                                                                    <div (click)="editassignPending(i)"><span *ngIf="item.Project_type">
                                                                         {{item.Project_type==='Under Approval'?'New project under approval':item.Project_type}}</span> | {{item.AssignedTo}}</div>
                                                                 </div>
 
 
 
 
-                                                                <div  class="action-div-item-content-end">
+                                                                <div (click)="editassignPending(i)" class="action-div-item-content-end">
                                                                     <div class="mb-1">
                                                                         {{item.Modified_DT|  date:'d MMM, y'}}
                                                                     </div>
@@ -1830,60 +1784,23 @@
  <!-- unassign edit side bar start -->
 
  <div id="unassign-editsidebar" class="sideInfobar animate-right offcanvas">
-
-
-
-
-
   <div class="unassign-editsidebar-body">
-    <div class="d-flex align-items-center mb-2" style="gap: 20px;">
-      <div class="form-check">
-          <input class="form-check-input" type="radio" name="projectOption" id="projectRadio1" (change)="toggleProjectoptions('option1')" checked>
-          <label class="form-check-label" for="projectRadio1">
-           <h5>Project/Task</h5>
-          </label>
-        </div>
-
-        <!-- *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length<=1" -->
-        <div class="form-check"  *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length<=1" >
-          <input class="form-check-input" type="radio" name="projectOption" id="projectRadio2" (change)="toggleProjectoptions('option2')">
-          <label class="form-check-label" for="projectRadio2">
-            <h5> Action to project</h5>
-          </label>
-        </div>
-   </div>
-    <span>Selected task(s)<span class="text-danger">*</span></span>
       <div class="unassign-editsidebar-head mb-0" style="align-items: flex-start;">
+          <div  >
+
+          </div>
           <div class="radiotitle"  [ngClass]="{'error-vd': !selected_taskName&&formFieldsRequired}" style="margin-top: 5px;">
-          <div class="todo-list w-100">
-              <div class="agenda-item" *ngFor="let item of selectedtaskNames; let i=index">
-                  <span class="agenda-index">{{i+1}}.</span>
-                  <label [id]="'agenda-label-'+i" class="task-name">{{item.Task_Name}}</label>
-                  <input [id]="'agenda-text-field-'+i" type="text" class="task-name-editfield  d-none " [value]="item.Task_Name"/>
-
-                 <div class="agenda-ctrl-btns">
-
-                  <button [id]="'edit-agendaname-btn-'+i" class="edit-agendaname-btn" title="Edit" (click)="editTaskname(i)">
-                      <svg  width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path> </g></svg>
-                  </button>
+              <!-- <input type="text"   class="form-control" id="unassigneditInput" placeholder="Enter title"  (keydown.enter)="OnTask_Renameofnew()"   [(ngModel)]="this.selected_taskName"> -->
+              <textarea id="unassigneditside1" class="runway-textarea" (input)="initAutosize('unassigneditside1')" style="height: 34px !important;"  placeholder="Enter title" (keydown.enter)="OnTask_Renameofnew()"   [(ngModel)]="this.selected_taskName" ></textarea>
 
 
-
-                <button (click)="canceleditTaskname(i)" title="Cancel" [id]="'edit-cancel-'+i" class="editing-cancel d-none">
-                  <svg width="10px" height="12px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title >cancel</title><desc >Created with Sketch.</desc><g  id="icons" stroke-width="1" fill-rule="evenodd"><g  id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-2168.000000, -158.000000)" fill-rule="nonzero"><g id="1" transform="translate(1350.000000, 120.000000)"><path  d="M821.426657,38.5856848 L830.000001,47.1592624 L838.573343,38.5856848 C839.288374,37.8706535 840.421422,37.8040611 841.267835,38.4653242 L841.414315,38.5987208 C842.195228,39.3796338 842.195228,40.645744 841.414306,41.4266667 L832.840738,50 L841.414315,58.5733429 C842.129347,59.2883742 842.195939,60.4214224 841.534676,61.2678347 L841.401279,61.4143152 C840.620366,62.1952283 839.354256,62.1952283 838.573333,61.4143055 L830.000001,52.8407376 L821.426657,61.4143152 C820.711626,62.1293465 819.578578,62.1959389 818.732165,61.5346758 L818.585685,61.4012792 C817.804772,60.6203662 817.804772,59.354256 818.585694,58.5733333 L827.159262,50 L818.585685,41.4266571 C817.870653,40.7116258 817.804061,39.5785776 818.465324,38.7321653 L818.598721,38.5856848 C819.379634,37.8047717 820.645744,37.8047717 821.426657,38.5856848 Z M820.028674,60.999873 C820.023346,60.9999577 820.018018,61 820.012689,61 Z M820.161408,60.9889406 L820.117602,60.9945129 L820.117602,60.9945129 C820.132128,60.9929912 820.146788,60.9911282 820.161408,60.9889406 Z M819.865274,60.9891349 L819.883098,60.9916147 C819.877051,60.9908286 819.87101,60.9899872 819.864975,60.9890905 L819.865274,60.9891349 Z M819.739652,60.9621771 L819.755271,60.9664589 C819.749879,60.9650278 819.744498,60.9635509 819.739126,60.9620283 L819.739652,60.9621771 Z M820.288411,60.9614133 L820.234515,60.9752112 L820.234515,60.9752112 C820.252527,60.971132 820.270527,60.9665268 820.288411,60.9614133 Z M820.401572,60.921544 L820.359957,60.9380009 L820.359957,60.9380009 C820.373809,60.9328834 820.387743,60.9273763 820.401572,60.921544 Z M819.623655,60.9214803 C819.628579,60.923546 819.626191,60.9225499 819.623806,60.921544 L819.623655,60.9214803 Z M819.506361,60.8625673 L819.400002,60.7903682 C819.444408,60.8248958 819.491056,60.8551582 819.539393,60.8811554 L819.506361,60.8625673 L819.506361,60.8625673 Z M820.51858,60.8628242 L820.486378,60.8809439 L820.486378,60.8809439 C820.496939,60.8752641 820.507806,60.8691536 820.51858,60.8628242 Z M840.881155,60.4606074 L840.862567,60.4936392 L840.862567,60.4936392 L840.790368,60.5999978 C840.824896,60.555592 840.855158,60.5089438 840.881155,60.4606074 Z M840.936494,60.3386283 L840.92148,60.3763453 L840.92148,60.3763453 C840.926791,60.3637541 840.931774,60.3512293 840.936494,60.3386283 Z M840.974777,60.2110466 L840.962177,60.2603479 L840.962177,60.2603479 C840.966711,60.2443555 840.97096,60.2277405 840.974777,60.2110466 Z M840.994445,60.0928727 L840.989135,60.1347261 L840.989135,60.1347261 C840.991174,60.1210064 840.992958,60.1069523 840.994445,60.0928727 Z M839.987311,39.9996529 L830,49.9872374 L820.012689,39.9996529 L819.999653,40.0126889 L829.987237,50 L819.999653,59.9873111 L820.012689,60.0003471 L830,50.0127626 L839.987311,60.0003471 L840.000347,59.9873111 L830.012763,50 L840.000347,40.0126889 L839.987311,39.9996529 Z M840.999873,59.9713258 L840.999916,60.0003193 L840.999916,60.0003193 C841.000041,59.9907089 841.000027,59.9810165 840.999873,59.9713258 Z M840.988941,59.8385918 L840.994513,59.8823981 L840.994513,59.8823981 C840.992991,59.8678719 840.991128,59.8532122 840.988941,59.8385918 Z M840.961413,59.7115886 L840.975211,59.7654853 L840.975211,59.7654853 C840.971132,59.7474727 840.966527,59.7294733 840.961413,59.7115886 Z M840.921544,59.5984278 L840.938001,59.6400431 L840.938001,59.6400431 C840.932883,59.6261908 840.927376,59.612257 840.921544,59.5984278 Z M840.862824,59.4814199 L840.880944,59.5136217 L840.880944,59.5136217 C840.875264,59.503061 840.869154,59.4921939 840.862824,59.4814199 Z M819.119056,40.4863783 L819.134164,40.5134185 C819.128903,40.5043379 819.123796,40.4951922 819.118845,40.4859852 L819.119056,40.4863783 Z M819.061999,40.3599569 L819.075467,40.3944079 C819.070734,40.3829341 819.066223,40.3713901 819.061935,40.3597825 L819.061999,40.3599569 Z M819.024789,40.2345147 L819.033541,40.2701072 C819.030397,40.2582611 819.027473,40.2463686 819.024771,40.234436 L819.024789,40.2345147 Z M819.005077,40.1136164 L819.008385,40.1422797 C819.007138,40.1326872 819.00603,40.12308 819.005061,40.1134615 L819.005077,40.1136164 Z M819.000419,39.9836733 L819,40.0126889 C819,40.002956 819.000141,39.993223 819.000424,39.9834934 L819.000419,39.9836733 Z M819.010865,39.8652739 L819.008385,39.8830981 C819.009171,39.8770511 819.010013,39.8710099 819.010909,39.8649753 L819.010865,39.8652739 Z M819.037823,39.7396521 L819.033541,39.7552707 C819.034972,39.7498794 819.036449,39.7444978 819.037972,39.7391264 L819.037823,39.7396521 Z M819.07852,39.6236547 C819.076454,39.6285788 819.07745,39.6261907 819.078456,39.6238057 L819.07852,39.6236547 Z M819.137433,39.5063608 L819.209632,39.4000022 C819.175104,39.444408 819.144842,39.4910562 819.118845,39.5393926 L819.137433,39.5063608 L819.137433,39.5063608 Z M820.485985,39.1188446 L820.519017,39.1374327 L820.519017,39.1374327 L820.625376,39.2096318 C820.58097,39.1751042 820.534322,39.1448418 820.485985,39.1188446 Z M839.513622,39.1190561 L839.486582,39.1341644 C839.495662,39.128903 839.504808,39.1237964 839.514015,39.1188446 L839.513622,39.1190561 Z M819.539,39.1190561 L819.511959,39.1341644 C819.52104,39.128903 819.530186,39.1237964 819.539393,39.1188446 L819.539,39.1190561 Z M840.460607,39.1188446 L840.493639,39.1374327 L840.493639,39.1374327 L840.599998,39.2096318 C840.555592,39.1751042 840.508944,39.1448418 840.460607,39.1188446 Z M819.661418,39.0634885 L819.63097,39.0754675 C819.641051,39.0713084 819.651187,39.0673212 819.661372,39.0635059 L819.661418,39.0634885 Z M820.359783,39.0619346 L820.401723,39.0785197 L820.401723,39.0785197 C820.387743,39.0726237 820.373809,39.0671166 820.359783,39.0619346 Z M839.640043,39.0619991 L839.605592,39.0754675 C839.617066,39.0707338 839.62861,39.0662229 839.640217,39.0619346 L839.640043,39.0619991 Z M840.338628,39.0635059 L840.376345,39.0785197 L840.376345,39.0785197 C840.363754,39.0732095 840.351229,39.0682261 840.338628,39.0635059 Z M819.789259,39.0251536 L819.755271,39.0335411 C819.766459,39.0305713 819.777688,39.0277987 819.788953,39.0252234 L819.789259,39.0251536 Z M820.234436,39.0247709 L820.288548,39.0386257 L820.288548,39.0386257 C820.270527,39.0334732 820.252527,39.028868 820.234436,39.0247709 Z M839.765485,39.0247888 L839.729893,39.0335411 C839.741739,39.0303966 839.753631,39.0274732 839.765564,39.0247709 L839.765485,39.0247888 Z M840.211047,39.0252234 L840.260348,39.0378229 L840.260348,39.0378229 C840.244356,39.0332892 840.227741,39.0290398 840.211047,39.0252234 Z M819.911404,39.0051132 L819.883098,39.0083853 C819.892432,39.0071719 819.901779,39.0060902 819.911137,39.0051402 L819.911404,39.0051132 Z M820.113462,39.0050614 L820.161342,39.0110494 L820.161342,39.0110494 C820.145468,39.0086743 820.12948,39.006675 820.113462,39.0050614 Z M839.886384,39.005077 L839.85772,39.0083853 C839.867313,39.0071382 839.87692,39.0060303 839.886538,39.0050614 L839.886384,39.005077 Z M840.088863,39.0051402 L840.134726,39.0108651 L840.134726,39.0108651 C840.119676,39.0086288 840.104284,39.0067057 840.088863,39.0051402 Z M839.95834,39.0004173 L840.016507,39.0004238 C839.997122,38.9998609 839.977725,38.9998588 839.95834,39.0004173 Z M819.983493,39.0004238 L820.04166,39.0004173 C820.022275,38.9998588 820.002878,38.9998609 819.983493,39.0004238 Z" id="cancel"></path></g></g></g></g></svg>
-                  </button>
-                  <button (click)="updateAgenda(i)"  title="Save" [id]="'editing-save-'+i" class="editing-save d-none ">
-                      <svg width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6"  stroke-width="2.4" stroke-linecap="round"></path> </g></svg>
-                  </button>
-
-               </div>
-              </div>
           </div>
-          <!-- <textarea id="unassigneditside1" class="runway-textarea" (input)="initAutosize('unassigneditside1')" style="height: 34px !important;"  placeholder="Enter title" (keydown.enter)="OnTask_Renameofnew()"   [(ngModel)]="this.selected_taskName" ></textarea> -->
-          </div>
+
       </div>
-      <span *ngIf="!selected_taskName&&formFieldsRequired" class="text-danger" >Please select task from unassign.</span>
-
+      <span *ngIf="!selected_taskName&&formFieldsRequired" class="text-danger" >Please enter title</span>
+      <!-- <div style="margin-bottom: 1.5rem;">
+        <span *ngIf="!selected_taskName&&formFieldsRequired" class="text-danger">Please enter title</span>
+      </div> -->
 
 
 
@@ -1926,7 +1843,22 @@
 
       <div class="unassign-editsidebar-radio">
       <!-- Radio buttons group -->
+       <div class="d-flex align-items-center mb-2" style="gap: 20px;">
+          <div class="form-check">
+              <input class="form-check-input" type="radio" name="projectOption" id="projectRadio1" (change)="toggleProjectoptions('option1')" checked>
+              <label class="form-check-label" for="projectRadio1">
+                Project/Task
+              </label>
+            </div>
 
+            <!-- *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length<=1" -->
+            <div class="form-check"  >
+              <input class="form-check-input" type="radio" name="projectOption" id="projectRadio2" (change)="toggleProjectoptions('option2')">
+              <label class="form-check-label" for="projectRadio2">
+                Action to project
+              </label>
+            </div>
+       </div>
 
   <div *ngIf="selectedOption === 'option1'">
     <!-- <div class="form-group mb-0">
@@ -1978,7 +1910,7 @@
   </mat-autocomplete>
   </mat-form-field>
 
-<span *ngIf="!employeSelect&&formFieldsRequired" class="text-danger">Please select assign.</span>
+<span *ngIf="!employeSelect&&formFieldsRequired" class="text-danger">Please select assign</span>
   </div>
   &nbsp;
         <!-- Divs that will be conditionally displayed -->
@@ -2119,7 +2051,7 @@
     <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
     <!-- <div class="text-info">Add any attachment for reference.</div> -->
 </div>
-<!-- <span class="text-muted">Add any attachment for reference</span> -->
+<span class="text-muted">Add any attachment for reference</span>
 </div>
   </div>
 
@@ -2279,7 +2211,7 @@
           <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
           <!-- <div class="text-info">Add any attachment for reference.</div> -->
         </div>
-        <!-- <span class="text-muted">Add any attachment for reference</span> -->
+        <span class="text-muted">Add any attachment for reference</span>
   </div>
 </div>
 </div>
@@ -2345,9 +2277,9 @@
   <ng-container *ngIf="ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status !== 'Pending'">
     <ng-container    >
   <div class="unassign-editsidebar-body">
-    <div class="text-right w-100 mb-3">
-      <button class="btn btn-sm btn-outline-info" *ngIf="ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Project_Code != null && ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status !='Pending'" (click)="newDetails(ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Project_Code)">View Project</button>
-      <button class="btn btn-sm rejected" *ngIf="ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status =='Rejected'" >{{ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status}}</button>
+    <div class="text-right w-100">
+      <button class="btn btn-sm btn-outline-info posts" *ngIf="ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Project_Code != null && ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status !='Pending'" (click)="newDetails(ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Project_Code)">View Project</button>
+      <button class="rejected posts" *ngIf="ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status =='Rejected'" >{{ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status}}</button>
     <div class="unassign-editsidebar-head mb-0" style="align-items: flex-start;">
         <div class="" >
             <!-- <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" fill="currentColor"></path> </g></svg> -->
@@ -2555,7 +2487,7 @@
 
     </div>
     <div style="margin-bottom: 1.5rem;">
-      <span *ngIf="!task__name&&formFieldsRequired" class="text-danger">Please enter title.</span>
+      <span *ngIf="!task__name&&formFieldsRequired" class="text-danger">Please enter title</span>
     </div>
     <div class="unassign-editsidebar-radio">
 
@@ -2810,9 +2742,9 @@
 <!-- open action assign section start -->
 <div id="openactionassign" class="sideInfobar animate-right offcanvas">
   <div class="unassign-editsidebar-body" >
-    <div class="text-right w-100 mb-3">
+    <div class="text-right w-100">
 
-  <button class="btn btn-sm btn-outline-info text-left" (click)="openActionInDetails(ActionedSubtask_Json[bindvalue]?.Project_Code, ActionedSubtask_Json[bindvalue]?.ActionCode)">
+  <button class="btn btn-sm btn-outline-info text-left posts" (click)="openActionInDetails(ActionedSubtask_Json[bindvalue]?.Project_Code, ActionedSubtask_Json[bindvalue]?.ActionCode)">
       View Action
     </button>
 
@@ -2834,7 +2766,7 @@
 
 
   <div style="margin-bottom: 1.5rem;">
-    <span *ngIf="!selected_taskName&&formFieldsRequired" class="text-danger">Please enter title.</span>
+    <span *ngIf="!selected_taskName&&formFieldsRequired" class="text-danger">Please enter title</span>
   </div>
 
 

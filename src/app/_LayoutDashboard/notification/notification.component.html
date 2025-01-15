@@ -18,10 +18,10 @@
                 <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
                 <strong *ngIf="currentPageContent=='PROJECT APPROVALS'">Project approval</strong>
                 <strong *ngIf="currentPageContent=='INFORMATION'">Information</strong>
-                <strong *ngIf="currentPageContent=='LEAVE REQUESTS'">Leave requests</strong>
+                <!-- <strong *ngIf="currentPageContent=='LEAVE REQUESTS'">Leave requests</strong>
                 <strong *ngIf="currentPageContent=='LEAVE RESPONSES'">Leave responses</strong>
                 <strong *ngIf="currentPageContent=='DAR REQUESTS'">Dar requests</strong>
-                <strong *ngIf="currentPageContent=='DAR RESPONSES'">Dar responses</strong>
+                <strong *ngIf="currentPageContent=='DAR RESPONSES'">Dar responses</strong> -->
               </h3>
 
               <div class="dropdown-menu dropdown-menu-xl px-2" id="dropd" style="margin-top: 21px; margin-left: -24px;">
@@ -66,7 +66,7 @@
                   </button>
                 </span>
 
-                <span (click)="setPageContent('LEAVE REQUESTS')">
+                <span class="d-none" (click)="setPageContent('LEAVE REQUESTS')">
                     <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':currentPageContent=='LEAVE REQUESTS'}">
                         <div class="d-flex align-items-center">
                             <span *ngIf="leave_Requests" class="count lv-reqs">{{leave_Requests.length}}</span>
@@ -85,7 +85,7 @@
                     </button>
                 </span>
 
-                <span (click)="setPageContent('LEAVE RESPONSES')">
+                <span class="d-none" (click)="setPageContent('LEAVE RESPONSES')">
                   <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':currentPageContent=='LEAVE RESPONSES'}">
                       <div class="d-flex align-items-center">
                           <span *ngIf="_newNotificationLeave" class="count lv-resps">{{_newNotificationLeave.length}}</span>
@@ -104,7 +104,7 @@
                   </button>
                 </span>
 
-                <span (click)="setPageContent('DAR REQUESTS')">
+                <span class="d-none" (click)="setPageContent('DAR REQUESTS')">
                   <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':currentPageContent=='DAR REQUESTS'}">
                       <div class="d-flex align-items-center">
                           <span class="count dr-reqs">0</span>
@@ -123,7 +123,7 @@
                   </button>
                 </span>
 
-                <span (click)="setPageContent('DAR RESPONSES')">
+                <span class="d-none" (click)="setPageContent('DAR RESPONSES')">
                   <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':currentPageContent=='DAR RESPONSES'}">
                       <div class="d-flex align-items-center">
                           <span class="count dr-resps">0</span>

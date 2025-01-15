@@ -216,6 +216,8 @@ export class MeetingDetailsComponent implements OnInit {
     this.GetPreviousdate_meetingdata();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
+
+    this.disablePreviousTodayDate.setDate(this.disablePreviousTodayDate.getDate() + 1);
     //   this.signalRService.startConnection();
     //   this.signalRService.addBroadcastMessageListener((name, message) => {
     //   console.log(`Received: ${name}: ${message}`);
@@ -723,7 +725,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.portfoliocount = this.checkedportfolio.length;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
       this._TotalAttachment = this.Attachments_ary.length;
-      // console.log('Attachments_ary',this.Attachments_ary);
+      console.log('Attachments_ary',this.Attachments_ary);
 
       this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
       this.Project_code = JSON.parse(this.EventScheduledjson[0].Project_code);
@@ -786,14 +788,28 @@ export class MeetingDetailsComponent implements OnInit {
       this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
     
     });
-
-
- 
-      
-
         console.log(this.Project_code,'<3-------Project_code----2>', this.portfolio_Scheduledjson);
-
   }
+
+
+
+
+  // getFileIcon(item: any): string {
+  //   const extension = item.File_Name.split('.').pop()?.toLowerCase();
+  //   return extension === 'pdf' ? 'https://upload.wikimedia.org/wikipedia/commons/0/02/Pdf_icon.svg' :
+  //          extension === 'jpg' || extension === 'jpeg' ? 'https://upload.wikimedia.org/wikipedia/commons/6/66/JPEG_icon.svg' :
+  //          extension === 'png' ? 'https://upload.wikimedia.org/wikipedia/commons/8/89/PNG_transparency_demonstration_1.png' :
+  //          'https://upload.wikimedia.org/wikipedia/commons/d/d7/File_icon_%28new%29.svg';
+  // }
+  
+
+
+
+
+
+
+
+
 
 
 
@@ -2068,6 +2084,8 @@ debugger
     document.getElementById("Previous_sidebar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetPreviousdate_meetingdata();
+    this.setFilterInfo('Agenda',this.filterconfig.sortby);
+    this.showDropdown = false;
   }
 
 
@@ -2103,7 +2121,7 @@ debugger
 
     this.Emp_Number = emp_Number;
     this.GetPreviousdate_meetingdata();
-    this.fiterDataOfEmployee = true;;
+    this.fiterDataOfEmployee = true;
 
   }
 
@@ -2153,11 +2171,15 @@ debugger
           this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
           this.filterByAgenda = this.Previousdata_meeting[0].Details
 
-
           this.sortbyAgendaList(0, this.filterByAgenda[0]);
           this.sortbyFilterList(0, this.filterByAgenda[0])
-          console.log(this.Previousdata_meeting, 'Previousdata_meeting');
+           
           this.totalPreviousdata_meeting = this.Previousdata_meeting.length;
+
+         if(this.filterconfig.filterby=='Attendees' && this.filterconfig.sortby == 'All'){
+          this.addDesignationAndCompanyToMeetingDatas();  
+         }
+         
           this.resultFound = true
         } else {
           this.resultFound = false
@@ -2167,9 +2189,76 @@ debugger
         // console.log(this.attendeesLists,'this.attendeesLists')
         this.Emp_Number = 0
       });
-
   }
 
+
+  remainingUsers :any
+
+  addDesignationAndCompanyToMeetingDatas(){
+
+    console.log(this.User_Scheduledjson,'User_Scheduledjson' ,(this.Createdby));
+    console.log(this.Previousdata_meeting,'User_Scheduledjson')
+
+
+    this.remainingUsers = this.User_Scheduledjson.filter(
+      user => !this.Previousdata_meeting[0].Details.some(detail => detail.Emp_no === user.stringval)
+    );
+    
+    console.log(this.remainingUsers);
+ 
+  }
+
+
+  //69 Remove it after 2 day now date is 13-01-2025 addDesignationAndCompanyToMeetingData() {
+   
+  //   this.User_Scheduledjson.forEach((user) => {
+  //     let isMatched = false;
+  
+     
+  //     this.Previousdata_meeting.forEach((meeting) => {
+  //       if (meeting.Details && meeting.Details.length > 0) {
+  //         meeting.Details.forEach((detail) => {
+  //           if (user.stringval === detail.Emp_no) {
+              
+  //             detail.Emp_Name = user.TM_DisplayName;
+  //             detail.Emp_no = user.stringval;
+  //             detail.Designation_Name = user.Designation_Name;
+  //             detail.Com_Name = user.Com_Name;
+  //             detail.AgendaNotes = detail.AgendaNotes || [];
+  //             detail.MatchText = `Matched with GetPreviousdate_meetingdata for ${user.TM_DisplayName}`;
+  //             isMatched = true;
+  //           }
+  //         });
+  //       }
+  //     });
+  
+  //     // Add unmatched user at the end of Details
+  //     if (!isMatched) {
+  //       this.Previousdata_meeting.forEach((meeting) => {
+  //         if (!meeting.Details) meeting.Details = [];
+  //         meeting.Details.push({
+  //           Emp_Name: user.TM_DisplayName,
+  //           Emp_no: user.stringval,
+  //           Designation_Name: user.Designation_Name,
+  //           Com_Name: user.Com_Name,
+  //           AgendaNotes: [],
+  //         });
+  //       });
+  //     }
+  //   });
+  
+  //   console.log(this.Previousdata_meeting, "Updated Previousdata_meeting with matched and unmatched data");
+  //69 Remove it after 2 day now date is 13-01-2025 }
+  
+
+
+
+
+
+
+
+
+  
 
   toggleAccordion(pause: any) {
     // Your implementation here
@@ -2447,7 +2536,9 @@ debugger
     this._calenderDto.Emp_No = this.Current_user_ID;
     this.CalenderService.NewGetMeetingnote_comp(this._calenderDto).subscribe
       (data => {
-        this._meetingNotesAry = JSON.parse(data["Checkdatetimejson"]);
+        if(data && data["Checkdatetimejson"]){
+          this._meetingNotesAry = JSON.parse(data["Checkdatetimejson"]);
+        } 
       })
   }
 
@@ -2460,8 +2551,8 @@ debugger
     // if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true || event.type === 'paste' || event.keyCode === 8) {
     //   debugger
       // Replace newline characters with <br> tags
-      if(event.type === 'paste'){
-
+   
+      if(event.type === 'paste'){     
         this.savePastedText(event);
         // const pastedText = event.clipboardData?.getData('text/plain') || '';
         // this.Notes_Type= this.Notes_Type + pastedText ;
@@ -2523,7 +2614,7 @@ debugger
 
     this.CalenderService.InsertAgendameeting_notes(this._calenderDto).subscribe
       (data => {
-        console.log(data, 'Private notes');
+       
         this.GetNotedata();
         // this.GetAttendeesnotes();
         // this.GetMeetingnotes_data();
@@ -2817,15 +2908,16 @@ onFileChange(event) {
 
   OnSubmitAttachment() {
 
-
     if (this.SelectedAttachmentFile != undefined || this.RemovedFile_id.length > 0) {
 
-      this.showFileUpload = true; // Show upload elements
-      this.filesUploadingCount = this._lstMultipleFiales.length;
-      if(this.filesUploadingCount === 1){
-        this.uploadingFileName = this._lstMultipleFiales[0].FileName
+      if(this.RemovedFile_id.length == 0){
+        this.showFileUpload = true; // Show upload elements
+        this.filesUploadingCount = this._lstMultipleFiales.length;
+        if(this.filesUploadingCount === 1){
+          this.uploadingFileName = this._lstMultipleFiales[0].FileName
+        }
       }
-
+    
 
       this.EventNumber = this.EventScheduledjson[0].EventNumber;
       let _attachmentValue = 0;
@@ -2905,18 +2997,21 @@ onFileChange(event) {
 
      
        this._calenderDto.flagid = this._PopupConfirmedValue;
-      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
-      frmData.append("CreatedBy", this.Current_user_ID);
-      frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
+      
+         
       frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
-      frmData.append("flag_id", this._calenderDto.flagid.toString());
+      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+      frmData.append("CreatedBy", this.Current_user_ID); 
       frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
+      frmData.append("flag_id", this._calenderDto.flagid.toString());
+      frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
       frmData.append("Schedule_date",this._StartDate.toString());
-
+  
       if (this._attachmentValue == 1) {
         // this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
           this.CalenderService.EditUploadCalendarAttachmenstCore(frmData).subscribe(
           (event: HttpEvent<any>) => {
+           
             switch (event.type) {
               case HttpEventType.Sent:
                 console.log('Request has been made!');
@@ -2937,24 +3032,27 @@ onFileChange(event) {
                   this.filesUploadingCount = 0;
                   this.processingFile = true;
                   this.CalenderService._AzureUpdateCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
-                   
+                    console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                     let responseBody = JSON.parse(myJSON).body; 
+
+                    console.log('User successfully created!', responseBody);
                     if (responseBody === 1) { 
                       this.processingFile = false;                
                       this.processingComplete = true;
                                   
                       setTimeout(() => {
                         this.processingComplete = false; 
+                        this.attach_btn();
                         this.notifyService.showSuccess("Uploaded successfully ", '');                
                         this.meeting_details();
-                        this.showFileUpload = false;    
-                      }, 2000);
-                         
-                  
-                  }
-                  //  this._Message = (JSON.parse(myJSON).body);
-                 
+                        this.showFileUpload = false;                            
+                      }, 2000);     
+                  }else if (responseBody === 0) { 
+                    this.notifyService.showSuccess("Deleted successfully", '');                            
+                      this.meeting_details();                                                                 
+                }
+                  //  this._Message = (JSON.parse(myJSON).body);         
                   });
                 }
 
@@ -3396,7 +3494,7 @@ onFileChange(event) {
       if (result === true) {
         this.CalenderService.DeleteAttachmentOfMeeting(this._calenderDto).subscribe((data) => {
           this.meeting_details()
-          this.notifyService.showSuccess("Deleted successfully ada ", '');
+          this.notifyService.showSuccess("Deleted successfully", '');
         });
       }
       else {
@@ -3936,7 +4034,7 @@ onFileChange(event) {
         this.agendasList = JSON.parse(data['Agendas']);
        
 
-         
+        if(this.agendasList != null){
      
             if(this.Agendas_List&&this.Agendas_List.length>0){                  
               if (this.agendasList.length != this.Agendas_List.length) {
@@ -4021,10 +4119,11 @@ onFileChange(event) {
           this.AllAttendees_notes = []
         }
         // const objectsWithEmployees  = this.AllAttendees_notes.filter(obj => obj.hasOwnProperty('Employees'));
-
+      }
         // this.Employeeslist=objectsWithEmployees[0].Employees;
       });
     // this.meeting_details();
+  
   }
 
 
@@ -4057,6 +4156,7 @@ onFileChange(event) {
   Attachment12_ary: any = [];
   _labelName: string;
   disablePreviousDate = new Date();
+  disablePreviousTodayDate = new Date();
   _StartDate: any;
   Startts: any;
   StartTimearr: any = [];
@@ -6554,7 +6654,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     this._attachmentValue = 0;
     frmData.append("Attachment", "false");
   }
-debugger
+
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
@@ -6562,9 +6662,10 @@ debugger
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id);
 
        this._calenderDto.attachment = this._attachmentValue.toString();
-
+      
       this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
         (data => {
+          debugger
           this.RemovedAttach = [];
           // alert(data['Schedule_date'])
           frmData.append("Schedule_date", data['Schedule_date'].toString());
@@ -7330,6 +7431,16 @@ onParticipantFilter(){
       agendaListElement.classList.toggle("active");
       agendaArrowElement.classList.toggle("rotate");
     }
+  }
+
+
+
+
+
+  activeAgendaIndexAttendees: number | null = null;
+
+  toggleMenu(i: number): void {
+      this.activeAgendaIndexAttendees = this.activeAgendaIndexAttendees === i ? null : i;
   }
 
 
@@ -8426,14 +8537,14 @@ validateURL(value: string): void {
 }
 
 
-SrearchingAgendaItem:any;
+SearchingAgendaItem:any;
 
-open_search() {
-  document.getElementById("search-head-filter-open").classList.add("search-head-filter-open");
+clear_search() {
+ this.SearchingAgendaItem=null;
 }
-close_search() {
-  document.getElementById("search-head-filter-open").classList.remove("search-head-filter-open");
-}
+// close_search() {
+//   document.getElementById("search-head-filter-open").classList.remove("search-head-filter-open");
+// }
 
 
 }

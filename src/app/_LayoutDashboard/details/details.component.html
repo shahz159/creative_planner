@@ -13573,7 +13573,7 @@
                   <div class="form-group mb-0">
 
                       <button type="submit" class="btn btn-info w-110 ml-2"
-                          (click)="onAction_updateProject(0)" *ngIf="(projectInfo&&projectInfo.Status!='Under Approval'  )">
+                          (click)="onAction_updateProject(0)" *ngIf="(projectInfo&&projectInfo.Status!='Under Approval')">
                           Update</button>
                       <ng-container *ngIf="(projectInfo&&projectInfo.Status==='Under Approval') && ((Current_user_ID==approvalEmpId && projectInfo&&projectInfo.OwnerEmpNo===Current_user_ID) || isHierarchy==true) ">
                           <button type="submit" class="btn btn-info w-110 ml-2"

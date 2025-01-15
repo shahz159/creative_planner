@@ -3631,6 +3631,10 @@ span.admin-check-svg {
     cursor: pointer;
 }
 
+.SMail:hover{
+    color: #2786fb !important;
+}
+
 .ast-kt-dw {
     position: relative;
     top: 4px;
@@ -4016,6 +4020,22 @@ span.lbl-hdn {
 }
 
 .no-agenda h6 {
+    font-size: 14px;
+    color: #979797;
+}
+
+
+
+.no-agenda-found {
+    text-align: center;
+}
+
+.no-agenda-found img {
+    width: 40%;
+    height: auto;
+}
+
+.no-agenda-found h6 {
     font-size: 14px;
     color: #979797;
 }
@@ -8711,6 +8731,7 @@ svg.asseticn.prim-icn.memo_attachment_img {
 }
 .search-head-filter.search-head-filter-open{
     width: 250px;
+    padding-left: 10px;
 }
 
 .search-head-filter .form-control {
