@@ -723,7 +723,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.portfoliocount = this.checkedportfolio.length;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
       this._TotalAttachment = this.Attachments_ary.length;
-      // console.log('Attachments_ary',this.Attachments_ary);
+      console.log('Attachments_ary',this.Attachments_ary);
 
       this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
       this.Project_code = JSON.parse(this.EventScheduledjson[0].Project_code);
@@ -786,14 +786,28 @@ export class MeetingDetailsComponent implements OnInit {
       this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
     
     });
-
-
- 
-      
-
         console.log(this.Project_code,'<3-------Project_code----2>', this.portfolio_Scheduledjson);
-
   }
+
+
+
+
+  // getFileIcon(item: any): string {
+  //   const extension = item.File_Name.split('.').pop()?.toLowerCase();
+  //   return extension === 'pdf' ? 'https://upload.wikimedia.org/wikipedia/commons/0/02/Pdf_icon.svg' :
+  //          extension === 'jpg' || extension === 'jpeg' ? 'https://upload.wikimedia.org/wikipedia/commons/6/66/JPEG_icon.svg' :
+  //          extension === 'png' ? 'https://upload.wikimedia.org/wikipedia/commons/8/89/PNG_transparency_demonstration_1.png' :
+  //          'https://upload.wikimedia.org/wikipedia/commons/d/d7/File_icon_%28new%29.svg';
+  // }
+  
+
+
+
+
+
+
+
+
 
 
 
@@ -2068,6 +2082,8 @@ debugger
     document.getElementById("Previous_sidebar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetPreviousdate_meetingdata();
+    this.setFilterInfo('Agenda',this.filterconfig.sortby);
+    this.showDropdown = false;
   }
 
 
@@ -2103,7 +2119,7 @@ debugger
 
     this.Emp_Number = emp_Number;
     this.GetPreviousdate_meetingdata();
-    this.fiterDataOfEmployee = true;;
+    this.fiterDataOfEmployee = true;
 
   }
 
@@ -2153,11 +2169,15 @@ debugger
           this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
           this.filterByAgenda = this.Previousdata_meeting[0].Details
 
-
           this.sortbyAgendaList(0, this.filterByAgenda[0]);
           this.sortbyFilterList(0, this.filterByAgenda[0])
-          console.log(this.Previousdata_meeting, 'Previousdata_meeting');
+           
           this.totalPreviousdata_meeting = this.Previousdata_meeting.length;
+
+         if(this.filterconfig.filterby=='Attendees' && this.filterconfig.sortby == 'All'){
+          this.addDesignationAndCompanyToMeetingDatas();  
+         }
+         
           this.resultFound = true
         } else {
           this.resultFound = false
@@ -2167,9 +2187,76 @@ debugger
         // console.log(this.attendeesLists,'this.attendeesLists')
         this.Emp_Number = 0
       });
-
   }
 
+
+  remainingUsers :any
+
+  addDesignationAndCompanyToMeetingDatas(){
+
+    console.log(this.User_Scheduledjson,'User_Scheduledjson' ,(this.Createdby));
+    console.log(this.Previousdata_meeting,'User_Scheduledjson')
+
+
+    this.remainingUsers = this.User_Scheduledjson.filter(
+      user => !this.Previousdata_meeting[0].Details.some(detail => detail.Emp_no === user.stringval)
+    );
+    
+    console.log(this.remainingUsers);
+ 
+  }
+
+
+  //69 Remove it after 2 day now date is 13-01-2025 addDesignationAndCompanyToMeetingData() {
+   
+  //   this.User_Scheduledjson.forEach((user) => {
+  //     let isMatched = false;
+  
+     
+  //     this.Previousdata_meeting.forEach((meeting) => {
+  //       if (meeting.Details && meeting.Details.length > 0) {
+  //         meeting.Details.forEach((detail) => {
+  //           if (user.stringval === detail.Emp_no) {
+              
+  //             detail.Emp_Name = user.TM_DisplayName;
+  //             detail.Emp_no = user.stringval;
+  //             detail.Designation_Name = user.Designation_Name;
+  //             detail.Com_Name = user.Com_Name;
+  //             detail.AgendaNotes = detail.AgendaNotes || [];
+  //             detail.MatchText = `Matched with GetPreviousdate_meetingdata for ${user.TM_DisplayName}`;
+  //             isMatched = true;
+  //           }
+  //         });
+  //       }
+  //     });
+  
+  //     // Add unmatched user at the end of Details
+  //     if (!isMatched) {
+  //       this.Previousdata_meeting.forEach((meeting) => {
+  //         if (!meeting.Details) meeting.Details = [];
+  //         meeting.Details.push({
+  //           Emp_Name: user.TM_DisplayName,
+  //           Emp_no: user.stringval,
+  //           Designation_Name: user.Designation_Name,
+  //           Com_Name: user.Com_Name,
+  //           AgendaNotes: [],
+  //         });
+  //       });
+  //     }
+  //   });
+  
+  //   console.log(this.Previousdata_meeting, "Updated Previousdata_meeting with matched and unmatched data");
+  //69 Remove it after 2 day now date is 13-01-2025 }
+  
+
+
+
+
+
+
+
+
+  
 
   toggleAccordion(pause: any) {
     // Your implementation here
@@ -2447,7 +2534,9 @@ debugger
     this._calenderDto.Emp_No = this.Current_user_ID;
     this.CalenderService.NewGetMeetingnote_comp(this._calenderDto).subscribe
       (data => {
-        this._meetingNotesAry = JSON.parse(data["Checkdatetimejson"]);
+        if(data && data["Checkdatetimejson"]){
+          this._meetingNotesAry = JSON.parse(data["Checkdatetimejson"]);
+        } 
       })
   }
 
@@ -3943,7 +4032,7 @@ onFileChange(event) {
         this.agendasList = JSON.parse(data['Agendas']);
        
 
-         
+        if(this.agendasList != null){
      
             if(this.Agendas_List&&this.Agendas_List.length>0){                  
               if (this.agendasList.length != this.Agendas_List.length) {
@@ -4028,10 +4117,11 @@ onFileChange(event) {
           this.AllAttendees_notes = []
         }
         // const objectsWithEmployees  = this.AllAttendees_notes.filter(obj => obj.hasOwnProperty('Employees'));
-
+      }
         // this.Employeeslist=objectsWithEmployees[0].Employees;
       });
     // this.meeting_details();
+  
   }
 
 
@@ -7338,6 +7428,16 @@ onParticipantFilter(){
       agendaListElement.classList.toggle("active");
       agendaArrowElement.classList.toggle("rotate");
     }
+  }
+
+
+
+
+
+  activeAgendaIndexAttendees: number | null = null;
+
+  toggleMenu(i: number): void {
+      this.activeAgendaIndexAttendees = this.activeAgendaIndexAttendees === i ? null : i;
   }
 
 

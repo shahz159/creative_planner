@@ -1495,6 +1495,9 @@ export class DashboardComponent implements OnInit {
   }
 
 
+  RecurrValue:boolean=false;
+  RecurrValueMonthly:boolean=false;
+
   ReshudingTaskandEvent() {
 
 
@@ -1510,7 +1513,7 @@ export class DashboardComponent implements OnInit {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-        console.log(this.EventScheduledjson, "test11111")
+
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
         this.Startts = (this.EventScheduledjson[0]['St_Time']);
@@ -1536,7 +1539,7 @@ export class DashboardComponent implements OnInit {
         this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
         this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
 
-  debugger
+
        if(this.Link_Details != ''){
         if(!this.Link_Details.includes('<a href=')){
           var details = this.Link_Details.split(', ')
@@ -1613,6 +1616,8 @@ export class DashboardComponent implements OnInit {
         this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
         this.maxDate = this.EventScheduledjson[0]['End_date'];
         this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
+
+
         // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
         if ((this.EventScheduledjson[0]['Onlinelink']) == true) {
           document.getElementById("Descrip_Name12").style.display = "flex";
@@ -1640,15 +1645,17 @@ export class DashboardComponent implements OnInit {
           document.getElementById("Recurrence_hide").style.display = "none";
         }
         else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
-
+       
           this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("div_endDate_new").style.display = "block";
           document.getElementById("Recurrence_hide").style.display = "block";
           document.getElementById("weekly_121_new").style.display = "block";
           this.selectedrecuvalue = '2';
-          let Recc = [];  
-          var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
+     
+          // old code start 
+          let Recc = [];
+          var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);   
           Recc = ret1.split(",");
 
           for (var i = 0; i < Recc.length; i++) {
@@ -1658,6 +1665,14 @@ export class DashboardComponent implements OnInit {
               }
             });
           }
+          // old code End 
+
+       // New code start 
+       const dayShort = new Date(this._StartDate).toLocaleDateString('en-US', { weekday: 'short' });
+       if(ret1 != dayShort){
+        this.RecurrValue =true;
+       }  
+       // New code End 
 
           this.dayArr.forEach((item:any)=>{
             if(item.checked){
@@ -1668,13 +1683,13 @@ export class DashboardComponent implements OnInit {
 
 
         }
-        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {
+        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {    
           document.getElementById("Recurrence_hide").style.display = "block";
           document.getElementById("div_endDate_new").style.display = "block";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Monthly_121_new").style.display = "block";
           this._labelName = "Schedule Date";
-          this.selectedrecuvalue = '3';
+          this.selectedrecuvalue = '3';  
           let Recc = [];
           var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
           Recc = ret1.split(",");
@@ -1685,6 +1700,13 @@ export class DashboardComponent implements OnInit {
               }
             });
           }
+  
+           // New code Monthly start 
+           const day = new Date(this._StartDate).getDate().toString();  
+            if(ret1 != day){
+              this.RecurrValueMonthly =true;
+            }  
+           // New code Monthly End 
 
           this.MonthArr.forEach((item:any)=>{
             if(item.checked){
@@ -2443,7 +2465,7 @@ isValidURL = true;
       this.notProvided = false;
 
       // update code below
-
+ 
       this._calenderDto.flagid = this._PopupConfirmedValue;
       this._calenderDto.type = type;
       var start = moment(this.minDate);
@@ -2465,7 +2487,6 @@ isValidURL = true;
       // alert(end);
       const format2 = "YYYY-MM-DD";
       const d1 = new Date(moment(start).format(format2));
-debugger
       const d2 = new Date(moment(end).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = [];
@@ -2524,32 +2545,74 @@ debugger
           alert('Please select day');
           return false;
         }
+
+        if(this._PopupConfirmedValue == 2){
         for (let index = 0; index < this.dayArr.length; index++) {
-          if (this.dayArr[index].checked) {
-          
+          if (this.dayArr[index].checked) { 
             const day = this.dayArr[index].value;
             _arraytext.push(day);
             var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
-            this.daysSelectedII = this.daysSelectedII.concat(newArray);
+            // old code start 
+            // this.daysSelectedII = this.daysSelectedII.concat(newArray);
+            // old code end
+             
+            //new code start
+            if(this.RecurrValue==true){
+              const matchingDate = this.AllDatesSDandED.find(item => item.Date === this._StartDate);
+              if(matchingDate != undefined){
+                newArray.push(matchingDate);
+             }
+             this.daysSelectedII = this.daysSelectedII.concat(newArray).sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());                              
+           }else{
+              this.daysSelectedII = this.daysSelectedII.concat(newArray);
+            }
+          //new code end          
           }
-        }
+        }}
+      
+        if(this._PopupConfirmedValue == 1){
+          var startDateForWeekly =this._StartDate.format('YYYY-MM-DD');
+          this.daysSelectedII = this.AllDatesSDandED.filter(item => item.Date === startDateForWeekly);
+
+         }
+    
         if (this.daysSelectedII.length == 0) {
           alert('please select valid day');
         }
       }
       else if (this.selectedrecuvalue == "3") {
+       
+      
         if (this.MonthArr.filter(x => x.checked == true).length == 0) {
           alert('Please select day');
           return false;
         }
+
+        if(this._PopupConfirmedValue == 2){
         for (let index = 0; index < this.MonthArr.length; index++) {
-          if (this.MonthArr[index].checked == true) {
+          if (this.MonthArr[index].checked == true) {  
             const day = this.MonthArr[index].value;
             _arraytext.push(day);
             var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
-            this.daysSelectedII = this.daysSelectedII.concat(newArray);
+            this.daysSelectedII = this.daysSelectedII.concat(newArray).sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
           }
         }
+            // New code Monthly start 
+            if(this.RecurrValueMonthly==true){
+              const matchingMonthlyDate = this.AllDatesSDandED.find(item => item.Date === this._StartDate);
+              if(matchingMonthlyDate != undefined){
+                newArray.push(matchingMonthlyDate);
+             }
+               this.daysSelectedII = this.daysSelectedII.concat(newArray).sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());                              
+             }
+          //new code Monthly end
+         }
+        if(this._PopupConfirmedValue == 1){
+          var startDateForMonthly =moment(this._StartDate).format('YYYY-MM-DD');
+          this.daysSelectedII = this.AllDatesSDandED.filter(item => item.Date === startDateForMonthly);
+        }
+    
+
       }
       finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
@@ -2726,78 +2789,78 @@ debugger
           for (var i = 0; i < this._lstMultipleFiales.length; i++) {
             frmData.append("files", this._lstMultipleFiales[i].Files);
           }
-    const xmlDoc = document.implementation.createDocument('', '', null);
-    const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+        const xmlDoc = document.implementation.createDocument('', '', null);
+        const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+        
+        // Iterate over the file groups
+        this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+        console.log(`Processing group ${groupIndex}:`, fileGroup);
+        
+        // Normalize Files to an array
+        const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+        
+        files.forEach((file, fileIndex) => {
+          if (!file || !file.name || !file.type) {
+            console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+            return;
+          }
     
-    // Iterate over the file groups
-    this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
-    console.log(`Processing group ${groupIndex}:`, fileGroup);
+          console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+        
+          const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+          const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+          const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+          const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+        
+          // Populate <FileName> element
+          nameElement.textContent = file.name;
+        
+          // Generate a random ID and sanitize the file name for CloudName
+          const randomId = this.generateRandomId();
+          const sanitizedFileName = this.sanitizeFileName(file.name);
+          cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
     
-    // Normalize Files to an array
-    const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+            // Populate <ContentType> element
+            const contentType = this.getContentType(file.type);
+            contentTypeElement.textContent = contentType;
+          
+            // Append child elements to the <Row>
+            rowElement.appendChild(nameElement);
+            rowElement.appendChild(cloudNameElement);
+            rowElement.appendChild(contentTypeElement);
+          
+            // Append the <Row> to the root element
+            parentElement.appendChild(rowElement);
+          });
+          });
     
-    files.forEach((file, fileIndex) => {
-      if (!file || !file.name || !file.type) {
-        console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
-        return;
-      }
-    
-      console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
-    
-      const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
-      const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
-      const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
-      const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
-    
-      // Populate <FileName> element
-      nameElement.textContent = file.name;
-    
-      // Generate a random ID and sanitize the file name for CloudName
-      const randomId = this.generateRandomId();
-      const sanitizedFileName = this.sanitizeFileName(file.name);
-      cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
-    
-      // Populate <ContentType> element
-      const contentType = this.getContentType(file.type);
-      contentTypeElement.textContent = contentType;
-    
-      // Append child elements to the <Row>
-      rowElement.appendChild(nameElement);
-      rowElement.appendChild(cloudNameElement);
-      rowElement.appendChild(contentTypeElement);
-    
-      // Append the <Row> to the root element
-      parentElement.appendChild(rowElement);
-    });
-    });
-    
-    // Append the root <MultiDocument> element to the XML document
-    xmlDoc.appendChild(parentElement);
-    
-    // Serialize the XML document to a string
-    const serializer = new XMLSerializer();
-    const xmlString = serializer.serializeToString(xmlDoc);
-    
-    // Append the XML string to FormData
-    frmData.append("docs_multiple_xml", xmlString);
-    
-    // Log the XML string for debugging
-    console.log("Generated XML:", xmlString);
-    
-    } 
-    else {
-      this._attachmentValue = 0;
-      frmData.append("Attachment", "false");
-    }
+          // Append the root <MultiDocument> element to the XML document
+          xmlDoc.appendChild(parentElement);
+          
+          // Serialize the XML document to a string
+          const serializer = new XMLSerializer();
+          const xmlString = serializer.serializeToString(xmlDoc);
+          
+          // Append the XML string to FormData
+          frmData.append("docs_multiple_xml", xmlString);
+          
+          // Log the XML string for debugging
+          console.log("Generated XML:", xmlString);
+          
+          } 
+          else {
+            this._attachmentValue = 0;
+            frmData.append("Attachment", "false");
+          }
 
       
-        frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
-        frmData.append("CreatedBy", this.Current_user_ID.toString());
-        frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
-        frmData.append("flag_id", this._calenderDto.flagid.toString());
-        frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
-        
-        this._calenderDto.attachment =this._attachmentValue.toString();
+          frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+          frmData.append("CreatedBy", this.Current_user_ID.toString());
+          frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
+          frmData.append("flag_id", this._calenderDto.flagid.toString());
+          frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
+          
+          this._calenderDto.attachment =this._attachmentValue.toString();
 
  
 
@@ -3419,45 +3482,45 @@ debugger
 if(this.editTask && this.selectedrecuvalue =='2'){
 
 // uncheck prev date.
-  let d=new Date(this._Oldstart_date);
-  const index=d.getDay();
-  this.dayArr[index].checked=false;
+  // let d=new Date(this._Oldstart_date);
+  // const index=d.getDay();
+  // this.dayArr[index].checked=false;
 // uncheck prev date.
 
 // update new
-  let d2=new Date(this._StartDate);
-  const index2=d2.getDay();
-  this.dayArr[index2].checked=true;
+//   let d2=new Date(this._StartDate);
+//   const index2=d2.getDay();
+//   this.dayArr[index2].checked=true;
 
-  this.mtgOnDays=[];
-  this.dayArr.forEach((item:any)=>{
-    if(item.checked){
-        let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
-       this.mtgOnDays.push(d_name);
-    }
- });
+//   this.mtgOnDays=[];
+//   this.dayArr.forEach((item:any)=>{
+//     if(item.checked){
+//         let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
+//        this.mtgOnDays.push(d_name);
+//     }
+//  });
 // update new
 } else if(this.editTask && this.selectedrecuvalue == "3"){
 
-    // uncheck prev date.
-    let d=new Date(this._Oldstart_date);
-    const index=d.getDate();
-    this.MonthArr[index].checked=false;
-    // uncheck prev date.
+    // // uncheck prev date.
+    // let d=new Date(this._Oldstart_date);
+    // const index=d.getDate();
+    // this.MonthArr[index].checked=false;
+    // // uncheck prev date.
 
-    // update new
-    let d2=new Date(this._StartDate);
-    const index2=d2.getDate();
-    this.MonthArr[index2-1].checked=true;
+    // // update new
+    // let d2=new Date(this._StartDate);
+    // const index2=d2.getDate();
+    // this.MonthArr[index2-1].checked=true;
 
-    this.mtgOnDays=[];
-    this.MonthArr.forEach((item:any)=>{
-      if(item.checked){
+    // this.mtgOnDays=[];
+    // this.MonthArr.forEach((item:any)=>{
+    //   if(item.checked){
        
-         const d_no=Number.parseInt(item.value);
-         this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
-      }
-    });
+    //      const d_no=Number.parseInt(item.value);
+    //      this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
+    //   }
+    // });
     // update new
 }
 ////test end  ///////////////////////////////////////////
@@ -6202,6 +6265,8 @@ debugger
     this._lstMultipleFiales = [];
     this.RemovedFile_id = [];
     this.maxDate = null;
+    this.RecurrValue= false;
+    this.RecurrValueMonthly=false;
     this.EventNumber=null;
     this.selected = null;
     this.Title_Name = null;
