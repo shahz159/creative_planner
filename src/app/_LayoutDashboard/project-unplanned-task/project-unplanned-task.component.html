@@ -1002,9 +1002,9 @@
 
                                                     <ng-container  *ngIf="DisplayCreateIcon(item)&&this.checkedTaskNames.length===1">
                                                     <div class="btn-group mr-2" role="group">
-                                                      <button type="button" class="btn dropdown-toggle btn-tsk"
-                                                          data-toggle="dropdown" aria-expanded="false">
-                                                          <span  matTooltip="Create task / event"  class="svg-icon  svg-icon-primary svg-icon-2x" >
+                                                      <button (click)="Task_type(2);updateCharacterCount()" type="button" class="btn btn-tsk"
+                                                          >
+                                                          <span class="svg-icon  svg-icon-primary svg-icon-2x" >
 
                                                               <svg width="36" height="36" viewBox="0 0 36 36">
                                                                   <path fill="#34A853" d="M16 16v14h4V20z"></path>
@@ -1018,10 +1018,10 @@
                                                           <!-- <span class="tsk" >Create</span> -->
 
                                                       </button>
-                                                      <div class="dropdown-menu drop-cus">
-                                                          <a class="dropdown-item" (click)="Task_type(1)">Task</a>
-                                                          <a class="dropdown-item" (click)="Task_type(2);updateCharacterCount()">Event</a>
-                                                      </div>
+                                                      <!-- <div  matTooltip="Create meeting / task" class="dropdown-menu drop-cus"> -->
+                                                          <!-- <a class="dropdown-item" (click)="Task_type(1)">Task</a> -->
+                                                          <!-- <a class="dropdown-item" (click)="Task_type(2);updateCharacterCount()">Event</a> -->
+                                                      <!-- </div> -->
                                                   </div>
                                                 </ng-container>
 
@@ -3833,9 +3833,10 @@ class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline ho
                        </div>
                     </div>
                     <div *ngIf="create==true" class="d-flex align-items-center">
-                        <div (click)="changeScheduleType(2)" class="schedule-badge active mr-2 ml-3  curser-pointer"  [ngClass]="{'active':ScheduleType=='Event'}">Event</div>
-                        <div (click)="changeScheduleType(1)" class="schedule-badge curser-pointer" [ngClass]="{'active':ScheduleType=='Task'}" >Task</div>
-                    </div>
+                        <div  class="schedule-badge active mr-2 ml-3  curser-pointer"  [ngClass]="{'active':ScheduleType=='Event'}">Event</div>
+                        <!-- <div (click)="changeScheduleType(1)" class="schedule-badge curser-pointer" [ngClass]="{'active':ScheduleType=='Task'}" >Task</div> -->
+                        <!-- (click)="changeScheduleType(2)" -->
+                      </div>
                 </div>
             </div>
         </div>
