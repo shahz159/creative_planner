@@ -3014,7 +3014,7 @@ else{
     fd.append("AssignTo", this.selectedEmpNo);
     fd.append("Remarks", this._remarks);
     fd.append("EmployeeName", localStorage.getItem('UserfullName'));
-    fd.append("AssignId", this.selected_taskId.toString());
+    fd.append("AssignIds", this.selected_taskId.toString());
     fd.append("Owner", this.owner);
     fd.append("proState",this.completionattachment.toString());
     fd.append("actionCost",this.actionCost);
@@ -3393,7 +3393,7 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
     fd.append("AssignTo", this.employeSelect);
     fd.append("StartDate", datestrStart);
     fd.append("EndDate", datestrEnd);
-    fd.append("assignid",this.assign_Id)
+    fd.append("AssignIds",this.assign_Id)
     fd.append("Portfolio_Id", portfoliosSelected);
     fd.append("ProjectDays", ProjectDays.toString());
     fd.append("Remarks", this.__remarks);

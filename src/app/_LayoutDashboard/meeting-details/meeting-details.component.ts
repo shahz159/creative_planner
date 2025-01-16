@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -401,9 +401,12 @@ export class MeetingDetailsComponent implements OnInit {
     this.GetMeetingnotes_data();
   }
   Repeat_Meeting() {
+    
     document.getElementById("repeatModal").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    this._StartDate = this.disablePreviousTodayDate;
+    this.disablePreviousDate = this.disablePreviousTodayDate;
     //  this.meeting_details();
   }
   Close_Repeat_Meeting() {
@@ -566,6 +569,7 @@ export class MeetingDetailsComponent implements OnInit {
   _AllEventAttachment: number = 0;
   _FutureEventAttachment: number = 0;
   AdminName:any;
+  isLoading: boolean = true;
 
   meeting_details() {
  
@@ -787,7 +791,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.minutes = duration.minutes();
       this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
     
-    });
+    }); 
         console.log(this.Project_code,'<3-------Project_code----2>', this.portfolio_Scheduledjson);
   }
 
@@ -869,6 +873,10 @@ export class MeetingDetailsComponent implements OnInit {
       this.meetingDuration = Math.abs(meetingDurations);
       //  console.log(this.meetingDuration, 'meetingDate:');
     }
+
+    setTimeout(() => {
+      this.isLoading = false; // Set to false once the data is loaded
+      }, 4000); 
   }
 
 
@@ -4510,7 +4518,7 @@ onFileChange(event) {
     this.create = false;
     this.eventRepeat=false;
 
-
+debugger
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
@@ -4617,6 +4625,17 @@ onFileChange(event) {
         this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
         this.maxDate = this.EventScheduledjson[0]['End_date'];
         this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
+   
+        
+        // this code for chnage detection start
+        this.disablePreviousDate = null;
+        setTimeout(()=>{
+          this.disablePreviousDate = new Date();
+        },0);
+       // this code for chnage detection End
+
+
+
         // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
         if ((this.EventScheduledjson[0]['Onlinelink']) == true) {
           document.getElementById("Descrip_Name12").style.display = "flex";
@@ -6229,7 +6248,9 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     this.Attachment12_ary = [];
     this._lstMultipleFiales = [];
     this.maxDate = null;
-    this.isValidURL=true
+    this.isValidURL=true;
+    this.editTask=false;
+    this.eventRepeat = false;
     this.EventNumber=null;
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
@@ -7574,13 +7595,15 @@ onParticipantFilter(){
   
 
   date_menu(dialogId: string) {
+   
     document.getElementById(dialogId).classList.add("show");
     // document.getElementById('date-menu').classList.add("show");
     // document.getElementById('drop-overlay').classList.add("show");
     $('#date-menu').addClass('show');
     $('#drop-overlay').addClass('show');
 
-   
+    this._StartDate = this.disablePreviousTodayDate;
+    
   }
   date_menu_close(dialogId: string) {
     document.getElementById(dialogId).classList.remove("show");
@@ -7590,9 +7613,12 @@ onParticipantFilter(){
 
 
   date_menu_modal() {
+   
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("datemenu").style.display = "block";
-   
+  
+    
+    
   }
   date_menu_modal_close() {
     document.getElementById("schedule-event-modal-backdrop").style.display = "none";
@@ -7790,14 +7816,14 @@ onParticipantFilter(){
         // continue; // Skip this file
       // }
     }) 
-  
-  
-  
-  
   }
 
 
+
+
+
   repeatEvent() {
+  
     document.getElementById("div_endDate_new").style.display = "none";
     document.getElementById("Schenddate").style.display = "none";
 
@@ -7810,12 +7836,12 @@ onParticipantFilter(){
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-
+      
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.Schedule_ID = 0;   // schedule id.
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];  // event or task
         this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
-
+        debugger
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
@@ -7823,7 +7849,7 @@ onParticipantFilter(){
         this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
         this.Addressurl = this.EventScheduledjson[0]['Addressurl'];             // url
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];   // file attachment
-
+     
         // if (this._FutureEventTasksCount > 0) {
 
         // }
@@ -7835,7 +7861,8 @@ onParticipantFilter(){
         document.getElementById("Monthly_121_new").style.display = "none";
         document.getElementById("weekly_121_new").style.display = "none";
         document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-
+     
+       
 
         this.AllDatesSDandED = [];
         var jsonData = {};
@@ -7971,18 +7998,27 @@ onParticipantFilter(){
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "flex";
           document.getElementById("core_Dms").style.display = "flex";
-
-          const TEsb = document.getElementById('TaskEvent-Sidebar')
-          TEsb.addEventListener('scroll', () => {
-            this.autocompletes.forEach((ac) => {
-              if (ac.panelOpen)
-                ac.updatePosition();
-            });
-          })
+       
+      
+          this._StartDate=null;
+          this.disablePreviousDate = null;
+          setTimeout(()=>{
+            this._StartDate=this.disablePreviousTodayDate;
+            this.disablePreviousDate = this.disablePreviousTodayDate;
+          },0);
+        
+          // const TEsb = document.getElementById('TaskEvent-Sidebar')
+          // TEsb.addEventListener('scroll', () => {
+          //   this.autocompletes.forEach((ac) => {
+          //     if (ac.panelOpen)
+          //       ac.updatePosition();
+          //   });
+          // })
 
          }
 
       });
+
     this.closeevearea();
 
   }
