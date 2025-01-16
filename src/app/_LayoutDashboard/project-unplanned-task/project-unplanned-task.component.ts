@@ -2345,9 +2345,9 @@ selected_taskId:any;
 selected_taskName:any= [];
 formattedTaskNames :any;
 copyofItem: { Task_Name: string, Assign_Id: any }[] = [];
+Creation_Date:any
 
-
-unassign_edit1(id, task){
+unassign_edit1(id, task, date){
 
   debugger
 this.copyofItem.push({
@@ -2356,7 +2356,7 @@ this.copyofItem.push({
 });
 this.selectedtaskNames=JSON.parse(JSON.stringify(this.copyofItem));   // copy of selected items.
 this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ')
-
+this.Creation_Date = date
 
 
   document.getElementById('unassign-editsidebar').classList.add('kt-action-panel--on');
@@ -2648,139 +2648,7 @@ selectedProjecttype: string = "";
 noEndDate:boolean = false
 noStartDate : boolean = false
 
-assignTasksub(){
 
-  // if(this.SelectedEmplList ==null || this.SelectedEmplList == undefined || this._taskName == null || this._taskName == undefined || this._taskName == ""){
-  //   this.formFieldsRequired = true
-
-  // }
-  // else{
-
-  // if(!((this._taskName)&&this.SelectedEmplList)){
-  //   this.formFieldsRequired=true;
-  //   return;
-  // }
-  // else this.formFieldsRequired=false;
-  // check whether all mandatory fields provided
-
-
-
-  // debugger
-  if (this._StartDate == null && this._EndDate != null) {
-    this.noStartDate = true;
-    this.noEndDate = false;
-  }
-  else if (this._StartDate != null && this._EndDate == null) {
-    this.noEndDate = true;
-    this.noStartDate = false;
-  }
-  else {
-    this._ObjAssigntaskDTO.TaskName = this._taskName;
-    this._ObjAssigntaskDTO.TaskDescription = this._description;
-
-
-    var datestrStart;
-    var datestrEnd;
-
-    if (this._StartDate != null && this._EndDate != null) {
-      datestrStart = moment(this._StartDate).format();
-      datestrEnd = moment(this._EndDate).format();
-      this._ObjAssigntaskDTO.StartDate = datestrStart;
-      this._ObjAssigntaskDTO.EndDate = datestrEnd;
-    }
-    else {
-      datestrStart = moment(new Date()).format();
-      datestrEnd = moment(new Date()).format();
-      this._ObjAssigntaskDTO.StartDate = datestrStart;
-      this._ObjAssigntaskDTO.EndDate = datestrEnd;
-    }
-
-
-    if (this._StartDate instanceof Date && this._EndDate instanceof Date) {
-      // Check if both _StartDate and _EndDate are valid Date objects
-      const differenceInTime = this._EndDate.getTime() - this._StartDate.getTime();
-      const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-      this._ObjAssigntaskDTO.ProjectDays = -differenceInDays;
-    }
-    else {
-      this._ObjAssigntaskDTO.ProjectDays = 0;
-    }
-
-
-    this.BsService.bs_TypeofTask.subscribe(t => {
-
-      this.typeoftask = t;
-    });
-    // this.BsService.SetNewAssignId(this.task_id);
-
-    this._ObjAssigntaskDTO.TypeOfTask = this.typeoftask;
-    this._ObjAssigntaskDTO.AssignTo = this.Selec;
-    this._ObjAssigntaskDTO.Assigned_By = this.CurrentUser_ID;
-    this._ObjAssigntaskDTO.AssignId = this.task_id;
-    this._ObjAssigntaskDTO.ProjectType = this.selectedProjecttype;
-    this._ObjAssigntaskDTO.Remarks = this._remarks;
-    this._ObjAssigntaskDTO.Attachment = this.fileAttachment;
-
-    // console.log(this.selectedProjectType);
-    if (this.fileAttachment != null) {
-      if (this.fileAttachment.length > 0) {
-        this._ObjAssigntaskDTO.Reference = this.fileAttachment[0].Files;
-      }
-    }
-    console.log("Sending Obj..",this._ObjAssigntaskDTO)
-    const fd = new FormData();
-    fd.append("AssignTo", this._ObjAssigntaskDTO.AssignTo);
-    if (this.fileAttachment != null) {
-      if (this.fileAttachment.length > 0) {
-        fd.append("Attachment", "true");
-        fd.append('file', this.fileAttachment[0].Files);
-        console.log(this.fileAttachment, 'files')
-      }
-    }
-    else {
-      fd.append("Attachment", "false");
-      fd.append('file', "");
-    }
-    fd.append("TaskName", this._taskName);
-    fd.append("Desc", this._description);
-    fd.append("StartDate", datestrStart);
-    fd.append("EndDate", datestrEnd);
-    fd.append("attachment",this.fileAttachment);
-    fd.append("ProjectDays", this._ObjAssigntaskDTO.ProjectDays.toString());
-    fd.append("TypeofTask", this.typeoftask);
-    fd.append("Remarks", this._remarks);
-    fd.append("ProjectType", this.selectedProjecttype);
-    if (this.task_id != null) {
-      fd.append("AssignId", this.task_id.toString());
-    }
-    fd.append("AssignedBy", this.CurrentUser_ID);
-
-    if(this.port_id!=null && this.port_id!=undefined && this.port_id!=''){
-      this.port_id =  this.port_id
-    }
-    else{
-      this.port_id=0;
-    }
-    fd.append("Portfolio_Id", this.port_id);
-
-    this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
-      (data) => {
-        console.log(data,'atattachmeatattachmeatattachmeatattachme')
-
-          let message: string = data['Message'];
-          this.notifyService.showSuccess("Task sent to assign projects.", message);
-
-          this.clearFeilds();
-          this.closeInfo();
-          this.fileAttachment = [];
-        }
-
-       )
-
-
-
-      }
-      }
 
 
 maxDate:any

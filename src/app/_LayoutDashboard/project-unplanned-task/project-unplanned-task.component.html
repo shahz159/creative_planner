@@ -944,7 +944,7 @@
                                                       <!-- Working Now -->
                                                       <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75"  [ngStyle]="{ 'cursor': 'pointer' }" >
                                                           <div class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg" >
-                                                              <span matTooltip="Click to assign task"  class="kt-inbox__subject" style="width: 100%; display: flex; height: 50px; align-items: center;" (click)="unassign_edit1(item.Assign_Id,item.Task_Name);"
+                                                              <span matTooltip="Click to assign task"  class="kt-inbox__subject" style="width: 100%; display: flex; height: 50px; align-items: center;" (click)="unassign_edit1(item.Assign_Id,item.Task_Name,item.Creation_Date);"
                                                                   id="spnLabel_{{item.Assign_Id}}">
                                                                   {{item.Task_Name}}</span>
                                                               <span class="kt-inbox__subject" style="display:none;"
@@ -995,14 +995,14 @@
 
 
 
-                                                    <div id="rightbar-overlay" (click)="closeInfo()"></div>
+                                                    <div id="rightbar-overlay"></div>
                                                     <div id="rightbar-overlay-et"></div>
 
 
 
                                                     <ng-container  *ngIf="DisplayCreateIcon(item)&&this.checkedTaskNames.length===1">
                                                     <div class="btn-group mr-2" role="group">
-                                                      <button (click)="Task_type(2);updateCharacterCount()" type="button" class="btn btn-tsk"
+                                                      <button  matTooltip="Click to create meeting" (click)="Task_type(2);updateCharacterCount()" type="button" class="btn btn-tsk"
                                                           >
                                                           <span class="svg-icon  svg-icon-primary svg-icon-2x" >
 
@@ -1026,7 +1026,7 @@
                                                 </ng-container>
 
                                                 <ng-container  *ngIf="DisplayCreateIcon(item)&&this.checkedTaskNames.length===1">
-                                                  <span  matTooltip="Create new project"  (click)="goToCreatePage()"  class="cursor-pointer ">
+                                                  <span  matTooltip="Click to create new project"  (click)="goToCreatePage()"  class="cursor-pointer ">
                                                   <svg style="width: 36px; height: 36px;" fill="currentColor" width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="-10 -30 120 160" enable-background="new 0 0 100 100" xml:space="preserve" class="kt-menu__link-icon"><g><g><path fill="currentColor" d="M95,79.564c0,2.236-1.855,4.091-4.091,4.091h-7.255v7.255c0,2.236-1.855,4.091-4.091,4.091    c-2.291,0-4.091-1.855-4.091-4.091v-7.255h-7.309c-1.091,0-2.127-0.436-2.891-1.2c-0.709-0.764-1.2-1.745-1.2-2.891    c0-2.291,1.855-4.091,4.091-4.091h7.309v-7.309c0-2.236,1.8-4.091,4.091-4.091c0.818,0,1.636,0.273,2.291,0.709    c1.091,0.709,1.8,1.964,1.8,3.382v7.309h7.255C93.145,75.473,95,77.273,95,79.564z"></path><path fill="currentColor" d="M57.691,21.364v-0.545c-0.055-4.2-3.436-7.636-7.691-7.636s-7.691,3.436-7.691,7.636v0.545H57.691z     M34.127,21.364v-0.545C34.127,12.091,41.218,5,50,5s15.873,7.091,15.873,15.818v0.545h13.636C88.073,21.364,95,28.291,95,36.855    v11.236v0.491v12.982c0,2.236-1.855,4.091-4.091,4.091c-0.818,0-1.636-0.273-2.291-0.709c-1.091-0.709-1.8-1.964-1.8-3.382V48.582    v-0.491V36.855c0-2.018-0.818-3.818-2.127-5.182c-1.364-1.364-3.164-2.127-5.182-2.127H61.782H38.218H20.491    c-2.018,0-3.818,0.764-5.182,2.127c-1.309,1.364-2.127,3.164-2.127,5.182v11.236v0.491v30.927c0,4.036,3.273,7.309,7.309,7.309    h41.018c2.236,0,4.091,1.8,4.091,4.091c0,2.236-1.855,4.091-4.091,4.091H20.491C11.982,94.945,5,88.073,5,79.509V48.582v-0.491    V36.855c0-8.564,6.927-15.491,15.491-15.491H34.127z"></path></g></g></svg>
 
                                                     </span>
@@ -2420,7 +2420,11 @@
         <!-- <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M7.774 5.263a.7.7 0 11.952-1.026l3.5 3.25a.7.7 0 010 1.026l-3.5 3.25a.7.7 0 01-.952-1.026L10.72 8 7.774 5.263z"></path> <path fill-rule="evenodd" d="M1 3.25A2.25 2.25 0 013.25 1h9.5A2.25 2.25 0 0115 3.25v9.5A2.25 2.25 0 0112.75 15h-9.5A2.25 2.25 0 011 12.75v-9.5zm2.25-.75a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.3v-11h-1.3zm9.5 11h-6.8v-11h6.8a.75.75 0 01.75.75v9.5a.75.75 0 01-.75.75z" clip-rule="evenodd"></path> </g> </g></svg> -->
         <span class="btn btn-secondary btn-sm ml-2">Close</span>
       </div>
-    <div class="foottext">Created on {{selected_date  | date:'dd-MM-yyyy'}}</div>
+
+    <span *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length<=1" >
+    <div class="foottext">Created on {{Creation_Date  | date:'dd-MM-yyyy'}}</div>
+  </span>
+
     <div class="sub-act">
         <div class="footicon save" (click)="assignTasksub1()"  >
             <!-- <svg width="64px" height="64px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="currentColor"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z" fill="currentColor"></path></g></svg> -->
@@ -2439,7 +2443,7 @@
       <!-- <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M7.774 5.263a.7.7 0 11.952-1.026l3.5 3.25a.7.7 0 010 1.026l-3.5 3.25a.7.7 0 01-.952-1.026L10.72 8 7.774 5.263z"></path> <path fill-rule="evenodd" d="M1 3.25A2.25 2.25 0 013.25 1h9.5A2.25 2.25 0 0115 3.25v9.5A2.25 2.25 0 0112.75 15h-9.5A2.25 2.25 0 011 12.75v-9.5zm2.25-.75a.75.75 0 00-.75.75v9.5c0 .414.336.75.75.75h1.3v-11h-1.3zm9.5 11h-6.8v-11h6.8a.75.75 0 01.75.75v9.5a.75.75 0 01-.75.75z" clip-rule="evenodd"></path> </g> </g></svg> -->
       <span class="btn btn-secondary btn-sm ml-2">Close</span>
     </div>
-  <div class="foottext">Created today</div>
+  <div class="foottext">Created on {{Creation_Date  | date:'dd-MM-yyyy'}}</div>
   <div class="sub-act">
       <div class="footicon save" (click)="sweetAlert()"  >
           <!-- <svg width="64px" height="64px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="currentColor"></path><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z" fill="currentColor"></path></g></svg> -->
@@ -3600,7 +3604,6 @@ class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline ho
 
 
 
-<div id="rightbar-overlay"></div>
 <!--
 <div id="mysideInfobar" class="sideInfobar animate-right">
   <router-outlet></router-outlet>
