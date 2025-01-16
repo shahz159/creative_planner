@@ -1306,6 +1306,8 @@ date_menuclo(dialogId:string){
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
         console.log(this.CategoryList,"this.CategoryListthis.CategoryListthis.CategoryListthis.CategoryList")
 
+
+        this.userCategory = [];
         this.CategoryList.forEach((item)=>{
           if(  item.Category_ID == 2411 || item.Category_ID == 3595){
             this.userCategory.push(item)
@@ -1313,6 +1315,7 @@ date_menuclo(dialogId:string){
         console.log(this.userCategory," this.userCategory.push(item) this.userCategory.push(item)")
         })
 
+        this.SystemCategory = [];
         this.CategoryList.forEach((item)=>{
         if(item.Category_ID !== 2411 && item.Category_ID !== 3595){
           this.SystemCategory.push(item)
@@ -4485,7 +4488,9 @@ if(this.editTask && this.selectedrecuvalue =='2'){
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
         this.companies_Arr=JSON.parse(data['Client_json']);
-
+        this.selectedtaskNames=JSON.parse(JSON.stringify(this.checkedTaskNames));   // copy of selected items.
+        this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ');
+        this.Title_Name = this.selected_taskName
         console.log("_EmployeeListForDropdown",this._EmployeeListForDropdown);
         console.log("Portfoliolist_1:",this.Portfoliolist_1);
         console.log("ProjectListArray:",this.ProjectListArray);
