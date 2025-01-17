@@ -2788,7 +2788,7 @@ span.kt-inbox__subject.h5 {
     margin-right: 5px;
 } */
 .kt-leftside-scroll{
-    height: calc(100vh - 217px);
+    height: calc(100vh - 180px);
     overflow-y: auto;
     overflow-x: hidden;
     margin-right: 5px;
@@ -3180,7 +3180,7 @@ li.kt-category-list:hover .kt-cat-action {
     color: #c3d323;
 }
 .rej-c svg{
-    color: #F44336;
+    color: #be0d00;
 }
 .Replied_border_left_true_success {
     background-color: #dfefe6;
@@ -3275,7 +3275,7 @@ span.kt-inbox__label.kt-badge--unified-info.kt-badge-light-bold {
 }
 .accordion-runway {
     margin-top: 1rem;
-    height: calc(100vh - 176px)
+    height: calc(100vh - 185px)
 }
 .runway-card-body {
     padding: 10px;
@@ -5600,15 +5600,16 @@ input.search-input {
   color: #2786fb;
 }
 .btn-tsk {
-  height: 44px;
+  /* height: 44px;
   transition: border 280ms cubic-bezier(.4, 0, .2, 1), box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
   -webkit-box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%), 0px 1px 3px 1px rgb(60 64 67 / 15%);
   box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%), 0px 1px 3px 1px rgb(60 64 67 / 15%);
   background-color: rgba(255, 255, 255, 0.502);
   width: 128px;
   -webkit-border-radius: 48px;
-  border-radius: 48px;
-  margin-bottom: 6px;
+  border-radius: 48px; */
+  margin-bottom: 0px;
+  padding: 0px;
 }
 .tsk {
   font-size: 16px;
@@ -5622,4 +5623,16 @@ input.search-input {
 .svg-icon.svg-icon-2x svg {
   height: 2rem !important;
   width: 2rem !important;
+}
+#rightbar-overlay, #rightbar-overlay-et {
+  background-color: rgba(50, 58, 70, .2);
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: none;
+  z-index: 998;
+  transition: all .2s ease-out;
+  cursor: pointer;
 }
