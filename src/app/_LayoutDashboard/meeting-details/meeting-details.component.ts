@@ -569,7 +569,7 @@ export class MeetingDetailsComponent implements OnInit {
   _AllEventAttachment: number = 0;
   _FutureEventAttachment: number = 0;
   AdminName:any;
-  // isLoading: boolean = true;
+  isLoading: boolean = true;
 
   meeting_details() {
  
@@ -874,9 +874,9 @@ export class MeetingDetailsComponent implements OnInit {
       //  console.log(this.meetingDuration, 'meetingDate:');
     }
 
-    // setTimeout(() => {
-    //   this.isLoading = false; // Set to false once the data is loaded
-    //   }, 4000); 
+    setTimeout(() => {
+      this.isLoading = false; // Set to false once the data is loaded
+      }, 4000); 
   }
 
 
