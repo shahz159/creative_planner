@@ -7080,12 +7080,13 @@
                                                 </path>
                                             </svg>
                                           </span>
-                                          <span style="line-height: 1;"  *ngIf="getFileType(item.File_Name) === 'png' || getFileType(item.File_Name) === 'jpg'" >
-                                            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"  class="asseticn prim-icn memo_attachment_img">
+                                          <span style="line-height: 1;"  *ngIf="getFileType(item.File_Name) === 'png' || getFileType(item.File_Name) === 'jpg' || getFileType(item.File_Name) === 'jpeg'" >
+                                            <!-- <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"  class="asseticn prim-icn memo_attachment_img">
                                                 <path
                                                     d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm20.658 12.93c-.687 0-1.567 1.4-2.334 2.953-1.22-3.124-2.998-6.883-4.5-6.883-1.864 0-4.568 6.398-5.747 9.435-.295.76.294 1.565 1.14 1.565H22.782c.84 0 1.431-.795 1.145-1.553-.787-2.081-2.24-5.517-3.269-5.517zM23 9a3 3 0 1 0-6 0 3 3 0 0 0 6 0z">
                                                 </path>
-                                            </svg>
+                                            </svg> -->
+                                            <img [src]="item.url" alt="file icon" width="20" height="20" />
                                         </span>
                                           <span style="line-height: 1;"  *ngIf="getFileType(item.File_Name) === 'txt' || getFileType(item.File_Name) === 'html' || getFileType(item.File_Name) === 'doc' || getFileType(item.File_Name) === 'docx' || getFileType(item.File_Name) === 'json' || getFileType(item.File_Name) === 'xml'" >
                                             <svg class="asseticn info-icn memo_attachment_img" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
@@ -7108,24 +7109,19 @@
                                                 </path>
                                             </svg>
                                        </span>
-                                       <span style="line-height: 1;"  *ngIf="getFileType(item.File_Name) !='application/pdf' && getFileType(item.File_Name) !='xlsx' && getFileType(item.File_Name) !='xls'  && getFileType(item.File_Name) !='ppt' && getFileType(item.File_Name) !='pptx'  && getFileType(item.File_Name) !='txt' && getFileType(item.File_Name) !='html' && getFileType(item.File_Name) !='doc' && getFileType(item.File_Name) !='docx' && getFileType(item.File_Name) !='png' && getFileType(item.File_Name) !='jpg' && getFileType(item.File_Name) !='pdf'" >
+                                       <span style="line-height: 1;"  *ngIf="getFileType(item.File_Name) !='application/pdf' && getFileType(item.File_Name) !='xlsx' && getFileType(item.File_Name) !='xls'  && getFileType(item.File_Name) !='ppt' && getFileType(item.File_Name) !='pptx'  && getFileType(item.File_Name) !='txt' && getFileType(item.File_Name) !='html' && getFileType(item.File_Name) !='doc' && getFileType(item.File_Name) !='docx' && getFileType(item.File_Name) !='png' && getFileType(item.File_Name) !='jpg' && getFileType(item.File_Name) !='pdf' && getFileType(item.File_Name) !='jpeg'" >
                                         <svg class="asseticn dark-icn memo_attachment_img" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
                                             <path
                                                 d="M0 6a6 6 0 0 1 6-6h11.84a7 7 0 0 1 4.48 1.622l7.161 5.967A7 7 0 0 1 32 12.967V26a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6zm8 2a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H8zm0 5a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0 10a1 1 0 1 0 0 2h15a1 1 0 1 0 0-2H8zm0-5a1 1 0 1 0 0 2h11.91a1 1 0 1 0 0-2H8z">
                                             </path>
                                         </svg>
-                                       </span>
-
-
-
-
-                                       <!-- <img [src]="item.url" alt="file icon" width="24" height="24" /> -->
+                                       </span>      
                                     </div>
                                 </a>
                                     <div class="kt-notification__item-details">
                                         <div class="d-flex-center">
                                     
-                                        <div class="kt-notification__item-title fw-bold cursor-pointer">
+                                        <div class="kt-notification__item-title fw-bold cursor-pointer ml-1">
                                             <a (click)="LoadDocument(item.file_id,true,item.File_Name&&item.File_Name,item.url,item.contenttype,item.Created_by)"> {{item.File_Name}}</a>
                                         </div>
                                         <div>

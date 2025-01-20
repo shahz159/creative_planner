@@ -1286,6 +1286,16 @@ export class DashboardComponent implements OnInit {
 
         this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
 
+           // this code for chnage detection start
+           this.disablePreviousDate = null;
+           setTimeout(()=>{
+             this.disablePreviousDate = new Date();
+           },0);
+           // this code for chnage detection End
+
+
+
+
         // this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
         // this.maxDate = this.EventScheduledjson[0]['End_date'];
 
@@ -1502,6 +1512,7 @@ export class DashboardComponent implements OnInit {
 
   RecurrValue:boolean=false;
   RecurrValueMonthly:boolean=false;
+  previousValue:any;
 
   ReshudingTaskandEvent() {
 
@@ -1622,7 +1633,14 @@ export class DashboardComponent implements OnInit {
         this.maxDate = this.EventScheduledjson[0]['End_date'];
         this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
 
+          // this code for chnage detection start
+          this.disablePreviousDate = null;
+          setTimeout(()=>{
+            this.disablePreviousDate = new Date();
+          },0);
+          // this code for chnage detection End
 
+debugger
         // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
         if ((this.EventScheduledjson[0]['Onlinelink']) == true) {
           document.getElementById("Descrip_Name12").style.display = "flex";
@@ -1733,7 +1751,7 @@ export class DashboardComponent implements OnInit {
 
         }
 
-
+        this.previousValue=this.selectedrecuvalue;
 
         if (this.ScheduleType == 'Task') {
           this.EventScheduledjson[0]['Ed_Time']
@@ -1983,6 +2001,7 @@ isValidURL = true;
   Meeting_Id:any;
   Meeting_password:any;
   rapeatLink_Details:boolean=true;
+  switChRecurrenceValue:boolean=false;
 
 
   OnSubmitSchedule() {
@@ -2003,6 +2022,8 @@ isValidURL = true;
         + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       this.EventNumber = timestamp;
     }
+
+    debugger  
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -2012,6 +2033,28 @@ isValidURL = true;
       const d1 = new Date(moment(start).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+
+
+
+       // new code start 69
+       debugger
+       if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate)){
+         let startDate = new Date(this._StartDate);
+         this.AllDatesSDandED = [{
+             Date: startDate.toISOString().split('T')[0],  // Get YYYY-MM-DD format
+             Day: startDate.toLocaleString('en-US', { weekday: 'short' }), // Get short day name
+             DayNum: startDate.getDate().toString(),
+             EndTime: this.Endtms,
+             IsActive: 1,
+             StartTime : this.Startts
+           }];
+       
+         this.daysSelectedII = this.AllDatesSDandED ;
+         this._SEndDate =this._StartDate.toISOString().split('T')[0];
+         this._StartDate = new Date(new Date(this._StartDate).setHours(0, 0, 0, 0)); 
+       }
+
+         // new code end 69
     }
     else if (this.selectedrecuvalue == "1") {
       this.daysSelectedII = this.AllDatesSDandED;
@@ -2149,7 +2192,7 @@ isValidURL = true;
         }
 
 
-        debugger
+       
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
         if(this.rapeatLink_Details==true){
@@ -2505,8 +2548,24 @@ isValidURL = true;
       const d1 = new Date(moment(start).format(format2));
       const d2 = new Date(moment(end).format(format2));
       const date = new Date(d1.getTime());
+
+  
+     
       this.daysSelectedII = [];
-      this.AllDatesSDandED = [];
+
+      // new code start
+      if(this.previousValue != this.selectedrecuvalue){
+        this.AllDatesSDandED;
+        this.switChRecurrenceValue=true;
+        
+      }else{
+        this.AllDatesSDandED = [];
+        this.switChRecurrenceValue=false;
+      }     
+      // new code End
+
+
+
       const dates = [];
       while (date <= d2) {
         dates.push(moment(date).format(format2));
@@ -2542,7 +2601,7 @@ isValidURL = true;
       //   + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       // this.EventNumber = timestamp;
 
-   
+  
       let finalarray = [];
       this.daysSelectedII = [];
       // const format2 = "YYYY-MM-DD";
@@ -2556,13 +2615,13 @@ isValidURL = true;
       else if (this.selectedrecuvalue == "1") {
         this.daysSelectedII = this.AllDatesSDandED;
       }
-      else if (this.selectedrecuvalue == "2") {
+      else if (this.selectedrecuvalue == "2") { 
         if (this.dayArr.filter(x => x.checked == true).length == 0) {
           alert('Please select day');
           return false;
         }
 
-        if(this._PopupConfirmedValue == 2){
+        if(this._PopupConfirmedValue == 2 || this.switChRecurrenceValue == true){
         for (let index = 0; index < this.dayArr.length; index++) {
           if (this.dayArr[index].checked) { 
             const day = this.dayArr[index].value;
@@ -2588,7 +2647,7 @@ isValidURL = true;
       
 
          //   //new code start
-        if(this._PopupConfirmedValue == 1){
+        if(this._PopupConfirmedValue == 1 &&  this.switChRecurrenceValue == false){
           var startDateForWeekly = moment(this._StartDate).format('YYYY-MM-DD');
           this.daysSelectedII = this.AllDatesSDandED.filter(item => item.Date === startDateForWeekly);
 
@@ -2606,7 +2665,7 @@ isValidURL = true;
           return false;
         }
 
-        if(this._PopupConfirmedValue == 2){
+        if(this._PopupConfirmedValue == 2 || this.switChRecurrenceValue == true){
         for (let index = 0; index < this.MonthArr.length; index++) {
           if (this.MonthArr[index].checked == true) {  
             const day = this.MonthArr[index].value;
@@ -2628,13 +2687,18 @@ isValidURL = true;
           //new code Monthly end
          }
           // New code Monthly start 
-        if(this._PopupConfirmedValue == 1){
+        if(this._PopupConfirmedValue == 1 &&  this.switChRecurrenceValue == false){
           var startDateForMonthly =moment(this._StartDate).format('YYYY-MM-DD');
           this.daysSelectedII = this.AllDatesSDandED.filter(item => item.Date === startDateForMonthly);
         }   
        //new code Monthly end
-
+     
       }
+      debugger
+      this.daysSelectedII = this.daysSelectedII.filter(
+        (value, index, self) => index === self.findIndex(obj => JSON.stringify(obj) === JSON.stringify(value))
+      );
+
       finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
       if (finalarray.length > 0) {
@@ -2874,7 +2938,7 @@ isValidURL = true;
             frmData.append("Attachment", "false");
           }
 
-      debugger
+ 
           frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
           frmData.append("CreatedBy", this.Current_user_ID.toString());
           frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
@@ -3197,6 +3261,12 @@ isValidURL = true;
     this.eventRepeat=false;
     this.create = true;
     this.currentTime=moment().format('h:mm A');
+       // this code for chnage detection start
+       this.disablePreviousDate = null;
+       setTimeout(()=>{
+         this.disablePreviousDate = new Date();
+       },0);
+       // this code for chnage detection End
 
     if (value == 1) {
       this.ScheduleType = "Task";
@@ -3384,7 +3454,7 @@ isValidURL = true;
   }
 
   selectedDay(days) {
-
+debugger
     //Checked the day
     let objIndex = this.dayArr1.findIndex((obj => obj.value == days.target.value));
     this.dayArr1[objIndex].checked = days.target.checked;
@@ -3398,7 +3468,7 @@ isValidURL = true;
 
 
   selectStartDate(event) {
-
+debugger
     this._StartDate = event;
     let sd = event.format("YYYY-MM-DD").toString();
     this._SEndDate = event.format("YYYY-MM-DD").toString();
@@ -6299,6 +6369,7 @@ debugger
     this._lstMultipleFiales = [];
     this.RemovedFile_id = [];
     this.maxDate = null;
+    this.switChRecurrenceValue=false;
     this.RecurrValue= false;
     this.RecurrValueMonthly=false;
     this.EventNumber=null;
@@ -7644,13 +7715,21 @@ repeatEvent() {
         document.getElementById("core_viw222").style.display = "flex";
         document.getElementById("core_Dms").style.display = "flex";
 
-        const TEsb = document.getElementById('TaskEvent-Sidebar')
-        TEsb.addEventListener('scroll', () => {
-          this.autocompletes.forEach((ac) => {
-            if (ac.panelOpen)
-              ac.updatePosition();
-          });
-        })
+        // const TEsb = document.getElementById('TaskEvent-Sidebar')
+        // TEsb.addEventListener('scroll', () => {
+        //   this.autocompletes.forEach((ac) => {
+        //     if (ac.panelOpen)
+        //       ac.updatePosition();
+        //   });
+        // })
+
+
+        this._StartDate=null;
+          this.disablePreviousDate = null;
+          setTimeout(()=>{
+            this._StartDate=this.disablePreviousTodayDate;
+            this.disablePreviousDate = this.disablePreviousTodayDate;
+          },0);
 
        }
 
@@ -7681,6 +7760,27 @@ if(input_date<current_date){
     const date = new Date(d1.getTime());
     this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
   }
+
+   // new code start 69
+
+   if(this._StartDate == this.disablePreviousTodayDate){
+    let startDate = new Date(this._StartDate);
+    this.AllDatesSDandED = [{
+        Date: startDate.toISOString().split('T')[0],  // Get YYYY-MM-DD format
+        Day: startDate.toLocaleString('en-US', { weekday: 'short' }), // Get short day name
+        DayNum: startDate.getDate().toString(),
+        EndTime: this.Endtms,
+        IsActive: 1,
+        StartTime : this.Startts
+       }];
+   
+    this.daysSelectedII = this.AllDatesSDandED ;
+    this._SEndDate =this._StartDate.toISOString().split('T')[0];
+    this._StartDate = new Date(new Date(this._StartDate).setHours(0, 0, 0, 0));
+   
+   }
+
+    // new code end 69
 
   finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
   if (finalarray.length > 0) {
@@ -7837,7 +7937,7 @@ onRecurrenceTypeChange(val:any){
           this.MonthArr1[index].checked = false;
     }
 
-
+   
     document.getElementById("div_endDate_new").style.display = "block";
     if (val.value == 0) {
       this._labelName = "Schedule Date";
