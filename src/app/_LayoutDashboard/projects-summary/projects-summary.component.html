@@ -507,7 +507,7 @@
                                                       <mat-label>Status</mat-label>
                                                        <mat-chip-list #selected_status>
                                                         <mat-chip *ngFor="let emptoshare of enterStatus" class="Data_chip_kt" (removed)="removeSelectedstatus(emptoshare); getNewFilterResult();">
-                                                          {{getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name}}
+                                                          {{ (getObjOfstatus(StatusCountFilter, emptoshare, 'Name')?.Name === 'Under Approval') ? 'New Approval' : getObjOfstatus(StatusCountFilter, emptoshare, 'Name')?.Name }}
 
                                                           -{{getObjOf(StatusCountFilter,emptoshare,'Name')?.Count}}
                                                           <button matChipRemove>
@@ -985,7 +985,7 @@
                                   </span>
 
                                   <span class="search-filter" *ngFor="let emptoshare of enterStatus">
-                                       {{getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name}}
+                                       {{ (getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name === 'Under Approval') ? 'New Approval' : getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name   }}
                                   </span>
 
                                </div>
@@ -995,6 +995,67 @@
                                 </div> -->
                               </div>
 
+
+
+
+
+                              <div  class="dropdown show">
+                                <button  *ngIf="this.allSelectedProjects.length>0"  class="btn btn-sm btn-outline-primary" data-toggle="dropdown" id="test1" title="Click to create new portfolio"
+                                [ngClass]="{'active': activeClass_NewPortfolio}" (click)="DropdownOpen();_portfolioName = ''">
+                                <!-- <svg width="44px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12H18M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> -->
+
+                                <span class="fs-14" style="font-size: 12px;" >Create portfolio</span>
+
+                              </button>
+                            <div  class="dropdown-menu dropdown-menu-fit dropdown-menu-md bg-ground"
+                                aria-labelledby="test1">
+
+                                <!--begin::Nav-->
+                                <div>
+                                    <ul class="kt-nav">
+
+
+                                        <li class="kt-nav__item px-3">
+
+                                            <strong>Create new portfolio</strong>
+
+                                            <div class="kt-nav__separator"></div>
+                                            <p>Enter the portfolio name you wish to create,it can be editable
+                                                anytime
+                                                later.</p>
+                                            <!-- <p>Enter the Portfolio Name you wish to create, it can be editable
+                                                anytime.</p> -->
+                                            <input type="text" class="form-control"
+                                                placeholder="Enter Portfolio Name" [(ngModel)]="_portfolioName"
+                                                (keydown.enter)="createNewPortfolio()" (keypress)="omit_number($event)" type="text"
+                                                [ngStyle]="{'border-color':_portfolioName == '' ? 'rgb(255 177 175)' : 'rgb(136 150 255)','background-color':_portfolioName=='' ? 'rgb(253 135 135 / 10%)':'#f5f6fc' }">
+
+                                            <!-- <p class="text-primary mb-0 py-1" [hidden]="_portfolioName!=''"> * Portfolio Name is
+                                    required</p>-->
+                                            <span>
+                                                <p class="text-danger mb-0 py-1">{{alreadyExists}}</p>
+                                            </span>
+                                            <span>
+                                                <p class="text-danger mb-0 py-1" *ngIf="special==true">
+                                                    {{specialnote}}
+                                                </p>
+                                            </span>
+                                        </li>
+                                        <!-- <li class="kt-nav__separator"></li> -->
+                                        <li class="kt-nav__foot d-inline-block">
+                                            <button
+                                                class="btn btn-secondary theme-btn btn-upper btn-sm btn-bold mr-2"
+                                                id="nextbttn" (click)="createNewPortfolio()"
+                                                [disabled]="_portfolioName==''">Next</button>
+                                            <button
+                                                class="btn btn-label-secondary btn-outline-secondary btn-upper btn-sm btn-bold"
+                                                (click)="resetInputText()">Close</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--end:: Nav-->
+                            </div>
+                              </div>
 <ng-container *ngIf="isapprovlFound">
                               <div  style="margin-left:8px" class="btn-group mr-2" role="group">
                                 <button type="button" class="btn btn-outline-success btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

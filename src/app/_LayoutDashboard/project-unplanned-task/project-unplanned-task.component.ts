@@ -799,7 +799,7 @@ discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:strin
             this.projectsSelected.splice(i,1);
      };break;
      case 'PORTFOLIO':{
-      debugger
+
           const i=this.Portfolio.findIndex(ptf=>ptf==item);
           this.Portfolio.splice(i,1);
 
@@ -902,7 +902,7 @@ onPortfolioFilter(){
 }
 
 onDMSFilter(){
-debugger
+
      const _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
       const fresult=this.Memos_List.filter((_memo:any)=>{
 
@@ -1258,18 +1258,24 @@ date_menuclo(dialogId:string){
   acceptCount: any;
   pendingCount:any;
   rejectCount:any;
+  allCount:any;
 
   getrunwayCount(){
     this.isCountsDataLoaded=false;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this.ProjectTypeService._GetCategoryCountforRunway(this._ObjCompletedProj).subscribe(
       (data) => {
+
         this.isCountsDataLoaded=true;
         this.procount = JSON.parse(data[0]['Procount']);
         this.catcount = JSON.parse(data[0]['CatCount']);
         this.status_list = JSON.parse(data[0]['statuscount']);
-
+        console.log(this.status_list,"this.status_listthis.status_list")
+debugger
         this.status_list.forEach(element => {
+          if(element.Status=='All'){
+            this.allCount = element.SCount;
+          }
           if(element.Status=='Accepted'){
             this.acceptCount = element.SCount;
           }
@@ -1279,6 +1285,10 @@ date_menuclo(dialogId:string){
           if(element.Status=='Rejected'){
             this.rejectCount = element.SCount;
           }
+
+          // if(element.Status=='Rejected'){
+          //   this.rejectCount = element.SCount;
+          // }
         });
       console.log(this.acceptCount,this.pendingCount,this.rejectCount,this.procount,this.catcount,"count");
 
@@ -1312,7 +1322,6 @@ date_menuclo(dialogId:string){
           if(  item.Category_ID == 2411 || item.Category_ID == 3595){
             this.userCategory.push(item)
           }
-        console.log(this.userCategory," this.userCategory.push(item) this.userCategory.push(item)")
         })
 
         this.SystemCategory = [];
@@ -1320,7 +1329,6 @@ date_menuclo(dialogId:string){
         if(item.Category_ID !== 2411 && item.Category_ID !== 3595){
           this.SystemCategory.push(item)
         }
-        console.log(this.SystemCategory," this.SystemCategory.SystemCategory")
         })
 
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
@@ -1558,7 +1566,7 @@ console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeLi
 
 
   // EmployeeOnSelected(obj) {
-  //   debugger
+  //
   //   // this.selectedEmpNo = obj['Emp_No'];
   //   if(obj['Emp_No'] == this.Owner_Empno){
   //     this.selectedEmpNo="";
@@ -1668,7 +1676,6 @@ console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeLi
       (data) => {
 
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
-
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
@@ -2077,7 +2084,7 @@ renameTask(task_id:any,new_name:any){
 
 
   OnTask_Renameofnew() {
-    debugger
+
     // const tf: any = document.getElementById(`agenda-text-field-${index}`);
     // if(tf.value.trim().length > 0 && tf.value.trim().length < 100){
     // this.checkedTaskNames[index].Task_Name = tf.value;
@@ -2263,7 +2270,7 @@ renameTask(task_id:any,new_name:any){
     }
   }
 // onbuttonclick(buttonId:string){
-//   debugger
+//
 //   const elements={
 //  'ActionToProjects':'active-action-to-project',
 //  'taskdd':'active-task',
@@ -2327,7 +2334,7 @@ showassign(){
 
 
 goToCreatePage(){
-  debugger
+
   this.router.navigate(['/backend/createproject']);
   this.createproject.Scratech_btn()
   this.selectedtaskNames=JSON.parse(JSON.stringify(this.checkedTaskNames));   // copy of selected items.
@@ -2349,7 +2356,6 @@ Creation_Date:any
 
 unassign_edit1(id, task, date){
 
-  debugger
 this.copyofItem.push({
   Task_Name: task,
   Assign_Id: id
@@ -2407,7 +2413,6 @@ assign_Id:any
 editTaskat:number|undefined= undefined;
 
 editassignPending(id:any){
-debugger
 const selectedindex=this.ActionedAssigned_Josn.findIndex((ob)=>ob.Assign_Id==id);
   this.editTaskat=selectedindex;
   this.task__name = this.ActionedAssigned_Josn[selectedindex].Task_Name.trim();
@@ -2662,7 +2667,6 @@ setMaxDate(dateField){
 
 
 assignTasksub1(){
-debugger
     this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ');
     this.selected_taskId =  this.selectedtaskNames.map(task=>task.Assign_Id).join(', ');
     console.log( this.selected_taskName,"pending")
@@ -3358,7 +3362,7 @@ checkedTaskNames: { Task_Name: string, Assign_Id: any }[] = [];
 selectedtaskNames: { Task_Name: string, Assign_Id: any }[] = [];
 
 selectunSelect(e, item) {
-  debugger
+
   if (e.checked) {
     // Add task name and assign id to checkedTaskNames array
     this.checkedTaskNames.push({
@@ -3385,7 +3389,7 @@ URL_ProjectCode: any;
 projectCode:any
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-debugger
+
 
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -3533,7 +3537,7 @@ sanitizeFileName(fileName: string): string {
 
 getContentType(item: any): string {
   // Check if 'item' has the 'Reference' or 'FileName' property
-debugger
+
   if (item.Reference) {
     if (item.Reference.endsWith('.pdf')) {
       return 'pdf';
@@ -4039,7 +4043,7 @@ updateTask(index: number) {
 
 
   selectStartDate(event) {
-debugger
+
     this._StartDate = event;
     let sd = event.format("YYYY-MM-DD").toString();
     this._SEndDate = event.format("YYYY-MM-DD").toString();
@@ -4403,7 +4407,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
         const result=t>=ct;
         return result;
       });
-      debugger
+
       this.validStartTimearr=this.StartTimearr.slice(index);
 
 
@@ -4487,7 +4491,7 @@ currentTime:any;
       this.Endtms = vahr.toString() + ':' + mins;
       // alert(this.Startts)
       // alert(this.Endtms)
-debugger
+
       if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
         //  alert(this.scstartdate)
@@ -4603,7 +4607,6 @@ Meeting_status: boolean;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.loading = false;
-debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         var Schedule_date =this.EventScheduledjson[0].Schedule_date
         this.meetingRestriction(Schedule_date);
@@ -5836,7 +5839,7 @@ onSubmitBtnClicked() {
         }
 
 
-        debugger
+
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
         if(this.rapeatLink_Details==true){
@@ -6304,7 +6307,7 @@ penhide1() {
       // alert(end);
       const format2 = "YYYY-MM-DD";
       const d1 = new Date(moment(start).format(format2));
-debugger
+
       const d2 = new Date(moment(end).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = [];
@@ -7058,7 +7061,7 @@ debugger
 
     let _attachmentValue = 0;
     const frmData = new FormData();
-    debugger
+
 
     if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
       frmData.append("Attachment", "true");
@@ -7287,7 +7290,7 @@ filterDraft(type : 'date'|'meeting'):void{
       this.MasterCode.push(parseInt(element.stringval));
     });
 
-debugger
+
     this.Link_Details= this.draft_arry[0].Link_details;
     if(this.Link_Details != '' && this.Link_Details != undefined ){
       if(!this.Link_Details.includes('<a href=')){

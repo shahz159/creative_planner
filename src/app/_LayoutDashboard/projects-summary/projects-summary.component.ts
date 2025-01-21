@@ -2348,7 +2348,7 @@ debugger
       })
       this.isAllPrjSelected = allselec
       this.value()
-
+console.log(this.allSelectedProjects,"this.allSelectedProjectsthis.allSelectedProjects")
     }
     else {   // when unchecked
       let index = this.allSelectedProjects.findIndex(obj => obj.Project_Code == item.Project_Code)
@@ -2598,6 +2598,104 @@ else{
   this.isapprovlFound = false
   this.value()
 }
+
+// Creating portfolio code start
+hideDropdown: boolean;
+activeClass_NewPortfolio: boolean;
+_portfolioName: string;
+alreadyExists: string;
+
+special:boolean=false;
+specialnote:string="special characters `~!@#$%^&*()-_=+,<.>/?;:'"+'"'+"[]{}| not allowed";
+
+omit_number(event) { //         key = event.keyCode;  (Both can be used)
+  if(( (event.charCode > 96 && event.charCode < 123) || (event.charCode > 64 && event.charCode < 91) || (event.charCode >= 48 && event.charCode <= 57) || event.charCode <= 32)){
+    this.special=false;
+    return true;
+  }
+  else{
+    this.notifyService.showInfo('','Allowed characters: a-z, A-Z, 0-9');
+    this.special=true;
+    return false;
+  }
+}
+
+
+createNewPortfolio(){
+
+  if (this._portfolioName != "") {
+    this.portfolioName = this._portfolioName.trim();
+    localStorage.setItem("portfolioName", this._portfolioName);
+    let portId: any = 0;
+    localStorage.setItem('Pid', portId);
+  }
+
+  this.service.AlreadyExistsPortfolioService(this._portfolioName).
+  subscribe(data => {
+    if (data['result'] == 0) {
+      this.notifyService.showError("Portfolio With this Name ", "Already Exists");
+    }
+    else {
+      this.addPrjsToPortflio()
+    }
+  });
+}
+
+
+
+addPrjsToPortflio() {
+debugger
+  if(this.allSelectedProjects.length>0){
+
+    const selectedPrjs=this.allSelectedProjects;
+    let LengthOfSelectedItems = JSON.stringify(selectedPrjs.length);
+    this.Obj_Portfolio_DTO.Created_By =this.Current_user_ID;
+    this.Obj_Portfolio_DTO.Modified_By = this.Current_user_ID;
+    this.Obj_Portfolio_DTO.Portfolio_ID = 0;
+    this.Obj_Portfolio_DTO.Portfolio_Name = this._portfolioName;
+    this.Obj_Portfolio_DTO.SelectedProjects = this.allSelectedProjects
+    // .map((item)=>({id:item.Project_ID}));
+
+    this.service.createPortfolioOfProjects(this.Obj_Portfolio_DTO)
+      .subscribe(data => {
+
+        const _prtfId = data['Portfolio_ID'];
+        if(_prtfId !==''){
+          this.notifyService.showSuccess("" + ' ' + 'Added' + ' ' + LengthOfSelectedItems + ' ' + 'Project(s)', '');
+
+          let Mode = _prtfId
+          var url = document.baseURI + "portfolioprojects";
+          var myurl = `${url}/${Mode}`;
+          var myWindow = window.open(myurl);
+          myWindow.focus();
+          this.allSelectedProjects=[];
+          this.isAllPrjSelected = false
+          this.value()
+        }
+    });
+
+}
+else{
+  this.notifyService.showInfo("Please select atleast one project to add.","");
+}
+}
+
+
+
+
+
+resetInputText() {
+  this._portfolioName = '';
+  this.alreadyExists = '';
+  this.activeClass_NewPortfolio = false;
+}
+
+DropdownOpen() {
+  this.activeClass_NewPortfolio = true;
+}
+
+
+
 }
 
 
