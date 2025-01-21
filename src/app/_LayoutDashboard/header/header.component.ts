@@ -597,7 +597,7 @@ export class HeaderComponent implements OnInit {
   localStorage.removeItem('OrganizationId');
   localStorage.removeItem('UserfullName');
   localStorage.removeItem('_Currentuser');
-
+  localStorage.removeItem('IsStreamDownload');
   // Call AuthService logout for any additional logic
   this.authService.logout();
 

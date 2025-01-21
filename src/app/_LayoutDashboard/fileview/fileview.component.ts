@@ -45,7 +45,7 @@ export class FileviewComponent implements OnInit {
   _mailid: number;
   _AnnouncementDocId: number;
   createdBy: number;
-  IsCommunicarionMemoDownload: any;
+  IsStreamDownload: any;
   _IsConfidential: string = 'false';
   Current_user_ID:string;
   _LoginUserId:string;
@@ -63,7 +63,7 @@ export class FileviewComponent implements OnInit {
   ngOnInit(): void {
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
-    this.IsCommunicarionMemoDownload = localStorage.getItem('IsCommunicationDownload');
+    this.IsStreamDownload = localStorage.getItem('IsStreamDownload');
     var decoder = new TextDecoder();
     this.url_project_code=this.route.snapshot.params['projectcode'];
     let surl = this.route.snapshot.params['url'];

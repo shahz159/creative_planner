@@ -23,7 +23,7 @@
             <div class="kt-inbox__details d-flex-center justify-content-between">
 
 
-                <div class="ht-min-wd"> <a (click)="DownloadHistory(filename)" *ngIf="invalid==false" class="btn btn-dull float-left mx-1" href="javascript:void(0)"
+                <div class="ht-min-wd" *ngIf="IsStreamDownload=='true'"> <a (click)="DownloadHistory(filename)" *ngIf="invalid==false" class="btn btn-dull float-left mx-1" href="javascript:void(0)"
                     data-target="#open_modal" data-toggle="modal" aria-haspopup="true" aria-expanded="false">
                     <!-- <span class="svg-icns">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download"
@@ -41,7 +41,7 @@
                     </span>
                 </a></div>
 
-                <div  class=""  *ngIf="viewer!='' && Current_user_ID=='2000'">
+                <div  class=""  *ngIf="viewer!='' && IsStreamDownload=='true'">
                         <a class="btn btn-info float-left mx-1" (click)="download(src,filename)">
                         <span class="svg-icns">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

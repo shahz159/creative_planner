@@ -801,7 +801,7 @@ discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:strin
             this.projectsSelected.splice(i,1);
      };break;
      case 'PORTFOLIO':{
-      debugger
+
           const i=this.Portfolio.findIndex(ptf=>ptf==item);
           this.Portfolio.splice(i,1);
 
@@ -904,7 +904,7 @@ onPortfolioFilter(){
 }
 
 onDMSFilter(){
-debugger
+
      const _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
       const fresult=this.Memos_List.filter((_memo:any)=>{
 
@@ -1260,18 +1260,24 @@ date_menuclo(dialogId:string){
   acceptCount: any;
   pendingCount:any;
   rejectCount:any;
+  allCount:any;
 
   getrunwayCount(){
     this.isCountsDataLoaded=false;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this.ProjectTypeService._GetCategoryCountforRunway(this._ObjCompletedProj).subscribe(
       (data) => {
+
         this.isCountsDataLoaded=true;
         this.procount = JSON.parse(data[0]['Procount']);
         this.catcount = JSON.parse(data[0]['CatCount']);
         this.status_list = JSON.parse(data[0]['statuscount']);
-
+        console.log(this.status_list,"this.status_listthis.status_list")
+debugger
         this.status_list.forEach(element => {
+          if(element.Status=='All'){
+            this.allCount = element.SCount;
+          }
           if(element.Status=='Accepted'){
             this.acceptCount = element.SCount;
           }
@@ -1281,6 +1287,10 @@ date_menuclo(dialogId:string){
           if(element.Status=='Rejected'){
             this.rejectCount = element.SCount;
           }
+
+          // if(element.Status=='Rejected'){
+          //   this.rejectCount = element.SCount;
+          // }
         });
       console.log(this.acceptCount,this.pendingCount,this.rejectCount,this.procount,this.catcount,"count");
 
@@ -1308,18 +1318,19 @@ date_menuclo(dialogId:string){
         this.CategoryList = JSON.parse(data[0]['CategoryList']);
         console.log(this.CategoryList,"this.CategoryListthis.CategoryListthis.CategoryListthis.CategoryList")
 
+
+        this.userCategory = [];
         this.CategoryList.forEach((item)=>{
           if(  item.Category_ID == 2411 || item.Category_ID == 3595){
             this.userCategory.push(item)
           }
-        console.log(this.userCategory," this.userCategory.push(item) this.userCategory.push(item)")
         })
 
+        this.SystemCategory = [];
         this.CategoryList.forEach((item)=>{
         if(item.Category_ID !== 2411 && item.Category_ID !== 3595){
           this.SystemCategory.push(item)
         }
-        console.log(this.SystemCategory," this.SystemCategory.SystemCategory")
         })
 
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
@@ -1557,7 +1568,7 @@ console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeLi
 
 
   // EmployeeOnSelected(obj) {
-  //   debugger
+  //
   //   // this.selectedEmpNo = obj['Emp_No'];
   //   if(obj['Emp_No'] == this.Owner_Empno){
   //     this.selectedEmpNo="";
@@ -1667,7 +1678,6 @@ console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeLi
       (data) => {
 
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
-
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
@@ -2076,7 +2086,7 @@ renameTask(task_id:any,new_name:any){
 
 
   OnTask_Renameofnew() {
-    debugger
+
     // const tf: any = document.getElementById(`agenda-text-field-${index}`);
     // if(tf.value.trim().length > 0 && tf.value.trim().length < 100){
     // this.checkedTaskNames[index].Task_Name = tf.value;
@@ -2262,7 +2272,7 @@ renameTask(task_id:any,new_name:any){
     }
   }
 // onbuttonclick(buttonId:string){
-//   debugger
+//
 //   const elements={
 //  'ActionToProjects':'active-action-to-project',
 //  'taskdd':'active-task',
@@ -2326,7 +2336,7 @@ showassign(){
 
 
 goToCreatePage(){
-  debugger
+
   this.router.navigate(['/backend/createproject']);
   this.createproject.Scratech_btn()
   this.selectedtaskNames=JSON.parse(JSON.stringify(this.checkedTaskNames));   // copy of selected items.
@@ -2344,18 +2354,17 @@ selected_taskId:any;
 selected_taskName:any= [];
 formattedTaskNames :any;
 copyofItem: { Task_Name: string, Assign_Id: any }[] = [];
+Creation_Date:any
 
+unassign_edit1(id, task, date){
 
-unassign_edit1(id, task){
-
-  debugger
 this.copyofItem.push({
   Task_Name: task,
   Assign_Id: id
 });
 this.selectedtaskNames=JSON.parse(JSON.stringify(this.copyofItem));   // copy of selected items.
 this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ')
-
+this.Creation_Date = date
 
 
   document.getElementById('unassign-editsidebar').classList.add('kt-action-panel--on');
@@ -2406,7 +2415,6 @@ assign_Id:any
 editTaskat:number|undefined= undefined;
 
 editassignPending(id:any){
-debugger
 const selectedindex=this.ActionedAssigned_Josn.findIndex((ob)=>ob.Assign_Id==id);
   this.editTaskat=selectedindex;
   this.task__name = this.ActionedAssigned_Josn[selectedindex].Task_Name.trim();
@@ -2647,139 +2655,7 @@ selectedProjecttype: string = "";
 noEndDate:boolean = false
 noStartDate : boolean = false
 
-assignTasksub(){
 
-  // if(this.SelectedEmplList ==null || this.SelectedEmplList == undefined || this._taskName == null || this._taskName == undefined || this._taskName == ""){
-  //   this.formFieldsRequired = true
-
-  // }
-  // else{
-
-  // if(!((this._taskName)&&this.SelectedEmplList)){
-  //   this.formFieldsRequired=true;
-  //   return;
-  // }
-  // else this.formFieldsRequired=false;
-  // check whether all mandatory fields provided
-
-
-
-  // debugger
-  if (this._StartDate == null && this._EndDate != null) {
-    this.noStartDate = true;
-    this.noEndDate = false;
-  }
-  else if (this._StartDate != null && this._EndDate == null) {
-    this.noEndDate = true;
-    this.noStartDate = false;
-  }
-  else {
-    this._ObjAssigntaskDTO.TaskName = this._taskName;
-    this._ObjAssigntaskDTO.TaskDescription = this._description;
-
-
-    var datestrStart;
-    var datestrEnd;
-
-    if (this._StartDate != null && this._EndDate != null) {
-      datestrStart = moment(this._StartDate).format();
-      datestrEnd = moment(this._EndDate).format();
-      this._ObjAssigntaskDTO.StartDate = datestrStart;
-      this._ObjAssigntaskDTO.EndDate = datestrEnd;
-    }
-    else {
-      datestrStart = moment(new Date()).format();
-      datestrEnd = moment(new Date()).format();
-      this._ObjAssigntaskDTO.StartDate = datestrStart;
-      this._ObjAssigntaskDTO.EndDate = datestrEnd;
-    }
-
-
-    if (this._StartDate instanceof Date && this._EndDate instanceof Date) {
-      // Check if both _StartDate and _EndDate are valid Date objects
-      const differenceInTime = this._EndDate.getTime() - this._StartDate.getTime();
-      const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-      this._ObjAssigntaskDTO.ProjectDays = -differenceInDays;
-    }
-    else {
-      this._ObjAssigntaskDTO.ProjectDays = 0;
-    }
-
-
-    this.BsService.bs_TypeofTask.subscribe(t => {
-
-      this.typeoftask = t;
-    });
-    // this.BsService.SetNewAssignId(this.task_id);
-
-    this._ObjAssigntaskDTO.TypeOfTask = this.typeoftask;
-    this._ObjAssigntaskDTO.AssignTo = this.Selec;
-    this._ObjAssigntaskDTO.Assigned_By = this.CurrentUser_ID;
-    this._ObjAssigntaskDTO.AssignId = this.task_id;
-    this._ObjAssigntaskDTO.ProjectType = this.selectedProjecttype;
-    this._ObjAssigntaskDTO.Remarks = this._remarks;
-    this._ObjAssigntaskDTO.Attachment = this.fileAttachment;
-
-    // console.log(this.selectedProjectType);
-    if (this.fileAttachment != null) {
-      if (this.fileAttachment.length > 0) {
-        this._ObjAssigntaskDTO.Reference = this.fileAttachment[0].Files;
-      }
-    }
-    console.log("Sending Obj..",this._ObjAssigntaskDTO)
-    const fd = new FormData();
-    fd.append("AssignTo", this._ObjAssigntaskDTO.AssignTo);
-    if (this.fileAttachment != null) {
-      if (this.fileAttachment.length > 0) {
-        fd.append("Attachment", "true");
-        fd.append('file', this.fileAttachment[0].Files);
-        console.log(this.fileAttachment, 'files')
-      }
-    }
-    else {
-      fd.append("Attachment", "false");
-      fd.append('file', "");
-    }
-    fd.append("TaskName", this._taskName);
-    fd.append("Desc", this._description);
-    fd.append("StartDate", datestrStart);
-    fd.append("EndDate", datestrEnd);
-    fd.append("attachment",this.fileAttachment);
-    fd.append("ProjectDays", this._ObjAssigntaskDTO.ProjectDays.toString());
-    fd.append("TypeofTask", this.typeoftask);
-    fd.append("Remarks", this._remarks);
-    fd.append("ProjectType", this.selectedProjecttype);
-    if (this.task_id != null) {
-      fd.append("AssignId", this.task_id.toString());
-    }
-    fd.append("AssignedBy", this.CurrentUser_ID);
-
-    if(this.port_id!=null && this.port_id!=undefined && this.port_id!=''){
-      this.port_id =  this.port_id
-    }
-    else{
-      this.port_id=0;
-    }
-    fd.append("Portfolio_Id", this.port_id);
-
-    this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
-      (data) => {
-        console.log(data,'atattachmeatattachmeatattachmeatattachme')
-
-          let message: string = data['Message'];
-          this.notifyService.showSuccess("Task sent to assign projects.", message);
-
-          this.clearFeilds();
-          this.closeInfo();
-          this.fileAttachment = [];
-        }
-
-       )
-
-
-
-      }
-      }
 
 
 maxDate:any
@@ -2793,7 +2669,6 @@ setMaxDate(dateField){
 
 
 assignTasksub1(){
-debugger
     this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ');
     this.selected_taskId =  this.selectedtaskNames.map(task=>task.Assign_Id).join(', ');
     console.log( this.selected_taskName,"pending")
@@ -3013,7 +2888,7 @@ else{
     fd.append("AssignTo", this.selectedEmpNo);
     fd.append("Remarks", this._remarks);
     fd.append("EmployeeName", localStorage.getItem('UserfullName'));
-    fd.append("AssignId", this.selected_taskId.toString());
+    fd.append("AssignIds", this.selected_taskId.toString());
     fd.append("Owner", this.owner);
     fd.append("proState",this.completionattachment.toString());
     fd.append("actionCost",this.actionCost);
@@ -3392,7 +3267,7 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
     fd.append("AssignTo", this.employeSelect);
     fd.append("StartDate", datestrStart);
     fd.append("EndDate", datestrEnd);
-    fd.append("assignid",this.assign_Id)
+    fd.append("AssignIds",this.assign_Id)
     fd.append("Portfolio_Id", portfoliosSelected);
     fd.append("ProjectDays", ProjectDays.toString());
     fd.append("Remarks", this.__remarks);
@@ -3497,7 +3372,7 @@ checkedTaskNames: { Task_Name: string, Assign_Id: any }[] = [];
 selectedtaskNames: { Task_Name: string, Assign_Id: any }[] = [];
 
 selectunSelect(e, item) {
-  debugger
+
   if (e.checked) {
     // Add task name and assign id to checkedTaskNames array
     this.checkedTaskNames.push({
@@ -3524,7 +3399,7 @@ URL_ProjectCode: any;
 projectCode:any
 
 LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-debugger
+
 
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -3672,7 +3547,7 @@ sanitizeFileName(fileName: string): string {
 
 getContentType(item: any): string {
   // Check if 'item' has the 'Reference' or 'FileName' property
-debugger
+
   if (item.Reference) {
     if (item.Reference.endsWith('.pdf')) {
       return 'pdf';
@@ -4178,7 +4053,7 @@ updateTask(index: number) {
 
 
   selectStartDate(event) {
-debugger
+
     this._StartDate = event;
     let sd = event.format("YYYY-MM-DD").toString();
     this._SEndDate = event.format("YYYY-MM-DD").toString();
@@ -4495,7 +4370,9 @@ if(this.editTask && this.selectedrecuvalue =='2'){
         this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
         this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
         this.companies_Arr=JSON.parse(data['Client_json']);
-
+        this.selectedtaskNames=JSON.parse(JSON.stringify(this.checkedTaskNames));   // copy of selected items.
+        this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ');
+        this.Title_Name = this.selected_taskName
         console.log("_EmployeeListForDropdown",this._EmployeeListForDropdown);
         console.log("Portfoliolist_1:",this.Portfoliolist_1);
         console.log("ProjectListArray:",this.ProjectListArray);
@@ -4540,7 +4417,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
         const result=t>=ct;
         return result;
       });
-      debugger
+
       this.validStartTimearr=this.StartTimearr.slice(index);
 
 
@@ -4624,7 +4501,7 @@ currentTime:any;
       this.Endtms = vahr.toString() + ':' + mins;
       // alert(this.Startts)
       // alert(this.Endtms)
-debugger
+
       if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
         //  alert(this.scstartdate)
@@ -4740,7 +4617,6 @@ Meeting_status: boolean;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.loading = false;
-debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         var Schedule_date =this.EventScheduledjson[0].Schedule_date
         this.meetingRestriction(Schedule_date);
@@ -5973,7 +5849,7 @@ onSubmitBtnClicked() {
         }
 
 
-        debugger
+
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
         if(this.rapeatLink_Details==true){
@@ -6441,7 +6317,7 @@ penhide1() {
       // alert(end);
       const format2 = "YYYY-MM-DD";
       const d1 = new Date(moment(start).format(format2));
-debugger
+
       const d2 = new Date(moment(end).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = [];
@@ -7195,7 +7071,7 @@ debugger
 
     let _attachmentValue = 0;
     const frmData = new FormData();
-    debugger
+
 
     if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
       frmData.append("Attachment", "true");
@@ -7424,7 +7300,7 @@ filterDraft(type : 'date'|'meeting'):void{
       this.MasterCode.push(parseInt(element.stringval));
     });
 
-debugger
+
     this.Link_Details= this.draft_arry[0].Link_details;
     if(this.Link_Details != '' && this.Link_Details != undefined ){
       if(!this.Link_Details.includes('<a href=')){

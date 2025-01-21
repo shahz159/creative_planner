@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -569,6 +569,7 @@ export class MeetingDetailsComponent implements OnInit {
   _AllEventAttachment: number = 0;
   _FutureEventAttachment: number = 0;
   AdminName:any;
+  isLoading: boolean = true;
 
   meeting_details() {
  
@@ -790,7 +791,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.minutes = duration.minutes();
       this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
     
-    });
+    }); 
         console.log(this.Project_code,'<3-------Project_code----2>', this.portfolio_Scheduledjson);
   }
 
@@ -872,6 +873,10 @@ export class MeetingDetailsComponent implements OnInit {
       this.meetingDuration = Math.abs(meetingDurations);
       //  console.log(this.meetingDuration, 'meetingDate:');
     }
+
+    setTimeout(() => {
+      this.isLoading = false; // Set to false once the data is loaded
+      }, 4000); 
   }
 
 
@@ -3139,6 +3144,28 @@ onFileChange(event) {
       const d1 = new Date(moment(start).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+
+          // new code start 69
+          debugger
+          if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate)){
+            let startDate = new Date(this._StartDate);
+            this.AllDatesSDandED = [{
+                Date: startDate.toISOString().split('T')[0],  // Get YYYY-MM-DD format
+                Day: startDate.toLocaleString('en-US', { weekday: 'short' }), // Get short day name
+                DayNum: startDate.getDate().toString(),
+                EndTime: this.Endtms,
+                IsActive: 1,
+                StartTime : this.Startts
+              }];
+          
+            this.daysSelectedII = this.AllDatesSDandED ;
+            this._SEndDate =this._StartDate.toISOString().split('T')[0];
+            this._StartDate = new Date(new Date(this._StartDate).setHours(0, 0, 0, 0));
+          
+          }
+
+            // new code end 69
+
     }
     else if (this.selectedrecuvalue == "1") {
       this.daysSelectedII = this.AllDatesSDandED;
@@ -4502,6 +4529,11 @@ onFileChange(event) {
   _meetingroom:boolean=false;
   timingarryend: any = [];
   Time_End: any = [];
+  RecurrValue:boolean=false;
+  RecurrValueMonthly:boolean=false;
+
+
+
 
   ReshudingTaskandEvent() {
 
@@ -4620,6 +4652,17 @@ onFileChange(event) {
         this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
         this.maxDate = this.EventScheduledjson[0]['End_date'];
         this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
+   
+        
+        // this code for chnage detection start
+        this.disablePreviousDate = null;
+        setTimeout(()=>{
+          this.disablePreviousDate = new Date();
+        },0);
+       // this code for chnage detection End
+
+
+
         // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
         if ((this.EventScheduledjson[0]['Onlinelink']) == true) {
           document.getElementById("Descrip_Name12").style.display = "flex";
@@ -4646,16 +4689,20 @@ onFileChange(event) {
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
         }
-        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
+     
 
+        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
+       
           this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("div_endDate_new").style.display = "block";
           document.getElementById("Recurrence_hide").style.display = "block";
           document.getElementById("weekly_121_new").style.display = "block";
           this.selectedrecuvalue = '2';
+          
+          // old code start 69
           let Recc = [];
-          var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
+          var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);   
           Recc = ret1.split(",");
 
           for (var i = 0; i < Recc.length; i++) {
@@ -4665,6 +4712,14 @@ onFileChange(event) {
               }
             });
           }
+          // old code End 69
+
+       // New code start 69
+       const dayShort = new Date(this._StartDate).toLocaleDateString('en-US', { weekday: 'short' });
+       if(ret1 != dayShort){
+        this.RecurrValue =true;
+       }  
+       // New code End 69
 
           this.dayArr.forEach((item:any)=>{
             if(item.checked){
@@ -4675,13 +4730,13 @@ onFileChange(event) {
 
 
         }
-        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {
+        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {    
           document.getElementById("Recurrence_hide").style.display = "block";
           document.getElementById("div_endDate_new").style.display = "block";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Monthly_121_new").style.display = "block";
           this._labelName = "Schedule Date";
-          this.selectedrecuvalue = '3';
+          this.selectedrecuvalue = '3';  
           let Recc = [];
           var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
           Recc = ret1.split(",");
@@ -4692,6 +4747,24 @@ onFileChange(event) {
               }
             });
           }
+          debugger 
+           // New code Monthly start 
+           const day = new Date(this._StartDate).getDate().toString();  
+            if(ret1 != day){
+              this.MonthArr.forEach(item => item.checked = false);
+              let d2=new Date(this._StartDate);
+              const index2=d2.getDate();
+              this.MonthArr[index2-1].checked=true;
+              this.RecurrValueMonthly =true;
+            } else if (ret1 == day){
+              this.MonthArr.forEach(item => item.checked = false);
+              let d2=new Date(this._StartDate);
+              const index2=d2.getDate();
+              this.MonthArr[index2-1].checked=true;
+              this.RecurrValueMonthly =true;
+
+            } 
+           // New code Monthly End 
 
           this.MonthArr.forEach((item:any)=>{
             if(item.checked){
@@ -5726,40 +5799,52 @@ sortbyCurrent_Time(){
 
 
 ////test start ///////////////////////////////////////////
+if((this.editTask || this.create ) && this.selectedrecuvalue =='2'){
+  debugger
+// uncheck prev date.
+if(this._Oldstart_date){
+  let d=new Date(this._Oldstart_date);
+  const index=d.getDay();
+  this.dayArr[index].checked=false;
+}
 
-if(this.editTask && this.selectedrecuvalue =='2'){
+//uncheck prev date.
 
-  // uncheck prev date.
-    let d=new Date(this._Oldstart_date);
-    const index=d.getDay();
-    this.dayArr[index].checked=false;
-  // uncheck prev date.
-  
-  // update new
-    let d2=new Date(this._StartDate);
-    const index2=d2.getDay();
-    this.dayArr[index2].checked=true;
-    this.mtgOnDays=[];
-    this.dayArr.forEach((item:any)=>{
-      if(item.checked){
-          let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
-         this.mtgOnDays.push(d_name);
-      }
-   });
-  // update new
-  } else if(this.editTask && this.selectedrecuvalue == "3"){
+this.dayArr.forEach(item => item.checked = false);
+
+//update new
+  let d2=new Date(this._StartDate);
+  const index2=d2.getDay();
+  this.dayArr[index2].checked=true;
+
+console.log(this.dayArr,'sdcsadcasdcssad')
+
+  this.mtgOnDays=[];
+  this.dayArr.forEach((item:any)=>{
+    if(item.checked){
+        let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
+       this.mtgOnDays.push(d_name);
+    }
+ });
+// update new
+} else if((this.editTask || this.create ) && this.selectedrecuvalue == "3"){
 
     // uncheck prev date.
-    let d=new Date(this._Oldstart_date);
-    const index=d.getDate();
-    this.MonthArr[index].checked=false;
+    if(this._Oldstart_date){
+      let d=new Date(this._Oldstart_date);
+      const index=d.getDate();
+      this.MonthArr[index].checked=false;
+    }
+
     // uncheck prev date.
 
+    this.MonthArr.forEach(item => item.checked = false);
     // update new
+
     let d2=new Date(this._StartDate);
     const index2=d2.getDate();
     this.MonthArr[index2-1].checked=true;
-  
+
     this.mtgOnDays=[];
     this.MonthArr.forEach((item:any)=>{
       if(item.checked){
@@ -5770,6 +5855,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     });
     // update new
 }
+
   ////test end  ///////////////////////////////////////////
 
 
@@ -6232,7 +6318,11 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     this.Attachment12_ary = [];
     this._lstMultipleFiales = [];
     this.maxDate = null;
-    this.isValidURL=true
+    this.isValidURL=true;
+    this.RecurrValue= false;
+    this.RecurrValueMonthly=false;
+    this.editTask=false;
+    this.eventRepeat = false;
     this.EventNumber=null;
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
@@ -6395,36 +6485,84 @@ if(this.editTask && this.selectedrecuvalue =='2'){
       this.daysSelectedII = this.AllDatesSDandED;
     }
     else if (this.selectedrecuvalue == "2") {
-      if (this.dayArr.filter(x => x.checked == true).length == 0) {
-        alert('Please select day');
-        return false;
-      }
-      for (let index = 0; index < this.dayArr.length; index++) {
-        if (this.dayArr[index].checked) {
-          const day = this.dayArr[index].value;
-          _arraytext.push(day);
-          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
-          this.daysSelectedII = this.daysSelectedII.concat(newArray);
-        }
-      }
-      if (this.daysSelectedII.length == 0) {
-        alert('please select valid day');
-      }
-    }
-    else if (this.selectedrecuvalue == "3") {
-      if (this.MonthArr.filter(x => x.checked == true).length == 0) {
-        alert('Please select day');
-        return false;
-      }
-      for (let index = 0; index < this.MonthArr.length; index++) {
-        if (this.MonthArr[index].checked == true) {
-          const day = this.MonthArr[index].value;
-          _arraytext.push(day);
-          var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
-          this.daysSelectedII = this.daysSelectedII.concat(newArray);
-        }
-      }
-    }
+           if (this.dayArr.filter(x => x.checked == true).length == 0) {
+             alert('Please select day');
+             return false;
+           }
+   
+           if(this._PopupConfirmedValue == 2){
+           for (let index = 0; index < this.dayArr.length; index++) {
+             if (this.dayArr[index].checked) { 
+               const day = this.dayArr[index].value;
+               _arraytext.push(day);
+               var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+               // old code start 69
+               this.daysSelectedII = this.daysSelectedII.concat(newArray).sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime()); 
+               // old code end 69
+                
+              //new code start 69
+               if(this.RecurrValue==true){
+                 const matchingDate = this.AllDatesSDandED.find(item => item.Date === this._StartDate);
+                 if(matchingDate != undefined){
+                   newArray.push(matchingDate);
+                }
+                this.daysSelectedII = this.daysSelectedII.concat(newArray).sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());                              
+              }else{
+                 this.daysSelectedII = this.daysSelectedII.concat(newArray);
+               }
+            //new code end 69         
+             }
+           }}
+         
+   
+           //new code start 69
+           if(this._PopupConfirmedValue == 1){
+             var startDateForWeekly = moment(this._StartDate).format('YYYY-MM-DD');
+             this.daysSelectedII = this.AllDatesSDandED.filter(item => item.Date === startDateForWeekly);
+   
+            }
+         //new code end 69 
+           if (this.daysSelectedII.length == 0) {
+             alert('please select valid day');
+           }
+         }
+      else if (this.selectedrecuvalue == "3") {
+          
+         
+           if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+             alert('Please select day');
+             return false;
+           }
+   
+           if(this._PopupConfirmedValue == 2){
+           for (let index = 0; index < this.MonthArr.length; index++) {
+             if (this.MonthArr[index].checked == true) {  
+               const day = this.MonthArr[index].value;
+               _arraytext.push(day);
+               var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+   
+               // this.daysSelectedII = this.daysSelectedII.concat(newArray);
+               this.daysSelectedII = this.daysSelectedII.concat(newArray).sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
+             }
+           }
+               // New code Monthly start 
+               if(this.RecurrValueMonthly==true){
+                 const matchingMonthlyDate = this.AllDatesSDandED.find(item => item.Date === this._StartDate);
+                 if(matchingMonthlyDate != undefined){
+                   newArray.push(matchingMonthlyDate);
+                }
+                  this.daysSelectedII = this.daysSelectedII.concat(newArray).sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());                              
+                }
+             //new code Monthly end
+            }
+             // New code Monthly start 
+           if(this._PopupConfirmedValue == 1){
+             var startDateForMonthly =moment(this._StartDate).format('YYYY-MM-DD');
+             this.daysSelectedII = this.AllDatesSDandED.filter(item => item.Date === startDateForMonthly);
+           }   
+          //new code Monthly end
+   
+         }
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
@@ -7585,6 +7723,7 @@ onParticipantFilter(){
     $('#drop-overlay').addClass('show');
 
     this._StartDate = this.disablePreviousTodayDate;
+    
   }
   date_menu_close(dialogId: string) {
     document.getElementById(dialogId).classList.remove("show");
@@ -7597,11 +7736,8 @@ onParticipantFilter(){
    
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("datemenu").style.display = "block";
-    debugger
-    if(this.eventRepeat==true){
-      this._StartDate = this.disablePreviousTodayDate;
-      this.disablePreviousDate = this.disablePreviousTodayDate;
-    }
+  
+    
     
   }
   date_menu_modal_close() {
@@ -7640,6 +7776,7 @@ onParticipantFilter(){
       return;
     }
 
+
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -7651,9 +7788,35 @@ onParticipantFilter(){
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
     }
 
+    debugger
+   // new code start 69
+
+   if(this._StartDate == this.disablePreviousTodayDate){
+    let startDate = new Date(this._StartDate);
+    this.AllDatesSDandED = [{
+        Date: startDate.toISOString().split('T')[0],  // Get YYYY-MM-DD format
+        Day: startDate.toLocaleString('en-US', { weekday: 'short' }), // Get short day name
+        DayNum: startDate.getDate().toString(),
+        EndTime: this.Endtms,
+        IsActive: 1,
+        StartTime : this.Startts
+       }];
+   
+    this.daysSelectedII = this.AllDatesSDandED ;
+    this._SEndDate =this._StartDate.toISOString().split('T')[0];
+    this._StartDate = new Date(new Date(this._StartDate).setHours(0, 0, 0, 0));
+   
+   }
+
+    // new code end 69
+
+
+
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
+ 
+   
 
         const date1: Date = new Date(this._StartDate);
         const date2: Date = new Date(this._SEndDate);
@@ -7982,20 +8145,27 @@ onParticipantFilter(){
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "flex";
           document.getElementById("core_Dms").style.display = "flex";
-          this._StartDate = this.disablePreviousTodayDate;
-          
-
-          const TEsb = document.getElementById('TaskEvent-Sidebar')
-          TEsb.addEventListener('scroll', () => {
-            this.autocompletes.forEach((ac) => {
-              if (ac.panelOpen)
-                ac.updatePosition();
-            });
-          })
+       
+      
+          this._StartDate=null;
+          this.disablePreviousDate = null;
+          setTimeout(()=>{
+            this._StartDate=this.disablePreviousTodayDate;
+            this.disablePreviousDate = this.disablePreviousTodayDate;
+          },0);
+        
+          // const TEsb = document.getElementById('TaskEvent-Sidebar')
+          // TEsb.addEventListener('scroll', () => {
+          //   this.autocompletes.forEach((ac) => {
+          //     if (ac.panelOpen)
+          //       ac.updatePosition();
+          //   });
+          // })
 
          }
 
       });
+
     this.closeevearea();
 
   }
