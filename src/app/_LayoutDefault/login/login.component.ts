@@ -114,7 +114,7 @@ export class LoginComponent implements OnInit {
             const parsedUserIdArray = JSON.parse(userIdJson); // Parse the JSON string into an array
             const userIdObject = parsedUserIdArray[0]; // Access the first object in the array
             this.IsStreamDownload = userIdObject['IsStreamDownload']; // Retrieve the IsStreamDownload value
-              alert(this.IsStreamDownload);
+              // alert(this.IsStreamDownload);
               const Isdownload: string = `${this.IsStreamDownload}`;
               localStorage.setItem('IsStreamDownload',Isdownload);
           });
