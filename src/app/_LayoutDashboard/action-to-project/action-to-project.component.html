@@ -204,7 +204,7 @@
       <div class="form-group flex-1 details-date">
         <label>Start date<span class="text-danger">*</span></label>
         <div class="d-flex date-border" [ngClass]="{'error-date': (_sdate == true&&!_StartDate)||_actbefore}" (click)="startdatechecker()">
-            <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()" [min]="todayDate" (dateChange)="_StartDate=_StartDate<_curtd?null:_StartDate"
+            <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()" [min]="todayDate" (dateChange)="(_StartDate=_StartDate<_curtd?null:_StartDate); (_actbefore=isActionStartBeforeProject()); "
                 [(ngModel)]="_StartDate" placeholder="Start date" class="form-control" />
 
             <div class="input-group-text p-0">
