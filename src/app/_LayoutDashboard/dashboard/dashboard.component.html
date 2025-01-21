@@ -2742,8 +2742,8 @@
                 <div class="foot-body br-top secfootr" id="secfootr555">
                     <div class="ftbtns flex-1">
                         <div class="d-flex align-items-center justify-content-end gap-1">
-                           <button class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
-                               href="#propse11" role="button" aria-expanded="false" aria-controls="propse11">
+                           <button  class="btn btn-sm btn-light-primary btn-pill footbtns" data-toggle="collapse"
+                               href="#propse11" role="button" aria-expanded="false" aria-controls="propse11" (click)="disableRepeatMeetingDate()">
                                Repeat
                            </button>
                            <button  class="btn btn-sm btn-light-primary btn-pill footbtns d-none" (click)="sweet_end()">End now</button>
@@ -2773,7 +2773,7 @@
                                         </div>
                                         <div class="date-menu-calender">
                                             <mat-card class="demo-inline-calendar-card">
-                                                <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate"  [minDate]="disablePreviousDate"></mat-calendar>
+                                                <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate"  [minDate]="disablePreviousTodayDate"></mat-calendar>
                                               </mat-card>
                                         </div>
                                         <div class="date-menu-time">

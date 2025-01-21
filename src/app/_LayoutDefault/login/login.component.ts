@@ -109,6 +109,7 @@ export class LoginComponent implements OnInit {
       this.service.login(this.Obj_ILoginDTO)
         .subscribe(
           (data) => {
+            console.log("DMS login Data---->", data);
             if (data[0]['CredentialsIsValid']) {
               localStorage.setItem('isLoggedIn', "true");
               this.EmpNo = data[0]['EmployeeCode'];
@@ -211,6 +212,7 @@ export class LoginComponent implements OnInit {
   }
 
   isLogginCredentails:boolean=false;
+  
   login() {
   
     this.submitted = true;
@@ -295,6 +297,7 @@ export class LoginComponent implements OnInit {
             
           });
     }
+    this.login_DMS();
   }
 }
 

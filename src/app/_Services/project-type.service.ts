@@ -314,7 +314,7 @@ export class ProjectTypeService {
   login(uobjLoginDetails) {
     this._userobj.userId = uobjLoginDetails.UserName;
     this._userobj.OldPassWord = uobjLoginDetails.Password;
-    return this.http.post<any>('https://cswebapps.com/dmsapi/api/' + '/AuthenticationAPI/NewLoginDetailsJSON', this._userobj);
+    return this.http.post<any>('https://cswebapps.com/dmscoretestapi/api/Login/StreamLoginAPI', this._userobj);
   }
 
 
