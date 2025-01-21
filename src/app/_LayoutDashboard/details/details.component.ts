@@ -184,6 +184,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   loading: boolean = false;
   actionowner_dropdown:any;
   actionresponsible_dropdown:any;
+  action_completionOffset:number|undefined;
+  action_deadlineExtendlist:any=[];
   isNewOwnerOk:boolean=false;
   pageContentType:'PROJECT_DETAILS'|'ACTION_DETAILS'='PROJECT_DETAILS';  // which content the page is display project or action. by default project.
   noActvySinceCreation:boolean=false;
@@ -289,7 +291,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     // these minhold and maxhold are used in the project hold section,project release section
     this.minhold.setDate(this.minhold.getDate() + 1);
     this.maxhold.setDate(this.minhold.getDate() + 90);
-    this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
+    this.minhold.setHours(0,0,0,0); 
+    this.maxhold.setHours(0,0,0,0);
+    this.release_date=new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    // this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
 
     tippy('#dmsasfa', {
@@ -1525,26 +1530,34 @@ debugger
   ActionActivity_List:any=[];
   ActionfirstFiveRecords: any[] = [];
   GetActionActivityDetails(code) {
+    this.action_deadlineExtendlist=[];  // clear prev data.
     this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(code).subscribe(
       (data) => {
 
         if (data !== null && data !== undefined) {
           this.ActionActivity_List = JSON.parse(data[0]['ActivityList']); console.log('ActinoActivity_List:',this.ActionActivity_List);
+          
+     // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.   modifying "ActionActivity_List" and "action_deadlineExtendlist".
           let count:number=0;
-          this.ActionActivity_List.map((actv:any)=>{
-
-        // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
-                if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
+          this.ActionActivity_List.forEach((actv:any)=>{  
+            // &&count+1!=actv.count
+                 const c=(actv.Value.includes('Deadline changed'));
+                  if(c)
                   {   // actv.count : 2,3,4....
                       let updatecount=(actv.count-count);
-                      let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                      actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
+                      if(updatecount>1){
+                        let x=updatecount>3?'th':updatecount==3?'rd':updatecount==2?'nd':'st';
+                        actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
+                      }
+                     
+                       // prepare action_deadlineExtendlist here.
+                      this.action_deadlineExtendlist.push({...actv,count:updatecount});
                       count+=1;
                   }
                   return actv;
-              });
-        // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+          });
+      // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
 
    // adding _type property
       this.ActionActivity_List.forEach((_actvy)=>{
@@ -1641,6 +1654,14 @@ debugger
           this.actionowner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
           this.actionresponsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
       });
+
+
+      //calculate action completion offset value if action is completed.
+      if(this.projectActionInfo[index].Status=='Completed'){
+        this.action_completionOffset=moment(this.projectActionInfo[index].CD).diff(moment(this.projectActionInfo[index].EndDate),'days');
+        console.log('action_completionOffset value:',this.action_completionOffset);
+       }
+
 
     }
   }
@@ -1816,11 +1837,11 @@ debugger
           }
           else {
             // when the user said no
-            Swal.fire(
-              'Cancelled',
-              'Action not created',
-              'error'
-            )
+            // Swal.fire(
+            //   'Cancelled',
+            //   'Action not created',
+            //   'error'
+            // )
           }
         })
         .catch(e => console.log(e));
@@ -4914,7 +4935,7 @@ debugger
     // For sidebar overlay background removing the slide on 'X' button
     document.getElementById("rightbar-overlay").style.display = "none";
     // For page top div removing fixed
-    // document.getElementById("newdetails").classList.remove("position-fixed");
+    document.getElementById("newdetails").classList.remove("position-fixed");
     // $('#mainPrjCheckbox').prop('checked', false);
     this._inputAttachments = '';
     this._remarks = '';
@@ -7694,7 +7715,7 @@ removeSelectedDMSMemo(item){
   minhold: any = new Date();
   maxhold: any = new Date();
   release_date: any = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-  dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
+  // dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
 
 
 holdcontinue(Pcode:any){
@@ -7738,19 +7759,26 @@ holdcontinue(Pcode:any){
   minPrjDeadline:Date;
   HprocessDone:number=0;
 
-  onHoldDateChanged(){
-
+  onHoldDateChanged(){ 
     const d1=new Date(this.Holddate);
-    const d2=new Date(this.projectInfo.EndDate);
-    this.isEHsectionVisible=d1>d2;
-    d1.setDate(d1.getDate()+1);
-    this.minPrjDeadline=d1;
+    if(d1>=this.minhold&&d1<=this.maxhold)
+    {
+      const d2=new Date(this.projectInfo.EndDate);
+      this.isEHsectionVisible=d1>d2;
+      d1.setDate(d1.getDate()+1);
+      d1.setHours(0,0,0,0);
+      this.minPrjDeadline=d1;
+    }
+    else{
+       this.Holddate=null;
+    }
+    
 }
 
 
   onProject_Hold(id, Pcode) {
 
-  if(this.Holddate&&this.hold_remarks&&(this.extendAndHold?this.newPrjDeadline:true)){
+  if(this.Holddate&&(this.hold_remarks&&this.hold_remarks.trim())&&(this.extendAndHold?this.newPrjDeadline:true)){
        // if holddate and remarks are provided.
       this.HprocessDone=this.extendAndHold?2:1;
 
@@ -7821,14 +7849,19 @@ holdcontinue(Pcode:any){
 
   }
   else
-   this.formFieldsRequired=true;
+  this.formFieldsRequired=true;
 
   }
 
 
 
-  orgValueChange1(val) {
-    this.release_date = moment(val.value).format("MM/DD/YYYY");
+  orgValueChange1(val) { 
+    const _inputdate=moment(val.value).toDate();
+    if((_inputdate>=this.minhold&&_inputdate<=this.maxhold)==false)
+    {
+      this.release_date=null;
+    }
+    // this.release_date = moment(val.value).format("MM/DD/YYYY");
   }
 
 
@@ -7836,7 +7869,7 @@ holdcontinue(Pcode:any){
 // Project / Action release.
   holdreleaseProject() {
 
-    if(this.hold_remarks){
+    if(this.hold_remarks&&this.hold_remarks.trim()){
       // if remarks are provided.
       if(this.currentActionView===undefined){
         // project release
@@ -7902,19 +7935,20 @@ holdcontinue(Pcode:any){
        }
     }
     else
-     this.formFieldsRequired=true;
+    this.formFieldsRequired=true;
 
   }
 
   updateReleaseDate() {
-
-    if(this.release_date&&this.hold_remarks){
+    if(this.release_date&&(this.hold_remarks&&this.hold_remarks.trim())){
      // if release date and remarks both are provided
       if (this.release_date == null || this.release_date == 'Invalid date') {
         this.notifyService.showError("Please enter valid date", "Failed");
         return false;
       }
       else {
+        const isprjrelease=this.currentActionView==undefined;
+
         this.release_date = this.datepipe.transform(this.release_date, 'MM/dd/yyyy');
         this.holdDate = moment(this.release_date).format("DD-MM-YYYY")
         this.approvalObj.Project_Code = (this.currentActionView===undefined)?this.URL_ProjectCode:this.projectActionInfo[this.currentActionView].Project_Code;
@@ -7924,14 +7958,24 @@ holdcontinue(Pcode:any){
         this.approvalservice.UpdateReleaseDate(this.approvalObj).subscribe((data) => {
           this._Message = (data['message']);
           if (this._Message == '1') {
-            this.notifyService.showSuccess("Project release date updated", "Success");
-            this.notifyService.showInfo("Project will be released on " + this.holdDate, "Note");
+            if(isprjrelease){
+              this.notifyService.showSuccess("Project release date updated", "Success");
+              this.notifyService.showInfo("Project will be released on " + this.holdDate, "Note");
+            }
+            else{
+              this.notifyService.showSuccess("Action release date updated", "Success");
+              this.notifyService.showInfo("Action will be released on " + this.holdDate, "Note");
+            }
+            
             this.getProjectDetails(this.projectInfo.Project_Code);
             this.getholdate();
             this.closePrjReleaseSideBar();
           }
           else if (this._Message == '2' || this._Message == '0') {
+            if(isprjrelease)
             this.notifyService.showError("Project release date not updated", "Failed");
+            else 
+            this.notifyService.showError("Action release date not updated", "Failed");
           }
         });
       }

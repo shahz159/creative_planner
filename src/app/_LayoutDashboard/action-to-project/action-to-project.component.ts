@@ -951,7 +951,6 @@ else if ((dateTwo < dateOne) && (this.Current_user_ID!=this.Owner_Empno && this.
 }
 
 
-
 // 3. Validation : forms fields required check  start.
 if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
   this._projcode = true;
@@ -1006,19 +1005,11 @@ if(this._allocated==null||this._allocated==undefined||this._allocated==0){
   // return false;
 }else  this._alchr=false;
 
-if(this._Urlid==5){
-   const d1=new Date(this.ProjectStartDate);
-   const d2=new Date(this.ProjectDeadLineDate);
-   this._actbefore=this._StartDate<d1;
-  //  this._actafter=this._EndDate>d2;
-  //  console.log("asdf eeeeee:",this._actbefore,this._actafter);
+
+if(this._Urlid==5||this._Urlid==4){
+     this._actbefore=this.isActionStartBeforeProject();
 }
-debugger
-if(this._Urlid==4){
-  const d1=new Date(this.ProjectStartDate);
-  const d2=new Date(this.ProjectDeadLineDate);
-  this._actbefore=this._StartDate<d1;
-}
+
 
 const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._actbefore ,this._alchr].some(item=>item);
 if(fieldsRequired)
@@ -1552,6 +1543,15 @@ hasSameDateActions(){
   });
   this.sameDateActions=result;
 }
+
+
+isActionStartBeforeProject():boolean{
+  const mainPrjStartdate=new Date(this.ProjectStartDate);  // project start date.
+  const inputActnStartdate=this._StartDate;               // action start date. 
+  const isStartsBefore=inputActnStartdate<mainPrjStartdate;  // is action starts before main project.
+  return isStartsBefore;
+}
+
 
 
 
