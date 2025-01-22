@@ -2046,6 +2046,25 @@ a.btn-v-icon svg {
   height: 21px;
 }
 
+
+.port-info-btn-no-acives {
+  /* width: 34px; */
+  /* height: 34px; */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease-in;
+  color: #8c8c8c;
+  border-radius: 3.25px
+}
+
+.port-info-btn-no-acives svg {
+  width: 21px;
+  height: 21px;
+}
+
+
+
 tr.table-card.brdr.project-list_AC.projecthold {
   border-left: 4px solid #e2d9bc;
 }
@@ -5938,4 +5957,24 @@ svg:not {
   line-height: 1.5em;
   cursor: default;
 
+}
+a.btn-v-icons {
+  width: 34px;
+  height: 34px;
+  border-radius: 3.25px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease-in;
+  color: #8c8c8c !important;
+  color: #7D7EBB !important;
+}
+.btn-v-icons:hover {
+  background: #e6e6ff;
+  color: #7D7EBB;
+}
+.btn-v-icons svg {
+  width: 21px;
+  height: 21px;
 }
