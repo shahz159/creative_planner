@@ -491,45 +491,48 @@ export class StreamCalendarComponent implements OnInit {
   }
   change_event(){
     this.createTaskEvent=true;
-    document.getElementById("event-title").style.display = "block";
-    document.getElementById("Copy-title").style.display = "none";
-    document.getElementById("Repeat-title").style.display = "none";
-    document.getElementById("Edit-title").style.display = "none";
-    document.getElementById("task-title").style.display = "none";
+    // document.getElementById("event-title").style.display = "block";
+    // document.getElementById("Copy-title").style.display = "none";
+    // document.getElementById("Repeat-title").style.display = "none";
+    // document.getElementById("Edit-title").style.display = "none";
+    // document.getElementById("task-title").style.display = "none";
     document.getElementById("nav-event").style.display = "block";
     document.getElementById("nav-task").style.display = "none";
     document.getElementById("create-event-div").style.display = "block";
     document.getElementById("create-task-div").style.display = "none";
-    // document.getElementById("create-event-badge").classList.add("active");
-    // document.getElementById("create-task-badge").classList.remove("active");
+    // $("#create-task-badge").removeClass("active");
+    // $("#create-event-badge").addClass("active");
+   
   }
   change_task(){
     this.createTaskEvent=true;
-    document.getElementById("event-title").style.display = "none";
-    document.getElementById("Copy-title").style.display = "none";
-    document.getElementById("Repeat-title").style.display = "none";
-    document.getElementById("Edit-title").style.display = "none";
-    document.getElementById("task-title").style.display = "block";
+    // document.getElementById("event-title").style.display = "none";
+    // document.getElementById("Copy-title").style.display = "none";
+    // document.getElementById("Repeat-title").style.display = "none";
+    // document.getElementById("Edit-title").style.display = "none";
+    // document.getElementById("task-title").style.display = "block";
     document.getElementById("nav-event").style.display = "none";
     document.getElementById("nav-task").style.display = "block";
     document.getElementById("create-event-div").style.display = "none";
     document.getElementById("create-task-div").style.display = "block";
-    // document.getElementById("create-event-badge").classList.remove("active");
-    // document.getElementById("create-task-badge").classList.add("active");
+    // $("#create-event-badge").removeClass("active");
+    // $("#create-task-badge").addClass("active");
   }
   createEventonlyTaskModal(){
+    // $("#create-event-badge").removeClass("active");
+    // $("#create-task-badge").addClass("active");
     this.createTaskEvent=true;
-    document.getElementById("event-title").style.display = "none";
-    document.getElementById("Copy-title").style.display = "none";
-    document.getElementById("Repeat-title").style.display = "none";
-    document.getElementById("Edit-title").style.display = "none";
-    document.getElementById("task-title").style.display = "block";
+    // document.getElementById("event-title").style.display = "none";
+    // document.getElementById("Copy-title").style.display = "none";
+    // document.getElementById("Repeat-title").style.display = "none";
+    // document.getElementById("Edit-title").style.display = "none";
+    // document.getElementById("task-title").style.display = "block";
+    this.draftid = 0;
     document.getElementById("nav-event").style.display = "none";
     document.getElementById("nav-task").style.display = "block";
     document.getElementById("create-event-div").style.display = "none";
     document.getElementById("create-task-div").style.display = "block";
-    document.getElementById("create-event-badge").classList.remove("active");
-    document.getElementById("create-task-badge").classList.add("active");
+ 
   }
   customEventModal(Schedule_Type){
     if(Schedule_Type==1){
@@ -615,7 +618,9 @@ debugger
     document.getElementById("createEventTaskModalBackdrop").style.display = "none";
     document.getElementById("createEventTaskModalBackdrop").classList.remove("show");
 
-    this.Link_Details==null;
+    this.Link_Details = null;
+    this.Meeting_Id = null;
+    this.Meeting_password = null;
     this.RecurrValue= false;
     this.RecurrValueMonthly=false;
     this.Attachment12_ary = [];
@@ -1132,11 +1137,10 @@ Task_type(value) {
   document.getElementById("createEventTaskModal").classList.add("show");
   document.getElementById("createEventTaskModalBackdrop").style.display = "block";
   document.getElementById("createEventTaskModalBackdrop").classList.add("show");
-  document.getElementById("Edit-title").style.display = "none";
-  document.getElementById("Copy-title").style.display = "none";
-  document.getElementById("Repeat-title").style.display = "none";
+  // document.getElementById("Edit-title").style.display = "none";
+  // document.getElementById("Copy-title").style.display = "none";
+  // document.getElementById("Repeat-title").style.display = "none";
  
-  
 
   // document.getElementById("div_recurrence").style.display = "block";
   document.getElementById("weekly_121_new").style.display = "none";
@@ -1164,13 +1168,14 @@ Task_type(value) {
   this.currentTime=moment().format('h:mm A');
 
   if (value == 1) {
-    
+    this.change_task();
     this.ScheduleType = "Task";
     this.GetProjectAndsubtashDrpforCalender();
   }
   else {
     this.createTaskEvent=true;
-    document.getElementById("event-title").style.display = "block";
+    // document.getElementById("event-title").style.display = "block";
+    this.change_event();
     this.ScheduleType = "Event";
     this._calenderDto.Emp_No = this.Current_user_ID;
     this._calenderDto.Project_Code = null;
@@ -3387,20 +3392,25 @@ filterMeetings(event: KeyboardEvent) {
 
 
   changeScheduleType(val:number){
+
+    this.draftid = 0;
+
     if(val==1)
-    {  // Task
+    {  // Task   
+      this.change_task();
       this.ScheduleType = "Task";
       this.GetProjectAndsubtashDrpforCalender();
-      this.change_task();
+      
     }
     else if(val==2)
     {  // Event
+      this.change_event();
       this.ScheduleType = "Event";
       this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.Project_Code = null;
       this.GetProjectAndsubtashDrpforCalender();
       this.GetMemosByEmployeeId();
-      this.change_event();
+      
     }
     this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
  }
@@ -3638,7 +3648,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
       this.pro_edtime = this.EventScheduledjson[0].PurposeEndtime;
       this.pro_enddate = this.EventScheduledjson[0].SEndDate;
       this.creation_date = this.EventScheduledjson[0].Created_date;
-
+debugger
       this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
       this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
       this.pending_status = this.EventScheduledjson[0].Pending_meeting;
@@ -4028,7 +4038,33 @@ AlldeleteSchedule() {
 
 
 
-DublicateTaskandEvent(val:number) {
+CopyMeetingandTask(value){
+
+  if(value==2){
+    Swal.fire({
+      title: `Copy meeting`,
+      text: `Are you sure you want to copy this meeting? It will be created as a new meeting with you as the organizer.`,
+      showCancelButton: true,
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.changeScheduleType(value);
+        this.DublicateTaskandEvent();
+      }
+    });
+  }else{
+    this.changeScheduleType(value);
+    this.DublicateTaskandEvent();
+  }
+
+
+}
+
+
+
+
+DublicateTaskandEvent() {
   this.createTaskEvent=false;
   document.getElementById("div_endDate_new").style.display = "none";
   // 69 document.getElementById("Schenddate").style.display = "none";
@@ -4054,12 +4090,7 @@ DublicateTaskandEvent(val:number) {
       this.Addressurl = this.EventScheduledjson[0]['Addressurl'];
       this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
 
-      if (this._FutureEventTasksCount > 0) {
-    
-      }
-      else if (this._FutureEventTasksCount == 0) {
-       
-      }
+     
       document.getElementById("div_recurrence").style.display = "block";
       document.getElementById("Monthly_121_new").style.display = "none";
       document.getElementById("weekly_121_new").style.display = "none";
@@ -4068,17 +4099,17 @@ DublicateTaskandEvent(val:number) {
       document.getElementById("createEventTaskModal").classList.add("show");
       document.getElementById("createEventTaskModalBackdrop").style.display = "block";
       document.getElementById("createEventTaskModalBackdrop").classList.add("show"); 
-      document.getElementById("event-title").style.display = "none"; 
-      document.getElementById("task-title").style.display = "none"; 
-      document.getElementById("Edit-title").style.display = "none";
-      document.getElementById("Repeat-title").style.display = "none";
-      if(val ==1){
-        document.getElementById("Copy-title").style.display = "none";
-        document.getElementById("Copy-task").style.display = "block";
-      }else{
-        document.getElementById("Copy-task").style.display = "none";
-        document.getElementById("Copy-title").style.display = "block";
-      }
+      // document.getElementById("event-title").style.display = "none"; 
+      // document.getElementById("task-title").style.display = "none"; 
+      // document.getElementById("Edit-title").style.display = "none";
+      // document.getElementById("Repeat-title").style.display = "none";
+      // if(val ==1){
+      //   // document.getElementById("Copy-title").style.display = "none";
+      //   document.getElementById("Copy-task").style.display = "block";
+      // }else{
+      //   document.getElementById("Copy-task").style.display = "none";
+      //   // document.getElementById("Copy-title").style.display = "block";
+      // }
      
       //69 document.getElementById("Location_Name").style.display = "none";
       
@@ -4109,13 +4140,13 @@ DublicateTaskandEvent(val:number) {
         this.MasterCode = (this.MasterCode[0].stringval);
 
         document.getElementById("subtaskid").style.display = "flex";
-        document.getElementById("Guest_Name").style.display = "none";
-        document.getElementById("Descrip_Name").style.display = "none";
-        document.getElementById("core_viw123").style.display = "flex";
-        document.getElementById("core_viw121").style.display = "none";
-        document.getElementById("core_viw222").style.display = "none";
-        document.getElementById("core_Dms").style.display = "none";   
-        document.getElementById("meeting-online-add").style.display = "none";
+        // document.getElementById("Guest_Name").style.display = "none";
+        // document.getElementById("Descrip_Name").style.display = "none";
+        // document.getElementById("core_viw123").style.display = "flex";
+        // document.getElementById("core_viw121").style.display = "none";
+        // document.getElementById("core_viw222").style.display = "none";
+        // document.getElementById("core_Dms").style.display = "none";   
+        // document.getElementById("meeting-online-add").style.display = "none";
 
       }
       else if (this.ScheduleType == 'Event') {
@@ -4165,24 +4196,45 @@ DublicateTaskandEvent(val:number) {
 
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
         this._meetingroom = this.Location_Type?true:false;
+
+        this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
+
+        if(this.Link_Details != ''){
+          if(!this.Link_Details.includes('<a href=')){
+            var details = this.Link_Details.split(', ')
+            this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+            this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+            this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined' || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+            console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
+          }
+          else if(this.Link_Details.includes('<a href=')){
+            this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
+            this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
+            this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
+          
+            console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details ss69');
+          }
+         }
+
+
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
         document.getElementById("subtaskid").style.display = "none";
         // document.getElementById("Guest_Name").style.display = "flex";
-        document.getElementById("Descrip_Name").style.display = "flex";
-        document.getElementById("core_viw121").style.display = "flex";
-        document.getElementById("core_viw123").style.display = "none";
-        document.getElementById("core_viw222").style.display = "flex";
-        document.getElementById("core_Dms").style.display = "flex";
-        document.getElementById("meeting-online-add").style.display = "flex";
+        // document.getElementById("Descrip_Name").style.display = "flex";
+        // document.getElementById("core_viw121").style.display = "flex";
+        // document.getElementById("core_viw123").style.display = "none";
+        // document.getElementById("core_viw222").style.display = "flex";
+        // document.getElementById("core_Dms").style.display = "flex";
+        // document.getElementById("meeting-online-add").style.display = "flex";
         //69 document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
 
-        const TEsb = document.getElementById('TaskEvent-Sidebar')
-        TEsb.addEventListener('scroll', () => {
-          this.autocompletes.forEach((ac) => {
-            if (ac.panelOpen)
-              ac.updatePosition();
-          });
-        })
+        // const TEsb = document.getElementById('TaskEvent-Sidebar')
+        // TEsb.addEventListener('scroll', () => {
+        //   this.autocompletes.forEach((ac) => {
+        //     if (ac.panelOpen)
+        //       ac.updatePosition();
+        //   });
+        // })
 
       }
 
@@ -4215,6 +4267,12 @@ DublicateTaskandEvent(val:number) {
     });
   this.customEventModal_dismiss();
   this.customTaskModal_dismiss()
+
+// else if (result.isDismissed) {
+  // Skip all when Cancel is clicked
+  // continue; // Skip this file
+// }
+
 }
 
 
@@ -4287,11 +4345,11 @@ debugger
       document.getElementById("createEventTaskModal").classList.add("show");
       document.getElementById("createEventTaskModalBackdrop").style.display = "block";
       document.getElementById("createEventTaskModalBackdrop").classList.add("show");  
-      document.getElementById("event-title").style.display = "none"; 
-      document.getElementById("task-title").style.display = "none"; 
-      document.getElementById("Copy-title").style.display = "none";
-      document.getElementById("Repeat-title").style.display = "none";
-      document.getElementById("Edit-title").style.display = "block";
+      // document.getElementById("event-title").style.display = "none"; 
+      // document.getElementById("task-title").style.display = "none"; 
+      // document.getElementById("Copy-title").style.display = "none";
+      // document.getElementById("Repeat-title").style.display = "none";
+      // document.getElementById("Edit-title").style.display = "block";
     
 
       this.AllDatesSDandED = [];
@@ -4430,6 +4488,8 @@ debugger
         });
 
       }
+
+      this.previousValue=this.selectedrecuvalue;
 
       if (this.ScheduleType == 'Task') {
         this.EventScheduledjson[0]['Ed_Time']
@@ -4591,7 +4651,7 @@ RecurrValueMonthly:boolean=false;
       const d2 = new Date(moment(end).format(format2));
       const date = new Date(d1.getTime());
 
-
+debugger
       this.daysSelectedII = [];
 
       // new code start
@@ -5348,11 +5408,15 @@ repeatEvent() {
       document.getElementById("createEventTaskModal").classList.add("show");
       document.getElementById("createEventTaskModalBackdrop").style.display = "block";
       document.getElementById("createEventTaskModalBackdrop").classList.add("show"); 
-      document.getElementById("event-title").style.display = "none"; 
-      document.getElementById("task-title").style.display = "none"; 
-      document.getElementById("Edit-title").style.display = "none";
-      document.getElementById("Copy-title").style.display = "none";
-      document.getElementById("Repeat-title").style.display = "block";
+      document.getElementById("nav-event").style.display = "block";
+      document.getElementById("nav-task").style.display = "none";
+      document.getElementById("create-event-div").style.display = "block";
+      document.getElementById("create-task-div").style.display = "none";
+      // document.getElementById("event-title").style.display = "none"; 
+      // document.getElementById("task-title").style.display = "none"; 
+      // document.getElementById("Edit-title").style.display = "none";
+      // document.getElementById("Copy-title").style.display = "none";
+      // document.getElementById("Repeat-title").style.display = "block";
       
 
 
@@ -5418,6 +5482,24 @@ repeatEvent() {
                }
         });
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
+        this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
+
+        if(this.Link_Details != ''){
+          if(!this.Link_Details.includes('<a href=')){
+            var details = this.Link_Details.split(', ')
+            this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+            this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+            this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined' || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+            console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
+          }
+          else if(this.Link_Details.includes('<a href=')){
+            this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
+            this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
+            this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
+          
+            console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details 69');
+          }
+         }
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
         document.getElementById("subtaskid").style.display = "none";
         // document.getElementById("Guest_Name").style.display = "flex";
@@ -5793,6 +5875,24 @@ UpdateMeetingRequestAccess(SNo,Schedule_Id,Type){
 }
 
 
+
+
+onDraft_Delete(draftid) {
+
+  Swal.fire({
+    title: `Delete ${this.Schedule_type1}`,
+    text: `Are you sure you want to delete this ${this.Schedule_type1}? This action cannot be undone.`,
+    showConfirmButton: true,
+    showCancelButton: true
+  }).then(choice => {
+    if (choice.isConfirmed) { 
+      this.delete_draft(draftid);
+    }
+  });
+}
+
+
+
 delete_draft(draftid) {
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.draftid = draftid;
@@ -5804,6 +5904,8 @@ delete_draft(draftid) {
       }
     });
 }
+
+
 
 
 LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
@@ -5900,16 +6002,26 @@ filterPending(type: 'date' | 'meeting'): void {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
       
-        document.getElementById("customEventModal").style.display = "block";
-        document.getElementById("customEventModal").classList.add("show");
-        document.getElementById("customEventModalBackdrop").style.display = "block";
-        document.getElementById("customEventModalBackdrop").classList.add("show");
   
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Pending list popup box Testing ");
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
+
+        if(this.Schedule_type1 == 'Event'){
+          document.getElementById("customEventModal").style.display = "block";
+          document.getElementById("customEventModal").classList.add("show");
+          document.getElementById("customEventModalBackdrop").style.display = "block";
+          document.getElementById("customEventModalBackdrop").classList.add("show");
+        }else if(this.Schedule_type1 == 'Task'){
+          document.getElementById("customTaskModal").style.display = "block";
+          document.getElementById("customTaskModal").classList.add("show");
+          document.getElementById("customTaskModalBackdrop").style.display = "block";
+          document.getElementById("customTaskModalBackdrop").classList.add("show");
+        }
+       
+
         this.Status1 = this.EventScheduledjson[0].Status;
         this.Proposedate = this.EventScheduledjson[0].Schedule_date;
         this.PropStart = this.EventScheduledjson[0].St_Time;
@@ -5923,10 +6035,14 @@ filterPending(type: 'date' | 'meeting'): void {
         this.pending_status = this.EventScheduledjson[0].Pending_meeting;
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
-        this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
+        this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount']; debugger
+        this.Startts=this.EventScheduledjson[0].St_Time;
+        this.Endtms=this.EventScheduledjson[0].Ed_Time;
+        this.repeatStartts=this.Startts;
+        this.repeatEndtms=this.Endtms;
 
         // console.log(this.EventScheduledjson, "Testing12");
-debugger
+
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
           document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':"flex";
           document.getElementById("deleteendit").style.display = "flex";
@@ -6005,7 +6121,8 @@ filterDraft(type : 'date'|'meeting'):void{
     this.draftid = Sno;
    
     this.Task_type(val);
-
+    debugger
+   
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]
     console.log(this.draft_arry[0], '6969')

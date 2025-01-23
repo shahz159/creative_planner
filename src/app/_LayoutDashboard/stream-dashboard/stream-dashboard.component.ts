@@ -324,9 +324,6 @@ export class StreamDashboardComponent implements OnInit {
 
         // this.userFound = true
 
-
-
-
       console.log(this.portfoiloData, "this.portfoiloDatathis.portfoiloData")
 
     })
