@@ -10522,9 +10522,9 @@
                     <div class="text-center acc-section">
                         <h1 class="text-primary main_acc">Access denied 503 !</h1>
                         <h5 class="acc-desc  user-not-found-msg  hide-content">
-                            Unfortunately, we did not find you in this meeting.
+                            Unfortunately, we did not find you in this meeting. Please contact meeting admin.
                         </h5>
-                        <div  class="mt-4" *ngIf="!isRequestSent">
+                        <div  class="mt-4 d-none" *ngIf="!isRequestSent">
                             <button
                             class="btn btn-info mr-3 ng-star-inserted hide-button" *ngIf="ishide" (click)="openRequestDialog()">Request access
                             </button>
