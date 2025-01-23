@@ -2733,7 +2733,7 @@ loadGanttChart(){
   this.prj_statuses=Array.from(new Set(this.prj_statuses));
   const todays_date=new Date().getTime();
 
-  const _series=_ProjectsListBy_Pid1.map((prj,_index)=>{ 
+  const _series=_ProjectsListBy_Pid1.map((prj,_index)=>{      debugger
       let p_status=prj.Status=='Completion Under Approval'?(prj.AuditStatus=='Audit Pending'?'Audit Approval':'Completion Under Approval'):prj.Status;
       const color=this.all_status[p_status]||this.all_status['other'];
       let data_ar=[];
