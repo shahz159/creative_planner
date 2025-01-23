@@ -2022,8 +2022,7 @@ isValidURL = true;
         + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       this.EventNumber = timestamp;
     }
-
-    debugger  
+    debugger
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -2037,7 +2036,7 @@ isValidURL = true;
 
 
        // new code start 69
-       debugger
+ 
        if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate)){
          let startDate = new Date(this._StartDate);
          this.AllDatesSDandED = [{
@@ -2124,7 +2123,7 @@ isValidURL = true;
         // var dd = moment(date3).add(diffInDays, 'days')
         // var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
         var dd = moment(date3).add(diffInDays, 'days')
-        console.log(dd, date3, diffInDays, date2, this._SEndDate, "update edit")
+        // console.log(dd, date3, diffInDays, date2, this._SEndDate, "update edit")
         var SEndDates = "SEndDate";
         element[SEndDates] = (dd.format(format2));
 
@@ -2694,7 +2693,7 @@ isValidURL = true;
        //new code Monthly end
      
       }
-      debugger
+     
       this.daysSelectedII = this.daysSelectedII.filter(
         (value, index, self) => index === self.findIndex(obj => JSON.stringify(obj) === JSON.stringify(value))
       );
@@ -2795,13 +2794,19 @@ isValidURL = true;
           if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
             this._onlinelink =false
           }
-
+debugger
           var vOnlinelink = "Onlinelink";
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+          if(this.rapeatLink_Details==true){
           this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
+          this.rapeatLink_Details=false;
+        }
+
 
           var vLink_Details = "Link_Details";
           element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+
+          
           // let link_d=this.Link_Details.replace(/&#160;/g, ' ');
           // link_d=this.anchoredIt(link_d);
           // let link_d=this.Link_Details;
@@ -5852,12 +5857,14 @@ debugger
   }
 
   Attamentdraftid:any;
-
+  isSubmitting: boolean = false;
+  
 
   Insert_indraft() {
 
-
-
+    if (this.isSubmitting) return;
+    this.isSubmitting = true;
+    
     if (this.draftid != 0) {
       this._calenderDto.draftid = this.draftid;
     }
@@ -6083,7 +6090,7 @@ console.log("Generated XML:", xmlString);
             }
           )
         }
-
+        this.isSubmitting = false;
         if (data['message'] == '1') {
           this.closeschd();        
           this.notifyService.showSuccess("Draft saved", "Success");
@@ -6094,6 +6101,7 @@ console.log("Generated XML:", xmlString);
         }
       });
       this.Getdraft_datalistmeeting();
+      
   }
 
 
@@ -7730,7 +7738,6 @@ repeatEvent() {
             this._StartDate=this.disablePreviousTodayDate;
             this.disablePreviousDate = this.disablePreviousTodayDate;
           },0);
-
        }
 
     });

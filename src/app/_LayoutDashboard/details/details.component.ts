@@ -7062,6 +7062,7 @@ getChangeSubtaskDetais(Project_Code) {
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
     this._SEndDate = null;
+    this.rapeatLink_Details=true;
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
     this.minDate = moment().format("YYYY-MM-DD").toString();
     this.Attachment12_ary = [];
@@ -7218,329 +7219,329 @@ getChangeSubtaskDetais(Project_Code) {
 
 
 
-  OnSubmitSchedule() {
-
-    if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
-      this._subname1 = true;
-      return false;
-    }
-
-    if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
-      this._subname = true;
-      return false;
-    }
-    var now = new Date();
-    let timestamp = "";
-    timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
-      + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
-
-    this.EventNumber = timestamp;
-    let finalarray = [];
-    this.daysSelectedII = [];
-    const format2 = "YYYY-MM-DD";
-    var start = moment(this.minDate);
-    const _arraytext = [];
-    if (this.selectedrecuvalue == "0") {
-      const d1 = new Date(moment(start).format(format2));
-      const date = new Date(d1.getTime());
-      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
-    }
-    else if (this.selectedrecuvalue == "1") {
-      this.daysSelectedII = this.AllDatesSDandED;
-    }
-    else if (this.selectedrecuvalue == "2") {
-      if (this.dayArr.filter(x => x.checked == true).length == 0) {
-       alert('Please select day');
-        return false;
-      }
-      for (let index = 0; index < this.dayArr.length; index++) {
-        if (this.dayArr[index].checked) {
-          const day = this.dayArr[index].value;
-          _arraytext.push(day);
-          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
-          this.daysSelectedII = this.daysSelectedII.concat(newArray);
-        }
-      }
-      if (this.daysSelectedII.length == 0) {
-        alert('please select valid day');
-      }
-    }
-    else if (this.selectedrecuvalue == "3") {
-
-      if (this.MonthArr.filter(x => x.checked == true).length == 0) {
-        alert('Please select day');
-        return false;
-      }
-      for (let index = 0; index < this.MonthArr.length; index++) {
-        if (this.MonthArr[index].checked == true) {
-          const day = this.MonthArr[index].value;
-          _arraytext.push(day);
-          var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
-          this.daysSelectedII = this.daysSelectedII.concat(newArray);
-        }
-      }
-    }
-
-    finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
-
-
-    if (finalarray.length > 0) {
-      finalarray.forEach(element => {
-        const date1: Date = new Date(this._StartDate);
-        const date2: Date = new Date(this._SEndDate);
-
-        const diffInMs: number = date2.getTime() - date1.getTime();
-
-        const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-        var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
-        var dd = moment(date3).add(diffInDays, 'days')
-
-
-        var SEndDates = "SEndDate";
-        element[SEndDates] = (dd.format(format2));
-
-        var vStartTime = "StartTime";
-        element[vStartTime] = this.Startts;
-
-        var vEndTime = "EndTime";
-        element[vEndTime] = this.Endtms;
-
-        var vEnd_date = "End_date";
-        element[vEnd_date] = this._EndDate;
-
-        var vIsDeleted = "IsDeleted";
-        element[vIsDeleted] = 0;
+  // OnSubmitSchedule() {
+
+  //   if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
+  //     this._subname1 = true;
+  //     return false;
+  //   }
+
+  //   if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
+  //     this._subname = true;
+  //     return false;
+  //   }
+  //   var now = new Date();
+  //   let timestamp = "";
+  //   timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
+  //     + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
+
+  //   this.EventNumber = timestamp;
+  //   let finalarray = [];
+  //   this.daysSelectedII = [];
+  //   const format2 = "YYYY-MM-DD";
+  //   var start = moment(this.minDate);
+  //   const _arraytext = [];
+  //   if (this.selectedrecuvalue == "0") {
+  //     const d1 = new Date(moment(start).format(format2));
+  //     const date = new Date(d1.getTime());
+  //     this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+  //   }
+  //   else if (this.selectedrecuvalue == "1") {
+  //     this.daysSelectedII = this.AllDatesSDandED;
+  //   }
+  //   else if (this.selectedrecuvalue == "2") {
+  //     if (this.dayArr.filter(x => x.checked == true).length == 0) {
+  //      alert('Please select day');
+  //       return false;
+  //     }
+  //     for (let index = 0; index < this.dayArr.length; index++) {
+  //       if (this.dayArr[index].checked) {
+  //         const day = this.dayArr[index].value;
+  //         _arraytext.push(day);
+  //         var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+  //         this.daysSelectedII = this.daysSelectedII.concat(newArray);
+  //       }
+  //     }
+  //     if (this.daysSelectedII.length == 0) {
+  //       alert('please select valid day');
+  //     }
+  //   }
+  //   else if (this.selectedrecuvalue == "3") {
+
+  //     if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+  //       alert('Please select day');
+  //       return false;
+  //     }
+  //     for (let index = 0; index < this.MonthArr.length; index++) {
+  //       if (this.MonthArr[index].checked == true) {
+  //         const day = this.MonthArr[index].value;
+  //         _arraytext.push(day);
+  //         var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+  //         this.daysSelectedII = this.daysSelectedII.concat(newArray);
+  //       }
+  //     }
+  //   }
+
+  //   finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
+
+
+  //   if (finalarray.length > 0) {
+  //     finalarray.forEach(element => {
+  //       const date1: Date = new Date(this._StartDate);
+  //       const date2: Date = new Date(this._SEndDate);
+
+  //       const diffInMs: number = date2.getTime() - date1.getTime();
+
+  //       const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  //       var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+  //       var dd = moment(date3).add(diffInDays, 'days')
+
+
+  //       var SEndDates = "SEndDate";
+  //       element[SEndDates] = (dd.format(format2));
+
+  //       var vStartTime = "StartTime";
+  //       element[vStartTime] = this.Startts;
+
+  //       var vEndTime = "EndTime";
+  //       element[vEndTime] = this.Endtms;
+
+  //       var vEnd_date = "End_date";
+  //       element[vEnd_date] = this._EndDate;
+
+  //       var vIsDeleted = "IsDeleted";
+  //       element[vIsDeleted] = 0;
 
-        var vPending = "Pending_meeting";
-        element[vPending] = 0;
-
-        var vRecurrence = "Recurrence";
-        element[vRecurrence] = this.selectedrecuvalue;
-
-        var vRecurrence_value = "Recurrence_values";
-        element[vRecurrence_value] = _arraytext.toString();
+  //       var vPending = "Pending_meeting";
+  //       element[vPending] = 0;
+
+  //       var vRecurrence = "Recurrence";
+  //       element[vRecurrence] = this.selectedrecuvalue;
+
+  //       var vRecurrence_value = "Recurrence_values";
+  //       element[vRecurrence_value] = _arraytext.toString();
 
-        var vEmp_No = "Emp_No";
-        element[vEmp_No] = this.Current_user_ID;
+  //       var vEmp_No = "Emp_No";
+  //       element[vEmp_No] = this.Current_user_ID;
 
-        var vScheduleType = "ScheduleType";
-        element[vScheduleType] = this.ScheduleType == "Task" ? 1 : 2;
+  //       var vScheduleType = "ScheduleType";
+  //       element[vScheduleType] = this.ScheduleType == "Task" ? 1 : 2;
 
-        var vTitle_Name = "Title_Name";
-        element[vTitle_Name] = this.Title_Name;
+  //       var vTitle_Name = "Title_Name";
+  //       element[vTitle_Name] = this.Title_Name;
 
-        var vMasterCode = "MasterCode";
-        element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
+  //       var vMasterCode = "MasterCode";
+  //       element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
 
-        // var columnName = "Link_Type";
-        // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
-        var vUser_Name = "User_Name";
-        element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.map((e)=>e.Emp_No).toString();   //when mat chip
+  //       // var columnName = "Link_Type";
+  //       // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
+  //       var vUser_Name = "User_Name";
+  //       element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.map((e)=>e.Emp_No).toString();   //when mat chip
 
-        var vLocation_Type = "Location_Type";
-        element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
+  //       var vLocation_Type = "Location_Type";
+  //       element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
 
-        var vLocation_fulladd = "FullAddress_loc";
-        element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" : this.Locationfulladd;
+  //       var vLocation_fulladd = "FullAddress_loc";
+  //       element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" : this.Locationfulladd;
 
-        var vLocation_url = "Addressurl";
-        element[vLocation_url] = this.Addressurl;
+  //       var vLocation_url = "Addressurl";
+  //       element[vLocation_url] = this.Addressurl;
 
-        var vOnlinelink = "Onlinelink";
-        element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
-
-        var vLink_Details = "Link_Details";
-        element[vLink_Details] = this.Link_Details == undefined ? "" : this.Link_Details;
-
-        var vDescription = "Description";
-        element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
-
-        var vSubtask = "Subtask";
-        element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
+  //       var vOnlinelink = "Onlinelink";
+  //       element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+
+  //       var vLink_Details = "Link_Details";
+  //       element[vLink_Details] = this.Link_Details == undefined ? "" : this.Link_Details;
+
+  //       var vDescription = "Description";
+  //       element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
+
+  //       var vSubtask = "Subtask";
+  //       element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
 
-        var vEventNumber = "EventNumber";
-        element[vEventNumber] = this.EventNumber;
+  //       var vEventNumber = "EventNumber";
+  //       element[vEventNumber] = this.EventNumber;
 
-        var vPortfolio_name = "Portfolio_name";
-        element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.map(p=>p.portfolio_id).toString();  // when mat-chip
+  //       var vPortfolio_name = "Portfolio_name";
+  //       element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.map(p=>p.portfolio_id).toString();  // when mat-chip
 
-        var vDMS_Name = "DMS_Name";
-        element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.map(m=>m.MailId).toString();    //when mat chip
+  //       var vDMS_Name = "DMS_Name";
+  //       element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.map(m=>m.MailId).toString();    //when mat chip
 
-         var vAgendas = "Meeting_Agendas";
-        const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-        element[vAgendas] = mtgAgendas;
+  //        var vAgendas = "Meeting_Agendas";
+  //       const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+  //       element[vAgendas] = mtgAgendas;
 
-
-      });
-
-
-      this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
-      if (this.Schedule_ID != 0) {
-        this._calenderDto.Schedule_ID = this.Schedule_ID;
-
-      }
-      else {
-        this._calenderDto.Schedule_ID = 0;
-      }
-
-      let _attachmentValue = 0;
-      const frmData = new FormData();
-      for (var i = 0; i < this._lstMultipleFiales.length; i++) {
-        frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
-      }
-      if (this._lstMultipleFiales.length > 0)
-        _attachmentValue = 1;
-      else
-        _attachmentValue = 0;
-
-      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
-      frmData.append("CreatedBy", this.Current_user_ID.toString());
-      console.log(JSON.stringify(finalarray), "finalarray")
-      this._calenderDto.draftid = this.draftid;
-
-
-
-      console.log('_calenderDto obj:', JSON.parse(this._calenderDto.ScheduleJson));
-
-      this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
-        (data => {
-
-          var Attamentdraftid= '0'
-          frmData.append("draftid", Attamentdraftid= Attamentdraftid);
-
-
-          if (_attachmentValue == 1) {
-            this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
-              (event: HttpEvent<any>) => {
-                switch (event.type) {
-                  case HttpEventType.Sent:
-                    console.log('Request has been made!');
-                    break;
-                  case HttpEventType.ResponseHeader:
-                    console.log('Response header has been received!');
-                    break;
-                  case HttpEventType.UploadProgress:
-                    this.progress = Math.round(event.loaded / event.total * 100);
-                    console.log(`Uploaded! ${this.progress}%`);
-                    break;
-                  case HttpEventType.Response:
-                    console.log('User successfully created!', event.body);
-
-                    // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
-                    this._lstMultipleFiales = [];
-                    // empty(this._lstMultipleFiales);
-                    // alert(this._lstMultipleFiales.length);
-                    setTimeout(() => {
-                      this.progress = 0;
-                    }, 1500);
-
-                    (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                    (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
-                    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                    document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
-                }
-              }
-            )
-          }
-          //UploadCalendarAttachmenst
-          // console.log(data, "m");
-          this._Message = data['message'];
-          if (this._Message == "Update successfully") {
-            if (this.draftid != 0) {
-              this.Getdraft_datalistmeeting();
-              this.draftid = 0
-            }
-            this.notifyService.showError(this._Message, "Failed");
-
-
-
-
-          }
-          else {
-            this.notifyService.showSuccess(this._Message, "Success");
-          }
-
-
-          this.GetScheduledJson();
-          this.Title_Name = this.projectInfo.Project_Name;
-          this.ngEmployeeDropdown = [];
-          this.Description_Type = null;
-          this.MasterCode = [];
-          this.Subtask = null;
-          this.Startts = null;
-          this.Endtms = null;
-          this.St_date = null;
-          this.Ed_date = null;
-          this._SEndDate = null;
-          this._SEndDate = moment().format("YYYY-MM-DD").toString();
-          this.Locationfulladd = null;
-          this._status = null;
-          this.SelectDms = [];
-          this.Location_Type = null;
-          this.Link_Details = null;
-          this._onlinelink = false;
-          this.Allocated_subtask = null;
-          this.TM_DisplayName = null;
-          this.Projectstartdate = "";
-          this.projectEnddate = null;
-          this.Status_project = null;
-          this.AllocatedHours = null;
-          this.daysSelectedII = [];
-          this.Avaliabletime = [];
-          this.timeslotsavl = [];
-          this.singleselectarry = [];
-          this.daysSelected = [];
-          // this.Recurr_arr = [];
-          this.selected = null;
-          this.TImetable();
-          this.Portfolio = null;
-          this.minDate = moment().format("YYYY-MM-DD").toString();
-          this.maxDate = null;
-          this.calendar.updateTodaysDate();
-          this.TImetable();
-
-        });
-
-      this.closeschd();
-
-
-
-
-      this.meetingsViewOn = true;   // closes the event task creation section.
-
-
-
-      this.meetingList = [];
-      this.meeting_arry = [];
-      this.meetinglength = 0;
-
-      this.upcomingMeetings = [];
-      this.todaymeetings = [];
-      this.last7dmeetings = [];
-      this.lastMonthMeetings = [];
-      this.olderMeetings = [];
-      this.mtgFromD = '';
-      this.mtgUptoD = '';
-      this.mtgsInRange = [];
-      this.mLdng = false;
-
-      this.tdMtgCnt = 0;   // Today Meetings Count
-      this.upcMtgCnt = 0;  // Upcoming Meetings Count
-      this.lstMthCnt = 0;  // Last Month Meetings Count
-      this.lst7dCnt = 0;   // Last 7 Days Meetings Count
-      this.oldMtgCnt = 0;  // Older Meetings Count
-
-      this.GetmeetingDetails();
-
-
-    }
-    else {
-      alert('Please Select Valid Date and Time');
-    }
-
-  }
+
+  //     });
+
+
+  //     this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
+  //     if (this.Schedule_ID != 0) {
+  //       this._calenderDto.Schedule_ID = this.Schedule_ID;
+
+  //     }
+  //     else {
+  //       this._calenderDto.Schedule_ID = 0;
+  //     }
+
+  //     let _attachmentValue = 0;
+  //     const frmData = new FormData();
+  //     for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+  //       frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+  //     }
+  //     if (this._lstMultipleFiales.length > 0)
+  //       _attachmentValue = 1;
+  //     else
+  //       _attachmentValue = 0;
+
+  //     frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+  //     frmData.append("CreatedBy", this.Current_user_ID.toString());
+  //     console.log(JSON.stringify(finalarray), "finalarray")
+  //     this._calenderDto.draftid = this.draftid;
+
+
+
+  //     console.log('_calenderDto obj:', JSON.parse(this._calenderDto.ScheduleJson));
+
+  //     this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
+  //       (data => {
+
+  //         var Attamentdraftid= '0'
+  //         frmData.append("draftid", Attamentdraftid= Attamentdraftid);
+
+
+  //         if (_attachmentValue == 1) {
+  //           this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+  //             (event: HttpEvent<any>) => {
+  //               switch (event.type) {
+  //                 case HttpEventType.Sent:
+  //                   console.log('Request has been made!');
+  //                   break;
+  //                 case HttpEventType.ResponseHeader:
+  //                   console.log('Response header has been received!');
+  //                   break;
+  //                 case HttpEventType.UploadProgress:
+  //                   this.progress = Math.round(event.loaded / event.total * 100);
+  //                   console.log(`Uploaded! ${this.progress}%`);
+  //                   break;
+  //                 case HttpEventType.Response:
+  //                   console.log('User successfully created!', event.body);
+
+  //                   // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+  //                   (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+  //                   this._lstMultipleFiales = [];
+  //                   // empty(this._lstMultipleFiales);
+  //                   // alert(this._lstMultipleFiales.length);
+  //                   setTimeout(() => {
+  //                     this.progress = 0;
+  //                   }, 1500);
+
+  //                   (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+  //                   (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+  //                   document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+  //                   document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+  //               }
+  //             }
+  //           )
+  //         }
+  //         //UploadCalendarAttachmenst
+  //         // console.log(data, "m");
+  //         this._Message = data['message'];
+  //         if (this._Message == "Update successfully") {
+  //           if (this.draftid != 0) {
+  //             this.Getdraft_datalistmeeting();
+  //             this.draftid = 0
+  //           }
+  //           this.notifyService.showError(this._Message, "Failed");
+
+
+
+
+  //         }
+  //         else {
+  //           this.notifyService.showSuccess(this._Message, "Success");
+  //         }
+
+
+  //         this.GetScheduledJson();
+  //         this.Title_Name = this.projectInfo.Project_Name;
+  //         this.ngEmployeeDropdown = [];
+  //         this.Description_Type = null;
+  //         this.MasterCode = [];
+  //         this.Subtask = null;
+  //         this.Startts = null;
+  //         this.Endtms = null;
+  //         this.St_date = null;
+  //         this.Ed_date = null;
+  //         this._SEndDate = null;
+  //         this._SEndDate = moment().format("YYYY-MM-DD").toString();
+  //         this.Locationfulladd = null;
+  //         this._status = null;
+  //         this.SelectDms = [];
+  //         this.Location_Type = null;
+  //         this.Link_Details = null;
+  //         this._onlinelink = false;
+  //         this.Allocated_subtask = null;
+  //         this.TM_DisplayName = null;
+  //         this.Projectstartdate = "";
+  //         this.projectEnddate = null;
+  //         this.Status_project = null;
+  //         this.AllocatedHours = null;
+  //         this.daysSelectedII = [];
+  //         this.Avaliabletime = [];
+  //         this.timeslotsavl = [];
+  //         this.singleselectarry = [];
+  //         this.daysSelected = [];
+  //         // this.Recurr_arr = [];
+  //         this.selected = null;
+  //         this.TImetable();
+  //         this.Portfolio = null;
+  //         this.minDate = moment().format("YYYY-MM-DD").toString();
+  //         this.maxDate = null;
+  //         this.calendar.updateTodaysDate();
+  //         this.TImetable();
+
+  //       });
+
+  //     this.closeschd();
+
+
+
+
+  //     this.meetingsViewOn = true;   // closes the event task creation section.
+
+
+
+  //     this.meetingList = [];
+  //     this.meeting_arry = [];
+  //     this.meetinglength = 0;
+
+  //     this.upcomingMeetings = [];
+  //     this.todaymeetings = [];
+  //     this.last7dmeetings = [];
+  //     this.lastMonthMeetings = [];
+  //     this.olderMeetings = [];
+  //     this.mtgFromD = '';
+  //     this.mtgUptoD = '';
+  //     this.mtgsInRange = [];
+  //     this.mLdng = false;
+
+  //     this.tdMtgCnt = 0;   // Today Meetings Count
+  //     this.upcMtgCnt = 0;  // Upcoming Meetings Count
+  //     this.lstMthCnt = 0;  // Last Month Meetings Count
+  //     this.lst7dCnt = 0;   // Last 7 Days Meetings Count
+  //     this.oldMtgCnt = 0;  // Older Meetings Count
+
+  //     this.GetmeetingDetails();
+
+
+  //   }
+  //   else {
+  //     alert('Please Select Valid Date and Time');
+  //   }
+
+  // }
 
   penhide1() {
     document.getElementById("pendlist1").classList.remove("show");
@@ -10619,7 +10620,7 @@ changeScheduleType(val:number){
 eventRepeat:boolean = false;
 Meeting_Id:any;
 Meeting_password:any;
-
+rapeatLink_Details:boolean=true;
 
 OnSubmitSchedule1() {
   if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
@@ -10785,7 +10786,11 @@ OnSubmitSchedule1() {
 
       var vOnlinelink = "Onlinelink";
       element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+      if(this.rapeatLink_Details==true){
       this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
+      this.rapeatLink_Details=false;
+    }
+
 
       var vLink_Details = "Link_Details";
       element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';

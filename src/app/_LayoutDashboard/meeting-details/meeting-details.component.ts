@@ -574,7 +574,7 @@ export class MeetingDetailsComponent implements OnInit {
   meeting_details() {
  
     this._calenderDto.Schedule_ID = this.Schedule_ID;
-
+debugger
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
 
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
@@ -3114,7 +3114,7 @@ onFileChange(event) {
     return moment({ hour, minute }).format("hh:mm A");
   }
 
-
+  rapeatLink_Details:boolean=true;
 
 
   OnSubmitSchedule() {
@@ -3305,7 +3305,10 @@ onFileChange(event) {
 
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+        if(this.rapeatLink_Details==true){
         this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
+        this.rapeatLink_Details=false;
+      }
 
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
@@ -6317,6 +6320,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
     this.minDate = moment().format("YYYY-MM-DD").toString();
     this.Attachment12_ary = [];
     this._lstMultipleFiales = [];
+    this.rapeatLink_Details=true;
     this.maxDate = null;
     this.isValidURL=true;
     this.RecurrValue= false;
@@ -6662,7 +6666,11 @@ console.log(this.dayArr,'sdcsadcasdcssad')
 
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+        if(this.rapeatLink_Details==true){
         this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
+        this.rapeatLink_Details=false;
+      }
+
 
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';

@@ -1392,6 +1392,11 @@ span.dar-dot {
     color: black !important;
 }
 
+.NotWorking {
+    background-color: #D32F2F!important;
+    color: white !important;
+}
+
 .asstask {
     background-color: #60708B !important;
     color: white !important;
@@ -2502,4 +2507,30 @@ span.p-b-percent-count {
     .picsum-img-wrapper img {
         height: 190px;
     }
+}
+
+
+.blue-color path {
+    fill: #2786fb;
+    /* Blue color */
+}
+
+.default-color path {
+    fill: #9B30FF;
+    /* Blue color */
+}
+
+.purple-color path {
+    fill: #9B30FF;
+    /* Green color */
+}
+
+.red-color path {
+    fill: #f10505;
+    /* Red color */
+}
+
+.green-color path {
+    fill: #1dc9b7;
+    /* green color */
 }

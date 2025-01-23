@@ -4056,6 +4056,7 @@ getChangeSubtaskDetais(Project_Code) {
     this.minDate = moment().format("YYYY-MM-DD").toString();
     this.Attachment12_ary = [];
     this.RemovedAttach = [];
+    this.rapeatLink_Details=true;
     this._lstMultipleFiales = [];
     this.maxDate = null;
     this.selected = null;
@@ -4191,6 +4192,7 @@ getChangeSubtaskDetais(Project_Code) {
   eventRepeat:boolean = false;
   Meeting_Id:any;
   Meeting_password:any;
+  rapeatLink_Details:boolean=true;
 
 
   OnSubmitSchedule() {
@@ -4359,8 +4361,10 @@ getChangeSubtaskDetais(Project_Code) {
 
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+        if(this.rapeatLink_Details==true){
         this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
-
+        this.rapeatLink_Details=false;
+      }
 
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
