@@ -653,6 +653,7 @@ dayArr: any = [
     //     // delay: [1000, 200]
     //   });
     // }
+
     this.totalproject();
     this.openTab()
     // this.initAutosize();
@@ -1261,7 +1262,8 @@ date_menuclo(dialogId:string){
   pendingCount:any;
   rejectCount:any;
   allCount:any;
-
+  completedCount: any;
+  UnassignCount:any
   getrunwayCount(){
     this.isCountsDataLoaded=false;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
@@ -1273,11 +1275,11 @@ date_menuclo(dialogId:string){
         this.catcount = JSON.parse(data[0]['CatCount']);
         this.status_list = JSON.parse(data[0]['statuscount']);
         console.log(this.status_list,"this.status_listthis.status_list")
-debugger
+
         this.status_list.forEach(element => {
-          if(element.Status=='All'){
-            this.allCount = element.SCount;
-          }
+          // if(element.Status=='All'){
+          //   this.allCount = element.SCount;
+          // }
           if(element.Status=='Accepted'){
             this.acceptCount = element.SCount;
           }
@@ -1288,13 +1290,19 @@ debugger
             this.rejectCount = element.SCount;
           }
 
-          // if(element.Status=='Rejected'){
-          //   this.rejectCount = element.SCount;
-          // }
+          if(element.Status=='Completed'){
+            this.completedCount = element.SCount;
+          }
+          if(element.Status=="UnAssigned"){
+            this.UnassignCount = element.SCount;
+          }
+          this.allCount = this.acceptCount + this.pendingCount + this.rejectCount +  this.completedCount + this.UnassignCount
         });
-      console.log(this.acceptCount,this.pendingCount,this.rejectCount,this.procount,this.catcount,"count");
+
+      console.log(this.acceptCount,this.pendingCount,this.rejectCount,this.procount,this.catcount,this.completedCount,this.allCount,"count","this.completedCount");
 
       });
+
   }
 
   underDev() {
@@ -1319,17 +1327,17 @@ debugger
         console.log(this.CategoryList,"this.CategoryListthis.CategoryListthis.CategoryListthis.CategoryList")
 
 
-        this.userCategory = [];
+        this.SystemCategory = [];
         this.CategoryList.forEach((item)=>{
           if(  item.Category_ID == 2411 || item.Category_ID == 3595){
-            this.userCategory.push(item)
+            this.SystemCategory.push(item)
           }
         })
 
-        this.SystemCategory = [];
+        this.userCategory = [];
         this.CategoryList.forEach((item)=>{
         if(item.Category_ID !== 2411 && item.Category_ID !== 3595){
-          this.SystemCategory.push(item)
+          this.userCategory.push(item)
         }
         })
 
@@ -1648,12 +1656,12 @@ console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeLi
   CountsAccepted: any;
   CountsPending: any;
   CountsRejected: any;
-
+  Countunassign:any;
 
   OnCategoryClick(C_id, C_Name) {
     // _Id = C_id;
     // _Name = C_Name;
-
+debugger
     this._selectedcatname = C_Name;
     this._selectedcatid = C_id;
     this.BsService.setNewCategoryID(this._selectedcatid);
@@ -1675,19 +1683,39 @@ console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeLi
     this._ObjCompletedProj.Mode = 'Todo';
     // alert(this._Categoryid);
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
-      (data) => {
+      (data) => {   debugger
+console.log(data,"Checking data of tasks")
 
+this._TodoList = [];
+this._CompletedList = [];
+this.ActionedSubtask_Json = [];
+this.ActionedAssigned_Josn = [];
+
+
+if (this._selectedcatid == '-1'||this._selectedcatid == '-2'||this._selectedcatid == '-3'){
+  this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+}
+else if(this._selectedcatid == '-4'){
+  this._TodoList = JSON.parse(data[0]['ActionedAssigned_Josn']);
+}
+else if(this._selectedcatid == '-5'){
+  this._CompletedList = JSON.parse(data[0]['ActionedAssigned_Josn']);
+}
+else{
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+}
         this.openTab()
         console.log(this.ActionedAssigned_Josn,"accept,pend")
 
         let _Accepted =0;
         let _Pending =0;
         let _Rejected=0;
+        // let _unassign = 0;
         this.ActionedAssigned_Josn.forEach(element => {
+
           if(element.Status=="Accepted"){
             _Accepted=_Accepted+1;
           }
@@ -1697,11 +1725,14 @@ console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeLi
           else if(element.Status == "Rejected"){
             _Rejected=_Rejected+1;
           }
+          // else if(element.Status == "Unassign"){
+          //   _unassign=_unassign+1;
+          // }
         });
         this.CountsAccepted= _Accepted;
         this.CountsPending= _Pending;
         this.CountsRejected= _Rejected;
-
+        // this.Countunassign = _unassign
         // console.log(this.CountsAccepted);
       });
       // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");

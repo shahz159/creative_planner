@@ -951,6 +951,69 @@
                 </div>
             </div>
             <!--begin::Portlet-->
+
+
+
+
+
+
+<!--
+            <div class="kt-Note-msg d-flex" *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0 || this.forwardPrjPort&&this.forwardPrjPort.length > 0 ||this.completionPrjPort&&this.completionPrjPort.length > 0 || this.newapprovalPrjport&&this.newapprovalPrjport.length > 0" >
+              <div class="kt-note-icon" style="align-self: flex-start;"><svg xmlns="http://www.w3.org/2000/svg"
+               xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px"
+               viewBox="0 0 66 65" xml:space="preserve">
+               <path
+                 d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z">
+               </path>
+               <path
+                 d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z">
+               </path>
+               <path
+                 d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z">
+               </path>
+               <path
+                 d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z">
+               </path>
+               <path
+                 d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z">
+               </path>
+               <path
+                 d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z">
+               </path>
+               <path
+                 d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z">
+               </path>
+               <path
+                 d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z">
+               </path>
+             </svg></div> -->
+
+
+             <!-- filterProjectsOfEmp(Current_user_ID)" -->
+             <!-- <div  class="notification delay-notification "><span  class="notif-msg" > Need your action on <span style="color: #ff2727;" *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0" (click)="filterPrjs(Current_user_ID,'Delay')"  class="delayaction-of-emp ">{{this.delayPrjsofPort.length}} delay project(s)</span><b *ngIf="this.forwardPrjPort.length>0" >,&nbsp;</b>
+              <span *ngIf="this.forwardPrjPort&&this.forwardPrjPort.length > 0"  class="delayaction-of-emp " (click)="filterPrjs(Current_user_ID,'Forward Under Approval')"  style="color:#9C27B0">{{this.forwardPrjPort.length}} Forward approval(s)</span> <b *ngIf="this.completionPrjPort.length > 0" >,&nbsp;</b>
+
+             <span *ngIf="this.completionPrjPort&&this.completionPrjPort.length > 0"  style="color:#81C784" class="delayaction-of-emp " (click)="filterPrjs(Current_user_ID,'Completion Under Approval')" >{{this.completionPrjPort.length}} Completion approval(s)</span><b *ngIf="this.cancellationPort.length >0 &&  this.delayPrjsofPort.length>0" class="">,&nbsp;</b>
+
+             <span *ngIf="this.cancellationPort&&this.cancellationPort.length > 0"  style="color:#EE4137 " class="delayaction-of-emp " (click)="filterPrjs(Current_user_ID,'Cancellation Under Approval')" >{{this.cancellationPort.length}} Cancellation approval(s)</span><b *ngIf="newapprovalPrjport.length > 0&&this.delayPrjsofPort.length>0" class="">,&nbsp;</b>
+
+
+           <span *ngIf="this.newapprovalPrjport&&this.newapprovalPrjport.length > 0"  style="color:#9C27B0 " class="delayaction-of-emp " (click)="filterPrjs(Current_user_ID,'Under Approval')">{{this.newapprovalPrjport.length}} New approval(s)</span>
+
+           </span>
+
+           </div> -->
+
+           <!-- </div> -->
+
+
+
+
+
+
+
+
+
             <div class="kt-portlet mt-2 mb-0">
                 <!-- <div class="kt-portlet__head">
                     <div class="col-md-6 py-3">
@@ -1003,7 +1066,8 @@
 
 
 
-                              <div  class="dropdown show d-none">
+                             <div class="d-flex">
+                              <div  class="dropdown show mr-2">
                                 <button  *ngIf="this.allSelectedProjects.length>0"  class="btn btn-sm btn-outline-primary" data-toggle="dropdown" id="test1" title="Click to create new portfolio"
                                 [ngClass]="{'active': activeClass_NewPortfolio}" (click)="DropdownOpen();_portfolioName = ''">
                                 <!-- <svg width="44px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12H18M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> -->
@@ -1060,8 +1124,8 @@
                                 <!--end:: Nav-->
                             </div>
                               </div>
-<ng-container *ngIf="isapprovlFound">
-                              <div  style="margin-left:8px" class="btn-group mr-2" role="group">
+                            <ng-container *ngIf="isapprovlFound">
+                              <div class="btn-group mr-2" role="group">
                                 <button type="button" class="btn btn-outline-success btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                   <span class="fs-8" style="font-weight:500">Accept</span>
                                 </button>
@@ -1081,6 +1145,10 @@
                               <span class="fs-8" style="font-weight:500">Reject</span>
                             </button>
                           </ng-container>
+                             </div>
+
+
+
 
 
                                 <div class="row mt-2">
@@ -3755,7 +3823,7 @@
                         </div>
                     </div>
                 </div>
-                    
+
             </div>
           <div class="header-act">
                 <div class="kt-graph-close"  data-dismiss="modal" aria-label="Close" (click)="onGanttChartClose()">
@@ -3767,7 +3835,7 @@
 
 
         <div class="modal-body actns-graph-dv" style=" display: flex; flex-direction: column;">
-            
+
          <div [ngClass]="{'d-none':isGanttchartVisible==false}">
             <div class="gantt-ctrls-btns"></div>
             <div class="actns-gantt-dates" style=" background-color:#fff;  position: relative;top: 28px;z-index: 1;width: 100%;display: flex;justify-content: flex-end;padding-right: 17px;">
@@ -3786,7 +3854,7 @@
           </div>
         </div>
 
-     
+
       </div>
 
 
