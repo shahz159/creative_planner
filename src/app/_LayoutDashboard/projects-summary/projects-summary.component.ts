@@ -775,7 +775,7 @@ dates:any
 // all_employees_list:any=[];
 // all_status_types:any=[];
 
-// getDropdownsDataFromDB1(){   debugger
+// getDropdownsDataFromDB1(){   
 
 //   this._objDropdownDTO.EmpNo = this.Current_user_ID;
 //   this._objDropdownDTO.Selected_ProjectType = "";
@@ -784,7 +784,7 @@ dates:any
 //   this._objDropdownDTO.SelectedEmp_No = "";
 //   this._objDropdownDTO.Selected_SearchText = "";
 //   this._objDropdownDTO.ActiveStatus = "Active";
-//   this.service.GetDropDownsOwnerData_ForSummary(this._objDropdownDTO).subscribe((data:any)=>{ debugger
+//   this.service.GetDropDownsOwnerData_ForSummary(this._objDropdownDTO).subscribe((data:any)=>{ 
 
 //     this.all_companiesList=JSON.parse(data[0]['CompanyType_Json']);
 //     this.all_project_types=JSON.parse(data[0]['ProjectType_Json']);
@@ -940,7 +940,7 @@ dates:any
 
 
   //   submit() {
-  //     debugger
+  //     
   //     // Filter the data based on the selected filters
   //     const coreFilter = this.TypeContInFilter.find(item => item.Name === 'Core Tasks' && item.checked);
 
@@ -1078,7 +1078,7 @@ dates:any
   }
 
   applyFilters() {
-debugger
+
     this.edited = true
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
@@ -1905,7 +1905,7 @@ isstatusDrpDwnOpen:boolean=false
 
 
 // openDropdown(dropdown: string): void {
-//   debugger
+//   
 //   if (dropdown === 'companyDDwn') {
 //     this.iscompanyDrpDwnOpen = true;
 //     this.isEmployeeDrpDwnOpen = false; // Close employee dropdown
@@ -2130,7 +2130,7 @@ isInvalidDate(date: moment.Moment) {
 }
 
 // closeOnOtherClick(id){
-//   debugger
+//   
 //   if(id == 'company'){
 //     this.closeAutocompleteDrpDwn('employeeDDwn');
 //     this.closeAutocompleteDrpDwn('proDDwn')
@@ -2343,7 +2343,7 @@ this.closeAutocompleteDrpDwn('proDDwn')
 
 
   selectUnSelectProject(e, item) {
-debugger
+
     if (e.checked) {
       this.allSelectedProjects.push(item)
       const allselec = this._ProjectDataList.every(item => {
@@ -2403,7 +2403,7 @@ isProjectSelected(prjcode: any): boolean {
   notProvided:any;
   approvingRequest = []
   submitAprvlsWithCmts(){
-debugger
+
 
     if(this.approverComments&&this.approverComments.trim()){
       this.notProvided=false;
@@ -2417,7 +2417,7 @@ debugger
 
   // approvingRequest = []
 acceptSelectedValues(_comments?:string) {
-debugger
+
 
 if( this.approvingRequest.length > 0 ){
 
@@ -2647,7 +2647,7 @@ createNewPortfolio(){
 
 
 addPrjsToPortflio() {
-debugger
+
   if(this.allSelectedProjects.length>0){
 
     const selectedPrjs=this.allSelectedProjects;
