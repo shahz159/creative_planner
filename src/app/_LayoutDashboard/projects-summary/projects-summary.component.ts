@@ -2720,7 +2720,7 @@ all_status={
 };
 prj_statuses:any=[];
 isGanttchartVisible:boolean=false;
-
+PrjsGanttChart:any;
 
 loadGanttChart(){
   console.log("current projects on the page:",this._ProjectDataList);
@@ -2733,7 +2733,7 @@ loadGanttChart(){
   this.prj_statuses=Array.from(new Set(this.prj_statuses));
   const todays_date=new Date().getTime();
 
-  const _series=_ProjectsListBy_Pid1.map((prj,_index)=>{      debugger
+  const _series=_ProjectsListBy_Pid1.map((prj,_index)=>{      
       let p_status=prj.Status=='Completion Under Approval'?(prj.AuditStatus=='Audit Pending'?'Audit Approval':'Completion Under Approval'):prj.Status;
       const color=this.all_status[p_status]||this.all_status['other'];
       let data_ar=[];
@@ -3191,12 +3191,16 @@ const d2=new Date(_ProjectsListBy_Pid1[index].DeadLine);
 
 };
 
-var chart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
-chart.render();
-
-
-
+this.PrjsGanttChart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
+this.PrjsGanttChart.render();
 }
+
+
+onGanttChartClose(){
+  this.PrjsGanttChart.destroy();
+  this.PrjsGanttChart=null;
+}
+
 
 
 // test new 

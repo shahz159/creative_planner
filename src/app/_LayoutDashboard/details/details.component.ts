@@ -11625,7 +11625,6 @@ onActnsGanttClosed(){
     this.ActnsGanttChart=null;
     this.ganttActnsConfig={bystatus:'All',byuser:'All'};
     this.total_userActns=undefined;
-
 }
 
 
