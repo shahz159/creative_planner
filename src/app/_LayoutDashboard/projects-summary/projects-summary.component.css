@@ -3930,3 +3930,113 @@ input:checked + .slider:before {
   color: #2786fb;
 
 }
+
+
+/*gantt chart css test  start*/
+
+@media (min-width: 1400px) {
+  #actns-graphmodal .modal-dialog.modal-xl {
+    max-width: 97%;
+    position: relative;
+    left: 0.5%;
+  }
+}
+
+#actnsfull-graph.actns-graph {
+  width: 100%;
+}
+
+#actns-graphmodal .actns-graph-dv .actngantt-chart-holder {
+  overflow-y: auto;
+}
+
+#actns-graphmodal .gantt-container {
+  flex-grow: 1;
+  max-height: 60vh;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+#actns-graphmodal .gantt-container::-webkit-scrollbar {
+  width: 7px;
+}
+
+#actns-graphmodal .gantt-container::-webkit-scrollbar-thumb {
+  background-color: #c8c8c8;
+  border-radius: 50px;
+}
+
+#actns-graphmodal .gantt-container::-webkit-scrollbar-track {
+  background-color: #fff;
+  border-radius: 50px;
+}
+
+
+.graphmodal .modal-header {
+  border-bottom: 0px;
+}
+
+.graphmodal .header-act {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+
+.graphmodal .kt-flter {
+  box-shadow: 0px 1px 5px #dfdddd;
+  border-radius: 3px;
+  padding: 4.5px;
+  background-color: #f9f7f7;
+  cursor: pointer;
+}
+
+.graphmodal .kt-flter:hover {
+  background-color: #ebebeb;
+}
+
+.graphmodal .kt-graph-close {
+  box-shadow: 0px 1px 5px #dfdddd;
+  border-radius: 3px;
+  padding: 4px;
+  background-color: #f9f7f7;
+  cursor: pointer;
+}
+
+.graphmodal .kt-graph-close:hover {
+  background-color: #ebebeb;
+}
+
+.graphmodal .kt-graph-close:active {
+  transform: scale(0.95);
+}
+
+
+
+#actns-graphmodal{
+  background-color: #27272799;
+}
+
+
+#actns-graphmodal .kt-filterdetails{
+  background-color: transparent;
+}
+
+#actns-graphmodal .search-filter1{
+  margin-left: 8px;
+      background-color: #f3f6f9;
+      padding: 2px 3px 4px 2px;
+      border-radius: 4px;
+      border: 1px solid #dbe5ef;
+  }
+
+
+#actns-graphmodal .page-prj-count
+{
+    background-color: #85838312;
+    border-radius: 3px;
+    padding: 0 7px;
+    color: gray;
+    font-weight: 500;
+}
+/*gantt chart css test  end*/

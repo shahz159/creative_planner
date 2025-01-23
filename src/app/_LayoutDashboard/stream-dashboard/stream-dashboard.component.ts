@@ -301,9 +301,10 @@ export class StreamDashboardComponent implements OnInit {
         }))
         .filter((item: any) => item.Schedule_date >= today); // Filter for future dates including today
 
-      console.log(this.scheduleItems, "this.meetingoftheuserthis.meetingoftheuser");
+      console.log(this.scheduleItems, "Calendar Data");
     });
   }
+
   isToday(date: Date): boolean {
     const today = new Date();
     return (
@@ -516,6 +517,40 @@ export class StreamDashboardComponent implements OnInit {
   gotoPortfolioPage(){
     this.router.navigate(['/backend/Portfolio']);
   }
+
+
+  newMeetingDetails(Schedule_ID) {
+    let name: string = 'Meeting-Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${Schedule_ID}`;
+    var myWindow = window.open(myurl);
+    myWindow.focus();
+  }
+
+
+
+  gotoCalendar(){
+    this.router.navigate(['/backend/StreamCalendar']);
+  }
+
+
+  
+
+  formatTimes(time: string): string {
+    if(time){
+      const [hours, minutes] = time.split(':');
+      const date = new Date();
+      date.setHours(parseInt(hours, 10));
+      date.setMinutes(parseInt(minutes, 10));
+  
+      const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
+      const x=date.toLocaleTimeString('en-US', options);
+      return x;
+    }
+    return '';
+  }
+
+
 
 }
 

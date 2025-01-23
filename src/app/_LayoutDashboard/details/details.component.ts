@@ -184,6 +184,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   loading: boolean = false;
   actionowner_dropdown:any;
   actionresponsible_dropdown:any;
+  action_completionOffset:number|undefined;
+  action_deadlineExtendlist:any=[];
   isNewOwnerOk:boolean=false;
   pageContentType:'PROJECT_DETAILS'|'ACTION_DETAILS'='PROJECT_DETAILS';  // which content the page is display project or action. by default project.
   noActvySinceCreation:boolean=false;
@@ -289,7 +291,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     // these minhold and maxhold are used in the project hold section,project release section
     this.minhold.setDate(this.minhold.getDate() + 1);
     this.maxhold.setDate(this.minhold.getDate() + 90);
-    this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
+    this.minhold.setHours(0,0,0,0); 
+    this.maxhold.setHours(0,0,0,0);
+    this.release_date=new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    // this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
 
     tippy('#dmsasfa', {
@@ -1525,26 +1530,34 @@ debugger
   ActionActivity_List:any=[];
   ActionfirstFiveRecords: any[] = [];
   GetActionActivityDetails(code) {
+    this.action_deadlineExtendlist=[];  // clear prev data.
     this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(code).subscribe(
       (data) => {
 
         if (data !== null && data !== undefined) {
           this.ActionActivity_List = JSON.parse(data[0]['ActivityList']); console.log('ActinoActivity_List:',this.ActionActivity_List);
+          
+     // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.   modifying "ActionActivity_List" and "action_deadlineExtendlist".
           let count:number=0;
-          this.ActionActivity_List.map((actv:any)=>{
-
-        // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
-                if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
+          this.ActionActivity_List.forEach((actv:any)=>{  
+            // &&count+1!=actv.count
+                 const c=(actv.Value.includes('Deadline changed'));
+                  if(c)
                   {   // actv.count : 2,3,4....
                       let updatecount=(actv.count-count);
-                      let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                      actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
+                      if(updatecount>1){
+                        let x=updatecount>3?'th':updatecount==3?'rd':updatecount==2?'nd':'st';
+                        actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
+                      }
+                     
+                       // prepare action_deadlineExtendlist here.
+                      this.action_deadlineExtendlist.push({...actv,count:updatecount});
                       count+=1;
                   }
                   return actv;
-              });
-        // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+          });
+      // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
 
    // adding _type property
       this.ActionActivity_List.forEach((_actvy)=>{
@@ -1641,6 +1654,14 @@ debugger
           this.actionowner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
           this.actionresponsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
       });
+
+
+      //calculate action completion offset value if action is completed.
+      if(this.projectActionInfo[index].Status=='Completed'){
+        this.action_completionOffset=moment(this.projectActionInfo[index].CD).diff(moment(this.projectActionInfo[index].EndDate),'days');
+        console.log('action_completionOffset value:',this.action_completionOffset);
+       }
+
 
     }
   }
@@ -1816,11 +1837,11 @@ debugger
           }
           else {
             // when the user said no
-            Swal.fire(
-              'Cancelled',
-              'Action not created',
-              'error'
-            )
+            // Swal.fire(
+            //   'Cancelled',
+            //   'Action not created',
+            //   'error'
+            // )
           }
         })
         .catch(e => console.log(e));
@@ -4914,7 +4935,7 @@ debugger
     // For sidebar overlay background removing the slide on 'X' button
     document.getElementById("rightbar-overlay").style.display = "none";
     // For page top div removing fixed
-    // document.getElementById("newdetails").classList.remove("position-fixed");
+    document.getElementById("newdetails").classList.remove("position-fixed");
     // $('#mainPrjCheckbox').prop('checked', false);
     this._inputAttachments = '';
     this._remarks = '';
@@ -5189,7 +5210,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
       myWindow.focus();
 
     }
-
     else if (cloud == true) {
 
       let FileUrl: string;
@@ -5272,7 +5292,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
       filename = filename.replace(/#/g, "%23");
       filename = filename.replace(/&/g, "%26");
-      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type+"&"+"mastercode="+this.URL_ProjectCode;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
@@ -5284,7 +5304,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
       filename = filename.replace(/#/g, "%23");
       filename = filename.replace(/&/g, "%26");
-      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type+"&"+"mastercode="+this.URL_ProjectCode;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
@@ -7042,6 +7062,7 @@ getChangeSubtaskDetais(Project_Code) {
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
     this._SEndDate = null;
+    this.rapeatLink_Details=true;
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
     this.minDate = moment().format("YYYY-MM-DD").toString();
     this.Attachment12_ary = [];
@@ -7198,329 +7219,329 @@ getChangeSubtaskDetais(Project_Code) {
 
 
 
-  OnSubmitSchedule() {
-
-    if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
-      this._subname1 = true;
-      return false;
-    }
-
-    if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
-      this._subname = true;
-      return false;
-    }
-    var now = new Date();
-    let timestamp = "";
-    timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
-      + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
-
-    this.EventNumber = timestamp;
-    let finalarray = [];
-    this.daysSelectedII = [];
-    const format2 = "YYYY-MM-DD";
-    var start = moment(this.minDate);
-    const _arraytext = [];
-    if (this.selectedrecuvalue == "0") {
-      const d1 = new Date(moment(start).format(format2));
-      const date = new Date(d1.getTime());
-      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
-    }
-    else if (this.selectedrecuvalue == "1") {
-      this.daysSelectedII = this.AllDatesSDandED;
-    }
-    else if (this.selectedrecuvalue == "2") {
-      if (this.dayArr.filter(x => x.checked == true).length == 0) {
-       alert('Please select day');
-        return false;
-      }
-      for (let index = 0; index < this.dayArr.length; index++) {
-        if (this.dayArr[index].checked) {
-          const day = this.dayArr[index].value;
-          _arraytext.push(day);
-          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
-          this.daysSelectedII = this.daysSelectedII.concat(newArray);
-        }
-      }
-      if (this.daysSelectedII.length == 0) {
-        alert('please select valid day');
-      }
-    }
-    else if (this.selectedrecuvalue == "3") {
-
-      if (this.MonthArr.filter(x => x.checked == true).length == 0) {
-        alert('Please select day');
-        return false;
-      }
-      for (let index = 0; index < this.MonthArr.length; index++) {
-        if (this.MonthArr[index].checked == true) {
-          const day = this.MonthArr[index].value;
-          _arraytext.push(day);
-          var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
-          this.daysSelectedII = this.daysSelectedII.concat(newArray);
-        }
-      }
-    }
-
-    finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
-
-
-    if (finalarray.length > 0) {
-      finalarray.forEach(element => {
-        const date1: Date = new Date(this._StartDate);
-        const date2: Date = new Date(this._SEndDate);
-
-        const diffInMs: number = date2.getTime() - date1.getTime();
-
-        const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-        var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
-        var dd = moment(date3).add(diffInDays, 'days')
-
-
-        var SEndDates = "SEndDate";
-        element[SEndDates] = (dd.format(format2));
-
-        var vStartTime = "StartTime";
-        element[vStartTime] = this.Startts;
-
-        var vEndTime = "EndTime";
-        element[vEndTime] = this.Endtms;
-
-        var vEnd_date = "End_date";
-        element[vEnd_date] = this._EndDate;
-
-        var vIsDeleted = "IsDeleted";
-        element[vIsDeleted] = 0;
+  // OnSubmitSchedule() {
+
+  //   if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
+  //     this._subname1 = true;
+  //     return false;
+  //   }
+
+  //   if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
+  //     this._subname = true;
+  //     return false;
+  //   }
+  //   var now = new Date();
+  //   let timestamp = "";
+  //   timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
+  //     + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
+
+  //   this.EventNumber = timestamp;
+  //   let finalarray = [];
+  //   this.daysSelectedII = [];
+  //   const format2 = "YYYY-MM-DD";
+  //   var start = moment(this.minDate);
+  //   const _arraytext = [];
+  //   if (this.selectedrecuvalue == "0") {
+  //     const d1 = new Date(moment(start).format(format2));
+  //     const date = new Date(d1.getTime());
+  //     this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+  //   }
+  //   else if (this.selectedrecuvalue == "1") {
+  //     this.daysSelectedII = this.AllDatesSDandED;
+  //   }
+  //   else if (this.selectedrecuvalue == "2") {
+  //     if (this.dayArr.filter(x => x.checked == true).length == 0) {
+  //      alert('Please select day');
+  //       return false;
+  //     }
+  //     for (let index = 0; index < this.dayArr.length; index++) {
+  //       if (this.dayArr[index].checked) {
+  //         const day = this.dayArr[index].value;
+  //         _arraytext.push(day);
+  //         var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+  //         this.daysSelectedII = this.daysSelectedII.concat(newArray);
+  //       }
+  //     }
+  //     if (this.daysSelectedII.length == 0) {
+  //       alert('please select valid day');
+  //     }
+  //   }
+  //   else if (this.selectedrecuvalue == "3") {
+
+  //     if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+  //       alert('Please select day');
+  //       return false;
+  //     }
+  //     for (let index = 0; index < this.MonthArr.length; index++) {
+  //       if (this.MonthArr[index].checked == true) {
+  //         const day = this.MonthArr[index].value;
+  //         _arraytext.push(day);
+  //         var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+  //         this.daysSelectedII = this.daysSelectedII.concat(newArray);
+  //       }
+  //     }
+  //   }
+
+  //   finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
+
+
+  //   if (finalarray.length > 0) {
+  //     finalarray.forEach(element => {
+  //       const date1: Date = new Date(this._StartDate);
+  //       const date2: Date = new Date(this._SEndDate);
+
+  //       const diffInMs: number = date2.getTime() - date1.getTime();
+
+  //       const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  //       var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+  //       var dd = moment(date3).add(diffInDays, 'days')
+
+
+  //       var SEndDates = "SEndDate";
+  //       element[SEndDates] = (dd.format(format2));
+
+  //       var vStartTime = "StartTime";
+  //       element[vStartTime] = this.Startts;
+
+  //       var vEndTime = "EndTime";
+  //       element[vEndTime] = this.Endtms;
+
+  //       var vEnd_date = "End_date";
+  //       element[vEnd_date] = this._EndDate;
+
+  //       var vIsDeleted = "IsDeleted";
+  //       element[vIsDeleted] = 0;
 
-        var vPending = "Pending_meeting";
-        element[vPending] = 0;
-
-        var vRecurrence = "Recurrence";
-        element[vRecurrence] = this.selectedrecuvalue;
-
-        var vRecurrence_value = "Recurrence_values";
-        element[vRecurrence_value] = _arraytext.toString();
+  //       var vPending = "Pending_meeting";
+  //       element[vPending] = 0;
+
+  //       var vRecurrence = "Recurrence";
+  //       element[vRecurrence] = this.selectedrecuvalue;
+
+  //       var vRecurrence_value = "Recurrence_values";
+  //       element[vRecurrence_value] = _arraytext.toString();
 
-        var vEmp_No = "Emp_No";
-        element[vEmp_No] = this.Current_user_ID;
+  //       var vEmp_No = "Emp_No";
+  //       element[vEmp_No] = this.Current_user_ID;
 
-        var vScheduleType = "ScheduleType";
-        element[vScheduleType] = this.ScheduleType == "Task" ? 1 : 2;
+  //       var vScheduleType = "ScheduleType";
+  //       element[vScheduleType] = this.ScheduleType == "Task" ? 1 : 2;
 
-        var vTitle_Name = "Title_Name";
-        element[vTitle_Name] = this.Title_Name;
+  //       var vTitle_Name = "Title_Name";
+  //       element[vTitle_Name] = this.Title_Name;
 
-        var vMasterCode = "MasterCode";
-        element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
+  //       var vMasterCode = "MasterCode";
+  //       element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
 
-        // var columnName = "Link_Type";
-        // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
-        var vUser_Name = "User_Name";
-        element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.map((e)=>e.Emp_No).toString();   //when mat chip
+  //       // var columnName = "Link_Type";
+  //       // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
+  //       var vUser_Name = "User_Name";
+  //       element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.map((e)=>e.Emp_No).toString();   //when mat chip
 
-        var vLocation_Type = "Location_Type";
-        element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
+  //       var vLocation_Type = "Location_Type";
+  //       element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
 
-        var vLocation_fulladd = "FullAddress_loc";
-        element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" : this.Locationfulladd;
+  //       var vLocation_fulladd = "FullAddress_loc";
+  //       element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" : this.Locationfulladd;
 
-        var vLocation_url = "Addressurl";
-        element[vLocation_url] = this.Addressurl;
+  //       var vLocation_url = "Addressurl";
+  //       element[vLocation_url] = this.Addressurl;
 
-        var vOnlinelink = "Onlinelink";
-        element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
-
-        var vLink_Details = "Link_Details";
-        element[vLink_Details] = this.Link_Details == undefined ? "" : this.Link_Details;
-
-        var vDescription = "Description";
-        element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
-
-        var vSubtask = "Subtask";
-        element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
+  //       var vOnlinelink = "Onlinelink";
+  //       element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+
+  //       var vLink_Details = "Link_Details";
+  //       element[vLink_Details] = this.Link_Details == undefined ? "" : this.Link_Details;
+
+  //       var vDescription = "Description";
+  //       element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
+
+  //       var vSubtask = "Subtask";
+  //       element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
 
-        var vEventNumber = "EventNumber";
-        element[vEventNumber] = this.EventNumber;
+  //       var vEventNumber = "EventNumber";
+  //       element[vEventNumber] = this.EventNumber;
 
-        var vPortfolio_name = "Portfolio_name";
-        element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.map(p=>p.portfolio_id).toString();  // when mat-chip
+  //       var vPortfolio_name = "Portfolio_name";
+  //       element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.map(p=>p.portfolio_id).toString();  // when mat-chip
 
-        var vDMS_Name = "DMS_Name";
-        element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.map(m=>m.MailId).toString();    //when mat chip
+  //       var vDMS_Name = "DMS_Name";
+  //       element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.map(m=>m.MailId).toString();    //when mat chip
 
-         var vAgendas = "Meeting_Agendas";
-        const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-        element[vAgendas] = mtgAgendas;
+  //        var vAgendas = "Meeting_Agendas";
+  //       const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+  //       element[vAgendas] = mtgAgendas;
 
-
-      });
-
-
-      this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
-      if (this.Schedule_ID != 0) {
-        this._calenderDto.Schedule_ID = this.Schedule_ID;
-
-      }
-      else {
-        this._calenderDto.Schedule_ID = 0;
-      }
-
-      let _attachmentValue = 0;
-      const frmData = new FormData();
-      for (var i = 0; i < this._lstMultipleFiales.length; i++) {
-        frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
-      }
-      if (this._lstMultipleFiales.length > 0)
-        _attachmentValue = 1;
-      else
-        _attachmentValue = 0;
-
-      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
-      frmData.append("CreatedBy", this.Current_user_ID.toString());
-      console.log(JSON.stringify(finalarray), "finalarray")
-      this._calenderDto.draftid = this.draftid;
-
-
-
-      console.log('_calenderDto obj:', JSON.parse(this._calenderDto.ScheduleJson));
-
-      this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
-        (data => {
-
-          var Attamentdraftid= '0'
-          frmData.append("draftid", Attamentdraftid= Attamentdraftid);
-
-
-          if (_attachmentValue == 1) {
-            this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
-              (event: HttpEvent<any>) => {
-                switch (event.type) {
-                  case HttpEventType.Sent:
-                    console.log('Request has been made!');
-                    break;
-                  case HttpEventType.ResponseHeader:
-                    console.log('Response header has been received!');
-                    break;
-                  case HttpEventType.UploadProgress:
-                    this.progress = Math.round(event.loaded / event.total * 100);
-                    console.log(`Uploaded! ${this.progress}%`);
-                    break;
-                  case HttpEventType.Response:
-                    console.log('User successfully created!', event.body);
-
-                    // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
-                    this._lstMultipleFiales = [];
-                    // empty(this._lstMultipleFiales);
-                    // alert(this._lstMultipleFiales.length);
-                    setTimeout(() => {
-                      this.progress = 0;
-                    }, 1500);
-
-                    (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                    (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
-                    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                    document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
-                }
-              }
-            )
-          }
-          //UploadCalendarAttachmenst
-          // console.log(data, "m");
-          this._Message = data['message'];
-          if (this._Message == "Update successfully") {
-            if (this.draftid != 0) {
-              this.Getdraft_datalistmeeting();
-              this.draftid = 0
-            }
-            this.notifyService.showError(this._Message, "Failed");
-
-
-
-
-          }
-          else {
-            this.notifyService.showSuccess(this._Message, "Success");
-          }
-
-
-          this.GetScheduledJson();
-          this.Title_Name = this.projectInfo.Project_Name;
-          this.ngEmployeeDropdown = [];
-          this.Description_Type = null;
-          this.MasterCode = [];
-          this.Subtask = null;
-          this.Startts = null;
-          this.Endtms = null;
-          this.St_date = null;
-          this.Ed_date = null;
-          this._SEndDate = null;
-          this._SEndDate = moment().format("YYYY-MM-DD").toString();
-          this.Locationfulladd = null;
-          this._status = null;
-          this.SelectDms = [];
-          this.Location_Type = null;
-          this.Link_Details = null;
-          this._onlinelink = false;
-          this.Allocated_subtask = null;
-          this.TM_DisplayName = null;
-          this.Projectstartdate = "";
-          this.projectEnddate = null;
-          this.Status_project = null;
-          this.AllocatedHours = null;
-          this.daysSelectedII = [];
-          this.Avaliabletime = [];
-          this.timeslotsavl = [];
-          this.singleselectarry = [];
-          this.daysSelected = [];
-          // this.Recurr_arr = [];
-          this.selected = null;
-          this.TImetable();
-          this.Portfolio = null;
-          this.minDate = moment().format("YYYY-MM-DD").toString();
-          this.maxDate = null;
-          this.calendar.updateTodaysDate();
-          this.TImetable();
-
-        });
-
-      this.closeschd();
-
-
-
-
-      this.meetingsViewOn = true;   // closes the event task creation section.
-
-
-
-      this.meetingList = [];
-      this.meeting_arry = [];
-      this.meetinglength = 0;
-
-      this.upcomingMeetings = [];
-      this.todaymeetings = [];
-      this.last7dmeetings = [];
-      this.lastMonthMeetings = [];
-      this.olderMeetings = [];
-      this.mtgFromD = '';
-      this.mtgUptoD = '';
-      this.mtgsInRange = [];
-      this.mLdng = false;
-
-      this.tdMtgCnt = 0;   // Today Meetings Count
-      this.upcMtgCnt = 0;  // Upcoming Meetings Count
-      this.lstMthCnt = 0;  // Last Month Meetings Count
-      this.lst7dCnt = 0;   // Last 7 Days Meetings Count
-      this.oldMtgCnt = 0;  // Older Meetings Count
-
-      this.GetmeetingDetails();
-
-
-    }
-    else {
-      alert('Please Select Valid Date and Time');
-    }
-
-  }
+
+  //     });
+
+
+  //     this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
+  //     if (this.Schedule_ID != 0) {
+  //       this._calenderDto.Schedule_ID = this.Schedule_ID;
+
+  //     }
+  //     else {
+  //       this._calenderDto.Schedule_ID = 0;
+  //     }
+
+  //     let _attachmentValue = 0;
+  //     const frmData = new FormData();
+  //     for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+  //       frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+  //     }
+  //     if (this._lstMultipleFiales.length > 0)
+  //       _attachmentValue = 1;
+  //     else
+  //       _attachmentValue = 0;
+
+  //     frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+  //     frmData.append("CreatedBy", this.Current_user_ID.toString());
+  //     console.log(JSON.stringify(finalarray), "finalarray")
+  //     this._calenderDto.draftid = this.draftid;
+
+
+
+  //     console.log('_calenderDto obj:', JSON.parse(this._calenderDto.ScheduleJson));
+
+  //     this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
+  //       (data => {
+
+  //         var Attamentdraftid= '0'
+  //         frmData.append("draftid", Attamentdraftid= Attamentdraftid);
+
+
+  //         if (_attachmentValue == 1) {
+  //           this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+  //             (event: HttpEvent<any>) => {
+  //               switch (event.type) {
+  //                 case HttpEventType.Sent:
+  //                   console.log('Request has been made!');
+  //                   break;
+  //                 case HttpEventType.ResponseHeader:
+  //                   console.log('Response header has been received!');
+  //                   break;
+  //                 case HttpEventType.UploadProgress:
+  //                   this.progress = Math.round(event.loaded / event.total * 100);
+  //                   console.log(`Uploaded! ${this.progress}%`);
+  //                   break;
+  //                 case HttpEventType.Response:
+  //                   console.log('User successfully created!', event.body);
+
+  //                   // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+  //                   (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+  //                   this._lstMultipleFiales = [];
+  //                   // empty(this._lstMultipleFiales);
+  //                   // alert(this._lstMultipleFiales.length);
+  //                   setTimeout(() => {
+  //                     this.progress = 0;
+  //                   }, 1500);
+
+  //                   (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+  //                   (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+  //                   document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+  //                   document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+  //               }
+  //             }
+  //           )
+  //         }
+  //         //UploadCalendarAttachmenst
+  //         // console.log(data, "m");
+  //         this._Message = data['message'];
+  //         if (this._Message == "Update successfully") {
+  //           if (this.draftid != 0) {
+  //             this.Getdraft_datalistmeeting();
+  //             this.draftid = 0
+  //           }
+  //           this.notifyService.showError(this._Message, "Failed");
+
+
+
+
+  //         }
+  //         else {
+  //           this.notifyService.showSuccess(this._Message, "Success");
+  //         }
+
+
+  //         this.GetScheduledJson();
+  //         this.Title_Name = this.projectInfo.Project_Name;
+  //         this.ngEmployeeDropdown = [];
+  //         this.Description_Type = null;
+  //         this.MasterCode = [];
+  //         this.Subtask = null;
+  //         this.Startts = null;
+  //         this.Endtms = null;
+  //         this.St_date = null;
+  //         this.Ed_date = null;
+  //         this._SEndDate = null;
+  //         this._SEndDate = moment().format("YYYY-MM-DD").toString();
+  //         this.Locationfulladd = null;
+  //         this._status = null;
+  //         this.SelectDms = [];
+  //         this.Location_Type = null;
+  //         this.Link_Details = null;
+  //         this._onlinelink = false;
+  //         this.Allocated_subtask = null;
+  //         this.TM_DisplayName = null;
+  //         this.Projectstartdate = "";
+  //         this.projectEnddate = null;
+  //         this.Status_project = null;
+  //         this.AllocatedHours = null;
+  //         this.daysSelectedII = [];
+  //         this.Avaliabletime = [];
+  //         this.timeslotsavl = [];
+  //         this.singleselectarry = [];
+  //         this.daysSelected = [];
+  //         // this.Recurr_arr = [];
+  //         this.selected = null;
+  //         this.TImetable();
+  //         this.Portfolio = null;
+  //         this.minDate = moment().format("YYYY-MM-DD").toString();
+  //         this.maxDate = null;
+  //         this.calendar.updateTodaysDate();
+  //         this.TImetable();
+
+  //       });
+
+  //     this.closeschd();
+
+
+
+
+  //     this.meetingsViewOn = true;   // closes the event task creation section.
+
+
+
+  //     this.meetingList = [];
+  //     this.meeting_arry = [];
+  //     this.meetinglength = 0;
+
+  //     this.upcomingMeetings = [];
+  //     this.todaymeetings = [];
+  //     this.last7dmeetings = [];
+  //     this.lastMonthMeetings = [];
+  //     this.olderMeetings = [];
+  //     this.mtgFromD = '';
+  //     this.mtgUptoD = '';
+  //     this.mtgsInRange = [];
+  //     this.mLdng = false;
+
+  //     this.tdMtgCnt = 0;   // Today Meetings Count
+  //     this.upcMtgCnt = 0;  // Upcoming Meetings Count
+  //     this.lstMthCnt = 0;  // Last Month Meetings Count
+  //     this.lst7dCnt = 0;   // Last 7 Days Meetings Count
+  //     this.oldMtgCnt = 0;  // Older Meetings Count
+
+  //     this.GetmeetingDetails();
+
+
+  //   }
+  //   else {
+  //     alert('Please Select Valid Date and Time');
+  //   }
+
+  // }
 
   penhide1() {
     document.getElementById("pendlist1").classList.remove("show");
@@ -7694,7 +7715,7 @@ removeSelectedDMSMemo(item){
   minhold: any = new Date();
   maxhold: any = new Date();
   release_date: any = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-  dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
+  // dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
 
 
 holdcontinue(Pcode:any){
@@ -7738,19 +7759,26 @@ holdcontinue(Pcode:any){
   minPrjDeadline:Date;
   HprocessDone:number=0;
 
-  onHoldDateChanged(){
-
+  onHoldDateChanged(){ 
     const d1=new Date(this.Holddate);
-    const d2=new Date(this.projectInfo.EndDate);
-    this.isEHsectionVisible=d1>d2;
-    d1.setDate(d1.getDate()+1);
-    this.minPrjDeadline=d1;
+    if(d1>=this.minhold&&d1<=this.maxhold)
+    {
+      const d2=new Date(this.projectInfo.EndDate);
+      this.isEHsectionVisible=d1>d2;
+      d1.setDate(d1.getDate()+1);
+      d1.setHours(0,0,0,0);
+      this.minPrjDeadline=d1;
+    }
+    else{
+       this.Holddate=null;
+    }
+    
 }
 
 
   onProject_Hold(id, Pcode) {
 
-  if(this.Holddate&&this.hold_remarks&&(this.extendAndHold?this.newPrjDeadline:true)){
+  if(this.Holddate&&(this.hold_remarks&&this.hold_remarks.trim())&&(this.extendAndHold?this.newPrjDeadline:true)){
        // if holddate and remarks are provided.
       this.HprocessDone=this.extendAndHold?2:1;
 
@@ -7821,14 +7849,19 @@ holdcontinue(Pcode:any){
 
   }
   else
-   this.formFieldsRequired=true;
+  this.formFieldsRequired=true;
 
   }
 
 
 
-  orgValueChange1(val) {
-    this.release_date = moment(val.value).format("MM/DD/YYYY");
+  orgValueChange1(val) { 
+    const _inputdate=moment(val.value).toDate();
+    if((_inputdate>=this.minhold&&_inputdate<=this.maxhold)==false)
+    {
+      this.release_date=null;
+    }
+    // this.release_date = moment(val.value).format("MM/DD/YYYY");
   }
 
 
@@ -7836,7 +7869,7 @@ holdcontinue(Pcode:any){
 // Project / Action release.
   holdreleaseProject() {
 
-    if(this.hold_remarks){
+    if(this.hold_remarks&&this.hold_remarks.trim()){
       // if remarks are provided.
       if(this.currentActionView===undefined){
         // project release
@@ -7902,19 +7935,20 @@ holdcontinue(Pcode:any){
        }
     }
     else
-     this.formFieldsRequired=true;
+    this.formFieldsRequired=true;
 
   }
 
   updateReleaseDate() {
-
-    if(this.release_date&&this.hold_remarks){
+    if(this.release_date&&(this.hold_remarks&&this.hold_remarks.trim())){
      // if release date and remarks both are provided
       if (this.release_date == null || this.release_date == 'Invalid date') {
         this.notifyService.showError("Please enter valid date", "Failed");
         return false;
       }
       else {
+        const isprjrelease=this.currentActionView==undefined;
+
         this.release_date = this.datepipe.transform(this.release_date, 'MM/dd/yyyy');
         this.holdDate = moment(this.release_date).format("DD-MM-YYYY")
         this.approvalObj.Project_Code = (this.currentActionView===undefined)?this.URL_ProjectCode:this.projectActionInfo[this.currentActionView].Project_Code;
@@ -7924,14 +7958,24 @@ holdcontinue(Pcode:any){
         this.approvalservice.UpdateReleaseDate(this.approvalObj).subscribe((data) => {
           this._Message = (data['message']);
           if (this._Message == '1') {
-            this.notifyService.showSuccess("Project release date updated", "Success");
-            this.notifyService.showInfo("Project will be released on " + this.holdDate, "Note");
+            if(isprjrelease){
+              this.notifyService.showSuccess("Project release date updated", "Success");
+              this.notifyService.showInfo("Project will be released on " + this.holdDate, "Note");
+            }
+            else{
+              this.notifyService.showSuccess("Action release date updated", "Success");
+              this.notifyService.showInfo("Action will be released on " + this.holdDate, "Note");
+            }
+            
             this.getProjectDetails(this.projectInfo.Project_Code);
             this.getholdate();
             this.closePrjReleaseSideBar();
           }
           else if (this._Message == '2' || this._Message == '0') {
+            if(isprjrelease)
             this.notifyService.showError("Project release date not updated", "Failed");
+            else 
+            this.notifyService.showError("Action release date not updated", "Failed");
           }
         });
       }
@@ -8576,8 +8620,8 @@ GetprojectComments() {
 /////////////////Comments end////////////////////////
 
 
-LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
+LoadDocument1(pcode:string,iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+debugger
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -8593,27 +8637,28 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
       FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + this.URL_ProjectCode + "/" + url1);
     }
 
-    let name = "ArchiveView/" + this.URL_ProjectCode;
+    let name = "ArchiveView/" + pcode;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(FileUrl);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");
     filename = filename.replace(/&/g, "%26");
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type+"&"+"mastercode="+this.URL_ProjectCode;
+    var myWindow = window.open(myurl, url.toString());
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
-
   else if (iscloud == true) {
-    let name = "ArchiveView/" + this.projectCode;
+    let name = "ArchiveView/" + pcode;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(url1);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");
     filename = filename.replace(/&/g, "%26");
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type+"&"+"mastercode="+this.URL_ProjectCode;
+    var myWindow = window.open(myurl, url.toString());
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
@@ -8663,7 +8708,6 @@ openPDF_task_att(standardid: number, emp_no: string, cloud: boolean, repDate: Da
     myWindow.focus();
 
   }
-
   else if (cloud == true) {
 
     let FileUrl: string;
@@ -10576,7 +10620,7 @@ changeScheduleType(val:number){
 eventRepeat:boolean = false;
 Meeting_Id:any;
 Meeting_password:any;
-
+rapeatLink_Details:boolean=true;
 
 OnSubmitSchedule1() {
   if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
@@ -10742,7 +10786,11 @@ OnSubmitSchedule1() {
 
       var vOnlinelink = "Onlinelink";
       element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+      if(this.rapeatLink_Details==true){
       this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
+      this.rapeatLink_Details=false;
+    }
+
 
       var vLink_Details = "Link_Details";
       element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
@@ -11577,7 +11625,6 @@ onActnsGanttClosed(){
     this.ActnsGanttChart=null;
     this.ganttActnsConfig={bystatus:'All',byuser:'All'};
     this.total_userActns=undefined;
-
 }
 
 
@@ -12423,7 +12470,7 @@ getOverallFilesUploadProgress():number{
 } 
 
 
-showFilesUploadingBar:boolean=false;  // whether files uploading bar is visible or not.
+
 
 // file uploading progress bar end.
 

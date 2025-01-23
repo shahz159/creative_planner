@@ -1766,10 +1766,10 @@
 
                                                             <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">
                                                                 <span
-                                                                    class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>
+                                                                    class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.Project_Code,item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>
                                                                     <span class="attach-tippy">
-                                                                      <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
-                                                                  <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
+                                                                      <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.Project_Code,item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
+                                                                  <span class="st-line curser-pointer" (click)="LoadDocument(item1.Project_Code,item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
                                                                      <div style="width: max-content;">Approved by: <h6>{{item1.Approvedby}} </h6></div>
                                                                       <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                                   </span>
@@ -1845,8 +1845,8 @@
                                                                   {{(item1.AuditStatus=='Audit Pending')?"Audit Approval":"Completion approval"}}
                                                                 </span>
                                                                 <span class="attach-tippy">
-                                                                  <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
-                                                               <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
+                                                                  <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.Project_Code,item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
+                                                               <span class="st-line curser-pointer" (click)="LoadDocument(item1.Project_Code,item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
                                                                  <div style="width: max-content;">Submit by: <h6>{{item1.Submitby}} </h6></div>
                                                                   <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                               </span>
@@ -2113,10 +2113,10 @@
 
                                             <div *ngIf="item1.Status=='Completed'"  class="attach-tippy-div">
                                                 <span
-                                                    class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>
+                                                    class="Completed_color font-weight-400 curser-pointer" (click)="LoadDocument(item1.Project_Code,item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"> {{item1.Status}} </span>
                                                     <span class="attach-tippy">
-                                                        <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
-                                                    <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
+                                                        <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.Project_Code, item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
+                                                    <span class="st-line curser-pointer" (click)="LoadDocument(item1.Project_Code, item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
                                                        <div style="width: max-content;">Approved by: <h6>{{item1.Approvedby}} </h6></div>
                                                         <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                     </span>
@@ -2165,10 +2165,10 @@
                                             <div *ngIf="item1.Status=='Completion Under Approval'">
                                                 <!-- <h2>Mubeen</h2> -->
                                                 <span
-                                                    class="font-weight-400 completion-under-approval" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">  {{(item1.AuditStatus=='Audit Pending')?"Audit Approval":"Completion approval"}} </span>
+                                                    class="font-weight-400 completion-under-approval" (click)="LoadDocument(item1.Project_Code, item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">  {{(item1.AuditStatus=='Audit Pending')?"Audit Approval":"Completion approval"}} </span>
                                                     <span class="attach-tippy">
-                                                      <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
-                                                  <span class="st-line curser-pointer" (click)="LoadDocument(item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
+                                                      <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.Project_Code, item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
+                                                  <span class="st-line curser-pointer" (click)="LoadDocument(item1.Project_Code, item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
                                                      <div style="width: max-content;">Approved by: <h6>{{item1.Approvedby}} </h6></div>
                                                       <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                   </span>
@@ -5227,12 +5227,12 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <input class="form-control"  placeholder="Meeting Id" type="text" [(ngModel)]="Meeting_Id">
+                        <input class="form-control"  placeholder="Meeting id (optional)" type="text" [(ngModel)]="Meeting_Id">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <input class="form-control" placeholder="Meeting password" type="text" [(ngModel)]="Meeting_password">
+                        <input class="form-control" placeholder="Password (optional)" type="text" [(ngModel)]="Meeting_password">
                     </div>
                 </div>
             </div>

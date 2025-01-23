@@ -951,7 +951,6 @@ else if ((dateTwo < dateOne) && (this.Current_user_ID!=this.Owner_Empno && this.
 }
 
 
-
 // 3. Validation : forms fields required check  start.
 if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
   this._projcode = true;
@@ -1006,19 +1005,11 @@ if(this._allocated==null||this._allocated==undefined||this._allocated==0){
   // return false;
 }else  this._alchr=false;
 
-if(this._Urlid==5){
-   const d1=new Date(this.ProjectStartDate);
-   const d2=new Date(this.ProjectDeadLineDate);
-   this._actbefore=this._StartDate<d1;
-  //  this._actafter=this._EndDate>d2;
-  //  console.log("asdf eeeeee:",this._actbefore,this._actafter);
+
+if(this._Urlid==5||this._Urlid==4){
+     this._actbefore=this.isActionStartBeforeProject();
 }
-debugger
-if(this._Urlid==4){
-  const d1=new Date(this.ProjectStartDate);
-  const d2=new Date(this.ProjectDeadLineDate);
-  this._actbefore=this._StartDate<d1;
-}
+
 
 const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._actbefore ,this._alchr].some(item=>item);
 if(fieldsRequired)
@@ -1079,6 +1070,13 @@ this.startActionCreation();
 azuremessage: any;
 IsFile:boolean=false;
 contentType:string="";
+
+
+
+
+
+
+
 
 startActionCreation=async()=>{
 
@@ -1193,34 +1191,94 @@ startActionCreation=async()=>{
 
      this.service._InsertNewSubtaskcore(fd).subscribe((event: HttpEvent<any>) => {
 
-      debugger
        if (event.type === HttpEventType.Response){
          var myJSON = JSON.stringify(event);
-
          this._Message = (JSON.parse(myJSON).body).message;
          console.log(event,myJSON,this._Message,"action data");
-        //  alert(this._Message);
-
+    
          if(this._Message=='1'){
-          if ( this.fileAttachment) {
+          if (this.fileAttachment) {   
+          this.fileInUpload={ filename:this.fileAttachment.name, uploaded:0, processingUploadFile:false };
+          this.setFileUploadingBarVisible(true);
+
           fd.append('file',  this.fileAttachment);
+      
           this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
+            switch (event1.type) {
+              case HttpEventType.Sent:
+                console.log('Request sent!');
+                break;
+              case HttpEventType.ResponseHeader:
+                console.log('Response header received!');
+                break;
+              case HttpEventType.UploadProgress:
+                const progress = Math.round(event1.loaded / event1.total * 100);
+                this.fileInUpload.uploaded=progress;
+                if(this.fileInUpload.uploaded==100){
+                  setTimeout(()=>{
+                    this.fileInUpload.processingUploadFile=true; //when server processing the file upload. 
+                  },1000);
+                }
+                break;
+              case HttpEventType.Response:{
+                console.log('Response received:', event1.body);
+                if(event1.body==1){
+                  this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");  
+                  this.fileInUpload=null;
+                  this.setFileUploadingBarVisible(false);
+                  this.exitActionToProject();
+                }
+              };break;
+            }
+
             console.log(event1,"azure data");
             var myJSON = JSON.stringify(event1);
           //  this._Message = (JSON.parse(myJSON).body);
 
-          });}
+          });
+       
+          }else{ this.exitActionToProject();   }
            this.notifyService.showSuccess("Action created successfully", "Success");
          }
          else if(this._Message=='2'){
-          if ( this.fileAttachment) {
+          if (this.fileAttachment) {
+            this.fileInUpload={ filename:this.fileAttachment.name, uploaded:0, processingUploadFile:false };
+            this.setFileUploadingBarVisible(true);
+
             fd.append('file',  this.fileAttachment);
             this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
+              switch (event1.type) {
+                case HttpEventType.Sent:
+                  console.log('Request sent!');
+                  break;
+                case HttpEventType.ResponseHeader:
+                  console.log('Response header received!');
+                  break;
+                case HttpEventType.UploadProgress:
+                  const progress = Math.round(event1.loaded / event1.total * 100);
+                  this.fileInUpload.uploaded=progress;
+                  if(this.fileInUpload.uploaded==100){
+                    setTimeout(()=>{
+                      this.fileInUpload.processingUploadFile=true; //when server processing the file upload. 
+                    },1000);
+                  }
+                  break;
+                case HttpEventType.Response:{
+                  console.log('Response received:', event1.body);
+                  if(event1.body==1){
+                    this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");  
+                    this.fileInUpload=null;
+                    this.setFileUploadingBarVisible(false);
+                    this.exitActionToProject();
+                  }
+                };break;
+              }
               console.log(event1,"azure data");
               var myJSON = JSON.stringify(event1);
             //  this._Message = (JSON.parse(myJSON).body);
 
-            });}
+            }); 
+          }else{ this.exitActionToProject();  }
            this.notifyService.showInfo("Request submitted to the Assigned employee","Action Under Approval");
          }
          else if(this._Message=='3'){
@@ -1232,60 +1290,71 @@ startActionCreation=async()=>{
          else{
            this.notifyService.showError("Something went wrong", "Action not created");
          }
-       }
 
-       if (this._Urlid == 1) {
-         this._Todoproject.CallOnSubmitAction();
-         this.Clear_Feilds();
-         this.closeInfo();
-         this._inputAttachments = [];
-       }
-       else if(this._Urlid == 2){
-         this._projectunplanned.getCatid();
-         this.Clear_Feilds();
-         this.closeInfo();
-         this._inputAttachments = [];
-       }
-       else if(this._Urlid == 3){
-         this._meetingreport.getScheduleId();
-           this._meetingreport.GetAssigned_SubtaskProjects();
-         this.Clear_Feilds();
-         this.closeInfo();
-         this._inputAttachments = [];
-       }
-       else if(this._Urlid == 7){
-         this._meetingreport.getScheduleId();
-           this._meetingreport.GetAssigned_SubtaskProjects();
-         this.Clear_Feilds();
-         this.closeInfo();
-         this._inputAttachments = [];
-       }
-       else if(this._Urlid == 4){
-
-         this._details.getProjectDetails(this.selectedProjectCode);
-         this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
-         this.closeInfo();
-       }
-       else if(this._Urlid == 5){
-         this.createproject.getActionsDetails();
-         this.createproject.newProjectDetails(this._MasterCode);
-         this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
-         this.closeInfo();
-       }
-       else {
-        //  this._MoreDetails.GetProjectDetails();
-        //  this._MoreDetails.GetSubtask_Details();
-        //  this._MoreDetails.getapproval_actiondetails();
-        //  this._MoreDetails.getRejectType();
-        //  this.Clear_Feilds();
-        //  this.closeInfo();
-        //  this._inputAttachments = [];
        }
 
      });
 
      });
 }
+
+
+exitActionToProject(){
+    if (this._Urlid == 1) {
+      this._Todoproject.CallOnSubmitAction();
+      this.Clear_Feilds();
+      this.closeInfo();
+      this._inputAttachments = [];
+    }
+    else if(this._Urlid == 2){
+      this._projectunplanned.getCatid();
+      this.Clear_Feilds();
+      this.closeInfo();
+      this._inputAttachments = [];
+    }
+    else if(this._Urlid == 3){
+      this._meetingreport.getScheduleId();
+      this._meetingreport.GetAssigned_SubtaskProjects();
+      this.Clear_Feilds();
+      this.closeInfo();
+      this._inputAttachments = [];
+    }
+    else if(this._Urlid == 7){
+      this._meetingreport.getScheduleId();
+        this._meetingreport.GetAssigned_SubtaskProjects();
+      this.Clear_Feilds();
+      this.closeInfo();
+      this._inputAttachments = [];
+    }
+    else if(this._Urlid == 4){
+
+      this._details.getProjectDetails(this.selectedProjectCode);
+      this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
+      this.closeInfo();
+    }
+    else if(this._Urlid == 5){
+      this.createproject.getActionsDetails();
+      this.createproject.newProjectDetails(this._MasterCode);
+      this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
+      this.closeInfo();
+    }
+    else {
+    //  this._MoreDetails.GetProjectDetails();
+    //  this._MoreDetails.GetSubtask_Details();
+    //  this._MoreDetails.getapproval_actiondetails();
+    //  this._MoreDetails.getRejectType();
+    //  this.Clear_Feilds();
+    //  this.closeInfo();
+    //  this._inputAttachments = [];
+    }
+}
+
+
+
+
+
+
+
 
 getFileExtension(fileName: any): string | null {
   if (!fileName) {
@@ -1322,12 +1391,9 @@ getFileExtension(fileName: any): string | null {
     this._meetingDetails.getDetailsScheduleId();
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
     }
-
     else if(this._Urlid==4){
-
-      this.router.navigate(["./Details", this.selectedProjectCode]);
+    this.router.navigate(["./Details", this.selectedProjectCode]);
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
-
     }
     else if(this._Urlid==5){
 
@@ -1419,25 +1485,56 @@ getFileExtension(fileName: any): string | null {
 
 
 selectFile() {
-
   this.fileInput.nativeElement.click();
 }
 
+
+
+
+permittedFileFormats=[
+  "image/*", "application/pdf", "text/plain", "text/html", "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/json", "application/xml", "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+];
+invalidFileSelected:boolean=false;
 onFileChanged(event: any) {
   const files: File[] = event.target.files;
 
   if (files && files.length > 0) {
+   // if file is selected.
+   const filetype = files[0].type;
+   const isValidFile=this.permittedFileFormats.some((format)=>{
+         return (filetype==format)||(filetype.startsWith('image/')&&format=='image/*');
+   });
+   
+   if(isValidFile){
     this.file = files[0];
     this.fileAttachment = this.file;
-  } else {
+    this.invalidFileSelected=false;
+    this.contentType=this.getFileExtension(this.fileAttachment.name);
+   }else{
     this.file = null;
     this.fileAttachment = null;
+    this.invalidFileSelected=true;
+    this.contentType="";
+   }
+
+  }else {
+   // if no file is selected. 
+    this.file = null;
+    this.fileAttachment = null;
+    this.invalidFileSelected=false;
+    this.contentType="";
   }
   console.log('File Object:', this.file);
-  this.contentType=this.getFileExtension(this.fileAttachment.name);
+
   // Reset file input value to allow selecting the same file again
   this.fileInput.nativeElement.value = '';
 }
+
+
 
 // testfiletype(){
 //   alert(this.contentType);
@@ -1554,6 +1651,15 @@ hasSameDateActions(){
 }
 
 
+isActionStartBeforeProject():boolean{
+  const mainPrjStartdate=new Date(this.ProjectStartDate);  // project start date.
+  const inputActnStartdate=this._StartDate;               // action start date. 
+  const isStartsBefore=inputActnStartdate<mainPrjStartdate;  // is action starts before main project.
+  return isStartsBefore;
+}
+
+
+
 
 
 // action cost start.
@@ -1575,6 +1681,23 @@ hasSameDateActions(){
 // action cost end.
 
 
+// file uploading progress bar start.
+fileInUpload:{filename:string, uploaded:number, processingUploadFile:boolean};   
+isFileUploadingBarVisible:boolean=false;  // whether file uploading bar is visible or not.
+
+setFileUploadingBarVisible(_visible:boolean){
+     this.isFileUploadingBarVisible=_visible;
+     if(this.isFileUploadingBarVisible){
+      document.getElementById("actnfile-upload-modal-backdrop").style.display = "block";
+      document.getElementsByClassName('file-upload-progress')[0].classList.remove('d-none');
+     }
+     else{
+      document.getElementById("actnfile-upload-modal-backdrop").style.display = "none";
+      document.getElementsByClassName('file-upload-progress')[0].classList.add('d-none');
+     }
+}
+
+// file uploading progress bar end.
 
 
 

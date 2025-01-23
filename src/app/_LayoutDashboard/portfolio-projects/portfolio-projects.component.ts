@@ -903,7 +903,7 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
 
 
 
-LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
 
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -912,14 +912,14 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   if (iscloud == false) {
     if (this.Team_Autho == this.Team_Res) {
       // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
-      FileUrl = (FileUrl +  this.Team_Res + "/" + this.Project_Code + "/" + url1);
+      FileUrl = (FileUrl +  this.Team_Res + "/" + pcode + "/" + url1);
 
     }
     else if (this.Team_Autho !=  this.Team_Res) {
-      FileUrl = (FileUrl + this.Team_Res + "/" + this.Project_Code + "/" + url1);
+      FileUrl = (FileUrl + this.Team_Res + "/" + pcode + "/" + url1);
     }
 
-    let name = "ArchiveView/" + this.Project_Code;
+    let name = "ArchiveView/" + pcode;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(FileUrl);
@@ -932,7 +932,7 @@ LoadDocument(iscloud: boolean, filename: string, url1: string, type: string, sub
   }
 
   else if (iscloud == true) {
-    let name = "ArchiveView/" + this.Project_Code;
+    let name = "ArchiveView/" + pcode;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(url1);
@@ -4056,6 +4056,7 @@ getChangeSubtaskDetais(Project_Code) {
     this.minDate = moment().format("YYYY-MM-DD").toString();
     this.Attachment12_ary = [];
     this.RemovedAttach = [];
+    this.rapeatLink_Details=true;
     this._lstMultipleFiales = [];
     this.maxDate = null;
     this.selected = null;
@@ -4191,6 +4192,7 @@ getChangeSubtaskDetais(Project_Code) {
   eventRepeat:boolean = false;
   Meeting_Id:any;
   Meeting_password:any;
+  rapeatLink_Details:boolean=true;
 
 
   OnSubmitSchedule() {
@@ -4359,8 +4361,10 @@ getChangeSubtaskDetais(Project_Code) {
 
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+        if(this.rapeatLink_Details==true){
         this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
-
+        this.rapeatLink_Details=false;
+      }
 
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';

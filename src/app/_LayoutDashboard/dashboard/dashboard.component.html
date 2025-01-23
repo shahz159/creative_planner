@@ -514,7 +514,7 @@
                                 <span class="kt-dashboard-cnt">{{draftcount}}</span>
                             </div>
 
-                            <div class="fc pend-bg" *ngIf="totalCountOfList" >
+                            <div class="fc pend-bg d-none" *ngIf="totalCountOfList" >
                                 <button type="button" (click)="requestAccess()" class="draft-btn">Request access</button>
                                 <span class="kt-dashboard-cnt">{{totalCountOfList}}</span>
                             </div>
@@ -2738,7 +2738,7 @@
                 </div>
             </div> -->
 
-            <div class="foot-main " style="display: block;" id="" *ngIf="Meeting_status==false && AdminMeeting_Status!=1 && Status1=='Owner' && Schedule_type1=='Event'">
+            <div class="foot-main " style="display: block;" id="" *ngIf="Meeting_status==false && AdminMeeting_Status!=1 && Status1=='Owner' && Schedule_type1=='Event' && this.RecurrenceValue != 'Daily'">
                 <div class="foot-body br-top secfootr" id="secfootr555">
                     <div class="ftbtns flex-1">
                         <div class="d-flex align-items-center justify-content-end gap-1">
@@ -3756,12 +3756,12 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <input class="form-control"  placeholder="Meeting Id" type="text" [(ngModel)]="Meeting_Id">
+                                        <input class="form-control"  placeholder="Meeting id (optional)" type="text" [(ngModel)]="Meeting_Id">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <input class="form-control" placeholder="Meeting password" type="text" [(ngModel)]="Meeting_password">
+                                        <input class="form-control" placeholder="Password (optional)" type="text" [(ngModel)]="Meeting_password">
                                     </div>
                                 </div>
                             </div>
@@ -5392,7 +5392,7 @@
 
 
             <div class="mb-2" id="div_endDate_new">
-                    <label>End Date</label>
+                    <label>Recurrence end date</label>
                     <div class="endtill-date">
                         <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()"
                                 [(ngModel)]="_EndDate1"  placeholder="End Date" [min]="today"

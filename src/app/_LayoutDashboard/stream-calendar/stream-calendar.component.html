@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <div class="kt-date-div" id="task-cal-date" style="display: none;"><span>July 16, 2024</span></div>
-                <div class="dropdown show" id="calendar-action">
+                <!-- 69  <div class="dropdown show" id="calendar-action">
                     <a class="btn kt-change-dropdown dropdown-toggle" href="javascript:void(0)" role="button"
                         id="dropdownChangeMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span id="day-nme" style="display: none;">Day</span>
@@ -56,11 +56,11 @@
                     <div class="dropdown-menu kt-change-dropdown-menu" aria-labelledby="dropdownChangeMenuLink">
                         <a class="dropdown-item" href="javascript:void(0)" (click)="day_div()">Day</a>
                         <a class="dropdown-item" href="javascript:void(0)" (click)="week_div()">Week</a>
-                        <a class="dropdown-item" href="javascript:void(0)" (click)="month_div()">Month</a>
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="month_div()">Month</a> 
                         <a class="dropdown-item" href="javascript:void(0)" (click)="sch_div()">Schedule</a>
-                    </div>
-                </div>
-                <div class="kt-header-switch">
+                    </div> 
+                </div> 69-->
+                 <!--  69 <div class="kt-header-switch">
                     <div class="switch-calendar active" id="switch-calendar" (click)="switch_calender()">
                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -73,7 +73,7 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="switch-task" id="switch-task" (click)="switch_task()">
+                   <div class="switch-task" id="switch-task" (click)="switch_task()">
                         <svg width="64px" height="64px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
                             fill="none">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -84,8 +84,8 @@
                                 </path>
                             </g>
                         </svg>
-                    </div>
-                </div>
+                    </div> 
+                </div> 69-->
             </div>
         </div>
         <div class="kt-calendar-main" id="main-calendar">
@@ -164,12 +164,12 @@
                             </span>
                             <label class="kt-list-nav-item-label" for="checkdomeetings">Done not attended</label>
                         </div>
-                        <div class="kt-list-nav-item">
+                        <!-- <div class="kt-list-nav-item">
                             <span class="kt-list-nav-item-check">
                                 <input class="form-check-input" type="checkbox" value="" id="checkmycaltask">
                             </span>
                             <label class="kt-list-nav-item-label" for="checkmycaltask">My tasks</label>
-                        </div>
+                        </div> -->
                         <!-- <div class="kt-list-nav-item">
                             <span class="kt-list-nav-item-check">
                                 <input class="form-check-input" type="checkbox" value="" id="checkconfirmmeetings">
@@ -505,7 +505,7 @@
                         <div class="sch-evt-item  sch-evt-border-bottom" *ngFor="let meetingItem of group.events"  (click)="customEventModal(meetingItem.Schedule_Type);GetClickEventJSON_Calender(meetingItem.Schedule_ID,meetingItem.className)">
                             <div style="display: flex;align-items: center;">
                                 <div class="sch-evt-p sch-evt-pr-0">
-                                    <svg *ngIf="meetingItem.Schedule_Type==1 &&  meetingItem.className!='fc-green'" width="18px" height="18px" viewBox="0 0 20 20"
+                                  <svg *ngIf="meetingItem.Schedule_Type==1 &&  meetingItem.className!='fc-green'" width="18px" height="18px" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg" fill="none">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
@@ -515,8 +515,8 @@
                                             d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z">
                                         </path>
                                     </g>
-                                   </svg>
-                                   <svg *ngIf="meetingItem.Schedule_Type==1 && meetingItem.className=='fc-green'" width="18px" height="18px" viewBox="0 0 20 20"
+                                  </svg>
+                                  <svg *ngIf="meetingItem.Schedule_Type==1 && meetingItem.className=='fc-green'" width="18px" height="18px" viewBox="0 0 20 20"
                                    xmlns="http://www.w3.org/2000/svg" fill="none">
                                   <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                   <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -525,8 +525,8 @@
                                             d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z">
                                       </path>
                                   </g>
-                                 </svg>
-                                    <svg *ngIf="meetingItem.Schedule_Type==2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                  </svg>
+                                  <svg *ngIf="meetingItem.Schedule_Type==2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                         width="20px" height="20px" viewBox="0 0 20 20" version="1.1" [ngClass]="meetingItem.className ?{
                                             'blue-color': meetingItem.className =='fc-info',
                                             'purple-color':  meetingItem.className =='fc-purple' || meetingItem.className =='fc-req',
@@ -545,7 +545,7 @@
                                                 <!-- style="stroke: none; fill-rule: nonzero; fill: #2786fb; fill-opacity: 1;" -->
                                             </path>
                                         </g>
-                                    </svg>
+                                  </svg>
                                 </div>
                                 <div class="sch-evt-time sch-evt-p  sch-evt-pr-0" *ngIf="meetingItem.className=='fc-red'"><s>{{meetingItem.start | date: 'h:mm a'}} - {{meetingItem.end | date: 'h:mm a'}}</s> </div>                         
                                 <div class="sch-evt-time sch-evt-p  sch-evt-pr-0" *ngIf="meetingItem.className=='fc-green'"><s>{{meetingItem.start | date: 'h:mm a'}} - {{meetingItem.end | date: 'h:mm a'}}</s> </div>
@@ -557,7 +557,7 @@
                                 </div>
                             </div>
                             <div class="sch-evt-mem">
-                                <div class="sch-evt-e-c" [ngClass]="{'sch-evt-border-right': meetingItem.attendees && meetingItem.link!=0}" *ngIf="meetingItem.attendees">
+                                <div class="sch-evt-e-c" [ngClass]="{'sch-evt-border-right': meetingItem.attendees && meetingItem.link!=0}" *ngIf="meetingItem.attendees" title="Attendee">
                                     <div class="sch-evt-svg-bg">
                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -702,6 +702,10 @@
 
 
                     </div>
+                    <div class="d-flex align-items-center"style="height: 90%; flex-direction: column;" *ngIf="filteredMeetingsArray.length == 0">
+                        <img src="../../../assets/images/waste.png" alt="" style="width: 35%; opacity: 0.6;">
+                        <p style=" font-size: 18px; font-weight: 500; color: #a7a7a7;">No events/tasks are created or scheduled</p>
+                      </div>
                     <!-- <div class="sch-evt-ul sch-evt-border">
                         <div class="sch-evt-heading sch-evt-p sch-evt-border-bottom">
                             <div>
@@ -2073,25 +2077,28 @@
             </div>
             <div class="kt-calendar-quickactions " id="kt-calendar-quickactions">
                 <div class="kt-calendar-quickactions-ul">
-                    <div *ngIf="pendingcount" class="kt-calendar-quickactions-li quick-pending" title="Pending" (click)="pending_list_open()">
+                    <div  class="kt-calendar-quickactions-li quick-pending" title="Pending" (click)="pending_list_open()">
                         <div class="kt-calendar-quickactions-li-icon">
-                            <div class="kt-calendar-quickactions-li-icon-count">{{pendingcount}}</div>
+                            <div *ngIf="pendingcount" class="kt-calendar-quickactions-li-icon-count">{{pendingcount}}</div>
+                            <div *ngIf="!pendingcount" class="kt-calendar-quickactions-li-icon-count">0</div>
                             <svg width="64px" height="64px" style="width: 18px; height: 18px;" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="currentColor" fill-rule="evenodd" d="M3,0 C2.44772,0 2,0.447715 2,1 C2,1.55228 2.44772,2 3,2 L3,3.17157 C3,3.96722 3.31607,4.73028 3.87868,5.29289 L6.58579,8 L3.87868,10.7071 C3.31607,11.2697 3,12.0328 3,12.8284 L3,14 C2.44772,14 2,14.4477 2,15 C2,15.5523 2.44772,16 3,16 L13,16 C13.5523,16 14,15.5523 14,15 C14,14.4477 13.5523,14 13,14 L13,12.8284 C13,12.0328 12.6839,11.2697 12.1213,10.7071 L9.41421,8 L12.1213,5.29289 C12.6839,4.73028 13,3.96722 13,3.17157 L13,2 C13.5523,2 14,1.55228 14,1 C14,0.447715 13.5523,0 13,0 L3,0 Z M11,2 L5,2 L5,3.17157 C5,3.43679 5.10536,3.69114 5.29289,3.87868 L5.41421,4 L10.5858,4 L10.7071,3.87868 C10.8946,3.69114 11,3.43679 11,3.17157 L11,2 Z M8,9.41421 L5.29289,12.1213 C5.10536,12.3089 5,12.5632 5,12.8284 L5,14 L11,14 L11,12.8284 C11,12.5632 10.8946,12.3089 10.7071,12.1213 L8,9.41421 Z"></path> </g></svg>
                         </div>
                     </div>
-                    <div *ngIf="draftcount" class="kt-calendar-quickactions-li quick-draft" title="Draft" (click)="draft_list_open()">
+                    <div  class="kt-calendar-quickactions-li quick-draft" title="Draft" (click)="draft_list_open()">
                         <div class="kt-calendar-quickactions-li-icon">
-                            <div class="kt-calendar-quickactions-li-icon-count">{{draftcount}}</div>
+                            <div *ngIf="draftcount" class="kt-calendar-quickactions-li-icon-count">{{draftcount}}</div>
+                            <div *ngIf="!draftcount" class="kt-calendar-quickactions-li-icon-count">0</div>
                             <svg width="64px" height="64px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path fill="none" d="M0 0L24 0 24 24 0 24z"></path> <path d="M20 2c.552 0 1 .448 1 1v3.757l-8.999 9-.006 4.238 4.246.006L21 15.242V21c0 .552-.448 1-1 1H4c-.552 0-1-.448-1-1V3c0-.552.448-1 1-1h16zm1.778 6.808l1.414 1.414L15.414 18l-1.416-.002.002-1.412 7.778-7.778zM12 12H7v2h5v-2zm3-4H7v2h8V8z"></path> </g> </g></svg>
                         </div>
                     </div>
-                    <div *ngIf="totalCountOfList" class="kt-calendar-quickactions-li quick-requestaccess" title="Request Access" (click)="requestaccess_list_open()">
+                    <div  class="kt-calendar-quickactions-li quick-requestaccess" title="Request Access" (click)="requestaccess_list_open()">
                         <div class="kt-calendar-quickactions-li-icon">
-                            <div class="kt-calendar-quickactions-li-icon-count">{{totalCountOfList}}</div>
+                            <div *ngIf="totalCountOfList" class="kt-calendar-quickactions-li-icon-count">{{totalCountOfList}}</div>
+                            <div *ngIf="!totalCountOfList" class="kt-calendar-quickactions-li-icon-count">0</div>
                             <svg width="64px" height="64px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Layer_2" data-name="Layer 2"> <g id="invisible_box" data-name="invisible box"> <rect width="48" height="48" fill="none"></rect> </g> <g id="Layer_7" data-name="Layer 7"> <g> <path d="M3,30.5l-1,.6V39a2,2,0,0,0,2,2H24V28.3A24.4,24.4,0,0,0,16,27,25.6,25.6,0,0,0,3,30.5Z"></path> <path d="M16,5a9,9,0,1,0,9,9A9,9,0,0,0,16,5Z"></path> <path d="M44,28H43V25a6,6,0,0,0-12,0v3H30a2,2,0,0,0-2,2V41a2,2,0,0,0,2,2H44a2,2,0,0,0,2-2V30A2,2,0,0,0,44,28Zm-9-3a2,2,0,0,1,4,0v3H35Z"></path> </g> </g> </g> </g></svg>
                         </div>
                     </div>
-                    <div class="kt-calendar-quickactions-li quick-bookmark" title="Bookmark"  (click)="bookmark_list_open()">
+                    <div class="kt-calendar-quickactions-li quick-bookmark d-none" title="Bookmark"  (click)="bookmark_list_open()">
                         <div class="kt-calendar-quickactions-li-icon">
                             <div class="kt-calendar-quickactions-li-icon-count">8</div>
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M5 6c0-1.4 0-2.1.272-2.635a2.5 2.5 0 0 1 1.093-1.093C6.9 2 7.6 2 9 2h6c1.4 0 2.1 0 2.635.272a2.5 2.5 0 0 1 1.092 1.093C19 3.9 19 4.6 19 6v13.208c0 1.056 0 1.583-.217 1.856a1 1 0 0 1-.778.378c-.349.002-.764-.324-1.593-.976L12 17l-4.411 3.466c-.83.652-1.245.978-1.594.976a1 1 0 0 1-.778-.378C5 20.791 5 20.264 5 19.208V6z" fill="currentColor"></path></g></svg>
@@ -2810,10 +2817,10 @@
                                                         <div *ngIf="!isValidURL" class="text-danger">Please enter a valid URL.</div>
                                                     </div>
                                                     <div class="meeting-type-link-input">
-                                                        <input class="form-control curser-pointer"  type="text" placeholder="Add Meeting ID" [(ngModel)]="Meeting_Id"  />
+                                                        <input class="form-control curser-pointer"  type="text" placeholder="Meeting id (optional)" [(ngModel)]="Meeting_Id"  />
                                                     </div>
                                                     <div class="meeting-type-link-input">
-                                                        <input class="form-control curser-pointer"  type="text"  placeholder="Add Meeting Password" [(ngModel)]="Meeting_password" />
+                                                        <input class="form-control curser-pointer"  type="text"  placeholder="Password (optional)" [(ngModel)]="Meeting_password" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -3775,7 +3782,7 @@
         <div class="modal-body">
             <div class="task-time-modal-calendar">
                 <mat-card class="calendar-card">
-                    <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate"   [minDate]="disablePreviousDate"></mat-calendar>
+                    <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
                 </mat-card>
             </div>
             <hr>
@@ -3810,7 +3817,7 @@
                 </div>
                 <div class="modal-time-item-control"  id="div_recurrence">
                     <mat-select name="Select Type" placeholder="Do not repeat"
-                    [(value)]="selectedrecuvalue1" class="form-control" (click)="customrecurrencemodal()"  (selectionChange)="onRecurrenceTypeChange($event);" >
+                    [(value)]="selectedrecuvalue1" class="form-control" (selectionChange)="onRecurrenceTypeChange($event);" >
 
                     <mat-option value="0">Do not repeat</mat-option>
                     <mat-option value="1">Daily</mat-option>
@@ -3938,7 +3945,7 @@
                 </div>
               </div>
             <div class="mb-4" id="div_endDate_new">
-                <label class="kt-label">End Date</label>
+                <label class="kt-label">Recurrence end date</label>
                 <div class="endtill-date">
                     <input matInput [matDatepicker]="div_endDatepicker" (click)="div_endDatepicker.open()"  [(ngModel)]="_EndDate1"  placeholder="End Date"
                             class="form-control" style="padding-left: 4rem !important;"    [min]="today">
@@ -4657,12 +4664,12 @@
                     </div>
 
 
-                    <div class="custom-evt-tsk-footer" id=""   *ngIf="Meeting_status==false && AdminMeeting_Status!=1 && Status1=='Owner' && Schedule_type1=='Event'">     
+                    <div class="custom-evt-tsk-footer" id=""   *ngIf="Meeting_status==false && AdminMeeting_Status!=1 && Status1=='Owner' && Schedule_type1=='Event' && this.RecurrenceValue != 'Daily'">     
                         <div><span>Repeat Event?</span></div>      
                         <div class="custom-evt-tsk-footer-action">
                             <div class="action-btns">
                                 <button class="btn btn-evt-foot"  data-toggle="collapse"
-                                href="#propse11" role="button" aria-expanded="false" aria-controls="propse11">Repeat</button>
+                                href="#propse11" role="button" aria-expanded="false" aria-controls="propse11" (click)="disableRepeatMeetingDate()">Repeat</button>
                                 <button class="btn btn-evt-foot d-none" (click)="sweet_end()">End now</button>
                             </div>
                         </div>
@@ -4696,7 +4703,7 @@
                                         </div>
                                         <div class="repeat-date-time-menu-calendar">
                                             <mat-card class="demo-inline-calendar-card">
-                                                <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousDate"></mat-calendar>
+                                                <mat-calendar (selectedChange)="selectStartDate($event)" [(selected)]="_StartDate" [minDate]="disablePreviousTodayDate"></mat-calendar>
                                                 </mat-card>
                                         </div>
                                         <div class="repeat-date-time-menu-t">
@@ -4729,7 +4736,7 @@
                         <span *ngIf="earlyDate==true" style="color:red">invalid date.</span>
                         <div class="w-100 text-right mt-2">
                             <button class="btn btn-evt-foot yes" (click)="submitEventToRepeat()">Submit repeat event</button>
-                            <button class="btn btn-evt-foot ml-2" data-toggle="collapse" href="#propse11" (click)="onCustomBtnClicked()">Custom</button>
+                            <button class="btn btn-evt-foot ml-2" (click)="onCustomBtnClicked()"  href="#propse11" >Custom</button>
                             <button id='closeRepeatDialog_btn' class="btn btn-evt-foot ml-2" data-toggle="collapse"
                             href="#propse11">Cancel</button>
                         </div>
@@ -5567,7 +5574,7 @@
 <!-- Request access list sidebar end -->
 
 <!-- Bookmark list sidebar start -->
-<div class="quickaction-sidebar" id="bookmark-list">
+<div class="quickaction-sidebar " id="bookmark-list">
     <div class="quickaction-sidebar-main">
         <div class="quickaction-sidebar-head">
             <div class="quickaction-sidebar-title">

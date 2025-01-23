@@ -45,11 +45,12 @@ export class FileviewComponent implements OnInit {
   _mailid: number;
   _AnnouncementDocId: number;
   createdBy: number;
-  IsCommunicarionMemoDownload: any;
+  IsStreamDownload: any;
   _IsConfidential: string = 'false';
   Current_user_ID:string;
   _LoginUserId:string;
   url_project_code:any;
+  url_master_code:any;
   invalid: boolean =false;
   objProjectDto: ProjectDetailsDTO;
 
@@ -63,7 +64,7 @@ export class FileviewComponent implements OnInit {
   ngOnInit(): void {
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
-    this.IsCommunicarionMemoDownload = localStorage.getItem('IsCommunicationDownload');
+    this.IsStreamDownload = localStorage.getItem('IsStreamDownload');
     var decoder = new TextDecoder();
     this.url_project_code=this.route.snapshot.params['projectcode'];
     let surl = this.route.snapshot.params['url'];
@@ -184,6 +185,9 @@ export class FileviewComponent implements OnInit {
             }
           });
       }
+debugger
+      this.url_master_code=params['mastercode'];
+
     });
   }
   incrementZoom(amount: number) {
@@ -333,6 +337,22 @@ export class FileviewComponent implements OnInit {
   searchhistory() {
     this.HistorySearch = "";
   }
+
+
+
+  newDetailsaction(pcode,acode:string|undefined) {
+    let qparams='';
+        if(acode!==undefined){
+          qparams=`?actionCode=${acode}`;
+        }
+        let name: string = 'Details';
+        var url = document.baseURI + name;
+        var myurl = `${url}/${pcode}${qparams}`;
+        var myWindow = window.open(myurl,pcode);
+        myWindow?.focus();
+   }
+
+
 }
 
 

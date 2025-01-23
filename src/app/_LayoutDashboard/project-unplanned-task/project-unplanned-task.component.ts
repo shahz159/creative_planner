@@ -716,7 +716,7 @@ dayArr: any = [
   expandTask(taskId:number){
 
     this.categoryTasksLoaded=new EventEmitter<any>();
-    this.categoryTasksLoaded.subscribe(()=>{
+    this.categoryTasksLoaded.subscribe(()=>{ debugger
       // when all tasks of the category loaded.
       const listindex=[this._TodoList,this.ActionedAssigned_Josn,this._CompletedList,this.ActionedSubtask_Json].findIndex((list)=>{
         return list&&list.find((item)=>item.Assign_Id==taskId);
@@ -731,8 +731,10 @@ dayArr: any = [
              const e2=document.querySelector(`#${anchrId}Item-${taskId}`);
              const e3:any=e2.querySelector('.inputforfocus');
 
-
-             e1.click();
+              if(e1.getAttribute('aria-expanded')=='false'){
+                e1.click();
+              }
+          
              setTimeout(()=>e3.focus(),500);
              e2.classList.add('task-item-focus');
              e2.addEventListener('animationend',()=>e2.classList.remove('task-item-focus'));
@@ -3367,21 +3369,29 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
   openTab() {
    // Now, check which condition matches and add 'show' to the appropriate element
    document.getElementById('collapseUnassign').classList.remove('show');
+   document.getElementById('UnassigntaskBtn').setAttribute('aria-expanded','false');
    document.getElementById('collapseActionproject').classList.remove('show');
+   document.getElementById('ActiontoprojectsBtn').setAttribute('aria-expanded','false');
    document.getElementById('collapseActiontask').classList.remove('show');
+   document.getElementById('AssignedTaskProjectBtn').setAttribute('aria-expanded','false');
    document.getElementById('collapseCompleted').classList.remove('show');
+   document.getElementById('CompletedBtn').setAttribute('aria-expanded','false');
+
 
     if (this._TodoList.length > 0) {
       document.getElementById('collapseUnassign').classList.add('show');
+      document.getElementById('UnassigntaskBtn').setAttribute('aria-expanded','true');
 
     } else if (this.ActionedSubtask_Json.length > 0) {
       document.getElementById('collapseActionproject').classList.add('show');
+      document.getElementById('ActiontoprojectsBtn').setAttribute('aria-expanded','true');
     }
     else if (this.ActionedAssigned_Josn.length > 0){
       document.getElementById('collapseActiontask').classList.add('show');
-
+      document.getElementById('AssignedTaskProjectBtn').setAttribute('aria-expanded','true');
     } else if (this._CompletedList.length > 0) {
       document.getElementById('collapseCompleted').classList.add('show');
+      document.getElementById('CompletedBtn').setAttribute('aria-expanded','true');
 // this.openTab()
 }}
 

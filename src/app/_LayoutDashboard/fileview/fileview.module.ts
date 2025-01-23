@@ -7,7 +7,7 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { FileviewComponent } from './fileview.component';
 import { MaterialModule } from 'src/app/material-module';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [FileviewComponent],
@@ -19,7 +19,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    MatTooltipModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

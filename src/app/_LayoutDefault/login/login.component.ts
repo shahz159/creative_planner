@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   isLoading = false;
   InValidPassword = false;
   InValidUserName = false;
-  IsCommunicationDownload: boolean;
+  IsStreamDownload: boolean;
   showLoader = true;
   //private ObjHomeComp: HomeComponent
   EmpNo: string; EmpCompNo: string; SystemRole: string;
@@ -110,103 +110,13 @@ export class LoginComponent implements OnInit {
         .subscribe(
           (data) => {
             console.log("DMS login Data---->", data);
-            if (data[0]['CredentialsIsValid']) {
-              localStorage.setItem('isLoggedIn', "true");
-              this.EmpNo = data[0]['EmployeeCode'];
-              this.IsCommunicationDownload = data[0]['IsCommunicationDownload'];
-              const Isdownload: string = `${this.IsCommunicationDownload}`;
-              localStorage.setItem('EmpNo', this.EmpNo);
-              localStorage.setItem('IsCommunicationDownload',Isdownload);
-              this.User_FullName = data[0]['FirstName'] + " " + data[0]['LastName'];
-              // this.IsPolicy = data[0]['IsPolicy'];
-              // this.router.navigate([this.policyUrl]);
-              // this.InValidPassword = false;
-              // this.cd.detectChanges();
-              this.router.navigate([this.dashboardUrl]);
-              this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login by :');
-              this.notifyService.showSuccess("Successfully", "Logged in");
-              this.InValidPassword = false;
-              this.cd.detectChanges();
-            }
-            else {
-              this.InValidPassword = true;
-              console.log("Invalid Login");
-              this.authService.logout();
-              localStorage.removeItem('EmpNo');
-              this.cd.detectChanges();
-              // alert("Invalid");
-              this.message = "Please check your UserName and Password";
-            }
-
-            // if (this.IsPolicy == 1) {
-            //   this.router.navigate([this.dashboardUrl]);
-            //   this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login By :');
-            //   this.notifyService.showSuccess("Successfully", "Logged In");
-            //   this.InValidPassword = false;
-            //   this.cd.detectChanges();
-            // }
-            // else if (this.IsPolicy == 0) {
-            //   this.router.navigate([this.policyUrl]);
-            //   this.InValidPassword = false;
-            //   this.cd.detectChanges();
-            // }
-
-            // this.UserDetails_List1 = data as UserDetailsDTO[];
-            // console.log("Data---->", this.UserDetails_List1);
-            // this.message = this.UserDetails_List1[0]['Message'];
-            // this.DB_username = this.UserDetails_List1[0]['UserName'].toLowerCase();
-            // this.DB_password = this.UserDetails_List1[0]['Password'];
-            // this.User_FullName = this.UserDetails_List1[0]['TM_DisplayName']
-            // this.IsPolicy = this.UserDetails_List1[0]['IsPolicy'];
-            // // console.log("Policy Test---->",this.IsPolicy);
-            // if (this.f.userid.value.toLowerCase() == this.DB_username && this.f.password.value == this.DB_password) {
-            //   //console.log("Login successful");
-            //   // alert("successful Login");
-            //   localStorage.setItem('isLoggedIn', "true");
-            //   this.InValidPassword = false;
-            //   this.cd.detectChanges();
-            //   this.EmpNo = data[0]['Emp_No'];
-            //   localStorage.setItem('EmpNo', this.EmpNo);
-            //   this.EmpCompNo = data[0]['Emp_Comp_No'].replace(/\s/g, "");
-            //   this.SystemRole = data[0]['Emp_SystemRole'];
-            //   this.OrganizationId = data[0]['OrganizationId'];
-            //   sessionStorage.setItem('Emp_Email', data[0]['Emp_Email']);
-
-            //   sessionStorage.setItem('Session_EmpNo', this.EmpNo);
-            //   sessionStorage.setItem('EmpCompNo', this.EmpCompNo);
-            //   // sessionStorage.setItem('SystemRole', this.SystemRole);
-            //   localStorage.setItem("UserfullName", this.User_FullName);
-            //   localStorage.setItem('_Currentuser', this.DB_username);
-            //   localStorage.setItem('OrganizationId', this.OrganizationId);
-
-            //   //debugger
-            //   if (this.IsPolicy == 1) {
-            //     this.router.navigate([this.dashboardUrl]);
-            //     this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login By :');
-            //     this.notifyService.showSuccess("Successfully", "Logged In");
-            //     this.InValidPassword = false;
-            //     this.cd.detectChanges();
-            //   }
-            //   else if (this.IsPolicy == 0) {
-            //     this.router.navigate([this.policyUrl]);
-            //     this.InValidPassword = false;
-            //     this.cd.detectChanges();
-            //   }
-
-            //   //this.router.navigate([this.policyUrl]);
-            //   // alert(this.returnUrl);
-            //   // this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login By :');
-            //   // this.notifyService.showSuccess("Successfully", "Logged In");
-            // }
-            // else {
-            //   this.InValidPassword = true;
-            //   console.log("Invalid Login");
-            //   this.authService.logout();
-            //   localStorage.removeItem('EmpNo');
-            //   this.cd.detectChanges();
-            //   // alert("Invalid");
-            //   // this.message = "Please check your UserName and Password";
-            // }
+            const userIdJson = data['Data']['UserId']; // Retrieve the UserId JSON string
+            const parsedUserIdArray = JSON.parse(userIdJson); // Parse the JSON string into an array
+            const userIdObject = parsedUserIdArray[0]; // Access the first object in the array
+            this.IsStreamDownload = userIdObject['IsStreamDownload']; // Retrieve the IsStreamDownload value
+              // alert(this.IsStreamDownload);
+              const Isdownload: string = `${this.IsStreamDownload}`;
+              localStorage.setItem('IsStreamDownload',Isdownload);
           });
     }
   }
