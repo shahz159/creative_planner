@@ -855,6 +855,10 @@
                             <i class="fas fa-sync-alt mr-0"></i>
                         </button>
 
+                        <button title="graph" class="btn btn-label-primary btn-upper btn-sm btn-bold" data-toggle="modal" data-target="#actns-graphmodal" (click)="loadGanttChart()">
+                            <i class="fas fa-chart-pie fs-5 mr-0"></i>
+                        </button>
+
                     </div>
                 </div>
             </div>
@@ -3708,6 +3712,86 @@
   </div>
 </div>
 
+<div id="rightbar-overlay" (click)="closeInfo()"></div>
 
 
-    <div id="rightbar-overlay" (click)="closeInfo()"></div>
+<!--Actions List Graph Modal Start -->
+<div class="modal fade graphmodal" id="actns-graphmodal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="actns-graphmodalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content" style="height:90vh;">
+        <div class="modal-header">
+            <div class="actnsGrph-of-user w-100">
+                <h5 id="graphmodalLabel" class="modal-title">{{Type}} Summary</h5>
+                <div *ngIf="filterByResult==true" class="row kt-filterdetails mt-2">
+                    <div class="">
+                        <span class="font-weight-bold">Filter by :</span>
+                        <span class="search-filter1" *ngFor="let emptoshare of comToselect">{{getObjOfs(CompanyCountFilter,emptoshare,'Company_No')?.Name}}</span><span *ngIf="emplyToselect&&emplyToselect.length>0" class="font-weight-bold fs-4 pl-2">/</span>
+                        <span class="search-filter1" *ngFor="let emptoshare of emplyToselect">{{getObjOf(EmpCountInFilter,emptoshare,'Emp_No')?.Name}} </span><span *ngIf="projtypeToselect&&projtypeToselect.length>0" class="font-weight-bold fs-4 pl-2">/</span>
+                        <span class="search-filter1" *ngFor="let emptoshare of projtypeToselect">{{getObjOfpro(TypeContInFilter,emptoshare,'Block_No')?.Name}}</span><span *ngIf="enterStatus&&enterStatus.length>0" class="font-weight-bold fs-4 pl-2">/</span>
+                        <span class="search-filter1" *ngFor="let emptoshare of enterStatus"> {{ (getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name === 'Under Approval') ? 'New Approval' : getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name   }}</span>
+                    </div>
+                </div>
+                <div  *ngIf="isGanttchartVisible"  class="d-flex gap-3">
+                    <div class="page-prj-count" style="font-weight: 500;">
+                        <ng-container *ngIf="CurrentPageNo==1">
+                            {{CurrentPageNo}} - {{_CurrentpageRecords}}
+                        </ng-container>
+                        <ng-container *ngIf="CurrentPageNo!=1 && CurrentPageNo!=LastPage">
+                            {{_CurrentpageRecords * (CurrentPageNo-1) + 1}} - {{_CurrentpageRecords *
+                            CurrentPageNo}}
+                        </ng-container>
+                        <ng-container *ngIf="CurrentPageNo==LastPage  && CurrentPageNo!=1">
+                            {{lastPagerecords * (CurrentPageNo-1) + 1}} - {{lastPagerecords * (CurrentPageNo-1) + _CurrentpageRecords}}
+                        </ng-container>
+
+                        of
+                        <span *ngIf="_totalProjectsCount>=1000"> {{_totalProjectsCount.toLocaleString()}}</span>
+                        <span *ngIf="_totalProjectsCount<1000"> {{_totalProjectsCount}}</span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <div *ngFor="let status of prj_statuses"  class="d-flex align-items-center gap-1">
+                            <div [ngStyle]="{ backgroundColor:all_status[status]||all_status['other'] }" style="width: 10px; height: 10px;"></div>
+                            {{status}}
+                        </div>
+                    </div>
+                </div>
+                    
+            </div>
+          <div class="header-act">
+                <div class="kt-graph-close"  data-dismiss="modal" aria-label="Close" (click)="0">
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11083)"> <path d="M7 7.00006L17 17.0001M7 17.0001L17 7.00006" stroke="#b0b0b0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11083"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>
+                </div>
+          </div>
+
+        </div>
+
+
+        <div class="modal-body actns-graph-dv" style=" display: flex; flex-direction: column;">
+            
+         <div [ngClass]="{'d-none':isGanttchartVisible==false}">
+            <div class="gantt-ctrls-btns"></div>
+            <div class="actns-gantt-dates" style=" background-color:#fff;  position: relative;top: 28px;z-index: 1;width: 100%;display: flex;justify-content: flex-end;padding-right: 17px;">
+                <div class="dates-label" style="background-color: #fff">
+                        <svg  width="100%" height="30px">
+                            <g id="SvgjsG1247" class="apexcharts-xaxis apexcharts-yaxis-inversed">
+                                <g id="this-is-head" class="apexcharts-xaxis-texts-g" transform="">
+
+                                </g>
+                            </g>
+                        </svg>
+                </div>
+            </div>
+          <div class="gantt-container">
+               <div  class="actns-graph" id="actnsfull-graph"></div>
+          </div>
+        </div>
+
+     
+      </div>
+
+
+      </div>
+    </div>
+  </div>
+  <!--Projects list Graph Modal End -->
+

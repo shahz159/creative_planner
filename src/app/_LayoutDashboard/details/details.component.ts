@@ -5210,7 +5210,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
       myWindow.focus();
 
     }
-
     else if (cloud == true) {
 
       let FileUrl: string;
@@ -5293,7 +5292,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
       filename = filename.replace(/#/g, "%23");
       filename = filename.replace(/&/g, "%26");
-      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type+"&"+"mastercode="+this.URL_ProjectCode;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
@@ -5305,7 +5304,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
       filename = filename.replace(/#/g, "%23");
       filename = filename.replace(/&/g, "%26");
-      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type+"&"+"mastercode="+this.URL_ProjectCode;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
@@ -8620,8 +8619,8 @@ GetprojectComments() {
 /////////////////Comments end////////////////////////
 
 
-LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
+LoadDocument1(pcode:string,iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+debugger
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -8637,27 +8636,28 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
       FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + this.URL_ProjectCode + "/" + url1);
     }
 
-    let name = "ArchiveView/" + this.URL_ProjectCode;
+    let name = "ArchiveView/" + pcode;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(FileUrl);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");
     filename = filename.replace(/&/g, "%26");
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type+"&"+"mastercode="+this.URL_ProjectCode;
+    var myWindow = window.open(myurl, url.toString());
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
-
   else if (iscloud == true) {
-    let name = "ArchiveView/" + this.projectCode;
+    let name = "ArchiveView/" + pcode;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(url1);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");
     filename = filename.replace(/&/g, "%26");
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type+"&"+"mastercode="+this.URL_ProjectCode;
+    var myWindow = window.open(myurl, url.toString());
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
@@ -8707,7 +8707,6 @@ openPDF_task_att(standardid: number, emp_no: string, cloud: boolean, repDate: Da
     myWindow.focus();
 
   }
-
   else if (cloud == true) {
 
     let FileUrl: string;
@@ -12467,7 +12466,7 @@ getOverallFilesUploadProgress():number{
 } 
 
 
-showFilesUploadingBar:boolean=false;  // whether files uploading bar is visible or not.
+
 
 // file uploading progress bar end.
 

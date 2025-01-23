@@ -356,3 +356,21 @@ body {
 }
 
 
+span.Running {
+  font-size: 13px;
+  background-color: #eaf4ff;
+  padding: 3px 12px;
+  text-align: center;
+  color: #3e97ff;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+.kt-fils-v-uname{
+  color: blue;
+  cursor: pointer;
+}
+
+.kt-fils-v-uname:hover{
+  text-decoration: underline;
+}

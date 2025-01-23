@@ -9,13 +9,21 @@
                 </div>
                 <ng-container>
                     <div class="kt-memo-dt-fl">
-                        <a  class="kt-inbox__message">
-                            <!-- <span class="kt-inbox__subject"> {{item.Subject}}</span> <span class="kt-flv-def"> </span> -->
-                            <span class="kt-inbox__flv-user"><b>{{submitby}}</b></span>
-                        </a>
+                       
                         <div class="kt-inbox__labels">
-                            <span class="kt-fils-v-uname">{{filename}}</span>
+                            <ng-container *ngIf="url_master_code&&(url_project_code!=url_master_code);else plabel">
+                                <span class="Running" >Action</span>
+                                <span matTooltip="Click to see the action." (click)="newDetailsaction(url_master_code,url_project_code)" class="kt-fils-v-uname">{{filename}}</span>
+                            </ng-container>
+                            <ng-template #plabel>
+                                <span class="Running">Project</span>
+                                <span matTooltip="Click to see the project." (click)="newDetailsaction(url_project_code)" class="kt-fils-v-uname">{{filename}}</span>
+                            </ng-template>  
                         </div>
+                        <a  class="kt-inbox__message mt-2">
+                            <!-- <span class="kt-inbox__subject"> {{item.Subject}}</span> <span class="kt-flv-def"> </span> -->
+                            <span class="kt-inbox__flv-user"> <span>Submitted by : </span> <b>{{submitby}}</b> </span>
+                        </a>
                     </div>
                 </ng-container>
 
