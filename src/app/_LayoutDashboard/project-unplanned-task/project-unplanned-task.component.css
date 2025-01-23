@@ -3327,16 +3327,17 @@ span.kt-inbox__label.kt-badge--unified-info.kt-badge-light-bold {
 }
 
 .runway-card-header {
-  background-color: #fff;
-  border-radius: 4px;
-  padding: 1rem;
   display: flex;
   margin-bottom: 8px;
 }
 
 .runway-card-header a {
   width: 100%;
-  color: #000;
+  color: #fff;
+  background-color: transparent;
+  border-radius: 0px;
+  border-bottom: 1px solid #fff;
+  padding: 1rem;
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -3350,8 +3351,19 @@ span.kt-inbox__label.kt-badge--unified-info.kt-badge-light-bold {
 .runway-card-header .accordion-icon svg {
   width: 14px;
   height: 14px;
-  color: #6F6F6F;
+  color: #fff;
   transition: all 0.25s ease-in-out;
+}
+
+.runway-card-header a[aria-expanded="true"] {
+  color: #000;
+  background-color: #fff;
+  border-radius: 4px;
+  border-bottom: 0px solid #fff;
+}
+
+.runway-card-header a[aria-expanded="true"] .accordion-icon svg {
+  color: #6F6F6F;
 }
 
 .runway-card-header a[aria-expanded="false"] .accordion-icon svg {
@@ -5827,4 +5839,11 @@ span.run-icon-group-icon {
 span.run-icon-group-icon svg {
   width: 14px;
   height: 14px;
+}
+
+.no-category {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 400px);
 }
