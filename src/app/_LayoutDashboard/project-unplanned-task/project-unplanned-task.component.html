@@ -330,15 +330,17 @@
                                       </svg>
                                   </span>
                               </div>
+                              <span style="color: #4865cf;">
                               Stream Planner Runway
+                            </span>
                               <div class="run-icon-group">
-                                  <span class="run-icon-group-icon" title="Total categories : {{catcount}}">
+                                  <!-- <span class="run-icon-group-icon" title="Total categories : {{catcount}}">
                                     <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 35 35" data-name="Layer 2" id="e73e2821-510d-456e-b3bd-9363037e93e3" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11.933,15.055H3.479A3.232,3.232,0,0,1,.25,11.827V3.478A3.232,3.232,0,0,1,3.479.25h8.454a3.232,3.232,0,0,1,3.228,3.228v8.349A3.232,3.232,0,0,1,11.933,15.055ZM3.479,2.75a.73.73,0,0,0-.729.728v8.349a.73.73,0,0,0,.729.728h8.454a.729.729,0,0,0,.728-.728V3.478a.729.729,0,0,0-.728-.728Z"></path><path d="M11.974,34.75H3.52A3.233,3.233,0,0,1,.291,31.521V23.173A3.232,3.232,0,0,1,3.52,19.945h8.454A3.232,3.232,0,0,1,15.2,23.173v8.348A3.232,3.232,0,0,1,11.974,34.75ZM3.52,22.445a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M31.522,34.75H23.068a3.233,3.233,0,0,1-3.229-3.229V23.173a3.232,3.232,0,0,1,3.229-3.228h8.454a3.232,3.232,0,0,1,3.228,3.228v8.348A3.232,3.232,0,0,1,31.522,34.75Zm-8.454-12.3a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M27.3,15.055a7.4,7.4,0,1,1,7.455-7.4A7.437,7.437,0,0,1,27.3,15.055Zm0-12.3a4.9,4.9,0,1,0,4.955,4.9A4.935,4.935,0,0,0,27.3,2.75Z"></path></g></svg>
-                                </span>
+                                </span> -->
 
-                                <span class="run-icon-group-icon"  title="Total tasks : {{procount}}">
+                                <!-- <span class="run-icon-group-icon"  title="Total tasks : {{procount}}">
                                   <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M139.61 35.5a12 12 0 0 0-17 0L58.93 98.81l-22.7-22.12a12 12 0 0 0-17 0L3.53 92.41a12 12 0 0 0 0 17l47.59 47.4a12.78 12.78 0 0 0 17.61 0l15.59-15.62L156.52 69a12.09 12.09 0 0 0 .09-17zm0 159.19a12 12 0 0 0-17 0l-63.68 63.72-22.7-22.1a12 12 0 0 0-17 0L3.53 252a12 12 0 0 0 0 17L51 316.5a12.77 12.77 0 0 0 17.6 0l15.7-15.69 72.2-72.22a12 12 0 0 0 .09-16.9zM64 368c-26.49 0-48.59 21.5-48.59 48S37.53 464 64 464a48 48 0 0 0 0-96zm432 16H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z"></path></g></svg>
-                                </span>
+                                </span> -->
                               </div>
                           </div>
                       </div>
@@ -395,17 +397,17 @@
                                   <div class="kt-main-list-item-count">7</div>
                               </div>
                           </div> -->
-                          <div class="kt-main-list-item" (click)="OnCategoryClick(0,'All');hideAddTask()">
+                          <div class="kt-main-list-item" (click)="OnCategoryClick('-6','All');hideAddTask()">
                             <div class="kt-main-list-item-icon imp-c">
                               <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M139.61 35.5a12 12 0 0 0-17 0L58.93 98.81l-22.7-22.12a12 12 0 0 0-17 0L3.53 92.41a12 12 0 0 0 0 17l47.59 47.4a12.78 12.78 0 0 0 17.61 0l15.59-15.62L156.52 69a12.09 12.09 0 0 0 .09-17zm0 159.19a12 12 0 0 0-17 0l-63.68 63.72-22.7-22.1a12 12 0 0 0-17 0L3.53 252a12 12 0 0 0 0 17L51 316.5a12.77 12.77 0 0 0 17.6 0l15.7-15.69 72.2-72.22a12 12 0 0 0 .09-16.9zM64 368c-26.49 0-48.59 21.5-48.59 48S37.53 464 64 464a48 48 0 0 0 0-96zm432 16H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z"></path></g></svg>
                             </div>
                             <div class="kt-main-list-item-label">
                                 <div class="kt-main-list-item-name"   >All</div>
-                                <div class="kt-main-list-item-count"  *ngIf="this.allCount">{{this.allCount}}</div>
-                                <div class="kt-main-list-item-count"  *ngIf="!this.allCount">0</div>
+                                <div class="kt-main-list-item-count"  *ngIf="allCount">{{allCount}}</div>
+                                <div class="kt-main-list-item-count"  *ngIf="!allCount">0</div>
                             </div>
                         </div>
-                          <div class="kt-main-list-item" (click)="OnCategoryClick(-1,'Accepted');hideAddTask()">
+                          <div class="kt-main-list-item" (click)="OnCategoryClick('-1','Accepted');hideAddTask()">
                               <div class="kt-main-list-item-icon acc-c">
                                   <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                               </div>
@@ -415,7 +417,7 @@
                                   <div class="kt-main-list-item-count"  *ngIf="!acceptCount">0</div>
                               </div>
                           </div>
-                          <div class="kt-main-list-item" (click)="OnCategoryClick(-2,'Pending');hideAddTask()">
+                          <div class="kt-main-list-item" (click)="OnCategoryClick('-2','Pending');hideAddTask()">
                               <div class="kt-main-list-item-icon pen-c">
                                   <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20 3H4M20 21H4M5 3C5 5.51022 6.21228 7.86592 8.25493 9.32495L15.7451 14.675C17.7877 16.1341 19 18.4898 19 21M19 3C19 5.51022 17.7877 7.86592 15.7451 9.32495L8.25493 14.675C6.21228 16.1341 5 18.4898 5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                               </div>
@@ -425,7 +427,7 @@
                                   <div class="kt-main-list-item-count" *ngIf="!pendingCount">0</div>
                               </div>
                           </div>
-                          <div class="kt-main-list-item" (click)="OnCategoryClick(-3,'Rejected');hideAddTask()">
+                          <div class="kt-main-list-item" (click)="OnCategoryClick('-3','Rejected');hideAddTask()">
                               <div class="kt-main-list-item-icon rej-c">
                                   <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>times</title> <path d="M17.769 16l9.016-9.016c0.226-0.226 0.366-0.539 0.366-0.884 0-0.691-0.56-1.251-1.251-1.251-0.346 0-0.658 0.14-0.885 0.367v0l-9.015 9.015-9.016-9.015c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l9.015 9.016-9.015 9.015c-0.227 0.226-0.367 0.539-0.367 0.885 0 0.691 0.56 1.251 1.251 1.251 0.345 0 0.658-0.14 0.884-0.366v0l9.016-9.016 9.015 9.016c0.227 0.228 0.541 0.369 0.888 0.369 0.691 0 1.251-0.56 1.251-1.251 0-0.347-0.141-0.661-0.369-0.887l-0-0z"></path> </g></svg>
                               </div>
@@ -435,30 +437,30 @@
                                   <div class="kt-main-list-item-count" *ngIf="!rejectCount">0</div>
                               </div>
                           </div>
-                          <div class="kt-main-list-item" (click)="OnCategoryClick(-4,'Unassign');hideAddTask()">
+                          <div class="kt-main-list-item" (click)="OnCategoryClick('-4','Unassign');hideAddTask()">
                             <div class="kt-main-list-item-icon rej-c">
                               <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 21C4 17.134 7.13401 14 11 14C11.695 14 12.3663 14.1013 13 14.2899M20 18L14 18M15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z" stroke="#ff5900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                             </div>
                             <div class="kt-main-list-item-label">
                                 <div class="kt-main-list-item-name" >Unassign</div>
-                                <div class="kt-main-list-item-count" *ngIf="rejectCount">{{rejectCount}}</div>
-                                 <div class="kt-main-list-item-count" *ngIf="!rejectCount">0</div>
+                                <div class="kt-main-list-item-count" *ngIf="UnassignCount">{{UnassignCount}}</div>
+                                 <div class="kt-main-list-item-count" *ngIf="!UnassignCount">0</div>
                             </div>
                         </div>
-                        <div class="kt-main-list-item" (click)="OnCategoryClick(-5,'Completed');hideAddTask()">
+                        <div class="kt-main-list-item" (click)="OnCategoryClick('-5','Completed');hideAddTask()">
                           <div class="kt-main-list-item-icon rej-c">
                             <svg width="64px" height="64px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#388e3c" fill-rule="evenodd" d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z"></path> </g></svg>
                           </div>
                           <div class="kt-main-list-item-label">
                               <div class="kt-main-list-item-name" >Completed</div>
-                              <div class="kt-main-list-item-count" *ngIf="rejectCount">{{rejectCount}}</div>
-                              <div class="kt-main-list-item-count" *ngIf="!rejectCount">0</div>
+                              <div class="kt-main-list-item-count" *ngIf="completedCount">{{completedCount}}</div>
+                              <div class="kt-main-list-item-count" *ngIf="!completedCount">0</div>
                           </div>
                       </div>
 
                       </div>
                       <hr class="kt-left-hr">
-              <div class="kt-info-box-cat">
+              <div   *ngIf="SystemCategory&&SystemCategory.length>0||userCategory&&userCategory.length>0" class="kt-info-box-cat">
                   <div class="d-flex align-items-center">
                       <div class="kt-info-box-tittle mt-0 mb-2" style="padding-left: 10px;    color: #4865cf;">
                           <div class="kt-title-icon">
@@ -501,10 +503,14 @@
                                   </svg>
                               </span>
                           </div>
-                          Category
+                    Category
+                    <div class="run-icon-group mr-2">
+                      <span style="color:#919191" >{{catcount}}
+                        <!-- <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 35 35" data-name="Layer 2" id="e73e2821-510d-456e-b3bd-9363037e93e3" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11.933,15.055H3.479A3.232,3.232,0,0,1,.25,11.827V3.478A3.232,3.232,0,0,1,3.479.25h8.454a3.232,3.232,0,0,1,3.228,3.228v8.349A3.232,3.232,0,0,1,11.933,15.055ZM3.479,2.75a.73.73,0,0,0-.729.728v8.349a.73.73,0,0,0,.729.728h8.454a.729.729,0,0,0,.728-.728V3.478a.729.729,0,0,0-.728-.728Z"></path><path d="M11.974,34.75H3.52A3.233,3.233,0,0,1,.291,31.521V23.173A3.232,3.232,0,0,1,3.52,19.945h8.454A3.232,3.232,0,0,1,15.2,23.173v8.348A3.232,3.232,0,0,1,11.974,34.75ZM3.52,22.445a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M31.522,34.75H23.068a3.233,3.233,0,0,1-3.229-3.229V23.173a3.232,3.232,0,0,1,3.229-3.228h8.454a3.232,3.232,0,0,1,3.228,3.228v8.348A3.232,3.232,0,0,1,31.522,34.75Zm-8.454-12.3a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M27.3,15.055a7.4,7.4,0,1,1,7.455-7.4A7.437,7.437,0,0,1,27.3,15.055Zm0-12.3a4.9,4.9,0,1,0,4.955,4.9A4.935,4.935,0,0,0,27.3,2.75Z"></path></g></svg> -->
+                    </span></div>
                       </div>
                   </div>
-                  <div class="position-relative w-100 pl-2">
+                  <div  class="position-relative w-100 pl-2">
                     <div class="cat-search-field">
                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -523,160 +529,158 @@
                     </div>
                 </div>
 
-
-
-
-            <div class="kt-category-action-list-view mt-3">
-              <span class="kt-info-box-tittle mt-0 mb-2"  style="padding-left: 10px;    color: #4865cf;">By system defined</span>
-                    <ul class="kt-category-acion-content side-bar-box">
-                        <!-- [ngClass]="{'bg-secondary': }" id="SelectedCat_{{item.Category_ID}} -->
-                        <li *ngFor="let item of userCategory|filter:categorySearch;" class="kt-category-list" [ngClass]="{'active': item.Category_ID==_Categoryid}">
-                            <a>
-                                <div class="d-flex justify-content-between align-items-center flex-wrap">
-                                    <!--Textbox Category Rename -->
-                                    <span class="kt-inbox__subject w-100" id="TextboxCat_{{item.Category_ID}}"
-                                        style="display: none;">
-                                        <div class="d-flex align-items-center">
-                                            <input type="text" class="form-control" [(ngModel)]="Cat_Name"
-                                                (keydown.enter)="OnCategoryRename(item.Category_ID)">
-                                            <div class="d-flex ml-3" id="button-addon4">
-                                                <button class=" btn btn-input-cat-action edit btn-sm py-0 px-2 mr-2"
-                                                    (click)="OnCategoryRename(item.Category_ID)"><i
-                                                        class="fas fa-check mr-0"></i></button>
-                                                <button class=" btn btn-input-cat-action delete btn-sm py-0 px-2"
-                                                    (click)="OnCat_Cancel(item.Category_ID)"><i
-                                                        class="fas fa-times mr-0"></i></button>
+                <div class="kt-category-action-list-view mt-3">
+                  <span  [ngClass]="{'d-none':SystemCategory&&SystemCategory.length==0}" class="kt-info-box-tittle mt-0 mb-2"  style="padding-left: 10px;    color: #4865cf;">By system defined</span>
+                        <ul class="kt-category-acion-content side-bar-box">
+                            <!-- [ngClass]="{'bg-secondary': }" id="SelectedCat_{{item.Category_ID}} -->
+                            <li *ngFor="let item of SystemCategory|filter:categorySearch;" class="kt-category-list" [ngClass]="{'active': item.Category_ID==_Categoryid}">
+                                <a>
+                                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                        <!--Textbox Category Rename -->
+                                        <span class="kt-inbox__subject w-100" id="TextboxCat_{{item.Category_ID}}"
+                                            style="display: none;">
+                                            <div class="d-flex align-items-center">
+                                                <input type="text" class="form-control" [(ngModel)]="Cat_Name"
+                                                    (keydown.enter)="OnCategoryRename(item.Category_ID)">
+                                                <div class="d-flex ml-3" id="button-addon4">
+                                                    <button class=" btn btn-input-cat-action edit btn-sm py-0 px-2 mr-2"
+                                                        (click)="OnCategoryRename(item.Category_ID)"><i
+                                                            class="fas fa-check mr-0"></i></button>
+                                                    <button class=" btn btn-input-cat-action delete btn-sm py-0 px-2"
+                                                        (click)="OnCat_Cancel(item.Category_ID)"><i
+                                                            class="fas fa-times mr-0"></i></button>
+                                                </div>
+                                            </div>
+                                        </span>
+                                        <div class="kt-main-list-item w-100" id="LabelCat_{{item.Category_ID}}"
+                                        (click)="OnCategoryClick(item.Category_ID,item.Category_Name);_SearchTask='';filterLists()" >
+                                            <div class="kt-main-list-item-icon">
+                                                <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 35 35" data-name="Layer 2" id="e73e2821-510d-456e-b3bd-9363037e93e3" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11.933,15.055H3.479A3.232,3.232,0,0,1,.25,11.827V3.478A3.232,3.232,0,0,1,3.479.25h8.454a3.232,3.232,0,0,1,3.228,3.228v8.349A3.232,3.232,0,0,1,11.933,15.055ZM3.479,2.75a.73.73,0,0,0-.729.728v8.349a.73.73,0,0,0,.729.728h8.454a.729.729,0,0,0,.728-.728V3.478a.729.729,0,0,0-.728-.728Z"></path><path d="M11.974,34.75H3.52A3.233,3.233,0,0,1,.291,31.521V23.173A3.232,3.232,0,0,1,3.52,19.945h8.454A3.232,3.232,0,0,1,15.2,23.173v8.348A3.232,3.232,0,0,1,11.974,34.75ZM3.52,22.445a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M31.522,34.75H23.068a3.233,3.233,0,0,1-3.229-3.229V23.173a3.232,3.232,0,0,1,3.229-3.228h8.454a3.232,3.232,0,0,1,3.228,3.228v8.348A3.232,3.232,0,0,1,31.522,34.75Zm-8.454-12.3a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M27.3,15.055a7.4,7.4,0,1,1,7.455-7.4A7.437,7.437,0,0,1,27.3,15.055Zm0-12.3a4.9,4.9,0,1,0,4.955,4.9A4.935,4.935,0,0,0,27.3,2.75Z"></path></g></svg>
+                                            </div>
+                                            <div class="kt-main-list-item-label">
+                                                <div class="kt-main-list-item-name">{{item.Category_Name}}</div>
+                                                <div class="kt-main-list-item-count">{{item.TaskCount}}</div>
                                             </div>
                                         </div>
-                                    </span>
-                                    <div class="kt-main-list-item w-100" id="LabelCat_{{item.Category_ID}}"
-                                    (click)="OnCategoryClick(item.Category_ID,item.Category_Name);_SearchTask='';filterLists()" >
-                                        <div class="kt-main-list-item-icon">
-                                            <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 35 35" data-name="Layer 2" id="e73e2821-510d-456e-b3bd-9363037e93e3" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11.933,15.055H3.479A3.232,3.232,0,0,1,.25,11.827V3.478A3.232,3.232,0,0,1,3.479.25h8.454a3.232,3.232,0,0,1,3.228,3.228v8.349A3.232,3.232,0,0,1,11.933,15.055ZM3.479,2.75a.73.73,0,0,0-.729.728v8.349a.73.73,0,0,0,.729.728h8.454a.729.729,0,0,0,.728-.728V3.478a.729.729,0,0,0-.728-.728Z"></path><path d="M11.974,34.75H3.52A3.233,3.233,0,0,1,.291,31.521V23.173A3.232,3.232,0,0,1,3.52,19.945h8.454A3.232,3.232,0,0,1,15.2,23.173v8.348A3.232,3.232,0,0,1,11.974,34.75ZM3.52,22.445a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M31.522,34.75H23.068a3.233,3.233,0,0,1-3.229-3.229V23.173a3.232,3.232,0,0,1,3.229-3.228h8.454a3.232,3.232,0,0,1,3.228,3.228v8.348A3.232,3.232,0,0,1,31.522,34.75Zm-8.454-12.3a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M27.3,15.055a7.4,7.4,0,1,1,7.455-7.4A7.437,7.437,0,0,1,27.3,15.055Zm0-12.3a4.9,4.9,0,1,0,4.955,4.9A4.935,4.935,0,0,0,27.3,2.75Z"></path></g></svg>
-                                        </div>
-                                        <div class="kt-main-list-item-label">
-                                            <div class="kt-main-list-item-name">{{item.Category_Name}}</div>
-                                            <div class="kt-main-list-item-count">{{item.TaskCount}}</div>
-                                        </div>
-                                    </div>
-                                    <div   class="d-flex flex-column align-items-cente py-2 w-100" style="display: none!important;">
-                                        <div id="LabelCat_{{item.Category_ID}}"
-                                            (click)="OnCategoryClick(item.Category_ID,item.Category_Name)">
-                                            <div class="kt-category-p-tittle">
-                                                <h4>
-                                                    {{item.Category_Name}}
-                                                </h4>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <div class="labelcat-task">
-                                                    Total Tasks: <b>{{item.TaskCount}}</b>
+                                        <div   class="d-flex flex-column align-items-cente py-2 w-100" style="display: none!important;">
+                                            <div id="LabelCat_{{item.Category_ID}}"
+                                                (click)="OnCategoryClick(item.Category_ID,item.Category_Name)">
+                                                <div class="kt-category-p-tittle">
+                                                    <h4>
+                                                        {{item.Category_Name}}
+                                                    </h4>
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div class="labelcat-task">
+                                                        Total Tasks: <b>{{item.TaskCount}}</b>
+                                                    </div>
+
+
                                                 </div>
 
-
                                             </div>
-
+                                            <!-- End -->
                                         </div>
-                                        <!-- End -->
+                                        <div class="kt-cat-action" [hidden]="hideMenuOfCategory" *ngIf="item.Category_ID!='2411' && item.Category_ID!='3595'">
+                                            <button class="btn btn-cat-action edit" title="Click to edit category"
+                                                (click)="OnCategoryEdit_Click(item.Category_ID,item.Category_Name)">
+                                                <span><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.3em;height: 1.3em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M432.4 787.2c-24.1 27.6-34.7 34.2-68.4 46.6-51.9 19.4-147 55.1-208.9 78.3-11.7 4.6-55.9 2.3-37.4-41.1 21-60.4 51.8-149.6 69.4-200.5 12.8-35.9 17.9-45.2 43.7-69.3l266.5-266.5L686 523.4C686 523.4 506.6 710.1 432.4 787.2z"></path><path d="M726.5 482.9 537.9 294.3 578.3 253.8 767 442.5Z"></path><path d="M888.3 321.2l-80.8 80.9L618.8 213.4l80.9-80.8c29.8-29.8 78-29.8 107.8 0l80.9 80.8C918.1 243.1 918.1 291.4 888.3 321.2z"></path></svg></span>
+
+                                            </button>
+
+                                            <button  class="btn btn btn-cat-action delete" title="Click to delete category"
+                                                (click)="OnDeleteCategory(item.Category_ID,item.Category_Name)">
+                                                <span><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.3em;height: 1.3em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M223.595474 318.284043l24.022113 480.742089c0 54.376445 44.989657 98.456383 100.485599 98.456383l331.963601 0c55.494918 0 100.489692-44.078914 100.489692-98.456383l23.109324-480.742089L223.595474 318.284043zM831.749418 284.181341c0.099261-20.274766 0.158612-21.623483 0.158612-22.981411 0-52.871161-31.298843-81.888032-73.29533-81.888032l-116.892267 0.122797c0-27.751041-27.105335-50.245358-54.855352-50.245358L441.349917 129.189338c-27.744901 0-55.727209 22.494317-55.727209 50.245358l-117.013017-0.122797c-46.387493 0-73.29533 35.359322-73.29533 81.888032 0 1.363044 0.054235 2.706645 0.158612 22.981411l636.281561 0L831.749418 284.181341zM614.168937 444.615287c0-15.32708 12.421914-27.750017 27.744901-27.750017 15.32708 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.422937 27.751041-27.750017 27.751041-15.322987 0-27.744901-12.422937-27.744901-27.751041L614.168937 444.615287 614.168937 444.615287zM485.85862 444.615287c0-15.32708 12.42703-27.750017 27.751041-27.750017 15.32708 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.422937 27.751041-27.750017 27.751041-15.322987 0-27.751041-12.422937-27.751041-27.751041L485.85862 444.615287 485.85862 444.615287zM357.63733 444.615287c0-15.32708 12.422937-27.750017 27.751041-27.750017 15.321964 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.42703 27.751041-27.750017 27.751041-15.328104 0-27.751041-12.422937-27.751041-27.751041L357.63733 444.615287 357.63733 444.615287zM357.63733 444.615287"></path></svg></span>
+
+                                            </button>
+                                        </div>
+
                                     </div>
-                                    <div class="kt-cat-action" [hidden]="hideMenuOfCategory" *ngIf="item.Category_ID!='2411' && item.Category_ID!='3595'">
-                                        <button class="btn btn-cat-action edit" title="Click to edit category"
-                                            (click)="OnCategoryEdit_Click(item.Category_ID,item.Category_Name)">
-                                            <span><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.3em;height: 1.3em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M432.4 787.2c-24.1 27.6-34.7 34.2-68.4 46.6-51.9 19.4-147 55.1-208.9 78.3-11.7 4.6-55.9 2.3-37.4-41.1 21-60.4 51.8-149.6 69.4-200.5 12.8-35.9 17.9-45.2 43.7-69.3l266.5-266.5L686 523.4C686 523.4 506.6 710.1 432.4 787.2z"></path><path d="M726.5 482.9 537.9 294.3 578.3 253.8 767 442.5Z"></path><path d="M888.3 321.2l-80.8 80.9L618.8 213.4l80.9-80.8c29.8-29.8 78-29.8 107.8 0l80.9 80.8C918.1 243.1 918.1 291.4 888.3 321.2z"></path></svg></span>
+                                </a>
+                            </li>
+                        </ul>
 
-                                        </button>
+                </div>
+                <div class="kt-category-action-list-view mt-3">
+                  <span [ngClass]="{'d-none':userCategory&&userCategory.length==0}" class="kt-info-box-tittle mt-0 mb-2"  style="padding-left: 10px;     color: #4865cf;">By user</span>
+                  <ul class="kt-category-acion-content side-bar-box">
+                      <!-- [ngClass]="{'bg-secondary': }" id="SelectedCat_{{item.Category_ID}} -->
+                      <li *ngFor="let item of userCategory|filter:categorySearch;" class="kt-category-list" [ngClass]="{'active': item.Category_ID==_Categoryid}">
 
-                                        <button  class="btn btn btn-cat-action delete" title="Click to delete category"
-                                            (click)="OnDeleteCategory(item.Category_ID,item.Category_Name)">
-                                            <span><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.3em;height: 1.3em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M223.595474 318.284043l24.022113 480.742089c0 54.376445 44.989657 98.456383 100.485599 98.456383l331.963601 0c55.494918 0 100.489692-44.078914 100.489692-98.456383l23.109324-480.742089L223.595474 318.284043zM831.749418 284.181341c0.099261-20.274766 0.158612-21.623483 0.158612-22.981411 0-52.871161-31.298843-81.888032-73.29533-81.888032l-116.892267 0.122797c0-27.751041-27.105335-50.245358-54.855352-50.245358L441.349917 129.189338c-27.744901 0-55.727209 22.494317-55.727209 50.245358l-117.013017-0.122797c-46.387493 0-73.29533 35.359322-73.29533 81.888032 0 1.363044 0.054235 2.706645 0.158612 22.981411l636.281561 0L831.749418 284.181341zM614.168937 444.615287c0-15.32708 12.421914-27.750017 27.744901-27.750017 15.32708 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.422937 27.751041-27.750017 27.751041-15.322987 0-27.744901-12.422937-27.744901-27.751041L614.168937 444.615287 614.168937 444.615287zM485.85862 444.615287c0-15.32708 12.42703-27.750017 27.751041-27.750017 15.32708 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.422937 27.751041-27.750017 27.751041-15.322987 0-27.751041-12.422937-27.751041-27.751041L485.85862 444.615287 485.85862 444.615287zM357.63733 444.615287c0-15.32708 12.422937-27.750017 27.751041-27.750017 15.321964 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.42703 27.751041-27.750017 27.751041-15.328104 0-27.751041-12.422937-27.751041-27.751041L357.63733 444.615287 357.63733 444.615287zM357.63733 444.615287"></path></svg></span>
-
-                                        </button>
-                                    </div>
-
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-
-            </div>
-
-
-
-            <div class="kt-category-action-list-view mt-3">
-              <span class="kt-info-box-tittle mt-0 mb-2"  style="padding-left: 10px;     color: #4865cf;">By user</span>
-              <ul class="kt-category-acion-content side-bar-box">
-                  <!-- [ngClass]="{'bg-secondary': }" id="SelectedCat_{{item.Category_ID}} -->
-                  <li *ngFor="let item of SystemCategory|filter:categorySearch;" class="kt-category-list" [ngClass]="{'active': item.Category_ID==_Categoryid}">
-                      <a>
-                          <div class="d-flex justify-content-between align-items-center flex-wrap">
-                              <!--Textbox Category Rename -->
-                              <span class="kt-inbox__subject w-100" id="TextboxCat_{{item.Category_ID}}"
-                                  style="display: none;">
-                                  <div class="d-flex align-items-center">
-                                      <input type="text" class="form-control" [(ngModel)]="Cat_Name"
-                                          (keydown.enter)="OnCategoryRename(item.Category_ID)">
-                                      <div class="d-flex ml-3" id="button-addon4">
-                                          <button class=" btn btn-input-cat-action edit btn-sm py-0 px-2 mr-2"
-                                              (click)="OnCategoryRename(item.Category_ID)"><i
-                                                  class="fas fa-check mr-0"></i></button>
-                                          <button class=" btn btn-input-cat-action delete btn-sm py-0 px-2"
-                                              (click)="OnCat_Cancel(item.Category_ID)"><i
-                                                  class="fas fa-times mr-0"></i></button>
+                        <a>
+                              <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                  <!--Textbox Category Rename -->
+                                  <span class="kt-inbox__subject w-100" id="TextboxCat_{{item.Category_ID}}"
+                                      style="display: none;">
+                                      <div class="d-flex align-items-center">
+                                          <input type="text" class="form-control" [(ngModel)]="Cat_Name"
+                                              (keydown.enter)="OnCategoryRename(item.Category_ID)">
+                                          <div class="d-flex ml-3" id="button-addon4">
+                                              <button class=" btn btn-input-cat-action edit btn-sm py-0 px-2 mr-2"
+                                                  (click)="OnCategoryRename(item.Category_ID)"><i
+                                                      class="fas fa-check mr-0"></i></button>
+                                              <button class=" btn btn-input-cat-action delete btn-sm py-0 px-2"
+                                                  (click)="OnCat_Cancel(item.Category_ID)"><i
+                                                      class="fas fa-times mr-0"></i></button>
+                                          </div>
+                                      </div>
+                                  </span>
+                                  <div class="kt-main-list-item w-100" id="LabelCat_{{item.Category_ID}}"
+                                  (click)="OnCategoryClick(item.Category_ID,item.Category_Name);_SearchTask='';filterLists()" >
+                                      <div class="kt-main-list-item-icon">
+                                          <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 35 35" data-name="Layer 2" id="e73e2821-510d-456e-b3bd-9363037e93e3" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11.933,15.055H3.479A3.232,3.232,0,0,1,.25,11.827V3.478A3.232,3.232,0,0,1,3.479.25h8.454a3.232,3.232,0,0,1,3.228,3.228v8.349A3.232,3.232,0,0,1,11.933,15.055ZM3.479,2.75a.73.73,0,0,0-.729.728v8.349a.73.73,0,0,0,.729.728h8.454a.729.729,0,0,0,.728-.728V3.478a.729.729,0,0,0-.728-.728Z"></path><path d="M11.974,34.75H3.52A3.233,3.233,0,0,1,.291,31.521V23.173A3.232,3.232,0,0,1,3.52,19.945h8.454A3.232,3.232,0,0,1,15.2,23.173v8.348A3.232,3.232,0,0,1,11.974,34.75ZM3.52,22.445a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M31.522,34.75H23.068a3.233,3.233,0,0,1-3.229-3.229V23.173a3.232,3.232,0,0,1,3.229-3.228h8.454a3.232,3.232,0,0,1,3.228,3.228v8.348A3.232,3.232,0,0,1,31.522,34.75Zm-8.454-12.3a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M27.3,15.055a7.4,7.4,0,1,1,7.455-7.4A7.437,7.437,0,0,1,27.3,15.055Zm0-12.3a4.9,4.9,0,1,0,4.955,4.9A4.935,4.935,0,0,0,27.3,2.75Z"></path></g></svg>
+                                      </div>
+                                      <div class="kt-main-list-item-label">
+                                          <div class="kt-main-list-item-name">{{item.Category_Name}}</div>
+                                          <div class="kt-main-list-item-count">{{item.TaskCount}}</div>
                                       </div>
                                   </div>
-                              </span>
-                              <div class="kt-main-list-item w-100" id="LabelCat_{{item.Category_ID}}"
-                              (click)="OnCategoryClick(item.Category_ID,item.Category_Name);_SearchTask='';filterLists()" >
-                                  <div class="kt-main-list-item-icon">
-                                      <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 35 35" data-name="Layer 2" id="e73e2821-510d-456e-b3bd-9363037e93e3" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11.933,15.055H3.479A3.232,3.232,0,0,1,.25,11.827V3.478A3.232,3.232,0,0,1,3.479.25h8.454a3.232,3.232,0,0,1,3.228,3.228v8.349A3.232,3.232,0,0,1,11.933,15.055ZM3.479,2.75a.73.73,0,0,0-.729.728v8.349a.73.73,0,0,0,.729.728h8.454a.729.729,0,0,0,.728-.728V3.478a.729.729,0,0,0-.728-.728Z"></path><path d="M11.974,34.75H3.52A3.233,3.233,0,0,1,.291,31.521V23.173A3.232,3.232,0,0,1,3.52,19.945h8.454A3.232,3.232,0,0,1,15.2,23.173v8.348A3.232,3.232,0,0,1,11.974,34.75ZM3.52,22.445a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M31.522,34.75H23.068a3.233,3.233,0,0,1-3.229-3.229V23.173a3.232,3.232,0,0,1,3.229-3.228h8.454a3.232,3.232,0,0,1,3.228,3.228v8.348A3.232,3.232,0,0,1,31.522,34.75Zm-8.454-12.3a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"></path><path d="M27.3,15.055a7.4,7.4,0,1,1,7.455-7.4A7.437,7.437,0,0,1,27.3,15.055Zm0-12.3a4.9,4.9,0,1,0,4.955,4.9A4.935,4.935,0,0,0,27.3,2.75Z"></path></g></svg>
-                                  </div>
-                                  <div class="kt-main-list-item-label">
-                                      <div class="kt-main-list-item-name">{{item.Category_Name}}</div>
-                                      <div class="kt-main-list-item-count">{{item.TaskCount}}</div>
-                                  </div>
-                              </div>
-                              <div   class="d-flex flex-column align-items-cente py-2 w-100" style="display: none!important;">
-                                  <div id="LabelCat_{{item.Category_ID}}"
-                                      (click)="OnCategoryClick(item.Category_ID,item.Category_Name)">
-                                      <div class="kt-category-p-tittle">
-                                          <h4>
-                                              {{item.Category_Name}}
-                                          </h4>
-                                      </div>
-                                      <div class="d-flex align-items-center justify-content-between">
-                                          <div class="labelcat-task">
-                                              Total Tasks: <b>{{item.TaskCount}}</b>
+                                  <div   class="d-flex flex-column align-items-cente py-2 w-100" style="display: none!important;">
+                                      <div id="LabelCat_{{item.Category_ID}}"
+                                          (click)="OnCategoryClick(item.Category_ID,item.Category_Name)">
+                                          <div class="kt-category-p-tittle">
+                                              <h4>
+                                                  {{item.Category_Name}}
+                                              </h4>
+                                          </div>
+                                          <div class="d-flex align-items-center justify-content-between">
+                                              <div class="labelcat-task">
+                                                  Total Tasks: <b>{{item.TaskCount}}</b>
+                                              </div>
+
+
                                           </div>
 
-
                                       </div>
-
+                                      <!-- End -->
                                   </div>
-                                  <!-- End -->
+                                  <div class="kt-cat-action" [hidden]="hideMenuOfCategory" *ngIf="item.Category_ID!='2411' && item.Category_ID!='3595'">
+                                      <button class="btn btn-cat-action edit" title="Click to edit category"
+                                          (click)="OnCategoryEdit_Click(item.Category_ID,item.Category_Name)">
+                                          <span><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.3em;height: 1.3em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M432.4 787.2c-24.1 27.6-34.7 34.2-68.4 46.6-51.9 19.4-147 55.1-208.9 78.3-11.7 4.6-55.9 2.3-37.4-41.1 21-60.4 51.8-149.6 69.4-200.5 12.8-35.9 17.9-45.2 43.7-69.3l266.5-266.5L686 523.4C686 523.4 506.6 710.1 432.4 787.2z"></path><path d="M726.5 482.9 537.9 294.3 578.3 253.8 767 442.5Z"></path><path d="M888.3 321.2l-80.8 80.9L618.8 213.4l80.9-80.8c29.8-29.8 78-29.8 107.8 0l80.9 80.8C918.1 243.1 918.1 291.4 888.3 321.2z"></path></svg></span>
+
+                                      </button>
+
+                                      <button  class="btn btn btn-cat-action delete" title="Click to delete category"
+                                          (click)="OnDeleteCategory(item.Category_ID,item.Category_Name)">
+                                          <span><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.3em;height: 1.3em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M223.595474 318.284043l24.022113 480.742089c0 54.376445 44.989657 98.456383 100.485599 98.456383l331.963601 0c55.494918 0 100.489692-44.078914 100.489692-98.456383l23.109324-480.742089L223.595474 318.284043zM831.749418 284.181341c0.099261-20.274766 0.158612-21.623483 0.158612-22.981411 0-52.871161-31.298843-81.888032-73.29533-81.888032l-116.892267 0.122797c0-27.751041-27.105335-50.245358-54.855352-50.245358L441.349917 129.189338c-27.744901 0-55.727209 22.494317-55.727209 50.245358l-117.013017-0.122797c-46.387493 0-73.29533 35.359322-73.29533 81.888032 0 1.363044 0.054235 2.706645 0.158612 22.981411l636.281561 0L831.749418 284.181341zM614.168937 444.615287c0-15.32708 12.421914-27.750017 27.744901-27.750017 15.32708 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.422937 27.751041-27.750017 27.751041-15.322987 0-27.744901-12.422937-27.744901-27.751041L614.168937 444.615287 614.168937 444.615287zM485.85862 444.615287c0-15.32708 12.42703-27.750017 27.751041-27.750017 15.32708 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.422937 27.751041-27.750017 27.751041-15.322987 0-27.751041-12.422937-27.751041-27.751041L485.85862 444.615287 485.85862 444.615287zM357.63733 444.615287c0-15.32708 12.422937-27.750017 27.751041-27.750017 15.321964 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.42703 27.751041-27.750017 27.751041-15.328104 0-27.751041-12.422937-27.751041-27.751041L357.63733 444.615287 357.63733 444.615287zM357.63733 444.615287"></path></svg></span>
+
+                                      </button>
+                                  </div>
+
                               </div>
-                              <div class="kt-cat-action" [hidden]="hideMenuOfCategory" *ngIf="item.Category_ID!='2411' && item.Category_ID!='3595'">
-                                  <button class="btn btn-cat-action edit" title="Click to edit category"
-                                      (click)="OnCategoryEdit_Click(item.Category_ID,item.Category_Name)">
-                                      <span><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.3em;height: 1.3em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M432.4 787.2c-24.1 27.6-34.7 34.2-68.4 46.6-51.9 19.4-147 55.1-208.9 78.3-11.7 4.6-55.9 2.3-37.4-41.1 21-60.4 51.8-149.6 69.4-200.5 12.8-35.9 17.9-45.2 43.7-69.3l266.5-266.5L686 523.4C686 523.4 506.6 710.1 432.4 787.2z"></path><path d="M726.5 482.9 537.9 294.3 578.3 253.8 767 442.5Z"></path><path d="M888.3 321.2l-80.8 80.9L618.8 213.4l80.9-80.8c29.8-29.8 78-29.8 107.8 0l80.9 80.8C918.1 243.1 918.1 291.4 888.3 321.2z"></path></svg></span>
+                          </a>
+                      </li>
+                  </ul>
 
-                                  </button>
-
-                                  <button  class="btn btn btn-cat-action delete" title="Click to delete category"
-                                      (click)="OnDeleteCategory(item.Category_ID,item.Category_Name)">
-                                      <span><svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1.3em;height: 1.3em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M223.595474 318.284043l24.022113 480.742089c0 54.376445 44.989657 98.456383 100.485599 98.456383l331.963601 0c55.494918 0 100.489692-44.078914 100.489692-98.456383l23.109324-480.742089L223.595474 318.284043zM831.749418 284.181341c0.099261-20.274766 0.158612-21.623483 0.158612-22.981411 0-52.871161-31.298843-81.888032-73.29533-81.888032l-116.892267 0.122797c0-27.751041-27.105335-50.245358-54.855352-50.245358L441.349917 129.189338c-27.744901 0-55.727209 22.494317-55.727209 50.245358l-117.013017-0.122797c-46.387493 0-73.29533 35.359322-73.29533 81.888032 0 1.363044 0.054235 2.706645 0.158612 22.981411l636.281561 0L831.749418 284.181341zM614.168937 444.615287c0-15.32708 12.421914-27.750017 27.744901-27.750017 15.32708 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.422937 27.751041-27.750017 27.751041-15.322987 0-27.744901-12.422937-27.744901-27.751041L614.168937 444.615287 614.168937 444.615287zM485.85862 444.615287c0-15.32708 12.42703-27.750017 27.751041-27.750017 15.32708 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.422937 27.751041-27.750017 27.751041-15.322987 0-27.751041-12.422937-27.751041-27.751041L485.85862 444.615287 485.85862 444.615287zM357.63733 444.615287c0-15.32708 12.422937-27.750017 27.751041-27.750017 15.321964 0 27.750017 12.422937 27.750017 27.750017l0 317.882907c0 15.328104-12.42703 27.751041-27.750017 27.751041-15.328104 0-27.751041-12.422937-27.751041-27.751041L357.63733 444.615287 357.63733 444.615287zM357.63733 444.615287"></path></svg></span>
-
-                                  </button>
-                              </div>
-
-                          </div>
-                      </a>
-                  </li>
-              </ul>
-
-      </div>
+                </div>
 
 
               </div>
-                  </div>
+              <div *ngIf="SystemCategory&&SystemCategory.length==0 && userCategory&&userCategory.length==0"  class="no-category" >
+                <h5> Please add a category from here.</h5>
+              </div>
+            </div>
 
 
 
@@ -771,10 +775,10 @@
                                             </div>
                                         </button>
                                     </li>
-                                    <li  *ngIf="_TodoList.length>0" >
+                                    <li  *ngIf="_TodoList&&_TodoList.length>0" >
                                         <button class="btn btn-filtr"  [class.active]="activeButton === 'todoList'" (click)="setActiveButton('todoList');taskside()"  >
                                             <div    class="d-flex align-items-center">
-                                                <span class="count untask"> {{_TodoList.length}}</span>
+                                                <span class="count untask"> {{_TodoList&&_TodoList.length}}</span>
                                                 <div   class="fil-lbl">Unassign task</div>
                                                 <span class="chck-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -789,7 +793,7 @@
                                             </div>
                                         </button>
                                     </li>
-                                    <li  *ngIf="_CompletedList.length>0">
+                                    <li  *ngIf="_CompletedList&&_CompletedList.length>0">
                                         <button class="btn btn-filtr"  [class.active]="activeButton === 'completed'" (click)="setActiveButton('completed');completed()" >
                                             <div class="d-flex align-items-center">
                                                 <span class="count compl">{{_CompletedList&&_CompletedList.length}}</span>
@@ -807,7 +811,7 @@
                                             </div>
                                         </button>
                                     </li>
-                                    <li *ngIf="ActionedSubtask_Json.length>0"  >
+                                    <li *ngIf="ActionedSubtask_Json&&ActionedSubtask_Json.length>0"  >
                                         <button class="btn btn-filtr" [class.active]="activeButton === 'actionedSubtask'" (click)="setActiveButton('actionedSubtask');showactprj()">
                                             <div class="d-flex align-items-center">
                                                 <span class="count actio">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span>
@@ -925,10 +929,10 @@
                           <div class="col-lg-12" >
                               <div class="accordion accordion-runway" [ngClass]="getAccordionClass()" id="accordionRunway">
                                   <div  class="runway-card d-none"  id="taskdd">
-                                    <div class="runway-card-header" id="headingOne" *ngIf="_TodoList.length>0">
+                                    <div class="runway-card-header" id="headingOne" *ngIf="_TodoList&&_TodoList.length>0">
                                         <a id="UnassigntaskBtn" class="" type="button" data-toggle="collapse" data-target="#collapseUnassign" aria-expanded="false" aria-controls="collapseUnassign">
-                                          <span>Unassign task &nbsp;<span class="task-count unass">{{_TodoList.length}}</span></span>
-                                          <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                                          <span>Unassign task &nbsp;<span class="task-count unass">{{_TodoList&&_TodoList.length}}</span></span>
+                                          <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                                         </a>
                                     </div>
 
@@ -1008,7 +1012,7 @@
                                                     <div id="rightbar-overlay-et"></div>
 
 
-                                                  <ng-container *ngIf="this.checkedTaskNames.length===0">
+                                                  <ng-container *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length===0">
                                                     <span class="mr-2 cursor-pointer unassign-btn" matTooltip="Click to assign task" (click)="unassign_edit1(item.Assign_Id,item.Task_Name,item.Creation_Date)"
                                                     >
                                                     <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="User / User_02"> <path id="Vector" d="M20 21C20 18.2386 16.4183 16 12 16C7.58172 16 4 18.2386 4 21M12 13C9.23858 13 7 10.7614 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8C17 10.7614 14.7614 13 12 13Z" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
@@ -1018,17 +1022,17 @@
                                                   <ng-container  *ngIf="DisplayCreateIcon(item)">
                                                     <span   class="mr-2 cursor-pointer unassign-btn" matTooltip="Click to assign" (click)="unassign_edit1(item.Assign_Id,item.Task_Name,item.Creation_Date)">
 
-                                                     <span *ngIf="this.checkedTaskNames.length <=1">
+                                                     <span *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length <=1">
                                                       <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="User / User_02"> <path id="Vector" d="M20 21C20 18.2386 16.4183 16 12 16C7.58172 16 4 18.2386 4 21M12 13C9.23858 13 7 10.7614 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8C17 10.7614 14.7614 13 12 13Z" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
                                                       </span>
-                                                    <span *ngIf="this.checkedTaskNames.length>1">
+                                                    <span *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length>1">
 
                                                       <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="User / Users"> <path id="Vector" d="M21 19.9999C21 18.2583 19.3304 16.7767 17 16.2275M15 20C15 17.7909 12.3137 16 9 16C5.68629 16 3 17.7909 3 20M15 13C17.2091 13 19 11.2091 19 9C19 6.79086 17.2091 5 15 5M9 13C6.79086 13 5 11.2091 5 9C5 6.79086 6.79086 5 9 5C11.2091 5 13 6.79086 13 9C13 11.2091 11.2091 13 9 13Z" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
                                                       </span>
                                                     </span>
                                                       </ng-container>
 
-                                                    <ng-container  *ngIf="DisplayCreateIcon(item)&&this.checkedTaskNames.length===1">
+                                                    <ng-container  *ngIf="DisplayCreateIcon(item)&& this.checkedTaskNames&&this.checkedTaskNames.length===1">
                                                     <div class="btn-group mr-2" role="group">
                                                       <button  matTooltip="Click to create meeting" (click)="Task_type(2);updateCharacterCount()" type="button" class="btn btn-tsk"
                                                           >
@@ -1053,7 +1057,7 @@
                                                   </div>
                                                 </ng-container>
 
-                                                <ng-container  *ngIf="DisplayCreateIcon(item)&&this.checkedTaskNames.length===1">
+                                                <ng-container  *ngIf="DisplayCreateIcon(item) && this.checkedTaskNames&&this.checkedTaskNames.length===1">
                                                   <span  matTooltip="Click to create new project"  (click)="goToCreatePage()"  class="cursor-pointer ">
                                                   <svg style="width: 36px; height: 36px;" fill="currentColor" width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="-10 -30 120 160" enable-background="new 0 0 100 100" xml:space="preserve" class="kt-menu__link-icon"><g><g><path fill="currentColor" d="M95,79.564c0,2.236-1.855,4.091-4.091,4.091h-7.255v7.255c0,2.236-1.855,4.091-4.091,4.091    c-2.291,0-4.091-1.855-4.091-4.091v-7.255h-7.309c-1.091,0-2.127-0.436-2.891-1.2c-0.709-0.764-1.2-1.745-1.2-2.891    c0-2.291,1.855-4.091,4.091-4.091h7.309v-7.309c0-2.236,1.8-4.091,4.091-4.091c0.818,0,1.636,0.273,2.291,0.709    c1.091,0.709,1.8,1.964,1.8,3.382v7.309h7.255C93.145,75.473,95,77.273,95,79.564z"></path><path fill="currentColor" d="M57.691,21.364v-0.545c-0.055-4.2-3.436-7.636-7.691-7.636s-7.691,3.436-7.691,7.636v0.545H57.691z     M34.127,21.364v-0.545C34.127,12.091,41.218,5,50,5s15.873,7.091,15.873,15.818v0.545h13.636C88.073,21.364,95,28.291,95,36.855    v11.236v0.491v12.982c0,2.236-1.855,4.091-4.091,4.091c-0.818,0-1.636-0.273-2.291-0.709c-1.091-0.709-1.8-1.964-1.8-3.382V48.582    v-0.491V36.855c0-2.018-0.818-3.818-2.127-5.182c-1.364-1.364-3.164-2.127-5.182-2.127H61.782H38.218H20.491    c-2.018,0-3.818,0.764-5.182,2.127c-1.309,1.364-2.127,3.164-2.127,5.182v11.236v0.491v30.927c0,4.036,3.273,7.309,7.309,7.309    h41.018c2.236,0,4.091,1.8,4.091,4.091c0,2.236-1.855,4.091-4.091,4.091H20.491C11.982,94.945,5,88.073,5,79.509V48.582v-0.491    V36.855c0-8.564,6.927-15.491,15.491-15.491H34.127z"></path></g></g></svg>
 
@@ -1161,10 +1165,10 @@
 
 
                                   <div class="runway-card d-none" id='ActionToProjects'>
-                                    <div class="runway-card-header" id="headingThree"   *ngIf="((ActionedSubtask_Json.length) > 0)">
+                                    <div class="runway-card-header" id="headingThree"   *ngIf="((ActionedSubtask_Json&&ActionedSubtask_Json.length) > 0)">
                                         <a id="ActiontoprojectsBtn" class="collapsed" type="button" data-toggle="collapse" data-target="#collapseActionproject" aria-expanded="false" aria-controls="collapseActionproject">
-                                          <span>Action to projects &nbsp;<span class="task-count act-pro">{{ActionedSubtask_Json.length}}</span></span>
-                                          <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                                          <span>Action to projects &nbsp;<span class="task-count act-pro">{{ActionedSubtask_Json&&ActionedSubtask_Json.length}}</span></span>
+                                          <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                                         </a>
                                     </div>
                                     <div id="collapseActionproject" class="collapse" aria-labelledby="headingThree" data-parent="#accordionRunway">
@@ -1473,10 +1477,10 @@
 
 
                                   <div class="runway-card d-none" id="AssignedTask">
-                                    <div class="runway-card-header" id="headingFour"    *ngIf="ActionedAssigned_Josn.length>0">
+                                    <div class="runway-card-header" id="headingFour"    *ngIf="ActionedAssigned_Josn&&ActionedAssigned_Josn.length>0">
                                         <a id="AssignedTaskProjectBtn" class="collapsed" type="button" data-toggle="collapse" data-target="#collapseActiontask" aria-expanded="false" aria-controls="collapseActiontask">
-                                         <span> Assigned Task/Project &nbsp;<span class="task-count ass-tas" >{{ActionedAssigned_Josn.length}}</span></span>
-                                          <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                                         <span> Assigned Task/Project &nbsp;<span class="task-count ass-tas" >{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span></span>
+                                          <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                                         </a>
                                     </div>
                                     <div id="collapseActiontask" class="collapse" aria-labelledby="headingThree" data-parent="#accordionRunway">
@@ -1662,7 +1666,7 @@
                                     <div  class="runway-card-header" id="headingTwo" *ngIf="_CompletedList&&_CompletedList.length>0">
                                         <a id="CompletedBtn" class=" collapsed" type="button" data-toggle="collapse" data-target="#collapseCompleted" aria-expanded="false" aria-controls="collapseCompleted">
                                           <span>Completed &nbsp;<span class="task-count cou-com">{{_CompletedList&&_CompletedList.length}}</span></span>
-                                          <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+                                          <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                                         </a>
                                     </div>
                                     <div id="collapseCompleted" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionRunway">
@@ -3531,7 +3535,7 @@ class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline ho
                       </span>
                   </li>
               </ng-container>
-                  <div *ngIf="ProjectListArray.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                  <div *ngIf="ProjectListArray&&ProjectListArray.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
                       <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
                           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -3555,7 +3559,7 @@ class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline ho
                           {{prtf.Portfolio_Name}}-{{prtf.DisplayName}}
                       </span>
                   </li>
-                  <div *ngIf="FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                  <div *ngIf="FilteredResults&&FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
                       <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
                           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -3604,7 +3608,7 @@ class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline ho
                           </span>
                       </span>
                   </li>
-                  <div *ngIf="FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                  <div *ngIf="FilteredResults&&FilteredResults.length==0" class="w-100 h-100 d-flex align-items-center justify-content-center">
                       <svg fill="#757575" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
                           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -3619,8 +3623,8 @@ class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline ho
       </div>
       <div class="modal-footer">
           <ng-container *ngIf="projectmodaltype">
-                  <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype==='project'" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
-                  <button [disabled]="choosedItems.length===0" *ngIf="projectmodaltype!=='project'" (click)="keepChoosedItems(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                  <button [disabled]="choosedItems&&choosedItems.length===0" *ngIf="projectmodaltype==='project'" (click)="keepChoosedItems(); PrjInputSearch.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
+                  <button [disabled]="choosedItems&&choosedItems.length===0" *ngIf="projectmodaltype!=='project'" (click)="keepChoosedItems(); InputSearchRef.value=''; "  type="button" class="btn btn-add-primary">Add {{choosedItems.length?('('+choosedItems.length+')'):''}}</button>
                   <button type="button" class="btn btn-close-secondary" (click)="close_projectmodal(); PrjInputSearch.value=''; InputSearchRef.value=''; ">Close</button>
           </ng-container>
       </div>
