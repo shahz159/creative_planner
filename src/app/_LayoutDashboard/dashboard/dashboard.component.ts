@@ -1499,8 +1499,6 @@ export class DashboardComponent implements OnInit {
     this.closeevearea();
 
 
-
-
   } 
   // else if (result.isDismissed) {
     // Skip all when Cancel is clicked
@@ -2548,7 +2546,7 @@ isValidURL = true;
       const d2 = new Date(moment(end).format(format2));
       const date = new Date(d1.getTime());
 
-  
+      debugger
      
       this.daysSelectedII = [];
 
@@ -2693,7 +2691,7 @@ isValidURL = true;
        //new code Monthly end
      
       }
-     
+
       this.daysSelectedII = this.daysSelectedII.filter(
         (value, index, self) => index === self.findIndex(obj => JSON.stringify(obj) === JSON.stringify(value))
       );
@@ -2794,7 +2792,7 @@ isValidURL = true;
           if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
             this._onlinelink =false
           }
-debugger
+
           var vOnlinelink = "Onlinelink";
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
           if(this.rapeatLink_Details==true){
@@ -2956,7 +2954,7 @@ debugger
         console.log(this._calenderDto,'new updaet data') 
         this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
           (data => {
-            
+            debugger
             // alert(data['Schedule_date'])
             this.Attamentdraftid= data['draftid']
            frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
