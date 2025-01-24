@@ -4808,7 +4808,7 @@
                                                             <div *ngSwitchCase="'Delay'" class="attach-tippy kt-project-type" >
                                                                 <span class="vi font-weight-400 st-line"> {{projectActionInfo[currentActionView].Delaydays ? projectActionInfo[currentActionView].Delaydays + ' days' + ' delay ' :''}}</span>
                                                                 <div class="d-flex">
-                                                                    <div class="Kt-Pd-Status Delay">
+                                                                    <div class="Kt-Pd-Status Delay text-nowrap">
                                                                     {{ getDelayText(projectActionInfo[currentActionView]) }}
                                                                     </div>
                                                                     <div class="extra-at-status deadline-main" *ngIf="(action_deadlineExtendlist&&action_deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
@@ -4851,7 +4851,7 @@
 
 
                                                             <div *ngSwitchCase="'Completed'" class="kt-project-type d-flex">
-                                                                <div class="Kt-Pd-Status Done"> Completed </div>
+                                                                <div class="Kt-Pd-Status Done text-nowrap "> Completed </div>
                                                                 <ng-container *ngIf="projectActionInfo[currentActionView].Status==='Completed'">
                                                                     <div *ngIf="action_completionOffset>0" class="extra-at-status" style="border-color: #388e3c; color: #d32f2f;">
                                                                           <span>{{action_completionOffset}} days delayed</span>

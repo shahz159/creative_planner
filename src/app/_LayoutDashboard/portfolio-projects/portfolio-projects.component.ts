@@ -1920,7 +1920,9 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
     this._CloseMemosidebar()
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
 
-
+    document.getElementById("release-holdprj-sidebar").classList.remove("kt-quick-panel--on");
+    this.releasePrjsRemarks=null;
+    this.notProvided1=false;
   }
 
 
@@ -6639,7 +6641,7 @@ isDepartment = false
   selectUnselectPagePrjs(evt) {
 
 
-    this.isAllPrjSelected = evt.checked
+    this.isAllPrjSelected = evt.checked;
     if (this.isAllPrjSelected) {
       const selprjs = this.allSelectedProjects.map(x => x.Project_Code)
       const PageunselPrjs = this._ProjectsListBy_Pid.filter(item => {
@@ -6656,7 +6658,13 @@ isDepartment = false
       });
       this.value()
     }
+
+    // if any approvl approvable by user
     this.isapprovlFound = this.allSelectedProjects.some((ob) => ob.PendingapproverEmpNo && ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
+  
+    // if any hold prj releasable by user
+    this.releasableHoldPrjs=this.allSelectedProjects.filter((ob)=>ob.Status=='Project Hold'&&this.Current_user_ID==ob.OwnerEmpNo);
+    this.selectedHoldPrjsReleasable=this.releasableHoldPrjs.length>0;
   }
 
 
@@ -6728,9 +6736,14 @@ selectUnSelectProject(e, item) {
       this.value()
     }
 
+    // if selected project aprvl can be approvable by user.
     this.isapprovlFound=this.allSelectedProjects.some((ob)=>ob.PendingapproverEmpNo&&ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
-
-}
+    
+    // if selected hold project can be releasable by user. 
+    this.releasableHoldPrjs=this.allSelectedProjects.filter((ob)=>ob.Status=='Project Hold'&&this.Current_user_ID==ob.OwnerEmpNo);
+    this.selectedHoldPrjsReleasable=this.releasableHoldPrjs.length>0;
+    
+  }
 
 
 isProjectSelected(prjcode: any): boolean {
@@ -7036,4 +7049,61 @@ submitReject(){
   this.resetReject();
   this.closeInfo();
 }
+
+
+// release hold projects selected. start
+
+selectedHoldPrjsReleasable:boolean=false; 
+releasableHoldPrjs:any=[];
+releasePrjsRemarks:string;
+notProvided1:boolean=false;
+
+onReleasePrjBtnClicked(){
+  document.getElementById("release-holdprj-sidebar").classList.add("kt-quick-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+}
+
+
+closeReleasePrjSidebar() {
+  document.getElementById("release-holdprj-sidebar").classList.remove("kt-quick-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "none";
+  document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+  this.releasePrjsRemarks=null;
+  this.notProvided1=false;
+}
+
+
+onPrjsReleaseSubmit(){
+debugger
+  if(this.releasePrjsRemarks&&this.releasePrjsRemarks.trim()){
+  this.approvalObj.Project_Code = this.releasableHoldPrjs.map(ob=>ob.Project_Code).join(',');
+  this.approvalObj.Request_type = 'Project Release';
+  this.approvalObj.Emp_no = this.Current_user_ID;
+  this.approvalObj.Remarks = this.releasePrjsRemarks;
+  this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+    this._Message = (data['message']);
+    if (this._Message == '1') {
+      this.notifyService.showSuccess(this.releasableHoldPrjs.length+" projects released", "Success");
+      this.releasableHoldPrjs=[];
+      this.selectedHoldPrjsReleasable=false;
+      this.GetPortfolioProjectsByPid();
+      this.closeReleasePrjSidebar();
+    }
+    else if (this._Message == '2' || this._Message == '0') {
+      this.notifyService.showError("Projects release failed", "Failed");
+    }
+  });
+
+  }
+  else{
+    this.notProvided1=true;
+  }
+
+}
+
+
+
+// release hold projects selected. end
+
 }
