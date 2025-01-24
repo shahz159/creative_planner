@@ -566,6 +566,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("customTaskModalBackdrop").classList.remove("show");
   }
   eventtaskitemtimeModal(){
+    debugger
     document.getElementById("eventtaskitemtimeModal").style.display = "block";
     document.getElementById("eventtaskitemtimeModal").classList.add("show");
     document.getElementById("eventtaskitemtimeModalBackdrop").style.display = "block";
@@ -575,7 +576,7 @@ export class StreamCalendarComponent implements OnInit {
     this.dayArr1=JSON.parse(JSON.stringify(this.dayArr)); // deep copying all content
     this.MonthArr1=JSON.parse(JSON.stringify(this.MonthArr)); // deep copying all content
     this._EndDate1=moment(this._EndDate);
-debugger
+
     if(this.selectedrecuvalue1=='2')
       document.getElementById("weekly_121_new").style.display = "block";
     else if(this.selectedrecuvalue1=='3')
@@ -598,7 +599,7 @@ debugger
     document.getElementById("weekly_121_new").style.display = "none";
     document.getElementById("Monthly_121_new").style.display = "none";
 
-
+    this.changeSelectionValue=false;
     this.selectedrecuvalue1='0';
     this.dayArr1=[];
     this.MonthArr1=[];
@@ -648,7 +649,7 @@ debugger
     this.rapeatLink_Details=true;
     this.Description_Type = null;
     this.characterCount=null;
-
+    this.switChRecurrenceValue=false;
   }
   // propose_date_time_open() {
   //   document.getElementById("propose-date-time-div").classList.toggle("open");
@@ -664,6 +665,7 @@ debugger
   }
 
   Repeat_date_time_menu() {
+    debugger
     document.getElementById("repeat-date-time-menu").classList.add("show");
   }
 
@@ -1799,7 +1801,7 @@ checkAddressURL(str) {
   }
 
 
-
+  changeSelectionValue:boolean=false;
 
 
   selectStartDate(event) {
@@ -1895,7 +1897,7 @@ checkAddressURL(str) {
 
 
     if((this.editTask || this.create ) && this.selectedrecuvalue =='2'){
-      debugger
+ 
     // uncheck prev date.
     if(this._Oldstart_date){
       let d=new Date(this._Oldstart_date);
@@ -1913,7 +1915,8 @@ checkAddressURL(str) {
       this.dayArr[index2].checked=true;
     
     console.log(this.dayArr,'sdcsadcasdcssad')
-    
+    this.changeSelectionValue=true;
+     
       this.mtgOnDays=[];
       this.dayArr.forEach((item:any)=>{
         if(item.checked){
@@ -1939,7 +1942,8 @@ checkAddressURL(str) {
         let d2=new Date(this._StartDate);
         const index2=d2.getDate();
         this.MonthArr[index2-1].checked=true;
-    
+
+        this.changeSelectionValue=true;
         this.mtgOnDays=[];
         this.MonthArr.forEach((item:any)=>{
           if(item.checked){
@@ -1950,18 +1954,6 @@ checkAddressURL(str) {
         });
         // update new
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
   }
 
@@ -2130,7 +2122,7 @@ onRecurrenceTypeChange(val:any){
 //     return;
 //   }
   
-//   debugger
+
 //   this.selectedrecuvalue=this.selectedrecuvalue1;
 //   this.dayArr=[...this.dayArr1];
 //   this.MonthArr=[...this.MonthArr1];
@@ -2214,6 +2206,9 @@ onRecurrenceTypeChange(val:any){
 
 bindCustomRecurrenceValues(){
 
+  if(this.changeSelectionValue==false){
+
+  
 
 if(this.selectedrecuvalue1=='2'&&!this.dayArr1.some((item)=>item.checked)){
   this.notProvided1='dayarr1';
@@ -2309,20 +2304,15 @@ if(this._EndDate1 == undefined){
   }
 }
 
-
-
-
-
+}
 
 this.eventtaskitemtimeModal_dismiss();
    //inserting values into these selectedrecuvalue, dayArr, MonthArr, _EndDate.
-
-
 }
 
 
   selectedDay(days) {
-
+debugger
     //Checked the day
     let objIndex = this.dayArr1.findIndex((obj => obj.value == days.target.value));
     this.dayArr1[objIndex].checked = days.target.checked;
@@ -2549,7 +2539,7 @@ this.eventtaskitemtimeModal_dismiss();
         + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       this.EventNumber = timestamp;
     }
-    debugger
+   
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -3648,7 +3638,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
       this.pro_edtime = this.EventScheduledjson[0].PurposeEndtime;
       this.pro_enddate = this.EventScheduledjson[0].SEndDate;
       this.creation_date = this.EventScheduledjson[0].Created_date;
-debugger
+
       this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
       this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
       this.pending_status = this.EventScheduledjson[0].Pending_meeting;
@@ -3953,7 +3943,7 @@ sweet_pending() {
     showCancelButton: true,
     confirmButtonText: 'Yes',
     cancelButtonText: 'No'
-  }).then((response: any) => {
+  }).then((response: any) => { 
     if (response.value) {
       this.Pending_meeting();
     } else if (response.dismiss === Swal.DismissReason.cancel) {
@@ -4651,7 +4641,7 @@ RecurrValueMonthly:boolean=false;
       const d2 = new Date(moment(end).format(format2));
       const date = new Date(d1.getTime());
 
-debugger
+
       this.daysSelectedII = [];
 
       // new code start
@@ -4888,7 +4878,7 @@ debugger
           if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
             this._onlinelink =false
           }
-          debugger
+          
           var vOnlinelink = "Onlinelink";
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
           if(this.rapeatLink_Details==true){
@@ -6035,7 +6025,7 @@ filterPending(type: 'date' | 'meeting'): void {
         this.pending_status = this.EventScheduledjson[0].Pending_meeting;
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
-        this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount']; debugger
+        this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount']; 
         this.Startts=this.EventScheduledjson[0].St_Time;
         this.Endtms=this.EventScheduledjson[0].Ed_Time;
         this.repeatStartts=this.Startts;
@@ -6121,7 +6111,7 @@ filterDraft(type : 'date'|'meeting'):void{
     this.draftid = Sno;
    
     this.Task_type(val);
-    debugger
+   
    
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]

@@ -1526,8 +1526,8 @@ export class DashboardComponent implements OnInit {
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
 
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
         this.Startts = (this.EventScheduledjson[0]['St_Time']);
@@ -1638,7 +1638,7 @@ export class DashboardComponent implements OnInit {
           },0);
           // this code for chnage detection End
 
-debugger
+
         // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
         if ((this.EventScheduledjson[0]['Onlinelink']) == true) {
           document.getElementById("Descrip_Name12").style.display = "flex";
@@ -2020,7 +2020,7 @@ isValidURL = true;
         + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       this.EventNumber = timestamp;
     }
-    debugger
+  
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -2546,7 +2546,7 @@ isValidURL = true;
       const d2 = new Date(moment(end).format(format2));
       const date = new Date(d1.getTime());
 
-      debugger
+   
      
       this.daysSelectedII = [];
 
@@ -2954,7 +2954,7 @@ isValidURL = true;
         console.log(this._calenderDto,'new updaet data') 
         this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
           (data => {
-            debugger
+          
             // alert(data['Schedule_date'])
             this.Attamentdraftid= data['draftid']
            frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
@@ -3457,7 +3457,7 @@ isValidURL = true;
   }
 
   selectedDay(days) {
-debugger
+
     //Checked the day
     let objIndex = this.dayArr1.findIndex((obj => obj.value == days.target.value));
     this.dayArr1[objIndex].checked = days.target.checked;
@@ -3471,23 +3471,14 @@ debugger
 
 
   selectStartDate(event) {
-debugger
+
     this._StartDate = event;
     let sd = event.format("YYYY-MM-DD").toString();
     this._SEndDate = event.format("YYYY-MM-DD").toString();
     this.minDate = sd;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Scheduled_date = sd;
-    // this.CalenderService.NewGetPendingAvailability(this._calenderDto).subscribe((data)=>{
-    //   if(data['message']=='1'){
-    //     this.pendingavailability==false;
-    //   }
-    //   else{
-    //     this.pendingavailability==true;
-    //   }
-    // });
-
-  
+ 
     var start = moment(this.minDate);
     var end = moment(this.maxDate);
     const format2 = "YYYY-MM-DD";
@@ -3575,7 +3566,7 @@ debugger
 ////test start ///////////////////////////////////////////
 
 if((this.editTask || this.create ) && this.selectedrecuvalue =='2'){
-  debugger
+
 // uncheck prev date.
 if(this._Oldstart_date){
   let d=new Date(this._Oldstart_date);
@@ -3591,7 +3582,7 @@ this.dayArr.forEach(item => item.checked = false);
   let d2=new Date(this._StartDate);
   const index2=d2.getDay();
   this.dayArr[index2].checked=true;
-
+  debugger
 console.log(this.dayArr,'sdcsadcasdcssad')
 
   this.mtgOnDays=[];
@@ -3635,7 +3626,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
 
   // old
 //   selectStartDate(event) {
-// debugger
+
 //     this._StartDate = event.value;
 //     let sd = event.value.format("YYYY-MM-DD").toString();
 //     this._SEndDate = event.value.format("YYYY-MM-DD").toString();
@@ -3942,7 +3933,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
         const result=t>=ct;
         return result;
       });
-      debugger
+   
       this.validStartTimearr=this.StartTimearr.slice(index);
 
 
@@ -4045,7 +4036,7 @@ currentTime:any;
       this.Endtms = vahr.toString() + ':' + mins;
       // alert(this.Startts)
       // alert(this.Endtms)
-debugger
+
       if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
         //  alert(this.scstartdate)
@@ -5952,7 +5943,7 @@ debugger
 
     let _attachmentValue = 0;
     const frmData = new FormData();
-    debugger
+
 
     if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
       frmData.append("Attachment", "true");
@@ -6163,7 +6154,7 @@ console.log("Generated XML:", xmlString);
       this.MasterCode.push(parseInt(element.stringval));
     });
 
-debugger
+
     this.Link_Details= this.draft_arry[0].Link_details;
     if(this.Link_Details != '' && this.Link_Details != undefined ){
       if(!this.Link_Details.includes('<a href=')){
@@ -7385,7 +7376,7 @@ discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:strin
             this.projectsSelected.splice(i,1);
      };break;
      case 'PORTFOLIO':{
-      debugger
+     
           const i=this.Portfolio.findIndex(ptf=>ptf==item);
           this.Portfolio.splice(i,1);
 
@@ -7488,7 +7479,7 @@ onPortfolioFilter(){
 }
 
 onDMSFilter(){
-debugger
+
      const _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
       const fresult=this.Memos_List.filter((_memo:any)=>{
 

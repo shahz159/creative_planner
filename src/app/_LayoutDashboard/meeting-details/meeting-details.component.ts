@@ -1209,7 +1209,7 @@ debugger
       this.checkeddms = this.checkeddms.map((num) => num.toString());
       this.dmscount = this.checkeddms.length;
      
-      debugger
+ 
       // if(this._MemosSubjectList[0].Subject!=undefined &&  this.ModifiedJson){
       //   this._MemosSubjectList = this.mergeObjects(
       //     this._MemosSubjectList || [], 
@@ -1903,7 +1903,7 @@ debugger
   adminComments: any
 
   Updating_Adminmeeting(_emp) {
-debugger
+
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = _emp;
@@ -2557,7 +2557,7 @@ debugger
    
     // event.preventDefault();
     // if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true || event.type === 'paste' || event.keyCode === 8) {
-    //   debugger
+    
       // Replace newline characters with <br> tags
    
       if(event.type === 'paste'){     
@@ -2776,7 +2776,7 @@ onFileChange(event) {
       this.myFiles.push(file.name);
 
       var d = new Date().valueOf();
-      debugger
+    
       this._lstMultipleFiales = [...this._lstMultipleFiales, {
         UniqueId: d,
         FileName: file.name,
@@ -2888,7 +2888,7 @@ onFileChange(event) {
     //     this.RemovedFile_id.push(element.file_id);  
     //   }
     // });
-    debugger
+
     this.Attachments_ary.forEach(element => {
       if (_id == element.file_id)
         // this.AttachmentName = element.File_Name;
@@ -3115,7 +3115,7 @@ onFileChange(event) {
   }
 
   rapeatLink_Details:boolean=true;
-
+  switChRecurrenceValue:boolean=false;
 
   OnSubmitSchedule() {
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
@@ -3146,7 +3146,7 @@ onFileChange(event) {
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
 
           // new code start 69
-          debugger
+    
           if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate)){
             let startDate = new Date(this._StartDate);
             this.AllDatesSDandED = [{
@@ -4534,7 +4534,7 @@ onFileChange(event) {
   Time_End: any = [];
   RecurrValue:boolean=false;
   RecurrValueMonthly:boolean=false;
-
+  previousValue:any;
 
 
 
@@ -4750,7 +4750,7 @@ onFileChange(event) {
               }
             });
           }
-          debugger 
+        
            // New code Monthly start 
            const day = new Date(this._StartDate).getDate().toString();  
             if(ret1 != day){
@@ -4778,6 +4778,7 @@ onFileChange(event) {
 
         }
 
+        this.previousValue=this.selectedrecuvalue;
 
         if (this.ScheduleType == 'Task') {
 
@@ -5803,7 +5804,7 @@ sortbyCurrent_Time(){
 
 ////test start ///////////////////////////////////////////
 if((this.editTask || this.create ) && this.selectedrecuvalue =='2'){
-  debugger
+
 // uncheck prev date.
 if(this._Oldstart_date){
   let d=new Date(this._Oldstart_date);
@@ -6324,6 +6325,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
     this.maxDate = null;
     this.isValidURL=true;
     this.RecurrValue= false;
+    this.switChRecurrenceValue=false;
     this.RecurrValueMonthly=false;
     this.editTask=false;
     this.eventRepeat = false;
@@ -6414,6 +6416,8 @@ console.log(this.dayArr,'sdcsadcasdcssad')
       && (this.Description_Type?(this.characterCount<=500):true) &&   this.isValidURL 
     ) {
 
+      this.notProvided = false;
+
     this._calenderDto.flagid = this._PopupConfirmedValue;
     this._calenderDto.type = type;
     var start = moment(this.minDate);
@@ -6438,8 +6442,26 @@ console.log(this.dayArr,'sdcsadcasdcssad')
 
     const d2 = new Date(moment(end).format(format2));
     const date = new Date(d1.getTime());
+
+
+
     this.daysSelectedII = [];
-    this.AllDatesSDandED = [];
+
+    // new code start
+    if(this.previousValue != this.selectedrecuvalue){
+      this.AllDatesSDandED;
+      this.switChRecurrenceValue=true;
+      
+    }else{
+      this.AllDatesSDandED = [];
+      this.switChRecurrenceValue=false;
+    }     
+    // new code End
+
+
+
+
+
     const dates = [];
     while (date <= d2) {
       dates.push(moment(date).format(format2));
@@ -6494,7 +6516,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
              return false;
            }
    
-           if(this._PopupConfirmedValue == 2){
+           if(this._PopupConfirmedValue == 2 || this.switChRecurrenceValue == true){
            for (let index = 0; index < this.dayArr.length; index++) {
              if (this.dayArr[index].checked) { 
                const day = this.dayArr[index].value;
@@ -6520,7 +6542,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
          
    
            //new code start 69
-           if(this._PopupConfirmedValue == 1){
+           if(this._PopupConfirmedValue == 1 &&  this.switChRecurrenceValue == false){
              var startDateForWeekly = moment(this._StartDate).format('YYYY-MM-DD');
              this.daysSelectedII = this.AllDatesSDandED.filter(item => item.Date === startDateForWeekly);
    
@@ -6538,7 +6560,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
              return false;
            }
    
-           if(this._PopupConfirmedValue == 2){
+           if(this._PopupConfirmedValue == 2 || this.switChRecurrenceValue == true){
            for (let index = 0; index < this.MonthArr.length; index++) {
              if (this.MonthArr[index].checked == true) {  
                const day = this.MonthArr[index].value;
@@ -6560,13 +6582,17 @@ console.log(this.dayArr,'sdcsadcasdcssad')
              //new code Monthly end
             }
              // New code Monthly start 
-           if(this._PopupConfirmedValue == 1){
+           if(this._PopupConfirmedValue == 1 &&  this.switChRecurrenceValue == false){
              var startDateForMonthly =moment(this._StartDate).format('YYYY-MM-DD');
              this.daysSelectedII = this.AllDatesSDandED.filter(item => item.Date === startDateForMonthly);
            }   
           //new code Monthly end
-   
          }
+
+         this.daysSelectedII = this.daysSelectedII.filter(
+          (value, index, self) => index === self.findIndex(obj => JSON.stringify(obj) === JSON.stringify(value))
+        );
+
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
@@ -6814,7 +6840,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
       
       this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
         (data => {
-          debugger
+       
           this.RemovedAttach = [];
           // alert(data['Schedule_date'])
           frmData.append("Schedule_date", data['Schedule_date'].toString());
@@ -7796,7 +7822,6 @@ onParticipantFilter(){
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
     }
 
-    debugger
    // new code start 69
 
    if(this._StartDate == this.disablePreviousTodayDate){
@@ -7996,7 +8021,7 @@ onParticipantFilter(){
         this.Schedule_ID = 0;   // schedule id.
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];  // event or task
         this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
-        debugger
+      
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
         this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
         this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
@@ -8665,7 +8690,7 @@ copied = false;
 
   
 LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-  debugger
+ 
   let FileUrl: string;
   
   FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
