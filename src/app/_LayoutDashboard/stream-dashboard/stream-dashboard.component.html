@@ -802,7 +802,7 @@
                                 <div class="card-title mb-0">
                                     Portfolios
                                 </div>
-                                <div (click)="gotoPortfolioPage()">
+                                <div *ngIf="portfoiloData.length != 0 " (click)="gotoPortfolioPage()">
                                     <button class="btn btn-port-all">View all</button>
                                 </div>
                             </div>
@@ -976,6 +976,18 @@
                                     </div>
                                 </div>
                             </div>
+
+                                <div *ngIf="portfoiloData.length == 0 ">
+                                    <div class="no-portfolio-div">
+                                        <img src="../../../assets/images/no-portfolio.PNG" alt="" style="opacity: 0.4;">
+                                    <div>
+                                        <p style=" margin-bottom: 0px;"> No portfolios are created, click view portfolio to create one.</p>
+                                        <div style="margin-top: 8px;"><button class="btn btn-port-all" (click)="gotoPortfolioPage()">View Portfolio</button></div></div>   
+                                    </div>
+                                </div>
+
+
+                           
                             <!-- <div class="portfolio-item-list owl-carousel owl-theme">
                                 <div class="portfolio-item" *ngFor="let item of portfoiloData"  (click)="openCard(item.Portfolio_ID,item.Portfolio_Name,item.Created_By)">
                                     <div class="portfolio-heading">{{item.Portfolio_Name}}</div>
