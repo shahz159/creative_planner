@@ -462,7 +462,7 @@ if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true')
       console.log(this.projectInfo, "projectInfo");
    })
 
-  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.PrjCode).subscribe(
+  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.PrjCode,this.Current_user_ID).subscribe(
     (data) => {
       this.owner_dropdown = (JSON.parse(data[0]['RacisList']));
       this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));  console.log("this 3:",this.responsible_dropdown);

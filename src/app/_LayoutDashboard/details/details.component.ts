@@ -1405,7 +1405,7 @@ debugger
         }
       });
 
-    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode,this.Current_user_ID).subscribe(
 
       (data) => {
  console.log('GetRACISandNonRACISEmployeesforMoredetails:',data);
@@ -1649,7 +1649,7 @@ debugger
 
 
       // action owner drpdwn and action resp drpdwn.
-      this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectActionInfo[index].Project_Code).subscribe(
+      this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectActionInfo[index].Project_Code,this.Current_user_ID).subscribe(
         (data) => {
           console.log(data, "action racis");
           this.actionowner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
@@ -3757,7 +3757,7 @@ approvalSubmitting:boolean=false;
 
       });
 
-    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode,this.Current_user_ID).subscribe(
       (data) => {
         console.log(data, "RACIS");
         this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
