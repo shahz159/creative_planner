@@ -3275,7 +3275,7 @@ var options = {
  const delaydays_=Math.abs(_ProjectsListBy_Pid1[index].Delaydays);
  const prj_res=_ProjectsListBy_Pid1[index].Team_Res;
  const prj_alhrs=_ProjectsListBy_Pid1[index].AllocatedHours;
- const used_hrs=_ProjectsListBy_Pid1[index].UsedHours;
+ const used_hrs=_ProjectsListBy_Pid1[index].UsedHours.toFixed(1);
 
 const _cd=new Date();
 const d1=new Date(_ProjectsListBy_Pid1[index].DPG);

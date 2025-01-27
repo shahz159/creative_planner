@@ -2255,6 +2255,9 @@ tr.dar-record-item {
     }
 }
 
+.wrk-des-bx{
+  white-space: break-spaces;
+}
 
 
 #collapseTimeline .collapseTimeline-table .wrk-des-bx
