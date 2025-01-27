@@ -618,7 +618,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("createEventTaskModal").classList.remove("show");
     document.getElementById("createEventTaskModalBackdrop").style.display = "none";
     document.getElementById("createEventTaskModalBackdrop").classList.remove("show");
-
+debugger
     this.Link_Details = null;
     this.Meeting_Id = null;
     this.Meeting_password = null;
@@ -3156,7 +3156,7 @@ debugger
       });
   }
 
-
+  isCalendarVisible: boolean = false;
 
 getEventsForWeeks(weeksFromToday: number) {
 
@@ -3183,10 +3183,24 @@ getEventsForWeeks(weeksFromToday: number) {
     // Update the current week offset
     this.currentWeekOffset = newOffset;
   }
+debugger
+
+if(weeksFromToday === 0  && this.selectDay){
+  var formattedDate = this.selectDay.toDate();
+}else{
+  formattedDate = undefined;
+  this.isCalendarVisible = false;  // Hide calendar first
+  setTimeout(() => {
+    this.isCalendarVisible = true;  // Show calendar after a brief delay
+    this.selectDay = new Date();    // Set to today's date
+  }, 0);
+}
+
+const startDate = formattedDate || today;
 
   // First and last date for the 7-day range
-  this.firstDate = new Date(today);
-  this.firstDate.setDate(today.getDate() + (this.currentWeekOffset * 7));
+  this.firstDate = new Date(startDate);
+  this.firstDate.setDate(startDate.getDate() + (this.currentWeekOffset * 7));
 
   this.lastDates = new Date(this.firstDate);
   this.lastDates.setDate(this.firstDate.getDate() + 6); // Last date is 7 days after the first date
@@ -3500,18 +3514,81 @@ Insert_indraft() {
 
   let _attachmentValue = 0;
   const frmData = new FormData();
-  for (var i = 0; i < this._lstMultipleFiales.length; i++) {
-    frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
-  }
-  if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
-    _attachmentValue = 1;
-  else
-    _attachmentValue = 0;
+  if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
+    frmData.append("Attachment", "true");
+    this._attachmentValue = 1;
 
+    for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+      frmData.append("files", this._lstMultipleFiales[i].Files);
+    }
+    const xmlDoc = document.implementation.createDocument('', '', null);
+      const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+
+      // Iterate over the file groups
+      this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+      console.log(`Processing group ${groupIndex}:`, fileGroup);
+
+      // Normalize Files to an array
+      const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+
+      files.forEach((file, fileIndex) => {
+      if (!file || !file.name || !file.type) {
+        console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+        return;
+      }
+
+      console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+
+      const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+      const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+      const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+      const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+
+      // Populate <FileName> element
+      nameElement.textContent = file.name;
+
+      // Generate a random ID and sanitize the file name for CloudName
+      const randomId = this.generateRandomId();
+      const sanitizedFileName = this.sanitizeFileName(file.name);
+      cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
+
+      // Populate <ContentType> element
+      const contentType = this.getContentType(file.type);
+      contentTypeElement.textContent = contentType;
+
+      // Append child elements to the <Row>
+      rowElement.appendChild(nameElement);
+      rowElement.appendChild(cloudNameElement);
+      rowElement.appendChild(contentTypeElement);
+
+      // Append the <Row> to the root element
+      parentElement.appendChild(rowElement);
+      });
+      });
+
+      // Append the root <MultiDocument> element to the XML document
+      xmlDoc.appendChild(parentElement);
+
+      // Serialize the XML document to a string
+      const serializer = new XMLSerializer();
+      const xmlString = serializer.serializeToString(xmlDoc);
+
+      // Append the XML string to FormData
+      frmData.append("docs_multiple_xml", xmlString);
+
+      // Log the XML string for debugging
+      console.log("Generated XML:", xmlString);
+
+        } 
+        else {
+          this._attachmentValue = 0;
+          frmData.append("Attachment", "false");
+        }
+        
     frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
     frmData.append("CreatedBy", this.Current_user_ID.toString());
     frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
- 
+    
     const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
     this._calenderDto.DraftAgendas=mtgAgendas;
  
@@ -3522,41 +3599,54 @@ Insert_indraft() {
     this.Attamentdraftid= data['draftid']
     frmData.append("draftid", this.Attamentdraftid);
 
-      if (_attachmentValue == 1) {
-        this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
-          (event: HttpEvent<any>) => {
-            switch (event.type) {
-              case HttpEventType.Sent:
-                console.log('Request has been made!');
-                break;
-              case HttpEventType.ResponseHeader:
-                console.log('Response header has been received!');
-                break;
-              case HttpEventType.UploadProgress:
-                this.progress = Math.round(event.loaded / event.total * 100);
-                console.log(`Uploaded! ${this.progress}%`);
-                break;
-              case HttpEventType.Response:
-                console.log('User successfully created!', event.body);
+    if (this._attachmentValue == 1) {
+      // this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+        this.CalenderService.UploadCalendarAttachmenstCore(frmData).subscribe(
+        (event: HttpEvent<any>) => {
+          switch (event.type) {
+            case HttpEventType.Sent:
+              console.log('Request has been made!');
+              break;
+            case HttpEventType.ResponseHeader:
+              console.log('Response header has been received!');
+              break;
+            case HttpEventType.UploadProgress:
+              this.progress = Math.round(event.loaded / event.total * 100);
+              console.log(`Uploaded! ${this.progress}%`);
+              break;
+            case HttpEventType.Response:
+              console.log('User successfully created!', event.body);
+              var myJSON = JSON.stringify(event);
+              this._azureMessage = (JSON.parse(myJSON).body).message;
 
-                // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                
-                (<HTMLInputElement>document.getElementById("customFile")).value = "";
-                this._lstMultipleFiales = [];
-                // empty(this._lstMultipleFiales);
-                // alert(this._lstMultipleFiales.length);
-                setTimeout(() => {
-                  this.progress = 0;
-                }, 2000);
+              if(this._azureMessage=="1"){
+                this.CalenderService._AzureUploadCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
+                  console.log(event1,"azure data");
+                  var myJSON = JSON.stringify(event1);
+                //  this._Message = (JSON.parse(myJSON).body);
+      
+                });
+              }
 
-                //69 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                //69 (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
-                document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                //69 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
-            }
+              // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+              
+
+              (<HTMLInputElement>document.getElementById("customFile")).value = "";
+              this._lstMultipleFiales = [];
+              // empty(this._lstMultipleFiales);
+              // alert(this._lstMultipleFiales.length);
+              setTimeout(() => {
+                this.progress = 0;
+              }, 2000);
+
+              //69 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+              //69 (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+              document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+              //69 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
           }
-        )
-      }
+        }
+      )
+    }
       this.isSubmitting = false;
       if (data['message'] == '1') {
         this.closeschd();        
@@ -3604,6 +3694,7 @@ Insert_indraft() {
 
 
 GetClickEventJSON_Calender(arg,meetingClassNeme) {
+  debugger
   this.meetingClassNemes=meetingClassNeme;
    this.EventScheduledjson = [];
   this.loading = true;
@@ -3778,6 +3869,8 @@ OnCardClick(P_id: any) {
   var myWindow = window.open(myurl, P_id);
   myWindow.focus();
 }
+
+
 
 
 openUrl(memo_Url) {
@@ -6109,7 +6202,7 @@ filterDraft(type : 'date'|'meeting'):void{
 
   darft_click(Sno, val, attachments) {
     this.draftid = Sno;
-   
+
     this.Task_type(val);
    
    
@@ -6117,7 +6210,7 @@ filterDraft(type : 'date'|'meeting'):void{
     this.Title_Name = this.draft_arry[0]["Task_name"]
     console.log(this.draft_arry[0], '6969')
     this. GetProjectAndsubtashDrpforCalender();
-  
+    debugger
     this.allAgendas = JSON.parse(this.draft_arry[0]['Agendas']);
     this.Attachment12_ary= attachments;
     this.MasterCode = [];
@@ -6295,6 +6388,51 @@ filterDraft(type : 'date'|'meeting'):void{
    
   }
 
+  newSelectedDate(){
+    this.getEventsForWeeks(0);
+  }
 /////////////////////////////////////////// Draft meeting list End /////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////// Bookmarks meeting list start /////////////////////////////////////////////////////////
+
+BookMarks:boolean;
+
+MeetingBookmark(flagid:any) {
+  if (this.isSubmitting) return;
+  this.isSubmitting = true;
+
+  this._calenderDto.Schedule_ID = this.Schedule_ID;
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  this._calenderDto.flagid = flagid;
+  
+  this.CalenderService.NewUpdateMeetingBookmark(this._calenderDto).subscribe
+    ((data) => {
+      if(data['message'] == '1'){
+    
+        this._calenderDto.Schedule_ID=this.Schedule_ID;
+
+        this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+        ((data) => {      debugger 
+          this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+          this.BookMarks = this.EventScheduledjson[0].IsBookMark;
+          if(this.BookMarks){
+            this.notifyService.showSuccess("Added In bookmark Successfully", "Success");          
+          }else{
+            this.notifyService.showSuccess("Bookmark deleted", "Success");
+          }
+          this.isSubmitting = false;
+        })  
+      }   
+    });
+}
+
+
+
+/////////////////////////////////////////// Bookmarks meeting list end /////////////////////////////////////////////////////////
+
+
+
+
 
 }

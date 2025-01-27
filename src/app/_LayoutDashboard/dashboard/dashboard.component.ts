@@ -2354,7 +2354,7 @@ isValidURL = true;
         console.log("Start", `${key} : ${value}, = ${typeof value}` ,"End");
       });
 
-
+      console.log(this._calenderDto,'new copy meeting')
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
 
@@ -5921,12 +5921,9 @@ debugger
     this._calenderDto.loc_status = this._onlinelink;
     this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password;
     this._calenderDto.Link_details=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
-
     this._calenderDto.Recurrence = this.selectedrecuvalue ;
     this._calenderDto.Rec_values = _arraytext.toString();
     this._calenderDto.Rec_EndDate = this._EndDate;
-
-
 
     this._calenderDto.Note = this.Description_Type;
     this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
@@ -5940,7 +5937,7 @@ debugger
     }
     this._calenderDto.Project_Code = this.MasterCode.toString();
 
-
+debugger
     let _attachmentValue = 0;
     const frmData = new FormData();
 
@@ -5953,62 +5950,62 @@ debugger
         frmData.append("files", this._lstMultipleFiales[i].Files);
       }
       const xmlDoc = document.implementation.createDocument('', '', null);
-const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+      const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
 
-// Iterate over the file groups
-this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
-console.log(`Processing group ${groupIndex}:`, fileGroup);
+      // Iterate over the file groups
+      this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+      console.log(`Processing group ${groupIndex}:`, fileGroup);
 
-// Normalize Files to an array
-const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+      // Normalize Files to an array
+      const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
 
-files.forEach((file, fileIndex) => {
-  if (!file || !file.name || !file.type) {
-    console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
-    return;
-  }
+      files.forEach((file, fileIndex) => {
+        if (!file || !file.name || !file.type) {
+          console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+          return;
+        }
 
-  console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+        console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
 
-  const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
-  const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
-  const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
-  const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+        const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+        const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+        const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+        const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
 
-  // Populate <FileName> element
-  nameElement.textContent = file.name;
+        // Populate <FileName> element
+        nameElement.textContent = file.name;
 
-  // Generate a random ID and sanitize the file name for CloudName
-  const randomId = this.generateRandomId();
-  const sanitizedFileName = this.sanitizeFileName(file.name);
-  cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
+        // Generate a random ID and sanitize the file name for CloudName
+        const randomId = this.generateRandomId();
+        const sanitizedFileName = this.sanitizeFileName(file.name);
+        cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
 
-  // Populate <ContentType> element
-  const contentType = this.getContentType(file.type);
-  contentTypeElement.textContent = contentType;
+        // Populate <ContentType> element
+        const contentType = this.getContentType(file.type);
+        contentTypeElement.textContent = contentType;
 
-  // Append child elements to the <Row>
-  rowElement.appendChild(nameElement);
-  rowElement.appendChild(cloudNameElement);
-  rowElement.appendChild(contentTypeElement);
+        // Append child elements to the <Row>
+        rowElement.appendChild(nameElement);
+        rowElement.appendChild(cloudNameElement);
+        rowElement.appendChild(contentTypeElement);
 
-  // Append the <Row> to the root element
-  parentElement.appendChild(rowElement);
-});
-});
+        // Append the <Row> to the root element
+        parentElement.appendChild(rowElement);
+      });
+      });
 
-// Append the root <MultiDocument> element to the XML document
-xmlDoc.appendChild(parentElement);
+      // Append the root <MultiDocument> element to the XML document
+      xmlDoc.appendChild(parentElement);
 
-// Serialize the XML document to a string
-const serializer = new XMLSerializer();
-const xmlString = serializer.serializeToString(xmlDoc);
+      // Serialize the XML document to a string
+      const serializer = new XMLSerializer();
+      const xmlString = serializer.serializeToString(xmlDoc);
 
-// Append the XML string to FormData
-frmData.append("docs_multiple_xml", xmlString);
+      // Append the XML string to FormData
+      frmData.append("docs_multiple_xml", xmlString);
 
-// Log the XML string for debugging
-console.log("Generated XML:", xmlString);
+      // Log the XML string for debugging
+      console.log("Generated XML:", xmlString);
 
     } 
     else {
