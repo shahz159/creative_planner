@@ -19,8 +19,7 @@ import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { TimeDiffPipe } from 'src/app/Shared/time-diff.pipe';
 // import { TimeDiffPipe } from 'src/app/Shared/time-diff.pipe';
 import {ShareModule} from '../../Shared/share/share.module';
-
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 // import { FormsModule } from '@angular/forms';
 
@@ -40,7 +39,8 @@ import {ShareModule} from '../../Shared/share/share.module';
     Ng2SearchPipeModule,
     GooglePlaceModule,
     ReactiveFormsModule,
-    ShareModule
+    ShareModule,
+    MatTooltipModule
     // FormsModule
   ],
   providers: [ 

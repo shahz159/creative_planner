@@ -93,7 +93,7 @@
                                                                 <div class="kt-sub-name">Attendees</div>
                                                             </div>
                                                             <div class="kt-metric-sub-info">
-                                                                <div class="kt-sub-label" *ngIf="item.Location" title="{{item.Location}}">
+                                                                <div class="kt-sub-label" *ngIf="item.Location" matTooltip="{{item.Location}}">
                                                                     <a href="{{item.Addressurl}}" target=”_blank”>{{item.Location}}
                                                                     </a>
                                                                 </div>
@@ -1173,7 +1173,7 @@
                                                             [(ngModel)]="agendaInput" (keyup.enter)=" addAgenda() " />
 
                                                         <ng-container *ngIf="agendaInput">
-                                                        <button (click)="addAgenda()"   _ngcontent-pec-c395="" title="save" class="editing-save" id="editing-save-agena"><svg _ngcontent-pec-c395="" width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-pec-c395="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-pec-c395="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-pec-c395="" id="SVGRepo_iconCarrier"><path _ngcontent-pec-c395="" d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6" stroke-width="2.4" stroke-linecap="round"></path></g></svg>
+                                                        <button (click)="addAgenda()"   _ngcontent-pec-c395="" matTooltip="save" class="editing-save" id="editing-save-agena"><svg _ngcontent-pec-c395="" width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-pec-c395="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-pec-c395="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-pec-c395="" id="SVGRepo_iconCarrier"><path _ngcontent-pec-c395="" d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6" stroke-width="2.4" stroke-linecap="round"></path></g></svg>
                                                         </button>
                                                         </ng-container>
                                                     </div> -->
@@ -1237,20 +1237,20 @@
                                                                                     <span *ngIf="notescount && notescount[i]" class="agenda-details-item-count">{{notescount[i].count}}</span>
                                                                                 </div>
                                                                         <div  *ngIf="(Status1=='Owner' || item.Created_by == CurrentUser_fullname) && Meetingstatuscom!='Completed'"  class="a-v-line"></div>
-                                                                        <button  *ngIf="(Status1=='Owner' || item.Created_by == CurrentUser_fullname) && Meetingstatuscom!='Completed'"  [id]="'edit-agendaname-btn-'+i" class="edit-agendaname-btn" title="Edit" (click)="unnecessarynotify();editAgenda(i)">
+                                                                        <button  *ngIf="(Status1=='Owner' || item.Created_by == CurrentUser_fullname) && Meetingstatuscom!='Completed'"  [id]="'edit-agendaname-btn-'+i" class="edit-agendaname-btn" matTooltip="Edit" (click)="unnecessarynotify();editAgenda(i)">
                                                                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" fill="currentColor"></path> </g></svg>
                                                                         </button>
                                                                         <button  *ngIf="(Status1=='Owner' || item.Created_by == CurrentUser_fullname) && Meetingstatuscom!='Completed'"  [id]="'remove-agenda-btn-'+i"
-                                                                            class="remove-agenda-btn" title="Delete"
+                                                                            class="remove-agenda-btn" matTooltip="Delete"
                                                                             (click)="unnecessarynotify();deleteAgenda(item.AgendaId)">
                                                                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10L7.70141 19.3578C7.87432 20.3088 8.70258 21 9.66915 21H14.3308C15.2974 21 16.1257 20.3087 16.2986 19.3578L18 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                         </button>
-                                                                        <button (click)="unnecessarynotify();cancelAgendaEdit(i)" title="Cancel"
+                                                                        <button (click)="unnecessarynotify();cancelAgendaEdit(i)" matTooltip="Cancel"
                                                                             [id]="'edit-cancel-'+i" class="editing-cancel d-none">
                                                                             <svg width="64px" height="64px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>cancel</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="work-case" fill="currentColor" transform="translate(91.520000, 91.520000)"> <polygon id="Close" points="328.96 30.2933333 298.666667 1.42108547e-14 164.48 134.4 30.2933333 1.42108547e-14 1.42108547e-14 30.2933333 134.4 164.48 1.42108547e-14 298.666667 30.2933333 328.96 164.48 194.56 298.666667 328.96 328.96 298.666667 194.56 164.48"> </polygon> </g> </g> </g></svg>
                                                                         </button>
 
-                                                                        <button (click)="unnecessarynotify();updateAgenda1(i)" title="Save"
+                                                                        <button (click)="unnecessarynotify();updateAgenda1(i)" matTooltip="Save"
                                                                             [id]="'editing-save-'+i" class="editing-save d-none ">
                                                                             <svg width="21px" height="25px"
                                                                                 viewBox="0 0 24.00 24.00"
@@ -1268,7 +1268,7 @@
                                                                         </button>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="agenda-title-input"  title="{{item.Agenda_Name.length>68 ? item.Agenda_Name: ''}}" >
+                                                                        <div class="agenda-title-input"  matTooltip="{{item.Agenda_Name.length>68 ? item.Agenda_Name: ''}}" >
                                                                             <label [id]="'agenda-label-'+i"
                                                                             class="task-name"  >{{item.Agenda_Name}}</label>
                                                                             <input [id]="'agenda-text-field-'+i" type="text"
@@ -1334,7 +1334,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="agenda-title-input"  title="{{item.Agenda_Name.length>68 ? item.Agenda_Name: ''}}">
+                                                                        <div class="agenda-title-input"  matTooltip="{{item.Agenda_Name.length>68 ? item.Agenda_Name: ''}}">
                                                                             <label [id]="'agenda-label-'+i"
                                                                             class="task-name" >{{item.Agenda_Name}}</label>
                                                                         </div>
@@ -1384,7 +1384,7 @@
                                                                                 </path>
                                                                             </svg>
                                                                         </button>
-                                                                        <button (click)="cancelAgendaEdit(i)" title="cancel"
+                                                                        <button (click)="cancelAgendaEdit(i)" matTooltip="cancel"
                                                                             [id]="'edit-cancel-'+i" class="editing-cancel d-none">
                                                                             <svg width="10px" height="12px" viewBox="0 0 24 24"
                                                                                 version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -1412,7 +1412,7 @@
                                                                             </svg>
                                                                         </button>
 
-                                                                        <button (click)="updateAgenda1(i)" title="save"
+                                                                        <button (click)="updateAgenda1(i)" matTooltip="save"
                                                                             [id]="'editing-save-'+i" class="editing-save d-none ">
                                                                             <svg width="21px" height="25px"
                                                                                 viewBox="0 0 24.00 24.00"
@@ -1467,11 +1467,11 @@
 
                                             <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()">
                                                 <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject!=undefined">
-                                                <img src="./assets/images/Image (4).jfif" height="23" width="21px"  title="View or link SMail">
+                                                <img src="./assets/images/Image (4).jfif" height="23" width="21px"  matTooltip="View or link SMail">
 
                                                 </ng-container >
                                                 <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
-                                                <img  src="./assets/images/Image (4).jfif" height="23" width="21px" title="Not linked" class="black-white ng-star-inserted">
+                                                <img  src="./assets/images/Image (4).jfif" height="23" width="21px" matTooltip="Not linked" class="black-white ng-star-inserted">
                                             </ng-container>
                                             </a>
 
@@ -1482,7 +1482,7 @@
 
                                             <!-- <div class="br-line"></div> -->
 
-                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalportfolios}" (click)="AddPortfolio()" title="View or link portfolio(s)">
+                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalportfolios}" (click)="AddPortfolio()" matTooltip="View or link portfolio(s)">
                                                 <svg xmlns="http://www.w3.org/2000/svg"   width="16"
                                                 height="16" class="iconify iconify--mdi" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 24 24" version="1.1">
                                                     <defs></defs>
@@ -1501,11 +1501,11 @@
 
 
 
-                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalproject}"  title="View or link project(s)" (click)="AddProjects()">
+                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalproject}"  matTooltip="View or link project(s)" (click)="AddProjects()">
                                                 <i _ngcontent-pre-c394="" class="fab fa-wpforms "
                                                     style="font-size: 1.4em;"></i>
                                             </a>
-                                            <!-- <a class="kt-inbox__icon" title="Favourite">
+                                            <!-- <a class="kt-inbox__icon" matTooltip="Favourite">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" viewBox="0 0 1024 1024"
                                                     class="star-fill iconify iconify--mdi">
@@ -1514,7 +1514,7 @@
                                                 </svg>
 
                                             </a> -->
-                                            <!-- <a class="kt-inbox__icon" title="Pin">
+                                            <!-- <a class="kt-inbox__icon" matTooltip="Pin">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" viewBox="0 0 1024 1024"
                                                     class="bi bi-pin-angle-fill iconify iconify--mdi">
@@ -1525,7 +1525,7 @@
 
                                             </a> -->
 
-                                            <!-- <a class="kt-inbox__icon" title="Link">
+                                            <!-- <a class="kt-inbox__icon" matTooltip="Link">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" viewBox="0 0 1024 1024" class="iconify iconify--mdi">
                                                     <path
@@ -1534,7 +1534,7 @@
                                             </a> -->
 
                                             <!-- <div class="br-line"></div> -->
-                                            <a (click)="Attachment_views()"  class="kt-inbox__icon" [ngClass]="{'active':_TotalAttachment}" title="View or link Attachment(s)">
+                                            <a (click)="Attachment_views()"  class="kt-inbox__icon" [ngClass]="{'active':_TotalAttachment}" matTooltip="View or link Attachment(s)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16"
                                                     height="16" fill="currentColor" class="iconify iconify--mdi">
                                                     <path
@@ -1543,7 +1543,7 @@
                                                 </svg>
                                             </a>
 
-                                            <!-- <a class="kt-inbox__icon kt_Comments" title="Comments">
+                                            <!-- <a class="kt-inbox__icon kt_Comments" matTooltip="Comments">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi" width="16"
                                                     height="16" fill="currentcolor" viewBox="0 0 1024 1024" version="1.1">
                                                     <path
@@ -1557,7 +1557,7 @@
                                                 </svg>
                                             </a> -->
                                             
-                                            <a class="kt-inbox__icon ac-activity" (click)="View_Activity()" title="Activity Log">
+                                            <a class="kt-inbox__icon ac-activity" (click)="View_Activity()" matTooltip="Activity Log">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1"
                                                     stroke-width="1" class="iconify iconify--mdim">
                                                     <path
@@ -1565,7 +1565,7 @@
                                                         fill="currentColor"></path>
                                                 </svg>
                                             </a>
-                                            <!-- <a class="kt-inbox__icon" title="timeline">
+                                            <!-- <a class="kt-inbox__icon" matTooltip="timeline">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1">
                                                     <path
@@ -1576,7 +1576,7 @@
 
                                             <!-- <div class="br-line"></div> -->
 
-                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalguest}" title="Add attendee(s)" (click)="View_Meeting_Attendees();">
+                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalguest}" matTooltip="Add attendee(s)" (click)="View_Meeting_Attendees();">
                                                 <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16"
                                                     xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi">
                                                     <path
@@ -1585,7 +1585,7 @@
                                                 </svg>
                                             </a>
 
-                                            <!-- <a class="kt-inbox__icon" title="meetings">
+                                            <!-- <a class="kt-inbox__icon" matTooltip="meetings">
                                                 <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16"
                                                     class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1">
                                                     <path
@@ -1593,7 +1593,7 @@
                                                 </svg>
                                             </a> -->
 
-                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalPreviousdata_meeting}" title="Previous meeting notes" (click)="Slide_meeting()">
+                                            <a class="kt-inbox__icon" [ngClass]="{'active':totalPreviousdata_meeting}" matTooltip="Previous meeting notes" (click)="Slide_meeting()">
                                                 <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                                                     viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16"
                                                     width="16" class="iconify iconify--mdi">
@@ -1610,23 +1610,37 @@
                                             </a>   
 
                                         
-                                            <a  *ngIf="meetings_Recurrence!='Do not repeat'"  title="Meetings" class="kt-inbox__icon" (click)="History_meeting();NewGetRecurrenceMeetings(0)" >
+                                            <a  *ngIf="meetings_Recurrence!='Do not repeat'"  matTooltip="Meetings" class="kt-inbox__icon" (click)="History_meeting();NewGetRecurrenceMeetings(0)" >
                                                 <span  class="blink"></span><svg _ngcontent-gam-c397="" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 1024 1024" version="1.1" fill="currentColor" class="iconify iconify--mdi"><path _ngcontent-gam-c397="" d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z"></path>
                                                 </svg>
                                             </a>
-                                            <!-- <a class="kt-inbox__icon" title="Meeting History" (click)="History_meeting()">
+                                            <!-- <a class="kt-inbox__icon" matTooltip="Meeting History" (click)="History_meeting()">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="1" stroke-width="1"  fill="currentColor" height="16"
                                                 width="16"  class="iconify iconify--mdi"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12H4C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.25022 4 6.82447 5.38734 5.38451 7.50024L8 7.5V9.5H2V3.5H4L3.99989 5.99918C5.82434 3.57075 8.72873 2 12 2ZM13 7L12.9998 11.585L16.2426 14.8284L14.8284 16.2426L10.9998 12.413L11 7H13Z"></path></svg>
                                             </a> -->
                                             
-                                            
-                                        
-
-                                            <a class="kt-inbox__icon " [ngClass]="{'active': totalCountAssign}" title="Assign project" (click)="Slide_AssignTask()">
+                                          
+                                            <a class="kt-inbox__icon " [ngClass]="{'active': totalCountAssign}" matTooltip="Assign project" (click)="Slide_AssignTask()">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 24" fill="currentColor" height="16"
                                                 width="16" class="iconify iconify--mdi" style=" width: 30px; height: 30px;">
                                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19.9994 19.2611H10.9294C10.4794 19.2611 10.1094 18.8911 10.1094 18.4411C10.1094 17.9911 10.4794 17.6211 10.9294 17.6211H19.9994C20.4494 17.6211 20.8194 17.9911 20.8194 18.4411C20.8194 18.9011 20.4494 19.2611 19.9994 19.2611Z"></path><path d="M19.9994 12.9681H10.9294C10.4794 12.9681 10.1094 12.5981 10.1094 12.1481C10.1094 11.6981 10.4794 11.3281 10.9294 11.3281H19.9994C20.4494 11.3281 20.8194 11.6981 20.8194 12.1481C20.8194 12.5981 20.4494 12.9681 19.9994 12.9681Z" ></path><path d="M19.9994 6.67125H10.9294C10.4794 6.67125 10.1094 6.30125 10.1094 5.85125C10.1094 5.40125 10.4794 5.03125 10.9294 5.03125H19.9994C20.4494 5.03125 20.8194 5.40125 20.8194 5.85125C20.8194 6.30125 20.4494 6.67125 19.9994 6.67125Z" ></path><path d="M4.90969 8.03187C4.68969 8.03187 4.47969 7.94187 4.32969 7.79187L3.41969 6.88188C3.09969 6.56188 3.09969 6.04187 3.41969 5.72187C3.73969 5.40187 4.25969 5.40187 4.57969 5.72187L4.90969 6.05188L7.04969 3.91187C7.36969 3.59188 7.88969 3.59188 8.20969 3.91187C8.52969 4.23188 8.52969 4.75188 8.20969 5.07188L5.48969 7.79187C5.32969 7.94187 5.12969 8.03187 4.90969 8.03187Z" ></path><path d="M4.90969 14.3287C4.69969 14.3287 4.48969 14.2487 4.32969 14.0887L3.41969 13.1788C3.09969 12.8588 3.09969 12.3388 3.41969 12.0188C3.73969 11.6988 4.25969 11.6988 4.57969 12.0188L4.90969 12.3488L7.04969 10.2087C7.36969 9.88875 7.88969 9.88875 8.20969 10.2087C8.52969 10.5288 8.52969 11.0487 8.20969 11.3687L5.48969 14.0887C5.32969 14.2487 5.11969 14.3287 4.90969 14.3287Z" ></path><path d="M4.90969 20.3288C4.69969 20.3288 4.48969 20.2488 4.32969 20.0888L3.41969 19.1788C3.09969 18.8588 3.09969 18.3388 3.41969 18.0188C3.73969 17.6988 4.25969 17.6988 4.57969 18.0188L4.90969 18.3488L7.04969 16.2087C7.36969 15.8888 7.88969 15.8888 8.20969 16.2087C8.52969 16.5288 8.52969 17.0488 8.20969 17.3688L5.48969 20.0888C5.32969 20.2488 5.11969 20.3288 4.90969 20.3288Z" ></path></g></svg>
                                             </a>
+
+
+
+                                            <div *ngIf="!BookMarks" class="custom-evt-tsk-action-icon" matTooltip="Bookmark"  (click)="MeetingBookmark(1)">
+                                                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.07989 3 8.2 3H15.8C16.9201 3 17.4802 3 17.908 3.21799C18.2843 3.40973 18.5903 3.71569 18.782 4.09202C19 4.51984 19 5.07989 19 6.2V21L12 16L5 21V6.2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path> </g></svg>
+                                            </div>
+                                            <div *ngIf="BookMarks" class="custom-evt-tsk-action-icon" matTooltip="Bookmark" (click)="MeetingBookmark(2)">
+                                                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M5 6c0-1.4 0-2.1.272-2.635a2.5 2.5 0 0 1 1.093-1.093C6.9 2 7.6 2 9 2h6c1.4 0 2.1 0 2.635.272a2.5 2.5 0 0 1 1.092 1.093C19 3.9 19 4.6 19 6v13.208c0 1.056 0 1.583-.217 1.856a1 1 0 0 1-.778.378c-.349.002-.764-.324-1.593-.976L12 17l-4.411 3.466c-.83.652-1.245.978-1.594.976a1 1 0 0 1-.778-.378C5 20.791 5 20.264 5 19.208V6z" fill="currentColor"></path></g></svg>
+                                            </div>
+
+
+
+
+
+
+
                                         </div>
 
                                         <div class="kt-meeting-status completed mt-0"   *ngIf="Meetingstatuscom!=Completed">
@@ -2312,7 +2326,7 @@
                                                 <ng-container  *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
                                                     <div (click)="addNewDMS()" class="dark-title SMail cursor-pointer">click to link SMail
 
-                                                        <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" title="Link SMail" (click)="addNewDMS()">
+                                                        <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" matTooltip="Link SMail" (click)="addNewDMS()">
                                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
                                                         </div>
                                                     </div>
@@ -2348,7 +2362,7 @@
                                                     <div (click)="AddPortfolio()" class="dark-title SMail cursor-pointer">click to link portfolio(s)
 
 
-                                                        <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" title="Link portfolio(s)" (click)="AddPortfolio()" >
+                                                        <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" matTooltip="Link portfolio(s)" (click)="AddPortfolio()" >
                                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
                                                             <!-- <span>Add More</span> -->
                                                         </div>
@@ -2386,7 +2400,7 @@
                                                 <ng-template #NoProject_code>
                                                     <div (click)="AddProjects()" class="dark-title SMail cursor-pointer">click to link project(s)
 
-                                                        <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" title="Link project(s)" (click)="AddProjects()">
+                                                        <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" matTooltip="Link project(s)" (click)="AddProjects()">
                                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
                                                             <!-- <span>Add More</span> -->
                                                         </div>
@@ -2540,7 +2554,7 @@
                                                     
                                                     <ng-template #NoAttachments_ary>
                                                         <span (click)="Attachment_views()" class="dark-title  SMail cursor-pointer ">click to link attachment(s) 
-                                                            <div *ngIf="Meetingstatuscom!='Completed'" class="add-s" title="Link attachment(s)" (click)="Attachment_views()">
+                                                            <div *ngIf="Meetingstatuscom!='Completed'" class="add-s" matTooltip="Link attachment(s)" (click)="Attachment_views()">
                                                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
                                                                 <!-- <span>Add More</span> -->
                                                             </div>
@@ -2708,7 +2722,7 @@
                                                     <ng-container *ngIf="totalguest>0;else NoUser"></ng-container>
                                                     <div class="attendess">
                                                         <div class="user-icon"  *ngFor="let item of User_Scheduledjson" >
-                                                            <span  title="{{item.TM_DisplayName}}">
+                                                            <span  matTooltip="{{item.TM_DisplayName}}">
                                                                 <span>{{getInitials(item.TM_DisplayName)}}</span>
                                                             </span>
                                                         </div>
@@ -2740,7 +2754,7 @@
                                                     </div>
                                                     <ng-template #NoUser>
                                                         <div (click)="View_Meeting_Attendees();" class="dark-title SMail cursor-pointer ">click to add attendee(s)
-                                                            <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" title="Link attendee(s)" (click)="View_Meeting_Attendees();">
+                                                            <div *ngIf="Isadmin ===true && Meetingstatuscom!='Completed'" class="add-s" matTooltip="Link attendee(s)" (click)="View_Meeting_Attendees();">
                                                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path> </g></svg>
                                                                 <!-- <span>Add More</span> -->
                                                             </div>
@@ -2960,9 +2974,9 @@
                                                 <label class="task-name">{{item.Task_Name}}</label>
                                                 <ng-container  *ngIf="Meetingstatuscom!='Completed'">
                                                 <div class="task-actions" >
-                                                            <mat-icon title="Assign project" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
+                                                            <mat-icon matTooltip="Assign project" (click)="GetProjectTypeList(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
 
-                                                            <mat-icon title="Add action to project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>
+                                                            <mat-icon matTooltip="Add action to project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>
                                                 </div>
                                             </ng-container>
                                                 <ng-container  *ngIf="Meetingstatuscom!='Completed'">
@@ -3166,10 +3180,10 @@
                                                     <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
                                                         <div class="d-flex align-items-center justify-content-between">
                                                             <div>
-                                                                <!-- <a data-toggle="tooltip" title="Project Details!" class="curser-pointer">
+                                                                <!-- <a data-toggle="tooltip" matTooltip="Project Details!" class="curser-pointer">
                                                     <i class="fa fa-info-circle info-icon-cir"></i>
                                                     </a>
-                                                    <a tabindex="0" role="button" placement="right" data-trigger="focus" data-toggle="tooltip" title="More Info!" class="ml-3 curser-pointer">
+                                                    <a tabindex="0" role="button" placement="right" data-trigger="focus" data-toggle="tooltip" matTooltip="More Info!" class="ml-3 curser-pointer">
                                                     <i class="fa fa-chart-bar info-icon-cir"></i>
                                                     </a> -->
                                                             </div>&nbsp; <div
@@ -3180,7 +3194,7 @@
                                                         </div>
                                                         <!-- <span class="desc ml-2 mb-2">Testing all the functionality after Publishing File on live</span> -->
                                                         <div class="my-2">
-                                                            <span data-toggle="tooltip" title="Created Date!"
+                                                            <span data-toggle="tooltip" matTooltip="Created Date!"
                                                                 class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                                 <div>
                                                                     <img src="./assets/icons/create2.png"
@@ -3196,12 +3210,12 @@
                                                                     data-mat-icon-type="font">task_alt </mat-icon>
                                                                 <b> {{item.AssignedTo}}</b>
                                                             </span>
-                                                            <span data-toggle="tooltip" title="Project Status!"
+                                                            <span data-toggle="tooltip" matTooltip="Project Status!"
                                                                 class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-warning"
                                                                 ng-reflect-ng-class="[object Object]">
                                                                 <div> {{item.Status}}</div>
                                                             </span>
-                                                            <!-- <span data-toggle="tooltip" title="Assigned Date!"
+                                                            <!-- <span data-toggle="tooltip" matTooltip="Assigned Date!"
                                                                 class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline">
                                                                 <div>
                                                                     <img src="../creativeplanner/assets/icons/create1.png"
@@ -3209,24 +3223,24 @@
                                                                 </div>
                                                                 <div>{{item.Modified_DT|date}} </div>
                                                             </span> -->
-                                                            <!-- <span data-toggle="tooltip" title="Assigned Status!" class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-success" ng-reflect-ng-class="[object Object]">
+                                                            <!-- <span data-toggle="tooltip" matTooltip="Assigned Status!" class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-success" ng-reflect-ng-class="[object Object]">
                                                     <div> Accepted</div>
                                                 </span> -->
                                                         </div>
                                                         <div class="my-1">
-                                                            <!-- <label data-toggle="tooltip" title="Project Type!" class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
+                                                            <!-- <label data-toggle="tooltip" matTooltip="Project Type!" class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
                                                     <i class="fa fa-clone mr-2"></i>{{item.Project_type}} </label> -->
 
 
 
-                                                            <!-- <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                            <!-- <span data-toggle="tooltip" matTooltip="Start Date!" class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                     <div>
                                                     <img src="../creativeplanner/assets/icons/strat-prim.png" class="badge-img">
                                                     </div>
                                                     <div> Feb 21, 2023</div>
                                                 </span> -->
 
-                                                            <!-- <span data-toggle="tooltip" title="End Date!" class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                            <!-- <span data-toggle="tooltip" matTooltip="End Date!" class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                     <div>
                                                     <img src="../creativeplanner/assets/icons/end-prim.png" class="badge-img">
                                                     </div>
@@ -3338,9 +3352,9 @@
                             <label class="task-name">{{item.Task_Name}}</label>
                             <ng-container >
                             <div class="task-actions curser-pointer" >
-                                        <mat-icon title="Assign Project" (click)="projectmodal();GetAssigned_SubtaskProjects();GetAssignName_id(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
+                                        <mat-icon matTooltip="Assign Project" (click)="projectmodal();GetAssigned_SubtaskProjects();GetAssignName_id(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>group</mat-icon>
 
-                                        <mat-icon title="Add action to project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>
+                                        <mat-icon matTooltip="Add action to project"  (click)="ActionToProject_Click(item.Task_Name,item.Assign_Id)" class="mr-2" color='primary'>new_label</mat-icon>
                             </div>
                         </ng-container>
                             <ng-container >
@@ -3465,7 +3479,7 @@
                                                                         <div
                                                                             class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1">
                                                                             <a (click)="openActionInDetails(item.Project_Code,item.ActionCode)"  class="btn px-0 mr-2 info-btn curser-pointer"  role="button" placement="right"
-                                                                            data-trigger="focus"  data-toggle="tooltip" title="View Action!" >
+                                                                            data-trigger="focus"  data-toggle="tooltip" matTooltip="View Action!" >
                                                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22" fill="none">
                                                                                 <path d="M12.2812 0.814453H2.86279C2.33236 0.814453 1.82365 1.02517 1.44858 1.40024C1.07351 1.77531 0.862793 2.28402 0.862793 2.81445V18.8145C0.862793 19.3449 1.07351 19.8536 1.44858 20.2287C1.82365 20.6037 2.33236 20.8145 2.86279 20.8145H14.8628C15.3932 20.8145 15.9019 20.6037 16.277 20.2287C16.6521 19.8536 16.8628 19.3449 16.8628 18.8145V5.48705L12.2812 0.814453Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
                                                                                 <rect x="3.06885" y="4.28076" width="6.5376" height="2.14" fill="currentColor"></rect>
@@ -3482,7 +3496,7 @@
                                                                         <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
                                                                         <div class="my-2">
 
-                                                                            <span data-toggle="tooltip" title="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                                            <span data-toggle="tooltip" matTooltip="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                                                 <div><img src="./assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
                                                                                 <div>
                                                                                     {{item.Creation_Date| date:'d MMM, y' }}
@@ -3502,7 +3516,7 @@
                                                                                 </mat-icon>
                                                                                 <b>{{item.Assigned_Name}}</b>
                                                                             </span>
-                                                                            <span data-toggle="tooltip" title="Assigned Date!"
+                                                                            <span data-toggle="tooltip" matTooltip="Assigned Date!"
                                                                                 class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                                                 <div>
                                                                                     {{item.Modified_DT| date:'d MMM, y'}}
@@ -3510,11 +3524,11 @@
                                                                             </span>
                                                                         </div>
                                                                         <div class="">
-                                                                            <label  data-toggle="tooltip" title="Project Type!"
+                                                                            <label  data-toggle="tooltip" matTooltip="Project Type!"
                                                                             class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
                                                                             <i class="fa fa-clone mr-2"></i>{{item.Project_type }} </label>
 
-                                                                            <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status!='Delay'"
+                                                                            <span  data-toggle="tooltip" matTooltip="Action Status!" *ngIf="item.Status!='Delay'"
                                                                                     class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
                                                                                     [ngClass]="{
                                                                                     'kt-badge completed ': item.Status === 'Completed',
@@ -3532,16 +3546,16 @@
                                                                                     'In-Process':item.Status}}
                                                                                 <!-- <div></div> -->
                                                                             </span>
-                                                                            <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status=='Delay'"
+                                                                            <span  data-toggle="tooltip" matTooltip="Action Status!" *ngIf="item.Status=='Delay'"
                                                                                     class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline delay">
                                                                                 <div> {{item.Status }} {{item.Delaydays}} days</div>
                                                                             </span>
 
-                                                                            <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                            <span data-toggle="tooltip" matTooltip="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                                                 <div ><img src="./assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
                                                                                 <div > {{item.Start_Date|date:'d MMM, y'}}</div>
                                                                             </span>
-                                                                            <span data-toggle="tooltip" title="End Date!"  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                            <span data-toggle="tooltip" matTooltip="End Date!"  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                                                 <div><img src="./assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
                                                                                 <div> {{item.End_Date|date:'d MMM, y'}}</div>
                                                                             </span>
@@ -3549,12 +3563,12 @@
                                                                         </div>
                                                                         <div class="mt-1 pl-2">
 
-                                                                            <span  data-toggle="tooltip" title="Attachment!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !=''"  (click)="LoadDocument(item.Reference)"><i
+                                                                            <span  data-toggle="tooltip" matTooltip="Attachment!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !=''"  (click)="LoadDocument(item.Reference)"><i
                                                                                 class="fas fa-file-pdf text-muted mr-1"></i>
-                                                                            <a class="text-info curser-pointer" title="click To Open File"
+                                                                            <a class="text-info curser-pointer" matTooltip="click To Open File"
                                                                                 ><b>{{item.FileName}}</b></a></span>
 
-                                                                            <span  data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !='' && item.Remarks!= 'undefined'">
+                                                                            <span  data-toggle="tooltip" matTooltip="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !='' && item.Remarks!= 'undefined'">
                                                                                 <i class="fas fa-registered text-muted mr-1"></i>
                                                                                 <b>{{item.Remarks}}</b>
                                                                             </span>
@@ -4073,7 +4087,7 @@
                                                             </div>                                                        
                                                         </span>
                                                         <!-- <span class="kt-inbox__label kt-badge kt-badge--unifieds kt-badge.kt-badge-light-bold kt-badge--inline">
-                                                          <div title="Responsible">
+                                                          <div matTooltip="Responsible">
                                                              {{memo.Name}}
                                                           </div>                                                        
                                                     </span> -->
@@ -4304,7 +4318,7 @@
                                                </span>
                                                 <!-- <span
                                                     class="kt-inbox__label kt-badge kt-badge--unifieds kt-badge.kt-badge-light-bold kt-badge--inline">
-                                                    <div title="Responsible">
+                                                    <div matTooltip="Responsible">
                                                        {{data.Name}}
                                                     </div>
                                                 </span> -->
@@ -5089,7 +5103,7 @@
                                                 </span>
                                                 <!-- <span
                                                 class="kt-inbox__label kt-badge kt-badge--unifieds kt-badge.kt-badge-light-bold kt-badge--inline">
-                                                <div title="Responsible">
+                                                <div matTooltip="Responsible">
                                                    {{item.Name}}
                                                 </div>
                                             </span> -->
@@ -5380,7 +5394,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <span  title="Clear Filters" 
+                                    <span  matTooltip="Clear Filters" 
                                         class="kt-user-list-ic" (click)="Clear_Filters();">
                                         <svg _ngcontent-kgj-c465="" xmlns="http://www.w3.org/2000/svg"
                                             xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -5927,21 +5941,21 @@
                                                         <div class="pn-label">Attendees</div>
                                                         <div class="pn-part">
                                                             <div class="pn-part-group"  *ngFor="let prt of item.Addguest;let i = index">
-                                                                <span class="pn-part-item" title="{{prt.TM_DisplayName}}">{{prt.twolet}}</span>
+                                                                <span class="pn-part-item" matTooltip="{{prt.TM_DisplayName}}">{{prt.twolet}}</span>
                                                             </div>
-                                                            <!-- <div class="pn-part-group" title="Md Waseem Akram">
+                                                            <!-- <div class="pn-part-group" matTooltip="Md Waseem Akram">
                                                                 <span class="pn-part-item">A</span>
                                                             </div>
-                                                            <div class="pn-part-group" title="Md Waseem Akram">
+                                                            <div class="pn-part-group" matTooltip="Md Waseem Akram">
                                                                 <span class="pn-part-item">P</span>
                                                             </div>
-                                                            <div class="pn-part-group" title="Md Waseem Akram">
+                                                            <div class="pn-part-group" matTooltip="Md Waseem Akram">
                                                                 <span class="pn-part-item">S</span>
                                                             </div> -->
                                                             
                                                         </div>
 
-                                                        <div class="pn-part-group dropdown" *ngIf="item.RemainingGuestsCount" title="{{item.RemainingGuests}}" >
+                                                        <div class="pn-part-group dropdown" *ngIf="item.RemainingGuestsCount" matTooltip="{{item.RemainingGuests}}" >
                                                             <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 <span class="pn-part-item">+{{item.RemainingGuestsCount}}</span>
                                                                 <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant">
@@ -5960,7 +5974,7 @@
                                                                 <div class="pn-time">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none"><g clip-path="url(#clip0_365_5615)"><path d="M13.9299 6.82339L12.5754 6.06971C12.5372 6.04848 12.4919 6.04848 12.4538 6.06971L11.0993 6.82339C11.0111 6.87248 10.906 6.80354 10.906 6.69668V1.01611L12.517 1.02015C13.4046 1.02239 14.1231 1.7979 14.1231 2.75379V6.69665C14.1231 6.80351 14.018 6.87248 13.9299 6.82339Z" fill="#717171" fill-opacity="0.65"></path><path d="M13.9908 7.31465C13.8998 7.31465 13.8088 7.29077 13.7274 7.24546L12.5148 6.57075L11.302 7.24552C11.2208 7.29077 11.1298 7.31465 11.0388 7.31465C10.8897 7.31471 10.7482 7.25316 10.6405 7.14144C10.5274 7.02417 10.4651 6.86626 10.4651 6.69677V1.01613C10.4651 0.889932 10.5117 0.768936 10.5947 0.679806C10.6774 0.590897 10.7895 0.541016 10.9063 0.541016C10.9067 0.541016 10.907 0.541016 10.9073 0.541016L12.5183 0.545054C13.6466 0.547894 14.5646 1.53877 14.5646 2.75381V6.69667C14.5645 7.03748 14.3071 7.31465 13.9908 7.31465ZM11.3475 1.49239V6.15072L12.2515 5.64771C12.4131 5.55757 12.616 5.55754 12.7782 5.64771L13.6822 6.15072V2.75387C13.6822 2.06153 13.1592 1.49696 12.5162 1.49535L11.3475 1.49239Z" fill="#717171"></path><path d="M12.7191 16.5767H4.2491C2.88229 16.5767 1.77026 15.3792 1.77026 13.9072V3.09237C1.77026 1.62038 2.88226 0.422852 4.2491 0.422852H12.7192C13.8223 0.422852 14.7197 1.38934 14.7197 2.57731V9.92513C14.7197 10.1875 14.5222 10.4002 14.2785 10.4002C14.0349 10.4002 13.8374 10.1875 13.8374 9.92513V2.57731C13.8373 1.9133 13.3357 1.37309 12.7191 1.37309H4.24907C3.36876 1.37309 2.6526 2.14434 2.6526 3.09237V13.9072C2.6526 14.8552 3.36876 15.6265 4.24907 15.6265H12.7191C13.3357 15.6265 13.8373 15.0863 13.8373 14.4222V12.4029C13.8373 12.1405 14.0349 11.9278 14.2785 11.9278C14.5221 11.9278 14.7197 12.1405 14.7197 12.4029V14.4223C14.7197 15.6102 13.8222 16.5767 12.7191 16.5767Z" fill="#717171"></path><path d="M4.26442 16.5766C4.02076 16.5766 3.82324 16.3639 3.82324 16.1015V3.27346C3.82324 3.01112 4.02076 2.79834 4.26442 2.79834C4.50809 2.79834 4.70561 3.01108 4.70561 3.27346V16.1015C4.70561 16.3639 4.50809 16.5766 4.26442 16.5766Z" fill="#717171"></path><path d="M3.97616 4.93657H1.77028C1.52662 4.93657 1.3291 4.72382 1.3291 4.46145C1.3291 4.19907 1.52662 3.98633 1.77028 3.98633H3.97616C4.21982 3.98633 4.41734 4.19907 4.41734 4.46145C4.41734 4.72382 4.21982 4.93657 3.97616 4.93657Z" fill="#717171"></path><path d="M3.97616 8.97465H1.77028C1.52662 8.97465 1.3291 8.76191 1.3291 8.49953C1.3291 8.23719 1.52662 8.02441 1.77028 8.02441H3.97616C4.21982 8.02441 4.41734 8.23716 4.41734 8.49953C4.41734 8.76188 4.21982 8.97465 3.97616 8.97465Z" fill="#717171"></path><path d="M3.97616 13.0132H1.77028C1.52662 13.0132 1.3291 12.8005 1.3291 12.5381C1.3291 12.2757 1.52662 12.063 1.77028 12.063H3.97616C4.21982 12.063 4.41734 12.2757 4.41734 12.5381C4.41734 12.8005 4.21982 13.0132 3.97616 13.0132Z" fill="#717171"></path><path d="M10.8292 12.8947H7.27037C6.91301 12.8947 6.62329 12.5827 6.62329 12.1978V10.7408C6.62329 10.3559 6.91298 10.0439 7.27037 10.0439H10.8292C11.1866 10.0439 11.4763 10.3559 11.4763 10.7408V12.1978C11.4762 12.5827 11.1866 12.8947 10.8292 12.8947Z" fill="#717171" fill-opacity="0.65"></path><path d="M10.829 13.3698H7.27015C6.67006 13.3698 6.18188 12.844 6.18188 12.1978V10.7408C6.18188 10.0946 6.67006 9.56885 7.27015 9.56885H10.829C11.4291 9.56885 11.9172 10.0946 11.9172 10.7408V12.1978C11.9172 12.844 11.4291 13.3698 10.829 13.3698ZM7.27018 10.5191C7.15665 10.5191 7.06428 10.6186 7.06428 10.7408V12.1978C7.06428 12.3201 7.15665 12.4195 7.27018 12.4195H10.829C10.9425 12.4195 11.0349 12.3201 11.0349 12.1978V10.7408C11.0349 10.6186 10.9425 10.5191 10.829 10.5191H7.27018Z" fill="#717171"></path></g><defs><clipPath id="clip0_365_5615"><rect width="15" height="16.1538" fill="#717171" transform="translate(0.524414 0.422852)"></rect></clipPath></defs></svg>
                                                                 </div>
-                                                            <div class="pn-ag-count" title="Agenda">
+                                                            <div class="pn-ag-count" matTooltip="Agenda">
                                                             {{item.AgendaCount}}
                                                             </div>
                                                             </div>
@@ -5969,7 +5983,7 @@
                                                                 <div class="pn-timel">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="#717171" height="16" width="16" ><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
                                                                 </div>
-                                                            <div class="pn-ag-count" title="Notes">
+                                                            <div class="pn-ag-count" matTooltip="Notes">
                                                             {{item.NotesCount}}
                                                             </div>
                                                             </div>
@@ -5978,7 +5992,7 @@
                                                                 <div class="pn-time">
                                                                     <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#717171"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 19.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 12.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 5.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 5.5L4 6.5L7 3.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 12.5L4 13.5L7 10.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 19.5L4 20.5L7 17.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                 </div> 
-                                                            <div class="pn-ag-count" title="Assign project">
+                                                            <div class="pn-ag-count" matTooltip="Assign project">
                                                             {{item.TaskCount}}
                                                             </div>
                                                             </div>
@@ -6292,16 +6306,16 @@
                                                     <div class="pn-details">
                                                         <div class="pn-label">Participants</div>
                                                         <div class="pn-part">
-                                                            <div class="pn-part-group" title="Md Waseem Akram">
+                                                            <div class="pn-part-group" matTooltip="Md Waseem Akram">
                                                                 <span class="pn-part-item">M</span>
                                                             </div>
-                                                            <div class="pn-part-group" title="Md Waseem Akram">
+                                                            <div class="pn-part-group" matTooltip="Md Waseem Akram">
                                                                 <span class="pn-part-item">A</span>
                                                             </div>
-                                                            <div class="pn-part-group" title="Md Waseem Akram">
+                                                            <div class="pn-part-group" matTooltip="Md Waseem Akram">
                                                                 <span class="pn-part-item">P</span>
                                                             </div>
-                                                            !-- <div class="pn-part-group" title="Md Waseem Akram">
+                                                            !-- <div class="pn-part-group" matTooltip="Md Waseem Akram">
                                                                 <span class="pn-part-item">S</span>
                                                             </div>
                                                             <div class="pn-part-group dropdown">
@@ -6394,10 +6408,10 @@
                                                     <div class="pn-details">
                                                         <div class="pn-label">Participants</div>
                                                         <div class="pn-part">
-                                                            <div class="pn-part-group" title="Md Waseem Akram">
+                                                            <div class="pn-part-group" matTooltip="Md Waseem Akram">
                                                                 <span class="pn-part-item">M</span>
                                                             </div>
-                                                            <div class="pn-part-group" title="Md Waseem Akram">
+                                                            <div class="pn-part-group" matTooltip="Md Waseem Akram">
                                                                 <span class="pn-part-item">A</span>
                                                             </div>
                                                         
@@ -6510,20 +6524,20 @@
                                                         <div class="pn-label">Attendees</div>
                                                         <div class="pn-part" >
                                                             <div class="pn-part-group" *ngFor="let upcom of data.Addguest">
-                                                                <span class="pn-part-item" title="{{upcom.TM_DisplayName}}">{{upcom.twolet}}</span>
+                                                                <span class="pn-part-item" matTooltip="{{upcom.TM_DisplayName}}">{{upcom.twolet}}</span>
                                                             </div>
-                                                            <!-- <div class="pn-part-group" title="Md Waseem Akram">
+                                                            <!-- <div class="pn-part-group" matTooltip="Md Waseem Akram">
                                                                 <span class="pn-part-item">A</span>
                                                             </div>
-                                                            <div class="pn-part-group" title="Md Waseem Akram">
+                                                            <div class="pn-part-group" matTooltip="Md Waseem Akram">
                                                                 <span class="pn-part-item">P</span>
                                                             </div>
-                                                            <div class="pn-part-group" title="Md Waseem Akram">
+                                                            <div class="pn-part-group" matTooltip="Md Waseem Akram">
                                                                 <span class="pn-part-item">S</span>
                                                             </div> -->
                                                         
                                                         </div>
-                                                        <div class="pn-part-group dropdown" *ngIf="data.RemainingGuestsCount"   title="{{data.RemainingGuests}}">
+                                                        <div class="pn-part-group dropdown" *ngIf="data.RemainingGuestsCount"   matTooltip="{{data.RemainingGuests}}">
                                                         <a id="dropdownparticipant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             <span class="pn-part-item">+{{data.RemainingGuestsCount}}</span>
                                                             <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownparticipant">
@@ -6542,7 +6556,7 @@
                                                                 <div class="pn-time">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none"><g clip-path="url(#clip0_365_5615)"><path d="M13.9299 6.82339L12.5754 6.06971C12.5372 6.04848 12.4919 6.04848 12.4538 6.06971L11.0993 6.82339C11.0111 6.87248 10.906 6.80354 10.906 6.69668V1.01611L12.517 1.02015C13.4046 1.02239 14.1231 1.7979 14.1231 2.75379V6.69665C14.1231 6.80351 14.018 6.87248 13.9299 6.82339Z" fill="#717171" fill-opacity="0.65"></path><path d="M13.9908 7.31465C13.8998 7.31465 13.8088 7.29077 13.7274 7.24546L12.5148 6.57075L11.302 7.24552C11.2208 7.29077 11.1298 7.31465 11.0388 7.31465C10.8897 7.31471 10.7482 7.25316 10.6405 7.14144C10.5274 7.02417 10.4651 6.86626 10.4651 6.69677V1.01613C10.4651 0.889932 10.5117 0.768936 10.5947 0.679806C10.6774 0.590897 10.7895 0.541016 10.9063 0.541016C10.9067 0.541016 10.907 0.541016 10.9073 0.541016L12.5183 0.545054C13.6466 0.547894 14.5646 1.53877 14.5646 2.75381V6.69667C14.5645 7.03748 14.3071 7.31465 13.9908 7.31465ZM11.3475 1.49239V6.15072L12.2515 5.64771C12.4131 5.55757 12.616 5.55754 12.7782 5.64771L13.6822 6.15072V2.75387C13.6822 2.06153 13.1592 1.49696 12.5162 1.49535L11.3475 1.49239Z" fill="#717171"></path><path d="M12.7191 16.5767H4.2491C2.88229 16.5767 1.77026 15.3792 1.77026 13.9072V3.09237C1.77026 1.62038 2.88226 0.422852 4.2491 0.422852H12.7192C13.8223 0.422852 14.7197 1.38934 14.7197 2.57731V9.92513C14.7197 10.1875 14.5222 10.4002 14.2785 10.4002C14.0349 10.4002 13.8374 10.1875 13.8374 9.92513V2.57731C13.8373 1.9133 13.3357 1.37309 12.7191 1.37309H4.24907C3.36876 1.37309 2.6526 2.14434 2.6526 3.09237V13.9072C2.6526 14.8552 3.36876 15.6265 4.24907 15.6265H12.7191C13.3357 15.6265 13.8373 15.0863 13.8373 14.4222V12.4029C13.8373 12.1405 14.0349 11.9278 14.2785 11.9278C14.5221 11.9278 14.7197 12.1405 14.7197 12.4029V14.4223C14.7197 15.6102 13.8222 16.5767 12.7191 16.5767Z" fill="#717171"></path><path d="M4.26442 16.5766C4.02076 16.5766 3.82324 16.3639 3.82324 16.1015V3.27346C3.82324 3.01112 4.02076 2.79834 4.26442 2.79834C4.50809 2.79834 4.70561 3.01108 4.70561 3.27346V16.1015C4.70561 16.3639 4.50809 16.5766 4.26442 16.5766Z" fill="#717171"></path><path d="M3.97616 4.93657H1.77028C1.52662 4.93657 1.3291 4.72382 1.3291 4.46145C1.3291 4.19907 1.52662 3.98633 1.77028 3.98633H3.97616C4.21982 3.98633 4.41734 4.19907 4.41734 4.46145C4.41734 4.72382 4.21982 4.93657 3.97616 4.93657Z" fill="#717171"></path><path d="M3.97616 8.97465H1.77028C1.52662 8.97465 1.3291 8.76191 1.3291 8.49953C1.3291 8.23719 1.52662 8.02441 1.77028 8.02441H3.97616C4.21982 8.02441 4.41734 8.23716 4.41734 8.49953C4.41734 8.76188 4.21982 8.97465 3.97616 8.97465Z" fill="#717171"></path><path d="M3.97616 13.0132H1.77028C1.52662 13.0132 1.3291 12.8005 1.3291 12.5381C1.3291 12.2757 1.52662 12.063 1.77028 12.063H3.97616C4.21982 12.063 4.41734 12.2757 4.41734 12.5381C4.41734 12.8005 4.21982 13.0132 3.97616 13.0132Z" fill="#717171"></path><path d="M10.8292 12.8947H7.27037C6.91301 12.8947 6.62329 12.5827 6.62329 12.1978V10.7408C6.62329 10.3559 6.91298 10.0439 7.27037 10.0439H10.8292C11.1866 10.0439 11.4763 10.3559 11.4763 10.7408V12.1978C11.4762 12.5827 11.1866 12.8947 10.8292 12.8947Z" fill="#717171" fill-opacity="0.65"></path><path d="M10.829 13.3698H7.27015C6.67006 13.3698 6.18188 12.844 6.18188 12.1978V10.7408C6.18188 10.0946 6.67006 9.56885 7.27015 9.56885H10.829C11.4291 9.56885 11.9172 10.0946 11.9172 10.7408V12.1978C11.9172 12.844 11.4291 13.3698 10.829 13.3698ZM7.27018 10.5191C7.15665 10.5191 7.06428 10.6186 7.06428 10.7408V12.1978C7.06428 12.3201 7.15665 12.4195 7.27018 12.4195H10.829C10.9425 12.4195 11.0349 12.3201 11.0349 12.1978V10.7408C11.0349 10.6186 10.9425 10.5191 10.829 10.5191H7.27018Z" fill="#717171"></path></g><defs><clipPath id="clip0_365_5615"><rect width="15" height="16.1538" fill="#717171" transform="translate(0.524414 0.422852)"></rect></clipPath></defs></svg>
                                                                 </div>
-                                                            <div class="pn-ag-count" title="Agenda">
+                                                            <div class="pn-ag-count" matTooltip="Agenda">
                                                             {{data.AgendaCount}}
                                                             </div>
                                                             </div>
@@ -6551,7 +6565,7 @@
                                                                 <div class="pn-timel">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="#717171" height="16" width="16" ><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
                                                                 </div>
-                                                            <div class="pn-ag-count" title="Notes">
+                                                            <div class="pn-ag-count" matTooltip="Notes">
                                                                 {{data.NotesCount}}
                                                             </div>
                                                             </div>
@@ -6560,7 +6574,7 @@
                                                                 <div class="pn-time">
                                                                     <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#717171"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 19.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 12.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 5.5H21" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 5.5L4 6.5L7 3.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 12.5L4 13.5L7 10.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 19.5L4 20.5L7 17.5" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                 </div>
-                                                            <div class="pn-ag-count" title="Assign project">
+                                                            <div class="pn-ag-count" matTooltip="Assign project">
                                                                 {{data.TaskCount}}
                                                             </div>
                                                             </div>
@@ -6737,11 +6751,11 @@
                                                                 </div>
 
                                                                 <div class="my-2">
-                                                                    <span data-toggle="tooltip" title="Created Date!"
+                                                                    <span data-toggle="tooltip" matTooltip="Created Date!"
                                                                     class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline"> 
                                                                     <div>By: {{item.AssignedBy}}</div>
                                                                 </span>
-                                                                    <span data-toggle="tooltip" title="Created Date!"
+                                                                    <span data-toggle="tooltip" matTooltip="Created Date!"
                                                                         class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                                         <div>
                                                                             <img src="./assets/icons/create2.png"
@@ -6757,7 +6771,7 @@
                                                                             data-mat-icon-type="font">task_alt </mat-icon>
                                                                         <b> {{item.AssignedTo}}</b>
                                                                     </span>
-                                                                    <span data-toggle="tooltip" title="Project Status!"
+                                                                    <span data-toggle="tooltip" matTooltip="Project Status!"
                                                                         class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline kt-badge--unified-warning"
                                                                         ng-reflect-ng-class="[object Object]">
                                                                         <div> {{item.Status}}</div>
@@ -6828,7 +6842,7 @@
                                                                         <div
                                                                             class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1">
                                                                             <a (click)="openActionInDetails(item.Project_Code,item.ActionCode)"  class="btn px-0 mr-2 info-btn curser-pointer"  role="button" placement="right"
-                                                                            data-trigger="focus"  data-toggle="tooltip" title="View Action!" >
+                                                                            data-trigger="focus"  data-toggle="tooltip" matTooltip="View Action!" >
                                                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22" fill="none">
                                                                                 <path d="M12.2812 0.814453H2.86279C2.33236 0.814453 1.82365 1.02517 1.44858 1.40024C1.07351 1.77531 0.862793 2.28402 0.862793 2.81445V18.8145C0.862793 19.3449 1.07351 19.8536 1.44858 20.2287C1.82365 20.6037 2.33236 20.8145 2.86279 20.8145H14.8628C15.3932 20.8145 15.9019 20.6037 16.277 20.2287C16.6521 19.8536 16.8628 19.3449 16.8628 18.8145V5.48705L12.2812 0.814453Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
                                                                                 <rect x="3.06885" y="4.28076" width="6.5376" height="2.14" fill="currentColor"></rect>
@@ -6845,14 +6859,14 @@
                                                                         <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
                                                                         <div class="my-2">
                                                                             
-                                                                            <span data-toggle="tooltip" title="Created Date!"
+                                                                            <span data-toggle="tooltip" matTooltip="Created Date!"
                                                                             class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                                             
                                                                             <div>By: {{item.AssignedBy}}</div>
                                                                             </span>
 
 
-                                                                            <span data-toggle="tooltip" title="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
+                                                                            <span data-toggle="tooltip" matTooltip="Created Date!" class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                                                 <div><img src="./assets/icons/create2.png" alt="actiondate" class="badge-img"></div>
                                                                                 <div>
                                                                                     {{item.Creation_Date| date:'d MMM, y' }}
@@ -6872,7 +6886,7 @@
                                                                                 </mat-icon>
                                                                                 <b>{{item.Assigned_Name}}</b>
                                                                             </span>
-                                                                            <span data-toggle="tooltip" title="Assigned Date!"
+                                                                            <span data-toggle="tooltip" matTooltip="Assigned Date!"
                                                                                 class="kt-inbox__label kt-badge kt-badge--unified-dark kt-badge-light-bold kt-badge--inline">
                                                                                 <div>
                                                                                     {{item.Modified_DT| date:'d MMM, y'}}
@@ -6880,11 +6894,11 @@
                                                                             </span>
                                                                         </div>
                                                                         <div class="">
-                                                                            <label  data-toggle="tooltip" title="Project Type!"
+                                                                            <label  data-toggle="tooltip" matTooltip="Project Type!"
                                                                             class="kt-badge kt-hover--primary kt-bg-light-primary kt-badge--inline ver-m">
                                                                             <i class="fa fa-clone mr-2"></i>{{item.Project_type }} </label>
 
-                                                                            <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status!='Delay'"
+                                                                            <span  data-toggle="tooltip" matTooltip="Action Status!" *ngIf="item.Status!='Delay'"
                                                                                     class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline"
                                                                                     [ngClass]="{
                                                                                     'kt-badge completed ': item.Status === 'Completed',
@@ -6902,16 +6916,16 @@
                                                                                     'In-Process':item.Status}}
                                                                                 <!-- <div></div> -->
                                                                             </span>
-                                                                            <span  data-toggle="tooltip" title="Action Status!" *ngIf="item.Status=='Delay'"
+                                                                            <span  data-toggle="tooltip" matTooltip="Action Status!" *ngIf="item.Status=='Delay'"
                                                                                     class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline delay">
                                                                                 <div> {{item.Status }} {{item.Delaydays}} days</div>
                                                                             </span>
 
-                                                                            <span data-toggle="tooltip" title="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                            <span data-toggle="tooltip" matTooltip="Start Date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                                                 <div ><img src="./assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
                                                                                 <div > {{item.Start_Date|date:'d MMM, y'}}</div>
                                                                             </span>
-                                                                            <span data-toggle="tooltip" title="End Date!"  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
+                                                                            <span data-toggle="tooltip" matTooltip="End Date!"  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                                                 <div><img src="./assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
                                                                                 <div> {{item.End_Date|date:'d MMM, y'}}</div>
                                                                             </span>
@@ -6919,12 +6933,12 @@
                                                                         </div>
                                                                         <div class="mt-1 pl-2">
 
-                                                                            <span  data-toggle="tooltip" title="Attachment!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !=''"  (click)="LoadDocument(item.Reference)"><i
+                                                                            <span  data-toggle="tooltip" matTooltip="Attachment!" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !=''"  (click)="LoadDocument(item.Reference)"><i
                                                                                 class="fas fa-file-pdf text-muted mr-1"></i>
-                                                                            <a class="text-info curser-pointer" title="click To open file"
+                                                                            <a class="text-info curser-pointer" matTooltip="click To open file"
                                                                                 ><b>{{item.FileName}}</b></a></span>
 
-                                                                            <span  data-toggle="tooltip" title="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !='' && item.Remarks!= 'undefined'">
+                                                                            <span  data-toggle="tooltip" matTooltip="Remarks!" class="mr-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks !='' && item.Remarks!= 'undefined'">
                                                                                 <i class="fas fa-registered text-muted mr-1"></i>
                                                                                 <b>{{item.Remarks}}</b>
                                                                             </span>
@@ -7058,7 +7072,7 @@
                                             <span></span>
                                         </label>
                                     </div>     -->
-                                    <!-- <span class="mr-4" title="click to download">
+                                    <!-- <span class="mr-4" matTooltip="click to download">
                                         <input type="checkbox" (change)="onCheckboxChanges($event, item.url, item.File_Name)">
                                     </span> -->
                                     <div class="attach-check">
@@ -7410,12 +7424,12 @@
                                     </svg>
                                 </button>
 
-                            <button (click)="cancelAgendaEditEvent(i)" title="cancel" [id]="'edit-cancel-Event-'+i" class="editing-cancel d-none">
+                            <button (click)="cancelAgendaEditEvent(i)" matTooltip="cancel" [id]="'edit-cancel-Event-'+i" class="editing-cancel d-none">
                             <svg width="10px" height="12px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title >cancel</title><desc >Created with Sketch.</desc><g  id="icons" stroke-width="1" fill-rule="evenodd"><g  id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-2168.000000, -158.000000)" fill-rule="nonzero"><g id="1" transform="translate(1350.000000, 120.000000)"><path  d="M821.426657,38.5856848 L830.000001,47.1592624 L838.573343,38.5856848 C839.288374,37.8706535 840.421422,37.8040611 841.267835,38.4653242 L841.414315,38.5987208 C842.195228,39.3796338 842.195228,40.645744 841.414306,41.4266667 L832.840738,50 L841.414315,58.5733429 C842.129347,59.2883742 842.195939,60.4214224 841.534676,61.2678347 L841.401279,61.4143152 C840.620366,62.1952283 839.354256,62.1952283 838.573333,61.4143055 L830.000001,52.8407376 L821.426657,61.4143152 C820.711626,62.1293465 819.578578,62.1959389 818.732165,61.5346758 L818.585685,61.4012792 C817.804772,60.6203662 817.804772,59.354256 818.585694,58.5733333 L827.159262,50 L818.585685,41.4266571 C817.870653,40.7116258 817.804061,39.5785776 818.465324,38.7321653 L818.598721,38.5856848 C819.379634,37.8047717 820.645744,37.8047717 821.426657,38.5856848 Z M820.028674,60.999873 C820.023346,60.9999577 820.018018,61 820.012689,61 Z M820.161408,60.9889406 L820.117602,60.9945129 L820.117602,60.9945129 C820.132128,60.9929912 820.146788,60.9911282 820.161408,60.9889406 Z M819.865274,60.9891349 L819.883098,60.9916147 C819.877051,60.9908286 819.87101,60.9899872 819.864975,60.9890905 L819.865274,60.9891349 Z M819.739652,60.9621771 L819.755271,60.9664589 C819.749879,60.9650278 819.744498,60.9635509 819.739126,60.9620283 L819.739652,60.9621771 Z M820.288411,60.9614133 L820.234515,60.9752112 L820.234515,60.9752112 C820.252527,60.971132 820.270527,60.9665268 820.288411,60.9614133 Z M820.401572,60.921544 L820.359957,60.9380009 L820.359957,60.9380009 C820.373809,60.9328834 820.387743,60.9273763 820.401572,60.921544 Z M819.623655,60.9214803 C819.628579,60.923546 819.626191,60.9225499 819.623806,60.921544 L819.623655,60.9214803 Z M819.506361,60.8625673 L819.400002,60.7903682 C819.444408,60.8248958 819.491056,60.8551582 819.539393,60.8811554 L819.506361,60.8625673 L819.506361,60.8625673 Z M820.51858,60.8628242 L820.486378,60.8809439 L820.486378,60.8809439 C820.496939,60.8752641 820.507806,60.8691536 820.51858,60.8628242 Z M840.881155,60.4606074 L840.862567,60.4936392 L840.862567,60.4936392 L840.790368,60.5999978 C840.824896,60.555592 840.855158,60.5089438 840.881155,60.4606074 Z M840.936494,60.3386283 L840.92148,60.3763453 L840.92148,60.3763453 C840.926791,60.3637541 840.931774,60.3512293 840.936494,60.3386283 Z M840.974777,60.2110466 L840.962177,60.2603479 L840.962177,60.2603479 C840.966711,60.2443555 840.97096,60.2277405 840.974777,60.2110466 Z M840.994445,60.0928727 L840.989135,60.1347261 L840.989135,60.1347261 C840.991174,60.1210064 840.992958,60.1069523 840.994445,60.0928727 Z M839.987311,39.9996529 L830,49.9872374 L820.012689,39.9996529 L819.999653,40.0126889 L829.987237,50 L819.999653,59.9873111 L820.012689,60.0003471 L830,50.0127626 L839.987311,60.0003471 L840.000347,59.9873111 L830.012763,50 L840.000347,40.0126889 L839.987311,39.9996529 Z M840.999873,59.9713258 L840.999916,60.0003193 L840.999916,60.0003193 C841.000041,59.9907089 841.000027,59.9810165 840.999873,59.9713258 Z M840.988941,59.8385918 L840.994513,59.8823981 L840.994513,59.8823981 C840.992991,59.8678719 840.991128,59.8532122 840.988941,59.8385918 Z M840.961413,59.7115886 L840.975211,59.7654853 L840.975211,59.7654853 C840.971132,59.7474727 840.966527,59.7294733 840.961413,59.7115886 Z M840.921544,59.5984278 L840.938001,59.6400431 L840.938001,59.6400431 C840.932883,59.6261908 840.927376,59.612257 840.921544,59.5984278 Z M840.862824,59.4814199 L840.880944,59.5136217 L840.880944,59.5136217 C840.875264,59.503061 840.869154,59.4921939 840.862824,59.4814199 Z M819.119056,40.4863783 L819.134164,40.5134185 C819.128903,40.5043379 819.123796,40.4951922 819.118845,40.4859852 L819.119056,40.4863783 Z M819.061999,40.3599569 L819.075467,40.3944079 C819.070734,40.3829341 819.066223,40.3713901 819.061935,40.3597825 L819.061999,40.3599569 Z M819.024789,40.2345147 L819.033541,40.2701072 C819.030397,40.2582611 819.027473,40.2463686 819.024771,40.234436 L819.024789,40.2345147 Z M819.005077,40.1136164 L819.008385,40.1422797 C819.007138,40.1326872 819.00603,40.12308 819.005061,40.1134615 L819.005077,40.1136164 Z M819.000419,39.9836733 L819,40.0126889 C819,40.002956 819.000141,39.993223 819.000424,39.9834934 L819.000419,39.9836733 Z M819.010865,39.8652739 L819.008385,39.8830981 C819.009171,39.8770511 819.010013,39.8710099 819.010909,39.8649753 L819.010865,39.8652739 Z M819.037823,39.7396521 L819.033541,39.7552707 C819.034972,39.7498794 819.036449,39.7444978 819.037972,39.7391264 L819.037823,39.7396521 Z M819.07852,39.6236547 C819.076454,39.6285788 819.07745,39.6261907 819.078456,39.6238057 L819.07852,39.6236547 Z M819.137433,39.5063608 L819.209632,39.4000022 C819.175104,39.444408 819.144842,39.4910562 819.118845,39.5393926 L819.137433,39.5063608 L819.137433,39.5063608 Z M820.485985,39.1188446 L820.519017,39.1374327 L820.519017,39.1374327 L820.625376,39.2096318 C820.58097,39.1751042 820.534322,39.1448418 820.485985,39.1188446 Z M839.513622,39.1190561 L839.486582,39.1341644 C839.495662,39.128903 839.504808,39.1237964 839.514015,39.1188446 L839.513622,39.1190561 Z M819.539,39.1190561 L819.511959,39.1341644 C819.52104,39.128903 819.530186,39.1237964 819.539393,39.1188446 L819.539,39.1190561 Z M840.460607,39.1188446 L840.493639,39.1374327 L840.493639,39.1374327 L840.599998,39.2096318 C840.555592,39.1751042 840.508944,39.1448418 840.460607,39.1188446 Z M819.661418,39.0634885 L819.63097,39.0754675 C819.641051,39.0713084 819.651187,39.0673212 819.661372,39.0635059 L819.661418,39.0634885 Z M820.359783,39.0619346 L820.401723,39.0785197 L820.401723,39.0785197 C820.387743,39.0726237 820.373809,39.0671166 820.359783,39.0619346 Z M839.640043,39.0619991 L839.605592,39.0754675 C839.617066,39.0707338 839.62861,39.0662229 839.640217,39.0619346 L839.640043,39.0619991 Z M840.338628,39.0635059 L840.376345,39.0785197 L840.376345,39.0785197 C840.363754,39.0732095 840.351229,39.0682261 840.338628,39.0635059 Z M819.789259,39.0251536 L819.755271,39.0335411 C819.766459,39.0305713 819.777688,39.0277987 819.788953,39.0252234 L819.789259,39.0251536 Z M820.234436,39.0247709 L820.288548,39.0386257 L820.288548,39.0386257 C820.270527,39.0334732 820.252527,39.028868 820.234436,39.0247709 Z M839.765485,39.0247888 L839.729893,39.0335411 C839.741739,39.0303966 839.753631,39.0274732 839.765564,39.0247709 L839.765485,39.0247888 Z M840.211047,39.0252234 L840.260348,39.0378229 L840.260348,39.0378229 C840.244356,39.0332892 840.227741,39.0290398 840.211047,39.0252234 Z M819.911404,39.0051132 L819.883098,39.0083853 C819.892432,39.0071719 819.901779,39.0060902 819.911137,39.0051402 L819.911404,39.0051132 Z M820.113462,39.0050614 L820.161342,39.0110494 L820.161342,39.0110494 C820.145468,39.0086743 820.12948,39.006675 820.113462,39.0050614 Z M839.886384,39.005077 L839.85772,39.0083853 C839.867313,39.0071382 839.87692,39.0060303 839.886538,39.0050614 L839.886384,39.005077 Z M840.088863,39.0051402 L840.134726,39.0108651 L840.134726,39.0108651 C840.119676,39.0086288 840.104284,39.0067057 840.088863,39.0051402 Z M839.95834,39.0004173 L840.016507,39.0004238 C839.997122,38.9998609 839.977725,38.9998588 839.95834,39.0004173 Z M819.983493,39.0004238 L820.04166,39.0004173 C820.022275,38.9998588 820.002878,38.9998609 819.983493,39.0004238 Z" id="cancel"></path></g></g></g></g></svg>
                             </button>
 
 
-                            <button (click)="updateAgendaEvent(i)"  title="save" [id]="'editing-save-Event-'+i" class="editing-save-Event d-none ">
+                            <button (click)="updateAgendaEvent(i)"  matTooltip="save" [id]="'editing-save-Event-'+i" class="editing-save-Event d-none ">
                                 <svg width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6"  stroke-width="2.4" stroke-linecap="round"></path> </g></svg>
                             </button>
                             </div>
@@ -8689,11 +8703,11 @@
                                         <div class="agenda-ctrl-btns">
         
         
-                                            <button [id]="'edit-agendasname-btn-'+i"  title="Edit" class="edit-agendaname-btn" (click)="editAgendas(i)"  >
+                                            <button [id]="'edit-agendasname-btn-'+i"  matTooltip="Edit" class="edit-agendaname-btn" (click)="editAgendas(i)"  >
                                                 <svg  width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" fill="currentColor"></path> </g></svg>
                                             </button>
         
-                                            <button [id]="'remove-agendas-btn-'+i"  title="Cancel" class="remove-agenda-btn" (click)="deleteAgendas(i)">
+                                            <button [id]="'remove-agendas-btn-'+i"  matTooltip="Cancel" class="remove-agenda-btn" (click)="deleteAgendas(i)">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                     xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
                                                     role="img" font-size="1.5rem" width="1em" height="1em"
@@ -8704,7 +8718,7 @@
                                                 </svg>
                                             </button>
         
-                                        <button (click)="cancelAgendasEdit(i)" title="Cancel" [id]="'edits-cancel-'+i" class="editing-cancel d-none">
+                                        <button (click)="cancelAgendasEdit(i)" matTooltip="Cancel" [id]="'edits-cancel-'+i" class="editing-cancel d-none">
                                         <!-- <svg width="10px" height="12px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title >cancel</title><desc >Created with Sketch.</desc><g  id="icons" stroke-width="1" fill-rule="evenodd"><g  id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-2168.000000, -158.000000)" fill-rule="nonzero"><g id="1" transform="translate(1350.000000, 120.000000)"><path  d="M821.426657,38.5856848 L830.000001,47.1592624 L838.573343,38.5856848 C839.288374,37.8706535 840.421422,37.8040611 841.267835,38.4653242 L841.414315,38.5987208 C842.195228,39.3796338 842.195228,40.645744 841.414306,41.4266667 L832.840738,50 L841.414315,58.5733429 C842.129347,59.2883742 842.195939,60.4214224 841.534676,61.2678347 L841.401279,61.4143152 C840.620366,62.1952283 839.354256,62.1952283 838.573333,61.4143055 L830.000001,52.8407376 L821.426657,61.4143152 C820.711626,62.1293465 819.578578,62.1959389 818.732165,61.5346758 L818.585685,61.4012792 C817.804772,60.6203662 817.804772,59.354256 818.585694,58.5733333 L827.159262,50 L818.585685,41.4266571 C817.870653,40.7116258 817.804061,39.5785776 818.465324,38.7321653 L818.598721,38.5856848 C819.379634,37.8047717 820.645744,37.8047717 821.426657,38.5856848 Z M820.028674,60.999873 C820.023346,60.9999577 820.018018,61 820.012689,61 Z M820.161408,60.9889406 L820.117602,60.9945129 L820.117602,60.9945129 C820.132128,60.9929912 820.146788,60.9911282 820.161408,60.9889406 Z M819.865274,60.9891349 L819.883098,60.9916147 C819.877051,60.9908286 819.87101,60.9899872 819.864975,60.9890905 L819.865274,60.9891349 Z M819.739652,60.9621771 L819.755271,60.9664589 C819.749879,60.9650278 819.744498,60.9635509 819.739126,60.9620283 L819.739652,60.9621771 Z M820.288411,60.9614133 L820.234515,60.9752112 L820.234515,60.9752112 C820.252527,60.971132 820.270527,60.9665268 820.288411,60.9614133 Z M820.401572,60.921544 L820.359957,60.9380009 L820.359957,60.9380009 C820.373809,60.9328834 820.387743,60.9273763 820.401572,60.921544 Z M819.623655,60.9214803 C819.628579,60.923546 819.626191,60.9225499 819.623806,60.921544 L819.623655,60.9214803 Z M819.506361,60.8625673 L819.400002,60.7903682 C819.444408,60.8248958 819.491056,60.8551582 819.539393,60.8811554 L819.506361,60.8625673 L819.506361,60.8625673 Z M820.51858,60.8628242 L820.486378,60.8809439 L820.486378,60.8809439 C820.496939,60.8752641 820.507806,60.8691536 820.51858,60.8628242 Z M840.881155,60.4606074 L840.862567,60.4936392 L840.862567,60.4936392 L840.790368,60.5999978 C840.824896,60.555592 840.855158,60.5089438 840.881155,60.4606074 Z M840.936494,60.3386283 L840.92148,60.3763453 L840.92148,60.3763453 C840.926791,60.3637541 840.931774,60.3512293 840.936494,60.3386283 Z M840.974777,60.2110466 L840.962177,60.2603479 L840.962177,60.2603479 C840.966711,60.2443555 840.97096,60.2277405 840.974777,60.2110466 Z M840.994445,60.0928727 L840.989135,60.1347261 L840.989135,60.1347261 C840.991174,60.1210064 840.992958,60.1069523 840.994445,60.0928727 Z M839.987311,39.9996529 L830,49.9872374 L820.012689,39.9996529 L819.999653,40.0126889 L829.987237,50 L819.999653,59.9873111 L820.012689,60.0003471 L830,50.0127626 L839.987311,60.0003471 L840.000347,59.9873111 L830.012763,50 L840.000347,40.0126889 L839.987311,39.9996529 Z M840.999873,59.9713258 L840.999916,60.0003193 L840.999916,60.0003193 C841.000041,59.9907089 841.000027,59.9810165 840.999873,59.9713258 Z M840.988941,59.8385918 L840.994513,59.8823981 L840.994513,59.8823981 C840.992991,59.8678719 840.991128,59.8532122 840.988941,59.8385918 Z M840.961413,59.7115886 L840.975211,59.7654853 L840.975211,59.7654853 C840.971132,59.7474727 840.966527,59.7294733 840.961413,59.7115886 Z M840.921544,59.5984278 L840.938001,59.6400431 L840.938001,59.6400431 C840.932883,59.6261908 840.927376,59.612257 840.921544,59.5984278 Z M840.862824,59.4814199 L840.880944,59.5136217 L840.880944,59.5136217 C840.875264,59.503061 840.869154,59.4921939 840.862824,59.4814199 Z M819.119056,40.4863783 L819.134164,40.5134185 C819.128903,40.5043379 819.123796,40.4951922 819.118845,40.4859852 L819.119056,40.4863783 Z M819.061999,40.3599569 L819.075467,40.3944079 C819.070734,40.3829341 819.066223,40.3713901 819.061935,40.3597825 L819.061999,40.3599569 Z M819.024789,40.2345147 L819.033541,40.2701072 C819.030397,40.2582611 819.027473,40.2463686 819.024771,40.234436 L819.024789,40.2345147 Z M819.005077,40.1136164 L819.008385,40.1422797 C819.007138,40.1326872 819.00603,40.12308 819.005061,40.1134615 L819.005077,40.1136164 Z M819.000419,39.9836733 L819,40.0126889 C819,40.002956 819.000141,39.993223 819.000424,39.9834934 L819.000419,39.9836733 Z M819.010865,39.8652739 L819.008385,39.8830981 C819.009171,39.8770511 819.010013,39.8710099 819.010909,39.8649753 L819.010865,39.8652739 Z M819.037823,39.7396521 L819.033541,39.7552707 C819.034972,39.7498794 819.036449,39.7444978 819.037972,39.7391264 L819.037823,39.7396521 Z M819.07852,39.6236547 C819.076454,39.6285788 819.07745,39.6261907 819.078456,39.6238057 L819.07852,39.6236547 Z M819.137433,39.5063608 L819.209632,39.4000022 C819.175104,39.444408 819.144842,39.4910562 819.118845,39.5393926 L819.137433,39.5063608 L819.137433,39.5063608 Z M820.485985,39.1188446 L820.519017,39.1374327 L820.519017,39.1374327 L820.625376,39.2096318 C820.58097,39.1751042 820.534322,39.1448418 820.485985,39.1188446 Z M839.513622,39.1190561 L839.486582,39.1341644 C839.495662,39.128903 839.504808,39.1237964 839.514015,39.1188446 L839.513622,39.1190561 Z M819.539,39.1190561 L819.511959,39.1341644 C819.52104,39.128903 819.530186,39.1237964 819.539393,39.1188446 L819.539,39.1190561 Z M840.460607,39.1188446 L840.493639,39.1374327 L840.493639,39.1374327 L840.599998,39.2096318 C840.555592,39.1751042 840.508944,39.1448418 840.460607,39.1188446 Z M819.661418,39.0634885 L819.63097,39.0754675 C819.641051,39.0713084 819.651187,39.0673212 819.661372,39.0635059 L819.661418,39.0634885 Z M820.359783,39.0619346 L820.401723,39.0785197 L820.401723,39.0785197 C820.387743,39.0726237 820.373809,39.0671166 820.359783,39.0619346 Z M839.640043,39.0619991 L839.605592,39.0754675 C839.617066,39.0707338 839.62861,39.0662229 839.640217,39.0619346 L839.640043,39.0619991 Z M840.338628,39.0635059 L840.376345,39.0785197 L840.376345,39.0785197 C840.363754,39.0732095 840.351229,39.0682261 840.338628,39.0635059 Z M819.789259,39.0251536 L819.755271,39.0335411 C819.766459,39.0305713 819.777688,39.0277987 819.788953,39.0252234 L819.789259,39.0251536 Z M820.234436,39.0247709 L820.288548,39.0386257 L820.288548,39.0386257 C820.270527,39.0334732 820.252527,39.028868 820.234436,39.0247709 Z M839.765485,39.0247888 L839.729893,39.0335411 C839.741739,39.0303966 839.753631,39.0274732 839.765564,39.0247709 L839.765485,39.0247888 Z M840.211047,39.0252234 L840.260348,39.0378229 L840.260348,39.0378229 C840.244356,39.0332892 840.227741,39.0290398 840.211047,39.0252234 Z M819.911404,39.0051132 L819.883098,39.0083853 C819.892432,39.0071719 819.901779,39.0060902 819.911137,39.0051402 L819.911404,39.0051132 Z M820.113462,39.0050614 L820.161342,39.0110494 L820.161342,39.0110494 C820.145468,39.0086743 820.12948,39.006675 820.113462,39.0050614 Z M839.886384,39.005077 L839.85772,39.0083853 C839.867313,39.0071382 839.87692,39.0060303 839.886538,39.0050614 L839.886384,39.005077 Z M840.088863,39.0051402 L840.134726,39.0108651 L840.134726,39.0108651 C840.119676,39.0086288 840.104284,39.0067057 840.088863,39.0051402 Z M839.95834,39.0004173 L840.016507,39.0004238 C839.997122,38.9998609 839.977725,38.9998588 839.95834,39.0004173 Z M819.983493,39.0004238 L820.04166,39.0004173 C820.022275,38.9998588 820.002878,38.9998609 819.983493,39.0004238 Z" id="cancel"></path></g></g></g></g></svg>
                                         -->
 
@@ -8713,7 +8727,7 @@
                                     </button>
         
         
-                                        <button (click)="updateAgendas(i)"  title="Save" [id]="'editings-save-'+i" class="editing-save d-none ">
+                                        <button (click)="updateAgendas(i)"  matTooltip="Save" [id]="'editings-save-'+i" class="editing-save d-none ">
                                             <svg width="21px" height="25px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 14L8.23309 16.4248C8.66178 16.7463 9.26772 16.6728 9.60705 16.2581L18 6"  stroke-width="2.4" stroke-linecap="round"></path> </g></svg>
                                         </button>
                                         </div>
@@ -8898,7 +8912,7 @@
                                                 <div class="file-name">{{url.FileName}} <span class="text-muted">({{url.Size}}kb)</span></div>
                                             </div>
                                             <div  class="file-remove">
-                                                <span (click)="RemoveSelectedFile(url.UniqueId)" title="remove" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
+                                                <span (click)="RemoveSelectedFile(url.UniqueId)" matTooltip="remove" class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
                                             </div>
                                     </div>
                                     </li>
@@ -8913,7 +8927,7 @@
                                                 <div class="file-name">{{url.File_Name}}</div>
                                             </div>
                                             <div  class="file-remove">
-                                                <span (click)="RemoveExistingFile(url.file_id)" title="remove"  class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
+                                                <span (click)="RemoveExistingFile(url.file_id)" matTooltip="remove"  class="slect-close"><svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path> </g></svg></span>
                                             </div>
                                         </div>
                                     </li>
@@ -10013,7 +10027,7 @@
                                                     <!-- <img alt="img"
                                                         src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/672189_anounce1.jpg"
                                                         class="ng-star-inserted"> -->
-                                                        <div data-toggle="tooltip" data-placement="top" title=""
+                                                        <div data-toggle="tooltip" data-placement="top" matTooltip=""
                                                             class="user-icon-round" style="width: 25px; height: 25px;">
                                                             <span class="user-Ltr bg-primary text-inverse-warning fw-bold" style="font-size: 15px;">{{item.TM_DisplayName[0]}}</span>
                                                         </div>
@@ -10509,7 +10523,7 @@
                         <div class="kt-inbox__labels">
                             <span
                                 class="kt-inbox__label kt-badge kt-badge--unified-primary kt-badge.kt-badge-light-bold kt-badge--inline   fs-7  p-1 m-1"
-                                title="Owner">
+                                matTooltip="Owner">
                                 <!-- {{projectInfo.Owner}} -->
                                 {{item.Created_by}}
                             </span>

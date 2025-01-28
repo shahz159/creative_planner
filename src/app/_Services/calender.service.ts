@@ -548,4 +548,12 @@ NewUpdateMeetingBookmark(obj:CalenderDTO){
 }
 
 
+GetBookmarkMeetingsList(obj:CalenderDTO){
+
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No
+ 
+  return this.http.post(this.rootUrl+'CalenderAPI/NewGetBookmarkMeetings',this.obj_CalenderDTO)
+}
+
+
 }

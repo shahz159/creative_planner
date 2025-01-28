@@ -16,6 +16,7 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
+import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 
 
 declare var $: any;
@@ -221,7 +222,8 @@ export class StreamCalendarComponent implements OnInit {
     public _LinkService: LinkService, 
     public dateAdapter: DateAdapter<Date>,
     public datepipe: DatePipe,
-    public approvalservice: ApprovalsService
+    public approvalservice: ApprovalsService,
+    public service: ProjectTypeService,
   ) { 
     this._lstMultipleFiales = [];
     this._calenderDto = new CalenderDTO;
@@ -246,7 +248,7 @@ export class StreamCalendarComponent implements OnInit {
 
 
   ngOnInit(): void {
-    
+ 
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.initAutosize();
     this.initFirstclass();
@@ -267,7 +269,7 @@ export class StreamCalendarComponent implements OnInit {
     });
     this.loadingDMS = false;
     this.GetScheduledJson();
-
+    this.getDayReportSummary();
 
     this.calendarOptions = {
       initialView: 'listWeek',
@@ -326,6 +328,7 @@ export class StreamCalendarComponent implements OnInit {
      this.GetPending_Request();
      this.Getdraft_datalistmeeting(); 
      this.getMeetingApprovals();
+     this.BookmarkMeetingsList();
   }
 
 
@@ -709,10 +712,13 @@ debugger
   }
   bookmark_list_open(){
     document.getElementById("bookmark-list").classList.add("quickaction-open");
+    this.BookmarkMeetingsList();
   }
   bookmark_list_close(){
     document.getElementById("bookmark-list").classList.remove("quickaction-open");
   }
+
+
 /////////////////////////////////////////// Create Event and Create Task sidebar start /////////////////////////////////////////////////////////
 
 
@@ -905,6 +911,7 @@ activeDraftMeeting:any;
 SearchOfDraftItem: any;
 activePendingMeeting:any;
 draft_arry: any = [];
+showLoader:boolean = false;
 
 
 
@@ -3185,7 +3192,7 @@ getEventsForWeeks(weeksFromToday: number) {
   }
 debugger
 
-if(weeksFromToday === 0  && this.selectDay){
+if(weeksFromToday === 4  && this.selectDay){
   var formattedDate = this.selectDay.toDate();
 }else{
   formattedDate = undefined;
@@ -3714,6 +3721,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
       this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
       this.propose_date=Schedule_date;
       console.log(this.EventScheduledjson, "Testing12");
+      this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       this.Link_Detail = this.EventScheduledjson[0].Link_Details;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
       this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -6088,6 +6096,7 @@ filterPending(type: 'date' | 'meeting'): void {
   
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Pending list popup box Testing ");
+        this.BookMarks = this.EventScheduledjson[0].IsBookMark;
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
@@ -6389,7 +6398,7 @@ filterDraft(type : 'date'|'meeting'):void{
   }
 
   newSelectedDate(){
-    this.getEventsForWeeks(0);
+    this.getEventsForWeeks(4);
   }
 /////////////////////////////////////////// Draft meeting list End /////////////////////////////////////////////////////////
 
@@ -6401,7 +6410,7 @@ BookMarks:boolean;
 MeetingBookmark(flagid:any) {
   if (this.isSubmitting) return;
   this.isSubmitting = true;
-
+  debugger 
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.flagid = flagid;
@@ -6413,7 +6422,7 @@ MeetingBookmark(flagid:any) {
         this._calenderDto.Schedule_ID=this.Schedule_ID;
 
         this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-        ((data) => {      debugger 
+        ((data) => {    
           this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
           this.BookMarks = this.EventScheduledjson[0].IsBookMark;
           if(this.BookMarks){
@@ -6422,6 +6431,7 @@ MeetingBookmark(flagid:any) {
             this.notifyService.showSuccess("Bookmark deleted", "Success");
           }
           this.isSubmitting = false;
+          this.BookmarkMeetingsList();
         })  
       }   
     });
@@ -6429,10 +6439,140 @@ MeetingBookmark(flagid:any) {
 
 
 
+
+
+SearchOfBookmarkItem:any;
+meetingbookmarks:any;
+totalbookmarkslist:any;
+
+BookmarkMeetingsList() {
+
+  this._calenderDto.Emp_No = this.Current_user_ID;
+
+  this.CalenderService.GetBookmarkMeetingsList(this._calenderDto).subscribe
+    ((data) => {
+debugger
+          this.meetingbookmarks = JSON.parse(data['meetingbookmarks']);
+          this.totalbookmarkslist =this.meetingbookmarks.length;
+          console.log(this.meetingbookmarks,'book mark list data')
+  })
+}
+
+
+
+
+Bookmark_Delete(Scheduleid:any) {
+  Swal.fire({
+    title: `Delete bookmark`,
+    text: `Are you sure you want to delete this bookmark? This action cannot be undone.`,
+    showConfirmButton: true,
+    showCancelButton: true
+  }).then(choice => {
+    if (choice.isConfirmed) { 
+      this.Schedule_ID=Scheduleid
+      this.MeetingBookmark(2);      
+    }
+  });
+}
+
 /////////////////////////////////////////// Bookmarks meeting list end /////////////////////////////////////////////////////////
 
 
+/////////////////////////////////////////// Timeline start /////////////////////////////////////////////////////////
 
+
+
+
+daySummaryReport:any;
+dueTodayTasksCount:{taskType:string,count:number}[]=[];
+reportCount:any;
+
+getDayReportSummary(){
+  this.service.NewGetEmployeePerformance(this.Current_user_ID).subscribe((res:any)=>{
+
+      if(res&&res.EmployeeReport){
+             this.daySummaryReport=JSON.parse(res.EmployeeReport)[0];
+            this.dueTodayTasksCount=[];
+            ['ActionsDueToday','ProjectsDueToday','StandardDueToday'].forEach((dkey)=>{
+              if(this.daySummaryReport[dkey]>0){
+                    const ob={ taskType:dkey, count:this.daySummaryReport[dkey] };
+                    this.dueTodayTasksCount.push(ob);
+              }
+            });
+      }
+      this.reportCount = ["NewProjectRejected", "AssignedTasksDue", "ActionsDelayed", "ProjectsDelayed", "StandardDelayed"]
+      .filter(key => this.daySummaryReport[key] > 0).length;
+
+      console.log("daySummaryReport:",this.reportCount);
+
+      if(this.reportCount){
+        this.showLoader=true;
+        setTimeout(()=>{ this.showLoader=false; },5000)
+      }      
+   
+  })
+}
+
+
+
+viewActions(type:'COMPLETED'|'DUE'|'DELAYED'){
+  if(type=='DELAYED')
+  {
+    let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Actions&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
+    let myWindow = window.open(myurl,'_blank');
+    myWindow?.focus();
+  }
+}
+
+
+viewProjects(type:'COMPLETED'|'DUE'|'DELAYED'){
+  if(type=='DELAYED')
+  {
+    let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Projects&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
+    let myWindow = window.open(myurl,'_blank');
+    myWindow?.focus();
+  }
+}
+
+
+
+viewStandardTasks(type:'COMPLETED'|'DELAYED'){
+  if(type=='DELAYED')
+  {
+
+   let myurl = document.baseURI+'/backend/ProjectsSummary';
+   let myWindow = window.open(myurl,'_blank');
+   const obj={
+     EmpNo:this.Current_user_ID,
+     ProjectType:'003',
+     Status:'InProcess',
+   };
+   myWindow?.sessionStorage.setItem('filterprjsby',JSON.stringify(obj));
+   myWindow?.focus();
+
+  }
+}
+
+
+
+viewTasks(){
+  let myurl = document.baseURI+'/backend/createproject?AssignedProjectId=none';
+  let myWindow = window.open(myurl,'_blank');
+  myWindow?.focus();
+}
+
+
+page_Name: string = "ViewProjects";
+Rejected_Click() {
+
+  let Mode: string = "Rejected";
+  var url = document.baseURI + this.page_Name;
+  var myurl = `${url}/${Mode}`;
+  var myWindow = window.open(myurl);
+  myWindow.focus();
+
+}
+/////////////////////////////////////////// Timeline end /////////////////////////////////////////////////////////
 
 
 }

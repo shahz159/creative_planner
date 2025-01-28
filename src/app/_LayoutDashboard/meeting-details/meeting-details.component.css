@@ -8819,3 +8819,26 @@ svg.asseticn.prim-icn.memo_attachment_img {
     text-overflow: ellipsis;
     position: relative;
 }
+
+
+
+.custom-evt-tsk-action-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #5f6368;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.custom-evt-tsk-action-icon:hover {
+    background-color: #f3f3f3;
+}
+
+.custom-evt-tsk-action-icon svg {
+    width: 20px;
+    height: 20px;
+}
