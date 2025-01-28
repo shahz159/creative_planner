@@ -22,6 +22,7 @@ import {
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/core';
 import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
+import { HttpEvent } from '@angular/common/http';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -295,17 +296,7 @@ else {
       console.log("Sending Obj..",this._ObjAssigntaskDTO)
       const fd = new FormData();
       fd.append("AssignTo", this._ObjAssigntaskDTO.AssignTo);
-      if (this.fileAttachment != null) {
-        if (this.fileAttachment.length > 0) {
-          fd.append("Attachment", "true");
-          fd.append('file', this.fileAttachment[0].Files);
-          console.log(this.fileAttachment, 'files')
-        }
-      }
-      else {
-        fd.append("Attachment", "false");
-        fd.append('file', "");
-      }
+      
       fd.append("TaskName", this._taskName);
       fd.append("Desc", this._description);
       fd.append("StartDate", datestrStart);
@@ -315,6 +306,7 @@ else {
       fd.append("TypeofTask", this.typeoftask);
       fd.append("Remarks", this._remarks);
       fd.append("ProjectType", this.selectedProjectType);
+      fd.append("contentType",this.contentType);
       if (this.task_id != null) {
         fd.append("AssignId", this.task_id.toString());
       }
@@ -327,14 +319,32 @@ else {
         this.port_id=0;
       }
       fd.append("Portfolio_Id", this.port_id);
+      if ( this.fileAttachment) {
+        fd.append("Attachment", "true");
+      }
+      else {
+        fd.append("Attachment", "false");
+        fd.append('file', "");
+      }
 
-      this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
+      // this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
+      this.ProjectTypeService._InsertAssignTaskServieCore(fd).subscribe(
         (data) => {
+          if(data['message']=="Assigned Successfully" && this.fileAttachment){
+            fd.append('file', this.fileAttachment);
+            fd.append('TaskName',data['taskName']);
+            this.ProjectTypeService._AzureAssigntaskCore(fd).subscribe((event1: HttpEvent<any>) => {
+              console.log(event1,"azure data");
+              var myJSON = JSON.stringify(event1);
+            //  this._Message = (JSON.parse(myJSON).body);
+  
+            });
+          }
           console.log(data,'atattachmeatattachmeatattachmeatattachme')
           if (this._Urlid == 1) {
             this._projectunplanned.getCatid();
             this.router.navigate(["UnplannedTask/"]);
-            let message: string = data['Message'];
+            let message: string = data['message'];
             this.notifyService.showSuccess("Task sent to assign projects", message);
 
             this.clearFeilds();
@@ -345,7 +355,7 @@ else {
 
             this._meetingreport.getScheduleId();
             this._meetingreport.GetAssigned_SubtaskProjects();
-            let message: string = data['Message'];
+            let message: string = data['message'];
             this.notifyService.showSuccess("Task sent to assign projects", message);
 
             this.clearFeilds();
@@ -356,7 +366,7 @@ else {
 
             this._meetingDetails.getDetailsScheduleId();
             this._meetingDetails.GetAssigned_SubtaskProjects();
-            let message: string = data['Message'];
+            let message: string = data['message'];
             this.notifyService.showSuccess("Task sent to assign projects", message);
 
             this.clearFeilds();
@@ -366,6 +376,14 @@ else {
 
         });
     }
+  }
+
+  getFileExtension(fileName: any): string | null {
+    if (!fileName) {
+      return null;
+    }
+    const lastDotIndex = fileName.lastIndexOf('.');
+    return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : null;
   }
   // this.OnCategoryClick(this._Categoryid, this._CategoryName);
   // this._TodoList = JSON.parse(data['TodoList']);
@@ -456,6 +474,8 @@ else {
   selectFile() {
     this.fileInput.nativeElement.click();
   }
+  
+  contentType:string="";
 
   onFileChanged(event: any) {
     const files: File[] = event.target.files;
@@ -467,6 +487,8 @@ else {
       this.file = null;
       this.fileAttachment = null;
     }
+    console.log('File Object:', this.file);
+    this.contentType=this.getFileExtension(this.fileAttachment.name);
     // Reset file input value to allow selecting the same file again
     this.fileInput.nativeElement.value = '';
   }

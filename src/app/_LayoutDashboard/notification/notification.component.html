@@ -8,7 +8,7 @@
 
     <div class="col-lg-12">
       <!--begin:: Widgets/Authors Profit-->
-      <div class="kt-portlet kt-portlet--bordered-semi mb-2">
+      <div class="kt-portlet kt-portlet--bordered-semi mb-2 ">
         <div class="kt-portlet__head">
           <div class="d-flex">
             <div class="kt-portlet__head-label dropdown">
@@ -16,99 +16,144 @@
               <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                <strong *ngIf="sendtype=='Req'">Project approval</strong>
-                <strong *ngIf="sendtype=='Res'">Information</strong>
+                <strong *ngIf="currentPageContent=='PROJECT APPROVALS'">Project approval</strong>
+                <strong *ngIf="currentPageContent=='INFORMATION'">Information</strong>
+                <!-- <strong *ngIf="currentPageContent=='LEAVE REQUESTS'">Leave requests</strong>
+                <strong *ngIf="currentPageContent=='LEAVE RESPONSES'">Leave responses</strong>
+                <strong *ngIf="currentPageContent=='DAR REQUESTS'">Dar requests</strong>
+                <strong *ngIf="currentPageContent=='DAR RESPONSES'">Dar responses</strong> -->
               </h3>
 
-              <div class="dropdown-menu dropdown-menu-xl" id="dropd">
+              <div class="dropdown-menu dropdown-menu-xl px-2" id="dropd" style="margin-top: 21px; margin-left: -24px;">
+      
                 <div class="drop-ul">
-                    <!-- <li class="dropdown-header">Filter by</li> -->
-                    <span  (click)="showPrjAprv();Leaveapprovaltab(); titleapp(); viewAll(type1);onButtonClick('tot')">
-                        <button id="tot" class="btn btn-filtr active">
-                            <div class="d-flex align-items-center">
-                                <span class="count tot">{{WScount}}</span>
-                                <div  class="fil-lbl">Project approval</div>
-                                <span class="chck-icn">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        width="16" height="16"
-                                        fill="currentColor" class="bi bi-check2"
-                                        viewBox="0 0 16 16">
-                                        <path
-                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                        </path>
-                                    </svg>
-                                </span>
-                            </div>
-                        </button>
-                    </span>
 
-                    <!-- onButtonClick('inn') -->
-                    <span  (click)="showPrjAprv();Leaveapprovaltab(); titleinfo(); viewAll(type2);onButtonClick('inn')">
-                        <button  id="inn" class="btn btn-filtr">
-                            <div class="d-flex align-items-center">
-                                <span class="count in-pro">{{WRcount}}</span>
-                                <div class="fil-lbl">Information</div>
-                                <span class="chck-icn">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        width="16" height="16"
-                                        fill="currentColor" class="bi bi-check2"
-                                        viewBox="0 0 16 16">
-                                        <path
-                                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                        </path>
-                                    </svg>
-                                </span>
-                            </div>
-                        </button>
-                    </span>
-                </div>
+                <span (click)="setPageContent('PROJECT APPROVALS')">
+                    <button id="tot" class="btn btn-filtr" [ngClass]="{'active':currentPageContent=='PROJECT APPROVALS'}">
+                          <div class="d-flex align-items-center">
+                              <span class="count tot  pj-aprvls">{{WScount}}</span>
+                              <div  class="fil-lbl">Project approval</div>
+                              <span class="chck-icn">
+                                  <svg xmlns="http://www.w3.org/2000/svg"
+                                      width="16" height="16"
+                                      fill="currentColor" class="bi bi-check2"
+                                      viewBox="0 0 16 16">
+                                      <path
+                                          d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                      </path>
+                                  </svg>
+                              </span>
+                          </div>
+                    </button>
+                </span>
+
+                <span (click)="setPageContent('INFORMATION')" >
+                  <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':currentPageContent=='INFORMATION'}">
+                          <div class="d-flex align-items-center">
+                              <span class="count infors">{{WRcount}}</span>
+                              <div class="fil-lbl">Information</div>
+                              <span class="chck-icn">
+                                  <svg xmlns="http://www.w3.org/2000/svg"
+                                      width="16" height="16"
+                                      fill="currentColor" class="bi bi-check2"
+                                      viewBox="0 0 16 16">
+                                      <path
+                                          d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                      </path>
+                                  </svg>
+                              </span>
+                          </div>
+                  </button>
+                </span>
+
+                <span class="d-none" (click)="setPageContent('LEAVE REQUESTS')">
+                    <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':currentPageContent=='LEAVE REQUESTS'}">
+                        <div class="d-flex align-items-center">
+                            <span *ngIf="leave_Requests" class="count lv-reqs">{{leave_Requests.length}}</span>
+                            <div class="fil-lbl">Leave requests</div>
+                            <span class="chck-icn">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16"
+                                    fill="currentColor" class="bi bi-check2"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </div>
+                    </button>
+                </span>
+
+                <span class="d-none" (click)="setPageContent('LEAVE RESPONSES')">
+                  <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':currentPageContent=='LEAVE RESPONSES'}">
+                      <div class="d-flex align-items-center">
+                          <span *ngIf="_newNotificationLeave" class="count lv-resps">{{_newNotificationLeave.length}}</span>
+                          <div class="fil-lbl">Leave responses</div>
+                          <span class="chck-icn">
+                              <svg xmlns="http://www.w3.org/2000/svg"
+                                  width="16" height="16"
+                                  fill="currentColor" class="bi bi-check2"
+                                  viewBox="0 0 16 16">
+                                  <path
+                                      d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                  </path>
+                              </svg>
+                          </span>
+                      </div>
+                  </button>
+                </span>
+
+                <span class="d-none" (click)="setPageContent('DAR REQUESTS')">
+                  <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':currentPageContent=='DAR REQUESTS'}">
+                      <div class="d-flex align-items-center">
+                          <span class="count dr-reqs">0</span>
+                          <div class="fil-lbl">Dar requests</div>
+                          <span class="chck-icn">
+                              <svg xmlns="http://www.w3.org/2000/svg"
+                                  width="16" height="16"
+                                  fill="currentColor" class="bi bi-check2"
+                                  viewBox="0 0 16 16">
+                                  <path
+                                      d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                  </path>
+                              </svg>
+                          </span>
+                      </div>
+                  </button>
+                </span>
+
+                <span class="d-none" (click)="setPageContent('DAR RESPONSES')">
+                  <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':currentPageContent=='DAR RESPONSES'}">
+                      <div class="d-flex align-items-center">
+                          <span class="count dr-resps">0</span>
+                          <div class="fil-lbl">Dar responses</div>
+                          <span class="chck-icn">
+                              <svg xmlns="http://www.w3.org/2000/svg"
+                                  width="16" height="16"
+                                  fill="currentColor" class="bi bi-check2"
+                                  viewBox="0 0 16 16">
+                                  <path
+                                      d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                  </path>
+                              </svg>
+                          </span>
+                      </div>
+                  </button>
+                </span>
+
+
+                 </div>
+          
              </div>
-              <!-- <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonPrjAprv">
-                <a [ngClass]="{ 'dropdown-item': true, 'active': (sendtype=='Req' && selectedDropdown === 'ProjectApproval') }"
-                  (click)="showPrjAprv();Leaveapprovaltab(); titleapp(); viewAll(type1); selectedDropdown = 'ProjectApproval';">
-                  <span class="count">{{WScount}}</span>&nbsp;&nbsp;&nbsp;&nbsp; <span class="fil-lbl">Project approval</span>
-                </a>
-
-                <a [ngClass]="{ 'dropdown-item': true, 'active': (sendtype=='Res' && selectedDropdown === 'Information') }"
-                  (click)="showPrjAprv();Leaveapprovaltab(); titleinfo(); viewAll(type2); selectedDropdown = 'Information';">
-                  <span class="count">{{WRcount}}</span>&nbsp; <span class="fil-lbl">Information</span>
-                </a>
-              </div> -->
-
-              <div *ngIf="sendtype=='Req' && selectedItems.length >0" style="display:none">
-                <button class="btn btn-outline-success btn-sm mr-2 fs-7"
-                  (click)="acceptSelectedValues()">Accept</button>
-                <button class="btn btn-outline-danger btn-sm fd-7" (click)="rejectpros()">Reject</button>
-              </div>
+            
               <div *ngIf="sendtype=='Res' && selectedItems.length >0">
                 <button class="btn btn-outline-success btn-sm mr-2" (click)="clearResponses()">Clear responses</button>
               </div>
             </div>
-           <!-- <button class="btn btn-outline-success btn-sm mr-2" (click)="leaveform(Current_user_ID,Leave_Code.trim())">sample</button>  -->
-           <!-- style="display: none;" -->
-             <div class="kt-portlet__head-label" >
-
-              <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                <strong>{{ leavePanelTitle }}</strong>
-
-              </h3>
-              <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButtonLeaveApr">
-                <a (click)="showLeaveAprv(); titlereq(); changeLeavePanel('REQUESTS');" class="dropdown-item"
-                  [ngClass]="{'selected-item-blue': leavePanel === 'REQUESTS' && isSelectedBlue, 'active': selectedDropdown === 'LeaveApproval'}">
-                  Leave Requests
-                </a>
-
-                <a (click)="showLeaveAprv(); titleres(); changeLeavePanel('RESPONSES');" class="dropdown-item"
-                  [ngClass]="{'selected-item-blue': leavePanel === 'RESPONSES' && isSelectedBlue, 'active': selectedDropdown === 'LeaveApproval'}">
-                  Leave Responses
-                </a>
-              </div>
-            </div>
           </div>
 
-          <div class="kt-portlet__head-label mr-2">
+          <div *ngIf="currentPageContent=='PROJECT APPROVALS'||currentPageContent=='INFORMATION'"  class="kt-portlet__head-label mr-2">
             <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
               <div class="kt-header__topbar-wrapper">
                 <div class="kt-quick-search kt-quick-search--inline">
@@ -279,44 +324,94 @@
         </div>
       </div>
 
-
-
       <div *ngIf="sendtype=='Req' && selectedItems.length >0" class=" bg-white p-2 px-3 rounded d-flex align-items-center justify-content-between">
-        
+
         <div class="">
-          <button  (click)="acceptSelectedValues()" class="btn btn-outline-success btn-sm mr-2 fs-7  d-inline-flex gap-1   ">
+
+          <div class="btn-group mr-2" role="group">
+            <button type="button" class="btn btn-outline-success btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <!-- <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" style="stroke: currentColor; stroke-width: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="checkmark"> <line class="cls-1" x1="3" x2="12" y1="16" y2="25"></line> <line class="cls-1" x1="12" x2="29" y1="25" y2="7"></line> </g> </g></svg> -->
+              <span class="fs-8" style="font-weight:500">Accept</span>
+            </button>
+            <div class="dropdown-menu drop-cus" style="margin-top:4px !important; border: 2px solid rgb(30, 197, 180) !important;" >
+                <a class="dropdown-item gap-2 align-items-center"  (click)="acceptSelectedValues()">
+                  Accept
+                  <svg width="15px" height="15px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" style="stroke:  rgb(63 67 70); stroke-width: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="checkmark"> <line class="cls-1" x1="3" x2="12" y1="16" y2="25"></line> <line class="cls-1" x1="12" x2="29" y1="25" y2="7"></line> </g> </g></svg>
+                </a>
+                <a class="dropdown-item gap-2 align-items-center" (click)="onAcceptWithCmtsBtnClicked()">
+                  Accept with comments
+                  <svg style="fill:rgb(63 67 70);" width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.093,1.293l-11.2,11.2a.99.99,0,0,0-.242.391l-1.6,4.8A1,1,0,0,0,5,19a1.014,1.014,0,0,0,.316-.051l4.8-1.6a1.006,1.006,0,0,0,.391-.242l11.2-11.2a1,1,0,0,0,0-1.414l-3.2-3.2A1,1,0,0,0,17.093,1.293ZM9.26,15.526l-2.679.893.893-2.679L17.8,3.414,19.586,5.2ZM3,21H20a1,1,0,0,1,0,2H3a1,1,0,0,1,0-2Z"></path></g></svg>
+                </a>
+            </div>
+        </div>
+        <button (click)="rejectpros()" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
+          <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="stroke: currentColor; stroke-width: 3px; stroke-linecap: butt;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="cross"> <line class="cls-1" x1="7" x2="25" y1="7" y2="25"></line> <line class="cls-1" x1="7" x2="25" y1="25" y2="7"></line> </g> </g></svg>
+          <span class="fs-8" style="font-weight:500">Reject</span>
+        </button>
+
+
+
+          <!-- <button  (click)="acceptSelectedValues()" class="btn btn-outline-success btn-sm mr-2 fs-7  d-inline-flex gap-1   ">
             <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" style="stroke: currentColor; stroke-width: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="checkmark"> <line class="cls-1" x1="3" x2="12" y1="16" y2="25"></line> <line class="cls-1" x1="12" x2="29" y1="25" y2="7"></line> </g> </g></svg>
             <span class="fs-8" style="font-weight:500">Accept</span>
           </button>
           <button (click)="onAcceptWithCmtsBtnClicked()" class="btn btn-outline-success btn-sm mr-2 fs-7  d-inline-flex gap-1">
             <svg fill="currentColor" width="17px" height="17px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.093,1.293l-11.2,11.2a.99.99,0,0,0-.242.391l-1.6,4.8A1,1,0,0,0,5,19a1.014,1.014,0,0,0,.316-.051l4.8-1.6a1.006,1.006,0,0,0,.391-.242l11.2-11.2a1,1,0,0,0,0-1.414l-3.2-3.2A1,1,0,0,0,17.093,1.293ZM9.26,15.526l-2.679.893.893-2.679L17.8,3.414,19.586,5.2ZM3,21H20a1,1,0,0,1,0,2H3a1,1,0,0,1,0-2Z"></path></g></svg>
             <span class="fs-8" style="font-weight:500">Accept with Comments</span>
-          </button>
-          <button (click)="rejectpros()" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
-            <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="stroke: currentColor; stroke-width: 3px; stroke-linecap: butt;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="cross"> <line class="cls-1" x1="7" x2="25" y1="7" y2="25"></line> <line class="cls-1" x1="7" x2="25" y1="25" y2="7"></line> </g> </g></svg>
-            <span class="fs-8" style="font-weight:500">Reject</span>
-          </button>
+          </button> -->
+
       </div>
       <span class="fs-6 text-muted font-weight-bold">{{selectedItems.length}} selected</span>
-    </div>
+      </div>
 
 
+      <div *ngIf="currentPageContent=='DAR REQUESTS' && selectedDarReqs.length >0" class=" bg-white p-2 px-3 rounded d-flex align-items-center justify-content-between">
+
+        <div class="">
+
+          <div class="btn-group mr-2" role="group">
+            <button type="button" class="btn btn-outline-success btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <!-- <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" style="stroke: currentColor; stroke-width: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="checkmark"> <line class="cls-1" x1="3" x2="12" y1="16" y2="25"></line> <line class="cls-1" x1="12" x2="29" y1="25" y2="7"></line> </g> </g></svg> -->
+              <span class="fs-8" style="font-weight:500">Accept</span>
+            </button>
+            <div class="dropdown-menu drop-cus" style="margin-top:4px !important; border: 2px solid rgb(30, 197, 180) !important;" >
+                <a class="dropdown-item gap-2 align-items-center"  (click)="0">
+                  Accept
+                  <svg width="15px" height="15px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" style="stroke:  rgb(63 67 70); stroke-width: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="checkmark"> <line class="cls-1" x1="3" x2="12" y1="16" y2="25"></line> <line class="cls-1" x1="12" x2="29" y1="25" y2="7"></line> </g> </g></svg>
+                </a>
+                <a class="dropdown-item gap-2 align-items-center" (click)="0">
+                  Accept with bonus
+                  <svg style="fill:rgb(63 67 70);" width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.093,1.293l-11.2,11.2a.99.99,0,0,0-.242.391l-1.6,4.8A1,1,0,0,0,5,19a1.014,1.014,0,0,0,.316-.051l4.8-1.6a1.006,1.006,0,0,0,.391-.242l11.2-11.2a1,1,0,0,0,0-1.414l-3.2-3.2A1,1,0,0,0,17.093,1.293ZM9.26,15.526l-2.679.893.893-2.679L17.8,3.414,19.586,5.2ZM3,21H20a1,1,0,0,1,0,2H3a1,1,0,0,1,0-2Z"></path></g></svg>
+                </a>
+            </div>
+        </div>
+        <button (click)="0" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
+          <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="stroke: currentColor; stroke-width: 3px; stroke-linecap: butt;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="cross"> <line class="cls-1" x1="7" x2="25" y1="7" y2="25"></line> <line class="cls-1" x1="7" x2="25" y1="25" y2="7"></line> </g> </g></svg>
+          <span class="fs-8" style="font-weight:500">Reject</span>
+        </button>
+
+      </div>
+      <span class="fs-6 text-muted font-weight-bold">{{selectedDarReqs.length}} selected</span>
+      </div>
 
 
 
       <div class="not-title">
-        <h5 id="titlepro" style="display: block;">Project approvals</h5>
-        <h5 id="titleinfo" style="display: none;">Information</h5>
-        <h5 id="titlereq" style="display: none;">
-          Leave requests
-          <span *ngIf="leave_Requests&&leave_Requests.length>0" class="text-muted fs-8 d-block">Total : {{leave_Requests.length}}</span>
+        <h5 *ngIf="currentPageContent=='PROJECT APPROVALS'" id="titlepro">Project approvals</h5>
+        <h5 *ngIf="currentPageContent=='INFORMATION'" id="titleinfo">Information</h5>
+        <h5 *ngIf="currentPageContent=='LEAVE REQUESTS'" id="titlereq">Leave requests
+           <span *ngIf="leave_Requests&&leave_Requests.length>0" class="text-muted fs-8 d-block">Total : {{leave_Requests.length}}</span>
         </h5>
-        <h5 id="titleres" style="display: none;">Leave responses</h5>
+        <h5 *ngIf="currentPageContent=='LEAVE RESPONSES'" id="titleres">Leave responses</h5>
+        <h5 *ngIf="currentPageContent=='DAR REQUESTS'" id="titleres">Dar requests
+          <span *ngIf="darRequests&&darRequests.length>0" class="text-muted fs-8 d-block">Total : {{darRequests.length}}</span>
+        </h5>
+        <h5 *ngIf="currentPageContent=='DAR RESPONSES'" id="titleres">Dar responses</h5>
       </div>
 
       <div class="kt-portlet">
 
-        <div class="kt-portlet__body kt-portlet__body_scroll px-1 py-3">
+        <div class="kt-portlet__body kt-portlet__body_scroll px-0 py-0">
 
 
           <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"  [ngClass]="{'d-none':notificationsLoading}">
@@ -326,20 +421,19 @@
                 <span class="d-none">About ({{_CurrentpageRecords}}) results found</span>
 
 
-
                 <!--Project aprv list start-->
                 <div id="prj-aprv-list" class="table-responsive">
                   <table class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
                     <thead>
                       <tr role="row">
-                        <th style="width: 50px;" tabindex="0" aria-controls="project-4" class="text-center" rowspan="1"
+                        <th style="width: 50px; height:30px;" tabindex="0" aria-controls="project-4" class="text-center" rowspan="1"
                           colspan="1">
-                          <input type="checkbox" id="snocheck" title="Click to select all" [(ngModel)]="selectAllCheckbox"
+                          <input type="checkbox" id="snocheck" [title]="selectAllCheckbox?'Unselect all projects':'Select all projects'" [(ngModel)]="selectAllCheckbox"
                             (change)="selectall($event)" class="form-check-input ps-1 btn px-0">
-
                         </th>
                         <th style="width: 100px;" tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
                           aria-sort="ascending" aria-label=": activate to sort column descending">
+                          <span style="position:relative; left:-15%; ">Select all</span>
                         </th>
                         <th [appSort]="_NotificationActivity" data-order="desc" data-name="Project_Name" tabindex="0"
                           aria-controls="project-4" class="curser-pointer" rowspan="1" colspan="1" style="width: 0px;"
@@ -384,11 +478,11 @@
                           aria-label="Category: activate to sort column ascending">
                           <i class="fas fa-sort"></i> Request type
                         </th>
-                        <th [appSort]="_NotificationActivity" data-order="desc" data-name="RACIS" tabindex="0"
+                        <!-- <th [appSort]="_NotificationActivity" data-order="desc" data-name="RACIS" tabindex="0"
                           aria-controls="project-4" rowspan="1" colspan="1" class="curser-pointer"
                           aria-label="Category: activate to sort column ascending">
                           <i class="fas fa-sort"></i> RACIS
-                        </th>
+                        </th> -->
 
 
                         <!-- <th data-order="desc" data-name="Status" tabindex="0"
@@ -534,7 +628,9 @@
                         </td>
                         <td>
                           <p class="kt-widget__title mb-0">
-                            {{item.Project_Name}}
+                            {{item.Project_Name | slice : 0 :70}}
+                                <ng-container *ngIf="item.Project_Name.length > 70"  >...</ng-container>
+
 
                           </p>
                           <span class="kt-widget__other d-block st-line" title="Main Project name"
@@ -655,7 +751,7 @@
                             title="Forward to">{{item.ForwardTo}}</span> -->
                         </td>
 
-                        <td>
+                        <!-- <td>
                           <div class="kt-media-group">
                             <a *ngIf="item.Owner!=item.Support" data-toggle="kt-tooltip" data-skin="brand"
                               data-placement="top" title="Owner:{{item.Project_Owner}}" data-original-title="John Myer"
@@ -702,7 +798,7 @@
                             </a>
 
                           </div>
-                        </td>
+                        </td> -->
 
                         <!-- <td>
                                                     <div *ngIf="item.Send_From=='WS'">
@@ -759,7 +855,7 @@
                               <!-- <th style="width: 50px;" tabindex="0" aria-controls="leave-4" class="text-center" rowspan="1" colspan="1">
                                 <input type="checkbox" id="leave-snocheck" title="Select All" class="form-check-input ps-1 btn px-0"/>
                               </th> -->
-                              <th style="width: 100px;" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" >
+                              <th style="width: 100px; height:30px;" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" >
                               </th>
                               <th data-name="Leave_Name" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
                                 Leave
@@ -962,11 +1058,167 @@
 
                  </div>
                 <!--new leave aprv list end-->
+
+
+
+              <!-- dar requests/responses start-->
+                <div id="darReqRes-list" class="table-responsive">
+                  <ng-container *ngIf="darPanelType==='REQUESTS'">
+                  <table *ngIf="darRequests&&darRequests.length>0; else noDARitemsfound" class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
+              
+                    <thead>
+                      <tr role="row">
+                        <th style="width: 50px; height:30px;" class="text-center" rowspan="1" colspan="1">
+                          <input type="checkbox" class="form-check-input ps-1 btn px-0">
+                        </th>
+                        <th style="width: 100px;" aria-controls="project-4" rowspan="1" colspan="1"
+                          aria-sort="ascending" aria-label=": activate to sort column descending">
+                          <span style="position:relative; left:-15%; ">Select all</span>
+                        </th>
+                        <th rowspan="1" colspan="1" style="width:0px;"> Dar Report </th>
+                        <th rowspan="1" colspan="1">Employee Name </th>
+                        <th rowspan="1" colspan="1" >Submitted On</th>
+                        <th rowspan="1" colspan="1">Achieved Hours</th>
+                        <th rowspan="1" colspan="1">Allotted Hours</th>
+                        <th rowspan="1" colspan="1">Status</th>
+                        
+                      </tr>
+                    </thead>
+
+
+                    <tbody>
+                      <tr role="row" class="odd project-list_AC" *ngFor="let item of leave_Requests;let i=index">
+                     
+                        <td align="center">
+                          <input type="checkbox" class="form-check-input ps-1 btn px-0 mr-2">
+                        </td>
+                        <td align="center">
+                          <div class="d-flex align-items-center">
+                            <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" placement="right"
+                            (click)="openDarReqSidebar(i)" href="javascript:void(0)">
+                              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                              viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+                          <g>
+                            <circle fill="currentColor" cx="10" cy="10.024" r="9.295"/>
+                            <g>
+                              <path fill="#FFFFFF" d="M16.674,10.017c0.008,1.031-0.763,1.823-1.778,1.825c-1.004,0.002-1.818-0.805-1.819-1.804
+                                c-0.002-0.981,0.785-1.775,1.774-1.793C15.879,8.227,16.666,8.992,16.674,10.017z"/>
+                              <path fill="#FFFFFF" d="M10.053,8.245c1.017-0.004,1.818,0.787,1.814,1.795c-0.003,1.006-0.809,1.806-1.815,1.802
+                                c-0.989-0.004-1.77-0.782-1.783-1.778C8.256,9.045,9.036,8.25,10.053,8.245z"/>
+                              <path fill="#FFFFFF" d="M3.447,10.019c0.006-1.013,0.809-1.791,1.828-1.774c0.994,0.017,1.769,0.803,1.769,1.791
+                                c-0.001,1.004-0.809,1.81-1.812,1.806C4.224,11.838,3.44,11.038,3.447,10.019z"/>
+                            </g>
+                            <path fill="currentColor" d="M14.864,8.959c0.595-0.011,1.084,0.451,1.104,1.043c0.02,0.6-0.435,1.089-1.029,1.107
+                              c-0.63,0.019-1.125-0.444-1.129-1.058C13.805,9.457,14.275,8.97,14.864,8.959z"/>
+                            <path fill="currentColor" d="M10.085,11.109C9.477,11.117,9,10.668,8.983,10.071C8.967,9.455,9.45,8.958,10.065,8.959
+                              c0.598,0,1.065,0.467,1.072,1.071C11.144,10.64,10.694,11.101,10.085,11.109z"/>
+                            <path fill="currentColor" d="M5.236,11.112c-0.599-0.004-1.083-0.48-1.085-1.066C4.149,9.443,4.662,8.944,5.268,8.959
+                              C5.851,8.973,6.34,9.48,6.326,10.056C6.312,10.657,5.838,11.117,5.236,11.112z"/>
+                          </g>
+                          </svg>
+                            </a>
+                          </div>
+                        </td>
+                        <td>
+                          <p class="kt-widget__title1 mb-0">DARReport-400695136</p>
+                        </td>
+                        <td>
+                          <span class="kt-widget__other text-nowrap ">Syed Sayeeduddin Hussain</span>
+                        </td>
+                        <td>
+                          <span class="kt-widget__other text-nowrap ">01-10-2023</span>
+                        </td>
+                        <td>
+                          <p class="mb-0">18:30 hrs</p>
+                        </td>
+                        <td>
+                          <p class="mb-0">18:30 hrs</p>
+                        </td>
+                        <td>
+                          <!-- [ngClass]="{
+                            'Done':item.Req_Type.trim()=='Leave Sanction',
+                            'cancellation':item.Req_Type.trim()=='Leave Rejected',
+                            'completion':item.Req_Type.trim()=='Approved Leave'
+                            }" -->
+                          <span class="kt-widget__other Done">
+                            Leave Sanction
+                          </span>
+                        </td>
+                      
+                        
+                    
+                      </tr>
+                    </tbody>
+                  </table>
+                  </ng-container>
+
+                  <ng-container *ngIf="darPanelType==='RESPONSES'">
+                  <table *ngIf="darResponses&&darResponses.length>0; else noDARitemsfound" class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
+                    <thead>
+                      <tr role="row">
+                        <th rowspan="1" colspan="1" style="width:0px;"> Dar Report </th>
+                        <th rowspan="1" colspan="1">Employee Name </th>
+                        <th rowspan="1" colspan="1" >Submitted On</th>
+                        <th rowspan="1" colspan="1">Achieved Hours</th>
+                        <th rowspan="1" colspan="1">Allotted Hours</th>
+                        <th rowspan="1" colspan="1">Status</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr role="row" class="odd project-list_AC" *ngFor="let item of leave_Requests;let i=index">
+                     
+                      
+                        <td>
+                          <p class="kt-widget__title1 mb-0">DARReport-400695136</p>
+                        </td>
+                        <td>
+                          <span class="kt-widget__other text-nowrap ">Syed Sayeeduddin Hussain</span>
+                        </td>
+                        <td>
+                          <span class="kt-widget__other text-nowrap ">01-10-2023</span>
+                        </td>
+                        <td>
+                          <p class="mb-0">18:30 hrs</p>
+                        </td>
+                        <td>
+                          <p class="mb-0">18:30 hrs</p>
+                        </td>
+                        <td>
+                          <!-- [ngClass]="{
+                            'Done':item.Req_Type.trim()=='Leave Sanction',
+                            'cancellation':item.Req_Type.trim()=='Leave Rejected',
+                            'completion':item.Req_Type.trim()=='Approved Leave'
+                            }" -->
+                          <span class="kt-widget__other Done">
+                            Leave Sanction
+                          </span>
+                        </td>
+                      
+                        
+                    
+                      </tr>
+                    </tbody>
+                  </table>
+                  </ng-container>
+
+                  <ng-template #noDARitemsfound>
+                    <div class="d-flex flex-column justify-content-center align-items-center pt-5">
+                      <img width="30%" height="30%" src="./assets/images/Document Type.png"/>
+                      <span *ngIf="darPanelType==='REQUESTS'" class="text-muted fs-6">No dar requests found</span>
+                      <span *ngIf="darPanelType==='RESPONSES'" class="text-muted fs-6">No dar responses found</span>
+                    </div>
+                 </ng-template>
+
+                </div>
+               <!-- dar requests/responses end-->
+
+
               </div>
             </div>
           </div>
 
-          <div class="smart-glass" [ngClass]="{'d-none':!notificationsLoading}">
+          <div class="smart-glass notifloading_spinner" [ngClass]="{'d-none':!notificationsLoading}">
               <h1></h1>
               <div class="logo">
                 <div class="circle">
@@ -1062,10 +1314,6 @@
   </div>
 
 </div>
-
-
-
-
 
 
 
@@ -1536,13 +1784,13 @@
                                                         'text-completed mb-0':item.Status=='Completion Under Approval',
                                                         'text-completeRejected mb-0':item.Status=='Project Complete Rejected',
                                                         'text-Todo mb-0':item.Status=='ToDo Completed'}"
-                          data-toggle="tooltip" title="Project Status!">
+                          data-toggle="tooltip" title="Project status">
 
 
  {{item.Status=='Under Approval'?'New approval':item.Status=='Enactive Under Approval'?'Enactive approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
 
                         </h6>
-                        <h6 class=" text-danger mb-0" data-toggle="tooltip" title="Project Status!"
+                        <h6 class=" text-danger mb-0" data-toggle="tooltip" title="Project status"
                           *ngIf="item.Status=='Delay'">
                           {{item.Status==='Under Approval'?'New Approval':item.Status}}
                           {{item.Delaydays}} days
@@ -2292,7 +2540,7 @@
                   <path d="m 13,4.1974 q 0,0.3097 -0.21677,0.5265 l -5.60517,5.6051 -1.0529,1.0529 q -0.21677,0.2168 -0.52645,0.2168 -0.30968,0 -0.52645,-0.2168 L 4.01935,10.329 1.21677,7.5264 Q 1,7.3097 1,7 1,6.6903 1.21677,6.4735 L 2.26968,5.4206 q 0.21677,-0.2167 0.52645,-0.2167 0.30968,0 0.52645,0.2167 l 2.27613,2.2839 5.07871,-5.0864 q 0.21677,-0.2168 0.52645,-0.2168 0.30968,0 0.52645,0.2168 L 12.78323,3.671 Q 13,3.8877 13,4.1974 z"></path>
                 </svg>
               </div>
-              <div class="fs-9 fw-bold text-nowrap">Approved</div>
+              <div class="fs-9 fw-bold text-nowrap">Submitted</div>
             </div>
             <div class="flex-grow-1 mt-3 line-aprved" style="border-width:1px;"></div>
             <div *ngIf="managerApproval" class="d-flex flex-column align-items-center" style="max-width: 75px; overflow-x: visible;">
@@ -2550,7 +2798,7 @@
 
           <div class="card card-mid flex-1">
             <div class="card-header">
-              <h5 clas="card-title"> {{selectedItems.length}} Projects selected</h5>
+              <h5 clas="card-title"> {{selectedItems.length}} {{selectedItems.length>1?'Projects':'Project'}} selected</h5>
             </div>
             <div class="card-body p-0">
               <div class=" cus-scroll scroll-y">
@@ -2578,10 +2826,10 @@
                                                         'text-completed mb-0':item.Status=='Completion Under Approval',
                                                         'text-completeRejected mb-0':item.Status=='Project Complete Rejected',
                                                         'text-Todo mb-0':item.Status=='ToDo Completed'}"
-                          data-toggle="tooltip" title="Project Status!">
+                          data-toggle="tooltip" title="Project status">
                       {{item.Status=='Under Approval'?'New approval':item.Status=='Enactive Under Approval'?'Enactive approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
                         </h6>
-                        <h6 class=" text-danger mb-0" data-toggle="tooltip" title="Project Status!"
+                        <h6 class=" text-danger mb-0" data-toggle="tooltip" title="Project status"
                           *ngIf="item.Status=='Delay'">
                           {{item.Status==='Under Approval'?'New Approval':item.Status}}
                           {{item.Delaydays}} days
@@ -2635,7 +2883,7 @@
             <div class="form-group">
               <label class="mb-2">Enter comments</label><span style="color:red">*</span>
               <textarea class="form-control h-100px" [(ngModel)]="approverComments" [ngClass]="{'error-border':(!approverComments||!approverComments.trim())&&notProvided}"   placeholder="Enter your comments here."></textarea>
-              <span *ngIf="(!approverComments||!approverComments.trim())&&notProvided" style="color:red;">comments required.</span>
+              <span *ngIf="(!approverComments||!approverComments.trim())&&notProvided" style="color:red;">Please enter comment.</span>
             </div>
           </div>
         </div>
@@ -2649,17 +2897,192 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
 <!--accept approvals with comment sidebar end-->
 
 
+
+
+
+
+<!--dar request details view sidebar start-->
+
+<div id="dar-req_slider_bar" class="dar-reqs-slider-bar animate-right">
+  <div class="kt-portlet--body mb-0">
+    <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
+    <div class="d-flex align-items-center">
+      <div class="kt-info-box-tittle m-0">
+        <div class="kt-title-icon">
+        <span class="svg-icon kt-title-icon m-0">
+        <svg width="22px" height="22px" fill="#fff" xmlns:x="http://ns.adobe.com/Extensibility/1.0/" xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 105" xml:space="preserve" style="enable-background: new 0 0 100 100;"><switch ><foreignObject requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/" x="0" y="0" width="1" height="1"></foreignObject><g i:extraneous="self"><g ><path d="M68.2,44.9v-3.6c0-2.4-2-4.4-4.4-4.4h-7.2v-4.3c0-0.9-0.8-1.7-1.7-1.7h-9.9c-0.9,0-1.7,0.8-1.7,1.7v4.3h-7.2     c-2.4,0-4.4,2-4.4,4.4v3.6c0,1.5,0.7,2.8,2,3.7v11.6c0,2.4,2,4.4,4.4,4.4h23.7c2.4,0,4.4-2,4.4-4.4V48.6     C67.4,47.7,68.2,46.4,68.2,44.9z M46.8,34.3h6.5v2.6h-6.5V34.3z M35.2,41.3c0-0.6,0.5-1,1-1h27.5c0.6,0,1,0.5,1,1v3.6     c0,0.4-0.2,0.7-0.5,0.9l-5,3.1c-0.2,0.1-0.4,0.2-0.6,0.2h-3.6c-0.1-2-1.7-3.6-3.7-3.6h-3.1c-2,0-3.6,1.6-3.7,3.6h-3.6     c-0.2,0-0.4-0.1-0.6-0.2l-4.9-3.1c-0.3-0.2-0.5-0.5-0.5-0.9V41.3z M51.9,49.2v3.1c0,0.2-0.1,0.3-0.3,0.3h-3.1     c-0.2,0-0.3-0.1-0.3-0.3v-3.1c0-0.2,0.1-0.3,0.3-0.3h3.1C51.7,48.9,51.9,49,51.9,49.2z M61.8,61.2H38.2c-0.6,0-1-0.4-1-1v-9.5     l1.7,1.1c0.7,0.4,1.5,0.7,2.4,0.7h3.6c0.1,2,1.7,3.6,3.7,3.6h3.1c2,0,3.6-1.6,3.7-3.6h3.6c0.8,0,1.7-0.2,2.4-0.7l1.7-1.1v9.5     C62.8,60.8,62.4,61.2,61.8,61.2z"></path><path d="M48.3,16.5v6.8c0,0.9,0.8,1.7,1.7,1.7c0.9,0,1.7-0.8,1.7-1.7v-6.8c3.1-0.8,5.4-3.5,5.4-6.9c0-3.9-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1C42.9,12.9,45.2,15.7,48.3,16.5z M50,5.9c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7     S47.9,5.9,50,5.9z"></path><path d="M21.4,28.5c1.3,0,2.6-0.4,3.7-1.1l4.8,4.8c0.3,0.3,0.8,0.5,1.2,0.5c0.4,0,0.9-0.2,1.2-0.5c0.7-0.7,0.7-1.7,0-2.4     l-4.8-4.8c0.7-1.1,1.1-2.3,1.1-3.7c0-3.9-3.2-7.1-7.1-7.1c-3.9,0-7.1,3.2-7.1,7.1S17.5,28.5,21.4,28.5z M21.4,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7s-3.7-1.7-3.7-3.7S19.4,17.7,21.4,17.7z"></path><path d="M16.5,51.7h6.8c0.9,0,1.7-0.8,1.7-1.7s-0.8-1.7-1.7-1.7h-6.8c-0.8-3.1-3.5-5.4-6.9-5.4c-3.9,0-7.1,3.2-7.1,7.1     s3.2,7.1,7.1,7.1C12.9,57.1,15.7,54.8,16.5,51.7z M9.6,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7     S11.7,53.7,9.6,53.7z"></path><path  d="M29.9,67.7l-4.8,4.8c-1.1-0.7-2.3-1.1-3.7-1.1c-3.9,0-7.1,3.2-7.1,7.1s3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1     c0-1.3-0.4-2.6-1.1-3.7l4.8-4.8c0.7-0.7,0.7-1.7,0-2.4C31.6,67.1,30.6,67.1,29.9,67.7z M21.4,82.3c-2.1,0-3.7-1.7-3.7-3.7     s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7S23.5,82.3,21.4,82.3z"></path><path d="M51.7,83.5v-6.8c0-0.9-0.8-1.7-1.7-1.7c-0.9,0-1.7,0.8-1.7,1.7v6.8c-3.1,0.8-5.4,3.5-5.4,6.9c0,3.9,3.2,7.1,7.1,7.1     c3.9,0,7.1-3.2,7.1-7.1C57.1,87.1,54.8,84.3,51.7,83.5z M50,94.1c-2.1,0-3.7-1.7-3.7-3.7c0-2.1,1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7C53.7,92.5,52.1,94.1,50,94.1z"></path><path  d="M78.6,71.5c-1.3,0-2.6,0.4-3.7,1.1l-4.8-4.8c-0.7-0.7-1.7-0.7-2.4,0s-0.7,1.7,0,2.4l4.8,4.8c-0.7,1.1-1.1,2.3-1.1,3.7     c0,3.9,3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1S82.5,71.5,78.6,71.5z M78.6,82.3c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7S80.6,82.3,78.6,82.3z"></path><path d="M90.4,42.9c-3.3,0-6.1,2.3-6.9,5.4h-6.8c-0.9,0-1.7,0.8-1.7,1.7s0.8,1.7,1.7,1.7h6.8c0.8,3.1,3.5,5.4,6.9,5.4     c3.9,0,7.1-3.2,7.1-7.1S94.3,42.9,90.4,42.9z M90.4,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7c2.1,0,3.7,1.7,3.7,3.7     S92.5,53.7,90.4,53.7z"></path><path d="M68.9,32.8c0.4,0,0.9-0.2,1.2-0.5l4.8-4.8c1.1,0.7,2.3,1.1,3.7,1.1c3.9,0,7.1-3.2,7.1-7.1s-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1c0,1.3,0.4,2.6,1.1,3.7l-4.8,4.8c-0.7,0.7-0.7,1.7,0,2.4C68.1,32.6,68.5,32.8,68.9,32.8z M78.6,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7S76.5,17.7,78.6,17.7z"></path></g></g></switch>
+        </svg>
+      </span>
+       </div> 
+       DAR Report Details
+    </div>
+    </div>
+      <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
+        (click)="closeDarReqSidebar()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#ccc">
+          <path fill="none" d="M0 0h24v24H0z"></path>
+          <path
+            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+          </path>
+        </svg>
+      </a>
+    </div>
+     <div class="container req-form">
+
+      <div class="d-flex gap-1 mb-3 mt-2 px-3">
+        <div class="kt-project-info-body w-100">
+       
+          <div class="d-flex justify-content-between">
+            <div class="kt-project-name">
+              <h4 class="mb-0" style="color: #181818; font-weight: 700;">asd fasdfasd</h4>
+            </div>
+            <span class="kt-widget__other dar-underaprvl text-nowrap align-self-start">Under Approval</span>
+          </div>
+      
+         
+
+          <div class="kt-info-box pb-3 mt-3">
+            <div class="row px-3 pt-3">
+              <div class="col text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1 d-flex align-items-center justify-content-center gap-1">
+                  <svg width="23px" height="22px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> 
+                    <path d="M20 10V7C20 5.89543 19.1046 5 18 5H6C4.89543 5 4 5.89543 4 7V10M20 10V19C20 20.1046 19.1046 21 18 21H6C4.89543 21 4 20.1046 4 19V10M20 10H4M8 3V7M16 3V7" stroke-width="1.296" stroke-linecap="round" stroke="#5c5c5c"></path> 
+                    <rect x="6" y="12" width="3" height="3" rx="0.5" fill="#5c5c5c"></rect> <rect x="10.5" y="12" width="3" height="3" rx="0.5" fill="#5c5c5c"></rect> <rect x="15" y="12" width="3" height="3" rx="0.5" fill="#5c5c5c"></rect> </g></svg>
+                  Report date
+                </div>
+                <div class="kt-info-data-v1 bg-light-shade">20-12-2024</div>
+              </div>
+              <div class="col text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1 d-flex align-items-center justify-content-center gap-1">
+                  <svg width="20px" height="19px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00024000000000000003" style="
+                  fill: #838080;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M23 12C23 12.3545 22.9832 12.7051 22.9504 13.051C22.3838 12.4841 21.7204 12.014 20.9871 11.6675C20.8122 6.85477 16.8555 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12C3.00683 16.8555 6.85477 20.8122 11.6675 20.9871C12.014 21.7204 12.4841 22.3838 13.051 22.9504C12.7051 22.9832 12.3545 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12Z"></path> <path d="M13 11.8812L13.8426 12.3677C13.2847 12.7802 12.7902 13.2737 12.3766 13.8307L11.5174 13.3346C11.3437 13.2343 11.2115 13.0898 11.1267 12.9235C11 12.7274 11 12.4667 11 12.4667V6C11 5.44771 11.4477 5 12 5C12.5523 5 13 5.44772 13 6V11.8812Z"></path> <path d="M15.2929 17.7071C15.6834 17.3166 16.3166 17.3166 16.7071 17.7071L17.3482 18.3482L19.2473 16.4491C19.6379 16.0586 20.271 16.0586 20.6615 16.4491C21.0521 16.8397 21.0521 17.4728 20.6615 17.8634L18.1213 20.4036C18.0349 20.49 17.9367 20.5573 17.8318 20.6054C17.4488 20.8294 16.9487 20.7772 16.6203 20.4487L15.2929 19.1213C14.9024 18.7308 14.9024 18.0976 15.2929 17.7071Z"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M18 24C21.3137 24 24 21.3137 24 18C24 14.6863 21.3137 12 18 12C14.6863 12 12 14.6863 12 18C12 21.3137 14.6863 24 18 24ZM18 22.0181C15.7809 22.0181 13.9819 20.2191 13.9819 18C13.9819 15.7809 15.7809 13.9819 18 13.9819C20.2191 13.9819 22.0181 15.7809 22.0181 18C22.0181 20.2191 20.2191 22.0181 18 22.0181Z"></path> </g>
+                  </svg>
+                  Achieved hours
+                </div>
+                <div class="kt-info-data-v1">05:30 hrs</div>
+              </div>
+              <div class="col text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1 d-flex align-items-center justify-content-center gap-1">
+                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="17px" viewBox="0 0 31.963 31.963" xml:space="preserve" stroke="#7a7a7a" stroke-width="0.00031963000000000006" style="fill: #b9b9b9;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M31.453,9.17c0.372-0.439,0.554-1.011,0.501-1.585c-0.055-0.574-0.338-1.102-0.785-1.466l-3.811-3.084 c-0.92-0.744-2.27-0.602-3.014,0.317L12.675,17.773l-5.536-4.667c-1.054-0.889-2.61-0.822-3.585,0.151l-2.927,2.926 c-0.421,0.421-0.647,0.999-0.626,1.594c0.022,0.596,0.291,1.152,0.742,1.542l11.108,9.565c0.432,0.373,0.994,0.558,1.562,0.513 c0.568-0.044,1.096-0.312,1.465-0.747L31.453,9.17z"></path> </g> </g>
+                  </svg>
+                  Allotted hours
+                </div>
+                <div class="kt-info-data-v1 bg-light-shade">08:30 hrs</div>
+              </div>
+            </div>
+            <div class="row px-3 pt-4">
+              <div class="col text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1 d-flex align-items-center justify-content-center gap-1">
+                  <svg width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="#898989" viewBox="0 0 101 101" id="user"><path fill="#898989" d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z"></path></svg>
+                  Employee Name
+                </div>
+                <div class="kt-info-data-v1">Md Waseem Akram</div>
+              </div>
+              <div class="col text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1 d-flex align-items-center justify-content-center gap-1">
+                  <svg width="24px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.1" d="M21 11.152C20.7154 12.0872 20.2501 12.9557 19.6405 13.7265C17.9516 15.8622 15.1545 17.25 12 17.25C8.84545 17.25 6.04844 15.8622 4.35949 13.7265C3.74993 12.9557 3.28461 12.0872 3 11.152V17C3 18.8856 3 19.8284 3.58579 20.4142C4.17157 21 5.11438 21 7 21H17C18.8856 21 19.8284 21 20.4142 20.4142C21 19.8284 21 18.8856 21 17V11.152Z" fill="#605c5c"></path> <path d="M3 10C3 9.06812 3 8.60218 3.15224 8.23463C3.35523 7.74458 3.74458 7.35523 4.23463 7.15224C4.60218 7 5.06812 7 6 7V7H18V7C18.9319 7 19.3978 7 19.7654 7.15224C20.2554 7.35523 20.6448 7.74458 20.8478 8.23463C21 8.60218 21 9.06812 21 10V17C21 18.8856 21 19.8284 20.4142 20.4142C19.8284 21 18.8856 21 17 21H16H8H7C5.11438 21 4.17157 21 3.58579 20.4142C3 19.8284 3 18.8856 3 17V10Z" stroke="#605c5c" stroke-width="1.152" stroke-linejoin="round"></path> <path d="M8 7V5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5V7" stroke="#605c5c" stroke-width="1.152" stroke-linejoin="round"></path> <path d="M3 10C3.18614 11.3166 3.73499 12.5338 4.55558 13.5714C6.19462 15.644 8.91777 17 12 17C15.0822 17 17.8054 15.644 19.4444 13.5714C20.265 12.5338 20.8139 11.3166 21 10" stroke="#605c5c" stroke-width="1.152" stroke-linecap="round"></path> <path d="M11.5 13H12.5" stroke="#605c5c" stroke-width="1.152" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                  Position
+                </div>
+                <div  class="kt-info-data-v1 bg-light-shade">Team Member</div>
+              </div>
+              <div class="col text-center cnt-ovrl1">
+                <div class="kt-info-lable-v1 d-flex align-items-center justify-content-center gap-1">
+                <svg  width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="#898989" viewBox="0 0 48 48" id="international-client"><path fill="#0c0c0c" d="M24 0C10.767 0 0 10.767 0 24s10.767 24 24 24 24-10.767 24-24S37.233 0 24 0zm0 47C11.318 47 1 36.682 1 24S11.318 1 24 1s23 10.318 23 23-10.318 23-23 23z"></path>
+                  <path  fill="#0c0c0c" d="M10.529 36.494a.499.499 0 1 0-.738.674l.362.396c.208.229.324.525.324.835V39.5a.5.5 0 0 0 1 0v-1.101c0-.56-.208-1.096-.585-1.509l-.363-.396zm8.804-.402a.5.5 0 0 0-.033.706c.237.26.368.597.368.948V39.5a.5.5 0 0 0 1 0v-1.754c0-.602-.223-1.177-.628-1.622a.5.5 0 0 0-.707-.032zm8.628.032a2.4 2.4 0 0 0-.629 1.622V39.5a.5.5 0 0 0 1 0v-1.754c0-.352.131-.688.368-.948a.499.499 0 0 0-.032-.706.497.497 0 0 0-.707.032zm9.51.37-.363.396a2.234 2.234 0 0 0-.584 1.509V39.5a.5.5 0 0 0 1 0v-1.101c0-.31.115-.606.323-.835l.362-.396a.5.5 0 1 0-.738-.674z"></path>
+                  <path fill="#0c0c0c" d="M38.378 34.064 36 33.172V32.02a2.983 2.983 0 0 0 .999-2.219v-1.169l.581-2.13c.082-.453-.019-.911-.284-1.288s-.662-.627-1.116-.703l-2.85-.475a1.68 1.68 0 0 0-1.91 1.263 1.473 1.473 0 0 0-.7.479c-.282.349-.39.8-.278 1.303L31 28.642v1.16c0 .884.391 1.671 1.001 2.221v1.149l-2.378.893c-.04.015-.074.038-.113.054l-.834-.519a1.676 1.676 0 0 0 .941-1.783 28.909 28.909 0 0 1-.364-4.563V25.597a5.222 5.222 0 0 0-5.216-5.216 5.222 5.222 0 0 0-5.216 5.216v1.657c0 1.521-.123 3.057-.364 4.563a1.656 1.656 0 0 0 .903 1.76l-.869.542c-.038-.016-.073-.039-.112-.054L16 33.172V32.02a2.983 2.983 0 0 0 .999-2.219v-1.169l.581-2.13c.082-.453-.019-.911-.284-1.288s-.662-.627-1.116-.703l-2.85-.475a1.682 1.682 0 0 0-1.91 1.263 1.473 1.473 0 0 0-.7.479c-.282.349-.39.8-.278 1.303L11 28.642v1.16c0 .884.391 1.671 1.001 2.221v1.149l-2.378.893A2.51 2.51 0 0 0 8 36.405V39.5a.5.5 0 0 0 1 0v-3.095c0-.622.391-1.186.974-1.405l.998-.374a4 4 0 0 0 3.029 1.393 4 4 0 0 0 3.028-1.393l.615.231A2.82 2.82 0 0 0 17 36.634V39.5a.5.5 0 0 0 1 0v-2.866c0-.646.327-1.235.875-1.576l2.224-1.386c.756.789 1.798 1.269 2.9 1.269 1.102 0 2.143-.48 2.899-1.268l2.225 1.385c.549.341.877.93.877 1.577V39.5a.5.5 0 0 0 1 0v-2.865c0-.665-.242-1.279-.644-1.778l.615-.231A4 4 0 0 0 34 36.019a4 4 0 0 0 3.028-1.393l.998.374c.583.219.974.783.974 1.405V39.5a.5.5 0 0 0 1 0v-3.095a2.512 2.512 0 0 0-1.622-2.341zm-6.881-7.658a.478.478 0 0 1 .372-.177c.276 0 .5-.256.5-.532a.69.69 0 0 1 .797-.674l2.85.475a.702.702 0 0 1 .463.292c.11.156.152.347.127.492l-.302 1.104-.085-.124a.499.499 0 0 0-.413-.218H32.18a.499.499 0 0 0-.416.223l-.129.192-.234-.65a.476.476 0 0 1 .096-.403zm.502 2.307.448-.67h3.095l.457.669v1.09a1.99 1.99 0 0 1-1.364 1.886l-.025.008a1.988 1.988 0 0 1-1.808-.306c-.003-.002-.006-.001-.008-.003a1.991 1.991 0 0 1-.795-1.586v-1.088zm-10.77-.94v-.631c0-.768.446-1.453 1.113-1.807 1.212.879 2.613 1.36 4.069 1.36h.001l.227.007c.04 0 .077.01.116.013v1.058c0 1.523-1.24 2.764-2.763 2.764s-2.763-1.24-2.763-2.764zm5.038 4.327v-1.348a3.746 3.746 0 0 0 1.489-2.979v-.565c.305.328.497.786.497 1.295 0 .082.024.156.059.224.054 1.089.145 2.177.318 3.248a.68.68 0 0 1-.671.787h-.629l-1.063-.662zm-6.153.662a.68.68 0 0 1-.67-.787c.25-1.558.376-3.146.376-4.721v-1.657c0-2.324 1.891-4.216 4.216-4.216s4.216 1.892 4.216 4.216v.717a2.534 2.534 0 0 0-.752-.445.482.482 0 0 0-.176-.059 2.363 2.363 0 0 0-.668-.107l-.227-.007c-1.316 0-2.573-.441-3.646-1.264a.496.496 0 0 0-.562-.162 3.076 3.076 0 0 0-1.976 2.672c-.004.027-.016.051-.016.078v.755c0 1.222.595 2.299 1.5 2.987V32.1l-1.062.662h-.553zm-8.617-6.356a.478.478 0 0 1 .372-.177c.276 0 .5-.256.5-.532a.69.69 0 0 1 .797-.674l2.85.475a.702.702 0 0 1 .463.292c.11.156.152.347.127.492l-.302 1.104-.085-.124a.499.499 0 0 0-.413-.218H12.18a.499.499 0 0 0-.416.223l-.129.192-.234-.65a.476.476 0 0 1 .096-.403zm.502 2.307.448-.67h3.095l.457.669v1.09a1.99 1.99 0 0 1-.798 1.588l-.003.001a1.987 1.987 0 0 1-.568.299l-.015.005c-.398.13-.828.131-1.227.002l-.022-.007a1.99 1.99 0 0 1-.565-.297l-.004-.001a1.992 1.992 0 0 1-.799-1.589v-1.09zM14 35.019a3 3 0 0 1-2.006-.776l.682-.256a.5.5 0 0 0 .324-.468v-.892c.062.022.127.032.19.05.088.025.174.053.265.07.135.025.272.035.41.041.045.002.088.014.134.014.044 0 .085-.011.129-.013.14-.006.279-.017.416-.042.091-.017.177-.045.265-.07.064-.018.13-.028.192-.051v.893a.5.5 0 0 0 .324.468l.681.256a3.003 3.003 0 0 1-2.006.776zm10-1.079c-.76 0-1.484-.301-2.039-.806l.533-.332a.491.491 0 0 0 .226-.425h.009v-1.075a3.71 3.71 0 0 0 1.263.234c.449 0 .874-.092 1.274-.237v1.078h.01c0 .167.075.33.227.425l.535.333A3.04 3.04 0 0 1 24 33.94zm10 1.079a3 3 0 0 1-2.006-.776l.682-.256a.5.5 0 0 0 .324-.468v-.893c.056.02.116.029.173.046.094.027.186.057.284.075.132.024.266.034.4.04.048.002.093.014.141.014.042 0 .081-.011.122-.012.143-.006.285-.017.426-.043.084-.016.164-.042.246-.065.069-.019.14-.03.208-.055v.892a.5.5 0 0 0 .324.468l.682.256a2.999 2.999 0 0 1-2.006.777z"></path><path _ngcontent-gda-c400="" fill="#0c0c0c" d="M24 8C15.178 8 8 15.178 8 24c0 2.362.536 4.738 1.551 6.871a.5.5 0 0 0 .903-.43A15.086 15.086 0 0 1 9 24c0-1.067 1.549-2.195 4.207-3.055-.068.5-.12 1.007-.154 1.522a.5.5 0 0 0 .466.532.493.493 0 0 0 .532-.466c.043-.649.124-1.28.222-1.902 1.406-.377 3.057-.681 4.9-.879-.034.411-.063.823-.086 1.235a.5.5 0 0 0 .471.527l.029.001a.5.5 0 0 0 .499-.472c.027-.473.06-.935.098-1.384a46.1 46.1 0 0 1 3.818-.16c1.342 0 2.612.06 3.818.16.036.421.067.851.093 1.293a.49.49 0 0 0 .528.47.5.5 0 0 0 .47-.528c-.022-.381-.05-.762-.081-1.142 1.842.198 3.493.502 4.899.879.098.622.179 1.253.222 1.901a.497.497 0 0 0 .497.468l.034-.001a.501.501 0 0 0 .466-.532 22.08 22.08 0 0 0-.154-1.522C37.451 21.805 39 22.933 39 24c0 2.21-.5 4.434-1.447 6.43a.5.5 0 1 0 .903.428A16.103 16.103 0 0 0 40 24c0-8.822-7.178-16-16-16zm0 1c.909 0 1.921 1.487 2.7 4.169A23.144 23.144 0 0 0 24 13c-.922 0-1.821.066-2.701.169C22.078 10.486 23.089 9 24 9zm-3.774 4.322c-1.34.224-2.621.554-3.806.994 1.409-2.466 3.327-4.246 5.482-4.96-.676.946-1.235 2.326-1.676 3.966zm5.87-3.967c2.155.713 4.075 2.494 5.484 4.961a20.939 20.939 0 0 0-3.807-.995c-.442-1.639-1.001-3.02-1.677-3.966zm-7.274.585c-1.523 1.203-2.836 2.913-3.831 4.976-2.071.974-3.792 2.272-5.009 3.789a15.06 15.06 0 0 1 8.84-8.765zM9.43 21.664c.763-2.115 2.525-3.971 4.949-5.326a20.413 20.413 0 0 0-.989 3.525c-1.636.484-3.011 1.086-3.96 1.801zm5.033-2.094a18.87 18.87 0 0 1 1.269-3.905 19.187 19.187 0 0 1 4.235-1.287 37.984 37.984 0 0 0-.699 4.373c-1.706.18-3.337.455-4.805.819zM24 18.5c-1.245 0-2.494.057-3.719.158.18-1.689.438-3.181.746-4.459a22.198 22.198 0 0 1 5.945 0c.309 1.278.567 2.771.747 4.459A45.407 45.407 0 0 0 24 18.5zm4.733.251a38.014 38.014 0 0 0-.7-4.373c1.522.284 2.95.718 4.236 1.287a18.87 18.87 0 0 1 1.269 3.905 35.836 35.836 0 0 0-4.805-.819zm5.878 1.112a20.503 20.503 0 0 0-.989-3.525c2.423 1.355 4.185 3.211 4.948 5.326-.949-.715-2.324-1.317-3.959-1.801zm-1.602-4.946c-.994-2.063-2.308-3.773-3.831-4.976a15.05 15.05 0 0 1 8.839 8.765c-1.217-1.517-2.938-2.816-5.008-3.789z"></path>
+                </svg>
+                  Company
+                </div>
+                <div class="kt-info-data-v1">Devbox Software Pvt Ltd</div>
+              </div>
+            </div>
+          </div>
+      </div>
+   </div>
+
+
+
+
+
+    </div> 
+
+    <div class="container req-form dar-achievement-sec">
+      <div class="kt-info-box-tittle">
+        <div class="kt-title-icon">
+          <span class="svg-icon">
+            <svg fill="#fff" width="20px" height="24px" viewBox="0 0 32 32" id="icon" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:none;}</style></defs><title>task</title><polygon points="14 20.18 10.41 16.59 9 18 14 23 23 14 21.59 12.58 14 20.18"></polygon>
+             <path d="M25,5H22V4a2,2,0,0,0-2-2H12a2,2,0,0,0-2,2V5H7A2,2,0,0,0,5,7V28a2,2,0,0,0,2,2H25a2,2,0,0,0,2-2V7A2,2,0,0,0,25,5ZM12,4h8V8H12ZM25,28H7V7h3v3H22V7h3Z" transform="translate(0 0)"></path><rect id="_Transparent_Rectangle_" data-name="<Transparent Rectangle>" width="32" height="32" class="cls-1"></rect></g>
+           </svg>
+         </span>
+        </div>
+        DAR Achievement Details
+      </div>
+      <div class="">
+        <div class="d-flex justify-content-end pr-3 mt-2">
+           <div class="align-items-center justify-content-end d-flex">
+            <!-- [ngClass]="{'active':leaveDecision=='APPROVE'}" -->
+             <div class="kt-detail-link" (click)="0">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon"style="width: 1.2em; height: 1.2em; vertical-align: middle; fill: #028507; ;overflow: hidden;">
+                 <path d="M1002.81 144.43a64 64 0 0 0-90.38 4.76L381.56 739l-272.3-272.3a64 64 0 0 0-90.51 90.51l320 320A64 64 0 0 0 384 896h1.68a64 64 0 0 0 45.89-21.16l576-640a64 64 0 0 0-4.76-90.41z"></path>
+               </svg>
+               <span class="kt-detail-iconname">Accept</span>
+             </div>
+             <!-- [ngClass]="{'active':leaveDecision=='REJECTED'}"  -->
+             <div class="kt-detail-link"  (click)="0">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 1.2em; height: 1.2em; vertical-align: middle; fill: #e81000; ;overflow: hidden;">
+                 <path  d="M622.276923 508.061538l257.969231-257.96923c11.815385-11.815385 11.815385-29.538462 0-41.353846l-41.353846-41.353847c-11.815385-11.815385-29.538462-11.815385-41.353846 0L539.569231 425.353846c-7.876923 7.876923-19.692308 7.876923-27.569231 0L254.030769 165.415385c-11.815385-11.815385-29.538462-11.815385-41.353846 0l-41.353846 41.353846c-11.815385 11.815385-11.815385 29.538462 0 41.353846l257.969231 257.969231c7.876923 7.876923 7.876923 19.692308 0 27.56923L169.353846 793.6c-11.815385 11.815385-11.815385 29.538462 0 41.353846l41.353846 41.353846c11.815385 11.815385 29.538462 11.815385 41.353846 0L512 618.338462c7.876923-7.876923 19.692308-7.876923 27.569231 0l257.969231 257.96923c11.815385 11.815385 29.538462 11.815385 41.353846 0l41.353846-41.353846c11.815385-11.815385 11.815385-29.538462 0-41.353846L622.276923 535.630769c-5.907692-7.876923-5.907692-19.692308 0-27.569231z"></path>
+               </svg>
+               <span class="kt-detail-iconname">Reject</span>
+             </div>
+             <!-- [ngClass]="{'active':leaveDecision=='APPROVEBUT'}" -->
+              <div class="kt-detail-link"  (click)="0">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 1.2em; height: 1.2em; vertical-align: middle; fill: #007c05; ;overflow: hidden;">
+                 <path d="M458.24 376.32 138.24 376.32c-15.36 0-25.6 10.24-25.6 25.6 0 15.36 10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6C483.84 389.12 471.04 376.32 458.24 376.32z"></path>
+                 <path d="M458.24 642.56 138.24 642.56c-15.36 0-25.6 10.24-25.6 25.6s10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6S471.04 642.56 458.24 642.56z"></path>
+                 <path  d="M732.16 706.56c-15.36 0-25.6 10.24-25.6 25.6 0 0 0 0 0 2.56l0 0 0 99.84c0 15.36-12.8 30.72-30.72 30.72L81.92 865.28c-15.36 0-30.72-12.8-30.72-30.72L51.2 189.44c0-15.36 12.8-30.72 30.72-30.72l596.48 0c15.36 0 30.72 12.8 30.72 30.72l0 115.2c0 15.36 10.24 25.6 25.6 25.6s25.6-10.24 25.6-25.6L760.32 189.44c0-46.08-35.84-81.92-81.92-81.92L81.92 107.52C35.84 107.52 0 145.92 0 189.44l0 645.12c0 46.08 35.84 81.92 81.92 81.92l596.48 0c46.08 0 81.92-35.84 81.92-81.92l0-99.84 0 0c0 0 0 0 0-2.56C757.76 719.36 747.52 706.56 732.16 706.56z"></path>
+                 <path d="M1016.32 340.48c-10.24-10.24-25.6-10.24-35.84 0l-245.76 245.76-138.24-130.56c-10.24-10.24-25.6-10.24-35.84 2.56-10.24 10.24-10.24 25.6 2.56 35.84l156.16 145.92c5.12 5.12 10.24 7.68 17.92 7.68 7.68 0 12.8-2.56 17.92-7.68l261.12-263.68C1026.56 366.08 1026.56 350.72 1016.32 340.48z"></path>
+               </svg>
+               <span class="kt-detail-iconname">Accept with bonus</span>
+             </div>
+ 
+           </div>
+         </div>
+      </div>
+      <div class="mt-3 mx-3">
+          <table class="time-table mb-1 border">
+            <thead>
+              <tr>
+                <th style="width: 5%;">S.No.</th>
+                <th style="width: 30%;">Type</th>
+                <th style="width: 35%;">Achievement</th>
+                <th style="width: 10%;">Start</th>
+                <th style="width: 10%;">End</th>
+                <th style="width: 10%;">Time</th>
+             </tr>
+            </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><span>Lunch</span></td>
+              <td>
+                <div class="d-flex gap-1">
+                <div class="compl-remarks-span" style="border-top: 1px solid #e1e6ee;padding: 10px;color: #0b0e1f;vertical-align: middle;"> asdfasdf </div>
+                <button title="show less" class="txt-expnd-btn align-self-end d-none">
+                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path></g></svg></button></div>
+              </td>
+              <td>11:30 AM</td>
+              <td>12:15 PM</td>
+              <td>45 mins</td>
+          </tr>
+          </tbody>
+        </table>
+     </div>
+    </div>
+
+  </div>
+</div>
+
+<!--dar request details view sidebar start-->

@@ -138,12 +138,14 @@ export class StreamDashboardComponent implements OnInit {
   Current_user_ID: any;
   UserfullName: any
   todayDate: any
-
+  getAll :any
   GetDashboardSummary() {
     this.Emp_No = localStorage.getItem('EmpNo');
     this.service._GetDashboardSummaryCount(this.Emp_No)
       .subscribe((data) => {
         console.log(data,"GetDashboardSummary()GetDashboardSummary()GetDashboardSummary()")
+
+
 
         this.DelayCount = data[0]['DelayCount'];
         sessionStorage.setItem('DelayCount', this.DelayCount);
@@ -175,6 +177,7 @@ export class StreamDashboardComponent implements OnInit {
 
         this.YesterdaysDAR_Status = data[0]['YesterdaysDAR_Status'];
         sessionStorage.setItem('YesterdaysDAR_Status', this.YesterdaysDAR_Status);
+        console.log(this.YesterdaysDAR_Status,"this.YesterdaysDAR_Statusthis.YesterdaysDAR_Status")
 
         this.RejectedCount = data[0]['RejectedCount'];
         sessionStorage.setItem('RejectedCount', this.RejectedCount);
@@ -298,9 +301,10 @@ export class StreamDashboardComponent implements OnInit {
         }))
         .filter((item: any) => item.Schedule_date >= today); // Filter for future dates including today
 
-      console.log(this.scheduleItems, "this.meetingoftheuserthis.meetingoftheuser");
+      console.log(this.scheduleItems, "Calendar Data");
     });
   }
+
   isToday(date: Date): boolean {
     const today = new Date();
     return (
@@ -319,9 +323,6 @@ export class StreamDashboardComponent implements OnInit {
       this.portfoiloData = JSON.parse(data[0]['PortfolioJson']);
 
         // this.userFound = true
-
-
-
 
       console.log(this.portfoiloData, "this.portfoiloDatathis.portfoiloData")
 
@@ -379,6 +380,7 @@ export class StreamDashboardComponent implements OnInit {
       this.darArray = JSON.parse(data['DAR_Details_Json']);
 
       const week_Arr = this.darArray[0].WeekSubmissionStatus;
+      console.log(week_Arr,'week_Arrweek_Arrweek_Arr')
       this.weekArr.forEach((item,index)=>{
 
         if(week_Arr[index]){
@@ -387,6 +389,7 @@ export class StreamDashboardComponent implements OnInit {
 
       })
     console.log(this.darArray,'darArraydarArray')
+
 
     })
 
@@ -495,6 +498,55 @@ export class StreamDashboardComponent implements OnInit {
   //   })
   //   // this.isLoading = true
   // }
+// page_Names: string = "backend";
+// gotoPortfolioPage(){
+//   let Mode: string = "Portfolio";
+//   var url = document.baseURI + this.page_Names;
+//   var myurl = `${url}/${Mode}`;
+//   var myWindow = window.open(myurl);
+//   myWindow.focus();
+// }
+
+
+
+
+  page_Names: string = "backend";
+  gotoPortfolioPage(){
+    this.router.navigate(['/backend/Portfolio']);
+  }
+
+
+  newMeetingDetails(Schedule_ID) {
+    let name: string = 'Meeting-Details';
+    var url = document.baseURI + name;
+    var myurl = `${url}/${Schedule_ID}`;
+    var myWindow = window.open(myurl);
+    myWindow.focus();
+  }
+
+
+
+  gotoCalendar(){
+    this.router.navigate(['/backend/StreamCalendar']);
+  }
+
+
+  
+
+  formatTimes(time: string): string {
+    if(time){
+      const [hours, minutes] = time.split(':');
+      const date = new Date();
+      date.setHours(parseInt(hours, 10));
+      date.setMinutes(parseInt(minutes, 10));
+  
+      const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
+      const x=date.toLocaleTimeString('en-US', options);
+      return x;
+    }
+    return '';
+  }
+
 
 
 }

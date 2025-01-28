@@ -102,12 +102,12 @@
                         </div> -->
 
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters();this.edited=false" [disabled]="CurrentPageNo==1">
+                            (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters();this.edited=false;clearAllCheckboxes()" [disabled]="CurrentPageNo==1">
                             <i class="fas fa-angle-left mr-0"></i>
                         </button>
                         <!-- [ngClass]="_CurrentpageRecords<30 ? 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1 not-allowed' : 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1'" -->
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters();this.edited=false"
+                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters();this.edited=false;clearAllCheckboxes()"
                             [disabled]="_CurrentpageRecords<30||(_CurrentpageRecords*CurrentPageNo)>_totalProjectsCount">
                             <i class="fas fa-angle-right mr-0"></i></button>
                         <div class="mr-1">
@@ -507,7 +507,7 @@
                                                       <mat-label>Status</mat-label>
                                                        <mat-chip-list #selected_status>
                                                         <mat-chip *ngFor="let emptoshare of enterStatus" class="Data_chip_kt" (removed)="removeSelectedstatus(emptoshare); getNewFilterResult();">
-                                                          {{getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name}}
+                                                          {{ (getObjOfstatus(StatusCountFilter, emptoshare, 'Name')?.Name === 'Under Approval') ? 'New Approval' : getObjOfstatus(StatusCountFilter, emptoshare, 'Name')?.Name }}
 
                                                           -{{getObjOf(StatusCountFilter,emptoshare,'Name')?.Count}}
                                                           <button matChipRemove>
@@ -855,6 +855,10 @@
                             <i class="fas fa-sync-alt mr-0"></i>
                         </button>
 
+                        <button title="graphical view" class="btn btn-label-primary btn-upper btn-sm btn-bold" data-toggle="modal" data-target="#actns-graphmodal" (click)="loadGanttChart()">
+                            <i class="fas fa-chart-pie fs-5 mr-0"></i>
+                        </button>
+
                     </div>
                 </div>
             </div>
@@ -947,6 +951,69 @@
                 </div>
             </div>
             <!--begin::Portlet-->
+
+
+
+
+
+
+<!--
+            <div class="kt-Note-msg d-flex" *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0 || this.forwardPrjPort&&this.forwardPrjPort.length > 0 ||this.completionPrjPort&&this.completionPrjPort.length > 0 || this.newapprovalPrjport&&this.newapprovalPrjport.length > 0" >
+              <div class="kt-note-icon" style="align-self: flex-start;"><svg xmlns="http://www.w3.org/2000/svg"
+               xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px"
+               viewBox="0 0 66 65" xml:space="preserve">
+               <path
+                 d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z">
+               </path>
+               <path
+                 d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z">
+               </path>
+               <path
+                 d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z">
+               </path>
+               <path
+                 d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z">
+               </path>
+               <path
+                 d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z">
+               </path>
+               <path
+                 d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z">
+               </path>
+               <path
+                 d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z">
+               </path>
+               <path
+                 d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z">
+               </path>
+             </svg></div> -->
+
+
+             <!-- filterProjectsOfEmp(Current_user_ID)" -->
+             <!-- <div  class="notification delay-notification "><span  class="notif-msg" > Need your action on <span style="color: #ff2727;" *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0" (click)="filterPrjs(Current_user_ID,'Delay')"  class="delayaction-of-emp ">{{this.delayPrjsofPort.length}} delay project(s)</span><b *ngIf="this.forwardPrjPort.length>0" >,&nbsp;</b>
+              <span *ngIf="this.forwardPrjPort&&this.forwardPrjPort.length > 0"  class="delayaction-of-emp " (click)="filterPrjs(Current_user_ID,'Forward Under Approval')"  style="color:#9C27B0">{{this.forwardPrjPort.length}} Forward approval(s)</span> <b *ngIf="this.completionPrjPort.length > 0" >,&nbsp;</b>
+
+             <span *ngIf="this.completionPrjPort&&this.completionPrjPort.length > 0"  style="color:#81C784" class="delayaction-of-emp " (click)="filterPrjs(Current_user_ID,'Completion Under Approval')" >{{this.completionPrjPort.length}} Completion approval(s)</span><b *ngIf="this.cancellationPort.length >0 &&  this.delayPrjsofPort.length>0" class="">,&nbsp;</b>
+
+             <span *ngIf="this.cancellationPort&&this.cancellationPort.length > 0"  style="color:#EE4137 " class="delayaction-of-emp " (click)="filterPrjs(Current_user_ID,'Cancellation Under Approval')" >{{this.cancellationPort.length}} Cancellation approval(s)</span><b *ngIf="newapprovalPrjport.length > 0&&this.delayPrjsofPort.length>0" class="">,&nbsp;</b>
+
+
+           <span *ngIf="this.newapprovalPrjport&&this.newapprovalPrjport.length > 0"  style="color:#9C27B0 " class="delayaction-of-emp " (click)="filterPrjs(Current_user_ID,'Under Approval')">{{this.newapprovalPrjport.length}} New approval(s)</span>
+
+           </span>
+
+           </div> -->
+
+           <!-- </div> -->
+
+
+
+
+
+
+
+
+
             <div class="kt-portlet mt-2 mb-0">
                 <!-- <div class="kt-portlet__head">
                     <div class="col-md-6 py-3">
@@ -985,7 +1052,7 @@
                                   </span>
 
                                   <span class="search-filter" *ngFor="let emptoshare of enterStatus">
-                                       {{getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name}}
+                                       {{ (getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name === 'Under Approval') ? 'New Approval' : getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name   }}
                                   </span>
 
                                </div>
@@ -994,7 +1061,97 @@
 
                                 </div> -->
                               </div>
-                                <div class="row">
+
+
+
+
+
+                             <div class="d-flex">
+                              <div  class="dropdown show mr-2">
+                                <button  *ngIf="this.allSelectedProjects.length>0"  class="btn btn-sm btn-outline-primary" data-toggle="dropdown" id="test1" title="Click to create new portfolio"
+                                [ngClass]="{'active': activeClass_NewPortfolio}" (click)="DropdownOpen();_portfolioName = ''">
+                                <!-- <svg width="44px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12H18M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> -->
+
+                                <span class="fs-14" style="font-size: 12px;" >Create portfolio</span>
+
+                              </button>
+                            <div  class="dropdown-menu dropdown-menu-fit dropdown-menu-md bg-ground"
+                                aria-labelledby="test1">
+
+                                <!--begin::Nav-->
+                                <div>
+                                    <ul class="kt-nav">
+
+
+                                        <li class="kt-nav__item px-3">
+
+                                            <strong>Create new portfolio</strong>
+
+                                            <div class="kt-nav__separator"></div>
+                                            <p>Enter the portfolio name you wish to create,it can be editable
+                                                anytime
+                                                later.</p>
+                                            <!-- <p>Enter the Portfolio Name you wish to create, it can be editable
+                                                anytime.</p> -->
+                                            <input type="text" class="form-control"
+                                                placeholder="Enter Portfolio Name" [(ngModel)]="_portfolioName"
+                                                (keydown.enter)="createNewPortfolio()" (keypress)="omit_number($event)" type="text"
+                                                [ngStyle]="{'border-color':_portfolioName == '' ? 'rgb(255 177 175)' : 'rgb(136 150 255)','background-color':_portfolioName=='' ? 'rgb(253 135 135 / 10%)':'#f5f6fc' }">
+
+                                            <!-- <p class="text-primary mb-0 py-1" [hidden]="_portfolioName!=''"> * Portfolio Name is
+                                    required</p>-->
+                                            <span>
+                                                <p class="text-danger mb-0 py-1">{{alreadyExists}}</p>
+                                            </span>
+                                            <span>
+                                                <p class="text-danger mb-0 py-1" *ngIf="special==true">
+                                                    {{specialnote}}
+                                                </p>
+                                            </span>
+                                        </li>
+                                        <!-- <li class="kt-nav__separator"></li> -->
+                                        <li class="kt-nav__foot d-inline-block">
+                                            <button
+                                                class="btn btn-secondary theme-btn btn-upper btn-sm btn-bold mr-2"
+                                                id="nextbttn" (click)="createNewPortfolio()"
+                                                [disabled]="_portfolioName==''">Next</button>
+                                            <button
+                                                class="btn btn-label-secondary btn-outline-secondary btn-upper btn-sm btn-bold"
+                                                (click)="resetInputText()">Close</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--end:: Nav-->
+                            </div>
+                              </div>
+                            <ng-container *ngIf="isapprovlFound">
+                              <div class="btn-group mr-2" role="group">
+                                <button type="button" class="btn btn-outline-success btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                  <span class="fs-8" style="font-weight:500">Accept</span>
+                                </button>
+                                <div class="dropdown-menu drop-cus" style="margin-top:4px !important; border: 2px solid rgb(30, 197, 180) !important;" >
+                                    <a class="dropdown-item gap-2 align-items-center"  (click)="acceptfunction()">
+                                      Accept
+                                      <svg width="15px" height="15px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" style="stroke:  rgb(63 67 70); stroke-width: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="checkmark"> <line class="cls-1" x1="3" x2="12" y1="16" y2="25"></line> <line class="cls-1" x1="12" x2="29" y1="25" y2="7"></line> </g> </g></svg>
+                                    </a>
+                                    <a class="dropdown-item gap-2 align-items-center" (click)="onAcceptWithCmtsBtnClicked()">
+                                      Accept with comments
+                                      <svg style="fill:rgb(63 67 70);" width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.093,1.293l-11.2,11.2a.99.99,0,0,0-.242.391l-1.6,4.8A1,1,0,0,0,5,19a1.014,1.014,0,0,0,.316-.051l4.8-1.6a1.006,1.006,0,0,0,.391-.242l11.2-11.2a1,1,0,0,0,0-1.414l-3.2-3.2A1,1,0,0,0,17.093,1.293ZM9.26,15.526l-2.679.893.893-2.679L17.8,3.414,19.586,5.2ZM3,21H20a1,1,0,0,1,0,2H3a1,1,0,0,1,0-2Z"></path></g></svg>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <button   (click)="rejectpros()" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
+                              <span class="fs-8" style="font-weight:500">Reject</span>
+                            </button>
+                          </ng-container>
+                             </div>
+
+
+
+
+
+                                <div class="row mt-2">
                                     <div class="col-sm-12">
 
                                         <span *ngIf="searchResult == true">About ({{_CurrentpageRecords}}) results found</span>
@@ -1003,10 +1160,17 @@
                                             style="width: 0px;">
                                             <thead>
                                                 <tr role="row">
-                                                    <th style="width: 100px; z-index: 12 !important;" tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
+
+
+                                                  <th class="icond" style="z-index: 12 !important;">
+                                                    <span class="d-flex align-items-center"  id="snocheck"   ><mat-checkbox  [checked]="isAllPrjSelected"   title="Select All" (change)="selectUnselectPagePrjs($event);value()" color="primary"></mat-checkbox>
+                                                      <label class="fs-7 ml-2">{{Value}}</label></span>
+                                                   </th>
+
+                                                    <!-- <th style="width: 100px; z-index: 12 !important;" tabindex="0" aria-controls="project-4" rowspan="1" colspan="1"
                                                         aria-sort="ascending"
                                                         aria-label=": activate to sort column descending">
-                                                    </th>
+                                                    </th> -->
 
                                                     <th [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Project_Name" tabindex="0" aria-controls="project-4"
@@ -1023,7 +1187,7 @@
                                                         </a>
                                                         Project name
                                                     </th>
-                                                    <th>
+                                                    <th>Actions
                                                      </th>
                                                     <th  [ngClass]="{'d-none':!isprojtype}"  [appSort]="_ProjectDataList" data-order="desc"
                                                         data-name="Exec_BlockName" tabindex="0" class="curser-pointer"
@@ -1378,7 +1542,15 @@
                                                     <!-- Information Icon -->
                                                     <td align="center">
                                                         <div class="d-flex align-items-center ">
-                                                            <a tabindex="0" class="btn px-0 mr-2 info-btn curser-pointer" role="button" placement="right"
+
+                                                          <mat-list-item class="mr-2">
+
+                                                            <mat-checkbox color="primary"   [checked]="isProjectSelected(item.Project_Code)"
+                                                            (change)="selectUnSelectProject($event,item)"></mat-checkbox>
+
+                                                          </mat-list-item>
+
+                                                            <a tabindex="0" class="btn px-0 mr-2 mb-0 ml-2 info-btn curser-pointer" role="button" placement="right"
                                                             data-trigger="focus" data-toggle="tooltip" title="Click to view the project info" (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
@@ -1471,13 +1643,27 @@
                                                         </ng-template>
                                                         </div>
                                                     </td>
-                                                    <td>
+
+
+                                                    <!-- <td>
                                                         <p class="kt-widget__title mb-0" title="{{item.Project_Name}}">
                                                             {{item.Project_Name| slice:0:limit}}
-                                                            <ng-container *ngIf="item.Project_Name.length>35">...
+                                                            <ng-container *ngIf="item.Project_Name.length>71">...
                                                             </ng-container>
                                                         </p>
-                                                    </td>
+                                                    </td> -->
+
+
+
+                                                    <td>
+                                                      <p #prjtextcBx class="kt-widget__title mb-0 compl-remarks-span" title="{{item.Project_Name}}"
+                                                      (click)="$event.stopPropagation(); prjtextcBx.classList.contains('compl-remarks-span')?prjtextcBx.classList.remove('compl-remarks-span'):prjtextcBx.classList.add('compl-remarks-span')" >
+                                                          {{item.Project_Name}}
+                                                      </p>
+                                                  </td>
+
+
+
                                                     <td>
                                                       <span class="count2" title="Completed/All" *ngIf="item.Actioncount > 0">
                                                             {{item.CompletedActioncount}}/{{ item.Actioncount }}
@@ -1513,7 +1699,37 @@
 
 
 
-                                                    <td  [ngClass]="{'d-none':!isrespon}"  class="responclass"  ><div class="kt-widget__other">{{item.Team_Res}}</div>
+                                                    <td  [ngClass]="{'d-none':!isrespon}"  class="responclass"  >
+                                                      <div class="kt-widget__other"   title="{{item.Emp_First_Name}}"
+                                                     >
+                                                   {{ item.Team_Res }}
+                                                 </div>
+
+
+
+
+                                                      <!-- <div  class="attach-tippy-div">
+                                                        <span class="kt-widget__other">{{item.Team_Res}}</span>
+                                                        <span class="attach-tippy">
+
+                                                        <span class=" st-line curser-pointer" >
+                                                           <div style="width: max-content;">Company name: <h6>{{item.Com_Name}} </h6></div>
+
+
+                                                            <div>Designation : {{item.Emp_First_Name}}</div></span>
+                                                        </span>
+
+
+
+                                                    </div> -->
+
+<!-- <span class="New_Approval_Project font-weight-400">
+                                                            {{item.RejectedBy}}
+                                                        </span> -->
+
+
+
+
                                                    <span *ngIf="item.Status=='Forward Under Approval'">
                                                       <div *ngIf="item.ForwardTo" class="d-flex align-items-center">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Arrow_Sub_Down_Right"> <path id="Vector" d="M13 11L18 16M18 16L13 21M18 16H10.1969C9.07899 16 8.5192 16 8.0918 15.7822C7.71547 15.5905 7.40973 15.2839 7.21799 14.9076C7 14.4798 7 13.9201 7 12.8V3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
@@ -1591,11 +1807,37 @@
 
                                                                   <span class="Completed_color font-weight-400" *ngSwitchCase="'Completed'">{{item.Status}}</span>
                                                                   <span class="Under_Approval_color font-weight-400" *ngSwitchCase="'Under Approval'">New approval</span>
-                                                                  <span class="New_Project_Rejected_color font-weight-400" *ngSwitchCase="'New Project Rejected'">New project rejected</span>
+                                                                  <span class="font-weight-400" *ngSwitchCase="'New Project Rejected'">
+
+
+                                                                    <div  class="attach-tippy-div">
+                                                                      <span class="New_Project_Rejected_color font-weight-400">New project rejected</span>
+                                                                      <span class="attach-tippy">
+
+                                                                      <span class=" st-line curser-pointer" >
+                                                                         <div style="width: max-content;">Rejected by: <h6>{{item.RejectedBy}} </h6></div>
+                                                                          <div>on: {{item.RejectFromDate | date: 'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.RejectFromDate))}})</div>
+
+                                                                          <div>Comment : {{item.Rejectcomments}}</div></span>
+                                                                      </span>
+
+                                                                      <span class="New_Approval_Project font-weight-400">
+                                                                          {{item.RejectedBy}}
+                                                                      </span>
+
+                                                                  </div>
+
+
+
+                                                                    </span>
                                                                   <span class="Not_Started font-weight-400" *ngSwitchCase="'Not Started'">Not Started</span>
                                                                   <span class="Cancelled_color font-weight-400" *ngSwitchCase="'Cancelled'">Cancelled</span>
                                                                   <span class="Cancellation_Under_Approval_color font-weight-400" *ngSwitchCase="'Cancellation Under Approval'">Cancellation approval</span>
-                                                                  <span class="Forward_Under_Approval_color font-weight-400"  *ngSwitchCase="'Forward Under Approval'">Forward approval</span>
+                                                                  <span class="attach-tippy font-weight-400"  *ngSwitchCase="'Forward Under Approval'">
+                                                                    <span class="Forward_Under_Approval_color font-weight-400">Forward approval</span>
+                                                                    <span *ngIf="item.approvalfromdate"  class=" st-line">Pending approval since: {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
+                                                                    </span>
+                                                                  </span>
                                                                   <span class="Hold_color font-weight-400" *ngSwitchCase="'Project Hold'">Hold</span>
                                                                   <span class="Completion_Under_Approval_color font-weight-400" *ngSwitchCase="'Completion Under Approval'">Completion Under Approval</span>
                                                                   <div *ngIf="item.Pendingapprover" class="pulsing-div">
@@ -1635,6 +1877,7 @@
                                                                   <span class="pulsing-dot-label">{{item.Pendingapprover}}</span>
                                                               </div>
                                                           </div>
+
                                                           <div *ngIf="item.Status=='Delay'" class="attach-tippy" >
                                                               <span class="vi font-weight-400 st-line"> {{item.Delaydays}} days delay</span>
                                                               <span
@@ -1706,7 +1949,7 @@
 
 
                                                           <div *ngIf="item.Status=='Project Hold'" class="attach-tippy">
-                                                            <span *ngIf="item.approvalfromdate"  class=" st-line">Pending approval since: {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
+                                                            <span *ngIf="item.approvalfromdate"  class=" st-line">Hold since: {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
                                                             </span>
                                                               <span class="Hold_color font-weight-400">
                                                                   Hold</span>
@@ -1783,7 +2026,7 @@
                                                           </div>
 
                                                           <div *ngIf="item.Status=='Forward Under Approval'" class="attach-tippy">
-                                                              <span class="  st-line">Pending approval since : {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
+                                                              <span class="st-line">Pending approval since : {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
 
 
                                                               </span>
@@ -3224,6 +3467,399 @@
     </div>
 
 
+    <!--accept approvals with comment sidebar start-->
 
 
-    <div id="rightbar-overlay" (click)="closeInfo()"></div>
+<div id="acceptbar" class="sideInfobar animate-right">
+  <div class="kt-portlet mb-0">
+    <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
+      <h4 class="m-0">Accept projects</h4>
+      <a href="javascript:void(0)" class="closebtns btn btn-xs btn-icon btn-hover-info" (click)="closeInfo()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+          <path fill="none" d="M0 0h24v24H0z"></path>
+          <path
+            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+          </path>
+        </svg>
+      </a>
+    </div>
+    <div class="kt-portlet__body sidehf_scroll scroll-y mb-0">
+      <div class="pb-1">
+        <div class="card-body card-car px-1 py-4">
+
+          <div class="card card-mid flex-1">
+            <div class="card-header">
+              <h5 clas="card-title"> {{approvingRequest.length}} {{approvingRequest.length>1?'Projects':'Project'}} selected</h5>
+            </div>
+            <div class="card-body p-0">
+              <div class="cus-scroll scroll-y">
+                <div class="meetdt" *ngFor="let item of approvingRequest">
+                  <div id="" class="eve-area">
+                    <div class="">
+                      <div class="event-main">
+                        <span class="event-color event-color--info"></span>
+                        <span class="event-title mr-2">
+                          <a href="javascript:;">{{item.Project_Name}}</a>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="btm-des">
+                      <div class="ml-4 mr-2 status-d">
+                        <h6 *ngIf="item.Status!='Delay'" [ngClass]="{
+                                                        'text-success mb-0':item.Status=='Completed',
+                                                        'text-warning mb-0':item.Status=='InProcess',
+                                                        'text-primary mb-0':item.Status=='Under Approval',
+                                                        'text-info mb-0':item.Status=='Completion Under Approval',
+                                                        'text-Rejected mb-0':item.Status=='New Project Rejected',
+                                                        'text-underApproval mb-0':item.Status=='Enactive Under Approval',
+                                                        'text-underApproval mb-0':item.Status=='Forward Under Approval',
+                                                        'text-underApp mb-0':item.Status=='New Project',
+                                                        'text-completed mb-0':item.Status=='Completion Under Approval',
+                                                        'text-completeRejected mb-0':item.Status=='Project Complete Rejected',
+                                                        'text-Todo mb-0':item.Status=='ToDo Completed'}"
+                          data-toggle="tooltip" title="Project status">
+                      {{item.Status=='Under Approval'?'New approval':item.Status=='Enactive Under Approval'?'Enactive approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
+                        </h6>
+                        <h6 class=" text-danger mb-0" data-toggle="tooltip" title="Project status"
+                          *ngIf="item.Status=='Delay'">
+                          {{item.Status==='Under Approval'?'New Approval':item.Status}}
+                          {{item.Delaydays}} days
+                        </h6>
+                      </div>
+
+                      <span class="mr-2 showv">|</span>
+                      <div class="ml-1 mr-2 status-d">
+                        <h6 [ngClass]="{
+                                                    'Done mb-0':item.Type=='Project Complete' ||  item.Type=='Task Complete'
+                                                    || item.Type=='StandardTask Completed' || item.Type=='Approved Project',
+                                                    'text-primary mb-0':item.Type=='Project Forward' || item.Type=='RACIS change' || item.Type=='New Action' || item.Type=='Revert Back',
+                                                    'text-info mb-0':item.Type=='New Project' ||  item.Type=='Information' || item.Type=='Deadline Extend'
+                                                    || item.Type=='ToDo Achieved',
+                                                    'text-danger mb-0':item.Type=='New Project Reject Release' ||  item.Type=='Project Hold' || item.Type=='Task-Reject' || item.Type =='Not Achieved'
+                                                    || item.Type=='Project Complete Rejected' || item.Type=='New Project Rejected' || item.Type=='Standardtask Enactive'
+                                                    }" data-toggle="tooltip" title="Request type">
+                          {{item.Type=="New Project"?"New approval":item.Type}}
+                        </h6>
+                      </div>
+                      <span class="mr-2 showv">|</span>
+                      <div class="">
+                        <span class="showv mr-2 text-muted">
+                          <i class="far fa-calendar-alt mr-1"></i>
+                          {{item.DPG | date:'dd/MM/yyyy'}} - {{item.DeadLine | date:'dd/MM/yyyy'}}
+                        </span>
+                      </div>
+                      <span class="mr-2 showv">|</span>
+                      <div class="">
+                        <span class="showv mr-2 text-muted">
+                          <i class="far fa-user mr-1"></i>
+                          {{item.TM_DisplayName}}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="">
+        <div class="card-body py-2 px-1">
+          <div class="crd-hdr">
+          </div>
+          <div class="col-md-12 checked-rad pl-1 pt-3">
+            <div class="form-group">
+              <label class="mb-2">Enter comments</label><span style="color:red">*</span>
+              <textarea class="form-control h-100px" [(ngModel)]="approverComments" [ngClass]="{'error-border':(!approverComments||!approverComments.trim())&&notProvided}"   placeholder="Enter your comments here."></textarea>
+              <span *ngIf="(!approverComments||!approverComments.trim())&&notProvided" style="color:red;">Please enter comment.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="kt-portlet__foot py-3 d-flex justify-content-end gap-1">
+      <button class="btn btn-secondary mr-2" (click)="closeInfo()">Close</button>
+      <button type="submit" class="btn btn-info" (click)="submitAprvlsWithCmts()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<!--accept approvals with comment sidebar end-->
+
+<div id="rejectbar" class="sideInfobar animate-right">
+  <div class="kt-portlet mb-0">
+    <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
+      <h4 class="m-0">Reject projects</h4>
+      <a href="javascript:void(0)" class="closebtns btn btn-xs btn-icon btn-hover-info" (click)="closeInfo()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+          <path fill="none" d="M0 0h24v24H0z"></path>
+          <path
+            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+          </path>
+        </svg>
+      </a>
+    </div>
+    <div class="kt-portlet--body mb-0">
+
+      <div class="brb-1 pb-1">
+
+        <div class="card-body card-car">
+
+          <div class="card card-mid flex-1">
+            <div class="card-header">
+              <h5 clas="card-title"> Projects list </h5>
+            </div>
+            <div class="card-body p-0">
+              <div class=" cus-scroll scroll-y">
+                <div class="meetdt" *ngFor="let item of approvingRequest">
+
+                  <div id="" class="eve-area">
+                    <div class="">
+                      <div class="event-main">
+                        <span class="event-color event-color--info"></span>
+                        <span class="event-title mr-2">
+                          <a href="javascript:;">{{item.Project_Name}}</a>
+                        </span>
+                      </div>
+
+
+                    </div>
+                    <div class="btm-des">
+
+                      <!-- <div class="desc-1">{{item.Project_Description}}</div> -->
+
+                      <div class="ml-4 mr-2 status-d">
+                        <h6 *ngIf="item.Status!='Delay'" [ngClass]="{
+                                                        'text-success mb-0':item.Status=='Completed',
+                                                        'text-warning mb-0':item.Status=='InProcess',
+                                                        'text-primary mb-0':item.Status=='Under Approval',
+                                                        'text-info mb-0':item.Status=='Completion Under Approval',
+                                                        'text-Rejected mb-0':item.Status=='New Project Rejected',
+                                                        'text-underApproval mb-0':item.Status=='Enactive Under Approval',
+                                                        'text-underApproval mb-0':item.Status=='Forward Under Approval',
+                                                        'text-underApp mb-0':item.Status=='New Project',
+                                                        'text-completed mb-0':item.Status=='Completion Under Approval',
+                                                        'text-completeRejected mb-0':item.Status=='Project Complete Rejected',
+                                                        'text-Todo mb-0':item.Status=='ToDo Completed'}"
+                          data-toggle="tooltip" title="Project status">
+
+
+ {{item.Status=='Under Approval'?'New approval':item.Status=='Enactive Under Approval'?'Enactive approval' :item.Status=="Cancellation Under Approval"?"Cancellation approval"   :item.Status== "Completion Under Approval" ? "Completion approval" :item.Status=='Forward Under Approval'? "Forward approval" :  item.Status=='Deadline Extend Under Approval'?"Deadline extend approval" :item.Status=='InProcess'?'In-process':item.Status}}
+
+                        </h6>
+                        <h6 class=" text-danger mb-0" data-toggle="tooltip" title="Project status"
+                          *ngIf="item.Status=='Delay'">
+                          {{item.Status==='Under Approval'?'New Approval':item.Status}}
+                          {{item.Delaydays}} days
+                        </h6>
+                      </div>
+                      <div>
+
+                      </div>
+                      <span class="mr-2 showv">|</span>
+                      <div class="ml-1 mr-2 status-d">
+                        <h6 [ngClass]="{
+                                                    'Done mb-0':item.Type=='Project Complete' ||  item.Type=='Task Complete'
+                                                    || item.Type=='StandardTask Completed' || item.Type=='Approved Project',
+                                                    'text-primary mb-0':item.Type=='Project Forward' || item.Type=='RACIS change' || item.Type=='New Action' || item.Type=='Revert Back',
+                                                    'text-info mb-0':item.Type=='New Project' ||  item.Type=='Information' || item.Type=='Deadline Extend'
+                                                    || item.Type=='ToDo Achieved',
+                                                    'text-danger mb-0':item.Type=='New Project Reject Release' ||  item.Type=='Project Hold' || item.Type=='Task-Reject' || item.Type =='Not Achieved'
+                                                    || item.Type=='Project Complete Rejected' || item.Type=='New Project Rejected' || item.Type=='Standardtask Enactive'
+                                                    }" data-toggle="tooltip" title="Request type">
+                          {{item.Type=="New Project"?"New approval":item.Type}}
+                        </h6>
+                      </div>
+                      <span class="mr-2 showv">|</span>
+                      <div class="">
+                        <span class="showv mr-2 text-muted">
+                          <i class="far fa-calendar-alt mr-1"></i>
+                          {{item.DPG | date:'dd/MM/yyyy'}} - {{item.DeadLine | date:'dd/MM/yyyy'}}
+                        </span>
+                      </div>
+                      <span class="mr-2 showv">|</span>
+                      <div class="">
+                        <span class="showv mr-2 text-muted">
+                          <i class="far fa-user mr-1"></i>
+                          <!--      <div class="initial-box color-7 b-50 mr-2">WA</div>    -->
+                          {{item.TM_DisplayName}}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+          </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+      <div class="">
+        <div class="card-body" id="comts1">
+          <div class="crd-hdr">
+            <div class="crd-title">
+              <h5>Reject comments</h5>
+            </div>
+          </div>
+          <div class="col-md-12 checked-rad pl-1 pt-3">
+            <div class="form-group">
+              <label class="mb-2">Reject type</label><span style="color:red">*</span>
+              <ng-select required name="rej_type" placeholder="Select reject type" [(ngModel)]="rejectType"
+                (change)="rejectApproval()">
+                <ng-option [value]="item.TypeID" *ngFor="let item of reject_list">
+                  {{item.RejectType}}
+                </ng-option>
+              </ng-select>
+              <span *ngIf="rejectType!=1 && rejectType" style="color:grey">{{rejDesc}}</span>
+              <span *ngIf="noRejectType==true" style="color:red">Please select Reject
+                type!!</span>
+            </div>
+
+            <label class="mb-2" *ngIf="rejectType && rejectcomments>0">Select From
+              Existing comments</label>
+            <div class="appr-comts" *ngIf="rejectType && rejectcomments>0">
+
+              <div class="exs-cmts cards">
+                <div class="card-header">
+                  <h6 class="mb-0">Existing comments</h6>
+                </div>
+                <div class="crd-bdy scroll-y">
+                  <div class="cmts-items" *ngFor="let item of rejectcommentsList;let i=index">
+                    <h6 [ngClass]="exist_comment.indexOf(item.Req_Coments) != -1 ? 'text-info' : ''">
+                      {{item.Req_Coments}}</h6>
+                    <div class="cmts-actns">
+                      <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) == -1"
+                        (click)="clickonselect(item.Req_Coments)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                          <path
+                            d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
+                          </path>
+                        </svg>
+                      </span>
+                      <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) != -1"
+                        (click)="clickondeselect(item.Req_Coments,i)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                          <path
+                            d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z">
+                          </path>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="form-group" *ngIf="rejectType">
+              <label class="mb-2">Enter comments</label><span style="color:red">*</span>
+              <!-- <div [innerHTML]="comments"></div> -->
+              <textarea class="form-control h-100px" [(ngModel)]="comments"></textarea>
+            </div>
+
+
+            <div class="d-flex justify-content-end mb-2">
+              <button class="btn btn-sm btn-secondary mr-2" (click)="resetReject()">Reset</button>
+              <button type="submit" class="btn btn-sm btn-info" [disabled]="!comments || !rejectType"
+                (click)="submitReject()">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="rightbar-overlay" (click)="closeInfo()"></div>
+
+
+<!--Actions List Graph Modal Start -->
+<div class="modal fade graphmodal" id="actns-graphmodal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="actns-graphmodalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content" style="height:90vh;">
+        <div class="modal-header">
+            <div class="actnsGrph-of-user w-100">
+                <h5 id="graphmodalLabel" class="modal-title">{{Type}} Summary</h5>
+                <div *ngIf="filterByResult==true" class="row kt-filterdetails mt-2">
+                    <div class="">
+                        <span class="font-weight-bold">Filter by :</span>
+                        <span class="search-filter1" *ngFor="let emptoshare of comToselect">{{getObjOfs(CompanyCountFilter,emptoshare,'Company_No')?.Name}}</span><span *ngIf="emplyToselect&&emplyToselect.length>0" class="font-weight-bold fs-4 pl-2">/</span>
+                        <span class="search-filter1" *ngFor="let emptoshare of emplyToselect">{{getObjOf(EmpCountInFilter,emptoshare,'Emp_No')?.Name}} </span><span *ngIf="projtypeToselect&&projtypeToselect.length>0" class="font-weight-bold fs-4 pl-2">/</span>
+                        <span class="search-filter1" *ngFor="let emptoshare of projtypeToselect">{{getObjOfpro(TypeContInFilter,emptoshare,'Block_No')?.Name}}</span><span *ngIf="enterStatus&&enterStatus.length>0" class="font-weight-bold fs-4 pl-2">/</span>
+                        <span class="search-filter1" *ngFor="let emptoshare of enterStatus"> {{ (getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name === 'Under Approval') ? 'New Approval' : getObjOfstatus(StatusCountFilter,emptoshare,'Name')?.Name   }}</span>
+                    </div>
+                </div>
+                <div  *ngIf="isGanttchartVisible"  class="d-flex gap-3">
+                    <div class="page-prj-count" style="font-weight: 500;">
+                        <ng-container *ngIf="CurrentPageNo==1">
+                            {{CurrentPageNo}} - {{_CurrentpageRecords}}
+                        </ng-container>
+                        <ng-container *ngIf="CurrentPageNo!=1 && CurrentPageNo!=LastPage">
+                            {{_CurrentpageRecords * (CurrentPageNo-1) + 1}} - {{_CurrentpageRecords *
+                            CurrentPageNo}}
+                        </ng-container>
+                        <ng-container *ngIf="CurrentPageNo==LastPage  && CurrentPageNo!=1">
+                            {{lastPagerecords * (CurrentPageNo-1) + 1}} - {{lastPagerecords * (CurrentPageNo-1) + _CurrentpageRecords}}
+                        </ng-container>
+
+                        of
+                        <span *ngIf="_totalProjectsCount>=1000"> {{_totalProjectsCount.toLocaleString()}}</span>
+                        <span *ngIf="_totalProjectsCount<1000"> {{_totalProjectsCount}}</span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <div *ngFor="let status of prj_statuses"  class="d-flex align-items-center gap-1">
+                            <div [ngStyle]="{ backgroundColor:all_status[status]||all_status['other'] }" style="width: 10px; height: 10px;"></div>
+                            {{status}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+          <div class="header-act">
+                <div class="kt-graph-close"  data-dismiss="modal" aria-label="Close" (click)="onGanttChartClose()">
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11083)"> <path d="M7 7.00006L17 17.0001M7 17.0001L17 7.00006" stroke="#b0b0b0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_429_11083"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>
+                </div>
+          </div>
+
+        </div>
+
+
+        <div class="modal-body actns-graph-dv" style=" display: flex; flex-direction: column;">
+
+         <div [ngClass]="{'d-none':isGanttchartVisible==false}">
+            <div class="gantt-ctrls-btns"></div>
+            <div class="actns-gantt-dates" style=" background-color:#fff;  position: relative;top: 28px;z-index: 1;width: 100%;display: flex;justify-content: flex-end;padding-right: 17px;">
+                <div class="dates-label" style="background-color: #fff">
+                        <svg  width="100%" height="30px">
+                            <g id="SvgjsG1247" class="apexcharts-xaxis apexcharts-yaxis-inversed">
+                                <g id="this-is-head" class="apexcharts-xaxis-texts-g" transform="">
+
+                                </g>
+                            </g>
+                        </svg>
+                </div>
+            </div>
+          <div class="gantt-container">
+               <div  class="actns-graph" id="actnsfull-graph"></div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+      </div>
+    </div>
+  </div>
+  <!--Projects list Graph Modal End -->
+

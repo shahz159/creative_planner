@@ -41,6 +41,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ThisReceiver } from '@angular/compiler';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
+import { object } from '@amcharts/amcharts5';
 // import { transition } from '@angular/animations';
 // import { getElement } from '@amcharts/amcharts4/core';
 // import { ThemeService } from 'ng2-charts';
@@ -96,6 +97,7 @@ export class DashboardComponent implements OnInit {
   _ActualProjectList = [];
   _CalendarProjectsList = {};
   disablePreviousDate = new Date();
+  disablePreviousTodayDate = new Date();
   _calenderDto: CalenderDTO;
   ProjectListArray: any = [];
   BlockNameProject1: any;
@@ -551,6 +553,8 @@ export class DashboardComponent implements OnInit {
     this.GetTimeslabfordate();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
 
+    this.disablePreviousTodayDate.setDate(this.disablePreviousTodayDate.getDate() + 1);
+
     this.typetext = "This Project consists of Core/Secondary Projects";
     this.Current_user_ID = localStorage.getItem('EmpNo');
 
@@ -571,6 +575,8 @@ export class DashboardComponent implements OnInit {
     this.Getdraft_datalistmeeting();
     this.GetPending_Request();
     this.getMeetingApprovals();
+
+
     // this.GetDelay_Actions();
     //Setting recurance max date
     //start
@@ -701,13 +707,30 @@ export class DashboardComponent implements OnInit {
 
 
   onFileChange(event) {
-    debugger
+ 
     if (event.target.files.length > 0) {
+      const allowedTypes = [
+        "image/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/json", "application/xml", "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ];
+
       const length = event.target.files.length;
       for (let index = 0; index < length; index++) {
         const file = event.target.files[index];
         const fileName = file.name;
         const contentType = file.type;
+        if (!allowedTypes.some(type => file.type.match(type))) {
+          // Show a sweet alert popup for unsupported file types
+          Swal.fire({
+            title: `This File "${fileName}" cannot be accepted!`,
+            text: `Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+            });
+          continue;
+        }
+
 
         // Skip file if its name already exists in either array
         const fileAlreadyExists =
@@ -1024,11 +1047,12 @@ export class DashboardComponent implements OnInit {
             jsonData[columnName] = element;
             this.dmsIdjson.push(jsonData);
           });
+         
           this.dmsIdjson = JSON.stringify(this.dmsIdjson);
           this._LinkService._GetMemosSubject(this.dmsIdjson).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              console.log("Subject Name ------------>", this._MemosSubjectList);
+              console.log("Subject Name 1------------>", this._MemosSubjectList);
             });
         }
 
@@ -1262,6 +1286,16 @@ export class DashboardComponent implements OnInit {
 
         this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
 
+           // this code for chnage detection start
+           this.disablePreviousDate = null;
+           setTimeout(()=>{
+             this.disablePreviousDate = new Date();
+           },0);
+           // this code for chnage detection End
+
+
+
+
         // this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
         // this.maxDate = this.EventScheduledjson[0]['End_date'];
 
@@ -1387,7 +1421,28 @@ export class DashboardComponent implements OnInit {
 
 
           this.Location_Type = (this.EventScheduledjson[0]['Location']);
-          this._meetingroom = this.Location_Type?true:false;
+          this._meetingroom = this.Location_Type?true:false; 
+          this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
+
+          if(this.Link_Details != ''){
+            if(!this.Link_Details.includes('<a href=')){
+              var details = this.Link_Details.split(', ')
+              this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+              this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+              this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined' || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+              console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
+            }
+            else if(this.Link_Details.includes('<a href=')){
+              this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
+              this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
+              this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
+            
+              console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details ss69');
+            }
+           }
+
+
+
           this.Description_Type = (this.EventScheduledjson[0]['Description']);
           document.getElementById("subtaskid").style.display = "none";
           document.getElementById("Guest_Name").style.display = "flex";
@@ -1444,8 +1499,6 @@ export class DashboardComponent implements OnInit {
     this.closeevearea();
 
 
-
-
   } 
   // else if (result.isDismissed) {
     // Skip all when Cancel is clicked
@@ -1454,6 +1507,10 @@ export class DashboardComponent implements OnInit {
   });
   }
 
+
+  RecurrValue:boolean=false;
+  RecurrValueMonthly:boolean=false;
+  previousValue:any;
 
   ReshudingTaskandEvent() {
 
@@ -1469,8 +1526,8 @@ export class DashboardComponent implements OnInit {
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
+
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-        console.log(this.EventScheduledjson, "test11111")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
         this.Startts = (this.EventScheduledjson[0]['St_Time']);
@@ -1492,12 +1549,11 @@ export class DashboardComponent implements OnInit {
         // alert(this.scstartdate)
         // this.Attachment12_ary=this.EventScheduledjson[0]['Attachmentsjson']
         this.Addressurl = this.EventScheduledjson[0]['Addressurl']
-        // alert( this.Addressurl);
         this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
         this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
         this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
 
-  
+
        if(this.Link_Details != ''){
         if(!this.Link_Details.includes('<a href=')){
           var details = this.Link_Details.split(', ')
@@ -1574,6 +1630,15 @@ export class DashboardComponent implements OnInit {
         this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
         this.maxDate = this.EventScheduledjson[0]['End_date'];
         this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
+
+          // this code for chnage detection start
+          this.disablePreviousDate = null;
+          setTimeout(()=>{
+            this.disablePreviousDate = new Date();
+          },0);
+          // this code for chnage detection End
+
+
         // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
         if ((this.EventScheduledjson[0]['Onlinelink']) == true) {
           document.getElementById("Descrip_Name12").style.display = "flex";
@@ -1600,16 +1665,18 @@ export class DashboardComponent implements OnInit {
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Recurrence_hide").style.display = "none";
         }
-        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
-
+        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {       
+       
           this._labelName = "Schedule Date";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("div_endDate_new").style.display = "block";
           document.getElementById("Recurrence_hide").style.display = "block";
           document.getElementById("weekly_121_new").style.display = "block";
           this.selectedrecuvalue = '2';
+          
+          // old code start 
           let Recc = [];
-          var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
+          var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);   
           Recc = ret1.split(",");
 
           for (var i = 0; i < Recc.length; i++) {
@@ -1619,6 +1686,14 @@ export class DashboardComponent implements OnInit {
               }
             });
           }
+          // old code End 
+
+       // New code start 
+       const dayShort = new Date(this._StartDate).toLocaleDateString('en-US', { weekday: 'short' });
+       if(ret1 != dayShort){
+        this.RecurrValue =true;
+       }  
+       // New code End 
 
           this.dayArr.forEach((item:any)=>{
             if(item.checked){
@@ -1629,13 +1704,13 @@ export class DashboardComponent implements OnInit {
 
 
         }
-        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {
+        else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {      
           document.getElementById("Recurrence_hide").style.display = "block";
           document.getElementById("div_endDate_new").style.display = "block";
           // document.getElementById("div_endDate").style.display = "none";
           document.getElementById("Monthly_121_new").style.display = "block";
           this._labelName = "Schedule Date";
-          this.selectedrecuvalue = '3';
+          this.selectedrecuvalue = '3';  
           let Recc = [];
           var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
           Recc = ret1.split(",");
@@ -1646,6 +1721,24 @@ export class DashboardComponent implements OnInit {
               }
             });
           }
+     
+           // New code Monthly start 
+           const day = new Date(this._StartDate).getDate().toString();  
+            if(ret1 != day){
+              this.MonthArr.forEach(item => item.checked = false);
+              let d2=new Date(this._StartDate);
+              const index2=d2.getDate();
+              this.MonthArr[index2-1].checked=true;
+              this.RecurrValueMonthly =true;
+            } else if (ret1 == day){
+              this.MonthArr.forEach(item => item.checked = false);
+              let d2=new Date(this._StartDate);
+              const index2=d2.getDate();
+              this.MonthArr[index2-1].checked=true;
+              this.RecurrValueMonthly =true;
+
+            } 
+           // New code Monthly End 
 
           this.MonthArr.forEach((item:any)=>{
             if(item.checked){
@@ -1656,7 +1749,7 @@ export class DashboardComponent implements OnInit {
 
         }
 
-
+        this.previousValue=this.selectedrecuvalue;
 
         if (this.ScheduleType == 'Task') {
           this.EventScheduledjson[0]['Ed_Time']
@@ -1849,11 +1942,18 @@ export class DashboardComponent implements OnInit {
   }
 
 
+  
+isValidURL = true;
+
   onSubmitBtnClicked() {
+
+    if(this.Link_Details){
+    this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
+    }
 
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
-      (this.Description_Type?(this.characterCount<=500):true)&&
+      (this.Description_Type?(this.characterCount<=500):true)&& this.isValidURL &&  
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
@@ -1898,7 +1998,8 @@ export class DashboardComponent implements OnInit {
 
   Meeting_Id:any;
   Meeting_password:any;
-
+  rapeatLink_Details:boolean=true;
+  switChRecurrenceValue:boolean=false;
 
 
   OnSubmitSchedule() {
@@ -1919,7 +2020,7 @@ export class DashboardComponent implements OnInit {
         + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       this.EventNumber = timestamp;
     }
- 
+  
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -1929,6 +2030,28 @@ export class DashboardComponent implements OnInit {
       const d1 = new Date(moment(start).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+
+
+
+       // new code start 69
+ 
+       if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate)){
+         let startDate = new Date(this._StartDate);
+         this.AllDatesSDandED = [{
+             Date: startDate.toISOString().split('T')[0],  // Get YYYY-MM-DD format
+             Day: startDate.toLocaleString('en-US', { weekday: 'short' }), // Get short day name
+             DayNum: startDate.getDate().toString(),
+             EndTime: this.Endtms,
+             IsActive: 1,
+             StartTime : this.Startts
+           }];
+       
+         this.daysSelectedII = this.AllDatesSDandED ;
+         this._SEndDate =this._StartDate.toISOString().split('T')[0];
+         this._StartDate = new Date(new Date(this._StartDate).setHours(0, 0, 0, 0)); 
+       }
+
+         // new code end 69
     }
     else if (this.selectedrecuvalue == "1") {
       this.daysSelectedII = this.AllDatesSDandED;
@@ -1998,7 +2121,7 @@ export class DashboardComponent implements OnInit {
         // var dd = moment(date3).add(diffInDays, 'days')
         // var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
         var dd = moment(date3).add(diffInDays, 'days')
-        console.log(dd, date3, diffInDays, date2, this._SEndDate, "update edit")
+        // console.log(dd, date3, diffInDays, date2, this._SEndDate, "update edit")
         var SEndDates = "SEndDate";
         element[SEndDates] = (dd.format(format2));
 
@@ -2050,12 +2173,31 @@ export class DashboardComponent implements OnInit {
         var vLocation_url = "Addressurl";
         element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
 
+    
+ 
+        if(this.Link_Details!=null){      
+          this.Link_Details = this.Link_Details.trim() == ''?null:this.Link_Details;
+        }
+        if(this.Meeting_Id!=null){ 
+          this.Meeting_Id = this.Meeting_Id.trim()  == ''?null:this.Meeting_Id;
+        }
+        if(this.Meeting_password!=null){  
+          this.Meeting_password = this.Meeting_password.trim() == ''?null:this.Meeting_password;
+        }
+        if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
+          this._onlinelink =false
+        }
 
 
+       
         var vOnlinelink = "Onlinelink";
         element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
-        this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
-    
+        if(this.rapeatLink_Details==true){
+        this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password;
+        this.rapeatLink_Details=false;
+      }
+        // console.log('this.Link_Details :->',this.Link_Details ,'this.Meeting_Id :->', this.Meeting_Id, 'this.Meeting_password :->',this.Meeting_password)
+      
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
         // var vLink_Details = "Link_Details";
@@ -2122,26 +2264,97 @@ export class DashboardComponent implements OnInit {
       else {
         this._calenderDto.Schedule_ID = 0;
       }
-      debugger
       
       const frmData = new FormData();
-      for (var i = 0; i < this._lstMultipleFiales.length; i++) {
-        frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
-      }
-      if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
-       this._attachmentValue = 1;
-      else
-        this._attachmentValue = 0;
+   
+      
+      if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
+        frmData.append("Attachment", "true");
+        this._attachmentValue = 1;
+
+        for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+          frmData.append("files", this._lstMultipleFiales[i].Files);
+        }
+        const xmlDoc = document.implementation.createDocument('', '', null);
+      const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+
+      // Iterate over the file groups
+      this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+        console.log(`Processing group ${groupIndex}:`, fileGroup);
+
+        // Normalize Files to an array
+        const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+
+        files.forEach((file, fileIndex) => {
+          if (!file || !file.name || !file.type) {
+            console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+            return;
+          }
+
+          console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+
+          const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+          const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+          const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+          const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+
+          // Populate <FileName> element
+          nameElement.textContent = file.name;
+
+          // Generate a random ID and sanitize the file name for CloudName
+          const randomId = this.generateRandomId();
+          const sanitizedFileName = this.sanitizeFileName(file.name);
+          cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
+
+          // Populate <ContentType> element
+          const contentType = this.getContentType(file.type);
+          contentTypeElement.textContent = contentType;
+
+          // Append child elements to the <Row>
+          rowElement.appendChild(nameElement);
+          rowElement.appendChild(cloudNameElement);
+          rowElement.appendChild(contentTypeElement);
+
+          // Append the <Row> to the root element
+          parentElement.appendChild(rowElement);
+          });
+        });
+
+      // Append the root <MultiDocument> element to the XML document
+        xmlDoc.appendChild(parentElement);
+
+        // Serialize the XML document to a string
+        const serializer = new XMLSerializer();
+        const xmlString = serializer.serializeToString(xmlDoc);
+
+        // Append the XML string to FormData
+        frmData.append("docs_multiple_xml", xmlString);
+
+        // Log the XML string for debugging
+        console.log("Generated XML:", xmlString);
+
+          } 
+          else {
+            this._attachmentValue = 0;
+            frmData.append("Attachment", "false");
+          }
+
+          
 
       frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
-      console.log(JSON.stringify(finalarray), "finalarray")
+  
       this._calenderDto.draftid = this.draftid? this.draftid : 0;
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
 
-      console.log('_calenderDto obj:', frmData);
       this._calenderDto.attachment =this._attachmentValue.toString();
 
+     
+      frmData.forEach((value, key) => {
+        console.log("Start", `${key} : ${value}, = ${typeof value}` ,"End");
+      });
+
+      console.log(this._calenderDto,'new copy meeting')
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
 
@@ -2150,8 +2363,11 @@ export class DashboardComponent implements OnInit {
           frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
 
           if (this._attachmentValue == 1) {
-            this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+            // this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+            this.CalenderService.UploadCalendarAttachmenstCore(frmData).subscribe(
+
               (event: HttpEvent<any>) => {
+            
                 switch (event.type) {
                   case HttpEventType.Sent:
                     console.log('Request has been made!');
@@ -2165,20 +2381,31 @@ export class DashboardComponent implements OnInit {
                     break;
                   case HttpEventType.Response:
                     console.log('User successfully created!', event.body);
+                    var myJSON = JSON.stringify(event);
+                    this._azureMessage = (JSON.parse(myJSON).body).message;
+
+                    if(this._azureMessage=="1"){
+                      this.CalenderService._AzureUploadCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
+                        console.log(event1,"azure data");
+                        var myJSON = JSON.stringify(event1);
+                      //  this._Message = (JSON.parse(myJSON).body);
+            
+                      });
+                    }
 
                     // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
-                    this._lstMultipleFiales = [];
-                    // empty(this._lstMultipleFiales);
-                    // alert(this._lstMultipleFiales.length);
-                    setTimeout(() => {
-                      this.progress = 0;
-                    }, 1500);
+                    // (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+                    // this._lstMultipleFiales = [];
+                    // // empty(this._lstMultipleFiales);
+                    // // alert(this._lstMultipleFiales.length);
+                    // setTimeout(() => {
+                    //   this.progress = 0;
+                    // }, 1500);
 
-                    (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                    (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                    // (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                    // (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
                     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                    document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+                    // document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
                 }
               }
             )
@@ -2250,12 +2477,43 @@ export class DashboardComponent implements OnInit {
 
   }
 
+
+  _azureMessage:any="";
+  
+  generateRandomId(): string {
+    return Math.random().toString().substr(2, 6).padStart(6, '0');
+  }
+
+  sanitizeFileName(fileName: string): string {
+    return fileName
+      .replace(/[^a-zA-Z0-9. ]/g, '_') // Allow dots by including '.' in the regex
+      .replace(/ /g, '_')              // Replace spaces with _
+      .replace(/_+/g, '_');            // Replace multiple underscores with a single _
+  }
+  
+
+  getContentType(fileName: any): string | null {
+    if (!fileName) {
+      return null;
+    }
+    const lastDotIndex = fileName.lastIndexOf('.');
+    return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : null;
+  }
+
+
+
+  
   OnSubmitReSchedule(type: number) {
+
+    if(this.Link_Details){
+      this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
+      }
+
 
     if (
       this.Title_Name &&
       this.Startts &&
-      this.Endtms &&
+      this.Endtms && this.isValidURL &&
       this.MinLastNameLength
       && (this.ScheduleType === 'Event' ?  this.allAgendas.length > 0 : true)
       && (this.Description_Type?(this.characterCount<=500):true)
@@ -2263,7 +2521,7 @@ export class DashboardComponent implements OnInit {
       this.notProvided = false;
 
       // update code below
-
+ 
       this._calenderDto.flagid = this._PopupConfirmedValue;
       this._calenderDto.type = type;
       var start = moment(this.minDate);
@@ -2285,11 +2543,26 @@ export class DashboardComponent implements OnInit {
       // alert(end);
       const format2 = "YYYY-MM-DD";
       const d1 = new Date(moment(start).format(format2));
-
       const d2 = new Date(moment(end).format(format2));
       const date = new Date(d1.getTime());
+
+   
+     
       this.daysSelectedII = [];
-      this.AllDatesSDandED = [];
+
+      // new code start
+      if(this.previousValue != this.selectedrecuvalue){
+        this.AllDatesSDandED;
+        this.switChRecurrenceValue=true;
+        
+      }else{
+        this.AllDatesSDandED = [];
+        this.switChRecurrenceValue=false;
+      }     
+      // new code End
+
+
+
       const dates = [];
       while (date <= d2) {
         dates.push(moment(date).format(format2));
@@ -2325,7 +2598,7 @@ export class DashboardComponent implements OnInit {
       //   + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       // this.EventNumber = timestamp;
 
-   
+  
       let finalarray = [];
       this.daysSelectedII = [];
       // const format2 = "YYYY-MM-DD";
@@ -2339,38 +2612,90 @@ export class DashboardComponent implements OnInit {
       else if (this.selectedrecuvalue == "1") {
         this.daysSelectedII = this.AllDatesSDandED;
       }
-      else if (this.selectedrecuvalue == "2") {
+      else if (this.selectedrecuvalue == "2") { 
         if (this.dayArr.filter(x => x.checked == true).length == 0) {
           alert('Please select day');
           return false;
         }
+
+        if(this._PopupConfirmedValue == 2 || this.switChRecurrenceValue == true){
         for (let index = 0; index < this.dayArr.length; index++) {
-          if (this.dayArr[index].checked) {
-          
+          if (this.dayArr[index].checked) { 
             const day = this.dayArr[index].value;
             _arraytext.push(day);
             var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
-            this.daysSelectedII = this.daysSelectedII.concat(newArray);
+            // old code start 
+            this.daysSelectedII = this.daysSelectedII.concat(newArray).sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime()); 
+            // old code end
+             
+          //   //new code start
+            if(this.RecurrValue==true){
+              const matchingDate = this.AllDatesSDandED.find(item => item.Date === this._StartDate);
+              if(matchingDate != undefined){
+                newArray.push(matchingDate);
+             }
+             this.daysSelectedII = this.daysSelectedII.concat(newArray).sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());                              
+           }else{
+              this.daysSelectedII = this.daysSelectedII.concat(newArray);
+            }
+          // //new code end          
           }
-        }
+        }}
+      
+
+         //   //new code start
+        if(this._PopupConfirmedValue == 1 &&  this.switChRecurrenceValue == false){
+          var startDateForWeekly = moment(this._StartDate).format('YYYY-MM-DD');
+          this.daysSelectedII = this.AllDatesSDandED.filter(item => item.Date === startDateForWeekly);
+
+         }
+        // //new code end  
         if (this.daysSelectedII.length == 0) {
           alert('please select valid day');
         }
       }
       else if (this.selectedrecuvalue == "3") {
+ 
+      
         if (this.MonthArr.filter(x => x.checked == true).length == 0) {
           alert('Please select day');
           return false;
         }
+
+        if(this._PopupConfirmedValue == 2 || this.switChRecurrenceValue == true){
         for (let index = 0; index < this.MonthArr.length; index++) {
-          if (this.MonthArr[index].checked == true) {
+          if (this.MonthArr[index].checked == true) {  
             const day = this.MonthArr[index].value;
             _arraytext.push(day);
             var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
-            this.daysSelectedII = this.daysSelectedII.concat(newArray);
+
+            // this.daysSelectedII = this.daysSelectedII.concat(newArray);
+            this.daysSelectedII = this.daysSelectedII.concat(newArray).sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
           }
         }
+            // New code Monthly start 
+            if(this.RecurrValueMonthly==true){
+              const matchingMonthlyDate = this.AllDatesSDandED.find(item => item.Date === this._StartDate);
+              if(matchingMonthlyDate != undefined){
+                newArray.push(matchingMonthlyDate);
+             }
+               this.daysSelectedII = this.daysSelectedII.concat(newArray).sort((a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());                              
+             }
+          //new code Monthly end
+         }
+          // New code Monthly start 
+        if(this._PopupConfirmedValue == 1 &&  this.switChRecurrenceValue == false){
+          var startDateForMonthly =moment(this._StartDate).format('YYYY-MM-DD');
+          this.daysSelectedII = this.AllDatesSDandED.filter(item => item.Date === startDateForMonthly);
+        }   
+       //new code Monthly end
+     
       }
+
+      this.daysSelectedII = this.daysSelectedII.filter(
+        (value, index, self) => index === self.findIndex(obj => JSON.stringify(obj) === JSON.stringify(value))
+      );
+
       finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
       if (finalarray.length > 0) {
@@ -2455,14 +2780,31 @@ export class DashboardComponent implements OnInit {
           var vLocation_url = "Addressurl";
           element[vLocation_url] = this._meetingroom==true?(this.Addressurl==undefined?'':this.Addressurl):'';
 
-
+          if(this.Link_Details!=null){      
+            this.Link_Details = this.Link_Details.trim() == ''?null:this.Link_Details;
+          }
+          if(this.Meeting_Id!=null){ 
+            this.Meeting_Id = this.Meeting_Id.trim()  == ''?null:this.Meeting_Id;
+          }
+          if(this.Meeting_password!=null){  
+            this.Meeting_password = this.Meeting_password.trim() == ''?null:this.Meeting_password;
+          }
+          if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
+            this._onlinelink =false
+          }
 
           var vOnlinelink = "Onlinelink";
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+          if(this.rapeatLink_Details==true){
           this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
+          this.rapeatLink_Details=false;
+        }
+
 
           var vLink_Details = "Link_Details";
           element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
+
+          
           // let link_d=this.Link_Details.replace(/&#160;/g, ' ');
           // link_d=this.anchoredIt(link_d);
           // let link_d=this.Link_Details;
@@ -2527,35 +2869,100 @@ export class DashboardComponent implements OnInit {
 
         
         const frmData = new FormData();
-        for (var i = 0; i < this._lstMultipleFiales.length; i++) {
-          frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
-        }
-        if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
+
+        if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
+          frmData.append("Attachment", "true");
           this._attachmentValue = 1;
-        else
-         this. _attachmentValue = 0;
-
-      
-         frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
-        frmData.append("CreatedBy", this.Current_user_ID.toString());
-        frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
-        frmData.append("flag_id", this._calenderDto.flagid.toString());
-        frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
+    
+          for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+            frmData.append("files", this._lstMultipleFiales[i].Files);
+          }
+        const xmlDoc = document.implementation.createDocument('', '', null);
+        const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
         
-        this._calenderDto.attachment =this._attachmentValue.toString();
-
+        // Iterate over the file groups
+        this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+        console.log(`Processing group ${groupIndex}:`, fileGroup);
         
+        // Normalize Files to an array
+        const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+        
+        files.forEach((file, fileIndex) => {
+          if (!file || !file.name || !file.type) {
+            console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+            return;
+          }
+    
+          console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+        
+          const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+          const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+          const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+          const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+        
+          // Populate <FileName> element
+          nameElement.textContent = file.name;
+        
+          // Generate a random ID and sanitize the file name for CloudName
+          const randomId = this.generateRandomId();
+          const sanitizedFileName = this.sanitizeFileName(file.name);
+          cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
+    
+            // Populate <ContentType> element
+            const contentType = this.getContentType(file.type);
+            contentTypeElement.textContent = contentType;
+          
+            // Append child elements to the <Row>
+            rowElement.appendChild(nameElement);
+            rowElement.appendChild(cloudNameElement);
+            rowElement.appendChild(contentTypeElement);
+          
+            // Append the <Row> to the root element
+            parentElement.appendChild(rowElement);
+          });
+          });
+    
+          // Append the root <MultiDocument> element to the XML document
+          xmlDoc.appendChild(parentElement);
+          
+          // Serialize the XML document to a string
+          const serializer = new XMLSerializer();
+          const xmlString = serializer.serializeToString(xmlDoc);
+          
+          // Append the XML string to FormData
+          frmData.append("docs_multiple_xml", xmlString);
+          
+          // Log the XML string for debugging
+          console.log("Generated XML:", xmlString);
+          
+          } 
+          else {
+            this._attachmentValue = 0;
+            frmData.append("Attachment", "false");
+          }
 
+ 
+          frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+          frmData.append("CreatedBy", this.Current_user_ID.toString());
+          frmData.append("Schedule_ID", this._calenderDto.Schedule_ID.toString());
+          frmData.append("flag_id", this._calenderDto.flagid.toString());
+          frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
+          
+          this._calenderDto.attachment =this._attachmentValue.toString();
+
+ 
+        console.log(this._calenderDto,'new updaet data') 
         this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
           (data => {
-            
+          
             // alert(data['Schedule_date'])
             this.Attamentdraftid= data['draftid']
            frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
 
             frmData.append("Schedule_date", data['Schedule_date'].toString());
             if (this._attachmentValue == 1) {
-              this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
+              // this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
+                this.CalenderService.EditUploadCalendarAttachmenstCore(frmData).subscribe(
                 (event: HttpEvent<any>) => {
                   switch (event.type) {
                     case HttpEventType.Sent:
@@ -2570,20 +2977,23 @@ export class DashboardComponent implements OnInit {
                       break;
                     case HttpEventType.Response:
                       console.log('User successfully created!', event.body);
+                      var myJSON = JSON.stringify(event);
+                      this._azureMessage = (JSON.parse(myJSON).body).message;
+    
+                      if(this._azureMessage=="1"){
+                        this.CalenderService._AzureUpdateCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
+                          console.log(event1,"azure data");
+                          var myJSON = JSON.stringify(event1);
+                        //  this._Message = (JSON.parse(myJSON).body);
+              
+                        });
+                      }
+               
 
-                      // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                      (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
-                      this._lstMultipleFiales = [];
-                      // empty(this._lstMultipleFiales);
-                      // alert(this._lstMultipleFiales.length);
-                      setTimeout(() => {
-                        this.progress = 0;
-                      }, 1500);
-
-                      (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                      (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+                      // (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+                      // (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
                       document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                      document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+                      // document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
                   }
                 }
               )
@@ -2679,6 +3089,10 @@ export class DashboardComponent implements OnInit {
 
 
   }
+
+
+
+
 
   Search_byname() {
     this.showsearch = true;
@@ -2820,7 +3234,8 @@ export class DashboardComponent implements OnInit {
   Task_type(value) {
  
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("rightbar-overlay-et").style.display = "block";
+    // document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
 
@@ -2849,6 +3264,12 @@ export class DashboardComponent implements OnInit {
     this.eventRepeat=false;
     this.create = true;
     this.currentTime=moment().format('h:mm A');
+       // this code for chnage detection start
+       this.disablePreviousDate = null;
+       setTimeout(()=>{
+         this.disablePreviousDate = new Date();
+       },0);
+       // this code for chnage detection End
 
     if (value == 1) {
       this.ScheduleType = "Task";
@@ -3050,23 +3471,14 @@ export class DashboardComponent implements OnInit {
 
 
   selectStartDate(event) {
-debugger
+
     this._StartDate = event;
     let sd = event.format("YYYY-MM-DD").toString();
     this._SEndDate = event.format("YYYY-MM-DD").toString();
     this.minDate = sd;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Scheduled_date = sd;
-    // this.CalenderService.NewGetPendingAvailability(this._calenderDto).subscribe((data)=>{
-    //   if(data['message']=='1'){
-    //     this.pendingavailability==false;
-    //   }
-    //   else{
-    //     this.pendingavailability==true;
-    //   }
-    // });
-
-  
+ 
     var start = moment(this.minDate);
     var end = moment(this.maxDate);
     const format2 = "YYYY-MM-DD";
@@ -3153,18 +3565,25 @@ debugger
 
 ////test start ///////////////////////////////////////////
 
-if(this.editTask && this.selectedrecuvalue =='2'){
+if((this.editTask || this.create ) && this.selectedrecuvalue =='2'){
 
 // uncheck prev date.
+if(this._Oldstart_date){
   let d=new Date(this._Oldstart_date);
   const index=d.getDay();
   this.dayArr[index].checked=false;
-// uncheck prev date.
+}
 
-// update new
+//uncheck prev date.
+
+this.dayArr.forEach(item => item.checked = false);
+
+//update new
   let d2=new Date(this._StartDate);
   const index2=d2.getDay();
   this.dayArr[index2].checked=true;
+  debugger
+console.log(this.dayArr,'sdcsadcasdcssad')
 
   this.mtgOnDays=[];
   this.dayArr.forEach((item:any)=>{
@@ -3174,15 +3593,20 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     }
  });
 // update new
-} else if(this.editTask && this.selectedrecuvalue == "3"){
+} else if((this.editTask || this.create ) && this.selectedrecuvalue == "3"){
 
     // uncheck prev date.
-    let d=new Date(this._Oldstart_date);
-    const index=d.getDate();
-    this.MonthArr[index].checked=false;
+    if(this._Oldstart_date){
+      let d=new Date(this._Oldstart_date);
+      const index=d.getDate();
+      this.MonthArr[index].checked=false;
+    }
+
     // uncheck prev date.
 
+    this.MonthArr.forEach(item => item.checked = false);
     // update new
+
     let d2=new Date(this._StartDate);
     const index2=d2.getDate();
     this.MonthArr[index2-1].checked=true;
@@ -3202,7 +3626,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
 
   // old
 //   selectStartDate(event) {
-// debugger
+
 //     this._StartDate = event.value;
 //     let sd = event.value.format("YYYY-MM-DD").toString();
 //     this._SEndDate = event.value.format("YYYY-MM-DD").toString();
@@ -3485,7 +3909,6 @@ if(this.editTask && this.selectedrecuvalue =='2'){
     this.CalenderService.GetTimeslabcalender(this._calenderDto).subscribe
       ((data) => {
 
-
         this._arrayObj = data as [];
         this.Alltimes = [];
         this.EndTimearr = [];
@@ -3497,7 +3920,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
           this.AllEndtime.push(element.TSEnd);
           this.StartTimearr.push(element.TSStart);
           this.Alltimes.push(element.TSStart);
-          // console.log("Arraydxxdd", this.EndTimearr);
+          
         });
 
 
@@ -3510,6 +3933,7 @@ if(this.editTask && this.selectedrecuvalue =='2'){
         const result=t>=ct;
         return result;
       });
+   
       this.validStartTimearr=this.StartTimearr.slice(index);
 
 
@@ -3612,7 +4036,7 @@ currentTime:any;
       this.Endtms = vahr.toString() + ':' + mins;
       // alert(this.Startts)
       // alert(this.Endtms)
-debugger
+
       if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
         //  alert(this.scstartdate)
@@ -4036,7 +4460,7 @@ debugger
   RecurrenceValue:any
 
   GetClickEventJSON_Calender(arg) {
-    console.log(arg,'testing process of popup box')
+   
     this.EventScheduledjson = [];
     this.loading = true;
     this.Schedule_ID = arg.event._def.extendedProps.Schedule_ID;
@@ -4046,7 +4470,7 @@ debugger
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.loading = false;
-
+debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         var Schedule_date =this.EventScheduledjson[0].Schedule_date
         this.meetingRestriction(Schedule_date);
@@ -4151,11 +4575,13 @@ debugger
             jsonData[columnName] = element;
             this.dmsIdjson.push(jsonData);
           });
+
+         
           this.dmsIdjson = JSON.stringify(this.dmsIdjson);
           this._LinkService._GetMemosSubject(this.dmsIdjson).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              console.log("Subject Name ------------>", this._MemosSubjectList);
+              console.log("Subject Name 2------------>", this._MemosSubjectList);
             });
         }
 
@@ -4254,11 +4680,9 @@ debugger
           this._LinkService._GetMemosSubject(this.dmsIdjson).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              console.log("Subject Name ------------>", this._MemosSubjectList);
+              console.log("Subject Name 3------------>", this._MemosSubjectList);
             });
         }
-
-
 
 
         // console.log(this.dmsIdjson,"ids");
@@ -4346,7 +4770,7 @@ debugger
           this._LinkService._GetMemosSubject(this.dmsIdjson).
             subscribe((data) => {
               this._MemosSubjectList = JSON.parse(data['JsonData']);
-              console.log("Subject Name ------------>", this._MemosSubjectList);
+              console.log("Subject Name 4------------>", this._MemosSubjectList);
             });
         }
 
@@ -4369,6 +4793,7 @@ debugger
       ((data) => {
         this.Pending_request = data as [];
         this.pendingcount = this.Pending_request.length;
+        this.filterPending('date');
         console.log(this.Pending_request, "111100000")
       });
   }
@@ -4407,6 +4832,7 @@ debugger
     $('.bg-ovr1').removeClass('d-block');
     document.getElementsByClassName("bg-ovr1")[0].classList.remove("d-block");
     document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
+    document.getElementById("rightbar-overlay-et").style.display = "block";
     // document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("div_recurrence").style.display = "block";
@@ -4638,7 +5064,7 @@ debugger
 
   TwinEvent = [];
   customizeEvent = (info) => {
-    debugger
+
     const eventDate = info.event.end;
     const currentDate = new Date();
     const taskComplete = info.event.className;
@@ -4698,7 +5124,7 @@ debugger
     //
     let is12am: boolean = (end.getHours() == 0 && end.getMinutes() == 0 && end.getSeconds() == 0);
     if (eventIsWithinView && (startMidnight !== endMidnight) && !is12am) {
-debugger
+
       if (start < viewStart) {
         this.TwinEvent.push(event._def.extendedProps.Schedule_ID);
       }
@@ -4710,7 +5136,6 @@ debugger
         dayLabel = 'Day (2/2)';
         const index = this.TwinEvent.indexOf(event._def.extendedProps.Schedule_ID);
         this.TwinEvent.splice(index, 1);
-
       }
       else {
         dayLabel = 'Day (1/2)';
@@ -4725,7 +5150,6 @@ debugger
         const titleWithoutDay = event.title.replace(/ - Day \(.\..?\)/, '');
         const newTitle = `${titleWithoutDay} - ${dayLabel}`;
 
-
         if (info.view.type === 'listWeek') {
 
           info.el.children[2].innerText = newTitle;
@@ -4734,15 +5158,8 @@ debugger
           event.setProp('title', event.title);
           this.TwinEvent = [];
         }
-
-
-
       }
     }
-
-
-
-
   }
 
 
@@ -4811,6 +5228,7 @@ debugger
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
     document.getElementById("reqsideInfobar").classList.remove("open_sidebar");
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
+    document.getElementById("rightbar-overlay-et").style.display = "none";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
@@ -5428,10 +5846,14 @@ debugger
   }
 
   Attamentdraftid:any;
-
+  isSubmitting: boolean = false;
+  
 
   Insert_indraft() {
 
+    if (this.isSubmitting) return;
+    this.isSubmitting = true;
+    
     if (this.draftid != 0) {
       this._calenderDto.draftid = this.draftid;
     }
@@ -5499,12 +5921,9 @@ debugger
     this._calenderDto.loc_status = this._onlinelink;
     this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password;
     this._calenderDto.Link_details=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
-
     this._calenderDto.Recurrence = this.selectedrecuvalue ;
     this._calenderDto.Rec_values = _arraytext.toString();
     this._calenderDto.Rec_EndDate = this._EndDate;
-
-
 
     this._calenderDto.Note = this.Description_Type;
     this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
@@ -5518,36 +5937,100 @@ debugger
     }
     this._calenderDto.Project_Code = this.MasterCode.toString();
 
-
+debugger
     let _attachmentValue = 0;
     const frmData = new FormData();
-    for (var i = 0; i < this._lstMultipleFiales.length; i++) {
-      frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
-    }
-    if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
-      _attachmentValue = 1;
-    else
-      _attachmentValue = 0;
 
-      ;
+
+    if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
+      frmData.append("Attachment", "true");
+      this._attachmentValue = 1;
+
+      for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+        frmData.append("files", this._lstMultipleFiales[i].Files);
+      }
+      const xmlDoc = document.implementation.createDocument('', '', null);
+      const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+
+      // Iterate over the file groups
+      this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+      console.log(`Processing group ${groupIndex}:`, fileGroup);
+
+      // Normalize Files to an array
+      const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+
+      files.forEach((file, fileIndex) => {
+        if (!file || !file.name || !file.type) {
+          console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+          return;
+        }
+
+        console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+
+        const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+        const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+        const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+        const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+
+        // Populate <FileName> element
+        nameElement.textContent = file.name;
+
+        // Generate a random ID and sanitize the file name for CloudName
+        const randomId = this.generateRandomId();
+        const sanitizedFileName = this.sanitizeFileName(file.name);
+        cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
+
+        // Populate <ContentType> element
+        const contentType = this.getContentType(file.type);
+        contentTypeElement.textContent = contentType;
+
+        // Append child elements to the <Row>
+        rowElement.appendChild(nameElement);
+        rowElement.appendChild(cloudNameElement);
+        rowElement.appendChild(contentTypeElement);
+
+        // Append the <Row> to the root element
+        parentElement.appendChild(rowElement);
+      });
+      });
+
+      // Append the root <MultiDocument> element to the XML document
+      xmlDoc.appendChild(parentElement);
+
+      // Serialize the XML document to a string
+      const serializer = new XMLSerializer();
+      const xmlString = serializer.serializeToString(xmlDoc);
+
+      // Append the XML string to FormData
+      frmData.append("docs_multiple_xml", xmlString);
+
+      // Log the XML string for debugging
+      console.log("Generated XML:", xmlString);
+
+    } 
+    else {
+      this._attachmentValue = 0;
+      frmData.append("Attachment", "false");
+    }
+    
       frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
       frmData.append("CreatedBy", this.Current_user_ID.toString());
       frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
       
-      debugger
       const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
       this._calenderDto.DraftAgendas=mtgAgendas;
 
-   
+    console.log(this._calenderDto,'this._calenderDto Draft')
     this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
       (data => {
-           
+          
    
       this.Attamentdraftid= data['draftid']
       frmData.append("draftid", this.Attamentdraftid);
  
-        if (_attachmentValue == 1) {
-          this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+        if (this._attachmentValue == 1) {
+          // this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+            this.CalenderService.UploadCalendarAttachmenstCore(frmData).subscribe(
             (event: HttpEvent<any>) => {
               switch (event.type) {
                 case HttpEventType.Sent:
@@ -5562,6 +6045,17 @@ debugger
                   break;
                 case HttpEventType.Response:
                   console.log('User successfully created!', event.body);
+                  var myJSON = JSON.stringify(event);
+                  this._azureMessage = (JSON.parse(myJSON).body).message;
+
+                  if(this._azureMessage=="1"){
+                    this.CalenderService._AzureUploadCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
+                      console.log(event1,"azure data");
+                      var myJSON = JSON.stringify(event1);
+                    //  this._Message = (JSON.parse(myJSON).body);
+          
+                    });
+                  }
 
                   // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
                   
@@ -5582,7 +6076,7 @@ debugger
             }
           )
         }
-
+        this.isSubmitting = false;
         if (data['message'] == '1') {
           this.closeschd();        
           this.notifyService.showSuccess("Draft saved", "Success");
@@ -5593,6 +6087,7 @@ debugger
         }
       });
       this.Getdraft_datalistmeeting();
+      
   }
 
 
@@ -5604,10 +6099,11 @@ debugger
     this.CalenderService.NewGetMeeting_darftdata(this._calenderDto).subscribe
       (data => {
    
-        console.log(data, "ssdddd")
+       
         if (data['Draft_meetingdata'] != "" && data['Draft_meetingdata'] != null && data['Draft_meetingdata'] != undefined) {
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
           this.draftcount = this.draftdata_meet.length;
+          this.filterDraft('date');
           console.log(this.draftdata_meet,'testing process')
         }
         else {
@@ -5655,7 +6151,7 @@ debugger
       this.MasterCode.push(parseInt(element.stringval));
     });
 
-debugger
+
     this.Link_Details= this.draft_arry[0].Link_details;
     if(this.Link_Details != '' && this.Link_Details != undefined ){
       if(!this.Link_Details.includes('<a href=')){
@@ -5851,6 +6347,7 @@ debugger
     // this.Insert_indraft();
     // document.getElementById('date-menu').classList.remove("show");
     document.getElementById("mysideInfobar_schd").classList.remove("open_sidebar");
+    document.getElementById("rightbar-overlay-et").style.display = "none";
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
@@ -5866,6 +6363,10 @@ debugger
     this._lstMultipleFiales = [];
     this.RemovedFile_id = [];
     this.maxDate = null;
+    this.switChRecurrenceValue=false;
+    this.RecurrValue= false;
+    this.RecurrValueMonthly=false;
+    this.EventNumber=null;
     this.selected = null;
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
@@ -5876,12 +6377,14 @@ debugger
     this.projectsSelected = [];
     this.Subtask = null;
     this.Startts = null;
+    this.rapeatLink_Details=true;
     this.Endtms = null;
     this.SelectStartdate = null;
     this.Selectenddate = null;
     this.selectDay = null;
     this.St_date = "";
     this.Ed_date = null;
+    this.isValidURL=true
     this._subname = false;
     this.draftid = 0;
     // this.Recurr_arr = [];
@@ -6667,7 +7170,6 @@ onProjectSearch(inputtext:any){
     }
     else if(this.projectmodaltype=='SMail')
     {
-      debugger
       keyname='Subject';
       arrtype=this.Memos_List;
       selectedinto='SelectDms';
@@ -6871,7 +7373,7 @@ discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:strin
             this.projectsSelected.splice(i,1);
      };break;
      case 'PORTFOLIO':{
-      debugger
+     
           const i=this.Portfolio.findIndex(ptf=>ptf==item);
           this.Portfolio.splice(i,1);
 
@@ -6974,7 +7476,7 @@ onPortfolioFilter(){
 }
 
 onDMSFilter(){
-debugger
+
      const _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
       const fresult=this.Memos_List.filter((_memo:any)=>{
 
@@ -7178,6 +7680,25 @@ repeatEvent() {
 
 
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
+        this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
+
+        if(this.Link_Details != ''){
+          if(!this.Link_Details.includes('<a href=')){
+            var details = this.Link_Details.split(', ')
+            this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+            this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+            this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined' || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+            console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
+          }
+          else if(this.Link_Details.includes('<a href=')){
+            this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
+            this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
+            this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
+          
+            console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details 69');
+          }
+         }
+
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
         document.getElementById("subtaskid").style.display = "none";
         document.getElementById("Guest_Name").style.display = "flex";
@@ -7188,14 +7709,21 @@ repeatEvent() {
         document.getElementById("core_viw222").style.display = "flex";
         document.getElementById("core_Dms").style.display = "flex";
 
-        const TEsb = document.getElementById('TaskEvent-Sidebar')
-        TEsb.addEventListener('scroll', () => {
-          this.autocompletes.forEach((ac) => {
-            if (ac.panelOpen)
-              ac.updatePosition();
-          });
-        })
+        // const TEsb = document.getElementById('TaskEvent-Sidebar')
+        // TEsb.addEventListener('scroll', () => {
+        //   this.autocompletes.forEach((ac) => {
+        //     if (ac.panelOpen)
+        //       ac.updatePosition();
+        //   });
+        // })
 
+
+        this._StartDate=null;
+          this.disablePreviousDate = null;
+          setTimeout(()=>{
+            this._StartDate=this.disablePreviousTodayDate;
+            this.disablePreviousDate = this.disablePreviousTodayDate;
+          },0);
        }
 
     });
@@ -7225,6 +7753,27 @@ if(input_date<current_date){
     const date = new Date(d1.getTime());
     this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
   }
+
+   // new code start 69
+
+   if(this._StartDate == this.disablePreviousTodayDate){
+    let startDate = new Date(this._StartDate);
+    this.AllDatesSDandED = [{
+        Date: startDate.toISOString().split('T')[0],  // Get YYYY-MM-DD format
+        Day: startDate.toLocaleString('en-US', { weekday: 'short' }), // Get short day name
+        DayNum: startDate.getDate().toString(),
+        EndTime: this.Endtms,
+        IsActive: 1,
+        StartTime : this.Startts
+       }];
+   
+    this.daysSelectedII = this.AllDatesSDandED ;
+    this._SEndDate =this._StartDate.toISOString().split('T')[0];
+    this._StartDate = new Date(new Date(this._StartDate).setHours(0, 0, 0, 0));
+   
+   }
+
+    // new code end 69
 
   finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
   if (finalarray.length > 0) {
@@ -7381,7 +7930,7 @@ onRecurrenceTypeChange(val:any){
           this.MonthArr1[index].checked = false;
     }
 
-
+   
     document.getElementById("div_endDate_new").style.display = "block";
     if (val.value == 0) {
       this._labelName = "Schedule Date";
@@ -7649,7 +8198,7 @@ parseTime(time: string): Date {
 
 
 LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-  debugger
+
   let FileUrl: string;
   
   FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -7687,5 +8236,64 @@ LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, ty
   }
 }
 
+
+validateURL(value: string): void {
+  if(value){
+    this.isValidURL = /^(https?:\/\/)/.test(value);
+  }else{
+    this.isValidURL=true
+  }
+  
+}
+
+previous_filter() {
+  document.getElementById("dropd").classList.toggle("show");
+}
+
+draft_filter() {
+  document.getElementById("dropds").classList.toggle("show");
+}
+
+
+activePendingMeeting:any;
+
+filterPending(type: 'date' | 'meeting'): void {
+  this.Pending_request.sort((a, b) => {
+    if (type === 'date') {
+      this.activePendingMeeting ='date';
+      return new Date(b.Schedule_date).getTime() - new Date(a.Schedule_date).getTime();
+      
+    }
+    this.activePendingMeeting ='meeting';
+    return a.Task_Name.trim().localeCompare(b.Task_Name.trim());
+   
+  });
+}
+
+activeDraftMeeting:any;
+
+filterDraft(type : 'date'|'meeting'):void{
+  this.activeDraftMeeting=type;
+  this.draftdata_meet.sort((a,b)=>{
+    if(type ==='date'){
+      if (a.Draft_date === undefined) return 1; // Place undefined at the end
+      if (b.Draft_date === undefined) return -1; // Place undefined at the end
+      return new Date(b.Draft_date).getTime() - new Date(a.Draft_date).getTime();
+    }
+    else if(type==='meeting'){
+      return a.Task_name.trim().localeCompare(b.Task_name.trim());
+    }
+  
+  })
+  console.log(this.draftdata_meet,'checking draft functionality')
+}
+
+
+
+
+
+disableRepeatMeetingDate(){
+  this._StartDate = this.disablePreviousTodayDate;
+}
 
 }

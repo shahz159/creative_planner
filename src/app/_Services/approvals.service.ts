@@ -149,7 +149,7 @@ export class ApprovalsService {
 return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService", this.obj_approvalDTO);
   }
 
-  InsertUpdateProjectCancelReleaseService(obj: ApprovalDTO) {
+  InsertUpdateProjectCancelReleaseService(obj: ApprovalDTO) {  
     this.obj_approvalDTO.Emp_no = obj.Emp_no;
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
     this.obj_approvalDTO.Request_type = obj.Request_type;

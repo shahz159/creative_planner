@@ -1,7 +1,7 @@
 
 import { Component, OnInit,ViewChild ,ViewChildren,QueryList } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpEventType,HttpEvent } from '@angular/common/http';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
@@ -192,44 +192,39 @@ export class ActionToProjectComponent implements OnInit {
 
 
       //And disable the wheel default functionality:
-      input.addEventListener("wheel", function(event) {
+    input.addEventListener("wheel", function(event) {
         event.preventDefault();
-      });
+    });
 
 
-
-
-        this.BsService.bs_templAction.subscribe(ta=>{
-           this.Sub_ProjectName=ta.name;
-           this._Description=ta.description;
-            if(ta.assignedTo!==''){
+    this.BsService.bs_templAction.subscribe(ta=>{
+      this.Sub_ProjectName=ta.name;
+      this._Description=ta.description;
+         if(ta.assignedTo!==''){
                    this.selectedEmpNo=ta.assignedTo;
                    this.disableAssignedField=true;
-            }
-         })
+        }
+    });
 
 
-          this.BsService.bs_TaskName.subscribe(t => {
-            if(t){
-              this.Sub_ProjectName = t
-            }
-            console.log(this.Sub_ProjectName,'======>')
-          });
+    this.BsService.bs_TaskName.subscribe(t => {
+      if(t){
+          this.Sub_ProjectName = t
+      }
+      console.log(this.Sub_ProjectName,'======>')
+   });
 
+    tippy('#actattach', {
+      content: "If you select this checkbox, you need to attach a file when completing the action.",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'dark',
+      animateFill: true,
+      inertia: true,
+      placement:'left'
+    });
 
-
-
-         tippy('#actattach', {
-          content: "If you select this checkbox, you need to attach a file when completing the action.",
-          arrow: true,
-          animation: 'scale-extreme',
-          theme: 'dark',
-          animateFill: true,
-          inertia: true,
-          placement:'left'
-        });
-
-     this.getActionCount(this.pcode);
+    this.getActionCount(this.pcode);
 
   }
   allocatedHour:any
@@ -252,11 +247,11 @@ export class ActionToProjectComponent implements OnInit {
         this.ProjectsDropdownBoolean = true;
         this.selectedProjectCode = p;
         this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
-          
+
           this.ProjectDeadLineDate = data["DeadLine"];
           this.ProjectStartDate = data["StartDate"];
           this.owner=data["Owner_empno"];
-          this.Owner_Empno = data['Owner_empno'];     
+          this.Owner_Empno = data['Owner_empno'];
           this.Resp_empno = data['Resp_empno'];
           this.Autho_empno = data['Autho_empno'];
           if(this.createproject.projectInfo){
@@ -302,7 +297,7 @@ export class ActionToProjectComponent implements OnInit {
 
   getRACISandNonRACIS(){
 
-    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode).subscribe(
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode,this.Current_user_ID).subscribe(
       (data) => {
 
         this.ownerArr=(JSON.parse(data[0]['RacisList']));
@@ -329,7 +324,7 @@ export class ActionToProjectComponent implements OnInit {
   selectedProjectCode: any;
 
   ProjectOnSelect() {
-debugger
+
     let obj: any = {
       pagenumber: 1,
       Emp_No: this.CurrentUser_ID,
@@ -337,7 +332,7 @@ debugger
     }
     // this.selectedProjectCode = obj['Project_Code'];
     this.selectedProjectCode=this.selectedProjectCodelist;
-    this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => { debugger
+    this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
       this.ProjectDeadLineDate = data["DeadLine"];
       this.ProjectStartDate = data["StartDate"];
       this.Owner_Empno = data['Owner_empno'];
@@ -350,7 +345,7 @@ debugger
       }
     });
 
-    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.selectedProjectCode).subscribe(
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.selectedProjectCode,this.Current_user_ID).subscribe(
       (data) => {
 
         this.ownerArr=(JSON.parse(data[0]['RacisList']));
@@ -388,7 +383,7 @@ debugger
     this.ObjUserDetails.SearchText = this.filterText;
     this.service.GetProjectsForRunwayTaskDropdown(this.ObjUserDetails).subscribe(data => {
       this._ProjectDataList = JSON.parse(data[0]['DropdownProjects_Json']);
-      this.Owner_Empno = this._ProjectDataList[0]['Owner_EmpNo'];   
+      this.Owner_Empno = this._ProjectDataList[0]['Owner_EmpNo'];
       this.dropdownSettings_Projects = {
         singleSelection: true,
         idField: 'Project_Code',
@@ -451,7 +446,7 @@ debugger
 
   alertMaxAllocation() {
     if (this._StartDate == null || this._EndDate == null) {
-      this._message = "Start Date/End date missing!!"
+      this._message = "Start Date/End date missing!"
     }
     else {
       // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
@@ -563,10 +558,10 @@ debugger
 //       this.notifyService.showError('','Internal server error');
 //       console.error('Unable to get action cost value.')
 //       return;
-//     } 
+//     }
 //   // Action cost calculate.
-    
-    
+
+
 //     if(this.owner==null || this.owner==undefined || this.owner==''){
 //       this.owner=this.Owner_Empno;
 //     }
@@ -585,7 +580,7 @@ debugger
 //     // console.log(this.owner,"selected owner")
 
 //     this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
-// debugger
+//
 //       this.Sub_ProjectCode = data['SubTask_ProjectCode'];
 //       this.EmpNo_Autho = data['Team_Autho'];
 //       this.ProjectBlock = data['ProjectBlock'];
@@ -715,7 +710,7 @@ debugger
 //         }
 //         else if(this._Urlid == 5){
 //           this.createproject.getActionsDetails();
-//           this.createproject.newProjectDetails(this._MasterCode); 
+//           this.createproject.newProjectDetails(this._MasterCode);
 //           this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
 //           this.closeInfo();
 //         }
@@ -742,14 +737,14 @@ debugger
 
 
 
-   
+
 
 
 
 
 //     if(this._Urlid == 5){
 //       // only for project creation page.
-//   debugger
+//
 //       //1. when provided allocated hrs exceeds main project planned allocated hr then confirm.
 //       if(this.allocatedHour>0){
 //         const exceeds:boolean=this.createproject.hasExceededTotalAllocatedHr(this._allocated);
@@ -786,15 +781,15 @@ debugger
 //       //           icon:'error',
 //       //           showConfirmButton:true,
 //       //           confirmButtonText:'OK'
-//       //        }); 
+//       //        });
 //       //        return;
 //       //       }
 //       // }
-  
-  
+
+
 
 //     continueNext();
-      
+
 //     }
 //     else
 //     {  // details page, runway ...
@@ -827,9 +822,9 @@ debugger
   }
 
 //   sweetAlert() {
-//   debugger
+//
 //    const processContinue=()=>{
-// debugger
+//
 
 // //     if (this.actionCount.DeadLine==this._EndDate&&this.actionCount.count>3){
 // //   Swal.fire({
@@ -906,8 +901,8 @@ debugger
 // sweet alert method new
 
 sweetAlert2=async()=>{
-    
-// 1. Validation : Action owner and responsible are same.  
+
+// 1. Validation : Action owner and responsible are same.
   if(this.owner==this.selectedEmpNo){
      const choice = await Swal.fire({
         title: 'Action owner and responsible are same.',
@@ -918,7 +913,7 @@ sweetAlert2=async()=>{
       });
     if(choice.isConfirmed==false){
        return;
-    }  
+    }
   }
 
 //2. Validation : Action deadline is greater than main project deadline.
@@ -927,7 +922,7 @@ var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
 const dateOne = new Date(this._EndDate);
 const dateTwo = new Date(this.ProjectDeadLineDate);
 if ((dateTwo < dateOne) && (this.Current_user_ID==this.Owner_Empno || this.Current_user_ID==this.Resp_empno || this.Current_user_ID==this.Autho_empno || this.isHierarchy==true)) {
- 
+
   const choice = await Swal.fire({
     title: 'Action deadline is greater than main project deadline ?',
     text: 'Do you want to continue for selection of date after main project deadline!',
@@ -935,7 +930,7 @@ if ((dateTwo < dateOne) && (this.Current_user_ID==this.Owner_Empno || this.Curre
     confirmButtonText: 'Yes',
     cancelButtonText: 'No'
   });
-  
+
   if(choice.isConfirmed==false){
     Swal.fire(
       'Cancelled',
@@ -954,7 +949,6 @@ else if ((dateTwo < dateOne) && (this.Current_user_ID!=this.Owner_Empno && this.
   });
  return;
 }
-
 
 
 // 3. Validation : forms fields required check  start.
@@ -1011,12 +1005,9 @@ if(this._allocated==null||this._allocated==undefined||this._allocated==0){
   // return false;
 }else  this._alchr=false;
 
-if(this._Urlid==5){
-   const d1=new Date(this.ProjectStartDate);
-   const d2=new Date(this.ProjectDeadLineDate);
-   this._actbefore=this._StartDate<d1;
-  //  this._actafter=this._EndDate>d2;
-  //  console.log("asdf eeeeee:",this._actbefore,this._actafter);
+
+if(this._Urlid==5||this._Urlid==4){
+     this._actbefore=this.isActionStartBeforeProject();
 }
 
 
@@ -1029,8 +1020,8 @@ return false;        // please provide all mandatory fields value.
 
 // 4. Validation : only for project creation page.
 if(this._Urlid == 5){
-  
-  //1. when provided allocated hrs exceeds main project planned allocated hr then confirm.
+
+  //i. when provided allocated hrs exceeds main project planned allocated hr then confirm.
   if(this.allocatedHour>0){
     const exceeds:boolean=this.createproject.hasExceededTotalAllocatedHr(this._allocated);
     if(exceeds)
@@ -1049,7 +1040,7 @@ if(this._Urlid == 5){
     }
   }
 
-  //2. when draft action deadline matches with main project deadline.
+  //ii. when draft action deadline matches with main project deadline.
   const actn_deadline = new Date(this._EndDate);
   const prj_deadline = new Date(this.ProjectDeadLineDate);
   if(actn_deadline.getTime()==prj_deadline.getTime()){
@@ -1057,11 +1048,11 @@ if(this._Urlid == 5){
         if(already_matched>=2){
           Swal.fire({
             title:'Invalid Action End Date',
-            html:'<div style="text-align:justify;">Action end date should be less than the main project deadline. Please modify the action end date to continue</div>',
-            icon:'error',
+            html:'<div style="text-align:justify;">Action end date should be less than the project deadline. Please modify the action end date to continue</div>',
+            // icon:'error',
             showConfirmButton:true,
             confirmButtonText:'OK'
-         }); 
+         });
          return;
         }
   }
@@ -1076,6 +1067,17 @@ this.startActionCreation();
 
 }
 
+azuremessage: any;
+IsFile:boolean=false;
+contentType:string="";
+
+
+
+
+
+
+
+
 startActionCreation=async()=>{
 
   // Action cost calculate.
@@ -1089,10 +1091,10 @@ startActionCreation=async()=>{
      this.notifyService.showError('','Internal server error');
      console.error('Unable to get action cost value.')
      return;
-   } 
+   }
  // Action cost calculate.
-   
-   
+
+
    if(this.owner==null || this.owner==undefined || this.owner==''){
      this.owner=this.Owner_Empno;
    }
@@ -1140,9 +1142,9 @@ startActionCreation=async()=>{
      this.ObjSubTaskDTO.Duration = this._allocated;
      // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
      console.log( this.fileAttachment)
-    if (this.fileAttachment&& this.fileAttachment.length > 0) {
-       this.ObjSubTaskDTO.Attachments =  this.fileAttachment;
-     }
+    // if (this.fileAttachment&& this.fileAttachment.length > 0) {
+    //    this.ObjSubTaskDTO.Attachments =  this.fileAttachment;
+    //  }
 
      var datestrStart = moment(this._StartDate).format("MM/DD/YYYY");
      var datestrEnd = moment(this._EndDate).format("MM/DD/YYYY");
@@ -1156,7 +1158,6 @@ startActionCreation=async()=>{
      // fd.append('file', this._inputAttachments[0].Files);
      if ( this.fileAttachment) {
        fd.append("Attachment", "true");
-       fd.append('file',  this.fileAttachment);
      }
      else {
        fd.append("Attachment", "false");
@@ -1170,13 +1171,14 @@ startActionCreation=async()=>{
      fd.append("EndDate", datestrEnd);
      // fd.append("Allocated", this.maxAllocation.toString());
      fd.append("Emp_No", this.CurrentUser_ID);
-     fd.append("AssignTo", this.selectedEmpNo);
+     fd.append("AssignTo", this.selectedEmpNo.trim());
      fd.append("Remarks", this._remarks);
      fd.append("EmployeeName", localStorage.getItem('UserfullName'));
      fd.append("AssignId", this.task_id.toString());
      fd.append("Owner", this.owner);
-     fd.append("isattachment",this.completionattachment.toString());
+     fd.append("proState",this.completionattachment.toString());
      fd.append("actionCost",this.actionCost);
+     fd.append("contentType",this.contentType);
 
      if (this.ObjSubTaskDTO.Duration != null) {
        fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
@@ -1185,16 +1187,98 @@ startActionCreation=async()=>{
        this.ObjSubTaskDTO.Duration = 0;
      }
 
-     this.service._InsertNewSubtask(fd).subscribe(event => {
+    //  this.service._InsertNewSubtask(fd).subscribe(event => {
+
+     this.service._InsertNewSubtaskcore(fd).subscribe((event: HttpEvent<any>) => {
 
        if (event.type === HttpEventType.Response){
          var myJSON = JSON.stringify(event);
-         this._Message = (JSON.parse(myJSON).body).Message;
-         // console.log(event,myJSON,this._Message,"action data");
+         this._Message = (JSON.parse(myJSON).body).message;
+         console.log(event,myJSON,this._Message,"action data");
+    
          if(this._Message=='1'){
+          if (this.fileAttachment) {   
+          this.fileInUpload={ filename:this.fileAttachment.name, uploaded:0, processingUploadFile:false };
+          this.setFileUploadingBarVisible(true);
+
+          fd.append('file',  this.fileAttachment);
+      
+          this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
+            switch (event1.type) {
+              case HttpEventType.Sent:
+                console.log('Request sent!');
+                break;
+              case HttpEventType.ResponseHeader:
+                console.log('Response header received!');
+                break;
+              case HttpEventType.UploadProgress:
+                const progress = Math.round(event1.loaded / event1.total * 100);
+                this.fileInUpload.uploaded=progress;
+                if(this.fileInUpload.uploaded==100){
+                  setTimeout(()=>{
+                    this.fileInUpload.processingUploadFile=true; //when server processing the file upload. 
+                  },1000);
+                }
+                break;
+              case HttpEventType.Response:{
+                console.log('Response received:', event1.body);
+                if(event1.body==1){
+                  this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");  
+                  this.fileInUpload=null;
+                  this.setFileUploadingBarVisible(false);
+                  this.exitActionToProject();
+                }
+              };break;
+            }
+
+            console.log(event1,"azure data");
+            var myJSON = JSON.stringify(event1);
+          //  this._Message = (JSON.parse(myJSON).body);
+
+          });
+       
+          }else{ this.exitActionToProject();   }
            this.notifyService.showSuccess("Action created successfully", "Success");
          }
          else if(this._Message=='2'){
+          if (this.fileAttachment) {
+            this.fileInUpload={ filename:this.fileAttachment.name, uploaded:0, processingUploadFile:false };
+            this.setFileUploadingBarVisible(true);
+
+            fd.append('file',  this.fileAttachment);
+            this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
+              switch (event1.type) {
+                case HttpEventType.Sent:
+                  console.log('Request sent!');
+                  break;
+                case HttpEventType.ResponseHeader:
+                  console.log('Response header received!');
+                  break;
+                case HttpEventType.UploadProgress:
+                  const progress = Math.round(event1.loaded / event1.total * 100);
+                  this.fileInUpload.uploaded=progress;
+                  if(this.fileInUpload.uploaded==100){
+                    setTimeout(()=>{
+                      this.fileInUpload.processingUploadFile=true; //when server processing the file upload. 
+                    },1000);
+                  }
+                  break;
+                case HttpEventType.Response:{
+                  console.log('Response received:', event1.body);
+                  if(event1.body==1){
+                    this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");  
+                    this.fileInUpload=null;
+                    this.setFileUploadingBarVisible(false);
+                    this.exitActionToProject();
+                  }
+                };break;
+              }
+              console.log(event1,"azure data");
+              var myJSON = JSON.stringify(event1);
+            //  this._Message = (JSON.parse(myJSON).body);
+
+            }); 
+          }else{ this.exitActionToProject();  }
            this.notifyService.showInfo("Request submitted to the Assigned employee","Action Under Approval");
          }
          else if(this._Message=='3'){
@@ -1206,58 +1290,78 @@ startActionCreation=async()=>{
          else{
            this.notifyService.showError("Something went wrong", "Action not created");
          }
-       }
 
-       if (this._Urlid == 1) {
-         this._Todoproject.CallOnSubmitAction();
-         this.Clear_Feilds();
-         this.closeInfo();
-         this._inputAttachments = [];
-       }
-       else if(this._Urlid == 2){
-         this._projectunplanned.getCatid();
-         this.Clear_Feilds();
-         this.closeInfo();
-         this._inputAttachments = [];
-       }
-       else if(this._Urlid == 3){
-         this._meetingreport.getScheduleId();
-           this._meetingreport.GetAssigned_SubtaskProjects();
-         this.Clear_Feilds();
-         this.closeInfo();
-         this._inputAttachments = [];
-       }
-       else if(this._Urlid == 7){
-         this._meetingreport.getScheduleId();
-           this._meetingreport.GetAssigned_SubtaskProjects();
-         this.Clear_Feilds();
-         this.closeInfo();
-         this._inputAttachments = [];
-       }
-       else if(this._Urlid == 4){
-
-         this._details.getProjectDetails(this.selectedProjectCode);
-         this.closeInfo();
-       }
-       else if(this._Urlid == 5){
-         this.createproject.getActionsDetails();
-         this.createproject.newProjectDetails(this._MasterCode); 
-         this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
-         this.closeInfo();
-       }
-       else {
-         this._MoreDetails.GetProjectDetails();
-         this._MoreDetails.GetSubtask_Details();
-         this._MoreDetails.getapproval_actiondetails();
-         this._MoreDetails.getRejectType();
-         this.Clear_Feilds();
-         this.closeInfo();
-         this._inputAttachments = [];
        }
 
      });
 
      });
+}
+
+
+exitActionToProject(){
+    if (this._Urlid == 1) {
+      this._Todoproject.CallOnSubmitAction();
+      this.Clear_Feilds();
+      this.closeInfo();
+      this._inputAttachments = [];
+    }
+    else if(this._Urlid == 2){
+      this._projectunplanned.getCatid();
+      this.Clear_Feilds();
+      this.closeInfo();
+      this._inputAttachments = [];
+    }
+    else if(this._Urlid == 3){
+      this._meetingreport.getScheduleId();
+      this._meetingreport.GetAssigned_SubtaskProjects();
+      this.Clear_Feilds();
+      this.closeInfo();
+      this._inputAttachments = [];
+    }
+    else if(this._Urlid == 7){
+      this._meetingreport.getScheduleId();
+        this._meetingreport.GetAssigned_SubtaskProjects();
+      this.Clear_Feilds();
+      this.closeInfo();
+      this._inputAttachments = [];
+    }
+    else if(this._Urlid == 4){
+
+      this._details.getProjectDetails(this.selectedProjectCode);
+      this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
+      this.closeInfo();
+    }
+    else if(this._Urlid == 5){
+      this.createproject.getActionsDetails();
+      this.createproject.newProjectDetails(this._MasterCode);
+      this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
+      this.closeInfo();
+    }
+    else {
+    //  this._MoreDetails.GetProjectDetails();
+    //  this._MoreDetails.GetSubtask_Details();
+    //  this._MoreDetails.getapproval_actiondetails();
+    //  this._MoreDetails.getRejectType();
+    //  this.Clear_Feilds();
+    //  this.closeInfo();
+    //  this._inputAttachments = [];
+    }
+}
+
+
+
+
+
+
+
+
+getFileExtension(fileName: any): string | null {
+  if (!fileName) {
+    return null;
+  }
+  const lastDotIndex = fileName.lastIndexOf('.');
+  return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : null;
 }
 
 // sweet alert method new
@@ -1268,7 +1372,7 @@ startActionCreation=async()=>{
      this.characterCount=0;
     // alert(this._Urlid);
     if(this._Urlid==2){
-      debugger
+
       this.router.navigate(["UnplannedTask/"]);
     document.getElementById("Project_info_slider_bar").classList.remove("kt-action-panel--on");
 
@@ -1287,12 +1391,9 @@ startActionCreation=async()=>{
     this._meetingDetails.getDetailsScheduleId();
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
     }
-
     else if(this._Urlid==4){
-
-      this.router.navigate(["./Details", this.selectedProjectCode]);
+    this.router.navigate(["./Details", this.selectedProjectCode]);
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
-
     }
     else if(this._Urlid==5){
 
@@ -1311,7 +1412,7 @@ startActionCreation=async()=>{
     document.getElementById("rightbar-overlay").style.display = "none";
   }
 
-  Clear_Feilds() {   debugger
+  Clear_Feilds() {
     this.selectedProjectCodelist = [];
     this.Sub_ProjectCode = null;
     this.Sub_ProjectName = null;
@@ -1384,24 +1485,60 @@ startActionCreation=async()=>{
 
 
 selectFile() {
-
   this.fileInput.nativeElement.click();
 }
 
+
+
+
+permittedFileFormats=[
+  "image/*", "application/pdf", "text/plain", "text/html", "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/json", "application/xml", "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+];
+invalidFileSelected:boolean=false;
 onFileChanged(event: any) {
   const files: File[] = event.target.files;
 
   if (files && files.length > 0) {
+   // if file is selected.
+   const filetype = files[0].type;
+   const isValidFile=this.permittedFileFormats.some((format)=>{
+         return (filetype==format)||(filetype.startsWith('image/')&&format=='image/*');
+   });
+   
+   if(isValidFile){
     this.file = files[0];
     this.fileAttachment = this.file;
-  } else {
+    this.invalidFileSelected=false;
+    this.contentType=this.getFileExtension(this.fileAttachment.name);
+   }else{
     this.file = null;
     this.fileAttachment = null;
+    this.invalidFileSelected=true;
+    this.contentType="";
+   }
+
+  }else {
+   // if no file is selected. 
+    this.file = null;
+    this.fileAttachment = null;
+    this.invalidFileSelected=false;
+    this.contentType="";
   }
+  console.log('File Object:', this.file);
+
   // Reset file input value to allow selecting the same file again
   this.fileInput.nativeElement.value = '';
 }
 
+
+
+// testfiletype(){
+//   alert(this.contentType);
+// }
 
 onInputChange(value: string) {
   this.Sub_ProjectName = value.trim();
@@ -1514,6 +1651,15 @@ hasSameDateActions(){
 }
 
 
+isActionStartBeforeProject():boolean{
+  const mainPrjStartdate=new Date(this.ProjectStartDate);  // project start date.
+  const inputActnStartdate=this._StartDate;               // action start date. 
+  const isStartsBefore=inputActnStartdate<mainPrjStartdate;  // is action starts before main project.
+  return isStartsBefore;
+}
+
+
+
 
 
 // action cost start.
@@ -1535,6 +1681,23 @@ hasSameDateActions(){
 // action cost end.
 
 
+// file uploading progress bar start.
+fileInUpload:{filename:string, uploaded:number, processingUploadFile:boolean};   
+isFileUploadingBarVisible:boolean=false;  // whether file uploading bar is visible or not.
+
+setFileUploadingBarVisible(_visible:boolean){
+     this.isFileUploadingBarVisible=_visible;
+     if(this.isFileUploadingBarVisible){
+      document.getElementById("actnfile-upload-modal-backdrop").style.display = "block";
+      document.getElementsByClassName('file-upload-progress')[0].classList.remove('d-none');
+     }
+     else{
+      document.getElementById("actnfile-upload-modal-backdrop").style.display = "none";
+      document.getElementsByClassName('file-upload-progress')[0].classList.add('d-none');
+     }
+}
+
+// file uploading progress bar end.
 
 
 

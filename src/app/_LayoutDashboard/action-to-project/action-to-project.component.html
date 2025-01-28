@@ -204,7 +204,7 @@
       <div class="form-group flex-1 details-date">
         <label>Start date<span class="text-danger">*</span></label>
         <div class="d-flex date-border" [ngClass]="{'error-date': (_sdate == true&&!_StartDate)||_actbefore}" (click)="startdatechecker()">
-            <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()" [min]="todayDate" (dateChange)="_StartDate=_StartDate<_curtd?null:_StartDate"
+            <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()" [min]="todayDate" (dateChange)="(_StartDate=_StartDate<_curtd?null:_StartDate); (_actbefore=isActionStartBeforeProject()); "
                 [(ngModel)]="_StartDate" placeholder="Start date" class="form-control" />
 
             <div class="input-group-text p-0">
@@ -267,10 +267,27 @@
 
     </div>
 
+
+    <div class="form-group">
+        <div class="text-muted mb-1">Add any attachment for reference</div>
+        <div class="custom-file pl-1">
+            <button type="button" class="btn btn-primary cursor-pointer" (click)="selectFile()">Choose file</button>
+            <span *ngIf="file" class="selected-file">{{ file.name }}</span>
+            <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
+            <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none" (change)="onFileChanged($event)" [accept]="permittedFileFormats.join(',')"/>
+        </div>
+        <div class="d-flex flex-column mt-1">
+        <span *ngIf="invalidFileSelected" style="color:red">File type is not supported. Please choose a valid file.</span>
+        <span class="text-info">* Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
+       </div>
+    </div>
+
+
+
+
     <div class="form-group">
         <label for="exampleFormControlFile1">Remarks</label>
-        <textarea class="form-control" aria-label="With textarea" placeholder="Enter action remarks if any" [(ngModel)]="_remarks"
-            style="height: 111px"></textarea>
+        <textarea class="form-control" aria-label="With textarea" placeholder="Enter action remarks if any" [(ngModel)]="_remarks" style="height: 111px"></textarea>
     </div>
 
 
@@ -318,38 +335,13 @@
       </div>
     </div> -->
 
-
-
-    <div class="form-group">
-      <div class="custom-file pl-1">
-          <button type="button" class="btn btn-primary cursor-pointer" (click)="selectFile()">Choose file</button>
-          <span *ngIf="file" class="selected-file">{{ file.name }}</span>
-          <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
-          <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none" (change)="onFileChanged($event)" />
-      </div>
-  </div>
-
-
-
-
-
-
-
     <div class="form-group">
       <div class="d-flex align-items-center" id="actattach">
         <input type="checkbox" class="mr-2" [(ngModel)]="completionattachment"/>
         <label for="actioncompl" class="mb-0 font-weight-normal"> Completion attachment</label>
       </div>
     </div>
-
     </div>
-
-
-
-
-
-
-
 
 
     <div class="kt-portlet__foot py-3">
@@ -358,7 +350,7 @@
 
             <button type="submit" class="btn btn-info btn-sm"  (click)="sweetAlert2()">Submit</button>
 
-            <!-- [disabled];="!Sub_ProjectName || !_Description || !selectedEmpNo || !_StartDate || !_EndDate || !_allocated || (_allocated > maxAllocation)" -->
+            <!-- [disabled];="!Sub_ProjectName || !_Description  || !selectedEmpNo || !_StartDate || !_EndDate || !_allocated || (_allocated > maxAllocation)" -->
 
             <!-- <button type="submit"; class="btn btn-info btn-sm"  (click)="sweetAlert()" *ngIf;="selectedEmpNo == Current_user_ID"
                 [disabled]="!Sub_ProjectName || !_Description || !selectedEmpNo || !_StartDate || !_EndDate || !_allocated || (_allocated > maxAllocation)">Submit
@@ -373,4 +365,25 @@
         </div>
     </div>
 </div>
+
+
+  <!--File attachment upload progress bar start.-->
+<div class="modal-backdrop fade show" id="actnfile-upload-modal-backdrop" style="display: none; z-index: 2000" ></div>
+  <div class="file-upload-progress d-none">
+      <div class="w-100 d-flex align-items-center flex-column">
+          <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [ngStyle]="{'width': (fileInUpload?fileInUpload.uploaded:0)+'%'}" [attr.aria-valuenow]="(fileInUpload?fileInUpload.uploaded:0)" aria-valuemin="0" aria-valuemax="100"></div>
+              <div class="progress-bar-control">
+                  <div class="progress-bar-label">
+                      <span *ngIf="fileInUpload">
+                          <span *ngIf="fileInUpload.uploaded<=100&&fileInUpload.processingUploadFile==false">Uploading "{{fileInUpload.filename}}"</span>
+                          <span *ngIf="fileInUpload.processingUploadFile">Processing uploaded file...</span> 
+                      </span>
+                  </div>
+                  <div class="progress-bar-count">{{fileInUpload?fileInUpload.uploaded:0}}%</div>
+              </div>
+          </div>
+      </div>
+  </div> 
+  <!--File attachment upload progress bar  end.-->
 

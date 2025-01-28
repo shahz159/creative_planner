@@ -392,12 +392,13 @@
                 <div class="kt-portlet__head portfolio-tool-head">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            <strong *ngIf="activeClassAll==true">All portfolio list <span class="head-title-count">{{countAll}}</span></strong>
-                            <strong *ngIf="activeClassFav==true">Favorite portfolio list<span class="head-title-count">{{countFav}}</span></strong>
-                            <strong *ngIf="activeClassOwners==true">Owner portfolio list<span class="head-title-count">{{countOwners}}</span></strong>
-                            <strong *ngIf="activeClassShare==true">Shared portfolio list<span class="head-title-count">{{countShare}}</span></strong>
+                            <strong *ngIf="activeClassAll==true">All portfolio list </strong>
+                            <strong *ngIf="activeClassFav==true">Favorite portfolio list</strong>
+                            <strong *ngIf="activeClassOwners==true">Owner portfolio list</strong>
+                            <strong *ngIf="activeClassShare==true">Shared portfolio list</strong>
                             <!-- <strong> Portfolio List</strong> -->
                         </h3>
+                        <!-- <span class="head-title-count"></span></strong> -->
                         <!-- <span *ngIf="searchResult == true" style="color:gray"> About (<b>{{_CurrentpageRecords}}</b>) results
                             found of page {{Portfolio_CurrentPage}}. </span> -->
                     </div>
@@ -474,11 +475,24 @@
                          (click)="Portfolio_CurrentPage = Portfolio_CurrentPage + 1;getPortfolio_List()" >
                          <i class="fas fa-angle-right mr-0"></i>
                      </button> -->
-                     <label class="mx-1" *ngIf="activeClassAll==true">{{Portfolio_CurrentPage}} of {{NoOfPages}} pages</label>
-                     <label class="mx-1" *ngIf="activeClassFav==true">{{Portfolio_FavoritePage}} of {{NoOfPages}} pages</label>
-                     <label class="mx-1" *ngIf="activeClassOwners==true">{{Portfolio_OwnerPage}} of {{NoOfPages}} pages</label>
-                     <label class="mx-1" *ngIf="activeClassShare==true">{{Portfolio_SharedPage}} of {{NoOfPages}} pages</label>
-                         <!-- Pagenation End -->
+                     <label class="mx-1" *ngIf="activeClassAll==true&&this._ListProjStat&&_ListProjStat.length == 30">{{this._ListProjStat&&this._ListProjStat.length * Portfolio_CurrentPage - (this._ListProjStat&&this._ListProjStat.length) + 1}} - {{this._ListProjStat&&this._ListProjStat.length  * Portfolio_CurrentPage}}   of {{countAll}}</label>
+                     <label class="mx-1" *ngIf="activeClassAll==true&&this._ListProjStat&&_ListProjStat.length < 30">{{countAll  - (this._ListProjStat&&this._ListProjStat.length) +1 }}  - {{countAll}}   of {{countAll}}</label>
+
+
+                     <label class="mx-1" *ngIf="activeClassFav==true&&this._ListProjStat&&_ListProjStat.length == 30">{{this._ListProjStat&&this._ListProjStat.length * Portfolio_FavoritePage - (this._ListProjStat&&this._ListProjStat.length) + 1}} - {{this._ListProjStat&&this._ListProjStat.length  * Portfolio_FavoritePage}} of {{countFav}}</label>
+                     <label  class="mx-1" *ngIf="activeClassFav==true&&this._ListProjStat&&_ListProjStat.length < 30"> {{countFav  - (this._ListProjStat&&this._ListProjStat.length) +1 }}  - {{countFav}}   of {{countFav}}</label>
+
+
+                     <label class="mx-1" *ngIf="activeClassOwners==true&&this._ListProjStat&&_ListProjStat.length == 30">{{this._ListProjStat&&this._ListProjStat.length * Portfolio_OwnerPage - (this._ListProjStat&&this._ListProjStat.length) + 1}} - {{this._ListProjStat&&this._ListProjStat.length  * Portfolio_OwnerPage}} of {{countOwners}} </label>
+                     <label class="mx-1" *ngIf="activeClassOwners==true&&this._ListProjStat&&_ListProjStat.length < 30">{{countOwners  - (this._ListProjStat&&this._ListProjStat.length) +1 }}  - {{countOwners}}   of {{countOwners}}</label>
+
+
+                     <label class="mx-1" *ngIf="activeClassShare==true&&this._ListProjStat&&_ListProjStat.length == 30">{{this._ListProjStat&&this._ListProjStat.length * Portfolio_SharedPage - (this._ListProjStat&&this._ListProjStat.length) + 1}} - {{this._ListProjStat&&this._ListProjStat.length  * Portfolio_SharedPage}} of {{countShare}} </label>
+                     <label class="mx-1" *ngIf="activeClassShare==true&&this._ListProjStat&&_ListProjStat.length < 30">{{countShare  - (this._ListProjStat&&this._ListProjStat.length) +1 }}  - {{countShare}}   of {{countShare}}</label>
+
+
+
+                     <!-- Pagenation End -->
                            </div>
                            <div class="dropdown">
                             <button class="btn btn-view-portfolio dropdown-toggle" type="button" id="dropdownviewportfolioMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -804,7 +818,7 @@
                                         </a>
                                             </div>
                                         </div>
-                                        <div class="n-portfolio-body">
+                                        <div class="n-portfolio-body pointer"   (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
                                             <!-- <div *ngIf="item.AchievementPercentage>0" class="per-con">{{item.AchievementPercentage  | number:'1.0-2'}}<small>%</small></div> -->
                                             <div class="n-portfolio-item">
                                                 <div class="n-portfolio-item-icon">
@@ -823,7 +837,7 @@
                                                 <div class="n-portfolio-item-icon">
                                                     <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="m 13,2.15688 0,9.68624 C 13,12.49386 12.491071,13 11.842857,13 L 2.1571429,13 C 1.5169643,12.99732 1,12.49922 1,11.84044 L 1,2.15688 C 1,1.51149 1.5035714,1 2.1571429,1 L 11.845536,1 C 12.488393,1 13,1.50346 13,2.15688 Z m -0.999107,9.68356 0,-9.68356 c 0,-0.0803 -0.06964,-0.15532 -0.155357,-0.15532 l -0.249107,0 L 8.6419643,3.99933 7,2.66302 5.3607143,3.99933 2.40625,1.99888 l -0.2491071,0 c -0.085714,0 -0.1553572,0.075 -0.1553572,0.15533 l 0,9.68623 c 0,0.0803 0.069643,0.15532 0.1553572,0.15532 l 9.6883931,0 c 0.08571,0.003 0.155357,-0.0723 0.155357,-0.15532 z m -6.9776787,-6.71636 0,0.99085 -1.96875,0 0,-0.99085 1.96875,0 z m 0,1.99241 0,0.99889 -1.96875,0 0,-0.99889 1.96875,0 z m 0.2973214,-3.94465 1.4464286,-1.17028 -3.1741072,0 1.7276786,1.17028 z m 5.6250003,1.95224 0,0.99085 -5.2500003,0 0,-0.99085 5.2500003,0 z m 0,1.99241 0,0.99889 -5.2500003,0 0,-0.99889 5.2500003,0 z M 8.6794643,3.17184 10.407143,2.00156 l -3.1714287,0 1.44375,1.17028 z m 2.2660717,5.94242 0,0.99888 -2.6625003,0 0,-0.99888 2.6625003,0 z"></path></g></svg>
                                                 </div>
-                                                <div class="n-portfolio-item-title">{{item.ProjectsCount}} Projects <span *ngIf="item.AchievementPercentage>0"  class="p-b-percent-count">{{item.AchievementPercentage  | number:'1.0-2'}}%</span></div>
+                                                <div class="n-portfolio-item-title">{{item.ProjectsCount}} Projects <span   class="p-b-percent-count">{{item.AchievementPercentage  | number:'1.0-2'}}%</span></div>
                                             </div>
                                             <div class="n-portfolio-item">
                                                 <div class="n-portfolio-item-icon">
@@ -951,7 +965,7 @@
                                             </div>
                                             <div class="n-portfolio-action">
                                                 <div class="p-g-more btn-group">
-                                                    <div data-toggle="dropdown" title="Click to delete portfolio" class="btn btn-more" aria-haspopup="true" aria-expanded="false" (click)="_deletePortfolio(item.Portfolio_ID,item.Portfolio_Name,item.Created_By,item.Created_DT,item.ProjectsCount,item.Status)">
+                                                    <div data-toggle="dropdown" title="Click to delete the portfolio" class="btn btn-more" aria-haspopup="true" aria-expanded="false" (click)="_deletePortfolio(item.Portfolio_ID,item.Portfolio_Name,item.Created_By,item.Created_DT,item.ProjectsCount,item.Status)">
                                                         <!-- <svg fill="currentColor" height="64px" width="64px" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path class="cls-1" d="M8,6.5A1.5,1.5,0,1,1,6.5,8,1.5,1.5,0,0,1,8,6.5ZM.5,8A1.5,1.5,0,1,0,2,6.5,1.5,1.5,0,0,0,.5,8Zm12,0A1.5,1.5,0,1,0,14,6.5,1.5,1.5,0,0,0,12.5,8Z"></path> </g></svg> -->
                                                         <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M18.8332 8.5L18.3732 15.3991C18.1962 18.054 18.1077 19.3815 17.2427 20.1907C16.3777 21 15.0473 21 12.3865 21H11.6132C8.95235 21 7.62195 21 6.75694 20.1907C5.89194 19.3815 5.80344 18.054 5.62644 15.3991L5.1665 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M9.5 11L10 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M14.5 11L14 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6" stroke="currentColor" stroke-width="1.5"></path> </g></svg>
 
@@ -989,7 +1003,7 @@
                                 <div class="kt-portlet mb-0"  *ngIf="_ListProjStat&&_ListProjStat.length > 0">
                                     <div class="kt-portlet-header">
                                         <div class="p-h-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" id="Portfolio" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" ><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path><path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor"></path></g></svg>
+                                          Favorite  <!-- <svg xmlns="http://www.w3.org/2000/svg" id="Portfolio" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" ><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path><path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor"></path></g></svg> -->
                                         </div>
                                         <div class="p-h-name">Name</div>
                                         <div class="p-h-datetime">Date & Time</div>
@@ -1001,27 +1015,46 @@
                                     <div class="kt-portlet-body">
                                         <div class="folder-item-scroll">
                                             <div class="folder-item" *ngFor="let item of _ListProjStat ;let i=index">
-                                                <div class="p-b-icon" [ngClass]="getStatusClass(item.Status)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" id="Portfolio" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" ><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path><path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor"></path></g></svg>
-                                                </div>
-                                                <div class="p-b-name">
-                                                    <div class="d-flex align-item-center">
-                                                        <div class="p-b-name-title" (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">{{item.Portfolio_Name}}</div>
+                                                <div class="p-b-icon"  >
+                                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" id="Portfolio" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" ><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path><path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor"></path></g></svg> -->
+                                                    <!-- <svg fill="currentColor" width="16px" height="16px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <path class="clr-i-solid clr-i-solid-path-1" d="M34,16.78a2.22,2.22,0,0,0-1.29-4l-9-.34a.23.23,0,0,1-.2-.15L20.4,3.89a2.22,2.22,0,0,0-4.17,0l-3.1,8.43a.23.23,0,0,1-.2.15l-9,.34a2.22,2.22,0,0,0-1.29,4l7.06,5.55a.23.23,0,0,1,.08.24L7.35,31.21a2.22,2.22,0,0,0,3.38,2.45l7.46-5a.22.22,0,0,1,.25,0l7.46,5a2.2,2.2,0,0,0,2.55,0,2.2,2.2,0,0,0,.83-2.4l-2.45-8.64a.22.22,0,0,1,.08-.24Z"></path> <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect> </g></svg> -->
 
-                                                        <div class="p-b-pin-star"  *ngIf="item.Created_By == Current_user_ID" [ngStyle]="{'display':item.IsFavourite=== true ? 'block' : 'none'}">
+
+
+                                                    <a class="pointer" *ngIf="item.Created_By == Current_user_ID"
+                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
+                                                    <i   class="flaticon-star " *ngIf="item.Created_By == Current_user_ID"
+                                                        [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"></i>
+                                                </a>
+                                                <a  class="pointer" *ngIf="item.Created_By != Current_user_ID"
+                                                (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                <i  class="flaticon-star " *ngIf="item.Created_By != Current_user_ID"
+                                                    [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
+                                                </a>
+
+                                                  </div>
+                                                <div class="p-b-name pointer" (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
+                                                    <div class="d-flex align-item-center justify-content-between">
+                                                        <div class="p-b-name-title" (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">{{item.Portfolio_Name}}</div>
+                                                        <span *ngIf="item.AchievementPercentage>0" class="p-b-percent-count">{{item.AchievementPercentage  | number:'1.0-2' }}%</span> 
+
+                                                        <!-- <div class="p-b-pin-star"  *ngIf="item.Created_By == Current_user_ID" [ngStyle]="{'display':item.IsFavourite=== true ? 'block' : 'none'}">
                                                             <svg fill="currentColor" width="16px" height="16px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <path class="clr-i-solid clr-i-solid-path-1" d="M34,16.78a2.22,2.22,0,0,0-1.29-4l-9-.34a.23.23,0,0,1-.2-.15L20.4,3.89a2.22,2.22,0,0,0-4.17,0l-3.1,8.43a.23.23,0,0,1-.2.15l-9,.34a2.22,2.22,0,0,0-1.29,4l7.06,5.55a.23.23,0,0,1,.08.24L7.35,31.21a2.22,2.22,0,0,0,3.38,2.45l7.46-5a.22.22,0,0,1,.25,0l7.46,5a2.2,2.2,0,0,0,2.55,0,2.2,2.2,0,0,0,.83-2.4l-2.45-8.64a.22.22,0,0,1,.08-.24Z"></path> <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect> </g></svg>
                                                         </div>
                                                         <div class="p-b-pin-star"   *ngIf="item.Created_By != Current_user_ID" [ngStyle]="{'display':item.IsFavourite1=== true ? 'block' : 'none'}">
                                                             <svg fill="currentColor" width="16px" height="16px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <path class="clr-i-solid clr-i-solid-path-1" d="M34,16.78a2.22,2.22,0,0,0-1.29-4l-9-.34a.23.23,0,0,1-.2-.15L20.4,3.89a2.22,2.22,0,0,0-4.17,0l-3.1,8.43a.23.23,0,0,1-.2.15l-9,.34a2.22,2.22,0,0,0-1.29,4l7.06,5.55a.23.23,0,0,1,.08.24L7.35,31.21a2.22,2.22,0,0,0,3.38,2.45l7.46-5a.22.22,0,0,1,.25,0l7.46,5a2.2,2.2,0,0,0,2.55,0,2.2,2.2,0,0,0,.83-2.4l-2.45-8.64a.22.22,0,0,1,.08-.24Z"></path> <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect> </g></svg>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="p-b-name-subtitle">
                                                         <span class="p-b-project-count">{{item.ProjectsCount}} Projects</span>
-                                                        <span *ngIf="item.AchievementPercentage>0" class="p-b-percent-count">{{item.AchievementPercentage  | number:'1.0-2' }}%</span>
+                                                        <!-- <span *ngIf="item.AchievementPercentage>0" class="p-b-percent-count">{{item.AchievementPercentage  | number:'1.0-2' }}%</span> -->
                                                     </div>
                                                 </div>
-                                                <div class="p-b-datetime"><span>{{item.Created_DT|date:'medium'}}</span></div>
-                                                <div class="p-b-modified-by">
+                               
+                                                                                            
+                                               
+                                                <div class="p-b-datetime pointer" (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)"><span>{{item.Created_DT|date:'medium'}}</span></div>
+                                                <div class="p-b-modified-by pointer" (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
                                                     <span *ngIf="item.CreatedName!=''; else SharedName">
                                                         {{item.CreatedName}}
                                                     </span>
@@ -1029,7 +1062,7 @@
                                                         {{item.SharedName}}
                                                     </ng-template>
                                                 </div>
-                                                <div class="p-b-activity">
+                                                <div class="p-b-activity pointer" (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
 
                                                     <div *ngIf="item.Status=='Delay'">
                                                         <span class="kt-inbox__label kt-badge Delay kt-badge   kt-badge.kt-badge-light-bold kt-badge--inline">
@@ -1126,10 +1159,14 @@
 
                                             </div>
                                                 <div class="p-b-more btn-group">
-                                                    <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <svg class="more-drop-icon" width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <circle cx="12" cy="7" r="0.5" transform="rotate(90 12 7)" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></circle> <circle cx="12" cy="12" r="0.5" transform="rotate(90 12 12)" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></circle> <circle cx="12" cy="17" r="0.5" transform="rotate(90 12 17)" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></circle> </g></svg>
+                                                    <div   title="Click to delete the portfolio" data-toggle="dropdown"  (click)="_deletePortfolio(item.Portfolio_ID,item.Portfolio_Name,item.Created_By,item.Created_DT,item.ProjectsCount,item.Status)" aria-haspopup="true" aria-expanded="false">
+                                                      <span class="p-b-more-item-icon pointer">
+                                                      <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M18.8332 8.5L18.3732 15.3991C18.1962 18.054 18.1077 19.3815 17.2427 20.1907C16.3777 21 15.0473 21 12.3865 21H11.6132C8.95235 21 7.62195 21 6.75694 20.1907C5.89194 19.3815 5.80344 18.054 5.62644 15.3991L5.1665 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M9.5 11L10 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M14.5 11L14 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6" stroke="currentColor" stroke-width="1.5"></path> </g></svg>
+                                                    </span>
+                                                    <!-- <span class="p-b-more-item-label">Delete Portfolio</span> -->
+                                                      <!-- <svg class="more-drop-icon" width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <circle cx="12" cy="7" r="0.5" transform="rotate(90 12 7)" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></circle> <circle cx="12" cy="12" r="0.5" transform="rotate(90 12 12)" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></circle> <circle cx="12" cy="17" r="0.5" transform="rotate(90 12 17)" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></circle> </g></svg> -->
                                                     </div>
-                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                    <!-- <div class="dropdown-menu dropdown-menu-right">
                                                         <div class="dropdown-item" type="button" (click)="AddFavourites(item.Portfolio_ID, item.Created_By == Current_user_ID ? item.IsFavourite : item.IsFavourite1)">
                                                             <span class="p-b-more-item-icon">
                                                                 <svg fill="currentColor" width="24px" height="24px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -1152,7 +1189,7 @@
                                                             </span>
                                                             <span class="p-b-more-item-label">Delete Portfolio</span>
                                                         </div>
-                                                      </div>
+                                                      </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -1186,12 +1223,12 @@
                                                                     class="kt-inbox__icon kt-inbox__icon--off kt-inbox__icon--light">
                                                                     <a *ngIf="item.Created_By == Current_user_ID"
                                                                         (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
-                                                                        <i class="flaticon-star" *ngIf="item.Created_By == Current_user_ID"
+                                                                        <i class="flaticon-star " *ngIf="item.Created_By == Current_user_ID"
                                                                             [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                     <a *ngIf="item.Created_By != Current_user_ID"
                                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
-                                                                    <i class="flaticon-star" *ngIf="item.Created_By != Current_user_ID"
+                                                                    <i class="flaticon-star " *ngIf="item.Created_By != Current_user_ID"
                                                                         [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
                                                                     </a>
                                                                 </div>

@@ -42,6 +42,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import tippy from 'tippy.js';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
 import * as ApexCharts from 'apexcharts';
+import { EventEmitter } from 'stream';
 
 declare var FusionCharts: any;
 
@@ -127,6 +128,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   TOTAL_ACTIONS_IN_CUA: number = 0;
   TOTAL_ACTIONS_IN_FUA: number = 0;
   TOTAL_ACTIONS_IN_HOLD: number = 0;
+  TOTAL_ACTIONS_IN_CNUA:number=0;
   TOTAL_ACTIONS: number = 0;
 
 
@@ -183,11 +185,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   loading: boolean = false;
   actionowner_dropdown:any;
   actionresponsible_dropdown:any;
+  action_completionOffset:number|undefined;
+  action_deadlineExtendlist:any=[];
   isNewOwnerOk:boolean=false;
   pageContentType:'PROJECT_DETAILS'|'ACTION_DETAILS'='PROJECT_DETAILS';  // which content the page is display project or action. by default project.
   noActvySinceCreation:boolean=false;
   noActvy4NDays:number=-1;
-
+  prjResHasActions:boolean=false;   // project responsible has actions or not.
+  actnsWithoutProgress:any[]=[];   // actions with no progress since their start date in the project.
 
 
 
@@ -279,14 +284,18 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     // this.GetProjectAndsubtashDrpforCalender()
 
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
+    this.disablePreviousDate.setHours(0,0,0,0);
     this.DisablePrevious.setDate(this.DisablePrevious.getDate());
-    $(document).on('change', '.custom-file-input', function (event) {
-      $(this).next('.custom-file-label').html(event.target.files[0].name);
-    });
+    // $(document).on('change', '.custom-file-input', function (event) {
+    //   $(this).next('.custom-file-label').html(event.target.files[0].name);
+    // });
     // these minhold and maxhold are used in the project hold section,project release section
     this.minhold.setDate(this.minhold.getDate() + 1);
     this.maxhold.setDate(this.minhold.getDate() + 90);
-    this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
+    this.minhold.setHours(0,0,0,0); 
+    this.maxhold.setHours(0,0,0,0);
+    this.release_date=new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    // this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
     //
 
     tippy('#dmsasfa', {
@@ -516,13 +525,38 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 //   }
 
+  darOfEmpl=[];
+
   drawStatisticsNew(){
     if(this.currentActionView===undefined){
-
+debugger
          // 1. bar chart start.
 
+            this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, "3", this.Current_user_ID).subscribe((res: any) => {
+              const tml = JSON.parse(res[0].Timeline_List);
+              console.log("timeline data here11111:", tml);
+              this.darOfEmpl=tml.map((ob)=>{
+                  return { member:ob.Value, totalTimeline:(+ob.TotalDuration).toFixed(2)}
+              });
+              this.darOfEmpl.sort((a,b)=>b.totalTimeline-a.totalTimeline);
+            });
 
-               let tlTotalHrs:number = this.projectInfo.TotalHours;
+            let tlTotalHrs:number = this.projectInfo.TotalHours;
+
+            let includeExpectedhrs:boolean=false;
+            let alloc4Ndays=0;
+            const psd=new Date(this.projectInfo.StartDate.split('T')[0]);  // project start date.
+            const ped=new Date(this.projectInfo.EndDate.split('T')[0]);    // project end date.
+            const crd=new Date();
+            const uptod=crd<=ped?crd:ped;
+
+            if(['001','002','011'].includes(this.projectInfo.Project_Block)&&['Completed','New Project Rejected','Cancelled'].includes(this.projectInfo.Status)==false&&crd>=psd){
+                const K=this.projectInfo.AllocatedHours/(this.projectInfo.Duration+1);
+                const N=(Math.abs(moment(psd).diff(uptod,'days'))+1);
+                alloc4Ndays=N*K;
+                alloc4Ndays=(+alloc4Ndays.toFixed(2));
+                includeExpectedhrs=true;
+            }
 
                  //standard  graph cal start    may need updation.
                  let x=0;
@@ -546,17 +580,19 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                    let t=timestr.split(':');
                    let prjAlHrs=+(Number.parseInt(t[0].trim())+'.'+Number.parseInt(t[1].trim()));
                    AL=+(prjAlHrs*Math.abs(x)).toFixed(2);
-
                  }
                  //standard graph cal end
 
 
+              let r_Hrs=['001', '002','011'].includes(this.projectInfo.Project_Block)?((+this.projectInfo.AllocatedHours)-tlTotalHrs):(AL - tlTotalHrs);
+              r_Hrs=(+r_Hrs.toFixed(2));
 
 
                var options = {
                  series: [{
-                   data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, tlTotalHrs, ((+this.projectInfo.AllocatedHours) - tlTotalHrs).toFixed(2)]
-                     : [AL, tlTotalHrs, (AL - tlTotalHrs).toFixed(2)]
+                   data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ?
+                         ( includeExpectedhrs?[+this.projectInfo.AllocatedHours,alloc4Ndays,tlTotalHrs,r_Hrs<0?0:r_Hrs]:[+this.projectInfo.AllocatedHours,tlTotalHrs,r_Hrs<0?0:r_Hrs] )
+                        : [AL, tlTotalHrs, r_Hrs]
                  }],
                  chart: {
                    type: 'bar',
@@ -572,8 +608,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                  dataLabels: {
                    enabled: true,
                    style:{
-                     colors:['#3a81c9','#3e6be0','#303031'],
-                     fontFamily:'Lucida Sans Unicode'
+                     colors:includeExpectedhrs?['#3a81c9','#8d48d7','#3e6be0','#303031']:['#3a81c9','#3e6be0','#303031'],
+                     fontFamily:'Lucida Sans Unicode',
+                     fontSize:'10px'
                    },
                    formatter: function (v) {
                      return v + ' hrs';
@@ -586,28 +623,61 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                    labels: {}
                  },
                  xaxis: {
-                   categories: ['Allocated', 'Used', 'Remaining'],
+                   categories: includeExpectedhrs?['Planned', 'Expected', 'Used', 'Remaining']:['Allocated','Used','Remaining'],
                    labels: {
-                     rotate: -90
+                     rotate: -90,
+                     style: {
+                      fontSize: '10px'
+                    }
                    }
                  },
                  colors:['003', '008'].includes(this.projectInfo.Project_Block)?
-                       ['#7dbeff', '#7da1ff',(AL-this.tlTotalHours)<0?'#757575':'#dbe1e4']:
-                       ['#7dbeff', '#7da1ff',((+this.projectInfo.AllocatedHours) - this.tlTotalHours)<0?'#757575':'#dbe1e4']
+                       ['#7dbeff', '#7da1ff',r_Hrs<0?'#757575':'#dbe1e4']:
+                       ( includeExpectedhrs?['#7dbeff','#c187ff','#7da1ff',r_Hrs<0?'#757575':'#dbe1e4']:['#7dbeff','#7da1ff',r_Hrs<0?'#757575':'#dbe1e4'] ),
+
+                tooltip: {
+                    enabled: true,
+                    custom: ({ series, seriesIndex, dataPointIndex, w })=> {
+                          const value = series[seriesIndex][dataPointIndex];
+                          let category = w.globals.labels[dataPointIndex];
+                          category=category=='Expected'?'Expected till today':category;
+
+                     return `${
+                       category=='Used'?`<div style=""><div style="border-radius: 4px;padding: 4px;font-family: monospace;box-shadow: 0px 0px 0px 1px #527ce2;">
+                             <div style="padding: 5px;border-radius: 5px; background-color: #527ce2;color: white;font-size: 11px;">Total used: ${value} hrs</div>
+                              <table>
+                                ${ this.darOfEmpl.map((ob)=>{
+                                          return `<tr>
+                                                  <td style="padding: 7px 2px 0px 2px; font-size: 10px;">${ob.member}:</td>
+                                                  <td style="padding: 7px 2px 0px 2px;font-family: 'Lucida Sans Unicode';font-weight: 600;font-size: 9px;">
+                                                    ${ob.totalTimeline} hrs
+                                                  </td>
+                                                </tr>`;
+                                      }).join('')
+                                  }
+                          </table>
+                        </div>`:
+                      `<div style="padding: 10px; background-color: #f4f4f4; border-radius: 5px;">
+                         <strong>${category}</strong>: ${value} hrs
+                      </div></div>`
+
+                      }`;
+                        }
+                      }
 
                };
 
+
                if (this.prjBARCHART)
-                 this.prjBARCHART.destroy();
-
-               let bchr=document.querySelector("#Bar-chart");
-               if(bchr)
-               {
-                 this.prjBARCHART = new ApexCharts(bchr, options);
-                 this.prjBARCHART.render();
-               }
+               this.prjBARCHART.destroy();
 
 
+                let bchr=document.querySelector("#Bar-chart");
+                if(bchr)
+                {
+                  this.prjBARCHART = new ApexCharts(bchr, options);
+                  this.prjBARCHART.render();
+                }
 
 
 
@@ -629,7 +699,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
                  let totalactions=0;
                  this.filterstatus.forEach(st=>{
-                   const actns=this.getFilteredPrjActions(st.Status,item.Team_Res);
+                   const actns=this.getFilteredPrjActions([st.Status],[item.Team_Res]);
                    if(actns.length>0){
                        obj[st.Status]=actns.length;
                        totalactions+=actns.length;
@@ -709,9 +779,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
                };
 
-               var chart = new ApexCharts(document.querySelector("#Pie-chart"), options123);
-               chart.render();
 
+                  let _piechartsec=document.querySelector("#Pie-chart");
+                  if(_piechartsec){
+                    let pchart = new ApexCharts(_piechartsec, options123);
+                    pchart.render();
+                  }
 
              }
          }
@@ -803,7 +876,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   Pid: any;
 
   calculateProjectActions() {
-    debugger
+
     if (this.projectActionInfo) {
       // all must be zero before calculation.
       this.TOTAL_ACTIONS_DONE = 0;
@@ -815,6 +888,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       this.TOTAL_ACTIONS_IN_PROCESS = 0;
       this.TOTAL_ACTIONS_REJECTED = 0;
       this.TOTAL_ACTIONS_UNDER_APPROVAL = 0;
+      this.TOTAL_ACTIONS_IN_CNUA=0;
       //
       this.projectActionInfo.forEach(action => {
         switch (action.Status) {
@@ -826,6 +900,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           case 'Completion Under Approval': this.TOTAL_ACTIONS_IN_CUA += 1; break;
           case 'Forward Under Approval': this.TOTAL_ACTIONS_IN_FUA += 1; break;
           case 'Project Hold': this.TOTAL_ACTIONS_IN_HOLD += 1; break;
+          case 'Cancellation Under Approval':this.TOTAL_ACTIONS_IN_CNUA+=1; break;
           default: { };
         }
       })
@@ -833,7 +908,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     }
     else
       this.projectActionInfo = null;
-    this.TOTAL_ACTIONS = this.TOTAL_ACTIONS_DONE + this.TOTAL_ACTIONS_IN_DELAY + this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_UNDER_APPROVAL + this.TOTAL_ACTIONS_REJECTED + this.TOTAL_ACTIONS_IN_CUA + this.TOTAL_ACTIONS_IN_FUA + this.TOTAL_ACTIONS_IN_HOLD;
+
+    this.TOTAL_ACTIONS = this.TOTAL_ACTIONS_DONE + this.TOTAL_ACTIONS_IN_DELAY + this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_UNDER_APPROVAL + this.TOTAL_ACTIONS_REJECTED + this.TOTAL_ACTIONS_IN_CUA + this.TOTAL_ACTIONS_IN_FUA + this.TOTAL_ACTIONS_IN_HOLD+this.TOTAL_ACTIONS_IN_CNUA;
   }
 
   isDMS:any
@@ -978,43 +1054,21 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       }
 
 
-      // this.projectActionDelay = this.projectActionInfo.map((action) => {
-      //   let delayText = '';
-
-      //   if (action.Delaydays >= 365) {
-      //     const years = Math.floor(action.Delaydays / 365);
-      //     delayText = years === 1 ? '1 year' : `${years} years`;
-      //   } else if (action.Delaydays >= 30) {
-      //     const months = Math.floor(action.Delaydays / 30);
-      //     delayText = months === 1 ? '1 month' : `${months} months`;
-      //   } else if (action.Delaydays >= 7) {
-      //     const weeks = Math.floor(action.Delaydays / 7);
-      //     delayText = weeks === 1 ? '1 week' : `${weeks} weeks`;
-      //   } else {
-      //     delayText = `${action.Delaydays} days`;
-      //   }
-
-      //   return {
-      //     ...action,
-      //     Delaydays: delayText
-      //   };
-      // });
-
-
       console.log("projectInfo:", this.projectInfo, "projectActionInfossssssssssssssss:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
 
-        this.filteredPrjAction=this.getFilteredPrjActions('All','All');
+        this.filteredPrjAction=this.getFilteredPrjActions(['All'],['All']);
         this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
         this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
         console.log('Now After Sorting:',this.filteremployee);
+        console.log('Action count:',this.filteredPrjAction);
 
       }
       this.calculateProjectActions();    // calculate project actions details.
 
-      this.myUnderApprvActions=this.getFilteredPrjActions('Under Approval',this.Current_user_ID);   // get all my underapproval actions.
-      this.myDelayPrjActions=this.getFilteredPrjActions('Delay',this.Current_user_ID);   // get all my delay actions .
+      this.myUnderApprvActions=this.getFilteredPrjActions(['Under Approval'],[this.Current_user_ID]);   // get all my underapproval actions.
+      this.myDelayPrjActions=this.getFilteredPrjActions(['Delay'],[this.Current_user_ID]);   // get all my delay actions .
       this.myDelayPrjActions=this.myDelayPrjActions.sort((a,b)=>{
             return b.Delaydays-a.Delaydays;
       });
@@ -1023,21 +1077,29 @@ export class DetailsComponent implements OnInit, AfterViewInit {
      {
        this.delayActionsOfEmps=[];   // must be empty before calculation.
           this.filteremployee.forEach((emp)=>{
-            let delayActionsOfEmp=this.getFilteredPrjActions('Delay',emp.Team_Res);
-            if(delayActionsOfEmp.length>0){
+            let delayActionsOfEmp=this.getFilteredPrjActions(['Delay'],[emp.Team_Res]);
+            if(delayActionsOfEmp.length>0){  debugger
               delayActionsOfEmp=delayActionsOfEmp.sort((a,b)=>b.Delaydays-a.Delaydays)
-              this.delayActionsOfEmps.push({ name:emp.Responsible, emp_no:emp.Team_Res, delayActions:delayActionsOfEmp})
+              const percentInDelay=((delayActionsOfEmp[0].Delaydays/this.projectInfo.Delaydays)*100).toFixed(1);
+              this.delayActionsOfEmps.push({ name:emp.Responsible, emp_no:emp.Team_Res, delayActions:delayActionsOfEmp, percentInDelay:(+percentInDelay)})
+              this.delayActionsOfEmps=this.delayActionsOfEmps.sort((a,b)=>b.delayActions[0].Delaydays-a.delayActions[0].Delaydays);
             }
           });
+
+      this.prjResHasActions=this.filteremployee.some((ob)=>ob.Team_Res.trim()==this.projectInfo.ResponsibleEmpNo.trim());  // whether project responsible has actions in the project or not.
      }
 
 
 
-
+debugger
      if(this.projectActionInfo){
       this.actionsWith0hrs=[];   // must be empty before calculation.
       this.selfAssignedActns=[];  // must be empty before calculation.
       this.pendingActns4Aprvls=[];   // must be empty before calculation.
+      this.actnsWithoutProgress=[];   // must be empty before calculation.
+
+     const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+
      this.projectActionInfo.forEach((actn)=>{
             if(Number.parseInt(actn.AllocatedHours)===0){
               const temp=this.actionsWith0hrs.find(item=>item.name===actn.Responsible);
@@ -1056,7 +1118,6 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             }
 
             if(['Under Approval','Forward Under Approval'].includes(actn.Status)){
-
                   const temp=this.pendingActns4Aprvls.find(item=>item.empno==actn.Team_Res);
                   if(temp)
                   temp.totalApprovals+=1;
@@ -1064,7 +1125,13 @@ export class DetailsComponent implements OnInit, AfterViewInit {
                   this.pendingActns4Aprvls.push({ name:actn.Responsible, empno:actn.Team_Res, totalApprovals:1   });
             }
 
-debugger
+
+            const actn_sdate=new Date(actn.StartDate); actn_sdate.setHours(0,0,0,0);
+            const no_progessOnActn=(['Completed','Cancelled'].includes(actn.Status)==false&&cr_date>actn_sdate&&actn.TotalHours==0);
+            if(no_progessOnActn){
+              this.actnsWithoutProgress.push(actn.Project_Code);
+            }
+
             if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno!=actn.Team_Res)){
               this.actionsAssignedByMe+=1;
             }
@@ -1073,7 +1140,9 @@ debugger
      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
      this.totalSelfAssignedActns=this.projectActionInfo.filter(item=>item.Project_Owner==item.Team_Res).length;
      this.totalPActns4Aprvls=this.projectActionInfo.filter(item=>['Under Approval','Forward Under Approval'].includes(item.Status)).length;
-     }
+
+
+    }
 
 
 
@@ -1100,9 +1169,10 @@ debugger
     if(actionIndex!==undefined){
       this.showActionDetails(actionIndex);
     }
-    // this.onTLSrtOrdrChanged('Date');  //for utilization bar 'tlTotalHours'
-    // setTimeout(() => this.drawStatistics(), 5000);
-    setTimeout(()=>this.drawStatisticsNew(),3000);
+
+    setTimeout(()=>{
+      this.drawStatisticsNew();
+    },3000)
 
 
 
@@ -1129,7 +1199,7 @@ debugger
     }
 
 
-    this.detectMembersWithoutActions();  // calculate 'hasNoActionMembers';
+
 
 
    // when project has no activity done even after start date.   calculation here.
@@ -1274,7 +1344,7 @@ debugger
 
     this.service.NewProjectService(this.URL_ProjectCode).subscribe(
       (data) => {
-
+debugger
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
           console.log(this.Project_List,"dddddd")
@@ -1300,7 +1370,6 @@ debugger
 
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
             const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', '), isActive:result[0].isActive};
-            console.log(this.PeopleOnProject,"sssssssss")
             if(this.Subtask_Res_List){
               const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
               if(p){
@@ -1328,14 +1397,15 @@ debugger
           const active_emp=this.PeopleOnProject.filter(item=>item.isActive);
           const inactive_emp=this.PeopleOnProject.filter(item=>!item.isActive)
           this.PeopleOnProject=[...active_emp,...inactive_emp];
+          console.log(this.PeopleOnProject,"sssssssss")
 // sorting people based on active or inactive
 
 
-          this.detectMembersWithoutActions();  // calculate 'hasNoActionMembers';
+
         }
       });
 
-    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode,this.Current_user_ID).subscribe(
 
       (data) => {
  console.log('GetRACISandNonRACISEmployeesforMoredetails:',data);
@@ -1461,26 +1531,34 @@ debugger
   ActionActivity_List:any=[];
   ActionfirstFiveRecords: any[] = [];
   GetActionActivityDetails(code) {
+    this.action_deadlineExtendlist=[];  // clear prev data.
     this.activitiesLoading=true; // start the loading.
     this.service.NewActivityService(code).subscribe(
       (data) => {
 
         if (data !== null && data !== undefined) {
           this.ActionActivity_List = JSON.parse(data[0]['ActivityList']); console.log('ActinoActivity_List:',this.ActionActivity_List);
+          
+     // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.   modifying "ActionActivity_List" and "action_deadlineExtendlist".
           let count:number=0;
-          this.ActionActivity_List.map((actv:any)=>{
-
-        // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
-                if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
+          this.ActionActivity_List.forEach((actv:any)=>{  
+            // &&count+1!=actv.count
+                 const c=(actv.Value.includes('Deadline changed'));
+                  if(c)
                   {   // actv.count : 2,3,4....
                       let updatecount=(actv.count-count);
-                      let x=updatecount>3?'th':updatecount==3?'rd':'nd';
-                      actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
+                      if(updatecount>1){
+                        let x=updatecount>3?'th':updatecount==3?'rd':updatecount==2?'nd':'st';
+                        actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
+                      }
+                     
+                       // prepare action_deadlineExtendlist here.
+                      this.action_deadlineExtendlist.push({...actv,count:updatecount});
                       count+=1;
                   }
                   return actv;
-              });
-        // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
+          });
+      // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
 
    // adding _type property
       this.ActionActivity_List.forEach((_actvy)=>{
@@ -1538,29 +1616,55 @@ debugger
   }
 
   showActionDetails(index: number | undefined) {
-     this.currentActionView = index;
-
-    if (index>-1 && (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval"||this.projectActionInfo[index].Status === "Cancellation Under Approval"))
-      this.GetApproval(this.projectActionInfo[index].Project_Code);
-
+    this.currentActionView = index;   // if index is number: an action is selected.  if index is undefined : project view is selected.
     if(index!=undefined){
+
       this.requestType = null;
       this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
-
       this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
-      $(document).ready(() =>this.getDarInfoOfAction(index));
 
-       if(this.projectActionInfo[this.currentActionView].Status=='New Project Rejected'){
-         this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
-       }
-       this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectActionInfo[index].Project_Code).subscribe(
+      if (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval"||this.projectActionInfo[index].Status === "Cancellation Under Approval"){
+        this.GetApproval(this.projectActionInfo[index].Project_Code);
+
+      }
+      else if(this.projectActionInfo[this.currentActionView].Status=='New Project Rejected'){
+        this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
+      }
+
+      // draw action's bar chart.
+      this.maxDuration = (+this.projectActionInfo[this.currentActionView].AllocatedHours);
+      this.UsedInDAR = this.projectActionInfo[this.currentActionView].TotalHours||0;
+       $(document).ready(()=>{
+        this.drawActionBarChart();
+      });
+
+
+      // when action has no activity done even after start date.
+      const actn_sdate=new Date(this.projectActionInfo[index].StartDate); actn_sdate.setHours(0,0,0,0);
+      const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+      this.noActvyOnActnSinceCreation=(['Completed','Cancelled'].includes(this.projectActionInfo[index].Status)==false&&cr_date>actn_sdate&&this.UsedInDAR==0);
+      if(this.noActvyOnActnSinceCreation){
+        this.noActnActvy4NDays=moment(cr_date).diff(actn_sdate,'days');
+      }
+
+
+      // action owner drpdwn and action resp drpdwn.
+      this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectActionInfo[index].Project_Code,this.Current_user_ID).subscribe(
         (data) => {
           console.log(data, "action racis");
           this.actionowner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
           this.actionresponsible_dropdown=(JSON.parse(data[0]['responsible_dropdown']));
-        });
-    }
+      });
 
+
+      //calculate action completion offset value if action is completed.
+      if(this.projectActionInfo[index].Status=='Completed'){
+        this.action_completionOffset=moment(this.projectActionInfo[index].CD).diff(moment(this.projectActionInfo[index].EndDate),'days');
+        console.log('action_completionOffset value:',this.action_completionOffset);
+       }
+
+
+    }
   }
 
   prostate(pstate){
@@ -1610,44 +1714,61 @@ debugger
   noActvyOnActnSinceCreation:boolean=false;
   noActnActvy4NDays:number=0;
 
-  getDarInfoOfAction(index) {
-    const actionCode:string=this.projectActionInfo[index].Project_Code;
-    this.service.DARGraphCalculations_Json(actionCode)
-      .subscribe(data1 => {
-        console.log("drawstatistics data1:",data1)
-        this.maxDuration = (data1[0]['ProjectMaxDuration']);
-        this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
-        // this.RemainingHours = (data1[0]['RemainingHours']);
+  // getDarInfoOfAction(index) {
+  //   const actionCode:string=this.projectActionInfo[index].Project_Code;
+  //   this.service.DARGraphCalculations_Json(actionCode)
+  //     .subscribe(data1 => {
+  //       console.log("drawstatistics data1:",data1)
+  //       this.maxDuration = (data1[0]['ProjectMaxDuration']);
+  //       this.UsedInDAR = (data1[0]['TotalHoursUsedInDAR']);
+  //       // this.RemainingHours = (data1[0]['RemainingHours']);
 
-        // when action has no activity done even after start date.   calculation here.
-          const actn_sdate=new Date(this.projectActionInfo[index].StartDate); actn_sdate.setHours(0,0,0,0);
-          const cr_date=new Date(); cr_date.setHours(0,0,0,0);
-          this.noActvyOnActnSinceCreation=(['Completed','Cancelled'].includes(this.projectActionInfo[index].Status)==false&&cr_date>actn_sdate&&this.UsedInDAR==0);
-          if(this.noActvyOnActnSinceCreation){
-            this.noActnActvy4NDays=moment(cr_date).diff(actn_sdate,'days');
-          }
-        // when action has no activity done even after start date.
-
-
-
-      // draw action bar chart.
-        this.drawActionBarChart();
-     });
+  //       // when action has no activity done even after start date.   calculation here.
+  //         const actn_sdate=new Date(this.projectActionInfo[index].StartDate); actn_sdate.setHours(0,0,0,0);
+  //         const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+  //         this.noActvyOnActnSinceCreation=(['Completed','Cancelled'].includes(this.projectActionInfo[index].Status)==false&&cr_date>actn_sdate&&this.UsedInDAR==0);
+  //         if(this.noActvyOnActnSinceCreation){
+  //           this.noActnActvy4NDays=moment(cr_date).diff(actn_sdate,'days');
+  //         }
+  //       // when action has no activity done even after start date.
 
 
-  }
+
+  //     // draw action bar chart.
+  //       this.drawActionBarChart();
+  //    });
+
+
+  // }
 
 
 
 
   drawActionBarChart(){
+
+    let includeExpectedhrs:boolean=false;
+    let alloc4Ndays=0;
+    const crd=new Date();                                          // current date.
+    const aed=new Date(this.projectActionInfo[this.currentActionView].EndDate.split('T')[0]);    // action end date.
+    const asd=new Date(this.projectActionInfo[this.currentActionView].StartDate.split('T')[0]);  // action start date.
+
+    if(['Completed','New Project Rejected','Cancelled'].includes(this.projectActionInfo[this.currentActionView].Status)==false&&crd>=asd&&crd<=aed){
+        const K=this.maxDuration/(this.projectActionInfo[this.currentActionView].Duration+1);
+        const N=(Math.abs(moment(asd).diff(crd,'days'))+1);
+        alloc4Ndays=N*K;
+        alloc4Ndays=(+alloc4Ndays.toFixed(2));
+        includeExpectedhrs=true;
+    }
+
+    const r_hrs=this.maxDuration-this.UsedInDAR;
     var options = {
       series: [{
-        data: [
+        data: includeExpectedhrs?[
           this.maxDuration,
+          alloc4Ndays,
           this.UsedInDAR,
-          this.maxDuration-this.UsedInDAR
-          ]
+          r_hrs<0?0:r_hrs
+          ]:[this.maxDuration, this.UsedInDAR, r_hrs<0?0:r_hrs]
       }],
       chart: {
         type: 'bar',
@@ -1663,8 +1784,9 @@ debugger
       dataLabels: {
         enabled: true,
         style:{
-          colors:['#3a81c9','#3e6be0','#303031'],
-          fontFamily:'Lucida Sans Unicode'
+          colors:includeExpectedhrs?['#3a81c9','#8d48d7','#3e6be0','#303031']:['#3a81c9','#3e6be0','#303031'],
+          fontFamily:'Lucida Sans Unicode',
+          fontSize:'10px'
         },
         formatter: function (v) {
           return v + ' hrs';
@@ -1677,12 +1799,14 @@ debugger
         labels: {}
       },
       xaxis: {
-        categories: ['Allocated', 'Used', 'Remaining'],
+        categories: includeExpectedhrs?['Planned','Expected', 'Used', 'Remaining']:['Allocated', 'Used', 'Remaining'],
         labels: {
           rotate: -90
         }
       },
-      colors:['#7dbeff', '#7da1ff',(this.maxDuration-this.UsedInDAR)<0?'#757575':'#dbe1e4']
+
+      colors:includeExpectedhrs?['#7dbeff','#c187ff','#7da1ff',r_hrs<0?'#757575':'#dbe1e4']:
+                                ['#7dbeff','#7da1ff',r_hrs<0?'#757575':'#dbe1e4']
 
     };
 
@@ -1714,11 +1838,11 @@ debugger
           }
           else {
             // when the user said no
-            Swal.fire(
-              'Cancelled',
-              'Action not created',
-              'error'
-            )
+            // Swal.fire(
+            //   'Cancelled',
+            //   'Action not created',
+            //   'error'
+            // )
           }
         })
         .catch(e => console.log(e));
@@ -1737,6 +1861,13 @@ debugger
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     $("#mysideInfobar1").scrollTop(0);
+
+    // first action must belongs to the project responsible.
+    if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo.trim()&&this.prjResHasActions==false){
+      this.bsService.setSelectedTemplAction({...this.bsService._templAction.value,assignedTo:this.Current_user_ID});
+    }
+    //
+
   }
 
 
@@ -1751,15 +1882,18 @@ debugger
     document.getElementById("rightbar-overlay").style.display = "block";
     this.getResponsibleActions();
     this.initializeSelectedValue()
+    this.formFieldsRequired = false
     // this.isStartDateEditable=new Date().getTime()<=new Date(this.projectInfo.StartDate).getTime();
   }
 
   Action_details_edit() {
+
     document.getElementById("Action_Details_Edit_form").classList.add("kt-quick-Project_edit_form--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.getResponsibleActions();
     this.initializeSelectedValues()
+    this.formFieldsRequired = false
 
   }
   ApprovalSideBar() {
@@ -1832,14 +1966,15 @@ multipleback(){
 }
 
 
-  closeInfo() {   debugger
-    this._remarks = ''
+  closeInfo() {
+    this._remarks = '';
     this.characterCount=0;
     this.characterCount_Action=0;
     this.selectedFile=null;
     this._inputAttachments='';
     this.formFieldsRequired=false;
     this.isLoadingData=undefined;
+    this.invalidFileSelected=false;
     document.getElementById("Action_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Project_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
@@ -1948,11 +2083,13 @@ multipleback(){
     this.endtime = null;
     this.isSelection=false;
     this.selectedEmployees=[];
-    this.dateF=new FormControl(new Date());
+    this.dateF=new Date();
     this._remarks='';
     this._inputAttachments='';
     this.selectedFile=null;
     this.notProvided=false;
+    this.a_details=null;
+    this.a_loading=false;
     document.getElementById("User_list_View").classList.remove("kt-quick-active--on");
     document.getElementById("Attachment_view").classList.remove("kt-quick-active--on");
     document.getElementById("Activity_Log").classList.remove("kt-quick-active--on");
@@ -2140,9 +2277,6 @@ multipleback(){
   @ViewChild('DMSDROPDOWN') dmsDD:MatAutocompleteTrigger;
 
 
-
-
-
   linkSMail:boolean=false;
   linkPort:boolean=false;
 
@@ -2188,7 +2322,7 @@ multipleback(){
 
         this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => {
           console.log("Response=>", res);
-          if (res.Message === "Updated Successfully") {
+          if (res.Message === "Updated Successfully.") {
             this.notifyService.showSuccess("", "SMail successfully added.");
             this.GetDMS_Memos();
           }
@@ -2239,7 +2373,7 @@ multipleback(){
             totalmemos.splice(index, 1);
             let memosAfterDeletion: string = JSON.stringify(totalmemos.map((item: any) => ({ MailId: item.MailId }))) // [{MailId:123,Subject:'asd'},{MailId:234,Subject:'hdf'}]->[{MailId:123},{MailId:234}]->'[{MailId:123},{MailId:234}]'
             this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, memosAfterDeletion, userid).subscribe((res: any) => {
-              if (res.Message === 'Updated Successfully') {
+              if (res.Message === 'Updated Successfully.') {
                 this.notifyService.showInfo("", "Memo removed.");
                 this._linkedMemos--;
                 this.GetDMS_Memos();
@@ -2252,7 +2386,7 @@ multipleback(){
         }
       }
       else {   // when deletion operation has cancelled.
-        this.notifyService.showInfo("Action cancelled ", '');
+        this.notifyService.showInfo("Action cancelled. ", '');
       }
     });
 
@@ -2319,10 +2453,10 @@ multipleback(){
     // this.approvalEmpId = null;
     this.approvalsFetching=true;   // fetching approvals or processing start.
     this.approvalObj.Project_Code = this.URL_ProjectCode;
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {  debugger
       this.approvalsFetching=false;    // fetched approvals or processing end.
       this.requestDetails = data as [];
-      console.log(this.requestDetails, "approvals");  debugger
+      console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
         this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
         this.requestType = (this.requestDetails[0]['Request_type']);
@@ -2331,7 +2465,7 @@ multipleback(){
         this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']));
         this.pendingAprvls=[];  // must be empty before calculation.
         if(this.multiapproval_list){
-          this.multiapproval_list=this.multiapproval_list.filter((_aprvl)=>_aprvl.Emp_No==this.Current_user_ID);
+          this.multiapproval_list=this.multiapproval_list.filter((_aprvl)=>_aprvl.Emp_No.trim()==this.Current_user_ID);
           console.log('multiapproval_list my approvals:',this.multiapproval_list);
           this.multiapproval_list.forEach((item)=>{
                const temp=this.pendingAprvls.find((item1)=>item1.request_type==item.Type);
@@ -2355,7 +2489,7 @@ multipleback(){
         this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
         //this.reject_list = JSON.parse(this.requestDetails[0]['reject_list']);
         this.Submitted_By = (this.requestDetails[0]['Submitted_By']);
-        debugger
+
         this.AuditRequestBY = (this.requestDetails[0]['AuditRequestBY']);   console.log('AuditRequestBY:',this.AuditRequestBY);
         const fullName = this.Submitted_By.split(' ');
         this.initials1 = fullName.shift().charAt(0) + fullName.pop().charAt(0);
@@ -2383,7 +2517,7 @@ multipleback(){
           this.newResponsible = (this.revert_json[0]['newResp']);
           this.forwardto = (this.revert_json[0]['Forwardedto']);
           this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
-        }  debugger
+        }
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved'||this.requestType == 'Project Audit') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
@@ -2720,6 +2854,7 @@ fetchingStdTaskAprvls:boolean=false;
   Close_Approval() {
     this.comments=null;
     this.isApprovalSection = false;
+    this.isTextAreaVisible=false;
     $(".Btn_Accpet").removeClass('active');
     $(".Btn_Conditional_Accept").removeClass('active');
     $(".Btn_Reject").removeClass('active');
@@ -2745,6 +2880,7 @@ approvalSubmitting:boolean=false;
       this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
         subscribe((data) => {
           this.Close_Approval();
+          this.removeCommit();
           this.approvalSubmitting=false;
           this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Approved successfully by - " + this._fullname, "Success");
           this.getapprovalStats();
@@ -2785,10 +2921,11 @@ approvalSubmitting:boolean=false;
               this.approvalSubmitting=false;
               this._Message = (data['message']);
               if (this._Message == 'Not Authorized' || this._Message == '0') {
-                this.notifyService.showError("project not approved", 'Failed.');
+                this.notifyService.showError("project not approved.", 'Failed');
               }
               else {
                 this.Close_Approval();
+                this.removeCommit();
                 this.notifyService.showSuccess("Project Approved Successfully", this._Message);
                 this.getapprovalStats();
                 this.getProjectDetails(this.URL_ProjectCode);
@@ -2813,6 +2950,7 @@ approvalSubmitting:boolean=false;
           subscribe((data) => {
             // if success
             this.Close_Approval();
+            this.removeCommit();
             this.approvalSubmitting=false;
             this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Rejected successfully by - " + this._fullname, "Success");
             this.getapprovalStats();
@@ -2944,10 +3082,49 @@ approvalSubmitting:boolean=false;
     console.log(e.target.files[0]);
     this._inputAttachments = e.target.files[0].name;
   }
-  onFileChange(e) {
-      this._inputAttachments = e.target.files[0].name;
-      this.selectedFile = <File>e.target.files[0];
-      e.target.files=null;
+
+  // permittedFileFormats='image/*,.pdf,.txt,.html,.htm,.doc,.docx,.json,.xml,.ppt,.pptx,.xlsx,.xls';
+
+  permittedFileFormats=[
+    "image/*", "application/pdf", "text/plain", "text/html", "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/json", "application/xml", "application/vnd.ms-powerpoint",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  ];
+  invalidFileSelected:boolean=false;
+
+  onFileChange(e){
+    if(e.target.files.length>0){
+      const filetype = e.target.files[0].type;
+      const isValidFile=this.permittedFileFormats.some((format)=>{
+            return (filetype==format)||(filetype.startsWith('image/')&&format=='image/*');
+      });
+      if (isValidFile) {
+        this.selectedFile = <File>e.target.files[0];
+        this._inputAttachments = e.target.files[0].name;
+        this.invalidFileSelected=false;
+      }
+      else {
+        this.invalidFileSelected=true;
+        this.selectedFile = null;
+        this._inputAttachments = '';
+        e.target.value='';
+      }
+      console.log('File Object:', this.file);
+      this.contentType=this.getFileExtension(this.selectedFile.name);
+      this.cdr.detectChanges();
+    }
+  }
+
+  contentType:any="";
+
+  getFileExtension(fileName: any): string | null {
+    if (!fileName) {
+      return null;
+    }
+    const lastDotIndex = fileName.lastIndexOf('.');
+    return lastDotIndex !== -1 ? fileName.substring(lastDotIndex + 1) : null;
   }
 
 
@@ -2976,6 +3153,8 @@ approvalSubmitting:boolean=false;
     this._inputAttachments = '';
     this._remarks = '';
     this.formFieldsRequired=false;
+    this.invalidFileSelected=false;
+
     $('#project-action-Checkbox').prop('checked', false);
     document.getElementById("mysideInfobar_Update").classList.remove("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "none";
@@ -2984,84 +3163,149 @@ approvalSubmitting:boolean=false;
     $('#upload').html('Select a file');
   }  // for temp we are using this.
 
-  proState:boolean=false
+  proState:boolean=false;
   actionCompleted() {
 
-   const fieldsprvided:boolean=this._remarks&&(this.proState?this.selectedFile:true);
+   const fieldsprvided:boolean=(this._remarks&&this._remarks.trim())&&(this.proState?this.selectedFile:true);
 
     if (!fieldsprvided) { // when the user not provided the required fields then .
       this.formFieldsRequired=true;
-      this.notifyService.showInfo("Please fill in the mandatory fields", '');
+      this.notifyService.showInfo("Please fill in the mandatory fields.", '');
     }
-    else if ((this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_IN_DELAY) === 1 && (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.Authority_EmpNo || this.isHierarchy === true)) {   // if user is O,R,A or is in heirarchy and there is only one action in inprocess or delay state.
+    else if (
+      (this.TOTAL_ACTIONS_UNDER_APPROVAL+this.TOTAL_ACTIONS_IN_FUA+this.TOTAL_ACTIONS_IN_CNUA+this.TOTAL_ACTIONS_IN_CUA+this.TOTAL_ACTIONS_IN_HOLD)==0&&
+      (this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_IN_DELAY) === 1&&
+      (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.Authority_EmpNo || this.isHierarchy === true)) {   // if user is O,R,A or is in heirarchy and there is only one action in inprocess or delay state.
       Swal.fire({
-        title: 'This is the last action to be completed',
-        text: 'Do you want to proceed with main project submission?',
+        title: 'Proceed With Project Submission ?',
+        html: `<div class="text-justify">
+        This is the last action to be completed in the project. Would you like to submit the project along with this action as well?
+           </div>
+        `,
         showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No'
+        confirmButtonText: 'Yes, Complete Both',
+        cancelButtonText: 'Complete Action',
+        cancelButtonColor:'#3085d6'
       }).then((res: any) => {
 
-        if (res.value) {   // when user proceed also with the main project submission.
+        if (res.value) {   // when user proceed also with the main project submission.  ( completing both action and project.)
           if (this.selectedFile == null) {
             this.notifyService.showInfo("Please attach the completion file to complete the main project", "Note");
-            }
+          }
+          else {  debugger
 
-          else {
-            // 1.  ACTION SUBMISSION
+            let actnAttchUpload=0;
+            let prjAttchUpload=0;
+            let isActionCompleted=false;
+            let isProjectCompleted=false;
+
+          // 1. Fileuploading bar visible. 
+          const fid=this.selectedFile.name+(new Date().getTime());
+          const fileattch={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Uploading file attachment for action and project.'};
+          this.filesInUpload.push(fileattch);
+          this.setFilesUploadingBarVisible(true);
+         
+
+            // 2.  ACTION SUBMISSION
             const fd = new FormData();
             fd.append("Project_Code", this.Sub_ProjectCode);
             fd.append("Master_Code", this._MasterCode);
             fd.append("Team_Autho", this.Sub_Autho);
+            fd.append("Emp_No", this.Current_user_ID);
             fd.append("Projectblock", this.projectInfo.Project_Block);
             fd.append("Remarks", this._remarks);
-            fd.append('file', this.selectedFile);
             fd.append("Project_Name", this._Subtaskname);
-            this.service._UpdateSubtaskByProjectCode(fd)
+            fd.append("contentType",this.contentType);
+            if(this.selectedFile){
+              fd.append("Attachment","true");
+            }
+            else{
+              fd.append("Attachment","false")
+            }
+            // this.service._UpdateSubtaskByProjectCode(fd)
+            this.service._UpdateSubtaskByProjectCodeCore(fd)
               .subscribe((event: HttpEvent<any>) => {
 
                 switch (event.type) {
-                  case HttpEventType.Sent:console.log('Request has been made!');break;
-                  case HttpEventType.ResponseHeader:console.log('Response header has been received!');break;
-                  case HttpEventType.UploadProgress:
-                    this.progress = Math.round(event.loaded / event.total * 100);
-                    if (this.progress == 100) console.log('progress completed');
-                    break;
                   case HttpEventType.Response:{
                     var myJSON = JSON.stringify(event);
-                    this._Message = (JSON.parse(myJSON).body).Message;
+                    this._Message = (JSON.parse(myJSON).body).message;
+                    console.log(myJSON,"acitonproject")
                     if(this._Message==='Success')
                     {
-                      this.notifyService.showSuccess("Successfully updated", 'Action completed');
+                      this.notifyService.showSuccess("Successfully updated", 'Action completed.');
+                      if (this.selectedFile) {
+
+                        fd.append("Project_Code", this.Sub_ProjectCode);
+                        fd.append("Team_Autho", this.Sub_Autho);
+                        fd.append("Emp_No", this.Current_user_ID);
+                        fd.append("Project_Name", this._Subtaskname);
+                        fd.append('file',  this.selectedFile);
+                        this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+      
+                          switch (event1.type) {
+                            case HttpEventType.Sent:
+                              console.log('Request sent!');
+                              break;
+                            case HttpEventType.ResponseHeader:
+                              console.log('Response header received!');
+                              break;
+                            case HttpEventType.UploadProgress:
+                              const progress = Math.round(event1.loaded / event1.total * 100);
+                              actnAttchUpload=progress;
+                              fileattch.uploaded=(actnAttchUpload+prjAttchUpload)/2;
+                              console.log(`actn Upload progress: ${actnAttchUpload}%`);
+                              break;
+                            case HttpEventType.Response:{
+                              console.log('Response received:', event1.body);
+                              if(event1.body==1){
+                                this.notifyService.showSuccess(fileattch.filename,"Action attachment uploaded successfully");   
+                                isActionCompleted=true;
+                                afterActionAndProjectCompleted();
+                              }
+                            };break;
+                          }
+      
+                          console.log(event1,"azure data");
+                          var myJSON = JSON.stringify(event1);
+                        //  this._Message = (JSON.parse(myJSON).body);
+                        });
+                      }
                       // after the action is successfully completed
-                      this.closeInfo();
-                      this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
-                      this.getAttachments(1);
-                      this.calculateProjectActions();
-                      this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+                      // this.closeInfo();
+                      // this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+                      // this.getAttachments(1);
+                      // this.calculateProjectActions();
+                      // this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
                     }
                     else
                     this.notifyService.showError('Unable to complete this action','Something went wrong');
                   };break;
 
                 }
+               
               });
-
             // ACTION SUBMITTED
 
 
-
-            // 2.  PROJECT SUBMISSION.
+            // 3.  PROJECT SUBMISSION.
             const fd1 = new FormData();
             fd1.append("Project_Code", this.URL_ProjectCode);
             fd1.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
             fd1.append("Remarks", this._remarks);
             fd1.append("Projectblock", this.projectInfo.Project_Block);
-            fd1.append('file', this.selectedFile);
             fd1.append("Emp_No", this.Current_user_ID);
             fd1.append("Project_Name", this.projectInfo.Project_Name);
+            fd1.append("contentType",this.contentType);
+            if(this.selectedFile){
+              fd1.append("Attachment","true");
+            }
+            else{
+              fd1.append("Attachment","false")
+            }
             console.log(fd1, "complete");
-            this.service._fileuploadService(fd1).
+            // this.service._fileuploadService(fd1).
+            this.service._UpdateProjectCompleteCore(fd1).
               subscribe((event: HttpEvent<any>) => {
                 switch (event.type) {
                   case HttpEventType.Sent:
@@ -3075,28 +3319,77 @@ approvalSubmitting:boolean=false;
                     console.log(this.progress, "progress");
                     if (this.progress == 100) {
                       this.notifyService.showInfo("File uploaded successfully", "Project updated");
-
                     }
                     break;
-                  case HttpEventType.Response:
+                  case HttpEventType.Response:{
                     console.log('File upload done!', event.body);
                     var myJSON = JSON.stringify(event);
-                    this._Message = (JSON.parse(myJSON).body).Message;
+                    this._Message = (JSON.parse(myJSON).body).message;
                     this.notifyService.showSuccess(this._Message, 'Success');
-                }
+                    if(this.selectedFile){
+                      fd1.append('file',  this.selectedFile);
+                      this.service._AzureUploadProjectComplete(fd1).subscribe((event1: HttpEvent<any>) => {
+                        switch (event1.type) {
+                          case HttpEventType.Sent:
+                            console.log('Request sent!');
+                            break;
+                          case HttpEventType.ResponseHeader:
+                            console.log('Response header received!');
+                            break;
+                          case HttpEventType.UploadProgress:
+                            const progress = Math.round(event1.loaded / event1.total * 100);
+                            prjAttchUpload=progress;
+                            fileattch.uploaded=(actnAttchUpload+prjAttchUpload)/2;
+                            console.log(`prj Upload progress: ${prjAttchUpload}%`);
+                            break;
+                          case HttpEventType.Response:{
+                            console.log('Response received:', event1.body);
+                            if(event1.body==1){
+                              this.notifyService.showSuccess(fileattch.filename,"Project attachment uploaded successfully ");  
+                              isProjectCompleted=true;
+                              afterActionAndProjectCompleted();
+                            }
+                          };break;
+                        }
+                        console.log(event1,"azure data");
+                        var myJSON = JSON.stringify(event1);
+                      //  this._Message = (JSON.parse(myJSON).body);
+                      });
+                    }
 
-                this.selectedFile = null;
-                this._inputAttachments = '';
-                this._remarks = '';
-                this.closeInfo();
-                this.getProjectDetails(this.URL_ProjectCode);
-                this.getAttachments(1);
-                this.calculateProjectActions();
-                // this.GetSubtask_Details();
-                // this.GetProjectDetails();
-                // this.getapprovalStats();
-                // this._projectSummary.GetProjectsByUserName('RACIS Projects');
+                  }
+                   
+                    
+                    
+                }
               });
+              // PROJECT SUBMITTED.
+
+
+            //4. after project and action completion.
+              const afterActionAndProjectCompleted=()=>{
+                if(isActionCompleted&&isProjectCompleted)
+                {
+                  this.selectedFile = null;
+                  this._inputAttachments = '';
+                  this._remarks = '';
+                  this.invalidFileSelected=false;
+  
+                  const fi=this.filesInUpload.findIndex(fup=>fup.id==fileattch.id);
+                  this.filesInUpload.splice(fi,1);
+                  if(this.filesInUpload.length==0){
+                    this.setFilesUploadingBarVisible(false);
+                  }
+  
+                  this.closeInfo();
+                  this.getProjectDetails(this.URL_ProjectCode);
+                  this.getAttachments(1);
+                  this.calculateProjectActions();
+                  this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+                }
+              }
+
+        
           }
         }
         else if (res.dismiss === Swal.DismissReason.cancel) {
@@ -3104,25 +3397,91 @@ approvalSubmitting:boolean=false;
           fd.append("Project_Code", this.Sub_ProjectCode);
           fd.append("Master_Code", this._MasterCode);
           fd.append("Team_Autho", this.Sub_Autho);
+          fd.append("Emp_No", this.Current_user_ID);
           fd.append("Projectblock", this.projectInfo.Project_Block);
           fd.append("Remarks", this._remarks);
-          fd.append('file', this.selectedFile);
           fd.append("Project_Name", this._Subtaskname);
+          fd.append("contentType",this.contentType);
+          if(this.selectedFile){
+            fd.append("Attachment","true");
+          }
+          else{
+            fd.append("Attachment","false")
+          }
           console.log(this.selectedFile, "action file")
 
-          this.service._UpdateSubtaskByProjectCode(fd)
-            .subscribe(data => {
+          // this.service._UpdateSubtaskByProjectCode(fd)
+          //   .subscribe(data => {
+            this.service._UpdateSubtaskByProjectCodeCore(fd)
+            .subscribe((event: HttpEvent<any>) => {
+               if (event.type === HttpEventType.Response){
+                 var myJSON = JSON.stringify(event);
+
+                 this._Message = (JSON.parse(myJSON).body).message;
+                 console.log(event,myJSON,this._Message,"action data");
+                //  alert(this._Message);
+
+                 if(this._Message=='Success'){
+                  if ( this.selectedFile) {
+                  this.setFilesUploadingBarVisible(true);
+                  const fid=this.selectedFile.name+(new Date().getTime());
+                  const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Action complete file attachment -'+this._Subtaskname};
+                  this.filesInUpload.push(ob);
+
+                  fd.append('file',  this.selectedFile);
+                  this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+                    switch (event1.type) {
+                      case HttpEventType.Sent:
+                        console.log('Request sent!');
+                        break;
+                      case HttpEventType.ResponseHeader:
+                        console.log('Response header received!');
+                        break;
+                      case HttpEventType.UploadProgress:
+                        const progress = Math.round(event1.loaded / event1.total * 100);
+                        ob.uploaded=progress;
+                        if(ob.uploaded==100){
+                          setTimeout(()=>{
+                            ob.processingUploadFile=true; //when server processing the file upload. 
+                          },1000);
+                        }
+                        console.log(`Upload progress: ${ob.uploaded}%`);
+                        break;
+                      case HttpEventType.Response:{
+                        console.log('Response received:', event1.body);
+                        if(event1.body==1){
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully ");  
+                          const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                          this.filesInUpload.splice(fi,1);
+                          if(this.filesInUpload.length==0){
+                            this.setFilesUploadingBarVisible(false);
+                          }
+                          
+                        }
+                      };break;
+                    }
+
+                    console.log(event1,"azure data");
+                    var myJSON = JSON.stringify(event1);
+                  //  this._Message = (JSON.parse(myJSON).body);
+
+                  });
+                }
+              }
               this._remarks = "";
               this._inputAttachments = "";
               this.selectedFile = null;
+              this.invalidFileSelected=false;
               this.getProjectDetails(this.URL_ProjectCode);
               this.calculateProjectActions();     // recalculate the project actions.
               this.closeActCompSideBar();
-              this.getAttachments(1);      // close action completion sidebar.
+              this.getAttachments(1);
+              }      // close action completion sidebar.
             });
           this.notifyService.showSuccess("Successfully updated", 'Action completed');
           this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
         }
+
       });   //swal end
 
     }
@@ -3133,39 +3492,98 @@ approvalSubmitting:boolean=false;
       fd.append("Project_Code", this.Sub_ProjectCode);
       fd.append("Master_Code", this._MasterCode);
       fd.append("Team_Autho", this.Sub_Autho);
+      fd.append("Emp_No", this.Current_user_ID);
       fd.append("Projectblock", this.projectInfo.Project_Block);
       fd.append("Remarks", this._remarks);
-      fd.append('file', this.selectedFile);
       fd.append("Project_Name", this._Subtaskname);
-      this.service._UpdateSubtaskByProjectCode(fd)
+      fd.append("contentType",this.contentType);
+      if(this.selectedFile){
+        fd.append("Attachment","true");
+      }
+      else{
+        fd.append("Attachment","false")
+      }
+      // this.service._UpdateSubtaskByProjectCode(fd)
+      this.service._UpdateSubtaskByProjectCodeCore(fd)
         .subscribe((event: HttpEvent<any>) => {
 
           switch (event.type) {
             case HttpEventType.Sent:console.log('Request has been made!');break;
             case HttpEventType.ResponseHeader:console.log('Response header has been received!');break;
             case HttpEventType.UploadProgress:
-              this.progress = Math.round(event.loaded / event.total * 100);
-              if (this.progress == 100) console.log('progress completed');
+              const actnprogress = Math.round(event.loaded / event.total * 100);
+              console.log(actnprogress, "progress");
+              if (actnprogress == 100) console.log('progress completed');
               break;
             case HttpEventType.Response:{
               var myJSON = JSON.stringify(event);
-              this._Message = (JSON.parse(myJSON).body).Message;
+              this._Message = (JSON.parse(myJSON).body).message;
               if(this._Message==='Success')
               {
+                if(this.selectedFile){  console.log("selectedFile:",this.selectedFile);
+                 
+                  this.setFilesUploadingBarVisible(true);   // show the file uploading bar. 
+                  const fid=this.selectedFile.name+(new Date().getTime());
+                  const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Action complete file attachment -'+this._Subtaskname};
+                  this.filesInUpload.push(ob);
+                  fd.append('file', this.selectedFile);
+                  this.service._AzureUploadActionComplete(fd).subscribe((event1: HttpEvent<any>) => {
+
+                    switch (event1.type) {
+                      case HttpEventType.Sent:
+                        console.log('Request sent!');
+                        break;
+                      case HttpEventType.ResponseHeader:
+                        console.log('Response header received!');
+                        break;
+                      case HttpEventType.UploadProgress:
+                        const progress = Math.round(event1.loaded / event1.total * 100);
+                        ob.uploaded=progress;
+                        if(ob.uploaded==100){
+                          setTimeout(()=>{
+                            ob.processingUploadFile=true; //when server processing the file upload. 
+                          },1000);
+                        }
+                        console.log(`Upload progress: ${ob.uploaded}%`);
+                        break;
+                      case HttpEventType.Response:{
+                        console.log('Response received:', event1.body);
+                        if(event1.body==1){
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                          const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                          this.filesInUpload.splice(fi,1);
+                          if(this.filesInUpload.length==0){
+                            this.setFilesUploadingBarVisible(false);   // hide the uploading bar.
+                          }
+                          
+                        }
+                      };break;
+                    }
+
+                    console.log(event1,"azure data");
+                    var myJSON = JSON.stringify(event1);
+                  //  this._Message = (JSON.parse(myJSON).body);
+
+                  });
+                }
                 this.notifyService.showSuccess("Successfully updated", 'Action completed');
+
+
+
                 // after the action is successfully completed
-                let prjAction = this.projectActionInfo.find((prjAct: any) => prjAct.Project_Code === this.Sub_ProjectCode)
-                const prjActionindex = this.projectActionInfo.indexOf(prjAction)
-                if (prjActionindex !== -1) {
-                  const prjActionComp = { ...prjAction,CD:new Date(), Status: 'Completed', Remarks: fd.get('Remarks'), IndexId: prjAction.IndexId };
-                  this.projectActionInfo.splice(prjActionindex, 1, prjActionComp);
-                  this.clearFilterConfigs();
-                }  // updated project action.
+                // let prjAction = this.projectActionInfo.find((prjAct: any) => prjAct.Project_Code === this.Sub_ProjectCode)
+                // const prjActionindex = this.projectActionInfo.indexOf(prjAction)
+                // if (prjActionindex !== -1) {
+                //   const prjActionComp = { ...prjAction,CD:new Date(), Status: 'Completed', Remarks: fd.get('Remarks'), IndexId: prjAction.IndexId };
+                //   this.projectActionInfo.splice(prjActionindex, 1, prjActionComp);
+                //   this.clearFilterConfigs();
+                // }  // updated project action.
 
                 this._remarks = "";
                 this._inputAttachments = "";
                 this.selectedFile = null;
-                // this.getProjectDetails(this.URL_ProjectCode);
+                this.invalidFileSelected=false;
+                this.getProjectDetails(this.URL_ProjectCode);
                 this.calculateProjectActions();     // recalculate the project actions.
                 this.closeActCompSideBar();   // close action completion sidebar.
                 this.getAttachments(1);
@@ -3185,6 +3603,8 @@ approvalSubmitting:boolean=false;
 
 
 
+  
+
 
 
   // Action completion sidebar code end at here.
@@ -3201,16 +3621,28 @@ approvalSubmitting:boolean=false;
   showaction: boolean = false;
   workdes: string="";
   current_Date: any = this.datepipe.transform(new Date(), 'MM/dd/yyyy');
-  dateF = new FormControl(new Date());
+  dateF:any=new Date();
   todayDate = new Date();
   disablePreviousDate = new Date();
   DisablePrevious = new Date();
   starttime: any=null;
-  timedata: any = [];
-  timedata1: any;
+  // timedata: any = [];
+  // timedata1: any = ["08:00",
+  //   "08:15", "08:30", "08:45", "09:00",
+  //   "09:15", "09:30", "09:45", "10:00",
+  //   "10:15", "10:30", "10:45", "11:00",
+  //   "11:15", "11:30", "11:45", "12:00",
+  //   "12:15", "12:30", "12:45", "13:00",
+  //   "13:15", "13:30", "13:45", "14:00",
+  //   "14:15", "14:30", "14:45", "15:00",
+  //   "15:15", "15:30", "15:45", "16:00",
+  //   "16:15", "16:30", "16:45", "17:00",
+  //   "17:15", "17:30", "17:45", "18:00",
+  //   "18:15", "18:30", "18:45", "19:00",
+  //   "19:15", "19:30", "19:45", "20:00"];
   objProjectDto: ProjectDetailsDTO;
   date11: any;
-  currenthours: any;
+  // currenthours: any;
   timeList: any;
   bol: boolean = true;
   starttimearr: any = [];
@@ -3233,7 +3665,6 @@ approvalSubmitting:boolean=false;
 
   openDarSideBar() {
     // opens the dar side bar
-
     document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
     document.getElementById("newdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -3241,7 +3672,10 @@ approvalSubmitting:boolean=false;
     // get all actions
     this.getResponsibleActions();
     //
-    this.currenthours = this.date.getHours();
+
+    this.selectDateForTimeline(this.current_Date);
+    // this.setTimelineDate(this.current_Date);
+    // this.currenthours = this.date.getHours();
 
   }
   closeDarSideBar() {
@@ -3267,17 +3701,19 @@ approvalSubmitting:boolean=false;
         this.darArr=this.darArr.filter(acn=>['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(acn.SubProject_Status.trim())==false);
         this.Subtask_Res_List=JSON.parse(data[0]['SubTaskResponsibe_Json']);
         this.totalSubtaskHours = (data[0]['SubtaskHours']);
+        const pracis=JSON.parse(data[0]['RACIS_Count']);
+        const projectinfo_=JSON.parse(data[0]['ProjectInfo'])[0];
         console.log('Subtask_Res_List:',this.Subtask_Res_List);
         console.log('totalSubtaskHours:',this.totalSubtaskHours);
 
         console.log('darArr:', this.darArr);
-try{
-        if (this.darArr.length == 0 && (this.projectInfo.OwnerEmpNo == this.Current_user_ID || this.projectInfo.ResponsibleEmpNo == this.Current_user_ID)) {
+      try{
+        if (this.darArr.length == 0 && (projectinfo_.OwnerEmpNo == this.Current_user_ID || projectinfo_.Responsible == this.Current_user_ID)) {
 // user is prj owner
 // user is prj resp + he does not contains any actions.
           this.showaction = false;
         }
-        else if (this.darArr.length == 0 && this.projectInfo.OwnerEmpNo != this.Current_user_ID && this.projectInfo.ResponsibleEmpNo != this.Current_user_ID) {
+        else if (this.darArr.length == 0 && projectinfo_.OwnerEmpNo != this.Current_user_ID && projectinfo_.Responsible != this.Current_user_ID) {
 // user is authority/support  + he does not contain any actions.
           this.showaction = true;
           this.noact_msg = true;
@@ -3289,7 +3725,10 @@ try{
                 if(this.currentActionView!==undefined){
                   const selectedActionOpt = this.darArr.find((item: any) => (item.Project_Code === this.projectActionInfo[this.currentActionView].Project_Code))
                   if (selectedActionOpt)
-                  this.actionCode = selectedActionOpt.Project_Code;
+                  {
+                    this.actionCode = selectedActionOpt.Project_Code;
+                    this.getADetails(this.actionCode);
+                  }
                 }
         }
 
@@ -3297,9 +3736,28 @@ try{
       }catch(e){
           console.error(e);
       }
+
+
+     // detect members without actions. excluding inactive members also.
+     if(['001','002'].includes(projectinfo_.Project_Block)){
+     this.hasNoActionMembers=[];
+     let pMemberwithActns=this.Subtask_Res_List.map(ob=>ob.Team_Res);
+     const arr=[];
+
+     pracis.forEach((tmember)=>{
+      if( tmember.Emp_No!=projectinfo_.OwnerEmpNo&&pMemberwithActns.includes(tmember.Emp_No)==false&&tmember.Emp_Active==true){
+            if(arr.findIndex(ob=>ob.Emp_No==tmember.Emp_No)==-1)
+            arr.push({  Emp_No:tmember.Emp_No.trim(), Emp_Name:tmember.RACIS.trim() });
+      }
+     });
+     this.hasNoActionMembers=arr;
+    }
+    // detect members without actions
+
+
       });
 
-    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode,this.Current_user_ID).subscribe(
       (data) => {
         console.log(data, "RACIS");
         this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
@@ -3403,12 +3861,17 @@ try{
 
   // isStartDateEditable:boolean=false;
   onAction_updateProject(val) {
+    debugger
+    this.isPrjNameValid=this.isValidString(this.ProjectName,3);
+    this.isPrjDesValid=this.isValidString(this.ProjectDescription,5);
+
 
 // check all mandatory fields are provided or not
    if(!(
-        (this.ProjectName&&this.ProjectName.trim()!='')&&
+        (this.ProjectName&&this.ProjectName.trim()!=''&&(this.ProjectName&&this.isPrjNameValid==='VALID'&&this.ProjectName.length <=100)  )&&
         // (this.ProjectDescription&&this.ProjectDescription.trim()!='')
-        (this.ProjectDescription?(this.characterCount<=500):true)
+        (this.ProjectDescription&&this.ProjectDescription.trim()!=''&&this.ProjectDescription?(this.characterCount<=500)&&(this.ProjectDescription&&this.isPrjDesValid==='VALID'&&this.ProjectDescription.length <=500) :false)
+
       ))
    {
       this.formFieldsRequired=true;
@@ -3511,19 +3974,19 @@ try{
       this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
         console.log(data['message'], "edit response");
         if (data['message'] == '1') {
-          this.notifyService.showSuccess("Updated successfully", "Success");
+          this.notifyService.showSuccess("Updated successfully.", "Success");
         }
         else if (data['message'] == '2') {
-          this.notifyService.showError("Not updated", "Failed");
+          this.notifyService.showError("Not updated.", "Failed");
         }
         else if (data['message'] == '5') {
-          this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully");
+          this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully.");
         }
         else if (data['message'] == '6') {
-          this.notifyService.showSuccess("Updated successfully,"+" Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+          this.notifyService.showSuccess("Updated successfully,"+" Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
         }
         else if (data['message'] == '8') {
-          this.notifyService.showError("Selected project owner cannot be updated", "Not updated");
+          this.notifyService.showError("Selected project owner cannot be updated.", "Not updated");
         }
         this.getProjectDetails(this.URL_ProjectCode);
         this.closeInfo();
@@ -3539,18 +4002,38 @@ try{
       this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
         console.log(data['message'], "edit response");
         if (data['message'] == '3') {
-          this.notifyService.showSuccess("Project updated and Approved successfully", "Success");
+          this.notifyService.showSuccess("Project updated and Approved successfully.", "Success");
           this.Close_Approval();
         }
         else if (data['message'] == '2') {
-          this.notifyService.showError("Not updated", "Failed");
+          this.notifyService.showError("Not updated.", "Failed");
         }
         this.getProjectDetails(this.URL_ProjectCode);
         this.getapprovalStats();
         this.closeInfo();
       });
     }
+    else if (val == 2) {
+      this.approvalObj.Emp_no = this.Current_user_ID;
+      this.approvalObj.Project_Code = this.URL_ProjectCode;
+      this.approvalObj.json = jsonvalue;
+      this.approvalObj.Remarks = this._remarks;
+      this.approvalObj.isApproval = val;
 
+      this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+        console.log(data['message'], "edit response");
+        if (data['message'] == '3') {
+          this.notifyService.showSuccess("Project updated and released successfully.", "Success");
+          this.Close_Approval();
+        }
+        else if (data['message'] == '2') {
+          this.notifyService.showError("Not updated.", "Failed");
+        }
+        this.getProjectDetails(this.URL_ProjectCode);
+        // this.getapprovalStats();
+        this.closeInfo();
+      });
+    }
 
 
 
@@ -3625,11 +4108,22 @@ try{
 
   updatingAction: boolean = false;
 
+  isactionValid:'TOOSHORT'|'VALID'='VALID';
+  isactdesValid:'TOOSHORT'|'VALID'='VALID';
+
+
 
   onAction_update() {
+
     this.updatingAction = true;
 // check all mandatory field are provided.
-    if(!(this.ActionName&&(this.ActionDescription?(this.characterCount_Action<=500):true)&&
+this.isactionValid=this.isValidString(this.ActionName,2);
+this.isactdesValid=this.isValidString(this.ActionDescription,3);
+
+    if(!( (this.ActionName.trim() != '' && this.ActionName&&this.ActionName.length<=100&&this.ActionName&&this.isactionValid=='VALID')
+
+      &&(this.ActionDescription?(this.characterCount_Action<=500)&&(this.ActionDescription&&this.isactdesValid==='VALID')&&this.ActionDescription.trim()!='' :false)&&
+
          this.ActionOwner&&this.ActionResponsible&&
          this.selectedcategory&&this.ActionClient&&
          this.ActionstartDate&&this.ActionendDate&&
@@ -3729,20 +4223,20 @@ try{
         this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
           console.log(data['message'], "edit response");
           if (data['message'] == '1') {
-            this.notifyService.showSuccess("Updated successfully", "Success");
+            this.notifyService.showSuccess("Updated successfully.", "Success");
             this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
           }
           else if (data['message'] == '2') {
-            this.notifyService.showError("Not updated", "Failed");
+            this.notifyService.showError("Not updated.", "Failed");
           }
           else if (data['message'] == '5') {
-            this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
+            this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully.");
           }
           else if (data['message'] == '6') {
-            this.notifyService.showSuccess("Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+            this.notifyService.showSuccess("Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
           }
           else if (data['message'] == '8') {
-            this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
+            this.notifyService.showError("Selected action owner cannot be updated.", "Not updated");
           }
           this.getProjectDetails(this.URL_ProjectCode);
           this.closeInfo();
@@ -3768,17 +4262,17 @@ try{
     this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
       console.log(data['message'], "edit response");
       if (data['message'] == '1') {
-        this.notifyService.showSuccess("Updated successfully", "Success");
+        this.notifyService.showSuccess("Updated successfully.", "Success");
         this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
       }
       else if (data['message'] == '2') {
         this.notifyService.showError("Not updated", "Failed");
       }
       else if (data['message'] == '5') {
-        this.notifyService.showSuccess("Project transfer request sent to the new responsible "+ this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully");
+        this.notifyService.showSuccess("Project transfer request sent to the new responsible "+ this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully.");
       }
       else if (data['message'] == '6') {
-        this.notifyService.showSuccess("Updated successfully"+"Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully");
+        this.notifyService.showSuccess("Updated successfully"+"Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
       }
       else if (data['message'] == '8') {
         this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
@@ -3839,7 +4333,7 @@ check_allocation() {
     this.ObjSubTaskDTO.PageSize = 10;
     this.service._GetDARbyMasterCode(this.ObjSubTaskDTO)
       .subscribe(data1 => {
-debugger
+
         this.darList = JSON.parse(data1[0]['DAR_Details_Json']);
         this.darArray = this.darList;
         // console.log("bhai this is your DAR array:", this.darArray);
@@ -3857,72 +4351,58 @@ debugger
 
 
 
-  getDarTime() {
-    this.timedata = [];
-    this.timedata1 = ["08:00",
-      "08:15", "08:30", "08:45", "09:00",
-      "09:15", "09:30", "09:45", "10:00",
-      "10:15", "10:30", "10:45", "11:00",
-      "11:15", "11:30", "11:45", "12:00",
-      "12:15", "12:30", "12:45", "13:00",
-      "13:15", "13:30", "13:45", "14:00",
-      "14:15", "14:30", "14:45", "15:00",
-      "15:15", "15:30", "15:45", "16:00",
-      "16:15", "16:30", "16:45", "17:00",
-      "17:15", "17:30", "17:45", "18:00",
-      "18:15", "18:30", "18:45", "19:00",
-      "19:15", "19:30", "19:45", "20:00"];
+  // getDarTime() {
+  //   this.timedata = [];
+
+  //   this.objProjectDto.Emp_No = this.Current_user_ID;
+  //   this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
+  //   this.date11 = moment(new Date()).format("MM/DD/YYYY");
+  //   this.objProjectDto.date = this.current_Date;
 
 
-    this.objProjectDto.Emp_No = this.Current_user_ID;
-    this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
-    this.date11 = moment(new Date()).format("MM/DD/YYYY");
-    this.objProjectDto.date = this.current_Date;
+  //   if (this.current_Date == this.date11) {
 
+  //     this.timedata1.forEach(element => {
+  //       const [shours, sminutes] = element.split(":");
+  //       if (shours <= this.currenthours)
+  //         this.timedata.push(element);
+  //     });
+  //     console.log('check this:', this.timedata);
 
-    if (this.current_Date == this.date11) {
+  //   }
+  //   else {
+  //     this.timedata1.forEach(element => {
+  //       this.timedata.push(element);
+  //     });
+  //   }
+  //   console.log("timedata:", this.timedata);
+  //   this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
+  //     .subscribe(data => {
+  //       this.timeList = JSON.parse(data[0]['time_json']);
+  //       console.log(this.timeList, "time");
+  //       if (this.timeList.length != 0) {
+  //         this.bol = false;
+  //         this.timeList.forEach(element => {
+  //           this.starttimearr.push(element.starttime);
+  //         });
+  //         this.timeList.forEach(element => {
+  //           this.endtimearr.push(element.endtime);
+  //         });
+  //         let l = this.endtimearr.length;
+  //         this.lastEndtime = this.endtimearr[l - 1];
+  //       }
+  //       else if (this.timeList.length == 0) {
+  //         this.bol = true;
+  //         this.lastEndtime = 0;
+  //         this.starttimearr = [];
+  //         this.endtimearr = [];
+  //       }
+  //     });
+  // }
 
-      this.timedata1.forEach(element => {
-        const [shours, sminutes] = element.split(":");
-        if (shours <= this.currenthours)
-          this.timedata.push(element);
-      });
-      console.log('check this:', this.timedata);
-
-    }
-    else {
-      this.timedata1.forEach(element => {
-        this.timedata.push(element);
-      });
-    }
-    console.log("timedata:", this.timedata);
-    this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
-      .subscribe(data => {
-        this.timeList = JSON.parse(data[0]['time_json']);
-        console.log(this.timeList, "time");
-        if (this.timeList.length != 0) {
-          this.bol = false;
-          this.timeList.forEach(element => {
-            this.starttimearr.push(element.starttime);
-          });
-          this.timeList.forEach(element => {
-            this.endtimearr.push(element.endtime);
-          });
-          let l = this.endtimearr.length;
-          this.lastEndtime = this.endtimearr[l - 1];
-        }
-        else if (this.timeList.length == 0) {
-          this.bol = true;
-          this.lastEndtime = 0;
-          this.starttimearr = [];
-          this.endtimearr = [];
-        }
-      });
-  }
-
-  orgValueChange(val) {
-    this.current_Date = moment(val.value).format("MM/DD/YYYY");
-  }
+  // orgValueChange(val) {
+  //   this.current_Date = moment(val.value).format("MM/DD/YYYY");
+  // }
 
   diff_minutes(dt2, dt1) {
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
@@ -3931,24 +4411,38 @@ debugger
   }
 
 
+
+
+
+
+
+
+
  submitDar(){
 debugger
    const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
+
    if(
    ((isPrjCoreSecondary&&this.showaction)?this.actionCode:true)&&
    this.workdes&&
    this.starttime&&
    this.endtime&&
-   ((isPrjCoreSecondary&&this.actionCode&&this.bothActTlSubm)?(this._remarks&&(this.proState?this.selectedFile:true)):true)
+   this.dateF&&
+   (this.starttime.value<this.endtime.value)
+  // &&((isPrjCoreSecondary&&this.actionCode&&this.bothActTlSubm)?(this._remarks&&(this.proState?this.selectedFile:true)):true)
    ){
     // if all mandatory fields are provided.
 
-
-    if (this.starttime != null && this.endtime != null) {
-      const [shours, sminutes] = this.starttime.split(":");
-      const [ehours, eminutes] = this.endtime.split(":");
-      var dt1 = new Date(2014, 10, 2, shours, sminutes);
-      var dt2 = new Date(2014, 10, 2, ehours, eminutes);
+ 
+    if (this.starttime&&this.endtime) {
+      const [shours, sminutes] = this.starttime.time.split(":");
+      const [ehours, eminutes] = this.endtime.time.split(":");
+      var dt1 = new Date(2014, 10, 2, +shours, +sminutes);
+      var dt2 = new Date(2014, 10, 2, +ehours, +eminutes);
+      // Adjust for crossing midnight
+      if (dt2 <= dt1) {
+            dt2.setDate(dt2.getDate() + 1); // Move dt2 to the next day
+      }
       this.minutes = this.diff_minutes(dt1, dt2) % 60;
       if (this.minutes < 10) {
         this.minutes = "0" + this.minutes
@@ -3963,8 +4457,8 @@ debugger
     this.objProjectDto.Emp_No = this.Current_user_ID;                  // setting the current user id.
     this.objProjectDto.Exec_BlockName = this.projectInfo.Project_Type;  // setting the project type.
     if (this.starttime != undefined && this.endtime != undefined && this.timecount != undefined) {
-      this.objProjectDto.StartTime = this.starttime;
-      this.objProjectDto.EndTime = this.endtime;
+      this.objProjectDto.StartTime = this.starttime.time;
+      this.objProjectDto.EndTime = this.endtime.time;
       this.objProjectDto.TimeCount = this.timecount;
     }
     this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
@@ -3973,39 +4467,37 @@ debugger
     this.objProjectDto.Emp_Comp_No = this.Comp_No;
 
 
-   // new start
-
-   if(['003','008','011'].includes(this.projectInfo.Project_Block)){
-    // std, routine or todo
-    this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
-    this.objProjectDto.Master_code = this.URL_ProjectCode;
-    this.objProjectDto.Project_Code = this.URL_ProjectCode;
-   }
-   else{
-      // core, secondary
-
-
-     if(this.Current_user_ID==this.projectInfo.OwnerEmpNo){
-       // user is project owner.
+    if(['003','008','011'].includes(this.projectInfo.Project_Block)){
+      // std, routine or todo
       this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
       this.objProjectDto.Master_code = this.URL_ProjectCode;
       this.objProjectDto.Project_Code = this.URL_ProjectCode;
-     }
-     else if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
-      // user is project responsible.
-      this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
-      this.objProjectDto.Master_code = this.URL_ProjectCode;
-      this.objProjectDto.Project_Code=this.showaction?this.actionCode:this.URL_ProjectCode; // If resp have action then provide that action code else provide prj code.
-     }
-     else{
-           // user is authority/support.
-           this.objProjectDto.Master_code = this.URL_ProjectCode;
-           this.objProjectDto.Project_Code = this.actionCode;
-     }
+    }
+    else{
+        // core, secondary
 
-   }
 
-   // new end
+      if(this.Current_user_ID==this.projectInfo.OwnerEmpNo){
+        // user is project owner.
+        this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+        this.objProjectDto.Master_code = this.URL_ProjectCode;
+        this.objProjectDto.Project_Code = this.URL_ProjectCode;
+      }
+      else if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo){
+        // user is project responsible.
+        this.objProjectDto.Project_Name = this.projectInfo.Project_Name;
+        this.objProjectDto.Master_code = this.URL_ProjectCode;
+        this.objProjectDto.Project_Code=this.showaction?this.actionCode:this.URL_ProjectCode; // If resp have action then provide that action code else provide prj code.
+      }
+      else{
+            // user is authority/support.
+            this.objProjectDto.Master_code = this.URL_ProjectCode;
+            this.objProjectDto.Project_Code = this.actionCode;
+      }
+
+    }
+
+  
 
 
     // if (this.projectInfo.Project_Type == 'Standard Tasks' || this.projectInfo.Project_Type == 'Routine Tasks' || this.projectInfo.Project_Type == 'To do List') {
@@ -4033,11 +4525,11 @@ debugger
       .subscribe(data => {
         this._Message = data['message'];
         this.notifyService.showSuccess(this._Message, "Success");
-
+        // this.selectDateForTimeline(this.timeline_of=='today'?this.todayDate:this.disablePreviousDate);
 
         if(this.currentActionView!==undefined)
         this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);   // get action activities update.
-       else
+        else
         this.GetActivityDetails();     // get project activities update.
 
 
@@ -4058,10 +4550,12 @@ debugger
           this.bothActTlSubm=false;
           this._remarks='';
           this._inputAttachments='';
+          this.a_details=null;
+          this.a_loading=false;
         }
       });
       this.dar_details();
-      this.getDarTime();
+      // this.getDarTime();
       this.actionCode=null
       this.workdes = "";
       this.starttime = null;
@@ -4072,11 +4566,16 @@ debugger
     // document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
     // document.getElementById("rightbar-overlay").style.display = "none";
     // this.Clear_Feilds();
-
-
    }
    else // some mandatory field are missing.
-     this.notProvided=true;
+    {
+      this.notProvided=true;
+    // if start time, end time or date if not provided.
+    // if(!(this.starttime&&this.endtime&&this.dateF)){
+    //   setTimeout(()=>document.getElementById("dropdown-timeline-menu").classList.add("show"),0);
+    // }
+    //
+    }
  }
 
 
@@ -4090,6 +4589,7 @@ debugger
       this.currentActionView = i;
 
     this.prostate(this.projectActionInfo[this.currentActionView].proState);
+    this.getADetails(this.projectActionInfo[this.currentActionView].Project_Code);
   }   // whenever action is changed or selected.
 
 
@@ -4122,7 +4622,7 @@ debugger
       console.log("timeline data here:", res);
       this.timelineList = JSON.parse(res[0].Timeline_List);
       this.tlTotalHours = +JSON.parse(res[0].Totalhours);
-      console.log(Math.abs(this.tlTotalHours))
+
       if (this.timelineList && this.timelineList.length) {
         this.isTimelinePresent = true;
         this.timelineList = this.timelineList.map((timeline: any) => ({ ...timeline, JsonData: JSON.parse(timeline.JsonData) }));
@@ -4272,13 +4772,13 @@ debugger
         subscribe((data) => {
 
           this._Message = (data['message']);
-          debugger
-          if (this._Message == 'Updated Successfully') {
+
+          if (this._Message == 'Updated Successfully.') {
             this.getPortfoliosDetails();
             this.Portfolio=[];
-            this.notifyService.showSuccess("Project successfully added to selected portfolio(s)", this._Message);
+            this.notifyService.showSuccess("Project successfully added to selected portfolio(s).", this._Message);
           } else {
-            this.notifyService.showInfo("Please select atleast one portfolio and try again", "");
+            this.notifyService.showInfo("Please select atleast one portfolio and try again.", "");
           }
         });
 
@@ -4317,11 +4817,11 @@ debugger
 
           this.getPortfoliosDetails();
           this.getPortfolios();
-          this.notifyService.showSuccess("Deleted successfully ", '');
+          this.notifyService.showSuccess("Deleted successfully. ", '');
         });
       }
       else {
-        this.notifyService.showInfo("Action cancelled ", '');
+        this.notifyService.showInfo("Action cancelled. ", '');
       }
     });
   }
@@ -4424,11 +4924,12 @@ debugger
     // For sidebar overlay background removing the slide on 'X' button
     document.getElementById("rightbar-overlay").style.display = "none";
     // For page top div removing fixed
-    // document.getElementById("newdetails").classList.remove("position-fixed");
+    document.getElementById("newdetails").classList.remove("position-fixed");
     // $('#mainPrjCheckbox').prop('checked', false);
     this._inputAttachments = '';
     this._remarks = '';
     this.selectedFile = null;
+    this.invalidFileSelected=false;
     this.formFieldsRequired=false;
     // $('#_file1').val('');
     // $('#upload').html('Select a file');
@@ -4467,10 +4968,18 @@ debugger
       fd.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
       fd.append("Remarks", this._remarks);
       fd.append("Projectblock", this.projectInfo.Project_Block);
-      fd.append('file', this.selectedFile);
       fd.append("Emp_No", this.Current_user_ID);
       fd.append("Project_Name", this.projectInfo.Project_Name);
-      this.service._fileuploadService(fd).
+      fd.append("contentType",this.contentType);
+      if(this.selectedFile){
+        fd.append("Attachment","true");
+      }
+      else{
+        fd.append("Attachment","false")
+      }
+      // this.service._fileuploadService(fd).
+
+      this.service._UpdateProjectCompleteCore(fd).
         subscribe((event: HttpEvent<any>) => {
           switch (event.type) {
             case HttpEventType.Sent:
@@ -4486,7 +4995,7 @@ debugger
             case HttpEventType.Response:
               console.log('File upload done!', event.body);
               var myJSON = JSON.stringify(event);
-              this._Message = (JSON.parse(myJSON).body).Message;
+              this._Message = (JSON.parse(myJSON).body).message;
               if(this._Message=='Actions are in Under Approval'){
                 this.notifyService.showError(this._Message, 'Failed');
               }
@@ -4494,17 +5003,63 @@ debugger
                 if (this.progress == 100) {
                   this.notifyService.showInfo("File uploaded successfully", "Project updated");
                 }
+
                 this.notifyService.showSuccess(this._Message, 'Success');
+         
+                if(this.selectedFile){
+
+                  this.setFilesUploadingBarVisible(true);
+                  const fid=this.selectedFile.name+(new Date().getTime());
+                  const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Project complete file attachment -'+this.projectInfo.Project_Name};
+                  this.filesInUpload.push(ob);
+
+                  fd.append('file',  this.selectedFile);
+                  this.service._AzureUploadProjectComplete(fd).subscribe((event1: HttpEvent<any>) => {
+
+                    switch (event1.type) {
+                      case HttpEventType.Sent:
+                        console.log('Request sent!');
+                        break;
+                      case HttpEventType.ResponseHeader:
+                        console.log('Response header received!');
+                        break;
+                      case HttpEventType.UploadProgress:
+                        const progress = Math.round(event1.loaded / event1.total * 100);
+                        ob.uploaded=progress;
+                        if(ob.uploaded==100){
+                          setTimeout(()=>{
+                            ob.processingUploadFile=true; //when server processing the file upload. 
+                          },1000);
+                        }
+                        console.log(`Upload progress: ${ob.uploaded}%`);
+                        break;
+                      case HttpEventType.Response:{
+                        console.log('Response received:', event1.body);
+                        if(event1.body==1){
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                          const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                          this.filesInUpload.splice(fi,1);
+                          if(this.filesInUpload.length==0){
+                            this.setFilesUploadingBarVisible(false);
+                          }
+                          
+                        }
+                      };break;
+                    }
+
+                    console.log(event1,"azure data");
+                    var myJSON = JSON.stringify(event1);
+                  //  this._Message = (JSON.parse(myJSON).body);
+
+                  });
+                }
+                this.GetActivityDetails();
+                this.closeInfoProject();
+                this.getProjectDetails(this.URL_ProjectCode);
+                this.getapprovalStats();
               }
           }
-          this.GetActivityDetails();
-          this.closeInfoProject();
-          this.getProjectDetails(this.URL_ProjectCode);
-          // this.getapproval_actiondetails();
-          // this.GetSubtask_Details();
-          // this.GetProjectDetails();
-          this.getapprovalStats();
-          // this._projectSummary.GetProjectsByUserName('RACIS Projects');
+
         });
     }
     else if (this.isAction == true) {
@@ -4644,7 +5199,6 @@ $('#acts-attachments-tab-btn').removeClass('active');
       myWindow.focus();
 
     }
-
     else if (cloud == true) {
 
       let FileUrl: string;
@@ -4663,12 +5217,23 @@ $('#acts-attachments-tab-btn').removeClass('active');
         else {
           this._month = Month;
         }
+        // Compare the date with 21-12-2024
+      const comparisonDate = new Date(2024, 11, 21); // Months are 0-indexed in JavaScript
+      if (repDate >= comparisonDate) {
+        // Logic for dates greater than or equal to 21-12-2024
+        if (Day < 10) {
+          this._day = "0" + Day;
+        } else {
+          this._day = Day;
+        }
+      } else {
+        // Logic for dates less than 21-12-2024
         if (Day < 10) {
           this._day = Day;
-        }
-        else {
+        } else {
           this._day = Day;
         }
+      }
         var date = this._day + "_" + this._month + "_" + repDate.getFullYear();
 
         // if (this.Authority_EmpNo == this.Responsible_EmpNo) {
@@ -4716,7 +5281,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
       filename = filename.replace(/#/g, "%23");
       filename = filename.replace(/&/g, "%26");
-      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type+"&"+"mastercode="+this.URL_ProjectCode;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
@@ -4728,7 +5293,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
       filename = filename.replace(/#/g, "%23");
       filename = filename.replace(/&/g, "%26");
-      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+      var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type+"&"+"mastercode="+this.URL_ProjectCode;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
     }
@@ -4756,13 +5321,14 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
 
-
+  fetchingActionApproval:boolean=false;     
   GetApproval(code) {
 
+    this.fetchingActionApproval=true;   // getting approval on the action if present start.
     this.approvalObj = new ApprovalDTO();
     this.approvalObj.Project_Code = code;
     this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
-
+      this.fetchingActionApproval=false;   // fetching approval on the action if present end.
       this.requestDetails = data as [];
       console.log(data,'jjj----------->')
       if (this.requestDetails.length > 0) {
@@ -5145,7 +5711,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
   }
 
   toggleMtgsSection(sec:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'){
-    debugger
+
     this.mtg_section=sec;
     const bx=this.mtg_section=='UPCOMING'?'#upcoming_meetings_tabpanel div#upcoming-mtg-0-btn':
              this.mtg_section=='TODAY'?'#today_meetings_tabpanel div#today-mtg-0-btn':
@@ -5557,7 +6123,7 @@ Task_type(value:number){
   }
 
   GetScheduledJson() {
-debugger
+
     this._calenderDto.EmpNo = this.Current_user_ID;
 
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
@@ -5872,43 +6438,123 @@ getChangeSubtaskDetais(Project_Code) {
   }
 
 
+  // onFileChange1(event) {
+
+  //   if (event.target.files.length > 0) {
+  //     var length = event.target.files.length;
+  //     for (let index = 0; index < length; index++) {
+  //       const file = event.target.files[index];
+  //       var contentType = file.type;
+  //       if (contentType === "application/pdf") {
+  //         contentType = ".pdf";
+  //       }
+  //       else if (contentType === "image/png") {
+  //         contentType = ".png";
+  //       }
+  //       else if (contentType === "image/jpeg") {
+  //         contentType = ".jpeg";
+  //       }
+  //       else if (contentType === "image/jpg") {
+  //         contentType = ".jpg";
+  //       }
+  //       this.myFiles.push(event.target.files[index].name);
+  //       // alert(this.myFiles.length);
+  //       console.log(this.myFiles, "attach")
+  //       //_lstMultipleFiales
+  //       var d = new Date().valueOf();
+  //       this._lstMultipleFiales = [...this._lstMultipleFiales, {
+  //         UniqueId: d,
+  //         FileName: event.target.files[index].name,
+  //         Size: event.target.files[index].size,
+  //         Files: event.target.files[index]
+  //       }];
+  //     }
+  //   }
+
+  //   const uploadFileInput = (<HTMLInputElement>document.getElementById("uploadFile"));
+  //   uploadFileInput.value = null;
+  //   uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+  // }
+
+
   onFileChange1(event) {
 
     if (event.target.files.length > 0) {
-      var length = event.target.files.length;
+      const allowedTypes = [
+        "image/*", "application/pdf", "text/plain", "text/html", "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/json", "application/xml", "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ];
+
+      const length = event.target.files.length;
       for (let index = 0; index < length; index++) {
         const file = event.target.files[index];
-        var contentType = file.type;
+        const fileName = file.name;
+        const contentType = file.type;
+        if (!allowedTypes.some(type => file.type.match(type))) {
+          // Show a sweet alert popup for unsupported file types
+          Swal.fire({
+            title: `This File "${fileName}" cannot be accepted!`,
+            text: `Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+            });
+          continue;
+        }
+
+
+        // Skip file if its name already exists in either array
+        const fileAlreadyExists =
+          this.Attachment12_ary.some(att => att.File_Name === fileName) ||
+          this._lstMultipleFiales.some(existingFile => existingFile.FileName === fileName);
+
+        if (fileAlreadyExists) {
+          Swal.fire({
+            title: `File "${fileName}" Already Exists`,
+            text: `The file "${fileName}" was not added to avoid duplication.`
+          })
+          continue; // Skip this file
+        }
+
+        // Determine file extension
+        let fileExtension = '';
         if (contentType === "application/pdf") {
-          contentType = ".pdf";
+          fileExtension = ".pdf";
+        } else if (contentType === "image/png") {
+          fileExtension = ".png";
+        } else if (contentType === "image/jpeg") {
+          fileExtension = ".jpeg";
+        } else if (contentType === "image/jpg") {
+          fileExtension = ".jpg";
         }
-        else if (contentType === "image/png") {
-          contentType = ".png";
-        }
-        else if (contentType === "image/jpeg") {
-          contentType = ".jpeg";
-        }
-        else if (contentType === "image/jpg") {
-          contentType = ".jpg";
-        }
-        this.myFiles.push(event.target.files[index].name);
-        // alert(this.myFiles.length);
-        console.log(this.myFiles, "attach")
-        //_lstMultipleFiales
-        var d = new Date().valueOf();
-        this._lstMultipleFiales = [...this._lstMultipleFiales, {
-          UniqueId: d,
-          FileName: event.target.files[index].name,
-          Size: event.target.files[index].size,
-          Files: event.target.files[index]
-        }];
+
+        // Add file to _lstMultipleFiales array
+        this.myFiles.push(fileName);
+        const uniqueId = new Date().valueOf();
+
+        this._lstMultipleFiales.push({
+          UniqueId: uniqueId,
+          FileName: fileName,
+          Size: file.size,
+          Files: file
+        });
       }
     }
 
-    const uploadFileInput = (<HTMLInputElement>document.getElementById("uploadFile"));
-    uploadFileInput.value = null;
-    uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+    // Reset the input value and styling
+    const uploadFileInput = document.getElementById("uploadFile") as HTMLInputElement;
+    if (uploadFileInput) {
+      uploadFileInput.value = null;
+      uploadFileInput.style.color = this._lstMultipleFiales.length === 0 ? 'darkgray' : 'transparent';
+    }
+    (event.target as HTMLInputElement).value = '';
   }
+
+
+
+
+
+
 
   RemoveSelectedFile(_id) {
     var removeIndex = this._lstMultipleFiales.map(function (item) { return item.UniqueId; }).indexOf(_id);
@@ -6405,6 +7051,7 @@ getChangeSubtaskDetais(Project_Code) {
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this._EndDate = moment().format("YYYY-MM-DD").toString();
     this._SEndDate = null;
+    this.rapeatLink_Details=true;
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
     this.minDate = moment().format("YYYY-MM-DD").toString();
     this.Attachment12_ary = [];
@@ -6417,6 +7064,7 @@ getChangeSubtaskDetais(Project_Code) {
     this.Description_Type = null;
     this.SelectDms = [];
     this.MasterCode = null;
+    this.EventNumber=null;
     this.Subtask = null;
     this.characterCount_Meeting=0;
     this.Description_Type=null;
@@ -6560,329 +7208,329 @@ getChangeSubtaskDetais(Project_Code) {
 
 
 
-  OnSubmitSchedule() {
-
-    if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
-      this._subname1 = true;
-      return false;
-    }
-
-    if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
-      this._subname = true;
-      return false;
-    }
-    var now = new Date();
-    let timestamp = "";
-    timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
-      + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
-
-    this.EventNumber = timestamp;
-    let finalarray = [];
-    this.daysSelectedII = [];
-    const format2 = "YYYY-MM-DD";
-    var start = moment(this.minDate);
-    const _arraytext = [];
-    if (this.selectedrecuvalue == "0") {
-      const d1 = new Date(moment(start).format(format2));
-      const date = new Date(d1.getTime());
-      this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
-    }
-    else if (this.selectedrecuvalue == "1") {
-      this.daysSelectedII = this.AllDatesSDandED;
-    }
-    else if (this.selectedrecuvalue == "2") {
-      if (this.dayArr.filter(x => x.checked == true).length == 0) {
-       alert('Please select day');
-        return false;
-      }
-      for (let index = 0; index < this.dayArr.length; index++) {
-        if (this.dayArr[index].checked) {
-          const day = this.dayArr[index].value;
-          _arraytext.push(day);
-          var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
-          this.daysSelectedII = this.daysSelectedII.concat(newArray);
-        }
-      }
-      if (this.daysSelectedII.length == 0) {
-        alert('please select valid day');
-      }
-    }
-    else if (this.selectedrecuvalue == "3") {
-
-      if (this.MonthArr.filter(x => x.checked == true).length == 0) {
-        alert('Please select day');
-        return false;
-      }
-      for (let index = 0; index < this.MonthArr.length; index++) {
-        if (this.MonthArr[index].checked == true) {
-          const day = this.MonthArr[index].value;
-          _arraytext.push(day);
-          var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
-          this.daysSelectedII = this.daysSelectedII.concat(newArray);
-        }
-      }
-    }
-
-    finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
-
-
-    if (finalarray.length > 0) {
-      finalarray.forEach(element => {
-        const date1: Date = new Date(this._StartDate);
-        const date2: Date = new Date(this._SEndDate);
-
-        const diffInMs: number = date2.getTime() - date1.getTime();
-
-        const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-        var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
-        var dd = moment(date3).add(diffInDays, 'days')
-
-
-        var SEndDates = "SEndDate";
-        element[SEndDates] = (dd.format(format2));
-
-        var vStartTime = "StartTime";
-        element[vStartTime] = this.Startts;
-
-        var vEndTime = "EndTime";
-        element[vEndTime] = this.Endtms;
-
-        var vEnd_date = "End_date";
-        element[vEnd_date] = this._EndDate;
-
-        var vIsDeleted = "IsDeleted";
-        element[vIsDeleted] = 0;
+  // OnSubmitSchedule() {
+
+  //   if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
+  //     this._subname1 = true;
+  //     return false;
+  //   }
+
+  //   if ((this.MasterCode == "" || this.MasterCode == null || this.MasterCode == undefined) && this.ScheduleType == "Task") {
+  //     this._subname = true;
+  //     return false;
+  //   }
+  //   var now = new Date();
+  //   let timestamp = "";
+  //   timestamp = now.getFullYear().toString() + now.getMonth().toString() + now.getDate().toString()
+  //     + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
+
+  //   this.EventNumber = timestamp;
+  //   let finalarray = [];
+  //   this.daysSelectedII = [];
+  //   const format2 = "YYYY-MM-DD";
+  //   var start = moment(this.minDate);
+  //   const _arraytext = [];
+  //   if (this.selectedrecuvalue == "0") {
+  //     const d1 = new Date(moment(start).format(format2));
+  //     const date = new Date(d1.getTime());
+  //     this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
+  //   }
+  //   else if (this.selectedrecuvalue == "1") {
+  //     this.daysSelectedII = this.AllDatesSDandED;
+  //   }
+  //   else if (this.selectedrecuvalue == "2") {
+  //     if (this.dayArr.filter(x => x.checked == true).length == 0) {
+  //      alert('Please select day');
+  //       return false;
+  //     }
+  //     for (let index = 0; index < this.dayArr.length; index++) {
+  //       if (this.dayArr[index].checked) {
+  //         const day = this.dayArr[index].value;
+  //         _arraytext.push(day);
+  //         var newArray = this.AllDatesSDandED.filter(obj => obj.Day == day);
+  //         this.daysSelectedII = this.daysSelectedII.concat(newArray);
+  //       }
+  //     }
+  //     if (this.daysSelectedII.length == 0) {
+  //       alert('please select valid day');
+  //     }
+  //   }
+  //   else if (this.selectedrecuvalue == "3") {
+
+  //     if (this.MonthArr.filter(x => x.checked == true).length == 0) {
+  //       alert('Please select day');
+  //       return false;
+  //     }
+  //     for (let index = 0; index < this.MonthArr.length; index++) {
+  //       if (this.MonthArr[index].checked == true) {
+  //         const day = this.MonthArr[index].value;
+  //         _arraytext.push(day);
+  //         var newArray = this.AllDatesSDandED.filter(txt => txt.DayNum == day);
+  //         this.daysSelectedII = this.daysSelectedII.concat(newArray);
+  //       }
+  //     }
+  //   }
+
+  //   finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
+
+
+  //   if (finalarray.length > 0) {
+  //     finalarray.forEach(element => {
+  //       const date1: Date = new Date(this._StartDate);
+  //       const date2: Date = new Date(this._SEndDate);
+
+  //       const diffInMs: number = date2.getTime() - date1.getTime();
+
+  //       const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  //       var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+  //       var dd = moment(date3).add(diffInDays, 'days')
+
+
+  //       var SEndDates = "SEndDate";
+  //       element[SEndDates] = (dd.format(format2));
+
+  //       var vStartTime = "StartTime";
+  //       element[vStartTime] = this.Startts;
+
+  //       var vEndTime = "EndTime";
+  //       element[vEndTime] = this.Endtms;
+
+  //       var vEnd_date = "End_date";
+  //       element[vEnd_date] = this._EndDate;
+
+  //       var vIsDeleted = "IsDeleted";
+  //       element[vIsDeleted] = 0;
 
-        var vPending = "Pending_meeting";
-        element[vPending] = 0;
-
-        var vRecurrence = "Recurrence";
-        element[vRecurrence] = this.selectedrecuvalue;
-
-        var vRecurrence_value = "Recurrence_values";
-        element[vRecurrence_value] = _arraytext.toString();
+  //       var vPending = "Pending_meeting";
+  //       element[vPending] = 0;
+
+  //       var vRecurrence = "Recurrence";
+  //       element[vRecurrence] = this.selectedrecuvalue;
+
+  //       var vRecurrence_value = "Recurrence_values";
+  //       element[vRecurrence_value] = _arraytext.toString();
 
-        var vEmp_No = "Emp_No";
-        element[vEmp_No] = this.Current_user_ID;
+  //       var vEmp_No = "Emp_No";
+  //       element[vEmp_No] = this.Current_user_ID;
 
-        var vScheduleType = "ScheduleType";
-        element[vScheduleType] = this.ScheduleType == "Task" ? 1 : 2;
+  //       var vScheduleType = "ScheduleType";
+  //       element[vScheduleType] = this.ScheduleType == "Task" ? 1 : 2;
 
-        var vTitle_Name = "Title_Name";
-        element[vTitle_Name] = this.Title_Name;
+  //       var vTitle_Name = "Title_Name";
+  //       element[vTitle_Name] = this.Title_Name;
 
-        var vMasterCode = "MasterCode";
-        element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
+  //       var vMasterCode = "MasterCode";
+  //       element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
 
-        // var columnName = "Link_Type";
-        // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
-        var vUser_Name = "User_Name";
-        element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.map((e)=>e.Emp_No).toString();   //when mat chip
+  //       // var columnName = "Link_Type";
+  //       // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
+  //       var vUser_Name = "User_Name";
+  //       element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.map((e)=>e.Emp_No).toString();   //when mat chip
 
-        var vLocation_Type = "Location_Type";
-        element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
+  //       var vLocation_Type = "Location_Type";
+  //       element[vLocation_Type] = this.Location_Type == undefined ? "" : this.Location_Type;
 
-        var vLocation_fulladd = "FullAddress_loc";
-        element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" : this.Locationfulladd;
+  //       var vLocation_fulladd = "FullAddress_loc";
+  //       element[vLocation_fulladd] = this.Locationfulladd == undefined ? "" : this.Locationfulladd;
 
-        var vLocation_url = "Addressurl";
-        element[vLocation_url] = this.Addressurl;
+  //       var vLocation_url = "Addressurl";
+  //       element[vLocation_url] = this.Addressurl;
 
-        var vOnlinelink = "Onlinelink";
-        element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
-
-        var vLink_Details = "Link_Details";
-        element[vLink_Details] = this.Link_Details == undefined ? "" : this.Link_Details;
-
-        var vDescription = "Description";
-        element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
-
-        var vSubtask = "Subtask";
-        element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
+  //       var vOnlinelink = "Onlinelink";
+  //       element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+
+  //       var vLink_Details = "Link_Details";
+  //       element[vLink_Details] = this.Link_Details == undefined ? "" : this.Link_Details;
+
+  //       var vDescription = "Description";
+  //       element[vDescription] = this.Description_Type == undefined ? "" : this.Description_Type;
+
+  //       var vSubtask = "Subtask";
+  //       element[vSubtask] = this.Subtask == undefined ? "" : this.Subtask;
 
-        var vEventNumber = "EventNumber";
-        element[vEventNumber] = this.EventNumber;
+  //       var vEventNumber = "EventNumber";
+  //       element[vEventNumber] = this.EventNumber;
 
-        var vPortfolio_name = "Portfolio_name";
-        element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.map(p=>p.portfolio_id).toString();  // when mat-chip
+  //       var vPortfolio_name = "Portfolio_name";
+  //       element[vPortfolio_name] = this.Portfolio == undefined ? "" : this.Portfolio.map(p=>p.portfolio_id).toString();  // when mat-chip
 
-        var vDMS_Name = "DMS_Name";
-        element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.map(m=>m.MailId).toString();    //when mat chip
+  //       var vDMS_Name = "DMS_Name";
+  //       element[vDMS_Name] = this.SelectDms == undefined ? "" : this.SelectDms.map(m=>m.MailId).toString();    //when mat chip
 
-         var vAgendas = "Meeting_Agendas";
-        const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
-        element[vAgendas] = mtgAgendas;
+  //        var vAgendas = "Meeting_Agendas";
+  //       const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
+  //       element[vAgendas] = mtgAgendas;
 
-
-      });
-
-
-      this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
-      if (this.Schedule_ID != 0) {
-        this._calenderDto.Schedule_ID = this.Schedule_ID;
-
-      }
-      else {
-        this._calenderDto.Schedule_ID = 0;
-      }
-
-      let _attachmentValue = 0;
-      const frmData = new FormData();
-      for (var i = 0; i < this._lstMultipleFiales.length; i++) {
-        frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
-      }
-      if (this._lstMultipleFiales.length > 0)
-        _attachmentValue = 1;
-      else
-        _attachmentValue = 0;
-
-      frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
-      frmData.append("CreatedBy", this.Current_user_ID.toString());
-      console.log(JSON.stringify(finalarray), "finalarray")
-      this._calenderDto.draftid = this.draftid;
-
-
-
-      console.log('_calenderDto obj:', JSON.parse(this._calenderDto.ScheduleJson));
-
-      this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
-        (data => {
-
-          var Attamentdraftid= '0'
-          frmData.append("draftid", Attamentdraftid= Attamentdraftid);
-
-
-          if (_attachmentValue == 1) {
-            this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
-              (event: HttpEvent<any>) => {
-                switch (event.type) {
-                  case HttpEventType.Sent:
-                    console.log('Request has been made!');
-                    break;
-                  case HttpEventType.ResponseHeader:
-                    console.log('Response header has been received!');
-                    break;
-                  case HttpEventType.UploadProgress:
-                    this.progress = Math.round(event.loaded / event.total * 100);
-                    console.log(`Uploaded! ${this.progress}%`);
-                    break;
-                  case HttpEventType.Response:
-                    console.log('User successfully created!', event.body);
-
-                    // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
-                    this._lstMultipleFiales = [];
-                    // empty(this._lstMultipleFiales);
-                    // alert(this._lstMultipleFiales.length);
-                    setTimeout(() => {
-                      this.progress = 0;
-                    }, 1500);
-
-                    (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                    (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
-                    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                    document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
-                }
-              }
-            )
-          }
-          //UploadCalendarAttachmenst
-          // console.log(data, "m");
-          this._Message = data['message'];
-          if (this._Message == "Update successfully") {
-            if (this.draftid != 0) {
-              this.Getdraft_datalistmeeting();
-              this.draftid = 0
-            }
-            this.notifyService.showError(this._Message, "Failed");
-
-
-
-
-          }
-          else {
-            this.notifyService.showSuccess(this._Message, "Success");
-          }
-
-
-          this.GetScheduledJson();
-          this.Title_Name = this.projectInfo.Project_Name;
-          this.ngEmployeeDropdown = [];
-          this.Description_Type = null;
-          this.MasterCode = [];
-          this.Subtask = null;
-          this.Startts = null;
-          this.Endtms = null;
-          this.St_date = null;
-          this.Ed_date = null;
-          this._SEndDate = null;
-          this._SEndDate = moment().format("YYYY-MM-DD").toString();
-          this.Locationfulladd = null;
-          this._status = null;
-          this.SelectDms = [];
-          this.Location_Type = null;
-          this.Link_Details = null;
-          this._onlinelink = false;
-          this.Allocated_subtask = null;
-          this.TM_DisplayName = null;
-          this.Projectstartdate = "";
-          this.projectEnddate = null;
-          this.Status_project = null;
-          this.AllocatedHours = null;
-          this.daysSelectedII = [];
-          this.Avaliabletime = [];
-          this.timeslotsavl = [];
-          this.singleselectarry = [];
-          this.daysSelected = [];
-          // this.Recurr_arr = [];
-          this.selected = null;
-          this.TImetable();
-          this.Portfolio = null;
-          this.minDate = moment().format("YYYY-MM-DD").toString();
-          this.maxDate = null;
-          this.calendar.updateTodaysDate();
-          this.TImetable();
-
-        });
-
-      this.closeschd();
-
-
-
-
-      this.meetingsViewOn = true;   // closes the event task creation section.
-
-
-
-      this.meetingList = [];
-      this.meeting_arry = [];
-      this.meetinglength = 0;
-
-      this.upcomingMeetings = [];
-      this.todaymeetings = [];
-      this.last7dmeetings = [];
-      this.lastMonthMeetings = [];
-      this.olderMeetings = [];
-      this.mtgFromD = '';
-      this.mtgUptoD = '';
-      this.mtgsInRange = [];
-      this.mLdng = false;
-
-      this.tdMtgCnt = 0;   // Today Meetings Count
-      this.upcMtgCnt = 0;  // Upcoming Meetings Count
-      this.lstMthCnt = 0;  // Last Month Meetings Count
-      this.lst7dCnt = 0;   // Last 7 Days Meetings Count
-      this.oldMtgCnt = 0;  // Older Meetings Count
-
-      this.GetmeetingDetails();
-
-
-    }
-    else {
-      alert('Please Select Valid Date and Time');
-    }
-
-  }
+
+  //     });
+
+
+  //     this._calenderDto.ScheduleJson = JSON.stringify(finalarray);
+  //     if (this.Schedule_ID != 0) {
+  //       this._calenderDto.Schedule_ID = this.Schedule_ID;
+
+  //     }
+  //     else {
+  //       this._calenderDto.Schedule_ID = 0;
+  //     }
+
+  //     let _attachmentValue = 0;
+  //     const frmData = new FormData();
+  //     for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+  //       frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
+  //     }
+  //     if (this._lstMultipleFiales.length > 0)
+  //       _attachmentValue = 1;
+  //     else
+  //       _attachmentValue = 0;
+
+  //     frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+  //     frmData.append("CreatedBy", this.Current_user_ID.toString());
+  //     console.log(JSON.stringify(finalarray), "finalarray")
+  //     this._calenderDto.draftid = this.draftid;
+
+
+
+  //     console.log('_calenderDto obj:', JSON.parse(this._calenderDto.ScheduleJson));
+
+  //     this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
+  //       (data => {
+
+  //         var Attamentdraftid= '0'
+  //         frmData.append("draftid", Attamentdraftid= Attamentdraftid);
+
+
+  //         if (_attachmentValue == 1) {
+  //           this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+  //             (event: HttpEvent<any>) => {
+  //               switch (event.type) {
+  //                 case HttpEventType.Sent:
+  //                   console.log('Request has been made!');
+  //                   break;
+  //                 case HttpEventType.ResponseHeader:
+  //                   console.log('Response header has been received!');
+  //                   break;
+  //                 case HttpEventType.UploadProgress:
+  //                   this.progress = Math.round(event.loaded / event.total * 100);
+  //                   console.log(`Uploaded! ${this.progress}%`);
+  //                   break;
+  //                 case HttpEventType.Response:
+  //                   console.log('User successfully created!', event.body);
+
+  //                   // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+  //                   (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+  //                   this._lstMultipleFiales = [];
+  //                   // empty(this._lstMultipleFiales);
+  //                   // alert(this._lstMultipleFiales.length);
+  //                   setTimeout(() => {
+  //                     this.progress = 0;
+  //                   }, 1500);
+
+  //                   (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+  //                   (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+  //                   document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+  //                   document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+  //               }
+  //             }
+  //           )
+  //         }
+  //         //UploadCalendarAttachmenst
+  //         // console.log(data, "m");
+  //         this._Message = data['message'];
+  //         if (this._Message == "Update successfully") {
+  //           if (this.draftid != 0) {
+  //             this.Getdraft_datalistmeeting();
+  //             this.draftid = 0
+  //           }
+  //           this.notifyService.showError(this._Message, "Failed");
+
+
+
+
+  //         }
+  //         else {
+  //           this.notifyService.showSuccess(this._Message, "Success");
+  //         }
+
+
+  //         this.GetScheduledJson();
+  //         this.Title_Name = this.projectInfo.Project_Name;
+  //         this.ngEmployeeDropdown = [];
+  //         this.Description_Type = null;
+  //         this.MasterCode = [];
+  //         this.Subtask = null;
+  //         this.Startts = null;
+  //         this.Endtms = null;
+  //         this.St_date = null;
+  //         this.Ed_date = null;
+  //         this._SEndDate = null;
+  //         this._SEndDate = moment().format("YYYY-MM-DD").toString();
+  //         this.Locationfulladd = null;
+  //         this._status = null;
+  //         this.SelectDms = [];
+  //         this.Location_Type = null;
+  //         this.Link_Details = null;
+  //         this._onlinelink = false;
+  //         this.Allocated_subtask = null;
+  //         this.TM_DisplayName = null;
+  //         this.Projectstartdate = "";
+  //         this.projectEnddate = null;
+  //         this.Status_project = null;
+  //         this.AllocatedHours = null;
+  //         this.daysSelectedII = [];
+  //         this.Avaliabletime = [];
+  //         this.timeslotsavl = [];
+  //         this.singleselectarry = [];
+  //         this.daysSelected = [];
+  //         // this.Recurr_arr = [];
+  //         this.selected = null;
+  //         this.TImetable();
+  //         this.Portfolio = null;
+  //         this.minDate = moment().format("YYYY-MM-DD").toString();
+  //         this.maxDate = null;
+  //         this.calendar.updateTodaysDate();
+  //         this.TImetable();
+
+  //       });
+
+  //     this.closeschd();
+
+
+
+
+  //     this.meetingsViewOn = true;   // closes the event task creation section.
+
+
+
+  //     this.meetingList = [];
+  //     this.meeting_arry = [];
+  //     this.meetinglength = 0;
+
+  //     this.upcomingMeetings = [];
+  //     this.todaymeetings = [];
+  //     this.last7dmeetings = [];
+  //     this.lastMonthMeetings = [];
+  //     this.olderMeetings = [];
+  //     this.mtgFromD = '';
+  //     this.mtgUptoD = '';
+  //     this.mtgsInRange = [];
+  //     this.mLdng = false;
+
+  //     this.tdMtgCnt = 0;   // Today Meetings Count
+  //     this.upcMtgCnt = 0;  // Upcoming Meetings Count
+  //     this.lstMthCnt = 0;  // Last Month Meetings Count
+  //     this.lst7dCnt = 0;   // Last 7 Days Meetings Count
+  //     this.oldMtgCnt = 0;  // Older Meetings Count
+
+  //     this.GetmeetingDetails();
+
+
+  //   }
+  //   else {
+  //     alert('Please Select Valid Date and Time');
+  //   }
+
+  // }
 
   penhide1() {
     document.getElementById("pendlist1").classList.remove("show");
@@ -7056,7 +7704,7 @@ removeSelectedDMSMemo(item){
   minhold: any = new Date();
   maxhold: any = new Date();
   release_date: any = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-  dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
+  // dateR = new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000));
 
 
 holdcontinue(Pcode:any){
@@ -7100,19 +7748,26 @@ holdcontinue(Pcode:any){
   minPrjDeadline:Date;
   HprocessDone:number=0;
 
-  onHoldDateChanged(){
-
+  onHoldDateChanged(){ 
     const d1=new Date(this.Holddate);
-    const d2=new Date(this.projectInfo.EndDate);
-    this.isEHsectionVisible=d1>d2;
-    d1.setDate(d1.getDate()+1);
-    this.minPrjDeadline=d1;
+    if(d1>=this.minhold&&d1<=this.maxhold)
+    {
+      const d2=new Date(this.projectInfo.EndDate);
+      this.isEHsectionVisible=d1>d2;
+      d1.setDate(d1.getDate()+1);
+      d1.setHours(0,0,0,0);
+      this.minPrjDeadline=d1;
+    }
+    else{
+       this.Holddate=null;
+    }
+    
 }
 
 
   onProject_Hold(id, Pcode) {
 
-  if(this.Holddate&&this.hold_remarks&&(this.extendAndHold?this.newPrjDeadline:true)){
+  if(this.Holddate&&(this.hold_remarks&&this.hold_remarks.trim())&&(this.extendAndHold?this.newPrjDeadline:true)){
        // if holddate and remarks are provided.
       this.HprocessDone=this.extendAndHold?2:1;
 
@@ -7149,7 +7804,7 @@ holdcontinue(Pcode:any){
                       this.HprocessDone--;
                       console.log(data['message'], "edit response");
                       if (data['message'] == '1') {
-                        this.notifyService.showSuccess("Updated successfully", "Success");
+                        this.notifyService.showSuccess("Updated successfully.", "Success");
                       }
                       else if (data['message'] == '2') {
                         this.notifyService.showError("Not updated", "Failed");
@@ -7183,14 +7838,19 @@ holdcontinue(Pcode:any){
 
   }
   else
-   this.formFieldsRequired=true;
+  this.formFieldsRequired=true;
 
   }
 
 
 
-  orgValueChange1(val) {
-    this.release_date = moment(val.value).format("MM/DD/YYYY");
+  orgValueChange1(val) { 
+    const _inputdate=moment(val.value).toDate();
+    if((_inputdate>=this.minhold&&_inputdate<=this.maxhold)==false)
+    {
+      this.release_date=null;
+    }
+    // this.release_date = moment(val.value).format("MM/DD/YYYY");
   }
 
 
@@ -7198,7 +7858,7 @@ holdcontinue(Pcode:any){
 // Project / Action release.
   holdreleaseProject() {
 
-    if(this.hold_remarks){
+    if(this.hold_remarks&&this.hold_remarks.trim()){
       // if remarks are provided.
       if(this.currentActionView===undefined){
         // project release
@@ -7264,19 +7924,20 @@ holdcontinue(Pcode:any){
        }
     }
     else
-     this.formFieldsRequired=true;
+    this.formFieldsRequired=true;
 
   }
 
   updateReleaseDate() {
-
-    if(this.release_date&&this.hold_remarks){
+    if(this.release_date&&(this.hold_remarks&&this.hold_remarks.trim())){
      // if release date and remarks both are provided
       if (this.release_date == null || this.release_date == 'Invalid date') {
         this.notifyService.showError("Please enter valid date", "Failed");
         return false;
       }
       else {
+        const isprjrelease=this.currentActionView==undefined;
+
         this.release_date = this.datepipe.transform(this.release_date, 'MM/dd/yyyy');
         this.holdDate = moment(this.release_date).format("DD-MM-YYYY")
         this.approvalObj.Project_Code = (this.currentActionView===undefined)?this.URL_ProjectCode:this.projectActionInfo[this.currentActionView].Project_Code;
@@ -7286,14 +7947,24 @@ holdcontinue(Pcode:any){
         this.approvalservice.UpdateReleaseDate(this.approvalObj).subscribe((data) => {
           this._Message = (data['message']);
           if (this._Message == '1') {
-            this.notifyService.showSuccess("Project release date updated", "Success");
-            this.notifyService.showInfo("Project will be released on " + this.holdDate, "Note");
+            if(isprjrelease){
+              this.notifyService.showSuccess("Project release date updated", "Success");
+              this.notifyService.showInfo("Project will be released on " + this.holdDate, "Note");
+            }
+            else{
+              this.notifyService.showSuccess("Action release date updated", "Success");
+              this.notifyService.showInfo("Action will be released on " + this.holdDate, "Note");
+            }
+            
             this.getProjectDetails(this.projectInfo.Project_Code);
             this.getholdate();
             this.closePrjReleaseSideBar();
           }
           else if (this._Message == '2' || this._Message == '0') {
+            if(isprjrelease)
             this.notifyService.showError("Project release date not updated", "Failed");
+            else 
+            this.notifyService.showError("Action release date not updated", "Failed");
           }
         });
       }
@@ -7411,7 +8082,7 @@ holdcontinue(Pcode:any){
             this.closePrjCancelSb();
             this._Message = (data['message']);
             if (this._Message == '1') {
-              this.notifyService.showSuccess("Project cancel request sent to the project owner", "Success");
+              this.notifyService.showSuccess("Project cancel request sent to the project owner.", "Success");
               this.getProjectDetails(this.URL_ProjectCode);
               this.getapproval_actiondetails();
             }
@@ -7464,10 +8135,11 @@ holdcontinue(Pcode:any){
   }
 
   // project cancel section end
-
+  ShowProgress: boolean = false;
   processingStd:boolean=false;
+
   achieveStandard() {
-    if(this._remarks==''||this.selectedFile==null){
+    if(!(this._remarks&&this._remarks.trim())||this.selectedFile==null){
         this.formFieldsRequired=true;
         return;
     }
@@ -7477,13 +8149,21 @@ holdcontinue(Pcode:any){
     fd.append("Team_Autho", this.Authority);
     fd.append("Remarks", this._remarks);
     fd.append("Projectblock", this.ProjectBlock);
-    fd.append('file', this.selectedFile);
     fd.append("Emp_No", this.Current_user_ID);
     fd.append("Project_Name", this.projectInfo.Project_Name);
+    fd.append("contentType",this.contentType);
+    fd.append("achievetype","1");
+    if(this.selectedFile){
+      fd.append("Attachment","true");
+    }
+    else{
+      fd.append("Attachment","false")
+    }
 
     console.log(this._MasterCode, this._remarks, this.selectedFile, this.Current_user_ID, "fd");
     this.processingStd=true;
-    this.service._UpdateStandardTaskSubmission(fd).
+    // this.service._UpdateStandardTaskSubmission(fd).
+    this.service._UpdateStandardTaskSubmissionCore(fd).
       subscribe((event: HttpEvent<any>) => {
         this.processingStd=false;
         switch (event.type) {
@@ -7494,34 +8174,70 @@ holdcontinue(Pcode:any){
             console.log('Response header has been received!');
             break;
           case HttpEventType.UploadProgress:
+            this.ShowProgress=true;
             this.progress = Math.round(event.loaded / event.total * 100);
             console.log(this.progress, "progress");
             if (this.progress == 100) {
+              this.ShowProgress=false;
               this.notifyService.showInfo("File uploaded successfully", "Project updated");
-
             }
             break;
           case HttpEventType.Response:
             console.log('File upload done!', event.body);
             var myJSON = JSON.stringify(event);
-            this._Message = (JSON.parse(myJSON).body).Message;
+            this._Message = (JSON.parse(myJSON).body).message;
             this.notifyService.showSuccess(this._Message, 'Success');
         }
-        // if (event.type == HttpEventType.UploadProgress) {
-        //   this.progress = Math.round(event.loaded / event.total * 100);
-        //   console.log(this.progress, "progress")
-        //   this.notifyService.showInfo("File uploaded successfully", "Project Updated");
-        // }
-        // else if (event.type === HttpEventType.Response) {
-        //   alert(1)
-        //   var myJSON = JSON.stringify(event);
-        //   this._Message = (JSON.parse(myJSON).body).Message;
-        //   this.notifyService.showSuccess(this._Message, 'Success');
-        // }
+        if (this.selectedFile) {
+
+          this.setFilesUploadingBarVisible(true);
+          const fid=this.selectedFile.name+(new Date().getTime());
+          const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Standard task complete file attachment -'+this.projectInfo.Project_Name};
+          this.filesInUpload.push(ob);
+
+          fd.append('file',  this.selectedFile);
+          this.service._AzureUploadStandardTaskComplete(fd).subscribe((event1: HttpEvent<any>) => {
+
+            switch (event1.type) {
+              case HttpEventType.Sent:
+                console.log('Request sent!');
+                break;
+              case HttpEventType.ResponseHeader:
+                console.log('Response header received!');
+                break;
+              case HttpEventType.UploadProgress:
+                const progress = Math.round(event1.loaded / event1.total * 100);
+                ob.uploaded=progress;
+                if(ob.uploaded==100){
+                  setTimeout(()=>{
+                    ob.processingUploadFile=true; //when server processing the file upload. 
+                  },1000);
+                }
+                console.log(`Upload progress: ${ob.uploaded}%`);
+                break;
+              case HttpEventType.Response:{
+                console.log('Response received:', event1.body);
+                if(event1.body==1){
+                  this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                  const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
+                  this.filesInUpload.splice(fi,1);
+                  if(this.filesInUpload.length==0){
+                    this.setFilesUploadingBarVisible(false);
+                  }
+                  
+                }
+              };break;
+            }
+
+            console.log(event1,"azure data");
+            var myJSON = JSON.stringify(event1);
+          //  this._Message = (JSON.parse(myJSON).body);
+          });
+        }
         this.closeInfo();
         this.getProjectDetails(this.URL_ProjectCode);
         this.getapprovalStats();
-        this._projectSummary.GetProjectsByUserName('RACIS Projects');
+        // this._projectSummary.GetProjectsByUserName('RACIS Projects');
       });
   }
 
@@ -7530,7 +8246,6 @@ holdcontinue(Pcode:any){
       this.formFieldsRequired=true;
       return;
     }
-
 
     this.selectedFile = null;
     const fd = new FormData();
@@ -7541,18 +8256,15 @@ holdcontinue(Pcode:any){
     fd.append('file', this.selectedFile);
     fd.append("Emp_No", this.Current_user_ID);
     fd.append("Project_Name", this.ProjectName);
-    // console.log(this._MasterCode,this._remarks,this.selectedFile,this.Current_user_ID,"fd");
+    fd.append("achievetype","0");
     this.processingStd=true;
-    this.service._UpdateStandardTaskSubmission(fd).
+    // this.service._UpdateStandardTaskSubmission(fd).
+    this.service._UpdateStandardTaskSubmissionCore(fd).
       subscribe(event => {
         this.processingStd=false;
-        if (event.type == HttpEventType.UploadProgress) {
-          this.progress = Math.round(event.loaded / event.total * 100);
-          this.notifyService.showInfo("File uploaded successfully", "Project updated");
-        }
-        else if (event.type === HttpEventType.Response) {
+        if (event.type === HttpEventType.Response) {
           var myJSON = JSON.stringify(event);
-          this._Message = (JSON.parse(myJSON).body).Message;
+          this._Message = (JSON.parse(myJSON).body).message;
           this.notifyService.showSuccess(this._Message, 'Success');
         }
         this.closeInfo();
@@ -7560,7 +8272,7 @@ holdcontinue(Pcode:any){
       });
       this.getProjectDetails(this.URL_ProjectCode);
       this.getapprovalStats();
-      this._projectSummary.GetProjectsByUserName('RACIS Projects');
+      // this._projectSummary.GetProjectsByUserName('RACIS Projects');
   }
 
   //  $('#_file1').val('');
@@ -7764,60 +8476,101 @@ removeSelectedMemo(item){
 actionsNotFound:boolean=false;
 filteredPrjAction:any=[];
 filterConfigChanged:boolean=false;
-filterConfig:{filterby:string,sortby:string}={
-         filterby:'All',
-         sortby:'All'
+filterConfig:{ filterby:string[], sortby:string[] }={
+    filterby:['All'],
+    sortby:['All']
 };
-onFilterConfigChanged({filterBy,sortBy}){
-  debugger
+
+
+
+onFilterConfigChanged(ob:{ filterBy:string[], sortBy:string[]}){
+  const {filterBy,sortBy}=ob;
   if(filterBy&&sortBy){
     this.filterConfig.filterby=filterBy;
     this.filterConfig.sortby=sortBy;
     this.filterConfigChanged=true;
-    // if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno!=actn.Team_Res)){
-    //   this.actionsAssignedByMe+=1;
-    //            }
-
     this.filteredPrjAction=this.getFilteredPrjActions(this.filterConfig.filterby,this.filterConfig.sortby);
   }
 }
 
 clearFilterConfigs(){
-  this.filterConfig.filterby='All';
-  this.filterConfig.sortby='All';
+  this.filterConfig.filterby=['All'];
+  this.filterConfig.sortby=['All'];
   this.filteredPrjAction=this.getFilteredPrjActions(this.filterConfig.filterby,this.filterConfig.sortby);
   this.filterConfigChanged=false;
 }
 
 
-count:any
-getFilteredPrjActions(filterby:string='All',sortby:string='All'){
-  debugger
-if(['001','002'].includes(this.projectInfo.Project_Block)){
 
-  let arr=this.projectActionInfo?this.projectActionInfo:[];
-  if(!(filterby==='All'&&sortby==='All'))
-  {
-    if(sortby!=='All'){
-     if(sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....
-      arr=arr.filter((action)=>{
-        return action.Team_Res.trim()===sortby;
-       });
-     }
-     else{  // when sortby is 'Assigned By me'
-        arr=arr.filter((action)=>{
-              return (action.AssignedbyEmpno.trim()==this.Current_user_ID&&action.AssignedbyEmpno!=action.Team_Res);
-        });
-     }
+onActnFilterOptionClicked(section:'filterby'|'sortby',item:string){
+  if(item=='All'){
+      if(this.filterConfig[section].length==1&&this.filterConfig[section][0]=='All')
+      this.filterConfig[section]=[];
+      else
+      this.filterConfig[section]=this.filterConfig[section]=[item];
+  }else{
+
+    if(this.filterConfig[section].length==1&&this.filterConfig[section][0]=='All'){
+       this.filterConfig[section]=[];
     }
 
-    if(filterby!=='All'){
-      arr=arr.filter((action)=>{
-         return action.Status===filterby;
-       })
-
-    }
+    if(this.filterConfig[section].includes(item)==false){
+      this.filterConfig[section].push(item);
+     }
+     else{
+       const i=this.filterConfig[section].indexOf(item);
+       this.filterConfig[section].splice(i,1);
+     }
   }
+
+  console.log(this.filterConfig);
+
+  this.onFilterConfigChanged({filterBy:this.filterConfig.filterby, sortBy:this.filterConfig.sortby});
+}
+
+
+
+
+// count:any
+getFilteredPrjActions(filterby:string[]=['All'],sortby:string[]=['All']){
+
+if(['001','002'].includes(this.projectInfo.Project_Block)){
+  let arr=this.projectActionInfo||[];
+
+  const isAssignedbyme=sortby.includes('Assigned By me');
+
+  arr=arr.filter((action)=>{
+    const x=(filterby[0]=='All'||filterby.includes(action.Status));
+    const y=(sortby[0]=='All'||sortby.includes(action.Team_Res.trim())|| (isAssignedbyme?(action.AssignedbyEmpno.trim()==this.Current_user_ID&&action.AssignedbyEmpno!=action.Team_Res):false));
+    return x&&y;
+  })
+
+
+
+
+
+  // if(!(filterby.includes('All')&&sortby.includes('All')))
+  // {
+  //   if(sortby!=='All'){
+  //    if(sortby!=='Assigned By me'){  // when sortby is 'md waseem akram','aquib shabaz' .....
+  //     arr=arr.filter((action)=>{
+  //       return action.Team_Res.trim()===sortby;
+  //      });
+  //    }
+  //    else{  // when sortby is 'Assigned By me'
+  //       arr=arr.filter((action)=>{
+  //             return (action.AssignedbyEmpno.trim()==this.Current_user_ID&&action.AssignedbyEmpno!=action.Team_Res);
+  //       });
+  //    }
+  //   }
+
+  //   if(filterby!=='All'){
+  //     arr=arr.filter((action)=>{
+  //        return action.Status===filterby;
+  //      })
+
+  //   }
+  // }
 
   return arr;
 
@@ -7856,8 +8609,8 @@ GetprojectComments() {
 /////////////////Comments end////////////////////////
 
 
-LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
+LoadDocument1(pcode:string,iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
+debugger
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -7873,27 +8626,28 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
       FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + this.URL_ProjectCode + "/" + url1);
     }
 
-    let name = "ArchiveView/" + this.URL_ProjectCode;
+    let name = "ArchiveView/" + pcode;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(FileUrl);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");
     filename = filename.replace(/&/g, "%26");
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&"+  "type=" + type+"&"+"mastercode="+this.URL_ProjectCode;
+    var myWindow = window.open(myurl, url.toString());
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
-
   else if (iscloud == true) {
-    let name = "ArchiveView/" + this.projectCode;
+    let name = "ArchiveView/" + pcode;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(url1);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");
     filename = filename.replace(/&/g, "%26");
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type+"&"+"mastercode="+this.URL_ProjectCode;
+    var myWindow = window.open(myurl, url.toString());
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
@@ -7943,7 +8697,6 @@ openPDF_task_att(standardid: number, emp_no: string, cloud: boolean, repDate: Da
     myWindow.focus();
 
   }
-
   else if (cloud == true) {
 
     let FileUrl: string;
@@ -8046,7 +8799,7 @@ rejectactivity1: any;
 
 getActionRejectType(actioncode:any) {
   this.approvalObj.Project_Code = actioncode;
-  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => { debugger
+  this.approvalservice.GetRejecttype(this.approvalObj).subscribe((data) => {
     this.activity1 = data[0]["activity"];
     this.send_from1 = data[0]["sendFrom"];
     this.rejectactivity1 = data[0]["rejectactivity"];
@@ -8125,28 +8878,30 @@ releasenewProject(){
 
 displaymessage(){
   if(this.projectInfo.Status=='Completion Under Approval'){
-    this.notifyService.showInfo("Please reject the project first and then you can change the project responsible as the project is in completion under approval","Not editable");
+    this.notifyService.showInfo("Please reject the project first and then you can change the project responsible as the project is in completion under approval.","Not editable");
   }
   else{
-    this.notifyService.showInfo("Please complete the approval process and change the project responsible","Not editable");
+    this.notifyService.showInfo("Please complete the approval process and change the project responsible.","Not editable");
   }
 }
 
 displaymessagemain(){
-  this.notifyService.showInfo("Project Owner cannot be changed","Not editable");
+  this.notifyService.showInfo("Project owner cannot be changed.","Not editable");
 }
 
 
 formatTimes(time: string): string {
+  if(time){
+    const [hours, minutes] = time.split(':');
+    const date = new Date();
+    date.setHours(parseInt(hours, 10));
+    date.setMinutes(parseInt(minutes, 10));
 
-  const [hours, minutes] = time.split(':');
-  const date = new Date();
-  date.setHours(parseInt(hours, 10));
-  date.setMinutes(parseInt(minutes, 10));
-
-  const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
-  const x=date.toLocaleTimeString('en-US', options);
-  return x;
+    const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
+    const x=date.toLocaleTimeString('en-US', options);
+    return x;
+  }
+  return '';
 }
 
 
@@ -8453,7 +9208,7 @@ cancelAction(index) {
         this.approvalObj.Remarks = this.hold_remarks;
 
         this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-          debugger
+
           this.closePrjCancelSb();
           this._Message = (data['message']);
           if (this._Message == '1') {
@@ -8599,10 +9354,16 @@ showPendingAprvlActnsOfEmp(userno:string){
   }
 }
 
+
+showActionsWithNoProgress(){
+  this.filteredPrjAction=this.projectActionInfo.filter(item=>this.actnsWithoutProgress.includes(item.Project_Code));
+}
+
+
 // start meeting feature start
 
 meetingReport(mtgScheduleId:any) {
-  debugger
+
   let name: string = 'Meeting-Details';
   var url = document.baseURI + name;
   var myurl = `${url}/${mtgScheduleId}`;
@@ -8703,8 +9464,6 @@ Insert_indraft() {
       }
     }
 
-
-    debugger
 
   this._calenderDto.Portfolio = this.Portfolio.toString();
   this._calenderDto.location = this.Location_Type;
@@ -9403,7 +10162,7 @@ bindCustomRecurrenceValues(){
   }
 
   customrecurrencemodal() {
-    debugger
+
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("customrecurrence").style.display = "block";
 
@@ -9479,7 +10238,7 @@ FilteredAttendees:any;
     let property_name;
     if(this.projectmodaltype=='participant')
      {
-      debugger
+
        keyname='DisplayName';
        arrtype=this._EmployeeListForDropdown;
        selectedinto='ngEmployeeDropdown';
@@ -9571,7 +10330,7 @@ FilteredAttendees:any;
       this.isFilteredOn=false;
   }
   onPortfolioFilter(){
-    debugger
+
     const fresult=this.Portfoliolist_1.filter((prtf:any)=>{
          const x=(prtf.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
          const y=(prtf.Created_By===this.basedOnFilter.byuser||!this.basedOnFilter.byuser);
@@ -9674,7 +10433,7 @@ discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:strin
 }
 
 keepChoosedItems(){
-  debugger
+
   switch(this.projectmodaltype)
   {
       case 'project':{
@@ -9767,11 +10526,17 @@ Meeting_method(event){
     this.onInputSearch('');
 }
 
+isValidURL = true;
+
+
 onSubmitBtnClicked() {
-debugger
+  if(this.Link_Details){
+    this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
+  }
+
   if (
     (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
-    (this.Description_Type?(this.Description_Type.trim().length<=500):true)&&
+    (this.Description_Type?(this.Description_Type.trim().length<=500):true)&& this.isValidURL &&
     this.Startts &&
     this.Endtms &&
     this.MinLastNameLength
@@ -9844,7 +10609,7 @@ changeScheduleType(val:number){
 eventRepeat:boolean = false;
 Meeting_Id:any;
 Meeting_password:any;
-
+rapeatLink_Details:boolean=true;
 
 OnSubmitSchedule1() {
   if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
@@ -9995,9 +10760,26 @@ OnSubmitSchedule1() {
       element[vLocation_url] = (this._meetingroom==true)?(this.Addressurl==undefined?'':this.Addressurl):'';
 
 
+      if(this.Link_Details!=null){
+        this.Link_Details = this.Link_Details.trim() == ''?null:this.Link_Details;
+      }
+      if(this.Meeting_Id!=null){
+        this.Meeting_Id = this.Meeting_Id.trim()  == ''?null:this.Meeting_Id;
+      }
+      if(this.Meeting_password!=null){
+        this.Meeting_password = this.Meeting_password.trim() == ''?null:this.Meeting_password;
+      }
+      if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
+        this._onlinelink =false
+      }
+
       var vOnlinelink = "Onlinelink";
       element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
+      if(this.rapeatLink_Details==true){
       this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
+      this.rapeatLink_Details=false;
+    }
+
 
       var vLink_Details = "Link_Details";
       element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
@@ -10115,7 +10897,7 @@ OnSubmitSchedule1() {
         //UploadCalendarAttachmenst
         // console.log(data, "m");
         this._Message = data['message'];
-        if (this._Message == "Updated Successfully") {
+        if (this._Message == "Updated Successfully.") {
           if (this.draftid != 0) {
             this.Getdraft_datalistmeeting();
             this.draftid = 0
@@ -10217,7 +10999,7 @@ empAuditor_remarks:string|undefined;
 
 
 
-onAuditorSelected(e){ debugger
+onAuditorSelected(e){
   if(e.option.value){
     const selected_emp=e.option.value;
     this.selectedAuditor=selected_emp;
@@ -10508,7 +11290,7 @@ loadActionsGantt(){
 
       events: {
         updated: ()=>{
-   
+
 
         try{
 
@@ -10695,8 +11477,8 @@ loadActionsGantt(){
     tooltip: {
       custom: ({ series, seriesIndex, dataPointIndex, w }) => {
         const data = w.config.series[seriesIndex].data[dataPointIndex];
-        const index = data.index;  
-        const actn_name = actions_list[index].Project_Name;   
+        const index = data.index;
+        const actn_name = actions_list[index].Project_Name;
         const actn_descrp=actions_list[index].Project_Description;
         const actn_start = this.datepipe.transform(new Date(actions_list[index].StartDate), 'MMM d, y');
         const actn_end = this.datepipe.transform(new Date(actions_list[index].EndDate), 'MMM d, y');
@@ -10801,10 +11583,10 @@ loadActionsGantt(){
 
 
  if(this.ActnsGanttChart){
-    this.ActnsGanttChart.updateOptions(options);    
+    this.ActnsGanttChart.updateOptions(options);
  }
  else{
- 
+
   this.ActnsGanttChart = new ApexCharts(document.querySelector("#actnsfull-graph"), options);
   this.ActnsGanttChart.render();
 console.log('apexchart gantt:',this.ActnsGanttChart);
@@ -10832,7 +11614,6 @@ onActnsGanttClosed(){
     this.ActnsGanttChart=null;
     this.ganttActnsConfig={bystatus:'All',byuser:'All'};
     this.total_userActns=undefined;
-    
 }
 
 
@@ -11028,12 +11809,14 @@ getNotificationsAnnouncements():string[]{
   allnotif=[...allnotif,'totalPActns4Aprvls'];
   if(this.pageContentType=='ACTION_DETAILS')
   allnotif=[...allnotif,'action_details'];
-  if(this.hasNoActionMembers&&this.hasNoActionMembers.length>0)
+  if(this.hasNoActionMembers&&this.hasNoActionMembers.length>0&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(this.projectInfo.Status.trim())==false)
   allnotif=[...allnotif,'hasNoActionMembers'];
-  if(this.noActvySinceCreation)
+  if(this.noActvySinceCreation&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(this.projectInfo.Status.trim())==false)
   allnotif=[...allnotif,'noActvySinceCreation'];
+  if(this.actnsWithoutProgress&&this.actnsWithoutProgress.length>0&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(this.projectInfo.Status.trim())==false)
+  allnotif=[...allnotif,'actnsWithoutProgress'];
 
-   return allnotif;
+  return allnotif;
 }
 
 //get notifications list.    end
@@ -11082,21 +11865,7 @@ getFormattedDuration(totalDuration: number): string {
 
 
   hasNoActionMembers:any=[];
-  detectMembersWithoutActions(){
-      if(this.Project_List&&this.filteremployee)
-      {    // if we have info of all the peoples present in the project. and info of all the people who have actions.
-        const peopleWithActns=this.filteremployee.map(item=>item.Team_Res);
-        const arr=[];
-        this.Project_List.forEach((item)=>{
-                if(item.Role!='Owner'&&peopleWithActns.includes(item.Emp_No)==false)
-                {
-                   if(arr.findIndex(ob=>ob.Emp_No==item.Emp_No)==-1)
-                   arr.push({  Emp_No:item.Emp_No, Emp_Name:item.RACIS.slice(0,item.RACIS.indexOf('(')).trim() })
-                }
-         });
-        this.hasNoActionMembers=arr;
-      }
-  }
+
 
 
 
@@ -11118,6 +11887,581 @@ getFormattedDuration(totalDuration: number): string {
     var myWindow = window.open(myurl, P_id);
     myWindow.focus();
   }
+
+
+
+  isPrjNameValid:'TOOSHORT'|'VALID'='VALID';
+  isPrjDesValid:'TOOSHORT'|'VALID'='VALID';
+
+
+
+  isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
+   if(inputString){
+
+    // let rg = new RegExp('^(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+');
+    let rg = new RegExp('^(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+');
+  // let rg = new RegExp('^\\s*(?:\\S+\\s+){' + (minWrds - 1) + '}\\S+(?:\\s+\\S+)*\\s*$');
+
+
+   const x=rg.test(inputString.trim());
+
+  return x ? 'VALID' : 'TOOSHORT';
+
+   }
+  return 'TOOSHORT'
+
+  }
+
+
+
+a_details:any;
+a_loading:boolean=false;
+getADetails(actncode){
+    if(actncode)
+    {
+        this.a_details=null;
+        this.a_loading=true;
+        const actnObj=this.projectActionInfo.find(actnobj=>actnobj.Project_Code==actncode);
+        let a_obj={
+          AllocatedHours:actnObj.AllocatedHours,
+          EndDate:actnObj.EndDate,
+          Status:actnObj.Status,
+          Delaydays:actnObj.Delaydays,
+          usedHours:0,
+          remainingHours:0,
+          extraHours:0
+        }
+
+        this.service.DARGraphCalculations_Json(actncode).subscribe((res:any)=>{
+          const actionAlhrs = (res[0]['ProjectMaxDuration']);  // action planned allocated hrs.
+          const usedhrs = (res[0]['TotalHoursUsedInDAR']);  // my timeline hrs on the action.
+          const remainingHrs:number=+((actionAlhrs-usedhrs).toFixed(1));
+          this.a_details={
+            ...a_obj,
+            usedHours:usedhrs,
+            remainingHours:remainingHrs<0?0:remainingHrs,
+            extraHours:remainingHrs<0?(Math.abs(remainingHrs)):0
+          };
+
+          this.a_loading=false;
+         });
+
+    }
+}
+
+
+
+close_add_time() {
+  document.getElementById("dropdown-timeline-menu").classList.remove("show");
+}
+
+btn_timeline_table_accordion(){
+  document.getElementById("btn-timeline-table-accordion").classList.toggle("rotate");
+}
+
+
+
+
+
+
+
+// setTimelineDate(val)
+// {
+//      this.current_Date = moment(val).format("MM/DD/YYYY");
+//      this.dateF=moment(val).toDate();
+//      this.starttime = null;
+//      this.endtime = null;
+//      this.noTimeSpaceAvailable=false;
+//      this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
+//      .subscribe(data => {
+//       const _timeList=JSON.parse(data[0]['time_json']);
+//       let _lastEndtime;
+//       if (_timeList.length != 0) {
+//          // when some timeline submit done on the selected date.
+//          const _endtimearr=_timeList.map(ob=>ob.endtime);
+//          _lastEndtime=_endtimearr[_endtimearr.length-1];
+//          const i=this.timedata1.indexOf(_lastEndtime);
+//          if(i<this.timedata1.length-1){
+//              this.starttime=_lastEndtime;
+//              this.endtime=this.timedata1[i+1];
+//          }
+//          else{
+//             this.starttime=null;
+//             this.endtime=null;
+//             this.noTimeSpaceAvailable=true;
+//          }
+
+//       }
+//       else{
+//            // when no timeline submit done on the selected date.
+//            this.starttime=this.timedata1[0];
+//            this.endtime=this.timedata1[1];
+//       }
+//      });
+
+//      const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
+//      const yesterdaystr=moment(this.disablePreviousDate).format("MM/DD/YYYY");
+//      this.timeline_of=this.current_Date==todaystr?'today':this.current_Date==yesterdaystr?'yesterday':null;
+//      this.getTimelineReportByDate(this.timeline_of);
+// }
+
+
+
+
+
+onTimelineDateInput(val){ debugger
+   if(val){  // user has input a value.
+    const tm4Date=(val.toDate()<this.disablePreviousDate||val.toDate()>this.todayDate)?this.current_Date:val.toDate();
+    this.selectDateForTimeline(tm4Date);
+    // this.setTimelineDate(tm4Date);
+   }
+   else{ // user has input null or undefined or val is falsy.
+       this.current_Date=null;
+   }
+}
+
+
+validateURL(value: string): void {
+  if(value){
+    this.isValidURL = /^(https?:\/\/)/.test(value);
+  }else{
+    this.isValidURL=true
+  }
+
+}
+
+
+
+// full time availability in timeline start.
+
+timeArr: any = [
+  "00:00", "00:15", "00:30", "00:45",
+  "01:00", "01:15", "01:30", "01:45",
+  "02:00", "02:15", "02:30", "02:45",
+  "03:00", "03:15", "03:30", "03:45",
+  "04:00", "04:15", "04:30", "04:45",
+  "05:00", "05:15", "05:30", "05:45",
+  "06:00", "06:15", "06:30", "06:45",
+  "07:00", "07:15", "07:30", "07:45",
+  "08:00", "08:15", "08:30", "08:45",
+  "09:00", "09:15", "09:30", "09:45",
+  "10:00", "10:15", "10:30", "10:45",
+  "11:00", "11:15", "11:30", "11:45",
+  "12:00", "12:15", "12:30", "12:45",
+  "13:00", "13:15", "13:30", "13:45",
+  "14:00", "14:15", "14:30", "14:45",
+  "15:00", "15:15", "15:30", "15:45",
+  "16:00", "16:15", "16:30", "16:45",
+  "17:00", "17:15", "17:30", "17:45",
+  "18:00", "18:15", "18:30", "18:45",
+  "19:00", "19:15", "19:30", "19:45",
+  "20:00", "20:15", "20:30", "20:45",
+  "21:00", "21:15", "21:30", "21:45",
+  "22:00", "22:15", "22:30", "22:45",
+  "23:00", "23:15", "23:30", "23:45"
+];
+
+tmCapacity=93;  // 23 hrs per day limit.   
+timedata3:any[]=[]; 
+timeline_of:'today'|'yesterday';
+noTimeSpaceAvailable:boolean=false;
+
+selectDateForTimeline(inputDate){    debugger   
+  this.current_Date = moment(inputDate).format("MM/DD/YYYY");
+  this.dateF = moment(inputDate).toDate();
+  const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
+  const yesterdaystr=moment(this.disablePreviousDate).format("MM/DD/YYYY");
+  if(this.current_Date==todaystr)
+  this.timeline_of='today';
+  else if(this.current_Date==yesterdaystr)
+  this.timeline_of='yesterday';   
+
+  this.timedata3=this.getTimeStamps(moment(inputDate).format("YYYY-MM-DD"),this.timeArr);   // initializing with default values.
+  this.getTimelineReportByDate(this.timeline_of); 
+}
+
+
+
+
+tmReportArr:any[]=[];
+tmReportTotalDuration:{hours:string,minutes:string}|null;
+// tmReportStatus:any;
+// tmSubmDate:any;
+tmReportLoading:boolean=false;
+submittedTimelines:any[]=[];
+getTimelineReportByDate(dateVal:'today'|'yesterday') {
+
+  if(dateVal){
+ 
+    this.tmReportArr=[];
+    // this.tmReportStatus=null;
+    this.tmReportTotalDuration=null;
+    // this.tmSubmDate=null;
+    this.submittedTimelines=[];
+    this.lastEndtime = 0;
+    this.bol = true;
+    this.noTimeSpaceAvailable=false;
+    this.starttime=null;
+    this.endtime=null;
+   // erase prev data.
+
+
+    this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+    this.ObjSubTaskDTO.PageNumber = 1;
+    this.ObjSubTaskDTO.PageSize = 2;
+    const _dateob=dateVal=='today'?this.todayDate:this.disablePreviousDate;
+    const _datestr=moment(_dateob).format('YYYY-MM-DD');
+    this.ObjSubTaskDTO.Start_Date = _datestr;
+    this.ObjSubTaskDTO.End_Date = _datestr;
+    this.ObjSubTaskDTO.sort = 'custom';
+    this.tmReportLoading=true;
+    this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+      (data => { 
+        this.tmReportLoading=false;
+        console.log(data);
+        if(data&&data[0].DAR_Details_Json){
+             const dar_json=JSON.parse(data[0].DAR_Details_Json);
+             if(dar_json&&dar_json[0]){
+
+              // all timelines submitted on selected date.     
+              this.tmReportArr=dar_json[0].Dardata;    
+              this.submittedTimelines=this.tmReportArr.map((obj)=>({ starttime:obj.starttime, endtime:obj.endtime }));
+              this.submittedTimelines.reverse();
+              this.bol = false;
+
+              // calculate last time of timeline submission on selected date.
+              const _lastendtm=this.submittedTimelines[this.submittedTimelines.length - 1].endtime;
+              const from=this.timeArr.indexOf(this.submittedTimelines[0].starttime);
+              const to=from+this.tmCapacity;
+              let choosed_date:any=new Date(_datestr);
+              let next_date:any=new Date(choosed_date);  next_date.setDate(next_date.getDate()+1);
+              choosed_date=moment(choosed_date).format("YYYY-MM-DD");
+              next_date=moment(next_date).format("YYYY-MM-DD");
+              const list=[...this.getTimeStamps(choosed_date,this.timeArr),...this.getTimeStamps(next_date,this.timeArr)].slice(from,to);
+              this.lastEndtime=list.find((ob)=>ob.time==_lastendtm);  
+            
+
+              // Check whether timespace available or not. and setting default values to starttime and endtime.
+              this.noTimeSpaceAvailable=(this.lastEndtime.time==list[list.length-1].time);
+              if(this.noTimeSpaceAvailable==false){
+                const li=list.findIndex((obj)=>obj.time==this.lastEndtime.time);
+                this.starttime=list[li];   this.endtime=list[li+1];   
+              }
+            
+              // calculate total timeline entered.
+              const [hrs,mins]=dar_json[0].TotalDuration.split(':');
+              this.tmReportTotalDuration={hours:hrs,minutes:mins};
+            
+
+
+            // adding 'duration' property to show timing in more easy way on the view.
+              this.tmReportArr.forEach(ob=>{
+                const k=/00:\d\d/.test(ob.Duration);
+                ob.duration=k?(ob.Duration.split(':')[1]+' mins'):(ob.Duration+' hrs');
+                ob.starttime=this.formatTimes(ob.starttime);
+                ob.endtime=this.formatTimes(ob.endtime);
+              }); 
+
+            }
+        }
+      });
+  }
+}
+
+
+getStartTiming1(){   
+  let list:any=[]; 
+
+  let from;
+  let to;
+  // modify start time list.  if: timeline found on selected date.
+  if(this.bol){
+      const choosed_date = moment(this.current_Date,'MM/DD/YYYY').format("YYYY-MM-DD");
+      list=this.getTimeStamps(choosed_date,this.timeArr);
+  }
+  else{
+    from=this.timeArr.indexOf(this.submittedTimelines[0].starttime);
+    to=from+this.tmCapacity;
+    let choosed_date:any=moment(this.current_Date,'MM/DD/YYYY').toDate();
+    let next_date:any=new Date(choosed_date);  next_date.setDate(next_date.getDate()+1);
+    choosed_date=moment(choosed_date).format("YYYY-MM-DD");
+    next_date=moment(next_date).format("YYYY-MM-DD");
+    list=[...this.getTimeStamps(choosed_date,this.timeArr),...this.getTimeStamps(next_date,this.timeArr)].slice(from,to);
+  }
+
+  // show time values till current time only. if: selected date==current date.
+  const c_date=new Date();   // fetches system current date and time. 
+  this.date11 = moment(c_date).format("MM/DD/YYYY");   
+  if (this.current_Date == this.date11||to>this.timeArr.length) {
+       const k=list.findIndex((tm)=>{  
+          const ct=c_date.getTime(); 
+          const r=tm.value>ct;
+          return r;
+       });
+
+       if(k>-1)
+       list=list.slice(0,k);
+  }
+  
+
+  this.timedata3=list;
+
+}
+
+
+getEndTiming1(){
+  let list:any=[];
+
+  // based on start time decide endtime.  if: no timeline found on selected date.
+  let from=0;
+  if(this.starttime){
+  from=this.timeArr.indexOf(this.bol?this.starttime.time:this.submittedTimelines[0].starttime);
+  }
+  const to=from+this.tmCapacity;
+  let choosed_date:any=moment(this.current_Date,'MM/DD/YYYY').toDate();
+  let next_date:any=new Date(choosed_date);  next_date.setDate(next_date.getDate()+1);
+  choosed_date=moment(choosed_date).format("YYYY-MM-DD");
+  next_date=moment(next_date).format("YYYY-MM-DD");
+  list=[...this.getTimeStamps(choosed_date,this.timeArr),...this.getTimeStamps(next_date,this.timeArr)].slice(from+1,to);
+
+ 
+     // show time values till current time only. if: selected date==current date.
+    const c_date=new Date();   // fetches system current date and time.
+    this.date11 = moment(c_date).format("MM/DD/YYYY");
+    if (this.current_Date == this.date11||to>this.timeArr.length) {
+        const k=list.findIndex((tm)=>{
+            const r=tm.value>c_date.getTime();
+            return r;
+        });
+
+        if(k>-1)
+        list=list.slice(0,k);
+    }
+   
+  this.timedata3=list;
+}
+
+
+
+getTimeStamps(dateVal:string,timeVals:string[]):{time:string,value:number}[]{
+  const _date=new Date(dateVal);
+  const _timestamps=timeVals.map((_time)=>{
+     const [shours,sminutes]=_time.split(':');
+     _date.setHours(+shours,+sminutes,0,0);
+     return {
+           time:_time,
+           value:_date.getTime()
+           };
+    });
+  return _timestamps;  
+}
+
+
+ngmodelObjCompare(obj1,obj2):boolean{
+  return obj1 && obj2 && obj1.time === obj2.time;
+}  // it is used in starttime and endtime ngmodel comparision.  since we are storing objects as ngmodel value.
+
+getTimeDiff(time1:number,time2:number):string{
+  if(time1&&time2){
+       const dfInMins=((time2-time1)/60000);
+       return dfInMins<60?`${dfInMins} mins`:`${(dfInMins/60).toFixed(1)} hrs`;
+  }
+  return '';
+}
+
+// full time availability in timeline end.
+on_Update_and_Released(val) {
+  this.isPrjNameValid=this.isValidString(this.ProjectName,3);
+  this.isPrjDesValid=this.isValidString(this.ProjectDescription,5);
+
+
+// check all mandatory fields are provided or not
+ if(!(
+      (this.ProjectName&&this.ProjectName.trim()!=''&&(this.ProjectName&&this.isPrjNameValid==='VALID'&&this.ProjectName.length <=100)  )&&
+      // (this.ProjectDescription&&this.ProjectDescription.trim()!='')
+      (this.ProjectDescription&&this.ProjectDescription.trim()!=''&&this.ProjectDescription?(this.characterCount<=500)&&(this.ProjectDescription&&this.isPrjDesValid==='VALID'&&this.ProjectDescription.length <=500) :false)
+
+    ))
+ {
+    this.formFieldsRequired=true;
+    return;
+ }
+ else this.formFieldsRequired=false;  // back to initial value.
+// check all mandatory fields are provided or not
+
+  this._remarks = '';
+  if (this.OGProjectType != this.ProjectType) {
+    var type = this.ProjectType
+    this.ProjectType = this.ProjectType;
+  }
+  else {
+    var type: string = this.OGProjectTypeid;
+  }
+
+  if (this.OGowner != this.selectedOwner) {
+    var owner = this.selectedOwner
+    this.selectedOwner = this.selectedOwner;
+  }
+  else {
+    var owner = this.OGownerid;
+  }
+
+  if (this.OGresponsible != this.selectedOwnResp) {
+    var resp = this.selectedOwnResp;
+    this.selectedOwnResp = this.selectedOwnResp;
+  }
+  else {
+    var resp = this.OGresponsibleid;
+  }
+
+  if (this.OGcategory != this.selectedcategory) {
+    var category = this.selectedcategory;
+    this.selectedcategory = this.selectedcategory;
+  }
+  else {
+    var category = this.OGselectedcategoryid;
+  }
+
+  if (this.OGclient != this.selectedclient) {
+    var client = this.selectedclient;
+    this.selectedclient = this.selectedclient;
+  }
+  else {
+    var client: string = this.OGselectedclientid;
+  }
+
+  if (this.OGSubmission != this.Submission_Name) {
+    var Submission = this.Submission_Name;
+    this.Submission_Name = this.Submission_Name;
+  }
+  else {
+    var Submission: string = this.OGSubmission_Nameid;
+  }
+
+  if (this.OGSubmission != this.Submission_Name) {
+    var Submission = this.Submission_Name;
+    this.Submission_Name = this.Submission_Name;
+  }
+  else {
+    var Submission: string = this.OGSubmission_Nameid;
+  }
+
+  if (type == '003' || type == '008') {
+    var allocation = this.Allocated_Hours["$ngOptionLabel"];
+  }
+  else {
+    var allocation = this.Allocated;
+  }
+
+  var datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");
+  var datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");
+
+  const jsonobj = {
+    Project_Type: type,
+    Project_Name: this.ProjectName,
+    Project_Description: this.ProjectDescription,
+    Owner: owner,
+    Responsible: resp,
+    Category: category,
+    Client: client,
+    StartDate: datestrStart,
+    EndDate: datestrEnd,
+    SubmissionName: Submission,
+    AllocatedHours: allocation,
+    Recurrence:this.Annual_date
+  }
+  const jsonvalue = JSON.stringify(jsonobj)
+  console.log(jsonvalue, 'json');
+
+  if (val == 0) {
+    this.approvalObj.Emp_no = this.Current_user_ID;
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
+    this.approvalObj.json = jsonvalue;
+    this.approvalObj.Remarks = this._remarks;
+    this.approvalObj.isApproval = val;
+
+    this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+      console.log(data['message'], "edit response");
+      if (data['message'] == '1') {
+        this.notifyService.showSuccess("Updated successfully.", "Success");
+      }
+      else if (data['message'] == '2') {
+        this.notifyService.showError("Not updated.", "Failed");
+      }
+      else if (data['message'] == '5') {
+        this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.responsible_dropdown.filter((element)=>(element.Emp_No===resp))[0]["RACIS"], "Updated successfully.");
+      }
+      else if (data['message'] == '6') {
+        this.notifyService.showSuccess("Updated successfully,"+" Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
+      }
+      else if (data['message'] == '8') {
+        this.notifyService.showError("Selected project owner cannot be updated.", "Not updated");
+      }
+      this.getProjectDetails(this.URL_ProjectCode);
+      this.closeInfo();
+    });
+  }
+  else if (val == 1) {
+    this.approvalObj.Emp_no = this.Current_user_ID;
+    this.approvalObj.Project_Code = this.URL_ProjectCode;
+    this.approvalObj.json = jsonvalue;
+    this.approvalObj.Remarks = this._remarks;
+    this.approvalObj.isApproval = val;
+
+    this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+      console.log(data['message'], "edit response");
+      if (data['message'] == '3') {
+        this.notifyService.showSuccess("Project updated and Approved successfully.", "Success");
+        this.Close_Approval();
+      }
+      else if (data['message'] == '2') {
+        this.notifyService.showError("Not updated.", "Failed");
+      }
+      this.getProjectDetails(this.URL_ProjectCode);
+      this.getapprovalStats();
+      this.closeInfo();
+    });
+  }
+
+
+
+
+}
+
+
+
+
+
+// file uploading progress bar start.
+filesInUpload:{id:string, filename:string, uploaded:number, processingUploadFile:boolean, message:string }[]=[];   // info of files are currently in uploading process.
+isFilesUploadingBarVisible:boolean=false;  // whether files uploading bar is visible or not.
+setFilesUploadingBarVisible(_visible:boolean){
+     this.isFilesUploadingBarVisible=_visible;
+     if(this.isFilesUploadingBarVisible){
+      document.getElementById("file-upload-modal-backdrop").style.display = "block";
+      document.getElementsByClassName('file-upload-progress')[0].classList.remove('d-none');
+     }
+     else{
+      document.getElementById("file-upload-modal-backdrop").style.display = "none";
+      document.getElementsByClassName('file-upload-progress')[0].classList.add('d-none');
+     }
+}
+
+
+getOverallFilesUploadProgress():number{
+  if(this.filesInUpload&&this.filesInUpload.length>0){
+    const filesProgressSum=this.filesInUpload.reduce((sum,item)=>sum+item.uploaded,0);
+    const totalfiles=this.filesInUpload.length;
+    const totalProgressVal=Math.round(filesProgressSum/totalfiles);
+    return totalProgressVal;
+  }
+  return 0;
+} 
+
+
+
+
+// file uploading progress bar end.
 
 }
 

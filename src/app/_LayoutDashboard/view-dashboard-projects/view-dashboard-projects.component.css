@@ -1530,7 +1530,7 @@ td:nth-child(4) {
 @media (max-width: 1300px) {
   .kt-widget__title {
       width: 160px;
-      white-space: nowrap;
+      /* white-space: nowrap; */
       overflow: hidden;
       text-overflow: ellipsis;
   }
@@ -1611,4 +1611,17 @@ td:nth-child(4) {
   display: flex;
   width: max-content;
   color: #979797;
+}
+
+
+.compl-remarks-span {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  max-height: 3em;
+  line-height: 1.5em;
+  cursor: default;
+
 }

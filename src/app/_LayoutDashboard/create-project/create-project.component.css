@@ -1490,7 +1490,7 @@ span.info-ic-guide svg {
   z-index: 99999999999999999999 !important;
 }
 
-::ng-deep .modal-backdrop.fade.show {
+::ng-deep .modal-backdrop.fade.show:not(#actnfile-upload-modal-backdrop) {
   display: none !important;
 }
 
@@ -2207,7 +2207,7 @@ a.nav-link.active span {
 ::ng-deep #staticBackdrop {
   z-index: 99999999999999999999 !important;
 }
-::ng-deep .modal-backdrop.fade.show {
+::ng-deep .modal-backdrop.fade.show:not(#actnfile-upload-modal-backdrop) {
   display: none !important;
 }
 

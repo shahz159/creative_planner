@@ -14,6 +14,8 @@ export class CalenderService {
     this.obj_CalenderDTO = new CalenderDTO;
   }
   readonly rootUrl = this.commonUrl.apiurl;
+  readonly rootUrlcore = this.commonUrl.apiurlcore;
+  
   GetCalenderProjectandsubList(obj: CalenderDTO) {
     let EmpNo = localStorage.getItem('EmpNo');
     this.obj_CalenderDTO.EmpNo = EmpNo;
@@ -223,6 +225,7 @@ export class CalenderService {
     this.obj_CalenderDTO.Rec_values=obj.Rec_values;
     this.obj_CalenderDTO.Rec_EndDate=obj.Rec_EndDate;
   
+    console.log(this.rootUrl + "CalenderAPI/Newinsertdarft_meetingco",'url')
     return this.http.post(this.rootUrl + "CalenderAPI/Newinsertdarft_meetingco", this.obj_CalenderDTO);
   }
   NewGetrequeat_Accpect(obj:CalenderDTO){
@@ -284,7 +287,30 @@ NewPending_table(obj:CalenderDTO){
   }
 
   UploadCalendarAttachmenst(data) {
+    console.log(this.rootUrl + "TestAPI/NewAddCalendarAttachment",'url')
     return this.http.post(this.rootUrl + "TestAPI/NewAddCalendarAttachment", data
+      , {
+        reportProgress: true,
+        observe: 'events'
+      }).pipe(
+      );
+  }
+
+  UploadCalendarAttachmenstCore(data) {
+  
+    return this.http.post(this.rootUrlcore + "Notification/NewAddCalendarAttachmentCore", data
+      , {
+        reportProgress: true,
+        observe: 'events'
+      }).pipe(
+      );
+  }
+
+  _AzureUploadCalendarAttachments(data) {
+    console.log(data,'attachment data')
+
+    console.log(this.rootUrlcore + "Azure/NewAddCalendarAttachmentCore",'attachment url')
+    return this.http.post(this.rootUrlcore + "Azure/NewAddCalendarAttachmentCore", data
       , {
         reportProgress: true,
         observe: 'events'
@@ -294,6 +320,24 @@ NewPending_table(obj:CalenderDTO){
 
   EditUploadCalendarAttachmenst(data) {
     return this.http.post(this.rootUrl + "TestAPI/NewAddNewfileCalendarDocuments", data
+      , {
+        reportProgress: true,
+        observe: 'events'
+      }).pipe(
+      );
+  }
+
+  EditUploadCalendarAttachmenstCore(data) {
+    return this.http.post(this.rootUrlcore + "Notification/NewEditCalendarAttachmentCore", data
+      , {
+        reportProgress: true,
+        observe: 'events'
+      }).pipe(
+      );
+  }
+
+  _AzureUpdateCalendarAttachments(data) {
+    return this.http.post(this.rootUrlcore + "Azure/NewEditCalendarAttachmentCore", data
       , {
         reportProgress: true,
         observe: 'events'
@@ -491,6 +535,16 @@ GetRecurrenceMeetingsService(obj:CalenderDTO){
   this.obj_CalenderDTO.Status_type=obj.Status_type
 
   return this.http.post(this.rootUrl+'CalenderAPI/NewGetRecurrenceMeetingsService',this.obj_CalenderDTO)
+}
+
+
+NewUpdateMeetingBookmark(obj:CalenderDTO){
+
+  this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID,
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No,
+  this.obj_CalenderDTO.flagid=obj.flagid
+
+  return this.http.post(this.rootUrl+'CalenderAPI/NewUpdateMeetingBookmark',this.obj_CalenderDTO)
 }
 
 

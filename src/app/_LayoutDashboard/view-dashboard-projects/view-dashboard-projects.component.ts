@@ -97,18 +97,35 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this._subtaskDiv = true;
     this.activatedRoute.queryParams.subscribe(params => {
       const section = params['section'];
-debugger
+
+      // filter if applied
+      const filterbyemp=params['filterbyemp'];
+      const filterbystatus=params['filterbystatus'];
+      const filterbytype=params['filterbytype'];
+      const filterconfig:any={};
+      if(filterbyemp)
+      filterconfig.emp=filterbyemp;
+      if(filterbystatus)
+      filterconfig.status=filterbystatus;
+      if(filterbytype)
+      filterconfig.type=filterbytype;
+
+      const isFilterapplied=Object.keys(filterconfig).length>0;
+     //
+
       if (section) {
         // Handle the case when you are coming from the dashboard
         if (section === 'Projects') {
-          this.getDelayProjects(this.delayType1);
+          this.getDelayProjects(this.delayType1,isFilterapplied?filterconfig:null);
         } else if (section === 'Actions') {
-          this.getDelayProjects(this.delayType2);
+          this.getDelayProjects(this.delayType2,isFilterapplied?filterconfig:null);
         } else if (section === 'Assigned Project') {
           this.Mode = this.activatedRoute.snapshot.params['Mode'];
           this.getAssignedProjects(this.type1);
           this.router.navigate(["../ViewProjects/" + this.Mode]);
         }
+
+
       } else {
         // Handle the case when you are on this page or coming from another page
         this.Mode = this.activatedRoute.snapshot.params['Mode'];
@@ -156,6 +173,8 @@ debugger
   ProjectPercentage: any; ProjectStatus: string;
   MoreDetailsList: any;
 
+
+  limit= 71
 
 
   getCurrentDate()  {
@@ -278,8 +297,8 @@ console.log(this._ProjectDataList,'_ProjectDataListxxxxxxxxxxxxxx')
   _totalfortfolio:any
 
 
-  getDelayProjects(type) {
-
+  getDelayProjects(type,filterconfig?:{emp:string,status:string,type:string}) {
+debugger
     this.projectsDataTable = false;
     this.AssignedTask = true;
     this.delayType=type;
@@ -300,6 +319,16 @@ console.log(this._ProjectDataList,'_ProjectDataListxxxxxxxxxxxxxx')
     this._ObjCompletedProj.PageNumber = Pgno;
     this._ObjCompletedProj.PageSize = 30;
 
+
+//if sort by filter applied.
+if(filterconfig){
+  this.edited = true;
+  this._ObjCompletedProj.Project_SearchText=undefined;
+  this._ObjCompletedProj.SelectedBlock_No=filterconfig.type;
+  this._ObjCompletedProj.SelectedEmp_No=filterconfig.emp;
+  this._ObjCompletedProj.SelectedStatus=filterconfig.status;
+}
+//
 
 
       if (this.Mode == "DelayProjects") {
@@ -322,16 +351,33 @@ console.log(this._ProjectDataList,'_ProjectDataListxxxxxxxxxxxxxx')
           }
           else {
             this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
-            console.log(  this._ProjectDataList,'_ProjectDataList')
+            console.log(  this._ProjectDataList,'_ProjectDataListvv')
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
 
             this._CurrentpageRecords = this._ProjectDataList.length;
             this._totalProjectsCount = data[0]['delaycount'];
+
+
+
+            if(filterconfig){
+               if(filterconfig.emp)
+               this.EmpCountInFilter[0].checked=true;
+
+               if(filterconfig.status)
+               this.StatusCountFilter[0].checked=true;
+
+               if(filterconfig.type)
+               this.TypeContInFilter[0].checked=true;
+            }
+
+
+
+
             // this.portfolio_List=JSON.parse(this._ProjectDataList['availableports'])
 
-             console.log(this._ProjectDataList,"portfolio_List")
+             console.log(this._ProjectDataList,"portfolio_Listsssss")
           }
         });
   }
@@ -468,7 +514,7 @@ debugger
     }
   }
   selectedItem_Emp = [];
-  isEmpChecked(item) {
+  isEmpChecked(item) { debugger
     let arr = [];
     this.edited = true;
     this.EmpCountInFilter.forEach(element => {

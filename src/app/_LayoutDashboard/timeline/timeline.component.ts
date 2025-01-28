@@ -26,7 +26,7 @@ export const MY_DATE_FORMATS = {
     dateInput: 'DD-MM-YYYY',
   },
   display: {
-    dateInput: 'DD-MM-YYYY',
+    dateInput: 'dddd, MMMM DD, YYYY',
     monthYearLabel: 'MMMM YYYY',
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MMMM YYYY'
@@ -72,9 +72,11 @@ export class TimelineComponent implements OnInit {
   Type:string;
   type1:string='My Timeline';
   type2:string='RACIS Timeline';
+  type3:string='DAR Inbox';
   CurrentPageNo: number = 1;
   _CurrentpageRecords: number;
   darArray: any = [];
+  darArrayLoading:boolean=false;
   sortType:string;
   sort1:string='Date';
   sort2:string='Project';
@@ -95,23 +97,52 @@ export class TimelineComponent implements OnInit {
   date = new Date();
   dateF = new FormControl(new Date());
   objProjectDto: ProjectDetailsDTO;
-  timedata: any = [];
-  timedata1: any=["08:00",
-    "08:15", "08:30", "08:45", "09:00",
-    "09:15", "09:30", "09:45", "10:00",
-    "10:15", "10:30", "10:45", "11:00",
-    "11:15", "11:30", "11:45", "12:00",
-    "12:15", "12:30", "12:45", "13:00",
-    "13:15", "13:30", "13:45", "14:00",
-    "14:15", "14:30", "14:45", "15:00",
-    "15:15", "15:30", "15:45", "16:00",
-    "16:15", "16:30", "16:45", "17:00",
-    "17:15", "17:30", "17:45", "18:00",
-    "18:15", "18:30", "18:45", "19:00",
-    "19:15", "19:30", "19:45", "20:00"];
+  // timedata: any = [];
+  // timedata1: any=["08:00",
+  //   "08:15", "08:30", "08:45", "09:00",
+  //   "09:15", "09:30", "09:45", "10:00",
+  //   "10:15", "10:30", "10:45", "11:00",
+  //   "11:15", "11:30", "11:45", "12:00",
+  //   "12:15", "12:30", "12:45", "13:00",
+  //   "13:15", "13:30", "13:45", "14:00",
+  //   "14:15", "14:30", "14:45", "15:00",
+  //   "15:15", "15:30", "15:45", "16:00",
+  //   "16:15", "16:30", "16:45", "17:00",
+  //   "17:15", "17:30", "17:45", "18:00",
+  //   "18:15", "18:30", "18:45", "19:00",
+  //   "19:15", "19:30", "19:45", "20:00"];
+
+  // timedata1: any = [
+  //   "00:00", "00:15", "00:30", "00:45",
+  //   "01:00", "01:15", "01:30", "01:45",
+  //   "02:00", "02:15", "02:30", "02:45",
+  //   "03:00", "03:15", "03:30", "03:45",
+  //   "04:00", "04:15", "04:30", "04:45",
+  //   "05:00", "05:15", "05:30", "05:45",
+  //   "06:00", "06:15", "06:30", "06:45",
+  //   "07:00", "07:15", "07:30", "07:45",
+  //   "08:00", "08:15", "08:30", "08:45",
+  //   "09:00", "09:15", "09:30", "09:45",
+  //   "10:00", "10:15", "10:30", "10:45",
+  //   "11:00", "11:15", "11:30", "11:45",
+  //   "12:00", "12:15", "12:30", "12:45",
+  //   "13:00", "13:15", "13:30", "13:45",
+  //   "14:00", "14:15", "14:30", "14:45",
+  //   "15:00", "15:15", "15:30", "15:45",
+  //   "16:00", "16:15", "16:30", "16:45",
+  //   "17:00", "17:15", "17:30", "17:45",
+  //   "18:00", "18:15", "18:30", "18:45",
+  //   "19:00", "19:15", "19:30", "19:45",
+  //   "20:00", "20:15", "20:30", "20:45",
+  //   "21:00", "21:15", "21:30", "21:45",
+  //   "22:00", "22:15", "22:30", "22:45",
+  //   "23:00", "23:15", "23:30", "23:45"
+  // ];
+  
+
   date11: any;
-  starttime: any;
-  endtime: any;
+  starttime: {time:string, value:number}|null;
+  endtime: {time:string, value:number}|null;
   timecount: any;
   releaseDate: any;
   timeList: any;
@@ -123,8 +154,8 @@ export class TimelineComponent implements OnInit {
   e_ind: number;
   stdata: any;
   etdata: any;
-  currenthours: any;
-  currentminutes: any;
+  // currenthours: any;
+  // currentminutes: any;
   minutes: any;
   hours: any;
   temp: any;
@@ -138,15 +169,23 @@ export class TimelineComponent implements OnInit {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.route.queryParams.subscribe(params => {
       const section=params.section;
-      this.timelineLog(section=='self'?this.type1:section=='racis'?this.type2:this.type1);
+      // this.timelineLog(section=='self'?this.type1:section=='racis'?this.type2:this.type1);
+
+      if(section=='self'||(!section)){
+          this.timelineLog(this.type1);
+      }else if(section=='racis'){
+          this.timelineLog1(this.type2,undefined);
+          this.setFilterInfo('Date',undefined);
+      }
+
     });
     this.activeDate=true;
     this.sortType=this.sort1;
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     this.disablePreviousDate.setHours(0,0,0,0);
     this.current_Date = moment(new Date()).format("MM/DD/YYYY");
-    this.currenthours = this.date.getHours();
-    this.currentminutes = this.date.getMinutes();
+    // this.currenthours = this.date.getHours();
+    // this.currentminutes = this.date.getMinutes();
     // this.french();
   }
 
@@ -164,57 +203,64 @@ export class TimelineComponent implements OnInit {
   //   this.endtime = null;
   //   // this.getTimelineReportByDate(sel_date=='TODAY'?'today':'yesterday');
 
-     
+
 
   // }
 
 
-
   noTimeSpaceAvailable:boolean=false;
-  setTimelineDate(val)
-  {    
-       this.current_Date = moment(val).format("MM/DD/YYYY");
-       this.dateF = new FormControl(new Date(val));
-       this.starttime = null;
-       this.endtime = null;
-       this.noTimeSpaceAvailable=false;
-       this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
-       .subscribe(data => { 
-        const _timeList=JSON.parse(data[0]['time_json']); 
-        let _lastEndtime;
-        if (_timeList.length != 0) {
-           // when some timeline submit done on the selected date.
-           const _endtimearr=_timeList.map(ob=>ob.endtime);
-           _lastEndtime=_endtimearr[_endtimearr.length-1];
-           const i=this.timedata1.indexOf(_lastEndtime);
-           if(i<this.timedata1.length-1){
-               this.starttime=_lastEndtime;
-               this.endtime=this.timedata1[i+1];
-           }
-           else{
-              this.starttime=null;
-              this.endtime=null;
-              this.noTimeSpaceAvailable=true;
-           }
 
-        }
-        else{
-             // when no timeline submit done on the selected date.
-             this.starttime=this.timedata1[0];
-             this.endtime=this.timedata1[1];
-        }
-       });
+  // setTimelineDate(val)
+  // {
+  //      this.current_Date = moment(val).format("MM/DD/YYYY");
+  //      this.dateF = new FormControl(new Date(val));
+  //      this.starttime = null;
+  //      this.endtime = null;
+  //      this.noTimeSpaceAvailable=false;
+  //      this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
+  //      .subscribe(data => {
+  //       const _timeList=JSON.parse(data[0]['time_json']);
+  //       let _lastEndtime;
+  //       if (_timeList.length != 0) {
+  //          // when some timeline submit done on the selected date.
+  //          const _endtimearr=_timeList.map(ob=>ob.endtime);
+  //          _lastEndtime=_endtimearr[_endtimearr.length-1];
+  //          const i=this.timedata1.indexOf(_lastEndtime);
+  //          if(i<this.timedata1.length-1){
+  //              this.starttime=_lastEndtime;
+  //              this.endtime=this.timedata1[i+1];
+  //          }
+  //          else{
+  //             this.starttime=null;
+  //             this.endtime=null;
+  //             this.noTimeSpaceAvailable=true;
+  //          }
 
-       const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
-       const yesterdaystr=moment(this.disablePreviousDate).format("MM/DD/YYYY");
-       this.timeline_of=this.current_Date==todaystr?'today':this.current_Date==yesterdaystr?'yesterday':null;
-       this.getTimelineReportByDate(this.timeline_of);
+  //       }
+  //       else{
+  //            // when no timeline submit done on the selected date.
+  //            this.starttime=this.timedata1[0];
+  //            this.endtime=this.timedata1[1];
+  //       }
+  //      });
 
-  }  
+  //      const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
+  //      const yesterdaystr=moment(this.disablePreviousDate).format("MM/DD/YYYY");
+  //      this.timeline_of=this.current_Date==todaystr?'today':this.current_Date==yesterdaystr?'yesterday':null;
+  //      this.getTimelineReportByDate(this.timeline_of);
+
+  // }
 
 
-
-
+  onTimelineDateInput(val){
+    if(val){  // user has input a value.
+     const tm4Date=(val.toDate()<this.disablePreviousDate||val.toDate()>this.todayDate)?this.current_Date:val.toDate();
+     this.selectDateForTimeline(tm4Date);
+    }
+    else{ // user has input null or undefined or val is falsy.
+        this.current_Date=null;
+    }
+ }
 
 
 
@@ -235,10 +281,11 @@ export class TimelineComponent implements OnInit {
     this.ObjSubTaskDTO.PageNumber = 1;
     this.ObjSubTaskDTO.PageSize = 30;
     // this.ObjSubTaskDTO.selected_emp = 0
-    this.ObjSubTaskDTO.sort = null
+    this.ObjSubTaskDTO.sort = null;
+    this.darArrayLoading=true;
       this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
       (data=>{
-
+        this.darArrayLoading=false;
         this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
         console.log(this.timelineList,"timelinedata")
         this.timelineDuration=(data[0]['TotalTime']);
@@ -262,7 +309,7 @@ export class TimelineComponent implements OnInit {
   }
   racisemplFilter:any
 
-  timelineLog1(type,empno:any){
+  timelineLog1(type,empno:any){   
     this.Type=type;
     this.showtimeline=true
 
@@ -271,13 +318,14 @@ export class TimelineComponent implements OnInit {
     this.ObjSubTaskDTO.PageSize = 30;
     this.ObjSubTaskDTO.selected_emp=empno?empno:0 ;
     this.ObjSubTaskDTO.sort = empno?'Employee':'Date';
-
+    this.darArrayLoading=true;
       this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
-      (data=>{
-
+      (data=>{ debugger
+        this.darArrayLoading=false;
+        this.userFound=true;
         this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
         this.racisemplFilter = JSON.parse(data[0]['RacisEmployee_Json'])
-
+console.log(this.racisemplFilter,"this.racisemplFilterthis.racisemplFilter")
         this.darArray=this.timelineList;
         console.log(this.darArray,"startdatastartdatastartdatastartdatastartdata")
         this._CurrentpageRecords=this.timelineList.length;
@@ -318,9 +366,10 @@ export class TimelineComponent implements OnInit {
       this.ObjSubTaskDTO.PageNumber = 1;
       this.ObjSubTaskDTO.PageSize = 30;
       this.ObjSubTaskDTO.sort = sort;
-
+        this.darArrayLoading=true;
         this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
         (data=>{
+          this.darArrayLoading=false;
           this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
           this.timelineDuration=(data[0]['TotalTime']);
           this.darArray=this.timelineList;
@@ -337,15 +386,16 @@ export class TimelineComponent implements OnInit {
     }
     else if(this.Type=='RACIS Timeline'){
       this.showtimeline=true;
-debugger
+
       this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
       this.ObjSubTaskDTO.PageNumber = 1;
       this.ObjSubTaskDTO.PageSize = 30;
       this.ObjSubTaskDTO.sort = sort;
       this.ObjSubTaskDTO.selected_emp = 0
-
+      this.darArrayLoading=true;
       this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
       (data=>{
+        this.darArrayLoading=false;
         this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
         this.darArray=this.timelineList;
         this._CurrentpageRecords=this.timelineList.length;
@@ -458,18 +508,31 @@ getTimelineProjects(){
   this.ObjSubTaskDTO.Emp_No=this.Current_user_ID;
   this.ObjSubTaskDTO.ProjectBlock=this.project_type;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
-  (data=>{ debugger
+  (data=>{ 
     this.loadingTimelineProjects=false;
-    this.projectList=JSON.parse(data[0]['ProjectList']); 
-    this.projectList=this.projectList.filter(p=>['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(p.Status.trim())==false)
-    console.log(this.projectList);
+    this.projectList=JSON.parse(data[0]['ProjectList']); console.log(this.projectList);
+    
+    let arr:any=[];
+    this.projectList.forEach((p)=>{
+         if(p.Team_Res.trim()==this.Current_user_ID){
+            p.possession='My responsible projects';
+            arr.unshift(p);
+         }
+         else{
+            p.possession='RACIS projects';
+            arr.push(p);
+         }
+    });
+    this.projectList=arr;
+
+    
   });
 }
 
 onTypeChanged(){
      if(['core','standard'].includes(this.project_type))
       this.getTimelineProjects();
-     else if(['lunch','personal'].includes(this.project_type)){
+     else if(['lunch','personal','corporate'].includes(this.project_type)){
          this.showProject=false;
          this.showAction=false;
          this.master_code=null;    // Project code.
@@ -491,12 +554,12 @@ getTimelineActions(){
   this.project_code=null;
   this.noact_msg=false;
   this.actionList=null;
-  
+
   this.ObjSubTaskDTO.Emp_No=this.Current_user_ID;
   this.ObjSubTaskDTO.Project_Code=this.master_code;
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
   (data=>{
-   
+
     this.actionList=JSON.parse(data[0]['ActionList']); console.log('actions here:',this.actionList);
     this.owner_empno=(data[0]['Project_Owner']);
     this.resp_empno=(data[0]['Team_Res']);
@@ -551,49 +614,49 @@ orgValueChange(val) {
 
 
 
-getDarTime() {
-  this.timedata = [];
-  this.objProjectDto.Emp_No = this.Current_user_ID;
-  this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
-  this.date11 = moment(new Date()).format("MM/DD/YYYY");
-  this.objProjectDto.date = this.current_Date;
+// getDarTime() {
+//   this.timedata = [];
+//   this.objProjectDto.Emp_No = this.Current_user_ID;
+//   this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
+//   this.date11 = moment(new Date()).format("MM/DD/YYYY");
+//   this.objProjectDto.date = this.current_Date;
 
-  if (this.current_Date == this.date11) {
-    this.timedata1.forEach(element => {
-      const [shours, sminutes] = element.split(":");
-      if (shours <= this.currenthours)
-        this.timedata.push(element);
-    });
-  }
-  else {
-    this.timedata1.forEach(element => {
-      this.timedata.push(element);
-    });
-  }
+//   if (this.current_Date == this.date11) {
+//     this.timedata1.forEach(element => {
+//       const [shours, sminutes] = element.split(":");
+//       if (shours <= this.currenthours)
+//         this.timedata.push(element);
+//     });
+//   }
+//   else {
+//     this.timedata1.forEach(element => {
+//       this.timedata.push(element);
+//     });
+//   }
 
-  this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
-    .subscribe(data => {
- debugger
-      this.timeList = JSON.parse(data[0]['time_json']); 
-      if (this.timeList.length != 0) {
-        this.bol = false;
-        this.timeList.forEach(element => {
-          this.starttimearr.push(element.starttime);
-        });
-        this.timeList.forEach(element => {
-          this.endtimearr.push(element.endtime);
-        });
-        let l = this.endtimearr.length;
-        this.lastEndtime = this.endtimearr[l - 1];
-      }
-      else if (this.timeList.length == 0) {
-        this.bol = true;
-        this.lastEndtime = 0;
-        this.starttimearr = [];
-        this.endtimearr = [];
-      }
-    });
-}
+//   this.service._GetTimeforDar(this.Current_user_ID, this.current_Date)
+//     .subscribe(data => {
+// debugger
+//       this.timeList = JSON.parse(data[0]['time_json']); 
+//       if (this.timeList.length != 0) {
+//         this.bol = false;
+//         this.timeList.forEach(element => {
+//           this.starttimearr.push(element.starttime);
+//         });
+//         this.timeList.forEach(element => {
+//           this.endtimearr.push(element.endtime);
+//         });
+//         let l = this.endtimearr.length;
+//         this.lastEndtime = this.endtimearr[l - 1];
+//       }
+//       else if (this.timeList.length == 0) {
+//         this.bol = true;
+//         this.lastEndtime = 0;
+//         this.starttimearr = [];
+//         this.endtimearr = [];
+//       }
+//     });
+// }
 
 diff_minutes(dt2, dt1) {
   var diff = (dt2.getTime() - dt1.getTime()) / 1000;
@@ -606,11 +669,16 @@ submitDar() {
 
   this.submittingDar=true;   // submitting dar process start.
 
-  if (this.starttime != null && this.endtime != null) {
-    const [shours, sminutes] = this.starttime.split(":");
-    const [ehours, eminutes] = this.endtime.split(":");
-    var dt1 = new Date(2014, 10, 2, shours, sminutes);
-    var dt2 = new Date(2014, 10, 2, ehours, eminutes);
+  if (this.starttime&&this.endtime) {
+    const [shours, sminutes] = this.starttime.time.split(":");
+    const [ehours, eminutes] = this.endtime.time.split(":");
+    var dt1 = new Date(2014, 10, 2, +shours, +sminutes);
+    var dt2 = new Date(2014, 10, 2, +ehours, +eminutes);
+    // // Adjust for crossing midnight
+    if (dt2 <= dt1) {
+      dt2.setDate(dt2.getDate() + 1); // Move dt2 to the next day
+    }
+
     this.minutes = this.diff_minutes(dt1, dt2) % 60;
     if (this.minutes < 10) {
       this.minutes = "0" + this.minutes
@@ -624,21 +692,23 @@ submitDar() {
 
   this.objProjectDto.Emp_No = this.Current_user_ID;
   if (this.starttime != undefined && this.endtime != undefined && this.timecount != undefined) {
-    this.objProjectDto.StartTime = this.starttime;
-    this.objProjectDto.EndTime = this.endtime;
+    this.objProjectDto.StartTime = this.starttime.time;
+    this.objProjectDto.EndTime = this.endtime.time;
     this.objProjectDto.TimeCount = this.timecount;
   }
   this.current_Date = this.datepipe.transform(this.current_Date, 'MM/dd/yyyy');
   this.objProjectDto.date = this.current_Date;
   this.objProjectDto.WorkAchieved = this.workdes;
 
-  if(['lunch','personal'].includes(this.project_type)){ // when Timeline is for lunch or personal.
-      if(this.project_type==='lunch')
-         this.objProjectDto.Master_code='0';
-      else if(this.project_type==='personal')
-         this.objProjectDto.Master_code='1';
+  if(['lunch','personal','corporate'].includes(this.project_type)){ // when Timeline is for lunch or personal or corporate
+    if(this.project_type==='lunch')
+    this.objProjectDto.Master_code='0';
+    else if(this.project_type==='personal')
+    this.objProjectDto.Master_code='1';
+    else if(this.project_type==='corporate')
+    this.objProjectDto.Master_code='2';
 
-      this.objProjectDto.Project_Code = null;
+    this.objProjectDto.Project_Code = null;   
   }
   else{  // when Timeline is for project or action ( core or standard )
         if (this.showAction == false) {
@@ -656,11 +726,11 @@ submitDar() {
 
   this.service._InsertDARServie(this.objProjectDto)
     .subscribe(data => {
-    
+
       this._Message = data['message'];
       this.notifyService.showSuccess(this._Message, "Success");
       // after timeline submission success then complete the action also if needed. start
-      if(this.bothActTlSubm&&(!['lunch','personal'].includes(this.project_type))){
+      if(this.bothActTlSubm&&(!['lunch','personal','corporate'].includes(this.project_type))){
         const fd = new FormData();
         fd.append("Project_Name", this.actionList.find(item => item.Project_Code == this.project_code).Project_Name);  // ACTION NAME
         fd.append("Project_Code", this.project_code);                                                             // ACTION CODE.
@@ -696,14 +766,13 @@ submitDar() {
           });
       }
       // after timeline submission success then complete the action also if needed.  end
-      this.timelineLog(this.Type);   // rebind page timeline reports list.
+      this.timelineLog(this.type1);   // rebind page timeline reports list.
       this.clear();   // clear all fields. project_code, master_code, ....
       this.submittingDar=false;       // dar submitting process end.
-      this.setTimelineDate(this.timeline_of=='today'?this.todayDate:this.disablePreviousDate);
-     
+      this.selectDateForTimeline(this.timeline_of=='today'?this.todayDate:this.disablePreviousDate);
     });
 
-  this.getDarTime();
+  // this.getDarTime();
   // this.getTimelineReportByDate(this.timeline_of=='TODAY'?'today':'yesterday');
   // close sidebar whenever timeline is added.
   // document.getElementById("timepage").classList.remove("position-fixed");
@@ -715,40 +784,37 @@ submitDar() {
 
 
 
-
   darcreate() {
-    document.getElementById("timepage").classList.add("position-fixed");
-    document.getElementById("rightbar-overlay").style.display = "block";
-    document.getElementById("darsidebar").classList.add("kt-quick-panel--on");
+    document.getElementById("timepage")!.classList.add("position-fixed");
+    document.getElementById("rightbar-overlay")!.style.display = "block";
+    document.getElementById("darsidebar")!.classList.add("kt-quick-panel--on");
     this.clear();
-    this.setTimelineDate(this.current_Date);
+    this.selectDateForTimeline(this.current_Date);    
     this.getDayReportSummary();
-    // this.changeTimelineDate('TODAY');  // get timeline report
-
   }
 
   closedarBar() {
-    document.getElementById("timepage").classList.remove("position-fixed");
-    document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
+    document.getElementById("timepage")!.classList.remove("position-fixed");
+    document.getElementById("rightbar-overlay")!.style.display = "none";
+    document.getElementById("darsidebar")!.classList.remove("kt-quick-panel--on");
     this.notifyService.showError("Cancelled", '');
     this.clear();
   }
 
-  closeInfo(){
-    document.getElementById("timepage").classList.remove("position-fixed");
-    document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementById("darsidebar").classList.remove("kt-quick-panel--on");
-    document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
-    this.clear();
-  }
+  // closeInfo(){
+  //   document.getElementById("timepage")!.classList.remove("position-fixed");
+  //   document.getElementById("rightbar-overlay")!.style.display = "none";
+  //   document.getElementById("darsidebar")!.classList.remove("kt-quick-panel--on");
+  //   document.getElementById("actyInfobar_header")!.classList.remove("open_sidebar");
+  //   this.clear();
+  // }
 
   moreDetails(pcode) {
     let name: string = 'MoreDetails';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
     var myWindow = window.open(myurl,pcode);
-    myWindow.focus();
+    myWindow?.focus();
   }
 
   newDetails(pcode) {
@@ -756,7 +822,7 @@ submitDar() {
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}`;
     var myWindow = window.open(myurl,pcode);
-    myWindow.focus();
+    myWindow?.focus();
   }
 
 
@@ -769,7 +835,7 @@ let qparams='';
     var url = document.baseURI + name;
     var myurl = `${url}/${pcode}${qparams}`;
     var myWindow = window.open(myurl,pcode);
-    myWindow.focus();
+    myWindow?.focus();
   }
 
   notinAction() {
@@ -832,18 +898,18 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
         this.a_details=null;
         this.a_loading=true;
       }
-      
-      
+
+
       this.service.NewSubTaskDetailsService(prjcode).subscribe((res:any)=>{
-      
+
                  console.log("|||=>",res[0].ProjectStates_Json);
                  if(of==='PROJECT'){
 
                   this.p_details=JSON.parse(res[0].ProjectStates_Json)[0];
                   this.p_details.project_type=JSON.parse(res[0].ProjectName_Json)[0].Project_Type;
-                  this.projectMoreDetailsService.getProjectTimeLine(prjcode, '1', this.Current_user_ID).subscribe((res: any) => { 
-                    
-                      const tlTotalHrs:number = +JSON.parse(res[0].Totalhours);    
+                  this.projectMoreDetailsService.getProjectTimeLine(prjcode, '1', this.Current_user_ID).subscribe((res: any) => {
+
+                      const tlTotalHrs:number = +JSON.parse(res[0].Totalhours);
                       const remainingHrs:number=+((this.p_details.AllocatedHours-tlTotalHrs).toFixed(1));
                       this.p_details={
                         ...this.p_details,
@@ -885,35 +951,41 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
 // form validation new start.
 fieldRequired:boolean=false;
 onTLSubmitBtnClick(){
- const isLunchOrPersonal:boolean=['lunch','personal'].includes(this.project_type);
+  
+ const invalidEndtime=(this.starttime&&this.endtime&&(  
+ (this.project_type=='corporate'&&((this.endtime.value-this.starttime.value)/(1000*60))>this.remainingCorporateTime)||
+ (this.project_type=='lunch'&&((this.endtime.value-this.starttime.value)/(1000*60))>this.remainingLunchTime)||
+ (this.endtime.value<this.starttime.value)) );
+
+ const lunchPersonalCorporate:boolean=['lunch','personal','corporate'].includes(this.project_type);
 
        if(
-           (isLunchOrPersonal?true:this.master_code)&&
-           (isLunchOrPersonal?true:(this.showAction?this.project_code:true))&&
-           this.workdes&&
+           (lunchPersonalCorporate?true:this.master_code)&&
+           (lunchPersonalCorporate?true:(this.showAction?this.project_code:true))&&
+           (this.workdes&&this.workdes.trim())&&
            this.starttime&&
            this.endtime&&
-           this.dateF.value&&
-           (this.starttime<this.endtime)&&
+           this.dateF.value &&
+           (!invalidEndtime)&&
            (
-               isLunchOrPersonal?true:
+            lunchPersonalCorporate?true:
               ((this.showAction&&this.bothActTlSubm)?(this._remarks&&(this.ProState?this.selectedFile:true)):true)
            )
          ){
       // when all mandatory fields are provided.
          this.submitDar();
          }
-         else{ 
+         else{
         // when some mandatory fields are not provided.
         this.fieldRequired=true;
 
         // if start time, end time or date if not provided.
-        if(!(this.starttime&&this.endtime&&this.dateF.value)){
-          setTimeout(()=>document.getElementById("dropdown-timeline-menu").classList.add("show"),0);
-        }
+        // if(!(this.starttime&&this.endtime&&this.dateF.value)){
+        //   setTimeout(()=>document.getElementById("dropdown-timeline-menu").classList.add("show"),0);
+        // }
 
 
-        // 
+        //
       }
 }
 
@@ -943,17 +1015,18 @@ prostate(actioncode:any){
 showDropdown = false;
 activeAgendaIndex: number = 0
 toggleDropdown() {
+  debugger
   this.activeAgendaIndex = 0
   this.showDropdown = !this.showDropdown;
 }
 
 filterconfig: {
   filterby: 'Date' | 'Project' | 'Employees' ,
-  sortby: string
+  sortby: string|undefined
 } = { filterby: 'Date', sortby: 'Employees' };
 
 setFilterInfo(filterby:  'Date' |'Project' | 'Employees' , sortby: string | undefined) {
-  debugger
+
   // this.activeAgendaIndex = 0
   if(this.filterconfig.filterby!=filterby){
      sortby=undefined;
@@ -964,7 +1037,7 @@ setFilterInfo(filterby:  'Date' |'Project' | 'Employees' , sortby: string | unde
 }
 
 previous_filter() {
-  document.getElementById("dropd").classList.toggle("show");
+  document.getElementById("dropd")!.classList.toggle("show");
 
 }
 
@@ -987,30 +1060,30 @@ previous_filter() {
 
     edited:boolean = false
 
-    getTimelineOfEmployee(empno:string,pageNo:number=1){
-      debugger
-      this.showtimeline=true;
-      this.ObjSubTaskDTO.Emp_No = empno;
-      this.ObjSubTaskDTO.PageNumber = pageNo;
-      this.ObjSubTaskDTO.PageSize = 30;
+    // getTimelineOfEmployee(empno:string,pageNo:number=1){
 
-        this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-        (data=>{
-
-          this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
-          console.log(this.timelineList,"timelinedata")
-          this.timelineDuration=(data[0]['TotalTime']);
-          this.darArray=this.timelineList;  console.log('dar arry list:',this.darArray);
-          this.userFound = true
-          this.edited = true
-          this._CurrentpageRecords=this.timelineList.length;
-          if(this.timelineList.length == 0){
-            this.showtimeline=false;
-            this.timelineDuration=0;
-          }
-        });
-        // this.hideloadmore()
-    }
+    //   this.showtimeline=true;
+    //   this.ObjSubTaskDTO.Emp_No = empno;
+    //   this.ObjSubTaskDTO.PageNumber = pageNo;
+    //   this.ObjSubTaskDTO.PageSize = 30;
+    //     this.darArrayLoading=true;
+    //     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+    //     (data=>{
+    //       this.darArrayLoading=false;
+    //       this.timelineList=JSON.parse(data[0]['DAR_Details_Json']);
+    //       console.log(this.timelineList,"timelinedata")
+    //       this.timelineDuration=(data[0]['TotalTime']);
+    //       this.darArray=this.timelineList;  console.log('dar arry list:',this.darArray);
+    //       this.userFound = true
+    //       this.edited = true
+    //       this._CurrentpageRecords=this.timelineList.length;
+    //       if(this.timelineList.length == 0){
+    //         this.showtimeline=false;
+    //         this.timelineDuration=0;
+    //       }
+    //     });
+    //     // this.hideloadmore()
+    // }
 
 
 // hideloadmore(){
@@ -1029,73 +1102,81 @@ previous_filter() {
 
 
 
-submitTL(submDate:string)
-{
+// submitTL(submDate:string)
+// {
 
-  Swal.fire({
-    title: "Confirm End of Day",
-    text:'Are you sure you want to end the day?',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, End Day',
-    cancelButtonText: 'No'
-  })
-    .then((option) => {
-      if (option.isConfirmed) {  debugger
-         const empno=this.Current_user_ID;
-         const tmDate=moment(new Date(submDate)).format('MM/DD/YYYY');
-         this.service.NewInsertTimelineReport(empno,tmDate).subscribe((res:any)=>{
-               console.log(res);
+//   Swal.fire({
+//     title: "Confirm End of Day",
+//     text:'Are you sure you want to end the day?',
+//     showCancelButton: true,
+//     confirmButtonText: 'Yes, End Day',
+//     cancelButtonText: 'No'
+//   })
+//     .then((option) => {
+//       if (option.isConfirmed) {  debugger
+//          const empno=this.Current_user_ID;
+//          const tmDate=moment(new Date(submDate)).format('MM/DD/YYYY');
+//          this.service.NewInsertTimelineReport(empno,tmDate).subscribe((res:any)=>{
+//                console.log(res);
 
-          if(res&&res.message){
-               if(res.message=='1'){
-                    Swal.fire(
-                      'Timeline report submitted successfully.',
-                      `date : ${submDate}`,
-                      'success'
-                    );
-                   this.timelineLog(this.type1);
-                   this.getTimelineReportByDate(this.timeline_of);
-                    // rebind
-               }
-               else if(res.message=='2'||res.message!='2'){
-                Swal.fire(
-                  'Failed to submit timeline report.',
-                  `date : ${submDate}`,
-                  'error'
-                );
-               }
-          }
-          else{
-            Swal.fire({
-              icon: 'error',
-              title: 'Something went wrong!',
-              text: 'An issue occurred while processing your request. Please review the timeline before try again.',
-            });
-          }
+//           if(res&&res.message){
+//                if(res.message=='1'){
+//                     Swal.fire(
+//                       'Timeline report submitted successfully.',
+//                       `date : ${submDate}`,
+//                       'success'
+//                     );
+//                    this.timelineLog(this.type1);
+//                    this.getTimelineReportByDate(this.timeline_of);
+//                     // rebind
+//                }
+//                else if(res.message=='2'||res.message!='2'){
+//                 Swal.fire(
+//                   'Failed to submit timeline report.',
+//                   `date : ${submDate}`,
+//                   'error'
+//                 );
+//                }
+//           }
+//           else{
+//             Swal.fire({
+//               icon: 'error',
+//               title: 'Something went wrong!',
+//               text: 'An issue occurred while processing your request. Please review the timeline before try again.',
+//             });
+//           }
 
-         });
+//          });
 
-      }
-      else {
-        Swal.fire(
-          'Timeline report not submitted',
-          `date : ${submDate}`,
-          'error'
-        );
+//       }
+//       else {
+//         Swal.fire(
+//           'Timeline report not submitted',
+//           `date : ${submDate}`,
+//           'error'
+//         );
 
-      }
-    })
-    .catch(e => console.log(e));
-}
+//       }
+//     })
+//     .catch(e => console.log(e));
+// }
 
 
-tm4EndDate_msg:boolean=false;
+// tm4EndDate_msg:boolean=false;
 
 endDay(submDate:string)
 {
-
   if(this.tmReportTotalDuration==null){    // if there is no timeline has been entered by the user on the selected date.
-    this.tm4EndDate_msg=true;
+    // this.tm4EndDate_msg=true;
+    const err_box=document.querySelector('#endDay-not-allowed-box');
+    err_box?.classList.add('anim-start');
+    const onanimend=()=>{
+      setTimeout(()=>{
+        err_box?.classList.remove('anim-start');
+        err_box?.removeEventListener('animationend',onanimend);
+      },3500);
+    };
+    err_box?.addEventListener('animationend',onanimend);
     return;
   }
 
@@ -1109,9 +1190,9 @@ endDay(submDate:string)
             'Timeline report submitted successfully.',
             `date : ${submDate}`,
             'success'
-          );   
-          this.timelineLog(this.type1); 
-          this.service.GetTimelineSubmissionStatus(this.Current_user_ID).subscribe((res:any)=>{  // get new latest submission list 
+          );
+          this.timelineLog(this.type1);
+          this.service.GetTimelineSubmissionStatus(this.Current_user_ID).subscribe((res:any)=>{  // get new latest submission list
               this.submission_json=JSON.parse(res[0].submission_json);
               this.getTimelineReportByDate(this.timeline_of);
            });
@@ -1134,10 +1215,7 @@ endDay(submDate:string)
   });
   }
    });
-
 }
-
-
 
 
 submission_json:any;
@@ -1157,7 +1235,6 @@ addStatusIntoDarArr(){
             if(tm_submitted)
               tm.DarStatus=tm_submitted.Status;
             else{
-              debugger
               tm.DarStatus='Not Submitted';
               const crtdate=new Date();
               const daysDiff=Math.abs(moment(d1).diff(moment(crtdate),'days'));
@@ -1207,43 +1284,83 @@ formatHoursToHHMM(hours: number): string {
 
 
 tmReportArr:any[]=[];
-tmReportTotalDuration:{hours:string,minutes:string};
+tmReportTotalDuration:{hours:string,minutes:string}|null;
 tmReportStatus:any;
 tmSubmDate:any;
 tmReportLoading:boolean=false;
-getTimelineReportByDate(dateVal:'today'|'yesterday') {   debugger
-  if(dateVal){
+submittedTimelines:any[]=[];
+
+getTimelineReportByDate(dateVal:'today'|'yesterday') {  
+  if(dateVal){   
     this.tmReportArr=[];
     this.tmReportStatus=null;
     this.tmReportTotalDuration=null;
     this.tmSubmDate=null;
+    this.submittedTimelines=[];
+    this.lastEndtime = 0;
+    this.bol = true;
+    this.noTimeSpaceAvailable=false;
+    this.starttime=null;
+    this.endtime=null;
+    this.disabledLunchOption=false;
+    this.disabledCorporateOption=false;
+    this.remainingLunchTime=this.allocatedTimeForLunch;   // default
+    this.remainingCorporateTime=this.allocatedTimeForCorporate;   // default
     // erase prev data.
 
     this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
     this.ObjSubTaskDTO.PageNumber = 1;
     this.ObjSubTaskDTO.PageSize = 2;
-    this.ObjSubTaskDTO.sort = dateVal
-    this.ObjSubTaskDTO.Start_Date = null;
-    this.ObjSubTaskDTO.End_Date = null;
+    const _dateob=dateVal=='today'?this.todayDate:this.disablePreviousDate;
+    const _datestr=moment(_dateob).format('YYYY-MM-DD');
+    this.ObjSubTaskDTO.Start_Date = _datestr;
+    this.ObjSubTaskDTO.End_Date = _datestr;
+    this.ObjSubTaskDTO.sort = 'custom';
     this.tmReportLoading=true;
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-      (data => {    debugger
+      (data => {              
         this.tmReportLoading=false;
         console.log(data);
-        if(data&&data[0].DAR_Details_Json){
+        if(data&&data[0].DAR_Details_Json){   
              const dar_json=JSON.parse(data[0].DAR_Details_Json);
-             if(dar_json&&dar_json[0]){
-                this.tmReportArr=dar_json[0].Dardata;     console.log('tmreportarr:',this.tmReportArr);
+             if(dar_json&&dar_json[0]){     
+                // all timelines submitted on selected date.     
+                this.tmReportArr=dar_json[0].Dardata;    
+                this.submittedTimelines=this.tmReportArr.map((obj)=>({ starttime:obj.starttime, endtime:obj.endtime }));
+                this.submittedTimelines.reverse();
+                this.bol = false;
+
+                // calculate last time of timeline submission on selected date.
+                const _lastendtm=this.submittedTimelines[this.submittedTimelines.length - 1].endtime;
+                const from=this.timeArr.indexOf(this.submittedTimelines[0].starttime);
+                const to=from+this.tmCapacity;
+                let choosed_date:any=new Date(_datestr);
+                let next_date:any=new Date(choosed_date);  next_date.setDate(next_date.getDate()+1);
+                choosed_date=moment(choosed_date).format("YYYY-MM-DD");
+                next_date=moment(next_date).format("YYYY-MM-DD");
+                const list=[...this.getTimeStamps(choosed_date,this.timeArr),...this.getTimeStamps(next_date,this.timeArr)].slice(from,to);
+                this.lastEndtime=list.find((ob)=>ob.time==_lastendtm);  
+               
+
+                // Check whether timespace available or not. and setting default values to starttime and endtime.
+                this.noTimeSpaceAvailable=(this.lastEndtime.time==list[list.length-1].time);
+                if(this.noTimeSpaceAvailable==false){
+                  const li=list.findIndex((obj)=>obj.time==this.lastEndtime.time);
+                  this.starttime=list[li];   this.endtime=list[li+1];  
+                }
+              
+                
+              // adding 'duration'and formating 'starttime' and 'endtime' property to show timing in more easy way on the view.
                 this.tmReportArr.forEach(ob=>{
                   const k=/00:\d\d/.test(ob.Duration);
-                   ob.duration=k?(ob.Duration.split(':')[1]+' mins'):(ob.Duration+' hrs');   
+                   ob.duration=k?(ob.Duration.split(':')[1]+' mins'):(ob.Duration+' hrs');
                    ob.starttime=this.formatTimes(ob.starttime);
                    ob.endtime=this.formatTimes(ob.endtime);
+                }); 
 
-                });  // adding 'duration' property to show timing in more easy way on the view.
 
-
-                const [hrs,mins]=dar_json[0].TotalDuration.split(':'); 
+              // calculate status.
+                const [hrs,mins]=dar_json[0].TotalDuration.split(':');
                 this.tmReportTotalDuration={hours:hrs,minutes:mins};
                 this.tmSubmDate=dar_json[0].SubmissionDate;
                 if(this.submission_json){
@@ -1255,7 +1372,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {   debugger
                         return d1.getTime()==d2.getTime();
                     });
 
-                   
+
                     if(tm_submitted)
                       this.tmReportStatus=tm_submitted.Status;
                     else{
@@ -1267,11 +1384,36 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {   debugger
 
                 }
 
+
+              // calculate whether lunch option is allowed or not on the selected date.
+               console.log('tmreport arr:',this.tmReportArr);
+               const totallnchInMins=this.tmReportArr.reduce((sum,_tm)=>{   
+                   if(_tm.Tasktype=='Lunch'){
+                      const [h,m]=_tm.Duration.split(':').map(Number);
+                      return sum+(h*60+m);
+                   } 
+                   else 
+                   return sum;
+               },0);
+               this.disabledLunchOption=totallnchInMins>=this.allocatedTimeForLunch;
+               this.remainingLunchTime=this.allocatedTimeForLunch-totallnchInMins;
+               
+
+
+             // calculate whether corporate responsibility option is allowed or not on the selected date. 
+             const totalCorporateInMins=this.tmReportArr.reduce((sum,_tm)=>{    
+              if(_tm.Tasktype=='Corporate Responsibility'){
+                 const [h,m]=_tm.Duration.split(':').map(Number);
+                 return sum+(h*60+m);
+              } 
+              else 
+              return sum;
+             },0);
+            this.disabledCorporateOption=totalCorporateInMins>=this.allocatedTimeForCorporate;
+            this.remainingCorporateTime=this.allocatedTimeForCorporate-totalCorporateInMins;
             }
-
-
+            console.log('submitted timelines:',this.submittedTimelines,'last end time was:',this.lastEndtime);
         }
-
 
       });
 
@@ -1283,25 +1425,24 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {   debugger
 /* timeline submit end */
 
 close_add_time() {
-  document.getElementById("dropdown-timeline-menu").classList.remove("show");
+  document.getElementById("dropdown-timeline-menu")!.classList.remove("show");
 }
 btn_timeline_table_accordion(){
-  document.getElementById("btn-timeline-table-accordion").classList.toggle("rotate");
+  document.getElementById("btn-timeline-table-accordion")!.classList.toggle("rotate");
 }
 endTimelineModal(){
-  document.getElementById("endTimelineModal").style.display = "block";
-  document.getElementById("endTimelineModal").classList.add("show");
-  document.getElementById("endTimelineModalBackdrop").style.display = "block";
-  document.getElementById("endTimelineModalBackdrop").classList.add("show");
+  document.getElementById("endTimelineModal")!.style.display = "block";
+  document.getElementById("endTimelineModal")!.classList.add("show");
+  document.getElementById("endTimelineModalBackdrop")!.style.display = "block";
+  document.getElementById("endTimelineModalBackdrop")!.classList.add("show");
   this.getDayReportSummary();
-  this.tm4EndDate_msg=false;
 }
 endTimelineModal_dismiss(){
-  document.getElementById("endTimelineModal").style.display = "none";
-  document.getElementById("endTimelineModal").classList.remove("show");
-  document.getElementById("endTimelineModalBackdrop").style.display = "none";
-  document.getElementById("endTimelineModalBackdrop").classList.remove("show");
-  this.tm4EndDate_msg=false;
+  document.getElementById("endTimelineModal")!.style.display = "none";
+  document.getElementById("endTimelineModal")!.classList.remove("show");
+  document.getElementById("endTimelineModalBackdrop")!.style.display = "none";
+  document.getElementById("endTimelineModalBackdrop")!.classList.remove("show");
+  $('#endDay-not-allowed-box').removeClass('anim-start');
 }
 
 
@@ -1321,10 +1462,12 @@ formatTimes(time: string): string {
 
 expandDescription(id:string){
   const workachvsec=document.querySelector(id);
-  if(workachvsec.classList.contains('collapse'))
-  workachvsec.classList.remove('collapse');
-  else
-  workachvsec.classList.add('collapse');
+  if(workachvsec){
+    if(workachvsec.classList.contains('collapse'))
+      workachvsec.classList.remove('collapse');
+      else
+      workachvsec.classList.add('collapse');
+  }
 }
 
 
@@ -1334,7 +1477,7 @@ dueTodayTasksCount:{taskType:string,count:number}[]=[];
 getDayReportSummary(){
     this.service.NewGetEmployeePerformance(this.Current_user_ID).subscribe((res:any)=>{
       console.log("daySummaryReport res:",res);
-        if(res&&res.EmployeeReport){   
+        if(res&&res.EmployeeReport){
                this.daySummaryReport=JSON.parse(res.EmployeeReport)[0];
               console.log("daySummaryReport:",this.daySummaryReport);
               this.dueTodayTasksCount=[];
@@ -1353,26 +1496,26 @@ getDayReportSummary(){
 viewActions(type:'COMPLETED'|'DUE'|'DELAYED'){
   if(type=='DELAYED')
   {
-    let myurl = document.baseURI+'/ViewProjects/DelayProjects?section=Actions';
+    let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Actions&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
     let myWindow = window.open(myurl,'_blank');
-    myWindow.focus(); 
-  } 
+    myWindow?.focus();
+  }
 }
 
 viewProjects(type:'COMPLETED'|'DUE'|'DELAYED'){
   if(type=='DELAYED')
   {
-    let myurl = document.baseURI+'/ViewProjects/DelayProjects?section=Projects';
+    let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Projects&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
     let myWindow = window.open(myurl,'_blank');
-    myWindow.focus(); 
-  } 
+    myWindow?.focus();
+  }
 }
 
 
 viewTasks(){
   let myurl = document.baseURI+'/backend/createproject?AssignedProjectId=none';
   let myWindow = window.open(myurl,'_blank');
-  myWindow.focus();
+  myWindow?.focus();
 }
 
 
@@ -1383,56 +1526,455 @@ viewStandardTasks(type:'COMPLETED'|'DELAYED'){
     let myurl = document.baseURI+'/backend/ProjectsSummary';
     let myWindow = window.open(myurl,'_blank');
     const obj={
-      EmpNo:this.Current_user_ID, 
+      EmpNo:this.Current_user_ID,
       ProjectType:'003',
       Status:'InProcess',
     };
-    myWindow.sessionStorage.setItem('filterprjsby',JSON.stringify(obj));
-    myWindow.focus(); 
+    myWindow?.sessionStorage.setItem('filterprjsby',JSON.stringify(obj));
+    myWindow?.focus();
 
    }
 }
 
 
+// full time available start.
 
-// let qparams='';
-//     if(acode!==undefined){
-//       qparams=`?actionCode=${acode}`;
-//     }
-//     let name: string = 'Details';
-//     var url = document.baseURI + name;
-//     var myurl = `${url}/${pcode}${qparams}`;
-//     var myWindow = window.open(myurl,pcode);
-//     myWindow.focus(); 
+timeArr: any = [
+  "00:00", "00:15", "00:30", "00:45",
+  "01:00", "01:15", "01:30", "01:45",
+  "02:00", "02:15", "02:30", "02:45",
+  "03:00", "03:15", "03:30", "03:45",
+  "04:00", "04:15", "04:30", "04:45",
+  "05:00", "05:15", "05:30", "05:45",
+  "06:00", "06:15", "06:30", "06:45",
+  "07:00", "07:15", "07:30", "07:45",
+  "08:00", "08:15", "08:30", "08:45",
+  "09:00", "09:15", "09:30", "09:45",
+  "10:00", "10:15", "10:30", "10:45",
+  "11:00", "11:15", "11:30", "11:45",
+  "12:00", "12:15", "12:30", "12:45",
+  "13:00", "13:15", "13:30", "13:45",
+  "14:00", "14:15", "14:30", "14:45",
+  "15:00", "15:15", "15:30", "15:45",
+  "16:00", "16:15", "16:30", "16:45",
+  "17:00", "17:15", "17:30", "17:45",
+  "18:00", "18:15", "18:30", "18:45",
+  "19:00", "19:15", "19:30", "19:45",
+  "20:00", "20:15", "20:30", "20:45",
+  "21:00", "21:15", "21:30", "21:45",
+  "22:00", "22:15", "22:30", "22:45",
+  "23:00", "23:15", "23:30", "23:45"
+];
 
+tmCapacity=93;  // 23 hrs per day limit.   
+timedata3:any[]=[];  
+disabledLunchOption:boolean=false;
+remainingLunchTime:number=0;
+disabledCorporateOption:boolean=false;
+remainingCorporateTime:number=0;
+allocatedTimeForLunch:number=60;   // atmost 1 hour.   (in minutes)
+allocatedTimeForCorporate:number=60; // atmost 1 hour. (in minutes)
 
+selectDateForTimeline(inputDate){     
+  this.current_Date = moment(inputDate).format("MM/DD/YYYY");
+  this.dateF = new FormControl(new Date(inputDate));
+  const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
+  const yesterdaystr=moment(this.disablePreviousDate).format("MM/DD/YYYY");
+  if(this.current_Date==todaystr)
+  this.timeline_of='today';
+  else if(this.current_Date==yesterdaystr)
+  this.timeline_of='yesterday';   
 
+  this.timedata3=this.getTimeStamps(moment(inputDate).format("YYYY-MM-DD"),this.timeArr);   // initializing with default values.
+  this.getTimelineReportByDate(this.timeline_of); 
+}
 
+getStartTiming1(){   
+  let list:any=[]; 
 
+  let from;
+  let to;
+  // modify start time list.  if: timeline found on selected date.
+  if(this.bol){
+      const choosed_date = moment(this.current_Date,'MM/DD/YYYY').format("YYYY-MM-DD");
+      list=this.getTimeStamps(choosed_date,this.timeArr);
+  }
+  else{
+    from=this.timeArr.indexOf(this.submittedTimelines[0].starttime);
+    to=from+this.tmCapacity;
+    let choosed_date:any=moment(this.current_Date,'MM/DD/YYYY').toDate();
+    let next_date:any=new Date(choosed_date);  next_date.setDate(next_date.getDate()+1);
+    choosed_date=moment(choosed_date).format("YYYY-MM-DD");
+    next_date=moment(next_date).format("YYYY-MM-DD");
+    list=[...this.getTimeStamps(choosed_date,this.timeArr),...this.getTimeStamps(next_date,this.timeArr)].slice(from,to);
+  }
 
+  // show time values till current time only. if: selected date==current date.
+  const c_date=new Date();   // fetches system current date and time. 
+  this.date11 = moment(c_date).format("MM/DD/YYYY");   
+  if (this.current_Date == this.date11||to>this.timeArr.length) {
+       const k=list.findIndex((tm)=>{  
+          const ct=c_date.getTime(); 
+          const r=tm.value>ct;
+          return r;
+       });
 
-
-
-
-
-
-// if (type === 'Assigned Project') {
-//   let Mode: string = 'AssignedTask'
-//   var url = document.baseURI + this.page_Name;
-//   var myurl = `${url}/${Mode}?section=${type}`;
-
-//   var myWindow = window.open(myurl);
-//   myWindow.focus();
-// } else {
-//   let Mode: string = "DelayProjects";
-//   var url = document.baseURI + this.page_Name;
-//   var myurl = `${url}/${Mode}?section=${type}`;
+       if(k>-1)
+       list=list.slice(0,k);
+  }
   
-//   var myWindow = window.open(myurl);
-//   myWindow.focus();
 
-// }
+  this.timedata3=list;
+
+}
 
 
+@ViewChild('endtimeselect') endtimesel:any;
+
+getEndTiming1(){
+  let list:any=[];
+  // based on start time decide endtime.  if: no timeline found on selected date.
+  let from=0;
+  if(this.starttime){
+  from=this.timeArr.indexOf(this.bol?this.starttime.time:this.submittedTimelines[0].starttime);
+  }
+  const to=from+this.tmCapacity;
+  let choosed_date:any=moment(this.current_Date,'MM/DD/YYYY').toDate();
+  let next_date:any=new Date(choosed_date);  next_date.setDate(next_date.getDate()+1);
+  choosed_date=moment(choosed_date).format("YYYY-MM-DD");
+  next_date=moment(next_date).format("YYYY-MM-DD");
+  list=[...this.getTimeStamps(choosed_date,this.timeArr),...this.getTimeStamps(next_date,this.timeArr)].slice(from+1,to);
+
+ 
+     // show time values till current time only. if: selected date==current date.
+    const c_date=new Date();   // fetches system current date and time.
+    this.date11 = moment(c_date).format("MM/DD/YYYY");
+    if (this.current_Date == this.date11||to>this.timeArr.length) {
+        const k=list.findIndex((tm)=>{
+            const r=tm.value>c_date.getTime();
+            return r;
+        });
+
+        if(k>-1)
+        list=list.slice(0,k);
+    }
+   
+  this.timedata3=list;
+
+
+  // manually scroll to option.    THIS IS JUST TO MANUALLY SCROLL TO CORRECT OPTION OF ENDTIME NGSELECT.
+    if(this.endtime){     
+          const dropdownPanel=this.endtimesel.dropdownPanel._dropdown;     // endtime dropdown.
+          const optionHeight=dropdownPanel.querySelector('.ng-dropdown-panel-items .ng-option')?.offsetHeight||0;  // height of each option view in ng select.
+          const optionIndex=this.timedata3.findIndex(op=>op.value==this.endtime?.value);    // option index where we need to focus. 
+          const scrollToOption=optionHeight*optionIndex;
+          dropdownPanel.querySelector('.ng-dropdown-panel-items').scrollTop=scrollToOption;    // scroll to option.
+    }
+  // manually scroll to option.
+
+}
+
+
+
+
+getTimeStamps(dateVal:string,timeVals:string[]):{time:string,value:number}[]{
+   const _date=new Date(dateVal);
+   const _timestamps=timeVals.map((_time)=>{
+      const [shours,sminutes]=_time.split(':');
+      _date.setHours(+shours,+sminutes,0,0);
+      return {
+            time:_time,
+            value:_date.getTime()
+            };
+     });
+   return _timestamps;  
+}
+
+
+
+
+ngmodelObjCompare(obj1,obj2):boolean{
+  return obj1 && obj2 && obj1.time === obj2.time;
+}  // it is used in starttime and endtime ngmodel comparision.  since we are storing objects as ngmodel value.
+
+
+getTimeDiff(time1:number,time2:number):string{
+   if(time1&&time2){
+        const dfInMins=((time2-time1)/60000);
+        return dfInMins<60?`${dfInMins} mins`:`${(dfInMins/60).toFixed(1)} hrs`;
+   }
+   return '';
+}
+
+// full time available end.
+
+// timeline record edit/delete start.
+
+editTimelineRecord(recordIdstr:string){
+  $(`${recordIdstr} .wrk-des-bx`).addClass('d-none');
+  $(`${recordIdstr} .wrk-des-editbx`).removeClass('d-none');
+  $(`${recordIdstr} .wrk-des-editbx textarea`).focus();
+  $(`${recordIdstr} .dar-record-delete-btn`).addClass('d-none');
+}
+
+
+cancelEditTimelineRecord(recordIdstr:string,prevVal:string){
+  $(`${recordIdstr} .wrk-des-bx`).removeClass('d-none');
+  $(`${recordIdstr} .wrk-des-editbx textarea`).val(prevVal);
+  $(`${recordIdstr} .wrk-des-editbx`).addClass('d-none');
+  $(`${recordIdstr} .dar-record-delete-btn`).removeClass('d-none');
+  $(`${recordIdstr} .wrk-des-editbx .wrk-des-required-msg`).addClass('d-none');
+  $(`${recordIdstr} .wrk-des-editbx textarea`).css('border-color','#ccc');
+}
+
+
+updateWorkdesOfTR(recordIdstr:string,recordId:number,newWorkAchv:string,updateTMReportArr?:boolean){
+
+
+  if(newWorkAchv&&newWorkAchv.trim()){
+
+   const empno=this.Current_user_ID;   
+   const r_id=recordId;
+   const newWorkDes=newWorkAchv;
+   const operation=1;
+   this.service.NewUpdateTimelineActivity(empno,r_id,newWorkDes,operation).subscribe((res:any)=>{
+    console.log('timeline edit resp:',res); 
+    if(res&&res.message)
+    {  
+        if(res.message=='1'){
+           
+          // update dar array.
+            let record_obj;
+            for(let ob of this.darArray)
+            {
+                const result=ob.Dardata.find(ob2=>ob2.id==res.id);
+                if(result){
+                    record_obj=result;
+                    break;
+                }
+            }
+            if(record_obj){
+              record_obj.WorkAchieved=res.achievement;
+            }
+         
+
+          // update tmreport array.
+            if(updateTMReportArr){
+               for(let ob of this.tmReportArr){
+                   if(ob.id==res.id){
+                    ob.WorkAchieved=res.achievement; 
+                    break;
+                   }
+               }
+            }
+
+           
+             this.notifyService.showSuccess("Updated successfully", '');
+             $(`${recordIdstr} .wrk-des-bx`).removeClass('d-none');
+             $(`${recordIdstr} .wrk-des-editbx`).addClass('d-none');
+             $(`${recordIdstr} .wrk-des-editbx textarea`).val(res.achievement);
+             $(`${recordIdstr} .dar-record-delete-btn`).removeClass('d-none');
+
+        }else if(res.message=='2') {
+             this.notifyService.showError("Work description not updated.", 'Failed');
+        }
+    }
+    else{
+         this.notifyService.showError("Internal server error", 'Failed');
+    }
+   });
+
+  }
+  else{
+    $(`${recordIdstr} .wrk-des-editbx .wrk-des-required-msg`).removeClass('d-none');  
+    $(`${recordIdstr} .wrk-des-editbx textarea`).css('border-color','red');   
+  }
+}
+
+
+isWorkdesValid(wrkdes,recordidstr){   
+   if(!(wrkdes&&wrkdes.trim())){
+    $(`${recordidstr} .wrk-des-editbx .wrk-des-required-msg`).removeClass('d-none');
+    $(`${recordidstr} .wrk-des-editbx textarea`).css('border-color','red');
+   }
+   else{
+    $(`${recordidstr} .wrk-des-editbx .wrk-des-required-msg`).addClass('d-none');
+    $(`${recordidstr} .wrk-des-editbx textarea`).css('border-color','#ccc');
+   }
+}
+
+
+deleteTimelineRecord(tmRecord:any,updateTMReportArr?:boolean){  
+  let {date,Tasktype,ProjectName,ActionName,starttime,endtime,Duration,id}=tmRecord;
+  let formatteddate=this.datepipe.transform(date, 'EEEE, MMMM d, yyyy');
+  const k=/00:\d\d/.test(Duration);
+  let formattedduration=k?(Duration.split(':')[1]+' mins'):(Duration+' hrs');
+  let taskName=(['Lunch','Personal','Corporate Responsibility'].includes(Tasktype)==false&&ProjectName)?ProjectName:Tasktype;
+     Swal.fire({
+       title: "Delete Timeline Confirmation",
+       html:`
+       <div style="text-align: justify;">
+        
+     <label class="fs-7" style="color: #79797a; font-weight: 400;">${formatteddate}</label>
+     <div class="border rounded">
+          <table cellpadding="10px">
+             <tr>
+
+              <td width="100%" colspan="4" class="fs-7" style="text-align: left;font-weight: 500;">
+                 ${taskName}
+               ${(ActionName&&ActionName!=ProjectName)?`<div class="fs-9 text-muted d-flex mt-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="15" class="svg-icn"><path fill="none" d="M0 0h24v24H0z"></path><path d="M16 12l-6 6V6z"></path></svg>
+                  <div>${ActionName}</div>    
+               </div>`:''}
+              </td>
+            </tr>
+             <tr>
+              <td width="10%" class="fs-7 text-nowrap" style="font-weight: 400;color: #79797a;">Duration :</td>
+              <td width="20%" class="fs-7 text-nowrap">${starttime}</td><td width="20%" class="fs-7 text-nowrap">${endtime}</td>
+              <td width="50%" class="fs-7 text-nowrap font-weight-bold">${formattedduration}</td>
+             </tr>
+          </table>
+     </div>
+
+        <div class="text-danger fs-7 mt-3">Delete this timeline? This action cannot be undone.</div>   
+      </div>
+       `,
+       showCancelButton: true,
+       confirmButtonText: 'Delete Timeline',
+       cancelButtonText: 'Cancel'
+     }).then((choice)=>{
+           if(choice.isConfirmed){
+             
+             const empno=this.Current_user_ID;   
+             const r_id=id;
+             const operation=2;
+             this.service.NewUpdateTimelineActivity(empno,r_id,'',operation).subscribe((res:any)=>{
+             console.log('timeline record delete resp:',res);
+               if(res&&res.message)
+               {
+                   if(res.message=='1'){   
+                       
+                     // update the dar array.
+            debugger
+                    
+                    if(this.Type==this.type1&&this.sortType==this.sort1){
+
+                          //1. approach
+                      this.ObjSubTaskDTO.Emp_No = this.Current_user_ID;
+                      this.ObjSubTaskDTO.PageNumber = 1;
+                      this.ObjSubTaskDTO.PageSize = 2;
+                      const _datestr=this.datepipe.transform(date, 'yyyy-MM-dd');
+                      this.ObjSubTaskDTO.Start_Date = _datestr;
+                      this.ObjSubTaskDTO.End_Date = _datestr;
+                      this.ObjSubTaskDTO.sort = 'custom';
+                      this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
+                         (data => {       
+                           console.log(data);  
+                           if(data&&data[0].DAR_Details_Json){   
+                                const dar_json=JSON.parse(data[0].DAR_Details_Json);
+                                if(dar_json){    
+                                 if(dar_json.length==0){
+                                     const k=this.darArray.findIndex(_ob=>_ob.SubmissionDate==_datestr);
+                                     this.darArray.splice(k,1);
+                                 }
+                                 else{
+                                    for(let ob of this.darArray)
+                                    {
+                                        const k=ob.Dardata.findIndex(ob2=>ob2.id==r_id);
+                                        if(k>-1){
+                                            ob.Dardata=dar_json[0].Dardata;
+                                            ob.Total=dar_json[0].Total;
+                                            ob.TotalDuration=dar_json[0].TotalDuration;
+                                            break;
+                                        }
+                                    }
+                                 }
+                                } 
+                           }
+                   
+                      });
+
+
+                        // 2. approach 
+                     // let isEmptyRecord:boolean=false;
+                     // for (let ob of this.darArray) {
+                     //   const k = ob.Dardata.findIndex(ob2 => ob2.id == r_id);
+                     //   if (k > -1) {
+                     //     ob.Dardata.splice(k, 1);
+                     //     ob.Total = ob.Dardata.length;
+                     //     ob.TotalDuration;
+                     //     isEmptyRecord=ob.Total==0;
+                     //     break;
+                     //   }
+                     // }
+                     // if(isEmptyRecord){
+                     //   const _datestr=this.datepipe.transform(date, 'yyyy-MM-dd');
+                     //   const k=this.darArray.findIndex(_ob=>_ob.SubmissionDate==_datestr);
+                     //   if(k>-1)
+                     //   this.darArray.splice(k,1);
+                     // }  
+                    }
+                    else if(this.Type==this.type1&&this.sortType==this.sort2){
+                        this.sortTimeline(this.sortType);
+                    }
+
+                     // update tmreport array.  if needed
+                     if(updateTMReportArr){
+                        this.selectDateForTimeline(this.current_Date);   
+                     }
+                     
+                     if(this.Type==this.type1){    // update timelineDuration value only when user is on My Timeline screen.
+                      this.timelineDuration=res.TotalTime;
+                      if(this.timelineDuration==0)
+                      this.showtimeline=false;
+                     }
+                     
+                    
+                     this.notifyService.showSuccess("Deleted successfully", '');
+                   }
+                   else if(res.message=='2'){
+                     this.notifyService.showError("Unable to delete the timeline.", 'Failed');
+                   } 
+               }
+               else{
+                 this.notifyService.showError("Internal server error", 'Failed');
+               }
+              });
+
+           }
+     });
+}
+
+// timeline record edit/delete end.
+
+
+
+// dar inbox start.
+
+
+openDarInbox(){
+   this.Type=this.type3;   
+}
+
+
+
+openDarReqSidebar(crntIndex:number){
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementById("timepage")!.classList.add("position-fixed");
+  document.getElementById("dar-req_slider_bar").classList.add("kt-quick-panel--on");
+  $('#dar-req_slider_bar').addClass('open_sidebar');
+}
+
+closeDarReqSidebar() {
+    document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("timepage")!.classList.remove("position-fixed");
+    document.getElementById("dar-req_slider_bar").classList.remove("kt-quick-panel--on");
+    $('#dar-req_slider_bar').removeClass('open_sidebar');
+}
+
+
+
+
+// dar inbox end.
 
 }

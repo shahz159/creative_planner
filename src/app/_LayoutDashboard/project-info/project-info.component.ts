@@ -307,6 +307,7 @@ Prj_Code:any;
   Forward_Under: number = 0;
   Under_Approval: number = 0;
   Project_Hold: number = 0;
+  actn_cancellation_under:number=0;
   Project_type: any;
   Approver_Name: any;
   Approver_No: any;
@@ -373,6 +374,11 @@ Prj_Code:any;
               if (item.Status.trim() === 'Project Hold') {
                 this.Project_Hold = item.count;
               }
+
+              if(item.Status.trim() === 'Cancellation Under Approval'){
+                this.actn_cancellation_under=item.count;  
+              }
+
             });
           }
 
@@ -2324,7 +2330,7 @@ openAutocompleteDrpDwn(Acomp:string){
 
 
 get_Dropdowns_data(){
-  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectCode).subscribe(
+  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectCode,this.Current_user_ID).subscribe(
     (data) => {
       this.racisNonRacis=JSON.parse(data[0]['owner_dropdown']);
       this.allUsers1=(JSON.parse(data[0]['alluserlist']));  

@@ -676,26 +676,37 @@
                                                         </ng-template>
 
 
-
-
-
-
-
-
-
-
-
                                                         </ng-container>
+
+
                                                         </div>
                                                     </td>
 
+                                                    <!-- <td *ngIf="Mode!='DelayActions'&&Mode!='AssignedActions'">
+                                                      <p class="kt-widget__title mb-0" title="{{item.Project_Name}}">
+                                                        {{item.Project_Name | slice:0:limit}}
+                                                        <ng-container *ngIf="item.Project_Name.length > 71">...</ng-container>
+
+
+                                                      </p>
+
+                                                    </td> -->
+
+
                                                     <td *ngIf="Mode!='DelayActions'&&Mode!='AssignedActions'">
-                                                        <p class="kt-widget__title mb-0">
-                                                            {{item.Project_Name}}
-                                                            <!-- <span class="count2" *ngIf="item.Actioncount>0">{{item.Actioncount}}</span> -->
-                                                        </p>
+                                                      <p #prjtextcBx class="kt-widget__title mb-0 compl-remarks-span" title="{{item.Project_Name}}"
+                                                      (click)="$event.stopPropagation(); prjtextcBx.classList.contains('compl-remarks-span')?prjtextcBx.classList.remove('compl-remarks-span'):prjtextcBx.classList.add('compl-remarks-span')">
+                                                        {{item.Project_Name }}
+
+
+
+                                                      </p>
 
                                                     </td>
+
+
+
+
                                                     <td *ngIf="Mode=='DelayActions'">
                                                         <p class="kt-widget__title mb-0" title="Action name">
                                                             {{item.Action_Name}}
@@ -746,7 +757,7 @@
                                                             <!-- <span class="bg-success">{{item.Status}}</span> -->
                                                         </div>
                                                         <div *ngIf="item.Status=='Delay'" class="attach-tippy">
-                                                          <span class="vi  st-line"> {{item.Delaydays}} days delay</span>
+                                                          <span class="  st-line"> {{item.Delaydays}} days delay</span>
                                                             <span class="Delay_color font-weight-400">{{getFormattedDelay(item.Delaydays)}}</span>
                                                             <!-- <span class="font-weight-400">{{item.Status}}</span> -->
                                                         </div>
@@ -778,12 +789,12 @@
                                                             <span class="attach-tippy">
 
                                                             <span class="st-line curser-pointer" >
-                                                               <div style="width: max-content;">Rejected by: <h6>{{item.RejectedBy}} </h6></div>
-                                                                <div>on: {{item.RejectFromDate| date: 'dd-MM-yyyy'}}  </div>
+                                                               <div *ngIf="item.RejectedBy" style="width: max-content;">Rejected by: <h6>{{item.RejectedBy}} </h6></div>
+                                                                <div *ngIf="item.RejectFromDate">on: {{item.RejectFromDate| date: 'dd-MM-yyyy'}}  </div>
                                                                 <div *ngIf="item.RejectFromDate"> ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.RejectFromDate))}})  </div>
-                                                                <div>Comment : {{item.Rejectcomments}}</div></span>
+                                                                <div *ngIf="item.Rejectcomments">Comment : {{item.Rejectcomments}}</div></span>
 
-                                                            </span>   <span class="New_Project_Rejected">{{item.RejectedBy}}</span></div>
+                                                            </span>   <span *ngIf="item.RejectedBy"  class="New_Project_Rejected">{{item.RejectedBy}}</span></div>
 
 
                                                             <!-- --{{this.currentDate -item.RejectedFromDate  }}  -->
@@ -860,7 +871,6 @@
                                                     <div class="kt-widget__details">
                                                         <div class="kt-section__content kt-section__content--solid">
                                                           <div class="kt-media-group">
-
                                                             <ng-container *ngIf="item.ProjectOwner">
                                                             <a *ngIf="item.ProjectOwner!=item.TeamSupport" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner:{{item.ProjectOwner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                               <span>{{ item.ProjectOwner.split(' ')[0].charAt(0) }}{{ item.ProjectOwner.split(' ')[item.ProjectOwner.split(' ').length - 1].charAt(0) }}</span>
@@ -871,6 +881,7 @@
                                                               <span>{{ item.ProjectOwner.split(' ')[0].charAt(0) }}{{ item.ProjectOwner.split(' ')[item.ProjectOwner.split(' ').length - 1].charAt(0) }}</span>
                                                             </a></ng-container>
 
+
                                                             <ng-container *ngIf="item.TeamRes">
                                                             <a *ngIf="item.TeamRes!=item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible: {{item.TeamRes}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                 <span>{{item.TeamRes.split(' ')[0].charAt(0)}}{{item.TeamRes.split(' ')[item.TeamRes.split(' ').length -1].charAt(0)}}</span>
@@ -880,9 +891,13 @@
                                                             <a *ngIf="item.TeamRes!=item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Authority: {{item.TeamAutho}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                               <span>{{item.TeamAutho.split(' ')[0].charAt(0)}}{{item.TeamAutho.split(' ')[item.TeamAutho.split(' ').length -1].charAt(0)}}</span>
                                                             </a></ng-container>
-                                                            <a *ngIf="item.TeamRes==item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.TeamRes}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
+
+                                                            <ng-container *ngIf="item.TeamRes&&item.TeamAutho">
+                                                             <a *ngIf="item.TeamRes==item.TeamAutho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.TeamRes}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                 <span>{{item.TeamAutho.split(' ')[0].charAt(0)}}{{item.TeamAutho.split(' ')[item.TeamAutho.split(' ').length-1].charAt(0)}}</span>
                                                               </a>
+                                                            </ng-container>
+
                                                               <ng-container *ngIf="item.TeamSupport">
                                                               <a *ngIf="item.ProjectOwner!=item.TeamSupport" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Support: {{item.TeamSupport}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
                                                                 <span>{{item.TeamSupport&&item.TeamSupport.split(' ')[0].charAt(0)}}{{item.TeamSupport&&item.TeamSupport.split(' ')[item.TeamSupport&&item.TeamSupport.split(' ').length-1].charAt(0)}}</span>

@@ -1275,6 +1275,7 @@ span.count {
   height: 20px;
   line-height: 2;
 }
+
 .btn-filtr svg {
   fill: #5c5b5a;
   width: 16px;
@@ -1291,6 +1292,19 @@ span.count {
   margin-top: 18px;
 }
 
+.btn-filtr .count.pj-aprvls{
+  background-color: #35A79C;
+}
+
+.btn-filtr .count.infors{
+  background-color: #64B5F6;
+}
+.btn-filtr .count.lv-reqs{
+  background-color: #9C27B0;
+}
+.btn-filtr .count.lv-resps{
+  background-color: #795548;
+}
 
 .kt-detail-link:first-child {
   border-top-left-radius: 4px;
@@ -1485,14 +1499,14 @@ display: inline-block; */
 /*new details page loading circle start*/
 
 .smart-glass {
-  position: absolute;
+  /* position: absolute; */
   margin: auto;
-  left: 0;
+  /* left: 0;
   top: 0;
   right: 0;
-  bottom: 0;
-  width: 288px;
-  height: 388px;
+  bottom: 0; */
+  /* width: 288px;
+  height: 388px; */
 }
 
 .logo {
@@ -1525,6 +1539,24 @@ display: inline-block; */
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+
+
+.notifloading_spinner .logo{
+  width: 200px;
+  height: 200px;
+}
+
+.notifloading_spinner .circle{
+  padding: 11px;
+  border-width:4px;
+  animation-duration: 2.2s;
+}
+
+.notifloading_spinner .loader-img {
+  width: 65px;
+  height: 50px;
 }
 
 
@@ -1689,10 +1721,173 @@ display: inline-block; */
   border-color:#ede6ef;
 }
 
-
-
-
-
-
-
 /*circles*/
+
+#leave-aprv-list table th, #prj-aprv-list table th{
+  background-color: #e9e9e9 !important;
+}
+
+
+
+#darReqRes-list table thead th{
+  background-color: #e9e9e9 !important;
+}
+
+
+
+
+/*dar sidebar css start*/
+
+.dar-reqs-slider-bar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  right: 0;
+  background-color: #ffffff;
+  border-left: 1px solid #EDEAE9;
+  overflow-x: hidden;
+  transition: 0.5s;
+  box-shadow: 0 0.1rem 1rem 0.25rem rgb(0 0 0/5%) !important;
+}
+.dar-reqs-slider-bar.open_sidebar {
+  width: 55% !important;
+}
+
+
+.btn-filtr .count.dr-reqs{
+ background-color: #527ce2;
+}
+
+.btn-filtr .count.dr-resps{
+ background-color: #ffc432;
+}
+
+
+
+
+
+
+
+.dar-reqs-slider-bar.open_sidebar .kt-portlet__head {
+  padding: 1rem;
+  border-bottom: 1px solid #ebedf2;
+  border-top-left-radius: calc(0.3rem - 1px);
+  border-top-right-radius: calc(0.3rem - 1px);
+}
+.dar-reqs-slider-bar.open_sidebar .kt-portlet--body {
+  margin: 1.3rem;
+  border: 1px solid #ededed;
+  min-height: calc(100vh - 4vh);
+  height: auto;
+}
+.dar-reqs-slider-bar.open_sidebar .leave-title {
+  font-size: 16px;
+  color: #000000;
+  font-weight: 400;
+}
+
+.dar-reqs-slider-bar.open_sidebar .grid{
+  align-items: flex-start;
+  animation: fade-in .5s forwards;
+  display: block;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill,minmax(170px,1fr));
+  margin: 0;
+  padding: 0px 12px;
+  padding-bottom: 12px;
+}
+.dar-reqs-slider-bar.open_sidebar .kt-info-lable-v {
+  color: #939393;
+  letter-spacing: 0.3px;
+  font-size: 14px;
+  width: 24%;
+  font-weight: 500;
+}
+.dar-reqs-slider-bar.open_sidebar .kt-info-data-v {
+   /* background-color: #f0f0f0; */
+  border-radius: 35px;
+  padding: 2px 14px;
+  /* font-weight: 500; */
+  color: #4f4f4f;
+  /* margin-top: 10px; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.dar-reqs-slider-bar.open_sidebar .cnt-ovrl {
+  text-decoration: none;
+  font-size: 0.85em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* -webkit-box-orient: vertical; */
+  text-align: left !important;
+}
+
+
+
+.dar-reqs-slider-bar.open_sidebar .kt-info-box-tittle {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  color: #000;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+.dar-reqs-slider-bar.open_sidebar .kt-title-icon {
+  background-color: #527ce2;
+  width: 30px;
+  height: 30px;
+  border-radius: 50px;
+  display: flex;
+  margin-right: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.dar-reqs-slider-bar .dar-underaprvl{
+  background-color: #9C27BD !important;
+  color: white !important;
+  padding: 2px 10px;
+  border-radius: 3px;
+  width: max-content;
+  display: inline-block;
+}
+
+#dar-req_slider_bar .dar-achievement-sec {
+  margin: 0px 0px;
+  padding: 14px !important;
+  background: #f2f5ff;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+#dar-req_slider_bar .dar-achievement-sec .time-table
+{
+  display: block; 
+  max-height: 35vh;
+  overflow-y: auto;
+  background-color: #fff;
+}
+
+#dar-req_slider_bar .dar-achievement-sec table.time-table thead th{
+  font-size: 12px;
+  background-color: #6e6d7614 !important;
+  color: #090808;
+  padding: 10px;
+  font-weight: 600;
+}
+
+
+#dar-req_slider_bar .dar-achievement-sec table.time-table tbody tr td{
+  border-top: 1px solid #e1e6ee;
+  padding: 10px;
+  color: #0b0e1f;
+  vertical-align: middle;
+}
+
+/*dar sidebar css end*/

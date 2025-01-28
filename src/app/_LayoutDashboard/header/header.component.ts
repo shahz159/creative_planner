@@ -245,7 +245,7 @@ export class HeaderComponent implements OnInit {
               }
           });
       }
-      
+
  }
  else
  this.viewTimeline();
@@ -257,6 +257,7 @@ export class HeaderComponent implements OnInit {
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    debugger
     this.router.navigate(["../backend/Timeline"],{queryParams:{section:this.timelineType}});
   }
 
@@ -365,6 +366,7 @@ export class HeaderComponent implements OnInit {
         this.ObjSubTaskDTO.selected_emp = 0;
         this.service._GetTimelineActivityforRACIS(this.ObjSubTaskDTO).subscribe
           (data => {
+            debugger
             this.timelineList = JSON.parse(data[0]['DAR_Details_Json']);
             console.log( this.timelineList, "RACIStimeline")
                 if (this.timelineList&&this.timelineList.length < 0) {
@@ -400,7 +402,6 @@ export class HeaderComponent implements OnInit {
   }
 
   customTimeline() {
-
     this.selectedSort = 'custom';
     this.showtimeline = true;
 
@@ -577,7 +578,7 @@ export class HeaderComponent implements OnInit {
                   }
               });
           }
-          
+
     }
     else
     this.logout();
@@ -596,7 +597,7 @@ export class HeaderComponent implements OnInit {
   localStorage.removeItem('OrganizationId');
   localStorage.removeItem('UserfullName');
   localStorage.removeItem('_Currentuser');
-
+  localStorage.removeItem('IsStreamDownload');
   // Call AuthService logout for any additional logic
   this.authService.logout();
 
@@ -693,37 +694,37 @@ leave_remark:string|undefined;
 
 // validateInputDates(){
 //   debugger
-//    if(this.leaveStartsOn&&this.leaveEndsOn){   
+//    if(this.leaveStartsOn&&this.leaveEndsOn){
 //        this.invalidStartDate=this.leaveStartsOn.toDate()>this.leaveEndsOn.toDate();
 //        this.invalidEndDate=this.leaveEndsOn.toDate()<this.leaveStartsOn.toDate();
 
 //        if(this.selectedLeaveType){
 //         this.invalidStartDate=this.leaveStartsOn.toDate()<this.min_date||([1,3].includes(this.selectedLeaveType)&&(this.leaveStartsOn.toDate()>this.max_date));
-        
+
 //         if(this.selectedLeaveType==1)
 //         this.invalidEndDate=this.leaveEndsOn.toDate()>this.max_date2;
-        
+
 //        }
 //    }
 // }
 
 
-validateInputDates(){ 
+validateInputDates(){
 
   this.invalidEndDate=false;  // initially false.
   if([1,2,3,5].includes(this.selectedLeaveType)){
-    //for annual, emergency, casual and hajj 
-      if(this.leaveStartsOn&&this.leaveEndsOn){  
+    //for annual, emergency, casual and hajj
+      if(this.leaveStartsOn&&this.leaveEndsOn){
         const D1=this.leaveStartsOn.toDate();
         const D2=this.leaveEndsOn.toDate();
         this.invalidStartDate=(D1>D2)||
                               (this.selectedLeaveType?(
                               D1<this.min_date ||([1,3].includes(this.selectedLeaveType)&&D1>this.max_date)
                               ):false);
-                
+
         if([1,2,3,5].includes(this.selectedLeaveType)){
           this.invalidEndDate=this.leaveEndsOn.toDate()>this.max_date2;
-        }  
+        }
 
      }
 
@@ -740,7 +741,7 @@ validateInputDates(){
 
 onDatesChanged(){
 
-  // set max enddate. 
+  // set max enddate.
      if(this.selectedLeaveType==1){
         const d=new Date(this.leaveStartsOn.toDate());
         d.setDate(d.getDate()+29);
@@ -795,13 +796,13 @@ onLeaveTypeChanged(lvtype:any){
           const d3=new Date(d);
           d3.setDate(d3.getDate()+29);
           this.max_date2=d3;
-         
+
          };break; // annual leave
          case 2:{
             const d=new Date();
             d.setDate(d.getDate()+7);
             d.setHours(0,0,0,0);
-            this.min_date=d;  
+            this.min_date=d;
             this.max_date=null;
 
 
@@ -851,12 +852,12 @@ onLeaveTypeChanged(lvtype:any){
           this.max_date2=null;
         };break;
      }
-    
-     this.validateInputDates(); 
+
+     this.validateInputDates();
      if(this.invalidStartDate==false){
        this.onDatesChanged();
      }
-     
+
 }
 
 
