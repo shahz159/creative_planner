@@ -7929,5 +7929,10 @@ newDetails(ProjectCode) {
   var myWindow = window.open(myurl, ProjectCode);
   myWindow.focus();
 }
-
+open_search() {
+  document.getElementById("search-head-filter-open").classList.add("search-head-filter-open");
+}
+close_search() {
+  document.getElementById("search-head-filter-open").classList.remove("search-head-filter-open");
+}
 }
