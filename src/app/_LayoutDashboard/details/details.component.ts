@@ -3115,6 +3115,9 @@ approvalSubmitting:boolean=false;
       this.contentType=this.getFileExtension(this.selectedFile.name);
       this.cdr.detectChanges();
     }
+
+    //Reset file input value to allow selecting the same file again
+  e.target.value = '';
   }
 
   contentType:any="";
@@ -8038,6 +8041,7 @@ holdcontinue(Pcode:any){
     $('#upload').html('Select a file');
     this.selectedFile = null;
     this._remarks = "";
+    this._inputAttachments='';
     this.formFieldsRequired=false;
   }
 

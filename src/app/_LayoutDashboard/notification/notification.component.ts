@@ -287,12 +287,11 @@ export class NotificationComponent implements OnInit {
 
   showLeaveAprv() {
     document.getElementById('prj-aprv-list').classList.add('d-none');
-    document.getElementById('darReqRes-list').classList.add('d-none');
     document.getElementById('leave-aprv-list').classList.remove('d-none');
   }
 
-  currentPageContent:'PROJECT APPROVALS'|'INFORMATION'|'LEAVE REQUESTS'|'LEAVE RESPONSES'|'DAR REQUESTS'|'DAR RESPONSES'='PROJECT APPROVALS';
-  setPageContent(contenttype:'PROJECT APPROVALS'|'INFORMATION'|'LEAVE REQUESTS'|'LEAVE RESPONSES'|'DAR REQUESTS'|'DAR RESPONSES'){
+  currentPageContent:'PROJECT APPROVALS'|'INFORMATION'|'LEAVE REQUESTS'|'LEAVE RESPONSES'='PROJECT APPROVALS';
+  setPageContent(contenttype:'PROJECT APPROVALS'|'INFORMATION'|'LEAVE REQUESTS'|'LEAVE RESPONSES'){
       switch(contenttype)
       {
           case 'PROJECT APPROVALS':{
@@ -318,17 +317,6 @@ export class NotificationComponent implements OnInit {
                this.leavePanel='RESPONSES';
                this.showLeaveAprv();  // shows the leaves list table. and hide other list if opened.
                this.newNotificationLeave();  // fetch leave responses.
-          };break;
-          case 'DAR REQUESTS':{
-               this.currentPageContent='DAR REQUESTS';
-               this.darPanelType='REQUESTS'
-               this.showDarPanel(); // shows the dar list table. and hide other list if opened.
-              
-          };break;
-          case 'DAR RESPONSES':{
-               this.currentPageContent='DAR RESPONSES';
-               this.darPanelType='RESPONSES';
-               this.showDarPanel();  // shows the dar list table. and hide other list if opened.
           };break;
           default:{};
       }
@@ -404,11 +392,6 @@ export class NotificationComponent implements OnInit {
     document.getElementById("leave_requisition_form_slider_bar").classList.remove("kt-quick-panel--on");
     $('#leave_requisition_form_slider_bar').removeClass('open_requisition_sidebar_info');
 
-
-    document.getElementById("dar-req_slider_bar").classList.remove("kt-quick-panel--on");
-    $('#dar-req_slider_bar').removeClass('open_sidebar');
-
-
     document.getElementById("acceptbar").classList.remove("kt-quick-panel--on");
     this.approverComments=null;
 
@@ -462,7 +445,6 @@ export class NotificationComponent implements OnInit {
   showPrjAprv(){
     document.getElementById('prj-aprv-list').classList.remove('d-none');
     document.getElementById('leave-aprv-list').classList.add('d-none');
-    document.getElementById('darReqRes-list').classList.add('d-none');
   }
 
 
@@ -1499,43 +1481,6 @@ onAcceptWithCmtsBtnClicked(){
 // accept selected approvals with comments end.
 
 
-// dar req/res start.
 
-darPanelType:'REQUESTS'|'RESPONSES';  // dar view currently opened.
-darRequests:Object[]=[{}];      // all dar requests on the user.
-darResponses:Object[]=[{}];    // all dar responses of the user.
-currentDarReqIndex:number=-1;   // current  selected.
-selectedDarReqs:any=[];      // multiple dar req aprvls selected.
-
-showDarPanel() {
-  document.getElementById('darReqRes-list').classList.remove('d-none');
-  document.getElementById('prj-aprv-list').classList.add('d-none');
-  document.getElementById('leave-aprv-list').classList.add('d-none');
-}
-
-
-openDarReqSidebar(crntIndex:number){
-  this.currentDarReqIndex=crntIndex;
-
-  document.getElementById("rightbar-overlay").style.display = "block";
-  document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-  document.getElementById("dar-req_slider_bar").classList.add("kt-quick-panel--on");
-  $('#dar-req_slider_bar').addClass('open_sidebar');
-}
-
-closeDarReqSidebar() {
-    this.currentDarReqIndex=-1;
-    document.getElementById("rightbar-overlay").style.display = "none";
-    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    document.getElementById("dar-req_slider_bar").classList.remove("kt-quick-panel--on");
-    $('#dar-req_slider_bar').removeClass('open_sidebar');
-}
-
-
-
-
-
-
-// dar req/res end.
 
 }
