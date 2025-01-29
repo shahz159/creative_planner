@@ -1174,4 +1174,15 @@ export class ProjectTypeService {
   }
 
 
+
+  NewGetTimelineInbox(listtype:'D'|'P',empNo:string){ 
+    // D - Requests, P - Response
+    this.ObjSubTaskDTO.Emp_No=empNo;
+    this.ObjSubTaskDTO.type=listtype;
+    return this.http.post(this.rootUrl+'TestAPI/NewGetTimelineInbox',this.ObjSubTaskDTO);
+  }
+
+
+
+
 }

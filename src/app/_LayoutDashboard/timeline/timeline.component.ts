@@ -1502,10 +1502,16 @@ viewActions(type:'COMPLETED'|'DUE'|'DELAYED'){
   }
 }
 
-viewProjects(type:'COMPLETED'|'DUE'|'DELAYED'){
+viewProjects(type:'COMPLETED'|'DUE'|'DELAYED'|'REJECTED'){
   if(type=='DELAYED')
   {
     let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Projects&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
+    let myWindow = window.open(myurl,'_blank');
+    myWindow?.focus();
+  }
+  else if(type=='REJECTED')
+  {
+    let myurl = document.baseURI+`/ViewProjects/Rejected`;
     let myWindow = window.open(myurl,'_blank');
     myWindow?.focus();
   }
@@ -1535,6 +1541,8 @@ viewStandardTasks(type:'COMPLETED'|'DELAYED'){
 
    }
 }
+
+
 
 
 // full time available start.
@@ -1952,13 +1960,38 @@ deleteTimelineRecord(tmRecord:any,updateTMReportArr?:boolean){
 // dar inbox start.
 
 
+darRequestsList:any=[];
+darResponsesList:any=[];
+totalDarRequests:number=0;
+totalDarResponses:number=0;
+selectedDarReqIndex:number=-1;
+currentDarSection:'DAR_REQUESTS'|'DAR_RESPONSES'='DAR_REQUESTS';
+darRequestsLoading:boolean=false;
+darResponsesLoading:boolean=false;
+
+
 openDarInbox(){
-   this.Type=this.type3;   
+   this.Type=this.type3;       // dar inbox view 
+   this.getDarRequestsList();  // fetch dar requests.
+   this.getDarResponsesList();  // fetch dar responses.   
+   this.currentDarSection='DAR_REQUESTS';   // by default dar requests section is opened.
+}
+
+
+changeDarSectionTo(section:'DAR_REQUESTS'|'DAR_RESPONSES'){
+   this.currentDarSection=section;
+   if(this.currentDarSection=='DAR_REQUESTS'){
+      this.getDarRequestsList();
+   }
+   else if(this.currentDarSection=='DAR_RESPONSES'){
+      this.getDarResponsesList();
+   }
 }
 
 
 
 openDarReqSidebar(crntIndex:number){
+  this.selectedDarReqIndex=crntIndex;
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementById("timepage")!.classList.add("position-fixed");
   document.getElementById("dar-req_slider_bar").classList.add("kt-quick-panel--on");
@@ -1966,14 +1999,40 @@ openDarReqSidebar(crntIndex:number){
 }
 
 closeDarReqSidebar() {
+    this.selectedDarReqIndex=-1;
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("timepage")!.classList.remove("position-fixed");
     document.getElementById("dar-req_slider_bar").classList.remove("kt-quick-panel--on");
     $('#dar-req_slider_bar').removeClass('open_sidebar');
 }
 
+getDarRequestsList(){
+   const listtype='D';
+   const empno=this.Current_user_ID;
+   this.darRequestsLoading=true;
+   this.service.NewGetTimelineInbox(listtype,empno).subscribe((res)=>{
+    this.darRequestsLoading=false;
+         if(res&&res[0]){
+             this.darRequestsList=JSON.parse(res[0]['DarRequests']);
+             this.totalDarRequests=this.darRequestsList.length;
+         }   
+      console.log('dar requests list:',res);
+   });
+}
 
-
+getDarResponsesList(){
+  const listtype='P';
+  const empno=this.Current_user_ID;
+  this.darResponsesLoading=true;
+  this.service.NewGetTimelineInbox(listtype,empno).subscribe((res)=>{
+  this.darResponsesLoading=false;
+    if(res&&res[0]){
+      this.darResponsesList=JSON.parse(res[0]['DarResponses']);
+      this.totalDarResponses=this.darResponsesList.length;
+    }
+    console.log('dar responses list:',res);
+  });
+}
 
 // dar inbox end.
 
