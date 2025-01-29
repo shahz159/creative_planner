@@ -1986,7 +1986,7 @@ selectedAttendeesList = new Set<any>();
         this.ProjectType_DB = ProjectInfo_List[0]['Project_Block'];
         this.BsService.setProjectAuthoity(this.RACI_Autho);
       });
-      this.service.GetRACISandNonRACISEmployeesforMoredetails(this.selectedProjectCode).subscribe(
+      this.service.GetRACISandNonRACISEmployeesforMoredetails(this.selectedProjectCode,this.Current_user_ID).subscribe(
         (data) => {
 
           this.ownerArr=(JSON.parse(data[0]['RacisList']));
@@ -2634,7 +2634,7 @@ pcode:any;
 ownerArr:any
 getRACISandNonRACIS(){
 
-  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode).subscribe(
+  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode,this.Current_user_ID).subscribe(
     (data) => {
 
       this.ownerArr=(JSON.parse(data[0]['RacisList']));

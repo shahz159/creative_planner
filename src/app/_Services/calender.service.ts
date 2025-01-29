@@ -538,4 +538,14 @@ GetRecurrenceMeetingsService(obj:CalenderDTO){
 }
 
 
+NewUpdateMeetingBookmark(obj:CalenderDTO){
+
+  this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID,
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No,
+  this.obj_CalenderDTO.flagid=obj.flagid
+
+  return this.http.post(this.rootUrl+'CalenderAPI/NewUpdateMeetingBookmark',this.obj_CalenderDTO)
+}
+
+
 }
