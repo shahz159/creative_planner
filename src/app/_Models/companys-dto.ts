@@ -25,4 +25,5 @@ export class CompanyDTO {
     PageSize:number;
     Search:string;
     Quotes:string;
+
 }
