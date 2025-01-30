@@ -1164,6 +1164,7 @@ previous_filter() {
 
 // tm4EndDate_msg:boolean=false;
 
+submittingTimelineReport:boolean=false;
 endDay(submDate:string)
 {
   if(this.tmReportTotalDuration==null){    // if there is no timeline has been entered by the user on the selected date.
@@ -1182,8 +1183,9 @@ endDay(submDate:string)
 
   const empno=this.Current_user_ID;
   const tmDate=moment(new Date(submDate)).format('MM/DD/YYYY');
-
+  this.submittingTimelineReport=true;
   this.service.NewInsertTimelineReport(empno,tmDate).subscribe((res:any)=>{
+  this.submittingTimelineReport=false;  
   if(res&&res.message){
       if(res.message=='1'){
           Swal.fire(
@@ -1736,6 +1738,7 @@ cancelEditTimelineRecord(recordIdstr:string,prevVal:string){
 }
 
 
+
 updateWorkdesOfTR(recordIdstr:string,recordId:number,newWorkAchv:string,updateTMReportArr?:boolean){
 
 
@@ -1745,8 +1748,10 @@ updateWorkdesOfTR(recordIdstr:string,recordId:number,newWorkAchv:string,updateTM
    const r_id=recordId;
    const newWorkDes=newWorkAchv;
    const operation=1;
+   $(`${recordIdstr} .wrk-des-editbx .updatewrkdes-btn`).prop('disabled',true);
    this.service.NewUpdateTimelineActivity(empno,r_id,newWorkDes,operation).subscribe((res:any)=>{
     console.log('timeline edit resp:',res); 
+    $(`${recordIdstr} .wrk-des-editbx .updatewrkdes-btn`).prop('disabled',false);
     if(res&&res.message)
     {  
         if(res.message=='1'){
@@ -1852,7 +1857,7 @@ deleteTimelineRecord(tmRecord:any,updateTMReportArr?:boolean){
        cancelButtonText: 'Cancel'
      }).then((choice)=>{
            if(choice.isConfirmed){
-             
+             console.log('delete btn is clicked.')
              const empno=this.Current_user_ID;   
              const r_id=id;
              const operation=2;

@@ -71,6 +71,11 @@ export const BACKEND_ROUTES: Routes = [
           path: 'userpolicy/:val',
           loadChildren: () => import('../policy/policy.module').then(m => m.PolicyModule)
      }
+     ,
+     {
+         path: 'masterforms',
+         loadChildren: () => import('../_LayoutDashboard/master-forms/master-forms.module').then(m => m.MasterFormsModule)
+     }
 
 ]
 

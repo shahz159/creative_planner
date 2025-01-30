@@ -1158,14 +1158,14 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl+'TestAPI/NewGetEmployeePerformance',this.ObjSubTaskDTO);
   }
 
-  GetCPProjectCost(empno:string,allocatedHr:string){  debugger
+  GetCPProjectCost(empno:string,allocatedHr:string){  
     this.ObjDto.Emp_No=empno;
     this.ObjDto.Hours=allocatedHr;
     return this.http.post('https://cswebapps.com/ProjectCostAPI/api/ProjectCost/GetCPProjectCost',this.ObjDto);
   }
 
 
-  NewUpdateTimelineActivity(empno:string,recordId:number,newworkdes:string,operationType:1|2){  debugger
+  NewUpdateTimelineActivity(empno:string,recordId:number,newworkdes:string,operationType:1|2){  
      this.ObjDto.Emp_No=empno;
      this.ObjDto.id=recordId;
      this.ObjDto.flagid=operationType;  

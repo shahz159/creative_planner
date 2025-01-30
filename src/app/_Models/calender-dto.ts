@@ -70,6 +70,7 @@ export class CalenderDTO {
     PortfolioCount:any;
     DmsCount:any;
     Schedule_date:any;
+    UserId:number;
 
     // Exec_BLockName:string;
     // Project_Name:string;
