@@ -5599,7 +5599,8 @@ $('#acts-attachments-tab-btn').removeClass('active');
     this.meetinglength = 0;
     this.characterCount_Meeting=0;
     this.Description_Type=null;
-
+    this.agendaInput=undefined;
+    this.agendacharacterCount=null;
     this.upcomingMeetings = [];
     this.todaymeetings = [];
     this.last7dmeetings = [];
@@ -7065,12 +7066,14 @@ getChangeSubtaskDetais(Project_Code) {
     this.Title_Name = this.projectInfo.Project_Name;
     this.ngEmployeeDropdown = [];
     this.Description_Type = null;
+    this.agendaInput=undefined;
+    this.agendacharacterCount=null;
     this.SelectDms = [];
     this.MasterCode = null;
     this.EventNumber=null;
     this.Subtask = null;
     this.characterCount_Meeting=0;
-    this.Description_Type=null;
+ 
     this.Startts = null;
     this.Endtms = null;
     this.SelectStartdate = null;
@@ -9912,13 +9915,40 @@ getFormattedDate(date: string): string {
   return date.replace(/_/g, '-');
 }
 
+
+
+
+
+
+
+
+
+
+
+
+agendacharacterCount:any;
+
+AgendaCharacterCount(): void {
+  var count =this.agendaInput;
+  if(count){
+    this.agendacharacterCount = count.length;
+  }else{
+    this.agendacharacterCount =  null;
+  }
+  
+}
+
+
+
+
+
 // agenda in event creation start
 agendaInput: string | undefined;
 allAgendas: any = [];
 agendasAdded: number = 0;
 totalcountofagenda:any
 addAgenda() {
-  if (this.agendaInput.trim().length > 0 && this.agendaInput.trim().length < 100) {
+  if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101) {
     this.agendasAdded += 1;
     const agenda = {
       index: this.agendasAdded,
@@ -9928,6 +9958,7 @@ addAgenda() {
     this.agendaInput = undefined;
   }
   this.totalcountofagenda = this.allAgendas.length;
+  this.agendacharacterCount =  null;
   console.log("allAgendas:", this.allAgendas);
 }
 
@@ -10917,6 +10948,8 @@ OnSubmitSchedule1() {
         this.Title_Name = null;
         this.ngEmployeeDropdown = null;
         this.Description_Type = null;
+        this.agendaInput=undefined;
+        this.agendacharacterCount=null;
         this.MasterCode = null;
         this.projectsSelected = [];
         this.Subtask = null;

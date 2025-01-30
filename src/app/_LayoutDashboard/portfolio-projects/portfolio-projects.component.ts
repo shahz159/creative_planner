@@ -4067,6 +4067,8 @@ getChangeSubtaskDetais(Project_Code) {
     this.EventNumber=null;
     this.ngEmployeeDropdown = [];
     this.Description_Type = null;
+    this.agendaInput=undefined;
+    this.agendacharacterCount =  null;
     this.SelectDms = [];
     this.MasterCode = null;
     this.Subtask = null;
@@ -4501,6 +4503,8 @@ getChangeSubtaskDetais(Project_Code) {
           this.Title_Name = null;
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
+          this.agendaInput=undefined;
+          this.agendacharacterCount =  null;
           this.MasterCode = null;
           this.projectsSelected = [];
           this.Subtask = null;
@@ -4891,13 +4895,24 @@ linkMtgsToPortfolio(){
             }
             else
             this.notifyService.showError("something went wrong.","");
-
-
      })
-
-
     }
 
+
+
+
+    agendacharacterCount:any;
+
+    AgendaCharacterCount(): void {
+      var count =this.agendaInput;
+      if(count){
+        this.agendacharacterCount = count.length;
+      }else{
+        this.agendacharacterCount =  null;
+      }
+      
+    }
+  
 
 
 
@@ -4911,7 +4926,7 @@ allAgendas: any = [];
 agendasAdded: number = 0;
 totalcountofagenda:any
 addAgenda() {
-  if (this.agendaInput.trim().length > 0 && this.agendaInput.trim().length < 100) {
+  if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101) {
     this.agendasAdded += 1;
     const agenda = {
       index: this.agendasAdded,
@@ -4921,6 +4936,7 @@ addAgenda() {
     this.agendaInput = null;
   }
   this.totalcountofagenda = this.allAgendas.length;
+  this.agendacharacterCount =  null;
   console.log("allAgendas:", this.totalcountofagenda);
 
 }
@@ -6338,6 +6354,8 @@ bindCustomRecurrenceValues(){
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.agendaInput=undefined;
+    this.agendacharacterCount =  null;
     this.SelectDms = null;
     this.MasterCode = null;
     this.projectsSelected = [];

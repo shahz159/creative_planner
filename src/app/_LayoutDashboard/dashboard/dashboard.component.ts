@@ -2430,6 +2430,8 @@ isValidURL = true;
           this.Title_Name = null;
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
+          this.agendaInput=undefined;
+          this.agendacharacterCount =  null;
           this.MasterCode = null;
           this.projectsSelected = [];
           this.Subtask = null;
@@ -3033,6 +3035,8 @@ isValidURL = true;
             this.RemovedAttach = [];
             this.ngEmployeeDropdown = null;
             this.Description_Type = null;
+            this.agendaInput=undefined;
+            this.agendacharacterCount =  null;
             this.MasterCode = null;
             this.projectsSelected = [];
             this.Subtask = null;
@@ -4470,7 +4474,7 @@ currentTime:any;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.loading = false;
-debugger
+
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         var Schedule_date =this.EventScheduledjson[0].Schedule_date
         this.meetingRestriction(Schedule_date);
@@ -4512,7 +4516,7 @@ debugger
         // this.Meeting_password=  details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
         // console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
  
-
+debugger
         // document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
      
@@ -4548,7 +4552,7 @@ debugger
         }
         else {
           document.getElementById("hiddenedit").style.display = "none";
-           document.getElementById("deleteendit").style.display = "flex";
+           document.getElementById("deleteendit").style.display = this.Meeting_status==true?'none':'flex';
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "none";
           // document.getElementById("copy_data1").style.display = "none";
@@ -6371,6 +6375,8 @@ debugger
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.agendaInput=undefined;
+    this.agendacharacterCount =  null;
     this.characterCount=null;
     this.SelectDms = null;
     this.MasterCode = null;
@@ -6455,6 +6461,8 @@ debugger
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.agendaInput=undefined;
+    this.agendacharacterCount =  null;
     this.SelectDms = null;
     this.MasterCode = null;
     this.projectsSelected = [];
@@ -6866,11 +6874,28 @@ debugger
 
   // bar graph
   // agenda in event creation start
+
+
+
+  agendacharacterCount:any;
+
+  AgendaCharacterCount(): void {
+    var count =this.agendaInput;
+    if(count){
+      this.agendacharacterCount = count.length;
+    }else{
+      this.agendacharacterCount =  null;
+    }
+  }
+
+
+
+
   agendaInput: string | undefined;
   allAgendas: any = [];
   agendasAdded: number = 0;
   addAgenda() {
-    if (this.agendaInput.trim().length > 0 && this.agendaInput.trim().length < 100) {
+    if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101) {
       this.agendasAdded += 1;
       const agenda = {
         index: this.agendasAdded,
@@ -6879,7 +6904,7 @@ debugger
       this.allAgendas.push(agenda);
       this.agendaInput = undefined;
     }
-
+    this.agendacharacterCount =  null;
     console.log("allAgendas:", this.allAgendas);
   }
 

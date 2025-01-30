@@ -176,9 +176,15 @@ export class MeetingDetailsComponent implements OnInit {
   activeAgendaIndex: number = 0
   _PopupConfirmedValue: number;
   today: any = new Date().toISOString().substring(0, 10);
+  loadingDMS: boolean;
+
+  
+    
+
+
 
   ngOnInit(): void {
-
+    this.loadingDMS = false;
     this.MinLastNameLength = true;
 
     this.route.paramMap.subscribe(params => {
@@ -201,6 +207,10 @@ export class MeetingDetailsComponent implements OnInit {
     // this.getAttendeeTime();
    
     this.meeting_details();
+
+
+
+
     // this.GetDMSList();
     this.addAgenda();
     // this.GetMeetingnotes_data();
@@ -212,6 +222,10 @@ export class MeetingDetailsComponent implements OnInit {
     this.GetcompletedMeeting_data();
     this.agendaside(0);
     this.getMeetingApprovals();
+
+    setTimeout(() => {
+      this.loadingDMS = true;
+      }, 4000); 
 
     this.GetPreviousdate_meetingdata();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
@@ -863,9 +877,10 @@ debugger
       //  console.log(this.meetingDuration, 'meetingDate:');
     }
 
-    setTimeout(() => {
+    // setTimeout(() => {
       this.isLoading = false; // Set to false once the data is loaded
-      }, 4000); 
+    
+    //   }, 3000); 
   }
 
 
@@ -1177,12 +1192,9 @@ debugger
 
 
 
-  loadingDMS: boolean;
-
-
-
+ 
   GetDMSList() {
-    this.loadingDMS = false;
+    // this.loadingDMS = false;
     this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
       if (data) {
         this._MemosSubjectList = JSON.parse(data['JsonData']);
@@ -1212,7 +1224,7 @@ debugger
      });
 
       
-    this.loadingDMS = true;
+    // this.loadingDMS = true;
   }
 
 
@@ -2283,6 +2295,24 @@ debugger
 
   /////////////////////////////////////////// Agenda Start /////////////////////////////////////////////////////////
 
+
+
+
+
+  mainAgendaCount:any;
+
+  MainAgendaCount(){
+    debugger
+    var count =this.agendaInput;
+    if(count){
+      this.mainAgendaCount = count.length;
+    }else{
+      this.mainAgendaCount =  null;
+    }
+  }
+
+  
+
   agendaInput: string | undefined;
   allAgendas: any = [];
   agendasAdded: number = 0;
@@ -2291,8 +2321,8 @@ debugger
 
 
   addAgenda() {
-
-    if (this.agendaInput && this.agendaInput?.trim().length < 100) {
+debugger
+    if (this.mainAgendaCount > 0 && this.mainAgendaCount < 101) {
       if (this.agendaInput && this.agendaInput.trim().length > 0) {
         this.agendasAdded += 1;
         const agenda = {
@@ -2320,6 +2350,8 @@ debugger
     } else if (this.agendaInput && this.agendaInput?.trim().length > 100) {
       this.notifyService.showInfo("Sorry, agenda name is too long.", 'Please shorten it.');
     }
+
+    this.mainAgendaCount =  null;
   }
 
 
@@ -3434,6 +3466,10 @@ onFileChange(event) {
           this.Title_Name = null;
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
+          this.agendaInputs=undefined;
+          this.agendacharacterCount =  null;         
+          this.mainAgendaCount =  null;
+          this.agendaInput=undefined;
           this.MasterCode = null;
           this.projectsSelected = [];
           this.Subtask = null;
@@ -6322,6 +6358,10 @@ console.log(this.dayArr,'sdcsadcasdcssad')
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.agendaInputs=undefined;
+    this.agendacharacterCount =  null;
+    this.mainAgendaCount =  null;
+    this.agendaInput=undefined;
     this.characterCount=null;
     this.SelectDms = null;
     this.MasterCode = null;
@@ -6902,6 +6942,10 @@ console.log(this.dayArr,'sdcsadcasdcssad')
           this.RemovedAttach = [];
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
+          this.agendaInputs=undefined;
+          this.agendacharacterCount =  null;
+          this.mainAgendaCount =  null;
+          this.agendaInput=undefined;
           this.MasterCode = null;
           this.Subtask = null;
           this.Startts = null;
@@ -7002,11 +7046,27 @@ _azureMessage:any="";
 
 
 
+
+
+  agendacharacterCount:any;
+
+  AgendaCharacterCount(): void {
+    debugger
+    var count =this.agendaInputs;
+    if(count){
+      this.agendacharacterCount = count.length;
+    }else{
+      this.agendacharacterCount =  null;
+    }
+  }
+
+
+
   agendaInputs: string | undefined;
   // allAgendas: any = [];
   // agendasAdded: number = 0;
   addAgendas() {
-    if (this.agendaInputs.trim().length > 0 && this.agendaInputs?.trim().length < 100) {
+    if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101) {
       this.agendasAdded += 1;
       const agenda = {
         index: this.agendasAdded,
@@ -7015,7 +7075,7 @@ _azureMessage:any="";
       this.allAgendas.push(agenda);
       this.agendaInputs = undefined;
     }
-
+    this.agendacharacterCount =  null;
     console.log("allAgendas:", this.allAgendas);
   }
 

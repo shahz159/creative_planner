@@ -11693,11 +11693,12 @@
                                   <input class="form-control task-input" id="todo-input" name="text"
                                   [ngClass]="{'error-borderbottom': agendaInput&&(agendaInput.trim().length>100)}"
                                    placeholder="Add agenda and press 'Enter'" autofocus="true"
-                                  [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()" (keyup)="onKeyPress()"
+                                  [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()" (keyup)="AgendaCharacterCount();onKeyPress()"
                                   />
-                              <button  *ngIf="agendaInput&&(agendaInput.trim().length<100)" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+                              <button  *ngIf="agendacharacterCount && agendacharacterCount<101" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
                               </div>
-                                <span style="color:red" *ngIf="agendaInput&&(agendaInput.trim().length>100)">Maximum 100 characters are allowed.</span>
+                                <span *ngIf="agendacharacterCount > 0" >Max characters {{agendacharacterCount}}/100 </span>
+                                <span style="color:red" *ngIf="agendacharacterCount>=101">Maximum 100 characters are allowed.</span>
                           </div>
 
 
