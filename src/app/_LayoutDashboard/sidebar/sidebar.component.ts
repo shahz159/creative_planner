@@ -21,6 +21,7 @@ export class SidebarComponent implements OnInit {
   OrganizationId:any;
   _CompNo:string;
   _confirmBeforeSwitch:string;
+  menu:any = ['Company','Department','Role','Designation']
   // _activeLink:string;
   constructor(private router: Router,private bsService: BsServiceService,
     private authService: AuthService,private notifyService: NotificationService,

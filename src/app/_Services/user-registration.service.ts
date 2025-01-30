@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { UserDTO } from '../_models/user-dto';
-import { UserRegistrationDTO } from '../_models/user-registration-dto';
+import { UserDTO } from '../../app/_Models/user-dto';
+import { UserRegistrationDTO } from '../../app/_Models/user-registration-dto';
 import { ApiurlService } from './apiurl.service';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';

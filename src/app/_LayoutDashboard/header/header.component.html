@@ -306,6 +306,21 @@
     <!-- end: Header Menu -->
     <!-- begin:: Header Topbar -->
     <div class="kt-header__topbar">
+        <div class="arabic-btn-div d-none">
+            <div class="dropdown">
+                <button class="btn btn-lan dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                    <span class="globe-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    </span>
+                  <span id="en-lan" *ngIf="currentLang==='en'">English</span>
+                  <span id="ar-lan" *ngIf="currentLang==='ar'">Arabic</span>
+                </button>
+                <div class="dropdown-menu">
+                    <button class="dropdown-item" *ngIf="currentLang==='ar'" (click)="ChangelangTo('en')">English</button>
+                    <button class="dropdown-item" *ngIf="currentLang==='en'" (click)="ChangelangTo('ar')">Arabic</button>
+                </div>
+            </div>
+        </div>
         <div class="kt-header__topbar-item">
             <span  id="streamfeature"
                 class="kt-header__topbar-icon kt-header__topbar-icon--success mr-2" (click)="featuremodel()">

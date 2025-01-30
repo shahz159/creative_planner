@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     // this.authService.logout();
     if (localStorage.getItem('isLoggedIn') === 'true') {
-      this.router.navigate(['/backend/dashboard']);
+      this.router.navigate(['/backend/Streamdashboard']);
     }
 
     $('.showOrHide').on('click', function (e) {

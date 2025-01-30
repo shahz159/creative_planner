@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import tippy from 'node_modules/tippy.js';
@@ -18,6 +18,8 @@ import { MAT_MOMENT_DATE_FORMATS,MomentDateAdapter,MAT_MOMENT_DATE_ADAPTER_OPTIO
 import { isString } from '@ng-bootstrap/ng-bootstrap/util/util';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import Swal from 'sweetalert2';
+import { TranslateService } from '@ngx-translate/core';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -54,12 +56,12 @@ export const MY_DATE_FORMATS = {
 })
 export class HeaderComponent implements OnInit {
 
-
+  public static languageChanged:EventEmitter<any>=new EventEmitter();
   constructor(public service: ProjectTypeService,private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,private notifyService: NotificationService,
     public loadingBarServce:LoadingBarService,
-    private bsService:BsServiceService
+    private bsService:BsServiceService, private translate : TranslateService
     ) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.notificationDTO = new NotificationActivityDTO();
@@ -171,6 +173,16 @@ export class HeaderComponent implements OnInit {
     });
 
 
+  }
+
+  currentLang:"ar"|"en"="ar";
+  storedLanguage:any
+  ChangelangTo(lang:any){
+    this.currentLang=lang;
+    this.translate.use(lang); 
+    localStorage.setItem('language', lang); 
+    // DashboardComponent.ArabicSide.emit(lang);
+    HeaderComponent.languageChanged.emit(lang);
   }
 
   menutoggle() {
