@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
-import { DepartmentDTO } from '../_models/department-dto';
-import { UserDTO } from '../_models/user-dto';
+import { DepartmentDTO } from '../../app/_Models/department-dto';
+import { UserDTO } from '../../app/_Models/user-dto';
 import { ApiurlService } from './apiurl.service';
 
 @Injectable({

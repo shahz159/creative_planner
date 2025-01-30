@@ -578,7 +578,7 @@ debugger
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
 
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-
+      this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       var Schedule_date = this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
       this.Agendas_List = this.EventScheduledjson[0].Agendas;
@@ -8750,6 +8750,49 @@ clear_search() {
 // close_search() {
 //   document.getElementById("search-head-filter-open").classList.remove("search-head-filter-open");
 // }
+
+
+
+
+
+BookMarks:boolean;
+
+MeetingBookmark(flagid:any) {
+  if (this.isSubmitting) return;
+  this.isSubmitting = true;
+  debugger 
+  this._calenderDto.Schedule_ID = this.Schedule_ID;
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  this._calenderDto.flagid = flagid;
+  
+  this.CalenderService.NewUpdateMeetingBookmark(this._calenderDto).subscribe
+    ((data) => {
+      if(data['message'] == '1'){
+    
+        this._calenderDto.Schedule_ID=this.Schedule_ID;
+
+        this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+        ((data) => {    
+          this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+          this.BookMarks = this.EventScheduledjson[0].IsBookMark;
+          if(this.BookMarks){
+            this.notifyService.showSuccess("Added In bookmark Successfully", "Success");          
+          }else{
+            this.notifyService.showSuccess("Bookmark deleted", "Success");
+          }
+          this.isSubmitting = false;
+        
+        })  
+      }   
+    });
+}
+
+
+
+
+
+
+
 
 
 }

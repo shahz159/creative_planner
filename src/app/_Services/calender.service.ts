@@ -273,6 +273,7 @@ NewPending_table(obj:CalenderDTO){
 }
 
   NewInsertCalender(obj: CalenderDTO){
+    debugger
     this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.draftid=obj.draftid;
@@ -561,6 +562,14 @@ NewUsersDashboard(){
    return this.http.post('https://cswebapps.com/dmsapi/api/DashboardAPI/NewUsersDashboard', this.obj_CalenderDTO);
 }
 
+
+
+GetBookmarkMeetingsList(obj:CalenderDTO){
+
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No
+ 
+  return this.http.post(this.rootUrl+'CalenderAPI/NewGetBookmarkMeetings',this.obj_CalenderDTO)
+}
 
 
 }
