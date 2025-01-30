@@ -23,4 +23,5 @@ export class UserDetailsService {
       //   this.user_DetailList = data as UserDetailsDTO[];
       // });
   }
+
 }

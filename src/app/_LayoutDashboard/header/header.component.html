@@ -422,12 +422,16 @@
         <div class="kt-header__topbar-item kt-header__topbar-item--user">
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
                 <span class="kt-header__topbar-icon Kt-User-IC" id="user_details">
-                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
+                    <img *ngIf="UserProfile&&UserProfile!='NA';else nouimage" src="https://yrglobaldocuments.blob.core.windows.net/documents/{{UserProfile}}">
+                    <ng-template #nouimage>
+                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png">
+                    </ng-template>
                 </span>
             </div>
             <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
                 <!--begin: Head -->
                 <div class="kt-user-card kt-user-card--skin-light kt-notification-item-padding-x">
+                    <!-- <img class="h-user-profile-img" *ngIf="UserProfile&&UserProfile!='NA'" src="https://yrglobaldocuments.blob.core.windows.net/documents/{{UserProfile}}"> -->
                     <div class="kt-user-card__name">
                         <span class="kt-menu__link-text"><b>{{_fullname}}</b></span>
                     </div>

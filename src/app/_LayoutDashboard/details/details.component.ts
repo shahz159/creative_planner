@@ -3167,6 +3167,7 @@ approvalSubmitting:boolean=false;
   }  // for temp we are using this.
 
   proState:boolean=false;
+  processingActnComplete:boolean=false;
   actionCompleted() {
 
    const fieldsprvided:boolean=(this._remarks&&this._remarks.trim())&&(this.proState?this.selectedFile:true);
@@ -3195,12 +3196,13 @@ approvalSubmitting:boolean=false;
           if (this.selectedFile == null) {
             this.notifyService.showInfo("Please attach the completion file to complete the main project", "Note");
           }
-          else {  debugger
+          else {  
 
             let actnAttchUpload=0;
             let prjAttchUpload=0;
             let isActionCompleted=false;
             let isProjectCompleted=false;
+            this.processingActnComplete=true;
 
           // 1. Fileuploading bar visible. 
           const fid=this.selectedFile.name+(new Date().getTime());
@@ -3377,7 +3379,8 @@ approvalSubmitting:boolean=false;
                   this._inputAttachments = '';
                   this._remarks = '';
                   this.invalidFileSelected=false;
-  
+                  this.processingActnComplete=false;
+
                   const fi=this.filesInUpload.findIndex(fup=>fup.id==fileattch.id);
                   this.filesInUpload.splice(fi,1);
                   if(this.filesInUpload.length==0){
@@ -3415,17 +3418,20 @@ approvalSubmitting:boolean=false;
 
           // this.service._UpdateSubtaskByProjectCode(fd)
           //   .subscribe(data => {
+          this.processingActnComplete=true;
             this.service._UpdateSubtaskByProjectCodeCore(fd)
             .subscribe((event: HttpEvent<any>) => {
                if (event.type === HttpEventType.Response){
                  var myJSON = JSON.stringify(event);
-
                  this._Message = (JSON.parse(myJSON).body).message;
                  console.log(event,myJSON,this._Message,"action data");
                 //  alert(this._Message);
 
                  if(this._Message=='Success'){
-                  if ( this.selectedFile) {
+                  this.notifyService.showSuccess("Successfully updated", 'Action completed');
+                  this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+
+                  if(this.selectedFile) {
                   this.setFilesUploadingBarVisible(true);
                   const fid=this.selectedFile.name+(new Date().getTime());
                   const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Action complete file attachment -'+this._Subtaskname};
@@ -3459,7 +3465,8 @@ approvalSubmitting:boolean=false;
                           if(this.filesInUpload.length==0){
                             this.setFilesUploadingBarVisible(false);
                           }
-                          
+                          this.getAttachments(1);
+                          this.processingActnComplete=false;  
                         }
                       };break;
                     }
@@ -3469,20 +3476,30 @@ approvalSubmitting:boolean=false;
                   //  this._Message = (JSON.parse(myJSON).body);
 
                   });
-                }
-              }
-              this._remarks = "";
-              this._inputAttachments = "";
-              this.selectedFile = null;
-              this.invalidFileSelected=false;
-              this.getProjectDetails(this.URL_ProjectCode);
-              this.calculateProjectActions();     // recalculate the project actions.
-              this.closeActCompSideBar();
-              this.getAttachments(1);
-              }      // close action completion sidebar.
+                  }
+                  else{
+                    this.processingActnComplete=false;
+                  }
+                 
+              
+
+                this._remarks = "";
+                this._inputAttachments = "";
+                this.selectedFile = null;
+                this.invalidFileSelected=false;
+                this.getProjectDetails(this.URL_ProjectCode);
+                this.calculateProjectActions();     // recalculate the project actions.
+                this.closeActCompSideBar(); // close action completion sidebar.
+               
+                  }
+                 else{
+                  this.notifyService.showError('Unable to complete this Action.','Something went wrong!');  
+                  this.processingActnComplete=false;
+                 }
+              
+              }      
             });
-          this.notifyService.showSuccess("Successfully updated", 'Action completed');
-          this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+         
         }
 
       });   //swal end
@@ -3507,6 +3524,7 @@ approvalSubmitting:boolean=false;
         fd.append("Attachment","false")
       }
       // this.service._UpdateSubtaskByProjectCode(fd)
+      this.processingActnComplete=true;
       this.service._UpdateSubtaskByProjectCodeCore(fd)
         .subscribe((event: HttpEvent<any>) => {
 
@@ -3518,7 +3536,8 @@ approvalSubmitting:boolean=false;
               console.log(actnprogress, "progress");
               if (actnprogress == 100) console.log('progress completed');
               break;
-            case HttpEventType.Response:{
+            case HttpEventType.Response:{ 
+             
               var myJSON = JSON.stringify(event);
               this._Message = (JSON.parse(myJSON).body).message;
               if(this._Message==='Success')
@@ -3558,7 +3577,8 @@ approvalSubmitting:boolean=false;
                           if(this.filesInUpload.length==0){
                             this.setFilesUploadingBarVisible(false);   // hide the uploading bar.
                           }
-                          
+                          this.getAttachments(1);   // rebind the file attachment sidebar data.
+                          this.processingActnComplete=false;   // finally actn completion with provided input file attach done.
                         }
                       };break;
                     }
@@ -3569,9 +3589,12 @@ approvalSubmitting:boolean=false;
 
                   });
                 }
+                else{  // processing actn complete done where file attachment not provided.
+                  this.processingActnComplete=false; 
+                }
                 this.notifyService.showSuccess("Successfully updated", 'Action completed');
 
-
+              
 
                 // after the action is successfully completed
                 // let prjAction = this.projectActionInfo.find((prjAct: any) => prjAct.Project_Code === this.Sub_ProjectCode)
@@ -3589,12 +3612,14 @@ approvalSubmitting:boolean=false;
                 this.getProjectDetails(this.URL_ProjectCode);
                 this.calculateProjectActions();     // recalculate the project actions.
                 this.closeActCompSideBar();   // close action completion sidebar.
-                this.getAttachments(1);
+                
 
               }
               else
-              this.notifyService.showError('Unable to complete this Action.','Something went wrong!');
-
+              {
+                this.notifyService.showError('Unable to complete this Action.','Something went wrong!');  
+                this.processingActnComplete=false;
+              }
             };break;
 
           }
@@ -4943,7 +4968,7 @@ debugger
 
 
 
-
+  processingPrjComplete:boolean=false;
   updateMainProject() {
 // for checking whether mandatory fields are provided or not.
 
@@ -4981,7 +5006,7 @@ debugger
         fd.append("Attachment","false")
       }
       // this.service._fileuploadService(fd).
-
+      this.processingPrjComplete=true;
       this.service._UpdateProjectCompleteCore(fd).
         subscribe((event: HttpEvent<any>) => {
           switch (event.type) {
@@ -4995,17 +5020,19 @@ debugger
               this.progress = Math.round(event.loaded / event.total * 100);
               console.log(this.progress, "progress");
               break;
-            case HttpEventType.Response:
+            case HttpEventType.Response:{  
               console.log('File upload done!', event.body);
               var myJSON = JSON.stringify(event);
               this._Message = (JSON.parse(myJSON).body).message;
+
               if(this._Message=='Actions are in Under Approval'){
                 this.notifyService.showError(this._Message, 'Failed');
+                this.processingPrjComplete=false;
               }
               else{
-                if (this.progress == 100) {
-                  this.notifyService.showInfo("File uploaded successfully", "Project updated");
-                }
+                // if (this.progress == 100) {
+                //   this.notifyService.showInfo("File uploaded successfully", "Project updated");
+                // }
 
                 this.notifyService.showSuccess(this._Message, 'Success');
          
@@ -5039,6 +5066,7 @@ debugger
                       case HttpEventType.Response:{
                         console.log('Response received:', event1.body);
                         if(event1.body==1){
+                          this.processingPrjComplete=false;  // project completion with file attach done here.
                           this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
                           const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
                           this.filesInUpload.splice(fi,1);
@@ -5056,11 +5084,15 @@ debugger
 
                   });
                 }
+             
                 this.GetActivityDetails();
                 this.closeInfoProject();
                 this.getProjectDetails(this.URL_ProjectCode);
                 this.getapprovalStats();
               }
+            };break;
+             
+             
           }
 
         });
@@ -5321,7 +5353,12 @@ $('#acts-attachments-tab-btn').removeClass('active');
     this.SearchItem = "";
   }
 
-
+  hasPeopleByInputName():boolean{
+    const hasResult=this.PeopleOnProject.find((_p)=>{
+      return _p.Emp_Name.trim().toLowerCase().includes(this.SearchItem?this.SearchItem.toLowerCase():'');
+     })
+    return hasResult;
+  }
 
 
   fetchingActionApproval:boolean=false;     
@@ -8353,15 +8390,19 @@ closePanel(){
 }
 
 
+  isAddingProjectSupport:boolean=false; 
   onProject_updateSupport() {
-
-
     const commaSeparatedString = this.selectedEmpIds.join(', ');
-
     if (this.selectedEmployees != null&&this.selectedEmployees.length>0) {
+      this.isAddingProjectSupport=true;
       this.service._NewProjectSupportService(this.URL_ProjectCode, this.Current_user_ID, commaSeparatedString, null).subscribe(data => {
+        this.GetPeopleDatils();
+        this.selectedEmpIds.length = 0;
+        this.selectedEmployees.length = 0;
+        this.closePanel();
+        this.isAddingProjectSupport=false; 
+    
         this._Message = data['message'];
-
         if (this._Message == '2') {
           this.notifyService.showError("Project support team not updated", "Failed");
         }
@@ -8369,10 +8410,7 @@ closePanel(){
           this.notifyService.showSuccess("Project support team updated successfully", "Success");
 
         }
-        this.GetPeopleDatils();
-        this.selectedEmpIds.length = 0;
-        this.selectedEmployees.length = 0;
-        this.closePanel();
+      
       });
     }
     else {
@@ -11012,21 +11050,26 @@ onAuditorSelected(e){
 }
 
 
+isAddingProjectAuditor:boolean=false;
 onAuditorSubmitClicked(){
-  const selected_emp=this.selectedAuditor.empNo;
-  this.projectMoreDetailsService.NewUpdateProjectAuditor(this.projectInfo.Project_Code,this.Current_user_ID,selected_emp).subscribe((res:any)=>{
-
-          if(res.message==1){
-             this.notifyService.showSuccess(`${this.selectedAuditor.empName} set as Auditor`,'Success');
-             this.selectedAuditor=undefined;
-             this.GetPeopleDatils();
-          }else if(res.message==2){
-             this.notifyService.showError(`Unable to set ${this.selectedAuditor.empName} as Auditor.`,'Failed.');
-          }
-          else
-            this.notifyService.showError('Something went wrong.','');
-
-  });
+  if(this.selectedAuditor){
+    this.isAddingProjectAuditor=true;
+    const selected_emp=this.selectedAuditor.empNo;
+    this.projectMoreDetailsService.NewUpdateProjectAuditor(this.projectInfo.Project_Code,this.Current_user_ID,selected_emp).subscribe((res:any)=>{
+      this.isAddingProjectAuditor=false;
+              if(res.message==1){
+                 this.notifyService.showSuccess(`${this.selectedAuditor.empName} set as Auditor`,'Success');
+                 this.selectedAuditor=undefined;
+                 this.GetPeopleDatils();
+              }else if(res.message==2){
+                 this.notifyService.showError(`Unable to set ${this.selectedAuditor.empName} as Auditor.`,'Failed.');
+              }
+              else
+                this.notifyService.showError('Something went wrong.','');
+      });
+  }
+  else 
+  this.notifyService.showInfo("No auditor selected", "");
 }
 
 

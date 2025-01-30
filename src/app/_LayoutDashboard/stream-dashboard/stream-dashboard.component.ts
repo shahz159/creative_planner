@@ -51,8 +51,10 @@ export class StreamDashboardComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.getDashboardBanners();    // Fetch Banners.
     this.initializeOwlCarousels();
     this.initializeOwlCarousels2();
+    this.initializeOwlCarousels3();
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.UserfullName = localStorage.getItem("UserfullName");
     this.todayDate = new Date();
@@ -104,11 +106,11 @@ export class StreamDashboardComponent implements OnInit {
 
   private initializeOwlCarousels2() {
     setTimeout(() => {
-      $('.activity-item').owlCarousel({
+      $('.activity-item:not(.banner-item)').owlCarousel({
         loop: true,
         margin: 0,
         autoplay: true,
-        autoplayTimeout:4000,
+        autoplayTimeout:5000,
         autoplayHoverPause: false,
         nav: false,
         dots: true,
@@ -123,7 +125,27 @@ export class StreamDashboardComponent implements OnInit {
       });
     }, 2000);
   }
+  private initializeOwlCarousels3() {
+    setTimeout(() => {
+      $('.banner-item').owlCarousel({
+        loop: true,
+        margin: 0,
+        autoplay: true,
+        autoplayTimeout:3700,
+        autoplayHoverPause: false,
+        nav: false,
+        dots: true,
+        navText: [
+         '<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>',
+            '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>'
+        ],
 
+        responsive: {
+          356: { items: 1 }
+        }
+      });
+    }, 2000);
+  }
   view_graph_div() {
     document.getElementById("graph-div").style.display = "block";
   }
@@ -546,6 +568,41 @@ export class StreamDashboardComponent implements OnInit {
     }
     return '';
   }
+
+
+
+
+   // dashboard banners start.  
+   dashboardBanners:any=[];
+   dashboardBannersImages:any=[];
+   getDashboardBanners(){
+          this.CalenderService.NewUsersDashboard().subscribe((res:any)=>{ 
+                console.log("for dashboard banners :",res); 
+                if(res){
+                    const djson=JSON.parse(res.DashboardJson); 
+                    this.dashboardBanners=JSON.parse(djson[0].BannerJson);
+                    if (this.dashboardBanners && Array.isArray(this.dashboardBanners)) {
+                      this.dashboardBannersImages=[];  // clear prev.
+                      this.dashboardBanners.forEach(element => {
+                        if (element.AttachmentJson && Array.isArray(element.AttachmentJson)) {
+                          element.AttachmentJson.forEach(Attch => {
+                            var _Obj = {};
+                            _Obj["path"] = Attch.FileUrl;
+                            _Obj["type"] = 'image';
+                            this.dashboardBannersImages.push(_Obj);
+                          });
+                        }
+                      });
+                    }
+
+                }
+          });
+   }
+
+
+
+
+   // dashboard banners end.
 
 
 

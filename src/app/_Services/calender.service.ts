@@ -548,4 +548,19 @@ NewUpdateMeetingBookmark(obj:CalenderDTO){
 }
 
 
+
+
+NewUsersDashboard(){   
+   let createdby;
+   let dmsUserinfo:any=localStorage.getItem('DMS_UserInfo');
+   if(dmsUserinfo){
+    dmsUserinfo=JSON.parse(dmsUserinfo);
+    createdby=dmsUserinfo.createdby;
+   }
+   this.obj_CalenderDTO.UserId=createdby;
+   return this.http.post('https://cswebapps.com/dmsapi/api/DashboardAPI/NewUsersDashboard', this.obj_CalenderDTO);
+}
+
+
+
 }

@@ -70,6 +70,7 @@ export class HeaderComponent implements OnInit {
   ObjSubTaskDTO: SubTaskDTO;
   aprvDtoObj:ApprovalDTO;
   _fullname: string;
+  UserProfile:string;
   timelineList: any;
   timelineType: string;
   type1: string = 'self';
@@ -91,6 +92,8 @@ export class HeaderComponent implements OnInit {
   _confirmBeforeRouting:string;
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
+    const dmsuserinfo=localStorage.getItem('DMS_UserInfo');
+    if(dmsuserinfo){  this.UserProfile=JSON.parse(dmsuserinfo).UserProfile;  }
     this.getusername();
     this.getNewFeatures();
     // this._fullname = localStorage.getItem('UserfullName');

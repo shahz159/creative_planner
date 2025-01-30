@@ -287,12 +287,12 @@
                                                         <a class="pro-link fs-6 cursor-pointer" href="javascript:void(0)" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"  (click)=" newDetailsaction(item1.project_code.trim(),item1.ActionCode.trim())" ><div class="desp-txt fs-7 actlabel-at-type">Action</div>{{item1.ActionName }}</a>
                                                     </td>
                                                     <td>
-                                                       <div class="wrk-des-editbx d-none">
+                                                       <div class="wrk-des-editbx d-none"> <!--wrk-des-editbx must not be removed-->
                                                         <textarea #wrkAchInput [value]="item1.WorkAchieved" class="w-100" placeholder="Define your work achievement here." (input)="isWorkdesValid(wrkAchInput.value,'#Dar-Record-'+i+' #tm-record-item-'+j)"></textarea>
                                                         <span class="wrk-des-required-msg d-none" style="color:red">Work achievement is required.</span>
                                                         <div class="d-flex justify-content-end gap-1">
                                                             <button class="btn btn-secondary btn-sm btn-fw fs-7" (click)="cancelEditTimelineRecord('#Dar-Record-'+i+' #tm-record-item-'+j, item1.WorkAchieved)">Cancel</button>
-                                                            <button class="btn btn-info btn-sm btn-fw fs-7" (click)="updateWorkdesOfTR('#Dar-Record-'+i+' #tm-record-item-'+j, item1.id, wrkAchInput.value)">Update</button>
+                                                            <button class="updatewrkdes-btn btn btn-info btn-sm btn-fw fs-7" (click)="updateWorkdesOfTR('#Dar-Record-'+i+' #tm-record-item-'+j, item1.id, wrkAchInput.value)">Update</button> <!--updatewrkdes-btn must not be removed-->
                                                         </div>
                                                        </div>
                                                         <div class="wrk-des-bx">
@@ -1444,12 +1444,12 @@
                                            </div> -->
 
 
-                                        <div class="wrk-des-editbx d-none">
+                                        <div class="wrk-des-editbx d-none">    <!--wrk-des-editbx must not be removed-->
                                             <textarea #wrkAchvInput2 [value]="item.WorkAchieved" class="w-100" placeholder="Define your work achievement here." (input)="isWorkdesValid(wrkAchvInput2.value,'#collapseTimeline .collapseTimeline-table #tm-record-item-'+i)"></textarea>
                                             <span class="wrk-des-required-msg d-none" style="color:red">Work achievement is required.</span>
                                             <div class="d-flex justify-content-end gap-1">
                                                 <button class="btn btn-secondary btn-sm btn-fw fs-7" (click)="cancelEditTimelineRecord('#collapseTimeline .collapseTimeline-table #tm-record-item-'+i, item.WorkAchieved)">Cancel</button>
-                                                <button class="btn btn-info btn-sm btn-fw fs-7" (click)="updateWorkdesOfTR('#collapseTimeline .collapseTimeline-table #tm-record-item-'+i, item.id, wrkAchvInput2.value, true)">Update</button>
+                                                <button class="updatewrkdes-btn btn btn-info btn-sm btn-fw fs-7" (click)="updateWorkdesOfTR('#collapseTimeline .collapseTimeline-table #tm-record-item-'+i, item.id, wrkAchvInput2.value, true)">Update</button>  <!--updatewrkdes-btn must not be removed-->
                                             </div>
                                         </div>
 
@@ -1952,7 +1952,7 @@
            <div class="d-flex justify-content-end gap-1">
              <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" (click)="endTimelineModal_dismiss()">Close</button>
               <!--if user not entered timeline or if user entered timeline but not ended day-->
-             <button *ngIf="tmReportStatus==null||tmReportStatus=='Not Submitted'" type="button" class="btn btn-sm btn-info" (click)="endDay(tmSubmDate)">End day now</button>
+             <button [disabled]="submittingTimelineReport" *ngIf="tmReportStatus==null||tmReportStatus=='Not Submitted'" type="button" class="btn btn-sm btn-info" (click)="endDay(tmSubmDate)">End day now</button>
            </div>
       </div>
     </div>
