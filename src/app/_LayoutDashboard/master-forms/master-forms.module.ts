@@ -29,6 +29,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { environment } from '../../../environments/environment';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CdkTreeModule } from '@angular/cdk/tree';
+import {Ng2TelInputModule} from 'ng2-tel-input';
+
 @NgModule({
   declarations: [
     ConfirmDialogComponent,
@@ -56,7 +58,8 @@ import { CdkTreeModule } from '@angular/cdk/tree';
     MaterialModule
     , Ng2SearchPipeModule
     , NgSelectModule
-    , PdfViewerModule
+    , PdfViewerModule,
+    Ng2TelInputModule
     //,NgxDocViewerModule
      
     ,NgxDaterangepickerMd.forRoot()

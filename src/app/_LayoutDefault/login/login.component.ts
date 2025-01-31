@@ -133,11 +133,13 @@ export class LoginComponent implements OnInit {
 
             const _createdBy=userIdObject['createdby'];
             const _userProfile=userIdObject['UserProfile'];
+            const _userRole=userIdObject['RoleId'];
             const Isdownload: string = `${this.IsStreamDownload}`;
       
             const userinfo_={
               createdby:_createdBy,
-              UserProfile:_userProfile
+              UserProfile:_userProfile,
+              UserRole:_userRole
             };    
             localStorage.setItem('DMS_UserInfo',JSON.stringify(userinfo_));  // store new user info.  
             localStorage.setItem('IsStreamDownload',Isdownload);

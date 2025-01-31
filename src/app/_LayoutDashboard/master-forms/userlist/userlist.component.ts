@@ -808,14 +808,7 @@ export class UserlistComponent implements OnInit {
   }
 
 
-// New 
 
-GetUserList1(){
-
-}
-
-
-// New 
 
 
 }

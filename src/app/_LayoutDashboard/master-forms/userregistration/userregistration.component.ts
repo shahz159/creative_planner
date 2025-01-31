@@ -452,7 +452,7 @@ _customerregistration:boolean=false;
       //animation: 'tada',
       animateFill: true,
       inertia: true,
-    });
+    });  
   }
   onCountryChange(event) {
     // this.ObjCountryCode = "+"+ event.dialCode;
@@ -493,7 +493,7 @@ _customerregistration:boolean=false;
       (<HTMLInputElement>document.getElementById("txtemail")).value = "";
     }
   }
-  getDropdown() {
+  getDropdown() {  debugger
     this._obj.CreatedBy = this.currentUserValue.createdby;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this.services.GetCompanyList(this._obj)
@@ -518,7 +518,7 @@ _customerregistration:boolean=false;
         // this.ObjgetDesignationList =this.ObjgetDesignationList.filter(word => word.isChecked == 0)
         // console.log(this.ObjgetDesignationList,"DesignationDrp");
         //  Feature filter functionality  
-
+   debugger
         this.ObjgetCompanyList = this._obj.Data["CompanyList"]
         // console.log(this.ObjgetCompanyList, "CompanyDrp");
         this.ObjgetDepartmentList = this._obj.Data["JDepartmentList"]
