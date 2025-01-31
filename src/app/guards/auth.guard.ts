@@ -7,6 +7,16 @@ import { Observable } from 'rxjs';
 })
 export class AuthGuard implements CanActivate {
 
+  private adminRoutes:any=[
+    '/backend/masterforms/UserList',
+    '/backend/masterforms/UserRegistration',
+    '/backend/masterforms/Company',
+    '/backend/masterforms/Department',
+    '/backend/masterforms/Role',
+    '/backend/masterforms/Designation'
+  ];
+
+
   constructor(private router: Router) { }
   // canActivate(
   //   next: ActivatedRouteSnapshot,
@@ -16,17 +26,24 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const currentRoute = state.url;
-    console.log(currentRoute,"urrl")
+    console.log(currentRoute,"urrl"); 
     if (localStorage.getItem('isLoggedIn') == "true") {
+
       if (currentRoute === '/login' || currentRoute === '/') {
-        this.router.navigate(['/backend/dashboard']);
+        this.router.navigate(['/backend/Streamdashboard']);
         return false;
       }
+      else if(this.adminRoutes.includes(currentRoute)&&this.isAdmin()==false){
+        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+        return false; 
+      }
+
       return true;
     } else {
       this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
       return false;
     }
+
   }
   public isLoggedIn(): boolean {
     let status = false;
@@ -39,5 +56,21 @@ export class AuthGuard implements CanActivate {
     }
     return status;
   }
+
+
+
+  public isAdmin():boolean{
+    let isAllowed=false;
+    const admin=502;
+    let dmsuserinfo:any=localStorage.getItem('DMS_UserInfo');
+    if(dmsuserinfo){
+      dmsuserinfo=JSON.parse(dmsuserinfo);
+      const uRole=dmsuserinfo.UserRole;
+      isAllowed=uRole==admin;
+    }
+    return isAllowed;
+  }
+
+
 
 }

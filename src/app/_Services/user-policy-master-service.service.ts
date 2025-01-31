@@ -12,11 +12,12 @@ export class UserPolicyMasterServiceService {
   public currentUser: Observable<UserDTO>;
   _obj: UserPolicyMasterDTO
   objPolicy_List: UserPolicyMasterDTO[]
-  readonly rootUrl = this.commonUrl.apiurl;
+  readonly rootUrl : string;
   constructor(private http: HttpClient, private commonUrl: ApiurlService) { 
     this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
     this._obj = new UserPolicyMasterDTO();
+    this.rootUrl = this.commonUrl.apiurl;
   }
   public get currentUserValue(): UserDTO {
     return this.currentUserSubject.value[0];

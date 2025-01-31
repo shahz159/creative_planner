@@ -1435,7 +1435,7 @@ onDMSFilter(){
 
 onParticipantFilter(){
   const fresult=this._EmployeeListForDropdown.filter((_emp:any)=>{
-     const isEmpIn:boolean=(!this.basedOnFilter.bycompany)||_emp.Emp_Comp_No.trim()===this.basedOnFilter.bycompany;
+     const isEmpIn:boolean=(!this.basedOnFilter.bycompany)||_emp.Emp_Comp_No===this.basedOnFilter.bycompany;
      let includeEmp:boolean=false;
      if(isEmpIn)
      includeEmp=!(this.ngEmployeeDropdown&&this.ngEmployeeDropdown.includes(_emp.Emp_No));

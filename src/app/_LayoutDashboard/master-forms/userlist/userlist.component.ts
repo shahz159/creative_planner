@@ -234,7 +234,7 @@ export class UserlistComponent implements OnInit {
         this.CompanyDropdownList = this._obj1.Data["CompanyList"];
         this.DepartmentDropdownList = this._obj1.Data["JDepartmentList"];
         this.DesignationDropdownList = this._obj1.Data["JDesignationList"];
-      })
+      });
   }
   SortUsers(value) {
     this._OrderBy = value;
@@ -810,14 +810,7 @@ export class UserlistComponent implements OnInit {
   }
 
 
-// New 
 
-GetUserList1(){
-
-}
-
-
-// New 
 
 
 }
