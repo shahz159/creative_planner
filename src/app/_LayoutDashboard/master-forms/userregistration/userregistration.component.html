@@ -2,18 +2,6 @@
     <div class="col-lg-12">
         <div class="d-flex-center">
             <h4 class="mb-3"> {{ "Masterform.UserRegistration" | translate }} </h4>
-            <!-- <div class="user-regi-container">
-                <input type="radio" type="radio" name="userregiRadioOption"  id="userregiRadioYes" value="P" checked="checked" />
-                <input type="radio" name="userregiRadioOption"  id="userregiRadioNo" value="T" />
-                <label for="userregiRadioYes"  (click)="ChangeTabs(1)" >Employee Registration</label>
-                <label for="userregiRadioNo" (click)="ChangeTabs(2)" >Customer Registration</label>
-                <div class="user-regi-wrapper">
-                    <div class="user-regi">
-                        <div>Employee Registration</div>
-                        <div>Customer Registration</div>
-                    </div>
-                </div>
-            </div> -->
             <div class="">
                 <button *ngIf="_customerregistration==false" class="btn btn-info btn-sm mr-3" (click)="opnblkupd()" id="blk-btn"><i
                         class="material-icons fs-4">people</i>{{ "Masterform.BulkUpload" | translate }}</button>
@@ -186,8 +174,8 @@
         <!-- Steppers -->
         <div id="stppr">
             <ul class="stepper horizontal linear">
-                <li class="step active">
-                    <div class="step-title waves-effect last1" data-step-label="Add User Personal Details">{{ "Masterform.PersonalInfo" | translate }}
+                <li class="step active" id="step-one">
+                    <div class="step-title waves-effect last1" data-step-label="Add User Personal Details" (click)="step_one()">{{ "Masterform.PersonalInfo" | translate }}
                     </div>
                     <div class="step-content">
                         <h6 class="txtm-cus kt-mandatory-lable"> <span>{{ "Masterform.Note" | translate }}: </span> <span class="text-danger">*</span> {{ "Masterform.UserfileldMandatory" | translate }}</h6>
@@ -338,8 +326,8 @@
                 </li>
 
 
-                <li class="step last">
-                    <div class="step-title waves-effect last1" data-step-label="Assign Role, position">{{ "Masterform.CompanyInfo" | translate }}
+                <li class="step last"  id="step-two">
+                    <div class="step-title waves-effect last1" data-step-label="Assign Role, position" (click)="step_two()" >{{ "Masterform.CompanyInfo" | translate }}
                     </div>
                     <div class="step-content">
                         <h6 class="txtm-cus kt-mandatory-lable"> <span>{{ "Masterform.Note" | translate  }}: </span> <span class="text-danger">*</span> {{ "Masterform.UserfileldMandatory" | translate }}</h6>
@@ -678,7 +666,7 @@
                                             <div class="kt-crd-acc-v">
                                                 <div class="d-flex align-items-center justify-content-between">
                                                     <div class="kt-rc-us-ic kt-archvie-ic p-0">
-                                                        <img class="ep-ic-dw" src="assets/icons/Ep_Logo.png">
+                                                        <img class="ep-ic-dw" src="assets/icons/favicon.ico">
                                                     </div>
                                                     <div class="kt-rc-us-ic-name">
                                                         <h5> {{ "Masterform.IsStreamPlannerDownload" | translate }}</h5>

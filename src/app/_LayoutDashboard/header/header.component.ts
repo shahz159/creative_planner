@@ -94,9 +94,10 @@ export class HeaderComponent implements OnInit {
   _confirmBeforeRouting:string;
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
-    const dmsuserinfo=localStorage.getItem('DMS_UserInfo');
-    if(dmsuserinfo){  this.UserProfile=JSON.parse(dmsuserinfo).UserProfile;  }
+    
     this.getusername();
+    this.getuserimage();
+    this.bsService.UserLoggedIn.subscribe(()=>{ this.getuserimage();  });  
     this.getNewFeatures();
     // this._fullname = localStorage.getItem('UserfullName');
     this.timelineType = this.type1;
@@ -165,6 +166,13 @@ export class HeaderComponent implements OnInit {
       this._fullname=data['Emp_First_Name'];
     });
   }
+
+
+  getuserimage(){
+    const dmsuserinfo=localStorage.getItem('DMS_UserInfo');
+    if(dmsuserinfo){  this.UserProfile=JSON.parse(dmsuserinfo).UserProfile;  }
+  }
+
 
   isView:any;
 
@@ -613,6 +621,8 @@ export class HeaderComponent implements OnInit {
   localStorage.removeItem('UserfullName');
   localStorage.removeItem('_Currentuser');
   localStorage.removeItem('IsStreamDownload');
+  localStorage.removeItem('DMS_UserInfo');
+  localStorage.removeItem('currentUser');
   // Call AuthService logout for any additional logic
   this.authService.logout();
 

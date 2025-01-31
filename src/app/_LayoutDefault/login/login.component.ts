@@ -11,6 +11,7 @@ import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { AuthenticationService } from 'src/app/_Services/authentication.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -38,7 +39,9 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private service: ProjectTypeService,
     private authenticationService: AuthenticationService,
-    private loadingBar: LoadingBarService) {
+    private loadingBar: LoadingBarService,
+    private bsService: BsServiceService
+    ) {
 
     this.Obj_ILoginDTO = new LoginDTO;
     // this.UserDetails_List = new UserDetailsDTO;
@@ -108,6 +111,7 @@ export class LoginComponent implements OnInit {
       this.Obj_ILoginDTO.UserName = this.f.userid.value;
       this.Obj_ILoginDTO.Password = this.f.password.value;
       //alert("One");
+      localStorage.removeItem('DMS_UserInfo');  // clear old user info.
       this.authenticationService.login(this.f.userid.value, this.f.password.value)
         .subscribe(
           (data) => {
@@ -120,12 +124,14 @@ export class LoginComponent implements OnInit {
             const _userProfile=userIdObject['UserProfile'];
             const Isdownload: string = `${this.IsStreamDownload}`;
       
-            const userinfostr={
+            const userinfo_={
               createdby:_createdBy,
               UserProfile:_userProfile
             };    
-            localStorage.setItem('DMS_UserInfo',JSON.stringify(userinfostr));    
+            localStorage.setItem('DMS_UserInfo',JSON.stringify(userinfo_));  // store new user info.  
             localStorage.setItem('IsStreamDownload',Isdownload);
+
+            this.bsService.UserLoggedIn.emit();  // user has logged in && user info fetched.
           });
     }
   }
@@ -148,7 +154,6 @@ export class LoginComponent implements OnInit {
       this.service.LoginCredentials(this.Obj_ILoginDTO)
         .subscribe(
           (data) => {  
-            debugger
             try{
 
             this.UserDetails_List = data as UserDetailsDTO[];
@@ -216,6 +221,7 @@ export class LoginComponent implements OnInit {
             
           });
     }
+
     this.login_DMS();
   }
 }
