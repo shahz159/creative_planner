@@ -125,7 +125,7 @@ export class LoginComponent implements OnInit {
             this.SystemRole = userIdObject['DesignationName'];
             this.SystemRole = userIdObject['DesignationName'];
               this.IsPolicynew = userIdObject['IsPolicy'];
-              this.EmpNo = userIdObject['userId'];
+              this.EmpNo = userIdObject['EmpNo'];
 
             const _createdBy=userIdObject['createdby'];
             const _userProfile=userIdObject['UserProfile'];
