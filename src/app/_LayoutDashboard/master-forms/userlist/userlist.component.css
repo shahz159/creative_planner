@@ -1149,3 +1149,28 @@ img.ep-ic-dw {
 .ribbon-box .ribbon-blue:before {
     border-color: #2d67be transparent transparent;
 }
+
+.card-footer {
+    padding: .75rem 1.25rem;
+    background-color: #f7f8fa;
+    border-top: 1px solid #ebedf2;
+}
+
+
+.d-flex-center {
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+}
+
+a.close.close-icn i {
+    font-size: 18px;
+}
+.form-control {
+    border-left: 1px solid #e2e5ec;
+}
+
+/* // 69 //  */
+#txtMainSearch::-webkit-search-cancel-button {
+    display: none;
+}

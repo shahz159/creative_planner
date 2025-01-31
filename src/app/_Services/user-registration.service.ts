@@ -116,7 +116,7 @@ export class UserRegistrationService {
 
   GetUserProfile(_values: UserRegistrationDTO) {
     this._obj.UserId = _values.UserId;
-
+    
     return this.http.post(this.rootUrl + 'UsersAPI/NewGetUserDetailsSPA', this._obj)
   }
   globaluser(_values: UserRegistrationDTO) {

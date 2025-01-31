@@ -317,7 +317,9 @@ export class StreamDashboardComponent implements OnInit {
 
   //   }
   meetingDetails(): void {
+    debugger
     this.CalenderService.NewDashboardScheduled(this._calenderDto).subscribe((data) => {
+      console.log( JSON.parse(data['Scheduledtime']),'test json list')
       const items = JSON.parse(data['Scheduledtime']);
 
       // Convert date strings to Date objects and filter out past dates

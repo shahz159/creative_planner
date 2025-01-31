@@ -227,8 +227,9 @@ export class UserlistComponent implements OnInit {
       })
   }
   CompanyandDepartmenrandDesignation() {
+
     this.service.GetCompanyList()
-      .subscribe(data => {
+      .subscribe(data => {    debugger
         this._obj1 = data as UserPolicyMasterDTO;
         this.CompanyDropdownList = this._obj1.Data["CompanyList"];
         this.DepartmentDropdownList = this._obj1.Data["JDepartmentList"];
@@ -241,7 +242,7 @@ export class UserlistComponent implements OnInit {
   }
 
 
-  GetUserList() {     debugger
+  GetUserList() {    
     this._obj.message = this.Usersearch
     this._obj.PageSize = this.PageSize;
     this._obj.PageNumber = this.activePage;
@@ -272,12 +273,13 @@ export class UserlistComponent implements OnInit {
     this._obj.DepartmentIds = this.CheckDepartment.toString();
     this._obj.DesignationIds = this.CheckDesignation.toString();
 
-    console.log("createdby:",this.currentUserValue.createdby);
-    console.log('organizationid',this.currentUserValue.organizationid);
+
+  
     this._services.GetUserListByPagination(this._obj, this.currentUserValue.createdby, this.currentUserValue.organizationid).subscribe(data => {
-      this._obj = data as UserRegistrationDTO;    debugger
+      
+      this._obj = data as UserRegistrationDTO;   
       this.UserList = this._obj.Data["UserList"];
-      // console.log(this.UserList, "user list");
+      console.log(this.UserList, "user list");
       this.TotalrecordsList = this._obj.Data["TotalRecords"];
       this.TotalRecords = this.TotalrecordsList[0].TotalRecords;
       this._CurrentpageRecords = this.UserList.length;

@@ -23,7 +23,7 @@ export class UserPolicyMasterServiceService {
   }
   GetPolicyList(){
     this._obj.OrganizationId = this.currentUserValue.organizationid;
-    return this.http.post(this.rootUrl + '/OrganizationAPI/NewPolicyList', this._obj);
+    return this.http.post(this.rootUrl + 'OrganizationAPI/NewPolicyList', this._obj);
   }
   InsertPolicy(_values:UserPolicyMasterDTO){
      
@@ -42,16 +42,16 @@ export class UserPolicyMasterServiceService {
     this._obj.CreatedBy = this.currentUserValue.createdby;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     
-    return this.http.post(this.rootUrl + '/OrganizationAPI/NewPolicy', this._obj);
+    return this.http.post(this.rootUrl + 'OrganizationAPI/NewPolicy', this._obj);
   }
   UpDatedialog_Status(objStatus) {
     this._obj.PolicyId = objStatus.PolicyId;
     this._obj.IsActive = objStatus.IsActive;
-    return this.http.post(this.rootUrl + "/OrganizationAPI/NewUpdatePolicyStatus", this._obj);
+    return this.http.post(this.rootUrl + "OrganizationAPI/NewUpdatePolicyStatus", this._obj);
   }
   GetCompanyList() {
     this._obj.OrganizationId = this.currentUserValue.organizationid;
-    return this.http.post(this.rootUrl + "/DocumentsAPI/NewCompanyDepartmentDrpJson", this._obj);
+    return this.http.post(this.rootUrl + "DocumentsAPI/NewCompanyDepartmentDrpJson", this._obj);
   }
   
 }

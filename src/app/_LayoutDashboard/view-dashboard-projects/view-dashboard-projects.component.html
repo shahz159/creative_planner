@@ -788,13 +788,15 @@
 
                                                             <span class="attach-tippy">
 
-                                                            <span class="st-line curser-pointer" >
+                                                            <span  *ngIf="item.RejectedBy || item.RejectFromDate || item.Rejectcomments" class="st-line curser-pointer" >
                                                                <div *ngIf="item.RejectedBy" style="width: max-content;">Rejected by: <h6>{{item.RejectedBy}} </h6></div>
                                                                 <div *ngIf="item.RejectFromDate">on: {{item.RejectFromDate| date: 'dd-MM-yyyy'}}  </div>
                                                                 <div *ngIf="item.RejectFromDate"> ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.RejectFromDate))}})  </div>
-                                                                <div *ngIf="item.Rejectcomments">Comment : {{item.Rejectcomments}}</div></span>
+                                                                <div *ngIf="item.Rejectcomments">Comment : {{item.Rejectcomments}}</div>
+                                                            </span>
 
-                                                            </span>   <span *ngIf="item.RejectedBy"  class="New_Project_Rejected">{{item.RejectedBy}}</span></div>
+                                                            </span>  
+                                                             <span *ngIf="item.RejectedBy"  class="New_Project_Rejected">{{item.RejectedBy}}</span></div>
 
 
                                                             <!-- --{{this.currentDate -item.RejectedFromDate  }}  -->

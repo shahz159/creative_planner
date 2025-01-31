@@ -9,7 +9,7 @@
                 <div class="flex-1">
                     <div class="search-bar">
                         <input type="search" id="txtMainSearch" [(ngModel)]="Usersearch" (keyup.enter)="Search()" class="form-control search_clear" (keyup)="handleKeyUp($event)" [placeholder]="UserSearch" aria-controls="example" autocomplete="off">
-                        <a *ngIf="Usersearch" class="close close-icn"><i (click)="ReBindData()" class="material-icons">close<i></i></i></a>
+                        <a *ngIf="Usersearch" class="close close-icn"><i (click)="ReBindData()" class="material-icons curser-pointer">close<i></i></i></a>
                     </div>
                 </div>
                 <div class="flex-shrink-0">
