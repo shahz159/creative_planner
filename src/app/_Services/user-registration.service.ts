@@ -33,32 +33,32 @@ export class UserRegistrationService {
     return this.currentUserSubject.value[0];
   }
   GetCountriesList() {
-    return this.http.get(this.rootUrl + "/OrganizationAPI/GetCountries")
+    return this.http.get(this.rootUrl + "OrganizationAPI/GetCountries")
 
   }
   GetCities(_values: UserRegistrationDTO) {
 
     this._obj.CountryId = _values.CountryId;
-    return this.http.post(this.rootUrl + '/OrganizationAPI/NewGetCities', this._obj);
+    return this.http.post(this.rootUrl + 'OrganizationAPI/NewGetCities', this._obj);
   }
   CheckUserEmailExist(email: string) {
-    return this.http.get(this.rootUrl + "/OrganizationAPI/GetUseremail?useremail=" + email)
+    return this.http.get(this.rootUrl + "OrganizationAPI/GetUseremail?useremail=" + email)
   }
   GetCompanyList(_values: UserRegistrationDTO) {
     // this._obj.OrganizationId = this.currentUserValue.organizationid;
     this._obj.OrganizationId =_values.OrganizationId;
     this._obj.CreatedBy =_values.CreatedBy;
-    return this.http.post(this.rootUrl + "/DocumentsAPI/NewCompanyDepartmentDrpJson", this._obj);
+    return this.http.post(this.rootUrl + "DocumentsAPI/NewCompanyDepartmentDrpJson", this._obj);
   }
   GetReportingUser(_values: UserRegistrationDTO) {
     this._obj.CompanyId = _values.CompanyId;
-    return this.http.post(this.rootUrl + "/DocumentsAPI/NewGetReportingUsers", this._obj);
+    return this.http.post(this.rootUrl + "DocumentsAPI/NewGetReportingUsers", this._obj);
   }
   CheckUserEmployeeIdExist(text: string) {
-    return this.http.get(this.rootUrl + "/OrganizationAPI/GetEmployeeId?employeeid=" + text)
+    return this.http.get(this.rootUrl + "OrganizationAPI/GetEmployeeId?employeeid=" + text)
   }
   CheckUserLoginIdExist(text: string) {
-    return this.http.get(this.rootUrl + "/OrganizationAPI/GetUsername?username=" + text)
+    return this.http.get(this.rootUrl + "OrganizationAPI/GetUsername?username=" + text)
   }
   InsertUpdateUserRegistration(_values: UserRegistrationDTO) {
     
@@ -104,25 +104,25 @@ export class UserRegistrationService {
 
     this._obj.UserId = _values.UserId;
     this._obj.FlagId = 1;
-    return this.http.post(this.rootUrl + '/UsersAPI/NewinsertupdateUsers', this._obj)
+    return this.http.post(this.rootUrl + 'UsersAPI/NewinsertupdateUsers', this._obj)
   }
   GetUserList() {
     this._obj.CreatedBy = this.currentUserValue.createdby;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this._obj.RoleId = this.currentUserValue.RoleId;
-    return this.http.post(this.rootUrl + '/UsersAPI/NewGetUsers', this._obj);
+    return this.http.post(this.rootUrl + 'UsersAPI/NewGetUsers', this._obj);
 
   }
 
   GetUserProfile(_values: UserRegistrationDTO) {
     this._obj.UserId = _values.UserId;
 
-    return this.http.post(this.rootUrl + '/UsersAPI/NewGetUserDetailsSPA', this._obj)
+    return this.http.post(this.rootUrl + 'UsersAPI/NewGetUserDetailsSPA', this._obj)
   }
   globaluser(_values: UserRegistrationDTO) {
     this._obj.UserId = _values.UserId;
     this._obj.ToUserIdsStr = _values.ToUserIdsStr;
-    return this.http.post(this.rootUrl + '/UsersAPI/NewAddRemoveGlobalUser', this._obj)
+    return this.http.post(this.rootUrl + 'UsersAPI/NewAddRemoveGlobalUser', this._obj)
   }
   UpdateUserProfile(_values: UserRegistrationDTO,_CreatedBy: number,organizationid:number) {
     
@@ -163,14 +163,14 @@ export class UserRegistrationService {
 
     this._obj.FlagId = _values.FlagId;
 
-    return this.http.post(this.rootUrl + '/UsersAPI/NewupdateUsersInfo', this._obj)
+    return this.http.post(this.rootUrl + 'UsersAPI/NewupdateUsersInfo', this._obj)
   }
 
   UpDatedialog_Status(objStatus) {
     this._obj.UserId = objStatus.UserId
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this._obj.CreatedBy = this.currentUserValue.createdby;
-    return this.http.post(this.rootUrl + "/UsersAPI/NewUserStatus", this._obj);
+    return this.http.post(this.rootUrl + "UsersAPI/NewUserStatus", this._obj);
   }
   GetUserListByPagination(_values: UserRegistrationDTO,_CreatedBy: number,organizationid:number) {
     this._obj.Sortby= _values.Sortby;
@@ -182,7 +182,7 @@ export class UserRegistrationService {
     this._obj.DepartmentIds = _values.DepartmentIds;
     this._obj.OrganizationId = organizationid;
     this._obj.CreatedBy = _CreatedBy;
-    return this.http.post(this.rootUrl + "/UsersAPI/NewGetUsersAng", this._obj);
+    return this.http.post(this.rootUrl + "UsersAPI/NewGetUsersAng", this._obj);
   }
   public exportAsExcelFile(UserRegistrationjson: any[], Positionjson: any[], ObjgetCompanyListjson: any[], ObjgetDepartmentListjson: any[], ObjgetRoleListjson: any[], ObjgetDesignationListjson: any[], excelFileName: string): void {
     const UserRegistrationWoorksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(UserRegistrationjson);
@@ -209,12 +209,12 @@ export class UserRegistrationService {
     this._obj.JSONData = _values.JSONData;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this._obj.CreatedBy = this.currentUserValue.createdby;
-    return this.http.post(this.rootUrl + "/UsersAPI/NewBulkUploadUsers", this._obj);
+    return this.http.post(this.rootUrl + "UsersAPI/NewBulkUploadUsers", this._obj);
   }
   UpdatedReportUser(_values: UserRegistrationDTO) {
     this._obj.ReportingUserId = _values.ReportingUserId;
     this._obj.UserId = _values.UserId;
-    return this.http.post(this.rootUrl + '/UsersAPI/NewUpdateReportingUser', this._obj);
+    return this.http.post(this.rootUrl + 'UsersAPI/NewUpdateReportingUser', this._obj);
   }
 
 }

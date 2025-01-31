@@ -235,6 +235,7 @@ export class StreamCalendarComponent implements OnInit {
 
 
   onKeyPress() {
+    debugger
     // Check if the input field is empty
     if (this.agendaInput===undefined||this.agendaInput.trim() === '') {
       // If input field is empty, remove the class
@@ -621,7 +622,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("createEventTaskModal").classList.remove("show");
     document.getElementById("createEventTaskModalBackdrop").style.display = "none";
     document.getElementById("createEventTaskModalBackdrop").classList.remove("show");
-debugger
+
     this.Link_Details = null;
     this.Meeting_Id = null;
     this.Meeting_password = null;
@@ -637,6 +638,7 @@ debugger
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.agendaInput=undefined;
     this.SelectDms = null;
     this.MasterCode = null;
     this.projectsSelected = [];
@@ -652,6 +654,7 @@ debugger
     this.rapeatLink_Details=true;
     this.Description_Type = null;
     this.characterCount=null;
+    this.agendacharacterCount=null;
     this.switChRecurrenceValue=false;
   }
   // propose_date_time_open() {
@@ -929,7 +932,6 @@ LastLengthValidation11() {
 
 
 updateCharacterCount(): void {
-
   // Create a temporary div element to strip out HTML tags
   const tempElement = document.createElement('div');
   tempElement.innerHTML = this.Description_Type;
@@ -938,8 +940,21 @@ updateCharacterCount(): void {
 }
 
 
+agendacharacterCount:any;
+
+AgendaCharacterCount(): void {
+  var count =this.agendaInput;
+  if(count){
+    this.agendacharacterCount = count.length;
+  }else{
+    this.agendacharacterCount =  null;
+  }
+  
+}
+
+
 addAgenda() {
-  if (this.agendaInput && this.agendaInput.trim().length > 0 && this.agendaInput.trim().length < 100) {
+  if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101) {
     this.agendasAdded += 1;
     const agenda = {
       index: this.agendasAdded,
@@ -948,7 +963,7 @@ addAgenda() {
     this.allAgendas.push(agenda);
     this.agendaInput = undefined;
   }
-
+  this.agendacharacterCount =  null;
   console.log("allAgendas:", this.allAgendas);
 }
 
@@ -1481,6 +1496,8 @@ clearallfields() {
   this.Title_Name = null;
   this.ngEmployeeDropdown = null;
   this.Description_Type = null;
+  this.agendaInput=undefined;
+  this.agendacharacterCount =  null;
   this.SelectDms = null;
   this.MasterCode = null;
   this.projectsSelected = [];
@@ -2954,6 +2971,8 @@ debugger
           this.Title_Name = null;
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
+          this.agendaInput=undefined;
+          this.agendacharacterCount =  null;
           this.MasterCode = null;
           this.projectsSelected = [];
           this.Subtask = null;
@@ -3167,56 +3186,56 @@ debugger
 
 getEventsForWeeks(weeksFromToday: number) {
 
-// precoius and upcoming meeting functionality 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Reset today's time to midnight
 
-  // Check if the "Today" button is clicked (i.e., weeksFromToday is 3)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); 
+
+ 
   if (weeksFromToday === 3) {
-    // Reset control: clear clickHistory and set currentWeekOffset to 0
+   
     this.clickHistory = [];
     this.currentWeekOffset = 0;
   } else {
-    // Calculate the new offset
+
     const newOffset = this.currentWeekOffset + weeksFromToday;
 
-    // Handle click history for backward/forward navigation
+   
     if (weeksFromToday < 0) {
       this.clickHistory.push(weeksFromToday);
     } else if (weeksFromToday > 0 && this.clickHistory.length > 0) {
       this.clickHistory.pop();
     }
 
-    // Update the current week offset
+  
     this.currentWeekOffset = newOffset;
   }
 debugger
 
-if(weeksFromToday === 4  && this.selectDay){
+if(this.noSelectedDate == true && weeksFromToday === 0  && this.selectDay){
   var formattedDate = this.selectDay.toDate();
 }else{
   formattedDate = undefined;
-  this.isCalendarVisible = false;  // Hide calendar first
+  this.isCalendarVisible = false;  
   setTimeout(() => {
-    this.isCalendarVisible = true;  // Show calendar after a brief delay
-    this.selectDay = new Date();    // Set to today's date
+    this.isCalendarVisible = true;  
+    this.selectDay = new Date();    
   }, 0);
 }
-
+this.noSelectedDate = false;
 const startDate = formattedDate || today;
 
-  // First and last date for the 7-day range
+  
   this.firstDate = new Date(startDate);
   this.firstDate.setDate(startDate.getDate() + (this.currentWeekOffset * 7));
 
   this.lastDates = new Date(this.firstDate);
-  this.lastDates.setDate(this.firstDate.getDate() + 6); // Last date is 7 days after the first date
+  this.lastDates.setDate(this.firstDate.getDate() + 6); 
 
   this.lastDate = new Date(this.firstDate);
   this.lastDate.setDate(this.firstDate.getDate() + 7);
 
 
-  // Existing filtering logic remains unchanged
+
   if(this.Searchingfunc==false){
     this.Calendarjson = this.Searchingjson;
   }else{
@@ -3228,37 +3247,36 @@ const startDate = formattedDate || today;
  
  
 
- // grouping data as date functionality
+
     this.groupedMeetingsArray = Object.entries(this.Calendarjson.reduce((acc, current) => {
-      const date = current.start.split(' ')[0]; // Extract the date portion only
+      const date = current.start.split(' ')[0]; 
       if (!acc[date]) {
-          acc[date] = []; // Initialize an array for each unique date
+          acc[date] = []; 
       }
-      acc[date].push(current); // Push the meeting into the respective date's group
+      acc[date].push(current);
       return acc;
   }, {})).map(([date, events]) => ({ date, events }));
 
 
-// getting count and link from meeting list
-  
+
       this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({
         ...day,
         events: day.events.map(event => {
             const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
-            const title = parts[0]; // The title before any pipes
+            const title = parts[0]; 
             const linkIndex = parts.findIndex(part => part.includes("Link"));
     
             let attendees = linkIndex > 1 ? parts.slice(1, linkIndex).map(s => s.trim()) : null;
     
-            // Always keep only the last attendee if there are multiple entries
+        
             if (attendees && attendees.length) {
-                attendees = [attendees[attendees.length - 1]]; // Keep only the last attendee
+                attendees = [attendees[attendees.length - 1]]; 
             }
     
-            // Increment the attendee count if it has a number in "+number" format
+        
             if (attendees && attendees[0]) {
                 const match = attendees[0].match(/\+(\d+)/);
-                attendees[0] = match ? `+${parseInt(match[1], 10) + 1}` : `+1`; // Increment or set to +1
+                attendees[0] = match ? `+${parseInt(match[1], 10) + 1}` : `+1`; 
             }
     
             const link = linkIndex !== -1 ? parts[linkIndex].split(' ')[0] : null;
@@ -3336,7 +3354,9 @@ filterMeetings(event: KeyboardEvent) {
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.agendaInput=undefined;
     this.characterCount=null;
+    this.agendacharacterCount=null;
     this.SelectDms = null;
     this.MasterCode = null;
     this.projectsSelected = [];
@@ -3764,31 +3784,31 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
       if (result && result[0])
         this.Link_Detail = result[0].slice(6, result[0].length - 1);
 
-     
+     debugger
       //69 document.getElementById("deleteendit").style.display = "flex";
       if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
 
-        //69 document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
-      
+       document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
+       document.getElementById("deleteendit").style.display =this.Meeting_status==true?'none':'flex';
         document.getElementById("main-foot").style.display = "none";
       
       }
       else if ((this.Schedule_type1 == 'Event') && (this.Meeting_status==false) && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
 
-      //69  document.getElementById("hiddenedit").style.display = "none";
-        
+       document.getElementById("hiddenedit").style.display = "none";
+       document.getElementById("deleteendit").style.display = "none";
+       document.getElementById("main-foot").style.display = "flex";
 
-        document.getElementById("main-foot").style.display = "flex";
       }
       else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
-       //69  document.getElementById("hiddenedit").style.display = "flex";
-  
+        document.getElementById("hiddenedit").style.display = "flex";
+        document.getElementById("deleteendit").style.display = "flex";
        document.getElementById("main-foot").style.display = "none";
   
       }
       else {
-       //69  document.getElementById("hiddenedit").style.display = "none";
-       
+        document.getElementById("hiddenedit").style.display = "none";
+        document.getElementById("deleteendit").style.display =this.Meeting_status==true?'none':'flex';
         document.getElementById("main-foot").style.display = "none";
      
       }
@@ -4705,7 +4725,7 @@ RecurrValueMonthly:boolean=false;
       this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
       }
 
-
+debugger
     if (
       this.Title_Name &&
       this.Startts &&
@@ -5197,6 +5217,7 @@ RecurrValueMonthly:boolean=false;
             this.RemovedAttach = [];
             this.ngEmployeeDropdown = null;
             this.Description_Type = null;
+            this.agendaInput=undefined;
             this.MasterCode = null;
             this.projectsSelected = [];
             this.Subtask = null;
@@ -6397,8 +6418,11 @@ filterDraft(type : 'date'|'meeting'):void{
    
   }
 
+  noSelectedDate : boolean = false;
   newSelectedDate(){
-    this.getEventsForWeeks(4);
+    this.noSelectedDate=true
+    this.getEventsForWeeks(0);
+   
   }
 /////////////////////////////////////////// Draft meeting list End /////////////////////////////////////////////////////////
 
