@@ -19,158 +19,7 @@ import { HeaderComponent } from '../../header/header.component';
 export class RoleComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject<any>();
   _obj: RoleDTO;
-  _objRole: any[] = [
-    {
-        "RoleName": "Myntra Devloper",
-        "RoleId": 685,
-        "Description": "",
-        "CreatedBy": 0,
-        "OrganizationId": 0,
-        "FlagId": 0,
-        "IsActive": true,
-        "message": null,
-        "Sharing": true,
-        "PageNumber": 0,
-        "PageSize": 0,
-        "Search": null,
-        "TotalRecords": 83
-    },
-    {
-        "RoleName": "Jackets",
-        "RoleId": 683,
-        "Description": "",
-        "CreatedBy": 0,
-        "OrganizationId": 0,
-        "FlagId": 0,
-        "IsActive": true,
-        "message": null,
-        "Sharing": true,
-        "PageNumber": 0,
-        "PageSize": 0,
-        "Search": null,
-        "TotalRecords": 83
-    },
-    {
-        "RoleName": "Aug 16",
-        "RoleId": 676,
-        "Description": "Test",
-        "CreatedBy": 0,
-        "OrganizationId": 0,
-        "FlagId": 0,
-        "IsActive": true,
-        "message": null,
-        "Sharing": true,
-        "PageNumber": 0,
-        "PageSize": 0,
-        "Search": null,
-        "TotalRecords": 83
-    },
-    {
-        "RoleName": "Angular Test",
-        "RoleId": 675,
-        "Description": "noteeevvvvv",
-        "CreatedBy": 0,
-        "OrganizationId": 0,
-        "FlagId": 0,
-        "IsActive": true,
-        "message": null,
-        "Sharing": true,
-        "PageNumber": 0,
-        "PageSize": 0,
-        "Search": null,
-        "TotalRecords": 83
-    },
-    {
-        "RoleName": "gggg",
-        "RoleId": 673,
-        "Description": "gdfg",
-        "CreatedBy": 0,
-        "OrganizationId": 0,
-        "FlagId": 0,
-        "IsActive": true,
-        "message": null,
-        "Sharing": true,
-        "PageNumber": 0,
-        "PageSize": 0,
-        "Search": null,
-        "TotalRecords": 83
-    },
-    {
-        "RoleName": "Dev Dms",
-        "RoleId": 672,
-        "Description": "Notee",
-        "CreatedBy": 0,
-        "OrganizationId": 0,
-        "FlagId": 0,
-        "IsActive": true,
-        "message": null,
-        "Sharing": true,
-        "PageNumber": 0,
-        "PageSize": 0,
-        "Search": null,
-        "TotalRecords": 83
-    },
-    {
-        "RoleName": "demomaster",
-        "RoleId": 671,
-        "Description": "write",
-        "CreatedBy": 0,
-        "OrganizationId": 0,
-        "FlagId": 0,
-        "IsActive": true,
-        "message": null,
-        "Sharing": false,
-        "PageNumber": 0,
-        "PageSize": 0,
-        "Search": null,
-        "TotalRecords": 83
-    },
-    {
-        "RoleName": "Test 28",
-        "RoleId": 670,
-        "Description": "write notee",
-        "CreatedBy": 0,
-        "OrganizationId": 0,
-        "FlagId": 0,
-        "IsActive": false,
-        "message": null,
-        "Sharing": false,
-        "PageNumber": 0,
-        "PageSize": 0,
-        "Search": null,
-        "TotalRecords": 83
-    },
-    {
-        "RoleName": "Test 26",
-        "RoleId": 669,
-        "Description": "write Noteee",
-        "CreatedBy": 0,
-        "OrganizationId": 0,
-        "FlagId": 0,
-        "IsActive": true,
-        "message": null,
-        "Sharing": true,
-        "PageNumber": 0,
-        "PageSize": 0,
-        "Search": null,
-        "TotalRecords": 83
-    },
-    {
-        "RoleName": "Test RBC",
-        "RoleId": 668,
-        "Description": "noteee",
-        "CreatedBy": 0,
-        "OrganizationId": 0,
-        "FlagId": 0,
-        "IsActive": true,
-        "message": null,
-        "Sharing": true,
-        "PageNumber": 0,
-        "PageSize": 0,
-        "Search": null,
-        "TotalRecords": 83
-    }
-];
+  _objRole: any[] = []
   RoleId: number;
   String_status: string;
   InActive: false;
@@ -471,7 +320,7 @@ export class RoleComponent implements OnInit {
           // document.getElementById("addrck").style.display = "none";
           // document.getElementById("role_add").style.display = "block";
           document.getElementById("addrck").classList.remove("kt-quick-panel--on");
-          document.getElementsByClassName("side_view1")[0].classList.remove("position-fixed");
+          document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
           document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
       
           this.roleformGroup.reset();
@@ -487,7 +336,7 @@ export class RoleComponent implements OnInit {
     // document.getElementById("addrck").style.display = "block";
     // document.getElementById("role_add").style.display = "none";
     document.getElementById("addrck").classList.add("kt-quick-panel--on");
-    document.getElementsByClassName("side_view1")[0].classList.add("position-fixed");
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.add("d-block");
     // document.getElementById("editrck").innerHTML = "Add";
     const element = document.getElementById("editrck");
@@ -502,7 +351,7 @@ export class RoleComponent implements OnInit {
     // document.getElementById("addrck").style.display = "block";
     // document.getElementById("role_add").style.display = "none";
     document.getElementById("addrck").classList.add("kt-quick-panel--on");
-    document.getElementsByClassName("side_view1")[0].classList.add("position-fixed");
+    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.add("d-block");
     // document.getElementById("editrck").innerHTML = "Edit";
     const element = document.getElementById("editrck");
@@ -523,7 +372,7 @@ export class RoleComponent implements OnInit {
     // document.getElementById("addrck").style.display = "none";
     // document.getElementById("role_add").style.display = "block";
     document.getElementById("addrck").classList.remove("kt-quick-panel--on");
-    document.getElementsByClassName("side_view1")[0].classList.remove("position-fixed");
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
     this.roleformGroup.reset()
     this.RoleId = 0;
@@ -533,7 +382,7 @@ export class RoleComponent implements OnInit {
   closeInfo() {
     this.roleformGroup.reset();
     document.getElementById("addrck").classList.remove("kt-quick-panel--on");
-    document.getElementsByClassName("side_view1")[0].classList.remove("position-fixed");
+    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
     document.getElementById("company_add").style.display = "block";
 
