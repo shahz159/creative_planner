@@ -781,7 +781,16 @@ _customerregistration:boolean=false;
   //     el.setAttribute("download", 'xlsxtojson.json');
   //   }, 1000)
   // }
-
+  step_one(){
+    document.getElementById("step-one").classList.add("active");
+    // document.getElementById("step-one").classList.add("done");
+    document.getElementById("step-two").classList.remove("active");
+  }
+  step_two(){
+    document.getElementById("step-one").classList.remove("active");
+    document.getElementById("step-one").classList.add("done");
+    document.getElementById("step-two").classList.add("active");
+  }
   opnblkupd() {
     document.getElementById("blkupd").classList.remove("d-none");
     document.getElementById("stppr").classList.add("d-none");

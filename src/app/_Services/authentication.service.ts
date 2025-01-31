@@ -48,10 +48,12 @@ export class AuthenticationService {
     // Login/DMSLoginAPI ---- dot net core api
     //  return this.http.get<any>(this.rootUrl + '/AuthenticationAPI/GetLoginDetailsJSON?userId=' + username + "&password=" + password, {
 
-    return this.http.post<any>(this.rootUrlII + "Login/StreamLoginAPI", this._userobj, {
+    return this.http.post<any>(this.rootUrl + "Notification/NewLoginDetailsJSON", this._userobj, {
     })
       .pipe(map(user => {
-         
+         console.log(user,"user dms")
+         console.log(user["Data"]["UserId"],"user dmsdqwe")
+         console.log(JSON.parse(user["Data"]["UserId"]),"user jsonconvert")
         var _json = JSON.parse(user["Data"]["UserId"]);
         let _obj1 = _json;
         console.log(_obj1, "dmsm das")
@@ -77,14 +79,14 @@ export class AuthenticationService {
     this.currentUserSubject.next(this._userdto);
   }
   UpdatePassword(_userdto: UserDTO) {
-    return this.http.post(this.rootUrl + '/AuthenticationAPI/NewUpdatePasswordANG', _userdto);
+    return this.http.post(this.rootUrl + 'AuthenticationAPI/NewUpdatePasswordANG', _userdto);
   }
 
   UpdateTourCount(dto: UserDTO) {
     this._userdto.createdby = dto.createdby;
     this._userdto.TourId = dto.TourId;
     // '/AuthenticationAPI/NewTourUpdateCount'
-    return this.http.post(this.rootUrl + '/AuthenticationAPI/NewTourUpdateCount', this._userdto);
+    return this.http.post(this.rootUrl + 'AuthenticationAPI/NewTourUpdateCount', this._userdto);
   }
 
 }

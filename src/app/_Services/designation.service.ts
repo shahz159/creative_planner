@@ -33,7 +33,7 @@ export class DesignationService {
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this._obj.RoleId = this.currentUserValue.RoleId;
     this._obj.CreatedBy = this.currentUserValue.createdby;
-    return this.http.post(this.rootUrl + "/DepartmentAPI/NewGetDesignation", this._obj)
+    return this.http.post(this.rootUrl + "DepartmentAPI/NewGetDesignation", this._obj)
    }
    designation_add(_values: DesignationDTO) {
     debugger
@@ -58,7 +58,7 @@ export class DesignationService {
     }
     this.objDesignation.DesignationId=_values.DesignationId;
   
-    return this.http.post(this.rootUrl + "/DepartmentAPI/NewDesignationInsertUpdate", this.objDesignation);
+    return this.http.post(this.rootUrl + "DepartmentAPI/NewDesignationInsertUpdate", this.objDesignation);
 }
 UpDatedialog_Status(objStatus) {
   // this.ObjracksDto.WareHouseId = objStatus.WareHouseId;
@@ -66,7 +66,7 @@ UpDatedialog_Status(objStatus) {
   this.objDesignation.OrganizationId = this.currentUserValue.organizationid;
   // this.objDesignation.IsActive = objStatus.IsActive;
   this.objDesignation.CreatedBy = this.currentUserValue.createdby;
-  this.http.post(this.rootUrl + "/DepartmentAPI/NewDesignationStatus", this.objDesignation)
+  this.http.post(this.rootUrl + "DepartmentAPI/NewDesignationStatus", this.objDesignation)
     .subscribe(
       (data) => {
         this.objDesignation_List = data as DesignationDTO[];

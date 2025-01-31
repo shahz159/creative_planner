@@ -1,5 +1,13 @@
+.card-body {
+  padding: 1.25rem;
+}
+
 .last1 {
   position: relative;
+}
+
+ul.stepper.horizontal {
+  list-style: none;
 }
 
 ul.stepper.horizontal::before {
@@ -22,6 +30,17 @@ ul.stepper.horizontal .step .step-content {
 
 ul.stepper.horizontal .step .step-title {
   padding: 0 65px 0 65px;
+}
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal .step {
+    position: static;
+    padding: 0 !important;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 84px;
+  }
 }
 
 ul.stepper.horizontal .step:last-of-type {
@@ -62,6 +81,16 @@ ul.stepper.horizontal .step.active .step-content {
 ul.stepper.horizontal .step .step-content .step-actions {
   bottom: -65px;
   background: #ffffff;
+}
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal .step .step-content .step-actions {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    flex-direction: row-reverse;
+  }
 }
 
 .btn.btn-light-primary {
@@ -425,6 +454,7 @@ img.ep-ic-dw {
   width: 43px;
   height: 43px;
 }
+
 .bulk-note {
   display: none;
   align-items: center;
@@ -435,16 +465,20 @@ img.ep-ic-dw {
   padding: 8px 6px;
   background: #fdf1ed;
 }
-.bulk-note.view{
+
+.bulk-note.view {
   display: flex;
 }
+
 .bulk-note span.icon {
   line-height: 0.5;
   color: #f33100;
 }
+
 .bulk-note span.content {
   color: #f33100;
 }
+
 .table-note {
   background: #d4e7fd;
   border-radius: 4px;
@@ -457,9 +491,11 @@ img.ep-ic-dw {
   align-items: center;
   gap: 5px;
 }
+
 .table-note span.label {
   font-size: 13px;
 }
+
 ::ng-deep .kt-body-arabic .table-note {
   border-left: 0px solid #2786fb;
   border-right: 4px solid #2786fb;
@@ -548,16 +584,352 @@ img.ep-ic-dw {
 .user-regi-container input:nth-of-type(2):checked~.user-regi-wrapper .user-regi div:nth-of-type(2) {
   opacity: 1;
 }
+
 .user-regi-container {
   background: #ffffff00;
   border: 1px solid #ccc;
 }
+
 .user-regi-container .user-regi {
   background: #2786fb;
 }
+
 .user-regi-container .user-regi div {
   color: #ffffff;
 }
+
 .user-regi-container label {
   color: #545151;
+}
+
+
+
+/* styles bundle new  */
+
+.d-flex-center {
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+}
+
+
+ul.stepper {
+  counter-reset: section;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+ul.stepper.horizontal {
+  min-height: 0;
+  min-height: initial;
+  padding-left: 0;
+}
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal {
+    min-height: 0;
+    min-height: initial;
+    overflow: visible !important;
+  }
+}
+
+ul.stepper.horizontal:before {
+  box-shadow: none;
+}
+
+
+ul.stepper.horizontal .step .step-title {
+  padding: 0 65px!important;
+}
+
+.step.active .step-title {
+  border-bottom: 3px solid #2196f3;
+}
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal .step .step-title {
+    line-height: 84px;
+    height: 84px;
+    margin: 0;
+    padding: 0 25px 0 65px;
+    display: inline-block;
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+  }
+}
+
+ul.stepper .step.active .step-title {
+  font-weight: 500;
+}
+
+
+@media only screen and (min-width: 420px) {
+
+  ul.stepper.horizontal .step.active .step-title:before,
+  ul.stepper.horizontal .step.done .step-title:before {
+    background-color: #2196f3;
+  }
+}
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal .step .step-title:before {
+    position: absolute;
+    counter-increment: section;
+    content: counter(section);
+    height: 26px;
+    width: 26px;
+    color: #fff;
+    background-color: #b2b2b2;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 26px;
+    font-weight: 400;
+    transition: background-color .4s cubic-bezier(.4, 0, .2, 1);
+    font-size: 14px;
+    top: 28.5px;
+    left: 19px;
+  }
+}
+
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal .step .step-title:after {
+    top: 15px;
+  }
+}
+
+ul.stepper .step .step-title:after {
+  content: attr(data-step-label);
+  display: block;
+  position: absolute;
+  font-size: 12.8px;
+  font-size: .8rem;
+  color: #424242;
+  font-weight: 400;
+}
+
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal:before {
+    content: "";
+    background-color: transparent;
+    width: 100%;
+    min-height: 84px;
+    /* box-shadow: 0 2px 1px -1px #0003, 0 1px 1px #00000024, 0 1px 3px #0000001f; */
+    position: absolute;
+    left: 0;
+  }
+}
+
+
+
+
+
+ul.stepper.horizontal .step.active .step-content {
+  padding: 20px 0 76px;
+  display: block;
+}
+
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal .step .step-content {
+    position: absolute;
+    height: calc(100% - 84px);
+    top: 84px;
+    display: block;
+    left: -100%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 20px 20px 76px;
+    transition: left .4s cubic-bezier(.4, 0, .2, 1);
+  }
+}
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal .step.active .step-content {
+    left: 0 !important;
+  }
+}
+
+ul.stepper.horizontal .step .step-title {
+  padding: 0 65px;
+}
+
+.step.active .step-title {
+  border-bottom: 3px solid #2196f3;
+}
+
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal .step .step-title {
+    line-height: 84px;
+    height: 84px;
+    margin: 0;
+    padding: 0 25px 0 65px;
+    display: inline-block;
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+  }
+}
+
+
+
+
+ul.stepper.horizontal .step .step-title {
+  padding: 0 65px;
+}
+
+.step.active .step-title {
+  border-bottom: 3px solid #2196f3;
+}
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal .step .step-title {
+    line-height: 84px;
+    height: 84px;
+    margin: 0;
+    padding: 0 25px 0 65px;
+    display: inline-block;
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+  }
+}
+
+ul.stepper .step.active .step-title {
+  font-weight: 500;
+}
+
+ul.stepper .step .step-title {
+  margin: 0 -24px;
+  cursor: pointer;
+  padding: 15.5px 44px 24px 64px;
+  display: block;
+}
+
+.last1 {
+  position: relative;
+}
+
+
+
+@media only screen and (min-width: 420px) {
+
+  ul.stepper.horizontal .step.active .step-title:before,
+  ul.stepper.horizontal .step.done .step-title:before {
+    background-color: #2196f3;
+  }
+}
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal .step .step-title:before {
+    position: absolute;
+    counter-increment: section;
+    content: counter(section);
+    height: 26px;
+    width: 26px;
+    color: #fff;
+    background-color: #b2b2b2;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 26px;
+    font-weight: 400;
+    transition: background-color .4s cubic-bezier(.4, 0, .2, 1);
+    font-size: 14px;
+    top: 28.5px;
+    left: 19px;
+  }
+}
+
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal .step .step-title:after {
+    top: 15px;
+  }
+}
+
+ul.stepper .step .step-title:after {
+  content: attr(data-step-label);
+  display: block;
+  position: absolute;
+  font-size: 12.8px;
+  font-size: .8rem;
+  color: #424242;
+  font-weight: 400;
+}
+
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal {
+    min-height: 0;
+    min-height: initial;
+    overflow: visible !important;
+  }
+}
+
+
+ul.stepper.horizontal {
+  min-height: 0;
+  min-height: initial;
+  padding-left: 0;
+}
+
+@media only screen and (min-width: 420px) {
+  ul.stepper.horizontal {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    min-height: 458px;
+    overflow: hidden;
+  }
+}
+
+@media only screen and (min-width: 420px) {
+
+  ul.stepper.horizontal .step.active:not(:last-of-type):after,
+  ul.stepper.horizontal .step:not(:last-of-type):after {
+    content: "";
+    position: static;
+    display: inline-block;
+    width: 100%;
+    height: 1px;
+  }
+}
+
+ul.stepper .step:not(:last-of-type):after {
+  background-color: #0000001a;
+  transition: height .4s cubic-bezier(.4, 0, .2, 1);
+}
+
+ul.stepper .step .step-title:hover {
+  background-color: #0000000f;
+}
+
+@media only screen and (min-width: 420px) {
+
+  ul.stepper.horizontal .step .step-content .step-actions .btn-flat:not(:last-child),
+  ul.stepper.horizontal .step .step-content .step-actions .btn-large:not(:last-child),
+  ul.stepper.horizontal .step .step-content .step-actions .btn:not(:last-child) {
+    margin-left: 5px;
+    margin-right: 0;
+  }
+}
+
+ul.stepper .step .step-content .step-actions {
+  display: flex
+}
+
+.form-m .form-cus {
+  width: 100%;
+  padding: 10px;
 }

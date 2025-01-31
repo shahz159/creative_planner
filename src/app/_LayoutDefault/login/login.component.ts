@@ -11,6 +11,7 @@ import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { AuthenticationService } from 'src/app/_Services/authentication.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { BsServiceService } from 'src/app/_Services/bs-service.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -38,7 +39,9 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private service: ProjectTypeService,
     private authenticationService: AuthenticationService,
-    private loadingBar: LoadingBarService) {
+    private loadingBar: LoadingBarService,
+    private bsService: BsServiceService
+    ) {
 
     this.Obj_ILoginDTO = new LoginDTO;
     // this.UserDetails_List = new UserDetailsDTO;
@@ -95,6 +98,7 @@ export class LoginComponent implements OnInit {
   cosnt_Loadingbar = this.loadingBar.useRef('http');
   OrganizationId: any;
   IsPolicy: number;
+  IsPolicynew: boolean;
 
   login_DMS() {
 
@@ -108,24 +112,74 @@ export class LoginComponent implements OnInit {
       this.Obj_ILoginDTO.UserName = this.f.userid.value;
       this.Obj_ILoginDTO.Password = this.f.password.value;
       //alert("One");
+      localStorage.removeItem('DMS_UserInfo');  // clear old user info.
       this.authenticationService.login(this.f.userid.value, this.f.password.value)
         .subscribe(
           (data) => {
             console.log("DMS login Data---->", data);
-            const userIdJson = data['Data']['UserId']; // Retrieve the UserId JSON string
-            const parsedUserIdArray = JSON.parse(userIdJson); // Parse the JSON string into an array
-            const userIdObject = parsedUserIdArray[0]; // Access the first object in the array
-            this.IsStreamDownload = userIdObject['IsStreamDownload']; // Retrieve the IsStreamDownload value
+            const userIdJson = data['Data']['UserId']; 
+            if(userIdJson.length > 0){
+              
+              const parsedUserIdArray = JSON.parse(userIdJson); // Parse the JSON string into an array
+            const userIdObject = parsedUserIdArray[0];
+            if (userIdObject["CredentialsIsValid"] == true) { // Access the first object in the array
+            this.IsStreamDownload = userIdObject['IsStreamDownload']; 
+            this.User_FullName = userIdObject['UserName'];
+            this.OrganizationId = userIdObject['organizationid'];
+            this.SystemRole = userIdObject['DesignationName'];
+            this.SystemRole = userIdObject['DesignationName'];
+              this.IsPolicynew = userIdObject['IsPolicy'];
+              this.EmpNo = userIdObject['EmpNo'];
+
             const _createdBy=userIdObject['createdby'];
             const _userProfile=userIdObject['UserProfile'];
             const Isdownload: string = `${this.IsStreamDownload}`;
       
-            const userinfostr={
+            const userinfo_={
               createdby:_createdBy,
               UserProfile:_userProfile
             };    
-            localStorage.setItem('DMS_UserInfo',JSON.stringify(userinfostr));    
+            localStorage.setItem('DMS_UserInfo',JSON.stringify(userinfo_));  // store new user info.  
             localStorage.setItem('IsStreamDownload',Isdownload);
+            localStorage.setItem("UserfullName", this.User_FullName);
+              localStorage.setItem('_Currentuser', this.DB_username);
+              localStorage.setItem('OrganizationId', this.OrganizationId);
+              localStorage.setItem('EmpNo', this.EmpNo);
+              localStorage.setItem('isLoggedIn', "true");
+              // this.router.navigate([this.dashboardUrl]);
+              //   this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login by');
+              //   this.notifyService.showSuccess("Successfully", "Logged in");
+              //   this.InValidPassword = false;
+              //   this.cd.detectChanges();
+
+
+                if (this.IsPolicynew == true) {
+                  this.router.navigate([this.dashboardUrl]);
+                  this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login by');
+                  this.notifyService.showSuccess("Successfully", "Logged in");
+                  this.InValidPassword = false;
+                  this.cd.detectChanges();
+                }
+                else if (this.IsPolicynew == false) {
+                  this.router.navigate([this.policyUrl]);
+                  this.InValidPassword = false;
+                  this.cd.detectChanges();
+                }
+               
+            this.bsService.UserLoggedIn.emit();  // user has logged in && user info fetched. 
+            }
+            else {
+              this.InValidPassword = true;
+              console.log("Invalid Login");
+              this.authService.logout();
+              localStorage.removeItem('EmpNo');
+              this.cd.detectChanges();
+              // alert("Invalid");
+              // this.message = "Please check your UserName and Password";
+            }
+            // Retrieve the UserId JSON string
+          }
+
           });
     }
   }
@@ -148,7 +202,6 @@ export class LoginComponent implements OnInit {
       this.service.LoginCredentials(this.Obj_ILoginDTO)
         .subscribe(
           (data) => {  
-            debugger
             try{
 
             this.UserDetails_List = data as UserDetailsDTO[];
@@ -216,6 +269,7 @@ export class LoginComponent implements OnInit {
             
           });
     }
+
     this.login_DMS();
   }
 }

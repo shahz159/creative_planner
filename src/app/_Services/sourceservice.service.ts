@@ -28,21 +28,21 @@ export class SourceserviceService {
     this._obj.RoleId = this.currentUserValue.RoleId;
     this._obj.CreatedBy = this.currentUserValue.createdby;
 
-    return this.http.post(this.rootUrl + "/SourceAPI/NewGetSource", this._obj)
+    return this.http.post(this.rootUrl + "SourceAPI/NewGetSource", this._obj)
   }
 
   GetCountries() {
-    return this.http.get<any>(this.rootUrl + "/OrganizationAPI/GetCountries")
+    return this.http.get<any>(this.rootUrl + "OrganizationAPI/GetCountries")
   }
   ///Get All Users based on OrganizationId
   GetUserList(_values:SourceDTO){
     this._obj.OrganizationId = this.currentUserValue.organizationid;
-    return this.http.post(this.rootUrl + '/SourceAPI/NewGetOrganizationUsers', this._obj)
+    return this.http.post(this.rootUrl + 'SourceAPI/NewGetOrganizationUsers', this._obj)
   }
 
   GetCities(_values:SourceDTO) {
     this._obj.CountryId = _values.CountryId;
-    return this.http.post(this.rootUrl + '/OrganizationAPI/NewGetCities', this._obj);
+    return this.http.post(this.rootUrl + 'OrganizationAPI/NewGetCities', this._obj);
   }
   InsertUpdateSource(_values:SourceDTO) {
      
@@ -86,14 +86,14 @@ export class SourceserviceService {
     }
     this._obj.SourceId = _values.SourceId;
      
-    return this.http.post(this.rootUrl + "/SourceAPI/NewSourceInsertUpdate", this._obj)
+    return this.http.post(this.rootUrl + "SourceAPI/NewSourceInsertUpdate", this._obj)
   }
 
   updatesourcestatus(objStatus) {
     this._obj.SourceId = objStatus.SourceId;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this._obj.CreatedBy = this.currentUserValue.createdby;
-    return this.http.post(this.rootUrl + "/SourceAPI/NewSourceStatus", this._obj)
+    return this.http.post(this.rootUrl + "SourceAPI/NewSourceStatus", this._obj)
     .subscribe(
       (data) => {
         this.ObjSource_List = data as SourceDTO[];

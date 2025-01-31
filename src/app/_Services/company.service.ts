@@ -33,7 +33,7 @@ export class CompanyService {
     this._obj.RoleId = this.currentUserValue.RoleId;
     this._obj.CreatedBy = this.currentUserValue.createdby;
 
-    return this.http.post(this.rootUrl + "/CompanyAPI/NewGetCompanies", this._obj)
+    return this.http.post(this.rootUrl + "CompanyAPI/NewGetCompanies", this._obj)
   }
   insertcompanydetails(_values: CompanyDTO) {
     
@@ -71,30 +71,30 @@ export class CompanyService {
 
     }
     this._obj.CompanyId = _values.CompanyId;
-    return this.http.post(this.rootUrl + '/CompanyAPI/NewCompany', this._obj)
+    return this.http.post(this.rootUrl + 'CompanyAPI/NewCompany', this._obj)
   }
   CheckCompanyName(_values: CompanyDTO) {
     this._obj.CompanyName = _values.CompanyName
     this._obj.OrganizationId = this.currentUserValue.organizationid
-    return this.http.post(this.rootUrl + "/CompanyAPI/NewCheckCompanyName", this._obj)
+    return this.http.post(this.rootUrl + "CompanyAPI/NewCheckCompanyName", this._obj)
   }
   Checkemail(_values: CompanyDTO) {
     this._obj.CompanyEmail = _values.Email
     this._obj.OrganizationId = this.currentUserValue.organizationid
-    return this.http.post(this.rootUrl + "/CompanyAPI/NewCheckCompanyEmail", this._obj)
+    return this.http.post(this.rootUrl + "CompanyAPI/NewCheckCompanyEmail", this._obj)
   }
   GetCities(_values: CompanyDTO) {
     this._obj.CountryId = _values.CountryId;
-    return this.http.post(this.rootUrl + '/OrganizationAPI/NewGetCities', this._obj)
+    return this.http.post(this.rootUrl + 'OrganizationAPI/NewGetCities', this._obj)
   }
   GetCountries() {
-    return this.http.get<any>(this.rootUrl + "/OrganizationAPI/GetCountries")
+    return this.http.get<any>(this.rootUrl + "OrganizationAPI/GetCountries")
   }
   UpdateCompanyStatus(objStatus) {
     this._obj.CompanyId = objStatus.CompanyId;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this._obj.CreatedBy = this.currentUserValue.createdby;
-    return this.http.post(this.rootUrl + "/CompanyAPI/NewCompanyStatus", this._obj)
+    return this.http.post(this.rootUrl + "CompanyAPI/NewCompanyStatus", this._obj)
   }
   AddUpdateQuotes(objStatus) {
     debugger
@@ -102,10 +102,10 @@ export class CompanyService {
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this._obj.CreatedBy = this.currentUserValue.createdby;
     this._obj.FlagId = objStatus.FlagId;
-    return this.http.post(this.rootUrl + "/CompanyAPI/NewQuotes", this._obj)
+    return this.http.post(this.rootUrl + "CompanyAPI/NewQuotes", this._obj)
   }
   GetQuotes() {
     this._obj.OrganizationId = this.currentUserValue.organizationid;
-    return this.http.post(this.rootUrl + "/CompanyAPI/NewGetQuotes", this._obj)
+    return this.http.post(this.rootUrl + "CompanyAPI/NewGetQuotes", this._obj)
   }
 }

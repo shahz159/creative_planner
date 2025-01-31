@@ -187,7 +187,6 @@ export class UserlistComponent implements OnInit {
     // this.GetUserList();
     this.GetUserList();
     this.CompanyandDepartmenrandDesignation();
-    ;
     tippy('.tips', {
       arrow: true,
       animation: 'scale-extreme',
@@ -242,7 +241,7 @@ export class UserlistComponent implements OnInit {
   }
 
 
-  GetUserList() {   
+  GetUserList() {     debugger
     this._obj.message = this.Usersearch
     this._obj.PageSize = this.PageSize;
     this._obj.PageNumber = this.activePage;
