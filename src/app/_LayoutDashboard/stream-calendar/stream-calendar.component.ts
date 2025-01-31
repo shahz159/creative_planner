@@ -3186,7 +3186,7 @@ debugger
 
 getEventsForWeeks(weeksFromToday: number) {
 
-
+  debugger
   const today = new Date();
   today.setHours(0, 0, 0, 0); 
 
@@ -3209,10 +3209,11 @@ getEventsForWeeks(weeksFromToday: number) {
   
     this.currentWeekOffset = newOffset;
   }
-debugger
+
 
 if(this.noSelectedDate == true && weeksFromToday === 0  && this.selectDay){
   var formattedDate = this.selectDay.toDate();
+  this.currentWeekOffset = 0 ;
 }else{
   formattedDate = undefined;
   this.isCalendarVisible = false;  

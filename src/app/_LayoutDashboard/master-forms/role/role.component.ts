@@ -19,7 +19,7 @@ import { HeaderComponent } from '../../header/header.component';
 export class RoleComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject<any>();
   _obj: RoleDTO;
-  _objRole: any[] = [];
+  _objRole: any[] = []
   RoleId: number;
   String_status: string;
   InActive: false;
