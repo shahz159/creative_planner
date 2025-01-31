@@ -638,12 +638,8 @@ export class CompanyComponent implements OnInit {
     });
   }
   
-  company_add() {
-    // document.getElementById("addrck").style.display = "block";
-    // document.getElementById("company_add").style.display = "none";
-    // document.getElementById("editrck").innerHTML = "Add";
+  company_add() {   debugger
     const element = document.getElementById("editrck");
-
     if (element) {
       // Set the inner HTML content based on the selected language
       element.innerHTML = this.translate.instant("Masterform.Add");

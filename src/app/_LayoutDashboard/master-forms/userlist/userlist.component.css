@@ -1065,3 +1065,87 @@ img.ep-ic-dw {
 .kt-body-arabic .card1 {
     margin-right: 0px !important;
 }
+
+
+
+
+/* styles bundles new */
+.b-table {
+    border-bottom-left-radius: .357rem;
+    border-bottom-right-radius: .357rem;
+    color: #6e6b7b;
+}
+
+.b-table thead th:first-child {
+    border-left: 1px solid #ebe9f1;
+}
+
+.b-table thead:not(.thead-dark) th {
+    background-color: #f3f2f7;
+}
+
+.table:not(.table-bordered) thead th, .table:not(.table-bordered) thead td {
+    border-top: 0;
+}
+
+.b-table thead th {
+    width: 300px;
+    vertical-align: top;
+    text-transform: uppercase;
+    font-size: .857rem;
+    letter-spacing: .5px;
+}
+
+
+
+.edit_options .tab-content {
+    background-color: #fafafa;
+    border: 1px solid #eee;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    padding: 15px;
+    min-height: 90px;
+    margin-bottom: 5px;
+}
+
+.ribbon-box .ribbon.float-left {
+    margin-left: -26px;
+    border-radius: 0 3px 3px 0;
+}
+
+.ribbon-box .ribbon-purple {
+    background: #9093d2;
+}
+.ribbon-box .ribbon {
+    position: relative;
+    clear: both;
+    padding: 5px 12px;
+    margin-bottom: 15px;
+    box-shadow: 2px 5px 10px #323a4626;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.ribbon-box .ribbon-purple:before {
+    border-color: #9093d2 transparent transparent;
+}
+.ribbon-box .ribbon:before {
+    content: " ";
+    border-style: solid;
+    border-width: 10px;
+    display: block;
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    margin-bottom: -10px;
+    z-index: -1;
+}
+
+.ribbon-box .ribbon-blue {
+    background: #4a81d4;
+}
+
+.ribbon-box .ribbon-blue:before {
+    border-color: #2d67be transparent transparent;
+}

@@ -50,3 +50,35 @@
 .w-3{
     width: 33.3% !important;
 }
+
+
+ /* new */
+
+
+@media (min-width: 769px) {
+    #addrck.kt-quick-panel--on {
+        width: 50% !important;
+    }
+}
+
+
+@media (min-width: 769px) {
+    .kt-quick-panel--right #addrck.kt-quick-panel.kt-quick-panel--on {
+        transition: left .3s ease, right .3s ease;
+        right: 0;
+        left: auto;
+    }
+}
+
+@media (min-width: 769px) {
+    .kt-quick-panel--right #addrck.kt-quick-panel {
+        right: -75%;
+        left: auto;
+    }
+} 
+
+
+.form-m .form-cus {
+    width: 100%;
+    padding: 10px;
+}
