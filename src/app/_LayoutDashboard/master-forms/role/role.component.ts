@@ -19,7 +19,158 @@ import { HeaderComponent } from '../../header/header.component';
 export class RoleComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject<any>();
   _obj: RoleDTO;
-  _objRole: any[] = []
+  _objRole: any[] = [
+    {
+        "RoleName": "Myntra Devloper",
+        "RoleId": 685,
+        "Description": "",
+        "CreatedBy": 0,
+        "OrganizationId": 0,
+        "FlagId": 0,
+        "IsActive": true,
+        "message": null,
+        "Sharing": true,
+        "PageNumber": 0,
+        "PageSize": 0,
+        "Search": null,
+        "TotalRecords": 83
+    },
+    {
+        "RoleName": "Jackets",
+        "RoleId": 683,
+        "Description": "",
+        "CreatedBy": 0,
+        "OrganizationId": 0,
+        "FlagId": 0,
+        "IsActive": true,
+        "message": null,
+        "Sharing": true,
+        "PageNumber": 0,
+        "PageSize": 0,
+        "Search": null,
+        "TotalRecords": 83
+    },
+    {
+        "RoleName": "Aug 16",
+        "RoleId": 676,
+        "Description": "Test",
+        "CreatedBy": 0,
+        "OrganizationId": 0,
+        "FlagId": 0,
+        "IsActive": true,
+        "message": null,
+        "Sharing": true,
+        "PageNumber": 0,
+        "PageSize": 0,
+        "Search": null,
+        "TotalRecords": 83
+    },
+    {
+        "RoleName": "Angular Test",
+        "RoleId": 675,
+        "Description": "noteeevvvvv",
+        "CreatedBy": 0,
+        "OrganizationId": 0,
+        "FlagId": 0,
+        "IsActive": true,
+        "message": null,
+        "Sharing": true,
+        "PageNumber": 0,
+        "PageSize": 0,
+        "Search": null,
+        "TotalRecords": 83
+    },
+    {
+        "RoleName": "gggg",
+        "RoleId": 673,
+        "Description": "gdfg",
+        "CreatedBy": 0,
+        "OrganizationId": 0,
+        "FlagId": 0,
+        "IsActive": true,
+        "message": null,
+        "Sharing": true,
+        "PageNumber": 0,
+        "PageSize": 0,
+        "Search": null,
+        "TotalRecords": 83
+    },
+    {
+        "RoleName": "Dev Dms",
+        "RoleId": 672,
+        "Description": "Notee",
+        "CreatedBy": 0,
+        "OrganizationId": 0,
+        "FlagId": 0,
+        "IsActive": true,
+        "message": null,
+        "Sharing": true,
+        "PageNumber": 0,
+        "PageSize": 0,
+        "Search": null,
+        "TotalRecords": 83
+    },
+    {
+        "RoleName": "demomaster",
+        "RoleId": 671,
+        "Description": "write",
+        "CreatedBy": 0,
+        "OrganizationId": 0,
+        "FlagId": 0,
+        "IsActive": true,
+        "message": null,
+        "Sharing": false,
+        "PageNumber": 0,
+        "PageSize": 0,
+        "Search": null,
+        "TotalRecords": 83
+    },
+    {
+        "RoleName": "Test 28",
+        "RoleId": 670,
+        "Description": "write notee",
+        "CreatedBy": 0,
+        "OrganizationId": 0,
+        "FlagId": 0,
+        "IsActive": false,
+        "message": null,
+        "Sharing": false,
+        "PageNumber": 0,
+        "PageSize": 0,
+        "Search": null,
+        "TotalRecords": 83
+    },
+    {
+        "RoleName": "Test 26",
+        "RoleId": 669,
+        "Description": "write Noteee",
+        "CreatedBy": 0,
+        "OrganizationId": 0,
+        "FlagId": 0,
+        "IsActive": true,
+        "message": null,
+        "Sharing": true,
+        "PageNumber": 0,
+        "PageSize": 0,
+        "Search": null,
+        "TotalRecords": 83
+    },
+    {
+        "RoleName": "Test RBC",
+        "RoleId": 668,
+        "Description": "noteee",
+        "CreatedBy": 0,
+        "OrganizationId": 0,
+        "FlagId": 0,
+        "IsActive": true,
+        "message": null,
+        "Sharing": true,
+        "PageNumber": 0,
+        "PageSize": 0,
+        "Search": null,
+        "TotalRecords": 83
+    }
+]
   RoleId: number;
   String_status: string;
   InActive: false;
@@ -369,6 +520,7 @@ export class RoleComponent implements OnInit {
     this.isShow = true
   }
   role_cl() {
+    debugger
     // document.getElementById("addrck").style.display = "none";
     // document.getElementById("role_add").style.display = "block";
     document.getElementById("addrck").classList.remove("kt-quick-panel--on");
