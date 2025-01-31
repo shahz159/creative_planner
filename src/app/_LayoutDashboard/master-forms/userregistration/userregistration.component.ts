@@ -3,12 +3,12 @@ import { Component, OnInit, ViewChild, ElementRef, Renderer2, Inject } from '@an
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserRegistrationDTO } from '../../../_Models/user-registration-dto';
 import { UserRegistrationService } from '../../../_Services/user-registration.service';
-import tippy from 'node_modules/tippy.js';
+import tippy from '../../../../../node_modules/tippy.js';
 import { environment } from '../../../../environments/environment';
 // import { ScriptService } from 'src/app/_service/script.service';
 import * as XLSX from 'xlsx';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { UserDTO } from '../../../_models/user-dto';
+import { UserDTO } from '../../../_Models/user-dto';
 import { DOCUMENT } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderComponent } from '../../header/header.component';

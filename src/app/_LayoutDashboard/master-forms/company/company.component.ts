@@ -171,7 +171,7 @@ export class CompanyComponent implements OnInit {
     this._obj.PageSize = this.PageSize;
     this._obj.PageNumber = this.activePage;
     this.services.getcompanylist(this._obj).subscribe(data => {
-      // console.log(data,"company");
+       console.log(data,"company");
       this._objCompany = data as [];
       this._obj = new CompanyDTO();
       this.TotalrecordsList = data as  [];

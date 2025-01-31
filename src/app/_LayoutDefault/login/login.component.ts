@@ -8,6 +8,7 @@ import { NotificationService } from 'src/app/_Services/notification.service';
 import { Login } from 'src/app/_Interface/login';
 import { AuthService } from 'src/app/_Services/auth.service'
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
+import { AuthenticationService } from 'src/app/_Services/authentication.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 @Component({
@@ -36,6 +37,7 @@ export class LoginComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private authService: AuthService,
     private service: ProjectTypeService,
+    private authenticationService: AuthenticationService,
     private loadingBar: LoadingBarService) {
 
     this.Obj_ILoginDTO = new LoginDTO;
@@ -50,7 +52,7 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   message: string;
-  dashboardUrl: string = 'backend/dashboard';
+  dashboardUrl: string = 'backend/Streamdashboard';
   policyUrl: string = 'userpolicy';
   User_FullName: string;
   //---end---
@@ -106,7 +108,7 @@ export class LoginComponent implements OnInit {
       this.Obj_ILoginDTO.UserName = this.f.userid.value;
       this.Obj_ILoginDTO.Password = this.f.password.value;
       //alert("One");
-      this.service.login(this.Obj_ILoginDTO)
+      this.authenticationService.login(this.f.userid.value, this.f.password.value)
         .subscribe(
           (data) => {
             console.log("DMS login Data---->", data);
