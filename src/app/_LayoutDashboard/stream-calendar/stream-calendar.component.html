@@ -191,9 +191,9 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="reportCount"  class="kt-calendar-right">
+            <div  class="kt-calendar-right">
                 <div class="kt-sch-div" id="kt-sch-div">
-                    <div class="accordion" id="accordionPendingtask">
+                    <div *ngIf="reportCount"  class="accordion" id="accordionPendingtask">
                         <a class="accordion-pending-task-btn position-relative" type="button" data-toggle="collapse" data-target="#collapseUnassign" aria-expanded="false" aria-controls="collapseUnassign">
                          <span><span class="sch-evt-date">{{reportCount}}</span>Overdue actions/tasks</span>
                          <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>

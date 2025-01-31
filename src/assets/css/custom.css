@@ -568,7 +568,7 @@ h3.popover-header {
 /* Ribbons  */
 .ribbon-box {
     position: relative;
-    z-index: 998;
+    /* z-index: 998; */
 }
 
 .ribbon {
@@ -1764,7 +1764,15 @@ svg.rmv-icn:hover {
     margin-right: 50px;
 }
 .btn-secondary {
-    background-color: #e2e5ec;
+    background-color: transparent;
     border: 1px solid #e2e5ec;
     color: #595d6e;
+}
+
+.disabled>.page-link, .page-link.disabled, .paginationdisable>.page-link, .page-link.paginationdisable {
+    background-color: #e9ecef;
+    background-color: #dee2e6;
+    border-color: #e9ecef;
+    color: #adb5bd;
+    pointer-events: none;
 }
