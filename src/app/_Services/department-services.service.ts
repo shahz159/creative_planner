@@ -31,7 +31,7 @@ export class DepartmentServicesService {
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this._obj.RoleId = this.currentUserValue.RoleId;
     this._obj.CreatedBy = this.currentUserValue.createdby;
-    return this.http.post(this.rootUrl + "/DepartmentAPI/NewGetDepartment", this._obj)
+    return this.http.post(this.rootUrl + "DepartmentAPI/NewGetDepartment", this._obj)
   }
   insertdepartmentdetails(_values: DepartmentDTO) {
     this._obj.DepartmentName = _values.DepartmentName;
@@ -52,18 +52,18 @@ export class DepartmentServicesService {
       this._obj.DepartmentId = 0
     }
     this._obj.DepartmentId = _values.DepartmentId;
-    return this.http.post(this.rootUrl + '/DepartmentAPI/NewDepartmentInsertUpdate', this._obj);
+    return this.http.post(this.rootUrl + 'DepartmentAPI/NewDepartmentInsertUpdate', this._obj);
   }
   CheckDepartmentName(_values: DepartmentDTO) {
     this._obj.DepartmentName = _values.DepartmentName;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
-    return this.http.post(this.rootUrl + "/DepartmentAPI/NewCheckDepartmentName", this._obj);
+    return this.http.post(this.rootUrl + "DepartmentAPI/NewCheckDepartmentName", this._obj);
   }
   updatedepartmentstatus(objStatus) {
     this._obj.DepartmentId = objStatus.DepartmentId;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this._obj.FlagId = objStatus.FlagId;
     this._obj.CreatedBy = this.currentUserValue.createdby;
-    return this.http.post(this.rootUrl + "/DepartmentAPI/NewDepartmentStatus", this._obj)
+    return this.http.post(this.rootUrl + "DepartmentAPI/NewDepartmentStatus", this._obj)
   }
 }

@@ -98,6 +98,7 @@ export class LoginComponent implements OnInit {
   cosnt_Loadingbar = this.loadingBar.useRef('http');
   OrganizationId: any;
   IsPolicy: number;
+  IsPolicynew: boolean;
 
   login_DMS() {
 
@@ -116,10 +117,20 @@ export class LoginComponent implements OnInit {
         .subscribe(
           (data) => {
             console.log("DMS login Data---->", data);
-            const userIdJson = data['Data']['UserId']; // Retrieve the UserId JSON string
-            const parsedUserIdArray = JSON.parse(userIdJson); // Parse the JSON string into an array
-            const userIdObject = parsedUserIdArray[0]; // Access the first object in the array
-            this.IsStreamDownload = userIdObject['IsStreamDownload']; // Retrieve the IsStreamDownload value
+            const userIdJson = data['Data']['UserId']; 
+            if(userIdJson.length > 0){
+              
+              const parsedUserIdArray = JSON.parse(userIdJson); // Parse the JSON string into an array
+            const userIdObject = parsedUserIdArray[0];
+            if (userIdObject["CredentialsIsValid"] == true) { // Access the first object in the array
+            this.IsStreamDownload = userIdObject['IsStreamDownload']; 
+            this.User_FullName = userIdObject['UserName'];
+            this.OrganizationId = userIdObject['organizationid'];
+            this.SystemRole = userIdObject['DesignationName'];
+            this.SystemRole = userIdObject['DesignationName'];
+              this.IsPolicynew = userIdObject['IsPolicy'];
+              this.EmpNo = userIdObject['EmpNo'];
+
             const _createdBy=userIdObject['createdby'];
             const _userProfile=userIdObject['UserProfile'];
             const Isdownload: string = `${this.IsStreamDownload}`;
@@ -130,8 +141,45 @@ export class LoginComponent implements OnInit {
             };    
             localStorage.setItem('DMS_UserInfo',JSON.stringify(userinfo_));  // store new user info.  
             localStorage.setItem('IsStreamDownload',Isdownload);
+            localStorage.setItem("UserfullName", this.User_FullName);
+              localStorage.setItem('_Currentuser', this.DB_username);
+              localStorage.setItem('OrganizationId', this.OrganizationId);
+              localStorage.setItem('EmpNo', this.EmpNo);
+              localStorage.setItem('isLoggedIn', "true");
+              // this.router.navigate([this.dashboardUrl]);
+              //   this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login by');
+              //   this.notifyService.showSuccess("Successfully", "Logged in");
+              //   this.InValidPassword = false;
+              //   this.cd.detectChanges();
 
-            this.bsService.UserLoggedIn.emit();  // user has logged in && user info fetched.
+
+                if (this.IsPolicynew == true) {
+                  this.router.navigate([this.dashboardUrl]);
+                  this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login by');
+                  this.notifyService.showSuccess("Successfully", "Logged in");
+                  this.InValidPassword = false;
+                  this.cd.detectChanges();
+                }
+                else if (this.IsPolicynew == false) {
+                  this.router.navigate([this.policyUrl]);
+                  this.InValidPassword = false;
+                  this.cd.detectChanges();
+                }
+               
+            this.bsService.UserLoggedIn.emit();  // user has logged in && user info fetched. 
+            }
+            else {
+              this.InValidPassword = true;
+              console.log("Invalid Login");
+              this.authService.logout();
+              localStorage.removeItem('EmpNo');
+              this.cd.detectChanges();
+              // alert("Invalid");
+              // this.message = "Please check your UserName and Password";
+            }
+            // Retrieve the UserId JSON string
+          }
+
           });
     }
   }
