@@ -10,6 +10,7 @@ export const environment = {
    baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
   //  baseUrlCore:'http://localhost:5201/api/',
    Language_file_url:''
+   ,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/'
    ,assetsurl:'../../../',
   // SignalUrl: 'http://localhost:1221/signalr'
   // baseUrl:'https://cswebapps.com/PortfolioAPI/api/'

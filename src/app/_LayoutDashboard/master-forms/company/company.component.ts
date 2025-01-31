@@ -171,7 +171,7 @@ export class CompanyComponent implements OnInit {
     this._obj.PageSize = this.PageSize;
     this._obj.PageNumber = this.activePage;
     this.services.getcompanylist(this._obj).subscribe(data => {
-      // console.log(data,"company");
+       console.log(data,"company");
       this._objCompany = data as [];
       this._obj = new CompanyDTO();
       this.TotalrecordsList = data as  [];
@@ -638,12 +638,8 @@ export class CompanyComponent implements OnInit {
     });
   }
   
-  company_add() {
-    // document.getElementById("addrck").style.display = "block";
-    // document.getElementById("company_add").style.display = "none";
-    // document.getElementById("editrck").innerHTML = "Add";
+  company_add() {   debugger
     const element = document.getElementById("editrck");
-
     if (element) {
       // Set the inner HTML content based on the selected language
       element.innerHTML = this.translate.instant("Masterform.Add");

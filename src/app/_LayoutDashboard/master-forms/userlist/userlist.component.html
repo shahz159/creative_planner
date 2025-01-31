@@ -5,7 +5,7 @@
 
 
         <div class="card card-company-table">
-            <div class="card-header align-items-center d-flex py-3">
+            <div class="card-header align-items-center d-flex py-3  d-none  ">
                 <div class="flex-1">
                     <div class="search-bar">
                         <input type="search" id="txtMainSearch" [(ngModel)]="Usersearch" (keyup.enter)="Search()" class="form-control search_clear" (keyup)="handleKeyUp($event)" [placeholder]="UserSearch" aria-controls="example" autocomplete="off">
@@ -177,47 +177,38 @@
                     <thead role="rowgroup" class="">
                         <tr role="row" class="">
                             <th role="columnheader" class="">
-                                <div>{{ "Masterform.EmpID" | translate }}</div>
+                                <div>EmpID</div>
                             </th>
                             <th role="columnheader" class="">
-                                <div>{{ "Masterform.LoginID" | translate }}</div>
+                                <div>LoginID</div>
                             </th>
                             <th role="columnheader" class="">
-                                <div>{{ "Masterform.FullName" | translate }}</div>
+                                <div>FullName</div>
                             </th>
                             <th role="columnheader" class="">
-                                <div>{{ "Masterform.DisplayName" | translate }}</div>
+                                <div>DisplayName</div>
                             </th>
-                            <!-- <th role="columnheader" class="">
-                <div>Email</div>
-            </th> -->
+                        
                             <th role="columnheader" class="">
-                                <div>{{ "Masterform.Company" | translate }}</div>
+                                <div>CompanyEmail</div>
                             </th>
                             <th role="columnheader" class="">
-                                <div>{{ "Masterform.Department" | translate }}</div>
+                                <div>DepartmentName</div>
                             </th>
                             <th role="columnheader" class="">
-                                <div> {{ "Masterform.PhoneNumber" | translate }}</div>
+                                <div>PhoneNumber</div>
                             </th>
-                            <!-- <th role="columnheader"  class="">
-                <div>Status</div>
-            </th>
-            <th role="columnheader" class="">
-                <div>Action</div>
-            </th> -->
-
                         </tr>
                     </thead>
                     <tbody role="rowgroup">
-                        <div class="inf-div" id="hideDiv">
+                         <div class="inf-div" id="hideDiv">
                             <div class="d-flex blink inf-txt">
                                 <div class="dotter"></div>{{ "Masterform.UserMessagealert" | translate }}
                             </div>
-                        </div>
-                        <tr *ngFor="let Usr of UserList" (click)="sidev(Usr.UserId)" role="row" class="curser-pointer">
-                            <td role="cell" class="">{{Usr.EmployeeId}}
-                            </td>
+                        </div> 
+
+                        <tr (click)="sidev(Usr.UserId)"  *ngFor="let Usr of UserList" role="row" class="curser-pointer">
+                            <td role="cell" class="">{{Usr.EmployeeId}}</td>
                             <td role="cell" class=""> {{Usr.UserName}}</td>
                             <td role="cell" class="">
                                 <div class="d-flex align-items-center">
@@ -232,18 +223,13 @@
                                             </svg>
                                         </span>
                                     </span>
-                                    <!-- <span class="b-avatar badge-light-danger rounded-circle" style="width: 32px; height: 32px;">
-                    <span class="b-avatar-img"><img src="../../../assets/media/icons/user1.png" alt="avatar">
-                    </span>
-                </span> -->
                                     <div>
                                         <div class="font-weight-bolder"> {{Usr.Name}} </div>
                                         <div class="font-small-2 text-muted mt-1"> {{Usr.UserEmail}} </div>
                                     </div>
                                 </div>
                             </td>
-                            <td role="cell" class="">{{Usr.DisplayName}}</td>
-                            <!-- <td role="cell" class=""></td> -->
+                            <td role="cell" class="">{{Usr.DisplayName}}</td>    
                             <td role="cell" class="">
                                 <div class="d-flex align-items-center">
                                     <span class="b-avatar badge-light-company rounded" style="width: 32px; height: 32px;">
@@ -271,7 +257,7 @@
                                                 <line x1="12" y1="17" x2="12" y2="21"></line>
                                             </svg>
                                         </span>
-                                    <!---->
+                                 
                                     </span>
                                     <span>{{Usr.DepartmentName}}</span>
                                 </div>
@@ -282,34 +268,10 @@
                                         {{Usr.UserPhone}}</span>
                                 </div>
                             </td>
-                            <!-- <td role="cell" class="" [ngStyle]="{'color':Usr.UserIsActive=== true ? '#1dc9b7' : '#dc3545'}" (click)="UpdateStatus(Usr)">
-                <div *ngIf="Usr.UserIsActive" class="kt-badge kt-badge--inline px-3 fs-8 kt-badge--pill curser-pointer kt-badge--unified-success"> Active </div>
-                <div *ngIf="!Usr.UserIsActive" class="kt-badge kt-badge--inline px-3 fs-8 kt-badge--pill curser-pointer kt-badge--unified-danger w-max">
-                In-Active
-            </div>
-            </td> -->
-                            <!-- <td aria-colindex="7" role="cell" class="">
-                <div class="text-nowrap">
-                <a (click)="sidev(Usr.UserId)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="invoice-row-5036-preview-icon" class="mx-3 feather feather-eye">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                </a>
-                <a (click)="sidev(Usr.UserId)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-50 feather feather-settings">
-                    <circle cx="12" cy="12" r="3"></circle>
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                    </svg>
-                </a>
-                </div>
-            </td> -->
-
                         </tr>
-
                     </tbody>
                 </table>
-                <ng-container *ngIf="UserList.length==0">
+                <ng-container *ngIf="UserList&&UserList.length==0">
                     <div class="m-auto text-center">
                         <div class="svgs-1">
                             <img src="assets/media/Img/registerred Users.png">
@@ -404,56 +366,6 @@
             </div>
 
         </div>
-
-        <!-- <table class="table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
-                        <thead>
-                            <tr>
-                                <th>Emp ID</th>
-                                <th>Login</th>
-                                <th>Name</th>
-                                <th>DisplayName</th>
-                                <th>Email</th>
-                                <th>Company</th>
-                                <th>Department</th>
-                                
-                                <th>Phone Number</th>
-                                <th>Status</th>
-                                <th>Info</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let Usr of UserList">
-
-                                <td>{{Usr.EmployeeId}}</td>
-                                <td>{{Usr.UserName}}</td>
-                                <td>{{Usr.Name}}</td>
-                                <td>{{Usr.DisplayName}}</td>
-                                <td>{{Usr.UserEmail}}</td>
-                                <td>{{Usr.CompanyName}}</td>
-                                <td>{{Usr.DepartmentName}}</td>
-                                
-                                <td> ({{Usr.CountryCode}}) {{Usr.UserPhone}}</td>
-                                <td [ngStyle]="{'color':Usr.UserIsActive=== true ? '#1dc9b7' : '#dc3545'}" (click)="UpdateStatus(Usr)">
-
-                                    <div *ngIf="Usr.UserIsActive" class="kt-badge kt-badge--inline text-white px-3 fs-8 kt-badge--pill bg-suc curser-pointer">
-                                        Active
-                                    </div>
-                                    <div *ngIf="!Usr.UserIsActive" class="kt-badge kt-badge--inline text-white px-3 fs-8 kt-badge--pill bg-dan curser-pointer">
-                                        In-Active
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="status0">
-                                        <a>
-                                        
-                                            <i (click)="sidev(Usr.UserId)" class="material-icons kt-menu__link-icon">settings_suggest</i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table> -->
-
     </div>
 </div>
 <div class="kt-aside-menu-overlay" (click)="closeInfo()"></div>
@@ -803,7 +715,7 @@
                                             <div class="add_rck" id="addrck">
                                                 <div class="px-3 edit_options">
 
-                                                    <ul class="nav nav-pills align-items-center">
+                                                    <ul class="nav nav-pills align-items-center mb-0">
                                                         <li class="tabs_li" id="ver0">
                                                             <a href="#homeee" data-toggle="tab" class="tab_link p-3 active">{{ "Masterform.PersonalInfo" | translate }}</a>
                                                         </li>
@@ -1263,7 +1175,7 @@
                                                                     <div class="kt-crd-acc-v">
                                                                         <div class="d-flex align-items-center justify-content-between">
                                                                             <div class="kt-rc-us-ic kt-archvie-ic p-0">
-                                                                                <img class="ep-ic-dw" src="assets/icons/Ep_Logo.png">
+                                                                                <img class="ep-ic-dw" src="assets/icons/Artboard Copy.png">
                                                                                 <!-- <svg xmlns="http://www.w3.org/2000/svg" width="64px"
                                                                                         height="64px" viewBox="0 0 24 24" fill="none">
                             
