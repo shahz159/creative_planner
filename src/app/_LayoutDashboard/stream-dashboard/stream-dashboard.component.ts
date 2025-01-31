@@ -52,7 +52,7 @@ export class StreamDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadDashboardBanners();
-    this.initializeOwlCarousels();
+    // this.initializeOwlCarousels();
     this.initializeOwlCarousels2();
     // this.initializeOwlCarousels3();
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -351,7 +351,7 @@ export class StreamDashboardComponent implements OnInit {
     this.Emp_No = localStorage.getItem('EmpNo');
     this.service.NewDashboardPortfolio(this.Emp_No).subscribe((data) => {
       this.portfoiloData = JSON.parse(data[0]['PortfolioJson']);
-
+      this.initializeOwlCarousels();   // 
         // this.userFound = true
 
       console.log(this.portfoiloData, "this.portfoiloDatathis.portfoiloData")
