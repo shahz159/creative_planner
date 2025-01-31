@@ -30,7 +30,7 @@ export class RoleService {
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this._obj.RoleId = this.currentUserValue.RoleId;
     this._obj.CreatedBy = this.currentUserValue.createdby;
-    return this.http.post(this.rootUrl + "/RoleAPI/NewGetRoles", this._obj)
+    return this.http.post(this.rootUrl + "RoleAPI/NewGetRoles", this._obj)
   }
   insertroledetails(_values: RoleDTO) {
     this._obj.RoleName = _values.RoleName;
@@ -51,17 +51,17 @@ export class RoleService {
       this._obj.RoleId = 0
     }
     this._obj.RoleId = _values.RoleId;
-    return this.http.post(this.rootUrl + "/RoleAPI/NewRole", this._obj)
+    return this.http.post(this.rootUrl + "RoleAPI/NewRole", this._obj)
   }
   checkrolename(_values: RoleDTO) {
     this._obj.RoleName = _values.RoleName;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
-    return this.http.post(this.rootUrl + "/RoleAPI/NewCheckRoleName", this._obj)
+    return this.http.post(this.rootUrl + "RoleAPI/NewCheckRoleName", this._obj)
   }
   updaterolestatus(objStatus) {
     this._obj.RoleId = objStatus.RoleId;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this._obj.CreatedBy = this.currentUserValue.createdby;
-    return this.http.post(this.rootUrl + "/RoleAPI/NewRoleStatus", this._obj)
+    return this.http.post(this.rootUrl + "RoleAPI/NewRoleStatus", this._obj)
   }
 }
