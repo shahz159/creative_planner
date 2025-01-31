@@ -12,18 +12,19 @@ export class UserPolicyMasterServiceService {
   public currentUser: Observable<UserDTO>;
   _obj: UserPolicyMasterDTO
   objPolicy_List: UserPolicyMasterDTO[]
-  readonly rootUrl = this.commonUrl.apiurl;
+  readonly rootUrl : string;
   constructor(private http: HttpClient, private commonUrl: ApiurlService) { 
     this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
     this._obj = new UserPolicyMasterDTO();
+    this.rootUrl = this.commonUrl.apiurl;
   }
   public get currentUserValue(): UserDTO {
     return this.currentUserSubject.value[0];
   }
   GetPolicyList(){
     this._obj.OrganizationId = this.currentUserValue.organizationid;
-    return this.http.post(this.rootUrl + '/OrganizationAPI/NewPolicyList', this._obj);
+    return this.http.post(this.rootUrl + 'OrganizationAPI/NewPolicyList', this._obj);
   }
   InsertPolicy(_values:UserPolicyMasterDTO){
      
@@ -42,16 +43,16 @@ export class UserPolicyMasterServiceService {
     this._obj.CreatedBy = this.currentUserValue.createdby;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     
-    return this.http.post(this.rootUrl + '/OrganizationAPI/NewPolicy', this._obj);
+    return this.http.post(this.rootUrl + 'OrganizationAPI/NewPolicy', this._obj);
   }
   UpDatedialog_Status(objStatus) {
     this._obj.PolicyId = objStatus.PolicyId;
     this._obj.IsActive = objStatus.IsActive;
-    return this.http.post(this.rootUrl + "/OrganizationAPI/NewUpdatePolicyStatus", this._obj);
+    return this.http.post(this.rootUrl + "OrganizationAPI/NewUpdatePolicyStatus", this._obj);
   }
   GetCompanyList() {
     this._obj.OrganizationId = this.currentUserValue.organizationid;
-    return this.http.post(this.rootUrl + "/DocumentsAPI/NewCompanyDepartmentDrpJson", this._obj);
+    return this.http.post(this.rootUrl + "DocumentsAPI/NewCompanyDepartmentDrpJson", this._obj);
   }
   
 }
