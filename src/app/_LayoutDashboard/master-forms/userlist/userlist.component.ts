@@ -229,7 +229,7 @@ export class UserlistComponent implements OnInit {
   CompanyandDepartmenrandDesignation() {
 
     this.service.GetCompanyList()
-      .subscribe(data => {    debugger
+      .subscribe(data => {    
         this._obj1 = data as UserPolicyMasterDTO;
         this.CompanyDropdownList = this._obj1.Data["CompanyList"];
         this.DepartmentDropdownList = this._obj1.Data["JDepartmentList"];
@@ -475,7 +475,7 @@ export class UserlistComponent implements OnInit {
 
     this._services.GetUserProfile(this._obj)
       .subscribe(data => {
-        // debugger
+    
         // console.log(data, 'userlist');
         this._obj = data as UserRegistrationDTO;
         this.companyid = this._obj.Data["UserDetails"][0].CompanyId;
@@ -598,7 +598,7 @@ export class UserlistComponent implements OnInit {
   // }
   OnUpdate(I: number) {
     try {
-      // debugger
+  
       this._obj.UserId = this.SelectedUserId;
       this._obj.FirstName = this.Fname;
       this._obj.lastName = this.lname;
