@@ -3133,7 +3133,7 @@ debugger
 
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
 
-        console.log(data,'Scheduledjson')
+        console.log(this.Scheduledjson,'Scheduledjson')
         this.loadingDMS = true;
         this.Scheduledjson = this.Scheduledjson
         .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());

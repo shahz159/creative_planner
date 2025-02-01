@@ -162,8 +162,10 @@ export class HeaderComponent implements OnInit {
   }
 
   getusername(){
-    this.service._GetUserName(this.Current_user_ID).subscribe(data=>{
+    this.service._GetUserName(this.Current_user_ID).subscribe(data=>{  debugger
       this._fullname=data['Emp_First_Name'];
+      this._fullname = this._fullname.replace(/\(\)/, '').trim();
+     
     });
   }
 
