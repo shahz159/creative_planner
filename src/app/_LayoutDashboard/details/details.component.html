@@ -784,11 +784,24 @@
 
 
 
-                                                              <div class="extra-at-status deadline-main" *ngIf="projectInfo.Status==='Delay'&&(deadlineExtendlist&&deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
+                                                              <div class="extra-at-status deadline-main pr-1" *ngIf="projectInfo.Status==='Delay'&&(deadlineExtendlist&&deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
 
-                                                                <span style="color: #d32f2f;">{{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} deadline changed</span>
+                                                                <span  class=" pin-msg-btn d-flex collapsed" data-toggle="collapse" data-target="#p-deadline-extends-drpdwn-1" aria-expanded="false" aria-controls="collapsepinMessage"  style="color: #d32f2f;">
+                                                                    {{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} deadline changed
+                                                                    <div  class="pin-msg-btn-caret">
+                                                                        <svg  width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                            <g  id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                            <g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                                            <g  id="SVGRepo_iconCarrier">
+                                                                                <g  id="Arrow / Caret_Down_MD">
+                                                                                    <path id="Vector" d="M16 10L12 14L8 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                                </g>
+                                                                            </g>
+                                                                        </svg>
+                                                                    </div>
+                                                                </span>
                                                                 <span class="deadline-count">
-                                                                    <div class="dropdown-menu">
+                                                                    <div class="dropdown-menu" id="p-deadline-extends-drpdwn-1" aria-labelledby="headingOne" data-parent="#pinMessages" class="collapse" >
                                                                      <ul class="deadline-timeline">
                                                                         <!-- loop this li part only -->
                                                                         <li class="deadline-timeline-item" *ngFor="let item of deadlineExtendlist;let i = index">
@@ -2798,9 +2811,22 @@
                                                               {{getDelayText(projectInfo&&projectInfo)}}
                                                             </div>
                                                             <div class="extra-at-status deadline-main" *ngIf="(deadlineExtendlist&&deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
-                                                                <span style="color: #d32f2f;">{{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} deadline changed</span>
+                                                                <span class="pin-msg-btn d-flex collapsed" style="color: #d32f2f;" data-toggle="collapse" data-target="#p-deadline-extends-drpdwn-2" aria-expanded="false" aria-controls="collapsepinMessage" >
+                                                                    {{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} deadline changed
+                                                                    <div  class="pin-msg-btn-caret">
+                                                                        <svg  width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                            <g  id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                            <g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                                            <g  id="SVGRepo_iconCarrier">
+                                                                                <g  id="Arrow / Caret_Down_MD">
+                                                                                    <path id="Vector" d="M16 10L12 14L8 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                                </g>
+                                                                            </g>
+                                                                        </svg>
+                                                                    </div>
+                                                                </span>
                                                                 <span class="deadline-count">
-                                                                    <div class="dropdown-menu onleft">
+                                                                    <div id="p-deadline-extends-drpdwn-2" aria-labelledby="headingOne" data-parent="#pinMessages" class="collapse">
                                                                      <ul class="deadline-timeline">
                                                                         <!-- loop this li part only -->
                                                                         <li class="deadline-timeline-item" *ngFor="let item of deadlineExtendlist;let i = index">

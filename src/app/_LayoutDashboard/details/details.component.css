@@ -6203,21 +6203,25 @@ svg>g[class^="raphael-group-fjUjWDEW"]>text {
   box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
   border-radius: .25rem;
   transition: all .15s ease-in-out, color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-  display: none;
+  display: block;
 }
 
-.deadline-count .dropdown-menu.onleft {
+.deadline-count #p-deadline-extends-drpdwn-2
+{
+  transform: translate3d(-157px, 9px, 0px);
+}
+/* .deadline-count .dropdown-menu.onleft {
   transform: translate3d(-350px, 26px, 0px)
-}
+} */
 
 
-.deadline-count:hover .dropdown-menu {
+/* .deadline-count:hover .dropdown-menu {
   display: block;
 }
 
 .deadline-main:hover .deadline-count .dropdown-menu {
   display: block;
-}
+} */
 
 ul.deadline-timeline {
   padding: 0px;
@@ -6227,6 +6231,7 @@ ul.deadline-timeline {
   min-height: 93px;
   max-height: 300px;
   overflow: auto;
+  text-align: left;
 }
 
 ul.deadline-timeline::-webkit-scrollbar {
@@ -10168,3 +10173,15 @@ span.time-value {
 
 
 /*file uploading loader*/
+
+
+
+
+#p-deadline-extends-drpdwn-1,#p-deadline-extends-drpdwn-2{
+  position: absolute;
+  top: 5px;
+  background-color: white;
+  z-index: 30;
+  padding: 15px;
+  box-shadow: rgb(183 183 183) 0px 0px 20px;
+}

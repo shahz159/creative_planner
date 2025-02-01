@@ -2413,6 +2413,20 @@ this.Creation_Date = date
     this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ');
   }
 
+
+  
+
+  // to fixed mat dropdowns scroll position issue.
+  const TEsb = document.querySelector('#unassign-editsidebar .unassign-editsidebar-body');
+      TEsb.addEventListener('scroll', () => {
+        this.autocompletes.forEach((ac) => {
+          if (ac.panelOpen)
+            ac.updatePosition();
+        });
+  })
+ //
+
+
 }
 
 

@@ -113,9 +113,13 @@ export class LoginComponent implements OnInit {
       this.Obj_ILoginDTO.Password = this.f.password.value;
       //alert("One");
       localStorage.removeItem('DMS_UserInfo');  // clear old user info.
+      this.isLogginCredentails=true;  // logging credentials process started.
       this.authenticationService.login(this.f.userid.value, this.f.password.value)
         .subscribe(
           (data) => {
+
+            try{
+
             console.log("DMS login Data---->", data);
             const userIdJson = data['Data']['UserId']; 
             if(userIdJson.length > 0){
@@ -180,7 +184,13 @@ export class LoginComponent implements OnInit {
               // this.message = "Please check your UserName and Password";
             }
             // Retrieve the UserId JSON string
+            this.isLogginCredentails=false;  // logging credentials process ended. 
           }
+
+           }catch(e){
+            console.error(e);
+            this.isLogginCredentails=false;  // logging credentials process ended. 
+           }
 
           });
     }

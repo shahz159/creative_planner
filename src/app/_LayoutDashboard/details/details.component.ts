@@ -5354,9 +5354,12 @@ $('#acts-attachments-tab-btn').removeClass('active');
   }
 
   hasPeopleByInputName():boolean{
-    const hasResult=this.PeopleOnProject.find((_p)=>{
-      return _p.Emp_Name.trim().toLowerCase().includes(this.SearchItem?this.SearchItem.toLowerCase():'');
-     })
+    let hasResult=false;
+    if(this.PeopleOnProject){
+      hasResult=this.PeopleOnProject.find((_p)=>{
+        return _p.Emp_Name.trim().toLowerCase().includes(this.SearchItem?this.SearchItem.toLowerCase():'');
+       });
+    }
     return hasResult;
   }
 
