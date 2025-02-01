@@ -68,7 +68,8 @@
                         <tr *ngFor="let item of Objdesignation_data">
                             <td>{{item.DesignationName}}</td>
 
-                            <td [ngStyle]="{'color':item.IsActive=== true ? '#1dc9b7' : '#dc3545'}" (click)="UpdateStatus(item)">
+                            <td [ngStyle]="{'color':item.IsActive=== true ? '#1dc9b7' : '#dc3545'}" >
+                                <!-- (click)="UpdateStatus(item)" -->
                                 <!-- <div *ngIf="item.IsActive" class="d-flex align-items-center">
                                     Active
                                 </div> -->

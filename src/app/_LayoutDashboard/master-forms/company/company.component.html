@@ -27,7 +27,7 @@
                     <div class="search-bar">
                         <input type="search" class="form-control search_clear" id="txtMainSearch" [(ngModel)]="Comysearch"
                             (keyup.enter)="Search()" [placeholder]="CompanySearch" autocomplete="off" aria-controls="example" (keyup)="handleKeyUp($event)" >
-                        <a *ngIf="Comysearch" class="close close-icn"><i  (click)="ReBindData()" class="material-icons">close<i></i></i></a>
+                        <a *ngIf="Comysearch" class="close close-icn"><i  (click)="ReBindData()" class="material-icons curser-pointer ">close<i></i></i></a>
                     </div>
                 </div>
                 <div class="flex-shrink-0">
@@ -61,7 +61,8 @@
                             <td>{{item.Address}}</td>
                             <td>{{item.Country}}</td>
                             <td [ngStyle]="{'color':item.IsActive=== true ? '#3f51b5' : 'red'}"
-                                (click)="UpdateStatus(item)">
+                               >
+                               <!-- (click)="UpdateStatus(item)" -->
                                 <div *ngIf="item.IsActive"
                                     class="kt-badge kt-badge--inline kt-badge--pill kt-badge--unified-success curser-pointer w-min-70">
                                     Active

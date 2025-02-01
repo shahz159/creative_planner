@@ -144,7 +144,7 @@ export class RoleComponent implements OnInit {
       this.RoleNameMinLength = false;
     } else {
       this.RoleNameMinLength = true;
-    }
+    } 
     this.services.checkrolename(this._obj).subscribe(data => {
       this._obj = data as RoleDTO
       if (this._obj.message != 1) {
@@ -158,7 +158,7 @@ export class RoleComponent implements OnInit {
             horizontalPosition:'right',
             panelClass: ['red-snackbar']
           });
-        } else {
+        } else { debugger
           this._snackBar.open('Role Name Already Exits', 'End now', {
             duration: 5000,
             verticalPosition: 'bottom',
@@ -175,7 +175,7 @@ export class RoleComponent implements OnInit {
     this._obj.Search = this.RoleSearch;
     this._obj.PageSize = this.PageSize;
     this._obj.PageNumber = this.activePage;
-    this.services.getrolelist(this._obj).subscribe(data => {
+    this.services.getrolelist(this._obj).subscribe(data => { debugger
       this._objRole = data as [];
       this._obj = new RoleDTO();
       this.TotalrecordsList = data as  [];
@@ -256,7 +256,7 @@ export class RoleComponent implements OnInit {
     try {
       if (this.roleformGroup.invalid) {
         return;
-      }
+      } 
       this._obj.RoleId = this.RoleId;
       
       this._obj.RoleName = this.roleformGroup.get('roleName').value;

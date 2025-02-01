@@ -262,3 +262,47 @@ input, button, select, optgroup, textarea {
     color: #74788d !important;
 }
 
+
+
+
+.d-flex-center {
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+}
+
+.form-control {
+    border-left: 1px solid #e2e5ec;
+}
+
+.close-icn {
+    position: absolute;
+    left: 290px;
+    top: 20px;
+    font-size: 8px !important;
+}
+
+a.close.close-icn i {
+    font-size: 18px;
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+/* // 69 //  */
+#txtMainSearch::-webkit-search-cancel-button {
+    display: none;
+}

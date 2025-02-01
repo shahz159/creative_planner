@@ -41,7 +41,8 @@
                                 <td>{{item.DepartmentName}}</td>
                                 <td>{{item.Description}}</td>
                                 <td [ngStyle]="{'color':item.IsMandatory=== true ? '#1dc9b7' : '#dc3545'}"
-                                    (click)="Updateisstatus(item)">
+                                    >
+                                    <!-- (click)="Updateisstatus(item)" -->
                                     <div *ngIf="item.IsMandatory"
                                         class="kt-badge kt-badge--inline kt-badge--pill kt-badge--unified-success curser-pointer">
                                         Yes
@@ -52,7 +53,8 @@
                                     </div>
                                 </td>
                                 <td [ngStyle]="{'color':item.IsActive=== true ? '#1dc9b7' : '#dc3545'}"
-                                    (click)="UpdateStatus(item)">
+                                   >
+                                   <!-- (click)="UpdateStatus(item)" -->
                                     <div *ngIf="item.IsActive"
                                         class="kt-badge kt-badge--inline kt-badge--pill kt-badge--unified-success curser-pointer w-min-70">
                                         Active
@@ -204,7 +206,7 @@
 
 <div class="kt-aside-menu-overlay" (click)="closeInfo()"></div>
 
-<div id="addrck" class="wc-75 kt-quick-panel kt-quick-panel1 scroll-div">
+<div id="addrck" class="kt-quick-panel kt-quick-panel1 scroll-div">
     <a id="kt_quick_panel_close_btn" class="kt-quick-panel__close" (click)="closeInfo()">
         <i class="flaticon2-delete"></i>
     </a>
