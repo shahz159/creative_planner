@@ -1,4 +1,4 @@
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid side_view1">
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid side_view">
     <div class="col-lg-12">
         <h4 class="mb-3 pro-nm"> {{ "Masterform.Role" | translate }} </h4>
 
@@ -43,7 +43,8 @@
                                     No
                                 </div>
                             </td>
-                            <td [ngStyle]="{'color':item.IsActive=== true ? '#1dc9b7' : '#dc3545'}" (click)="UpdateStatus(item)">
+                            <td [ngStyle]="{'color':item.IsActive=== true ? '#1dc9b7' : '#dc3545'}" >
+                                <!-- (click)="UpdateStatus(item)" -->
                                 <div *ngIf="item.IsActive" class="kt-badge kt-badge--inline kt-badge--pill kt-badge--unified-success curser-pointer w-min-70">
                                     Active
                                 </div>

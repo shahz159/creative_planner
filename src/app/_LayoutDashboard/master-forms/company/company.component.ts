@@ -615,6 +615,7 @@ export class CompanyComponent implements OnInit {
     else {
       this.String_status = "Active"
     }
+    debugger
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Confirm ',
@@ -622,7 +623,7 @@ export class CompanyComponent implements OnInit {
       }
     });
     confirmDialog.afterClosed().subscribe(result => {
-
+      debugger
       if (result === true) {
         if (Obj_Status.IsActive === true) {
           Obj_Status.IsActive = false;

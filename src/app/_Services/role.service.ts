@@ -12,27 +12,29 @@ export class RoleService {
   private currentUserSubject: BehaviorSubject<UserDTO>;
   public currentUser: Observable<UserDTO>;
   private _values: any;
+  readonly rootUrl :string;
   _obj: RoleDTO
   objRole_list: RoleDTO[];
   constructor(private http: HttpClient, private commonUrl: ApiurlService) {
     this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
     this._obj = new RoleDTO();
+    this.rootUrl = this.commonUrl.apiurl;
   }
-  readonly rootUrl = this.commonUrl.apiurl;
   public get currentUserValue(): UserDTO {
     return this.currentUserSubject.value[0];
   }
   getrolelist(_values: RoleDTO) {
     this._obj.Search= _values.Search;
-  this._obj.PageNumber= _values.PageNumber;
-  this._obj.PageSize = _values.PageSize;
+    this._obj.PageNumber= _values.PageNumber;
+    this._obj.PageSize = _values.PageSize;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this._obj.RoleId = this.currentUserValue.RoleId;
     this._obj.CreatedBy = this.currentUserValue.createdby;
+  
     return this.http.post(this.rootUrl + "RoleAPI/NewGetRoles", this._obj)
   }
-  insertroledetails(_values: RoleDTO) {
+  insertroledetails(_values: RoleDTO) {  
     this._obj.RoleName = _values.RoleName;
     if (this._obj.Description = null) {
       this._obj.Description = "";
@@ -51,11 +53,13 @@ export class RoleService {
       this._obj.RoleId = 0
     }
     this._obj.RoleId = _values.RoleId;
+   
     return this.http.post(this.rootUrl + "RoleAPI/NewRole", this._obj)
   }
   checkrolename(_values: RoleDTO) {
     this._obj.RoleName = _values.RoleName;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
+   
     return this.http.post(this.rootUrl + "RoleAPI/NewCheckRoleName", this._obj)
   }
   updaterolestatus(objStatus) {
