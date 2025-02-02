@@ -73,7 +73,7 @@
 
                     </a>
                 </li>
-                <li *ngIf="_UserRole==AdminID" class="kt-menu__item">
+                <li  [ngClass]="{'d-none':_UserRole!=AdminID}" class="kt-menu__item">
                     <!-- routerLink="PerformanceDashboard" routerLinkActive="active" -->
                     <a (click)="navigateToSection('/backend/masterforms/UserList')" class="kt-menu__link" [ngClass]="{'active':getActiveLink()=='/backend/PerformanceDashboard'}">
                         <!-- <i class="kt-menu__link-icon flaticon2-graph"></i> title="Performance Dashboard" title="Dashboard"-->
@@ -93,7 +93,7 @@
                     </a>
                 </li>
              
-                <li  *ngIf="_UserRole==AdminID" routerLinkActive="active" class="kt-menu__item  kt-menu__item--submenu dropdown menu-sub1 " data-ktmenu-submenu-toggle="click" aria-haspopup="true">
+                <li   [ngClass]="{'d-none':_UserRole!=AdminID}" routerLinkActive="active" class="kt-menu__item  kt-menu__item--submenu dropdown menu-sub1 " data-ktmenu-submenu-toggle="click" aria-haspopup="true">
                     <!-- kt-menu__item--hover kt-menu__item--open -->
                     <a class="kt-menu__link kt-menu__toggle"  aria-haspopup="true" aria-expanded="false">
                         <i class="material-icons kt-menu__link-icon">admin_panel_settings</i>

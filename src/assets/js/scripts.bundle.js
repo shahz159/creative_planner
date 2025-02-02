@@ -1279,7 +1279,7 @@ var KTMenu = function(elementId, options) {
          * helper functions
          * @returns {KTMenu}
          */
-        handleSubmenuAccordion: function(e, el) {
+        handleSubmenuAccordion: function(e, el) {   debugger
             var query;
             var item = el ? el : this;
 
