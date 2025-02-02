@@ -2,8 +2,8 @@ export const environment = {
   production: true,
   //baseUrl: 'http://217.145.247.43/EPNewAPI/api/'
   //----Test Server----
-//  baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
- baseUrl:'https://cswebapps.com/StreamPlannerAPI/api/',
+ baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
+//  baseUrl:'https://cswebapps.com/StreamPlannerAPI/api/',
  baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
  Language_file_url:'https://cswebapps.com/creativeplanner/assets/i18n/'
  ,assetsurl:'/creativeplanner/'

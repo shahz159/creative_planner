@@ -1860,7 +1860,7 @@
                                   <label>Owner<span class="text-danger">*</span></label>
 
                                   <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!PrjOwner&&notProvided}"  [items]="owner_json" bindLabel="EmpName" bindValue="EmpNo" groupBy="type"
-                                  (change)="onProjectOwnerChanged();  PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo.trim()))?PrjInformer:Responsible_json[0].OwnerEmpNo.trim();  setRACIS(); "
+                                  (change)="onProjectOwnerChanged();  PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo))?PrjInformer:Responsible_json[0].OwnerEmpNo;  setRACIS(); "
                                   placeholder="Select owner" id="owner-drp-dwn" [searchable]="true" name="owner-drp-dwn"
                                   [(ngModel)]="PrjOwner"></ng-select>
                                   <span style="color:rgb(217,48,37)" *ngIf="!PrjOwner">Please select owner.</span>
@@ -1871,11 +1871,11 @@
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Responsible<span class="text-danger">*</span></label>
                                   <ng-select *ngIf="Responsible_json"  [ngClass]="{'error-vd':!PrjResp&&notProvided}"     class="kt-form-vd" placeholder="Select responsible"
-                                    [(ngModel)]="PrjResp" (change)="onResponsibleChanged(); PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo.trim()))?PrjInformer:Responsible_json[0].OwnerEmpNo.trim(); setRACIS();">
+                                    [(ngModel)]="PrjResp" (change)="onResponsibleChanged(); PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo))?PrjInformer:Responsible_json[0].OwnerEmpNo; setRACIS();">
                                     <ng-option
-                                      [value]="Responsible_json[0].ResponsibleNo.trim()">{{Responsible_json[0].ResponsibleName}}</ng-option>
+                                      [value]="Responsible_json[0].ResponsibleNo">{{Responsible_json[0].ResponsibleName}}</ng-option>
                                     <ng-option *ngIf="heirarchical_owner.length>1"
-                                      [value]="Responsible_json[0].OwnerEmpNo.trim()">{{Responsible_json[0].OwnerName}}</ng-option>
+                                      [value]="Responsible_json[0].OwnerEmpNo">{{Responsible_json[0].OwnerName}}</ng-option>
                                   </ng-select>
                                   <span style="color:rgb(217,48,37)" *ngIf="!PrjResp">Please select responsible.</span>
                                 </div>
@@ -1910,11 +1910,11 @@
                                     (change)="setRACIS() ">
 
                                   <ng-container *ngIf="Responsible_json">
-                                          <ng-container *ngIf="[PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo.trim()); else reportToMustPresent">
+                                          <ng-container *ngIf="[PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo); else reportToMustPresent">
                                               <ng-option *ngFor="let p of allUser_json" [value]="p.Emp_No">{{ p.Emp_Name }}</ng-option>
                                           </ng-container>
                                           <ng-template #reportToMustPresent>
-                                              <ng-option [value]="Responsible_json[0].OwnerEmpNo.trim()">{{Responsible_json[0].OwnerName}}</ng-option>
+                                              <ng-option [value]="Responsible_json[0].OwnerEmpNo">{{Responsible_json[0].OwnerName}}</ng-option>
                                           </ng-template>
                                   </ng-container>
 
@@ -1963,7 +1963,7 @@
                                       (opened)="isPrjSprtDrpDwnOpen=true" (closed)="isPrjSprtDrpDwnOpen=false; ">
                                       <ng-container *ngIf="PrjResp;else PrjRespIsUndefined">
                                         <ng-container *ngFor="let p of allUser_json|filter:PrjSprtSelectTF.value">
-                                            <mat-option *ngIf="p.Emp_No!=PrjResp.trim()" [value]="p.Emp_No">
+                                            <mat-option *ngIf="p.Emp_No!=PrjResp" [value]="p.Emp_No">
                                             <mat-checkbox color="primary" [checked]="PrjSupport.indexOf(p)!==-1"></mat-checkbox>
                                             {{p.Emp_Name}}
                                             </mat-option>
