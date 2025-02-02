@@ -92,6 +92,8 @@ export class HeaderComponent implements OnInit {
   urlcomponent:any;
   newfeaturetippy:any;
   _confirmBeforeRouting:string;
+  AdminID=502;
+  
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     
@@ -102,6 +104,12 @@ export class HeaderComponent implements OnInit {
     // this._fullname = localStorage.getItem('UserfullName');
     this.timelineType = this.type1;
     this.selectedSort = 'today';
+
+    let dmsuserinfo:any=localStorage.getItem('DMS_UserInfo');
+    if(dmsuserinfo){
+      dmsuserinfo=JSON.parse(dmsuserinfo);
+      this._UserRole=dmsuserinfo.UserRole;
+    }
 
     this.getDashboardnotifications();
 
@@ -187,8 +195,10 @@ export class HeaderComponent implements OnInit {
 
 
   }
+  _UserRole:number;
 
-  currentLang:"ar"|"en"="ar";
+
+  currentLang:"ar"|"en"="en";
   storedLanguage:any
   ChangelangTo(lang:any){
     this.currentLang=lang;
