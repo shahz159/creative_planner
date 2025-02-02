@@ -307,7 +307,7 @@
     <!-- end: Header Menu -->
     <!-- begin:: Header Topbar -->
     <div class="kt-header__topbar">
-        <div class="arabic-btn-div d-none">
+        <div class="arabic-btn-div" *ngIf="_UserRole==AdminID">
             <div class="dropdown">
                 <button class="btn btn-lan dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                     <span class="globe-icon">
