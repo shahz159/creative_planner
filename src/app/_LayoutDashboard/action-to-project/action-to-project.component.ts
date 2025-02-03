@@ -300,10 +300,11 @@ export class ActionToProjectComponent implements OnInit {
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode,this.Current_user_ID).subscribe(
       (data) => {
 
-        this.ownerArr=(JSON.parse(data[0]['RacisList']));
+        this.ownerArr=(JSON.parse(data[0]['RacisList']));   
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
-        console.log(this.allUsers,"groupby");
+        console.log(this.ownerArr,"groupby");
+
 
 
       });
@@ -899,7 +900,7 @@ export class ActionToProjectComponent implements OnInit {
 
 
 // sweet alert method new
-
+processingActionCreate:boolean = false
 sweetAlert2=async()=>{
 
 // 1. Validation : Action owner and responsible are same.
@@ -1079,18 +1080,27 @@ contentType:string="";
 
 
 startActionCreation=async()=>{
-
+debugger
   // Action cost calculate.
    this.actionCost=null;  // must be empty before calculating.
+   this.processingActionCreate=true;
    const res:any=await this.service.GetCPProjectCost(this.selectedEmpNo,this._allocated.toString()).toPromise();
    if(res&&res.Status){
          this.actionCost=res.Data;
          console.log("action cost:",this.actionCost);
    }
    else{
-     this.notifyService.showError('','Internal server error');
-     console.error('Unable to get action cost value.')
-     return;
+    //  this.notifyService.showError('','Internal server error');
+    //  this.processingActionCreate=false;
+    //  console.error('Unable to get action cost value.')
+    //  return;
+
+
+    // test for new users (Temporary)
+    const cost=this._allocated*10;
+    this.actionCost=cost;
+    // test for new users (Temporary)
+
    }
  // Action cost calculate.
 
@@ -1195,14 +1205,14 @@ startActionCreation=async()=>{
          var myJSON = JSON.stringify(event);
          this._Message = (JSON.parse(myJSON).body).message;
          console.log(event,myJSON,this._Message,"action data");
-    
+
          if(this._Message=='1'){
-          if (this.fileAttachment) {   
+          if (this.fileAttachment) {
           this.fileInUpload={ filename:this.fileAttachment.name, uploaded:0, processingUploadFile:false };
           this.setFileUploadingBarVisible(true);
 
           fd.append('file',  this.fileAttachment);
-      
+
           this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
             switch (event1.type) {
               case HttpEventType.Sent:
@@ -1216,14 +1226,14 @@ startActionCreation=async()=>{
                 this.fileInUpload.uploaded=progress;
                 if(this.fileInUpload.uploaded==100){
                   setTimeout(()=>{
-                    this.fileInUpload.processingUploadFile=true; //when server processing the file upload. 
+                    this.fileInUpload.processingUploadFile=true; //when server processing the file upload.
                   },1000);
                 }
                 break;
               case HttpEventType.Response:{
                 console.log('Response received:', event1.body);
                 if(event1.body==1){
-                  this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");  
+                  this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");
                   this.fileInUpload=null;
                   this.setFileUploadingBarVisible(false);
                   this.exitActionToProject();
@@ -1236,9 +1246,10 @@ startActionCreation=async()=>{
           //  this._Message = (JSON.parse(myJSON).body);
 
           });
-       
+
           }else{ this.exitActionToProject();   }
            this.notifyService.showSuccess("Action created successfully", "Success");
+
          }
          else if(this._Message=='2'){
           if (this.fileAttachment) {
@@ -1259,14 +1270,14 @@ startActionCreation=async()=>{
                   this.fileInUpload.uploaded=progress;
                   if(this.fileInUpload.uploaded==100){
                     setTimeout(()=>{
-                      this.fileInUpload.processingUploadFile=true; //when server processing the file upload. 
+                      this.fileInUpload.processingUploadFile=true; //when server processing the file upload.
                     },1000);
                   }
                   break;
                 case HttpEventType.Response:{
                   console.log('Response received:', event1.body);
                   if(event1.body==1){
-                    this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");  
+                    this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");
                     this.fileInUpload=null;
                     this.setFileUploadingBarVisible(false);
                     this.exitActionToProject();
@@ -1277,7 +1288,7 @@ startActionCreation=async()=>{
               var myJSON = JSON.stringify(event1);
             //  this._Message = (JSON.parse(myJSON).body);
 
-            }); 
+            });
           }else{ this.exitActionToProject();  }
            this.notifyService.showInfo("Request submitted to the Assigned employee","Action Under Approval");
          }
@@ -1290,7 +1301,7 @@ startActionCreation=async()=>{
          else{
            this.notifyService.showError("Something went wrong", "Action not created");
          }
-
+         this.processingActionCreate=false;
        }
 
      });
@@ -1508,7 +1519,7 @@ onFileChanged(event: any) {
    const isValidFile=this.permittedFileFormats.some((format)=>{
          return (filetype==format)||(filetype.startsWith('image/')&&format=='image/*');
    });
-   
+
    if(isValidFile){
     this.file = files[0];
     this.fileAttachment = this.file;
@@ -1522,7 +1533,7 @@ onFileChanged(event: any) {
    }
 
   }else {
-   // if no file is selected. 
+   // if no file is selected.
     this.file = null;
     this.fileAttachment = null;
     this.invalidFileSelected=false;
@@ -1653,7 +1664,7 @@ hasSameDateActions(){
 
 isActionStartBeforeProject():boolean{
   const mainPrjStartdate=new Date(this.ProjectStartDate);  // project start date.
-  const inputActnStartdate=this._StartDate;               // action start date. 
+  const inputActnStartdate=this._StartDate;               // action start date.
   const isStartsBefore=inputActnStartdate<mainPrjStartdate;  // is action starts before main project.
   return isStartsBefore;
 }
@@ -1682,7 +1693,7 @@ isActionStartBeforeProject():boolean{
 
 
 // file uploading progress bar start.
-fileInUpload:{filename:string, uploaded:number, processingUploadFile:boolean};   
+fileInUpload:{filename:string, uploaded:number, processingUploadFile:boolean};
 isFileUploadingBarVisible:boolean=false;  // whether file uploading bar is visible or not.
 
 setFileUploadingBarVisible(_visible:boolean){

@@ -116,15 +116,14 @@ export class LoginComponent implements OnInit {
       this.isLogginCredentails=true;  // logging credentials process started.
       this.authenticationService.login(this.f.userid.value, this.f.password.value)
         .subscribe(
-          (data) => {
-
+          (data) => {      debugger
             try{
 
             console.log("DMS login Data---->", data);
             const userIdJson = data['Data']['UserId']; 
             if(userIdJson.length > 0){
               
-              const parsedUserIdArray = JSON.parse(userIdJson); // Parse the JSON string into an array
+            const parsedUserIdArray = JSON.parse(userIdJson); // Parse the JSON string into an array
             const userIdObject = parsedUserIdArray[0];
             if (userIdObject["CredentialsIsValid"] == true) { // Access the first object in the array
             this.IsStreamDownload = userIdObject['IsStreamDownload']; 

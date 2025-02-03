@@ -175,7 +175,7 @@
         <div id="stppr">
             <ul class="stepper horizontal linear">
                 <li class="step active" id="step-one">
-                    <div class="step-title waves-effect last1" data-step-label="Add User Personal Details" (click)="step_one()">{{ "Masterform.PersonalInfo" | translate }}
+                    <div class="step-title waves-effect last1" data-step-label="Add User Personal Details" >{{ "Masterform.PersonalInfo" | translate }}
                     </div>
                     <div class="step-content">
                         <h6 class="txtm-cus kt-mandatory-lable"> <span>{{ "Masterform.Note" | translate }}: </span> <span class="text-danger">*</span> {{ "Masterform.UserfileldMandatory" | translate }}</h6>
@@ -318,7 +318,7 @@
 
 
                             <div class="step-actions">
-                                <button (click)="step_two()" [disabled]="!Fname || !lname ||!Display || !cunname || !email || !code || !cty || !addrs || !phnnum" class="waves-effect waves-dark btn btn-sm btn-info next-step">{{ "Masterform.Next" | translate }}</button>
+                                <button [disabled]="!Fname || !lname ||!Display || !cunname || !email || !code || !cty || !addrs || !phnnum" class="waves-effect waves-dark btn btn-sm btn-info next-step">{{ "Masterform.Next" | translate }}</button>
                                 <a (click)="reset()" class="waves-effect waves-dark btn btn-sm btn-secondary">{{ "Masterform.Cancel" | translate }}</a>
                             </div>
                         </div>
@@ -327,7 +327,7 @@
 
 
                 <li class="step last"  id="step-two">
-                    <div class="step-title waves-effect last1" data-step-label="Assign Role, position" (click)="step_two()" >{{ "Masterform.CompanyInfo" | translate }}
+                    <div class="step-title waves-effect last1" data-step-label="Assign Role, position" >{{ "Masterform.CompanyInfo" | translate }}
                     </div>
                     <div class="step-content">
                         <h6 class="txtm-cus kt-mandatory-lable"> <span>{{ "Masterform.Note" | translate  }}: </span> <span class="text-danger">*</span> {{ "Masterform.UserfileldMandatory" | translate }}</h6>

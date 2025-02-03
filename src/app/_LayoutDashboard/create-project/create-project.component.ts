@@ -156,18 +156,16 @@ export class CreateProjectComponent implements OnInit {
 
     const navigatingToCreateProject = localStorage.getItem('navigatingToCreateProject');
     if (navigatingToCreateProject === 'true') {
-
     setTimeout(()=>{ this.Assigned_projects();   },2000);
     localStorage.removeItem('navigatingToCreateProject');
     }
-debugger
-const navigatingfromrunway = JSON.parse(localStorage.getItem('combinedobj'));
-if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true'){
- this.PrjName = navigatingfromrunway.task
-  setTimeout(()=>{this.Scratech_btn()},2000)
-  localStorage.removeItem('combinedobj');
 
-}
+    const navigatingfromrunway = JSON.parse(localStorage.getItem('combinedobj'));
+    if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true'){
+    this.PrjName = navigatingfromrunway.task
+      setTimeout(()=>{this.Scratech_btn()},2000)
+      localStorage.removeItem('combinedobj');
+    }
 
     this.ProjectDto=new ProjectDetailsDTO();
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -274,7 +272,7 @@ if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true')
     this.createProjectService.NewGetProjectCreationDetails().subscribe((res)=>{
       console.log("NewGetProjectCreationDetails:",res);
       if(res)
-      {
+      { 
          this.Authority_json=JSON.parse(res[0].Authority_json);
          this.Category_json=JSON.parse(res[0].Category_json);
          this.Client_json=JSON.parse(res[0].Client_json);
@@ -282,21 +280,21 @@ if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true')
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
          this.Team_json=JSON.parse(res[0].Team_json);
          this.allUser_json=JSON.parse(res[0].allUser_json);
-
+     
          this.heirarchical_owner=JSON.parse(res[0].owner_json);
          let owner_values=JSON.parse(res[0].owner_json);
          owner_values=owner_values.map(ob=>({...ob,type:'Hierarchical'}));
-         const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo.trim()];
+         const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo];
          let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob.Emp_No));
          otherusers=otherusers.map(ob=>({EmpNo:ob.Emp_No, EmpName:ob.Emp_Name, type:'Others'}));
          this.owner_json=[...owner_values,...otherusers];
 
 
-          this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
-          this.PrjResp=this.Responsible_json[0].ResponsibleNo.trim();
-          this.PrjAuth=this.Responsible_json[0].ResponsibleNo.trim();
-          this.PrjCrdtr=this.Team_json[0].CoordinatorNo.trim();
-          this.PrjInformer=this.Team_json[0].InformerNo.trim();
+          this.PrjOwner=this.Responsible_json[0].OwnerEmpNo;
+          this.PrjResp=this.Responsible_json[0].ResponsibleNo;
+          this.PrjAuth=this.Responsible_json[0].ResponsibleNo;
+          this.PrjCrdtr=this.Team_json[0].CoordinatorNo;
+          this.PrjInformer=this.Team_json[0].InformerNo;
           this.SubmissionType=JSON.parse(res[0].SubmissionType);  console.log('submission type values:',this.SubmissionType);
           const defaultvalue=this.allUser_json.find((item)=>{
                return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
@@ -338,17 +336,22 @@ if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true')
 
 
 
-  getFindName(){
-   let Owner=this.owner_json.find((e)=>{
-    return e.EmpNo===this.PrjOwner
-      })
-   let Emp_Name=Owner.EmpName
-   let openParenIndex = Emp_Name.indexOf('(');
-   this.Owner_Name = Emp_Name.substring(0, openParenIndex).trim();
+  getFindName(){  
+    let Owner=this.owner_json.find((e)=>{
+    return e.EmpNo==this.PrjOwner;
+    });
+    if(Owner){
+      let Emp_Name=Owner.EmpName;
+      let openParenIndex = Emp_Name.indexOf('(');
+      this.Owner_Name = Emp_Name.substring(0, openParenIndex).trim();
+    }
+  
+   let res= this.Responsible_json[0].ResponsibleName;
+   if(res){
+    let openParenIndex_res = res.indexOf('(');
+    this.responsible = res.substring(0, openParenIndex_res).trim();
+   }
 
-   let res= this.Responsible_json[0].ResponsibleName
-   let openParenIndex_res = res.indexOf('(');
-   this.responsible = res.substring(0, openParenIndex_res).trim();
 
   }
 
@@ -593,7 +596,7 @@ if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true')
   }
 
 createSRTProject=async()=>{
-debugger
+
   // 1. project cost calculate.
   let alhr:number|null=null;
   if(['003','008'].includes(this.Prjtype)){
@@ -613,8 +616,14 @@ debugger
         console.log(this.PrjCost);
       }
       else{
-        console.log('ERROR WHILE CALCULATING PROJECT COST.');
-        return;
+
+        // console.log('ERROR WHILE CALCULATING PROJECT COST.');
+        // return;
+
+        // testing (Temporary)
+        const cost=alhr*100
+        this.PrjCost=cost;
+        // testing (Temporary)
       }
   }
   else
@@ -639,7 +648,7 @@ debugger
 
 
  createProject(){
-debugger
+
   this.Client_json.forEach(element => {
     if(element.ClientName==this.PrjClient){
       this.PrjClient=element.ClientId;
@@ -665,7 +674,7 @@ debugger
            Coordinator:this.PrjCrdtr,
            Informer:this.PrjInformer,
            Auditor:this.PrjAuditor,
-           Support:this.PrjSupport.map(item=>+item.Emp_No.trim()).join(','),
+           Support:this.PrjSupport.map(item=>+item.Emp_No).join(','),
            SubmissionType:['003','008'].includes(this.Prjtype)?this.prjsubmission:'0',
            // Duration:['001','002','011'].includes(this.Prjtype)?this._allocated:'0',
            Duration:['001','002','011'].includes(this.Prjtype)?(this.Allocated_Hours ?this.Allocated_Hours:'0'):'0',
@@ -696,7 +705,7 @@ debugger
      this.ProjectDto.portfolioids=this.ngDropdwonPort.map(item=>item.Portfolio_ID).join(',');
      console.log(this.ProjectDto,"dto")
      //1. creating project
-     this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
+     this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{  
 
            console.log("res after project creation:",res);
 
@@ -1225,7 +1234,7 @@ isPrjSprtDrpDwnOpen:boolean=false;
 // responsible field start
 onResponsibleChanged(){
   if(this.PrjResp){
-    if(this.PrjResp.trim()===this.PrjOwner.trim())
+    if(this.PrjResp===this.PrjOwner)
     {
       const selectedowr=this.owner_json.find((item)=>item.EmpNo===this.PrjOwner);
       const newowr=this.owner_json[this.owner_json.indexOf(selectedowr)+1];
@@ -1257,7 +1266,7 @@ onResponsibleChanged(){
 
 onProjectOwnerChanged(){
   if(this.PrjOwner){
-      if(this.PrjOwner.trim()===this.PrjResp.trim()){
+      if(this.PrjOwner===this.PrjResp){
       this.PrjResp=this.Responsible_json[0].ResponsibleNo;
       this.onResponsibleChanged();
       }
@@ -1807,21 +1816,39 @@ return;
 RACIS:any=[];
 
 
-setRACIS(){
+setRACIS(){  
     this.RACIS=[];
   try{
-     if(this.PrjOwner)
-     this.RACIS.push(this.owner_json.find((item)=>item.EmpNo===this.PrjOwner).EmpName);
-     if(this.PrjResp)
-     this.RACIS.push(this.Responsible_json[0].OwnerEmpNo===this.PrjResp?this.Responsible_json[0].OwnerName:this.Responsible_json[0].ResponsibleName);
-     if(this.PrjAuth)
-     this.RACIS.push(this.Authority_json.find((item)=>item.EmpNo===this.PrjAuth).EmpName);
-     if(this.PrjCrdtr)
-     this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjCrdtr).Emp_Name);
-     if(this.PrjInformer)
-     this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjInformer).Emp_Name);
-     if(this.PrjAuditor)
-     this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjAuditor).Emp_Name);
+   
+     if(this.PrjOwner){
+         const obj=this.owner_json.find((item)=>item.EmpNo==this.PrjOwner);
+         if(obj){   this.RACIS.push(obj.EmpName);   }
+     }
+   
+     if(this.PrjResp){
+      this.RACIS.push(this.Responsible_json[0].OwnerEmpNo==this.PrjResp?this.Responsible_json[0].OwnerName:this.Responsible_json[0].ResponsibleName);
+     }
+
+     if(this.PrjAuth){
+         const obj=this.Authority_json.find((item)=>item.EmpNo==this.PrjAuth);
+         if(obj){  this.RACIS.push(obj.EmpName);  }
+     }
+
+     if(this.PrjCrdtr){
+          const obj=this.allUser_json.find((item)=>item.Emp_No==this.PrjCrdtr);
+          if(obj){  this.RACIS.push(obj.Emp_Name);   } 
+     }
+
+     if(this.PrjInformer){
+       const obj=this.allUser_json.find((item)=>item.Emp_No==this.PrjInformer);
+       if(obj){    this.RACIS.push(obj.Emp_Name);  }
+     }
+
+     if(this.PrjAuditor){
+        const obj=this.allUser_json.find((item)=>item.Emp_No==this.PrjAuditor);
+        if(obj){  this.RACIS.push(obj.Emp_Name); }
+     }
+
 
 
      const e=this.PrjSupport.map((item)=>item.Emp_Name);
@@ -1914,7 +1941,7 @@ detectMembersWithoutActions(){
   else{
     _hasNoActionMembers=this.totalPeopleOnProject.filter(ob=>ob.Emp_No!=ownerObj.Emp_No);
   }
-  _hasNoActionMembers=_hasNoActionMembers.map(ob=>(ob.RACIS.slice(0,ob.RACIS.indexOf('('))).trim() );
+  _hasNoActionMembers=_hasNoActionMembers.map(ob=>(ob.RACIS.slice(0,ob.RACIS.indexOf('('))));
   this.hasNoActionMembers=Array.from(new Set(_hasNoActionMembers));
 }
 
@@ -1935,7 +1962,7 @@ sendApproval=async()=>{
     this.ProjectDto.file = this.fileAttachment
     this.ProjectDto.Remarks=this._remarks;
     this.ProjectDto.Project_Cost=this.PrjCost;
-    this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
+    this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{ 
       if(res&&res.message==='Success'){
             this.notification.showSuccess("Project sent to project owner "+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for approval',"Success");
             this.BsService.ConfirmBeforeRoute.emit(null);
@@ -2043,7 +2070,7 @@ if(this.PrjActionsInfo.length==0){
  }
 //
 
-debugger
+
 
 // 4.validation: Confirm Project Allocated hours
   const hrsToActns=this.PrjActionsInfo.reduce((sum,acn)=>(sum+Number.parseFloat(acn.AllocatedHours)),0);
@@ -2116,7 +2143,6 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
 
 
 
-
 //6. calculate project cost.
   this.PrjCost=0;
   let alhrVal:number|null=null;
@@ -2140,8 +2166,14 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
       console.log('project_cost:',this.PrjCost);
     }
     else{
-      console.log('ERROR WHILE CALCULATING PROJECT COST.')
-      return;   // if any failure occur during the project cost calculation.
+      // console.log('ERROR WHILE CALCULATING PROJECT COST.')
+      // return;   // if any failure occur during the project cost calculation.
+    
+      // test for new users    (Temporary)
+      const cost=alhrVal*10
+      this.PrjCost=cost;
+      // test for new users  (Temporary)
+
     }
   }
   else
@@ -2552,6 +2584,7 @@ openDraft(index:number){
   console.log(this.draft_json[index]);
   this.Prjtype=this.draft_json[index].Project_Block;
   this.PrjCode=this.draft_json[index].Project_Code;
+  this._remarks = this.draft_json[index].Remarks
   this.notificationMsg=3;
 
 // // opens the step-3 view
@@ -2643,8 +2676,8 @@ reset(){
       return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
     });
    this.PrjSupport=defaultvalue?[defaultvalue]:[];
-   this.PrjCrdtr=this.Team_json[0].CoordinatorNo.trim();
-   this.PrjInformer=this.Team_json[0].InformerNo.trim();
+   this.PrjCrdtr=this.Team_json[0].CoordinatorNo;
+   this.PrjInformer=this.Team_json[0].InformerNo;
   }
   else{
       this.PrjSupport=[];
@@ -2918,6 +2951,7 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
           StartDate:datestrStart,                   // new action start date.
           EndDate:datestrEnd,                     // new action end date.
           AllocatedHours: this.Allocated,             // new action alc hrs.
+
       };
 
       jsonobj = JSON.stringify(jsonobj);

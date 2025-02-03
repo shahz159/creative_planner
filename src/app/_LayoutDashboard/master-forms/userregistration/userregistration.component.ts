@@ -164,7 +164,7 @@ _customerregistration:boolean=false;
   EnterEmployeeId:string;
   ReportingUserselect:string;
   public get currentUserValue(): UserDTO {
-    this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser_SP')));
     this.currentUser = this.currentUserSubject.asObservable();
     return this.currentUserSubject.value[0];
   }
@@ -493,7 +493,7 @@ _customerregistration:boolean=false;
       (<HTMLInputElement>document.getElementById("txtemail")).value = "";
     }
   }
-  getDropdown() {  debugger
+  getDropdown() {
     this._obj.CreatedBy = this.currentUserValue.createdby;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this.services.GetCompanyList(this._obj)
@@ -518,7 +518,7 @@ _customerregistration:boolean=false;
         // this.ObjgetDesignationList =this.ObjgetDesignationList.filter(word => word.isChecked == 0)
         // console.log(this.ObjgetDesignationList,"DesignationDrp");
         //  Feature filter functionality  
-   debugger
+
         this.ObjgetCompanyList = this._obj.Data["CompanyList"]
         // console.log(this.ObjgetCompanyList, "CompanyDrp");
         this.ObjgetDepartmentList = this._obj.Data["JDepartmentList"]
@@ -781,16 +781,16 @@ _customerregistration:boolean=false;
   //     el.setAttribute("download", 'xlsxtojson.json');
   //   }, 1000)
   // }
-  step_one(){
-    document.getElementById("step-one").classList.add("active");
-    // document.getElementById("step-one").classList.add("done");
-    document.getElementById("step-two").classList.remove("active");
-  }
-  step_two(){
-    document.getElementById("step-one").classList.remove("active");
-    document.getElementById("step-one").classList.add("done");
-    document.getElementById("step-two").classList.add("active");
-  }
+  // step_one(){
+  //   document.getElementById("step-one").classList.add("active");
+  //   // document.getElementById("step-one").classList.add("done");
+  //   document.getElementById("step-two").classList.remove("active");
+  // }
+  // step_two(){
+  //   document.getElementById("step-one").classList.remove("active");
+  //   document.getElementById("step-one").classList.add("done");
+  //   document.getElementById("step-two").classList.add("active");
+  // }
   opnblkupd() {
     document.getElementById("blkupd").classList.remove("d-none");
     document.getElementById("stppr").classList.add("d-none");
@@ -806,7 +806,7 @@ _customerregistration:boolean=false;
   _errorExists: boolean = false;
   BulkUploadList(json: any) {
     this._obj.JSONData = JSON.stringify(json);
-    debugger
+  
     this.services.BulkUpload(this._obj)
       .subscribe(data => {
         // console.log(data, "bulkdatalist")
