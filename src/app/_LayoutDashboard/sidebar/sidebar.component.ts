@@ -42,12 +42,12 @@ export class SidebarComponent implements OnInit {
       this._UserRole=dmsuserinfo.UserRole;
     }
     // this._activeLink=this.router.url;
-   
+    
      
     $(document).ready(function() {
       // import('../../../assets/js/test.js');
       $('<script/>',{type:'text/javascript', src:'/assets/js/test.js'}).appendTo('head');
-      $('<script/>',{type:'text/javascript', src:'/assets/js/scripts.bundle.js'}).appendTo('head');
+      // $('<script/>',{type:'text/javascript', src:'/assets/js/scripts.bundle.js'}).appendTo('head');
     });
 
     tippy('#dashboard', {
@@ -181,10 +181,23 @@ export class SidebarComponent implements OnInit {
       this._confirmBeforeSwitch=modalScreen;
     })
 
-
+this.Menubinding();
   }
 
-  
+  Menubinding() {
+      
+           
+    var dynamicScripts = [ environment.assetsurl+"assets/js/scripts.bundle.js"];
+    //  var dynamicScripts = ["../../../assets/js/scripts.bundle.js"];
+    for (var i = 0; i < dynamicScripts.length; i++) {
+      let node = document.createElement('script');
+      node.src = dynamicScripts[i];
+      node.type = 'text/javascript';
+      node.async = false;
+      node.charset = 'utf-8';
+      document.getElementsByTagName('head')[0].appendChild(node);
+    }
+}
   // AfterViewInit():void{
   //   alert('ok');
   // }

@@ -83,6 +83,7 @@ export class UserRegistrationService {
     this._obj.UserIsActive = _values.UserIsActive;
     this._obj.CreatedBy = this.currentUserValue.createdby;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
+    alert(this.currentUserValue.organizationid);
     this._obj.CompanyId = _values.CompanyId;
     this._obj.DepartmentId = _values.DepartmentId;
     this._obj.RoleId = _values.RoleId;
