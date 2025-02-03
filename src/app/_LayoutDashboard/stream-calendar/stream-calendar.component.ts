@@ -2894,8 +2894,8 @@ debugger
       frmData.forEach((value, key) => {
         console.log("Start", `${key} : ${value}, = ${typeof value}` ,"End");
       });
-
-
+debugger
+      console.log(this._calenderDto,'new testing of save button')
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
 
@@ -2945,7 +2945,7 @@ debugger
 
                     // (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
                     // (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
-                    document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                    // document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
                     // document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
                 }
               }
@@ -3135,8 +3135,7 @@ debugger
 
         console.log(this.Scheduledjson,'Scheduledjson')
         this.loadingDMS = true;
-        this.Scheduledjson = this.Scheduledjson
-        .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+        this.Scheduledjson = this.Scheduledjson.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
        
         this.getEventsForWeeks(0)
 
@@ -3669,7 +3668,7 @@ Insert_indraft() {
 
               //69 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
               //69 (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
-              document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+              // document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
               //69 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
           }
         }
@@ -3722,7 +3721,7 @@ Insert_indraft() {
 
 
 GetClickEventJSON_Calender(arg,meetingClassNeme) {
-  debugger
+ 
   this.meetingClassNemes=meetingClassNeme;
    this.EventScheduledjson = [];
   this.loading = true;
@@ -3733,7 +3732,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
   this._calenderDto.Schedule_ID = arg;
   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
     ((data) => {
-
+      debugger
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       this.loading = false;
       var Schedule_date =this.EventScheduledjson[0].Schedule_date
@@ -5184,7 +5183,7 @@ debugger
                         });
                       }
                
-                      document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+                      // document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
                     
                   }
                 }
