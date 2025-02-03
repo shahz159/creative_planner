@@ -532,7 +532,7 @@ var KTDialog = function(options) {
          * Construct
          */
 
-        construct: function(options) {
+        construct: function(options) {  
             Plugin.init(options);
 
             return the;
@@ -632,7 +632,7 @@ var KTDialog = function(options) {
      * Set default options 
      */
 
-    the.setDefaults = function(options) {
+    the.setDefaults = function(options) {    
         defaultOptions = options;
     };
 
@@ -1087,8 +1087,8 @@ var KTMenu = function(elementId, options) {
          * Get submenu mode for current breakpoint and menu state
          * @returns {KTMenu}
          */
-        getSubmenuMode: function(el) {
-            if (KTUtil.isInResponsiveRange('desktop')) {
+        getSubmenuMode: function(el) {  
+            if (KTUtil.isInResponsiveRange('desktop')) {   
                 if (el && KTUtil.hasAttr(el, 'data-ktmenu-submenu-toggle') && KTUtil.attr(el, 'data-ktmenu-submenu-toggle') == 'hover') {
                     return 'dropdown';
                 }
@@ -1115,7 +1115,7 @@ var KTMenu = function(elementId, options) {
          * Get submenu mode for current breakpoint and menu state
          * @returns {KTMenu}
          */
-        isConditionalSubmenuDropdown: function() {
+        isConditionalSubmenuDropdown: function() {  
             if (KTUtil.isInResponsiveRange('desktop') && KTUtil.isset(the.options.submenu, 'desktop.state.body')) {
                 return true;
             } else {
@@ -1192,7 +1192,7 @@ var KTMenu = function(elementId, options) {
          * Handles submenu click toggle
          * @returns {KTMenu}
          */
-        handleSubmenuDropdownClick: function(e) {   
+        handleSubmenuDropdownClick: function(e) {     
             if (Plugin.getSubmenuMode(this) === 'accordion') {
                 return;
             }
@@ -1747,7 +1747,7 @@ document.addEventListener("click", function(e) {
 });
 
 "use strict";
-var KTOffcanvas = function(elementId, options) {
+var KTOffcanvas = function(elementId, options) {  
     // Main object
     var the = this;
     var init = false;
@@ -9907,3 +9907,18 @@ KTUtil.ready(function() {
         KTQuickSearchOffcanvas().init(KTUtil.get('kt_quick_search_offcanvas'));
     }
 });
+
+
+
+// extra from dms
+$(document).click(function(event) {  
+    if (!$(event.target).closest('.kt-menu__toggleII').length) {  
+        $('ul li.kt-menu__item--submenu').removeClass("kt-menu__item--hover kt-menu__item--open");
+    }
+});
+$('.kt-menu__toggleII').on('click', function() {  
+    $('ul li.kt-menu__item--submenu').removeClass('kt-menu__item--hover kt-menu__item--open');
+    $(this).closest('.kt-menu__item--submenu').addClass("kt-menu__item--hover kt-menu__item--open");
+});
+
+//  extra from dms
