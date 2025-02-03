@@ -227,7 +227,7 @@
                 </div>
                 <div class="kt-login__form">
 
-                  <form class="kt-form" action="" [formGroup]="loginForm" (ngSubmit)="login()">
+                  <form class="kt-form" action="" [formGroup]="loginForm" (ngSubmit)="login_DMS()">
                     <div class="form-group mb-4" [ngClass]="{ 'has-error': submitted && f.userid.errors }">
                       <input class="form-control" type="text" placeholder="Username" autocomplete="off"
                         formControlName="userid">

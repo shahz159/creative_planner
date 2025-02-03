@@ -868,13 +868,12 @@
                                 <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                   <div class="kt-filterdetails" *ngIf="_MessageIfNotOwner==''" >
 
-                                  <div class="d-flex align-items-center">
+                                  <div class="d-flex align-items-center gap-1">
                                     <div  class="dropdown show">
                                       <button  *ngIf="this.allSelectedProjects.length>0"  class="btn btn-sm btn-outline-primary" data-toggle="dropdown" id="test1" title="Click to create new portfolio"
                                       [ngClass]="{'active': activeClass_NewPortfolio}" (click)="DropdownOpen();_portfolioName = ''">
                                       <!-- <svg width="44px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12H18M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> -->
-
-                                      <span class="fs-14" style="font-size: 12px;" >Create portfolio</span>
+                                      <span class="fs-14">Create portfolio</span>
 
                                     </button>
                                   <div  class="dropdown-menu dropdown-menu-fit dropdown-menu-md bg-ground"
@@ -927,7 +926,7 @@
                                   </div>
                                     </div>
 
-                                    <div *ngIf="isapprovlFound" style="margin-left:8px" class="btn-group mr-2" role="group">
+                                  <div *ngIf="isapprovlFound" class="btn-group mr-2" role="group">
                                       <button type="button" class="btn btn-outline-success btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                         <!-- <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" style="stroke: currentColor; stroke-width: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="checkmark"> <line class="cls-1" x1="3" x2="12" y1="16" y2="25"></line> <line class="cls-1" x1="12" x2="29" y1="25" y2="7"></line> </g> </g></svg> -->
                                         <span class="fs-8" style="font-weight:500">Accept</span>
@@ -947,6 +946,12 @@
                                   <button *ngIf="isapprovlFound"  (click)="rejectpros()" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
                                     <!-- <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="stroke: currentColor; stroke-width: 3px; stroke-linecap: butt;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="cross"> <line class="cls-1" x1="7" x2="25" y1="7" y2="25"></line> <line class="cls-1" x1="7" x2="25" y1="25" y2="7"></line> </g> </g></svg> -->
                                     <span class="fs-8" style="font-weight:500">Reject</span>
+                                  </button>
+                                  
+                                  <button *ngIf="selectedHoldPrjsReleasable"  (click)="onReleasePrjBtnClicked()" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
+                                    <!-- <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="stroke: currentColor; stroke-width: 3px; stroke-linecap: butt;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="cross"> <line class="cls-1" x1="7" x2="25" y1="7" y2="25"></line> <line class="cls-1" x1="7" x2="25" y1="25" y2="7"></line> </g> </g></svg> -->
+                                    <span class="fs-8" style="font-weight:500">Release</span>
+                                    <span class="fs-8">{{releasableHoldPrjs&&releasableHoldPrjs.length}}</span>
                                   </button>
                                   </div>
 
@@ -5088,11 +5093,12 @@
                             <div class="agenda-input-field">
                                 <input class="form-control task-input" id="todo-input" name="text" placeholder="Add agenda and press 'Enter'" autofocus="true"
                                [(ngModel)]="agendaInput"
-                                [ngClass]="{'error-borderbottom': agendaInput&&(agendaInput.trim().length>100)}"    (keyup.enter)="addAgenda()" (keyup)="onKeyPress()"
+                                [ngClass]="{'error-borderbottom': agendaInput&&(agendaInput.trim().length>100)}"    (keyup.enter)="addAgenda()" (keyup)="AgendaCharacterCount();onKeyPress()"
                                 />
-                            <button *ngIf="agendaInput&&(agendaInput.trim().length<100)" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+                            <button *ngIf="agendacharacterCount && agendacharacterCount<101" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
                             </div>
-                            <span style="color:red" *ngIf="agendaInput&&(agendaInput.trim().length>100)">Maximum 100 characters are allowed.</span>
+                            <span *ngIf="agendacharacterCount > 0" >Max characters {{agendacharacterCount}}/100 </span>
+                            <span style="color:red" *ngIf="agendacharacterCount>=101">Maximum 100 characters are allowed.</span>
                         </div>
 
 
@@ -7256,3 +7262,83 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+<!-- release hold project sidebar start.-->
+<div id="release-holdprj-sidebar" class="sideInfobar animate-right">
+    <div class="kt-portlet mb-0">
+      <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
+        <h4 class="m-0">Projects release</h4>
+        <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeReleasePrjSidebar()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path fill="none" d="M0 0h24v24H0z"></path>
+            <path
+              d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+            </path>
+          </svg>
+        </a>
+      </div>
+      <div class="kt-portlet__body sidehf_scroll scroll-y mb-0">
+        <div class="pb-1">
+          <div class="card-body card-car px-1 py-4">
+  
+            <div class="card card-mid flex-1">
+              <div class="card-header">
+                <h5 clas="card-title"> {{releasableHoldPrjs.length}} {{releasableHoldPrjs.length>1?'Projects':'Project'}} selected</h5>
+              </div>
+              <div class="card-body p-0">
+                <div class="cus-scroll scroll-y">
+                  <div class="meetdt" *ngFor="let item of releasableHoldPrjs">
+                    <div id="" class="eve-area flex-column align-items-start">
+                      <div class="">
+                        <div class="event-main">
+                          <span class="event-color event-color--info"></span>
+                          <span class="event-title mr-2">
+                            <a>{{item.Project_Name}}</a>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="btm-des ml-4">
+                        <div><span class="showv mr-2 text-muted">{{item.Exec_BlockName}}</span></div>
+                        <span class="mr-2 showv">|</span>
+                        <div class="ml-1 mr-2 status-d"><h6 data-toggle="tooltip" title="Project Hold" class="text-warning mb-0">Hold</h6></div>
+                        <span class="mr-2 showv">|</span>
+                        <div><span class="showv mr-2 text-muted"><i class="far fa-user mr-1"></i> {{item.TM_DisplayName}}</span></div>
+                        <span class="mr-2 showv">|</span>
+                        <div><span class="showv mr-2 text-muted"><i class="far fa-calendar-alt mr-1"></i> {{item.DPG | date:'dd/MM/yyyy'}} - {{item.DeadLine | date:'dd/MM/yyyy'}} </span></div>
+                     </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="">
+          <div class="card-body py-2 px-1">
+            <div class="crd-hdr">
+            </div>
+            <div class="col-md-12 checked-rad pl-1 pt-3">
+              <div class="form-group">
+                <label class="mb-2">Enter comments</label><span style="color:red">*</span>
+                <textarea class="form-control h-100px" [(ngModel)]="releasePrjsRemarks" [ngClass]="{'error-border':!(releasePrjsRemarks&&releasePrjsRemarks.trim())&&notProvided1}"   placeholder="Enter your comments here."></textarea>
+                <span *ngIf="!(releasePrjsRemarks&&releasePrjsRemarks.trim())&&notProvided1" style="color:red;">Please enter comment.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="kt-portlet__foot py-3 d-flex justify-content-end gap-1">
+        <button class="btn btn-secondary mr-2" (click)="closeReleasePrjSidebar()">Close</button>
+        <button type="submit" class="btn btn-info" (click)="onPrjsReleaseSubmit()">Submit</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- release hold project sidebar start.-->
+  

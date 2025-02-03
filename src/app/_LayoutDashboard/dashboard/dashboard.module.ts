@@ -33,7 +33,7 @@ import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 // import { TimeDiffPipe } from 'src/app/Shared/time-diff.pipe';
 import {ShareModule} from '../../Shared/share/share.module';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -74,7 +74,8 @@ FullCalendarModule.registerPlugins([
     ,NgxDocViewerModule,
     GuidedTourModule,
     Ng2SearchPipeModule,
-    ShareModule
+    ShareModule,
+    MatTooltipModule
 
   ],
   providers: [DatePipe

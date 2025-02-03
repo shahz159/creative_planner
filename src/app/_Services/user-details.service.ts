@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { ProjecttypeDTO } from '../_Models/projecttype-dto';
+import { ProjecttypeDTO } from '../../app/_Models/projecttype-dto';
 import { ApiurlService } from './apiurl.service';
-import { UserDetailsDTO } from '../_Models/user-details-dto';
+import { UserDetailsDTO } from '../../app/_Models/user-details-dto';
 @Injectable({
   providedIn: 'root'
 })
@@ -23,4 +23,5 @@ export class UserDetailsService {
       //   this.user_DetailList = data as UserDetailsDTO[];
       // });
   }
+
 }

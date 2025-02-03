@@ -784,11 +784,24 @@
 
 
 
-                                                              <div class="extra-at-status deadline-main" *ngIf="projectInfo.Status==='Delay'&&(deadlineExtendlist&&deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
+                                                              <div class="extra-at-status deadline-main pr-1" *ngIf="projectInfo.Status==='Delay'&&(deadlineExtendlist&&deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
 
-                                                                <span style="color: #d32f2f;">{{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} deadline changed</span>
+                                                                <span  class=" pin-msg-btn d-flex collapsed" data-toggle="collapse" data-target="#p-deadline-extends-drpdwn-1" aria-expanded="false" aria-controls="collapsepinMessage"  style="color: #d32f2f;">
+                                                                    {{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} deadline changed
+                                                                    <div  class="pin-msg-btn-caret">
+                                                                        <svg  width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                            <g  id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                            <g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                                            <g  id="SVGRepo_iconCarrier">
+                                                                                <g  id="Arrow / Caret_Down_MD">
+                                                                                    <path id="Vector" d="M16 10L12 14L8 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                                </g>
+                                                                            </g>
+                                                                        </svg>
+                                                                    </div>
+                                                                </span>
                                                                 <span class="deadline-count">
-                                                                    <div class="dropdown-menu">
+                                                                    <div class="dropdown-menu" id="p-deadline-extends-drpdwn-1" aria-labelledby="headingOne" data-parent="#pinMessages" class="collapse" >
                                                                      <ul class="deadline-timeline">
                                                                         <!-- loop this li part only -->
                                                                         <li class="deadline-timeline-item" *ngFor="let item of deadlineExtendlist;let i = index">
@@ -2798,9 +2811,22 @@
                                                               {{getDelayText(projectInfo&&projectInfo)}}
                                                             </div>
                                                             <div class="extra-at-status deadline-main" *ngIf="(deadlineExtendlist&&deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
-                                                                <span style="color: #d32f2f;">{{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} deadline changed</span>
+                                                                <span class="pin-msg-btn d-flex collapsed" style="color: #d32f2f;" data-toggle="collapse" data-target="#p-deadline-extends-drpdwn-2" aria-expanded="false" aria-controls="collapsepinMessage" >
+                                                                    {{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} deadline changed
+                                                                    <div  class="pin-msg-btn-caret">
+                                                                        <svg  width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                            <g  id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                            <g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                                            <g  id="SVGRepo_iconCarrier">
+                                                                                <g  id="Arrow / Caret_Down_MD">
+                                                                                    <path id="Vector" d="M16 10L12 14L8 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                                </g>
+                                                                            </g>
+                                                                        </svg>
+                                                                    </div>
+                                                                </span>
                                                                 <span class="deadline-count">
-                                                                    <div class="dropdown-menu onleft">
+                                                                    <div id="p-deadline-extends-drpdwn-2" aria-labelledby="headingOne" data-parent="#pinMessages" class="collapse">
                                                                      <ul class="deadline-timeline">
                                                                         <!-- loop this li part only -->
                                                                         <li class="deadline-timeline-item" *ngFor="let item of deadlineExtendlist;let i = index">
@@ -4808,7 +4834,7 @@
                                                             <div *ngSwitchCase="'Delay'" class="attach-tippy kt-project-type" >
                                                                 <span class="vi font-weight-400 st-line"> {{projectActionInfo[currentActionView].Delaydays ? projectActionInfo[currentActionView].Delaydays + ' days' + ' delay ' :''}}</span>
                                                                 <div class="d-flex">
-                                                                    <div class="Kt-Pd-Status Delay">
+                                                                    <div class="Kt-Pd-Status Delay text-nowrap">
                                                                     {{ getDelayText(projectActionInfo[currentActionView]) }}
                                                                     </div>
                                                                     <div class="extra-at-status deadline-main" *ngIf="(action_deadlineExtendlist&&action_deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
@@ -4851,7 +4877,7 @@
 
 
                                                             <div *ngSwitchCase="'Completed'" class="kt-project-type d-flex">
-                                                                <div class="Kt-Pd-Status Done"> Completed </div>
+                                                                <div class="Kt-Pd-Status Done text-nowrap "> Completed </div>
                                                                 <ng-container *ngIf="projectActionInfo[currentActionView].Status==='Completed'">
                                                                     <div *ngIf="action_completionOffset>0" class="extra-at-status" style="border-color: #388e3c; color: #d32f2f;">
                                                                           <span>{{action_completionOffset}} days delayed</span>
@@ -8569,7 +8595,97 @@
 
                                   </div>
 
-                              <ng-container *ngIf="(PeopleOnProject | filter:SearchItem).length>0 ; else searchPeople">
+                                <ng-container *ngFor="let Data of PeopleOnProject; let i=index">
+
+                                    <div id="pOnPrj-user-row-{{i}}" class="project-users" *ngIf="Data.Emp_Name.trim().toLowerCase().includes(SearchItem?SearchItem.toLowerCase():'')">
+                                        <div class="user-list">
+                                          <div class="user-info" [ngClass]="{'inactive-prjusr':Data.isActive==false}">
+                                            <div class="user-icon">
+                                              <span class="user-initial bg-primary text-inverse-warning fw-bold">{{Data.Emp_Name[0]}}</span>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                              <div class="user-details">
+                                                <h6>
+                                                  {{Data.Emp_Name}}
+                                                </h6>
+                                              </div>
+                                              <div class="user-type">
+                                                <span *ngIf="Data.isActive==false" class="inactv-label">
+                                                    <span>In-active</span>
+                                                </span>
+                                                <span *ngFor="let role of Data.Role.split(', ')">
+                                                  <span >{{ role }}</span>
+                                                </span>
+                                                <div *ngIf="Data.contribution&&projectActionInfo"  [title]="Data.totalActionsCreated+' actions'"   class="prctg-in-project">
+                                                    <span class="bg-transparent text-body">{{((Data.totalActionsCreated/projectActionInfo.length)*100).toFixed(1)}}%</span>
+                                                </div>
+                                              </div>
+                                            </div>
+    
+                            
+                                         <ng-container *ngIf="projectInfo&&Data.Role&&(Current_user_ID == projectInfo.OwnerEmpNo || Current_user_ID == projectInfo.ResponsibleEmpNo || isHierarchy == true)">
+    
+    
+                                                <button *ngIf="Data.Role.includes('Auditor')&&(projectInfo.Status!='Completion Under Approval'&&projectInfo.Status!='Completed')" (click)="onChangeAuditorBtnClicked();" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted curser-pointer ">
+                                                    <svg  width="14px" height="15px" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path></g></svg>
+                                                    <span class="auditor-btn-text">&nbsp;change auditor</span>
+                                                </button>
+    
+    
+    
+                                               <ng-container *ngIf="Data.Role.includes('Auditor')&&Data.Role.includes('Support'); else notbothAuditorAndSupport">
+                                                    <button data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle Auditor-edit-btn btn btn-sm  d-flex  text-muted curser-pointer">
+                                                        <svg viewBox="0 0 24 24" height="18px" width="17px" role="img" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" ><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z" fill="currentColor"></path></svg>
+                                                        <span class="auditor-btn-text">&nbsp;remove</span>
+                                                    </button>
+    
+                                                    <div class="dropdown-menu drop-cus">
+                                                        <a (click)="openRemoveSADialog(i,'AUDITOR')" class="dropdown-item">Remove as auditor</a>
+                                                        <a (click)="openRemoveSADialog(i,'SUPPORT')" class="dropdown-item">Remove as support</a>
+                                                    </div>
+                                               </ng-container>
+                                               <ng-template #notbothAuditorAndSupport>
+    
+                                                    <div *ngIf="Data.Role.includes('Support')&&Data.isRemovable" class="d-flex align-self-start">
+                                                        <button (click)="openRemoveSADialog(i,'SUPPORT')" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted  curser-pointer ">
+                                                            <svg viewBox="0 0 24 24" height="18px" width="17px" role="img" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" ><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z" fill="currentColor"></path></svg>
+                                                            <span *ngIf="Data.Role=='Support';else alsoAsSupport" class="auditor-btn-text">&nbsp;remove</span>
+                                                            <ng-template #alsoAsSupport><span class="auditor-btn-text">&nbsp;remove support</span></ng-template>
+                                                        </button>
+                                                    </div>
+    
+                                                    <button *ngIf="Data.Role.includes('Auditor')&&(projectInfo.Status!='Completion Under Approval'&&projectInfo.Status!='Completed')" (click)="openRemoveSADialog(i,'AUDITOR')"  class="Auditor-edit-btn btn btn-sm  d-flex  text-muted  curser-pointer ">
+                                                        <svg viewBox="0 0 24 24" height="18px" width="17px" role="img" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" ><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z" fill="currentColor"></path></svg>
+                                                        <span class="auditor-btn-text">&nbsp;remove auditor</span>
+                                                    </button>
+    
+                                               </ng-template>
+    
+                                            </ng-container>
+    
+                                            <!--( popup ) remarks on removing support/auditor-->
+                                            <div class="mark-admin-drop" id="mark-admin-drop{{i}}">
+                                                <div class="form-group mb-0">
+                                                    <label *ngIf="typeUserRemove=='SUPPORT'" for="exampleFormControlTextarea1" class="fs-7" style="font-weight:600;">Remove as support</label>
+                                                    <label *ngIf="typeUserRemove=='AUDITOR'" for="exampleFormControlTextarea1" class="fs-7" style="font-weight:600;">Remove as auditor</label>
+                                                    <textarea [ngClass]="{'error-border':!sprtaudtr_remarks&&sa_notProvided}"  placeholder="provide your remarks here." class="form-control remarks-input" [(ngModel)]="sprtaudtr_remarks" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                    <span *ngIf="!sprtaudtr_remarks&&sa_notProvided" style="color:red" class="fs-8"  >remarks required.</span>
+                                                </div>
+                                                <hr>
+                                                <div class="d-flex align-items-center" style="gap:10px">
+                                                    <button [disabled]="processingRemove" class="btn btn-sm btn-info" (click)="onSARemoveSubmit()">Submit</button>
+                                                    <button class="btn btn-sm btn-secondary" (click)="closeRemoveSADialog(i)">Cancel</button>
+                                                </div>
+                                            </div>
+                                            <!--( popup ) remarks on removing support/auditor-->
+                                        </div>
+    
+                                        </div>
+                                      </div>
+                                </ng-container>
+
+                               <!-- 
+                                <ng-container *ngIf="(PeopleOnProject | filter:SearchItem).length>0 ; else searchPeople">
                                   <div id="pOnPrj-user-row-{{i}}" class="project-users" *ngFor="let Data of PeopleOnProject | filter :SearchItem ;let i=index">
                                     <div class="user-list">
                                       <div class="user-info" [ngClass]="{'inactive-prjusr':Data.isActive==false}">
@@ -8594,22 +8710,6 @@
                                             </div>
                                           </div>
                                         </div>
-
-                                       <!-- <ng-container *ngIf="Data.Role&&projectInfo">
-                                        <div *ngIf="Data.Role.includes('Auditor')&&(projectInfo.Status!='Completion Under Approval'&&projectInfo.Status!='Completed')" class="d-flex">
-                                            <button  (click)="onChangeAuditorBtnClicked();" class="Auditor-edit-btn btn btn-sm  d-flex  text-muted curser-pointer ">
-                                                <svg  width="14px" height="15px" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path></g></svg>
-                                                <span class="auditor-btn-text">&nbsp;change</span>
-                                            </button>
-                                            <button (click)="openRemoveSADialog(i,'AUDITOR')"  class="Auditor-edit-btn btn btn-sm  d-flex  text-muted curser-pointer ">
-                                                <svg viewBox="0 0 24 24" height="18px" width="17px" role="img" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" ><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12M8 9h8v10H8V9m7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5Z" fill="currentColor"></path></svg>
-                                                <span class="auditor-btn-text">&nbsp;remove</span>
-                                            </button>
-                                       </div>
-                                     </ng-container> -->
-
-
-
 
 
                                      <ng-container *ngIf="projectInfo&&Data.Role&&(Current_user_ID == projectInfo.OwnerEmpNo || Current_user_ID == projectInfo.ResponsibleEmpNo || isHierarchy == true)">
@@ -8652,7 +8752,7 @@
 
                                         </ng-container>
 
-                                        <!--( popup ) remarks on removing support/auditor-->
+                                       
                                         <div class="mark-admin-drop" id="mark-admin-drop{{i}}">
                                             <div class="form-group mb-0">
                                                 <label *ngIf="typeUserRemove=='SUPPORT'" for="exampleFormControlTextarea1" class="fs-7" style="font-weight:600;">Remove as support</label>
@@ -8666,27 +8766,24 @@
                                                 <button class="btn btn-sm btn-secondary" (click)="closeRemoveSADialog(i)">Cancel</button>
                                             </div>
                                         </div>
-                                        <!--( popup ) remarks on removing support/auditor-->
+                                  
 
                                     </div>
-
-
-
                                     </div>
                                   </div>
-                                </ng-container>
+                                </ng-container> -->
 
                               </ng-container>
 
-                              <ng-template #searchPeople>
-                                  <div class="text-center">
+                              <!-- <ng-template #searchPeople> -->
+                                  <div *ngIf="!hasPeopleByInputName()" class="text-center">
                                       <img src="./assets/images/people on the project 02.png" width="268"
                                           height="256">
                                       <div class="bnk-txt mt-3">
                                           <h3 class="blank-txt pfl-img">No people found</h3>
                                       </div>
                                   </div>
-                              </ng-template>
+                              <!-- </ng-template> -->
 
                               <!-- <div class="user-list-card">
                                           <div class="mvc-vb">
@@ -8827,7 +8924,7 @@
 
                                       </mat-autocomplete>
                                   </mat-form-field>
-                                  <button
+                                  <button [disabled]="isAddingProjectSupport"
                                       class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn "
                                       (click)="onProject_updateSupport()">Submit</button>
 
@@ -8884,7 +8981,7 @@
 
                                     </mat-autocomplete>
                                 </mat-form-field>
-                                <button
+                                <button [disabled]="isAddingProjectAuditor"
                                     class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text  drp-dwn-submitbtn "
                                     (click)="onAuditorSubmitClicked()">{{projectAuditor?'CHANGE':'SUBMIT'}}</button>
 
@@ -9212,7 +9309,7 @@
                 </div>
                 <!-- <span class="text-danger">Note: (*) are mandatory!</span> -->
                 <div class="form-group">
-                <button type="submit" class="btn btn-info" (click)="actionCompleted()">Submit</button>
+                <button [disabled]="processingActnComplete" type="submit" class="btn btn-info" (click)="actionCompleted()">Submit</button>
                 </div>
 
 
@@ -9319,7 +9416,7 @@
                       class="btn btn-info"  (click)="updateMainProject()">Submit
                   </button> -->
                   <!-- [disabled]="(_remarks=='')" -->
-                  <button type="submit" class="btn btn-info" (click)="updateMainProject()">Submit</button>
+                  <button [disabled]="processingPrjComplete" type="submit" class="btn btn-info" (click)="updateMainProject()">Submit</button>
               </div>
           </div>
 
@@ -11693,11 +11790,12 @@
                                   <input class="form-control task-input" id="todo-input" name="text"
                                   [ngClass]="{'error-borderbottom': agendaInput&&(agendaInput.trim().length>100)}"
                                    placeholder="Add agenda and press 'Enter'" autofocus="true"
-                                  [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()" (keyup)="onKeyPress()"
+                                  [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()" (keyup)="AgendaCharacterCount();onKeyPress()"
                                   />
-                              <button  *ngIf="agendaInput&&(agendaInput.trim().length<100)" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
+                              <button  *ngIf="agendacharacterCount && agendacharacterCount<101" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
                               </div>
-                                <span style="color:red" *ngIf="agendaInput&&(agendaInput.trim().length>100)">Maximum 100 characters are allowed.</span>
+                                <span *ngIf="agendacharacterCount > 0" >Max characters {{agendacharacterCount}}/100 </span>
+                                <span style="color:red" *ngIf="agendacharacterCount>=101">Maximum 100 characters are allowed.</span>
                           </div>
 
 

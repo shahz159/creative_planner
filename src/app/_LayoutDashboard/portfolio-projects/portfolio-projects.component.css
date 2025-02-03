@@ -5978,3 +5978,13 @@ a.btn-v-icons {
   width: 21px;
   height: 21px;
 }
+
+
+
+
+/* release proj hold css start*/
+#release-holdprj-sidebar.kt-quick-panel--on {
+  width: 45% !important;
+}
+
+/* release proj hold css start*/

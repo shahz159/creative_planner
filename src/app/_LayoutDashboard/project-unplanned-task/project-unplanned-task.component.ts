@@ -1986,7 +1986,7 @@ selectedAttendeesList = new Set<any>();
         this.ProjectType_DB = ProjectInfo_List[0]['Project_Block'];
         this.BsService.setProjectAuthoity(this.RACI_Autho);
       });
-      this.service.GetRACISandNonRACISEmployeesforMoredetails(this.selectedProjectCode).subscribe(
+      this.service.GetRACISandNonRACISEmployeesforMoredetails(this.selectedProjectCode,this.Current_user_ID).subscribe(
         (data) => {
 
           this.ownerArr=(JSON.parse(data[0]['RacisList']));
@@ -2413,6 +2413,20 @@ this.Creation_Date = date
     this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ');
   }
 
+
+  
+
+  // to fixed mat dropdowns scroll position issue.
+  const TEsb = document.querySelector('#unassign-editsidebar .unassign-editsidebar-body');
+      TEsb.addEventListener('scroll', () => {
+        this.autocompletes.forEach((ac) => {
+          if (ac.panelOpen)
+            ac.updatePosition();
+        });
+  })
+ //
+
+
 }
 
 
@@ -2634,7 +2648,7 @@ pcode:any;
 ownerArr:any
 getRACISandNonRACIS(){
 
-  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode).subscribe(
+  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode,this.Current_user_ID).subscribe(
     (data) => {
 
       this.ownerArr=(JSON.parse(data[0]['RacisList']));

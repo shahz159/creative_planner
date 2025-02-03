@@ -2534,3 +2534,31 @@ span.p-b-percent-count {
     fill: #1dc9b7;
     /* green color */
 }
+
+.no-portfolio-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #909090;
+    width: 74%;
+    margin: 0 auto;
+}
+::ng-deep .banner-item.activity-item.owl-theme .owl-nav.disabled+.owl-dots {
+    margin-top: -21px !important;
+    position: relative;
+}
+::ng-deep .banner-item.activity-item.owl-theme .owl-dots .owl-dot span {
+    height: 4px;
+    background: #fdfdfd59;
+    border-radius: 2px;
+}
+::ng-deep .banner-item.activity-item.owl-theme .owl-dots .owl-dot.active span, ::ng-deep .banner-item.activity-item.owl-theme .owl-dots .owl-dot:hover span {
+    background: #ffffff;
+    width: 40px;
+}
+.banner-card {
+    background-color: transparent;
+    box-shadow: none;
+}

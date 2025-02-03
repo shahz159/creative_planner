@@ -1537,7 +1537,7 @@ export class MoreDetailsComponent implements OnInit {
 
   userFound:boolean=false;
   getRACISandNonRACIS() {
-    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode,this.Current_user_ID).subscribe(
       (data) => {
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
 
@@ -4187,7 +4187,7 @@ export class MoreDetailsComponent implements OnInit {
     this.editnewrelease=false;
     this.editholdrelease=false;
 
-    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode,this.Current_user_ID).subscribe(
       (data) => {
         this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
         this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
@@ -4218,7 +4218,7 @@ export class MoreDetailsComponent implements OnInit {
     this.editnewrelease=false;
     this.editholdrelease=false;
 
-    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode).subscribe(
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode,this.Current_user_ID).subscribe(
       (data) => {
         this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
         this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
@@ -4252,7 +4252,7 @@ export class MoreDetailsComponent implements OnInit {
     this.editnewrelease=false;
     this.editholdrelease=false;
 
-    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.actCode).subscribe(
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.actCode,this.Current_user_ID).subscribe(
       (data) => {
         this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
         this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));
@@ -4286,7 +4286,7 @@ export class MoreDetailsComponent implements OnInit {
     this.editnewrelease=false;
     this.editholdrelease=false;
 
-    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.actCode).subscribe(
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.actCode,this.Current_user_ID).subscribe(
       (data) => {
         this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));
         this.owner_dropdown = (JSON.parse(data[0]['owner_dropdown']));

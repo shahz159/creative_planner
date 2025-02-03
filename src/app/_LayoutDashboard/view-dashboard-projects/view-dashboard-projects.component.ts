@@ -281,7 +281,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
           }
           else {
             this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
-console.log(this._ProjectDataList,'_ProjectDataListxxxxxxxxxxxxxx')
+            console.log(this._ProjectDataList,'_ProjectDataListxxxxxxxxxxxxxx')
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);

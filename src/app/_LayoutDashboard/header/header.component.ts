@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import tippy from 'node_modules/tippy.js';
@@ -18,6 +18,8 @@ import { MAT_MOMENT_DATE_FORMATS,MomentDateAdapter,MAT_MOMENT_DATE_ADAPTER_OPTIO
 import { isString } from '@ng-bootstrap/ng-bootstrap/util/util';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import Swal from 'sweetalert2';
+import { TranslateService } from '@ngx-translate/core';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -54,12 +56,12 @@ export const MY_DATE_FORMATS = {
 })
 export class HeaderComponent implements OnInit {
 
-
+  public static languageChanged:EventEmitter<any>=new EventEmitter();
   constructor(public service: ProjectTypeService,private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,private notifyService: NotificationService,
     public loadingBarServce:LoadingBarService,
-    private bsService:BsServiceService
+    private bsService:BsServiceService, private translate : TranslateService
     ) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.notificationDTO = new NotificationActivityDTO();
@@ -70,6 +72,7 @@ export class HeaderComponent implements OnInit {
   ObjSubTaskDTO: SubTaskDTO;
   aprvDtoObj:ApprovalDTO;
   _fullname: string;
+  UserProfile:string;
   timelineList: any;
   timelineType: string;
   type1: string = 'self';
@@ -89,13 +92,24 @@ export class HeaderComponent implements OnInit {
   urlcomponent:any;
   newfeaturetippy:any;
   _confirmBeforeRouting:string;
+  AdminID=502;
+  
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
+    
     this.getusername();
+    this.getuserimage();
+    this.bsService.UserLoggedIn.subscribe(()=>{ this.getuserimage();  });  
     this.getNewFeatures();
     // this._fullname = localStorage.getItem('UserfullName');
     this.timelineType = this.type1;
     this.selectedSort = 'today';
+
+    let dmsuserinfo:any=localStorage.getItem('DMS_UserInfo');
+    if(dmsuserinfo){
+      dmsuserinfo=JSON.parse(dmsuserinfo);
+      this._UserRole=dmsuserinfo.UserRole;
+    }
 
     this.getDashboardnotifications();
 
@@ -156,10 +170,19 @@ export class HeaderComponent implements OnInit {
   }
 
   getusername(){
-    this.service._GetUserName(this.Current_user_ID).subscribe(data=>{
+    this.service._GetUserName(this.Current_user_ID).subscribe(data=>{  debugger
       this._fullname=data['Emp_First_Name'];
+      this._fullname = this._fullname.replace(/\(\)/, '').trim();
+     
     });
   }
+
+
+  getuserimage(){
+    const dmsuserinfo=localStorage.getItem('DMS_UserInfo');
+    if(dmsuserinfo){  this.UserProfile=JSON.parse(dmsuserinfo).UserProfile;  }
+  }
+
 
   isView:any;
 
@@ -171,6 +194,18 @@ export class HeaderComponent implements OnInit {
     });
 
 
+  }
+  _UserRole:number;
+
+
+  currentLang:"ar"|"en"="en";
+  storedLanguage:any
+  ChangelangTo(lang:any){
+    this.currentLang=lang;
+    this.translate.use(lang); 
+    localStorage.setItem('language', lang); 
+    // DashboardComponent.ArabicSide.emit(lang);
+    HeaderComponent.languageChanged.emit(lang);
   }
 
   menutoggle() {
@@ -598,6 +633,8 @@ export class HeaderComponent implements OnInit {
   localStorage.removeItem('UserfullName');
   localStorage.removeItem('_Currentuser');
   localStorage.removeItem('IsStreamDownload');
+  localStorage.removeItem('DMS_UserInfo');
+  localStorage.removeItem('currentUser');
   // Call AuthService logout for any additional logic
   this.authService.logout();
 

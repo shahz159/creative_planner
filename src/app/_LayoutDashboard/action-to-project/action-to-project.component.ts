@@ -297,7 +297,7 @@ export class ActionToProjectComponent implements OnInit {
 
   getRACISandNonRACIS(){
 
-    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode).subscribe(
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode,this.Current_user_ID).subscribe(
       (data) => {
 
         this.ownerArr=(JSON.parse(data[0]['RacisList']));
@@ -345,7 +345,7 @@ export class ActionToProjectComponent implements OnInit {
       }
     });
 
-    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.selectedProjectCode).subscribe(
+    this.service.GetRACISandNonRACISEmployeesforMoredetails(this.selectedProjectCode,this.Current_user_ID).subscribe(
       (data) => {
 
         this.ownerArr=(JSON.parse(data[0]['RacisList']));

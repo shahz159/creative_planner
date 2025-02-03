@@ -8,6 +8,7 @@ import tippy from 'node_modules/tippy.js';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-sidebar',
@@ -21,6 +22,9 @@ export class SidebarComponent implements OnInit {
   OrganizationId:any;
   _CompNo:string;
   _confirmBeforeSwitch:string;
+  _UserRole:number;
+  AdminID=502;
+  menu:any = ['Company','Department','Role','Designation']
   // _activeLink:string;
   constructor(private router: Router,private bsService: BsServiceService,
     private authService: AuthService,private notifyService: NotificationService,
@@ -32,12 +36,18 @@ export class SidebarComponent implements OnInit {
     this._EmpNo = localStorage.getItem('EmpNo');
     this.OrganizationId=localStorage.getItem('OrganizationId');
     this._CompNo=sessionStorage.getItem("EmpCompNo");
+    let dmsuserinfo:any=localStorage.getItem('DMS_UserInfo');
+    if(dmsuserinfo){
+      dmsuserinfo=JSON.parse(dmsuserinfo);
+      this._UserRole=dmsuserinfo.UserRole;
+    }
     // this._activeLink=this.router.url;
-    
+   
      
     $(document).ready(function() {
       // import('../../../assets/js/test.js');
       $('<script/>',{type:'text/javascript', src:'/assets/js/test.js'}).appendTo('head');
+      $('<script/>',{type:'text/javascript', src:'/assets/js/scripts.bundle.js'}).appendTo('head');
     });
 
     tippy('#dashboard', {
@@ -281,7 +291,6 @@ export class SidebarComponent implements OnInit {
    getActiveLink(){
     return this.router.url;
    }
-
 
 
 }

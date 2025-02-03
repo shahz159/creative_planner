@@ -1009,7 +1009,7 @@ var KTMenu = function(elementId, options) {
          * Reset menu
          * @returns {KTMenu}
          */
-        build: function() {
+        build: function() {    
             // General accordion submenu toggle
             the.eventHandlers['event_1'] = KTUtil.on(element, '.kt-menu__toggle', 'click', Plugin.handleSubmenuAccordion);
 
@@ -1192,7 +1192,7 @@ var KTMenu = function(elementId, options) {
          * Handles submenu click toggle
          * @returns {KTMenu}
          */
-        handleSubmenuDropdownClick: function(e) {
+        handleSubmenuDropdownClick: function(e) {   
             if (Plugin.getSubmenuMode(this) === 'accordion') {
                 return;
             }
@@ -1206,7 +1206,7 @@ var KTMenu = function(elementId, options) {
             if (KTUtil.hasClass(item, 'kt-menu__item--hover') === false) {
                 KTUtil.addClass(item, 'kt-menu__item--open-dropdown');
                 Plugin.showSubmenuDropdown(item);
-            } else {
+            } else {  
                 KTUtil.removeClass(item, 'kt-menu__item--open-dropdown');
                 Plugin.hideSubmenuDropdown(item, true);
             }
@@ -1241,7 +1241,7 @@ var KTMenu = function(elementId, options) {
          * Handles link click
          * @returns {KTMenu}
          */
-        handleLinkClick: function(e) {
+        handleLinkClick: function(e) {   
             var submenu = this.closest('.kt-menu__item.kt-menu__item--submenu'); //
 
             var result = Plugin.eventTrigger('linkClick', this, e);
@@ -1279,7 +1279,7 @@ var KTMenu = function(elementId, options) {
          * helper functions
          * @returns {KTMenu}
          */
-        handleSubmenuAccordion: function(e, el) {
+        handleSubmenuAccordion: function(e, el) {     
             var query;
             var item = el ? el : this;
 
@@ -1302,8 +1302,8 @@ var KTMenu = function(elementId, options) {
                 var speed = the.options.accordion.slideSpeed;
                 var hasClosables = false;
 
-                if (KTUtil.hasClass(li, 'kt-menu__item--open') === false) {
-                    // hide other accordions
+                if (KTUtil.hasClass(li, 'kt-menu__item--open') === false) {  
+                    // hide other accordions     
                     if (the.options.accordion.expandAll === false) {
                         var subnav = item.closest('.kt-menu__nav, .kt-menu__subnav');
                         var closables = KTUtil.children(subnav, '.kt-menu__item.kt-menu__item--open.kt-menu__item--submenu:not(.kt-menu__item--here):not(.kt-menu__item--open-always)');
@@ -1393,7 +1393,7 @@ var KTMenu = function(elementId, options) {
          * helper functions
          * @returns {KTMenu}
          */
-        showSubmenuDropdown: function(item) {
+        showSubmenuDropdown: function(item) {    
             // close active submenus
             var list = element.querySelectorAll('.kt-menu__item--submenu.kt-menu__item--hover, .kt-menu__item--submenu.kt-menu__item--active-tab');
 
@@ -4254,7 +4254,7 @@ var KTUtil = function() {
             }
         },
 
-        on: function(element, selector, event, handler) {
+        on: function(element, selector, event, handler) {   
             if (!selector) {
                 return;
             }
@@ -9234,9 +9234,8 @@ var KTLayout = function() {
         });
 
         // Handle full height dropdowns
-        if (KTUtil.isInResponsiveRange('desktop')) {
+        if (KTUtil.isInResponsiveRange('desktop')) {  
             var query = KTUtil.findAll(aside, '.kt-menu__item--submenu-fullheight .kt-menu__submenu > .kt-menu__wrapper');
-
             for (var i = 0, j = query.length; i < j; i++) {
                 var item = query[i];
 

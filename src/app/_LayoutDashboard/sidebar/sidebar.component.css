@@ -25,7 +25,7 @@ a.kt-menu__link svg {
 .kt-aside--minimize .kt-aside-menu .kt-menu__nav>.kt-menu__item>.kt-menu__link.active svg {
     fill: #ffffff !important;
 }
-a.kt-menu__link.kt-menu__toggle.active svg {
+a.kt-menu_link.kt-menu__toggle.active svg {
     fill: #fff;
 }
 li.kt-menu__item:hover a svg path {

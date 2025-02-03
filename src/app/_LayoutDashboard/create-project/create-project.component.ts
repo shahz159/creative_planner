@@ -286,17 +286,17 @@ if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true')
          this.heirarchical_owner=JSON.parse(res[0].owner_json);
          let owner_values=JSON.parse(res[0].owner_json);
          owner_values=owner_values.map(ob=>({...ob,type:'Hierarchical'}));
-         const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo.trim()];
+         const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo];
          let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob.Emp_No));
          otherusers=otherusers.map(ob=>({EmpNo:ob.Emp_No, EmpName:ob.Emp_Name, type:'Others'}));
          this.owner_json=[...owner_values,...otherusers];
 
 
-          this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
-          this.PrjResp=this.Responsible_json[0].ResponsibleNo.trim();
-          this.PrjAuth=this.Responsible_json[0].ResponsibleNo.trim();
-          this.PrjCrdtr=this.Team_json[0].CoordinatorNo.trim();
-          this.PrjInformer=this.Team_json[0].InformerNo.trim();
+          this.PrjOwner=this.Responsible_json[0].OwnerEmpNo;
+          this.PrjResp=this.Responsible_json[0].ResponsibleNo;
+          this.PrjAuth=this.Responsible_json[0].ResponsibleNo;
+          this.PrjCrdtr=this.Team_json[0].CoordinatorNo;
+          this.PrjInformer=this.Team_json[0].InformerNo;
           this.SubmissionType=JSON.parse(res[0].SubmissionType);  console.log('submission type values:',this.SubmissionType);
           const defaultvalue=this.allUser_json.find((item)=>{
                return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
@@ -462,7 +462,7 @@ if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true')
       console.log(this.projectInfo, "projectInfo");
    })
 
-  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.PrjCode).subscribe(
+  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.PrjCode,this.Current_user_ID).subscribe(
     (data) => {
       this.owner_dropdown = (JSON.parse(data[0]['RacisList']));
       this.responsible_dropdown = (JSON.parse(data[0]['responsible_dropdown']));  console.log("this 3:",this.responsible_dropdown);
@@ -665,7 +665,7 @@ debugger
            Coordinator:this.PrjCrdtr,
            Informer:this.PrjInformer,
            Auditor:this.PrjAuditor,
-           Support:this.PrjSupport.map(item=>+item.Emp_No.trim()).join(','),
+           Support:this.PrjSupport.map(item=>+item.Emp_No).join(','),
            SubmissionType:['003','008'].includes(this.Prjtype)?this.prjsubmission:'0',
            // Duration:['001','002','011'].includes(this.Prjtype)?this._allocated:'0',
            Duration:['001','002','011'].includes(this.Prjtype)?(this.Allocated_Hours ?this.Allocated_Hours:'0'):'0',
@@ -696,7 +696,7 @@ debugger
      this.ProjectDto.portfolioids=this.ngDropdwonPort.map(item=>item.Portfolio_ID).join(',');
      console.log(this.ProjectDto,"dto")
      //1. creating project
-     this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
+     this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{   debugger
 
            console.log("res after project creation:",res);
 
@@ -1225,7 +1225,7 @@ isPrjSprtDrpDwnOpen:boolean=false;
 // responsible field start
 onResponsibleChanged(){
   if(this.PrjResp){
-    if(this.PrjResp.trim()===this.PrjOwner.trim())
+    if(this.PrjResp===this.PrjOwner)
     {
       const selectedowr=this.owner_json.find((item)=>item.EmpNo===this.PrjOwner);
       const newowr=this.owner_json[this.owner_json.indexOf(selectedowr)+1];
@@ -1257,7 +1257,7 @@ onResponsibleChanged(){
 
 onProjectOwnerChanged(){
   if(this.PrjOwner){
-      if(this.PrjOwner.trim()===this.PrjResp.trim()){
+      if(this.PrjOwner===this.PrjResp){
       this.PrjResp=this.Responsible_json[0].ResponsibleNo;
       this.onResponsibleChanged();
       }
@@ -1914,7 +1914,7 @@ detectMembersWithoutActions(){
   else{
     _hasNoActionMembers=this.totalPeopleOnProject.filter(ob=>ob.Emp_No!=ownerObj.Emp_No);
   }
-  _hasNoActionMembers=_hasNoActionMembers.map(ob=>(ob.RACIS.slice(0,ob.RACIS.indexOf('('))).trim() );
+  _hasNoActionMembers=_hasNoActionMembers.map(ob=>(ob.RACIS.slice(0,ob.RACIS.indexOf('('))));
   this.hasNoActionMembers=Array.from(new Set(_hasNoActionMembers));
 }
 
@@ -1926,7 +1926,7 @@ detectMembersWithoutActions(){
 
 
 sendApproval=async()=>{
-
+debugger
   const _sendApprovalToOwner=()=>{
 
     this.ProjectDto.Emp_No=this.Current_user_ID;
@@ -1935,7 +1935,7 @@ sendApproval=async()=>{
     this.ProjectDto.file = this.fileAttachment
     this.ProjectDto.Remarks=this._remarks;
     this.ProjectDto.Project_Cost=this.PrjCost;
-    this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
+    this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{  debugger
       if(res&&res.message==='Success'){
             this.notification.showSuccess("Project sent to project owner "+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for approval',"Success");
             this.BsService.ConfirmBeforeRoute.emit(null);
@@ -2644,8 +2644,8 @@ reset(){
       return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
     });
    this.PrjSupport=defaultvalue?[defaultvalue]:[];
-   this.PrjCrdtr=this.Team_json[0].CoordinatorNo.trim();
-   this.PrjInformer=this.Team_json[0].InformerNo.trim();
+   this.PrjCrdtr=this.Team_json[0].CoordinatorNo;
+   this.PrjInformer=this.Team_json[0].InformerNo;
   }
   else{
       this.PrjSupport=[];

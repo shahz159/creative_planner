@@ -1499,8 +1499,6 @@ export class DashboardComponent implements OnInit {
     this.closeevearea();
 
 
-
-
   } 
   // else if (result.isDismissed) {
     // Skip all when Cancel is clicked
@@ -1528,8 +1526,8 @@ export class DashboardComponent implements OnInit {
     this.Schedule_ID = this._calenderDto.Schedule_ID;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
-        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
 
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
         this.Startts = (this.EventScheduledjson[0]['St_Time']);
@@ -1640,7 +1638,7 @@ export class DashboardComponent implements OnInit {
           },0);
           // this code for chnage detection End
 
-debugger
+
         // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
         if ((this.EventScheduledjson[0]['Onlinelink']) == true) {
           document.getElementById("Descrip_Name12").style.display = "flex";
@@ -2022,7 +2020,7 @@ isValidURL = true;
         + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       this.EventNumber = timestamp;
     }
-    debugger
+  
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -2356,7 +2354,7 @@ isValidURL = true;
         console.log("Start", `${key} : ${value}, = ${typeof value}` ,"End");
       });
 
-
+      console.log(this._calenderDto,'new copy meeting')
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
 
@@ -2432,6 +2430,8 @@ isValidURL = true;
           this.Title_Name = null;
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
+          this.agendaInput=undefined;
+          this.agendacharacterCount =  null;
           this.MasterCode = null;
           this.projectsSelected = [];
           this.Subtask = null;
@@ -2548,7 +2548,7 @@ isValidURL = true;
       const d2 = new Date(moment(end).format(format2));
       const date = new Date(d1.getTime());
 
-  
+   
      
       this.daysSelectedII = [];
 
@@ -2693,7 +2693,7 @@ isValidURL = true;
        //new code Monthly end
      
       }
-     
+
       this.daysSelectedII = this.daysSelectedII.filter(
         (value, index, self) => index === self.findIndex(obj => JSON.stringify(obj) === JSON.stringify(value))
       );
@@ -2794,7 +2794,7 @@ isValidURL = true;
           if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
             this._onlinelink =false
           }
-debugger
+
           var vOnlinelink = "Onlinelink";
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
           if(this.rapeatLink_Details==true){
@@ -2956,7 +2956,7 @@ debugger
         console.log(this._calenderDto,'new updaet data') 
         this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
           (data => {
-            
+          
             // alert(data['Schedule_date'])
             this.Attamentdraftid= data['draftid']
            frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
@@ -3035,6 +3035,8 @@ debugger
             this.RemovedAttach = [];
             this.ngEmployeeDropdown = null;
             this.Description_Type = null;
+            this.agendaInput=undefined;
+            this.agendacharacterCount =  null;
             this.MasterCode = null;
             this.projectsSelected = [];
             this.Subtask = null;
@@ -3459,7 +3461,7 @@ debugger
   }
 
   selectedDay(days) {
-debugger
+
     //Checked the day
     let objIndex = this.dayArr1.findIndex((obj => obj.value == days.target.value));
     this.dayArr1[objIndex].checked = days.target.checked;
@@ -3473,23 +3475,14 @@ debugger
 
 
   selectStartDate(event) {
-debugger
+
     this._StartDate = event;
     let sd = event.format("YYYY-MM-DD").toString();
     this._SEndDate = event.format("YYYY-MM-DD").toString();
     this.minDate = sd;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Scheduled_date = sd;
-    // this.CalenderService.NewGetPendingAvailability(this._calenderDto).subscribe((data)=>{
-    //   if(data['message']=='1'){
-    //     this.pendingavailability==false;
-    //   }
-    //   else{
-    //     this.pendingavailability==true;
-    //   }
-    // });
-
-  
+ 
     var start = moment(this.minDate);
     var end = moment(this.maxDate);
     const format2 = "YYYY-MM-DD";
@@ -3577,7 +3570,7 @@ debugger
 ////test start ///////////////////////////////////////////
 
 if((this.editTask || this.create ) && this.selectedrecuvalue =='2'){
-  debugger
+
 // uncheck prev date.
 if(this._Oldstart_date){
   let d=new Date(this._Oldstart_date);
@@ -3593,7 +3586,7 @@ this.dayArr.forEach(item => item.checked = false);
   let d2=new Date(this._StartDate);
   const index2=d2.getDay();
   this.dayArr[index2].checked=true;
-
+  debugger
 console.log(this.dayArr,'sdcsadcasdcssad')
 
   this.mtgOnDays=[];
@@ -3637,7 +3630,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
 
   // old
 //   selectStartDate(event) {
-// debugger
+
 //     this._StartDate = event.value;
 //     let sd = event.value.format("YYYY-MM-DD").toString();
 //     this._SEndDate = event.value.format("YYYY-MM-DD").toString();
@@ -3944,7 +3937,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
         const result=t>=ct;
         return result;
       });
-      debugger
+   
       this.validStartTimearr=this.StartTimearr.slice(index);
 
 
@@ -4047,7 +4040,7 @@ currentTime:any;
       this.Endtms = vahr.toString() + ':' + mins;
       // alert(this.Startts)
       // alert(this.Endtms)
-debugger
+
       if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
         //  alert(this.scstartdate)
@@ -4481,7 +4474,7 @@ debugger
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
         this.loading = false;
-debugger
+
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         var Schedule_date =this.EventScheduledjson[0].Schedule_date
         this.meetingRestriction(Schedule_date);
@@ -4523,7 +4516,7 @@ debugger
         // this.Meeting_password=  details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
         // console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
  
-
+debugger
         // document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
      
@@ -4559,7 +4552,7 @@ debugger
         }
         else {
           document.getElementById("hiddenedit").style.display = "none";
-           document.getElementById("deleteendit").style.display = "flex";
+           document.getElementById("deleteendit").style.display = this.Meeting_status==true?'none':'flex';
           document.getElementById("main-foot").style.display = "none";
           // document.getElementById("copy_data").style.display = "none";
           // document.getElementById("copy_data1").style.display = "none";
@@ -5932,12 +5925,9 @@ debugger
     this._calenderDto.loc_status = this._onlinelink;
     this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password;
     this._calenderDto.Link_details=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
-
     this._calenderDto.Recurrence = this.selectedrecuvalue ;
     this._calenderDto.Rec_values = _arraytext.toString();
     this._calenderDto.Rec_EndDate = this._EndDate;
-
-
 
     this._calenderDto.Note = this.Description_Type;
     this._calenderDto.Schedule_type = this.ScheduleType == "Task" ? 1 : 2;
@@ -5951,10 +5941,10 @@ debugger
     }
     this._calenderDto.Project_Code = this.MasterCode.toString();
 
-
+debugger
     let _attachmentValue = 0;
     const frmData = new FormData();
-    debugger
+
 
     if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
       frmData.append("Attachment", "true");
@@ -5964,62 +5954,62 @@ debugger
         frmData.append("files", this._lstMultipleFiales[i].Files);
       }
       const xmlDoc = document.implementation.createDocument('', '', null);
-const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+      const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
 
-// Iterate over the file groups
-this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
-console.log(`Processing group ${groupIndex}:`, fileGroup);
+      // Iterate over the file groups
+      this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+      console.log(`Processing group ${groupIndex}:`, fileGroup);
 
-// Normalize Files to an array
-const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+      // Normalize Files to an array
+      const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
 
-files.forEach((file, fileIndex) => {
-  if (!file || !file.name || !file.type) {
-    console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
-    return;
-  }
+      files.forEach((file, fileIndex) => {
+        if (!file || !file.name || !file.type) {
+          console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+          return;
+        }
 
-  console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+        console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
 
-  const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
-  const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
-  const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
-  const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+        const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+        const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+        const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+        const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
 
-  // Populate <FileName> element
-  nameElement.textContent = file.name;
+        // Populate <FileName> element
+        nameElement.textContent = file.name;
 
-  // Generate a random ID and sanitize the file name for CloudName
-  const randomId = this.generateRandomId();
-  const sanitizedFileName = this.sanitizeFileName(file.name);
-  cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
+        // Generate a random ID and sanitize the file name for CloudName
+        const randomId = this.generateRandomId();
+        const sanitizedFileName = this.sanitizeFileName(file.name);
+        cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
 
-  // Populate <ContentType> element
-  const contentType = this.getContentType(file.type);
-  contentTypeElement.textContent = contentType;
+        // Populate <ContentType> element
+        const contentType = this.getContentType(file.type);
+        contentTypeElement.textContent = contentType;
 
-  // Append child elements to the <Row>
-  rowElement.appendChild(nameElement);
-  rowElement.appendChild(cloudNameElement);
-  rowElement.appendChild(contentTypeElement);
+        // Append child elements to the <Row>
+        rowElement.appendChild(nameElement);
+        rowElement.appendChild(cloudNameElement);
+        rowElement.appendChild(contentTypeElement);
 
-  // Append the <Row> to the root element
-  parentElement.appendChild(rowElement);
-});
-});
+        // Append the <Row> to the root element
+        parentElement.appendChild(rowElement);
+      });
+      });
 
-// Append the root <MultiDocument> element to the XML document
-xmlDoc.appendChild(parentElement);
+      // Append the root <MultiDocument> element to the XML document
+      xmlDoc.appendChild(parentElement);
 
-// Serialize the XML document to a string
-const serializer = new XMLSerializer();
-const xmlString = serializer.serializeToString(xmlDoc);
+      // Serialize the XML document to a string
+      const serializer = new XMLSerializer();
+      const xmlString = serializer.serializeToString(xmlDoc);
 
-// Append the XML string to FormData
-frmData.append("docs_multiple_xml", xmlString);
+      // Append the XML string to FormData
+      frmData.append("docs_multiple_xml", xmlString);
 
-// Log the XML string for debugging
-console.log("Generated XML:", xmlString);
+      // Log the XML string for debugging
+      console.log("Generated XML:", xmlString);
 
     } 
     else {
@@ -6165,7 +6155,7 @@ console.log("Generated XML:", xmlString);
       this.MasterCode.push(parseInt(element.stringval));
     });
 
-debugger
+
     this.Link_Details= this.draft_arry[0].Link_details;
     if(this.Link_Details != '' && this.Link_Details != undefined ){
       if(!this.Link_Details.includes('<a href=')){
@@ -6385,6 +6375,8 @@ debugger
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.agendaInput=undefined;
+    this.agendacharacterCount =  null;
     this.characterCount=null;
     this.SelectDms = null;
     this.MasterCode = null;
@@ -6469,6 +6461,8 @@ debugger
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.agendaInput=undefined;
+    this.agendacharacterCount =  null;
     this.SelectDms = null;
     this.MasterCode = null;
     this.projectsSelected = [];
@@ -6880,11 +6874,28 @@ debugger
 
   // bar graph
   // agenda in event creation start
+
+
+
+  agendacharacterCount:any;
+
+  AgendaCharacterCount(): void {
+    var count =this.agendaInput;
+    if(count){
+      this.agendacharacterCount = count.length;
+    }else{
+      this.agendacharacterCount =  null;
+    }
+  }
+
+
+
+
   agendaInput: string | undefined;
   allAgendas: any = [];
   agendasAdded: number = 0;
   addAgenda() {
-    if (this.agendaInput.trim().length > 0 && this.agendaInput.trim().length < 100) {
+    if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101) {
       this.agendasAdded += 1;
       const agenda = {
         index: this.agendasAdded,
@@ -6893,7 +6904,7 @@ debugger
       this.allAgendas.push(agenda);
       this.agendaInput = undefined;
     }
-
+    this.agendacharacterCount =  null;
     console.log("allAgendas:", this.allAgendas);
   }
 
@@ -7387,7 +7398,7 @@ discardChoosedItem(listtype:'PROJECT'|'PORTFOLIO'|'DMS'|'PARTICIPANT',item:strin
             this.projectsSelected.splice(i,1);
      };break;
      case 'PORTFOLIO':{
-      debugger
+     
           const i=this.Portfolio.findIndex(ptf=>ptf==item);
           this.Portfolio.splice(i,1);
 
@@ -7490,7 +7501,7 @@ onPortfolioFilter(){
 }
 
 onDMSFilter(){
-debugger
+
      const _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
       const fresult=this.Memos_List.filter((_memo:any)=>{
 

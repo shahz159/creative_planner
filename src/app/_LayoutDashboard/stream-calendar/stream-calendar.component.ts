@@ -16,6 +16,7 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
+import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 
 
 declare var $: any;
@@ -221,7 +222,8 @@ export class StreamCalendarComponent implements OnInit {
     public _LinkService: LinkService, 
     public dateAdapter: DateAdapter<Date>,
     public datepipe: DatePipe,
-    public approvalservice: ApprovalsService
+    public approvalservice: ApprovalsService,
+    public service: ProjectTypeService,
   ) { 
     this._lstMultipleFiales = [];
     this._calenderDto = new CalenderDTO;
@@ -233,6 +235,7 @@ export class StreamCalendarComponent implements OnInit {
 
 
   onKeyPress() {
+    debugger
     // Check if the input field is empty
     if (this.agendaInput===undefined||this.agendaInput.trim() === '') {
       // If input field is empty, remove the class
@@ -246,7 +249,7 @@ export class StreamCalendarComponent implements OnInit {
 
 
   ngOnInit(): void {
-    
+ 
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.initAutosize();
     this.initFirstclass();
@@ -267,7 +270,7 @@ export class StreamCalendarComponent implements OnInit {
     });
     this.loadingDMS = false;
     this.GetScheduledJson();
-
+    this.getDayReportSummary();
 
     this.calendarOptions = {
       initialView: 'listWeek',
@@ -326,6 +329,7 @@ export class StreamCalendarComponent implements OnInit {
      this.GetPending_Request();
      this.Getdraft_datalistmeeting(); 
      this.getMeetingApprovals();
+     this.BookmarkMeetingsList();
   }
 
 
@@ -491,45 +495,48 @@ export class StreamCalendarComponent implements OnInit {
   }
   change_event(){
     this.createTaskEvent=true;
-    document.getElementById("event-title").style.display = "block";
-    document.getElementById("Copy-title").style.display = "none";
-    document.getElementById("Repeat-title").style.display = "none";
-    document.getElementById("Edit-title").style.display = "none";
-    document.getElementById("task-title").style.display = "none";
+    // document.getElementById("event-title").style.display = "block";
+    // document.getElementById("Copy-title").style.display = "none";
+    // document.getElementById("Repeat-title").style.display = "none";
+    // document.getElementById("Edit-title").style.display = "none";
+    // document.getElementById("task-title").style.display = "none";
     document.getElementById("nav-event").style.display = "block";
     document.getElementById("nav-task").style.display = "none";
     document.getElementById("create-event-div").style.display = "block";
     document.getElementById("create-task-div").style.display = "none";
-    // document.getElementById("create-event-badge").classList.add("active");
-    // document.getElementById("create-task-badge").classList.remove("active");
+    // $("#create-task-badge").removeClass("active");
+    // $("#create-event-badge").addClass("active");
+   
   }
   change_task(){
     this.createTaskEvent=true;
-    document.getElementById("event-title").style.display = "none";
-    document.getElementById("Copy-title").style.display = "none";
-    document.getElementById("Repeat-title").style.display = "none";
-    document.getElementById("Edit-title").style.display = "none";
-    document.getElementById("task-title").style.display = "block";
+    // document.getElementById("event-title").style.display = "none";
+    // document.getElementById("Copy-title").style.display = "none";
+    // document.getElementById("Repeat-title").style.display = "none";
+    // document.getElementById("Edit-title").style.display = "none";
+    // document.getElementById("task-title").style.display = "block";
     document.getElementById("nav-event").style.display = "none";
     document.getElementById("nav-task").style.display = "block";
     document.getElementById("create-event-div").style.display = "none";
     document.getElementById("create-task-div").style.display = "block";
-    // document.getElementById("create-event-badge").classList.remove("active");
-    // document.getElementById("create-task-badge").classList.add("active");
+    // $("#create-event-badge").removeClass("active");
+    // $("#create-task-badge").addClass("active");
   }
   createEventonlyTaskModal(){
+    // $("#create-event-badge").removeClass("active");
+    // $("#create-task-badge").addClass("active");
     this.createTaskEvent=true;
-    document.getElementById("event-title").style.display = "none";
-    document.getElementById("Copy-title").style.display = "none";
-    document.getElementById("Repeat-title").style.display = "none";
-    document.getElementById("Edit-title").style.display = "none";
-    document.getElementById("task-title").style.display = "block";
+    // document.getElementById("event-title").style.display = "none";
+    // document.getElementById("Copy-title").style.display = "none";
+    // document.getElementById("Repeat-title").style.display = "none";
+    // document.getElementById("Edit-title").style.display = "none";
+    // document.getElementById("task-title").style.display = "block";
+    this.draftid = 0;
     document.getElementById("nav-event").style.display = "none";
     document.getElementById("nav-task").style.display = "block";
     document.getElementById("create-event-div").style.display = "none";
     document.getElementById("create-task-div").style.display = "block";
-    document.getElementById("create-event-badge").classList.remove("active");
-    document.getElementById("create-task-badge").classList.add("active");
+ 
   }
   customEventModal(Schedule_Type){
     if(Schedule_Type==1){
@@ -563,6 +570,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("customTaskModalBackdrop").classList.remove("show");
   }
   eventtaskitemtimeModal(){
+    debugger
     document.getElementById("eventtaskitemtimeModal").style.display = "block";
     document.getElementById("eventtaskitemtimeModal").classList.add("show");
     document.getElementById("eventtaskitemtimeModalBackdrop").style.display = "block";
@@ -572,7 +580,7 @@ export class StreamCalendarComponent implements OnInit {
     this.dayArr1=JSON.parse(JSON.stringify(this.dayArr)); // deep copying all content
     this.MonthArr1=JSON.parse(JSON.stringify(this.MonthArr)); // deep copying all content
     this._EndDate1=moment(this._EndDate);
-debugger
+
     if(this.selectedrecuvalue1=='2')
       document.getElementById("weekly_121_new").style.display = "block";
     else if(this.selectedrecuvalue1=='3')
@@ -595,7 +603,7 @@ debugger
     document.getElementById("weekly_121_new").style.display = "none";
     document.getElementById("Monthly_121_new").style.display = "none";
 
-
+    this.changeSelectionValue=false;
     this.selectedrecuvalue1='0';
     this.dayArr1=[];
     this.MonthArr1=[];
@@ -615,7 +623,9 @@ debugger
     document.getElementById("createEventTaskModalBackdrop").style.display = "none";
     document.getElementById("createEventTaskModalBackdrop").classList.remove("show");
 
-    this.Link_Details==null;
+    this.Link_Details = null;
+    this.Meeting_Id = null;
+    this.Meeting_password = null;
     this.RecurrValue= false;
     this.RecurrValueMonthly=false;
     this.Attachment12_ary = [];
@@ -628,6 +638,7 @@ debugger
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.agendaInput=undefined;
     this.SelectDms = null;
     this.MasterCode = null;
     this.projectsSelected = [];
@@ -643,7 +654,8 @@ debugger
     this.rapeatLink_Details=true;
     this.Description_Type = null;
     this.characterCount=null;
-
+    this.agendacharacterCount=null;
+    this.switChRecurrenceValue=false;
   }
   // propose_date_time_open() {
   //   document.getElementById("propose-date-time-div").classList.toggle("open");
@@ -659,6 +671,7 @@ debugger
   }
 
   Repeat_date_time_menu() {
+    debugger
     document.getElementById("repeat-date-time-menu").classList.add("show");
   }
 
@@ -702,10 +715,13 @@ debugger
   }
   bookmark_list_open(){
     document.getElementById("bookmark-list").classList.add("quickaction-open");
+    this.BookmarkMeetingsList();
   }
   bookmark_list_close(){
     document.getElementById("bookmark-list").classList.remove("quickaction-open");
   }
+
+
 /////////////////////////////////////////// Create Event and Create Task sidebar start /////////////////////////////////////////////////////////
 
 
@@ -898,6 +914,7 @@ activeDraftMeeting:any;
 SearchOfDraftItem: any;
 activePendingMeeting:any;
 draft_arry: any = [];
+showLoader:boolean = false;
 
 
 
@@ -915,7 +932,6 @@ LastLengthValidation11() {
 
 
 updateCharacterCount(): void {
-
   // Create a temporary div element to strip out HTML tags
   const tempElement = document.createElement('div');
   tempElement.innerHTML = this.Description_Type;
@@ -924,8 +940,21 @@ updateCharacterCount(): void {
 }
 
 
+agendacharacterCount:any;
+
+AgendaCharacterCount(): void {
+  var count =this.agendaInput;
+  if(count){
+    this.agendacharacterCount = count.length;
+  }else{
+    this.agendacharacterCount =  null;
+  }
+  
+}
+
+
 addAgenda() {
-  if (this.agendaInput && this.agendaInput.trim().length > 0 && this.agendaInput.trim().length < 100) {
+  if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101) {
     this.agendasAdded += 1;
     const agenda = {
       index: this.agendasAdded,
@@ -934,7 +963,7 @@ addAgenda() {
     this.allAgendas.push(agenda);
     this.agendaInput = undefined;
   }
-
+  this.agendacharacterCount =  null;
   console.log("allAgendas:", this.allAgendas);
 }
 
@@ -1132,11 +1161,10 @@ Task_type(value) {
   document.getElementById("createEventTaskModal").classList.add("show");
   document.getElementById("createEventTaskModalBackdrop").style.display = "block";
   document.getElementById("createEventTaskModalBackdrop").classList.add("show");
-  document.getElementById("Edit-title").style.display = "none";
-  document.getElementById("Copy-title").style.display = "none";
-  document.getElementById("Repeat-title").style.display = "none";
+  // document.getElementById("Edit-title").style.display = "none";
+  // document.getElementById("Copy-title").style.display = "none";
+  // document.getElementById("Repeat-title").style.display = "none";
  
-  
 
   // document.getElementById("div_recurrence").style.display = "block";
   document.getElementById("weekly_121_new").style.display = "none";
@@ -1164,13 +1192,14 @@ Task_type(value) {
   this.currentTime=moment().format('h:mm A');
 
   if (value == 1) {
-    
+    this.change_task();
     this.ScheduleType = "Task";
     this.GetProjectAndsubtashDrpforCalender();
   }
   else {
     this.createTaskEvent=true;
-    document.getElementById("event-title").style.display = "block";
+    // document.getElementById("event-title").style.display = "block";
+    this.change_event();
     this.ScheduleType = "Event";
     this._calenderDto.Emp_No = this.Current_user_ID;
     this._calenderDto.Project_Code = null;
@@ -1406,7 +1435,7 @@ onDMSFilter(){
 
 onParticipantFilter(){
   const fresult=this._EmployeeListForDropdown.filter((_emp:any)=>{
-     const isEmpIn:boolean=(!this.basedOnFilter.bycompany)||_emp.Emp_Comp_No.trim()===this.basedOnFilter.bycompany;
+     const isEmpIn:boolean=(!this.basedOnFilter.bycompany)||_emp.Emp_Comp_No===this.basedOnFilter.bycompany;
      let includeEmp:boolean=false;
      if(isEmpIn)
      includeEmp=!(this.ngEmployeeDropdown&&this.ngEmployeeDropdown.includes(_emp.Emp_No));
@@ -1467,6 +1496,8 @@ clearallfields() {
   this.Title_Name = null;
   this.ngEmployeeDropdown = null;
   this.Description_Type = null;
+  this.agendaInput=undefined;
+  this.agendacharacterCount =  null;
   this.SelectDms = null;
   this.MasterCode = null;
   this.projectsSelected = [];
@@ -1794,7 +1825,7 @@ checkAddressURL(str) {
   }
 
 
-
+  changeSelectionValue:boolean=false;
 
 
   selectStartDate(event) {
@@ -1890,7 +1921,7 @@ checkAddressURL(str) {
 
 
     if((this.editTask || this.create ) && this.selectedrecuvalue =='2'){
-      debugger
+ 
     // uncheck prev date.
     if(this._Oldstart_date){
       let d=new Date(this._Oldstart_date);
@@ -1908,7 +1939,8 @@ checkAddressURL(str) {
       this.dayArr[index2].checked=true;
     
     console.log(this.dayArr,'sdcsadcasdcssad')
-    
+    this.changeSelectionValue=true;
+     
       this.mtgOnDays=[];
       this.dayArr.forEach((item:any)=>{
         if(item.checked){
@@ -1934,7 +1966,8 @@ checkAddressURL(str) {
         let d2=new Date(this._StartDate);
         const index2=d2.getDate();
         this.MonthArr[index2-1].checked=true;
-    
+
+        this.changeSelectionValue=true;
         this.mtgOnDays=[];
         this.MonthArr.forEach((item:any)=>{
           if(item.checked){
@@ -1945,18 +1978,6 @@ checkAddressURL(str) {
         });
         // update new
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
   }
 
@@ -2125,7 +2146,7 @@ onRecurrenceTypeChange(val:any){
 //     return;
 //   }
   
-//   debugger
+
 //   this.selectedrecuvalue=this.selectedrecuvalue1;
 //   this.dayArr=[...this.dayArr1];
 //   this.MonthArr=[...this.MonthArr1];
@@ -2209,6 +2230,9 @@ onRecurrenceTypeChange(val:any){
 
 bindCustomRecurrenceValues(){
 
+  if(this.changeSelectionValue==false){
+
+  
 
 if(this.selectedrecuvalue1=='2'&&!this.dayArr1.some((item)=>item.checked)){
   this.notProvided1='dayarr1';
@@ -2304,20 +2328,15 @@ if(this._EndDate1 == undefined){
   }
 }
 
-
-
-
-
+}
 
 this.eventtaskitemtimeModal_dismiss();
    //inserting values into these selectedrecuvalue, dayArr, MonthArr, _EndDate.
-
-
 }
 
 
   selectedDay(days) {
-
+debugger
     //Checked the day
     let objIndex = this.dayArr1.findIndex((obj => obj.value == days.target.value));
     this.dayArr1[objIndex].checked = days.target.checked;
@@ -2544,7 +2563,7 @@ this.eventtaskitemtimeModal_dismiss();
         + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       this.EventNumber = timestamp;
     }
-    debugger
+   
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -2952,6 +2971,8 @@ this.eventtaskitemtimeModal_dismiss();
           this.Title_Name = null;
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
+          this.agendaInput=undefined;
+          this.agendacharacterCount =  null;
           this.MasterCode = null;
           this.projectsSelected = [];
           this.Subtask = null;
@@ -3112,7 +3133,7 @@ this.eventtaskitemtimeModal_dismiss();
 
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
 
-        console.log(data,'Scheduledjson')
+        console.log(this.Scheduledjson,'Scheduledjson')
         this.loadingDMS = true;
         this.Scheduledjson = this.Scheduledjson
         .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
@@ -3161,46 +3182,61 @@ this.eventtaskitemtimeModal_dismiss();
       });
   }
 
-
+  isCalendarVisible: boolean = false;
 
 getEventsForWeeks(weeksFromToday: number) {
 
-// precoius and upcoming meeting functionality 
+  debugger
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // Reset today's time to midnight
+  today.setHours(0, 0, 0, 0); 
 
-  // Check if the "Today" button is clicked (i.e., weeksFromToday is 3)
+ 
   if (weeksFromToday === 3) {
-    // Reset control: clear clickHistory and set currentWeekOffset to 0
+   
     this.clickHistory = [];
     this.currentWeekOffset = 0;
   } else {
-    // Calculate the new offset
+
     const newOffset = this.currentWeekOffset + weeksFromToday;
 
-    // Handle click history for backward/forward navigation
+   
     if (weeksFromToday < 0) {
       this.clickHistory.push(weeksFromToday);
     } else if (weeksFromToday > 0 && this.clickHistory.length > 0) {
       this.clickHistory.pop();
     }
 
-    // Update the current week offset
+  
     this.currentWeekOffset = newOffset;
   }
 
-  // First and last date for the 7-day range
-  this.firstDate = new Date(today);
-  this.firstDate.setDate(today.getDate() + (this.currentWeekOffset * 7));
+
+if(this.noSelectedDate == true && weeksFromToday === 0  && this.selectDay){
+  var formattedDate = this.selectDay.toDate();
+  this.currentWeekOffset = 0 ;
+}else{
+  formattedDate = undefined;
+  this.isCalendarVisible = false;  
+  setTimeout(() => {
+    this.isCalendarVisible = true;  
+    this.selectDay = new Date();    
+  }, 0);
+}
+this.noSelectedDate = false;
+const startDate = formattedDate || today;
+
+  
+  this.firstDate = new Date(startDate);
+  this.firstDate.setDate(startDate.getDate() + (this.currentWeekOffset * 7));
 
   this.lastDates = new Date(this.firstDate);
-  this.lastDates.setDate(this.firstDate.getDate() + 6); // Last date is 7 days after the first date
+  this.lastDates.setDate(this.firstDate.getDate() + 6); 
 
   this.lastDate = new Date(this.firstDate);
   this.lastDate.setDate(this.firstDate.getDate() + 7);
 
 
-  // Existing filtering logic remains unchanged
+
   if(this.Searchingfunc==false){
     this.Calendarjson = this.Searchingjson;
   }else{
@@ -3212,37 +3248,36 @@ getEventsForWeeks(weeksFromToday: number) {
  
  
 
- // grouping data as date functionality
+
     this.groupedMeetingsArray = Object.entries(this.Calendarjson.reduce((acc, current) => {
-      const date = current.start.split(' ')[0]; // Extract the date portion only
+      const date = current.start.split(' ')[0]; 
       if (!acc[date]) {
-          acc[date] = []; // Initialize an array for each unique date
+          acc[date] = []; 
       }
-      acc[date].push(current); // Push the meeting into the respective date's group
+      acc[date].push(current);
       return acc;
   }, {})).map(([date, events]) => ({ date, events }));
 
 
-// getting count and link from meeting list
-  
+
       this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({
         ...day,
         events: day.events.map(event => {
             const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
-            const title = parts[0]; // The title before any pipes
+            const title = parts[0]; 
             const linkIndex = parts.findIndex(part => part.includes("Link"));
     
             let attendees = linkIndex > 1 ? parts.slice(1, linkIndex).map(s => s.trim()) : null;
     
-            // Always keep only the last attendee if there are multiple entries
+        
             if (attendees && attendees.length) {
-                attendees = [attendees[attendees.length - 1]]; // Keep only the last attendee
+                attendees = [attendees[attendees.length - 1]]; 
             }
     
-            // Increment the attendee count if it has a number in "+number" format
+        
             if (attendees && attendees[0]) {
                 const match = attendees[0].match(/\+(\d+)/);
-                attendees[0] = match ? `+${parseInt(match[1], 10) + 1}` : `+1`; // Increment or set to +1
+                attendees[0] = match ? `+${parseInt(match[1], 10) + 1}` : `+1`; 
             }
     
             const link = linkIndex !== -1 ? parts[linkIndex].split(' ')[0] : null;
@@ -3320,7 +3355,9 @@ filterMeetings(event: KeyboardEvent) {
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.agendaInput=undefined;
     this.characterCount=null;
+    this.agendacharacterCount=null;
     this.SelectDms = null;
     this.MasterCode = null;
     this.projectsSelected = [];
@@ -3387,20 +3424,25 @@ filterMeetings(event: KeyboardEvent) {
 
 
   changeScheduleType(val:number){
+
+    this.draftid = 0;
+
     if(val==1)
-    {  // Task
+    {  // Task   
+      this.change_task();
       this.ScheduleType = "Task";
       this.GetProjectAndsubtashDrpforCalender();
-      this.change_task();
+      
     }
     else if(val==2)
     {  // Event
+      this.change_event();
       this.ScheduleType = "Event";
       this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.Project_Code = null;
       this.GetProjectAndsubtashDrpforCalender();
       this.GetMemosByEmployeeId();
-      this.change_event();
+      
     }
     this.MasterCode=null; // whenever user switches task to event or viceversa remove all selected projects.
  }
@@ -3500,18 +3542,81 @@ Insert_indraft() {
 
   let _attachmentValue = 0;
   const frmData = new FormData();
-  for (var i = 0; i < this._lstMultipleFiales.length; i++) {
-    frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
-  }
-  if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0)
-    _attachmentValue = 1;
-  else
-    _attachmentValue = 0;
+  if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
+    frmData.append("Attachment", "true");
+    this._attachmentValue = 1;
 
+    for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+      frmData.append("files", this._lstMultipleFiales[i].Files);
+    }
+    const xmlDoc = document.implementation.createDocument('', '', null);
+      const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+
+      // Iterate over the file groups
+      this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+      console.log(`Processing group ${groupIndex}:`, fileGroup);
+
+      // Normalize Files to an array
+      const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+
+      files.forEach((file, fileIndex) => {
+      if (!file || !file.name || !file.type) {
+        console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+        return;
+      }
+
+      console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+
+      const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+      const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+      const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+      const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+
+      // Populate <FileName> element
+      nameElement.textContent = file.name;
+
+      // Generate a random ID and sanitize the file name for CloudName
+      const randomId = this.generateRandomId();
+      const sanitizedFileName = this.sanitizeFileName(file.name);
+      cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
+
+      // Populate <ContentType> element
+      const contentType = this.getContentType(file.type);
+      contentTypeElement.textContent = contentType;
+
+      // Append child elements to the <Row>
+      rowElement.appendChild(nameElement);
+      rowElement.appendChild(cloudNameElement);
+      rowElement.appendChild(contentTypeElement);
+
+      // Append the <Row> to the root element
+      parentElement.appendChild(rowElement);
+      });
+      });
+
+      // Append the root <MultiDocument> element to the XML document
+      xmlDoc.appendChild(parentElement);
+
+      // Serialize the XML document to a string
+      const serializer = new XMLSerializer();
+      const xmlString = serializer.serializeToString(xmlDoc);
+
+      // Append the XML string to FormData
+      frmData.append("docs_multiple_xml", xmlString);
+
+      // Log the XML string for debugging
+      console.log("Generated XML:", xmlString);
+
+        } 
+        else {
+          this._attachmentValue = 0;
+          frmData.append("Attachment", "false");
+        }
+        
     frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
     frmData.append("CreatedBy", this.Current_user_ID.toString());
     frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
- 
+    
     const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
     this._calenderDto.DraftAgendas=mtgAgendas;
  
@@ -3522,41 +3627,54 @@ Insert_indraft() {
     this.Attamentdraftid= data['draftid']
     frmData.append("draftid", this.Attamentdraftid);
 
-      if (_attachmentValue == 1) {
-        this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
-          (event: HttpEvent<any>) => {
-            switch (event.type) {
-              case HttpEventType.Sent:
-                console.log('Request has been made!');
-                break;
-              case HttpEventType.ResponseHeader:
-                console.log('Response header has been received!');
-                break;
-              case HttpEventType.UploadProgress:
-                this.progress = Math.round(event.loaded / event.total * 100);
-                console.log(`Uploaded! ${this.progress}%`);
-                break;
-              case HttpEventType.Response:
-                console.log('User successfully created!', event.body);
+    if (this._attachmentValue == 1) {
+      // this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
+        this.CalenderService.UploadCalendarAttachmenstCore(frmData).subscribe(
+        (event: HttpEvent<any>) => {
+          switch (event.type) {
+            case HttpEventType.Sent:
+              console.log('Request has been made!');
+              break;
+            case HttpEventType.ResponseHeader:
+              console.log('Response header has been received!');
+              break;
+            case HttpEventType.UploadProgress:
+              this.progress = Math.round(event.loaded / event.total * 100);
+              console.log(`Uploaded! ${this.progress}%`);
+              break;
+            case HttpEventType.Response:
+              console.log('User successfully created!', event.body);
+              var myJSON = JSON.stringify(event);
+              this._azureMessage = (JSON.parse(myJSON).body).message;
 
-                // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                
-                (<HTMLInputElement>document.getElementById("customFile")).value = "";
-                this._lstMultipleFiales = [];
-                // empty(this._lstMultipleFiales);
-                // alert(this._lstMultipleFiales.length);
-                setTimeout(() => {
-                  this.progress = 0;
-                }, 2000);
+              if(this._azureMessage=="1"){
+                this.CalenderService._AzureUploadCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
+                  console.log(event1,"azure data");
+                  var myJSON = JSON.stringify(event1);
+                //  this._Message = (JSON.parse(myJSON).body);
+      
+                });
+              }
 
-                //69 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
-                //69 (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
-                document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                //69 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
-            }
+              // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
+              
+
+              (<HTMLInputElement>document.getElementById("customFile")).value = "";
+              this._lstMultipleFiales = [];
+              // empty(this._lstMultipleFiales);
+              // alert(this._lstMultipleFiales.length);
+              setTimeout(() => {
+                this.progress = 0;
+              }, 2000);
+
+              //69 (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
+              //69 (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
+              document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+              //69 document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
           }
-        )
-      }
+        }
+      )
+    }
       this.isSubmitting = false;
       if (data['message'] == '1') {
         this.closeschd();        
@@ -3604,6 +3722,7 @@ Insert_indraft() {
 
 
 GetClickEventJSON_Calender(arg,meetingClassNeme) {
+  debugger
   this.meetingClassNemes=meetingClassNeme;
    this.EventScheduledjson = [];
   this.loading = true;
@@ -3623,6 +3742,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
       this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
       this.propose_date=Schedule_date;
       console.log(this.EventScheduledjson, "Testing12");
+      this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       this.Link_Detail = this.EventScheduledjson[0].Link_Details;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
       this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
@@ -3665,31 +3785,31 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
       if (result && result[0])
         this.Link_Detail = result[0].slice(6, result[0].length - 1);
 
-     
+     debugger
       //69 document.getElementById("deleteendit").style.display = "flex";
       if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
 
-        //69 document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
-      
+       document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
+       document.getElementById("deleteendit").style.display =this.Meeting_status==true?'none':'flex';
         document.getElementById("main-foot").style.display = "none";
       
       }
       else if ((this.Schedule_type1 == 'Event') && (this.Meeting_status==false) && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
 
-      //69  document.getElementById("hiddenedit").style.display = "none";
-        
+       document.getElementById("hiddenedit").style.display = "none";
+       document.getElementById("deleteendit").style.display = "none";
+       document.getElementById("main-foot").style.display = "flex";
 
-        document.getElementById("main-foot").style.display = "flex";
       }
       else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
-       //69  document.getElementById("hiddenedit").style.display = "flex";
-  
+        document.getElementById("hiddenedit").style.display = "flex";
+        document.getElementById("deleteendit").style.display = "flex";
        document.getElementById("main-foot").style.display = "none";
   
       }
       else {
-       //69  document.getElementById("hiddenedit").style.display = "none";
-       
+        document.getElementById("hiddenedit").style.display = "none";
+        document.getElementById("deleteendit").style.display =this.Meeting_status==true?'none':'flex';
         document.getElementById("main-foot").style.display = "none";
      
       }
@@ -3778,6 +3898,8 @@ OnCardClick(P_id: any) {
   var myWindow = window.open(myurl, P_id);
   myWindow.focus();
 }
+
+
 
 
 openUrl(memo_Url) {
@@ -3943,7 +4065,7 @@ sweet_pending() {
     showCancelButton: true,
     confirmButtonText: 'Yes',
     cancelButtonText: 'No'
-  }).then((response: any) => {
+  }).then((response: any) => { 
     if (response.value) {
       this.Pending_meeting();
     } else if (response.dismiss === Swal.DismissReason.cancel) {
@@ -4028,7 +4150,33 @@ AlldeleteSchedule() {
 
 
 
-DublicateTaskandEvent(val:number) {
+CopyMeetingandTask(value){
+
+  if(value==2){
+    Swal.fire({
+      title: `Copy meeting`,
+      text: `Are you sure you want to copy this meeting? It will be created as a new meeting with you as the organizer.`,
+      showCancelButton: true,
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.changeScheduleType(value);
+        this.DublicateTaskandEvent();
+      }
+    });
+  }else{
+    this.changeScheduleType(value);
+    this.DublicateTaskandEvent();
+  }
+
+
+}
+
+
+
+
+DublicateTaskandEvent() {
   this.createTaskEvent=false;
   document.getElementById("div_endDate_new").style.display = "none";
   // 69 document.getElementById("Schenddate").style.display = "none";
@@ -4054,12 +4202,7 @@ DublicateTaskandEvent(val:number) {
       this.Addressurl = this.EventScheduledjson[0]['Addressurl'];
       this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
 
-      if (this._FutureEventTasksCount > 0) {
-    
-      }
-      else if (this._FutureEventTasksCount == 0) {
-       
-      }
+     
       document.getElementById("div_recurrence").style.display = "block";
       document.getElementById("Monthly_121_new").style.display = "none";
       document.getElementById("weekly_121_new").style.display = "none";
@@ -4068,17 +4211,17 @@ DublicateTaskandEvent(val:number) {
       document.getElementById("createEventTaskModal").classList.add("show");
       document.getElementById("createEventTaskModalBackdrop").style.display = "block";
       document.getElementById("createEventTaskModalBackdrop").classList.add("show"); 
-      document.getElementById("event-title").style.display = "none"; 
-      document.getElementById("task-title").style.display = "none"; 
-      document.getElementById("Edit-title").style.display = "none";
-      document.getElementById("Repeat-title").style.display = "none";
-      if(val ==1){
-        document.getElementById("Copy-title").style.display = "none";
-        document.getElementById("Copy-task").style.display = "block";
-      }else{
-        document.getElementById("Copy-task").style.display = "none";
-        document.getElementById("Copy-title").style.display = "block";
-      }
+      // document.getElementById("event-title").style.display = "none"; 
+      // document.getElementById("task-title").style.display = "none"; 
+      // document.getElementById("Edit-title").style.display = "none";
+      // document.getElementById("Repeat-title").style.display = "none";
+      // if(val ==1){
+      //   // document.getElementById("Copy-title").style.display = "none";
+      //   document.getElementById("Copy-task").style.display = "block";
+      // }else{
+      //   document.getElementById("Copy-task").style.display = "none";
+      //   // document.getElementById("Copy-title").style.display = "block";
+      // }
      
       //69 document.getElementById("Location_Name").style.display = "none";
       
@@ -4109,13 +4252,13 @@ DublicateTaskandEvent(val:number) {
         this.MasterCode = (this.MasterCode[0].stringval);
 
         document.getElementById("subtaskid").style.display = "flex";
-        document.getElementById("Guest_Name").style.display = "none";
-        document.getElementById("Descrip_Name").style.display = "none";
-        document.getElementById("core_viw123").style.display = "flex";
-        document.getElementById("core_viw121").style.display = "none";
-        document.getElementById("core_viw222").style.display = "none";
-        document.getElementById("core_Dms").style.display = "none";   
-        document.getElementById("meeting-online-add").style.display = "none";
+        // document.getElementById("Guest_Name").style.display = "none";
+        // document.getElementById("Descrip_Name").style.display = "none";
+        // document.getElementById("core_viw123").style.display = "flex";
+        // document.getElementById("core_viw121").style.display = "none";
+        // document.getElementById("core_viw222").style.display = "none";
+        // document.getElementById("core_Dms").style.display = "none";   
+        // document.getElementById("meeting-online-add").style.display = "none";
 
       }
       else if (this.ScheduleType == 'Event') {
@@ -4165,24 +4308,45 @@ DublicateTaskandEvent(val:number) {
 
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
         this._meetingroom = this.Location_Type?true:false;
+
+        this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
+
+        if(this.Link_Details != ''){
+          if(!this.Link_Details.includes('<a href=')){
+            var details = this.Link_Details.split(', ')
+            this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+            this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+            this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined' || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+            console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
+          }
+          else if(this.Link_Details.includes('<a href=')){
+            this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
+            this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
+            this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
+          
+            console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details ss69');
+          }
+         }
+
+
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
         document.getElementById("subtaskid").style.display = "none";
         // document.getElementById("Guest_Name").style.display = "flex";
-        document.getElementById("Descrip_Name").style.display = "flex";
-        document.getElementById("core_viw121").style.display = "flex";
-        document.getElementById("core_viw123").style.display = "none";
-        document.getElementById("core_viw222").style.display = "flex";
-        document.getElementById("core_Dms").style.display = "flex";
-        document.getElementById("meeting-online-add").style.display = "flex";
+        // document.getElementById("Descrip_Name").style.display = "flex";
+        // document.getElementById("core_viw121").style.display = "flex";
+        // document.getElementById("core_viw123").style.display = "none";
+        // document.getElementById("core_viw222").style.display = "flex";
+        // document.getElementById("core_Dms").style.display = "flex";
+        // document.getElementById("meeting-online-add").style.display = "flex";
         //69 document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
 
-        const TEsb = document.getElementById('TaskEvent-Sidebar')
-        TEsb.addEventListener('scroll', () => {
-          this.autocompletes.forEach((ac) => {
-            if (ac.panelOpen)
-              ac.updatePosition();
-          });
-        })
+        // const TEsb = document.getElementById('TaskEvent-Sidebar')
+        // TEsb.addEventListener('scroll', () => {
+        //   this.autocompletes.forEach((ac) => {
+        //     if (ac.panelOpen)
+        //       ac.updatePosition();
+        //   });
+        // })
 
       }
 
@@ -4215,6 +4379,12 @@ DublicateTaskandEvent(val:number) {
     });
   this.customEventModal_dismiss();
   this.customTaskModal_dismiss()
+
+// else if (result.isDismissed) {
+  // Skip all when Cancel is clicked
+  // continue; // Skip this file
+// }
+
 }
 
 
@@ -4287,11 +4457,11 @@ debugger
       document.getElementById("createEventTaskModal").classList.add("show");
       document.getElementById("createEventTaskModalBackdrop").style.display = "block";
       document.getElementById("createEventTaskModalBackdrop").classList.add("show");  
-      document.getElementById("event-title").style.display = "none"; 
-      document.getElementById("task-title").style.display = "none"; 
-      document.getElementById("Copy-title").style.display = "none";
-      document.getElementById("Repeat-title").style.display = "none";
-      document.getElementById("Edit-title").style.display = "block";
+      // document.getElementById("event-title").style.display = "none"; 
+      // document.getElementById("task-title").style.display = "none"; 
+      // document.getElementById("Copy-title").style.display = "none";
+      // document.getElementById("Repeat-title").style.display = "none";
+      // document.getElementById("Edit-title").style.display = "block";
     
 
       this.AllDatesSDandED = [];
@@ -4431,6 +4601,8 @@ debugger
 
       }
 
+      this.previousValue=this.selectedrecuvalue;
+
       if (this.ScheduleType == 'Task') {
         this.EventScheduledjson[0]['Ed_Time']
         this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
@@ -4554,7 +4726,7 @@ RecurrValueMonthly:boolean=false;
       this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
       }
 
-
+debugger
     if (
       this.Title_Name &&
       this.Startts &&
@@ -4828,7 +5000,7 @@ RecurrValueMonthly:boolean=false;
           if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
             this._onlinelink =false
           }
-          debugger
+          
           var vOnlinelink = "Onlinelink";
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
           if(this.rapeatLink_Details==true){
@@ -5046,6 +5218,7 @@ RecurrValueMonthly:boolean=false;
             this.RemovedAttach = [];
             this.ngEmployeeDropdown = null;
             this.Description_Type = null;
+            this.agendaInput=undefined;
             this.MasterCode = null;
             this.projectsSelected = [];
             this.Subtask = null;
@@ -5348,11 +5521,15 @@ repeatEvent() {
       document.getElementById("createEventTaskModal").classList.add("show");
       document.getElementById("createEventTaskModalBackdrop").style.display = "block";
       document.getElementById("createEventTaskModalBackdrop").classList.add("show"); 
-      document.getElementById("event-title").style.display = "none"; 
-      document.getElementById("task-title").style.display = "none"; 
-      document.getElementById("Edit-title").style.display = "none";
-      document.getElementById("Copy-title").style.display = "none";
-      document.getElementById("Repeat-title").style.display = "block";
+      document.getElementById("nav-event").style.display = "block";
+      document.getElementById("nav-task").style.display = "none";
+      document.getElementById("create-event-div").style.display = "block";
+      document.getElementById("create-task-div").style.display = "none";
+      // document.getElementById("event-title").style.display = "none"; 
+      // document.getElementById("task-title").style.display = "none"; 
+      // document.getElementById("Edit-title").style.display = "none";
+      // document.getElementById("Copy-title").style.display = "none";
+      // document.getElementById("Repeat-title").style.display = "block";
       
 
 
@@ -5418,6 +5595,24 @@ repeatEvent() {
                }
         });
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
+        this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
+
+        if(this.Link_Details != ''){
+          if(!this.Link_Details.includes('<a href=')){
+            var details = this.Link_Details.split(', ')
+            this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
+            this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
+            this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined' || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
+            console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
+          }
+          else if(this.Link_Details.includes('<a href=')){
+            this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
+            this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
+            this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
+          
+            console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details 69');
+          }
+         }
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
         document.getElementById("subtaskid").style.display = "none";
         // document.getElementById("Guest_Name").style.display = "flex";
@@ -5793,6 +5988,24 @@ UpdateMeetingRequestAccess(SNo,Schedule_Id,Type){
 }
 
 
+
+
+onDraft_Delete(draftid) {
+
+  Swal.fire({
+    title: `Delete ${this.Schedule_type1}`,
+    text: `Are you sure you want to delete this ${this.Schedule_type1}? This action cannot be undone.`,
+    showConfirmButton: true,
+    showCancelButton: true
+  }).then(choice => {
+    if (choice.isConfirmed) { 
+      this.delete_draft(draftid);
+    }
+  });
+}
+
+
+
 delete_draft(draftid) {
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.draftid = draftid;
@@ -5804,6 +6017,8 @@ delete_draft(draftid) {
       }
     });
 }
+
+
 
 
 LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
@@ -5900,16 +6115,27 @@ filterPending(type: 'date' | 'meeting'): void {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
       
-        document.getElementById("customEventModal").style.display = "block";
-        document.getElementById("customEventModal").classList.add("show");
-        document.getElementById("customEventModalBackdrop").style.display = "block";
-        document.getElementById("customEventModalBackdrop").classList.add("show");
   
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Pending list popup box Testing ");
+        this.BookMarks = this.EventScheduledjson[0].IsBookMark;
         this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
         this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
         this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
+
+        if(this.Schedule_type1 == 'Event'){
+          document.getElementById("customEventModal").style.display = "block";
+          document.getElementById("customEventModal").classList.add("show");
+          document.getElementById("customEventModalBackdrop").style.display = "block";
+          document.getElementById("customEventModalBackdrop").classList.add("show");
+        }else if(this.Schedule_type1 == 'Task'){
+          document.getElementById("customTaskModal").style.display = "block";
+          document.getElementById("customTaskModal").classList.add("show");
+          document.getElementById("customTaskModalBackdrop").style.display = "block";
+          document.getElementById("customTaskModalBackdrop").classList.add("show");
+        }
+       
+
         this.Status1 = this.EventScheduledjson[0].Status;
         this.Proposedate = this.EventScheduledjson[0].Schedule_date;
         this.PropStart = this.EventScheduledjson[0].St_Time;
@@ -5923,10 +6149,14 @@ filterPending(type: 'date' | 'meeting'): void {
         this.pending_status = this.EventScheduledjson[0].Pending_meeting;
         this.Meeting_status = this.EventScheduledjson[0].Meeting_status;
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
-        this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
+        this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount']; 
+        this.Startts=this.EventScheduledjson[0].St_Time;
+        this.Endtms=this.EventScheduledjson[0].Ed_Time;
+        this.repeatStartts=this.Startts;
+        this.repeatEndtms=this.Endtms;
 
         // console.log(this.EventScheduledjson, "Testing12");
-debugger
+
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
           document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':"flex";
           document.getElementById("deleteendit").style.display = "flex";
@@ -6003,14 +6233,15 @@ filterDraft(type : 'date'|'meeting'):void{
 
   darft_click(Sno, val, attachments) {
     this.draftid = Sno;
-   
-    this.Task_type(val);
 
+    this.Task_type(val);
+   
+   
     this.draft_arry = this.draftdata_meet.filter(x => x.Sno == Sno);
     this.Title_Name = this.draft_arry[0]["Task_name"]
     console.log(this.draft_arry[0], '6969')
     this. GetProjectAndsubtashDrpforCalender();
-  
+    debugger
     this.allAgendas = JSON.parse(this.draft_arry[0]['Agendas']);
     this.Attachment12_ary= attachments;
     this.MasterCode = [];
@@ -6188,6 +6419,185 @@ filterDraft(type : 'date'|'meeting'):void{
    
   }
 
+  noSelectedDate : boolean = false;
+  newSelectedDate(){
+    this.noSelectedDate=true
+    this.getEventsForWeeks(0);
+   
+  }
 /////////////////////////////////////////// Draft meeting list End /////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////// Bookmarks meeting list start /////////////////////////////////////////////////////////
+
+BookMarks:boolean;
+
+MeetingBookmark(flagid:any) {
+  if (this.isSubmitting) return;
+  this.isSubmitting = true;
+  debugger 
+  this._calenderDto.Schedule_ID = this.Schedule_ID;
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  this._calenderDto.flagid = flagid;
+  
+  this.CalenderService.NewUpdateMeetingBookmark(this._calenderDto).subscribe
+    ((data) => {
+      if(data['message'] == '1'){
+    
+        this._calenderDto.Schedule_ID=this.Schedule_ID;
+
+        this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+        ((data) => {    
+          this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+          this.BookMarks = this.EventScheduledjson[0].IsBookMark;
+          if(this.BookMarks){
+            this.notifyService.showSuccess("Added In bookmark Successfully", "Success");          
+          }else{
+            this.notifyService.showSuccess("Bookmark deleted", "Success");
+          }
+          this.isSubmitting = false;
+          this.BookmarkMeetingsList();
+        })  
+      }   
+    });
+}
+
+
+
+
+
+SearchOfBookmarkItem:any;
+meetingbookmarks:any;
+totalbookmarkslist:any;
+
+BookmarkMeetingsList() {
+
+  this._calenderDto.Emp_No = this.Current_user_ID;
+
+  this.CalenderService.GetBookmarkMeetingsList(this._calenderDto).subscribe
+    ((data) => {
+debugger
+          this.meetingbookmarks = JSON.parse(data['meetingbookmarks']);
+          this.totalbookmarkslist =this.meetingbookmarks.length;
+          console.log(this.meetingbookmarks,'book mark list data')
+  })
+}
+
+
+
+
+Bookmark_Delete(Scheduleid:any) {
+  Swal.fire({
+    title: `Delete bookmark`,
+    text: `Are you sure you want to delete this bookmark? This action cannot be undone.`,
+    showConfirmButton: true,
+    showCancelButton: true
+  }).then(choice => {
+    if (choice.isConfirmed) { 
+      this.Schedule_ID=Scheduleid
+      this.MeetingBookmark(2);      
+    }
+  });
+}
+
+/////////////////////////////////////////// Bookmarks meeting list end /////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////// Timeline start /////////////////////////////////////////////////////////
+
+
+
+
+daySummaryReport:any;
+dueTodayTasksCount:{taskType:string,count:number}[]=[];
+reportCount:any;
+
+getDayReportSummary(){
+  this.service.NewGetEmployeePerformance(this.Current_user_ID).subscribe((res:any)=>{
+
+      if(res&&res.EmployeeReport){
+             this.daySummaryReport=JSON.parse(res.EmployeeReport)[0];
+            this.dueTodayTasksCount=[];
+            ['ActionsDueToday','ProjectsDueToday','StandardDueToday'].forEach((dkey)=>{
+              if(this.daySummaryReport[dkey]>0){
+                    const ob={ taskType:dkey, count:this.daySummaryReport[dkey] };
+                    this.dueTodayTasksCount.push(ob);
+              }
+            });
+      }
+      this.reportCount = ["NewProjectRejected", "AssignedTasksDue", "ActionsDelayed", "ProjectsDelayed", "StandardDelayed"]
+      .filter(key => this.daySummaryReport[key] > 0).length;
+
+      console.log("daySummaryReport:",this.reportCount);
+
+      if(this.reportCount){
+        this.showLoader=true;
+        setTimeout(()=>{ this.showLoader=false; },5000)
+      }      
+   
+  })
+}
+
+
+
+viewActions(type:'COMPLETED'|'DUE'|'DELAYED'){
+  if(type=='DELAYED')
+  {
+    let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Actions&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
+    let myWindow = window.open(myurl,'_blank');
+    myWindow?.focus();
+  }
+}
+
+
+viewProjects(type:'COMPLETED'|'DUE'|'DELAYED'){
+  if(type=='DELAYED')
+  {
+    let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Projects&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
+    let myWindow = window.open(myurl,'_blank');
+    myWindow?.focus();
+  }
+}
+
+
+
+viewStandardTasks(type:'COMPLETED'|'DELAYED'){
+  if(type=='DELAYED')
+  {
+
+   let myurl = document.baseURI+'/backend/ProjectsSummary';
+   let myWindow = window.open(myurl,'_blank');
+   const obj={
+     EmpNo:this.Current_user_ID,
+     ProjectType:'003',
+     Status:'InProcess',
+   };
+   myWindow?.sessionStorage.setItem('filterprjsby',JSON.stringify(obj));
+   myWindow?.focus();
+
+  }
+}
+
+
+
+viewTasks(){
+  let myurl = document.baseURI+'/backend/createproject?AssignedProjectId=none';
+  let myWindow = window.open(myurl,'_blank');
+  myWindow?.focus();
+}
+
+
+page_Name: string = "ViewProjects";
+Rejected_Click() {
+
+  let Mode: string = "Rejected";
+  var url = document.baseURI + this.page_Name;
+  var myurl = `${url}/${Mode}`;
+  var myWindow = window.open(myurl);
+  myWindow.focus();
+
+}
+/////////////////////////////////////////// Timeline end /////////////////////////////////////////////////////////
+
 
 }

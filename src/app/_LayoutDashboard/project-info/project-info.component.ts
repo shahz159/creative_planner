@@ -2330,7 +2330,7 @@ openAutocompleteDrpDwn(Acomp:string){
 
 
 get_Dropdowns_data(){
-  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectCode).subscribe(
+  this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectCode,this.Current_user_ID).subscribe(
     (data) => {
       this.racisNonRacis=JSON.parse(data[0]['owner_dropdown']);
       this.allUsers1=(JSON.parse(data[0]['alluserlist']));  

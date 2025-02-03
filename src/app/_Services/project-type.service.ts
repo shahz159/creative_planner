@@ -447,8 +447,10 @@ export class ProjectTypeService {
   // Project Info
   ObjSubTaskDTO: SubTaskDTO;
 
-  GetRACISandNonRACISEmployeesforMoredetails(prjCode) {
-    this.ObjSubTaskDTO.Project_Code = prjCode;    console.log("---->",this.rootUrl + "TestAPI/NewGetRACISandNonRACISEmployees");
+  GetRACISandNonRACISEmployeesforMoredetails(prjCode,empno) {
+    this.ObjSubTaskDTO.Project_Code = prjCode;
+    this.ObjSubTaskDTO.Emp_No = empno;
+    console.log("---->",this.rootUrl + "TestAPI/NewGetRACISandNonRACISEmployees");
     return this.http.post(this.rootUrl + "TestAPI/NewGetRACISandNonRACISEmployees", this.ObjSubTaskDTO);
   }
 
@@ -1156,20 +1158,31 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl+'TestAPI/NewGetEmployeePerformance',this.ObjSubTaskDTO);
   }
 
-  GetCPProjectCost(empno:string,allocatedHr:string){  debugger
+  GetCPProjectCost(empno:string,allocatedHr:string){  
     this.ObjDto.Emp_No=empno;
     this.ObjDto.Hours=allocatedHr;
     return this.http.post('https://cswebapps.com/ProjectCostAPI/api/ProjectCost/GetCPProjectCost',this.ObjDto);
   }
 
 
-  NewUpdateTimelineActivity(empno:string,recordId:number,newworkdes:string,operationType:1|2){  debugger
+  NewUpdateTimelineActivity(empno:string,recordId:number,newworkdes:string,operationType:1|2){  
      this.ObjDto.Emp_No=empno;
      this.ObjDto.id=recordId;
      this.ObjDto.flagid=operationType;  
      this.ObjDto.achievement=newworkdes;
      return this.http.post(this.rootUrl+'TestAPI/NewUpdateTimelineActivity',this.ObjDto);
   }
+
+
+
+  NewGetTimelineInbox(listtype:'D'|'P',empNo:string){ 
+    // D - Requests, P - Response
+    this.ObjSubTaskDTO.Emp_No=empNo;
+    this.ObjSubTaskDTO.type=listtype;
+    return this.http.post(this.rootUrl+'TestAPI/NewGetTimelineInbox',this.ObjSubTaskDTO);
+  }
+
+
 
 
 }

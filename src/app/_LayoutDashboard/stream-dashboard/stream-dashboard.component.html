@@ -286,8 +286,8 @@
                                         </div>
 
 
-                                        <div class="d-flex align-items-center justify-content-between"style="height: 90%; flex-direction: column;" *ngIf="scheduleItems.length == 0">
-                                          <img src="../../../assets/images/waste.png" alt="" style="width: 35%; opacity: 0.6;">
+                                        <div class="d-flex align-items-center justify-content-between"style="height: 90%; flex-direction: column;" *ngIf="scheduleItems&&scheduleItems.length == 0">
+                                          <img src="./assets/images/waste.png" alt="" style="width: 35%; opacity: 0.6;">
                                           <p style=" font-size: 18px; font-weight: 500; color: #a7a7a7;">No events/tasks are created or scheduled</p>
                                         </div>
                                     </div>
@@ -802,7 +802,7 @@
                                 <div class="card-title mb-0">
                                     Portfolios
                                 </div>
-                                <div (click)="gotoPortfolioPage()">
+                                <div *ngIf="portfoiloData&&portfoiloData.length != 0 " (click)="gotoPortfolioPage()">
                                     <button class="btn btn-port-all">View all</button>
                                 </div>
                             </div>
@@ -976,6 +976,18 @@
                                     </div>
                                 </div>
                             </div>
+
+                                <div *ngIf="portfoiloData&&portfoiloData.length == 0 ">
+                                    <div class="no-portfolio-div">
+                                        <img src="./assets/images/no-portfolio.PNG" alt="" style="opacity: 0.4;">
+                                    <div>
+                                        <p style=" margin-bottom: 0px;"> No portfolios are created, click view portfolio to create one.</p>
+                                        <div style="margin-top: 8px;"><button class="btn btn-port-all" (click)="gotoPortfolioPage()">View Portfolio</button></div></div>   
+                                    </div>
+                                </div>
+
+
+                           
                             <!-- <div class="portfolio-item-list owl-carousel owl-theme">
                                 <div class="portfolio-item" *ngFor="let item of portfoiloData"  (click)="openCard(item.Portfolio_ID,item.Portfolio_Name,item.Created_By)">
                                     <div class="portfolio-heading">{{item.Portfolio_Name}}</div>
@@ -1008,12 +1020,44 @@
 
                             <div class="">
                                 <div class="cr-img mh-25 d-flex align-items-center justify-content-center">
-                                    <div class="picsum-img-wrapper text-center">
+                                    <!-- <div class="picsum-img-wrapper text-center"> -->
                                         <!-- <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Banner/43/321673_Digital%20Signage%20Solution%203%20(1).png"
                                             alt="Angular Carousel 1" class="w-100"> -->
-                                            <img src="./assets/images/cp-robot.png"
-                                            alt="Angular Carousel 1" class="w-100">
+                                            <!-- <img src="./assets/images/cp-robot.png"
+                                            alt="Angular Carousel 1" class="w-100" loading="lazy">
+                                    </div> -->
+
+
+                               <!--new -->
+
+                               <div class="picsum-img-wrapper text-center">
+                               <div class="card h-100 activity-card banner-card">
+                                <div class="activity-item banner-item owl-carousel owl-theme d-block">
+                                     
+                                <ng-container *ngIf="dashboardBanners&&dashboardBanners.length>0; else noDbbanner">
+                                    <div *ngFor="let bannerImg of dashboardBannersImages" class="card-body p-0">
+                                            <div class="activity-report" >
+                                                <div class="activity-report-content">
+                                                    <img [src]="bannerImg.path" alt="Angular Carousel 1" class="w-100">
+                                                </div>
+                                            </div>
                                     </div>
+                                </ng-container>
+                                <ng-template #noDbbanner>
+                                    <div class="activity-report">
+                                        <div class="activity-report-content">
+                                            <img src="./assets/images/cp-robot.png" alt="Angular Carousel 1" class="w-100"/>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                                    
+                                </div>
+                               </div>
+                               </div>
+
+                              <!-- new-->
+
+
                                 </div>
                             </div>
                             <div class="pt-3 px-3">
@@ -1128,7 +1172,7 @@
                     </div>
                     <div class="card h-100 mt-3 activity-card">
                         <div class="activity-item owl-carousel owl-theme">
-                            <div class="card-body">
+                        <div class="card-body">
 
 
 
@@ -1166,7 +1210,7 @@
                             <div class="activity-report">
                                 <div class="activity-report-content">
                                     <p style="margin-bottom: 0rem;">
-                                        "Happy Monday! It's a new week to tackle your goals. You have pending actions to complete, or feel free to start a new task to kick things off. Let’s make this week productive!"
+                                        "Happy Sunday! It's a new week to tackle your goals. You have pending actions to complete, or feel free to start a new task to kick things off. Let’s make this week productive!"
                                     </p>
                                 </div>
                             </div>
@@ -1181,8 +1225,7 @@
                             </div>
                         </div>
                         </div>
-
-                </div>
+                   </div>
                 <div class="card h-100 mt-3">
                     <div class="card-body pt-0">
                         <div class="position-relative" *ngFor="let item of darArray">
