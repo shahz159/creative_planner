@@ -1498,7 +1498,7 @@ debugger
         this.companies_Arr=JSON.parse(data['Client_json']);
 
 
-        this.originalProjectList = this.ProjectListArray
+        this.originalProjectList = this.ProjectListArray;
 
         this.PortfolioLists = JSON.parse(data['Portfolio_drp'])
         var recordPortfolio = this.portfolio_Scheduledjson.map(item => item.numberval)
@@ -2175,7 +2175,7 @@ debugger
     this._calenderDto.Emp_No = this.Emp_Number === undefined ? 0 : this.Emp_Number;
 
     this.CalenderService.NewGet_previousMeetingNotes(this._calenderDto).subscribe
-      (data => {
+      (data => {    debugger
         if (data['previousmeet_data']) {
           this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
           this.filterByAgenda = this.Previousdata_meeting[0].Details
@@ -2605,7 +2605,7 @@ debugger
       this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.Meeting_notes = this.Notes_Type=="<div><br></div><div></div>" || this.Notes_Type==" " || this.isNotesTypeEmpty(this.Notes_Type) ?"":this.Notes_Type;
       this._calenderDto.AgendaId = this.currentAgendaView === undefined ? 0 : this.Agendas_List[this.currentAgendaView].AgendaId;
-
+      debugger
       this.CalenderService.InsertAgendameeting_notes(this._calenderDto).subscribe
         (data => {
           console.log(data, 'Private notes');
@@ -4086,7 +4086,7 @@ onFileChange(event) {
 
     this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
       ((data: any) => {
-
+    
         
         this.exact_start = (data['Start_time']);
         this.agendasList = JSON.parse(data['Agendas']);
@@ -4150,9 +4150,9 @@ onFileChange(event) {
        
         this.meetingStarted = data.AdminMeeting_Status === 'True' ? true : false
         if (this.meetingStarted || this.meetingStarted != true) {
-
+      
           if (data['Checkdatetimejson'] != '') {
-
+           
             this.AllAttendees_notes = JSON.parse(data['Checkdatetimejson']);
         
           } else if (data['Checkdatetimejson'] == '') {
