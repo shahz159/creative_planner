@@ -635,11 +635,19 @@ export class HeaderComponent implements OnInit {
   localStorage.removeItem('IsStreamDownload');
   localStorage.removeItem('DMS_UserInfo');
   localStorage.removeItem('currentUser');
+
+  sessionStorage.clear();
+  localStorage.clear();
+    // localStorage.setItem('language', this.storedLanguage);
+    // alert(this.storedLanguage)
+    this.router.navigate(['login']).then(() => {
+      window.location.reload();
+    });
   // Call AuthService logout for any additional logic
   this.authService.logout();
 
   // Navigate to login page
-  this.router.navigate(['/login']);
+  // this.router.navigate(['/login']);
 }
 
   featuremodel() {
