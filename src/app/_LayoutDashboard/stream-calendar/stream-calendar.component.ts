@@ -2464,7 +2464,7 @@ debugger
       this.Endtms &&
       this.MinLastNameLength
       && (this.ScheduleType === 'Event' ?this.allAgendas.length > 0: true )
-      // && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0)
+      // && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0).action-section
     ) {
       this.OnSubmitSchedule();
       this.notProvided = false;
@@ -2472,7 +2472,7 @@ debugger
     else {
       if ((!this.Title_Name)||this.Title_Name.trim().length<3||this.Title_Name.trim().length>100)
         document.getElementById('dsb-evt-titleName').focus();
-      else if (this.ScheduleType === 'Event' && this.allAgendas.length === 0) { const agf: any = document.querySelector('.action-section .agenda-input-field input#todo-input'); agf.focus(); }
+      else if (this.ScheduleType === 'Event' && this.allAgendas.length === 0) { const agf: any = document.querySelector('.agenda-input-field input#todo-input'); agf.focus(); }
 
       this.notProvided = true;
     }
