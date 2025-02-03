@@ -1998,6 +1998,8 @@
                                                           </div>
                                                           <div *ngIf="item.Status=='Completion Under Approval'">
 
+
+                                                    <div class="d-flex">
                                                               <span *ngIf="item.AuditStatus=='Audit Pending';else compl_aprvl_status" class="AuditUnderApproval font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
                                                                   Audit Approval
                                                               </span>
@@ -2012,7 +2014,8 @@
                                                             <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
                                                                <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
                                                                 <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
-                                                            </span>
+                                                            </span></div>
+
                                                             <!-- <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
                                                           </span> -->
                                                           <div class="pulsing-div">
