@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 export class AppComponent {
   title = 'CreativePlanner';
   isLoading: boolean;
-  constructor() {}
+  constructor() {} 
   
   // _loadChildComponent = false;
   // parentToChild: string;
