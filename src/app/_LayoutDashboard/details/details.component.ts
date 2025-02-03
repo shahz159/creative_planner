@@ -291,7 +291,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     // these minhold and maxhold are used in the project hold section,project release section
     this.minhold.setDate(this.minhold.getDate() + 1);
     this.maxhold.setDate(this.minhold.getDate() + 90);
-    this.minhold.setHours(0,0,0,0); 
+    this.minhold.setHours(0,0,0,0);
     this.maxhold.setHours(0,0,0,0);
     this.release_date=new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
     // this.release_date = moment(new Date().getTime() + 24 * 60 * 60 * 1000).format("MM/DD/YYYY");
@@ -1537,10 +1537,10 @@ debugger
 
         if (data !== null && data !== undefined) {
           this.ActionActivity_List = JSON.parse(data[0]['ActivityList']); console.log('ActinoActivity_List:',this.ActionActivity_List);
-          
+
      // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.   modifying "ActionActivity_List" and "action_deadlineExtendlist".
           let count:number=0;
-          this.ActionActivity_List.forEach((actv:any)=>{  
+          this.ActionActivity_List.forEach((actv:any)=>{
             // &&count+1!=actv.count
                  const c=(actv.Value.includes('Deadline changed'));
                   if(c)
@@ -1550,7 +1550,7 @@ debugger
                         let x=updatecount>3?'th':updatecount==3?'rd':updatecount==2?'nd':'st';
                         actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
                       }
-                     
+
                        // prepare action_deadlineExtendlist here.
                       this.action_deadlineExtendlist.push({...actv,count:updatecount});
                       count+=1;
@@ -3265,7 +3265,7 @@ approvalSubmitting:boolean=false;
                         ob.uploaded=progress;
                         if(ob.uploaded==100){
                           setTimeout(()=>{
-                            ob.processingUploadFile=true; //when server processing the file upload. 
+                            ob.processingUploadFile=true; //when server processing the file upload.
                           },1000);
                         }
                         console.log(`Upload progress: ${ob.uploaded}%`);
@@ -3273,13 +3273,13 @@ approvalSubmitting:boolean=false;
                       case HttpEventType.Response:{
                         console.log('Response received:', event1.body);
                         if(event1.body==1){
-                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully");
                           const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
                           this.filesInUpload.splice(fi,1);
                           if(this.filesInUpload.length==0){
                             this.setFilesUploadingBarVisible(false);
                           }
-                          
+
                         }
                       };break;
                     }
@@ -3365,7 +3365,7 @@ approvalSubmitting:boolean=false;
                             ob.uploaded=progress;
                             if(ob.uploaded==100){
                               setTimeout(()=>{
-                                ob.processingUploadFile=true; //when server processing the file upload. 
+                                ob.processingUploadFile=true; //when server processing the file upload.
                               },1000);
                             }
                             console.log(`Upload progress: ${ob.uploaded}%`);
@@ -3373,7 +3373,7 @@ approvalSubmitting:boolean=false;
                           case HttpEventType.Response:{
                             console.log('Response received:', event1.body);
                             if(event1.body==1){
-                              this.notifyService.showSuccess(ob.filename,"Uploaded successfully ");  
+                              this.notifyService.showSuccess(ob.filename,"Uploaded successfully ");
                               const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
                               if(fi>-1){
                                 this.filesInUpload.splice(fi,1);
@@ -3381,7 +3381,7 @@ approvalSubmitting:boolean=false;
                               if(this.filesInUpload.length==0){
                                 this.setFilesUploadingBarVisible(false);
                               }
-                              
+
                             }
                           };break;
                         }
@@ -3453,7 +3453,7 @@ approvalSubmitting:boolean=false;
                         ob.uploaded=progress;
                         if(ob.uploaded==100){
                           setTimeout(()=>{
-                            ob.processingUploadFile=true; //when server processing the file upload. 
+                            ob.processingUploadFile=true; //when server processing the file upload.
                           },1000);
                         }
                         console.log(`Upload progress: ${ob.uploaded}%`);
@@ -3461,13 +3461,13 @@ approvalSubmitting:boolean=false;
                       case HttpEventType.Response:{
                         console.log('Response received:', event1.body);
                         if(event1.body==1){
-                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully ");  
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully ");
                           const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
                           this.filesInUpload.splice(fi,1);
                           if(this.filesInUpload.length==0){
                             this.setFilesUploadingBarVisible(false);
                           }
-                          
+
                         }
                       };break;
                     }
@@ -3532,8 +3532,8 @@ approvalSubmitting:boolean=false;
               if(this._Message==='Success')
               {
                 if(this.selectedFile){  console.log("selectedFile:",this.selectedFile);
-                 
-                  this.setFilesUploadingBarVisible(true);   // show the file uploading bar. 
+
+                  this.setFilesUploadingBarVisible(true);   // show the file uploading bar.
                   const fid=this.selectedFile.name+(new Date().getTime());
                   const ob={id:fid, filename:this.selectedFile.name, uploaded:0, processingUploadFile:false, message:'Action complete file attachment -'+this._Subtaskname};
                   this.filesInUpload.push(ob);
@@ -3552,7 +3552,7 @@ approvalSubmitting:boolean=false;
                         ob.uploaded=progress;
                         if(ob.uploaded==100){
                           setTimeout(()=>{
-                            ob.processingUploadFile=true; //when server processing the file upload. 
+                            ob.processingUploadFile=true; //when server processing the file upload.
                           },1000);
                         }
                         console.log(`Upload progress: ${ob.uploaded}%`);
@@ -3560,13 +3560,13 @@ approvalSubmitting:boolean=false;
                       case HttpEventType.Response:{
                         console.log('Response received:', event1.body);
                         if(event1.body==1){
-                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully");
                           const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
                           this.filesInUpload.splice(fi,1);
                           if(this.filesInUpload.length==0){
                             this.setFilesUploadingBarVisible(false);   // hide the uploading bar.
                           }
-                          
+
                         }
                       };break;
                     }
@@ -3614,7 +3614,7 @@ approvalSubmitting:boolean=false;
 
 
 
-  
+
 
 
 
@@ -4444,7 +4444,7 @@ debugger
    ){
     // if all mandatory fields are provided.
 
- 
+
     if (this.starttime&&this.endtime) {
       const [shours, sminutes] = this.starttime.time.split(":");
       const [ehours, eminutes] = this.endtime.time.split(":");
@@ -4508,7 +4508,7 @@ debugger
 
     }
 
-  
+
 
 
     // if (this.projectInfo.Project_Type == 'Standard Tasks' || this.projectInfo.Project_Type == 'Routine Tasks' || this.projectInfo.Project_Type == 'To do List') {
@@ -5016,7 +5016,7 @@ debugger
                 }
 
                 this.notifyService.showSuccess(this._Message, 'Success');
-         
+
                 if(this.selectedFile){
 
                   this.setFilesUploadingBarVisible(true);
@@ -5039,7 +5039,7 @@ debugger
                         ob.uploaded=progress;
                         if(ob.uploaded==100){
                           setTimeout(()=>{
-                            ob.processingUploadFile=true; //when server processing the file upload. 
+                            ob.processingUploadFile=true; //when server processing the file upload.
                           },1000);
                         }
                         console.log(`Upload progress: ${ob.uploaded}%`);
@@ -5047,13 +5047,13 @@ debugger
                       case HttpEventType.Response:{
                         console.log('Response received:', event1.body);
                         if(event1.body==1){
-                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                          this.notifyService.showSuccess(ob.filename,"Uploaded successfully");
                           const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
                           this.filesInUpload.splice(fi,1);
                           if(this.filesInUpload.length==0){
                             this.setFilesUploadingBarVisible(false);
                           }
-                          
+
                         }
                       };break;
                     }
@@ -5332,7 +5332,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
 
-  fetchingActionApproval:boolean=false;     
+  fetchingActionApproval:boolean=false;
   GetApproval(code) {
 
     this.fetchingActionApproval=true;   // getting approval on the action if present start.
@@ -5604,10 +5604,11 @@ $('#acts-attachments-tab-btn').removeClass('active');
     // empty all variables
     this.meetingList = [];
     this.meeting_arry = [];
+    this.ngEmployeeDropdown = [];
     this.meetinglength = 0;
     this.characterCount_Meeting=0;
     this.Description_Type=null;
-
+    this.projectsSelected = []
     this.upcomingMeetings = [];
     this.todaymeetings = [];
     this.last7dmeetings = [];
@@ -5617,6 +5618,8 @@ $('#acts-attachments-tab-btn').removeClass('active');
     this.mtgUptoD = '';
     this.mtgsInRange = [];
     this.mLdng = false;
+    this.SelectDms = [];
+
 
     this.tdMtgCnt = 0;   // Today Meetings Count
     this.upcMtgCnt = 0;  // Upcoming Meetings Count
@@ -7091,6 +7094,8 @@ getChangeSubtaskDetais(Project_Code) {
     // this.Recurr_arr = [];
     this._status = null;
     this.Portfolio = [];
+    this.SelectDms = []
+    this.projectsSelected = []
     this.Location_Type = null;
     this.Allocated_subtask = null;
     this.Projectstartdate = "";
@@ -7098,6 +7103,7 @@ getChangeSubtaskDetais(Project_Code) {
     this.Status_project = null;
     this.AllocatedHours = null;
     this.daysSelected = [];
+
     this.selectdaytime = [];
     this.daysSelectedII = [];
     this.singleselectarry = [];
@@ -7759,7 +7765,7 @@ holdcontinue(Pcode:any){
   minPrjDeadline:Date;
   HprocessDone:number=0;
 
-  onHoldDateChanged(){ 
+  onHoldDateChanged(){
     const d1=new Date(this.Holddate);
     if(d1>=this.minhold&&d1<=this.maxhold)
     {
@@ -7772,7 +7778,7 @@ holdcontinue(Pcode:any){
     else{
        this.Holddate=null;
     }
-    
+
 }
 
 
@@ -7855,7 +7861,7 @@ holdcontinue(Pcode:any){
 
 
 
-  orgValueChange1(val) { 
+  orgValueChange1(val) {
     const _inputdate=moment(val.value).toDate();
     if((_inputdate>=this.minhold&&_inputdate<=this.maxhold)==false)
     {
@@ -7966,7 +7972,7 @@ holdcontinue(Pcode:any){
               this.notifyService.showSuccess("Action release date updated", "Success");
               this.notifyService.showInfo("Action will be released on " + this.holdDate, "Note");
             }
-            
+
             this.getProjectDetails(this.projectInfo.Project_Code);
             this.getholdate();
             this.closePrjReleaseSideBar();
@@ -7974,7 +7980,7 @@ holdcontinue(Pcode:any){
           else if (this._Message == '2' || this._Message == '0') {
             if(isprjrelease)
             this.notifyService.showError("Project release date not updated", "Failed");
-            else 
+            else
             this.notifyService.showError("Action release date not updated", "Failed");
           }
         });
@@ -8221,7 +8227,7 @@ holdcontinue(Pcode:any){
                 ob.uploaded=progress;
                 if(ob.uploaded==100){
                   setTimeout(()=>{
-                    ob.processingUploadFile=true; //when server processing the file upload. 
+                    ob.processingUploadFile=true; //when server processing the file upload.
                   },1000);
                 }
                 console.log(`Upload progress: ${ob.uploaded}%`);
@@ -8229,13 +8235,13 @@ holdcontinue(Pcode:any){
               case HttpEventType.Response:{
                 console.log('Response received:', event1.body);
                 if(event1.body==1){
-                  this.notifyService.showSuccess(ob.filename,"Uploaded successfully");  
+                  this.notifyService.showSuccess(ob.filename,"Uploaded successfully");
                   const fi=this.filesInUpload.findIndex(fup=>fup.id==ob.id);
                   this.filesInUpload.splice(fi,1);
                   if(this.filesInUpload.length==0){
                     this.setFilesUploadingBarVisible(false);
                   }
-                  
+
                 }
               };break;
             }
@@ -12072,12 +12078,12 @@ timeArr: any = [
   "23:00", "23:15", "23:30", "23:45"
 ];
 
-tmCapacity=93;  // 23 hrs per day limit.   
-timedata3:any[]=[]; 
+tmCapacity=93;  // 23 hrs per day limit.
+timedata3:any[]=[];
 timeline_of:'today'|'yesterday';
 noTimeSpaceAvailable:boolean=false;
 
-selectDateForTimeline(inputDate){    debugger   
+selectDateForTimeline(inputDate){    debugger
   this.current_Date = moment(inputDate).format("MM/DD/YYYY");
   this.dateF = moment(inputDate).toDate();
   const todaystr=moment(this.todayDate).format("MM/DD/YYYY");
@@ -12085,10 +12091,10 @@ selectDateForTimeline(inputDate){    debugger
   if(this.current_Date==todaystr)
   this.timeline_of='today';
   else if(this.current_Date==yesterdaystr)
-  this.timeline_of='yesterday';   
+  this.timeline_of='yesterday';
 
   this.timedata3=this.getTimeStamps(moment(inputDate).format("YYYY-MM-DD"),this.timeArr);   // initializing with default values.
-  this.getTimelineReportByDate(this.timeline_of); 
+  this.getTimelineReportByDate(this.timeline_of);
 }
 
 
@@ -12103,7 +12109,7 @@ submittedTimelines:any[]=[];
 getTimelineReportByDate(dateVal:'today'|'yesterday') {
 
   if(dateVal){
- 
+
     this.tmReportArr=[];
     // this.tmReportStatus=null;
     this.tmReportTotalDuration=null;
@@ -12127,15 +12133,15 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
     this.ObjSubTaskDTO.sort = 'custom';
     this.tmReportLoading=true;
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-      (data => { 
+      (data => {
         this.tmReportLoading=false;
         console.log(data);
         if(data&&data[0].DAR_Details_Json){
              const dar_json=JSON.parse(data[0].DAR_Details_Json);
              if(dar_json&&dar_json[0]){
 
-              // all timelines submitted on selected date.     
-              this.tmReportArr=dar_json[0].Dardata;    
+              // all timelines submitted on selected date.
+              this.tmReportArr=dar_json[0].Dardata;
               this.submittedTimelines=this.tmReportArr.map((obj)=>({ starttime:obj.starttime, endtime:obj.endtime }));
               this.submittedTimelines.reverse();
               this.bol = false;
@@ -12149,20 +12155,20 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
               choosed_date=moment(choosed_date).format("YYYY-MM-DD");
               next_date=moment(next_date).format("YYYY-MM-DD");
               const list=[...this.getTimeStamps(choosed_date,this.timeArr),...this.getTimeStamps(next_date,this.timeArr)].slice(from,to);
-              this.lastEndtime=list.find((ob)=>ob.time==_lastendtm);  
-            
+              this.lastEndtime=list.find((ob)=>ob.time==_lastendtm);
+
 
               // Check whether timespace available or not. and setting default values to starttime and endtime.
               this.noTimeSpaceAvailable=(this.lastEndtime.time==list[list.length-1].time);
               if(this.noTimeSpaceAvailable==false){
                 const li=list.findIndex((obj)=>obj.time==this.lastEndtime.time);
-                this.starttime=list[li];   this.endtime=list[li+1];   
+                this.starttime=list[li];   this.endtime=list[li+1];
               }
-            
+
               // calculate total timeline entered.
               const [hrs,mins]=dar_json[0].TotalDuration.split(':');
               this.tmReportTotalDuration={hours:hrs,minutes:mins};
-            
+
 
 
             // adding 'duration' property to show timing in more easy way on the view.
@@ -12171,7 +12177,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
                 ob.duration=k?(ob.Duration.split(':')[1]+' mins'):(ob.Duration+' hrs');
                 ob.starttime=this.formatTimes(ob.starttime);
                 ob.endtime=this.formatTimes(ob.endtime);
-              }); 
+              });
 
             }
         }
@@ -12180,8 +12186,8 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
 }
 
 
-getStartTiming1(){   
-  let list:any=[]; 
+getStartTiming1(){
+  let list:any=[];
 
   let from;
   let to;
@@ -12201,11 +12207,11 @@ getStartTiming1(){
   }
 
   // show time values till current time only. if: selected date==current date.
-  const c_date=new Date();   // fetches system current date and time. 
-  this.date11 = moment(c_date).format("MM/DD/YYYY");   
+  const c_date=new Date();   // fetches system current date and time.
+  this.date11 = moment(c_date).format("MM/DD/YYYY");
   if (this.current_Date == this.date11||to>this.timeArr.length) {
-       const k=list.findIndex((tm)=>{  
-          const ct=c_date.getTime(); 
+       const k=list.findIndex((tm)=>{
+          const ct=c_date.getTime();
           const r=tm.value>ct;
           return r;
        });
@@ -12213,7 +12219,7 @@ getStartTiming1(){
        if(k>-1)
        list=list.slice(0,k);
   }
-  
+
 
   this.timedata3=list;
 
@@ -12235,7 +12241,7 @@ getEndTiming1(){
   next_date=moment(next_date).format("YYYY-MM-DD");
   list=[...this.getTimeStamps(choosed_date,this.timeArr),...this.getTimeStamps(next_date,this.timeArr)].slice(from+1,to);
 
- 
+
      // show time values till current time only. if: selected date==current date.
     const c_date=new Date();   // fetches system current date and time.
     this.date11 = moment(c_date).format("MM/DD/YYYY");
@@ -12248,7 +12254,7 @@ getEndTiming1(){
         if(k>-1)
         list=list.slice(0,k);
     }
-   
+
   this.timedata3=list;
 }
 
@@ -12264,7 +12270,7 @@ getTimeStamps(dateVal:string,timeVals:string[]):{time:string,value:number}[]{
            value:_date.getTime()
            };
     });
-  return _timestamps;  
+  return _timestamps;
 }
 
 
@@ -12467,7 +12473,7 @@ getOverallFilesUploadProgress():number{
     return totalProgressVal;
   }
   return 0;
-} 
+}
 
 
 

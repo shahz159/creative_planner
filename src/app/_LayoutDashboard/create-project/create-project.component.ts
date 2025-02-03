@@ -1596,7 +1596,7 @@ ProjeditDescription:any
 
 
 initializeSelectedValue() {
-
+debugger
     this.OGownerid = this.projectInfo['OwnerEmpNo'];
     this.OGresponsibleid = this.projectInfo['ResponsibleEmpNo'];
     this.OGselectedcategoryid = this.projectInfo['Reportid'];
@@ -1625,7 +1625,7 @@ initializeSelectedValue() {
 }
 
 projectEdit(val) {
-
+debugger
 if (this.Allocated <= this.maxAllocation){
   this.notProvided = false
 }
@@ -2548,10 +2548,11 @@ deletingDraftactions(index:number){
 
 
 openDraft(index:number){
-
+debugger
   console.log(this.draft_json[index]);
   this.Prjtype=this.draft_json[index].Project_Block;
   this.PrjCode=this.draft_json[index].Project_Code;
+  this._remarks = this.draft_json[index].Remarks
   this.notificationMsg=3;
 
 // // opens the step-3 view
@@ -2846,7 +2847,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
 
   alterAction(){
 
-
+debugger
 // v1. Action allocated hr must be <= max allocated hrs value.
   if (this.Allocated <= this.maxAllocation){
     this.notProvided = false
@@ -2918,6 +2919,7 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
           StartDate:datestrStart,                   // new action start date.
           EndDate:datestrEnd,                     // new action end date.
           AllocatedHours: this.Allocated,             // new action alc hrs.
+
       };
 
       jsonobj = JSON.stringify(jsonobj);
