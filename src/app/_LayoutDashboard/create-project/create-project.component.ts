@@ -696,7 +696,7 @@ debugger
      this.ProjectDto.portfolioids=this.ngDropdwonPort.map(item=>item.Portfolio_ID).join(',');
      console.log(this.ProjectDto,"dto")
      //1. creating project
-     this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
+     this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{   debugger
 
            console.log("res after project creation:",res);
 
@@ -1926,7 +1926,7 @@ detectMembersWithoutActions(){
 
 
 sendApproval=async()=>{
-
+debugger
   const _sendApprovalToOwner=()=>{
 
     this.ProjectDto.Emp_No=this.Current_user_ID;
@@ -1935,7 +1935,7 @@ sendApproval=async()=>{
     this.ProjectDto.file = this.fileAttachment
     this.ProjectDto.Remarks=this._remarks;
     this.ProjectDto.Project_Cost=this.PrjCost;
-    this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
+    this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{  debugger
       if(res&&res.message==='Success'){
             this.notification.showSuccess("Project sent to project owner "+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for approval',"Success");
             this.BsService.ConfirmBeforeRoute.emit(null);

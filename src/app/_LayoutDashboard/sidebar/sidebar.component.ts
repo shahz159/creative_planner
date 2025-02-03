@@ -8,6 +8,7 @@ import tippy from 'node_modules/tippy.js';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-sidebar',
@@ -41,11 +42,12 @@ export class SidebarComponent implements OnInit {
       this._UserRole=dmsuserinfo.UserRole;
     }
     // this._activeLink=this.router.url;
-    
+   
      
     $(document).ready(function() {
       // import('../../../assets/js/test.js');
       $('<script/>',{type:'text/javascript', src:'/assets/js/test.js'}).appendTo('head');
+      $('<script/>',{type:'text/javascript', src:'/assets/js/scripts.bundle.js'}).appendTo('head');
     });
 
     tippy('#dashboard', {
@@ -289,7 +291,6 @@ export class SidebarComponent implements OnInit {
    getActiveLink(){
     return this.router.url;
    }
-
 
 
 }

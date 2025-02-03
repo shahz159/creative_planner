@@ -117,7 +117,6 @@ export class LoginComponent implements OnInit {
       this.authenticationService.login(this.f.userid.value, this.f.password.value)
         .subscribe(
           (data) => {
-
             try{
 
             console.log("DMS login Data---->", data);

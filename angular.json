@@ -43,12 +43,13 @@
                             "node_modules/@fullcalendar/timegrid/main.css",
                             "node_modules/@fullcalendar/list/main.css",
                             "node_modules/intl-tel-input/build/css/intlTelInput.css"
-                        ],
-                        "scripts": [
-                            "src/assets/plugins/global/plugins.bundle.js",
+                        ],  
+                        "scripts": [ 
+                            "src/assets/plugins/global/plugins.bundle.js", 
                             "src/assets/js/owl.carousel.min.js",
-                            "src/assets/js/intlTelInput.min.js"
-                        ]
+                            "src/assets/js/intlTelInput.min.js" 
+                            
+                        ] 
                     },
                     "configurations": {
                         "production": {
