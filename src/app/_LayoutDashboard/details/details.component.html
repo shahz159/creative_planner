@@ -2472,7 +2472,7 @@
                             <span>{{aprvl.totalRequests}} for {{aprvl.request_type}}</span>{{i+1===pendingAprvls.length-1?' and':(i+1===pendingAprvls.length)?'.':', '}}
                         </ng-container>
                    </ng-container>
-  
+
                    <ng-container *ngIf="multiapproval_list.length==1">
                           You have 1 pending approval for {{pendingAprvls[0].request_type}}<b>.</b>
                    </ng-container>
@@ -3365,20 +3365,20 @@
                                                                 <span class="text-info fw-medium" *ngIf="Transfer_active">* Handover the project ownership, then new owner will takeover the control.</span>
                                                                 <span class="text-info fw-medium" *ngIf="Conditional_Active">* Submitted project will be approved and new request created in runway for next version.</span>
                                                                 <span class="text-info fw-medium" *ngIf="Accept_active">
-                                                                   
+
                                                                   <ng-container *ngIf="requestType=='New Project'">*Approve it, to acknowledge the team's efforts and proceed further.</ng-container>
                                                                   <ng-container *ngIf="requestType=='Project Complete'">* Approve it, to appreciate project team for great work.</ng-container>
                                                                   <ng-container *ngIf="requestType=='Project Forward'">* Approve it, to forward this project to the assigned employee for further execution and completion.</ng-container>
                                                                   <ng-container *ngIf="requestType=='Project Cancel'">* Approve it, to cancel this project, removing it from the system and releasing the team from responsibility.</ng-container>
-                                                                   
+
                                                                 </span>
                                                                 <span class="text-info fw-medium" *ngIf="Reject_active">
-                                                                  
+
                                                                   <ng-container *ngIf="requestType=='New Project'">* Reject as to type of rejection, which help user to modify the project accordingly.</ng-container>
                                                                   <ng-container *ngIf="requestType=='Project Complete'"> * Reject as to type of rejection, which help user to modify the project accordingly.</ng-container>
                                                                   <ng-container *ngIf="requestType=='Project Forward'">* Reject if unsuitable or unclear. Provide a reason to guide the forwarder.</ng-container>
                                                                   <ng-container *ngIf="requestType=='Project Cancel'">* Reject as to type of rejection if it's not justified.</ng-container>
-                                                                
+
                                                                 </span>
                                                             </div>
 
@@ -3949,7 +3949,7 @@
                                                                   <img src="https://cswebapps.com/dmsweb/assets/media/icons/user2.png" class="" alt="">
                                                               </div>
                                                               <div class="user-name-email">
-                                                                  <p class="name">DisplayName</p>
+                                                                  <p class="name"> {{projectInfo&&projectInfo.Owner}}</p>
                                                                   <div class="user-i">
                                                                       <div class="user-i-icon">
                                                                           <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 6C9 4.89543 9.89543 4 11 4H13C14.1046 4 15 4.89543 15 6V8H9V6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <rect x="4" y="8" width="16" height="11" rx="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></rect> </g></svg>
@@ -4004,7 +4004,7 @@
                                                                   <img src="https://cswebapps.com/dmsweb/assets/media/icons/user2.png" class="" alt="">
                                                               </div>
                                                               <div class="user-name-email">
-                                                                  <p class="name">DisplayName</p>
+                                                                  <p class="name"> {{projectInfo&&projectInfo.Responsible}}</p>
                                                                   <div class="user-i">
                                                                       <div class="user-i-icon">
                                                                           <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 6C9 4.89543 9.89543 4 11 4H13C14.1046 4 15 4.89543 15 6V8H9V6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <rect x="4" y="8" width="16" height="11" rx="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></rect> </g></svg>
@@ -5106,18 +5106,18 @@
 
                                                             <div class="mb-2">
                                                                 <span class="text-info fw-medium" *ngIf="Accept_active">
-                                                          
+
                                                                     <ng-container *ngIf="requestType=='New Project'">* This action is assigned to you, and you will be responsible for its execution.</ng-container>
                                                                     <ng-container *ngIf="requestType=='Project Forward'">* This action will be forwarded to the designated team member and will be responsible for its execution.</ng-container>
                                                                     <ng-container *ngIf="requestType=='Project Cancel'">* This will remove the action from the project, and clear the accountability for its completion.</ng-container>
-                                                            
+
                                                                 </span>
                                                                 <span class="text-info fw-medium" *ngIf="Reject_active">
-                                                               
+
                                                                     <ng-container *ngIf="requestType=='New Project'">* Reject if unsuitable or needs changes. Provide a reason to assist the assignee.</ng-container>
                                                                     <ng-container *ngIf="requestType=='Project Forward'">* Reject if unsuitable or unclear. Provide a reason to guide the forwarder.</ng-container>
                                                                     <ng-container *ngIf="requestType=='Project Cancel'">* Reject as to type of rejection if it's not justified.</ng-container>
-                                                            
+
                                                                 </span>
                                                             </div>
 
@@ -5370,7 +5370,7 @@
                                                                       <img src="https://cswebapps.com/dmsweb/assets/media/icons/user2.png" class="" alt="">
                                                                   </div>
                                                                   <div class="user-name-email">
-                                                                      <p class="name">DisplayName</p>
+                                                                      <p class="name"> {{projectActionInfo[currentActionView].Owner}}</p>
                                                                       <div class="user-i">
                                                                           <div class="user-i-icon">
                                                                               <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 6C9 4.89543 9.89543 4 11 4H13C14.1046 4 15 4.89543 15 6V8H9V6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <rect x="4" y="8" width="16" height="11" rx="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></rect> </g></svg>
@@ -5427,7 +5427,7 @@
                                                                       <img src="https://cswebapps.com/dmsweb/assets/media/icons/user2.png" class="" alt="">
                                                                   </div>
                                                                   <div class="user-name-email">
-                                                                      <p class="name">DisplayName</p>
+                                                                      <p class="name">{{projectActionInfo[currentActionView].Responsible}}</p>
                                                                       <div class="user-i">
                                                                           <div class="user-i-icon">
                                                                               <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 6C9 4.89543 9.89543 4 11 4H13C14.1046 4 15 4.89543 15 6V8H9V6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <rect x="4" y="8" width="16" height="11" rx="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></rect> </g></svg>
@@ -6714,7 +6714,7 @@
                          </div>
 
                          <div class="form-group w-100 mb-0">
-                            <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end" 
+                            <ng-select name="endtim" #end="ngModel" placeholder="Select End Time" id="time-end"
                             [ngClass]="{'error-borderbottom': (notProvided&&!endtime)||(starttime&&endtime&&endtime.value<starttime.value)}"
                             (click)="getEndTiming1()" [(ngModel)]="endtime" [compareWith]="ngmodelObjCompare" [disabled]="noTimeSpaceAvailable">
                                 <ng-option [value]="item" *ngFor="let item of timedata3; let i=index"
@@ -9820,9 +9820,9 @@
                                                       <div class="input-group"  [ngClass]="{'error-date': !release_date&&formFieldsRequired}">
                                                         <input class="form-control" name="date" matInput  [matDatepicker]="picker7" id="Holdtext_{{Pid}}"
                                                         [(ngModel)]="release_date"  (dateChange)="orgValueChange1($event)"
-                                                        (click)="picker7.open();" [min]="minhold"  [max]="maxhold" placeholder="Select Date" 
+                                                        (click)="picker7.open();" [min]="minhold"  [max]="maxhold" placeholder="Select Date"
                                                         />
-                                                    
+
                                                         <!-- <input class="form-control" name="date" matInput
                                                               [matDatepicker]="picker7" id="Holdtext_{{Pid}}"
                                                               (click)="picker7.open();"
@@ -10133,7 +10133,7 @@
                           </span>
                           <span class="tsk">Create</span>
                       </a>
-                      <div class="dropdown-menu drop-cus btm-dropdn">
+                      <div class="dropdown-menu drop-cus btm-dropdn cursor-pointer">
                           <a class="dropdown-item" (click)="Task_type(1)">Task</a>
                           <a class="dropdown-item" (click)="Task_type(2)">Event</a>
                       </div>
@@ -12016,7 +12016,7 @@
             </div>
             <div class="se-col-11">
                 <div class="form-group">
-                    <input class="form-control curser-pointer" placeholder="Add Location" type="text" ngx-google-places-autocomplete
+                    <input class="form-control " placeholder="Add Location" type="text" ngx-google-places-autocomplete
                     [(ngModel)]="Location_Type" (onAddressChange)="handleAddressChange($event)" (change)="addreschange()" />
 
                 </div>
@@ -13999,7 +13999,7 @@
                   <div class="kt-info-box-tittle m-0">
                       <div class="kt-title-icon">
                           <span class="svg-icon kt-title-icon m-0">
-                             
+
                               <svg width="22px" height="21px" viewBox="0 0 512 512" id="svg2793"
                               style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
                               version="1.1" xml:space="preserve"
@@ -15375,15 +15375,15 @@
                                         </ng-container>
 
 
-                                        <div title="Approve it, to appreciate project team for great work." 
-                                        
+                                        <div title="Approve it, to appreciate project team for great work."
+
                                         [ngClass]="Accept_active ==true ? 'kt-detail-link active ':'kt-detail-link'" (click)="approvalClick('ACCEPT')">
                                            <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;    fill: #028507;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M1002.81 144.43a64 64 0 0 0-90.38 4.76L381.56 739l-272.3-272.3a64 64 0 0 0-90.51 90.51l320 320A64 64 0 0 0 384 896h1.68a64 64 0 0 0 45.89-21.16l576-640a64 64 0 0 0-4.76-90.41z"/></svg>
                                            <span class="kt-detail-iconname">Accept</span>
                                         </div>
 
-                                        <div title="Reject as to type of rejection, which help user to modify the project accordingly." 
-                                        
+                                        <div title="Reject as to type of rejection, which help user to modify the project accordingly."
+
                                         [ngClass]="Reject_active ==true ? 'kt-detail-link active' : 'kt-detail-link'" (click)="approvalClick('REJECT')">
                                           <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;    fill: #e81000;;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M622.276923 508.061538l257.969231-257.96923c11.815385-11.815385 11.815385-29.538462 0-41.353846l-41.353846-41.353847c-11.815385-11.815385-29.538462-11.815385-41.353846 0L539.569231 425.353846c-7.876923 7.876923-19.692308 7.876923-27.569231 0L254.030769 165.415385c-11.815385-11.815385-29.538462-11.815385-41.353846 0l-41.353846 41.353846c-11.815385 11.815385-11.815385 29.538462 0 41.353846l257.969231 257.969231c7.876923 7.876923 7.876923 19.692308 0 27.56923L169.353846 793.6c-11.815385 11.815385-11.815385 29.538462 0 41.353846l41.353846 41.353846c11.815385 11.815385 29.538462 11.815385 41.353846 0L512 618.338462c7.876923-7.876923 19.692308-7.876923 27.569231 0l257.969231 257.96923c11.815385 11.815385 29.538462 11.815385 41.353846 0l41.353846-41.353846c11.815385-11.815385 11.815385-29.538462 0-41.353846L622.276923 535.630769c-5.907692-7.876923-5.907692-19.692308 0-27.569231z"/></svg>
                                           <span class="kt-detail-iconname">Reject</span>
@@ -15439,20 +15439,20 @@
                                     <span class="text-info fw-medium" *ngIf="Transfer_active">* Handover the project ownership, then new owner will takeover the control.</span>
                                     <span class="text-info fw-medium" *ngIf="Conditional_Active">* Submitted project will be approved and new request created in runway for next version.</span>
                                     <span class="text-info fw-medium" *ngIf="Accept_active">
-                                       
+
                                             <ng-container *ngIf="aprv.Type=='New Project'">*Approve it, to acknowledge the team's efforts and proceed further.</ng-container>
                                             <ng-container *ngIf="aprv.Type=='Project Complete'">* Approve it, to appreciate project team for great work.</ng-container>
                                             <ng-container *ngIf="aprv.Type=='Project Forward'">* Approve it, to forward this project to the assigned employee for further execution and completion.</ng-container>
                                             <ng-container *ngIf="aprv.Type=='Project Cancel'">* Approve it, to cancel this project, removing it from the system and releasing the team from responsibility.</ng-container>
-                                
+
                                     </span>
                                     <span class="text-info fw-medium" *ngIf="Reject_active">
-                                      
+
                                             <ng-container *ngIf="aprv.Type=='New Project'">* Reject as to type of rejection, which help user to modify the project accordingly.</ng-container>
                                             <ng-container *ngIf="aprv.Type=='Project Complete'"> * Reject as to type of rejection, which help user to modify the project accordingly.</ng-container>
                                             <ng-container *ngIf="aprv.Type=='Project Forward'">* Reject if unsuitable or unclear. Provide a reason to guide the forwarder.</ng-container>
                                             <ng-container *ngIf="aprv.Type=='Project Cancel'">* Reject as to type of rejection if it's not justified.</ng-container>
-                                      
+
                                     </span>
                                 </div>
                                   <div class="kt-pdv mt-2">
@@ -16834,7 +16834,7 @@
 
                     <span *ngIf="filesInUpload.length==1">
                         <span *ngIf="filesInUpload[0].uploaded<=100&&filesInUpload[0].processingUploadFile==false">Uploading "{{filesInUpload[0].filename}}"</span>
-                        <span *ngIf="filesInUpload[0].processingUploadFile">Processing uploaded file...</span> 
+                        <span *ngIf="filesInUpload[0].processingUploadFile">Processing uploaded file...</span>
                 </span>
                 </div>
                 <div class="progress-bar-count">{{getOverallFilesUploadProgress()}}%</div>
@@ -16843,9 +16843,9 @@
 
         <div *ngIf="filesInUpload.length>1" style="width:30%">
         <div id="files-uploadinglist" class="kt-widget__items mt-2 mx-0 px-2 collapse bounce-effect" aria-labelledby="files-uploadinglist" aria-hidden="true">
-        
+
                 <div style="background-color: white;padding: 20px;box-shadow: 0 0 5px #ccc;border-radius: 3px;">
-                
+
                     <div *ngFor="let attch of filesInUpload" class="mt-3">
                         <div class="d-flex justify-content-between">
                             <label class="text-muted fs-8 mb-1" style="white-space: nowrap;overflow-x: hidden;text-overflow: ellipsis;font-weight: 500;">{{attch.message}}</label>
@@ -16861,7 +16861,7 @@
                             </div>
                         </div>
                     </div>
-                
+
         </div>
         </div>
         </div>
