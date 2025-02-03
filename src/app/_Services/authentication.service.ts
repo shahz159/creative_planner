@@ -26,7 +26,7 @@ export class AuthenticationService {
   constructor(private http: HttpClient, private commonUrl: ApiurlService
     //,private dbService: NgxIndexedDBService
   ) {
-    this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser_SP')));
     this.currentUser = this.currentUserSubject.asObservable();
     this._userdto = new UserDTO();
     this._userobj = new AuthenticationDTO();
@@ -65,7 +65,7 @@ export class AuthenticationService {
           _obj1[0]["SharePopupCount"] = 0;
           // login successful
           if (_obj1 && _obj1[0].userId) {
-            localStorage.setItem('currentUser', JSON.stringify(_obj1));
+            localStorage.setItem('currentUser_SP', JSON.stringify(_obj1));
             this.currentUserSubject.next(_obj1);
           }
         }
@@ -75,7 +75,7 @@ export class AuthenticationService {
   //Logout Service
   logout() {
     this._userdto = new UserDTO();
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentUser_SP');
     this.currentUserSubject.next(this._userdto);
   }
   UpdatePassword(_userdto: UserDTO) {

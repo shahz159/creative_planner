@@ -29,7 +29,7 @@ export class UserlistComponent implements OnInit {
   currentUserSubject: any;
   currentUser: any;
   public get currentUserValue(): UserDTO {
-    this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser_SP')));
     this.currentUser = this.currentUserSubject.asObservable();   
     return this.currentUserSubject.value[0];
   }
