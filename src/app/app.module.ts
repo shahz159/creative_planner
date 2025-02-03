@@ -16,7 +16,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { BackendLayoutComponent } from './_Layouts/backend-layout/backend-layout.component';
 import { DefaultLayoutComponent } from './_Layouts/default-layout/default-layout.component';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NotificationComponent } from './_LayoutDashboard/notification/notification.component';
 import { TimelineComponent } from './_LayoutDashboard/timeline/timeline.component';
@@ -52,6 +51,7 @@ import { TimelineModule } from './_LayoutDashboard/timeline/timeline.module';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+
 
 // Function to load translations
 export function HttpLoaderFactory(http: HttpClient) {
@@ -96,7 +96,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoadingBarRouterModule,
     LoadingBarHttpClientModule,
     FormsModule,
-    NgbModule,
     NgMultiSelectDropDownModule,
     PdfViewerModule,
     NgxDocViewerModule,
