@@ -947,7 +947,7 @@
                                     <!-- <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="stroke: currentColor; stroke-width: 3px; stroke-linecap: butt;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="cross"> <line class="cls-1" x1="7" x2="25" y1="7" y2="25"></line> <line class="cls-1" x1="7" x2="25" y1="25" y2="7"></line> </g> </g></svg> -->
                                     <span class="fs-8" style="font-weight:500">Reject</span>
                                   </button>
-                                  
+
                                   <button *ngIf="selectedHoldPrjsReleasable"  (click)="onReleasePrjBtnClicked()" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
                                     <!-- <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="stroke: currentColor; stroke-width: 3px; stroke-linecap: butt;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="cross"> <line class="cls-1" x1="7" x2="25" y1="7" y2="25"></line> <line class="cls-1" x1="7" x2="25" y1="25" y2="7"></line> </g> </g></svg> -->
                                     <span class="fs-8" style="font-weight:500">Release</span>
@@ -1846,7 +1846,8 @@
                                                                 </span>
                                                             </div>
                                                             <div *ngIf="item1.Status=='Completion Under Approval'">
-                                                                <span class="font-weight-400 completion-under-approval">
+                                                              <div class="d-flex">
+                                                              <span class="font-weight-400 completion-under-approval">
                                                                   {{(item1.AuditStatus=='Audit Pending')?"Audit Approval":"Completion approval"}}
                                                                 </span>
                                                                 <span class="attach-tippy">
@@ -1855,6 +1856,9 @@
                                                                  <div style="width: max-content;">Submit by: <h6>{{item1.Submitby}} </h6></div>
                                                                   <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                               </span>
+                                                            </div>
+
+
                                                               <div class="pulsing-div">
                                                                <ng-container *ngIf="item1.PendingapproverEmpNo"><span *ngIf="item1.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
                                                                   <span class="pulsing-dot-label"> {{item1.Pendingapprover}} </span>
@@ -2169,14 +2173,20 @@
 
                                             <div *ngIf="item1.Status=='Completion Under Approval'">
                                                 <!-- <h2>Mubeen</h2> -->
+                                                 <div class="d-flex">
                                                 <span
-                                                    class="font-weight-400 completion-under-approval" (click)="LoadDocument(item1.Project_Code, item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">  {{(item1.AuditStatus=='Audit Pending')?"Audit Approval":"Completion approval"}} </span>
+                                                    class="font-weight-400 completion-under-approval" (click)="LoadDocument(item1.Project_Code, item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
+                                                      {{(item1.AuditStatus=='Audit Pending')?"Audit Approval":"Completion approval"}} </span>
                                                     <span class="attach-tippy">
                                                       <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.Project_Code, item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)"></b>
                                                   <span class="st-line curser-pointer" (click)="LoadDocument(item1.Project_Code, item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Team_Res)">
                                                      <div style="width: max-content;">Approved by: <h6>{{item1.Approvedby}} </h6></div>
                                                       <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
                                                   </span>
+                                                </div>
+
+
+
                                                   <span class="New_Approval_Project font-weight-400">
                                                     {{item1.Approvedby}}
                                                 </span>
@@ -7284,7 +7294,7 @@
       <div class="kt-portlet__body sidehf_scroll scroll-y mb-0">
         <div class="pb-1">
           <div class="card-body card-car px-1 py-4">
-  
+
             <div class="card card-mid flex-1">
               <div class="card-header">
                 <h5 clas="card-title"> {{releasableHoldPrjs.length}} {{releasableHoldPrjs.length>1?'Projects':'Project'}} selected</h5>
@@ -7317,7 +7327,7 @@
             </div>
           </div>
         </div>
-  
+
         <div class="">
           <div class="card-body py-2 px-1">
             <div class="crd-hdr">
@@ -7341,4 +7351,3 @@
 
 
   <!-- release hold project sidebar start.-->
-  
