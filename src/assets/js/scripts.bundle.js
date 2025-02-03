@@ -1009,7 +1009,7 @@ var KTMenu = function(elementId, options) {
          * Reset menu
          * @returns {KTMenu}
          */
-        build: function() {    debugger
+        build: function() {    
             // General accordion submenu toggle
             the.eventHandlers['event_1'] = KTUtil.on(element, '.kt-menu__toggle', 'click', Plugin.handleSubmenuAccordion);
 
@@ -1087,7 +1087,7 @@ var KTMenu = function(elementId, options) {
          * Get submenu mode for current breakpoint and menu state
          * @returns {KTMenu}
          */
-        getSubmenuMode: function(el) {  debugger
+        getSubmenuMode: function(el) {  
             if (KTUtil.isInResponsiveRange('desktop')) {   
                 if (el && KTUtil.hasAttr(el, 'data-ktmenu-submenu-toggle') && KTUtil.attr(el, 'data-ktmenu-submenu-toggle') == 'hover') {
                     return 'dropdown';
@@ -1115,7 +1115,7 @@ var KTMenu = function(elementId, options) {
          * Get submenu mode for current breakpoint and menu state
          * @returns {KTMenu}
          */
-        isConditionalSubmenuDropdown: function() {  debugger
+        isConditionalSubmenuDropdown: function() {  
             if (KTUtil.isInResponsiveRange('desktop') && KTUtil.isset(the.options.submenu, 'desktop.state.body')) {
                 return true;
             } else {
@@ -1192,7 +1192,7 @@ var KTMenu = function(elementId, options) {
          * Handles submenu click toggle
          * @returns {KTMenu}
          */
-        handleSubmenuDropdownClick: function(e) {     debugger 
+        handleSubmenuDropdownClick: function(e) {     
             if (Plugin.getSubmenuMode(this) === 'accordion') {
                 return;
             }
@@ -9910,15 +9910,15 @@ KTUtil.ready(function() {
 
 
 
-//
+// extra from dms
 $(document).click(function(event) {  
-    if (!$(event.target).closest('.kt-menu__toggleII').length) {  debugger
+    if (!$(event.target).closest('.kt-menu__toggleII').length) {  
         $('ul li.kt-menu__item--submenu').removeClass("kt-menu__item--hover kt-menu__item--open");
     }
 });
-$('.kt-menu__toggleII').on('click', function() {  debugger
+$('.kt-menu__toggleII').on('click', function() {  
     $('ul li.kt-menu__item--submenu').removeClass('kt-menu__item--hover kt-menu__item--open');
     $(this).closest('.kt-menu__item--submenu').addClass("kt-menu__item--hover kt-menu__item--open");
 });
 
-//
+//  extra from dms
