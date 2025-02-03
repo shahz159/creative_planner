@@ -50,14 +50,14 @@ export class AuthenticationService {
 
     return this.http.post<any>(this.rootUrl + "Notification/NewLoginDetailsJSON", this._userobj, {
     })
-      .pipe(map(user => {
+      .pipe(map(user => {    
          console.log(user,"user dms")
          console.log(user["Data"]["UserId"],"user dmsdqwe")
          console.log(JSON.parse(user["Data"]["UserId"]),"user jsonconvert")
         var _json = JSON.parse(user["Data"]["UserId"]);
         let _obj1 = _json;
         console.log(_obj1, "dmsm das")
-        if (user["Data"]["UserId"].length != 0) {
+        if (_obj1.length != 0) {
           users_db.collection('users').add({
             username: _obj1[0].userId,
             userid: _obj1[0].createdby
@@ -72,6 +72,8 @@ export class AuthenticationService {
         return user;
       }));
   }
+
+
   //Logout Service
   logout() {
     this._userdto = new UserDTO();
