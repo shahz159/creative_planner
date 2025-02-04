@@ -1411,6 +1411,7 @@ getFileExtension(fileName: any): string | null {
     this.router.navigate(["./backend/createproject"]);
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+    document.getElementById("kt_wrapper").style.zIndex="unset";
     }
     else{
       this.router.navigate(["./MoreDetails", this.selectedProjectCode]);

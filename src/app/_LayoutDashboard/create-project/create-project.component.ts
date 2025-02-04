@@ -769,7 +769,7 @@ createSRTProject=async()=>{
  }
 
 
- uploadFileAttachment(){
+ uploadFileAttachment(){   debugger
            const fd=new FormData();
            fd.append('Project_Code',this.PrjCode);
            fd.append('Project_Name',this.PrjName);
@@ -783,12 +783,12 @@ createSRTProject=async()=>{
 
            }
           //  this.createProjectService.NewUpdateFileUploadsByProjectCode(fd).subscribe((fres:any)=>{
-            this.createProjectService.NewUpdateFileUploadsByProjectCodeCore(fd).subscribe((fres:any)=>{
+            this.createProjectService.NewUpdateFileUploadsByProjectCodeCore(fd).subscribe((fres:any)=>{   debugger
             console.log("file attachment:",fres)
             if(fres&&fres.Message==='Success'){
               if(this.fileAttachment){
                 fd.append('file',this.fileAttachment);
-                this.createProjectService._AzureUpdateFileUploadsByProjectCode(fd).subscribe((event1: HttpEvent<any>) => {
+                this.createProjectService._AzureUpdateFileUploadsByProjectCode(fd).subscribe((event1: HttpEvent<any>) => {   debugger
                                     console.log(event1,"azure data");
                                     var myJSON = JSON.stringify(event1);
                                   //  this._Message = (JSON.parse(myJSON).body);
@@ -947,6 +947,7 @@ contentType:any="";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("project-creation-page").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("kt_wrapper").style.zIndex="unset";
 
     this.characterCount_Desc=0;
   }
@@ -1467,6 +1468,8 @@ onRejectProjectDialogClosed(){
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
     document.getElementById("kt-bodyc")
+    document.getElementById("kt_wrapper").style.zIndex="99";
+
     // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
@@ -1479,6 +1482,7 @@ onRejectProjectDialogClosed(){
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("kt_wrapper").style.zIndex="unset";
     // document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     this.router.navigate(["/backend/createproject/"]);
   }
@@ -1495,6 +1499,7 @@ onRejectProjectDialogClosed(){
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("Project_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    document.getElementById("kt_wrapper").style.zIndex="99";
     // document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
@@ -2827,6 +2832,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
       document.getElementById("Action_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
       document.getElementById("kt-bodyc").classList.add("overflow-hidden");
       document.getElementById("rightbar-overlay").style.display = "block";
+      document.getElementById("kt_wrapper").style.zIndex="99";
       $("#mysideInfobar12").scrollTop(0);
       this.bindActionDetailsIntoForm();
 
@@ -2840,7 +2846,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
       document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
       document.getElementById("project-creation-page").classList.remove("position-fixed");
       document.getElementById("rightbar-overlay").style.display = "none";
-
+      document.getElementById("kt_wrapper").style.zIndex="unset";
       this.notProvided=false;   // back to initial state.
       this.characterCount_Action=0;
     }

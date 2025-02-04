@@ -341,15 +341,12 @@ export class ProjectTypeService {
   }
   SharePortfolio(_ObjShare: Shareportfolio_DTO) {
     console.log("Obj Share---->", _ObjShare);
-    return this.http.post(this.rootUrl + "TestAPI/NewInsertUpdateSharePortfolio", _ObjShare)
-      .subscribe(data => {
-        this._ObjSharePortfolio = data as Shareportfolio_DTO;
-      });
+    return this.http.post(this.rootUrl + "TestAPI/NewInsertUpdateSharePortfolio", _ObjShare);
   }
   GetPreferences(empId, pid) {
     this._ObjSharePortfolio.EmployeeId = empId;
     this._ObjSharePortfolio.Portfolio_ID = pid;
-    return this.http.post(this.rootUrl + "TestAPI/NewGetPreferencesByEmployeeId", this._ObjSharePortfolio)
+    return this.http.post(this.rootUrl + "TestAPI/NewGetPreferencesByEmployeeId", this._ObjSharePortfolio);
   }
   GetShareDetailsBy_PId(pid) {
     this._ObjSharePortfolio.Portfolio_ID = pid;

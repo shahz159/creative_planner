@@ -2844,3 +2844,55 @@ color: #2786fb;
  border:2px solid #8cabfa;
 } */
 
+/* ::ng-deep div#kt_wrapper {
+  z-index: 99;
+}
+
+#rightbar-overlay {
+  position: fixed;
+} */
+
+
+
+
+
+/*notification accordian css start*/
+
+.pin-message {
+  margin: 0 0 10px 10px;
+}
+
+.pin-message .pin-msg-btn {
+  width: 100%;
+  padding: 6px 18px;
+  background-color: #edf3ff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid #efefef;
+}
+
+.pin-msg-btn-text{
+  font-size: 14px;
+  color: #3e3c3c;
+  padding-left: 6px;
+}
+
+.notifications-list #pinMessages>.card:hover{
+  box-shadow:none;
+}
+
+.pin-msg-btn .pin-msg-btn-caret svg {
+  transform: rotate(180deg);
+  transition-duration: 0.3s;
+}
+
+.pin-msg-btn.collapsed .pin-msg-btn-caret svg {
+  transform: rotate(0deg);
+  transition-duration: 0.3s;
+}
+
+
+
+/*notification accordian css end*/
