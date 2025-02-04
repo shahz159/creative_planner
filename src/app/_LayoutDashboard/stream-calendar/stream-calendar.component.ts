@@ -235,7 +235,7 @@ export class StreamCalendarComponent implements OnInit {
 
 
   onKeyPress() {
-    debugger
+   
     // Check if the input field is empty
     if (this.agendaInput===undefined||this.agendaInput.trim() === '') {
       // If input field is empty, remove the class
@@ -570,7 +570,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("customTaskModalBackdrop").classList.remove("show");
   }
   eventtaskitemtimeModal(){
-    debugger
+
     document.getElementById("eventtaskitemtimeModal").style.display = "block";
     document.getElementById("eventtaskitemtimeModal").classList.add("show");
     document.getElementById("eventtaskitemtimeModalBackdrop").style.display = "block";
@@ -671,7 +671,7 @@ export class StreamCalendarComponent implements OnInit {
   }
 
   Repeat_date_time_menu() {
-    debugger
+ 
     document.getElementById("repeat-date-time-menu").classList.add("show");
   }
 
@@ -2336,7 +2336,7 @@ this.eventtaskitemtimeModal_dismiss();
 
 
   selectedDay(days) {
-debugger
+
     //Checked the day
     let objIndex = this.dayArr1.findIndex((obj => obj.value == days.target.value));
     this.dayArr1[objIndex].checked = days.target.checked;
@@ -2472,6 +2472,7 @@ debugger
     else {
       if ((!this.Title_Name)||this.Title_Name.trim().length<3||this.Title_Name.trim().length>100)
         document.getElementById('dsb-evt-titleName').focus();
+      // .action-section 
       else if (this.ScheduleType === 'Event' && this.allAgendas.length === 0) { const agf: any = document.querySelector('.agenda-input-field input#todo-input'); agf.focus(); }
 
       this.notProvided = true;
@@ -2894,7 +2895,7 @@ debugger
       frmData.forEach((value, key) => {
         console.log("Start", `${key} : ${value}, = ${typeof value}` ,"End");
       });
-debugger
+
       console.log(this._calenderDto,'new testing of save button')
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
@@ -3185,7 +3186,7 @@ debugger
 
 getEventsForWeeks(weeksFromToday: number) {
 
-  debugger
+  
   const today = new Date();
   today.setHours(0, 0, 0, 0); 
 
@@ -3732,7 +3733,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
   this._calenderDto.Schedule_ID = arg;
   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
     ((data) => {
-      debugger
+     
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       this.loading = false;
       var Schedule_date =this.EventScheduledjson[0].Schedule_date
@@ -3784,7 +3785,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
       if (result && result[0])
         this.Link_Detail = result[0].slice(6, result[0].length - 1);
 
-     debugger
+    
       //69 document.getElementById("deleteendit").style.display = "flex";
       if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
 
@@ -4135,7 +4136,6 @@ AllDelete_event(val) {
 
 
 AlldeleteSchedule() {
-
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.flag_id = this.flagevent;
   this.CalenderService.NewDelete_table(this._calenderDto).subscribe(text => {
@@ -4398,7 +4398,7 @@ ReshudingTaskandEvent() {
   this.copyTask = false;
   this.create = false;
   this.eventRepeat=false;
-debugger
+
   this.Schedule_ID = this._calenderDto.Schedule_ID;
   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
     ((data) => {
@@ -4725,7 +4725,7 @@ RecurrValueMonthly:boolean=false;
       this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
       }
 
-debugger
+
     if (
       this.Title_Name &&
       this.Startts &&
@@ -5148,7 +5148,7 @@ debugger
         console.log(this._calenderDto,'new updaet data') 
         this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
           (data => {
-            debugger
+          
             // alert(data['Schedule_date'])
             this.Attamentdraftid= data['draftid']
            frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
@@ -5318,7 +5318,7 @@ Event_acceptandReject() {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       });
     this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
-    this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
+    this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber; debugger
     this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
       ((data) => {
         this.GetScheduledJson();
@@ -5336,7 +5336,7 @@ Event_acceptandReject() {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       });
     this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
-    this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
+    this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber; debugger
 
     this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
       ((data) => {
@@ -5422,7 +5422,7 @@ Maybe_event(val) {
     });
   this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
   this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
-
+  debugger
   this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
     ((data) => {
       this.GetScheduledJson();
@@ -6114,7 +6114,7 @@ filterPending(type: 'date' | 'meeting'): void {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
       
-  
+        debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Pending list popup box Testing ");
         this.BookMarks = this.EventScheduledjson[0].IsBookMark;
@@ -6158,26 +6158,26 @@ filterPending(type: 'date' | 'meeting'): void {
 
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
           document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':"flex";
-          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = this.Meeting_status==true?'none':'flex';
           document.getElementById("main-foot").style.display = "none";
      
         }
         else if ((this.Schedule_type1 == 'Event') && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
           document.getElementById("hiddenedit").style.display = "none";
-          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = this.Meeting_status==true?'none':'flex';
           document.getElementById("main-foot").style.display = "flex";
       
 
         }
         else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
           document.getElementById("hiddenedit").style.display = "flex";
-          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("deleteendit").style.display = this.Meeting_status==true?'none':'flex';
           document.getElementById("main-foot").style.display = "none";
         
         }
         else {
           document.getElementById("hiddenedit").style.display = "none";
-          document.getElementById("deleteendit").style.display = "flex";
+          document.getElementById("deleteendit").style.display =this.Meeting_status==true?'none':'flex';
           document.getElementById("main-foot").style.display = "flex";
    
         }
@@ -6240,7 +6240,7 @@ filterDraft(type : 'date'|'meeting'):void{
     this.Title_Name = this.draft_arry[0]["Task_name"]
     console.log(this.draft_arry[0], '6969')
     this. GetProjectAndsubtashDrpforCalender();
-    debugger
+
     this.allAgendas = JSON.parse(this.draft_arry[0]['Agendas']);
     this.Attachment12_ary= attachments;
     this.MasterCode = [];
@@ -6305,7 +6305,7 @@ filterDraft(type : 'date'|'meeting'):void{
       this._labelName = "Schedule Date";
       // document.getElementById("div_endDate").style.display = "none";
       document.getElementById("div_endDate_new").style.display = "block";
-      document.getElementById("Recurrence_hide").style.display = "block";
+      // document.getElementById("Recurrence_hide").style.display = "block";
       document.getElementById("weekly_121_new").style.display = "block";
       this.selectedrecuvalue = '2';
       let Recc = [];
@@ -6434,7 +6434,7 @@ BookMarks:boolean;
 MeetingBookmark(flagid:any) {
   if (this.isSubmitting) return;
   this.isSubmitting = true;
-  debugger 
+
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.flagid = flagid;
@@ -6475,7 +6475,7 @@ BookmarkMeetingsList() {
 
   this.CalenderService.GetBookmarkMeetingsList(this._calenderDto).subscribe
     ((data) => {
-debugger
+
           this.meetingbookmarks = JSON.parse(data['meetingbookmarks']);
           this.totalbookmarkslist =this.meetingbookmarks.length;
           console.log(this.meetingbookmarks,'book mark list data')
