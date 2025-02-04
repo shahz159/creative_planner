@@ -2,12 +2,12 @@ export const environment = {
   production: true,
   //baseUrl: 'http://217.145.247.43/EPNewAPI/api/'
   //----Test Server----
-//  baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
- baseUrl:'https://cswebapps.com/StreamPlannerAPI/api/',
+ baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
+//  baseUrl:'https://cswebapps.com/StreamPlannerAPI/api/',
  baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
- Language_file_url:'https://cswebapps.com/streamplanner/assets/i18n/'
- ,assetsurl:'/streamplanner/'
- ,ImageUrl:'/streamplanner/assets/'
+ Language_file_url:'https://cswebapps.com/testcreativeplanner/assets/i18n/'
+ ,assetsurl:'/testcreativeplanner/'
+ ,ImageUrl:'/testcreativeplanner/assets/'
  ,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/'
 // --------Azure API-------- 
 // baseUrl:'https://creativeplannerapi.azurewebsites.net/api/',

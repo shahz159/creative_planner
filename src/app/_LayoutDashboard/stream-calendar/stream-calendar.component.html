@@ -122,47 +122,47 @@
                 <div class="kt-list-nav">
                     <div class="kt-list-label">My Calender</div>
                     <div class="kt-list-nav-main-cal-scroll">
-                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(0)">
+                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(0)" for="checkallmeetings">
                             <span class="kt-list-nav-item-check">
                                 <input class="form-check-input"  [checked]="user_Type === 0"  type="checkbox" value="" id="checkallmeetings">
                             </span>
-                            <label class="kt-list-nav-item-label" for="checkallmeetings">All meetings</label>
+                            <label class="kt-list-nav-item-label">All meetings</label>
                         </div>
-                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(1)">
+                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(1)"  for="checkmymeetings">
                             <span class="kt-list-nav-item-check">
                                 <input class="form-check-input"  [checked]="user_Type === 1"  type="checkbox" value="" id="checkmymeetings">
                             </span>
-                            <label class="kt-list-nav-item-label" for="checkmymeetings">My meetings</label>
+                            <label class="kt-list-nav-item-label">My meetings</label>
                         </div>
-                        <div class="kt-list-nav-item"  (click)="sortMeetingCalender(2)">
+                        <div class="kt-list-nav-item"  (click)="sortMeetingCalender(2)" for="checkconmeetings">
                             <span class="kt-list-nav-item-check">
                                <input class="form-check-input" [checked]="user_Type === 2" type="checkbox" value="" id="checkconmeetings">
                             </span>
-                            <label class="kt-list-nav-item-label" for="checkconmeetings">Confirm meetings</label>
+                            <label class="kt-list-nav-item-label">Confirm meetings</label>
                         </div>
-                        <div class="kt-list-nav-item"  (click)="sortMeetingCalender(3)">
+                        <div class="kt-list-nav-item"  (click)="sortMeetingCalender(3)" for="checkpenmeetings">
                             <span class="kt-list-nav-item-check">
                                <input class="form-check-input" [checked]="user_Type === 3" type="checkbox" value="" id="checkpenmeetings">
                             </span>
-                            <label class="kt-list-nav-item-label" for="checkpenmeetings">Pending meetings</label>
+                            <label class="kt-list-nav-item-label">Pending meetings</label>
                         </div>
-                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(4)">
+                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(4)" for="checkrejmeetings">
                             <span class="kt-list-nav-item-check">
                                <input class="form-check-input" [checked]="user_Type === 4" type="checkbox" value="" id="checkrejmeetings">
                             </span>
-                            <label class="kt-list-nav-item-label" for="checkrejmeetings">Rejected meetings</label>
+                            <label class="kt-list-nav-item-label">Rejected meetings</label>
                         </div>
-                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(5)">
+                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(5)" for="checkdomeetings">
                             <span class="kt-list-nav-item-check">
                                <input class="form-check-input" [checked]="user_Type === 5" type="checkbox" value="" id="checkdomeetings">
                             </span>
-                            <label class="kt-list-nav-item-label" for="checkdomeetings">Done attended</label>
+                            <label class="kt-list-nav-item-label">Done attended</label>
                         </div>
-                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(6)">
+                        <div class="kt-list-nav-item" (click)="sortMeetingCalender(6)" for="checkdomeetings">
                             <span class="kt-list-nav-item-check">
                                <input class="form-check-input" [checked]="user_Type === 6" type="checkbox" value="" id="checkdomeetings">
                             </span>
-                            <label class="kt-list-nav-item-label" for="checkdomeetings">Done not attended</label>
+                            <label class="kt-list-nav-item-label">Done not attended</label>
                         </div>
                         <!-- <div class="kt-list-nav-item">
                             <span class="kt-list-nav-item-check">
@@ -4721,7 +4721,7 @@
                     </div>
 
 
-                    <div class="custom-evt-tsk-footer" id=""   *ngIf="Meeting_status==false && AdminMeeting_Status!=1 && Status1=='Owner' && Schedule_type1=='Event' && this.RecurrenceValue != 'Daily'">     
+                    <div class="custom-evt-tsk-footer" id=""   *ngIf="AdminMeeting_Status!=1 && Status1=='Owner' && Schedule_type1=='Event' && this.RecurrenceValue != 'Daily'">     
                         <div><span>Repeat Event?</span></div>      
                         <div class="custom-evt-tsk-footer-action">
                             <div class="action-btns">
@@ -5090,8 +5090,9 @@
             <div class="modal-body">
                 <div class="rescontent" style="color: #3c4043;">
                     <div class="form-check mb-3">
-                        <label class="form-check-label">
-                            <input type="radio" (click)="Action_event(1)"  name="optradio" checked><span
+                        <label class="form-check-label"> 
+                            <!-- checked -->
+                            <input type="radio" (click)="Action_event(1)"  name="optradio"><span
                                 class="ml-2">This Event Only</span>
                         </label>
                     </div>
