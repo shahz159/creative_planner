@@ -2464,7 +2464,7 @@ this.eventtaskitemtimeModal_dismiss();
       this.Endtms &&
       this.MinLastNameLength
       && (this.ScheduleType === 'Event' ?this.allAgendas.length > 0: true )
-      // && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0)
+      // && (this.ngEmployeeDropdown&&this.ngEmployeeDropdown.length > 0).action-section
     ) {
       this.OnSubmitSchedule();
       this.notProvided = false;
