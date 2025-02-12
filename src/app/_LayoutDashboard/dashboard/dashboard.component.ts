@@ -2276,7 +2276,7 @@ debugger
           frmData.append("files", this._lstMultipleFiales[i].Files);
         }
         const xmlDoc = document.implementation.createDocument('', '', null);
-      const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+        const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
 
       // Iterate over the file groups
       this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
@@ -2350,10 +2350,6 @@ debugger
       this._calenderDto.attachment =this._attachmentValue.toString();
 
      
-      frmData.forEach((value, key) => {
-        console.log("Start", `${key} : ${value}, = ${typeof value}` ,"End");
-      });
-
       console.log(this._calenderDto,'new copy meeting')
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {

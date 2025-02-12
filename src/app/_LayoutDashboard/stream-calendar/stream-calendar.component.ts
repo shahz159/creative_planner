@@ -46,7 +46,6 @@ moment.locale('en');
 export class StreamCalendarComponent implements OnInit {
   disablePreviousDate = new Date();
   disablePreviousTodayDate = new Date();
-
   calendarOptions: CalendarOptions
   selectDay: any;
   Current_user_ID: any;
@@ -66,6 +65,7 @@ export class StreamCalendarComponent implements OnInit {
   scstartdate: any = new Date();
   _labelName: string;
   today: any = new Date().toISOString().substring(0, 10);
+  gmtOffset = `GMT+${(-new Date().getTimezoneOffset() / 60) | 0}:${String(Math.abs(new Date().getTimezoneOffset()) % 60).padStart(2, '0')}`;
   ProjectCode: string; Status: string; ProjectType: string; Owner: string;
   event: any;
   Selecteddaate: any;
@@ -420,6 +420,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("month-date").style.display = "none";
     document.getElementById("schedule-date").style.display = "none";
     document.getElementById("kt-calendar-quickactions").classList.remove("border-0");
+    this.dayScheduleJson();
   }
 
   week_div() {
@@ -3196,17 +3197,13 @@ getEventsForWeeks(weeksFromToday: number) {
     this.clickHistory = [];
     this.currentWeekOffset = 0;
   } else {
-
     const newOffset = this.currentWeekOffset + weeksFromToday;
-
-   
     if (weeksFromToday < 0) {
       this.clickHistory.push(weeksFromToday);
     } else if (weeksFromToday > 0 && this.clickHistory.length > 0) {
       this.clickHistory.pop();
     }
 
-  
     this.currentWeekOffset = newOffset;
   }
 
@@ -3225,7 +3222,6 @@ if(this.noSelectedDate == true && weeksFromToday === 0  && this.selectDay){
 this.noSelectedDate = false;
 const startDate = formattedDate || today;
 
-  
   this.firstDate = new Date(startDate);
   this.firstDate.setDate(startDate.getDate() + (this.currentWeekOffset * 7));
 
@@ -3234,8 +3230,6 @@ const startDate = formattedDate || today;
 
   this.lastDate = new Date(this.firstDate);
   this.lastDate.setDate(this.firstDate.getDate() + 7);
-
-
 
   if(this.Searchingfunc==false){
     this.Calendarjson = this.Searchingjson;
@@ -3246,9 +3240,6 @@ const startDate = formattedDate || today;
     });
   }
  
- 
-
-
     this.groupedMeetingsArray = Object.entries(this.Calendarjson.reduce((acc, current) => {
       const date = current.start.split(' ')[0]; 
       if (!acc[date]) {
@@ -3258,8 +3249,6 @@ const startDate = formattedDate || today;
       return acc;
   }, {})).map(([date, events]) => ({ date, events }));
 
-
-
       this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({
         ...day,
         events: day.events.map(event => {
@@ -3268,13 +3257,11 @@ const startDate = formattedDate || today;
             const linkIndex = parts.findIndex(part => part.includes("Link"));
     
             let attendees = linkIndex > 1 ? parts.slice(1, linkIndex).map(s => s.trim()) : null;
-    
         
             if (attendees && attendees.length) {
                 attendees = [attendees[attendees.length - 1]]; 
             }
-    
-        
+
             if (attendees && attendees[0]) {
                 const match = attendees[0].match(/\+(\d+)/);
                 attendees[0] = match ? `+${parseInt(match[1], 10) + 1}` : `+1`; 
@@ -3286,7 +3273,23 @@ const startDate = formattedDate || today;
         })
     }));
     
-      this.filteredMeetingsArray = this.groupedMeetingsArray;
+    
+    this.filteredMeetingsArray = Object.values(
+      this.groupedMeetingsArray.flatMap(group =>
+        group.events.flatMap(event => {
+          const [startDate] = event.start.split(' ');
+          const [endDate] = event.end.split(' ');
+          return startDate !== endDate
+            ? [
+                { date: startDate, events: [{ ...event, title: `${event.title} (1/2)` }] },
+                { date: endDate, events: [{ ...event, title: `${event.title} (2/2)` }] }
+              ]
+            : [{ date: group.date, events: [event] }];
+        })
+      ).reduce((acc, { date, events }) => (
+        (acc[date] ??= { date, events: [] }).events.push(...events), acc
+      ), {})
+    );
     
       console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
        
@@ -4100,7 +4103,7 @@ Task_pending() {
 }
 
 
-Pending_meeting() {
+Pending_meeting() { 
   this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
   this.CalenderService.NewPending_table(this._calenderDto).subscribe(text => {
     this.notifyService.showSuccess("Added In Pending Successfully", "Success");
@@ -6597,6 +6600,14 @@ Rejected_Click() {
 
 }
 /////////////////////////////////////////// Timeline end /////////////////////////////////////////////////////////
+
+/////////////////////////////////////////// Day section Sart /////////////////////////////////////////////////////////
+
+dayScheduleJson(){
+  console.log(this.Scheduledjson,'Scheduledjson')
+}
+
+/////////////////////////////////////////// Day section end /////////////////////////////////////////////////////////
 
 
 }

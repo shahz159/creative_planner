@@ -266,7 +266,7 @@ export class CalenderService {
   this.obj_CalenderDTO.flag_id= obj.flag_id;
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetRessheduling_table", this.obj_CalenderDTO);
 }
-NewPending_table(obj:CalenderDTO){
+NewPending_table(obj:CalenderDTO){ debugger
   this.obj_CalenderDTO.Schedule_ID=  obj.Schedule_ID;
 
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetPending_tables", this.obj_CalenderDTO);
