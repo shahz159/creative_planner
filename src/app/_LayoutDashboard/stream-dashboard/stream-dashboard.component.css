@@ -473,10 +473,19 @@ tr.action-row:hover {
 
 @media screen and (min-width : 1500px) {
     .picsum-img-wrapper img {
-        height: 220px;
+        height: 240px;
     }
 }
-
+@media screen and (min-width : 1600px) {
+    .picsum-img-wrapper img {
+        height: 280px;
+    }
+}
+@media screen and (min-width : 1700px) {
+    .picsum-img-wrapper img {
+        height: 300px;
+    }
+}
 .svg-bg {
     position: absolute;
     top: 0;
@@ -2505,7 +2514,7 @@ span.p-b-percent-count {
         width: 70px;
     }
     .picsum-img-wrapper img {
-        height: 190px;
+        height: 170px;
     }
 }
 

@@ -5131,8 +5131,8 @@
                                 />
                             <button *ngIf="agendacharacterCount && agendacharacterCount<101" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
                             </div>
-                            <span *ngIf="agendacharacterCount > 0" >Max characters {{agendacharacterCount}}/100 </span>
-                            <span style="color:red" *ngIf="agendacharacterCount>=101">Maximum 100 characters are allowed.</span>
+                            <span class="max-charater" *ngIf="agendacharacterCount > 0" >Max characters {{agendacharacterCount}}/100 </span>
+                            <span class="max-charater" style="color:red" *ngIf="agendacharacterCount>=101">Maximum 100 characters are allowed.</span>
                         </div>
 
 

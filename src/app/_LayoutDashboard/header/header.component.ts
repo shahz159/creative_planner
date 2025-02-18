@@ -170,10 +170,11 @@ export class HeaderComponent implements OnInit {
   }
 
   getusername(){
-    this.service._GetUserName(this.Current_user_ID).subscribe(data=>{  debugger
-      this._fullname=data['Emp_First_Name'];
-      this._fullname = this._fullname.replace(/\(\)/, '').trim();
-     
+    this.service._GetUserName(this.Current_user_ID).subscribe(data=>{  
+      if(data){
+        this._fullname=data['Emp_First_Name'];
+        this._fullname = this._fullname.replace(/\(\)/, '').trim();
+      }
     });
   }
 
@@ -635,11 +636,19 @@ export class HeaderComponent implements OnInit {
   localStorage.removeItem('IsStreamDownload');
   localStorage.removeItem('DMS_UserInfo');
   localStorage.removeItem('currentUser');
+
+  sessionStorage.clear();
+  localStorage.clear();
+    // localStorage.setItem('language', this.storedLanguage);
+    // alert(this.storedLanguage)
+    this.router.navigate(['login']).then(() => {
+      window.location.reload();
+    });
   // Call AuthService logout for any additional logic
   this.authService.logout();
 
   // Navigate to login page
-  this.router.navigate(['/login']);
+  // this.router.navigate(['/login']);
 }
 
   featuremodel() {

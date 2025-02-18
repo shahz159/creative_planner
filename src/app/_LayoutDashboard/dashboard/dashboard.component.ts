@@ -1950,7 +1950,7 @@ isValidURL = true;
     if(this.Link_Details){
     this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
     }
-
+debugger
     if (
       (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ))&&
       (this.Description_Type?(this.characterCount<=500):true)&& this.isValidURL &&  
@@ -2276,7 +2276,7 @@ isValidURL = true;
           frmData.append("files", this._lstMultipleFiales[i].Files);
         }
         const xmlDoc = document.implementation.createDocument('', '', null);
-      const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+        const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
 
       // Iterate over the file groups
       this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
@@ -2350,10 +2350,6 @@ isValidURL = true;
       this._calenderDto.attachment =this._attachmentValue.toString();
 
      
-      frmData.forEach((value, key) => {
-        console.log("Start", `${key} : ${value}, = ${typeof value}` ,"End");
-      });
-
       console.log(this._calenderDto,'new copy meeting')
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {

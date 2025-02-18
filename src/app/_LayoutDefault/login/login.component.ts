@@ -55,14 +55,16 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   message: string;
-  dashboardUrl: string = 'backend/Streamdashboard';
+  dashboardUrl: string = 'backend/dashboard';
+  // dashboardUrl: string = 'backend/Streamdashboard';
   policyUrl: string = 'userpolicy';
   User_FullName: string;
   //---end---
   ngOnInit() {
     // this.authService.logout();
     if (localStorage.getItem('isLoggedIn') === 'true') {
-      this.router.navigate(['/backend/Streamdashboard']);
+      this.router.navigate(['/backend/dashboard']);
+      // this.router.navigate(['/backend/Streamdashboard']);
     }
 
     $('.showOrHide').on('click', function (e) {
@@ -107,91 +109,147 @@ export class LoginComponent implements OnInit {
       return;
     }
     else {
-      // this.Sendlogin_Credentials();
-      // debugger
+ 
       this.Obj_ILoginDTO.UserName = this.f.userid.value;
       this.Obj_ILoginDTO.Password = this.f.password.value;
-      //alert("One");
       localStorage.removeItem('DMS_UserInfo');  // clear old user info.
       this.isLogginCredentails=true;  // logging credentials process started.
-      this.authenticationService.login(this.f.userid.value, this.f.password.value)
-        .subscribe(
-          (data) => {
+
+      this.authenticationService.login(this.f.userid.value, this.f.password.value).subscribe((data) => {     
             try{
 
-            console.log("DMS login Data---->", data);
-            const userIdJson = data['Data']['UserId']; 
-            if(userIdJson.length > 0){
+            const userIdJson = JSON.parse(data['Data']['UserId']);
+            if(userIdJson.length>0&&userIdJson[0]["CredentialsIsValid"]==true){
               
-              const parsedUserIdArray = JSON.parse(userIdJson); // Parse the JSON string into an array
-            const userIdObject = parsedUserIdArray[0];
-            if (userIdObject["CredentialsIsValid"] == true) { // Access the first object in the array
-            this.IsStreamDownload = userIdObject['IsStreamDownload']; 
-            this.User_FullName = userIdObject['UserName'];
-            this.OrganizationId = userIdObject['organizationid'];
-            this.SystemRole = userIdObject['DesignationName'];
-            this.SystemRole = userIdObject['DesignationName'];
-              this.IsPolicynew = userIdObject['IsPolicy'];
-              this.EmpNo = userIdObject['EmpNo'];
-
-            const _createdBy=userIdObject['createdby'];
-            const _userProfile=userIdObject['UserProfile'];
-            const _userRole=userIdObject['RoleId'];
-            const Isdownload: string = `${this.IsStreamDownload}`;
-      
-            const userinfo_={
-              createdby:_createdBy,
-              UserProfile:_userProfile,
-              UserRole:_userRole
-            };    
-            localStorage.setItem('DMS_UserInfo',JSON.stringify(userinfo_));  // store new user info.  
-            localStorage.setItem('IsStreamDownload',Isdownload);
-            localStorage.setItem("UserfullName", this.User_FullName);
+              this.IsStreamDownload = userIdJson[0]['IsStreamDownload']; 
+              this.User_FullName = userIdJson[0]['UserName'];
+              this.OrganizationId = userIdJson[0]['organizationid'];
+              this.SystemRole = userIdJson[0]['DesignationName'];
+              this.SystemRole = userIdJson[0]['DesignationName'];
+              this.IsPolicynew = userIdJson[0]['IsPolicy'];
+              this.EmpNo = userIdJson[0]['EmpNo'];
+              const _createdBy=userIdJson[0]['createdby'];
+              const _userProfile=userIdJson[0]['UserProfile'];
+              const _userRole=userIdJson[0]['RoleId'];
+              const Isdownload: string = `${this.IsStreamDownload}`;
+              const userinfo_={
+                createdby:_createdBy,
+                UserProfile:_userProfile,
+                UserRole:_userRole
+              };    
+              localStorage.setItem('DMS_UserInfo',JSON.stringify(userinfo_));  // store new user info.  
+              localStorage.setItem('IsStreamDownload',Isdownload);
+              localStorage.setItem("UserfullName", this.User_FullName);
               localStorage.setItem('_Currentuser', this.DB_username);
               localStorage.setItem('OrganizationId', this.OrganizationId);
               localStorage.setItem('EmpNo', this.EmpNo);
               localStorage.setItem('isLoggedIn', "true");
-              // this.router.navigate([this.dashboardUrl]);
-              //   this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login by');
-              //   this.notifyService.showSuccess("Successfully", "Logged in");
-              //   this.InValidPassword = false;
-              //   this.cd.detectChanges();
-
-
-                if (this.IsPolicynew == true) {
-                  this.router.navigate([this.dashboardUrl]);
-                  this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login by');
-                  this.notifyService.showSuccess("Successfully", "Logged in");
-                  this.InValidPassword = false;
+                
+  
+              if (this.IsPolicynew == true) {
+                this.router.navigate([this.dashboardUrl]);
+                this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login by');
+                this.notifyService.showSuccess("Successfully", "Logged in");
+                this.cd.detectChanges();
+              }
+              else if (this.IsPolicynew == false) {
+                  this.router.navigate([this.policyUrl]); 
                   this.cd.detectChanges();
-                }
-                else if (this.IsPolicynew == false) {
-                  this.router.navigate([this.policyUrl]);
-                  this.InValidPassword = false;
-                  this.cd.detectChanges();
-                }
-               
-            this.bsService.UserLoggedIn.emit();  // user has logged in && user info fetched. 
-            }
-            else {
-              this.InValidPassword = true;
+              }
+                 
+
+              this.InValidUserName=false;
+              this.InValidPassword=false;
+              this.message='';
+              this.bsService.UserLoggedIn.emit();  // user has logged in && user info fetched. 
+
+            }else{
+
+              this.InValidUserName=true;
+              this.InValidPassword=true;
+              this.message='Please check your username and password';
               console.log("Invalid Login");
               this.authService.logout();
               localStorage.removeItem('EmpNo');
               this.cd.detectChanges();
-              // alert("Invalid");
-              // this.message = "Please check your UserName and Password";
+
             }
-            // Retrieve the UserId JSON string
+
+            this.isLogginCredentails=false;  // logging credentials process ended. 
+          }catch(e){
+            console.error(e);
             this.isLogginCredentails=false;  // logging credentials process ended. 
           }
 
-           }catch(e){
-            console.error(e);
-            this.isLogginCredentails=false;  // logging credentials process ended. 
-           }
+            // console.log("DMS login Data---->", data);
+            // const userIdJson = data['Data']['UserId']; 
+            // if(userIdJson.length > 0){
+              
+            // const parsedUserIdArray = JSON.parse(userIdJson); // Parse the JSON string into an array
+            // const userIdObject = parsedUserIdArray[0];
+            // if (userIdObject["CredentialsIsValid"] == true) { // Access the first object in the array
+            // this.IsStreamDownload = userIdObject['IsStreamDownload']; 
+            // this.User_FullName = userIdObject['UserName'];
+            // this.OrganizationId = userIdObject['organizationid'];
+            // this.SystemRole = userIdObject['DesignationName'];
+            // this.SystemRole = userIdObject['DesignationName'];
+            //   this.IsPolicynew = userIdObject['IsPolicy'];
+            //   this.EmpNo = userIdObject['EmpNo'];
+
+            // const _createdBy=userIdObject['createdby'];
+            // const _userProfile=userIdObject['UserProfile'];
+            // const _userRole=userIdObject['RoleId'];
+            // const Isdownload: string = `${this.IsStreamDownload}`;
+      
+            // const userinfo_={
+            //   createdby:_createdBy,
+            //   UserProfile:_userProfile,
+            //   UserRole:_userRole
+            // };    
+            // localStorage.setItem('DMS_UserInfo',JSON.stringify(userinfo_));  // store new user info.  
+            // localStorage.setItem('IsStreamDownload',Isdownload);
+            // localStorage.setItem("UserfullName", this.User_FullName);
+            //   localStorage.setItem('_Currentuser', this.DB_username);
+            //   localStorage.setItem('OrganizationId', this.OrganizationId);
+            //   localStorage.setItem('EmpNo', this.EmpNo);
+            //   localStorage.setItem('isLoggedIn', "true");
+            //   // this.router.navigate([this.dashboardUrl]);
+            //   //   this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login by');
+            //   //   this.notifyService.showSuccess("Successfully", "Logged in");
+            //   //   this.InValidPassword = false;
+            //   //   this.cd.detectChanges();
+
+
+            //     if (this.IsPolicynew == true) {
+            //       this.router.navigate([this.dashboardUrl]);
+            //       this.notifyService.showInfo(this.User_FullName + ' ' + ' ', 'Login by');
+            //       this.notifyService.showSuccess("Successfully", "Logged in");
+            //       this.InValidPassword = false;
+            //       this.cd.detectChanges();
+            //     }
+            //     else if (this.IsPolicynew == false) {
+            //       this.router.navigate([this.policyUrl]);
+            //       this.InValidPassword = false;
+            //       this.cd.detectChanges();
+            //     }
+               
+            // this.bsService.UserLoggedIn.emit();  // user has logged in && user info fetched. 
+            // }
+            // else {
+            //   this.InValidPassword = true;
+            //   console.log("Invalid Login");
+            //   this.authService.logout();
+            //   localStorage.removeItem('EmpNo');
+            //   this.cd.detectChanges();
+            //   // alert("Invalid");
+            //   // this.message = "Please check your UserName and Password";
+            // }
+            // // Retrieve the UserId JSON string
+            // this.isLogginCredentails=false;  // logging credentials process ended. 
+            //  }
 
           });
+
     }
   }
 

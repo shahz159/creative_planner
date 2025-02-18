@@ -16,7 +16,7 @@ export class CompanyService {
   readonly rootUrl: string;
   objcompany_List: CompanyDTO[];
   constructor(private http: HttpClient, private commonUrl: ApiurlService) {
-    this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser_SP')));
     this.currentUser = this.currentUserSubject.asObservable();
     this._obj = new CompanyDTO();
     this.rootUrl = this.commonUrl.apiurl;

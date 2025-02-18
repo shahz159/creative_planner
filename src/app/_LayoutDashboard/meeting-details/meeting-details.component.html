@@ -549,7 +549,7 @@
                                                                 <div class="app-title">Zoom meeting</div>
                                                                 </a>
                                                             </span>
-                                                            <span *ngIf="Link_Detail.includes('teams.microsoft.com')">
+                                                            <span *ngIf="Link_Detail.includes('teams')">
                                                                 <a href="{{Link_Detail.substring(Link_Detail.indexOf('https://')) }}"
                                                                 target="_blank">
                                                                 <div class="app-logo">
@@ -7018,10 +7018,12 @@
                     </div>
                 </div>
                 <div class="kt-Attachament__body">
-                    <!-- <div *ngIf="showFileUpload" class="file-upload-backdrop"></div> -->
+                     <div *ngIf="showFileUpload" class="file-upload-backdrop"></div> 
+                    
                     <div *ngIf="showFileUpload" class="file-upload-progress">
+                        <h5 class="file-upload-upload-label"style="">Uploading attachment ... Please do not close or refresh this tab.</h5>
                         <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 54%" aria-valuenow="54" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [ngStyle]="{'width': progress+'%'}" [attr.aria-valuenow]="progress" style="width: 54%" aria-valuenow="54" aria-valuemin="0" aria-valuemax="100"></div>
                             <div class="progress-bar-control">
                                 <div class="progress-bar-label">
                                     <span *ngIf="filesUploadingCount === 1">Uploading "{{uploadingFileName}}"</span>
@@ -7034,7 +7036,7 @@
                         </div>
                     </div>
                     <div id="attach_div">
-                        <div class="pt-2 pb-2 ">
+                        <div class="pt-2 pb-2">
                             <div class="d-flex-center">
                                 <div class="position-relative w-100">
                                     <input type="text" autocomplete="off" name="search" placeholder="Search..."
@@ -7132,7 +7134,7 @@
                                         <div class="d-flex-center">
                                     
                                         <div class="kt-notification__item-title fw-bold cursor-pointer ml-1">
-                                            <a (click)="LoadDocument(item.file_id,true,item.File_Name&&item.File_Name,item.url,item.contenttype,item.Created_by)"> {{item.File_Name}}</a>
+                                            <a (click)="LoadDocument(item.file_id,true,item.File_Name&&item.File_Name,item.url,item.File_type,item.Created_by)"> {{item.File_Name}}</a>
                                         </div>
                                         <div>
                                             <div class="d-flex align-items-center">
@@ -8689,8 +8691,8 @@
                                             />
                                         <button *ngIf="agendacharacterCount && agendacharacterCount<101" class="btn btn-secondary add-agenda-btn" (click)="addAgendas()">Add</button>
                                         </div>
-                                         <span *ngIf="agendacharacterCount > 0" >Max characters {{agendacharacterCount}}/100 </span>
-                                        <span style="color:red" *ngIf="agendacharacterCount>=101">Maximum 100 characters are allowed.</span>
+                                         <span  class="max-charater" *ngIf="agendacharacterCount > 0" >Max characters {{agendacharacterCount}}/100 </span>
+                                        <span  class="max-charater" style="color:red" *ngIf="agendacharacterCount>=101">Maximum 100 characters are allowed.</span>
                                     </div>
                                     <div class="todo-list">
                                         <div class="agenda-item" *ngFor="let agenda of allAgendas; let i=index">

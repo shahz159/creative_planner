@@ -1080,12 +1080,20 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
         this.ObjSharePortfolio.Preference = this._Preferences;
         this.ObjSharePortfolio.Shared_By = this.Current_user_ID;
         this.ObjSharePortfolio.IsActive = true;
-        this.service.SharePortfolio(this.ObjSharePortfolio);
-        this.notifyService.showInfo("Successfully", "Portfolio Shared");
-        this.GetPortfolioProjectsByPid();
-        this.Close_ShareModel();
-        this.PortfolioList = false;
-        this.cdr.detectChanges();
+        this.service.SharePortfolio(this.ObjSharePortfolio).subscribe((data)=>{
+          if(data){
+              console.log(data);
+              this.notifyService.showInfo("Successfully", "Portfolio Shared");
+              this.GetPortfolioProjectsByPid();
+              this.Close_ShareModel();
+              this.PortfolioList = false;
+              this.cdr.detectChanges();
+          }
+        
+        })
+   
+  
+      
       }
     }
   }

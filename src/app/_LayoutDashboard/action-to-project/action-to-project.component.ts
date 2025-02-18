@@ -300,10 +300,11 @@ export class ActionToProjectComponent implements OnInit {
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode,this.Current_user_ID).subscribe(
       (data) => {
 
-        this.ownerArr=(JSON.parse(data[0]['RacisList']));
+        this.ownerArr=(JSON.parse(data[0]['RacisList']));   
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
-        console.log(this.allUsers,"groupby");
+        console.log(this.ownerArr,"groupby");
+
 
 
       });
@@ -1080,7 +1081,7 @@ contentType:string="";
 
 
 startActionCreation=async()=>{
-
+debugger
   // Action cost calculate.
    this.actionCost=null;  // must be empty before calculating.
    this.processingActionCreate=true;
@@ -1090,10 +1091,17 @@ startActionCreation=async()=>{
          console.log("action cost:",this.actionCost);
    }
    else{
-     this.notifyService.showError('','Internal server error');
-     this.processingActionCreate=false;
-     console.error('Unable to get action cost value.')
-     return;
+    //  this.notifyService.showError('','Internal server error');
+    //  this.processingActionCreate=false;
+    //  console.error('Unable to get action cost value.')
+    //  return;
+
+
+    // test for new users (Temporary)
+    const cost=this._allocated*10;
+    this.actionCost=cost;
+    // test for new users (Temporary)
+
    }
  // Action cost calculate.
 
@@ -1404,6 +1412,7 @@ getFileExtension(fileName: any): string | null {
     this.router.navigate(["./backend/createproject"]);
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+    document.getElementById("kt_wrapper").style.zIndex="unset";
     }
     else{
       this.router.navigate(["./MoreDetails", this.selectedProjectCode]);

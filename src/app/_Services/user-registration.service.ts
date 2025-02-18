@@ -23,7 +23,7 @@ export class UserRegistrationService {
   readonly rootUrl : string;
 
   constructor(private http: HttpClient, private commonUrl: ApiurlService) {
-    this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser_SP')));
     this.currentUser = this.currentUserSubject.asObservable();
     this._obj = new UserRegistrationDTO();
     this.rootUrl = this.commonUrl.apiurl;
@@ -83,6 +83,7 @@ export class UserRegistrationService {
     this._obj.UserIsActive = _values.UserIsActive;
     this._obj.CreatedBy = this.currentUserValue.createdby;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
+    alert(this.currentUserValue.organizationid);
     this._obj.CompanyId = _values.CompanyId;
     this._obj.DepartmentId = _values.DepartmentId;
     this._obj.RoleId = _values.RoleId;

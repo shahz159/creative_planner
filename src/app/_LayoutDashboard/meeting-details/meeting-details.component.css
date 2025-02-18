@@ -8757,14 +8757,14 @@ svg.asseticn.prim-icn.memo_attachment_img {
 }
 
 .file-upload-backdrop {
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #000000;
+    background-color: #00000075;
     z-index: 8;
-    opacity: 0.2;
+    /* opacity: 0.2;*/
 }
 
 .file-upload-progress {
@@ -8782,7 +8782,7 @@ svg.asseticn.prim-icn.memo_attachment_img {
     width: 30%;
     height: 30px;
     border-radius: 16px;
-    background-color: #347bb1;
+    background-color: #6b92af;
     position: relative;
 }
 
@@ -8841,4 +8841,39 @@ svg.asseticn.prim-icn.memo_attachment_img {
 .custom-evt-tsk-action-icon svg {
     width: 20px;
     height: 20px;
+}
+
+  .file-upload-progress .file-upload-upload-label{
+    position: fixed;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    animation-name: texthighlight-jump;
+    animation-duration: 0.6s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-direction: alternate;
+  }
+  @keyframes texthighlight-jump{
+    from{
+         transform: scale(1);
+         opacity: 0.91;
+    }
+    to{
+      transform: scale(1.025);
+      opacity: 1;
+    }
+  }
+
+.max-charater{
+    font-size: 13px;
+    font-weight: 400;
+    font-family: var(--font-family-sans-serif);
+    -ms-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
 }

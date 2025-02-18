@@ -27,7 +27,7 @@ export class SourceService {
   _XmlToJson: XmlToJson;
   ObjSourceDto:SurceDto;
   constructor(private http: HttpClient, private commonUrl: ApiurlService) {
-    this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser_SP')));
     this.currentUser = this.currentUserSubject.asObservable();
 
     // this._obj = new InboxDTO();
