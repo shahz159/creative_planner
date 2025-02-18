@@ -8869,3 +8869,11 @@ svg.asseticn.prim-icn.memo_attachment_img {
       opacity: 1;
     }
   }
+
+.max-charater{
+    font-size: 13px;
+    font-weight: 400;
+    font-family: var(--font-family-sans-serif);
+    -ms-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+}

@@ -10185,3 +10185,11 @@ span.time-value {
   padding: 15px;
   box-shadow: rgb(183 183 183) 0px 0px 20px;
 }
+
+.max-charater{
+  font-size: 13px;
+  font-weight: 400;
+  font-family: var(--font-family-sans-serif);
+  -ms-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+}
