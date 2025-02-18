@@ -10185,3 +10185,6 @@ span.time-value {
   padding: 15px;
   box-shadow: rgb(183 183 183) 0px 0px 20px;
 }
+.bnk-txt .kt-blank-msg:before {
+  content: none
+}

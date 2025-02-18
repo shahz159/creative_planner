@@ -851,7 +851,7 @@
                         </div>
                         <!-- new filters -->
 
-                        <button   title="Click to reset the filter" class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll();getNewFilterResult();">
+                        <button   title="Click to reset the filter" class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"   (click)="resetAll();getNewFilterResult(); clearAllCheckboxes()">
                             <i class="fas fa-sync-alt mr-0"></i>
                         </button>
 
@@ -992,13 +992,12 @@
            <div class="notification delay-notification">
             <span class="notif-msg">
               Need your action on
-              <span *ngIf="this.mydelayProjects && this.mydelayProjects.length > 0" style="color:#D32F2F" (click)="filterPrjs(Current_user_ID, 'Delay')" class="delayaction-of-emp">
+              <!-- <span *ngIf="this.mydelayProjects && this.mydelayProjects.length > 0" style="color:#D32F2F" (click)="filterPrjs(Current_user_ID, 'Delay')" class="delayaction-of-emp">
                 {{this.mydelayProjects.length}} delay project(s)
-              </span>
+              </span> -->
 
-              <ng-container *ngIf="this.mydelayProjects.length > 0 && (this.forwardUA.length > 0 || this.completionUA.length > 0 || this.cancellationUA.length > 0 || this.newUA.length > 0)">
-                <b>,&nbsp;</b>
-              </ng-container>
+              <!-- <ng-container *ngIf="this.forwardUA.length > 0  && ( this.completionUA.length > 0 || this.cancellationUA.length > 0 || this.newUA.length > 0)">
+              </ng-container> -->
 
               <span *ngIf="this.forwardUA && this.forwardUA.length > 0" (click)="filterPrjs(Current_user_ID, 'Forward Under Approval')" class="delayaction-of-emp" style="color:#9C27B0">
                 {{this.forwardUA.length}} Forward approval(s)
@@ -1094,63 +1093,7 @@
 
 
                              <div class="d-flex">
-                              <div  class="dropdown show mr-2">
-                                <button  *ngIf="this.allSelectedProjects.length>0"  class="btn btn-sm btn-outline-primary" data-toggle="dropdown" id="test1" title="Click to create new portfolio"
-                                [ngClass]="{'active': activeClass_NewPortfolio}" (click)="DropdownOpen();_portfolioName = ''">
-                                <!-- <svg width="44px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12H18M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> -->
 
-                                <span class="fs-14" style="font-size: 12px;" >Create portfolio</span>
-
-                              </button>
-                            <div  class="dropdown-menu dropdown-menu-fit dropdown-menu-md bg-ground"
-                                aria-labelledby="test1">
-
-                                <!--begin::Nav-->
-                                <div>
-                                    <ul class="kt-nav">
-
-
-                                        <li class="kt-nav__item px-3">
-
-                                            <strong>Create new portfolio</strong>
-
-                                            <div class="kt-nav__separator"></div>
-                                            <p>Enter the portfolio name you wish to create,it can be editable
-                                                anytime
-                                                later.</p>
-                                            <!-- <p>Enter the Portfolio Name you wish to create, it can be editable
-                                                anytime.</p> -->
-                                            <input type="text" class="form-control"
-                                                placeholder="Enter Portfolio Name" [(ngModel)]="_portfolioName"
-                                                (keydown.enter)="createNewPortfolio()" (keypress)="omit_number($event)" type="text"
-                                                [ngStyle]="{'border-color':_portfolioName == '' ? 'rgb(255 177 175)' : 'rgb(136 150 255)','background-color':_portfolioName=='' ? 'rgb(253 135 135 / 10%)':'#f5f6fc' }">
-
-                                            <!-- <p class="text-primary mb-0 py-1" [hidden]="_portfolioName!=''"> * Portfolio Name is
-                                    required</p>-->
-                                            <span>
-                                                <p class="text-danger mb-0 py-1">{{alreadyExists}}</p>
-                                            </span>
-                                            <span>
-                                                <p class="text-danger mb-0 py-1" *ngIf="special==true">
-                                                    {{specialnote}}
-                                                </p>
-                                            </span>
-                                        </li>
-                                        <!-- <li class="kt-nav__separator"></li> -->
-                                        <li class="kt-nav__foot d-inline-block">
-                                            <button
-                                                class="btn btn-secondary theme-btn btn-upper btn-sm btn-bold mr-2"
-                                                id="nextbttn" (click)="createNewPortfolio()"
-                                                [disabled]="_portfolioName==''">Next</button>
-                                            <button
-                                                class="btn btn-label-secondary btn-outline-secondary btn-upper btn-sm btn-bold"
-                                                (click)="resetInputText()">Close</button>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!--end:: Nav-->
-                            </div>
-                              </div>
                             <ng-container *ngIf="isapprovlFound">
                               <div class="btn-group mr-2" role="group">
                                 <button type="button" class="btn btn-outline-success btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -1168,10 +1111,68 @@
                                 </div>
                             </div>
 
-                            <button   (click)="rejectpros()" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
+                            <button   (click)="rejectpros()" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1 mr-2">
                               <span class="fs-8" style="font-weight:500">Reject</span>
                             </button>
                           </ng-container>
+
+                          <div  class="dropdown show mr-2">
+                            <button  *ngIf="this.allSelectedProjects.length>0"  class="btn btn-sm btn-outline-primary" data-toggle="dropdown" id="test1" title="Click to create new portfolio"
+                            [ngClass]="{'active': activeClass_NewPortfolio}" (click)="DropdownOpen();_portfolioName = ''">
+                            <!-- <svg width="44px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12H18M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> -->
+
+                            <span class="fs-14" style="font-size: 12px;" >Create portfolio</span>
+
+                          </button>
+                        <div  class="dropdown-menu dropdown-menu-fit dropdown-menu-md bg-ground"
+                            aria-labelledby="test1">
+
+                            <!--begin::Nav-->
+                            <div>
+                                <ul class="kt-nav">
+
+
+                                    <li class="kt-nav__item px-3">
+
+                                        <strong>Create new portfolio</strong>
+
+                                        <div class="kt-nav__separator"></div>
+                                        <p>Enter the portfolio name you wish to create,it can be editable
+                                            anytime
+                                            later.</p>
+                                        <!-- <p>Enter the Portfolio Name you wish to create, it can be editable
+                                            anytime.</p> -->
+                                        <input type="text" class="form-control"
+                                            placeholder="Enter Portfolio Name" [(ngModel)]="_portfolioName"
+                                            (keydown.enter)="createNewPortfolio()" (keypress)="omit_number($event)" type="text"
+                                            [ngStyle]="{'border-color':_portfolioName == '' ? 'rgb(255 177 175)' : 'rgb(136 150 255)','background-color':_portfolioName=='' ? 'rgb(253 135 135 / 10%)':'#f5f6fc' }">
+
+                                        <!-- <p class="text-primary mb-0 py-1" [hidden]="_portfolioName!=''"> * Portfolio Name is
+                                required</p>-->
+                                        <span>
+                                            <p class="text-danger mb-0 py-1">{{alreadyExists}}</p>
+                                        </span>
+                                        <span>
+                                            <p class="text-danger mb-0 py-1" *ngIf="special==true">
+                                                {{specialnote}}
+                                            </p>
+                                        </span>
+                                    </li>
+                                    <!-- <li class="kt-nav__separator"></li> -->
+                                    <li class="kt-nav__foot d-inline-block">
+                                        <button
+                                            class="btn btn-secondary theme-btn btn-upper btn-sm btn-bold mr-2"
+                                            id="nextbttn" (click)="createNewPortfolio()"
+                                            [disabled]="_portfolioName==''">Next</button>
+                                        <button
+                                            class="btn btn-label-secondary btn-outline-secondary btn-upper btn-sm btn-bold"
+                                            (click)="resetInputText()">Close</button>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--end:: Nav-->
+                        </div>
+                          </div>
                              </div>
 
 

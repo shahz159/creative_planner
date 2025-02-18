@@ -541,7 +541,7 @@
                         <ng-container *ngIf="requestType=='Project Forward'">* Approve it, to forward this project to the assigned employee for further execution and completion.</ng-container>
                         <ng-container *ngIf="requestType=='Project Cancel'">* Approve it, to cancel this project, removing it from the system and releasing the team from responsibility.</ng-container>
                         <ng-container *ngIf="requestType=='Task Complete'">* Approve it, to appreciate project team for great work.</ng-container>
-                        
+
                     </span>
                     <span class="text-info fw-medium" *ngIf="Reject_active">
                         <ng-container *ngIf="requestType=='New Project'">* Reject as to type of rejection, which help user to modify the project accordingly.</ng-container>
@@ -1800,7 +1800,7 @@
                                 aria-valuemin="0" aria-valuemax="100"></div>
                             <div *ngIf="actn_cancellation_under>0" class="progress-bar P_cancellation_under_Approval" role="progressbar"
                                  [ngStyle]="{'width': (actn_cancellation_under / total) * 100 + '%'}" aria-valuenow="20"
-                                 aria-valuemin="0" aria-valuemax="100"></div>    
+                                 aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                     <div class="col-lg-1">
@@ -1833,7 +1833,7 @@
                                 <li *ngIf="Project_Hold>0"><span class="B-Bot P_Hold"></span> Hold
                                     <b>({{Project_Hold}})</b> </li>
                                 <li *ngIf="actn_cancellation_under>0"><span class="B-Bot P_cancellation_under_Approval"></span>Cancellation Approval
-                                    <b>({{actn_cancellation_under}})</b> </li>    
+                                    <b>({{actn_cancellation_under}})</b> </li>
 
                                 <!-- <li><span class="B-Bot P_Active"></span> Active</li> -->
                                 <!-- <li><span class="B-Bot P_Slow"></span> Slow <b>(5)</b></li> -->
