@@ -2775,9 +2775,16 @@ ul.card-task-item-project-ul li:hover::before {
     line-height: 26px;
 }
 
+.month-e-s {
+    overflow: scroll;
+    visibility: hidden;
+    -webkit-box-flex: 0;
+    flex: none;
+}
+
 .month-slot-body {
     margin: 0;
-    overflow: hidden;
+    overflow: auto;
     flex: 1 1 0%;
     display: flex;
     flex-direction: column;
@@ -3932,7 +3939,18 @@ span.part-count {
     border-radius: 8px;
     min-height: 40px;
 }
+.month-slot-body::-webkit-scrollbar {
+    background: transparent;
+    height: 8px;
+    width: 17px;
+}
 
+.month-slot-body::-webkit-scrollbar-thumb {
+    border: 4px solid #fff;
+    background: #dadce0;
+    border-radius: 8px;
+    min-height: 40px;
+}
 .schedule-event-task-scroll::-webkit-scrollbar {
     background: transparent;
     height: 8px;
@@ -5351,4 +5369,68 @@ span.previous-dots {
         opacity: 0;
         transform: scale(2);
     }
+}
+
+.day-day-time.day-task.time-15-min .day-day-time-label {
+    font-size: 9px;
+    line-height: 1;
+    align-items: flex-start;
+}
+.day-day-time.day-task.time-30-min .day-day-time-label {
+    font-size: 9px;
+    line-height: 1;
+    align-items: center;
+}
+.day-day-time.day-task.time-30-min .day-day-time-time {
+    font-size: 9px;
+    line-height: 1;
+}
+
+
+.day-day-time.day-event.time-15-min .day-day-time-label {
+    font-size: 9px;
+    line-height: 1;
+    align-items: flex-start;
+}
+.day-day-time.day-event.time-30-min .day-day-time-label {
+    font-size: 9px;
+    line-height: 1;
+    align-items: center;
+}
+.day-day-time.day-event.time-30-min .day-day-time-time {
+    font-size: 9px;
+    line-height: 1;
+}
+
+
+
+
+.week-day-time.week-task.time-15-min .week-day-time-label {
+    font-size: 9px;
+    line-height: 1;
+    align-items: flex-start;
+}
+.week-day-time.week-task.time-30-min .week-day-time-label {
+    font-size: 9px;
+    line-height: 1;
+    align-items: center;
+}
+.week-day-time.week-task.time-30-min .week-day-time-time {
+    font-size: 9px;
+    line-height: 1;
+}
+
+.week-day-time.week-event.time-15-min .week-day-time-label {
+    font-size: 9px;
+    line-height: 1;
+    align-items: flex-start;
+}
+.week-day-time.week-event.time-30-min .week-day-time-label {
+    font-size: 9px;
+    line-height: 1;
+    align-items: center;
+}
+.week-day-time.week-event.time-30-min .week-day-time-time {
+    font-size: 9px;
+    line-height: 1;
 }

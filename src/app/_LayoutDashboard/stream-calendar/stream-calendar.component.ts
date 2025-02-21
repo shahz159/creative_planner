@@ -427,7 +427,7 @@ export class StreamCalendarComponent implements OnInit {
   }
 
 
-  weekToDay(selectesDate) {
+  weekToDay(selectesDate) { 
     document.getElementById("kt-day-div").style.display = "block";
     document.getElementById("kt-week-div").style.display = "none";
     document.getElementById("kt-month-div").style.display = "none";
@@ -479,6 +479,10 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("month-date").style.display = "block";
     document.getElementById("schedule-date").style.display = "none";
     document.getElementById("kt-calendar-quickactions").classList.add("border-0");
+    this.dayMeetingSection = 'Monthly';
+    this.monthlyScheduleJson(0);
+
+    
   }
 
   sch_div() {
@@ -3146,8 +3150,13 @@ this.eventtaskitemtimeModal_dismiss();
       this.dayScheduleJson(3);
     }else if(this.dayMeetingSection == 'Weekly'){
       this.weeklyScheduleJson(3);
+    }else if(this.dayMeetingSection == 'Monthly'){
+      this.monthlyScheduleJson(3);
     }
    
+
+
+    
   }
 
 
@@ -3183,7 +3192,14 @@ this.eventtaskitemtimeModal_dismiss();
           this.getEventsForWeeks(0);
         }else if(this.dayMeetingSection == 'Day'){
           this.dayScheduleJson(0);
+        }else if(this.dayMeetingSection == 'Weekly'){
+          this.weeklyScheduleJson(0);
+        }else if(this.dayMeetingSection == 'Monthly'){
+          this.monthlyScheduleJson(0);
         }
+
+
+
         
         this.dataBindEndTime = performance.now();
         this.dataBindTime = this.dataBindEndTime - this.dataBindStartTime;
@@ -6479,6 +6495,8 @@ filterDraft(type : 'date'|'meeting'):void{
       this.dayScheduleJson(0);
     }else if(this.dayMeetingSection == 'Weekly'){
       this.weeklyScheduleJson(0);
+    }else if(this.dayMeetingSection == 'Monthly'){
+      this.monthlyScheduleJson(0);
     }
    
   
@@ -6660,7 +6678,7 @@ Rejected_Click() {
 /////////////////////////////////////////// Day section Sart /////////////////////////////////////////////////////////
 
 dayEventsLists: any []=[];
-mappedHoursList:any [] =[];
+dayMappedList:any [] =[];
 hoursList: string[] = [
   "12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM",
   "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM"
@@ -6675,14 +6693,14 @@ dayScheduleJson(dayFromToday: number){ debugger
       
         this.dayEventsLists = this.Scheduledjson.filter(e => e.start.includes(selectedDate));
       
-            this.mappedHoursList = this.hoursList.map(hour => ({
+            this.dayMappedList = this.hoursList.map(hour => ({
               hour,
               events: this.dayEventsLists.filter(({ start }) => new Date(start).getHours() === 
                 (hour.includes("AM") ? (hour.startsWith("12") ? 0 : parseInt(hour)) : (hour.startsWith("12") ? 12 : parseInt(hour) + 12))
               )
             }));
 
-            this.mappedHoursList = this.mappedHoursList.map(hour => ({
+            this.dayMappedList = this.dayMappedList.map(hour => ({
               ...hour,
               events: hour.events.map(event => {
                   const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
@@ -6694,7 +6712,7 @@ dayScheduleJson(dayFromToday: number){ debugger
               })
           }));
 
-      console.log(this.mappedHoursList,'dayJson');
+      console.log(this.dayMappedList,'dayMappedList');
 }
 
 getDurationInPixels(start: string, end: string): number {
@@ -6710,6 +6728,7 @@ weekStartDate:any;
 weekEndDate:any;
 weekDates:any;
 weekJsonList:any;
+weekMappedList:any;
 
 weeklyScheduleJson(weekFromToday) { 
   
@@ -6728,7 +6747,6 @@ weeklyScheduleJson(weekFromToday) {
 
    const weekEventsLists = this.Scheduledjson.filter(event => new Date(event.start) >= startDate && new Date(event.start) < endDate);
    
-
    this.weekJsonList = weekEventsLists.map(event => {
     const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
     const title = parts[0];
@@ -6738,11 +6756,59 @@ weeklyScheduleJson(weekFromToday) {
     return { ...event, title, link, attendees };
     });
 
+    this.weekMappedList = this.hoursList.map(hour => ({
+      hour,
+      events: this.weekDates.map(date => ({
+        date,
+        subdate: this.weekJsonList.filter(({ start }) => {
+          const eventDate = new Date(start);
+          return (
+            eventDate.toISOString().split('T')[0] === date &&
+            eventDate.getHours() === (hour.includes("AM") ? (hour.startsWith("12") ? 0 : parseInt(hour)) : (hour.startsWith("12") ? 12 : parseInt(hour) + 12))
+          );
+        })
+      }))
+    }));
 
-
-console.log(this.weekDates,'weekDates');
-console.log(this.weekJsonList,'weekEventsLists'); // Filtered events within the week
+  
+    console.log(this.weekMappedList,'weekMappedList'); // Filtered events within the week
 }
 /////////////////////////////////////////// Weekly section end /////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////// Monthly section Sart /////////////////////////////////////////////////////////
+
+monthMappedList:any;
+weekdays:any;
+selectedMonthlyDate:any;
+
+
+monthlyScheduleJson(monthFromToday) { debugger
+  this.selectDay = monthFromToday === 3 ? moment() : moment(this.selectDay).add(monthFromToday, 'month');
+  this.selectedMonthlyDate = moment(this.selectDay).startOf('month');
+  this.weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' , 'Sunday'];
+  const start = moment(this.selectDay).startOf('month').isoWeekday(1);
+  this.monthMappedList = Array.from({ length: 6 }, (_, i) => ({
+    week: Array.from({ length: 7 }, (__, j) => {
+      const currentDate = start.clone().add(i * 7 + j, 'days');
+      const dateStr = currentDate.format('DD-MM-YYYY');
+      return {
+        date: dateStr,
+        day: currentDate.format('dddd'),
+        events: this.Scheduledjson.filter(event => moment(event.start).format('DD-MM-YYYY') === dateStr)
+      };
+    })
+  }));
+  console.log(this.monthMappedList, 'monthMappedList');
+}
+
+
+convertToISO(dateString: string) {
+  const [day, month, year] = dateString.split('-');
+  return `${year}-${month}-${day}`;
+}
+
+
+/////////////////////////////////////////// Monthly section end /////////////////////////////////////////////////////////
 
 }
