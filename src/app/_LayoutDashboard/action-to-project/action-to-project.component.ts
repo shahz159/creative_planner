@@ -100,6 +100,7 @@ export class ActionToProjectComponent implements OnInit {
   ProjectDeadLineDate: Date;
   ProjectStartDate: Date;
   maxAllocation: number;
+  perDayLimit:number;
   Current_user_ID: string;
   _projcode: boolean;
   _desbool: boolean;
@@ -183,6 +184,7 @@ export class ActionToProjectComponent implements OnInit {
     this.BsService.bs_catName.subscribe(d =>{ this.cat_name = d});
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
+    this.perDayLimit=7; // allocation hr per day limit.
     this.GetAllEmployeesForAssignDropdown();
 
     this.gethierarchy();
@@ -449,7 +451,7 @@ export class ActionToProjectComponent implements OnInit {
     if (this._StartDate == null || this._EndDate == null) {
       this._message = "Start Date/End date missing!"
     }
-    else {
+    else { 
       // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
       // this.end_dt = moment(this._EndDate).format("MM/DD/YYYY");
       this.start_dt=new Date(this._StartDate);
@@ -461,10 +463,10 @@ export class ActionToProjectComponent implements OnInit {
       var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
       if(Difference_In_Days==0){
         Difference_In_Days=-1;
-        this.maxAllocation = (-Difference_In_Days) * 10 / 1;
+        this.maxAllocation = (-Difference_In_Days) * this.perDayLimit / 1;
       }
       else{
-        this.maxAllocation = (-Difference_In_Days) * 10 / 1 +10;
+        this.maxAllocation = (-Difference_In_Days) * this.perDayLimit / 1 +this.perDayLimit;
       }
       console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
     }
@@ -903,21 +905,80 @@ export class ActionToProjectComponent implements OnInit {
 processingActionCreate:boolean = false
 sweetAlert2=async()=>{
 
-// 1. Validation : Action owner and responsible are same.
-  if(this.owner==this.selectedEmpNo){
-     const choice = await Swal.fire({
-        title: 'Action owner and responsible are same.',
-        text: 'Do you want to continue?',
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No'
-      });
-    if(choice.isConfirmed==false){
-       return;
-    }
-  }
 
-//2. Validation : Action deadline is greater than main project deadline.
+// 1. Validation : forms fields required check  start.
+if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
+  this._projcode = true;
+  // return false;
+}else this._projcode=false;
+
+
+
+if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined ||this.isPrjNameValid != 'VALID'||this.Sub_ProjectName.length>100) {
+  // this.Sub_ProjectName==="VALID"
+  this._subname = true;
+}else this._subname=false;
+
+
+if (this._Description == "" || this._Description == null || this._Description == undefined ||this.isPrjDesValid !=='VALID'||this._Description.length>500) {
+  this._desbool = true;
+  // return false;
+}else this._desbool = false;
+
+
+if (this.selectedEmpNo == "" || this.selectedEmpNo == null || this.selectedEmpNo == undefined) {
+  this._selectemp = true;
+  // return false;
+}else this._selectemp = false;
+
+if (this._StartDate == null || this._StartDate == null || this._StartDate == undefined) {
+  this._sdate = true;
+  // return false;
+}else this._sdate = false;
+
+if (this._EndDate == null || this._EndDate == null || this._EndDate == undefined) {
+  this._edate = true;
+  // return false;
+}else this._edate = false;
+
+if(this._allocated==null||this._allocated==undefined||this._allocated==0||this._allocated > this.maxAllocation){
+  this._alchr=true;
+  // return false;
+}else  this._alchr=false;
+// 
+
+
+if(this._Urlid==5||this._Urlid==4){
+     if(this._sdate == false){  // if input startdate of action is given.
+      this._actbefore=this.isActionStartBeforeProject();   
+     } 
+}
+
+const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._actbefore ,this._alchr].some(item=>item);
+if(fieldsRequired)
+return false;        // please provide all mandatory fields value.
+// 1. Validation : forms fields required check end.
+
+
+
+// 2. Validation : Action owner and responsible are same. start
+if(this.owner==this.selectedEmpNo){
+  const choice = await Swal.fire({
+     title: 'Action owner and responsible are same.',
+     text: 'Do you want to continue?',
+     showCancelButton: true,
+     confirmButtonText: 'Yes',
+     cancelButtonText: 'No'
+   });
+ if(choice.isConfirmed==false){
+    return;
+ }
+}
+// 2. Validation : Action owner and responsible are same. end
+
+
+
+//3. Validation : Action deadline is greater than main project deadline.
 var datestrEnd = (new Date(this._EndDate)).toUTCString();
 var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
 const dateOne = new Date(this._EndDate);
@@ -950,73 +1011,6 @@ else if ((dateTwo < dateOne) && (this.Current_user_ID!=this.Owner_Empno && this.
   });
  return;
 }
-
-
-// 3. Validation : forms fields required check  start.
-if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
-  this._projcode = true;
-  // return false;
-}else this._projcode=false;
-
-
-if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
-  // this.Sub_ProjectName==="VALID"
-  this._subname = true;
-}else this._subname=false;
-
-if (this.isPrjNameValid !== 'VALID'  ) {
-  // Don't proceed with form submision if input is invalid
-  return;
-}
-
-if(this.Sub_ProjectName.length>100){
-return;
-}
-
-if (this._Description == "" || this._Description == null || this._Description == undefined ) {
-  this._desbool = true;
-  // return false;
-}else this._desbool = false;
-if(this.isPrjDesValid !=='VALID'){
-  return
-}
-
-if(this._Description.length>500){
-return
-}
-
-
-if (this.selectedEmpNo == "" || this.selectedEmpNo == null || this.selectedEmpNo == undefined) {
-  this._selectemp = true;
-  // return false;
-}else this._selectemp = false;
-
-if (this._StartDate == null || this._StartDate == null || this._StartDate == undefined) {
-  this._sdate = true;
-  // return false;
-}else this._sdate = false;
-
-if (this._EndDate == null || this._EndDate == null || this._EndDate == undefined) {
-  this._edate = true;
-  // return false;
-}else this._edate = false;
-
-if(this._allocated==null||this._allocated==undefined||this._allocated==0){
-  this._alchr=true;
-  // return false;
-}else  this._alchr=false;
-
-
-if(this._Urlid==5||this._Urlid==4){
-     this._actbefore=this.isActionStartBeforeProject();
-}
-
-
-const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._actbefore ,this._alchr].some(item=>item);
-if(fieldsRequired)
-return false;        // please provide all mandatory fields value.
-// 3. Validation : forms fields required check end.
-
 
 
 // 4. Validation : only for project creation page.
@@ -1065,7 +1059,6 @@ if(this._Urlid == 5){
 // Action creation here
 this.startActionCreation();
 
-
 }
 
 azuremessage: any;
@@ -1080,7 +1073,7 @@ contentType:string="";
 
 
 startActionCreation=async()=>{
-debugger
+
   // Action cost calculate.
    this.actionCost=null;  // must be empty before calculating.
    this.processingActionCreate=true;
@@ -1663,10 +1656,13 @@ hasSameDateActions(){
 }
 
 
-isActionStartBeforeProject():boolean{
-  const mainPrjStartdate=new Date(this.ProjectStartDate);  // project start date.
-  const inputActnStartdate=this._StartDate;               // action start date.
-  const isStartsBefore=inputActnStartdate<mainPrjStartdate;  // is action starts before main project.
+isActionStartBeforeProject():boolean{ 
+  let isStartsBefore=false;
+  if(this.ProjectStartDate&&this._StartDate){
+    const mainPrjStartdate=new Date(this.ProjectStartDate);  // project start date.
+    const inputActnStartdate=this._StartDate;               // action start date.
+    isStartsBefore=inputActnStartdate<mainPrjStartdate;  // is action starts before main project.
+  }
   return isStartsBefore;
 }
 

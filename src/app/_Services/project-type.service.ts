@@ -110,7 +110,6 @@ export class ProjectTypeService {
   }
 
   GetProjectsBy_portfolioId(pid: number) {
-
     // let P_Id: string = sessionStorage.getItem('Pid');
     // let parsePid: number = +P_Id;
     this.objPortfolioDTO.Portfolio_ID = pid;
@@ -1172,14 +1171,27 @@ export class ProjectTypeService {
 
 
 
-  NewGetTimelineInbox(listtype:'D'|'P',empNo:string){ 
-    // D - Requests, P - Response
-    this.ObjSubTaskDTO.Emp_No=empNo;
-    this.ObjSubTaskDTO.type=listtype;
-    return this.http.post(this.rootUrl+'TestAPI/NewGetTimelineInbox',this.ObjSubTaskDTO);
+  NewGetTimelineInbox(obj:StatusDTO){   
+    this.ObjStatusDTO.Type=obj.Type;
+    this.ObjStatusDTO.Emp_No=obj.Emp_No;
+    this.ObjStatusDTO.SelectedEmp_No=obj.SelectedEmp_No;
+    this.ObjStatusDTO.SelectedCompany=obj.SelectedCompany;
+    this.ObjStatusDTO.PageNumber=obj.PageNumber;
+    this.ObjStatusDTO.RowsOfPage=obj.RowsOfPage;
+    this.ObjStatusDTO.startdate=obj.startdate;
+    this.ObjStatusDTO.enddate=obj.enddate; 
+    return this.http.post(this.rootUrl+'TestAPI/NewGetTimelineInbox',this.ObjStatusDTO);
   }
 
 
-
+  NewGetTimelinedropdown(obj:StatusDTO){   
+    this.ObjStatusDTO.Type=obj.Type;
+    this.ObjStatusDTO.EmpNo=obj.EmpNo;
+    this.ObjStatusDTO.SelectedEmp_No=obj.SelectedEmp_No;
+    this.ObjStatusDTO.SelectedCompany=obj.SelectedCompany;
+    this.ObjStatusDTO.startdate=obj.startdate; 
+    this.ObjStatusDTO.enddate=obj.enddate;
+    return this.http.post(this.rootUrl+'TestAPI/NewGetTimelinedropdown',this.ObjStatusDTO);
+  }
 
 }

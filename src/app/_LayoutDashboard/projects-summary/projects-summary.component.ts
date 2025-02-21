@@ -105,7 +105,7 @@ Dateselectionrange: string = 'Date selection range';
       this.GetProjectsByUserName(this.type1);
     });
 
-   let filterprjsby:any=sessionStorage.getItem('filterprjsby');
+   let filterprjsby:any=sessionStorage.getItem('filterprjsby');     debugger
    if(filterprjsby){   // show only standard type projects which are in delay.
         filterprjsby=JSON.parse(filterprjsby);
         this.emplyToselect=filterprjsby.EmpNo?[filterprjsby.EmpNo]:[];
@@ -117,7 +117,7 @@ Dateselectionrange: string = 'Date selection range';
         this.TypeContInFilter=filterprjsby.ProjectType?[{ Block_No: filterprjsby.ProjectType }]:[];
         this.StatusCountFilter=filterprjsby.Status?[{ Name: filterprjsby.Status }]:[];
         this.CompanyCountFilter=filterprjsby.Company?[{Company_No:filterprjsby.Company}]:[];
-
+                                 
         this.Type=this.type1;
         this.userFound=true;
         sessionStorage.removeItem('filterprjsby');
@@ -1089,7 +1089,7 @@ dates:any
   }
 
   filterPrjs(empNo:string,status:string){
-debugger
+
      this._ProjectDataList = this.un_FilteredProjects.filter(item => {
       if(status == 'Delay')
       return ((item.Emp_No == empNo || item.Owner == this.Current_user_ID)  && (item.Status == status));
@@ -1126,7 +1126,7 @@ debugger
 
 
   applyFilters() {
-
+debugger
     this.edited = true
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
@@ -1140,7 +1140,6 @@ debugger
     this.selectedCompany_String = this.checkedItems_Cmp.map(select => {
       return select.Company_No;
     }).join(',');
-
 
     const date_1 = this.selected_dates?moment(this.selected_dates.startDate.$d).format('YYYY-MM-DD'):null;
     const date_2 = this.selected_dates?moment(this.selected_dates.endDate.$d).format('YYYY-MM-DD'):null;
@@ -1192,7 +1191,7 @@ debugger
     this.filterMegadropdownclose();
     }
     else if(this.Type=='RACIS Projects'){
-      moment.locale('en');
+      moment.locale('en');     
       this.ObjUserDetails.SelectedStatus = this.selectedStatus_String;
       this.ObjUserDetails.SelectedCompany = this.selectedCompany_String;
       this.ObjUserDetails.SelectedEmp_No = this.selectedEmp_String;
@@ -1211,7 +1210,7 @@ debugger
       else{
         this.ObjUserDetails.ActiveStatus = "Active";
       }
-
+      console.log("object passing to api:",this.ObjUserDetails);
       //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails)
         .subscribe(data => {
@@ -1273,23 +1272,11 @@ debugger
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
       FileName = FileName.replace(/#/g, "%23");
       FileName = FileName.replace(/&/g, "%26");
+      FileName = FileName.replace(/%/g, "%25");
       var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + FileName + "&" + "submitby=" + Submitby + "&"+  "type=" + type;
 
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 
@@ -1301,6 +1288,7 @@ debugger
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
       FileName = FileName.replace(/#/g, "%23");
       FileName = FileName.replace(/&/g, "%26");
+      FileName = FileName.replace(/%/g, "%25");
       var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + FileName + "&" + "submitby=" + Submitby + "&" + "type=" + type;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
@@ -1788,7 +1776,7 @@ onEmpSelected(selected:boolean,selectedItem:any){
 filterByResult:boolean=false
 
 getNewFilterResult(){
-
+  debugger
 this.edited = false
 
   this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>this.emplyToselect.includes(item.Emp_No));
@@ -1817,12 +1805,6 @@ console.log(this.checkedItems_Emp,'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
   this.selectedCompany_String = this.checkedItems_Cmp.map(select => {
     return select.Company_No;
   }).join(',');
-
-
-
-
-
-
 
 
   // console.log(this.checkedItems_Emp,'employee')

@@ -568,7 +568,7 @@
             <div *ngIf="Type==type3" class="kt-portlet portlet-height">
                 <div class="kt-portlet__body kt-portlet__body_scroll p-0">
                     <div class="mt-3">
-                        <div class="darReqRes-Tabbtn tabs-view-dg px-1 mx-4 mb-2">
+                        <div class="darReqRes-Tabbtn tabs-view-dg px-1 mx-4 mb-2 d-flex align-items-center justify-content-between">
                             <ul class="nav nav-tabs nav-bold nav-tabs-line mb-0">
                               <li class="nav-item">
                                 <a class="nav-link" [ngClass]="{'active':currentDarSection=='DAR_REQUESTS'}" (click)="changeDarSectionTo('DAR_REQUESTS')">
@@ -581,7 +581,7 @@
                                     </svg>
                                     DAR requests
                                   </span>
-                                  <span *ngIf="totalDarRequests" class="total-count ml-2">{{totalDarRequests}}</span>
+                                  <span *ngIf="totalDarRequests" class="total-count ml-2">{{totalDarRequests|number}}</span>
                                 </a>
                               </li>
                               <li class="nav-item">
@@ -596,18 +596,153 @@
                                     </svg>
                                     DAR responses
                                   </span>
-                                  <span *ngIf="totalDarResponses" class="total-count ml-2">{{totalDarResponses}}</span>
+                                  <span *ngIf="totalDarResponses" class="total-count ml-2">{{totalDarResponses|number}}</span>
                                 </a>
                               </li>
                             </ul>
-                          </div>
+                            <div class="d-flex justify-content-end">
+                                <div *ngIf="total_records" class="darreqs-pagination">
+                                 <button (click)="prevPageRecords()" [disabled]="current_pageno==1"  class="btn pg-btn"><i class="fas fa-angle-left m-0 p-0 pr-1"></i></button>
+                                 <button (click)="nextPageRecords()" [disabled]="current_pageno>=lastPageNo"  class="btn pg-btn ml-1"><i class="fas fa-angle-right m-0 p-0 "></i></button>
+                                 <label class="mx-2 pg-label">{{(page_size*(current_pageno-1)+1)|number}} - {{ ((page_size*current_pageno<=total_records)?(page_size*current_pageno):total_records)|number}} of {{total_records|number}}</label>
+                                </div>
+                            <!-- Filters box start -->
+                            <div class="dreqres-fltrbox stores-sec">
+                                <ul class="nav navbar-nav filters">
+                                    <li class="dropdown mega-dropdown">
+                                        <a class="fltr-btn kt-todo__icon"  [ngClass]="{'filter-dot':isfilterOnDarSection}" data-toggle="dropdown" aria-expanded="false" id="filterDarReqResbox">
+                                            <svg width="18px" height="18px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-three-dots-vertical"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path> </g></svg>
+                                        </a>
+                                        <div class="dropdown-menu mega-dropdown-menu" aria-labelledby="filterDarReqResbox">
+                                            <div (click)="$event.stopPropagation();">
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                         <h5>
+                                                            <ng-container *ngIf="currentDarSection=='DAR_REQUESTS'">
+                                                                <strong>Total DAR requests - </strong>
+                                                                <span class="d-inline-block">
+                                                                    <strong *ngIf="totalDarRequests>=1000">{{totalDarRequests.toLocaleString()}}</strong>
+                                                                    <strong *ngIf="totalDarRequests<1000">{{totalDarRequests}}</strong> 
+                                                                </span>
+                                                            </ng-container>
+
+                                                            <ng-container *ngIf="currentDarSection=='DAR_RESPONSES'">
+                                                                <strong>Total DAR responses - </strong>
+                                                                <span class="d-inline-block">
+                                                                    <strong *ngIf="totalDarResponses>=1000">{{totalDarResponses.toLocaleString()}}</strong>
+                                                                    <strong *ngIf="totalDarResponses<1000">{{totalDarResponses}}</strong> 
+                                                                </span>
+                                                           </ng-container>
+                                                        </h5> 
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+    
+                                                    <div class="col-md-5">
+                                                        <p><strong>Company</strong></p>
+                                                         <div class="count-height">
+                                                            <div *ngFor="let company of companiesList" class="d-flex justify-content-between" >
+                                                                <label class="kt-checkbox">
+                                                                    <input type="checkbox" [checked]="isCompanyChecked(company.Company_No)" (change)="configureCompanyFilter($event.target.checked,company)"/> 
+                                                                    {{company.Name}}
+                                                                    <span></span>
+                                                                </label>
+                                                                <span class="count-btn">{{company.Count}}</span>
+                                                            </div>
+                                                        </div> 
+                                                        <div class="selected-options">
+                                                        <div *ngFor="let selcomp of filterRecordsByCompany"  class="selected-options-item">
+                                                            {{ selcomp.Name}}
+                                                              <span class="selected-options-item-remove" (click)="configureCompanyFilter(false,selcomp)">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                      <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                                  </svg>
+                                                              </span>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div class="col-md-5">
+                                                        <p><strong>Employee</strong></p>
+                                                        <div class="count-height">
+                                                            <div *ngFor="let emp of employeesList" class="d-flex justify-content-between">
+                                                                <label class="kt-checkbox">
+                                                                    <input type="checkbox" [checked]="isEmployeeChecked(emp.Emp_No)" (change)="configureEmployeeFilter($event.target.checked,emp)"/> 
+                                                                    {{emp.Name}}
+                                                                    <span></span>
+                                                                </label>
+                                                                <span class="count-btn">{{emp.Count}}</span>
+                                                            </div>
+                                                        </div> 
+
+                                                        <div class="selected-options">
+                                                        <div *ngFor="let selemp of filterRecordsByEmp"  class="selected-options-item">
+                                                            {{ selemp.Name}}
+                                                              <span class="selected-options-item-remove" (click)="configureEmployeeFilter(false,selemp)">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                      <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                                  </svg>
+                                                              </span>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+    
+                                                </div>
+                                                <br>
+                                                <hr>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <button class="btn btn-info btn-upper btn-sm btn-bold mr-2" data-toggle="dropdown" (click)="applyFilterOnDarSection()">Submit</button>
+                                                    <button class="btn btn-secondary btn-upper btn-sm btn-bold mr-2" (click)="resetDarSectionFilter()">Reset</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Filters box end -->
+                            </div>
+                        </div>
+
+                      <div>
+
+                        <div *ngIf="darRequestsSelected&&darRequestsSelected.length>0" class="d-flex px-1 mx-4 mb-2 mt-3 justify-content-between">
+                           <div>
+                            <div class="btn-group mr-2" role="group">
+                              <button type="button" class="btn btn-outline-success btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="fs-8" style="font-weight:500">Accept</span>
+                              </button>
+                              <div class="dropdown-menu drop-cus" style="margin-top:4px !important; border: 2px solid rgb(30, 197, 180) !important;" >
+                                  <a class="dropdown-item gap-2 align-items-center"  (click)="0">
+                                    Accept
+                                    <!-- <svg width="15px" height="15px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" style="stroke:  rgb(63 67 70); stroke-width: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="checkmark"> <line class="cls-1" x1="3" x2="12" y1="16" y2="25"></line> <line class="cls-1" x1="12" x2="29" y1="25" y2="7"></line> </g> </g></svg> -->
+                                  </a>
+                                  <a class="dropdown-item gap-2 align-items-center" (click)="0">
+                                    Accept with bonus
+                                    <!-- <svg style="fill:rgb(63 67 70);" width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.093,1.293l-11.2,11.2a.99.99,0,0,0-.242.391l-1.6,4.8A1,1,0,0,0,5,19a1.014,1.014,0,0,0,.316-.051l4.8-1.6a1.006,1.006,0,0,0,.391-.242l11.2-11.2a1,1,0,0,0,0-1.414l-3.2-3.2A1,1,0,0,0,17.093,1.293ZM9.26,15.526l-2.679.893.893-2.679L17.8,3.414,19.586,5.2ZM3,21H20a1,1,0,0,1,0,2H3a1,1,0,0,1,0-2Z"></path></g></svg> -->
+                                  </a>
+                              </div>
+                            </div>
+        
+                            <button (click)="0" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
+                              <span class="fs-8" style="font-weight:500">Reject</span>
+                            </button>
+                        </div>
+                            <span>{{darRequestsSelected&&darRequestsSelected.length}} items selected</span>
+              
+                        </div>
+
                         <div class="timeline-scroll px-1 mx-4">
                     
             <!-- dar requests/responses start-->
                  <div id="darReqRes-list" class="table-responsive">
                   <ng-container *ngIf="currentDarSection=='DAR_REQUESTS'">
                     <ng-container *ngIf="darRequestsLoading==false;else darReqResLoading">
-                    <table *ngIf="totalDarRequests>0" class="table table-hover dataTable no-footer dtr-inline" role="grid">
+                    <table *ngIf="darRequestsList&&darRequestsList.length>0" class="table table-hover dataTable no-footer dtr-inline" role="grid">
                       <thead>
                         <tr role="row">
                           <th style="width: 50px; height:30px;" class="text-center" rowspan="1" colspan="1">
@@ -619,6 +754,7 @@
                           </th>
                           <th rowspan="1" colspan="1" style="width:0px;"> Dar Report </th>
                           <th rowspan="1" colspan="1">Employee Name </th>
+                          <th rowspan="1" colspan="1">Company </th>
                           <th rowspan="1" colspan="1">Submitted On</th>
                           <th rowspan="1" colspan="1">Achieved Hours</th>
                           <th rowspan="1" colspan="1">Allotted Hours</th>
@@ -629,7 +765,7 @@
                         <tr *ngFor="let dreq of darRequestsList; let i=index"  [ngClass]="{'selected':currentDarSection=='DAR_REQUESTS'&&i==selectedDarReqIndex}"  role="row" class="odd project-list_AC">
                        
                           <td align="center">
-                            <input type="checkbox" class="form-check-input ps-1 btn px-0 mr-2">
+                            <input [checked]="darRequestsSelected.includes(dreq.Emp_Rep_No)" type="checkbox" class="form-check-input ps-1 btn px-0 mr-2" (change)="selectDarRequest($event.target.checked,dreq)" />
                           </td>
                           <td align="center">
                             <div class="d-flex align-items-center">
@@ -665,6 +801,9 @@
                             <span class="kt-widget__other text-nowrap ">{{dreq.Emp_Name}}</span>
                           </td>
                           <td>
+                            <span class="kt-widget__other text-nowrap ">{{dreq.Com_Name}}</span>
+                          </td>
+                          <td>
                             <span class="kt-widget__other text-nowrap ">{{dreq.SubmissionDate|date:'dd-MM-yyyy'}}</span>
                           </td>
                           <td>
@@ -683,7 +822,7 @@
                        
                       </tbody>
                     </table>
-                    <div *ngIf="totalDarRequests==0" class="no-c">
+                    <div *ngIf="(!darRequestsList)||darRequestsList.length==0" class="no-c">
                         <img src="https://cswebapps.com/creativeplanner/assets/images/no-image.png">
                         <h1 class="space">No requests found.</h1>
                     </div>
@@ -691,7 +830,7 @@
                   </ng-container>
                   <ng-container *ngIf="currentDarSection=='DAR_RESPONSES'">
                     <ng-container *ngIf="darResponsesLoading==false;else darReqResLoading">
-                    <table *ngIf="totalDarResponses>0" class="table table-hover dataTable no-footer dtr-inline" role="grid">
+                    <table *ngIf="darResponsesList&&darResponsesList.length>0" class="table table-hover dataTable no-footer dtr-inline" role="grid">
                         <thead>
                           <tr role="row">
                             <th style="width: 100px;"rowspan="1" colspan="1"></th>
@@ -763,7 +902,7 @@
                          
                         </tbody>
                     </table>
-                    <div *ngIf="totalDarResponses==0" class="no-c">
+                    <div *ngIf="(!darResponsesList)||darResponsesList.length==0" class="no-c">
                         <img src="https://cswebapps.com/creativeplanner/assets/images/no-image.png">
                         <h1 class="space">No responses found.</h1>
                     </div>
@@ -783,6 +922,8 @@
             <!-- dar requests/responses end-->
 
                         </div>
+
+                      </div>  
                     </div>
                 </div>
             </div>

@@ -1102,7 +1102,7 @@
                                   <div class="kt-project-sts-data">
                                       <ng-container *ngIf="['001', '002', '011'].includes(Prjtype)">
                                           <ng-container *ngIf="projectInfo && projectInfo.Duration !== ''">
-                                              {{ projectInfo.Duration === 1 ? '1 day'   : projectInfo.Duration  + ' days' }}
+                                              {{ projectInfo.Duration === 1 ? '1 day'   : (projectInfo.Duration+1)  + ' days' }}
                                           </ng-container>
                                           <ng-container *ngIf="!(projectInfo && projectInfo.Duration !== '')">
                                               {{ durationInDays === 0 ? '1 day'  : (durationInDays + 1) + ' days' }}
@@ -3155,7 +3155,7 @@
               <div class="row pt-2 pb-2">
                   <div class="col-lg-12 mt-3">
                       <div class="form-group text-end">
-                          <button type="submit"  (click)="projectEdit(0); " class="btn btn-info w-110 ml-2" >
+                          <button type="submit"  (click)="projectEdit()" class="btn btn-info w-110 ml-2" >
                               Update</button>
                               <button class="btn w-110 btn-secondary ml-2"   (click)="closeInfos()">Cancel</button>
                       </div>

@@ -213,11 +213,8 @@ export class CreateProjectComponent implements OnInit {
             }
       }
 
-
     });
     // open assigned project if asked in url
-
-
   }
 
 
@@ -272,7 +269,7 @@ export class CreateProjectComponent implements OnInit {
     this.createProjectService.NewGetProjectCreationDetails().subscribe((res)=>{
       console.log("NewGetProjectCreationDetails:",res);
       if(res)
-      { 
+      {    
          this.Authority_json=JSON.parse(res[0].Authority_json);
          this.Category_json=JSON.parse(res[0].Category_json);
          this.Client_json=JSON.parse(res[0].Client_json);
@@ -1638,45 +1635,38 @@ initializeSelectedValue() {
     this._remarks = this.projectInfo.Remarks
 }
 
-projectEdit(val) {
-
-if (this.Allocated <= this.maxAllocation){
-  this.notProvided = false
-}
-else{
-  this.notProvided = true
-  return
-}
-
-  this.isPrjNameValids=this.isValidString(this.ProjeditName,3);
-  this.isPrjDesValids=this.isValidString(this.ProjeditDescription,5);
 
 
-if (this.ProjeditName&&this.isPrjNameValids=='VALID'&&this.ProjeditName.length<=100&&this.ProjeditDescription&&this.isPrjDesValids==='VALID'&&this.ProjeditDescription.length<=500
-  &&this.selectedOwnResp&&this.selectedcategory&&this.selectedclient&&this.Start_Date&&this.End_Date
+
+
+
+projectEdit() {
+
+this.isPrjNameValids=this.isValidString(this.ProjeditName,3);
+this.isPrjDesValids=this.isValidString(this.ProjeditDescription,5);   
+
+
+// CHECK ALL INPUT DATA ARE VALID OR NOT.
+if(
+  this.ProjeditName&&this.isPrjNameValids=='VALID'&&this.ProjeditName.length<=100&&
+  this.ProjeditDescription&&this.isPrjDesValids==='VALID'&&this.ProjeditDescription.length<=500&&
+  this.selectedOwnResp&&
+  this.selectedcategory&&
+  this.selectedclient&&
+  this.Start_Date&&
+  this.End_Date&&
+  this.Allocated <= this.maxAllocation
 ){
   this.notProvided=false
-
-} else{
+}
+else{
 this.notProvided=true;
 return;
 }
 
-//  if(constv = parseInt(this.Allocated) <=  this.projectInfo.Duration +1){
-//   this.notProvided = false
-//  }else{
-//   this.notProvided = true
-//  }
-//  this.setprojeditAllocation()
-//  if(this.Allocated <= this.maxAllocation){
-// this.notProvided=false
-//  }
-//  else{
-//   this.notProvided=true
-//   return
-//  }
 
-  // this._remarks = '';
+
+// Update process starts.
 
   if (this.OGProjectType != this.ProjectType) {
     var type = this.ProjectType
@@ -1735,9 +1725,7 @@ return;
   }
 
 
-    var allocation = this.Allocated;
-
-
+  var allocation = this.Allocated;
   var datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");
   var datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");
 
@@ -1758,15 +1746,14 @@ return;
   const jsonvalue = JSON.stringify(jsonobj)
   console.log(jsonvalue, 'json');
 
-  if (val == 0) {
-
+ 
     this.approvalObj.Emp_no = this.Current_user_ID;
     this.approvalObj.Project_Code = this.PrjCode;
 
     this.approvalObj.json = jsonvalue;
     //this.approvalObj.Remarks = this._remarks;
-    this.approvalObj.isApproval = val;
-    this.getAddActionDetails();
+    this.approvalObj.isApproval = 0;
+
 
     this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
       console.log(data['message'], "edit response");
@@ -1774,7 +1761,10 @@ return;
       if(['1','5','6'].includes(data['message']))
       {
         this.notifyService.showSuccess("Updated successfully.", "Success");
+        this.getAddActionDetails();   // rebind project details
+        this.getActionsDetails();  // rebind action list.
         this.closeInfos();
+
       }
       else if(data['message'] == '2')
       {
@@ -1792,29 +1782,16 @@ return;
       //this.getProjectDetails(this.URL_ProjectCode);
 
     });
-  }
-  // else if (val == 1) {
-  //   this.approvalObj.Emp_no = this.Current_user_ID;
-  //   this.approvalObj.Project_Code = this.PrjCode;
-  //   this.approvalObj.json = jsonvalue;
-  //   this.approvalObj.Remarks = this._remarks;
-  //   this.approvalObj.isApproval = val;
 
-  //   this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
-  //     console.log(data['message'], "edit response");
-  //     if (data['message'] == '3') {
-  //       this.notifyService.showSuccess("Project updated and Approved successfully", "Success");
-  //     }
-  //     else if (data['message'] == '2') {
-  //       this.notifyService.showError("Not updated", "Failed");
-  //     }
-  //   //  this.getProjectDetails(this.URL_ProjectCode);
-  //   //  this.getapprovalStats();
-  //   //  this.closeInfos();
-  //   });
-  // }
 
 }
+
+
+
+
+
+
+
 // Project Edit End
 
 // RACIS CODE start
@@ -2022,7 +1999,6 @@ sendApproval=async()=>{
 const pdur=Math.abs(moment(_prjstrtd).diff(moment(_prjendd),'days'));
 let noactnDialogType:'MANDATORY'|'NOT_MANDATORY';
 noactnDialogType=pdur>=15?'MANDATORY':pdur<15?'NOT_MANDATORY':null;
-
 if(this.PrjActionsInfo.length==0){
 
   const choice=await Swal.fire({
@@ -2051,31 +2027,57 @@ if(this.PrjActionsInfo.length==0){
 //
 
 
-// 3.validation: Check if any action's start date is before the project start date
-  const inputdate = new Date(this.projectInfo.StartDate);
-  const actn_index = this.PrjActionsInfo.findIndex((actn) => {
-      const actdate = new Date(actn.StartDate);
-      return actdate < inputdate;
-  });
- if(actn_index>-1){
-  Swal.fire({
-    title: 'Invalid action dates',
-    html: `Action <b>"${this.PrjActionsInfo[actn_index].Project_Name}"</b> cannot start before the project itself. Please revise the start date for this action to comply with the project timeline.`,
-    showCancelButton:true,
-    showConfirmButton:true,
-    confirmButtonText:'View',
-    cancelButtonText:'Cancel'
-   }).then(choice=>{
-        if(choice.isConfirmed){
-          this.showActionDetails(actn_index);
-        }
-   })
 
-   return;
- }
+// 3.validation: checking all actions in the project have valid dates or not.
+if(this.PrjActionsInfo.length>0)   // if project contains actions
+{
+   const actnsWithWrongDates=this.PrjActionsInfo.filter((actn:any)=>{
+    const d1=new Date(actn.StartDate);
+    const d2=new Date(actn.EndDate);
+    return ((d1>=_prjstrtd&&d2<=_prjendd)==false)||(d1>d2);
+   });
+
+  if(actnsWithWrongDates.length>0){    // project includes actions with wrong start date and end date.
+    Swal.fire({
+        title:`Found ${actnsWithWrongDates.length} Invalid ${actnsWithWrongDates.length>1?'Actions':'Action'}`,
+        html:` <div style="text-align: justify;">      
+                 Please provide valid start date and end date for the following actions to proceed.
+                 <p style="margin-top:1rem;"><b style="font-size: 13px;font-weight: 500;">Project dates :</b> ${moment(this.projectInfo.StartDate).format('YYYY-MM-DD')} <b>-</b> ${moment(this.projectInfo.EndDate).format('YYYY-MM-DD')}</p>
+                 <fieldset style="border: 2px solid #b2b3b4; border-radius: 6px; margin-top:15px; padding: 4px; padding-bottom: 6px; overflow-y: auto; max-height: 126px; scrollbar-width: thin; font-size: 13px;">
+                      <table width="100%" cellpadding="5px" style="">
+                          <thead>
+                          <tr> <th></th><th style="font-size: 11px;font-weight: 500;">Actions</th><th style="font-size: 11px;font-weight: 500;">Start</th><th style="font-size: 11px;font-weight: 500;">End</th> </tr>
+                          </thead>
+                          <tbody> 
+                              ${ 
+                                actnsWithWrongDates.map((acn)=>{
+                                    return `<tr> 
+                                                <td width="10%">${acn.IndexId}.</td>
+                                                <td width="70%"><div style="display:-webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden !important;">${acn.Project_Name}</div></td> 
+                                                <td width="20%" style="font-weight: 500; text-wrap-mode: nowrap; color:red;">${moment(acn.StartDate).format('YYYY-MM-DD')}</td>
+                                                 <td width="20%" style="font-weight: 500; text-wrap-mode: nowrap; color:red;">${moment(acn.EndDate).format('YYYY-MM-DD')}</td>
+                                            </tr>`
+                                    }).join('')
+                               }
+                          </tbody>    
+                      </table>
+                    </fieldset>
+                     <div style="font-size: 12px;color: #00a2eb;border: 1px solid #aae4ff;font-weight: 500;margin-top: 10px;background-color: #d8efff;padding: 5px;border-radius: 4px;display: flex; align-items: center;column-gap: 7px;">
+                      <svg width="30px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.00024000000000000003" style="min-width: 18px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z" fill="#1692df"></path></g>
+                      </svg>
+                      <span>All actions must start and end within the project duration.</span>
+                    </div>
+                  </div>
+                </div> `,
+          showConfirmButton:true,
+          confirmButtonText: 'Ok',
+      });
+
+   return;   
+  }
+}
 //
-
-
 
 // 4.validation: Confirm Project Allocated hours
   const hrsToActns=this.PrjActionsInfo.reduce((sum,acn)=>(sum+Number.parseFloat(acn.AllocatedHours)),0);
@@ -2146,25 +2148,64 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
 }
 //
 
-
+debugger
 
 //6. calculate project cost.
-  this.PrjCost=0;
-  let alhrVal:number|null=null;
+  // this.PrjCost=0;
+  // let alhrVal:number|null=null;
 
-  if(this.PrjActionsInfo.length>0)  // if there are actions then calculate cost using those actions.
+  // if(this.PrjActionsInfo.length>0)  // if there are actions then calculate cost using those actions.
+  // {
+  //   alhrVal=this.PrjActionsInfo.reduce((sum,_actn)=>{
+  //     return sum+Number.parseFloat(_actn.AllocatedHours)
+  //    },0);
+  // }
+  // else if(noactnDialogType=='NOT_MANDATORY'){
+  //     alhrVal=this.projectInfo.AllocatedHours;   // take project allocated hrs set by user.
+  // }
+
+  // if(alhrVal!=null){
+  //   this.ProjectDto.Emp_No=this.Current_user_ID;
+  //   this.ProjectDto.Hours=alhrVal.toString();
+  //   const costres:any=await this.createProjectService.GetCPProjectCost(this.ProjectDto).toPromise();    // wait for project cost.
+  //   if(costres&&costres.Status){
+  //     this.PrjCost=costres.Data;
+  //     console.log('project_cost:',this.PrjCost);
+  //   }
+  //   else{
+  //     // console.log('ERROR WHILE CALCULATING PROJECT COST.')
+  //     // return;   // if any failure occur during the project cost calculation.
+    
+  //     // test for new users    (Temporary)
+  //     const cost=alhrVal*10
+  //     this.PrjCost=cost;
+  //     // test for new users  (Temporary)
+
+  //   }
+  // }
+  // else
+  // return;
+
+//
+// Project_Cost
+
+
+
+
+// 6.Calculate project cost
+if(this.PrjActionsInfo.length>0)  // check if there are actions in the project then calculate project cost using those actions cost.
+{
+  this.PrjCost=this.PrjActionsInfo.reduce((sum,_draftactn)=>{
+    return sum+_draftactn.Project_Cost;
+   },0);
+}
+else 
+{   
+  if(noactnDialogType=='NOT_MANDATORY')
   {
-    alhrVal=this.PrjActionsInfo.reduce((sum,_actn)=>{
-      return sum+Number.parseFloat(_actn.AllocatedHours)
-     },0);
-  }
-  else if(noactnDialogType=='NOT_MANDATORY'){
-      alhrVal=this.projectInfo.AllocatedHours;   // take project allocated hrs set by user.
-  }
-
-  if(alhrVal!=null){
+    const alhrVal=this.projectInfo.AllocatedHours;  
     this.ProjectDto.Emp_No=this.Current_user_ID;
-    this.ProjectDto.Hours=alhrVal.toString();
+    this.ProjectDto.Hours=alhrVal.toString();  
     const costres:any=await this.createProjectService.GetCPProjectCost(this.ProjectDto).toPromise();    // wait for project cost.
     if(costres&&costres.Status){
       this.PrjCost=costres.Data;
@@ -2181,10 +2222,12 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
 
     }
   }
-  else
+  else 
   return;
-
+}
 //
+
+
 
 
 // 7.validation: project cost confirmation from user.
