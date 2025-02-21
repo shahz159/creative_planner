@@ -772,6 +772,7 @@ createSRTProject=async()=>{
            fd.append('Project_Name',this.PrjName);
            fd.append('Emp_No',this.Current_user_ID);
            fd.append('Remarks',this._remarks);
+           fd.append("contentType",this.contentType);
            if(this.fileAttachment){
             fd.append("Attachment","true");
            }
@@ -782,7 +783,7 @@ createSRTProject=async()=>{
           //  this.createProjectService.NewUpdateFileUploadsByProjectCode(fd).subscribe((fres:any)=>{
             this.createProjectService.NewUpdateFileUploadsByProjectCodeCore(fd).subscribe((fres:any)=>{   debugger
             console.log("file attachment:",fres)
-            if(fres&&fres.Message==='Success'){
+            if(fres&&fres.message==='Success'){
               if(this.fileAttachment){
                 fd.append('file',this.fileAttachment);
                 this.createProjectService._AzureUpdateFileUploadsByProjectCode(fd).subscribe((event1: HttpEvent<any>) => {   debugger

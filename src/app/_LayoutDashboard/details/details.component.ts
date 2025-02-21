@@ -2853,6 +2853,7 @@ fetchingStdTaskAprvls:boolean=false;
 // accept, reject or next version submission done via this same method only.
 approvalSubmitting:boolean=false;
   submitApproval() {
+    debugger
     console.log('passing single approvaljson:',this.singleapporval_json);
     if (this.selectedType == '1') {
       console.log("singleapporval_json:",this.singleapporval_json);
@@ -2911,7 +2912,7 @@ approvalSubmitting:boolean=false;
               this.approvalSubmitting=false;
               this._Message = (data['message']);
               if (this._Message == 'Not Authorized' || this._Message == '0') {
-                this.notifyService.showError("project not approved.", 'Failed');
+                this.notifyService.showError("Project not approved.", 'Failed');
               }
               else {
                 this.Close_Approval();
@@ -5188,7 +5189,7 @@ check_allocation() {
               var myJSON = JSON.stringify(event);
               this._Message = (JSON.parse(myJSON).body).message;
 
-              if(this._Message=='Actions are in Under Approval'){
+              if(this._Message=='Actions are in under approval.'){
                 this.notifyService.showError(this._Message, 'Failed');
                 this.processingPrjComplete=false;
               }
@@ -9152,7 +9153,8 @@ getMonthNumber(month: string): string {
 
 
 // open Graph screen start
-
+isOpenbutton : boolean = false
+isClosebutton : boolean = true
 openFullGraph(){
   $('#recent-activities-section').addClass('d-none');
 
@@ -9162,7 +9164,8 @@ openFullGraph(){
   $('#Pie-chart').removeClass('d-none');
 
   $('.CHARTS').css('grid-template-columns', '1fr 1fr');
-
+  this.isOpenbutton = true
+  this.isClosebutton = false
 }
 
 closeFullGraph(){
@@ -9171,6 +9174,8 @@ closeFullGraph(){
   $('#bar-and-pie').addClass('col-lg-6');
   $('#Pie-chart').addClass('d-none');
   $('.CHARTS').css('grid-template-columns','1fr');
+  this.isClosebutton = true
+  this.isOpenbutton = false
 }
 // open Graph screen end
 

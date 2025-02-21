@@ -49,6 +49,7 @@ export class FileviewComponent implements OnInit {
   _IsConfidential: string = 'false';
   Current_user_ID:string;
   _LoginUserId:string;
+  Schedule_ID: any;
   url_project_code:any;
   url_master_code:any;
   invalid: boolean =false;
@@ -86,7 +87,7 @@ export class FileviewComponent implements OnInit {
         alert('Invalid User');
         return false;
       }
-      let type = params['type'];
+      let type = params['type']; 
             let officetext = ".ppt, .pptx, .doc, .docx, .xls, .xlsx";
             let office = officetext.includes(type.toLowerCase());
 
@@ -187,7 +188,7 @@ export class FileviewComponent implements OnInit {
       }
 
       this.url_master_code=params['mastercode'];
-
+      this.Schedule_ID=params['Schedule_ID'];
     });
   }
   incrementZoom(amount: number) {
@@ -349,6 +350,14 @@ export class FileviewComponent implements OnInit {
         var url = document.baseURI + name;
         var myurl = `${url}/${pcode}${qparams}`;
         var myWindow = window.open(myurl,pcode);
+        myWindow?.focus();
+   }
+
+   viewMeeting(sid) {
+        let name: string = 'Meeting-Details';
+        var url = document.baseURI + name;
+        var myurl = `${url}/${sid}`;
+        var myWindow = window.open(myurl,sid);
         myWindow?.focus();
    }
 

@@ -46,7 +46,6 @@ moment.locale('en');
 export class StreamCalendarComponent implements OnInit {
   disablePreviousDate = new Date();
   disablePreviousTodayDate = new Date();
-
   calendarOptions: CalendarOptions
   selectDay: any;
   Current_user_ID: any;
@@ -66,8 +65,10 @@ export class StreamCalendarComponent implements OnInit {
   scstartdate: any = new Date();
   _labelName: string;
   today: any = new Date().toISOString().substring(0, 10);
+  gmtOffset = `GMT+${(-new Date().getTimezoneOffset() / 60) | 0}:${String(Math.abs(new Date().getTimezoneOffset()) % 60).padStart(2, '0')}`;
   ProjectCode: string; Status: string; ProjectType: string; Owner: string;
   event: any;
+  dayMeetingSection:any = 'Schedule';
   Selecteddaate: any;
   flagevent: number;
   approvalObj: ApprovalDTO;
@@ -406,6 +407,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("taskAdd").classList.remove("show");
   }
 
+  
   day_div() {
     document.getElementById("kt-day-div").style.display = "block";
     document.getElementById("kt-week-div").style.display = "none";
@@ -420,7 +422,30 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("month-date").style.display = "none";
     document.getElementById("schedule-date").style.display = "none";
     document.getElementById("kt-calendar-quickactions").classList.remove("border-0");
+    this.dayMeetingSection = 'Day';
+    this.dayScheduleJson(0);
   }
+
+
+  weekToDay(selectesDate) { 
+    document.getElementById("kt-day-div").style.display = "block";
+    document.getElementById("kt-week-div").style.display = "none";
+    document.getElementById("kt-month-div").style.display = "none";
+    document.getElementById("kt-sch-div").style.display = "none";
+    document.getElementById("day-nme").style.display = "inline-block";
+    document.getElementById("week-nme").style.display = "none";
+    document.getElementById("month-nme").style.display = "none";
+    document.getElementById("sch-nme").style.display = "none";
+    document.getElementById("day-date").style.display = "block";
+    document.getElementById("week-date").style.display = "none";
+    document.getElementById("month-date").style.display = "none";
+    document.getElementById("schedule-date").style.display = "none";
+    document.getElementById("kt-calendar-quickactions").classList.remove("border-0");
+    this.dayMeetingSection = 'Day';
+    this.selectDay = selectesDate; 
+    this.dayScheduleJson(0);
+  }
+
 
   week_div() {
     document.getElementById("kt-day-div").style.display = "none";
@@ -436,6 +461,8 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("month-date").style.display = "none";
     document.getElementById("schedule-date").style.display = "none";
     document.getElementById("kt-calendar-quickactions").classList.remove("border-0");
+    this.dayMeetingSection = 'Weekly';
+    this.weeklyScheduleJson(0);
   }
 
   month_div() {
@@ -452,6 +479,10 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("month-date").style.display = "block";
     document.getElementById("schedule-date").style.display = "none";
     document.getElementById("kt-calendar-quickactions").classList.add("border-0");
+    this.dayMeetingSection = 'Monthly';
+    this.monthlyScheduleJson(0);
+
+    
   }
 
   sch_div() {
@@ -468,6 +499,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("month-date").style.display = "none";
     document.getElementById("schedule-date").style.display = "block";
     document.getElementById("kt-calendar-quickactions").classList.remove("border-0");
+    this.dayMeetingSection = 'Schedule';
   }
   teams_icon(){
     document.getElementById("teams-icon").style.display = "inline-block";
@@ -647,7 +679,7 @@ export class StreamCalendarComponent implements OnInit {
     this.Endtms = null;
     this.SelectStartdate = null;
     this.Selectenddate = null;
-    this.selectDay = null;
+    // this.selectDay = null;
     this.St_date = "";
     this.Ed_date = null;
     this._subname = false;
@@ -1506,7 +1538,7 @@ clearallfields() {
   this.Endtms = null;
   this.SelectStartdate = null;
   this.Selectenddate = null;
-  this.selectDay = null;
+  // this.selectDay = null;
   this.St_date = "";
   this.Ed_date = null;
   this._subname = false;
@@ -3111,6 +3143,25 @@ this.eventtaskitemtimeModal_dismiss();
 /////////////////////////////////////////// Calendar meeting list start /////////////////////////////////////////////////////////
 
 
+  SetBydefaultToday(){
+    if(this.dayMeetingSection == 'Schedule'){
+      this.getEventsForWeeks(3);
+    }else if(this.dayMeetingSection == 'Day'){
+      this.dayScheduleJson(3);
+    }else if(this.dayMeetingSection == 'Weekly'){
+      this.weeklyScheduleJson(3);
+    }else if(this.dayMeetingSection == 'Monthly'){
+      this.monthlyScheduleJson(3);
+    }
+   
+
+
+    
+  }
+
+
+
+
   sortMeetingCalender(user_Types){
    this.user_Type=user_Types;
    this.GetScheduledJson()
@@ -3120,7 +3171,6 @@ this.eventtaskitemtimeModal_dismiss();
 
   GetScheduledJson() {
 
-   
     this._calenderDto.EmpNo = this.Current_user_ID;
     this._calenderDto.User_Type=this.user_Type;
     this.fetchDataStartTime = performance.now();
@@ -3137,9 +3187,20 @@ this.eventtaskitemtimeModal_dismiss();
         console.log(this.Scheduledjson,'Scheduledjson')
         this.loadingDMS = true;
         this.Scheduledjson = this.Scheduledjson.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
-       
-        this.getEventsForWeeks(0)
+ 
+        if(this.dayMeetingSection == 'Schedule'){
+          this.getEventsForWeeks(0);
+        }else if(this.dayMeetingSection == 'Day'){
+          this.dayScheduleJson(0);
+        }else if(this.dayMeetingSection == 'Weekly'){
+          this.weeklyScheduleJson(0);
+        }else if(this.dayMeetingSection == 'Monthly'){
+          this.monthlyScheduleJson(0);
+        }
 
+
+
+        
         this.dataBindEndTime = performance.now();
         this.dataBindTime = this.dataBindEndTime - this.dataBindStartTime;
         this.userFound = true
@@ -3196,17 +3257,13 @@ getEventsForWeeks(weeksFromToday: number) {
     this.clickHistory = [];
     this.currentWeekOffset = 0;
   } else {
-
     const newOffset = this.currentWeekOffset + weeksFromToday;
-
-   
     if (weeksFromToday < 0) {
       this.clickHistory.push(weeksFromToday);
     } else if (weeksFromToday > 0 && this.clickHistory.length > 0) {
       this.clickHistory.pop();
     }
 
-  
     this.currentWeekOffset = newOffset;
   }
 
@@ -3225,7 +3282,6 @@ if(this.noSelectedDate == true && weeksFromToday === 0  && this.selectDay){
 this.noSelectedDate = false;
 const startDate = formattedDate || today;
 
-  
   this.firstDate = new Date(startDate);
   this.firstDate.setDate(startDate.getDate() + (this.currentWeekOffset * 7));
 
@@ -3234,8 +3290,6 @@ const startDate = formattedDate || today;
 
   this.lastDate = new Date(this.firstDate);
   this.lastDate.setDate(this.firstDate.getDate() + 7);
-
-
 
   if(this.Searchingfunc==false){
     this.Calendarjson = this.Searchingjson;
@@ -3246,9 +3300,6 @@ const startDate = formattedDate || today;
     });
   }
  
- 
-
-
     this.groupedMeetingsArray = Object.entries(this.Calendarjson.reduce((acc, current) => {
       const date = current.start.split(' ')[0]; 
       if (!acc[date]) {
@@ -3258,8 +3309,6 @@ const startDate = formattedDate || today;
       return acc;
   }, {})).map(([date, events]) => ({ date, events }));
 
-
-
       this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({
         ...day,
         events: day.events.map(event => {
@@ -3268,13 +3317,11 @@ const startDate = formattedDate || today;
             const linkIndex = parts.findIndex(part => part.includes("Link"));
     
             let attendees = linkIndex > 1 ? parts.slice(1, linkIndex).map(s => s.trim()) : null;
-    
         
             if (attendees && attendees.length) {
                 attendees = [attendees[attendees.length - 1]]; 
             }
-    
-        
+
             if (attendees && attendees[0]) {
                 const match = attendees[0].match(/\+(\d+)/);
                 attendees[0] = match ? `+${parseInt(match[1], 10) + 1}` : `+1`; 
@@ -3285,9 +3332,30 @@ const startDate = formattedDate || today;
             return { ...event, title, attendees, link };
         })
     }));
+
+   
+    this.filteredMeetingsArray = Object.values(
+      this.groupedMeetingsArray.flatMap(group =>
+        group.events.flatMap(event => {
+          const [startDate] = event.start.split(' ');
+          const [endDate] = event.end.split(' ');
+          const nextDate = new Date(startDate);
+          nextDate.setDate(nextDate.getDate() + 1);
+          const correctedEndDate = nextDate.toISOString().split('T')[0];
     
-      this.filteredMeetingsArray = this.groupedMeetingsArray;
-    
+          return startDate !== endDate
+            ? [
+                { date: startDate, events: [{ ...event, title: `${event.title} (1/2)` }] },
+                { date: correctedEndDate, events: [{ ...event, title: `${event.title} (2/2)` }] }
+              ]
+            : [{ date: group.date, events: [event] }];
+        })
+      ).reduce((acc, { date, events }) => (
+        (acc[date] ??= { date, events: [] }).events.push(...events), acc
+      ), {})
+    );
+
+
       console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
        
 }
@@ -3366,7 +3434,7 @@ filterMeetings(event: KeyboardEvent) {
     this.Endtms = null;
     this.SelectStartdate = null;
     this.Selectenddate = null;
-    this.selectDay = null;
+    // this.selectDay = null;
     this.St_date = "";
     this.Ed_date = null;
     this._subname = false;
@@ -4100,7 +4168,7 @@ Task_pending() {
 }
 
 
-Pending_meeting() {
+Pending_meeting() { 
   this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
   this.CalenderService.NewPending_table(this._calenderDto).subscribe(text => {
     this.notifyService.showSuccess("Added In Pending Successfully", "Success");
@@ -5318,7 +5386,7 @@ Event_acceptandReject() {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       });
     this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
-    this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber; debugger
+    this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber; 
     this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
       ((data) => {
         this.GetScheduledJson();
@@ -5336,7 +5404,7 @@ Event_acceptandReject() {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       });
     this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
-    this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber; debugger
+    this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber; 
 
     this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
       ((data) => {
@@ -5422,7 +5490,7 @@ Maybe_event(val) {
     });
   this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
   this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
-  debugger
+
   this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
     ((data) => {
       this.GetScheduledJson();
@@ -6114,7 +6182,7 @@ filterPending(type: 'date' | 'meeting'): void {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
       ((data) => {
       
-        debugger
+        
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
         console.log(this.EventScheduledjson, "Pending list popup box Testing ");
         this.BookMarks = this.EventScheduledjson[0].IsBookMark;
@@ -6419,10 +6487,19 @@ filterDraft(type : 'date'|'meeting'):void{
   }
 
   noSelectedDate : boolean = false;
-  newSelectedDate(){
+  newSelectedDate(){ 
     this.noSelectedDate=true
-    this.getEventsForWeeks(0);
+    if(this.dayMeetingSection == 'Schedule'){
+      this.getEventsForWeeks(0);
+    }else if (this.dayMeetingSection == 'Day'){
+      this.dayScheduleJson(0);
+    }else if(this.dayMeetingSection == 'Weekly'){
+      this.weeklyScheduleJson(0);
+    }else if(this.dayMeetingSection == 'Monthly'){
+      this.monthlyScheduleJson(0);
+    }
    
+  
   }
 /////////////////////////////////////////// Draft meeting list End /////////////////////////////////////////////////////////
 
@@ -6598,5 +6675,140 @@ Rejected_Click() {
 }
 /////////////////////////////////////////// Timeline end /////////////////////////////////////////////////////////
 
+/////////////////////////////////////////// Day section Sart /////////////////////////////////////////////////////////
+
+dayEventsLists: any []=[];
+dayMappedList:any [] =[];
+hoursList: string[] = [
+  "12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM",
+  "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM"
+];
+
+
+
+dayScheduleJson(dayFromToday: number){ debugger
+      
+        this.selectDay = dayFromToday === 3 ? moment() : moment(this.selectDay).add(dayFromToday, 'days');
+        const selectedDate = moment(this.selectDay).format('YYYY-MM-DD');
+      
+        this.dayEventsLists = this.Scheduledjson.filter(e => e.start.includes(selectedDate));
+      
+            this.dayMappedList = this.hoursList.map(hour => ({
+              hour,
+              events: this.dayEventsLists.filter(({ start }) => new Date(start).getHours() === 
+                (hour.includes("AM") ? (hour.startsWith("12") ? 0 : parseInt(hour)) : (hour.startsWith("12") ? 12 : parseInt(hour) + 12))
+              )
+            }));
+
+            this.dayMappedList = this.dayMappedList.map(hour => ({
+              ...hour,
+              events: hour.events.map(event => {
+                  const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
+                  const title = parts[0];
+                  const link = parts.find(part => part.includes("Link"))?.split(' ')[0] || null;
+                  const attendees = parts.slice(1, -1).join(' ').match(/\+(\d+)/)?.[0] || null;
+
+                  return { ...event, title, link, attendees };
+              })
+          }));
+
+      console.log(this.dayMappedList,'dayMappedList');
+}
+
+getDurationInPixels(start: string, end: string): number {
+  const durationInMinutes = (new Date(end).getTime() - new Date(start).getTime()) / (1000 * 60);
+  return (durationInMinutes / 5) * 4; // 5 minutes = 4px, 10 minutes = 8px, etc.
+}
+/////////////////////////////////////////// Day section end /////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////// Weekly section Sart /////////////////////////////////////////////////////////
+
+weekStartDate:any;
+weekEndDate:any;
+weekDates:any;
+weekJsonList:any;
+weekMappedList:any;
+
+weeklyScheduleJson(weekFromToday) { 
+  
+  this.selectDay = weekFromToday === 3 ? moment() : moment(this.selectDay).add(weekFromToday, 'week');
+  const selectedDate = moment(this.selectDay).format('YYYY-MM-DD');
+
+   const startOfWeek = moment(selectedDate).startOf('isoWeek');
+   this.weekDates = Array.from({ length: 7 }, (_, i) => startOfWeek.clone().add(i, 'days').format('YYYY-MM-DD'));
+
+   const startDate = new Date(this.weekDates[0]);
+   const endDate = new Date(this.weekDates[6]);
+   endDate.setDate(endDate.getDate() + 1); // Include the end date in the range
+
+   this.weekStartDate = this.weekDates[0];
+   this.weekEndDate = this.weekDates[this.weekDates.length - 1];
+
+   const weekEventsLists = this.Scheduledjson.filter(event => new Date(event.start) >= startDate && new Date(event.start) < endDate);
+   
+   this.weekJsonList = weekEventsLists.map(event => {
+    const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
+    const title = parts[0];
+    const link = parts.find(part => part.includes("Link"))?.split(' ')[0] || null;
+    const attendees = parts.slice(1, -1).join(' ').match(/\+(\d+)/)?.[0] || null;
+
+    return { ...event, title, link, attendees };
+    });
+
+    this.weekMappedList = this.hoursList.map(hour => ({
+      hour,
+      events: this.weekDates.map(date => ({
+        date,
+        subdate: this.weekJsonList.filter(({ start }) => {
+          const eventDate = new Date(start);
+          return (
+            eventDate.toISOString().split('T')[0] === date &&
+            eventDate.getHours() === (hour.includes("AM") ? (hour.startsWith("12") ? 0 : parseInt(hour)) : (hour.startsWith("12") ? 12 : parseInt(hour) + 12))
+          );
+        })
+      }))
+    }));
+
+  
+    console.log(this.weekMappedList,'weekMappedList'); // Filtered events within the week
+}
+/////////////////////////////////////////// Weekly section end /////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////// Monthly section Sart /////////////////////////////////////////////////////////
+
+monthMappedList:any;
+weekdays:any;
+selectedMonthlyDate:any;
+
+
+monthlyScheduleJson(monthFromToday) { debugger
+  this.selectDay = monthFromToday === 3 ? moment() : moment(this.selectDay).add(monthFromToday, 'month');
+  this.selectedMonthlyDate = moment(this.selectDay).startOf('month');
+  this.weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' , 'Sunday'];
+  const start = moment(this.selectDay).startOf('month').isoWeekday(1);
+  this.monthMappedList = Array.from({ length: 6 }, (_, i) => ({
+    week: Array.from({ length: 7 }, (__, j) => {
+      const currentDate = start.clone().add(i * 7 + j, 'days');
+      const dateStr = currentDate.format('DD-MM-YYYY');
+      return {
+        date: dateStr,
+        day: currentDate.format('dddd'),
+        events: this.Scheduledjson.filter(event => moment(event.start).format('DD-MM-YYYY') === dateStr)
+      };
+    })
+  }));
+  console.log(this.monthMappedList, 'monthMappedList');
+}
+
+
+convertToISO(dateString: string) {
+  const [day, month, year] = dateString.split('-');
+  return `${year}-${month}-${day}`;
+}
+
+
+/////////////////////////////////////////// Monthly section end /////////////////////////////////////////////////////////
 
 }

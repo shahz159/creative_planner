@@ -11,14 +11,20 @@
                     <div class="kt-memo-dt-fl">
                        
                         <div class="kt-inbox__labels">
-                            <ng-container *ngIf="url_master_code&&(url_project_code!=url_master_code);else plabel">
-                                <span class="Running" >Action</span>
-                                <span matTooltip="Click to see the action." (click)="newDetailsaction(url_master_code,url_project_code)" class="kt-fils-v-uname">{{filename}}</span>
+                            <ng-container *ngIf="!Schedule_ID">
+                                <ng-container *ngIf="url_master_code&&(url_project_code!=url_master_code);else plabel">
+                                    <span class="Running" >Action</span>
+                                    <span matTooltip="Click to see the action." (click)="newDetailsaction(url_master_code,url_project_code)" class="kt-fils-v-uname">{{filename}}</span>
+                                </ng-container>
+                                <ng-template #plabel>
+                                    <span class="Running">Project</span>
+                                    <span matTooltip="Click to see the project." (click)="newDetailsaction(url_project_code)" class="kt-fils-v-uname">{{filename}}</span>
+                                </ng-template>  
+                        </ng-container>
+                            <ng-container *ngIf="Schedule_ID">
+                                <span class="Running" >Meeting</span>
+                                <span matTooltip="Click to see the meeting." (click)="viewMeeting(Schedule_ID)" class="kt-fils-v-uname">{{filename}}</span>
                             </ng-container>
-                            <ng-template #plabel>
-                                <span class="Running">Project</span>
-                                <span matTooltip="Click to see the project." (click)="newDetailsaction(url_project_code)" class="kt-fils-v-uname">{{filename}}</span>
-                            </ng-template>  
                         </div>
                         <a  class="kt-inbox__message mt-2">
                             <!-- <span class="kt-inbox__subject"> {{item.Subject}}</span> <span class="kt-flv-def"> </span> -->

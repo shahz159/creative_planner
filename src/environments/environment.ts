@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   //localServer
   //  baseUrl:'http://localhost:1221/api/',
+  // baseUrl:'http://cswebapps.com/PortfolioAPI/api/',
   //  baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/',
    baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
   //  baseUrlCore:'http://localhost:5201/api/',

@@ -1353,7 +1353,9 @@ debugger
     this.selectedItem_Emp.length = 0;
     this.selectedItem_Company.length = 0;
     this.isChecked=false;
+    this.isapprovlFound = false
     this.resetFilters();
+
   }
 
   Subtask_List: SubTaskDTO[];
@@ -2632,6 +2634,12 @@ else{
   this.allSelectedProjects = this.allSelectedProjects.filter(item => {
     return !curPagePrjs.includes(item.Project_Code)
   });
+  // const curPagePrjs = this._ProjectDataList.map(x => x.Project_Code);
+  this.allSelectedProjects = this.allSelectedProjects.filter(item => {
+  let index = this.allSelectedProjects.findIndex(obj => obj.Project_Code == item.Project_Code)
+  if (index != -1)
+    this.allSelectedProjects.splice(index, 1);
+  })
   this.isAllPrjSelected=false;
   this.isapprovlFound = false
   this.value()
@@ -3271,10 +3279,10 @@ debugger
       this.newUA.push(p);
     else if(p.PendingapproverEmpNo==empno&&p.Status==='Cancellation Under Approval')
       this.cancellationUA.push(p);
-    else if((p.Emp_No==empno || p.Owner == empno)  && (p.Status==='Delay')) {
-      this.mydelayProjects.push(p);
-    }
-    console.log(this.completionUA,'comple', this.forwardUA,'forward', this.newUA,'newapp',this.mydelayProjects,'delay',this.cancellationUA ,'cancellationUA')
+    // else if((p.Emp_No==empno || p.Owner == empno)  && (p.Status==='Delay')) {
+   //   this.mydelayProjects.push(p);
+  // }
+    console.log(this.completionUA,'comple', this.forwardUA,'forward', this.newUA,'newapp',this.cancellationUA ,'cancellationUA')
   });
 }
 
@@ -3285,6 +3293,16 @@ debugger
 
 // test new
 
+
+// Uncheckedwhenreset(){
+//   const curPagePrjs = this._ProjectDataList.map(x => x.Project_Code);
+//   this.allSelectedProjects = this.allSelectedProjects.filter(item => {
+//     return !curPagePrjs.includes(item.Project_Code)
+//   });
+//  this.value()
+// }
 }
+
+
 
 
