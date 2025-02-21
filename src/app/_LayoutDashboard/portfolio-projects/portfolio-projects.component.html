@@ -74,6 +74,13 @@
                         <div class="kt-todo__details">
 
 
+                          <a class="kt-todo__icon" (click)="shareoptionModal()">
+
+                         <svg  width="1.3em" height="1.3em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M9 12C9 13.3807 7.88071 14.5 6.5 14.5C5.11929 14.5 4 13.3807 4 12C4 10.6193 5.11929 9.5 6.5 9.5C7.88071 9.5 9 10.6193 9 12Z" stroke="currentColor" stroke-width="1.5"></path><path  d="M14 6.5L9 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path  d="M14 17.5L9 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path  d="M19 18.5C19 19.8807 17.8807 21 16.5 21C15.1193 21 14 19.8807 14 18.5C14 17.1193 15.1193 16 16.5 16C17.8807 16 19 17.1193 19 18.5Z" stroke="currentColor" stroke-width="1.5"></path><path  d="M19 5.5C19 6.88071 17.8807 8 16.5 8C15.1193 8 14 6.88071 14 5.5C14 4.11929 15.1193 3 16.5 3C17.8807 3 19 4.11929 19 5.5Z" stroke="currentColor" stroke-width="1.5"></path></g></svg>
+
+                        </a>
+
+
                                  <ng-container  *ngIf="_MessageIfNotOwner == ''">
                                     <a class="kt-todo__icon" title="Click to view the {{Project_Graph}}" *ngIf="Project_Graph=='Graphs'" (click)="ProjectsGraphsClick()">
                                         <i class="fas fa-chart-pie"></i>
@@ -96,6 +103,11 @@
                                           -->
                                           <svg viewBox="0 0 16 16" fill="currentColor" height="19" width="19" xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi"><path  d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"></path></svg>
                                     </a>
+
+
+
+
+
 
 
 
@@ -585,34 +597,46 @@
   <!-- <div data-v-1c9b9602="" class="TableViewColumnPicker__trigger"><svg data-v-1c9b9602="" class="w-svg-sprite">
       <use xlink:href="#ci-add" fill=""></use>
     </svg></div> -->
+    <!-- <span style="color: #ff2727;" *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0" (click)="labelDelay();filterProjectsOfEmp(Current_user_ID)"  class="delayaction-of-emp ">{{this.delayPrjsofPort.length}} delay project(s)</span><b *ngIf="this.forwardPrjPort.length>0" >,&nbsp;</b> -->
 
 
 
 
+    <div class="notification delay-notification">
+      <span class="notif-msg">Need your action on
+        <span *ngIf="this.forwardPrjPort && this.forwardPrjPort.length > 0" class="delayaction-of-emp"
+              (click)="labelForward();filterProjectsOfEmp(Current_user_ID)" style="color:#9C27B0">
+          {{this.forwardPrjPort.length}} Forward approval(s)
+        </span>
 
-  <div  class="notification delay-notification "><span  class="notif-msg" > Need your action on <span style="color: #ff2727;" *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0" (click)="labelDelay();filterProjectsOfEmp(Current_user_ID)"  class="delayaction-of-emp ">{{this.delayPrjsofPort.length}} delay project(s)</span><b *ngIf="this.forwardPrjPort.length>0" >,&nbsp;</b>
-   <span *ngIf="this.forwardPrjPort&&this.forwardPrjPort.length > 0"  class="delayaction-of-emp " (click)="labelForward();filterProjectsOfEmp(Current_user_ID)"  style="color:#9C27B0">{{this.forwardPrjPort.length}} Forward approval(s)</span> <b *ngIf="this.completionPrjPort.length > 0" >,&nbsp;</b>
+        <b *ngIf="this.forwardPrjPort.length > 0 && (this.completionPrjPort.length > 0 || this.cancellationPort.length > 0 || this.newapprovalPrjport.length > 0)">
+          ,&nbsp;
+        </b>
 
-  <span *ngIf="this.completionPrjPort&&this.completionPrjPort.length > 0"  style="color:#81C784" class="delayaction-of-emp " (click)="labelCompletionapproval();filterProjectsOfEmp(Current_user_ID)" >{{this.completionPrjPort.length}} Completion approval(s)</span><b *ngIf="this.cancellationPort.length >0 &&  this.delayPrjsofPort.length>0" class="">,&nbsp;</b>
+        <span *ngIf="this.completionPrjPort && this.completionPrjPort.length > 0" style="color:#81C784"
+              class="delayaction-of-emp" (click)="labelCompletionapproval();filterProjectsOfEmp(Current_user_ID)">
+          {{this.completionPrjPort.length}} Completion approval(s)
+        </span>
 
-  <span *ngIf="this.cancellationPort&&this.cancellationPort.length > 0"  style="color:#EE4137 " class="delayaction-of-emp " (click)="labelCancellationapproval();filterProjectsOfEmp(Current_user_ID)" >{{this.cancellationPort.length}} Cancellation approval(s)</span><b *ngIf="newapprovalPrjport.length > 0&&this.delayPrjsofPort.length>0" class="">,&nbsp;</b>
+        <b *ngIf="this.completionPrjPort.length > 0 && (this.cancellationPort.length > 0 || this.newapprovalPrjport.length > 0)">
+          ,&nbsp;
+        </b>
 
+        <span *ngIf="this.cancellationPort && this.cancellationPort.length > 0" style="color:#EE4137"
+              class="delayaction-of-emp" (click)="labelCancellationapproval();filterProjectsOfEmp(Current_user_ID)">
+          {{this.cancellationPort.length}} Cancellation approval(s)
+        </span>
 
-<span *ngIf="this.newapprovalPrjport&&this.newapprovalPrjport.length > 0"  style="color:#9C27B0 " class="delayaction-of-emp " (click)="labelUA();filterProjectsOfEmp(Current_user_ID)">{{this.newapprovalPrjport.length}} New approval(s)</span>
+        <b *ngIf="this.cancellationPort.length > 0 && this.newapprovalPrjport.length > 0">
+          ,&nbsp;
+        </b>
 
-
-<!-- (109 days)<b  class="">,&nbsp;</b>
-
-<span  class="delayaction-of-emp ">Mohammed Raohan</span> (109 days)
-
-
-<span  class="">&nbsp;and&nbsp;</span>
-   <span  class="delayaction-of-emp ">Shaik Akheel Ahmed</span> (115 days)
-
-<b >.</b> -->
-</span>
-
-</div>
+        <span *ngIf="this.newapprovalPrjport && this.newapprovalPrjport.length > 0" style="color:#9C27B0"
+              class="delayaction-of-emp" (click)="labelUA();filterProjectsOfEmp(Current_user_ID)">
+          {{this.newapprovalPrjport.length}} New approval(s)
+        </span>
+      </span>
+    </div>
 
 </div>
 
@@ -2907,7 +2931,7 @@
                               <hr>
 
                               &nbsp;&nbsp;
-                              <ng-container *ngIf="_ShareDetailsList.length>0">
+                              <ng-container *ngIf="_ShareDetailsList&&_ShareDetailsList.length>0">
                               <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -7349,5 +7373,89 @@
     </div>
   </div>
 
+
+
+  <!-- share option Modal Start -->
+<div class="modal-backdrop fade" id="shareoptionModalBackdrop" style="display: none"></div>
+<div class="shareoption-modal modal fade" id="shareoptionModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="dmsUsageModalTitle" aria-modal="true" style="display: none">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <span>Share</span>
+                </h5>
+                <div class="shareoption-modal-close" title="Close" (click)="shareoptionModal_dismiss()">
+                    <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M17.769 16l9.016-9.016c0.226-0.226 0.366-0.539 0.366-0.884 0-0.691-0.56-1.251-1.251-1.251-0.346 0-0.658 0.14-0.885 0.367v0l-9.015 9.015-9.016-9.015c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l9.015 9.016-9.015 9.015c-0.227 0.226-0.367 0.539-0.367 0.885 0 0.691 0.56 1.251 1.251 1.251 0.345 0 0.658-0.14 0.884-0.366v0l9.016-9.016 9.015 9.016c0.227 0.228 0.541 0.369 0.888 0.369 0.691 0 1.251-0.56 1.251-1.251 0-0.347-0.141-0.661-0.369-0.887l-0-0z">
+                            </path>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-body p-0">
+                <div class="share-option-main">
+                    <div class="share-option-main-inner">
+                        <div class="share-option-user-img">
+                            <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/blank-profile-picture.png" alt="img">
+                        </div>
+                        <div class="share-option-user-details">
+                            <h5 class="share-option-user-name"> {{_PortfolioOwner}} </h5>
+                            <h6 class="share-option-user-subject"> test workflwo 12 </h6>
+                            <p class="share-option-user-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                        </div>
+                    </div>
+                    <div class="share-link-div">
+                        <div class="share-link-label">Link to share</div>
+                        <div class="share-link-control">
+                            <input class="share-link-input" readonly="" type="text" [value]="link">
+                            <button class="share-link-button" (click)="copyLinkToClipboard()"> COPY LINK</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="share-link-social">
+                    <div class="share-link-social-item" (click)="shareOnWhatsApp()">
+                        <svg enable-background="new 0 0 512 512" id="Layer_1" version="1.1" viewBox="0 0 512 512" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <g>
+                                <path
+                                    d="M500.4,241.8c-0.6,63.4-16.9,113-50.8,156.1c-36.4,46.3-83.8,75.7-141.8,87.6   c-44.8,9.1-88.4,5.1-131.2-10.4c-9.5-3.5-18.8-7.6-27.7-12.5c-2.7-1.5-5-1.7-8-0.7c-40.5,13.1-81.1,26.1-121.7,39   c-1.8,0.6-4.2,2.3-5.6,1c-1.6-1.6,0.4-4,1-5.9c8.1-24.1,16.2-48.3,24.4-72.4c5-14.7,9.8-29.3,15-43.9c1.4-3.8,0.9-6.7-1.2-10.2   c-10.3-17.6-17.9-36.4-23.3-56.1c-10.1-37-11.2-74.4-3.3-111.8c8.6-40.8,26.6-77.2,54.3-108.6c33.5-38,74.8-63.1,123.9-75.2   c31.3-7.7,62.9-8.9,94.7-3.7c41.6,6.8,79.1,23.3,111.8,49.9c34,27.7,58.8,62.1,74.4,103.4C493.9,189.7,500.7,226.2,500.4,241.8z    M74.6,441.5c24.8-8,48.5-15.6,72-23.3c3.1-1,5.6-0.8,8.3,1c9,6,18.7,10.8,28.7,15c32.5,13.8,66.3,18.8,101.2,14.3   c42.8-5.5,80.4-22.7,112-52.6c39.8-37.7,61.1-83.9,63-138.5c1.8-53.5-15.4-100.5-51.3-140.4c-34.1-37.9-76.9-59.5-127.4-64.9   c-43.9-4.7-85,4.8-123,27.6c-32.5,19.6-57.4,46.3-74.7,80c-19.1,37.1-25.6,76.5-20.1,117.8c4.1,31.2,15.3,59.9,33.3,85.7   c2,2.9,2.6,5.3,1.4,8.7c-3.7,10.2-7,20.5-10.5,30.7C83.3,415.2,79.2,427.8,74.6,441.5z"
+                                    fill="#51C85D" />
+                                <path
+                                    d="M141,194.7c0.5-23.8,8.9-41.5,24.8-55.6c5.1-4.6,11.4-6.6,18.5-5.6c3,0.4,6,0.7,9,0.5   c5.6-0.3,9.4,2.4,11.3,7.3c6.7,17.4,13.2,34.8,19.7,52.3c2.2,6-1.6,10.7-4.8,15c-3.7,5.1-8.2,9.6-12.6,14.1   c-4.5,4.6-5.1,7.2-2,12.8c18.1,32.9,43.5,58.2,78,73.8c1.2,0.5,2.4,1.2,3.6,1.8c4.6,2.1,8.7,1.6,12.2-2.4   c6.4-7.5,13.4-14.4,19.3-22.3c3.9-5.2,6.6-6.1,12.5-3.5c17.6,7.6,34.1,17.2,50.9,26.5c3.1,1.7,4.2,4.3,4.1,7.9   c-0.9,29.5-17.8,44.9-47.5,51.7c-14.4,3.3-27.7-0.3-40.9-5.1c-27.7-10-54.4-21.8-76.8-41.6c-17.8-15.8-33.5-33.4-46.8-53.1   c-10.2-15.2-20.8-30.1-26.7-47.8C143.4,212,140.9,202.4,141,194.7z"
+                                    fill="#51C85D" />
+                            </g>
+                        </svg>
+                        <span>WhatsApp</span>
+                    </div>
+                    <div class="share-link-social-item" (click)="shareOnTwitter()">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" width="24px" height="24px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+                            <path
+                                d="M14.095479,10.316482L22.286354,1h-1.940718l-7.115352,8.087682L7.551414,1H1l8.589488,12.231093L1,23h1.940717  l7.509372-8.542861L16.448587,23H23L14.095479,10.316482z M11.436522,13.338465l-0.871624-1.218704l-6.924311-9.68815h2.981339  l5.58978,7.82155l0.867949,1.218704l7.26506,10.166271h-2.981339L11.436522,13.338465z" />
+                        </svg>
+                        <span>X</span>
+                    </div>
+                    <div class="share-link-social-item" (click)="shareOnFacebook()">
+                        <svg enable-background="new 0 0 32 32" height="32px" id="Layer_1" version="1.0" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <path
+                                d="M18,32V18h6l1-6h-7V9c0-2,1.002-3,3-3h3V0c-1,0-3.24,0-5,0c-5,0-7,3-7,8v4H6v6h6v14H18z"
+                                fill="#3B5998" id="f_1_" />
+                            <g />
+                            <g />
+                            <g />
+                            <g />
+                            <g />
+                            <g />
+                        </svg>
+                        <span>Facebook</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- share option Modal End -->
 
   <!-- release hold project sidebar start.-->
