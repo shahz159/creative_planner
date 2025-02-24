@@ -404,7 +404,6 @@ export class PortfolioProjectsComponent implements OnInit {
 
 
   GetPortfolioProjectsByPid() {
-
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
     this._Pid = this.Url_portfolioId;
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -424,7 +423,6 @@ export class PortfolioProjectsComponent implements OnInit {
     //this.LoadingBar_state.start();
     this.service.GetProjectsBy_portfolioId(this._Pid)
       .subscribe((data) => {
-        debugger
         this._MessageIfNotOwner = data[0]['message'];
         console.log(this._MessageIfNotOwner,'this._MessageIfNotOwner')
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);

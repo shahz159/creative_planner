@@ -32,7 +32,7 @@ export class MyprofileComponent implements OnInit {
   Gender: any;
   Password: any;
   LoginUserName: any;
-
+  userProfileImage:string;
 
   constructor(fb: FormBuilder,
     private EmpDetailsService: EmployeeDetailsService,
@@ -69,6 +69,9 @@ export class MyprofileComponent implements OnInit {
         this.Oldpassword = localStorage.setItem('oldPassword', this.Password);
         this.LoginUserName = this.EmployeeDetails_List[0]['UserName'];
       });
+
+      const dmsuserinfo=localStorage.getItem('DMS_UserInfo');
+      if(dmsuserinfo){  this.userProfileImage=JSON.parse(dmsuserinfo).UserProfile;  }
   }
 
   ngAfterViewInit() {

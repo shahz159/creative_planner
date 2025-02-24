@@ -56,13 +56,13 @@ export class FileviewComponent implements OnInit {
   objProjectDto: ProjectDetailsDTO;
 
   constructor(private route: ActivatedRoute,public service: ProjectTypeService,private notifyService: NotificationService
-  ) {
+  ) {   
     this._LoginUserId = this.Current_user_ID;
     this.objProjectDto = new ProjectDetailsDTO();
   }
 
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.IsStreamDownload = localStorage.getItem('IsStreamDownload');
@@ -186,7 +186,7 @@ export class FileviewComponent implements OnInit {
             }
           });
       }
-debugger
+
       this.url_master_code=params['mastercode'];
       this.Schedule_ID=params['Schedule_ID'];
     });

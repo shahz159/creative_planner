@@ -22,4 +22,10 @@ export class StatusDTO {
     SearchText:string;
 
 
+    Type:string;
+    SelectedEmp_No:string;
+    startdate:string;
+    enddate:string;
+    EmpNo:string;
+
 }
