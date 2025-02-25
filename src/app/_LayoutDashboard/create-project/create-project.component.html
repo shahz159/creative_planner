@@ -1006,7 +1006,7 @@
                               <div class="ow_r">
                                 <svg width="30px" height="30px" xmlns="http://www.w3.org/2000/svg" fill="#898989"
                                   viewBox="0 0 101 101" id="user">
-                                  <path _ngcontent-afb-c397="" fill="#898989"
+                                  <path  fill="#898989"
                                     d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z">
                                   </path>
                                 </svg>
@@ -1102,7 +1102,7 @@
                                   <div class="kt-project-sts-data">
                                       <ng-container *ngIf="['001', '002', '011'].includes(Prjtype)">
                                           <ng-container *ngIf="projectInfo && projectInfo.Duration !== ''">
-                                              {{ projectInfo.Duration === 1 ? '1 day'   : projectInfo.Duration  + ' days' }}
+                                              {{ projectInfo.Duration === 1 ? '1 day'   : (projectInfo.Duration+1)  + ' days' }}
                                           </ng-container>
                                           <ng-container *ngIf="!(projectInfo && projectInfo.Duration !== '')">
                                               {{ durationInDays === 0 ? '1 day'  : (durationInDays + 1) + ' days' }}
@@ -1442,40 +1442,84 @@
                       </div>
                       <div class="notifications-list">
 
-                      <div class="notification i-notification  mb-0 cursor-auto">
-                           <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
-
+                        <div *ngIf="notificationMsg!=3"  class="notification i-notification  mb-0 cursor-auto">
+                          <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
                           <ng-container [ngSwitch]="notificationMsg">
                                 <span *ngSwitchCase="0" class="notif-msg">Welcome to project creation enter the initial project details to continue.</span>
                                 <span *ngSwitchCase="1" class="notif-msg">You are 2 steps away from creating the project.</span>
                                 <span *ngSwitchCase="2" class="notif-msg">You are 1 step away from creating the project.</span>
-                                <span *ngSwitchCase="3" class="notif-msg">Project not yet submitted. Click the 'Submit Project' button to submit the project for approval or continue adding actions.</span>
                                 <span *ngSwitchCase="4" class="notif-msg">Click the 'Submit project' button to send the project for approval.</span>
                           </ng-container>
+                         </div>
 
-                      </div>
+                        <div *ngIf="notificationMsg===3" id="pinMessages" class="pin-message accordion ">
+                          <div class="card border-0">
+                              <div id="headingOne" class="card-header">
+                                  <h2 class="mb-0" style="background-color:transparent;">
+                                      <a  style="border-radius:5px;"  type="button" data-toggle="collapse" data-target="#collapsepinMessage" aria-expanded="false" aria-controls="collapsepinMessage" class="pin-msg-btn collapsed">
+                                          <div class="d-flex align-items-center">
+                                              <span style="line-height: 0;fill: #656464;">
+                                                  <svg width="20px" height="20px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 1H1v18h18V1H3zm14 2v14H3V3h14zm4 18H5v2h18V5h-2v16zM15 5H5v2h10V5zM5 9h10v2H5V9zm7 4H5v2h7v-2z"></path> </g></svg>
+                                              </span>
+                                              <div class="pin-msg-btn-text">
+                                                  <span>Please click to review following key points before continuing.</span>
+                                              </div>
+                                          </div>
+                                          <div  class="pin-msg-btn-caret">
+                                              <svg  width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                  <g  id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                  <g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                  <g  id="SVGRepo_iconCarrier">
+                                                      <g  id="Arrow / Caret_Down_MD">
+                                                          <path id="Vector" d="M16 10L12 14L8 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                      </g>
+                                                  </g>
+                                              </svg>
+                                          </div>
+                                      </a>
+                                  </h2>
+                              </div>
+                              <div  id="collapsepinMessage" aria-labelledby="headingOne" data-parent="#pinMessages" class="collapse">
+                                  <div  class="card-body p-0 pt-3">
+                            
+                                      <div class="notification i-notification  mb-0 cursor-auto">
+                                          <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
+              
+                                        <ng-container [ngSwitch]="notificationMsg">
+                                              <span *ngSwitchCase="0" class="notif-msg">Welcome to project creation enter the initial project details to continue.</span>
+                                              <span *ngSwitchCase="1" class="notif-msg">You are 2 steps away from creating the project.</span>
+                                              <span *ngSwitchCase="2" class="notif-msg">You are 1 step away from creating the project.</span>
+                                              <span *ngSwitchCase="3" class="notif-msg">Project not yet submitted. Click the 'Submit Project' button to submit the project for approval or continue adding actions.</span>
+                                              <span *ngSwitchCase="4" class="notif-msg">Click the 'Submit project' button to send the project for approval.</span>
+                                        </ng-container>
+              
+                                    </div>
+              
+                                    <div *ngIf="notificationMsg===3" class="notification i-notification  cursor-auto">
+                                      <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
+                                      <span  class="notif-msg"> Need to make changes? Click the
+                                          <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="11" height="12" class="ml-1"><path d="M18.656.93,6.464,13.122A4.966,4.966,0,0,0,5,16.657V18a1,1,0,0,0,1,1H7.343a4.966,4.966,0,0,0,3.535-1.464L23.07,5.344a3.125,3.125,0,0,0,0-4.414A3.194,3.194,0,0,0,18.656.93Zm3,3L9.464,16.122A3.02,3.02,0,0,1,7.343,17H7v-.343a3.02,3.02,0,0,1,.878-2.121L20.07,2.344a1.148,1.148,0,0,1,1.586,0A1.123,1.123,0,0,1,21.656,3.93Z" style="fill:#2786fb"></path><path d="M23,8.979a1,1,0,0,0-1,1V15H18a3,3,0,0,0-3,3v4H5a3,3,0,0,1-3-3V5A3,3,0,0,1,5,2h9.042a1,1,0,0,0,0-2H5A5.006,5.006,0,0,0,0,5V19a5.006,5.006,0,0,0,5,5H16.343a4.968,4.968,0,0,0,3.536-1.464l2.656-2.658A4.968,4.968,0,0,0,24,16.343V9.979A1,1,0,0,0,23,8.979ZM18.465,21.122a2.975,2.975,0,0,1-1.465.8V18a1,1,0,0,1,1-1h3.925a3.016,3.016,0,0,1-.8,1.464Z" style="fill: #2786fb"></path></svg>
+                                          'Edit' button to update your project details.
+                                      </span>
+                                    </div>
+              
+                                    <ng-container *ngIf="draftActionsLoading==false&&totalPeopleOnProject.length>0">
+                                      <div *ngIf="hasNoActionMembers&&hasNoActionMembers.length>0"  class="notification overutilization-notification">
+                                        <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
+                                        <span class="notif-msg" style="color:#c57a05">
+                                            No actions assigned to
+                                            <ng-container *ngFor="let member of hasNoActionMembers; let i=index;">
+                                              <span>'{{member}}'</span>{{i+1===hasNoActionMembers.length-1?' and':(i+1===hasNoActionMembers.length)?'':', '}}
+                                            </ng-container>.
+                                            It is recommended to assign actions for better workflow.
+                                        </span>
+                                    </div>
+                                    </ng-container>
 
-                      <div *ngIf="notificationMsg===3" class="notification i-notification  cursor-auto">
-                        <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg>
-                        <span  class="notif-msg"> Need to make changes? Click the
-                           <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="11" height="12" class="ml-1"><path d="M18.656.93,6.464,13.122A4.966,4.966,0,0,0,5,16.657V18a1,1,0,0,0,1,1H7.343a4.966,4.966,0,0,0,3.535-1.464L23.07,5.344a3.125,3.125,0,0,0,0-4.414A3.194,3.194,0,0,0,18.656.93Zm3,3L9.464,16.122A3.02,3.02,0,0,1,7.343,17H7v-.343a3.02,3.02,0,0,1,.878-2.121L20.07,2.344a1.148,1.148,0,0,1,1.586,0A1.123,1.123,0,0,1,21.656,3.93Z" style="fill:#2786fb"></path><path d="M23,8.979a1,1,0,0,0-1,1V15H18a3,3,0,0,0-3,3v4H5a3,3,0,0,1-3-3V5A3,3,0,0,1,5,2h9.042a1,1,0,0,0,0-2H5A5.006,5.006,0,0,0,0,5V19a5.006,5.006,0,0,0,5,5H16.343a4.968,4.968,0,0,0,3.536-1.464l2.656-2.658A4.968,4.968,0,0,0,24,16.343V9.979A1,1,0,0,0,23,8.979ZM18.465,21.122a2.975,2.975,0,0,1-1.465.8V18a1,1,0,0,1,1-1h3.925a3.016,3.016,0,0,1-.8,1.464Z" style="fill: #2786fb"></path></svg>
-                           'Edit' button to update your project details.
-                        </span>
-                      </div>
-
-                 <ng-container *ngIf="draftActionsLoading==false&&totalPeopleOnProject.length>0">
-                    <div *ngIf="hasNoActionMembers&&hasNoActionMembers.length>0"  class="notification overutilization-notification">
-                      <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
-                      <span class="notif-msg" style="color:#c57a05">
-                          No actions assigned to 
-                          <ng-container *ngFor="let member of hasNoActionMembers; let i=index;">
-                            <span>'{{member}}'</span>{{i+1===hasNoActionMembers.length-1?' and':(i+1===hasNoActionMembers.length)?'':', '}}
-                          </ng-container>. 
-                          It is recommended to assign actions for better workflow. 
-                      </span>
-                   </div>
-                  </ng-container>
-
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
                       </div>
                   </div>
 
@@ -1860,7 +1904,7 @@
                                   <label>Owner<span class="text-danger">*</span></label>
 
                                   <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!PrjOwner&&notProvided}"  [items]="owner_json" bindLabel="EmpName" bindValue="EmpNo" groupBy="type"
-                                  (change)="onProjectOwnerChanged();  PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo.trim()))?PrjInformer:Responsible_json[0].OwnerEmpNo.trim();  setRACIS(); "
+                                  (change)="onProjectOwnerChanged();  PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo))?PrjInformer:Responsible_json[0].OwnerEmpNo;  setRACIS(); "
                                   placeholder="Select owner" id="owner-drp-dwn" [searchable]="true" name="owner-drp-dwn"
                                   [(ngModel)]="PrjOwner"></ng-select>
                                   <span style="color:rgb(217,48,37)" *ngIf="!PrjOwner">Please select owner.</span>
@@ -1871,11 +1915,11 @@
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Responsible<span class="text-danger">*</span></label>
                                   <ng-select *ngIf="Responsible_json"  [ngClass]="{'error-vd':!PrjResp&&notProvided}"     class="kt-form-vd" placeholder="Select responsible"
-                                    [(ngModel)]="PrjResp" (change)="onResponsibleChanged(); PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo.trim()))?PrjInformer:Responsible_json[0].OwnerEmpNo.trim(); setRACIS();">
+                                    [(ngModel)]="PrjResp" (change)="onResponsibleChanged(); PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo))?PrjInformer:Responsible_json[0].OwnerEmpNo; setRACIS();">
                                     <ng-option
-                                      [value]="Responsible_json[0].ResponsibleNo.trim()">{{Responsible_json[0].ResponsibleName}}</ng-option>
+                                      [value]="Responsible_json[0].ResponsibleNo">{{Responsible_json[0].ResponsibleName}}</ng-option>
                                     <ng-option *ngIf="heirarchical_owner.length>1"
-                                      [value]="Responsible_json[0].OwnerEmpNo.trim()">{{Responsible_json[0].OwnerName}}</ng-option>
+                                      [value]="Responsible_json[0].OwnerEmpNo">{{Responsible_json[0].OwnerName}}</ng-option>
                                   </ng-select>
                                   <span style="color:rgb(217,48,37)" *ngIf="!PrjResp">Please select responsible.</span>
                                 </div>
@@ -1910,11 +1954,11 @@
                                     (change)="setRACIS() ">
 
                                   <ng-container *ngIf="Responsible_json">
-                                          <ng-container *ngIf="[PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo.trim()); else reportToMustPresent">
+                                          <ng-container *ngIf="[PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo); else reportToMustPresent">
                                               <ng-option *ngFor="let p of allUser_json" [value]="p.Emp_No">{{ p.Emp_Name }}</ng-option>
                                           </ng-container>
                                           <ng-template #reportToMustPresent>
-                                              <ng-option [value]="Responsible_json[0].OwnerEmpNo.trim()">{{Responsible_json[0].OwnerName}}</ng-option>
+                                              <ng-option [value]="Responsible_json[0].OwnerEmpNo">{{Responsible_json[0].OwnerName}}</ng-option>
                                           </ng-template>
                                   </ng-container>
 
@@ -1963,7 +2007,7 @@
                                       (opened)="isPrjSprtDrpDwnOpen=true" (closed)="isPrjSprtDrpDwnOpen=false; ">
                                       <ng-container *ngIf="PrjResp;else PrjRespIsUndefined">
                                         <ng-container *ngFor="let p of allUser_json|filter:PrjSprtSelectTF.value">
-                                            <mat-option *ngIf="p.Emp_No!=PrjResp.trim()" [value]="p.Emp_No">
+                                            <mat-option *ngIf="p.Emp_No!=PrjResp" [value]="p.Emp_No">
                                             <mat-checkbox color="primary" [checked]="PrjSupport.indexOf(p)!==-1"></mat-checkbox>
                                             {{p.Emp_Name}}
                                             </mat-option>
@@ -1988,7 +2032,7 @@
                                     <div class="symbol-group symbol-hover flex-nowrap justify-content-start">
                                       <div *ngFor="let item of RACIS;let i=index"
                                         class="symbol symbol-35px symbol-circle">
-                                        <span title="{{item}}" class="symbol-label text-inverse-warning fw-bold"
+                                        <span *ngIf="item"  title="{{item}}" class="symbol-label text-inverse-warning fw-bold"
                                           [ngClass]="{'bg-primary':i===0,'bg-danger':i===1,'bg-warning':i===2,'bg-dark':i>=3}">
                                           {{item[0]}} </span>
                                       </div>
@@ -3111,7 +3155,7 @@
               <div class="row pt-2 pb-2">
                   <div class="col-lg-12 mt-3">
                       <div class="form-group text-end">
-                          <button type="submit"  (click)="projectEdit(0); " class="btn btn-info w-110 ml-2" >
+                          <button type="submit"  (click)="projectEdit()" class="btn btn-info w-110 ml-2" >
                               Update</button>
                               <button class="btn w-110 btn-secondary ml-2"   (click)="closeInfos()">Cancel</button>
                       </div>
@@ -3508,7 +3552,7 @@
         <h5 class="modal-title" id="exampleModalLongTitle">Project reject</h5>
       </div>
       <div class="modal-body">
-      
+
         <div class="row">
           <div class="col-lg-12">
             <div class="kt-action-list">
@@ -3571,7 +3615,7 @@
             </div>
           </div>
         </div>
-      
+
         <div class="form-group mb-2 mt-3">
           <label>Remark<span class="text-danger">*</span></label>
           <textarea  [ngClass]="{'error-border':!(reason4PrjRejection&&reason4PrjRejection.trim())&&notProvided }" [(ngModel)]="reason4PrjRejection" placeholder="Define your exact reason for rejecting the project."   rows="2" cols="20" class="form-control" style="height: 107px; resize:none;"></textarea>

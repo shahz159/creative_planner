@@ -20,8 +20,8 @@ export class PolicyComponent implements OnInit {
 
   // private currentUserSubject: BehaviorSubject<UserDetailsDTO>;
   //public currentUserId: Observable<UserDetailsDTO>;
-  displayStyle = "none";
-  dashboardUrl: string = 'backend/dashboard';
+  displayStyle = "none";  
+  dashboardUrl: string = 'backend/Streamdashboard';
   loginUrl: string = 'login';
   Currentuser: string;
 

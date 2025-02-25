@@ -261,18 +261,19 @@ export class CalenderService {
 
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetEvent_request", this.obj_CalenderDTO);
   }
-  NewDelete_table(obj:CalenderDTO){
+  NewDelete_table(obj:CalenderDTO){ debugger
   this.obj_CalenderDTO.Schedule_ID=  obj.Schedule_ID;
   this.obj_CalenderDTO.flag_id= obj.flag_id;
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetRessheduling_table", this.obj_CalenderDTO);
 }
-NewPending_table(obj:CalenderDTO){
+NewPending_table(obj:CalenderDTO){ debugger
   this.obj_CalenderDTO.Schedule_ID=  obj.Schedule_ID;
 
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetPending_tables", this.obj_CalenderDTO);
 }
 
   NewInsertCalender(obj: CalenderDTO){
+    debugger
     this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.draftid=obj.draftid;
@@ -545,6 +546,29 @@ NewUpdateMeetingBookmark(obj:CalenderDTO){
   this.obj_CalenderDTO.flagid=obj.flagid
 
   return this.http.post(this.rootUrl+'CalenderAPI/NewUpdateMeetingBookmark',this.obj_CalenderDTO)
+}
+
+
+
+
+NewUsersDashboard(){   
+   let createdby;
+   let dmsUserinfo:any=localStorage.getItem('DMS_UserInfo');
+   if(dmsUserinfo){
+    dmsUserinfo=JSON.parse(dmsUserinfo);
+    createdby=dmsUserinfo.createdby;
+   }
+   this.obj_CalenderDTO.UserId=createdby;
+   return this.http.post('https://cswebapps.com/dmsapi/api/DashboardAPI/NewUsersDashboard', this.obj_CalenderDTO);
+}
+
+
+
+GetBookmarkMeetingsList(obj:CalenderDTO){
+
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No
+ 
+  return this.http.post(this.rootUrl+'CalenderAPI/NewGetBookmarkMeetings',this.obj_CalenderDTO)
 }
 
 

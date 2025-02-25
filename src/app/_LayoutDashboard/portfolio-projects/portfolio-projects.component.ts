@@ -404,7 +404,6 @@ export class PortfolioProjectsComponent implements OnInit {
 
 
   GetPortfolioProjectsByPid() {
-
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
     this._Pid = this.Url_portfolioId;
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -424,7 +423,6 @@ export class PortfolioProjectsComponent implements OnInit {
     //this.LoadingBar_state.start();
     this.service.GetProjectsBy_portfolioId(this._Pid)
       .subscribe((data) => {
-        debugger
         this._MessageIfNotOwner = data[0]['message'];
         console.log(this._MessageIfNotOwner,'this._MessageIfNotOwner')
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);
@@ -464,20 +462,20 @@ debugger
       })
         console.log(this.filteredEmployees,"this.filteredEmployeesthis.filteredEmployees")
 
-        this.delayPrjsofPort = []
-        this._ProjectsListBy_Pid.forEach(item => {
-          if (item.Status === 'Delay' && (item.Emp_No == this.Current_user_ID || item.OwnerEmpNo == this.Current_user_ID ))  {
-             const obj = {
-              prjname : item.Project_Name,
-              prjcode : item.Project_Code,
-              status : item.Status,
-              emp_No : item.Emp_No,
-              owner : item.OwnerEmpNo
-              };
-              this.delayPrjsofPort.push(obj)
-          }
-        });
-        console.log(this.delayPrjsofPort, 'storingDelaycount');
+        // this.delayPrjsofPort = []
+        // this._ProjectsListBy_Pid.forEach(item => {
+        //   if (item.Status === 'Delay' && (item.Emp_No == this.Current_user_ID || item.OwnerEmpNo == this.Current_user_ID ))  {
+        //      const obj = {
+        //       prjname : item.Project_Name,
+        //       prjcode : item.Project_Code,
+        //       status : item.Status,
+        //       emp_No : item.Emp_No,
+        //       owner : item.OwnerEmpNo
+        //       };
+        //       this.delayPrjsofPort.push(obj)
+        //   }
+        // });
+        // console.log(this.delayPrjsofPort, 'storingDelaycount');
 
 
 
@@ -1080,12 +1078,20 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
         this.ObjSharePortfolio.Preference = this._Preferences;
         this.ObjSharePortfolio.Shared_By = this.Current_user_ID;
         this.ObjSharePortfolio.IsActive = true;
-        this.service.SharePortfolio(this.ObjSharePortfolio);
-        this.notifyService.showInfo("Successfully", "Portfolio Shared");
-        this.GetPortfolioProjectsByPid();
-        this.Close_ShareModel();
-        this.PortfolioList = false;
-        this.cdr.detectChanges();
+        this.service.SharePortfolio(this.ObjSharePortfolio).subscribe((data)=>{
+          if(data){
+              console.log(data);
+              this.notifyService.showInfo("Successfully", "Portfolio Shared");
+              this.GetPortfolioProjectsByPid();
+              this.Close_ShareModel();
+              this.PortfolioList = false;
+              this.cdr.detectChanges();
+          }
+        
+        })
+   
+  
+      
       }
     }
   }
@@ -4067,6 +4073,8 @@ getChangeSubtaskDetais(Project_Code) {
     this.EventNumber=null;
     this.ngEmployeeDropdown = [];
     this.Description_Type = null;
+    this.agendaInput=undefined;
+    this.agendacharacterCount =  null;
     this.SelectDms = [];
     this.MasterCode = null;
     this.Subtask = null;
@@ -4501,6 +4509,8 @@ getChangeSubtaskDetais(Project_Code) {
           this.Title_Name = null;
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
+          this.agendaInput=undefined;
+          this.agendacharacterCount =  null;
           this.MasterCode = null;
           this.projectsSelected = [];
           this.Subtask = null;
@@ -4891,10 +4901,21 @@ linkMtgsToPortfolio(){
             }
             else
             this.notifyService.showError("something went wrong.","");
-
-
      })
+    }
 
+
+
+
+    agendacharacterCount:any;
+
+    AgendaCharacterCount(): void {
+      var count =this.agendaInput;
+      if(count){
+        this.agendacharacterCount = count.length;
+      }else{
+        this.agendacharacterCount =  null;
+      }
 
     }
 
@@ -4911,7 +4932,7 @@ allAgendas: any = [];
 agendasAdded: number = 0;
 totalcountofagenda:any
 addAgenda() {
-  if (this.agendaInput.trim().length > 0 && this.agendaInput.trim().length < 100) {
+  if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101) {
     this.agendasAdded += 1;
     const agenda = {
       index: this.agendasAdded,
@@ -4921,6 +4942,7 @@ addAgenda() {
     this.agendaInput = null;
   }
   this.totalcountofagenda = this.allAgendas.length;
+  this.agendacharacterCount =  null;
   console.log("allAgendas:", this.totalcountofagenda);
 
 }
@@ -6338,6 +6360,8 @@ bindCustomRecurrenceValues(){
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.agendaInput=undefined;
+    this.agendacharacterCount =  null;
     this.SelectDms = null;
     this.MasterCode = null;
     this.projectsSelected = [];
@@ -6661,7 +6685,7 @@ isDepartment = false
 
     // if any approvl approvable by user
     this.isapprovlFound = this.allSelectedProjects.some((ob) => ob.PendingapproverEmpNo && ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
-  
+
     // if any hold prj releasable by user
     this.releasableHoldPrjs=this.allSelectedProjects.filter((ob)=>ob.Status=='Project Hold'&&this.Current_user_ID==ob.OwnerEmpNo);
     this.selectedHoldPrjsReleasable=this.releasableHoldPrjs.length>0;
@@ -6738,11 +6762,11 @@ selectUnSelectProject(e, item) {
 
     // if selected project aprvl can be approvable by user.
     this.isapprovlFound=this.allSelectedProjects.some((ob)=>ob.PendingapproverEmpNo&&ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
-    
-    // if selected hold project can be releasable by user. 
+
+    // if selected hold project can be releasable by user.
     this.releasableHoldPrjs=this.allSelectedProjects.filter((ob)=>ob.Status=='Project Hold'&&this.Current_user_ID==ob.OwnerEmpNo);
     this.selectedHoldPrjsReleasable=this.releasableHoldPrjs.length>0;
-    
+
   }
 
 
@@ -7053,7 +7077,7 @@ submitReject(){
 
 // release hold projects selected. start
 
-selectedHoldPrjsReleasable:boolean=false; 
+selectedHoldPrjsReleasable:boolean=false;
 releasableHoldPrjs:any=[];
 releasePrjsRemarks:string;
 notProvided1:boolean=false;
@@ -7105,5 +7129,106 @@ debugger
 
 
 // release hold projects selected. end
+
+
+shareoptionModal() {
+  document.getElementById("shareoptionModal").style.display = "block";
+  document.getElementById("shareoptionModal").classList.add("show");
+  document.getElementById("shareoptionModalBackdrop").style.display = "block";
+  document.getElementById("shareoptionModalBackdrop").classList.add("show");
+  this.generateLink()
+}
+
+shareoptionModal_dismiss() {
+  document.getElementById("shareoptionModal").style.display = "none";
+  document.getElementById("shareoptionModal").classList.remove("show");
+  document.getElementById("shareoptionModalBackdrop").style.display = "none";
+  document.getElementById("shareoptionModalBackdrop").classList.remove("show");
+}
+
+_MemoId:any
+_ReplyId:any
+
+shareOnWhatsApp(): void {
+  // URL encode the link
+  debugger
+  const link = 'https://cswebapps.com/creativeplanner/portfolioprojects/' +  this._Pid
+  const encodedLink = encodeURIComponent(link);
+
+  // Create the WhatsApp share URL
+  const whatsappUrl = `https://wa.me/?text=${encodedLink}`;
+
+  // Open the URL in a new tab/window
+  window.open(whatsappUrl, '_blank');
+}
+
+shareOnFacebook(): void {
+  debugger
+  // URL encode the link
+  const link = 'https://cswebapps.com/creativeplanner/portfolioprojects/' +  this._Pid
+  const encodedLink = encodeURIComponent(link);
+  // Create the Facebook share URL
+  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedLink}`;
+
+  // Open the URL in a new tab/window
+  window.open(facebookShareUrl, '_blank');
+}
+
+shareOnTwitter(): void {
+  // URL encode the components
+  const link = 'https://cswebapps.com/creativeplanner/portfolioprojects/' +  this._Pid
+  const encodedUrl = encodeURIComponent(link);
+
+  // Create the Twitter Intent URL
+  let twitterIntentUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}`;
+
+  // Open the URL in a new tab/window
+  window.open(twitterIntentUrl, '_blank');
+}
+
+link: string = '';
+generateLink(): void {
+  this.link = 'https://cswebapps.com/creativeplanner/portfolioprojects/' +  this._Pid
+}
+
+buttonText: string = 'Copy link'; // Initial button text
+
+handleButtonClick(): void {
+  if (this.buttonText === 'Copy link') {
+    this.copyLinkToClipboard();
+    this.buttonText = 'Copied to clipboard';
+  } else if (this.buttonText === 'Copied to clipboard') {
+    this.copyLinkToClipboard(); // Call method again if user clicks "Copied to clipboard"
+  }
+}
+
+copyLinkToClipboard(): void {
+  debugger
+  navigator.clipboard.writeText(this.link).then(() => {
+    // const language = localStorage.getItem('language');
+    // Display message based on language preference
+    // if (language === 'ar') {
+    //   this._snackBar.open('تم نسخ الرابط إلى الحافظة', 'تنتهي الآن', {
+    //     duration: 5000,
+    //     horizontalPosition: "right",
+    //     verticalPosition: "bottom",
+    //   });
+    // } else {
+      this._snackBar.open('link copied to clipboard', 'End now', {
+        duration: 5000,
+        horizontalPosition: "right",
+        verticalPosition: "bottom",
+      });
+    // }
+
+    // Here you can trigger any feedback to the user, like a tooltip or a toast notification.
+  }).catch(err => {
+    console.error('Could not copy text: ', err);
+  });
+
+}
+
+
+
 
 }

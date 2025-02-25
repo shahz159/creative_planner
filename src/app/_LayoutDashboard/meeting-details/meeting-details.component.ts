@@ -176,9 +176,15 @@ export class MeetingDetailsComponent implements OnInit {
   activeAgendaIndex: number = 0
   _PopupConfirmedValue: number;
   today: any = new Date().toISOString().substring(0, 10);
+  loadingDMS: boolean;
+
+  
+    
+
+
 
   ngOnInit(): void {
-
+    this.loadingDMS = false;
     this.MinLastNameLength = true;
 
     this.route.paramMap.subscribe(params => {
@@ -201,6 +207,10 @@ export class MeetingDetailsComponent implements OnInit {
     // this.getAttendeeTime();
    
     this.meeting_details();
+
+
+
+
     // this.GetDMSList();
     this.addAgenda();
     // this.GetMeetingnotes_data();
@@ -212,6 +222,10 @@ export class MeetingDetailsComponent implements OnInit {
     this.GetcompletedMeeting_data();
     this.agendaside(0);
     this.getMeetingApprovals();
+
+    setTimeout(() => {
+      this.loadingDMS = true;
+      }, 4000); 
 
     this.GetPreviousdate_meetingdata();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
@@ -574,11 +588,11 @@ export class MeetingDetailsComponent implements OnInit {
   meeting_details() {
  
     this._calenderDto.Schedule_ID = this.Schedule_ID;
-debugger
+
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
 
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-
+      this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       var Schedule_date = this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
       this.Agendas_List = this.EventScheduledjson[0].Agendas;
@@ -727,7 +741,13 @@ debugger
     
 
       this.portfoliocount = this.checkedportfolio.length;
-      this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
+      this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson;
+
+      this.Attachments_ary=this.Attachments_ary.map(item=>({
+        ...item,
+        File_type:item.Cloud_Name.split('.').pop()
+       }))
+
       this._TotalAttachment = this.Attachments_ary.length;
       console.log('Attachments_ary',this.Attachments_ary);
 
@@ -863,9 +883,10 @@ debugger
       //  console.log(this.meetingDuration, 'meetingDate:');
     }
 
-    setTimeout(() => {
+    // setTimeout(() => {
       this.isLoading = false; // Set to false once the data is loaded
-      }, 4000); 
+    
+    //   }, 3000); 
   }
 
 
@@ -1177,12 +1198,9 @@ debugger
 
 
 
-  loadingDMS: boolean;
-
-
-
+ 
   GetDMSList() {
-    this.loadingDMS = false;
+    // this.loadingDMS = false;
     this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
       if (data) {
         this._MemosSubjectList = JSON.parse(data['JsonData']);
@@ -1212,7 +1230,7 @@ debugger
      });
 
       
-    this.loadingDMS = true;
+    // this.loadingDMS = true;
   }
 
 
@@ -1486,7 +1504,7 @@ debugger
         this.companies_Arr=JSON.parse(data['Client_json']);
 
 
-        this.originalProjectList = this.ProjectListArray
+        this.originalProjectList = this.ProjectListArray;
 
         this.PortfolioLists = JSON.parse(data['Portfolio_drp'])
         var recordPortfolio = this.portfolio_Scheduledjson.map(item => item.numberval)
@@ -2163,7 +2181,7 @@ debugger
     this._calenderDto.Emp_No = this.Emp_Number === undefined ? 0 : this.Emp_Number;
 
     this.CalenderService.NewGet_previousMeetingNotes(this._calenderDto).subscribe
-      (data => {
+      (data => {   
         if (data['previousmeet_data']) {
           this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
           this.filterByAgenda = this.Previousdata_meeting[0].Details
@@ -2283,6 +2301,24 @@ debugger
 
   /////////////////////////////////////////// Agenda Start /////////////////////////////////////////////////////////
 
+
+
+
+
+  mainAgendaCount:any;
+
+  MainAgendaCount(){
+ 
+    var count =this.agendaInput;
+    if(count){
+      this.mainAgendaCount = count.length;
+    }else{
+      this.mainAgendaCount =  null;
+    }
+  }
+
+  
+
   agendaInput: string | undefined;
   allAgendas: any = [];
   agendasAdded: number = 0;
@@ -2292,7 +2328,7 @@ debugger
 
   addAgenda() {
 
-    if (this.agendaInput && this.agendaInput?.trim().length < 100) {
+    if (this.mainAgendaCount > 0 && this.mainAgendaCount < 101) {
       if (this.agendaInput && this.agendaInput.trim().length > 0) {
         this.agendasAdded += 1;
         const agenda = {
@@ -2320,6 +2356,8 @@ debugger
     } else if (this.agendaInput && this.agendaInput?.trim().length > 100) {
       this.notifyService.showInfo("Sorry, agenda name is too long.", 'Please shorten it.');
     }
+
+    this.mainAgendaCount =  null;
   }
 
 
@@ -2573,7 +2611,7 @@ debugger
       this._calenderDto.Emp_No = this.Current_user_ID;
       this._calenderDto.Meeting_notes = this.Notes_Type=="<div><br></div><div></div>" || this.Notes_Type==" " || this.isNotesTypeEmpty(this.Notes_Type) ?"":this.Notes_Type;
       this._calenderDto.AgendaId = this.currentAgendaView === undefined ? 0 : this.Agendas_List[this.currentAgendaView].AgendaId;
-
+     
       this.CalenderService.InsertAgendameeting_notes(this._calenderDto).subscribe
         (data => {
           console.log(data, 'Private notes');
@@ -2907,7 +2945,9 @@ onFileChange(event) {
 
     if (this.SelectedAttachmentFile != undefined || this.RemovedFile_id.length > 0) {
 
-      if(this.RemovedFile_id.length == 0){
+      if(this._lstMultipleFiales.length > 0){
+        this.processingFile = false;
+        this.progress=0;
         this.showFileUpload = true; // Show upload elements
         this.filesUploadingCount = this._lstMultipleFiales.length;
         if(this.filesUploadingCount === 1){
@@ -3008,7 +3048,7 @@ onFileChange(event) {
         // this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
           this.CalenderService.EditUploadCalendarAttachmenstCore(frmData).subscribe(
           (event: HttpEvent<any>) => {
-           
+          
             switch (event.type) {
               case HttpEventType.Sent:
                 console.log('Request has been made!');
@@ -3024,7 +3064,7 @@ onFileChange(event) {
                 console.log('User successfully created!', event.body);
                 var myJSON = JSON.stringify(event);
                 this._azureMessage = (JSON.parse(myJSON).body).message;
-               
+              
                 if(this._azureMessage=="1"){         
                   this.filesUploadingCount = 0;
                   this.processingFile = true;
@@ -3032,7 +3072,6 @@ onFileChange(event) {
                     console.log(event1,"azure data");
                     var myJSON = JSON.stringify(event1);
                     let responseBody = JSON.parse(myJSON).body; 
-
                     console.log('User successfully created!', responseBody);
                     if (responseBody === 1) { 
                       this.processingFile = false;                
@@ -3047,8 +3086,9 @@ onFileChange(event) {
                       }, 2000);     
                   }else if (responseBody === 0) { 
                     this.notifyService.showSuccess("Deleted successfully", '');                            
-                      this.meeting_details();                                                                 
-                }
+                      this.meeting_details();     
+                      this.RemovedFile_id = [];                                                            
+                  }
                   //  this._Message = (JSON.parse(myJSON).body);         
                   });
                 }
@@ -3297,7 +3337,7 @@ onFileChange(event) {
         if(this.rapeatLink_Details==true){
         this.Link_Details =`Meeting link:- `+ this.Link_Details +`, Meeting Id:- `+ this.Meeting_Id +`, Meeting password:- `+ this.Meeting_password
         this.rapeatLink_Details=false;
-      }
+       }
 
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
@@ -3345,7 +3385,7 @@ onFileChange(event) {
          element[vDMS_Name]='';
          element[vAgendas]='[]';
        }
-// dont provide unnecessary values to api when task is creating.
+     // dont provide unnecessary values to api when task is creating.
 
 
         //
@@ -3362,28 +3402,108 @@ onFileChange(event) {
 
       let _attachmentValue = 0;
       const frmData = new FormData();
-      for (var i = 0; i < this._lstMultipleFiales.length; i++) {
-        frmData.append("fileUpload", this._lstMultipleFiales[i].Files);
-      }
-      if (this._lstMultipleFiales.length > 0)
+
+
+
+      debugger
+      if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
+        frmData.append("Attachment", "true");
         _attachmentValue = 1;
-      else
-        _attachmentValue = 0;
-
-      frmData.append("EventNumber", this.EventNumber.toString());
-      frmData.append("CreatedBy", this.Current_user_ID.toString());
-      console.log(JSON.stringify(finalarray), "finalarray")
-      this._calenderDto.draftid = this.draftid;
 
 
-      console.log('_calenderDto obj:', JSON.parse(this._calenderDto.ScheduleJson));
+        if(this._lstMultipleFiales.length > 0){
+          this.progress=0;
+          this.showFileUpload = true; // Show upload elements
+          this.filesUploadingCount = this._lstMultipleFiales.length;
+          if(this.filesUploadingCount === 1){
+            this.uploadingFileName = this._lstMultipleFiales[0].FileName
+          }
+        }
+        
 
+        for (var i = 0; i < this._lstMultipleFiales.length; i++) {
+          frmData.append("files", this._lstMultipleFiales[i].Files);
+        }
+        const xmlDoc = document.implementation.createDocument('', '', null);
+        const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+
+      // Iterate over the file groups
+      this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+        console.log(`Processing group ${groupIndex}:`, fileGroup);
+
+        // Normalize Files to an array
+        const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+
+        files.forEach((file, fileIndex) => {
+          if (!file || !file.name || !file.type) {
+            console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+            return;
+          }
+
+          console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+
+          const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+          const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+          const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+          const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+
+          // Populate <FileName> element
+          nameElement.textContent = file.name;
+
+          // Generate a random ID and sanitize the file name for CloudName
+          const randomId = this.generateRandomId();
+          const sanitizedFileName = this.sanitizeFileName(file.name);
+          cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
+
+          // Populate <ContentType> element
+          const contentType = this.getContentType(file.type);
+          contentTypeElement.textContent = contentType;
+
+          // Append child elements to the <Row>
+          rowElement.appendChild(nameElement);
+          rowElement.appendChild(cloudNameElement);
+          rowElement.appendChild(contentTypeElement);
+
+          // Append the <Row> to the root element
+          parentElement.appendChild(rowElement);
+          });
+        });
+
+        // Append the root <MultiDocument> element to the XML document
+          xmlDoc.appendChild(parentElement);
+
+          // Serialize the XML document to a string
+          const serializer = new XMLSerializer();
+          const xmlString = serializer.serializeToString(xmlDoc);
+
+          // Append the XML string to FormData
+          frmData.append("docs_multiple_xml", xmlString);
+
+          // Log the XML string for debugging
+          console.log("Generated XML:", xmlString);
+
+            } 
+            else {
+              _attachmentValue = 0;
+              frmData.append("Attachment", "false");
+            }
+
+          frmData.append("EventNumber", this.EventNumber=this.EventNumber?this.EventNumber.toString():'');
+          frmData.append("CreatedBy", this.Current_user_ID.toString());
+          this._calenderDto.draftid = this.draftid? this.draftid : 0;
+          frmData.append("RemovedFile_id", this._calenderDto.file_ids=this.RemovedFile_id?this.RemovedFile_id:'');
+          this._calenderDto.attachment =this._attachmentValue.toString();
+
+          console.log(JSON.stringify(finalarray), "finalarray")
+        
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
-
+          this.Attamentdraftid= data['draftid']
+          frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
+        
           if (_attachmentValue == 1) {
             this.CalenderService.UploadCalendarAttachmenst(frmData).subscribe(
-              (event: HttpEvent<any>) => {
+              (event: HttpEvent<any>) => {   
                 switch (event.type) {
                   case HttpEventType.Sent:
                     console.log('Request has been made!');
@@ -3398,19 +3518,44 @@ onFileChange(event) {
                   case HttpEventType.Response:
                     console.log('User successfully created!', event.body);
 
+                    var myJSON = JSON.stringify(event);
+                    this._azureMessage = (JSON.parse(myJSON).body).message;
+
+                    if(this._azureMessage=="1"){  debugger
+                      this.filesUploadingCount = 0;
+                      this.processingFile = true;
+                      this.CalenderService._AzureUploadCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
+                        console.log(event1,"azure data");
+                        var myJSON = JSON.stringify(event1);
+                        let responseBody = JSON.parse(myJSON).body; 
+                    
+                        if (responseBody === 1) { 
+                          this.processingFile = false;                
+                          this.processingComplete = true;                                     
+                          setTimeout(() => {
+                            this.processingComplete = false; 
+                            this.notifyService.showSuccess(this._Message, "Success");              
+                            this.meeting_details();
+                            this.showFileUpload = false;                            
+                          }, 2000);     
+                         }
+            
+                      });
+                    }
+
                     // (<HTMLInputElement>document.getElementById("div_exixtingfiles")).innerHTML = "";
-                    (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
+                    // (<HTMLInputElement>document.getElementById("uploadFile")).value = "";
                     this._lstMultipleFiales = [];
                     // empty(this._lstMultipleFiales);
                     // alert(this._lstMultipleFiales.length);
-                    setTimeout(() => {
-                      this.progress = 0;
-                    }, 1500);
+                    // setTimeout(() => {
+                    //   this.progress = 0;
+                    // }, 1500);
 
                     (<HTMLInputElement>document.getElementById("Kt_reply_Memo")).classList.remove("kt-quick-panel--on");
                     (<HTMLInputElement>document.getElementById("hdnMailId")).value = "0";
                     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-                    document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
+                    // document.getElementsByClassName("kt-aside-menu-overlay")[0].classList.remove("d-block");
                 }
               }
             )
@@ -3418,14 +3563,16 @@ onFileChange(event) {
           //UploadCalendarAttachmenst
           // console.log(data, "m");
           this._Message = data['message'];
-          if (this._Message == "Updated Successfully") {
+          if (this._Message == "Updated Successfully" && this.filesUploadingCount == 0) {
             if (this.draftid != 0) {
               // this.Getdraft_datalistmeeting();
               this.draftid = 0
             }
-            this.notifyService.showSuccess(this._Message.split(' ').map((word, index) => index === 1 ? word.charAt(0).toLowerCase() + word.slice(1) : word).join(' '), "Success");
+            this.notifyService.showSuccess(this._Message, "Success");              
+                            
+            // this.notifyService.showSuccess(this._Message.split(' ').map((word, index) => index === 1 ? word.charAt(0).toLowerCase() + word.slice(1) : word).join(' '), "Success");
           }
-          else {
+          else if(this._Message != "Updated Successfully" && this.filesUploadingCount == 0) {
             this.notifyService.showError(this._Message, "Failed");
           }
 
@@ -3434,6 +3581,10 @@ onFileChange(event) {
           this.Title_Name = null;
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
+          this.agendaInputs=undefined;
+          this.agendacharacterCount =  null;         
+          this.mainAgendaCount =  null;
+          this.agendaInput=undefined;
           this.MasterCode = null;
           this.projectsSelected = [];
           this.Subtask = null;
@@ -4050,7 +4201,7 @@ onFileChange(event) {
 
     this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
       ((data: any) => {
-
+    
         
         this.exact_start = (data['Start_time']);
         this.agendasList = JSON.parse(data['Agendas']);
@@ -4114,9 +4265,9 @@ onFileChange(event) {
        
         this.meetingStarted = data.AdminMeeting_Status === 'True' ? true : false
         if (this.meetingStarted || this.meetingStarted != true) {
-
+      
           if (data['Checkdatetimejson'] != '') {
-
+           
             this.AllAttendees_notes = JSON.parse(data['Checkdatetimejson']);
         
           } else if (data['Checkdatetimejson'] == '') {
@@ -6322,6 +6473,10 @@ console.log(this.dayArr,'sdcsadcasdcssad')
     this.Title_Name = null;
     this.ngEmployeeDropdown = null;
     this.Description_Type = null;
+    this.agendaInputs=undefined;
+    this.agendacharacterCount =  null;
+    this.mainAgendaCount =  null;
+    this.agendaInput=undefined;
     this.characterCount=null;
     this.SelectDms = null;
     this.MasterCode = null;
@@ -6541,7 +6696,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
              alert('please select valid day');
            }
          }
-      else if (this.selectedrecuvalue == "3") {
+          else if (this.selectedrecuvalue == "3") {
           
          
            if (this.MonthArr.filter(x => x.checked == true).length == 0) {
@@ -6746,78 +6901,88 @@ console.log(this.dayArr,'sdcsadcasdcssad')
 
 
       this._attachmentValue = 0;
-      
+
       const frmData = new FormData();
       if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
+
         frmData.append("Attachment", "true");
         this._attachmentValue = 1;
+      
+        if(this._lstMultipleFiales.length > 0){
+          this.progress=0;
+          this.showFileUpload = true; // Show upload elements
+          this.filesUploadingCount = this._lstMultipleFiales.length;
+          if(this.filesUploadingCount === 1){
+            this.uploadingFileName = this._lstMultipleFiales[0].FileName
+          }
+        }
   
         for (var i = 0; i < this._lstMultipleFiales.length; i++) {
           frmData.append("files", this._lstMultipleFiales[i].Files);
         }
-  const xmlDoc = document.implementation.createDocument('', '', null);
-  const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
-  
-  // Iterate over the file groups
-  this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
-  console.log(`Processing group ${groupIndex}:`, fileGroup);
-  
-  // Normalize Files to an array
-  const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
-  
-  files.forEach((file, fileIndex) => {
-    if (!file || !file.name || !file.type) {
-      console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
-      return;
-    }
-  
-    console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
-  
-    const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
-    const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
-    const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
-    const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
-  
-    // Populate <FileName> element
-    nameElement.textContent = file.name;
-  
-    // Generate a random ID and sanitize the file name for CloudName
-    const randomId = this.generateRandomId();
-    const sanitizedFileName = this.sanitizeFileName(file.name);
-    cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
-  
-    // Populate <ContentType> element
-    const contentType = this.getContentType(file.type);
-    contentTypeElement.textContent = contentType;
-  
-    // Append child elements to the <Row>
-    rowElement.appendChild(nameElement);
-    rowElement.appendChild(cloudNameElement);
-    rowElement.appendChild(contentTypeElement);
-  
-    // Append the <Row> to the root element
-    parentElement.appendChild(rowElement);
-  });
-  });
-  
-  // Append the root <MultiDocument> element to the XML document
-  xmlDoc.appendChild(parentElement);
-  
-  // Serialize the XML document to a string
-  const serializer = new XMLSerializer();
-  const xmlString = serializer.serializeToString(xmlDoc);
-  
-  // Append the XML string to FormData
-  frmData.append("docs_multiple_xml", xmlString);
-  
-  // Log the XML string for debugging
-  console.log("Generated XML:", xmlString);
-  
-  } 
-  else {
-    this._attachmentValue = 0;
-    frmData.append("Attachment", "false");
-  }
+        const xmlDoc = document.implementation.createDocument('', '', null);
+        const parentElement = xmlDoc.createElement('MultiDocument'); // Create the root <MultiDocument> element
+        
+        // Iterate over the file groups
+        this._lstMultipleFiales.forEach((fileGroup, groupIndex) => {
+        console.log(`Processing groups  ${groupIndex}:`, fileGroup);
+        
+        // Normalize Files to an array
+        const files = Array.isArray(fileGroup.Files) ? fileGroup.Files : (fileGroup.Files ? [fileGroup.Files] : []);
+        
+        files.forEach((file, fileIndex) => {
+          if (!file || !file.name || !file.type) {
+            console.warn(`Skipping invalid file in group ${groupIndex}, file ${fileIndex}:`, file);
+            return;
+          }
+        
+          console.log(`Adding file ${fileIndex} from group ${groupIndex}:`, file.name);
+        
+          const rowElement = xmlDoc.createElement('Row'); // Create <Row> element
+          const contentTypeElement = xmlDoc.createElement('ContentType'); // Create <ContentType> element
+          const nameElement = xmlDoc.createElement('FileName'); // Create <FileName> element
+          const cloudNameElement = xmlDoc.createElement('CloudName'); // Create <CloudName> element
+        
+          // Populate <FileName> element
+          nameElement.textContent = file.name;
+        
+          // Generate a random ID and sanitize the file name for CloudName
+          const randomId = this.generateRandomId();
+          const sanitizedFileName = this.sanitizeFileName(file.name);
+          cloudNameElement.textContent = `${randomId}_${sanitizedFileName}`;
+        
+          // Populate <ContentType> element
+          const contentType = this.getContentType(file.type);
+          contentTypeElement.textContent = contentType;
+        
+          // Append child elements to the <Row>
+          rowElement.appendChild(nameElement);
+          rowElement.appendChild(cloudNameElement);
+          rowElement.appendChild(contentTypeElement);
+        
+          // Append the <Row> to the root element
+          parentElement.appendChild(rowElement);
+        });
+        });
+        
+        // Append the root <MultiDocument> element to the XML document
+        xmlDoc.appendChild(parentElement);
+        
+        // Serialize the XML document to a string
+        const serializer = new XMLSerializer();
+        const xmlString = serializer.serializeToString(xmlDoc);
+        
+        // Append the XML string to FormData
+        frmData.append("docs_multiple_xml", xmlString);
+        
+        // Log the XML string for debugging
+        console.log("Generated XML:", xmlString);
+        
+        } 
+        else {
+          this._attachmentValue = 0;
+          frmData.append("Attachment", "false");
+        }
 
       frmData.append("EventNumber", this.EventNumber.toString());
       frmData.append("CreatedBy", this.Current_user_ID.toString());
@@ -6829,7 +6994,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
       
       this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
         (data => {
-       
+        
           this.RemovedAttach = [];
           // alert(data['Schedule_date'])
           frmData.append("Schedule_date", data['Schedule_date'].toString());
@@ -6837,6 +7002,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
             // this.CalenderService.EditUploadCalendarAttachmenst(frmData).subscribe(
               this.CalenderService.EditUploadCalendarAttachmenstCore(frmData).subscribe(
               (event: HttpEvent<any>) => {
+               
                 switch (event.type) {
                   case HttpEventType.Sent:
                     console.log('Request has been made!');
@@ -6852,13 +7018,26 @@ console.log(this.dayArr,'sdcsadcasdcssad')
                     console.log('User successfully created!', event.body);
                     var myJSON = JSON.stringify(event);
                     this._azureMessage = (JSON.parse(myJSON).body).message;
-  
+                
                     if(this._azureMessage=="1"){
+                      this.filesUploadingCount = 0;
+                      this.processingFile = true;
                       this.CalenderService._AzureUpdateCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
                         console.log(event1,"azure data");
                         var myJSON = JSON.stringify(event1);
-                      //  this._Message = (JSON.parse(myJSON).body);
-            
+                        let responseBody = JSON.parse(myJSON).body; 
+                    
+                        if (responseBody === 1) { 
+                          this.processingFile = false;                
+                          this.processingComplete = true;                                     
+                          setTimeout(() => {
+                            this.processingComplete = false; 
+                            this.notifyService.showSuccess(this._Message, "Success");              
+                            this.meeting_details();
+                            this.showFileUpload = false;                            
+                          }, 2000);     
+                         }
+                     
                       });
                     }
 
@@ -6879,7 +7058,6 @@ console.log(this.dayArr,'sdcsadcasdcssad')
               }
             )
           }
-
           // console.log(data, "m");
           this._Message = data['message'];
           if (this._Message == 'Not updated') {
@@ -6891,9 +7069,9 @@ console.log(this.dayArr,'sdcsadcasdcssad')
           else if (this._Message == 'Nothing to Update') {
             this.notifyService.showInfo(this._Message, "Update failed");
           }
-          else {
+          else if (this.filesUploadingCount == 0){
             this.notifyService.showSuccess(this._Message, "Success");
-            this.meeting_details();
+              this.meeting_details();
           }
           //69 this.GetScheduledJson();
           //69 this.GetPending_Request();
@@ -6902,6 +7080,10 @@ console.log(this.dayArr,'sdcsadcasdcssad')
           this.RemovedAttach = [];
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
+          this.agendaInputs=undefined;
+          this.agendacharacterCount =  null;
+          this.mainAgendaCount =  null;
+          this.agendaInput=undefined;
           this.MasterCode = null;
           this.Subtask = null;
           this.Startts = null;
@@ -6909,6 +7091,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
           this.St_date = null;
           this.Ed_date = null;
           this._status = null;
+          this.processingFile = false;  
           this.SelectDms = null;
           this._SEndDate = moment().format("YYYY-MM-DD").toString();
           this.Location_Type = null;
@@ -7002,11 +7185,27 @@ _azureMessage:any="";
 
 
 
+
+
+  agendacharacterCount:any;
+
+  AgendaCharacterCount(): void {
+ 
+    var count =this.agendaInputs;
+    if(count){
+      this.agendacharacterCount = count.length;
+    }else{
+      this.agendacharacterCount =  null;
+    }
+  }
+
+
+
   agendaInputs: string | undefined;
   // allAgendas: any = [];
   // agendasAdded: number = 0;
   addAgendas() {
-    if (this.agendaInputs.trim().length > 0 && this.agendaInputs?.trim().length < 100) {
+    if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101) {
       this.agendasAdded += 1;
       const agenda = {
         index: this.agendasAdded,
@@ -7015,7 +7214,7 @@ _azureMessage:any="";
       this.allAgendas.push(agenda);
       this.agendaInputs = undefined;
     }
-
+    this.agendacharacterCount =  null;
     console.log("allAgendas:", this.allAgendas);
   }
 
@@ -7938,7 +8137,7 @@ onParticipantFilter(){
         this._calenderDto.Schedule_ID = 0;
       }
       this._calenderDto.draftid = this.draftid;
-      console.log(this._calenderDto, 'testing')
+      console.log(this._calenderDto, 'Rapeat testing')
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
 
@@ -8679,7 +8878,7 @@ copied = false;
 
   
 LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
- 
+
   let FileUrl: string;
   
   FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -8692,26 +8891,26 @@ LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, ty
     // else if (this.projectInfo.AuthorityEmpNo != this.projectInfo.ResponsibleEmpNo) {
     //   FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
     // }
-    let name = "ArchiveView/" + pcode;
+    let name = "ArchiveView/" + this.Schedule_ID;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(FileUrl);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");
     filename = filename.replace(/&/g, "%26");
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type +"&"+"Schedule_ID="+this.Schedule_ID;;
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
   else if (iscloud == true) {
-    let name = "ArchiveView/" + pcode;
+    let name = "ArchiveView/" + this.Schedule_ID;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(url1);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");
     filename = filename.replace(/&/g, "%26");
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type +"&"+"Schedule_ID="+this.Schedule_ID;
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
@@ -8750,6 +8949,48 @@ clear_search() {
 // close_search() {
 //   document.getElementById("search-head-filter-open").classList.remove("search-head-filter-open");
 // }
+
+
+
+
+
+BookMarks:boolean;
+
+MeetingBookmark(flagid:any) {
+  if (this.isSubmitting) return;
+  this.isSubmitting = true;
+ 
+  this._calenderDto.Schedule_ID = this.Schedule_ID;
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  this._calenderDto.flagid = flagid;
+  
+  this.CalenderService.NewUpdateMeetingBookmark(this._calenderDto).subscribe
+    ((data) => {
+      if(data['message'] == '1'){
+    
+        this._calenderDto.Schedule_ID=this.Schedule_ID;
+
+        this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+        ((data) => {    
+          this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+          this.BookMarks = this.EventScheduledjson[0].IsBookMark;
+          if(this.BookMarks){
+            this.notifyService.showSuccess("Added In bookmark Successfully", "Success");          
+          }else{
+            this.notifyService.showSuccess("Bookmark deleted", "Success");
+          }
+          this.isSubmitting = false;
+        
+        })  
+      }   
+    });
+}
+
+
+
+
+
+
 
 
 }

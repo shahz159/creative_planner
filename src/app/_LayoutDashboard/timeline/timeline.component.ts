@@ -1,9 +1,10 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit ,Inject, ViewChild} from '@angular/core';
+import { Component, OnInit ,Inject, ViewChild, ChangeDetectorRef} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import * as moment from 'moment';
 import { ProjectDetailsDTO } from 'src/app/_Models/project-details-dto';
 import { SubTaskDTO } from 'src/app/_Models/sub-task-dto';
+import { StatusDTO } from 'src/app/_Models/status-dto';  
 import { NotificationService } from 'src/app/_Services/notification.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import {
@@ -61,9 +62,11 @@ export class TimelineComponent implements OnInit {
     private route : ActivatedRoute,
     private _adapter: DateAdapter<any>,
     @Inject(MAT_DATE_LOCALE) private _locale: string,
+    private cdr:ChangeDetectorRef
     ) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
+    this.objStatusDto=new StatusDTO();
    }
   timeline_of:'today'|'yesterday';
   ObjSubTaskDTO: SubTaskDTO;
@@ -97,6 +100,7 @@ export class TimelineComponent implements OnInit {
   date = new Date();
   dateF = new FormControl(new Date());
   objProjectDto: ProjectDetailsDTO;
+  objStatusDto:StatusDTO;
   // timedata: any = [];
   // timedata1: any=["08:00",
   //   "08:15", "08:30", "08:45", "09:00",
@@ -1164,6 +1168,7 @@ previous_filter() {
 
 // tm4EndDate_msg:boolean=false;
 
+submittingTimelineReport:boolean=false;
 endDay(submDate:string)
 {
   if(this.tmReportTotalDuration==null){    // if there is no timeline has been entered by the user on the selected date.
@@ -1182,8 +1187,9 @@ endDay(submDate:string)
 
   const empno=this.Current_user_ID;
   const tmDate=moment(new Date(submDate)).format('MM/DD/YYYY');
-
+  this.submittingTimelineReport=true;
   this.service.NewInsertTimelineReport(empno,tmDate).subscribe((res:any)=>{
+  this.submittingTimelineReport=false;  
   if(res&&res.message){
       if(res.message=='1'){
           Swal.fire(
@@ -1502,10 +1508,16 @@ viewActions(type:'COMPLETED'|'DUE'|'DELAYED'){
   }
 }
 
-viewProjects(type:'COMPLETED'|'DUE'|'DELAYED'){
+viewProjects(type:'COMPLETED'|'DUE'|'DELAYED'|'REJECTED'){
   if(type=='DELAYED')
   {
     let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Projects&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
+    let myWindow = window.open(myurl,'_blank');
+    myWindow?.focus();
+  }
+  else if(type=='REJECTED')
+  {
+    let myurl = document.baseURI+`/ViewProjects/Rejected`;
     let myWindow = window.open(myurl,'_blank');
     myWindow?.focus();
   }
@@ -1535,6 +1547,8 @@ viewStandardTasks(type:'COMPLETED'|'DELAYED'){
 
    }
 }
+
+
 
 
 // full time available start.
@@ -1728,6 +1742,7 @@ cancelEditTimelineRecord(recordIdstr:string,prevVal:string){
 }
 
 
+
 updateWorkdesOfTR(recordIdstr:string,recordId:number,newWorkAchv:string,updateTMReportArr?:boolean){
 
 
@@ -1737,8 +1752,10 @@ updateWorkdesOfTR(recordIdstr:string,recordId:number,newWorkAchv:string,updateTM
    const r_id=recordId;
    const newWorkDes=newWorkAchv;
    const operation=1;
+   $(`${recordIdstr} .wrk-des-editbx .updatewrkdes-btn`).prop('disabled',true);
    this.service.NewUpdateTimelineActivity(empno,r_id,newWorkDes,operation).subscribe((res:any)=>{
     console.log('timeline edit resp:',res); 
+    $(`${recordIdstr} .wrk-des-editbx .updatewrkdes-btn`).prop('disabled',false);
     if(res&&res.message)
     {  
         if(res.message=='1'){
@@ -1844,7 +1861,7 @@ deleteTimelineRecord(tmRecord:any,updateTMReportArr?:boolean){
        cancelButtonText: 'Cancel'
      }).then((choice)=>{
            if(choice.isConfirmed){
-             
+             console.log('delete btn is clicked.')
              const empno=this.Current_user_ID;   
              const r_id=id;
              const operation=2;
@@ -1952,13 +1969,100 @@ deleteTimelineRecord(tmRecord:any,updateTMReportArr?:boolean){
 // dar inbox start.
 
 
+darRequestsList:any=[];
+darResponsesList:any=[];
+totalDarRequests:number=0;
+totalDarResponses:number=0;
+selectedDarReqIndex:number=-1;
+currentDarSection:'DAR_REQUESTS'|'DAR_RESPONSES'='DAR_REQUESTS';
+darRequestsLoading:boolean=false;
+darResponsesLoading:boolean=false;
+companiesList:any[]=[];
+employeesList:any[]=[];
+darRequestsSelected:any[]=[];
+total_records:number=0;  // Total overall records in DB. 
+page_size:number=30;    // Total records can be on each page limit. 
+current_pageno:number=1;   // current page number.   
+lastPageNo:number=0;       // last page number.
+filterRecordsByEmp:Object[]=[];
+filterRecordsByCompany:Object[]=[];
+isfilterOnDarSection:boolean=false;
+
+
 openDarInbox(){
-   this.Type=this.type3;   
+  this.Type=this.type3;       // set dar inbox view 
+  this.clearFilterConfig();    // clear filter configurations if exists.
+  this.getDarRequestsList();  // fetch dar requests.
+  this.getDarResponsesList();  // fetch dar responses.   
+  this.currentDarSection='DAR_REQUESTS';   // by default dar requests section is opened.
+  this.getDefaultFilterDropdownData();     // filterbox default data fetch.
 }
 
 
+changeDarSectionTo(section:'DAR_REQUESTS'|'DAR_RESPONSES'){
+  this.currentDarSection=section;  // switch the view.  
+  this.clearFilterConfig();    // clear filter configurations.
+  if(this.currentDarSection=='DAR_REQUESTS'){
+    this.getDarRequestsList();
+  }
+  else if(this.currentDarSection=='DAR_RESPONSES'){
+    this.getDarResponsesList();
+  }                               // render page content.
+  this.getDefaultFilterDropdownData();   // fetches filter box dropdowns data.
+}
+
+clearFilterConfig(){
+  this.filterRecordsByEmp=[];
+  this.filterRecordsByCompany=[];
+  this.isfilterOnDarSection=false;
+  this.current_pageno=1;
+}
+
+
+resetDarSectionFilter(){
+  this.clearFilterConfig();    // clear filter configurations.
+  this.getDefaultFilterDropdownData();   // fetches filter box dropdowns default data.
+  if(this.currentDarSection=='DAR_REQUESTS'){
+    this.getDarRequestsList();
+  }
+  else if(this.currentDarSection=='DAR_RESPONSES'){
+    this.getDarResponsesList();
+  }     // fetches corresponding page data after filter config reset.
+}
+
+applyFilterOnDarSection(){
+    this.current_pageno=1;
+    this.isfilterOnDarSection=(this.filterRecordsByCompany.length>0||this.filterRecordsByEmp.length>0);
+    if(this.isfilterOnDarSection){
+
+      if(this.currentDarSection=='DAR_REQUESTS'){
+          this.getDarRequestsList();
+      }else if(this.currentDarSection=='DAR_RESPONSES'){
+          this.getDarResponsesList();
+      }
+
+    const _compnsel=this.filterRecordsByCompany.map((ob:any)=>ob.Company_No);
+    const _empsel=this.filterRecordsByEmp.map((ob:any)=>ob.Emp_No);
+
+    this.objStatusDto.Type=this.currentDarSection=='DAR_REQUESTS'?'D':this.currentDarSection=='DAR_RESPONSES'?'P':'D';
+    this.objStatusDto.EmpNo=this.Current_user_ID;
+    this.objStatusDto.SelectedCompany=_compnsel.join(',');
+    this.objStatusDto.SelectedEmp_No=_empsel.join(',');
+    this.objStatusDto.startdate='';
+    this.objStatusDto.enddate='';
+    this.service.NewGetTimelinedropdown(this.objStatusDto).subscribe((res)=>{  
+        if(res&&res[0]){   
+          const totalprjJsonstr=JSON.parse(res[0]['TotalProjectsCount_Json']);
+          this.total_records=totalprjJsonstr[0]['TotalProjects'];
+          this.lastPageNo=Math.ceil(this.total_records/this.page_size);
+        }  
+    });
+
+    }
+}
 
 openDarReqSidebar(crntIndex:number){
+  this.selectedDarReqIndex=crntIndex;
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementById("timepage")!.classList.add("position-fixed");
   document.getElementById("dar-req_slider_bar").classList.add("kt-quick-panel--on");
@@ -1966,11 +2070,236 @@ openDarReqSidebar(crntIndex:number){
 }
 
 closeDarReqSidebar() {
+    this.selectedDarReqIndex=-1;
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("timepage")!.classList.remove("position-fixed");
     document.getElementById("dar-req_slider_bar").classList.remove("kt-quick-panel--on");
     $('#dar-req_slider_bar').removeClass('open_sidebar');
 }
+
+getDarRequestsList(){   
+  this.objStatusDto.Type='D';
+  this.objStatusDto.Emp_No=this.Current_user_ID;
+  this.objStatusDto.SelectedEmp_No=this.filterRecordsByEmp.map((ob:any)=>ob.Emp_No).join(',');
+  this.objStatusDto.SelectedCompany=this.filterRecordsByCompany.map((ob:any)=>ob.Company_No).join(',');
+  this.objStatusDto.PageNumber=this.current_pageno;
+  this.objStatusDto.RowsOfPage=this.page_size;
+  this.objStatusDto.startdate='';
+  this.objStatusDto.enddate='';
+ 
+   this.darRequestsLoading=true;
+   this.service.NewGetTimelineInbox(this.objStatusDto).subscribe((res)=>{  
+    console.log('pageno:',this.current_pageno,'dar requests list:',res);
+    this.darRequestsLoading=false;  
+         if(res&&res[0]){
+             this.darRequestsList=JSON.parse(res[0]['DarRequests']);
+             this.totalDarRequests=res[0]['TotalRequests'];
+         }   
+   });
+}
+
+getDarResponsesList(){ 
+  this.objStatusDto.Type='P';
+  this.objStatusDto.Emp_No=this.Current_user_ID;
+  this.objStatusDto.SelectedEmp_No=this.filterRecordsByEmp.map((ob:any)=>ob.Emp_No).join(',');
+  this.objStatusDto.SelectedCompany=this.filterRecordsByCompany.map((ob:any)=>ob.Company_No).join(',');
+  this.objStatusDto.PageNumber=this.current_pageno;
+  this.objStatusDto.RowsOfPage=this.page_size;
+  this.objStatusDto.startdate='';
+  this.objStatusDto.enddate='';
+
+  this.darResponsesLoading=true;
+  this.service.NewGetTimelineInbox(this.objStatusDto).subscribe((res)=>{
+  console.log('dar responses list:',res);
+  this.darResponsesLoading=false;
+    if(res&&res[0]){
+      this.darResponsesList=JSON.parse(res[0]['DarResponses']);
+      this.totalDarResponses=res[0]['TotalResponses'];
+    }
+  });
+}
+
+
+prevPageRecords(){
+  this.current_pageno-=1;
+  if(this.currentDarSection=='DAR_REQUESTS'){
+    this.getDarRequestsList();
+  }else if(this.currentDarSection=='DAR_RESPONSES'){
+    this.getDarResponsesList();
+  }
+}
+
+nextPageRecords(){
+  this.current_pageno+=1;
+  if(this.currentDarSection=='DAR_REQUESTS'){
+    this.getDarRequestsList();
+  }else if(this.currentDarSection=='DAR_RESPONSES'){
+    this.getDarResponsesList();
+  }
+}
+
+getDefaultFilterDropdownData(){
+  this.objStatusDto.Type=this.currentDarSection=='DAR_REQUESTS'?'D':this.currentDarSection=='DAR_RESPONSES'?'P':'D';
+  this.objStatusDto.EmpNo=this.Current_user_ID;
+  this.objStatusDto.SelectedCompany='';
+  this.objStatusDto.SelectedEmp_No='';
+  this.objStatusDto.startdate='';
+  this.objStatusDto.enddate='';
+  this.service.NewGetTimelinedropdown(this.objStatusDto).subscribe((res)=>{  
+      console.log('timeline dropdown:',res);
+      if(res&&res[0]){   
+        this.companiesList=JSON.parse(res[0]['CompanyType_Json']);
+        this.employeesList=JSON.parse(res[0]['Emp_Json']);
+        const totalprjJsonstr=JSON.parse(res[0]['TotalProjectsCount_Json']);
+        this.total_records=totalprjJsonstr[0]['TotalProjects'];
+        this.lastPageNo=Math.ceil(this.total_records/this.page_size);
+      }  
+  });
+}
+
+
+isCompanyChecked(companyId:any){
+  return this.filterRecordsByCompany.find((ob:any)=>ob.Company_No==companyId);
+}
+isEmployeeChecked(empId:any){
+  return this.filterRecordsByEmp.find((ob:any)=>ob.Emp_No==empId);
+}
+
+
+
+selectDarRequest(isSelected:boolean,dreq:any){
+  if(isSelected){
+      this.darRequestsSelected.push(dreq);
+  }
+  else{
+     const index=this.darRequestsSelected.findIndex(ob=>ob.Emp_Rep_No==dreq.Emp_Rep_No);
+     if(index>-1){
+        this.darRequestsSelected.splice(index,1);
+     }
+  }
+}
+
+
+configureCompanyFilter(include:boolean,companyObj:any){
+  if(include){
+    this.filterRecordsByCompany.push(companyObj);
+  }else{
+    const rindex=this.filterRecordsByCompany.findIndex((ob:any)=>ob.Company_No==companyObj.Company_No);
+    this.filterRecordsByCompany.splice(rindex,1);
+  }
+
+  this.objStatusDto.Type=this.currentDarSection=='DAR_REQUESTS'?'D':this.currentDarSection=='DAR_RESPONSES'?'P':'D';
+  this.objStatusDto.EmpNo=this.Current_user_ID;
+  this.objStatusDto.SelectedCompany=this.filterRecordsByCompany.map((ob:any)=>ob.Company_No).join(',');
+  this.objStatusDto.SelectedEmp_No='';
+  this.objStatusDto.startdate='';
+  this.objStatusDto.enddate='';
+  this.service.NewGetTimelinedropdown(this.objStatusDto).subscribe((res)=>{  
+    console.log('timeline dropdown:',res);
+    if(res&&res[0]){   
+      this.employeesList=JSON.parse(res[0]['Emp_Json']);
+      const empsAfterFilter=this.employeesList.map((ob:any)=>ob.Emp_No);
+      this.filterRecordsByEmp=this.filterRecordsByEmp.filter((emp:any)=>empsAfterFilter.includes(emp.Emp_No));
+    }  
+});
+
+
+}
+
+configureEmployeeFilter(include:boolean,empObj:any){
+   if(include){
+    this.filterRecordsByEmp.push(empObj);
+   }else{
+    const rindex=this.filterRecordsByEmp.findIndex((ob:any)=>ob.Emp_No==empObj.Emp_No);
+    if(rindex>-1)
+    this.filterRecordsByEmp.splice(rindex,1);
+   }
+
+}
+
+
+
+//  //when user unselect any company and some emps are found set as filterconfig.
+//  if(include==false&&this.filterRecordsByEmp.length>0)
+//   {   // as company is unselected unselect all its associated emp from filterconfig. since it may unused select query.
+//     if(this.filterRecordsByCompany.length>0){
+//       const empNos=this.employeesList.map((ob:any)=>ob.Emp_No);
+//       this.filterRecordsByEmp=this.filterRecordsByEmp.filter((emp:any)=>empNos.includes(emp.Emp_No));  
+//     }
+//     else{ // after unselection we found no company left as selected.
+//       this.filterRecordsByEmp=[]; 
+//       this.companiesList=JSON.parse(res[0]['CompanyType_Json']);
+//     } 
+     
+//   }
+
+
+
+
+// configureCompanyFilter(include:boolean,companyObj:any){
+  
+//   if(include){
+//     this.filterRecordsByCompany.push(companyObj);
+//   }else{
+//     const rindex=this.filterRecordsByCompany.findIndex((ob:any)=>ob.Company_No==companyObj.Company_No);
+//     this.filterRecordsByCompany.splice(rindex,1);
+//   }
+
+//   this.objStatusDto.Type=this.currentDarSection=='DAR_REQUESTS'?'D':this.currentDarSection=='DAR_RESPONSES'?'P':'D';
+//   this.objStatusDto.EmpNo=this.Current_user_ID;
+//   this.objStatusDto.SelectedCompany=this.filterRecordsByCompany.map((ob:any)=>ob.Company_No).join(',');
+//   this.objStatusDto.SelectedEmp_No='';
+//   this.objStatusDto.startdate='';
+//   this.objStatusDto.enddate='';
+//   this.service.NewGetTimelinedropdown(this.objStatusDto).subscribe((res)=>{  
+//     console.log('timeline dropdown:',res);
+//     if(res&&res[0]){   
+//       this.employeesList=JSON.parse(res[0]['CompanyType_Json']);
+//       const totalprjJsonstr=JSON.parse(res[0]['TotalProjectsCount_Json']);
+//       this.total_records=totalprjJsonstr[0]['TotalProjects'];
+//       this.lastPageNo=Math.ceil(this.total_records/this.page_size);
+//     }  
+// });
+
+
+
+
+
+
+// }
+
+// configureEmployeeFilter(include:boolean,empObj:any){
+//    if(include){
+//     this.filterRecordsByEmp.push(empObj);
+//    }else{
+//     const rindex=this.filterRecordsByEmp.findIndex((ob:any)=>ob.Emp_No==empObj.Emp_No);
+//     if(rindex>-1)
+//     this.filterRecordsByEmp.splice(rindex,1);
+//    }
+//   //  this.getFilterDropdownData();
+//   this.objStatusDto.Type=this.currentDarSection=='DAR_REQUESTS'?'D':this.currentDarSection=='DAR_RESPONSES'?'P':'D';
+//   this.objStatusDto.EmpNo=this.Current_user_ID;
+//   this.objStatusDto.SelectedCompany=this.filterRecordsByCompany.map((ob:any)=>ob.Company_No).join(',');
+//   this.objStatusDto.SelectedEmp_No=this.filterRecordsByEmp.map((ob:any)=>ob.Emp_No).join(',');
+//   this.objStatusDto.startdate='';
+//   this.objStatusDto.enddate='';
+//   this.service.NewGetTimelinedropdown(this.objStatusDto).subscribe((res)=>{  
+//     console.log('timeline dropdown:',res);
+//     if(res&&res[0]){  
+//       const _compn=JSON.parse(res[0]['CompanyType_Json']); 
+//       console.log(_compn);
+
+
+
+
+//       // this.companiesList=JSON.parse(res[0]['CompanyType_Json']);   console.log('companies of emps selected:',this.companiesList);
+//       const totalprjJsonstr=JSON.parse(res[0]['TotalProjectsCount_Json']);
+//       this.total_records=totalprjJsonstr[0]['TotalProjects'];
+//       this.lastPageNo=Math.ceil(this.total_records/this.page_size);
+
+//     }
+//   });
+// }
 
 
 

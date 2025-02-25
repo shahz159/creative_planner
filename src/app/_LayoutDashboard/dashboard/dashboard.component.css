@@ -5315,3 +5315,11 @@ span.previous-dots {
     transition: all .2s ease-out;
     cursor: pointer;
 }
+
+.max-charater{
+    font-size: 13px;
+    font-weight: 400;
+    font-family: var(--font-family-sans-serif);
+    -ms-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+}

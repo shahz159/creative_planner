@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+// import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -16,7 +16,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { BackendLayoutComponent } from './_Layouts/backend-layout/backend-layout.component';
 import { DefaultLayoutComponent } from './_Layouts/default-layout/default-layout.component';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NotificationComponent } from './_LayoutDashboard/notification/notification.component';
 import { TimelineComponent } from './_LayoutDashboard/timeline/timeline.component';
@@ -49,6 +48,16 @@ import { TimelineModule } from './_LayoutDashboard/timeline/timeline.module';
 //import { FilterPipeSearchPipe } from './Shared/filter-pipe-search.pipe';
 //import { ProjectInfoComponent } from "src/app/_LayoutDashboard/project-info/project-info.component";
 
+// Import Translate Modules
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
+
+// Function to load translations
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -90,7 +99,6 @@ import { TimelineModule } from './_LayoutDashboard/timeline/timeline.module';
     LoadingBarRouterModule,
     LoadingBarHttpClientModule,
     FormsModule,
-    NgbModule,
     NgMultiSelectDropDownModule,
     PdfViewerModule,
     NgxDocViewerModule,
@@ -99,10 +107,18 @@ import { TimelineModule } from './_LayoutDashboard/timeline/timeline.module';
     MatFormFieldModule,
     ScrollingModule,
     TimelineModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
+  
    
   ],
   providers:
-    [AuthGuard
+    [AuthGuard,TranslateService
       // ,ProjectUnplannedTaskComponent
      ],
      schemas: [CUSTOM_ELEMENTS_SCHEMA],

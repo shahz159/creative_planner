@@ -473,10 +473,19 @@ tr.action-row:hover {
 
 @media screen and (min-width : 1500px) {
     .picsum-img-wrapper img {
-        height: 220px;
+        height: 240px;
     }
 }
-
+@media screen and (min-width : 1600px) {
+    .picsum-img-wrapper img {
+        height: 280px;
+    }
+}
+@media screen and (min-width : 1700px) {
+    .picsum-img-wrapper img {
+        height: 300px;
+    }
+}
 .svg-bg {
     position: absolute;
     top: 0;
@@ -2505,7 +2514,7 @@ span.p-b-percent-count {
         width: 70px;
     }
     .picsum-img-wrapper img {
-        height: 190px;
+        height: 170px;
     }
 }
 
@@ -2544,4 +2553,21 @@ span.p-b-percent-count {
     color: #909090;
     width: 74%;
     margin: 0 auto;
+}
+::ng-deep .banner-item.activity-item.owl-theme .owl-nav.disabled+.owl-dots {
+    margin-top: -21px !important;
+    position: relative;
+}
+::ng-deep .banner-item.activity-item.owl-theme .owl-dots .owl-dot span {
+    height: 4px;
+    background: #fdfdfd59;
+    border-radius: 2px;
+}
+::ng-deep .banner-item.activity-item.owl-theme .owl-dots .owl-dot.active span, ::ng-deep .banner-item.activity-item.owl-theme .owl-dots .owl-dot:hover span {
+    background: #ffffff;
+    width: 40px;
+}
+.banner-card {
+    background-color: transparent;
+    box-shadow: none;
 }

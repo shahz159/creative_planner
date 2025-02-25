@@ -2980,6 +2980,7 @@ tr.odd.project-list_AC.active {
   border-radius: 3px;
   width: max-content;
   display: inline-block;
+  white-space: nowrap;
 }
 
 .Hold_color {

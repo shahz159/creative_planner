@@ -58,4 +58,5 @@ export class SubTaskDTO {
   Schedule_id:string;
 
   submissionDate:string;
+  type:string;
 }

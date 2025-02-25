@@ -35,13 +35,15 @@ export class BsServiceService {
   private _portId = new BehaviorSubject<any>(null);
   public _templAction = new BehaviorSubject<{name:string,description:string,assignedTo:string}>({name:'',description:'',assignedTo:''});
 
- 
+  
 
   ProjectCreatedEvent:EventEmitter<undefined>=new EventEmitter<undefined>();
 
   ProjectStatusChanged:EventEmitter<undefined>=new EventEmitter<undefined>();
 
   ConfirmBeforeRoute:EventEmitter<string>=new EventEmitter<string>(null);
+
+  UserLoggedIn:EventEmitter<undefined>=new EventEmitter<undefined>();
 
 
   private dataSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);

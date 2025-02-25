@@ -220,7 +220,7 @@
             <label>End date<span class="text-danger">*</span></label>
             <div class="d-flex date-border" [ngClass]="{'error-date': (_edate && !_EndDate)}" >
                 <input matInput [matDatepicker]="picker2" required #Enddate="ngModel" (click)="picker2.open()" [min]="_StartDate"
-                    [(ngModel)]="_EndDate" placeholder="End date" class="form-control"  (dateChange)="(this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null); hasSameDateActions();" (input)="_edate=!_EndDate" />
+                    [(ngModel)]="_EndDate" placeholder="End date" class="form-control"  (dateChange)="(this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null); hasSameDateActions();  alertMaxAllocation();  " (input)="_edate=!_EndDate" />
 
              <div class="input-group-text p-0">
                     <mat-datepicker-toggle  matSuffix [for]="picker2"></mat-datepicker-toggle>
@@ -237,7 +237,7 @@
             <div class="d-flex date-border" [ngClass]="{'error-date': _edate && !_EndDate}"  (click)="enddateChecker()">
                 <input matInput [matDatepicker]="picker2"  [matDatepickerFilter]="myFilter"
                 required #Enddate="ngModel" (click)="picker2.open()"
-                    [(ngModel)]="_EndDate" (dateChange)="this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null" placeholder="End Date" class="form-control">
+                    [(ngModel)]="_EndDate" (dateChange)="(this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null);  alertMaxAllocation();  " placeholder="End Date" class="form-control">
                 <div class="input-group-text p-0">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
@@ -248,23 +248,25 @@
     </div>
 
 
-    <div class="form-group">                          <!--*ngIf;="selectedEmpNo == Current_user_ID"-->
+    <div class="form-group">                       
         <label>Allocated hours<span class="text-danger">*</span></label>
-        <!-- [ngClass];="{'form-control':maxlimit==true,'form-control-danger':maxlimit==false}" -->
         <input id="hour-input" #allocated="ngModel"   type="tel" class="form-control" pattern="[0-9]*" placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='')"
             (click)="alertMaxAllocation()"  (change)="_alchr=!_allocated"
-            [ngClass]="{'error-border': _allocated > maxAllocation}"
-            [ngClass]="{'error-border': (_allocated==0)}"
-            [ngClass]="{'error-border': this._StartDate == null || this._EndDate == null}"
-            [ngClass]="{'error-border': this._alchr==true&&!_allocated}"
-            >
-        <!-- <span *ngIf;="allocated.touched&&!_allocated"; style="color:red">Allocated; hours; required!; Enter; non-decimal; value&nbsp;</span> -->
-        <span *ngIf="_allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span>
-        <span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
+            [ngClass]="{
+                'error-border': (_allocated&&(this._StartDate == null || this._EndDate == null))||
+                                (this._alchr==true&&!_allocated)||
+                                (_allocated&&_allocated==0)||
+                                (_allocated&&(_allocated > maxAllocation)) 
+                   }" />
+       <div  class="d-flex flex-column">
         <span *ngIf="this._alchr==true&&!_allocated" style="color:red">Allocated hours required. Hours should not be in decimal. </span>
-        <span *ngIf="(_allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value, It accept only numeric and non-negative value. </span>
-        <span *ngIf="this._StartDate == null || this._EndDate == null" >{{ _message}} </span>
-
+        <ng-container *ngIf="_allocated">
+            <span *ngIf="(this._StartDate == null || this._EndDate == null)" style="color:red">{{_message}}</span>  
+            <span *ngIf="_allocated > maxAllocation" style="color:red">Maximum <b>{{maxAllocation}}</b> hours allowed for given duration. (<b>48</b> hours/week limit).</span>
+            <span *ngIf="(_allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value, It accept only numeric and non-negative value. </span>
+        </ng-container>
+    </div>
+     
     </div>
 
 
@@ -348,7 +350,7 @@
 
         <div class="form-group mb-0">
 
-            <button type="submit" class="btn btn-info btn-sm"  (click)="sweetAlert2()">Submit</button>
+            <button type="submit" class="btn btn-info btn-sm"   [disabled]="processingActionCreate"   (click)="sweetAlert2()">Submit</button>
 
             <!-- [disabled];="!Sub_ProjectName || !_Description  || !selectedEmpNo || !_StartDate || !_EndDate || !_allocated || (_allocated > maxAllocation)" -->
 
@@ -377,13 +379,14 @@
                   <div class="progress-bar-label">
                       <span *ngIf="fileInUpload">
                           <span *ngIf="fileInUpload.uploaded<=100&&fileInUpload.processingUploadFile==false">Uploading "{{fileInUpload.filename}}"</span>
-                          <span *ngIf="fileInUpload.processingUploadFile">Processing uploaded file...</span> 
+                          <span *ngIf="fileInUpload.processingUploadFile">Processing uploaded file...</span>
                       </span>
                   </div>
                   <div class="progress-bar-count">{{fileInUpload?fileInUpload.uploaded:0}}%</div>
               </div>
           </div>
       </div>
-  </div> 
+      <h5 class="file-upload-upload-label"style="">Uploading attachment... Please do not close or refresh this tab.</h5>
+  </div>
   <!--File attachment upload progress bar  end.-->
 

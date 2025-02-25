@@ -49,19 +49,20 @@ export class FileviewComponent implements OnInit {
   _IsConfidential: string = 'false';
   Current_user_ID:string;
   _LoginUserId:string;
+  Schedule_ID: any;
   url_project_code:any;
   url_master_code:any;
   invalid: boolean =false;
   objProjectDto: ProjectDetailsDTO;
 
   constructor(private route: ActivatedRoute,public service: ProjectTypeService,private notifyService: NotificationService
-  ) {
+  ) {   
     this._LoginUserId = this.Current_user_ID;
     this.objProjectDto = new ProjectDetailsDTO();
   }
 
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.IsStreamDownload = localStorage.getItem('IsStreamDownload');
@@ -86,7 +87,7 @@ export class FileviewComponent implements OnInit {
         alert('Invalid User');
         return false;
       }
-      let type = params['type'];
+      let type = params['type']; 
             let officetext = ".ppt, .pptx, .doc, .docx, .xls, .xlsx";
             let office = officetext.includes(type.toLowerCase());
 
@@ -185,9 +186,9 @@ export class FileviewComponent implements OnInit {
             }
           });
       }
-debugger
-      this.url_master_code=params['mastercode'];
 
+      this.url_master_code=params['mastercode'];
+      this.Schedule_ID=params['Schedule_ID'];
     });
   }
   incrementZoom(amount: number) {
@@ -349,6 +350,14 @@ debugger
         var url = document.baseURI + name;
         var myurl = `${url}/${pcode}${qparams}`;
         var myWindow = window.open(myurl,pcode);
+        myWindow?.focus();
+   }
+
+   viewMeeting(sid) {
+        let name: string = 'Meeting-Details';
+        var url = document.baseURI + name;
+        var myurl = `${url}/${sid}`;
+        var myWindow = window.open(myurl,sid);
         myWindow?.focus();
    }
 

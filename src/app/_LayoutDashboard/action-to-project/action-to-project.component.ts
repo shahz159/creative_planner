@@ -100,6 +100,7 @@ export class ActionToProjectComponent implements OnInit {
   ProjectDeadLineDate: Date;
   ProjectStartDate: Date;
   maxAllocation: number;
+  perDayLimit:number;
   Current_user_ID: string;
   _projcode: boolean;
   _desbool: boolean;
@@ -183,6 +184,7 @@ export class ActionToProjectComponent implements OnInit {
     this.BsService.bs_catName.subscribe(d =>{ this.cat_name = d});
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
+    this.perDayLimit=7; // allocation hr per day limit.
     this.GetAllEmployeesForAssignDropdown();
 
     this.gethierarchy();
@@ -300,10 +302,11 @@ export class ActionToProjectComponent implements OnInit {
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode,this.Current_user_ID).subscribe(
       (data) => {
 
-        this.ownerArr=(JSON.parse(data[0]['RacisList']));
+        this.ownerArr=(JSON.parse(data[0]['RacisList']));   
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
-        console.log(this.allUsers,"groupby");
+        console.log(this.ownerArr,"groupby");
+
 
 
       });
@@ -419,8 +422,9 @@ export class ActionToProjectComponent implements OnInit {
 
   EmployeeOnSelect(obj) {
     // this.selectedEmpNo = obj['Emp_No'];
+    debugger
     if(obj['Emp_No'] == this.Owner_Empno){
-      this.selectedEmpNo="";
+      this.selectedEmpNo='';
       this._selectemp = true;
       this.notifyService.showInfo("Action cannot be assigned to project owner","");
     }
@@ -448,7 +452,7 @@ export class ActionToProjectComponent implements OnInit {
     if (this._StartDate == null || this._EndDate == null) {
       this._message = "Start Date/End date missing!"
     }
-    else {
+    else { 
       // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
       // this.end_dt = moment(this._EndDate).format("MM/DD/YYYY");
       this.start_dt=new Date(this._StartDate);
@@ -460,10 +464,10 @@ export class ActionToProjectComponent implements OnInit {
       var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
       if(Difference_In_Days==0){
         Difference_In_Days=-1;
-        this.maxAllocation = (-Difference_In_Days) * 10 / 1;
+        this.maxAllocation = (-Difference_In_Days) * this.perDayLimit / 1;
       }
       else{
-        this.maxAllocation = (-Difference_In_Days) * 10 / 1 +10;
+        this.maxAllocation = (-Difference_In_Days) * this.perDayLimit / 1 +this.perDayLimit;
       }
       console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
     }
@@ -899,24 +903,83 @@ export class ActionToProjectComponent implements OnInit {
 
 
 // sweet alert method new
-
+processingActionCreate:boolean = false
 sweetAlert2=async()=>{
 
-// 1. Validation : Action owner and responsible are same.
-  if(this.owner==this.selectedEmpNo){
-     const choice = await Swal.fire({
-        title: 'Action owner and responsible are same.',
-        text: 'Do you want to continue?',
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No'
-      });
-    if(choice.isConfirmed==false){
-       return;
-    }
-  }
 
-//2. Validation : Action deadline is greater than main project deadline.
+// 1. Validation : forms fields required check  start.
+if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
+  this._projcode = true;
+  // return false;
+}else this._projcode=false;
+
+
+
+if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined ||this.isPrjNameValid != 'VALID'||this.Sub_ProjectName.length>100) {
+  // this.Sub_ProjectName==="VALID"
+  this._subname = true;
+}else this._subname=false;
+
+
+if (this._Description == "" || this._Description == null || this._Description == undefined ||this.isPrjDesValid !=='VALID'||this._Description.length>500) {
+  this._desbool = true;
+  // return false;
+}else this._desbool = false;
+
+
+if (this.selectedEmpNo == "" || this.selectedEmpNo == null || this.selectedEmpNo == undefined) {
+  this._selectemp = true;
+  // return false;
+}else this._selectemp = false;
+
+if (this._StartDate == null || this._StartDate == null || this._StartDate == undefined) {
+  this._sdate = true;
+  // return false;
+}else this._sdate = false;
+
+if (this._EndDate == null || this._EndDate == null || this._EndDate == undefined) {
+  this._edate = true;
+  // return false;
+}else this._edate = false;
+
+if(this._allocated==null||this._allocated==undefined||this._allocated==0||this._allocated > this.maxAllocation){
+  this._alchr=true;
+  // return false;
+}else  this._alchr=false;
+// 
+
+
+if(this._Urlid==5||this._Urlid==4){
+     if(this._sdate == false){  // if input startdate of action is given.
+      this._actbefore=this.isActionStartBeforeProject();   
+     } 
+}
+
+const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._actbefore ,this._alchr].some(item=>item);
+if(fieldsRequired)
+return false;        // please provide all mandatory fields value.
+// 1. Validation : forms fields required check end.
+
+
+
+// 2. Validation : Action owner and responsible are same. start
+if(this.owner==this.selectedEmpNo){
+  const choice = await Swal.fire({
+     title: 'Action owner and responsible are same.',
+     text: 'Do you want to continue?',
+     showCancelButton: true,
+     confirmButtonText: 'Yes',
+     cancelButtonText: 'No'
+   });
+ if(choice.isConfirmed==false){
+    return;
+ }
+}
+// 2. Validation : Action owner and responsible are same. end
+
+
+
+//3. Validation : Action deadline is greater than main project deadline.
 var datestrEnd = (new Date(this._EndDate)).toUTCString();
 var datedead = (new Date(this.ProjectDeadLineDate)).toUTCString();
 const dateOne = new Date(this._EndDate);
@@ -949,73 +1012,6 @@ else if ((dateTwo < dateOne) && (this.Current_user_ID!=this.Owner_Empno && this.
   });
  return;
 }
-
-
-// 3. Validation : forms fields required check  start.
-if (this._Urlid==2 && (this.selectedProjectCodelist == null || this.selectedProjectCodelist == undefined)) {
-  this._projcode = true;
-  // return false;
-}else this._projcode=false;
-
-
-if (this.Sub_ProjectName == "" || this.Sub_ProjectName == null || this.Sub_ProjectName == undefined) {
-  // this.Sub_ProjectName==="VALID"
-  this._subname = true;
-}else this._subname=false;
-
-if (this.isPrjNameValid !== 'VALID'  ) {
-  // Don't proceed with form submision if input is invalid
-  return;
-}
-
-if(this.Sub_ProjectName.length>100){
-return;
-}
-
-if (this._Description == "" || this._Description == null || this._Description == undefined ) {
-  this._desbool = true;
-  // return false;
-}else this._desbool = false;
-if(this.isPrjDesValid !=='VALID'){
-  return
-}
-
-if(this._Description.length>500){
-return
-}
-
-
-if (this.selectedEmpNo == "" || this.selectedEmpNo == null || this.selectedEmpNo == undefined) {
-  this._selectemp = true;
-  // return false;
-}else this._selectemp = false;
-
-if (this._StartDate == null || this._StartDate == null || this._StartDate == undefined) {
-  this._sdate = true;
-  // return false;
-}else this._sdate = false;
-
-if (this._EndDate == null || this._EndDate == null || this._EndDate == undefined) {
-  this._edate = true;
-  // return false;
-}else this._edate = false;
-
-if(this._allocated==null||this._allocated==undefined||this._allocated==0){
-  this._alchr=true;
-  // return false;
-}else  this._alchr=false;
-
-
-if(this._Urlid==5||this._Urlid==4){
-     this._actbefore=this.isActionStartBeforeProject();
-}
-
-
-const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._actbefore ,this._alchr].some(item=>item);
-if(fieldsRequired)
-return false;        // please provide all mandatory fields value.
-// 3. Validation : forms fields required check end.
-
 
 
 // 4. Validation : only for project creation page.
@@ -1064,7 +1060,6 @@ if(this._Urlid == 5){
 // Action creation here
 this.startActionCreation();
 
-
 }
 
 azuremessage: any;
@@ -1082,15 +1077,24 @@ startActionCreation=async()=>{
 
   // Action cost calculate.
    this.actionCost=null;  // must be empty before calculating.
+   this.processingActionCreate=true;
    const res:any=await this.service.GetCPProjectCost(this.selectedEmpNo,this._allocated.toString()).toPromise();
    if(res&&res.Status){
          this.actionCost=res.Data;
          console.log("action cost:",this.actionCost);
    }
    else{
-     this.notifyService.showError('','Internal server error');
-     console.error('Unable to get action cost value.')
-     return;
+    //  this.notifyService.showError('','Internal server error');
+    //  this.processingActionCreate=false;
+    //  console.error('Unable to get action cost value.')
+    //  return;
+
+
+    // test for new users (Temporary)
+    const cost=this._allocated*10;
+    this.actionCost=cost;
+    // test for new users (Temporary)
+
    }
  // Action cost calculate.
 
@@ -1195,14 +1199,14 @@ startActionCreation=async()=>{
          var myJSON = JSON.stringify(event);
          this._Message = (JSON.parse(myJSON).body).message;
          console.log(event,myJSON,this._Message,"action data");
-    
+
          if(this._Message=='1'){
-          if (this.fileAttachment) {   
+          if (this.fileAttachment) {
           this.fileInUpload={ filename:this.fileAttachment.name, uploaded:0, processingUploadFile:false };
           this.setFileUploadingBarVisible(true);
 
           fd.append('file',  this.fileAttachment);
-      
+
           this.service._AzureUploadNewAction(fd).subscribe((event1: HttpEvent<any>) => {
             switch (event1.type) {
               case HttpEventType.Sent:
@@ -1216,14 +1220,14 @@ startActionCreation=async()=>{
                 this.fileInUpload.uploaded=progress;
                 if(this.fileInUpload.uploaded==100){
                   setTimeout(()=>{
-                    this.fileInUpload.processingUploadFile=true; //when server processing the file upload. 
+                    this.fileInUpload.processingUploadFile=true; //when server processing the file upload.
                   },1000);
                 }
                 break;
               case HttpEventType.Response:{
                 console.log('Response received:', event1.body);
                 if(event1.body==1){
-                  this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");  
+                  this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");
                   this.fileInUpload=null;
                   this.setFileUploadingBarVisible(false);
                   this.exitActionToProject();
@@ -1236,9 +1240,10 @@ startActionCreation=async()=>{
           //  this._Message = (JSON.parse(myJSON).body);
 
           });
-       
+
           }else{ this.exitActionToProject();   }
            this.notifyService.showSuccess("Action created successfully", "Success");
+
          }
          else if(this._Message=='2'){
           if (this.fileAttachment) {
@@ -1259,14 +1264,14 @@ startActionCreation=async()=>{
                   this.fileInUpload.uploaded=progress;
                   if(this.fileInUpload.uploaded==100){
                     setTimeout(()=>{
-                      this.fileInUpload.processingUploadFile=true; //when server processing the file upload. 
+                      this.fileInUpload.processingUploadFile=true; //when server processing the file upload.
                     },1000);
                   }
                   break;
                 case HttpEventType.Response:{
                   console.log('Response received:', event1.body);
                   if(event1.body==1){
-                    this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");  
+                    this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");
                     this.fileInUpload=null;
                     this.setFileUploadingBarVisible(false);
                     this.exitActionToProject();
@@ -1277,7 +1282,7 @@ startActionCreation=async()=>{
               var myJSON = JSON.stringify(event1);
             //  this._Message = (JSON.parse(myJSON).body);
 
-            }); 
+            });
           }else{ this.exitActionToProject();  }
            this.notifyService.showInfo("Request submitted to the Assigned employee","Action Under Approval");
          }
@@ -1290,7 +1295,7 @@ startActionCreation=async()=>{
          else{
            this.notifyService.showError("Something went wrong", "Action not created");
          }
-
+         this.processingActionCreate=false;
        }
 
      });
@@ -1400,6 +1405,7 @@ getFileExtension(fileName: any): string | null {
     this.router.navigate(["./backend/createproject"]);
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+    document.getElementById("kt_wrapper").style.zIndex="unset";
     }
     else{
       this.router.navigate(["./MoreDetails", this.selectedProjectCode]);
@@ -1508,7 +1514,7 @@ onFileChanged(event: any) {
    const isValidFile=this.permittedFileFormats.some((format)=>{
          return (filetype==format)||(filetype.startsWith('image/')&&format=='image/*');
    });
-   
+
    if(isValidFile){
     this.file = files[0];
     this.fileAttachment = this.file;
@@ -1522,7 +1528,7 @@ onFileChanged(event: any) {
    }
 
   }else {
-   // if no file is selected. 
+   // if no file is selected.
     this.file = null;
     this.fileAttachment = null;
     this.invalidFileSelected=false;
@@ -1651,10 +1657,13 @@ hasSameDateActions(){
 }
 
 
-isActionStartBeforeProject():boolean{
-  const mainPrjStartdate=new Date(this.ProjectStartDate);  // project start date.
-  const inputActnStartdate=this._StartDate;               // action start date. 
-  const isStartsBefore=inputActnStartdate<mainPrjStartdate;  // is action starts before main project.
+isActionStartBeforeProject():boolean{ 
+  let isStartsBefore=false;
+  if(this.ProjectStartDate&&this._StartDate){
+    const mainPrjStartdate=new Date(this.ProjectStartDate);  // project start date.
+    const inputActnStartdate=this._StartDate;               // action start date.
+    isStartsBefore=inputActnStartdate<mainPrjStartdate;  // is action starts before main project.
+  }
   return isStartsBefore;
 }
 
@@ -1682,7 +1691,7 @@ isActionStartBeforeProject():boolean{
 
 
 // file uploading progress bar start.
-fileInUpload:{filename:string, uploaded:number, processingUploadFile:boolean};   
+fileInUpload:{filename:string, uploaded:number, processingUploadFile:boolean};
 isFileUploadingBarVisible:boolean=false;  // whether file uploading bar is visible or not.
 
 setFileUploadingBarVisible(_visible:boolean){

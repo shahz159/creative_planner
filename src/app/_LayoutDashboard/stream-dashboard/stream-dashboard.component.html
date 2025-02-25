@@ -10,7 +10,7 @@
                     <div class="w-c">
                         <span class="w-c-h">Hello, {{this.UserfullName}}</span>
                         <div class="w-c-m">
-                            <div class="w-c-s" *ngFor="let item of employeeReport">You have completed <b>{{item.EmployeePerformance}}<small>%</small></b> task.</div>
+                            <div class="w-c-s" *ngFor="let item of employeeReport">You have completed <b>{{item.EmployeePerformance?item.EmployeePerformance:0}}<small>%</small></b> task.</div>
                         <div class="w-c-date"><span>{{todayDate | date:'d MMMM, yyyy'}}</span>
                             <div class="icon">
                                 <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="64px" height="64px" viewBox="0 0 30 30" version="1.1" id="svg822" inkscape:version="0.92.4 (f8dce91, 2019-08-02)" sodipodi:docname="event.svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs id="defs816"></defs>  <metadata id="metadata819">   </metadata> <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1" transform="translate(0,-289.0625)"> <path style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.99999976;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" d="M 9 4 L 9 7 L 7 7 C 5.3552974 7 4 8.3553 4 10 L 4 24 C 4 25.6447 5.3552974 27 7 27 L 23 27 C 24.644703 27 26 25.6447 26 24 L 26 10 C 26 8.3553 24.644703 7 23 7 L 21 7 L 21 4 L 19 4 L 19 7 L 11 7 L 11 4 L 9 4 z M 7 9 L 23 9 C 23.571297 9 24 9.4287 24 10 L 24 24 C 24 24.5713 23.571297 25 23 25 L 7 25 C 6.4287028 25 6 24.5713 6 24 L 6 10 C 6 9.4287 6.4287028 9 7 9 z M 17 17 C 16.446 17 16 17.446 16 18 L 16 22 C 16 22.554 16.446 23 17 23 L 21 23 C 21.554 23 22 22.554 22 22 L 22 18 C 22 17.446 21.554 17 21 17 L 17 17 z " transform="translate(0,289.0625)" id="rect894"></path> <g id="g825" transform="translate(0,1)" style="fill:CurrentColor"></g> </g> </g></svg>
@@ -286,8 +286,8 @@
                                         </div>
 
 
-                                        <div class="d-flex align-items-center justify-content-between"style="height: 90%; flex-direction: column;" *ngIf="scheduleItems.length == 0">
-                                          <img src="../../../assets/images/waste.png" alt="" style="width: 35%; opacity: 0.6;">
+                                        <div class="d-flex align-items-center justify-content-between"style="height: 90%; flex-direction: column;" *ngIf="scheduleItems&&scheduleItems.length == 0">
+                                          <img src="./assets/images/waste.png" alt="" style="width: 35%; opacity: 0.6;">
                                           <p style=" font-size: 18px; font-weight: 500; color: #a7a7a7;">No events/tasks are created or scheduled</p>
                                         </div>
                                     </div>
@@ -802,7 +802,7 @@
                                 <div class="card-title mb-0">
                                     Portfolios
                                 </div>
-                                <div *ngIf="portfoiloData.length != 0 " (click)="gotoPortfolioPage()">
+                                <div *ngIf="portfoiloData&&portfoiloData.length != 0 " (click)="gotoPortfolioPage()">
                                     <button class="btn btn-port-all">View all</button>
                                 </div>
                             </div>
@@ -977,9 +977,9 @@
                                 </div>
                             </div>
 
-                                <div *ngIf="portfoiloData.length == 0 ">
+                                <div *ngIf="portfoiloData&&portfoiloData.length == 0 ">
                                     <div class="no-portfolio-div">
-                                        <img src="../../../assets/images/no-portfolio.PNG" alt="" style="opacity: 0.4;">
+                                        <img src="./assets/images/no-portfolio.PNG" alt="" style="opacity: 0.4;">
                                     <div>
                                         <p style=" margin-bottom: 0px;"> No portfolios are created, click view portfolio to create one.</p>
                                         <div style="margin-top: 8px;"><button class="btn btn-port-all" (click)="gotoPortfolioPage()">View Portfolio</button></div></div>   
@@ -1020,12 +1020,44 @@
 
                             <div class="">
                                 <div class="cr-img mh-25 d-flex align-items-center justify-content-center">
-                                    <div class="picsum-img-wrapper text-center">
+                                    <!-- <div class="picsum-img-wrapper text-center"> -->
                                         <!-- <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Banner/43/321673_Digital%20Signage%20Solution%203%20(1).png"
                                             alt="Angular Carousel 1" class="w-100"> -->
-                                            <img src="./assets/images/cp-robot.png"
+                                            <!-- <img src="./assets/images/cp-robot.png"
                                             alt="Angular Carousel 1" class="w-100" loading="lazy">
+                                    </div> -->
+
+
+                               <!--new -->
+
+                               <div class="picsum-img-wrapper text-center">
+                               <div class="card h-100 activity-card banner-card">
+                                <div class="activity-item banner-item owl-carousel owl-theme d-block">
+                                     
+                                <ng-container *ngIf="dashboardBanners&&dashboardBanners.length>0; else noDbbanner">
+                                    <div *ngFor="let bannerImg of dashboardBannersImages" class="card-body p-0">
+                                            <div class="activity-report" >
+                                                <div class="activity-report-content">
+                                                    <img [src]="bannerImg.path" alt="Angular Carousel 1" class="w-100">
+                                                </div>
+                                            </div>
                                     </div>
+                                </ng-container>
+                                <ng-template #noDbbanner>
+                                    <div class="activity-report">
+                                        <div class="activity-report-content">
+                                            <img src="./assets/images/cp-robot.png" alt="Angular Carousel 1" class="w-100"/>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                                    
+                                </div>
+                               </div>
+                               </div>
+
+                              <!-- new-->
+
+
                                 </div>
                             </div>
                             <div class="pt-3 px-3">
@@ -1140,7 +1172,7 @@
                     </div>
                     <div class="card h-100 mt-3 activity-card">
                         <div class="activity-item owl-carousel owl-theme">
-                            <div class="card-body">
+                        <div class="card-body">
 
 
 
@@ -1178,7 +1210,7 @@
                             <div class="activity-report">
                                 <div class="activity-report-content">
                                     <p style="margin-bottom: 0rem;">
-                                        "Happy Monday! It's a new week to tackle your goals. You have pending actions to complete, or feel free to start a new task to kick things off. Let’s make this week productive!"
+                                        "Happy Tuesday! It's a new week to tackle your goals. You have pending actions to complete, or feel free to start a new task to kick things off. Let’s make this week productive!"
                                     </p>
                                 </div>
                             </div>
@@ -1193,8 +1225,7 @@
                             </div>
                         </div>
                         </div>
-
-                </div>
+                   </div>
                 <div class="card h-100 mt-3">
                     <div class="card-body pt-0">
                         <div class="position-relative" *ngFor="let item of darArray">

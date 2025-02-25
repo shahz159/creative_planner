@@ -15,7 +15,7 @@
                             <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
                                 <a [ngClass]="Type==type1 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog(type1);">{{type1}}</a>
                                 <a [ngClass]="Type==type2 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog1(type2);  setFilterInfo('Date',undefined); ">{{type2}}</a>
-                                <!-- <a [ngClass]="Type==type3 ? 'dropdown-item active' : 'dropdown-item'"  (click)="openDarInbox()">{{type3}}</a> -->
+                                <a [ngClass]="Type==type3 ? 'dropdown-item active' : 'dropdown-item'"  (click)="openDarInbox()">{{type3}}</a>
                             </div>
                         </div>
                     </div>
@@ -287,12 +287,12 @@
                                                         <a class="pro-link fs-6 cursor-pointer" href="javascript:void(0)" *ngIf="item1.ActionName && item1.ActionName!=item1.ProjectName"  (click)=" newDetailsaction(item1.project_code.trim(),item1.ActionCode.trim())" ><div class="desp-txt fs-7 actlabel-at-type">Action</div>{{item1.ActionName }}</a>
                                                     </td>
                                                     <td>
-                                                       <div class="wrk-des-editbx d-none">
+                                                       <div class="wrk-des-editbx d-none"> <!--wrk-des-editbx must not be removed-->
                                                         <textarea #wrkAchInput [value]="item1.WorkAchieved" class="w-100" placeholder="Define your work achievement here." (input)="isWorkdesValid(wrkAchInput.value,'#Dar-Record-'+i+' #tm-record-item-'+j)"></textarea>
                                                         <span class="wrk-des-required-msg d-none" style="color:red">Work achievement is required.</span>
                                                         <div class="d-flex justify-content-end gap-1">
                                                             <button class="btn btn-secondary btn-sm btn-fw fs-7" (click)="cancelEditTimelineRecord('#Dar-Record-'+i+' #tm-record-item-'+j, item1.WorkAchieved)">Cancel</button>
-                                                            <button class="btn btn-info btn-sm btn-fw fs-7" (click)="updateWorkdesOfTR('#Dar-Record-'+i+' #tm-record-item-'+j, item1.id, wrkAchInput.value)">Update</button>
+                                                            <button class="updatewrkdes-btn btn btn-info btn-sm btn-fw fs-7" (click)="updateWorkdesOfTR('#Dar-Record-'+i+' #tm-record-item-'+j, item1.id, wrkAchInput.value)">Update</button> <!--updatewrkdes-btn must not be removed-->
                                                         </div>
                                                        </div>
                                                         <div class="wrk-des-bx">
@@ -568,12 +568,181 @@
             <div *ngIf="Type==type3" class="kt-portlet portlet-height">
                 <div class="kt-portlet__body kt-portlet__body_scroll p-0">
                     <div class="mt-3">
-                        <div class="timeline-scroll">
+                        <div class="darReqRes-Tabbtn tabs-view-dg px-1 mx-4 mb-2 d-flex align-items-center justify-content-between">
+                            <ul class="nav nav-tabs nav-bold nav-tabs-line mb-0">
+                              <li class="nav-item">
+                                <a class="nav-link" [ngClass]="{'active':currentDarSection=='DAR_REQUESTS'}" (click)="changeDarSectionTo('DAR_REQUESTS')">
+                                  <span class="nav-text">
+                                    <svg width="19px" height="19px" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0)matrix(-1, 0, 0, 1, 0, 0)" style=" stroke-width: 1.8;stroke: #747474;stroke-linecap: square;">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.288"></g><g id="SVGRepo_iconCarrier"> 
+                                            <path d="M12 2L12 10M12 10L15 7M12 10L9 7" stroke-linejoin="round"></path> <path d="M2 13H5.16026C6.06543 13 6.51802 13 6.91584 13.183C7.31367 13.3659 7.60821 13.7096 8.19729 14.3968L8.80271 15.1032C9.39179 15.7904 9.68633 16.1341 10.0842 16.317C10.482 16.5 10.9346 16.5 11.8397 16.5H12.1603C13.0654 16.5 13.518 16.5 13.9158 16.317C14.3137 16.1341 14.6082 15.7904 15.1973 15.1032L15.8027 14.3968C16.3918 13.7096 16.6863 13.3659 17.0842 13.183C17.482 13 17.9346 13 18.8397 13H22" stroke-linecap="round"></path>
+                                            <path d="M22 12.0001C22 16.7141 22 19.0712 20.5355 20.5356C19.0711 22.0001 16.714 22.0001 12 22.0001C7.28595 22.0001 4.92893 22.0001 3.46447 20.5356C2 19.0712 2 16.7141 2 12.0001C2 7.28604 2 4.92902 3.46447 3.46455C4.28094 2.64808 5.37486 2.28681 7 2.12695M17 2.12695C18.6251 2.28681 19.7191 2.64808 20.5355 3.46455C21.5093 4.43829 21.8356 5.80655 21.9449 8" stroke-linecap="round"></path>
+                                       </g>
+                                    </svg>
+                                    DAR requests
+                                  </span>
+                                  <span *ngIf="totalDarRequests" class="total-count ml-2">{{totalDarRequests|number}}</span>
+                                </a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" [ngClass]="{'active':currentDarSection=='DAR_RESPONSES'}" (click)="changeDarSectionTo('DAR_RESPONSES')">
+                                  <span class="svg-icv-hd">
+                                  </span>
+                                  <span class="nav-text">
+                                    <svg width="17px" height="18px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" stroke="#757575" stroke-width="0.003" style="fill: #767676d6; ">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier"><path d="M139.61 35.5a12 12 0 0 0-17 0L58.93 98.81l-22.7-22.12a12 12 0 0 0-17 0L3.53 92.41a12 12 0 0 0 0 17l47.59 47.4a12.78 12.78 0 0 0 17.61 0l15.59-15.62L156.52 69a12.09 12.09 0 0 0 .09-17zm0 159.19a12 12 0 0 0-17 0l-63.68 63.72-22.7-22.1a12 12 0 0 0-17 0L3.53 252a12 12 0 0 0 0 17L51 316.5a12.77 12.77 0 0 0 17.6 0l15.7-15.69 72.2-72.22a12 12 0 0 0 .09-16.9zM64 368c-26.49 0-48.59 21.5-48.59 48S37.53 464 64 464a48 48 0 0 0 0-96zm432 16H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z"></path>
+                                        </g>
+                                    </svg>
+                                    DAR responses
+                                  </span>
+                                  <span *ngIf="totalDarResponses" class="total-count ml-2">{{totalDarResponses|number}}</span>
+                                </a>
+                              </li>
+                            </ul>
+                            <div class="d-flex justify-content-end">
+                                <div *ngIf="total_records" class="darreqs-pagination">
+                                 <button (click)="prevPageRecords()" [disabled]="current_pageno==1"  class="btn pg-btn"><i class="fas fa-angle-left m-0 p-0 pr-1"></i></button>
+                                 <button (click)="nextPageRecords()" [disabled]="current_pageno>=lastPageNo"  class="btn pg-btn ml-1"><i class="fas fa-angle-right m-0 p-0 "></i></button>
+                                 <label class="mx-2 pg-label">{{(page_size*(current_pageno-1)+1)|number}} - {{ ((page_size*current_pageno<=total_records)?(page_size*current_pageno):total_records)|number}} of {{total_records|number}}</label>
+                                </div>
+                            <!-- Filters box start -->
+                            <div class="dreqres-fltrbox stores-sec">
+                                <ul class="nav navbar-nav filters">
+                                    <li class="dropdown mega-dropdown">
+                                        <a class="fltr-btn kt-todo__icon"  [ngClass]="{'filter-dot':isfilterOnDarSection}" data-toggle="dropdown" aria-expanded="false" id="filterDarReqResbox">
+                                            <svg width="18px" height="18px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-three-dots-vertical"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path> </g></svg>
+                                        </a>
+                                        <div class="dropdown-menu mega-dropdown-menu" aria-labelledby="filterDarReqResbox">
+                                            <div (click)="$event.stopPropagation();">
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                         <h5>
+                                                            <ng-container *ngIf="currentDarSection=='DAR_REQUESTS'">
+                                                                <strong>Total DAR requests - </strong>
+                                                                <span class="d-inline-block">
+                                                                    <strong *ngIf="totalDarRequests>=1000">{{totalDarRequests.toLocaleString()}}</strong>
+                                                                    <strong *ngIf="totalDarRequests<1000">{{totalDarRequests}}</strong> 
+                                                                </span>
+                                                            </ng-container>
+
+                                                            <ng-container *ngIf="currentDarSection=='DAR_RESPONSES'">
+                                                                <strong>Total DAR responses - </strong>
+                                                                <span class="d-inline-block">
+                                                                    <strong *ngIf="totalDarResponses>=1000">{{totalDarResponses.toLocaleString()}}</strong>
+                                                                    <strong *ngIf="totalDarResponses<1000">{{totalDarResponses}}</strong> 
+                                                                </span>
+                                                           </ng-container>
+                                                        </h5> 
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+    
+                                                    <div class="col-md-5">
+                                                        <p><strong>Company</strong></p>
+                                                         <div class="count-height">
+                                                            <div *ngFor="let company of companiesList" class="d-flex justify-content-between" >
+                                                                <label class="kt-checkbox">
+                                                                    <input type="checkbox" [checked]="isCompanyChecked(company.Company_No)" (change)="configureCompanyFilter($event.target.checked,company)"/> 
+                                                                    {{company.Name}}
+                                                                    <span></span>
+                                                                </label>
+                                                                <span class="count-btn">{{company.Count}}</span>
+                                                            </div>
+                                                        </div> 
+                                                        <div class="selected-options">
+                                                        <div *ngFor="let selcomp of filterRecordsByCompany"  class="selected-options-item">
+                                                            {{ selcomp.Name}}
+                                                              <span class="selected-options-item-remove" (click)="configureCompanyFilter(false,selcomp)">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                      <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                                  </svg>
+                                                              </span>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div class="col-md-5">
+                                                        <p><strong>Employee</strong></p>
+                                                        <div class="count-height">
+                                                            <div *ngFor="let emp of employeesList" class="d-flex justify-content-between">
+                                                                <label class="kt-checkbox">
+                                                                    <input type="checkbox" [checked]="isEmployeeChecked(emp.Emp_No)" (change)="configureEmployeeFilter($event.target.checked,emp)"/> 
+                                                                    {{emp.Name}}
+                                                                    <span></span>
+                                                                </label>
+                                                                <span class="count-btn">{{emp.Count}}</span>
+                                                            </div>
+                                                        </div> 
+
+                                                        <div class="selected-options">
+                                                        <div *ngFor="let selemp of filterRecordsByEmp"  class="selected-options-item">
+                                                            {{ selemp.Name}}
+                                                              <span class="selected-options-item-remove" (click)="configureEmployeeFilter(false,selemp)">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
+                                                                      <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
+                                                                  </svg>
+                                                              </span>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+    
+                                                </div>
+                                                <br>
+                                                <hr>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <button class="btn btn-info btn-upper btn-sm btn-bold mr-2" data-toggle="dropdown" (click)="applyFilterOnDarSection()">Submit</button>
+                                                    <button class="btn btn-secondary btn-upper btn-sm btn-bold mr-2" (click)="resetDarSectionFilter()">Reset</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Filters box end -->
+                            </div>
+                        </div>
+
+                      <div>
+
+                        <div *ngIf="darRequestsSelected&&darRequestsSelected.length>0" class="d-flex px-1 mx-4 mb-2 mt-3 justify-content-between">
+                           <div>
+                            <div class="btn-group mr-2" role="group">
+                              <button type="button" class="btn btn-outline-success btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="fs-8" style="font-weight:500">Accept</span>
+                              </button>
+                              <div class="dropdown-menu drop-cus" style="margin-top:4px !important; border: 2px solid rgb(30, 197, 180) !important;" >
+                                  <a class="dropdown-item gap-2 align-items-center"  (click)="0">
+                                    Accept
+                                    <!-- <svg width="15px" height="15px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" style="stroke:  rgb(63 67 70); stroke-width: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="checkmark"> <line class="cls-1" x1="3" x2="12" y1="16" y2="25"></line> <line class="cls-1" x1="12" x2="29" y1="25" y2="7"></line> </g> </g></svg> -->
+                                  </a>
+                                  <a class="dropdown-item gap-2 align-items-center" (click)="0">
+                                    Accept with bonus
+                                    <!-- <svg style="fill:rgb(63 67 70);" width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.093,1.293l-11.2,11.2a.99.99,0,0,0-.242.391l-1.6,4.8A1,1,0,0,0,5,19a1.014,1.014,0,0,0,.316-.051l4.8-1.6a1.006,1.006,0,0,0,.391-.242l11.2-11.2a1,1,0,0,0,0-1.414l-3.2-3.2A1,1,0,0,0,17.093,1.293ZM9.26,15.526l-2.679.893.893-2.679L17.8,3.414,19.586,5.2ZM3,21H20a1,1,0,0,1,0,2H3a1,1,0,0,1,0-2Z"></path></g></svg> -->
+                                  </a>
+                              </div>
+                            </div>
+        
+                            <button (click)="0" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
+                              <span class="fs-8" style="font-weight:500">Reject</span>
+                            </button>
+                        </div>
+                            <span>{{darRequestsSelected&&darRequestsSelected.length}} items selected</span>
+              
+                        </div>
+
+                        <div class="timeline-scroll px-1 mx-4">
                     
             <!-- dar requests/responses start-->
-                <div id="darReqRes-list" class="table-responsive">
-                 
-                    <table class="table table-hover dataTable no-footer dtr-inline" role="grid">
+                 <div id="darReqRes-list" class="table-responsive">
+                  <ng-container *ngIf="currentDarSection=='DAR_REQUESTS'">
+                    <ng-container *ngIf="darRequestsLoading==false;else darReqResLoading">
+                    <table *ngIf="darRequestsList&&darRequestsList.length>0" class="table table-hover dataTable no-footer dtr-inline" role="grid">
                       <thead>
                         <tr role="row">
                           <th style="width: 50px; height:30px;" class="text-center" rowspan="1" colspan="1">
@@ -585,17 +754,18 @@
                           </th>
                           <th rowspan="1" colspan="1" style="width:0px;"> Dar Report </th>
                           <th rowspan="1" colspan="1">Employee Name </th>
-                          <th rowspan="1" colspan="1" >Submitted On</th>
+                          <th rowspan="1" colspan="1">Company </th>
+                          <th rowspan="1" colspan="1">Submitted On</th>
                           <th rowspan="1" colspan="1">Achieved Hours</th>
                           <th rowspan="1" colspan="1">Allotted Hours</th>
                           <th rowspan="1" colspan="1">Status</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr role="row" class="odd project-list_AC">
+                        <tr *ngFor="let dreq of darRequestsList; let i=index"  [ngClass]="{'selected':currentDarSection=='DAR_REQUESTS'&&i==selectedDarReqIndex}"  role="row" class="odd project-list_AC">
                        
                           <td align="center">
-                            <input type="checkbox" class="form-check-input ps-1 btn px-0 mr-2">
+                            <input [checked]="darRequestsSelected.includes(dreq.Emp_Rep_No)" type="checkbox" class="form-check-input ps-1 btn px-0 mr-2" (change)="selectDarRequest($event.target.checked,dreq)" />
                           </td>
                           <td align="center">
                             <div class="d-flex align-items-center">
@@ -625,221 +795,135 @@
                             </div>
                           </td>
                           <td>
-                            <p class="kt-widget__title1 mb-0">DARReport-400695136</p>
+                            <p class="kt-widget__title1 mb-0 text-nowrap ">DARReport-{{dreq.Emp_Rep_No}}</p>
                           </td>
                           <td>
-                            <span class="kt-widget__other text-nowrap ">Syed Sayeeduddin Hussain</span>
+                            <span class="kt-widget__other text-nowrap ">{{dreq.Emp_Name}}</span>
                           </td>
                           <td>
-                            <span class="kt-widget__other text-nowrap ">01-10-2023</span>
+                            <span class="kt-widget__other text-nowrap ">{{dreq.Com_Name}}</span>
                           </td>
                           <td>
-                            <p class="mb-0">18:30 hrs</p>
+                            <span class="kt-widget__other text-nowrap ">{{dreq.SubmissionDate|date:'dd-MM-yyyy'}}</span>
                           </td>
                           <td>
-                            <p class="mb-0">18:30 hrs</p>
+                            <p class="mb-0">{{formatDuration(dreq.TotalHoursWorked)}}</p>
                           </td>
                           <td>
-                            <span class="kt-widget__other Forward">
-                              Under approval
+                            <p class="mb-0">{{formatDuration(dreq.TotalNoOfWorkingHours)}}</p>
+                          </td>  
+                          <td>
+                            <span class="kt-widget__other"  [ngClass]="{'Forward':dreq.SubmissionType=='Under Approval'}">
+                               {{dreq.SubmissionType}}
                             </span>
                           </td>
                         
-                          
-                      
                         </tr>
-                        <tr role="row" class="odd project-list_AC">
                        
-                            <td align="center">
-                              <input type="checkbox" class="form-check-input ps-1 btn px-0 mr-2">
-                            </td>
-                            <td align="center">
-                              <div class="d-flex align-items-center">
-                                <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" placement="right"
-                                (click)="openDarReqSidebar(i)" href="javascript:void(0)">
-                                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                  viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
-                              <g>
-                                <circle fill="currentColor" cx="10" cy="10.024" r="9.295"/>
-                                <g>
-                                  <path fill="#FFFFFF" d="M16.674,10.017c0.008,1.031-0.763,1.823-1.778,1.825c-1.004,0.002-1.818-0.805-1.819-1.804
-                                    c-0.002-0.981,0.785-1.775,1.774-1.793C15.879,8.227,16.666,8.992,16.674,10.017z"/>
-                                  <path fill="#FFFFFF" d="M10.053,8.245c1.017-0.004,1.818,0.787,1.814,1.795c-0.003,1.006-0.809,1.806-1.815,1.802
-                                    c-0.989-0.004-1.77-0.782-1.783-1.778C8.256,9.045,9.036,8.25,10.053,8.245z"/>
-                                  <path fill="#FFFFFF" d="M3.447,10.019c0.006-1.013,0.809-1.791,1.828-1.774c0.994,0.017,1.769,0.803,1.769,1.791
-                                    c-0.001,1.004-0.809,1.81-1.812,1.806C4.224,11.838,3.44,11.038,3.447,10.019z"/>
-                                </g>
-                                <path fill="currentColor" d="M14.864,8.959c0.595-0.011,1.084,0.451,1.104,1.043c0.02,0.6-0.435,1.089-1.029,1.107
-                                  c-0.63,0.019-1.125-0.444-1.129-1.058C13.805,9.457,14.275,8.97,14.864,8.959z"/>
-                                <path fill="currentColor" d="M10.085,11.109C9.477,11.117,9,10.668,8.983,10.071C8.967,9.455,9.45,8.958,10.065,8.959
-                                  c0.598,0,1.065,0.467,1.072,1.071C11.144,10.64,10.694,11.101,10.085,11.109z"/>
-                                <path fill="currentColor" d="M5.236,11.112c-0.599-0.004-1.083-0.48-1.085-1.066C4.149,9.443,4.662,8.944,5.268,8.959
-                                  C5.851,8.973,6.34,9.48,6.326,10.056C6.312,10.657,5.838,11.117,5.236,11.112z"/>
-                              </g>
-                              </svg>
-                                </a>
-                              </div>
-                            </td>
-                            <td>
-                              <p class="kt-widget__title1 mb-0">DARReport-400695136</p>
-                            </td>
-                            <td>
-                              <span class="kt-widget__other text-nowrap ">Syed Sayeeduddin Hussain</span>
-                            </td>
-                            <td>
-                              <span class="kt-widget__other text-nowrap ">01-10-2023</span>
-                            </td>
-                            <td>
-                              <p class="mb-0">18:30 hrs</p>
-                            </td>
-                            <td>
-                              <p class="mb-0">18:30 hrs</p>
-                            </td>
-                            <td>
-                              <!-- [ngClass]="{
-                                'Done':item.Req_Type.trim()=='Leave Sanction',
-                                'cancellation':item.Req_Type.trim()=='Leave Rejected',
-                                'completion':item.Req_Type.trim()=='Approved Leave'
-                                }" -->
-                              <span class="kt-widget__other Done">
-                                Approved
-                              </span>
-                            </td>
-                          
-                            
-                        
-                        </tr>
-                        <tr role="row" class="odd project-list_AC">
-                       
-                            <td align="center">
-                              <input type="checkbox" class="form-check-input ps-1 btn px-0 mr-2">
-                            </td>
-                            <td align="center">
-                              <div class="d-flex align-items-center">
-                                <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" placement="right"
-                                (click)="openDarReqSidebar(i)" href="javascript:void(0)">
-                                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                  viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
-                              <g>
-                                <circle fill="currentColor" cx="10" cy="10.024" r="9.295"/>
-                                <g>
-                                  <path fill="#FFFFFF" d="M16.674,10.017c0.008,1.031-0.763,1.823-1.778,1.825c-1.004,0.002-1.818-0.805-1.819-1.804
-                                    c-0.002-0.981,0.785-1.775,1.774-1.793C15.879,8.227,16.666,8.992,16.674,10.017z"/>
-                                  <path fill="#FFFFFF" d="M10.053,8.245c1.017-0.004,1.818,0.787,1.814,1.795c-0.003,1.006-0.809,1.806-1.815,1.802
-                                    c-0.989-0.004-1.77-0.782-1.783-1.778C8.256,9.045,9.036,8.25,10.053,8.245z"/>
-                                  <path fill="#FFFFFF" d="M3.447,10.019c0.006-1.013,0.809-1.791,1.828-1.774c0.994,0.017,1.769,0.803,1.769,1.791
-                                    c-0.001,1.004-0.809,1.81-1.812,1.806C4.224,11.838,3.44,11.038,3.447,10.019z"/>
-                                </g>
-                                <path fill="currentColor" d="M14.864,8.959c0.595-0.011,1.084,0.451,1.104,1.043c0.02,0.6-0.435,1.089-1.029,1.107
-                                  c-0.63,0.019-1.125-0.444-1.129-1.058C13.805,9.457,14.275,8.97,14.864,8.959z"/>
-                                <path fill="currentColor" d="M10.085,11.109C9.477,11.117,9,10.668,8.983,10.071C8.967,9.455,9.45,8.958,10.065,8.959
-                                  c0.598,0,1.065,0.467,1.072,1.071C11.144,10.64,10.694,11.101,10.085,11.109z"/>
-                                <path fill="currentColor" d="M5.236,11.112c-0.599-0.004-1.083-0.48-1.085-1.066C4.149,9.443,4.662,8.944,5.268,8.959
-                                  C5.851,8.973,6.34,9.48,6.326,10.056C6.312,10.657,5.838,11.117,5.236,11.112z"/>
-                              </g>
-                              </svg>
-                                </a>
-                              </div>
-                            </td>
-                            <td>
-                              <p class="kt-widget__title1 mb-0">DARReport-400695136</p>
-                            </td>
-                            <td>
-                              <span class="kt-widget__other text-nowrap ">Syed Sayeeduddin Hussain</span>
-                            </td>
-                            <td>
-                              <span class="kt-widget__other text-nowrap ">01-10-2023</span>
-                            </td>
-                            <td>
-                              <p class="mb-0">18:30 hrs</p>
-                            </td>
-                            <td>
-                              <p class="mb-0">18:30 hrs</p>
-                            </td>
-                            <td>
-                              <!-- [ngClass]="{
-                                'Done':item.Req_Type.trim()=='Leave Sanction',
-                                'cancellation':item.Req_Type.trim()=='Leave Rejected',
-                                'completion':item.Req_Type.trim()=='Approved Leave'
-                                }" -->
-                              <span class="kt-widget__other Done">
-                                Approved
-                              </span>
-                            </td>
-                          
-                            
-                        
-                        </tr>
-                        <tr role="row" class="odd project-list_AC">
-                       
-                            <td align="center">
-                              <input type="checkbox" class="form-check-input ps-1 btn px-0 mr-2">
-                            </td>
-                            <td align="center">
-                              <div class="d-flex align-items-center">
-                                <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" placement="right"
-                                (click)="openDarReqSidebar(i)" href="javascript:void(0)">
-                                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                  viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
-                              <g>
-                                <circle fill="currentColor" cx="10" cy="10.024" r="9.295"/>
-                                <g>
-                                  <path fill="#FFFFFF" d="M16.674,10.017c0.008,1.031-0.763,1.823-1.778,1.825c-1.004,0.002-1.818-0.805-1.819-1.804
-                                    c-0.002-0.981,0.785-1.775,1.774-1.793C15.879,8.227,16.666,8.992,16.674,10.017z"/>
-                                  <path fill="#FFFFFF" d="M10.053,8.245c1.017-0.004,1.818,0.787,1.814,1.795c-0.003,1.006-0.809,1.806-1.815,1.802
-                                    c-0.989-0.004-1.77-0.782-1.783-1.778C8.256,9.045,9.036,8.25,10.053,8.245z"/>
-                                  <path fill="#FFFFFF" d="M3.447,10.019c0.006-1.013,0.809-1.791,1.828-1.774c0.994,0.017,1.769,0.803,1.769,1.791
-                                    c-0.001,1.004-0.809,1.81-1.812,1.806C4.224,11.838,3.44,11.038,3.447,10.019z"/>
-                                </g>
-                                <path fill="currentColor" d="M14.864,8.959c0.595-0.011,1.084,0.451,1.104,1.043c0.02,0.6-0.435,1.089-1.029,1.107
-                                  c-0.63,0.019-1.125-0.444-1.129-1.058C13.805,9.457,14.275,8.97,14.864,8.959z"/>
-                                <path fill="currentColor" d="M10.085,11.109C9.477,11.117,9,10.668,8.983,10.071C8.967,9.455,9.45,8.958,10.065,8.959
-                                  c0.598,0,1.065,0.467,1.072,1.071C11.144,10.64,10.694,11.101,10.085,11.109z"/>
-                                <path fill="currentColor" d="M5.236,11.112c-0.599-0.004-1.083-0.48-1.085-1.066C4.149,9.443,4.662,8.944,5.268,8.959
-                                  C5.851,8.973,6.34,9.48,6.326,10.056C6.312,10.657,5.838,11.117,5.236,11.112z"/>
-                              </g>
-                              </svg>
-                                </a>
-                              </div>
-                            </td>
-                            <td>
-                              <p class="kt-widget__title1 mb-0">DARReport-400695136</p>
-                            </td>
-                            <td>
-                              <span class="kt-widget__other text-nowrap ">Syed Sayeeduddin Hussain</span>
-                            </td>
-                            <td>
-                              <span class="kt-widget__other text-nowrap ">01-10-2023</span>
-                            </td>
-                            <td>
-                              <p class="mb-0">18:30 hrs</p>
-                            </td>
-                            <td>
-                              <p class="mb-0">18:30 hrs</p>
-                            </td>
-                            <td>
-                              <!-- [ngClass]="{
-                                'Done':item.Req_Type.trim()=='Leave Sanction',
-                                'cancellation':item.Req_Type.trim()=='Leave Rejected',
-                                'completion':item.Req_Type.trim()=='Approved Leave'
-                                }" -->
-                              <span class="kt-widget__other Done">
-                                Approved
-                              </span>
-                            </td>
-                          
-                            
-                        
-                        </tr>
                       </tbody>
                     </table>
-              
-  
-                
+                    <div *ngIf="(!darRequestsList)||darRequestsList.length==0" class="no-c">
+                        <img src="https://cswebapps.com/creativeplanner/assets/images/no-image.png">
+                        <h1 class="space">No requests found.</h1>
+                    </div>
+                    </ng-container>  
+                  </ng-container>
+                  <ng-container *ngIf="currentDarSection=='DAR_RESPONSES'">
+                    <ng-container *ngIf="darResponsesLoading==false;else darReqResLoading">
+                    <table *ngIf="darResponsesList&&darResponsesList.length>0" class="table table-hover dataTable no-footer dtr-inline" role="grid">
+                        <thead>
+                          <tr role="row">
+                            <th style="width: 100px;"rowspan="1" colspan="1"></th>
+                            <th rowspan="1" colspan="1">Dar Report</th>
+                            <th rowspan="1" colspan="1">Company</th>
+                            <th rowspan="1" colspan="1">Name</th>
+                            <th rowspan="1" colspan="1">Status</th>
+                            <th rowspan="1" colspan="1">Achieved Hours</th>
+                            <th rowspan="1" colspan="1">Allotted Hours</th>
+                            <th rowspan="1" colspan="1">Received On</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let dres of darResponsesList; let i=index"    role="row" class="odd project-list_AC">
+                         
+                          
+                            <td align="center">
+                              <div class="d-flex align-items-center">
+                                <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" placement="right"
+                                (click)="openDarReqSidebar(i)" href="javascript:void(0)">
+                                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                  viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+                              <g>
+                                <circle fill="currentColor" cx="10" cy="10.024" r="9.295"/>
+                                <g>
+                                  <path fill="#FFFFFF" d="M16.674,10.017c0.008,1.031-0.763,1.823-1.778,1.825c-1.004,0.002-1.818-0.805-1.819-1.804
+                                    c-0.002-0.981,0.785-1.775,1.774-1.793C15.879,8.227,16.666,8.992,16.674,10.017z"/>
+                                  <path fill="#FFFFFF" d="M10.053,8.245c1.017-0.004,1.818,0.787,1.814,1.795c-0.003,1.006-0.809,1.806-1.815,1.802
+                                    c-0.989-0.004-1.77-0.782-1.783-1.778C8.256,9.045,9.036,8.25,10.053,8.245z"/>
+                                  <path fill="#FFFFFF" d="M3.447,10.019c0.006-1.013,0.809-1.791,1.828-1.774c0.994,0.017,1.769,0.803,1.769,1.791
+                                    c-0.001,1.004-0.809,1.81-1.812,1.806C4.224,11.838,3.44,11.038,3.447,10.019z"/>
+                                </g>
+                                <path fill="currentColor" d="M14.864,8.959c0.595-0.011,1.084,0.451,1.104,1.043c0.02,0.6-0.435,1.089-1.029,1.107
+                                  c-0.63,0.019-1.125-0.444-1.129-1.058C13.805,9.457,14.275,8.97,14.864,8.959z"/>
+                                <path fill="currentColor" d="M10.085,11.109C9.477,11.117,9,10.668,8.983,10.071C8.967,9.455,9.45,8.958,10.065,8.959
+                                  c0.598,0,1.065,0.467,1.072,1.071C11.144,10.64,10.694,11.101,10.085,11.109z"/>
+                                <path fill="currentColor" d="M5.236,11.112c-0.599-0.004-1.083-0.48-1.085-1.066C4.149,9.443,4.662,8.944,5.268,8.959
+                                  C5.851,8.973,6.34,9.48,6.326,10.056C6.312,10.657,5.838,11.117,5.236,11.112z"/>
+                              </g>
+                              </svg>
+                                </a>
+                              </div>
+                            </td>
+                            <td>
+                              <p class="kt-widget__title1 mb-0">DARReport-{{dres.Emp_Rep_No}}</p>
+                            </td>
+                            <td>
+                              <span class="kt-widget__other text-nowrap ">{{dres.Com_Name}}</span>
+                            </td>
+                            <td>
+                              <span class="kt-widget__other text-nowrap ">{{dres.Emp_Name}}</span>
+                            </td>
+                            <td>
+                                <span class="kt-widget__other"  [ngClass]="{'Done':dres.DARStatus=='Accepted'||dres.DARStatus=='Bonus Accepted','cancellation':dres.DARStatus=='Rejected'}">
+                                  {{dres.DARStatus}}
+                                </span>
+                            </td>
+                            <td>
+                              <p class="mb-0">{{formatDuration(dres.TotalHoursWorked)}}</p>
+                            </td>
+                            <td>
+                              <p class="mb-0">{{formatDuration(dres.TotalNoOfWorkingHours)}}</p>
+                            </td>
+                            <td>
+                                <span class="kt-widget__other text-nowrap ">{{dres.SubmissionDate|date:'dd-MM-yyyy'}}</span>
+                            </td>
+                          
+                          </tr>
+                         
+                        </tbody>
+                    </table>
+                    <div *ngIf="(!darResponsesList)||darResponsesList.length==0" class="no-c">
+                        <img src="https://cswebapps.com/creativeplanner/assets/images/no-image.png">
+                        <h1 class="space">No responses found.</h1>
+                    </div>
+                  </ng-container>
+                  </ng-container>
+                  <ng-template #darReqResLoading>
+                    <div class="d-flex justify-content-center align-items-center" style="height:35vh">
+                        <div class="spinner-border darReqRes-loader" role="status">
+                            <span class="visually-hidden"></span>
+                          </div>
+                    </div>
+                  </ng-template>
+
+
+
                   </div>
             <!-- dar requests/responses end-->
 
                         </div>
+
+                      </div>  
                     </div>
                 </div>
             </div>
@@ -1501,12 +1585,12 @@
                                            </div> -->
 
 
-                                        <div class="wrk-des-editbx d-none">
+                                        <div class="wrk-des-editbx d-none">    <!--wrk-des-editbx must not be removed-->
                                             <textarea #wrkAchvInput2 [value]="item.WorkAchieved" class="w-100" placeholder="Define your work achievement here." (input)="isWorkdesValid(wrkAchvInput2.value,'#collapseTimeline .collapseTimeline-table #tm-record-item-'+i)"></textarea>
                                             <span class="wrk-des-required-msg d-none" style="color:red">Work achievement is required.</span>
                                             <div class="d-flex justify-content-end gap-1">
                                                 <button class="btn btn-secondary btn-sm btn-fw fs-7" (click)="cancelEditTimelineRecord('#collapseTimeline .collapseTimeline-table #tm-record-item-'+i, item.WorkAchieved)">Cancel</button>
-                                                <button class="btn btn-info btn-sm btn-fw fs-7" (click)="updateWorkdesOfTR('#collapseTimeline .collapseTimeline-table #tm-record-item-'+i, item.id, wrkAchvInput2.value, true)">Update</button>
+                                                <button class="updatewrkdes-btn btn btn-info btn-sm btn-fw fs-7" (click)="updateWorkdesOfTR('#collapseTimeline .collapseTimeline-table #tm-record-item-'+i, item.id, wrkAchvInput2.value, true)">Update</button>  <!--updatewrkdes-btn must not be removed-->
                                             </div>
                                         </div>
 
@@ -1671,7 +1755,80 @@
             </div>
         </div>
         <div class="summary-report-content mt-4">
+
+
             <div class="mt-2 px-2">
+                <h6 class="text-muted">
+                    <svg height="16px" width="16px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 329.328 329.328" xml:space="preserve" style="fill: #8b8d93;">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M164.666,0C73.871,0,0.004,73.871,0.004,164.672c0.009,90.792,73.876,164.656,164.662,164.656 c90.793,0,164.658-73.865,164.658-164.658C329.324,73.871,255.459,0,164.666,0z M164.666,30c31.734,0,60.933,11.042,83.975,29.477 L59.478,248.638c-18.431-23.04-29.471-52.237-29.474-83.967C30.004,90.413,90.413,30,164.666,30z M164.666,299.328 c-31.733,0-60.934-11.042-83.977-29.477L269.854,80.691c18.431,23.043,29.471,52.244,29.471,83.979 C299.324,238.921,238.917,299.328,164.666,299.328z"></path> 
+                        </g>
+                    </svg>
+                 Rejected 
+                </h6>
+                <div class="summary-report-table border rounded">
+                <table width="100%"  cellpadding="10px">
+                <tbody>
+
+                    <tr>
+                        <td width="50%">
+                            <div class="d-flex gap-1 align-items-center">
+                                <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.576 31.576" width="18px" height="18px" style="stroke-width: 0;fill: #d32f2f;"><g _ngcontent-rkk-c390="" id="SVGRepo_iconCarrier"><path d="M16.779,23.888H6.215c-1.079,0-1.968-0.844-1.968-1.923V4.446c0-1.079,0.889-1.928,1.968-1.928h13.677 c1.08,0,1.984,0.849,1.984,1.928v11.917l1.231,1.383l1.257-1.407c0.016-0.017,0.03-0.031,0.03-0.048V2.57 c0-1.419-1.14-2.57-2.56-2.57H4.169C2.807,0,1.73,1.104,1.73,2.466v21.44c0,1.42,1.123,2.574,2.543,2.574H15.22 c0.018,0,0.036-0.054,0.055-0.074l1.879-2.092L16.779,23.888z" style="fill: #d32f2fc7;"></path><path  d="M18.838,5.8H7.498c-0.697,0-1.26,0.563-1.26,1.26c0,0.696,0.563,1.258,1.26,1.258h11.34c0.699,0,1.264-0.563,1.264-1.258 C20.102,6.362,19.537,5.8,18.838,5.8z" style="fill: #d32f2fc7;"></path>
+                                    <path d="M18.838,9.997H7.498c-0.697,0-1.26,0.524-1.26,1.221c0,0.693,0.563,1.221,1.26,1.221h11.34 c0.699,0,1.264-0.528,1.264-1.221C20.102,10.522,19.537,9.997,18.838,9.997z" style="fill: #d32f2fc7;"></path><path d="M15.594,16.017c1.259-1.137,2.992-1.426,4.482-0.878c-0.113-0.578-0.623-1.02-1.238-1.02H7.498 c-0.697,0-1.26,0.564-1.26,1.259c0,0.694,0.563,1.259,1.26,1.259h7.527C15.191,16.406,15.381,16.209,15.594,16.017z" style=" fill: #d32f2fc7; "></path><path d="M7.498,18.164c-0.697,0-1.26,0.562-1.26,1.259s0.563,1.259,1.26,1.259h6.864c-0.268-0.84-0.294-1.679-0.083-2.519 L7.498,18.164L7.498,18.164z" style="fill: #d32f2fc7;"></path><path  d="M26.065,24.332l1.483-1.646l1.728-1.914c0.813-0.904,0.744-2.301-0.161-3.115c-0.908-0.816-2.3-0.743-3.117,0.16 l-1.42,1.576l-1.484,1.646l-2.906-3.223c-0.814-0.902-2.209-0.978-3.117-0.16c-0.905,0.815-0.976,2.211-0.16,3.115l3.211,3.561 l-1.482,1.646l-1.729,1.912c-0.815,0.905-0.744,2.301,0.161,3.116c0.423,0.381,0.95,0.567,1.476,0.567 c0.604,0,1.203-0.245,1.641-0.729l1.42-1.572l1.484-1.646l2.906,3.221c0.438,0.482,1.037,0.729,1.641,0.729 c0.525,0,1.055-0.188,1.479-0.566c0.904-0.814,0.977-2.211,0.16-3.115L26.065,24.332z" style="fill: #d32f2fc7;"></path></g>
+                                </svg>
+                                <span class="overalldelay-label">Rejected projects</span>
+                            </div>
+                        </td>
+                        <td>
+                        <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
+                            <span class="due-count">{{daySummaryReport.NewProjectRejected}}</span>
+                            <button (click)="viewProjects('REJECTED')" *ngIf="daySummaryReport.NewProjectRejected>0" class="btn px-1 py-1 btn-outline-info fs-10">
+                                <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>
+                            </button>
+                        </div>
+                    </td>
+                    </tr>
+
+                </tbody>
+                </table>
+                </div>
+            </div>
+
+            <div class="mt-4 px-2">
+                <h6 class="text-muted">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 74 75" fill="none"><g clip-path="url(#clip0_237_573)"><path  d="M19.0912 63.3546C19.0912 60.5455 16.8442 58.2682 14.0725 58.2682C11.3007 58.2682 9.05371 60.5455 9.05371 63.3546C9.05371 66.1637 11.3007 68.4409 14.0725 68.4409C16.8442 68.4409 19.0912 66.1637 19.0912 63.3546Z" fill="#838383" class="dtv"></path><path d="M41.8422 63.3546C41.8422 60.5455 39.5952 58.2682 36.8234 58.2682C34.0517 58.2682 31.8047 60.5455 31.8047 63.3546C31.8047 66.1637 34.0517 68.4409 36.8234 68.4409C39.5952 68.4409 41.8422 66.1637 41.8422 63.3546Z" fill="#B8B8B8"></path>
+                    <path d="M64.5932 63.3546C64.5932 60.5455 62.3462 58.2682 59.5744 58.2682C56.8026 58.2682 54.5557 60.5455 54.5557 63.3546C54.5557 66.1637 56.8026 68.4409 59.5744 68.4409C62.3462 68.4409 64.5932 66.1637 64.5932 63.3546Z" fill="#B8B8B8"></path><path d="M43.0996 13.8838C43.0996 10.3716 40.2909 7.52441 36.8262 7.52441C33.3614 7.52441 30.5527 10.3716 30.5527 13.8838C30.5527 17.396 33.3614 20.2432 36.8262 20.2432C40.2909 20.2432 43.0996 17.396 43.0996 13.8838Z" fill="#838383" class="dtv"></path><path d="M39.8359 53.3657L39.8359 42.6109C39.1109 42.1871 38.4076 41.7269 37.7288 41.232L36.8126 40.5886C35.8965 41.2627 34.9498 41.9061 33.7588 42.5496L33.7588 53.3657C34.5442 53.1315 35.3535 52.9876 36.1713 52.9368L37.4539 52.9368C38.262 52.985 39.0615 53.129 39.8359 53.3657Z" fill="#B8B8B8"></path>
+                    <path d="M27.59 33.1735L26.3379 33.8783L24.9331 34.7362L22.2763 36.0844C14.6418 39.9451 11.1299 43.9284 11.1299 51.9563L11.1299 53.3657C12.122 53.0762 13.1505 52.9317 14.1837 52.9368C15.217 52.9309 16.2456 53.0754 17.2375 53.3657L17.2375 51.9563C17.2375 46.9925 18.795 44.817 24.2002 41.8142L25.5134 41.0788L26.9792 40.3435C35.8353 35.9006 39.1945 32.6833 39.9274 25.2376C38.9275 25.4809 37.9024 25.6043 36.8736 25.6053C35.841 25.6019 34.8136 25.4576 33.8197 25.1763L33.8197 24.9925C33.4838 28.6081 31.9264 30.6917 27.59 33.1735Z" fill="#838383" class="dtv"></path><path d="M43.9897 38.8114L45.3639 39.5468L47.6848 40.7111L49.059 41.4465L50.3111 42.1513C55.2278 44.9702 56.6631 47.1763 56.6631 51.9563L56.6631 53.3657C57.4472 53.1263 58.2572 52.9823 59.0756 52.9368L60.2055 52.9368C61.0236 52.9848 61.8333 53.1288 62.618 53.3657L62.618 51.1596C62.4042 43.7752 58.8618 39.7919 51.5021 35.8393L48.2345 34.1847L47.0435 33.5412L46.0358 32.9897C45.2729 32.5461 44.5385 32.0549 43.837 31.519C43.1285 33.4201 42.0951 35.1828 40.7832 36.7279C41.7941 37.5083 42.8665 38.2051 43.9897 38.8114Z" fill="#B8B8B8"></path></g>
+                    <defs><clipPath id="clip0_237_573"><rect width="74" height="73" fill="white" transform="translate(0.499023 74.8003) rotate(-90)"></rect></clipPath></defs>
+                </svg>
+                Assigned tasks
+                </h6>
+                <div class="summary-report-table border rounded">
+                <table width="100%"  cellpadding="10px">
+                <tbody>
+
+                    <tr>
+                        <td width="50%">
+                            <div class="d-flex gap-1 align-items-center">
+                                <svg class="due-svg" version="1.1" id="designs" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .sketchy_een{fill:#e28936;} </style> <path class="sketchy_een" d="M29.879,27.345c-0.068-0.107-0.117-0.227-0.18-0.336c-0.094-0.164-0.193-0.326-0.287-0.49 c-0.201-0.354-0.389-0.713-0.582-1.07c-0.398-0.732-0.836-1.439-1.219-2.182c-0.387-0.754-0.768-1.512-1.15-2.268 c-0.398-0.785-0.85-1.541-1.281-2.311c-0.443-0.789-0.832-1.609-1.252-2.412c-0.408-0.781-0.818-1.564-1.219-2.35 c-0.414-0.812-0.836-1.621-1.258-2.428c-0.432-0.818-0.877-1.629-1.291-2.459c-0.406-0.816-0.826-1.627-1.24-2.439 c-0.465-0.918-0.965-1.824-1.496-2.705c-0.152-0.255-0.417-0.403-0.696-0.427c-0.083-0.025-0.168-0.041-0.255-0.041 c-0.077,0-0.154,0.01-0.229,0.03c-0.23,0.064-0.385,0.207-0.518,0.398c-0.287,0.412-0.561,0.83-0.826,1.258 c-0.217,0.35-0.416,0.713-0.641,1.057c-0.459,0.701-0.977,1.361-1.391,2.092c-0.432,0.756-0.885,1.5-1.328,2.25 c-0.432,0.732-0.816,1.49-1.238,2.229c-0.422,0.744-0.875,1.471-1.311,2.207c-0.434,0.732-0.822,1.488-1.25,2.225 c-0.42,0.727-0.836,1.457-1.268,2.176c-0.439,0.729-0.844,1.475-1.27,2.213c-0.514,0.893-1.004,1.799-1.564,2.664 c-0.254,0.395-0.512,0.783-0.758,1.182c-0.248,0.4-0.498,0.803-0.762,1.193c-0.162,0.24-0.137,0.541-0.012,0.791 c-0.02,0.072-0.043,0.143-0.043,0.219c0,0.215,0.086,0.424,0.238,0.576c0.162,0.162,0.352,0.217,0.576,0.238 c0.848,0.076,1.701,0.064,2.553,0.08c0.867,0.014,1.734,0.004,2.602,0.016c0.818,0.01,1.637,0.021,2.457,0.027 c0.842,0.004,1.684,0.041,2.525,0.031c0.842-0.012,1.684-0.045,2.525-0.035c0.447,0.004,0.895,0.014,1.34,0.043 c0.418,0.027,0.834,0.076,1.254,0.098c0.814,0.041,1.627,0.029,2.443,0.039c0.844,0.01,1.684,0.027,2.527,0.074 c0.98,0.053,1.959,0.129,2.941,0.164c0.461,0.018,0.922,0.023,1.385,0.031c0.422,0.008,0.842,0.016,1.262-0.018 c0.23-0.02,0.43-0.08,0.598-0.248c0.033-0.033,0.05-0.078,0.076-0.115c0.065-0.019,0.131-0.029,0.193-0.066 C29.967,28.31,30.131,27.751,29.879,27.345z M26.428,27.276c-0.812-0.02-1.627-0.09-2.441-0.129 c-0.404-0.021-0.811-0.059-1.217-0.072c-0.404-0.014-0.809-0.021-1.215-0.033c-0.844-0.023-1.688-0.031-2.533-0.037 c-0.848-0.006-1.691-0.098-2.537-0.125c-0.832-0.029-1.67-0.004-2.502,0.027c-0.852,0.033-1.701,0.027-2.553,0.021 c-0.846-0.008-1.689-0.006-2.535,0.01c-1,0.016-1.998,0.035-2.996,0.012c-0.651-0.015-1.304-0.042-1.955-0.08 c0.281-0.451,0.56-0.904,0.848-1.352c0.465-0.723,0.881-1.469,1.287-2.225c0.801-1.486,1.672-2.934,2.52-4.393 c0.439-0.756,0.896-1.5,1.326-2.264c0.402-0.711,0.85-1.396,1.273-2.094c0.443-0.73,0.848-1.479,1.27-2.221 c0.43-0.758,0.883-1.504,1.33-2.252c0.256-0.428,0.502-0.861,0.748-1.295c0.254-0.449,0.566-0.865,0.859-1.291 c0.275-0.4,0.531-0.814,0.791-1.225c0.096-0.151,0.202-0.296,0.3-0.446c0.31,0.527,0.627,1.051,0.922,1.586 c0.426,0.773,0.799,1.574,1.18,2.367c0.385,0.803,0.816,1.582,1.238,2.365c0.432,0.801,0.838,1.617,1.27,2.42 c0.854,1.592,1.646,3.217,2.496,4.812c0.408,0.766,0.854,1.512,1.26,2.279c0.404,0.766,0.803,1.535,1.195,2.307 c0.393,0.768,0.84,1.504,1.258,2.256c0.198,0.356,0.383,0.717,0.574,1.074C27.402,27.283,26.916,27.286,26.428,27.276z M16.968,18.518c0.021,0.545,0.064,1.088,0.066,1.633c0.002,0.457-0.383,0.838-0.838,0.838c-0.471,0-0.818-0.381-0.838-0.838 c-0.021-0.553-0.035-1.105-0.049-1.658c-0.014-0.562-0.027-1.133-0.006-1.695c0.021-0.555,0.055-1.109,0.07-1.666 c0.016-0.623,0.014-1.246,0.02-1.869c0.006-0.416,0.346-0.766,0.768-0.766c0.41,0,0.773,0.348,0.766,0.766 c-0.023,1.189-0.057,2.377-0.014,3.566C16.933,17.392,16.946,17.956,16.968,18.518z M16.969,23.753c0,0.451-0.377,0.828-0.828,0.828 s-0.828-0.377-0.828-0.828s0.377-0.828,0.828-0.828S16.969,23.302,16.969,23.753z"></path> </g></svg>
+                                <span class="due-label">Awaiting to create</span>
+                            </div>
+                        </td>
+                        <td>
+                        <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
+                            <span class="due-count">{{daySummaryReport.AssignedTasksDue}}</span>
+                            <button (click)="viewTasks()" *ngIf="daySummaryReport.AssignedTasksDue>0" class="btn px-1 py-1 btn-outline-info fs-10">
+                                <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>
+                            </button>
+                        </div>
+                    </td>
+                    </tr>
+
+                </tbody>
+                </table>
+                </div>
+            </div>
+
+            <div class="mt-4 px-2">
                 <h6 class="text-muted d-flex align-items-center gap-1">
                 <svg width="18px" height="18px" viewBox="0 0 512 512" id="svg2793" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:serif="http://www.serif.com/" xmlns:svg="http://www.w3.org/2000/svg" fill="#74788d" stroke="#74788d" style="fill-rule: evenodd;clip-rule: evenodd;stroke-linejoin: round;stroke-miterlimit: 2;stroke-width: 3px;">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs id="defs2797"></defs><g id="_09-Round-Chart" transform="translate(-3072,-1024)" style="display: inline;"><g id="g2606" transform="translate(3282.77,1327.86)"><path d="M 0,175.522 C -89.87,157.49 -160.117,87.247 -178.15,-2.619 h 91.441 c 6.863,19.997 18.253,38.267 33.348,53.362 C -38.267,65.838 -19.997,77.227 0,84.09 Z M 18.637,58.348 C -20.648,48.532 -51.15,18.03 -60.967,-21.255 c -1.669,-6.678 -7.669,-11.364 -14.553,-11.364 h -120.25 c -4.3,0 -8.394,1.846 -11.242,5.071 -2.847,3.222 -4.174,7.513 -3.643,11.781 7.022,56.445 33.152,109.793 73.578,150.217 40.426,40.426 93.777,66.554 150.225,73.576 0.619,0.078 1.237,0.115 1.853,0.115 3.636,0 7.173,-1.322 9.93,-3.758 C 28.154,201.536 30,197.442 30,193.141 V 72.901 C 30,66.018 25.314,60.018 18.637,58.348" id="path2604" style="fill-rule: nonzero;"></path></g><g id="g2610" transform="translate(3373.23,1327.86)">
@@ -1866,40 +2023,7 @@
             </div>
 
 
-            <div class="mt-4 px-2">
-                <h6 class="text-muted">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 74 75" fill="none"><g clip-path="url(#clip0_237_573)"><path  d="M19.0912 63.3546C19.0912 60.5455 16.8442 58.2682 14.0725 58.2682C11.3007 58.2682 9.05371 60.5455 9.05371 63.3546C9.05371 66.1637 11.3007 68.4409 14.0725 68.4409C16.8442 68.4409 19.0912 66.1637 19.0912 63.3546Z" fill="#838383" class="dtv"></path><path d="M41.8422 63.3546C41.8422 60.5455 39.5952 58.2682 36.8234 58.2682C34.0517 58.2682 31.8047 60.5455 31.8047 63.3546C31.8047 66.1637 34.0517 68.4409 36.8234 68.4409C39.5952 68.4409 41.8422 66.1637 41.8422 63.3546Z" fill="#B8B8B8"></path>
-                    <path d="M64.5932 63.3546C64.5932 60.5455 62.3462 58.2682 59.5744 58.2682C56.8026 58.2682 54.5557 60.5455 54.5557 63.3546C54.5557 66.1637 56.8026 68.4409 59.5744 68.4409C62.3462 68.4409 64.5932 66.1637 64.5932 63.3546Z" fill="#B8B8B8"></path><path d="M43.0996 13.8838C43.0996 10.3716 40.2909 7.52441 36.8262 7.52441C33.3614 7.52441 30.5527 10.3716 30.5527 13.8838C30.5527 17.396 33.3614 20.2432 36.8262 20.2432C40.2909 20.2432 43.0996 17.396 43.0996 13.8838Z" fill="#838383" class="dtv"></path><path d="M39.8359 53.3657L39.8359 42.6109C39.1109 42.1871 38.4076 41.7269 37.7288 41.232L36.8126 40.5886C35.8965 41.2627 34.9498 41.9061 33.7588 42.5496L33.7588 53.3657C34.5442 53.1315 35.3535 52.9876 36.1713 52.9368L37.4539 52.9368C38.262 52.985 39.0615 53.129 39.8359 53.3657Z" fill="#B8B8B8"></path>
-                    <path d="M27.59 33.1735L26.3379 33.8783L24.9331 34.7362L22.2763 36.0844C14.6418 39.9451 11.1299 43.9284 11.1299 51.9563L11.1299 53.3657C12.122 53.0762 13.1505 52.9317 14.1837 52.9368C15.217 52.9309 16.2456 53.0754 17.2375 53.3657L17.2375 51.9563C17.2375 46.9925 18.795 44.817 24.2002 41.8142L25.5134 41.0788L26.9792 40.3435C35.8353 35.9006 39.1945 32.6833 39.9274 25.2376C38.9275 25.4809 37.9024 25.6043 36.8736 25.6053C35.841 25.6019 34.8136 25.4576 33.8197 25.1763L33.8197 24.9925C33.4838 28.6081 31.9264 30.6917 27.59 33.1735Z" fill="#838383" class="dtv"></path><path d="M43.9897 38.8114L45.3639 39.5468L47.6848 40.7111L49.059 41.4465L50.3111 42.1513C55.2278 44.9702 56.6631 47.1763 56.6631 51.9563L56.6631 53.3657C57.4472 53.1263 58.2572 52.9823 59.0756 52.9368L60.2055 52.9368C61.0236 52.9848 61.8333 53.1288 62.618 53.3657L62.618 51.1596C62.4042 43.7752 58.8618 39.7919 51.5021 35.8393L48.2345 34.1847L47.0435 33.5412L46.0358 32.9897C45.2729 32.5461 44.5385 32.0549 43.837 31.519C43.1285 33.4201 42.0951 35.1828 40.7832 36.7279C41.7941 37.5083 42.8665 38.2051 43.9897 38.8114Z" fill="#B8B8B8"></path></g>
-                    <defs><clipPath id="clip0_237_573"><rect width="74" height="73" fill="white" transform="translate(0.499023 74.8003) rotate(-90)"></rect></clipPath></defs>
-                </svg>
-                Assigned tasks
-                </h6>
-                <div class="summary-report-table border rounded">
-                <table width="100%"  cellpadding="10px">
-                <tbody>
-
-                    <tr>
-                        <td width="50%">
-                            <div class="d-flex gap-1 align-items-center">
-                                <svg class="due-svg" version="1.1" id="designs" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .sketchy_een{fill:#e28936;} </style> <path class="sketchy_een" d="M29.879,27.345c-0.068-0.107-0.117-0.227-0.18-0.336c-0.094-0.164-0.193-0.326-0.287-0.49 c-0.201-0.354-0.389-0.713-0.582-1.07c-0.398-0.732-0.836-1.439-1.219-2.182c-0.387-0.754-0.768-1.512-1.15-2.268 c-0.398-0.785-0.85-1.541-1.281-2.311c-0.443-0.789-0.832-1.609-1.252-2.412c-0.408-0.781-0.818-1.564-1.219-2.35 c-0.414-0.812-0.836-1.621-1.258-2.428c-0.432-0.818-0.877-1.629-1.291-2.459c-0.406-0.816-0.826-1.627-1.24-2.439 c-0.465-0.918-0.965-1.824-1.496-2.705c-0.152-0.255-0.417-0.403-0.696-0.427c-0.083-0.025-0.168-0.041-0.255-0.041 c-0.077,0-0.154,0.01-0.229,0.03c-0.23,0.064-0.385,0.207-0.518,0.398c-0.287,0.412-0.561,0.83-0.826,1.258 c-0.217,0.35-0.416,0.713-0.641,1.057c-0.459,0.701-0.977,1.361-1.391,2.092c-0.432,0.756-0.885,1.5-1.328,2.25 c-0.432,0.732-0.816,1.49-1.238,2.229c-0.422,0.744-0.875,1.471-1.311,2.207c-0.434,0.732-0.822,1.488-1.25,2.225 c-0.42,0.727-0.836,1.457-1.268,2.176c-0.439,0.729-0.844,1.475-1.27,2.213c-0.514,0.893-1.004,1.799-1.564,2.664 c-0.254,0.395-0.512,0.783-0.758,1.182c-0.248,0.4-0.498,0.803-0.762,1.193c-0.162,0.24-0.137,0.541-0.012,0.791 c-0.02,0.072-0.043,0.143-0.043,0.219c0,0.215,0.086,0.424,0.238,0.576c0.162,0.162,0.352,0.217,0.576,0.238 c0.848,0.076,1.701,0.064,2.553,0.08c0.867,0.014,1.734,0.004,2.602,0.016c0.818,0.01,1.637,0.021,2.457,0.027 c0.842,0.004,1.684,0.041,2.525,0.031c0.842-0.012,1.684-0.045,2.525-0.035c0.447,0.004,0.895,0.014,1.34,0.043 c0.418,0.027,0.834,0.076,1.254,0.098c0.814,0.041,1.627,0.029,2.443,0.039c0.844,0.01,1.684,0.027,2.527,0.074 c0.98,0.053,1.959,0.129,2.941,0.164c0.461,0.018,0.922,0.023,1.385,0.031c0.422,0.008,0.842,0.016,1.262-0.018 c0.23-0.02,0.43-0.08,0.598-0.248c0.033-0.033,0.05-0.078,0.076-0.115c0.065-0.019,0.131-0.029,0.193-0.066 C29.967,28.31,30.131,27.751,29.879,27.345z M26.428,27.276c-0.812-0.02-1.627-0.09-2.441-0.129 c-0.404-0.021-0.811-0.059-1.217-0.072c-0.404-0.014-0.809-0.021-1.215-0.033c-0.844-0.023-1.688-0.031-2.533-0.037 c-0.848-0.006-1.691-0.098-2.537-0.125c-0.832-0.029-1.67-0.004-2.502,0.027c-0.852,0.033-1.701,0.027-2.553,0.021 c-0.846-0.008-1.689-0.006-2.535,0.01c-1,0.016-1.998,0.035-2.996,0.012c-0.651-0.015-1.304-0.042-1.955-0.08 c0.281-0.451,0.56-0.904,0.848-1.352c0.465-0.723,0.881-1.469,1.287-2.225c0.801-1.486,1.672-2.934,2.52-4.393 c0.439-0.756,0.896-1.5,1.326-2.264c0.402-0.711,0.85-1.396,1.273-2.094c0.443-0.73,0.848-1.479,1.27-2.221 c0.43-0.758,0.883-1.504,1.33-2.252c0.256-0.428,0.502-0.861,0.748-1.295c0.254-0.449,0.566-0.865,0.859-1.291 c0.275-0.4,0.531-0.814,0.791-1.225c0.096-0.151,0.202-0.296,0.3-0.446c0.31,0.527,0.627,1.051,0.922,1.586 c0.426,0.773,0.799,1.574,1.18,2.367c0.385,0.803,0.816,1.582,1.238,2.365c0.432,0.801,0.838,1.617,1.27,2.42 c0.854,1.592,1.646,3.217,2.496,4.812c0.408,0.766,0.854,1.512,1.26,2.279c0.404,0.766,0.803,1.535,1.195,2.307 c0.393,0.768,0.84,1.504,1.258,2.256c0.198,0.356,0.383,0.717,0.574,1.074C27.402,27.283,26.916,27.286,26.428,27.276z M16.968,18.518c0.021,0.545,0.064,1.088,0.066,1.633c0.002,0.457-0.383,0.838-0.838,0.838c-0.471,0-0.818-0.381-0.838-0.838 c-0.021-0.553-0.035-1.105-0.049-1.658c-0.014-0.562-0.027-1.133-0.006-1.695c0.021-0.555,0.055-1.109,0.07-1.666 c0.016-0.623,0.014-1.246,0.02-1.869c0.006-0.416,0.346-0.766,0.768-0.766c0.41,0,0.773,0.348,0.766,0.766 c-0.023,1.189-0.057,2.377-0.014,3.566C16.933,17.392,16.946,17.956,16.968,18.518z M16.969,23.753c0,0.451-0.377,0.828-0.828,0.828 s-0.828-0.377-0.828-0.828s0.377-0.828,0.828-0.828S16.969,23.302,16.969,23.753z"></path> </g></svg>
-                                <span class="due-label">Awaiting to create</span>
-                            </div>
-                        </td>
-                        <td>
-                        <div *ngIf="daySummaryReport" class="d-flex justify-content-between align-items-center">
-                            <span class="due-count">{{daySummaryReport.AssignedTasksDue}}</span>
-                            <button (click)="viewTasks()" *ngIf="daySummaryReport.AssignedTasksDue>0" class="btn px-1 py-1 btn-outline-info fs-10">
-                                <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>
-                            </button>
-                        </div>
-                    </td>
-                    </tr>
-
-                </tbody>
-                </table>
-                </div>
-            </div>
+         
 
 
             <div *ngIf="daySummaryReport" class="completion-ending-statement mx-2 mt-4 mb-2" [ngClass]="{'success':daySummaryReport.EmployeePerformance>=70, 'danger':daySummaryReport.EmployeePerformance<70}">
@@ -1969,7 +2093,7 @@
            <div class="d-flex justify-content-end gap-1">
              <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" (click)="endTimelineModal_dismiss()">Close</button>
               <!--if user not entered timeline or if user entered timeline but not ended day-->
-             <button *ngIf="tmReportStatus==null||tmReportStatus=='Not Submitted'" type="button" class="btn btn-sm btn-info" (click)="endDay(tmSubmDate)">End day now</button>
+             <button [disabled]="submittingTimelineReport" *ngIf="tmReportStatus==null||tmReportStatus=='Not Submitted'" type="button" class="btn btn-sm btn-info" (click)="endDay(tmSubmDate)">End day now</button>
            </div>
       </div>
     </div>

@@ -156,18 +156,16 @@ export class CreateProjectComponent implements OnInit {
 
     const navigatingToCreateProject = localStorage.getItem('navigatingToCreateProject');
     if (navigatingToCreateProject === 'true') {
-
     setTimeout(()=>{ this.Assigned_projects();   },2000);
     localStorage.removeItem('navigatingToCreateProject');
     }
-debugger
-const navigatingfromrunway = JSON.parse(localStorage.getItem('combinedobj'));
-if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true'){
- this.PrjName = navigatingfromrunway.task
-  setTimeout(()=>{this.Scratech_btn()},2000)
-  localStorage.removeItem('combinedobj');
 
-}
+    const navigatingfromrunway = JSON.parse(localStorage.getItem('combinedobj'));
+    if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true'){
+    this.PrjName = navigatingfromrunway.task
+      setTimeout(()=>{this.Scratech_btn()},2000)
+      localStorage.removeItem('combinedobj');
+    }
 
     this.ProjectDto=new ProjectDetailsDTO();
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -215,11 +213,8 @@ if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true')
             }
       }
 
-
     });
     // open assigned project if asked in url
-
-
   }
 
 
@@ -274,7 +269,7 @@ if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true')
     this.createProjectService.NewGetProjectCreationDetails().subscribe((res)=>{
       console.log("NewGetProjectCreationDetails:",res);
       if(res)
-      {
+      {    
          this.Authority_json=JSON.parse(res[0].Authority_json);
          this.Category_json=JSON.parse(res[0].Category_json);
          this.Client_json=JSON.parse(res[0].Client_json);
@@ -282,21 +277,21 @@ if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true')
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
          this.Team_json=JSON.parse(res[0].Team_json);
          this.allUser_json=JSON.parse(res[0].allUser_json);
-
+     
          this.heirarchical_owner=JSON.parse(res[0].owner_json);
          let owner_values=JSON.parse(res[0].owner_json);
          owner_values=owner_values.map(ob=>({...ob,type:'Hierarchical'}));
-         const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo.trim()];
+         const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo];
          let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob.Emp_No));
          otherusers=otherusers.map(ob=>({EmpNo:ob.Emp_No, EmpName:ob.Emp_Name, type:'Others'}));
          this.owner_json=[...owner_values,...otherusers];
 
 
-          this.PrjOwner=this.Responsible_json[0].OwnerEmpNo.trim();
-          this.PrjResp=this.Responsible_json[0].ResponsibleNo.trim();
-          this.PrjAuth=this.Responsible_json[0].ResponsibleNo.trim();
-          this.PrjCrdtr=this.Team_json[0].CoordinatorNo.trim();
-          this.PrjInformer=this.Team_json[0].InformerNo.trim();
+          this.PrjOwner=this.Responsible_json[0].OwnerEmpNo;
+          this.PrjResp=this.Responsible_json[0].ResponsibleNo;
+          this.PrjAuth=this.Responsible_json[0].ResponsibleNo;
+          this.PrjCrdtr=this.Team_json[0].CoordinatorNo;
+          this.PrjInformer=this.Team_json[0].InformerNo;
           this.SubmissionType=JSON.parse(res[0].SubmissionType);  console.log('submission type values:',this.SubmissionType);
           const defaultvalue=this.allUser_json.find((item)=>{
                return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
@@ -338,17 +333,22 @@ if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true')
 
 
 
-  getFindName(){
-   let Owner=this.owner_json.find((e)=>{
-    return e.EmpNo===this.PrjOwner
-      })
-   let Emp_Name=Owner.EmpName
-   let openParenIndex = Emp_Name.indexOf('(');
-   this.Owner_Name = Emp_Name.substring(0, openParenIndex).trim();
+  getFindName(){  
+    let Owner=this.owner_json.find((e)=>{
+    return e.EmpNo==this.PrjOwner;
+    });
+    if(Owner){
+      let Emp_Name=Owner.EmpName;
+      let openParenIndex = Emp_Name.indexOf('(');
+      this.Owner_Name = Emp_Name.substring(0, openParenIndex).trim();
+    }
+  
+   let res= this.Responsible_json[0].ResponsibleName;
+   if(res){
+    let openParenIndex_res = res.indexOf('(');
+    this.responsible = res.substring(0, openParenIndex_res).trim();
+   }
 
-   let res= this.Responsible_json[0].ResponsibleName
-   let openParenIndex_res = res.indexOf('(');
-   this.responsible = res.substring(0, openParenIndex_res).trim();
 
   }
 
@@ -593,7 +593,7 @@ if(navigatingfromrunway && navigatingfromrunway.navigatingfromrunway === 'true')
   }
 
 createSRTProject=async()=>{
-debugger
+
   // 1. project cost calculate.
   let alhr:number|null=null;
   if(['003','008'].includes(this.Prjtype)){
@@ -613,8 +613,14 @@ debugger
         console.log(this.PrjCost);
       }
       else{
-        console.log('ERROR WHILE CALCULATING PROJECT COST.');
-        return;
+
+        // console.log('ERROR WHILE CALCULATING PROJECT COST.');
+        // return;
+
+        // testing (Temporary)
+        const cost=alhr*100
+        this.PrjCost=cost;
+        // testing (Temporary)
       }
   }
   else
@@ -639,7 +645,7 @@ debugger
 
 
  createProject(){
-debugger
+
   this.Client_json.forEach(element => {
     if(element.ClientName==this.PrjClient){
       this.PrjClient=element.ClientId;
@@ -665,7 +671,7 @@ debugger
            Coordinator:this.PrjCrdtr,
            Informer:this.PrjInformer,
            Auditor:this.PrjAuditor,
-           Support:this.PrjSupport.map(item=>+item.Emp_No.trim()).join(','),
+           Support:this.PrjSupport.map(item=>+item.Emp_No).join(','),
            SubmissionType:['003','008'].includes(this.Prjtype)?this.prjsubmission:'0',
            // Duration:['001','002','011'].includes(this.Prjtype)?this._allocated:'0',
            Duration:['001','002','011'].includes(this.Prjtype)?(this.Allocated_Hours ?this.Allocated_Hours:'0'):'0',
@@ -696,7 +702,7 @@ debugger
      this.ProjectDto.portfolioids=this.ngDropdwonPort.map(item=>item.Portfolio_ID).join(',');
      console.log(this.ProjectDto,"dto")
      //1. creating project
-     this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{
+     this.createProjectService.NewInsertNewProject(this.ProjectDto).subscribe((res:any)=>{  
 
            console.log("res after project creation:",res);
 
@@ -760,12 +766,13 @@ debugger
  }
 
 
- uploadFileAttachment(){
+ uploadFileAttachment(){   debugger
            const fd=new FormData();
            fd.append('Project_Code',this.PrjCode);
            fd.append('Project_Name',this.PrjName);
            fd.append('Emp_No',this.Current_user_ID);
            fd.append('Remarks',this._remarks);
+           fd.append("contentType",this.contentType);
            if(this.fileAttachment){
             fd.append("Attachment","true");
            }
@@ -774,12 +781,12 @@ debugger
 
            }
           //  this.createProjectService.NewUpdateFileUploadsByProjectCode(fd).subscribe((fres:any)=>{
-            this.createProjectService.NewUpdateFileUploadsByProjectCodeCore(fd).subscribe((fres:any)=>{
+            this.createProjectService.NewUpdateFileUploadsByProjectCodeCore(fd).subscribe((fres:any)=>{   debugger
             console.log("file attachment:",fres)
-            if(fres&&fres.Message==='Success'){
+            if(fres&&fres.message==='Success'){
               if(this.fileAttachment){
                 fd.append('file',this.fileAttachment);
-                this.createProjectService._AzureUpdateFileUploadsByProjectCode(fd).subscribe((event1: HttpEvent<any>) => {
+                this.createProjectService._AzureUpdateFileUploadsByProjectCode(fd).subscribe((event1: HttpEvent<any>) => {   debugger
                                     console.log(event1,"azure data");
                                     var myJSON = JSON.stringify(event1);
                                   //  this._Message = (JSON.parse(myJSON).body);
@@ -938,6 +945,7 @@ contentType:any="";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("project-creation-page").classList.remove("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "none";
+    document.getElementById("kt_wrapper").style.zIndex="unset";
 
     this.characterCount_Desc=0;
   }
@@ -1225,7 +1233,7 @@ isPrjSprtDrpDwnOpen:boolean=false;
 // responsible field start
 onResponsibleChanged(){
   if(this.PrjResp){
-    if(this.PrjResp.trim()===this.PrjOwner.trim())
+    if(this.PrjResp===this.PrjOwner)
     {
       const selectedowr=this.owner_json.find((item)=>item.EmpNo===this.PrjOwner);
       const newowr=this.owner_json[this.owner_json.indexOf(selectedowr)+1];
@@ -1257,7 +1265,7 @@ onResponsibleChanged(){
 
 onProjectOwnerChanged(){
   if(this.PrjOwner){
-      if(this.PrjOwner.trim()===this.PrjResp.trim()){
+      if(this.PrjOwner===this.PrjResp){
       this.PrjResp=this.Responsible_json[0].ResponsibleNo;
       this.onResponsibleChanged();
       }
@@ -1458,6 +1466,8 @@ onRejectProjectDialogClosed(){
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("mysideInfobar12").classList.add("kt-action-panel--on");
     document.getElementById("kt-bodyc")
+    document.getElementById("kt_wrapper").style.zIndex="99";
+
     // document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
@@ -1470,6 +1480,7 @@ onRejectProjectDialogClosed(){
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
+    document.getElementById("kt_wrapper").style.zIndex="unset";
     // document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
     this.router.navigate(["/backend/createproject/"]);
   }
@@ -1486,6 +1497,7 @@ onRejectProjectDialogClosed(){
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("Project_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    document.getElementById("kt_wrapper").style.zIndex="99";
     // document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementById("project-creation-page").classList.add("position-fixed");
     $("#mysideInfobar12").scrollTop(0);
@@ -1624,45 +1636,38 @@ initializeSelectedValue() {
     this._remarks = this.projectInfo.Remarks
 }
 
-projectEdit(val) {
-
-if (this.Allocated <= this.maxAllocation){
-  this.notProvided = false
-}
-else{
-  this.notProvided = true
-  return
-}
-
-  this.isPrjNameValids=this.isValidString(this.ProjeditName,3);
-  this.isPrjDesValids=this.isValidString(this.ProjeditDescription,5);
 
 
-if (this.ProjeditName&&this.isPrjNameValids=='VALID'&&this.ProjeditName.length<=100&&this.ProjeditDescription&&this.isPrjDesValids==='VALID'&&this.ProjeditDescription.length<=500
-  &&this.selectedOwnResp&&this.selectedcategory&&this.selectedclient&&this.Start_Date&&this.End_Date
+
+
+
+projectEdit() {
+
+this.isPrjNameValids=this.isValidString(this.ProjeditName,3);
+this.isPrjDesValids=this.isValidString(this.ProjeditDescription,5);   
+
+
+// CHECK ALL INPUT DATA ARE VALID OR NOT.
+if(
+  this.ProjeditName&&this.isPrjNameValids=='VALID'&&this.ProjeditName.length<=100&&
+  this.ProjeditDescription&&this.isPrjDesValids==='VALID'&&this.ProjeditDescription.length<=500&&
+  this.selectedOwnResp&&
+  this.selectedcategory&&
+  this.selectedclient&&
+  this.Start_Date&&
+  this.End_Date&&
+  this.Allocated <= this.maxAllocation
 ){
   this.notProvided=false
-
-} else{
+}
+else{
 this.notProvided=true;
 return;
 }
 
-//  if(constv = parseInt(this.Allocated) <=  this.projectInfo.Duration +1){
-//   this.notProvided = false
-//  }else{
-//   this.notProvided = true
-//  }
-//  this.setprojeditAllocation()
-//  if(this.Allocated <= this.maxAllocation){
-// this.notProvided=false
-//  }
-//  else{
-//   this.notProvided=true
-//   return
-//  }
 
-  // this._remarks = '';
+
+// Update process starts.
 
   if (this.OGProjectType != this.ProjectType) {
     var type = this.ProjectType
@@ -1721,9 +1726,7 @@ return;
   }
 
 
-    var allocation = this.Allocated;
-
-
+  var allocation = this.Allocated;
   var datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");
   var datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");
 
@@ -1744,15 +1747,14 @@ return;
   const jsonvalue = JSON.stringify(jsonobj)
   console.log(jsonvalue, 'json');
 
-  if (val == 0) {
-
+ 
     this.approvalObj.Emp_no = this.Current_user_ID;
     this.approvalObj.Project_Code = this.PrjCode;
 
     this.approvalObj.json = jsonvalue;
     //this.approvalObj.Remarks = this._remarks;
-    this.approvalObj.isApproval = val;
-    this.getAddActionDetails();
+    this.approvalObj.isApproval = 0;
+
 
     this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
       console.log(data['message'], "edit response");
@@ -1760,7 +1762,10 @@ return;
       if(['1','5','6'].includes(data['message']))
       {
         this.notifyService.showSuccess("Updated successfully.", "Success");
+        this.getAddActionDetails();   // rebind project details
+        this.getActionsDetails();  // rebind action list.
         this.closeInfos();
+
       }
       else if(data['message'] == '2')
       {
@@ -1778,50 +1783,55 @@ return;
       //this.getProjectDetails(this.URL_ProjectCode);
 
     });
-  }
-  // else if (val == 1) {
-  //   this.approvalObj.Emp_no = this.Current_user_ID;
-  //   this.approvalObj.Project_Code = this.PrjCode;
-  //   this.approvalObj.json = jsonvalue;
-  //   this.approvalObj.Remarks = this._remarks;
-  //   this.approvalObj.isApproval = val;
 
-  //   this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
-  //     console.log(data['message'], "edit response");
-  //     if (data['message'] == '3') {
-  //       this.notifyService.showSuccess("Project updated and Approved successfully", "Success");
-  //     }
-  //     else if (data['message'] == '2') {
-  //       this.notifyService.showError("Not updated", "Failed");
-  //     }
-  //   //  this.getProjectDetails(this.URL_ProjectCode);
-  //   //  this.getapprovalStats();
-  //   //  this.closeInfos();
-  //   });
-  // }
 
 }
+
+
+
+
+
+
+
 // Project Edit End
 
 // RACIS CODE start
 RACIS:any=[];
 
 
-setRACIS(){
+setRACIS(){  
     this.RACIS=[];
   try{
-     if(this.PrjOwner)
-     this.RACIS.push(this.owner_json.find((item)=>item.EmpNo===this.PrjOwner).EmpName);
-     if(this.PrjResp)
-     this.RACIS.push(this.Responsible_json[0].OwnerEmpNo===this.PrjResp?this.Responsible_json[0].OwnerName:this.Responsible_json[0].ResponsibleName);
-     if(this.PrjAuth)
-     this.RACIS.push(this.Authority_json.find((item)=>item.EmpNo===this.PrjAuth).EmpName);
-     if(this.PrjCrdtr)
-     this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjCrdtr).Emp_Name);
-     if(this.PrjInformer)
-     this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjInformer).Emp_Name);
-     if(this.PrjAuditor)
-     this.RACIS.push(this.allUser_json.find((item)=>item.Emp_No===this.PrjAuditor).Emp_Name);
+   
+     if(this.PrjOwner){
+         const obj=this.owner_json.find((item)=>item.EmpNo==this.PrjOwner);
+         if(obj){   this.RACIS.push(obj.EmpName);   }
+     }
+   
+     if(this.PrjResp){
+      this.RACIS.push(this.Responsible_json[0].OwnerEmpNo==this.PrjResp?this.Responsible_json[0].OwnerName:this.Responsible_json[0].ResponsibleName);
+     }
+
+     if(this.PrjAuth){
+         const obj=this.Authority_json.find((item)=>item.EmpNo==this.PrjAuth);
+         if(obj){  this.RACIS.push(obj.EmpName);  }
+     }
+
+     if(this.PrjCrdtr){
+          const obj=this.allUser_json.find((item)=>item.Emp_No==this.PrjCrdtr);
+          if(obj){  this.RACIS.push(obj.Emp_Name);   } 
+     }
+
+     if(this.PrjInformer){
+       const obj=this.allUser_json.find((item)=>item.Emp_No==this.PrjInformer);
+       if(obj){    this.RACIS.push(obj.Emp_Name);  }
+     }
+
+     if(this.PrjAuditor){
+        const obj=this.allUser_json.find((item)=>item.Emp_No==this.PrjAuditor);
+        if(obj){  this.RACIS.push(obj.Emp_Name); }
+     }
+
 
 
      const e=this.PrjSupport.map((item)=>item.Emp_Name);
@@ -1914,7 +1924,7 @@ detectMembersWithoutActions(){
   else{
     _hasNoActionMembers=this.totalPeopleOnProject.filter(ob=>ob.Emp_No!=ownerObj.Emp_No);
   }
-  _hasNoActionMembers=_hasNoActionMembers.map(ob=>(ob.RACIS.slice(0,ob.RACIS.indexOf('('))).trim() );
+  _hasNoActionMembers=_hasNoActionMembers.map(ob=>(ob.RACIS.slice(0,ob.RACIS.indexOf('('))));
   this.hasNoActionMembers=Array.from(new Set(_hasNoActionMembers));
 }
 
@@ -1935,7 +1945,7 @@ sendApproval=async()=>{
     this.ProjectDto.file = this.fileAttachment
     this.ProjectDto.Remarks=this._remarks;
     this.ProjectDto.Project_Cost=this.PrjCost;
-    this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{
+    this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{ 
       if(res&&res.message==='Success'){
             this.notification.showSuccess("Project sent to project owner "+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for approval',"Success");
             this.BsService.ConfirmBeforeRoute.emit(null);
@@ -1990,7 +2000,6 @@ sendApproval=async()=>{
 const pdur=Math.abs(moment(_prjstrtd).diff(moment(_prjendd),'days'));
 let noactnDialogType:'MANDATORY'|'NOT_MANDATORY';
 noactnDialogType=pdur>=15?'MANDATORY':pdur<15?'NOT_MANDATORY':null;
-
 if(this.PrjActionsInfo.length==0){
 
   const choice=await Swal.fire({
@@ -2019,31 +2028,57 @@ if(this.PrjActionsInfo.length==0){
 //
 
 
-// 3.validation: Check if any action's start date is before the project start date
-  const inputdate = new Date(this.projectInfo.StartDate);
-  const actn_index = this.PrjActionsInfo.findIndex((actn) => {
-      const actdate = new Date(actn.StartDate);
-      return actdate < inputdate;
-  });
- if(actn_index>-1){
-  Swal.fire({
-    title: 'Invalid action dates',
-    html: `Action <b>"${this.PrjActionsInfo[actn_index].Project_Name}"</b> cannot start before the project itself. Please revise the start date for this action to comply with the project timeline.`,
-    showCancelButton:true,
-    showConfirmButton:true,
-    confirmButtonText:'View',
-    cancelButtonText:'Cancel'
-   }).then(choice=>{
-        if(choice.isConfirmed){
-          this.showActionDetails(actn_index);
-        }
-   })
 
-   return;
- }
+// 3.validation: checking all actions in the project have valid dates or not.
+if(this.PrjActionsInfo.length>0)   // if project contains actions
+{
+   const actnsWithWrongDates=this.PrjActionsInfo.filter((actn:any)=>{
+    const d1=new Date(actn.StartDate);
+    const d2=new Date(actn.EndDate);
+    return ((d1>=_prjstrtd&&d2<=_prjendd)==false)||(d1>d2);
+   });
+
+  if(actnsWithWrongDates.length>0){    // project includes actions with wrong start date and end date.
+    Swal.fire({
+        title:`Found ${actnsWithWrongDates.length} Invalid ${actnsWithWrongDates.length>1?'Actions':'Action'}`,
+        html:` <div style="text-align: justify;">      
+                 Please provide valid start date and end date for the following actions to proceed.
+                 <p style="margin-top:1rem;"><b style="font-size: 13px;font-weight: 500;">Project dates :</b> ${moment(this.projectInfo.StartDate).format('YYYY-MM-DD')} <b>-</b> ${moment(this.projectInfo.EndDate).format('YYYY-MM-DD')}</p>
+                 <fieldset style="border: 2px solid #b2b3b4; border-radius: 6px; margin-top:15px; padding: 4px; padding-bottom: 6px; overflow-y: auto; max-height: 126px; scrollbar-width: thin; font-size: 13px;">
+                      <table width="100%" cellpadding="5px" style="">
+                          <thead>
+                          <tr> <th></th><th style="font-size: 11px;font-weight: 500;">Actions</th><th style="font-size: 11px;font-weight: 500;">Start</th><th style="font-size: 11px;font-weight: 500;">End</th> </tr>
+                          </thead>
+                          <tbody> 
+                              ${ 
+                                actnsWithWrongDates.map((acn)=>{
+                                    return `<tr> 
+                                                <td width="10%">${acn.IndexId}.</td>
+                                                <td width="70%"><div style="display:-webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden !important;">${acn.Project_Name}</div></td> 
+                                                <td width="20%" style="font-weight: 500; text-wrap-mode: nowrap; color:red;">${moment(acn.StartDate).format('YYYY-MM-DD')}</td>
+                                                 <td width="20%" style="font-weight: 500; text-wrap-mode: nowrap; color:red;">${moment(acn.EndDate).format('YYYY-MM-DD')}</td>
+                                            </tr>`
+                                    }).join('')
+                               }
+                          </tbody>    
+                      </table>
+                    </fieldset>
+                     <div style="font-size: 12px;color: #00a2eb;border: 1px solid #aae4ff;font-weight: 500;margin-top: 10px;background-color: #d8efff;padding: 5px;border-radius: 4px;display: flex; align-items: center;column-gap: 7px;">
+                      <svg width="30px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" stroke-width="0.00024000000000000003" style="min-width: 18px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z" fill="#1692df"></path></g>
+                      </svg>
+                      <span>All actions must start and end within the project duration.</span>
+                    </div>
+                  </div>
+                </div> `,
+          showConfirmButton:true,
+          confirmButtonText: 'Ok',
+      });
+
+   return;   
+  }
+}
 //
-
-debugger
 
 // 4.validation: Confirm Project Allocated hours
   const hrsToActns=this.PrjActionsInfo.reduce((sum,acn)=>(sum+Number.parseFloat(acn.AllocatedHours)),0);
@@ -2114,40 +2149,86 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
 }
 //
 
-
-
+debugger
 
 //6. calculate project cost.
-  this.PrjCost=0;
-  let alhrVal:number|null=null;
+  // this.PrjCost=0;
+  // let alhrVal:number|null=null;
 
-  if(this.PrjActionsInfo.length>0)  // if there are actions then calculate cost using those actions.
+  // if(this.PrjActionsInfo.length>0)  // if there are actions then calculate cost using those actions.
+  // {
+  //   alhrVal=this.PrjActionsInfo.reduce((sum,_actn)=>{
+  //     return sum+Number.parseFloat(_actn.AllocatedHours)
+  //    },0);
+  // }
+  // else if(noactnDialogType=='NOT_MANDATORY'){
+  //     alhrVal=this.projectInfo.AllocatedHours;   // take project allocated hrs set by user.
+  // }
+
+  // if(alhrVal!=null){
+  //   this.ProjectDto.Emp_No=this.Current_user_ID;
+  //   this.ProjectDto.Hours=alhrVal.toString();
+  //   const costres:any=await this.createProjectService.GetCPProjectCost(this.ProjectDto).toPromise();    // wait for project cost.
+  //   if(costres&&costres.Status){
+  //     this.PrjCost=costres.Data;
+  //     console.log('project_cost:',this.PrjCost);
+  //   }
+  //   else{
+  //     // console.log('ERROR WHILE CALCULATING PROJECT COST.')
+  //     // return;   // if any failure occur during the project cost calculation.
+    
+  //     // test for new users    (Temporary)
+  //     const cost=alhrVal*10
+  //     this.PrjCost=cost;
+  //     // test for new users  (Temporary)
+
+  //   }
+  // }
+  // else
+  // return;
+
+//
+// Project_Cost
+
+
+
+
+// 6.Calculate project cost
+if(this.PrjActionsInfo.length>0)  // check if there are actions in the project then calculate project cost using those actions cost.
+{
+  this.PrjCost=this.PrjActionsInfo.reduce((sum,_draftactn)=>{
+    return sum+_draftactn.Project_Cost;
+   },0);
+}
+else 
+{   
+  if(noactnDialogType=='NOT_MANDATORY')
   {
-    alhrVal=this.PrjActionsInfo.reduce((sum,_actn)=>{
-      return sum+Number.parseFloat(_actn.AllocatedHours)
-     },0);
-  }
-  else if(noactnDialogType=='NOT_MANDATORY'){
-      alhrVal=this.projectInfo.AllocatedHours;   // take project allocated hrs set by user.
-  }
-
-  if(alhrVal!=null){
+    const alhrVal=this.projectInfo.AllocatedHours;  
     this.ProjectDto.Emp_No=this.Current_user_ID;
-    this.ProjectDto.Hours=alhrVal.toString();
+    this.ProjectDto.Hours=alhrVal.toString();  
     const costres:any=await this.createProjectService.GetCPProjectCost(this.ProjectDto).toPromise();    // wait for project cost.
     if(costres&&costres.Status){
       this.PrjCost=costres.Data;
       console.log('project_cost:',this.PrjCost);
     }
     else{
-      console.log('ERROR WHILE CALCULATING PROJECT COST.')
-      return;   // if any failure occur during the project cost calculation.
+      // console.log('ERROR WHILE CALCULATING PROJECT COST.')
+      // return;   // if any failure occur during the project cost calculation.
+    
+      // test for new users    (Temporary)
+      const cost=alhrVal*10
+      this.PrjCost=cost;
+      // test for new users  (Temporary)
+
     }
   }
-  else
+  else 
   return;
-
+}
 //
+
+
 
 
 // 7.validation: project cost confirmation from user.
@@ -2552,6 +2633,7 @@ openDraft(index:number){
   console.log(this.draft_json[index]);
   this.Prjtype=this.draft_json[index].Project_Block;
   this.PrjCode=this.draft_json[index].Project_Code;
+  this._remarks = this.draft_json[index].Remarks
   this.notificationMsg=3;
 
 // // opens the step-3 view
@@ -2643,8 +2725,8 @@ reset(){
       return (item.Emp_Name===this.Team_json[0].SupportName&&item.Emp_No===this.Team_json[0].SupportNo);
     });
    this.PrjSupport=defaultvalue?[defaultvalue]:[];
-   this.PrjCrdtr=this.Team_json[0].CoordinatorNo.trim();
-   this.PrjInformer=this.Team_json[0].InformerNo.trim();
+   this.PrjCrdtr=this.Team_json[0].CoordinatorNo;
+   this.PrjInformer=this.Team_json[0].InformerNo;
   }
   else{
       this.PrjSupport=[];
@@ -2794,6 +2876,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
       document.getElementById("Action_Details_Edit_forms").classList.add("kt-quick-Project_edit_form--on");
       document.getElementById("kt-bodyc").classList.add("overflow-hidden");
       document.getElementById("rightbar-overlay").style.display = "block";
+      document.getElementById("kt_wrapper").style.zIndex="99";
       $("#mysideInfobar12").scrollTop(0);
       this.bindActionDetailsIntoForm();
 
@@ -2807,7 +2890,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
       document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
       document.getElementById("project-creation-page").classList.remove("position-fixed");
       document.getElementById("rightbar-overlay").style.display = "none";
-
+      document.getElementById("kt_wrapper").style.zIndex="unset";
       this.notProvided=false;   // back to initial state.
       this.characterCount_Action=0;
     }
@@ -2918,6 +3001,7 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
           StartDate:datestrStart,                   // new action start date.
           EndDate:datestrEnd,                     // new action end date.
           AllocatedHours: this.Allocated,             // new action alc hrs.
+
       };
 
       jsonobj = JSON.stringify(jsonobj);

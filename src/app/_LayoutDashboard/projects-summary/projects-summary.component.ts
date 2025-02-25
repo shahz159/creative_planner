@@ -105,7 +105,7 @@ Dateselectionrange: string = 'Date selection range';
       this.GetProjectsByUserName(this.type1);
     });
 
-   let filterprjsby:any=sessionStorage.getItem('filterprjsby');
+   let filterprjsby:any=sessionStorage.getItem('filterprjsby');     debugger
    if(filterprjsby){   // show only standard type projects which are in delay.
         filterprjsby=JSON.parse(filterprjsby);
         this.emplyToselect=filterprjsby.EmpNo?[filterprjsby.EmpNo]:[];
@@ -117,7 +117,7 @@ Dateselectionrange: string = 'Date selection range';
         this.TypeContInFilter=filterprjsby.ProjectType?[{ Block_No: filterprjsby.ProjectType }]:[];
         this.StatusCountFilter=filterprjsby.Status?[{ Name: filterprjsby.Status }]:[];
         this.CompanyCountFilter=filterprjsby.Company?[{Company_No:filterprjsby.Company}]:[];
-
+                                 
         this.Type=this.type1;
         this.userFound=true;
         sessionStorage.removeItem('filterprjsby');
@@ -488,13 +488,15 @@ Dateselectionrange: string = 'Date selection range';
 
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
       this._ProjectDataList = data;
+
       this.ActualDataList = data;
       this.cancelcheck=this.ActualDataList[0]['cancel'];
       this.cancelcount=this.ActualDataList[0]['cancelcount'];
-
+      this.un_FilteredProjects = this.ActualDataList;
+        this.getNotificationsofprojects();
       if (this._ProjectDataList.length > 0) {
       }
-      this.un_FilteredProjects = this.ActualDataList;
+
       if (this._ProjectDataList) {
         this._CurrentpageRecords = this._ProjectDataList.length;
       }
@@ -526,87 +528,8 @@ Dateselectionrange: string = 'Date selection range';
 
          console.log("Summary Data---->",this._ProjectDataList);
 
-         this.delayPrjsofPort = []
-         this._ProjectDataList.forEach(item => {
-           if (item.Status === 'Delay' && (item.Emp_No == this.Current_user_ID || item.OwnerEmpNo == this.Current_user_ID ))  {
-              const obj = {
-               prjname : item.Project_Name,
-               prjcode : item.Project_Code,
-               status : item.Status,
-               emp_No : item.Emp_No,
-               owner : item.OwnerEmpNo
-               };
-               this.delayPrjsofPort.push(obj)
-           }
-         });
-         console.log(this.delayPrjsofPort, 'storingDelaycount');
-
-         this.forwardPrjPort = []
-
-         this._ProjectDataList.forEach((item=>{
-           if(item.Status =='Forward Under Approval' && item.PendingapproverEmpNo&&item.PendingapproverEmpNo == this.Current_user_ID){
-             const obj = {
-               prjname : item.Project_Name,
-               prjcode : item.Project_Code,
-               status: item.Status,
-               empNo : item.Emp_No
-               };
-               this.forwardPrjPort.push(obj)
-           }
-         }))
-         console.log(this.forwardPrjPort, 'forwardPrjPortcount');
-
-         this.completionPrjPort = []
-
-         this._ProjectDataList.forEach((item)=>{
-           if (item.Status === 'Completion Under Approval'  && item.PendingapproverEmpNo&&item.PendingapproverEmpNo === this.Current_user_ID){
-             const obj = {
-               prjname : item.Project_Name,
-               prjcode : item.Project_Code,
-               status: item.Status,
-               empNo : item.Emp_No
-             }
-             this.completionPrjPort.push(obj)
-           }
-         })
-         console.log(this.completionPrjPort,"this.completionPrjPort")
-
-
-         this.newapprovalPrjport = []
-         this._ProjectDataList.forEach((item)=>{
-
-           if (item.Status === "Under Approval"  &&item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
-             const obj = {
-               prjname : item.Project_Name,
-               prjcode : item.Project_Code,
-               status: item.Status,
-               owner : item.PendingapproverEmpNo,
-               empNo : item.Emp_No
-             }
-             this.newapprovalPrjport.push(obj)
-           }
-         })
-         console.log(this.newapprovalPrjport,"this.newapprovalPrjport")
-
-
-          this.cancellationPort = []
-
-         this._ProjectDataList.forEach((item)=>{
-
-           if (item.Status === "Cancellation Under Approval"  && item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
-             const obj = {
-               prjname : item.Project_Name,
-               prjcode : item.Project_Code,
-               status: item.Status,
-               owner : item.PendingapproverEmpNo,
-               empNo : item.Emp_No
-             }
-             this.cancellationPort.push(obj)
-           }
-         })
-         console.log(this.cancellationPort,"this.cancellationPort")
-
-
+         this.un_FilteredProjects = data;
+         this.getNotificationsofprojects();
         this.userFound = true
         this.ActualDataList = data;
         this.cancelcheck=this.ActualDataList[0]['cancel'];
@@ -1166,16 +1089,35 @@ dates:any
   }
 
   filterPrjs(empNo:string,status:string){
-     debugger
 
+     this._ProjectDataList = this.un_FilteredProjects.filter(item => {
+      if(status == 'Delay')
+      return ((item.Emp_No == empNo || item.Owner == this.Current_user_ID)  && (item.Status == status));
+      else
+      // return (item.PendingapproverEmpNo==empNo &&['Completion Under Approval','Cancellation Under Approval','Under Approval','Forward Under Approval'].includes(status))
+      if (status === 'Completion Under Approval'){
+        return item.PendingapproverEmpNo==empNo && item.Status == status;
+      }
+      else if (status === 'Cancellation Under Approval'){
+        return item.PendingapproverEmpNo==empNo && item.Status == status;
+      }
+      else if (status === 'Under Approval'){
+        return item.PendingapproverEmpNo==empNo && item.Status == status;
+      }
+      else if (status === 'Forward Under Approval'){
+        return item.PendingapproverEmpNo==empNo && item.Status == status;
 
-    this.enterStatus=[];
-    this.emplyToselect=[];
-    this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>item.Emp_No==empNo);
-    this.checkedItems_Status=this.StatusCountFilter.filter(item=>item.Name==status);
+      }
 
-    this.applyFilters();
-    this.edited = false;
+      });
+
+    // this.enterStatus=[];
+    // this.emplyToselect=[];
+    // this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>item.Emp_No==empNo);
+    // this.checkedItems_Status=this.StatusCountFilter.filter(item=>item.Name==status);
+
+    // this.applyFilters();
+    // this.edited = false;
   }
 
 
@@ -1184,7 +1126,7 @@ dates:any
 
 
   applyFilters() {
-
+debugger
     this.edited = true
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
@@ -1198,7 +1140,6 @@ dates:any
     this.selectedCompany_String = this.checkedItems_Cmp.map(select => {
       return select.Company_No;
     }).join(',');
-
 
     const date_1 = this.selected_dates?moment(this.selected_dates.startDate.$d).format('YYYY-MM-DD'):null;
     const date_2 = this.selected_dates?moment(this.selected_dates.endDate.$d).format('YYYY-MM-DD'):null;
@@ -1228,6 +1169,8 @@ dates:any
       .subscribe(data => {
         //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
         this._ProjectDataList = data;
+        this.un_FilteredProjects = data;
+        this.getNotificationsofprojects();
         console.log(this._ProjectDataList,"this._ProjectDataListthis._ProjectDataListthis._ProjectDataList")
         this._CurrentpageRecords = this._ProjectDataList.length;
         if (this._ProjectDataList.length == 0) {
@@ -1248,7 +1191,7 @@ dates:any
     this.filterMegadropdownclose();
     }
     else if(this.Type=='RACIS Projects'){
-      moment.locale('en');
+      moment.locale('en');     
       this.ObjUserDetails.SelectedStatus = this.selectedStatus_String;
       this.ObjUserDetails.SelectedCompany = this.selectedCompany_String;
       this.ObjUserDetails.SelectedEmp_No = this.selectedEmp_String;
@@ -1267,96 +1210,17 @@ dates:any
       else{
         this.ObjUserDetails.ActiveStatus = "Active";
       }
-
+      console.log("object passing to api:",this.ObjUserDetails);
       //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails)
         .subscribe(data => {
           //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
           this._ProjectDataList = data;
+          this.un_FilteredProjects = data;
+         this.getNotificationsofprojects();
           this._CurrentpageRecords = this._ProjectDataList.length;
-          this.delayPrjsofPort = []
-          this._ProjectDataList.forEach(item => {
-            if (item.Status === 'Delay' && (item.Emp_No == this.Current_user_ID || item.OwnerEmpNo == this.Current_user_ID ))  {
-               const obj = {
-                prjname : item.Project_Name,
-                prjcode : item.Project_Code,
-                status : item.Status,
-                emp_No : item.Emp_No,
-                owner : item.OwnerEmpNo
-                };
-                this.delayPrjsofPort.push(obj)
-            }
-          });
-
-          this.forwardPrjPort = []
-
-          this._ProjectDataList.forEach((item=>{
-            if(item.Status =='Forward Under Approval' && item.PendingapproverEmpNo&&item.PendingapproverEmpNo == this.Current_user_ID){
-              const obj = {
-                prjname : item.Project_Name,
-                prjcode : item.Project_Code,
-                status: item.Status,
-                empNo : item.Emp_No
-                };
-                this.forwardPrjPort.push(obj)
-            }
-          }))
-
-          this._ProjectDataList.forEach((item)=>{
-            if (item.Status === 'Completion Under Approval'  && item.PendingapproverEmpNo&&item.PendingapproverEmpNo === this.Current_user_ID){
-              const obj = {
-                prjname : item.Project_Name,
-                prjcode : item.Project_Code,
-                status: item.Status,
-                empNo : item.Emp_No
-              }
-              this.completionPrjPort.push(obj)
-            }
-          })
-
-          this.newapprovalPrjport = []
-
-          this._ProjectDataList.forEach((item)=>{
-
-            if (item.Status === "Under Approval"  &&item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
-              const obj = {
-                prjname : item.Project_Name,
-                prjcode : item.Project_Code,
-                status: item.Status,
-                owner : item.PendingapproverEmpNo,
-                empNo : item.Emp_No
-              }
-              this.newapprovalPrjport.push(obj)
-            }
-          })
-
-
-           this.cancellationPort = []
-
-          this._ProjectDataList.forEach((item)=>{
-
-            if (item.Status === "Cancellation Under Approval"  && item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
-              const obj = {
-                prjname : item.Project_Name,
-                prjcode : item.Project_Code,
-                status: item.Status,
-                owner : item.PendingapproverEmpNo,
-                empNo : item.Emp_No
-              }
-              this.cancellationPort.push(obj)
-            }
-          })
-
-
-
-
 
           console.log('this._ProjectDataList:tjhis,this',this._ProjectDataList);
-          console.log(this.delayPrjsofPort, 'storingDelaycount');
-          console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
-          console.log(this.completionPrjPort,"this.completionPrjPort")
-          console.log(this.newapprovalPrjport,"this.newapprovalPrjport.newapprovalPrjport")
-          console.log(this.cancellationPort,"this.cancellationPort.cancellationPort")
           console.log('lastPagerecords:',this.lastPagerecords);
           console.log('CurrentPageNo:',this.CurrentPageNo);
           console.log('_CurrentpageRecords:',this._CurrentpageRecords);
@@ -1408,23 +1272,11 @@ dates:any
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
       FileName = FileName.replace(/#/g, "%23");
       FileName = FileName.replace(/&/g, "%26");
+      FileName = FileName.replace(/%/g, "%25");
       var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + FileName + "&" + "submitby=" + Submitby + "&"+  "type=" + type;
 
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 
@@ -1436,6 +1288,7 @@ dates:any
       let encodeduserid = encoder.encode(this.Current_user_ID.toString());
       FileName = FileName.replace(/#/g, "%23");
       FileName = FileName.replace(/&/g, "%26");
+      FileName = FileName.replace(/%/g, "%25");
       var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + FileName + "&" + "submitby=" + Submitby + "&" + "type=" + type;
       var myWindow = window.open(myurl, url.toString());
       myWindow.focus();
@@ -1500,7 +1353,9 @@ dates:any
     this.selectedItem_Emp.length = 0;
     this.selectedItem_Company.length = 0;
     this.isChecked=false;
+    this.isapprovlFound = false
     this.resetFilters();
+
   }
 
   Subtask_List: SubTaskDTO[];
@@ -1923,7 +1778,7 @@ onEmpSelected(selected:boolean,selectedItem:any){
 filterByResult:boolean=false
 
 getNewFilterResult(){
-
+  debugger
 this.edited = false
 
   this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>this.emplyToselect.includes(item.Emp_No));
@@ -1952,12 +1807,6 @@ console.log(this.checkedItems_Emp,'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
   this.selectedCompany_String = this.checkedItems_Cmp.map(select => {
     return select.Company_No;
   }).join(',');
-
-
-
-
-
-
 
 
   // console.log(this.checkedItems_Emp,'employee')
@@ -2785,6 +2634,12 @@ else{
   this.allSelectedProjects = this.allSelectedProjects.filter(item => {
     return !curPagePrjs.includes(item.Project_Code)
   });
+  // const curPagePrjs = this._ProjectDataList.map(x => x.Project_Code);
+  this.allSelectedProjects = this.allSelectedProjects.filter(item => {
+  let index = this.allSelectedProjects.findIndex(obj => obj.Project_Code == item.Project_Code)
+  if (index != -1)
+    this.allSelectedProjects.splice(index, 1);
+  })
   this.isAllPrjSelected=false;
   this.isapprovlFound = false
   this.value()
@@ -3397,8 +3252,57 @@ onGanttChartClose(){
 
 
 
+completionUA:any=[];
+forwardUA:any=[];
+newUA:any=[];
+cancellationUA:any=[];
+mydelayProjects:any=[];
+
+
+
+getNotificationsofprojects(){
+  let empno=this.Current_user_ID;
+  this.completionUA=[];
+  this.forwardUA=[];
+  this.newUA=[];
+  this.cancellationUA=[];
+  this.mydelayProjects = [];
+
+  // item.Status === 'Delay' && (item.Emp_No == this.Current_user_ID || item.OwnerEmpNo == this.Current_user_ID
+debugger
+  this.un_FilteredProjects.forEach((p)=>{
+    if(p.PendingapproverEmpNo==empno&&p.Status==='Completion Under Approval')
+      this.completionUA.push(p);
+    else if(p.PendingapproverEmpNo==empno&&p.Status==='Forward Under Approval')
+      this.forwardUA.push(p);
+    else if(p.PendingapproverEmpNo==empno&&p.Status==='Under Approval')
+      this.newUA.push(p);
+    else if(p.PendingapproverEmpNo==empno&&p.Status==='Cancellation Under Approval')
+      this.cancellationUA.push(p);
+    // else if((p.Emp_No==empno || p.Owner == empno)  && (p.Status==='Delay')) {
+   //   this.mydelayProjects.push(p);
+  // }
+    console.log(this.completionUA,'comple', this.forwardUA,'forward', this.newUA,'newapp',this.cancellationUA ,'cancellationUA')
+  });
+}
+
+
+
+
+
+
 // test new
 
+
+// Uncheckedwhenreset(){
+//   const curPagePrjs = this._ProjectDataList.map(x => x.Project_Code);
+//   this.allSelectedProjects = this.allSelectedProjects.filter(item => {
+//     return !curPagePrjs.includes(item.Project_Code)
+//   });
+//  this.value()
+// }
 }
+
+
 
 

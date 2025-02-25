@@ -110,7 +110,6 @@ export class ProjectTypeService {
   }
 
   GetProjectsBy_portfolioId(pid: number) {
-
     // let P_Id: string = sessionStorage.getItem('Pid');
     // let parsePid: number = +P_Id;
     this.objPortfolioDTO.Portfolio_ID = pid;
@@ -341,15 +340,12 @@ export class ProjectTypeService {
   }
   SharePortfolio(_ObjShare: Shareportfolio_DTO) {
     console.log("Obj Share---->", _ObjShare);
-    return this.http.post(this.rootUrl + "TestAPI/NewInsertUpdateSharePortfolio", _ObjShare)
-      .subscribe(data => {
-        this._ObjSharePortfolio = data as Shareportfolio_DTO;
-      });
+    return this.http.post(this.rootUrl + "TestAPI/NewInsertUpdateSharePortfolio", _ObjShare);
   }
   GetPreferences(empId, pid) {
     this._ObjSharePortfolio.EmployeeId = empId;
     this._ObjSharePortfolio.Portfolio_ID = pid;
-    return this.http.post(this.rootUrl + "TestAPI/NewGetPreferencesByEmployeeId", this._ObjSharePortfolio)
+    return this.http.post(this.rootUrl + "TestAPI/NewGetPreferencesByEmployeeId", this._ObjSharePortfolio);
   }
   GetShareDetailsBy_PId(pid) {
     this._ObjSharePortfolio.Portfolio_ID = pid;
@@ -1158,14 +1154,14 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl+'TestAPI/NewGetEmployeePerformance',this.ObjSubTaskDTO);
   }
 
-  GetCPProjectCost(empno:string,allocatedHr:string){  debugger
+  GetCPProjectCost(empno:string,allocatedHr:string){  
     this.ObjDto.Emp_No=empno;
     this.ObjDto.Hours=allocatedHr;
     return this.http.post('https://cswebapps.com/ProjectCostAPI/api/ProjectCost/GetCPProjectCost',this.ObjDto);
   }
 
 
-  NewUpdateTimelineActivity(empno:string,recordId:number,newworkdes:string,operationType:1|2){  debugger
+  NewUpdateTimelineActivity(empno:string,recordId:number,newworkdes:string,operationType:1|2){  
      this.ObjDto.Emp_No=empno;
      this.ObjDto.id=recordId;
      this.ObjDto.flagid=operationType;  
@@ -1173,5 +1169,29 @@ export class ProjectTypeService {
      return this.http.post(this.rootUrl+'TestAPI/NewUpdateTimelineActivity',this.ObjDto);
   }
 
+
+
+  NewGetTimelineInbox(obj:StatusDTO){   
+    this.ObjStatusDTO.Type=obj.Type;
+    this.ObjStatusDTO.Emp_No=obj.Emp_No;
+    this.ObjStatusDTO.SelectedEmp_No=obj.SelectedEmp_No;
+    this.ObjStatusDTO.SelectedCompany=obj.SelectedCompany;
+    this.ObjStatusDTO.PageNumber=obj.PageNumber;
+    this.ObjStatusDTO.RowsOfPage=obj.RowsOfPage;
+    this.ObjStatusDTO.startdate=obj.startdate;
+    this.ObjStatusDTO.enddate=obj.enddate; 
+    return this.http.post(this.rootUrl+'TestAPI/NewGetTimelineInbox',this.ObjStatusDTO);
+  }
+
+
+  NewGetTimelinedropdown(obj:StatusDTO){   
+    this.ObjStatusDTO.Type=obj.Type;
+    this.ObjStatusDTO.EmpNo=obj.EmpNo;
+    this.ObjStatusDTO.SelectedEmp_No=obj.SelectedEmp_No;
+    this.ObjStatusDTO.SelectedCompany=obj.SelectedCompany;
+    this.ObjStatusDTO.startdate=obj.startdate; 
+    this.ObjStatusDTO.enddate=obj.enddate;
+    return this.http.post(this.rootUrl+'TestAPI/NewGetTimelinedropdown',this.ObjStatusDTO);
+  }
 
 }
