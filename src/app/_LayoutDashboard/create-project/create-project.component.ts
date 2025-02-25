@@ -125,8 +125,8 @@ export class CreateProjectComponent implements OnInit {
   _message: string;
   maxAllocation: number;
   maxactAllocation:number;
-  _allocated:any
-  maxDate:any
+  _allocated:any;
+  maxPrjEndDate:any;
   URL_ProjectCode: any;
   approvalObj: ApprovalDTO;
   saveAsTemplate:boolean=false;
@@ -353,19 +353,21 @@ export class CreateProjectComponent implements OnInit {
   }
 
 
+
   projectTypes:any
   durationInDays:any
 
   findProjectType(){
-    let projectType=this.ProjectType_json.find((e)=>{
-      return e.Typeid===this.Prjtype
-        })
+    if(this.Prjtype){
+      let projectType=this.ProjectType_json.find((e)=>{
+        return e.Typeid===this.Prjtype;
+      });
       this.projectTypes= projectType.ProjectType;
       var startDate = moment(this.Prjstartdate);
       var endDate = moment(this.Prjenddate);
       this.durationInDays = endDate.diff(startDate, 'days');
       console.log('Duration in days:', this.durationInDays);
-
+    }
   }
 
 
@@ -470,10 +472,10 @@ export class CreateProjectComponent implements OnInit {
 
 
   this.service.SubTaskDetailsService_ToDo_Page(prjCode, null, this.Current_user_ID).subscribe(
-      (data) => {
+      (data) => {   
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
         this.Category_List = JSON.parse(data[0]['CategoryDropdown']);
-        console.log(this.Category_List, "CategoryDropdown");
+        console.log(this.Client_List, "Client_List");
     });
 
     this.service.NewProjectService(this.PrjCode).subscribe(
@@ -501,44 +503,45 @@ export class CreateProjectComponent implements OnInit {
 
 
   setMaxAllocation() {
-
     if(this.Prjstartdate&&this.Prjenddate){
       this.Prjstartdate=new Date(this.Prjstartdate);
       this.Prjenddate=new Date(this.Prjenddate);
       const dffinsec=this.Prjstartdate.getTime()-this.Prjenddate.getTime()
       const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
-      this.maxAllocation=(Difference_In_Days+1)*10;
+      this.maxAllocation=(Difference_In_Days+1)*7;
     }
-    else
-    this._message = "Start Date/End date missing, It accept only numeric and non-negative value."
-
+    else{
+       this.maxAllocation=null;
+       this._message = "Start Date/End date missing, It accept only numeric and non-negative value."
+    }
+    
   }
 
-  setprojeditAllocation() {
-    if(this.Start_Date&&this.End_Date){
-      this.Start_Date=new Date(this.Start_Date);
-      this.End_Date=new Date(this.End_Date);
-      const dffinsec=this.Start_Date.getTime()-this.End_Date.getTime()
-      const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
-      this.maxAllocation=(Difference_In_Days+1)*10;
-    }
-    else
-    this._message = "Start Date/End date missing, It accept only numeric and non-negative value"
+  // setprojeditAllocation() {
+  //   if(this.Start_Date&&this.End_Date){
+  //     this.Start_Date=new Date(this.Start_Date);
+  //     this.End_Date=new Date(this.End_Date);
+  //     const dffinsec=this.Start_Date.getTime()-this.End_Date.getTime()
+  //     const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
+  //     this.maxAllocation=(Difference_In_Days+1)*7;
+  //   }
+  //   else
+  //   this._message = "Start Date/End date missing, It accept only numeric and non-negative value"
 
-  }
-  setactioneditAllocation() {
+  // }
+  // setactioneditAllocation() {
 
-    if(this.Start_Date&&this.End_Date){
-      this.Start_Date=new Date(this.Start_Date);
-      this.End_Date=new Date(this.End_Date);
-      const dffinsec=this.Start_Date.getTime()-this.End_Date.getTime()
-      const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
-      this.maxactAllocation=(Difference_In_Days+1)*10;
-    }
-    else
-    this._message = "Start Date/End date missing, It accept only numeric and non-negative value"
+  //   if(this.Start_Date&&this.End_Date){
+  //     this.Start_Date=new Date(this.Start_Date);
+  //     this.End_Date=new Date(this.End_Date);
+  //     const dffinsec=this.Start_Date.getTime()-this.End_Date.getTime()
+  //     const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
+  //     this.maxactAllocation=(Difference_In_Days+1)*7;
+  //   }
+  //   else
+  //   this._message = "Start Date/End date missing, It accept only numeric and non-negative value"
 
-  }
+  // }
 
   validateInput() {
     this.Allocated = this.Allocated.toString().replace(/[^0-9]/g, '');
@@ -552,11 +555,21 @@ export class CreateProjectComponent implements OnInit {
 
 
 
-  setMaxDate(){
-    const d=new Date(this.Prjstartdate);
-    d.setDate(d.getDate()+2);
-    this.maxDate=d;
-
+  setMaxPrjEndDate(){
+    if(this.Prjstartdate&&this.Prjtype){
+      if(this.Prjtype=='011'){
+        const d=new Date(this.Prjstartdate);
+        d.setDate(d.getDate()+2);
+        this.maxPrjEndDate=d;
+        if(this.Prjenddate>this.maxPrjEndDate)
+        this.Prjenddate=null;     
+      }
+      else 
+      this.maxPrjEndDate=null;
+    }
+    else {
+      this.maxPrjEndDate=null;
+    }  
   }
 
 
@@ -1062,77 +1075,33 @@ contentType:any="";
 
   Move_to_add_team(){
 
-    // ['003','008'].includes(Prjtype)&&prjsubmission&&( (prjsubmission!=6&&Allocated_Hours) || (prjsubmission==6&&Allocated_Hours&&Annual_date)
-
-
-this.isPrjNameValid=this.isValidString(this.PrjName,3);
-this.isPrjDesValid=this.isValidString(this.PrjDes,5);
-
-
-  if(
-
-    (this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.isPrjNameValid==='VALID'&&this.PrjName.length<=100)&&(this.PrjDes&&this.isPrjDesValid==='VALID'&&this.PrjDes.length<=500))&&
-    (
-      (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate)||
-      (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours)) ||
-      ['003','008'].includes(this.Prjtype)&&this.prjsubmission&&this.Allocated_Hours&&(this.prjsubmission==6?this.Annual_date:true)
-
-    )
-  )
-  {
-    // when all mandatory fields of step1 are provided.
+    this.isPrjNameValid=this.isValidString(this.PrjName,3);
+    this.isPrjDesValid=this.isValidString(this.PrjDes,5);
+    
+    if((this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.isPrjNameValid==='VALID'&&this.PrjName.length<=100)&&(this.PrjDes&&this.isPrjDesValid==='VALID'&&this.PrjDes.length<=500))&&
+        (
+          (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours?this.Allocated_Hours<=this.maxAllocation:true))||
+          (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours&&this.Allocated_Hours<=this.maxAllocation)) ||
+          ['003','008'].includes(this.Prjtype)&&this.prjsubmission&&this.Allocated_Hours&&(this.prjsubmission==6?this.Annual_date:true)
+        ) 
+     ){
+          // when all mandatory fields of step1 are provided.
           $('.right-side-dv').removeClass('d-none');
           $('.add_tema_tab').show();
           $('.Project_details_tab').hide();
           $('.sbs--basic .active').addClass('finished');
           $('.sbs--basic li').removeClass('active');
           $('.sbs--basic li:nth-child(2)').addClass('active');
-          this.findProjectType()
+          this.findProjectType();
           if(['003','008'].includes(this.Prjtype))
           this.Prjstartdate=new Date();
           this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
           this.notProvided=false;
-  }
-  else{
-     // when some mandatory fields are missing.
-     this.notProvided=true;
-
-  }
-
-
-
-
-
-
-
-
-
-
-
-    // if((this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.PrjName.trim().split(' ').length>=3)&&(this.PrjDes&&this.PrjDes.trim().split(' ').length>=5)&&
-    // (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate) ||
-    // (['011'].includes(this.Prjtype)&&this.PrjName&&this.PrjClient&&this.PrjCategory&&this.PrjDes&&this.Prjstartdate&&this.Prjenddate&&this.Allocated_Hours) ||
-    // ( ['003','008'].includes(this.Prjtype)&&this.PrjName&&this.PrjClient&&this.PrjCategory&&this.PrjDes&&this.prjsubmission&&this.Allocated_Hours&&this.prjsubmission&&( (this.prjsubmission!=6&&this.Allocated_Hours) || (this.prjsubmission==6&&this.Allocated_Hours&&this.Annual_date) ))
-    // )){
-    //       // alert(this.Allocated_Hours)
-    //       $('.right-side-dv').removeClass('d-none');
-    //       $('.add_tema_tab').show();
-    //       $('.Project_details_tab').hide();
-    //       $('.sbs--basic .active').addClass('finished');
-    //       $('.sbs--basic li').removeClass('active');
-    //       $('.sbs--basic li:nth-child(2)').addClass('active');
-    //       this.findProjectType()
-    //       if(['003','008'].includes(this.Prjtype))
-    //       this.Prjstartdate=new Date();
-    //       this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
-    // }
-    // else{
-    //   this.notProvided=true;
-    // }
-
-
-
-
+    }
+    else{
+      // when some mandatory fields are missing.
+      this.notProvided=true;
+   }
 
   }
 
@@ -3442,6 +3411,7 @@ ActionupdateDuration(){
 start_dt:any
 end_dt:any
 
+
 alertMaxAllocation() {
   if (this.Start_Date == null || this.End_Date == null) {
     this._message = "Start Date/End date missing!!"
@@ -3458,41 +3428,41 @@ alertMaxAllocation() {
     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
     if(Difference_In_Days==0){
       Difference_In_Days=-1;
-      this.maxAllocation = (-Difference_In_Days) * 10 / 1;
+      this.maxAllocation = (-Difference_In_Days) * 7 / 1;
     }
     else{
-      this.maxAllocation = (-Difference_In_Days) * 10 / 1 +10;
+      this.maxAllocation = (-Difference_In_Days) * 7 / 1 +7;
     }
     console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
   }
 }
 
-maxAllocations: number;
-alertMaxAllocations() {
+// maxAllocations: number;
+// alertMaxAllocations() {
 
-  if (this.Start_Date == null || this.End_Date == null) {
-    this._message = "Start Date/End date missing!!"
-  }
-  else {
-    // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
-    // this.end_dt = moment(this._EndDate).format("MM/DD/YYYY");
-    this.start_dt=new Date(this.Start_Date);
-    this.end_dt=new Date(this.End_Date);
+//   if (this.Start_Date == null || this.End_Date == null) {
+//     this._message = "Start Date/End date missing!!"
+//   }
+//   else {
+//     // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
+//     // this.end_dt = moment(this._EndDate).format("MM/DD/YYYY");
+//     this.start_dt=new Date(this.Start_Date);
+//     this.end_dt=new Date(this.End_Date);
 
-    console.log(this.start_dt,this.end_dt,this.maxAllocations,"allcoation")
+//     console.log(this.start_dt,this.end_dt,this.maxAllocations,"allcoation")
 
-    var Difference_In_Time = this.start_dt.getTime() - this.end_dt.getTime();
-    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-    if(Difference_In_Days==0){
-      Difference_In_Days=-1;
-      this.maxAllocations = (-Difference_In_Days) * 10 / 1;
-    }
-    else{
-      this.maxAllocations = (-Difference_In_Days) * 10 / 1 +10;
-    }
-    console.log(this.start_dt,this.end_dt,this.maxAllocations,"allcoation")
-  }
-}
+//     var Difference_In_Time = this.start_dt.getTime() - this.end_dt.getTime();
+//     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+//     if(Difference_In_Days==0){
+//       Difference_In_Days=-1;
+//       this.maxAllocations = (-Difference_In_Days) * 10 / 1;
+//     }
+//     else{
+//       this.maxAllocations = (-Difference_In_Days) * 10 / 1 +10;
+//     }
+//     console.log(this.start_dt,this.end_dt,this.maxAllocations,"allcoation")
+//   }
+// }
 
 
 

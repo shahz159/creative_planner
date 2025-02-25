@@ -1551,8 +1551,7 @@
                                     placeholder="Enter project description" [ngClass]="{'error-border': !PrjDes&&notProvided}" (input)="updateCharacterCount()"
                                     (paste)="updateCharacterCount()"  [(ngModel)]="PrjDes" #prjDescr="ngModel"  (ngModelChange)="isPrjDesValid=isValidString(PrjDes,5)"  ></textarea>
                                     <span style="color:rgb(217,48,37)" *ngIf="!PrjDes&&notProvided">Please enter project description. </span>
-                                    <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOSHORT'">Please enter
-                                    at least 5 words, maximum 500 characters are allowed. </span>
+                                    <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOSHORT'">Please enter at least 5 words, maximum 500 characters are allowed. </span>
                                     <span *ngIf="characterCount > 0" >Max Characters {{characterCount}}/500</span>
                                     <!-- <span style="color:rgb(217,48,37)"*ngIf="isPrjDesValid==='TOOLONG'"> Maximum 200 words are allowed</span> -->
                                    <span *ngIf="characterCount >500" style="color:rgb(217,48,37)">  Maximum 500 characters are allowed.</span>
@@ -1561,7 +1560,7 @@
                               <div class="col-lg-4 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project type<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="Select project type" [(ngModel)]="Prjtype" (change)="changeprojecttype();  promptIfNameTypeMismatch(); "
+                                  <ng-select class="kt-form-vd" placeholder="Select project type" [(ngModel)]="Prjtype" (change)="changeprojecttype();  promptIfNameTypeMismatch(); setMaxPrjEndDate();"
                                     #PrjTYPE="ngModel"  [ngClass]="{'error-vd': !Prjtype&&notProvided}" (ngModelChange)=" notificationMsg=(notificationMsg!==0)?((Prjtype==='001'||Prjtype==='002')?1:2):notificationMsg"    >
                                     <ng-option *ngFor="let item of ProjectType_json"
                                       [value]="item.Typeid" >{{item.ProjectType }} </ng-option>
@@ -1598,10 +1597,8 @@
                                   <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
                                     <label>Start date<span class="text-danger">*</span></label>
                                     <div class="d-flex date-border" [ngClass]="{'error-date': !Prjstartdate && notProvided}">
-                                      <input class="form-control ng-pristine curser-pointer" name="date" [(ngModel)]="Prjstartdate" (input)="text()"    (dateChange)="Prjenddate=Prjenddate>=Prjstartdate?Prjenddate:null;Prjstartdate=Prjstartdate>=previousdate?Prjstartdate:null"
-                                        id="d-date" placeholder="Select start date" [matDatepicker]="picker2"
-                                        (click)="picker2.open()" [min]="todayDate" (dateChange)="setMaxDate()"
-                                        #SrtDate="ngModel" />
+                                      <input class="form-control ng-pristine curser-pointer" name="date" [(ngModel)]="Prjstartdate" (dateChange)="Prjenddate=Prjenddate>=Prjstartdate?Prjenddate:null;   Prjstartdate=Prjstartdate>=previousdate?Prjstartdate:null; setMaxPrjEndDate(); setMaxAllocation(); "
+                                        id="d-date" placeholder="Select start date" [matDatepicker]="picker2" (click)="picker2.open()" [min]="todayDate" #SrtDate="ngModel" />
                                       <div class="input-group-text p-0">
                                         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                         <mat-datepicker #picker2></mat-datepicker>
@@ -1613,7 +1610,6 @@
                                  <!-- <span *ngIf="['001', '002', '011'].includes(Prjtype)&&Prjstartdate && Prjenddate">Duration : {{this.durationInDays+1}} days </span>
                                    <span *ngIf="Allocated_Hours">{{Allocated_Hours}} hours</span> -->
                                 </div>
-
                                 <div class="col-lg-4 mb-3">
                                   <!-- \[ngClass]="{'col-lg-6 mb-3': Prjtype!='011','col-lg-4 mb-3':  Prjtype=='011'}"  -->
                                   <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0 mb-0">
@@ -1621,7 +1617,7 @@
                                     <div class="d-flex date-border" [ngClass]="{'error-date': !Prjenddate && notProvided}">
                                       <input class="form-control ng-pristine curser-pointer" [(ngModel)]="Prjenddate"  id="end-date"
                                         placeholder="Select end date" [matDatepicker]="picker3" (click)="picker3.open();"
-                                        [min]="Prjstartdate" [max]="Prjtype==='011'?maxDate:''" #EdDate="ngModel"  (dateChange)="Prjenddate=Prjstartdate<=Prjenddate?(Prjtype!=='011'?Prjenddate:( Prjenddate<=maxDate?Prjenddate:null) ):null;findProjectType();Prjenddate=Prjenddate>=Prjstartdate?Prjenddate:null"/>
+                                        [min]="Prjstartdate" [max]="Prjtype==='011'?maxPrjEndDate:''" #EdDate="ngModel"  (dateChange)="Prjenddate=Prjstartdate<=Prjenddate?(Prjtype!=='011'?Prjenddate:( Prjenddate<=maxPrjEndDate?Prjenddate:null) ):null;  findProjectType(); Prjenddate=Prjenddate>=Prjstartdate?Prjenddate:null;  setMaxAllocation();"/>
                                       <div class="input-group-text p-0">
                                         <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                                         <mat-datepicker #picker3></mat-datepicker>
@@ -1630,10 +1626,20 @@
                                     <span *ngIf="!Prjenddate&&notProvided" style="color:rgb(217,48,37)">Please select project end date.</span>
                                   </div>
                                 </div>
-                                <div class="col-lg-4 mb-3">
-                                    <label>Allocated hours<span class="text-danger"  *ngIf="Prjtype=='011'">*</span></label>
+                                <!-- <div class="col-lg-4 mb-3 d-none">
+                                    <label>Allocated hours<span class="text-danger" *ngIf="Prjtype=='011'">*</span></label>
+                                    <input #allocated="ngModel" id="hour-input" class="form-control" placeholder="Enter allocated hours"  pattern="[0-9]*" min="0" oninput="validity.valid||(value='');"   
+                                     [(ngModel)]="Allocated_Hours"  
+                                     [ngClass]="{
+                                       'error-border':(Prjstartdate&&Prjenddate&&Allocated_Hours > maxAllocation)||
+                                                      (Prjtype=='011'&&!Allocated_Hours&&notProvided)||
+                                                      (allocated.touched && allocated.invalid && Allocated_Hours==0)
+                                      }"/>
+                                     <span *ngIf=" Prjtype=='011'&&!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing</span>
+                                     <span *ngIf="Allocated_Hours > maxAllocation" style="color:rgb(217,48,37)">Maximum <b>{{maxAllocation}}</b> hours allowed for given duration. (<b>48</b> hours/week limit).</span>
+                                     <span *ngIf="allocated.touched && allocated.invalid && (Allocated_Hours==0)" style="color:rgb(217,48,37)">Allocated hours cannot be 0 and decimal, please enter a value. </span> -->
 
-                                    <input id="hour-input" #allocated="ngModel"  required class="form-control" placeholder="Enter action duration in hrs"
+                                      <!-- <input id="hour-input" #allocated="ngModel"  required class="form-control" placeholder="Enter allocated hours"
                                     [ngClass]="{
                                       'error-border': Prjtype == '011' && (
                                           (!Allocated_Hours && notProvided) ||
@@ -1643,21 +1649,31 @@
                                           this.Prjstartdate == null ||
                                           this.Prjenddate == null
                                       )
-                                  }"
+                                  }" [(ngModel)]="Allocated_Hours" pattern="[0-9]*" min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()" /> -->
+                                    <!-- <span *ngIf=" Prjtype=='011'&&!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing</span> -->
+                                    <!-- <span *ngIf="Allocated_Hours > maxAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 10
+                                      hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span> -->
+                                    
+                                    <!-- <span *ngIf="this.Prjstartdate == null || this.Prjenddate == null" style="color:rgb(217, 48, 37)">{{_message}}</span>  -->
 
-                                    [(ngModel)]="Allocated_Hours" pattern="[0-9]*"    min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()"  />
-                                    <span *ngIf=" Prjtype=='011'&&!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing
-                                      </span>
-                                    <span *ngIf="Allocated_Hours > maxAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 10
-                                      hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
-                                    <span *ngIf="allocated.touched && allocated.invalid && (Allocated_Hours==0)" style="color:rgb(217,48,37)">Allocated hours cannot be 0 and decimal, please enter a
-                                      value. </span>
-                                    <span *ngIf="this.Prjstartdate == null || this.Prjenddate == null" style="color:rgb(217, 48, 37)">{{_message}}</span>
                                     <!-- <span *ngIf="allocated.value && !isNumeric(allocated.value)">Alphabet will not accept
                                       {{maxAllocation}}
                                     </span> -->
+                                <!-- </div> -->
 
-                                </div>
+
+                                <div class="col-lg-4 mb-3">
+                                  <label>Allocated hours<span class="text-danger" *ngIf="Prjtype=='011'">*</span></label>
+                                  <input id="hour-input" class="form-control" placeholder="Enter allocated hours"  pattern="[0-9]*" min="0" oninput="validity.valid||(value='');" [(ngModel)]="Allocated_Hours" 
+                                     [ngClass]="{
+                                          'error-border':(Prjtype=='011'&&!Allocated_Hours&&notProvided)||
+                                                         (Prjtype=='011'&&Allocated_Hours==0)||
+                                                         (maxAllocation&&Allocated_Hours>maxAllocation)
+                                      }"/>
+                                  <span *ngIf="(Prjtype=='011'&&!Allocated_Hours&&notProvided)||(Prjtype=='011'&&Allocated_Hours==0)" style="color:rgb(217,48,37)">allocated hours required</span>
+                                  <span *ngIf="maxAllocation&&Allocated_Hours>maxAllocation" style="color:rgb(217,48,37)">Maximum <b>{{maxAllocation}}</b> hours allowed for given duration. (<b>48</b> hours/week limit).</span>
+                                </div>  
+
                               </ng-container>
 
                               <div [ngClass]="{'col-lg-6 mb-3': prjsubmission!='6','col-lg-4 mb-3':  prjsubmission=='6'}"  *ngIf="Prjtype == '003'||Prjtype=='008'">
@@ -2082,7 +2098,7 @@
                               <div class="kt-info-box-tittle justify-content-between mb-4 border-b-dashed">
                                 <div class="PA_title w-100">
                                   <span class="label">Project</span>
-                                  <span class="PA_Edit_btn m-2  curser-pointer  " (click)="Project_details_edit();updateCharacterCount_Desc();alertMaxAllocation();">
+                                  <span class="PA_Edit_btn m-2  curser-pointer  " (click)="Project_details_edit();updateCharacterCount_Desc()">
                                     <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="15"
                                       height="15">
                                       <path
@@ -2706,90 +2722,22 @@
 
     <!-- Project Details edit view Start-->
 
-       <div class="sideInfobar animate-right" id="Project_Details_Edit_forms">
+      <div class="sideInfobar animate-right" id="Project_Details_Edit_forms">
       <div class="kt-info-body">
-        <h3 style="margin-left: 10px;">Project edit</h3>
+  
       <div class="modal-header p-3">
-
           <div class="d-flex justify-content-between align-items-center w-100">
-
               <div class="d-flex align-items-center">
-
-                  <div class="kt-info-box-tittle m-0">
-                      <div class="kt-title-icon">
-
-                          <span class="svg-icon kt-title-icon m-0">
-                              <svg width="22px" height="22px" fill="#fff"
-                                  xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
-                                  xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
-                                  xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg"
-                                  xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px"
-                                  viewBox="0 0 100 105" style="enable-background:new 0 0 100 100;"
-                                  xml:space="preserve">
-                                  <switch>
-                                      <foreignObject
-                                          requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/" x="0"
-                                          y="0" width="1" height="1" />
-                                      <g i:extraneous="self">
-                                          <g>
-                                              <path
-                                                  d="M68.2,44.9v-3.6c0-2.4-2-4.4-4.4-4.4h-7.2v-4.3c0-0.9-0.8-1.7-1.7-1.7h-9.9c-0.9,0-1.7,0.8-1.7,1.7v4.3h-7.2     c-2.4,0-4.4,2-4.4,4.4v3.6c0,1.5,0.7,2.8,2,3.7v11.6c0,2.4,2,4.4,4.4,4.4h23.7c2.4,0,4.4-2,4.4-4.4V48.6     C67.4,47.7,68.2,46.4,68.2,44.9z M46.8,34.3h6.5v2.6h-6.5V34.3z M35.2,41.3c0-0.6,0.5-1,1-1h27.5c0.6,0,1,0.5,1,1v3.6     c0,0.4-0.2,0.7-0.5,0.9l-5,3.1c-0.2,0.1-0.4,0.2-0.6,0.2h-3.6c-0.1-2-1.7-3.6-3.7-3.6h-3.1c-2,0-3.6,1.6-3.7,3.6h-3.6     c-0.2,0-0.4-0.1-0.6-0.2l-4.9-3.1c-0.3-0.2-0.5-0.5-0.5-0.9V41.3z M51.9,49.2v3.1c0,0.2-0.1,0.3-0.3,0.3h-3.1     c-0.2,0-0.3-0.1-0.3-0.3v-3.1c0-0.2,0.1-0.3,0.3-0.3h3.1C51.7,48.9,51.9,49,51.9,49.2z M61.8,61.2H38.2c-0.6,0-1-0.4-1-1v-9.5     l1.7,1.1c0.7,0.4,1.5,0.7,2.4,0.7h3.6c0.1,2,1.7,3.6,3.7,3.6h3.1c2,0,3.6-1.6,3.7-3.6h3.6c0.8,0,1.7-0.2,2.4-0.7l1.7-1.1v9.5     C62.8,60.8,62.4,61.2,61.8,61.2z" />
-                                              <path
-                                                  d="M48.3,16.5v6.8c0,0.9,0.8,1.7,1.7,1.7c0.9,0,1.7-0.8,1.7-1.7v-6.8c3.1-0.8,5.4-3.5,5.4-6.9c0-3.9-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1C42.9,12.9,45.2,15.7,48.3,16.5z M50,5.9c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7     S47.9,5.9,50,5.9z" />
-                                              <path
-                                                  d="M21.4,28.5c1.3,0,2.6-0.4,3.7-1.1l4.8,4.8c0.3,0.3,0.8,0.5,1.2,0.5c0.4,0,0.9-0.2,1.2-0.5c0.7-0.7,0.7-1.7,0-2.4     l-4.8-4.8c0.7-1.1,1.1-2.3,1.1-3.7c0-3.9-3.2-7.1-7.1-7.1c-3.9,0-7.1,3.2-7.1,7.1S17.5,28.5,21.4,28.5z M21.4,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7s-3.7-1.7-3.7-3.7S19.4,17.7,21.4,17.7z" />
-                                              <path
-                                                  d="M16.5,51.7h6.8c0.9,0,1.7-0.8,1.7-1.7s-0.8-1.7-1.7-1.7h-6.8c-0.8-3.1-3.5-5.4-6.9-5.4c-3.9,0-7.1,3.2-7.1,7.1     s3.2,7.1,7.1,7.1C12.9,57.1,15.7,54.8,16.5,51.7z M9.6,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7     S11.7,53.7,9.6,53.7z" />
-                                              <path
-                                                  d="M29.9,67.7l-4.8,4.8c-1.1-0.7-2.3-1.1-3.7-1.1c-3.9,0-7.1,3.2-7.1,7.1s3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1     c0-1.3-0.4-2.6-1.1-3.7l4.8-4.8c0.7-0.7,0.7-1.7,0-2.4C31.6,67.1,30.6,67.1,29.9,67.7z M21.4,82.3c-2.1,0-3.7-1.7-3.7-3.7     s1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7S23.5,82.3,21.4,82.3z" />
-                                              <path
-                                                  d="M51.7,83.5v-6.8c0-0.9-0.8-1.7-1.7-1.7c-0.9,0-1.7,0.8-1.7,1.7v6.8c-3.1,0.8-5.4,3.5-5.4,6.9c0,3.9,3.2,7.1,7.1,7.1     c3.9,0,7.1-3.2,7.1-7.1C57.1,87.1,54.8,84.3,51.7,83.5z M50,94.1c-2.1,0-3.7-1.7-3.7-3.7c0-2.1,1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7C53.7,92.5,52.1,94.1,50,94.1z" />
-                                              <path
-                                                  d="M78.6,71.5c-1.3,0-2.6,0.4-3.7,1.1l-4.8-4.8c-0.7-0.7-1.7-0.7-2.4,0s-0.7,1.7,0,2.4l4.8,4.8c-0.7,1.1-1.1,2.3-1.1,3.7     c0,3.9,3.2,7.1,7.1,7.1c3.9,0,7.1-3.2,7.1-7.1S82.5,71.5,78.6,71.5z M78.6,82.3c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7     c2.1,0,3.7,1.7,3.7,3.7S80.6,82.3,78.6,82.3z" />
-                                              <path
-                                                  d="M90.4,42.9c-3.3,0-6.1,2.3-6.9,5.4h-6.8c-0.9,0-1.7,0.8-1.7,1.7s0.8,1.7,1.7,1.7h6.8c0.8,3.1,3.5,5.4,6.9,5.4     c3.9,0,7.1-3.2,7.1-7.1S94.3,42.9,90.4,42.9z M90.4,53.7c-2.1,0-3.7-1.7-3.7-3.7s1.7-3.7,3.7-3.7c2.1,0,3.7,1.7,3.7,3.7     S92.5,53.7,90.4,53.7z" />
-                                              <path
-                                                  d="M68.9,32.8c0.4,0,0.9-0.2,1.2-0.5l4.8-4.8c1.1,0.7,2.3,1.1,3.7,1.1c3.9,0,7.1-3.2,7.1-7.1s-3.2-7.1-7.1-7.1     c-3.9,0-7.1,3.2-7.1,7.1c0,1.3,0.4,2.6,1.1,3.7l-4.8,4.8c-0.7,0.7-0.7,1.7,0,2.4C68.1,32.6,68.5,32.8,68.9,32.8z M78.6,17.7     c2.1,0,3.7,1.7,3.7,3.7s-1.7,3.7-3.7,3.7c-2.1,0-3.7-1.7-3.7-3.7S76.5,17.7,78.6,17.7z" />
-                                          </g>
-                                      </g>
-                                  </switch>
-                              </svg>
-                          </span>
-                      </div>
-
-
-
-
-
-                      <div class="Project_type_DW curser-pointer">
-                        <!-- <ng-select class="kt-form-vd" placeholder="Select Type.." [(ngModel)]="Prjtype">
-                          <ng-option *ngFor="let item of ProjectType_json"
-                            [value]="item.Typeid">{{item.ProjectType}}
-                          </ng-option>
-                        </ng-select> -->
-                        <div class="input-icon Sub_In_ed" style="max-width: 140px;"
-                        *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List'))">
-                        <input type="text" class="form-control kt-info-box-tit  readonly" [(ngModel)]="ProjectType" readonly />
-                    </div>
-                    <div class="Project_type_DW curser-pointer"
-                        *ngIf="ProjectType == '003' || ProjectType =='Standard Tasks' || ProjectType=='008' || ProjectType =='Routine Tasks'">
-                        <ng-select [(ngModel)]="ProjectType" placeholder="Change task type" class="kt-form-vd ">
-                            <ng-option [value]="item.typeid" *ngFor="let item of type_list">{{item.typename}}
-                                <!-- <a *ngIf="item.typeid=='003' || item.typeid=='008'"></a> -->
-                            </ng-option>
-                        </ng-select>
-                    </div>
-                  </div>
-                  </div>
+                  <h3 class="m-0">Project edit</h3>
               </div>
           </div>
           <div data-bs-dismiss="modal" class="btn btn-sm btn-icon btn-hover-info btn-active-color-primary"
               (click)="closeInfos()">
               <div class="btn btn-icon">
-                  <svg _ngcontent-uyr-c401="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
                       height="24" fill="#ccc">
-                      <path _ngcontent-uyr-c401="" fill="none" d="M0 0h24v24H0z"></path>
-                      <path _ngcontent-uyr-c401=""
+                      <path fill="none" d="M0 0h24v24H0z"></path>
+                      <path
                           d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
                       </path>
                   </svg>
@@ -2803,25 +2751,18 @@
                       <div class="form-group mb-2">
                           <label class="pe-label">Project name</label>
                           <div class="input-icon project-name_ed curser-pointer">
-                              <!-- <input type="text" class="form-control"  [(ngModel)]="PrjName"
-                                  placeholder="Search..." /> -->
-                                  <input type="text"  [ngClass]="{'error-border':!ProjeditName&&notProvided}" class="form-control" [(ngModel)]="ProjeditName"
-                                  placeholder="Enter project name" #ProjeditNameF="ngModel" (ngModelChange)="isPrjNameValids=isValidString(ProjeditName.trim(),3)" />
-                                  <!-- <span *ngIf="!ProjectName&&notProvided"  style="color:rgb(217,48,37)">Please enter project name. </span> -->
-                                  <span  *ngIf="isPrjNameValids=='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter atleast 3 words, Maximum 100 characters are allowed. </span>
+                                  <input type="text"  [ngClass]="{'error-border':(!ProjeditName&&notProvided)||(isPrjNameValids=='TOOSHORT')||(ProjeditName&&ProjeditName.length > 100) }" class="form-control" [(ngModel)]="ProjeditName" placeholder="Enter project name" #ProjeditNameF="ngModel" (ngModelChange)="isPrjNameValids=isValidString(ProjeditName.trim(),3)" />
+                                  <span *ngIf="isPrjNameValids=='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter atleast 3 words, Maximum 100 characters are allowed. </span>
                                   <span *ngIf="ProjeditName&&ProjeditName.length > 100"  style="color:rgb(217,48,37)">Maximum 100 characters are allowed.</span>
                           </div>
                       </div>
                   </div>
-
                   <div class="col-lg-12">
                       <div class="form-group mb-2">
                           <label class="pe-label">Project description</label>
                           <div class="input-icon project_des_ed curser-pointer">
-                              <!-- <textarea type="text" class="form-control" [(ngModel)]="PrjDes" placeholder="Search..." height="60px"
-                                ></textarea> -->
-                                <textarea type="text" class="form-control"  [ngClass]="{'error-border':!ProjeditDescription&&notProvided}"    placeholder="Enter project description" height="60px"
-                                [(ngModel)]="ProjeditDescription"    (input)="updateCharacterCount_Desc()"
+                                <textarea type="text" class="form-control"  [ngClass]="{'error-border':(!ProjeditDescription&&notProvided)||(isPrjDesValids==='TOOSHORT')}"    placeholder="Enter project description" height="60px"
+                                [(ngModel)]="ProjeditDescription" (input)="updateCharacterCount_Desc()"
                                 (paste)="updateCharacterCount_Desc()" (ngModelChange)="isPrjDesValids=isValidString(ProjeditDescription,5)"></textarea>
                                 <!-- <span *ngIf="!ProjectDescription&&notProvided" style="color:rgb(217,48,37)">Please enter description</span> -->
                                 <span *ngIf="isPrjDesValids==='TOOSHORT'" style="color:rgb(217,48,37)">Please enter atleast 5 words, Maximum 500 characters are allowed. </span>
@@ -2834,11 +2775,12 @@
           </div>
       </div>
       <div class="kt-info-box_en">
-          <div class="row pt-4 pb-4">
+
+          <div class="row pt-4">
               <div class="col-lg-4 text-left">
                   <div class="form-group Ic_ed">
-                      <div class="kt-info-lable-v"><span class="kt-info-lable-icon"><svg width="24px"
-                                  height="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+                      <div class="kt-info-lable-v"><span class="kt-info-lable-icon">
+                             <svg width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
                                   id="handshake">
                                   <g fill="#898989" data-name="Handshake">
                                       <path
@@ -2878,80 +2820,37 @@
                               </svg>
                           </span> Owner</div>
                       <div class="input-icon Sub_In_ed" *ngIf="projectInfo">
-
-                      <!-- <ng-container  *ngIf="projectInfo.OwnerEmpNo === Current_user_ID && ( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
-                          && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval') ; else ownwerEdit">
-                      <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
-                          <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown" [disabled]="item.Emp_No==selectedOwnResp">
-                              {{item.RACIS}}
-                          </ng-option>
-                      </ng-select>
-                  </ng-container>
-                  <ng-template #ownwerEdit>
-                      <input type="text" (click)="displaymessagemain()"  class="form-control readonly"
-                          [(ngModel)]="selectedOwner" readonly />
-
-                  </ng-template> -->
-
-                  <ng-container
-                  *ngIf="projectInfo.OwnerEmpNo === Current_user_ID && ( projectInfo.Status !=='Under Approval' && projectInfo.Status !=='Completion Under Approval'
-                  && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval') ; else ownwerEdit">
-                  <ng-select [(ngModel)]="selectedOwner" placeholder=" Select new owner">
-                      <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown"
-                          [disabled]="item.Emp_No==selectedOwnResp">
-                          {{item.RACIS}}
-                      </ng-option>
-                  </ng-select>
-              </ng-container>
-              <ng-template #ownwerEdit>
-                  <input type="text" (click)="displaymessagemain('Owner')" class="form-control readonly"
-                      [(ngModel)]="selectedOwner" readonly />
-
-              </ng-template>
-
-
-
-
-
-
-
-
-
+                        <input type="text" (click)="displaymessagemain('Owner')" class="form-control readonly mt-0" [(ngModel)]="selectedOwner" readonly />
                       </div>
                   </div>
               </div>
               <div class="col-lg-4 text-left">
                   <div class="form-group Ic_ed">
-                      <div class="kt-info-lable-v"><span class="kt-info-lable-icon"><svg width="24px"
-                                  height="24px" xmlns="http://www.w3.org/2000/svg" fill="#898989"
+                      <div class="kt-info-lable-v">
+                        <span class="kt-info-lable-icon">
+                            <svg width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="#898989"
                                   viewBox="0 0 101 101" id="user">
                                   <path fill="#898989"
                                       d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z">
                                   </path>
-                              </svg></span> Responsible</div>
-                            <div class="" *ngIf="projectInfo">
+                              </svg></span> Responsible
+                            </div>
+                            <div *ngIf="projectInfo">
                               <ng-container *ngIf="projectInfo.isRespActive=='1'">
-                                <ng-container
-                                   >
-
+                                <ng-container>
                                     <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!selectedOwnResp&&notProvided}"   [(ngModel)]="selectedOwnResp"    placeholder="Select new responsible">
-                                        <ng-option [value]="item.Emp_No"       *ngFor="let item of owner_dropdown"
-                                            [disabled]="item.Emp_No==selectedOwner">
-
+                                        <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown" [disabled]="item.Emp_No==selectedOwner">
                                             {{item.RACIS}}
                                         </ng-option>
-
                                     </ng-select>
-
                                     <span *ngIf="!selectedOwnResp&&notProvided" style="color:rgb(217,48,37)">Please select responsible.</span>
-
                                 </ng-container>
-                                    <ng-template #ownEdit>
+                                    <!-- <ng-template #ownEdit>
                                         <input type="text" (click)="displaymessage()" class="form-control readonly"
                                             [(ngModel)]="selectedOwnResp" readonly />
-                                    </ng-template>
+                                    </ng-template> -->
                             </ng-container>
-                            <ng-container *ngIf="projectInfo.isRespActive=='0' && projectInfo.OwnerEmpNo === Current_user_ID; else respedit">
+                            <!-- <ng-container *ngIf="projectInfo.isRespActive=='0' && projectInfo.OwnerEmpNo === Current_user_ID; else respedit">
                               <ng-container>
                                   <ng-select class="kt-form-vd " [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
                                       <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
@@ -2964,12 +2863,11 @@
                                           [(ngModel)]="selectedOwnResp" readonly />
                                   </ng-template>
                               </ng-container>
-                          </ng-container>
+                          </ng-container> -->
                         </div>
                   </div>
                   <!-- <span *ngIf="!responsible_dropdown.Racis">Please enter responsible</span> -->
               </div>
-
               <div class="col-lg-4 text-left">
                   <div class="form-group Ic_ed">
                       <div class="kt-info-lable-v"><span class="kt-info-lable-icon"><svg width="24px"
@@ -2990,30 +2888,6 @@
                               </ng-select>
                               <span *ngIf="!selectedcategory&&notProvided" style="color:rgb(217,48,37)">Please select category.</span>
                       </div>
-                  </div>
-              </div>
-              <div class="col-lg-4 text-left">
-                  <div class="form-group Ic_ed">
-                      <div class="kt-info-lable-v"><span class="kt-info-lable-icon"><svg width="24px"
-                                  height="24px" xmlns="http://www.w3.org/2000/svg" fill="#898989"
-                                  viewBox="0 0 64 64" id="money">
-                                  <path
-                                      d="M32,46A10,10,0,1,0,22,36,10.011,10.011,0,0,0,32,46Zm0-18a8,8,0,1,1-8,8A8.009,8.009,0,0,1,32,28Z">
-                                  </path>
-                                  <path
-                                      d="M32,39a1,1,0,0,1-1-1,1,1,0,0,0-2,0,3,3,0,0,0,2,2.816V42a1,1,0,0,0,2,0V40.816A2.993,2.993,0,0,0,32,35a1,1,0,1,1,1-1,1,1,0,0,0,2,0,3,3,0,0,0-2-2.816V30a1,1,0,0,0-2,0v1.184A2.993,2.993,0,0,0,32,37a1,1,0,0,1,0,2Z">
-                                  </path>
-                                  <path
-                                      d="M59.218,36h-6.48a27.909,27.909,0,0,0-8.3-12.82l-5.556-4.862a2.974,2.974,0,0,0-1.092-5.2l5.043-7.564a1,1,0,0,0-.067-1.2c-.025-.028-.057-.045-.084-.071l.008-.008A8.36,8.36,0,0,0,37,2a8.223,8.223,0,0,0-4.671,1.466C29.224,2.108,26,.747,21.4,4.2a1,1,0,0,0-.232,1.355l5.043,7.564a2.967,2.967,0,0,0-1.538,4.751L19.94,22.288l1.366,1.461L26.394,19h10.23l6.5,5.685A25.925,25.925,0,0,1,50.641,36H46.782A2.785,2.785,0,0,0,44,38.782v2.436A2.756,2.756,0,0,0,44.664,43,2.756,2.756,0,0,0,44,44.782v2.436a2.765,2.765,0,0,0,.15.861,2.783,2.783,0,0,0-2.15,2.7v2.436a2.783,2.783,0,0,0,2.15,2.7,2.765,2.765,0,0,0-.15.861v2.436a2.9,2.9,0,0,0,.035.35A10.982,10.982,0,0,1,41,60h-.126A2.74,2.74,0,0,0,41,59.218V56.782A2.756,2.756,0,0,0,40.336,55,2.756,2.756,0,0,0,41,53.218V50.782A2.785,2.785,0,0,0,38.218,48H25.782A2.785,2.785,0,0,0,23,50.782v2.436A2.756,2.756,0,0,0,23.664,55,2.756,2.756,0,0,0,23,56.782v2.436a2.74,2.74,0,0,0,.126.782H23a10.982,10.982,0,0,1-3.035-.432,2.9,2.9,0,0,0,.035-.35V56.782a2.765,2.765,0,0,0-.15-.861,2.783,2.783,0,0,0,2.15-2.7V50.782a2.783,2.783,0,0,0-2.15-2.7,2.765,2.765,0,0,0,.15-.861V44.782A2.756,2.756,0,0,0,19.336,43,2.756,2.756,0,0,0,20,41.218V38.782A2.785,2.785,0,0,0,17.218,36h-4.03A26,26,0,0,1,19.7,25.26L18.3,23.839A28.007,28.007,0,0,0,11.1,36H4.782A2.785,2.785,0,0,0,2,38.782v2.436A2.756,2.756,0,0,0,2.664,43,2.756,2.756,0,0,0,2,44.782v2.436a2.783,2.783,0,0,0,2.15,2.7,2.765,2.765,0,0,0-.15.861v2.436a2.765,2.765,0,0,0,.15.861A2.783,2.783,0,0,0,2,56.782v2.436A2.785,2.785,0,0,0,4.782,62H17.218a2.752,2.752,0,0,0,1.759-.645A12.964,12.964,0,0,0,23,62H41a12.964,12.964,0,0,0,4.023-.645A2.752,2.752,0,0,0,46.782,62H59.218A2.785,2.785,0,0,0,62,59.218V56.782a2.783,2.783,0,0,0-2.15-2.7,2.765,2.765,0,0,0,.15-.861V50.782a2.765,2.765,0,0,0-.15-.861,2.783,2.783,0,0,0,2.15-2.7V44.782A2.756,2.756,0,0,0,61.336,43,2.756,2.756,0,0,0,62,41.218V38.782A2.785,2.785,0,0,0,59.218,36ZM39.844,4.7a8.592,8.592,0,0,1-5.115-.262A6.139,6.139,0,0,1,37,4,6.492,6.492,0,0,1,39.844,4.7Zm-8.233.638c2.249.985,4.732,2.075,7.983,1.472L35.465,13h-6.93l-5.16-7.74C26.649,3.162,28.862,4.13,31.611,5.335ZM27,17a1,1,0,0,1,0-2H37a1,1,0,0,1,0,2ZM20,53.218a.783.783,0,0,1-.782.782H6.782A.783.783,0,0,1,6,53.218V50.782A.783.783,0,0,1,6.782,50H8v2h2V50h2v2h2V50h2v2h2V50h1.218a.783.783,0,0,1,.782.782ZM4,38.782A.783.783,0,0,1,4.782,38H6v2H8V38h2v2h2V38h2v2h2V38h1.218a.783.783,0,0,1,.782.782v2.436a.783.783,0,0,1-.782.782H4.782A.783.783,0,0,1,4,41.218Zm0,6A.783.783,0,0,1,4.782,44H6v2H8V44h2v2h2V44h2v2h2V44h1.218a.783.783,0,0,1,.782.782v2.436a.783.783,0,0,1-.782.782H4.782A.783.783,0,0,1,4,47.218ZM18,59.218a.783.783,0,0,1-.782.782H4.782A.783.783,0,0,1,4,59.218V56.782A.783.783,0,0,1,4.782,56H6v2H8V56h2v2h2V56h2v2h2V56h1.218a.783.783,0,0,1,.782.782Zm7-8.436A.783.783,0,0,1,25.782,50H27v2h2V50h2v2h2V50h2v2h2V50h1.218a.783.783,0,0,1,.782.782v2.436a.783.783,0,0,1-.782.782H25.782A.783.783,0,0,1,25,53.218ZM25.782,60A.783.783,0,0,1,25,59.218V56.782A.783.783,0,0,1,25.782,56H27v2h2V56h2v2h2V56h2v2h2V56h1.218a.783.783,0,0,1,.782.782v2.436a.783.783,0,0,1-.782.782ZM46,38.782A.783.783,0,0,1,46.782,38H48v2h2V38h2v2h2V38h2v2h2V38h1.218a.783.783,0,0,1,.782.782v2.436a.783.783,0,0,1-.782.782H46.782A.783.783,0,0,1,46,41.218Zm-2,12A.783.783,0,0,1,44.782,50H46v2h2V50h2v2h2V50h2v2h2V50h1.218a.783.783,0,0,1,.782.782v2.436a.783.783,0,0,1-.782.782H44.782A.783.783,0,0,1,44,53.218Zm16,8.436a.783.783,0,0,1-.782.782H46.782A.783.783,0,0,1,46,59.218V56.782A.783.783,0,0,1,46.782,56H48v2h2V56h2v2h2V56h2v2h2V56h1.218a.783.783,0,0,1,.782.782Zm0-12a.783.783,0,0,1-.782.782H46.782A.783.783,0,0,1,46,47.218V44.782A.783.783,0,0,1,46.782,44H48v2h2V44h2v2h2V44h2v2h2V44h1.218a.783.783,0,0,1,.782.782Z">
-                                  </path>
-                              </svg></span> Cost </div>
-                      <div class="input-icon Sub_In_ed">
-                          <!-- <input type="text" placeholder="SAR 00.00"  class="form-control readonly"
-                          readonly  /> -->
-                          <input type="text" class="form-control " placeholder="SAR 00.00"
-                          value="{{projectInfo && projectInfo.Project_Cost | currency:'SAR '}}"   />
-                      </div>
-
                   </div>
               </div>
               <div class="col-lg-4 text-left">
@@ -3047,24 +2921,12 @@
                       </div>
                   </div>
               </div>
-          </div>
-          <div class="row pt-2">
-             <!-- <div class="col-lg-4 text-left">
-              <div class="form-group mb-2 Ic_ed">
-                <div class="kt-info-lable-v"> Start date</div>
-                    <div class="input-icon Sub_In_ed">
-                      <input type="text" class="form-control readonly"
-                      [value]="Start_Date | date : 'dd-MM-yyyy'" placeholder="Start date" readonly />
-                    </div>
-                  </div>
-              </div> -->
 
-
-               <div class="col-lg-4 text-left mb-3">
+              <div class="col-lg-4 text-left mb-3">
                 <div class="form-group mb-0">
                   <div class="kt-info-lable-v"> Start date</div>
                       <div class="date-border d-flex " [ngClass]="{'error-date':!Start_Date&&notProvided}">
-                        <input  class="form-control curser-pointer"   [(ngModel)]="Start_Date" [min]="todayDate"   (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;Start_Date= Start_Date>=previousdate?Start_Date:null;End_Date=null" [matDatepicker]="startEditsPicker" (click)="startEditsPicker.open()"
+                        <input  class="form-control curser-pointer" [(ngModel)]="Start_Date" [min]="todayDate" (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;   Start_Date= Start_Date>=previousdate?Start_Date:null;  alertMaxAllocation();" [matDatepicker]="startEditsPicker" (click)="startEditsPicker.open()"
                          placeholder="Select start date" />
                          <div class="input-group-text p-0">
                           <mat-datepicker-toggle matSuffix [for]="startEditsPicker">
@@ -3073,78 +2935,63 @@
                       </div>
                       </div>
                       <span *ngIf="!Start_Date&&notProvided"   style="color:rgb(217,48,37)">Please select start date.</span>
-
                     </div>
-                </div>
-<!-- <span>please enter start date</span> -->
+              </div>
 
-
-
-
-
-
-
-
-                  <div class="col-lg-4 text-left mb-3">
-                      <div class="form-group mb-0">
-                          <div class="kt-info-lable-v">End date</div>
-                              <div class="date-border d-flex"  [ngClass]="{'error-date':!End_Date&&notProvided}">
-                                <input class="form-control curser-pointer" [(ngModel)]="End_Date"
-                                    [min]="Start_Date" [matDatepicker]="strtEditsPicker"  (dateChange)="check_Enddate();updateDuration();alertMaxAllocation()"
-                                    (click)="strtEditsPicker.open();"
-                                     placeholder="Select end date"
-                                    class="form-control" name="date" />
-                                <div class="input-group-text p-0">
-                                    <mat-datepicker-toggle matSuffix [for]="strtEditsPicker">
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker #strtEditsPicker></mat-datepicker>
-                                </div>
-                            </div>
-                            <span *ngIf="!End_Date&&notProvided" style="color:rgb(217,48,37)">Please select end date.</span>
-                      </div>
-                  </div>
-                  <div class="col-lg-4 text-left">
-                  <div class="form-group mb-2 Ic_ed">
-
-                      <div class="kt-info-lable-v"> Duration</div>
-                  <div class="input-icon Sub_In_ed"
-                        *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else continue">
-                        <input type="text" class="form-control "  value="{{projectInfo.Duration +1}} days "
-                            placeholder="Enter duration"  />
-
-                 </div>
-
-
-                <ng-template #continue>
-                    <div class="input-icon Sub_In_ed readonly">
-                        <input type="text" class="form-control readonly" value=" Continuous" readonly>
-                    </div>
-                </ng-template>
-                    </div>
-                  </div>
-          </div>
-              <div class="col-lg-4 text-left" >
-                  <div class="form-group mb-2 Ic_ed">
-                      <div class="kt-info-lable-v"> Allocated hours
-                          <div class="input-icon Sub_In_ed" >
-                              <input    (input)="validateInput()"
-                              (keypress)="restrictToNumbers($event)"   class="form-control " [(ngModel)]="Allocated" pattern="[0-9]*"    min="0" />
+              <div class="col-lg-4 text-left mb-3">
+                <div class="form-group mb-0">
+                    <div class="kt-info-lable-v">End date</div>
+                        <div class="date-border d-flex"  [ngClass]="{'error-date':!End_Date&&notProvided}">
+                          <input class="form-control curser-pointer" [(ngModel)]="End_Date"
+                              [min]="Start_Date" [matDatepicker]="strtEditsPicker"  (dateChange)="check_Enddate();updateDuration();alertMaxAllocation()"
+                              (click)="strtEditsPicker.open();"
+                               placeholder="Select end date"
+                              class="form-control" name="date" />
+                          <div class="input-group-text p-0">
+                              <mat-datepicker-toggle matSuffix [for]="strtEditsPicker">
+                              </mat-datepicker-toggle>
+                              <mat-datepicker #strtEditsPicker></mat-datepicker>
                           </div>
-                          <span *ngIf=" Prjtype=='011'&&!Allocated&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing
-                          </span>
-                        <span *ngIf="Allocated > maxAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 10
-                          hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
-
-                        <span *ngIf="this.Start_Date == null || this.End_Date == null" style="color:rgb(217, 48, 37)">{{_message}}</span>
-                        <!-- <span *ngIf="!Allocated" style="color:rgb(217, 48, 37)">It accept only numeric and non-negative value</span> -->
                       </div>
-                  </div>
+                      <span *ngIf="!End_Date&&notProvided" style="color:rgb(217,48,37)">Please select end date.</span>
+                </div>
               </div>
           </div>
-          <div class="row">
+
+          <div class="row pt-1">
+              <div class="col-lg-4 text-left">
+                <div class="form-group mb-2 Ic_ed">
+                    <div class="kt-info-lable-v"> Duration</div>
+                <div class="input-icon Sub_In_ed" *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List'))">
+                      <input type="text" class="form-control" readonly value="{{projectInfo.Duration +1}} days " placeholder="Enter duration"  />
+                </div>
+                  </div>
+              </div>
+              <div class="col-lg-4 text-left">
+                <div class="form-group mb-2 Ic_ed">
+                    <div class="kt-info-lable-v"> Allocated hours
+                        <div class="input-icon Sub_In_ed" >
+                            <input  (input)="validateInput()" (keypress)="restrictToNumbers($event)" class="form-control " [(ngModel)]="Allocated" pattern="[0-9]*"  min="0"
+                            [ngClass]="{'error-border':(!Allocated&&notProvided)||(maxAllocation&&Allocated > maxAllocation)}"
+                            />
+                        </div>
+                        <span *ngIf="!Allocated&&notProvided" style="color:rgb(217,48,37)">Allocated hours required.</span>
+                        <span class="fs-7" *ngIf="maxAllocation&&Allocated > maxAllocation" style="color:rgb(217,48,37)">Maximum <b>{{maxAllocation}}</b> hours allowed for given duration. (<b>48</b> hours/week limit).</span>
+                      <!-- <span *ngIf="Allocated > maxAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 10
+                        hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span> -->
+
+                      <!-- <span *ngIf="this.Start_Date == null || this.End_Date == null" style="color:rgb(217, 48, 37)">{{_message}}</span> -->
+                      <!-- <span *ngIf="!Allocated" style="color:rgb(217, 48, 37)">It accept only numeric and non-negative value</span> -->
+                    </div>
+                </div>
+              </div>
+          </div>
+            
+          </div>
+          <div class="row px-3 pt-2">
               <div class="col-lg-12">
                   <div class="form-group ">
-                      <label for="exampleFormControlFile1">Remarks</label>
+                      <label class="kt-info-lable-v" for="exampleFormControlFile1">Remarks</label>
                           <textarea class="form-control " aria-label="With textarea"
                           placeholder="Enter project remark if any" [(ngModel)]="_remarks"
                           style="margin-top: 0px; margin-bottom: 0px; height: 100px;"></textarea>
@@ -3283,8 +3130,8 @@
                   </ng-select>
               </ng-container> -->
   <!-- </div> -->
- </div></div>
-
+ </div>
+           </div>
 
             <div class="col-lg-4 text-left mb-3">
                 <div class="form-group mb-0">
@@ -3350,7 +3197,7 @@
                                 </path>
                             </svg></span> Cost </div>
                     <div class="input-icon Sub_In_ed">
-                        <input *ngIf="PrjActionsInfo&&PrjActionsInfo[currentActionView]"  type="text"   class="form-control " placeholder="SAR 00.00"
+                        <input *ngIf="PrjActionsInfo&&PrjActionsInfo[currentActionView]"  type="text"   class="form-control " placeholder="SAR 00.00" readonly
                         value="{{PrjActionsInfo[currentActionView].Project_Cost | currency:'SAR '}}"  />
                     </div>
                 </div>
@@ -3407,7 +3254,7 @@
                     <div class="kt-info-lable-v"> Start date</div>
                         <div class="date-border d-flex" [ngClass]="{'error-date':!Start_Date&&notProvided}">
                           <input type="text" class="form-control cursor-pointer"
-                          [(ngModel)]="Start_Date"   placeholder="Select start date" [matDatepicker]="ActionstartDatepicker"  [min]="todayDate" (click)="ActionstartDatepicker.open()"  (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;Start_Date= Start_Date>=previousdate?Start_Date:null;this.End_Date=null"/>
+                          [(ngModel)]="Start_Date"   placeholder="Select start date" [matDatepicker]="ActionstartDatepicker"  [min]="todayDate" (click)="ActionstartDatepicker.open()"  (dateChange)="End_Date=End_Date>=Start_Date?End_Date:null;Start_Date= Start_Date>=previousdate?Start_Date:null;this.End_Date=null; alertMaxAllocation();"/>
                           <div class="input-group-text p-0">
                             <mat-datepicker-toggle matSuffix [for]="ActionstartDatepicker">
                             </mat-datepicker-toggle>
@@ -3416,7 +3263,7 @@
 
                         </div>
                         <span *ngIf="!Start_Date&&notProvided" style="color:red">Please select start date.</span>
-                      </div>
+                    </div>
 
 
                 </div>
@@ -3424,7 +3271,7 @@
                     <div class="form-group mb-0">
                         <div class="kt-info-lable-v">End date</div>
                             <div class="date-border d-flex" [ngClass]="{'error-date':!End_Date&&notProvided}"  >
-                              <input  class="form-control curser-pointer" [(ngModel)]="End_Date" (dateChange)="check_Enddate();ActionupdateDuration();this.Allocated = null"
+                              <input  class="form-control curser-pointer" [(ngModel)]="End_Date" (dateChange)="check_Enddate();ActionupdateDuration();this.Allocated = null; alertMaxAllocation();"
                                   [min]="Start_Date"   [matDatepicker]="ActionEnd_Datepicker"
 
                                   (click)="ActionEnd_Datepicker.open();"   placeholder="Select end date"
@@ -3454,21 +3301,25 @@
                     <div class="kt-info-lable-v"> Allocated hours
 
                         <div class="input-icon Sub_In_ed">
-                          <input   class="form-control " placeholder="Enter allocated hour"
-                            [(ngModel)]="Allocated" pattern="[0-9]*" (input)="validateInput()"
-                            (keypress)="restrictToNumbers($event)"   (click)="alertMaxAllocation()"
-                               />
-                              <span *ngIf=" Prjtype=='011'&&!Allocated&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing
-                              </span>
-                            <span *ngIf="Allocated > maxactAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 10
-                              hours. Please enter the hours less than or equal to <b>{{maxactAllocation}}</b> hours!</span>
-
-                            <span *ngIf="this.Start_Date == null || this.End_Date == null" style="color:rgb(217, 48, 37)">{{_message}}</span>
-                            <span *ngIf="Allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span>
-                            <span *ngIf="Allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
+                          <input class="form-control " placeholder="Enter allocated hour" [(ngModel)]="Allocated" pattern="[0-9]*" (input)="validateInput()"
+                            (keypress)="restrictToNumbers($event)" (click)="alertMaxAllocation()" />
+                            <span *ngIf="maxAllocation&&Allocated > maxAllocation" style="color:red"> Maximum <b>{{maxAllocation}}</b> hours allowed for given duration. (<b>48</b> hours/week limit).</span> 
                             <span *ngIf="!Allocated" style="color:red">Allocated hours required. Hours should not be in decimal. </span>
                             <span *ngIf="(Allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value, It accept only numeric and non-negative value. </span>
-                            <span *ngIf="this.Start_Date == null || this.End_Date == null" >{{ _message}} </span>
+
+
+
+                            
+                            <!-- <span *ngIf="Prjtype=='011'&&!Allocated&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing</span> -->
+                            <!-- <span *ngIf="Allocated > maxactAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 10
+                              hours. Please enter the hours less than or equal to <b>{{maxactAllocation}}</b> hours!</span> -->
+                            <!-- <span *ngIf="Allocated > maxactAllocation" style="color:red"> Maximum <b>{{maxAllocation}}</b> hours allowed for given duration. (<b>48</b> hours/week limit).</span>  -->
+                            <!-- <span *ngIf="this.Start_Date == null || this.End_Date == null" style="color:rgb(217, 48, 37)">{{_message}}</span> -->
+                            <!-- <span *ngIf="Allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span>
+                            <span *ngIf="Allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span> -->
+                           
+                            
+                            <!-- <span *ngIf="this.Start_Date == null || this.End_Date == null" >{{ _message}} </span> -->
                       </div>
 
 
@@ -3492,10 +3343,8 @@
             <div class="row pt-2 pb-2">
                 <div class="col-lg-12 mt-3">
                     <div class="form-group text-end">
-
-                      <button type="submit"  (click)="alterAction();alertMaxAllocation()" class="btn btn-info w-110 ml-2" >Update</button>
+                      <button type="submit" (click)="alterAction()" class="btn btn-info w-110 ml-2" >Update</button>
                       <button (click)="closeAction_details_edit()" class="btn w-110 btn-secondary ml-2" >Cancel</button>
-
                     </div>
                 </div>
             </div>
