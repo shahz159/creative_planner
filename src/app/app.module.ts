@@ -35,6 +35,7 @@ import { MeetingDetailsComponent } from './_LayoutDashboard/meeting-details/meet
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { StreamDashboardComponent } from './_LayoutDashboard/stream-dashboard/stream-dashboard.component';
 import { TimelineModule } from './_LayoutDashboard/timeline/timeline.module';
+
 // import { TimelineModule } from './_LayoutDashboard/timeline/timeline.module';
 // import { StreamCalendarComponent } from './_LayoutDashboard/stream-calendar/stream-calendar.component';
 
@@ -68,6 +69,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ConfirmDialogComponent,
     // TimelineComponent,
     StreamDashboardComponent,
+    // MasterFormsComponent,
+    // UserlistComponent,
     // StreamCalendarComponent,
     
     // MeetingReportComponent

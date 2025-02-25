@@ -6691,6 +6691,9 @@ dayScheduleJson(dayFromToday: number){ debugger
         this.selectDay = dayFromToday === 3 ? moment() : moment(this.selectDay).add(dayFromToday, 'days');
         const selectedDate = moment(this.selectDay).format('YYYY-MM-DD');
       
+        // console.log(this.dayMappedList,'dayMappedList');
+
+
         this.dayEventsLists = this.Scheduledjson.filter(e => e.start.includes(selectedDate));
       
             this.dayMappedList = this.hoursList.map(hour => ({
@@ -6783,11 +6786,35 @@ weekdays:any;
 selectedMonthlyDate:any;
 
 
-monthlyScheduleJson(monthFromToday) { debugger
+// monthlyScheduleJson(monthFromToday) { debugger
+//   this.selectDay = monthFromToday === 3 ? moment() : moment(this.selectDay).add(monthFromToday, 'month');
+//   this.selectedMonthlyDate = moment(this.selectDay).startOf('month');
+//   this.weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' , 'Sunday'];
+//   const start = moment(this.selectDay).startOf('month').isoWeekday(1);
+//   this.monthMappedList = Array.from({ length: 6 }, (_, i) => ({
+//     week: Array.from({ length: 7 }, (__, j) => {
+//       const currentDate = start.clone().add(i * 7 + j, 'days');
+//       const dateStr = currentDate.format('DD-MM-YYYY');
+//       return {
+//         date: dateStr,
+//         day: currentDate.format('dddd'),
+//         events: this.Scheduledjson.filter(event => moment(event.start).format('DD-MM-YYYY') === dateStr)
+//       };
+//     })
+//   }));
+//   console.log(this.monthMappedList, 'monthMappedList');
+// }
+
+
+
+
+monthlyScheduleJson(monthFromToday) {
+  debugger;
   this.selectDay = monthFromToday === 3 ? moment() : moment(this.selectDay).add(monthFromToday, 'month');
   this.selectedMonthlyDate = moment(this.selectDay).startOf('month');
   this.weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' , 'Sunday'];
   const start = moment(this.selectDay).startOf('month').isoWeekday(1);
+
   this.monthMappedList = Array.from({ length: 6 }, (_, i) => ({
     week: Array.from({ length: 7 }, (__, j) => {
       const currentDate = start.clone().add(i * 7 + j, 'days');
@@ -6796,11 +6823,28 @@ monthlyScheduleJson(monthFromToday) { debugger
         date: dateStr,
         day: currentDate.format('dddd'),
         events: this.Scheduledjson.filter(event => moment(event.start).format('DD-MM-YYYY') === dateStr)
+          .map(event => {
+            const [title, ...rest] = event.title.replace('📝', '').split('|').map(s => s.trim());
+            return {
+              ...event,
+              title,
+              link: rest.find(p => p.includes("Link"))?.split(' ')[0] || null,
+              attendees: rest.slice(0, -1).join(' ').match(/\+(\d+)/)?.[0] || null
+            };
+          })
       };
     })
   }));
+
   console.log(this.monthMappedList, 'monthMappedList');
 }
+
+
+
+formatDate = (d: string) => d ? new Date(d.split('-').reverse().join('-'))
+  .toLocaleDateString('en-US', { day: '2-digit', month: 'short', weekday: 'short', year: 'numeric' })
+  .toUpperCase() : '';
+
 
 
 convertToISO(dateString: string) {
