@@ -1484,16 +1484,24 @@ export class DashboardComponent implements OnInit {
 
 
 
-          this.timingarryend = [];
-          this.Time_End = [];
-          this.Time_End = [...this.StartTimearr];
-          let _index = this.Time_End.indexOf(this.Startts);
-          if (_index + 1 === this.Time_End.length) {
-            _index = -1;
-          }
-          this.timingarryend = this.Time_End.splice(_index + 1);
-          this.EndTimearr = this.timingarryend;
+          // this.timingarryend = [];
+          // this.Time_End = [];
+          // this.Time_End = [...this.StartTimearr];
+          // let _index = this.Time_End.indexOf(this.Startts);
+          // if (_index + 1 === this.Time_End.length) {
+          //   _index = -1;
+          // }
+          // this.timingarryend = this.Time_End.splice(_index + 1);
+          // this.EndTimearr = this.timingarryend;
  // valid starttimearr and endtimearr setting end.
+          this.Time_End = [];
+          this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+          let _from = this.Time_End.indexOf(this.Startts);
+          const eventmaxDuration=286;
+          let _to=_from+eventmaxDuration;
+          this.EndTimearr=this.Time_End.slice(_from,_to);
+
+
 
       });
     this.closeevearea();
@@ -1859,17 +1867,26 @@ export class DashboardComponent implements OnInit {
 
 
 
-          this.timingarryend = [];
-          this.Time_End = [];
-          this.Time_End = [...this.StartTimearr];
-          let _index = this.Time_End.indexOf(this.Startts);
-          if (_index + 1 === this.Time_End.length) {
-            _index = -1;
-          }
-          this.timingarryend = this.Time_End.splice(_index + 1);
-          this.EndTimearr = this.timingarryend;
+          // this.timingarryend = [];
+          // this.Time_End = [];
+          // this.Time_End = [...this.StartTimearr];
+          // let _index = this.Time_End.indexOf(this.Startts);
+          // if (_index + 1 === this.Time_End.length) {
+          //   _index = -1;
+          // }
+          // this.timingarryend = this.Time_End.splice(_index + 1);
+          // this.EndTimearr = this.timingarryend;
           // valid starttimearr and endtimearr setting end.
 
+
+
+          this.Time_End = [];
+          this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+          let _from = this.Time_End.indexOf(this.Startts);
+          const eventmaxDuration=286;
+          let _to=_from+eventmaxDuration;
+          this.EndTimearr=this.Time_End.slice(_from,_to);
+       
       });
     this.closeevearea();
   }
@@ -3937,17 +3954,25 @@ console.log(this.dayArr,'sdcsadcasdcssad')
       this.validStartTimearr=this.StartTimearr.slice(index);
 
 
-      this.timingarryend = [];
-      this.Time_End = [];
-      this.Time_End = this.AllEndtime;
-      let _index = this.Time_End.indexOf(this.Startts);
-      if (_index + 1 === this.Time_End.length) {
-        _index = -1;
-      }
-      this.timingarryend = this.Time_End.splice(_index + 1);
-      this.EndTimearr = this.timingarryend;
+      // this.timingarryend = [];
+      // this.Time_End = [];
+      // this.Time_End = this.AllEndtime;
+      // let _index = this.Time_End.indexOf(this.Startts);
+      // if (_index + 1 === this.Time_End.length) {
+      //   _index = -1;
+      // }
+      // this.timingarryend = this.Time_End.splice(_index + 1);
+      // this.EndTimearr = this.timingarryend;
       // provide valid starttiming and endtimearr.    end
 
+
+
+      this.Time_End = [];
+      this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+      let _from = this.Time_End.indexOf(this.Startts);
+      const eventmaxDuration=286;
+      let _to=_from+eventmaxDuration;
+      this.EndTimearr=this.Time_End.slice(_from,_to);
       });
   }
 
@@ -3973,7 +3998,7 @@ console.log(this.dayArr,'sdcsadcasdcssad')
 
 currentTime:any;
 
-  addstarttime() {
+  addstarttime1() {  
 
     this.Alltimes = [];
     this.EndTimearr = [];
@@ -4001,7 +4026,7 @@ currentTime:any;
     // });
     // this.Startts = this.Startts;
 
-    this.timingarryend = [];
+    this.timingarryend = []; debugger
     this.Time_End = [];
     this.Time_End = this.AllEndtime;
     // this.Startts = TSStart;
@@ -4022,7 +4047,7 @@ currentTime:any;
     else if (vahr == 11 && mins.includes("PM")) {
       mins = mins.replace("PM", "AM")
     }
-
+ 
     if (this.timearr1[0] == 11) {
       this._arrayObj.forEach(element => {
         this.EndTimearr.push(element.TSStart);
@@ -4097,6 +4122,35 @@ currentTime:any;
 
     console.log(this.EndTimearr, "End Time Updated")
   }
+
+
+
+
+
+//test
+addstarttime(){
+  const completetime=this._arrayObj.map((element)=>{
+      return element.TSStart;
+   });
+   const endtime_arr=[...completetime,...completetime];
+   let _from = completetime.indexOf(this.Startts);
+   const eventmaxDuration=286;
+   let _to=_from+eventmaxDuration;
+   this.EndTimearr=endtime_arr.slice(_from,_to);
+  }
+   //test
+
+
+
+
+
+
+
+
+
+
+
+
 
   purposeEndtime(TSEnd) {
     this.PurposeEnd = TSEnd;
@@ -4512,7 +4566,7 @@ currentTime:any;
         // this.Meeting_password=  details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
         // console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
  
-debugger
+
         // document.getElementById("deleteendit").style.display = "flex";
         if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
      
@@ -4586,7 +4640,13 @@ debugger
         }
 
 
-
+        this.Time_End = [];
+        this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+        let _from = this.Time_End.indexOf(this.Startts);
+        const eventmaxDuration=286;
+        let _to=_from+eventmaxDuration;
+        this.EndTimearr=this.Time_End.slice(_from,_to);
+     
 
         // console.log(this.dmsIdjson,"ids");
       });
@@ -8188,9 +8248,20 @@ sortbyCurrent_Time(){
           return result;
       });
       this.validStartTimearr=this.StartTimearr.slice(index);
+
+
+      this.Time_End = [];
+      this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+      let _from = this.Time_End.indexOf(this.Startts);
+      const eventmaxDuration=286;
+      let _to=_from+eventmaxDuration;
+      this.EndTimearr=this.Time_End.slice(_from,_to);
   }
   else
   this.validStartTimearr=[...this.StartTimearr];
+
+
+
 
 }
 editorPlaceholder: string = 'Add meeting link';

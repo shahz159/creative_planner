@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import * as moment from 'moment'
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -55,6 +55,8 @@ export class StreamCalendarComponent implements OnInit {
   ScheduleType: any;
   Endtms: any;
   Description_Type: any;
+  currentHourIndex: number = 0;
+  currentTimeTop: number = 0;
   content: string = '';
   selectedOption: string = 'option1'; 
   agendaInput: string | undefined;
@@ -500,6 +502,8 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("schedule-date").style.display = "block";
     document.getElementById("kt-calendar-quickactions").classList.remove("border-0");
     this.dayMeetingSection = 'Schedule';
+    this.timeLineVisible= false;
+    clearInterval(this.timeLineInterval);
   }
   teams_icon(){
     document.getElementById("teams-icon").style.display = "inline-block";
@@ -570,7 +574,11 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("create-task-div").style.display = "block";
  
   }
+
+  openPopupBox:boolean=true;
+
   customEventModal(Schedule_Type){
+    this.openPopupBox = false;
     if(Schedule_Type==1){
      this.customTaskModal();
     }else{
@@ -1188,7 +1196,7 @@ RemoveSelectedFile(_id) {
 
 
 Task_type(value) {
-
+  
   document.getElementById("createEventTaskModal").style.display = "block";
   document.getElementById("createEventTaskModal").classList.add("show");
   document.getElementById("createEventTaskModalBackdrop").style.display = "block";
@@ -1237,8 +1245,6 @@ Task_type(value) {
     this._calenderDto.Project_Code = null;
     this.GetProjectAndsubtashDrpforCalender();
     this.GetMemosByEmployeeId();
-
-
     // const TEsb = document.getElementById('TaskEvent-Sidebar');
     // TEsb.addEventListener('scroll', () => {
     //   this.autocompletes.forEach((ac) => {
@@ -1246,6 +1252,13 @@ Task_type(value) {
     //       ac.updatePosition();
     //   });
     // })
+  }
+  if(this.formattedDayTime){
+   this._StartDate = this.monthDateBinde;
+   this.Startts= this.formattedDayTime;
+   this.Endtms = this.Startts.replace(/(\d+):(\d+) (\wM)/, (_, h, m, p) => 
+    `${String((h = +h % 12 + 1)).padStart(2, '0')}:${m} ${h === 12 ? (p === "AM" ? "PM" : "AM") : p}`
+  );
   }
 
 
@@ -1263,7 +1276,9 @@ Task_type(value) {
   }
   this.daysSelectedII.push(jsonData);
   console.log(this.ScheduleType, "ScheduleType")
-
+  
+  this.formattedDayTime = null;
+  this.monthDateBinde = null;
 }
 
 
@@ -3151,12 +3166,9 @@ this.eventtaskitemtimeModal_dismiss();
     }else if(this.dayMeetingSection == 'Weekly'){
       this.weeklyScheduleJson(3);
     }else if(this.dayMeetingSection == 'Monthly'){
-      this.monthlyScheduleJson(3);
+      this.monthlyScheduleJson(3);   
     }
-   
-
-
-    
+  
   }
 
 
@@ -3246,8 +3258,7 @@ this.eventtaskitemtimeModal_dismiss();
   isCalendarVisible: boolean = false;
 
 getEventsForWeeks(weeksFromToday: number) {
-
-  
+ 
   const today = new Date();
   today.setHours(0, 0, 0, 0); 
 
@@ -6498,8 +6509,7 @@ filterDraft(type : 'date'|'meeting'):void{
     }else if(this.dayMeetingSection == 'Monthly'){
       this.monthlyScheduleJson(0);
     }
-   
-  
+    
   }
 /////////////////////////////////////////// Draft meeting list End /////////////////////////////////////////////////////////
 
@@ -6684,14 +6694,55 @@ hoursList: string[] = [
   "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM"
 ];
 
+timeLineVisible : boolean =false;
+timeLineInterval:any;
+openBoxSelectedDate:any;
 
-
-dayScheduleJson(dayFromToday: number){ debugger
+dayScheduleJson(dayFromToday: number){
       
         this.selectDay = dayFromToday === 3 ? moment() : moment(this.selectDay).add(dayFromToday, 'days');
         const selectedDate = moment(this.selectDay).format('YYYY-MM-DD');
-      
+        this.openBoxSelectedDate = selectedDate;
+       
+        if (selectedDate === this.today) {
+          this.timeLineVisible= true;
+          this.updateTimeLine();
+          this.timeLineInterval = setInterval(() => this.updateTimeLine(), 60000);
+        }else{
+          this.timeLineVisible= false;
+          clearInterval(this.timeLineInterval);
+        }
         // console.log(this.dayMappedList,'dayMappedList');
+      //   var MeetingsArray = [].concat.apply([], this.Scheduledjson.map(event => {
+      //     // Return original event if start or end is missing
+      //     if (!event.start || !event.end) {
+      //         return [event];
+      //     }
+      
+      //     const startDate = event.start.split(' ')[0];
+      //     const endDate = event.end.split(' ')[0];
+          
+      //     if (startDate !== endDate) {
+      //         const nextDate = new Date(startDate);
+      //         nextDate.setDate(nextDate.getDate() + 1);
+              
+      //         return [
+      //             {
+      //                 ...event,
+      //                 title: ${event.title} (1/2),
+      //                 start: event.start,
+      //                 end: ${startDate} 24:00
+      //             },
+      //             {
+      //                 ...event,
+      //                 title: ${event.title} (2/2),
+      //                 start: ${nextDate.toISOString().split('T')[0]} 00:00,
+      //                 end: event.end
+      //             }
+      //         ];
+      //     }
+      //     return [event];
+      // }));
 
 
         this.dayEventsLists = this.Scheduledjson.filter(e => e.start.includes(selectedDate));
@@ -6722,6 +6773,39 @@ getDurationInPixels(start: string, end: string): number {
   const durationInMinutes = (new Date(end).getTime() - new Date(start).getTime()) / (1000 * 60);
   return (durationInMinutes / 5) * 4; // 5 minutes = 4px, 10 minutes = 8px, etc.
 }
+
+
+formattedDayTime:any;
+monthDateBinde:any;
+
+
+dayTimeBinding(time:any){ debugger
+const now = new Date();  
+let [hour, period] = time.split(" ");
+let timeHour = (period === "PM" && +hour !== 12) ? +hour + 12 : (period === "AM" && +hour === 12) ? 0 : +hour;
+this.formattedDayTime = time.replace(/(\d+)\s(AM|PM)/, (_, h, p) => `${h.padStart(2, '0')}:00 ${p}`);    
+this.monthDateBinde = this.openBoxSelectedDate; 
+
+if(this.openPopupBox == true && (this.openBoxSelectedDate == this.today && timeHour >= now.getHours()) || this.openPopupBox == true && this.openBoxSelectedDate > this.today ){
+    this.Task_type(2);    
+  }else if(  this.openPopupBox == true){
+    this.notifyService.showInfo("Your selected date is invalid. Please select a valid date.", "Failed"); 
+  }else{
+    this.openPopupBox = true
+  }
+}
+
+
+
+updateTimeLine() { 
+  const now = new Date();
+  let hours = now.getHours(); 
+  const minutes = now.getMinutes();
+  const isPM = hours >= 12;
+  const formattedHour = (hours % 12 || 12) + (isPM ? " PM" : " AM");
+  this.currentHourIndex = this.hoursList.findIndex(hour => hour.includes(formattedHour));
+  this.currentTimeTop = (minutes / 60) * 48;
+}
 /////////////////////////////////////////// Day section end /////////////////////////////////////////////////////////
 
 
@@ -6738,8 +6822,17 @@ weeklyScheduleJson(weekFromToday) {
   this.selectDay = weekFromToday === 3 ? moment() : moment(this.selectDay).add(weekFromToday, 'week');
   const selectedDate = moment(this.selectDay).format('YYYY-MM-DD');
 
-   const startOfWeek = moment(selectedDate).startOf('isoWeek');
-   this.weekDates = Array.from({ length: 7 }, (_, i) => startOfWeek.clone().add(i, 'days').format('YYYY-MM-DD'));
+  const startOfWeek = moment(selectedDate).startOf('isoWeek');
+  this.weekDates = Array.from({ length: 7 }, (_, i) => startOfWeek.clone().add(i, 'days').format('YYYY-MM-DD'));
+
+   if (this.weekDates.includes(this.today)) { 
+     this.timeLineVisible= true;
+     this.updateTimeLine();
+     this.timeLineInterval = setInterval(() => this.updateTimeLine(), 60000);
+   }else{
+     this.timeLineVisible= false;
+     clearInterval(this.timeLineInterval);
+   }
 
    const startDate = new Date(this.weekDates[0]);
    const endDate = new Date(this.weekDates[6]);
@@ -6776,6 +6869,26 @@ weeklyScheduleJson(weekFromToday) {
   
     console.log(this.weekMappedList,'weekMappedList'); // Filtered events within the week
 }
+
+
+
+
+monthTimeBinding(data,time){ debugger
+  this.monthDateBinde = data;
+  const now = new Date();  
+  let [hour, period] = time.split(" ");
+  let timeHour = (period === "PM" && +hour !== 12) ? +hour + 12 : (period === "AM" && +hour === 12) ? 0 : +hour;
+  this.formattedDayTime = time.replace(/(\d+)\s(AM|PM)/, (_, h, p) => `${h.padStart(2, '0')}:00 ${p}`);    
+    if(this.openPopupBox == true && (this.monthDateBinde == this.today && timeHour >= now.getHours()) || this.openPopupBox == true && this.monthDateBinde > this.today ){
+      this.Task_type(2);    
+    }else if(  this.openPopupBox == true){
+      this.notifyService.showInfo("Your selected date is invalid. Please select a valid date.", "Failed"); 
+    }else{
+      this.openPopupBox = true
+    }
+
+    console.log(this._StartDate,'_StartDate')
+}
 /////////////////////////////////////////// Weekly section end /////////////////////////////////////////////////////////
 
 
@@ -6785,31 +6898,30 @@ monthMappedList:any;
 weekdays:any;
 selectedMonthlyDate:any;
 
-
-// monthlyScheduleJson(monthFromToday) { debugger
-//   this.selectDay = monthFromToday === 3 ? moment() : moment(this.selectDay).add(monthFromToday, 'month');
-//   this.selectedMonthlyDate = moment(this.selectDay).startOf('month');
-//   this.weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' , 'Sunday'];
-//   const start = moment(this.selectDay).startOf('month').isoWeekday(1);
-//   this.monthMappedList = Array.from({ length: 6 }, (_, i) => ({
-//     week: Array.from({ length: 7 }, (__, j) => {
-//       const currentDate = start.clone().add(i * 7 + j, 'days');
-//       const dateStr = currentDate.format('DD-MM-YYYY');
-//       return {
-//         date: dateStr,
-//         day: currentDate.format('dddd'),
-//         events: this.Scheduledjson.filter(event => moment(event.start).format('DD-MM-YYYY') === dateStr)
-//       };
-//     })
-//   }));
-//   console.log(this.monthMappedList, 'monthMappedList');
+// onWheelScroll(bx, event){
+//   console.log(bx.clientHeight);
+//   console.log('scrolling... ',event);
 // }
 
 
 
+// @HostListener('wheel', ['$event'])
 
-monthlyScheduleJson(monthFromToday) {
-  debugger;
+// onMouseWheel(event: WheelEvent) {
+//   if (event.deltaY < 0) {
+//     // Scrolling up
+//     this.monthlyScheduleJson(-1);
+//   } else {
+//     // Scrolling down
+//     this.monthlyScheduleJson(1);
+//   }
+// }
+
+
+
+monthlyScheduleJson(monthFromToday) { 
+  this.timeLineVisible= false;
+  clearInterval(this.timeLineInterval);
   this.selectDay = monthFromToday === 3 ? moment() : moment(this.selectDay).add(monthFromToday, 'month');
   this.selectedMonthlyDate = moment(this.selectDay).startOf('month');
   this.weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' , 'Sunday'];
