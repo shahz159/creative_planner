@@ -2090,6 +2090,20 @@ export class MeetingDetailsComponent implements OnInit {
     myWindow.focus();
   }
 
+
+
+  newDetailsaction(pcode,acode:string|undefined) {
+    let qparams='';
+   if(acode!==undefined){
+     qparams=`?actionCode=${acode}`;
+   }
+   let name: string = 'Details';
+   var url = document.baseURI + name;
+   var myurl = `${url}/${pcode}${qparams}`;
+   var myWindow = window.open(myurl,pcode);
+   myWindow?.focus();
+ }
+
   /////////////////////////////////////////// Project Side-Bar End /////////////////////////////////////////////////////////
   /////////////////////////////////////////// Previous Meeting Notes Side-Bar start /////////////////////////////////////////////////////////
 
@@ -4063,11 +4077,11 @@ onFileChange(event) {
           
 
                 this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-
+                console.log(this.ActionedSubtask_Json,'ActionedSubtask_Json')
 
                 this.assigncount = this.ActionedAssigned_Josn.length;
                 this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
-
+                console.log(this.ActionedAssigned_Josn,'this.ActionedAssigned_Josn')
 
                 this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
                 this.FiterEmployee = this.EmployeeList;
@@ -5033,16 +5047,23 @@ onFileChange(event) {
 
 
 
-          this.timingarryend = [];
-          this.Time_End = [];
-          this.Time_End = [...this.StartTimearr];
-          let _index = this.Time_End.indexOf(this.Startts);
-          if (_index + 1 === this.Time_End.length) {
-            _index = -1;
-          }
-          this.timingarryend = this.Time_End.splice(_index + 1);
-          this.EndTimearr = this.timingarryend;
+          // this.timingarryend = [];
+          // this.Time_End = [];
+          // this.Time_End = [...this.StartTimearr];
+          // let _index = this.Time_End.indexOf(this.Startts);
+          // if (_index + 1 === this.Time_End.length) {
+          //   _index = -1;
+          // }
+          // this.timingarryend = this.Time_End.splice(_index + 1);
+          // this.EndTimearr = this.timingarryend;
           // valid starttimearr and endtimearr setting end.
+
+          this.Time_End = [];
+          this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+          let _from = this.Time_End.indexOf(this.Startts);
+          const eventmaxDuration=286;
+          let _to=_from+eventmaxDuration;
+          this.EndTimearr=this.Time_End.slice(_from,_to);
 
       });
     this.closeevearea();
@@ -5576,6 +5597,7 @@ sortbyCurrent_Time(){
   else
   this.validStartTimearr=[...this.StartTimearr];
 
+
 }
 
 
@@ -5585,16 +5607,28 @@ sortbyCurrent_Time(){
     if (!this.Startts) {
       return [];
     }
-    // Convert Start Time to minutes for easier comparison
-    const selectedStartMinutes = this.timeToMinutes(this.Startts);
+    // // Convert Start Time to minutes for easier comparison
+    // const selectedStartMinutes = this.timeToMinutes(this.Startts);
 
-    // Filter End Time options to start from 5 minutes interval after selected Start Time
-    const filteredTimes = this.EndTimearr.filter(time => {
-      const endTimeMinutes = this.timeToMinutes(time);
-      return endTimeMinutes > selectedStartMinutes;
-    });
+    // // Filter End Time options to start from 5 minutes interval after selected Start Time
+    // const filteredTimes = this.EndTimearr.filter(time => {
+    //   const endTimeMinutes = this.timeToMinutes(time);
+    //   return endTimeMinutes > selectedStartMinutes;
+    // });
+
+    // return filteredTimes;
+
+  
+    const Times_=[...this.EndTimearr,...this.EndTimearr];
+    let _from = Times_.indexOf(this.Startts);
+    const eventmaxDuration=286;
+    let _to=_from+eventmaxDuration;
+    const filteredTimes=Times_.slice(_from,_to);
 
     return filteredTimes;
+
+
+
   }
 
   // Convert time in format 'hh:mm AM/PM' to minutes since midnight
@@ -6036,110 +6070,125 @@ console.log(this.dayArr,'sdcsadcasdcssad')
 
   timearr1: any = [];
 
-  addstarttime() {
-    this.Alltimes = [];
-    this.EndTimearr = [];
-    this.AllEndtime = [];
-    this.StartTimearr = [];
+  // addstarttime() {
+  //   this.Alltimes = [];
+  //   this.EndTimearr = [];
+  //   this.AllEndtime = [];
+  //   this.StartTimearr = [];
 
-      this._arrayObj.forEach(element => {
-      this.EndTimearr.push(element.TSStart);
-      this.AllEndtime.push(element.TSStart);
-      this.StartTimearr.push(element.TSStart);
-      this.Alltimes.push(element.TSStart);
-      //  console.log( this.Alltimes,"times")
-    });
+  //     this._arrayObj.forEach(element => {
+  //     this.EndTimearr.push(element.TSStart);
+  //     this.AllEndtime.push(element.TSStart);
+  //     this.StartTimearr.push(element.TSStart);
+  //     this.Alltimes.push(element.TSStart);
+  //     //  console.log( this.Alltimes,"times")
+  //   });
 
-    console.log("StartTimearr:", this.StartTimearr);
-    console.log("EndTimearr:", this.EndTimearr);
+  //   console.log("StartTimearr:", this.StartTimearr);
+  //   console.log("EndTimearr:", this.EndTimearr);
 
 
-    this.timingarryend = [];
-    this.Time_End = [];
-    this.Time_End = this.AllEndtime;
-    // this.Startts = TSStart;
-    let _index = this.Time_End.indexOf(this.Startts);
-    if (_index + 1 === this.Time_End.length) {
-      _index = -1;
-    }
-    this.timingarryend = this.Time_End.splice(_index + 1);
+  //   this.timingarryend = [];
+  //   this.Time_End = [];
+  //   this.Time_End = this.AllEndtime;
+  //   // this.Startts = TSStart;
+  //   let _index = this.Time_End.indexOf(this.Startts);
+  //   if (_index + 1 === this.Time_End.length) {
+  //     _index = -1;
+  //   }
+  //   this.timingarryend = this.Time_End.splice(_index + 1);
 
-    this.EndTimearr = this.timingarryend;
-    this.timearr1 = this.Startts.split(":");
-    let vahr = this.timearr1[0];
-    let mins = this.timearr1[1].toString();
+  //   this.EndTimearr = this.timingarryend;
+  //   this.timearr1 = this.Startts.split(":");
+  //   let vahr = this.timearr1[0];
+  //   let mins = this.timearr1[1].toString();
 
-    if (vahr == 11 && mins.includes("AM")) {
-      mins = mins.replace("AM", "PM")
-    }
-    else if (vahr == 11 && mins.includes("PM")) {
-      mins = mins.replace("PM", "AM")
-    }
+  //   if (vahr == 11 && mins.includes("AM")) {
+  //     mins = mins.replace("AM", "PM")
+  //   }
+  //   else if (vahr == 11 && mins.includes("PM")) {
+  //     mins = mins.replace("PM", "AM")
+  //   }
 
-    if (this.timearr1[0] == 11) {
-      this._arrayObj.forEach(element => {
-        this.EndTimearr.push(element.TSStart);
+  //   if (this.timearr1[0] == 11) {
+  //     this._arrayObj.forEach(element => {
+  //       this.EndTimearr.push(element.TSStart);
 
-      });
-      vahr = Number(vahr) + 1;
-      if (vahr == 13) {
-        vahr = '1'
+  //     });
+  //     vahr = Number(vahr) + 1;
+  //     if (vahr == 13) {
+  //       vahr = '1'
 
-      }
-      this.Endtms = vahr.toString() + ':' + mins;
+  //     }
+  //     this.Endtms = vahr.toString() + ':' + mins;
 
-      if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
-        this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
+  //     if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
+  //       this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
 
-      }
-      else {
-        this._SEndDate = this._StartDate;
-      }
+  //     }
+  //     else {
+  //       this._SEndDate = this._StartDate;
+  //     }
 
-    }
-    else {
-      vahr = Number(vahr) + 1;
-      if (vahr == 13) {
-        vahr = '1'
-      }
-      if (vahr <= 9) {
-        this.Endtms = '0' + vahr.toString() + ':' + mins;
-      }
-      else {
-        this.Endtms = vahr.toString() + ':' + mins;
-      }
-    }
+  //   }
+  //   else {
+  //     vahr = Number(vahr) + 1;
+  //     if (vahr == 13) {
+  //       vahr = '1'
+  //     }
+  //     if (vahr <= 9) {
+  //       this.Endtms = '0' + vahr.toString() + ':' + mins;
+  //     }
+  //     else {
+  //       this.Endtms = vahr.toString() + ':' + mins;
+  //     }
+  //   }
 
-    this.daysSelectedII = [];
-    var jsonData = {};
-    var columnName = "Date";
-    jsonData[columnName] = this.minDate;
-    var columnNames = "StartTime";
-    jsonData[columnNames] = this.Startts;
-    var columnNamee = "EndTime";
-    jsonData[columnNamee] = this.Endtms;
-    var columnNameess = "SEndDate";
-    jsonData[columnNameess] = moment(this._SEndDate).format("YYYY-MM-DD").toString();
+  //   this.daysSelectedII = [];
+  //   var jsonData = {};
+  //   var columnName = "Date";
+  //   jsonData[columnName] = this.minDate;
+  //   var columnNames = "StartTime";
+  //   jsonData[columnNames] = this.Startts;
+  //   var columnNamee = "EndTime";
+  //   jsonData[columnNamee] = this.Endtms;
+  //   var columnNameess = "SEndDate";
+  //   jsonData[columnNameess] = moment(this._SEndDate).format("YYYY-MM-DD").toString();
 
-    if (this.ScheduleType == "Event") {
-      var IsActive = "IsActive";
-      jsonData[IsActive] = 0;
-    }
-    this.daysSelectedII.push(jsonData)
+  //   if (this.ScheduleType == "Event") {
+  //     var IsActive = "IsActive";
+  //     jsonData[IsActive] = 0;
+  //   }
+  //   this.daysSelectedII.push(jsonData)
 
-    const selectedStartTimeObj = new Date(`2000-01-01T${this.Startts}:00`);
-    this.EndTimearr.forEach(element => {
-      // alert(element)
-      const _element = element;
-      const EndTimeObj = new Date(`2000-01-01T${_element}:00`);
-      const diffInMinutes = (EndTimeObj.getTime() - selectedStartTimeObj.getTime()) / 60000;
-      // alert(diffInMinutes)
-      element = _element.toString() + "-" + diffInMinutes.toString();
+  //   const selectedStartTimeObj = new Date(`2000-01-01T${this.Startts}:00`);
+  //   this.EndTimearr.forEach(element => {
+  //     // alert(element)
+  //     const _element = element;
+  //     const EndTimeObj = new Date(`2000-01-01T${_element}:00`);
+  //     const diffInMinutes = (EndTimeObj.getTime() - selectedStartTimeObj.getTime()) / 60000;
+  //     // alert(diffInMinutes)
+  //     element = _element.toString() + "-" + diffInMinutes.toString();
 
-    });
+  //   });
 
-    console.log(this.EndTimearr, "End Time Updated")
+  //   console.log(this.EndTimearr, "End Time Updated")
+  // }
+
+
+
+  //test
+addstarttime(){
+  const completetime=this._arrayObj.map((element)=>{
+      return element.TSStart;
+   });
+   const endtime_arr=[...completetime,...completetime];
+   let _from = completetime.indexOf(this.Startts);
+   const eventmaxDuration=286;
+   let _to=_from+eventmaxDuration;
+   this.EndTimearr=endtime_arr.slice(_from,_to);
   }
+   //test
 
   singleselectarry: any[] = [];
   daysSelected: any[] = [];
@@ -8271,20 +8320,25 @@ onParticipantFilter(){
 
 
 
-          this.timingarryend = [];
-          this.Time_End = [];
-          this.Time_End = [...this.StartTimearr];
-          let _index = this.Time_End.indexOf(this.Startts);
-          if (_index + 1 === this.Time_End.length) {
-            _index = -1;
-          }
-          this.timingarryend = this.Time_End.splice(_index + 1);
-          this.EndTimearr = this.timingarryend;
+          // this.timingarryend = [];
+          // this.Time_End = [];
+          // this.Time_End = [...this.StartTimearr];
+          // let _index = this.Time_End.indexOf(this.Startts);
+          // if (_index + 1 === this.Time_End.length) {
+          //   _index = -1;
+          // }
+          // this.timingarryend = this.Time_End.splice(_index + 1);
+          // this.EndTimearr = this.timingarryend;
           // valid starttimearr and endtimearr setting end.
 
 
 
-
+          this.Time_End = [];
+          this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+          let _from = this.Time_End.indexOf(this.Startts);
+          const eventmaxDuration=286;
+          let _to=_from+eventmaxDuration;
+          this.EndTimearr=this.Time_End.slice(_from,_to);
 
 
 

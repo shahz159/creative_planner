@@ -3,7 +3,7 @@ import { environment } from '../../environments/environment'
 
 @Injectable({
   providedIn: 'root'
-})
+}) 
 export class ApiurlService {
   baseUrl = environment.baseUrl;
   baseurlcore = environment.baseUrlCore;
