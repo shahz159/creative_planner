@@ -3937,15 +3937,31 @@ console.log(this.dayArr,'sdcsadcasdcssad')
       this.validStartTimearr=this.StartTimearr.slice(index);
 
 
-      this.timingarryend = [];
-      this.Time_End = [];
-      this.Time_End = this.AllEndtime;
-      let _index = this.Time_End.indexOf(this.Startts);
-      if (_index + 1 === this.Time_End.length) {
-        _index = -1;
-      }
-      this.timingarryend = this.Time_End.splice(_index + 1);
-      this.EndTimearr = this.timingarryend;
+      // this.timingarryend = [];
+      // this.Time_End = [];
+      // this.Time_End = this.AllEndtime;
+      // let _index = this.Time_End.indexOf(this.Startts);
+      // if (_index + 1 === this.Time_End.length) {
+      //   _index = -1;
+      // }
+      // this.timingarryend = this.Time_End.splice(_index + 1);
+      // this.EndTimearr = this.timingarryend;
+
+
+
+
+   //test
+
+   this.Time_End = [];
+   this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+   let _from = this.Time_End.indexOf(this.Startts);
+   const eventmaxDuration=286;
+   let _to=_from+eventmaxDuration;
+   this.EndTimearr=this.Time_End.slice(_from,_to);
+  
+
+   //test
+
       // provide valid starttiming and endtimearr.    end
 
       });
@@ -3973,8 +3989,8 @@ console.log(this.dayArr,'sdcsadcasdcssad')
 
 currentTime:any;
 
-  addstarttime() {
-
+  addstarttime1() {
+debugger
     this.Alltimes = [];
     this.EndTimearr = [];
     this.AllEndtime = [];
@@ -4097,6 +4113,21 @@ currentTime:any;
 
     console.log(this.EndTimearr, "End Time Updated")
   }
+
+
+ //test
+addstarttime(){
+const completetime=this._arrayObj.map((element)=>{
+    return element.TSStart;
+ });
+ const endtime_arr=[...completetime,...completetime];
+ let _from = completetime.indexOf(this.Startts);
+ const eventmaxDuration=286;
+ let _to=_from+eventmaxDuration;
+ this.EndTimearr=endtime_arr.slice(_from,_to);
+}
+ //test
+
 
   purposeEndtime(TSEnd) {
     this.PurposeEnd = TSEnd;

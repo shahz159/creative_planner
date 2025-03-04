@@ -2713,7 +2713,7 @@ setMaxDate(dateField){
 
 
 
-assignTasksub1(){
+assignTasksub1(){   debugger
     this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ');
     this.selected_taskId =  this.selectedtaskNames.map(task=>task.Assign_Id).join(', ');
     console.log( this.selected_taskName,"pending")
