@@ -2714,8 +2714,8 @@ debugger
       finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
       if (finalarray.length > 0) {
-        finalarray.forEach(element => {
-
+        finalarray.forEach(element => { 
+          this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
           const date1: Date = new Date(this._StartDate);
           if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
             this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
@@ -4137,6 +4137,10 @@ addstarttime(){
    const eventmaxDuration=286;
    let _to=_from+eventmaxDuration;
    this.EndTimearr=endtime_arr.slice(_from,_to);
+
+   this.Endtms = new Date(new Date('2000-01-01 ' + this.Startts).getTime() + 15 * 60000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+
+   console.log(this.EndTimearr, "this.Startts")
   }
    //test
 
