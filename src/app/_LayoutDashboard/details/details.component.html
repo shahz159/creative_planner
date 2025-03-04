@@ -13579,7 +13579,7 @@
                             <div class="input-icon Sub_In_ed">
                                 <ng-select class="curser-pointer" [(ngModel)]="Submission_Name"
                                     placeholder="Select Submission Type">
-                                    <ng-option [value]="item.SubmissionId" *ngFor="let item of Submission">
+                                    <ng-option [value]="item.SubmissionName" *ngFor="let item of Submission">
                                         {{item.SubmissionName}}
                                     </ng-option>
                                 </ng-select>
@@ -13593,7 +13593,7 @@
                         (Current_user_ID==projectInfo.ResponsibleEmpNo&&['Under Approval','New Project Rejected'].includes(projectInfo.Status))   
                      )">
                         <div class="form-group row  Ic_ed" [ngSwitch]="Submission_Name">
-                            <div class="kt-info-lable-v col-lg-6" *ngSwitchDefault> Allocated hours
+                            <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="'Daily'"> Allocated hours
                                 <div class="input-icon Sub_In_ed">
                                     <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost()">
                                         <ng-option *ngFor="let item of Daily_array">{{item}}</ng-option>
@@ -13601,7 +13601,7 @@
                                     <span class="Wd_text_kt"> Max duration limit is 60 Minutes only.</span>
                                 </div>
                             </div>
-                            <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="2"> Allocated hours
+                            <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="'Weekly'"> Allocated hours
                                 <div class="input-icon Sub_In_ed">
                                     <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost()">
                                         <ng-option *ngFor="let item of Week_array">{{item}}</ng-option>
@@ -13609,7 +13609,7 @@
                                     <span class="Wd_text_kt"> Max duration limit is 2 hrs only.</span>
                                 </div>
                             </div>
-                            <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="3"> Allocated hours
+                            <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="'Monthly'"> Allocated hours
                                 <div class="input-icon Sub_In_ed">
                                     <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost()">
                                         <ng-option *ngFor="let item of Month_array">{{item}}</ng-option>
@@ -13617,8 +13617,8 @@
                                     <span class="Wd_text_kt">Max duration limit is 4 hrs only.</span>
         
                                 </div>
-                            </div>
-                            <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="4"> Allocated hours
+                            </div> 
+                            <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="'Quarterly'"> Allocated hours
                                 <div class="input-icon Sub_In_ed">
                                     <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost()">
                                         <ng-option *ngFor="let item of Quarter_array">{{item}}</ng-option>
@@ -13626,7 +13626,7 @@
                                     <span class="Wd_text_kt"> Max duration limit is 8 hrs only.</span>
                                 </div>
                             </div>
-                            <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="5"> Allocated hours
+                            <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="'Half Yearly'"> Allocated hours
                                 <div class="input-icon Sub_In_ed">
                                     <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost()">
                                         <ng-option *ngFor="let item of Halfyear_array">{{item}}</ng-option>
@@ -13634,15 +13634,17 @@
                                     <span class="Wd_text_kt"> Max duration limit is 10 hrs only.</span>
                                 </div>
                             </div>
-                            <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="6"> Allocated hours
+
+                         <ng-container *ngSwitchCase="'Annually'">
+                            <div class="kt-info-lable-v col-lg-6"> Allocated hours
                                 <div class="input-icon Sub_In_ed">
                                     <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost()">
-                                        <ng-option *ngFor="let item of Halfyear_array">{{item}}</ng-option>
+                                        <ng-option *ngFor="let item of Annual_array">{{item}}</ng-option>
                                     </ng-select>
                                     <span class="Wd_text_kt"> Max duration limit is 16 hrs only.</span>
                                 </div>
                             </div>
-                            <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="6">
+                            <div class="kt-info-lable-v col-lg-6">
                                 Recurrence :
                                 <ng-select class="curser-pointer" [(ngModel)]="Annual_date" placeholder="Select">
                                     <ng-option [value]="1">January</ng-option>
@@ -13659,6 +13661,7 @@
                                     <ng-option [value]="12">December</ng-option>
                                 </ng-select>
                             </div>
+                        </ng-container>
                         </div>
                     </div>
                  </ng-container>
@@ -13675,7 +13678,7 @@
                           </span> Cost 
                        </div>
                         <div class="input-icon Sub_In_ed">
-                            <input type="text" class="form-control readonly" value="{{newproject_Cost | currency:'SAR '}}" readonly />
+                            <input type="text" class="form-control readonly" value="{{newproject_Cost | currency:'SAR '}}" readonly (click)="onPrjCostInputClicked()" />
                         </div>
                     </div>
                 </div>
@@ -14039,7 +14042,7 @@
                                Cost 
                             </div>
                             <div class="input-icon Sub_In_ed">
-                                <input type="text" class="form-control readonly" value="{{newaction_Cost |currency:'SAR '}}" readonly />
+                                <input type="text" class="form-control readonly" value="{{newaction_Cost |currency:'SAR '}}" readonly  (click)="onActnCostInputClicked()"  />
                             </div>
                         </div>
                     </div>

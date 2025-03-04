@@ -980,9 +980,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   projecttypes : any
   task_assign_json:any;
 
- getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {
+ getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) { 
     this.errorFetchingProjectInfo=false;
-    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {
+    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  debugger
       try{
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
       }catch(er){
@@ -3828,7 +3828,7 @@ approvalSubmitting:boolean=false;
   OGownerid: any;
   OGresponsibleid: any;
   OGclientId: any;
-  Submission_Name: string
+  Submission_Name: string;
   Allocated_Hours: any;
   Daily_array: any = [];
   Week_array: any = [];
@@ -3884,7 +3884,7 @@ approvalSubmitting:boolean=false;
   OGProjectTypeid: any
   ActionName: any
 
-  initializeSelectedValue() {   
+  initializeSelectedValue() {   debugger
     this.OGownerid = this.projectInfo['OwnerEmpNo'];
     this.OGresponsibleid = this.projectInfo['ResponsibleEmpNo'];
     this.OGselectedcategoryid = this.projectInfo['Reportid'];
@@ -4060,20 +4060,13 @@ if(this.End_Date&&invaildPrjEnddate){
     }
 
     if (this.OGSubmission != this.Submission_Name) {
-      var Submission = this.Submission_Name;
-      this.Submission_Name = this.Submission_Name;
+      const submissionObj=this.Submission.find((ob:any)=>ob.SubmissionName==this.Submission_Name);
+      var Submission = submissionObj.SubmissionId;
     }
     else {
-      var Submission: string = this.OGSubmission_Nameid;
+      var Submission = this.OGSubmission_Nameid;
     }
 
-    if (this.OGSubmission != this.Submission_Name) {
-      var Submission = this.Submission_Name;
-      this.Submission_Name = this.Submission_Name;
-    }
-    else {
-      var Submission: string = this.OGSubmission_Nameid;
-    }
 
     if (type == '003' || type == '008') {
       var allocation = this.Allocated_Hours["$ngOptionLabel"];
@@ -4083,11 +4076,9 @@ if(this.End_Date&&invaildPrjEnddate){
     }
 
 
-
-
     var datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");
     var datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");
-  debugger
+
     const jsonobj = {
       Project_Type: type,
       Project_Name: this.ProjectName,
@@ -4182,14 +4173,12 @@ if(this.End_Date&&invaildPrjEnddate){
   }
 
 
-
   getNewPrjCost(){ 
-
     let alhrVal:any=null;
     if(['003','008'].includes(this.projectInfo.Project_Block))
     {
-      const h=Number.parseInt(this.Allocated_Hours.split(':')[0]);
-      const m=Number.parseInt(this.Allocated_Hours.split(':')[1]);
+      const h=Number.parseInt(this.Allocated_Hours["$ngOptionLabel"].split(':')[0]);
+      const m=Number.parseInt(this.Allocated_Hours["$ngOptionLabel"].split(':')[1]);
       alhrVal=h+(m/60);
     }
     else 
@@ -4210,6 +4199,11 @@ if(this.End_Date&&invaildPrjEnddate){
   }
 
   
+ onPrjCostInputClicked(){
+      this.notifyService.showError("Project cost depends on the number of allocated hours.","Not Editable");
+ }
+
+
 
 
   ActionCode: any
@@ -4478,6 +4472,9 @@ debugger
   this.updatingAction = false;
   }
 
+onActnCostInputClicked(){
+    this.notifyService.showError("Action cost depends on the number of allocated hours.","Not Editable");
+}
 
 ///////////////////duration Edit start//////////////////////
 
@@ -12597,21 +12594,22 @@ on_Update_and_Released(val) {
     var client: string = this.OGselectedclientid;
   }
 
-  if (this.OGSubmission != this.Submission_Name) {
-    var Submission = this.Submission_Name;
-    this.Submission_Name = this.Submission_Name;
-  }
-  else {
-    var Submission: string = this.OGSubmission_Nameid;
-  }
+  // if (this.OGSubmission != this.Submission_Name) {
+  //   var Submission = this.Submission_Name;
+  //   this.Submission_Name = this.Submission_Name;
+  // }
+  // else {
+  //   var Submission: string = this.OGSubmission_Nameid;
+  // }
 
   if (this.OGSubmission != this.Submission_Name) {
-    var Submission = this.Submission_Name;
-    this.Submission_Name = this.Submission_Name;
+    const submissionObj=this.Submission.find((ob:any)=>ob.SubmissionName==this.Submission_Name);
+    var Submission = submissionObj.SubmissionId;
   }
   else {
-    var Submission: string = this.OGSubmission_Nameid;
+    var Submission = this.OGSubmission_Nameid;
   }
+
 
   if (type == '003' || type == '008') {
     var allocation = this.Allocated_Hours["$ngOptionLabel"];
