@@ -2791,11 +2791,9 @@
                                                 <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
                                                 <ng-select class="kt-input" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
                                                     [(ngModel)]="Endtms">
-                                                    <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
+                                                    <ng-option *ngFor="let item1 of EndTimearr; let i = index " [value]="item1">
                                                         {{item1}}
-                                                        ({{
-                                                            Startts|timeDiff:item1
-                                                        }})
+                                                        ({{i*5>60?((i*5/60).toFixed(1)+' hrs'):(i*5+' mins')}})
                                                     </ng-option>
                                                 </ng-select>
                                                 <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
@@ -5464,11 +5462,9 @@
                             <label class="cus-lbl">End Time <span class="text-danger">*</span> </label>
                             <ng-select class="kt-input" [ngClass]="{'error-vd': !Endtms&&notProvided}" style="cursor: pointer;"  (open)="onfocus($event)" placeholder="End Time"
                                 [(ngModel)]="Endtms">
-                                <ng-option *ngFor="let item1 of EndTimearr" [value]="item1">
-                                    {{item1}}
-                                    ({{
-                                        Startts|timeDiff:item1
-                                    }})
+                                <ng-option *ngFor="let item1 of EndTimearr; let i = index " [value]="item1">
+                                    {{item1}}                                  
+                                        ({{i*5>60?((i*5/60).toFixed(1)+' hrs'):(i*5+' mins')}})                             
                                 </ng-option>
                             </ng-select>
                             <span  *ngIf="!Endtms&&notProvided" style="color:red" >Please select end time.</span>
