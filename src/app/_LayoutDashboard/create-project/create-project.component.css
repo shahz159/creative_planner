@@ -1538,6 +1538,13 @@ span.info-ic-guide svg {
   color: #212529;
 }
 
+
+.sideInfobar#Project_Details_Edit_forms, .sideInfobar#Action_Details_Edit_forms{
+  overflow-x: unset;
+}
+
+
+
 .PA_Edit_btn svg {
   width: 15px;
   height: 15px;

@@ -1355,7 +1355,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
             this.projectAuditor={empName:prj_auditor.RACIS, empNo:prj_auditor.Emp_No};
           }
 // If project has project auditor
-
+debugger
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{
 
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
@@ -3879,6 +3879,10 @@ approvalSubmitting:boolean=false;
     // console.log("Weekly Array:", this.Week_array);
     // console.log("Monthly Array:", this.Month_array);
   }
+
+
+
+
 
   type_list: any
   OGProjectTypeid: any
@@ -12386,7 +12390,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
         if(data&&data[0].DAR_Details_Json){
              const dar_json=JSON.parse(data[0].DAR_Details_Json);
              if(dar_json&&dar_json[0]){
-
+debugger
               // all timelines submitted on selected date.
               this.tmReportArr=dar_json[0].Dardata;
               this.submittedTimelines=this.tmReportArr.map((obj)=>({ starttime:obj.starttime, endtime:obj.endtime }));

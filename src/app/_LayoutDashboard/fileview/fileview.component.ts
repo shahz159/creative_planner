@@ -54,6 +54,7 @@ export class FileviewComponent implements OnInit {
   url_master_code:any;
   invalid: boolean =false;
   objProjectDto: ProjectDetailsDTO;
+  noRedirectionToSource:boolean=false;  // by default redirection is allowed.
 
   constructor(private route: ActivatedRoute,public service: ProjectTypeService,private notifyService: NotificationService
   ) {   
@@ -188,6 +189,7 @@ export class FileviewComponent implements OnInit {
       }
 
       this.url_master_code=params['mastercode'];
+      this.noRedirectionToSource=params['noRedirection']?params['noRedirection']=='true':false;
       this.Schedule_ID=params['Schedule_ID'];
     });
   }

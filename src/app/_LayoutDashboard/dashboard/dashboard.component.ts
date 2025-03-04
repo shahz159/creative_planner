@@ -4013,11 +4013,6 @@ currentTime:any;
       //  console.log( this.Alltimes,"times")
     });
 
-    console.log("StartTimearr:", this.StartTimearr);
-    console.log("EndTimearr:", this.EndTimearr);
-    // alert(this.Startts);
-
-
 
 
     // this.Alltimes = [];
