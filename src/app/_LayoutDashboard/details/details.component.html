@@ -7759,8 +7759,6 @@
                                      </svg>
                                    </ng-container>
 
-
-
                                    <ng-container *ngIf="data.Value.includes('Project next version assigned to')">
                                    <span class="timeline-icon pl-1" style="left: 1px;top: 1px; width: 95%;height: 95%;border-color: #2dc16700;">
                                     <svg style="width:37px !important; height:30px !important;" viewBox="-0.72 -0.72 25.44 25.44" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#2786fb " stroke-width="0.65"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.5777 4.43152L15.5777 3.38197C13.8221 2.46066 12.9443 2 12 2C11.0557 2 10.1779 2.46066 8.42229 3.38197L6.42229 4.43152C4.64855 5.36234 3.6059 5.9095 2.95969 6.64132L12 11.1615L21.0403 6.64132C20.3941 5.9095 19.3515 5.36234 17.5777 4.43152Z" style="fill:white !important;" ></path> <path d="M21.7484 7.96435L12.75 12.4635V21.904C13.4679 21.7252 14.2848 21.2965 15.5777 20.618L17.5777 19.5685C19.7294 18.4393 20.8052 17.8748 21.4026 16.8603C22 15.8458 22 14.5833 22 12.0585V11.9415C22 10.0489 22 8.86558 21.7484 7.96435Z" style="fill:white !important;"></path>
@@ -13833,7 +13831,7 @@
                                 <div class="form-group mb-2">
                                     <label class="pe-label">Action name</label>
                                     <div class="input-icon project-name_ed">
-                                        <input type="text" class="form-control" [(ngModel)]="ActionName" [ngClass]="{'error-border': !ActionName&&formFieldsRequired}"
+                                        <input type="text" class="form-control" [(ngModel)]="ActionName" [ngClass]="{'error-border': (!ActionName&&formFieldsRequired)||(isactionValid=='TOOSHORT'&&formFieldsRequired)||(ActionName&&ActionName.length>100)}"
                                             placeholder="Enter action name" (ngModelChange)="isactionValid=isValidString(ActionName.trim(),2);" />
                                     </div>
                                     <span style="color:red"  *ngIf="!ActionName&&formFieldsRequired" >Please enter action name. </span>
@@ -13845,7 +13843,7 @@
                                 <div class="form-group mb-2">
                                     <label class="pe-label">Action description</label>
                                     <div class="input-icon project_des_ed">
-                                        <textarea type="text" class="form-control" placeholder="Enter action description" rows="5" [ngClass]="{'error-border': !ActionDescription&&formFieldsRequired}"
+                                        <textarea type="text" class="form-control" placeholder="Enter action description" rows="5" [ngClass]="{'error-border': (!ActionDescription&&formFieldsRequired)||(isactdesValid=='TOOSHORT'&&formFieldsRequired)||(characterCount_Action >=501)}"
                                             [(ngModel)]="ActionDescription" (input)="updateCharacterCount_Action()" (ngModelChange)="isactdesValid=isValidString(ActionDescription.trim(),3);" (paste)="updateCharacterCount_Action()" >
                                           </textarea>
                                     </div>

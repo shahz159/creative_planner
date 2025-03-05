@@ -281,14 +281,16 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
   
 
   NewGetEmployeeLeaveResponse(obj:ApprovalDTO){
-
      this.obj_approvalDTO.Emp_no=obj.Emp_no;
      this.obj_approvalDTO.Leave_Code=obj.Leave_Code;
      this.obj_approvalDTO.Request_type=obj.Request_type;
      return this.http.post(this.rootUrl+"ApprovalAPI/NewGetEmployeeLeaveResponse",this.obj_approvalDTO);
   }
 
-
+  NewGetUserActivity(empNo:string){  
+    this.obj_approvalDTO.Emp_no=empNo;
+    return this.http.post(this.rootUrl+"ApprovalAPI/NewGetUserActivity",this.obj_approvalDTO);
+  }
 
 
 }
