@@ -796,7 +796,7 @@
             </div>
             <div class="row mt-3">
                 <div class="col-md-12">
-                    <div class="card">
+                    <div class="card" style="max-height: 294px;">
                         <div class="card-body" >
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <div class="card-title mb-0">
@@ -1015,7 +1015,7 @@
         <div class="col-md-4">
             <div class="">
                 <div class="card-body p-0">
-                    <div class="card h-100">
+                    <div class="h-100">
                         <div class="card-body p-0">
 
                             <div class="">
@@ -1031,16 +1031,14 @@
                                <!--new -->
 
                                <div class="picsum-img-wrapper text-center">
-                               <div class="card h-100 activity-card banner-card">
+                               <div class="activity-card banner-card">
                                 <div class="activity-item banner-item owl-carousel owl-theme d-block">
                                      
                                 <ng-container *ngIf="dashboardBanners&&dashboardBanners.length>0; else noDbbanner">
-                                    <div *ngFor="let bannerImg of dashboardBannersImages" class="card-body p-0">
-                                            <div class="activity-report" >
-                                                <div class="activity-report-content">
-                                                    <img [src]="bannerImg.path" alt="Angular Carousel 1" class="w-100">
-                                                </div>
-                                            </div>
+                                    <div class="activity-report" *ngFor="let bannerImg of dashboardBannersImages">
+                                        <div class="activity-report-content">
+                                            <img [src]="bannerImg.path" alt="Angular Carousel 1" class="w-100">
+                                        </div>
                                     </div>
                                 </ng-container>
                                 <ng-template #noDbbanner>
@@ -1060,7 +1058,7 @@
 
                                 </div>
                             </div>
-                            <div class="pt-3 px-3">
+                            <div class="pt-3 px-3 d-none">
                                 <div class="card-title">Project Status</div>
                             <div class="action-tile">
                                 <div>
@@ -1226,7 +1224,7 @@
                         </div>
                         </div>
                    </div>
-                <div class="card h-100 mt-3">
+                <div class="card h-100 mt-3 d-none">
                     <div class="card-body pt-0">
                         <div class="position-relative" *ngFor="let item of darArray">
                             <div class="card-title mt-3">DAR Status</div>
@@ -1246,10 +1244,155 @@
 
                 </div>
             </div>
+            <div class="card mt-3 weekactivity-card">
+                <div class="card-body" style="display: flex; flex-direction: column;">
+                    <div class="card-title">This Week Activity</div>
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pills-action-tab" data-toggle="pill" data-target="#pills-action" type="button" role="tab" aria-controls="pills-action" aria-selected="true">Action</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-projects-tab" data-toggle="pill" data-target="#pills-projects" type="button" role="tab" aria-controls="pills-projects" aria-selected="false">Projects</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-standard-task-tab" data-toggle="pill" data-target="#pills-standard-task" type="button" role="tab" aria-controls="pills-standard-task" aria-selected="false">Standard Tasks</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-assigned-task-tab" data-toggle="pill" data-target="#pills-assigned-task" type="button" role="tab" aria-controls="pills-assigned-task" aria-selected="false"> Assigned Tasks</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent"  *ngFor="let item of employeeReport">
+                        <div class="tab-pane fade show active" id="pills-action" role="tabpanel" aria-labelledby="pills-action-tab">
+                            <div class="week-report-item">
+                                <div class="week-report-group-div">
+                                    <div class="week-report-group">
+                                        <div class="week-report-icon week-completed">
+                                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 13L10 16L17 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle> </g></svg>
+                                        </div>
+                                        <div class="week-report-control">
+                                            <div class="week-report-title">Completed Today</div>
+                                            <div class="week-report-count">{{item.ActionsCompletedToday}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="week-report-group">
+                                        <div class="week-report-icon week-due">
+                                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 15H12.01M12 12V9M4.98207 19H19.0179C20.5615 19 21.5233 17.3256 20.7455 15.9923L13.7276 3.96153C12.9558 2.63852 11.0442 2.63852 10.2724 3.96153L3.25452 15.9923C2.47675 17.3256 3.43849 19 4.98207 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                        </div>
+                                        <div class="week-report-control">
+                                            <div class="week-report-title">Due Today</div>
+                                            <div class="week-report-count">{{item.ActionsDueToday}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="week-report-group">
+                                        <div class="week-report-icon week-delay">
+                                            <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
+                                        </div>
+                                        <div class="week-report-control">
+                                            <div class="week-report-title">Delayed</div>
+                                            <div class="week-report-count">{{item.ActionsDelayed}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-projects" role="tabpanel" aria-labelledby="pills-projects-tab">
+                            <div class="week-report-item">
+                                <div class="week-report-group-div">
+                                    <div class="week-report-group">
+                                        <div class="week-report-icon week-completed">
+                                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 13L10 16L17 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle> </g></svg>
+                                        </div>
+                                        <div class="week-report-control">
+                                            <div class="week-report-title">Completed Today</div>
+                                            <div class="week-report-count">{{item.ProjectsCompletedToday}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="week-report-group">
+                                        <div class="week-report-icon week-due">
+                                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 15H12.01M12 12V9M4.98207 19H19.0179C20.5615 19 21.5233 17.3256 20.7455 15.9923L13.7276 3.96153C12.9558 2.63852 11.0442 2.63852 10.2724 3.96153L3.25452 15.9923C2.47675 17.3256 3.43849 19 4.98207 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                        </div>
+                                        <div class="week-report-control">
+                                            <div class="week-report-title">Due Today</div>
+                                            <div class="week-report-count">{{item.ProjectsDueToday}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="week-report-group">
+                                        <div class="week-report-icon week-delay">
+                                            <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
+                                        </div>
+                                        <div class="week-report-control">
+                                            <div class="week-report-title">Delayed</div>
+                                            <div class="week-report-count">{{item.ProjectsDelayed}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-standard-task" role="tabpanel" aria-labelledby="pills-standard-task-tab">
+                            <div class="week-report-item">
+                                <div class="week-report-group-div">
+                                    <div class="week-report-group">
+                                        <div class="week-report-icon week-completed">
+                                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 13L10 16L17 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle> </g></svg>
+                                        </div>
+                                        <div class="week-report-control">
+                                            <div class="week-report-title">Submitted Today</div>
+                                            <div class="week-report-count">{{item.StandardSubmittedToday}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="week-report-group">
+                                        <div class="week-report-icon week-due">
+                                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 15H12.01M12 12V9M4.98207 19H19.0179C20.5615 19 21.5233 17.3256 20.7455 15.9923L13.7276 3.96153C12.9558 2.63852 11.0442 2.63852 10.2724 3.96153L3.25452 15.9923C2.47675 17.3256 3.43849 19 4.98207 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                        </div>
+                                        <div class="week-report-control">
+                                            <div class="week-report-title">Due Today</div>
+                                            <div class="week-report-count">{{item.StandardDueToday}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="week-report-group">
+                                        <div class="week-report-icon week-delay">
+                                            <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor"> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
+                                        </div>
+                                        <div class="week-report-control">
+                                            <div class="week-report-title">Delayed</div>
+                                            <div class="week-report-count">{{item.StandardDelayed}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-assigned-task" role="tabpanel" aria-labelledby="pills-assigned-task-tab">
+                            <div class="week-report-item">
+                                <div class="week-report-group-div">
+
+                                    <div class="week-report-group">
+                                        <div class="week-report-icon week-due">
+                                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 15H12.01M12 12V9M4.98207 19H19.0179C20.5615 19 21.5233 17.3256 20.7455 15.9923L13.7276 3.96153C12.9558 2.63852 11.0442 2.63852 10.2724 3.96153L3.25452 15.9923C2.47675 17.3256 3.43849 19 4.98207 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                        </div>
+                                        <div class="week-report-control">
+                                            <div class="week-report-title">Awaiting to create</div>
+                                            <div class="week-report-count">{{item.StandardDueToday}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="week-report-group">
+                                        <div class="week-report-icon week-total">
+                                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 16L16.1 18.5L20 13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M10 14H3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M10 18H3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M3 6L13.5 6M20 6L17.75 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M20 10L9.5 10M3 10H5.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+                                        </div>
+                                        <div class="week-report-control">
+                                            <div class="week-report-title">Total Tasks</div>
+                                            <div class="week-report-count">100</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-12 d-none">
         <div class="card mt-3">
             <div class="card-body ">
                         <div class="d-flex align-items-center justify-content-between">

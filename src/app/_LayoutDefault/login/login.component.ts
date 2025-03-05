@@ -55,16 +55,16 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   message: string;
-  dashboardUrl: string = 'backend/dashboard';
-  // dashboardUrl: string = 'backend/Streamdashboard';
+  // dashboardUrl: string = 'backend/dashboard';
+  dashboardUrl: string = 'backend/Streamdashboard';
   policyUrl: string = 'userpolicy';
   User_FullName: string;
   //---end---
   ngOnInit() {
     // this.authService.logout();
     if (localStorage.getItem('isLoggedIn') === 'true') {
-      this.router.navigate(['/backend/dashboard']);
-      // this.router.navigate(['/backend/Streamdashboard']);
+      // this.router.navigate(['/backend/dashboard']);
+      this.router.navigate(['/backend/Streamdashboard']);
     }
 
     $('.showOrHide').on('click', function (e) {

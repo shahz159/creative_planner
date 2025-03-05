@@ -424,8 +424,10 @@ a.ordr-a {
 }
 .Kt-User-IC img {
     border-radius: 50% !important;
-    height: 25px;
-    width: 25px;
+    height: 35px;
+    width: 35px;
+    object-fit: cover;
+    box-shadow: 0px 0px 6px #d6d6d6;
 }
 
 

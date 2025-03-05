@@ -299,8 +299,8 @@
 <div id="kt_header" class="kt-header kt-grid kt-grid--ver  kt-header--fixed">
     <!-- side_view -->
     <div class="kt-header-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_header_menu_wrapper">
-        <div class="d-flex align-items-stretch my-2 ml-3">
-            <button class="btn-menu btn" (click)="menutoggle()"><i class="fas fa-bars"></i></button>
+        <div class="d-flex align-items-stretch my-2 ml-4 pl-1">
+            <!-- <button class="btn-menu btn" (click)="menutoggle()"><i class="fas fa-bars"></i></button> -->
             <h3 class="my-3 Stream-planner-font">Stream planner</h3>
         </div>
     </div>
@@ -453,8 +453,8 @@
                     </div>
                 </div>
                 <div class="kt-notification">
-                    <!-- routerLink="settings/myprofile" routerLinkActive="active" -->
-                    <a (click)="navigate('/backend/settings/myprofile')" class="kt-notification__item"  [ngClass]="{'active':sectionActive=='/backend/settings/myprofile'}">
+                    <!-- (click)="navigate('/backend/settings/myprofile')"  [ngClass]="{'active':sectionActive=='/backend/settings/myprofile'}" -->
+                    <a routerLink="settings/myprofile" routerLinkActive="active" class="kt-notification__item">
                         <div class="kt-notification__item-icon">
                             <i class="flaticon2-calendar-3 kt-font-success"></i>
                         </div>
@@ -467,8 +467,8 @@
                             </div>
                         </div>
                     </a>
-                    <!-- routerLink="settings/privacypolicy" routerLinkActive="active" -->
-                    <a (click)="navigate('/backend/settings/privacypolicy')"  class="kt-notification__item" [ngClass]="{'active':sectionActive=='/backend/settings/privacypolicy'}">
+                    <!-- (click)="navigate('/backend/settings/privacypolicy')" [ngClass]="{'active':sectionActive=='/backend/settings/privacypolicy'}" -->
+                    <a routerLink="settings/privacypolicy" routerLinkActive="active" class="kt-notification__item">
                         <div class="kt-notification__item-icon">
                             <i class="flaticon2-crisp-icons kt-font-primary"></i>
                         </div>
@@ -495,7 +495,7 @@
                         </div>
                     </a> -->
                     <div class="kt-notification__custom kt-space-between">
-                        <a  (click)="onLogoutBtnClicked()" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign out</a>
+                        <a  (click)="logout()" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign out</a>
                     </div>
                 </div>
                 <!--end: Navigation -->
@@ -879,7 +879,7 @@
         </div>
         <div class="kt-portlet__foot py-2">
             <div class="text-center">
-                <button class="btn-info btn btn-sm" (click)="viewTimelineBtnClicked()">
+                <button class="btn-info btn btn-sm" (click)="viewTimeline()">
                     View all
                 </button>
             </div>
