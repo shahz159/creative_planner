@@ -88,11 +88,11 @@
                 </ng-container>
               </ng-template> -->
 
-              <ng-template ng-option-tmp let-item="item">
+              <!-- <ng-template ng-option-tmp let-item="item">
                 <span [ngClass]="{'disabled-option': item.Emp_No === Owner_Empno }">
                   {{ item.RACIS }}
                 </span>
-              </ng-template>
+              </ng-template> -->
         </ng-select>
         <span *ngIf ="_selectemp !selectedEmpNo" style="color:red">Please select employee to assign.</span>
     </div>

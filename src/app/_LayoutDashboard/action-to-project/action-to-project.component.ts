@@ -423,15 +423,15 @@ export class ActionToProjectComponent implements OnInit {
   EmployeeOnSelect(obj) {
     // this.selectedEmpNo = obj['Emp_No'];
     debugger
-    if(obj['Emp_No'] == this.Owner_Empno){
-      this.selectedEmpNo='';
-      this._selectemp = true;
-      this.notifyService.showInfo("Action cannot be assigned to project owner","");
-    }
-    else{
+    // if(obj['Emp_No'] == this.Owner_Empno){
+    //   this.selectedEmpNo='';
+    //   this._selectemp = true;
+    //   this.notifyService.showInfo("Action cannot be assigned to project owner","");
+    // }
+    // else{
       this._selectemp = false;
       this.selectedEmpNo = obj['Emp_No'];
-    }
+    // }
   }
 
   EmployeeOnDeselect(obj) {
