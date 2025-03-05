@@ -21,7 +21,7 @@ export class SidebarComponent implements OnInit {
   _EmpNo: string;
   OrganizationId:any;
   _CompNo:string;
-  _confirmBeforeSwitch:string;
+  // _confirmBeforeSwitch:string;
   _UserRole:number;
   AdminID=502;
   menu:any = ['Company','Department','Role','Designation']
@@ -177,9 +177,9 @@ export class SidebarComponent implements OnInit {
       placement:'right'
     });
 
-    this.bsService.ConfirmBeforeRoute.subscribe((modalScreen:string)=>{
-      this._confirmBeforeSwitch=modalScreen;
-    })
+    // this.bsService.ConfirmBeforeRoute.subscribe((modalScreen:string)=>{
+    //   this._confirmBeforeSwitch=modalScreen;
+    // })
 
 this.Menubinding();
   }
@@ -273,37 +273,37 @@ this.Menubinding();
   // }
 
 
-  navigateToSection(page:string){
-   if(this._confirmBeforeSwitch){
-        if(this._confirmBeforeSwitch=='AT-3RD-STEP-PC'){
-            // when moving out from the 3rd step.
-            Swal.fire({
-              title:'Project Not Submitted',
-              text:"Click 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
-              showConfirmButton:true,
-              confirmButtonText:'Keep as draft',
-              showCancelButton:true,
-              cancelButtonText:'Back',
-              // icon:'warning'
-            }).then((decision)=>{
-                if(decision.isConfirmed){
-                  this.bsService.ConfirmBeforeRoute.emit(null);
-                  // this._activeLink=page; 
-                  this.router.navigate([page]);
-                }
-            });
-        }
+  // navigateToSection(page:string){
+  //  if(this._confirmBeforeSwitch){
+  //       if(this._confirmBeforeSwitch=='AT-3RD-STEP-PC'){
+  //           // when moving out from the 3rd step.
+  //           Swal.fire({
+  //             title:'Project Not Submitted',
+  //             text:"Click 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
+  //             showConfirmButton:true,
+  //             confirmButtonText:'Keep as draft',
+  //             showCancelButton:true,
+  //             cancelButtonText:'Back',
+  //             // icon:'warning'
+  //           }).then((decision)=>{
+  //               if(decision.isConfirmed){
+  //                 this.bsService.ConfirmBeforeRoute.emit(null);
+  //                 // this._activeLink=page; 
+  //                 this.router.navigate([page]);
+  //               }
+  //           });
+  //       }
         
-   }
-   else{  
-    // this._activeLink=page;
-    this.router.navigate([page]);
-   }
-  }
+  //  }
+  //  else{  
+  //   // this._activeLink=page;
+  //   this.router.navigate([page]);
+  //  }
+  // }
   
-   getActiveLink(){
-    return this.router.url;
-   }
+  //  getActiveLink(){
+  //   return this.router.url;
+  //  }
 
 
 }
