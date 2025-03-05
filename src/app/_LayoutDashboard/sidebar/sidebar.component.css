@@ -31,3 +31,39 @@ a.kt-menu_link.kt-menu__toggle.active svg {
 li.kt-menu__item:hover a svg path {
     fill: #5867dd  !important;
 }
+
+
+.side-open-close {
+    top: 22px;
+    right: -40px;
+    bottom: 99%;
+    width: 60px;
+    height: 20px;
+    position: absolute;
+    clip-path: url(#menu);
+    will-change: transform;
+    background-color: #0b0e1f;
+    transform: rotate(90deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d1cfcf;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.side-open-close:hover {
+    color: #fff;
+}
+
+svg.toggle-arrow-svg {
+    width: 20px;
+    height: 20px;
+    transform: rotate(270deg);
+    margin-bottom: -8px;
+    transition: all 0.15s ease-in-out;
+}
+::ng-deep .kt-aside--minimize svg.toggle-arrow-svg {
+    transform: rotate(90deg)!important;
+    transition: all 0.15s ease-in-out;
+}
