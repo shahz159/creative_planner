@@ -663,6 +663,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("createEventTaskModalBackdrop").style.display = "none";
     document.getElementById("createEventTaskModalBackdrop").classList.remove("show");
 
+    this.mtgOnDays=[];
     this.Link_Details = null;
     this.Meeting_Id = null;
     this.Meeting_password = null;
@@ -713,6 +714,15 @@ export class StreamCalendarComponent implements OnInit {
   Repeat_date_time_menu() {
  
     document.getElementById("repeat-date-time-menu").classList.add("show");
+
+    //test
+   this.Time_End = [];
+   this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+   let _from = this.Time_End.indexOf(this.Startts);
+   const eventmaxDuration=286;
+   let _to=_from+eventmaxDuration;
+   this.EndTimearr=this.Time_End.slice(_from,_to);
+   //test
   }
 
   Repeat_date_time_menu_close() {
@@ -1668,15 +1678,22 @@ GetTimeslabfordate() {
     });
     this.validStartTimearr=this.StartTimearr.slice(index);
 
-    this.timingarryend = [];
+    // this.timingarryend = [];
+    // this.Time_End = [];
+    // this.Time_End = this.AllEndtime;
+    // let _index = this.Time_End.indexOf(this.Startts);
+    // if (_index + 1 === this.Time_End.length) {
+    //   _index = -1;
+    // }
+    // this.timingarryend = this.Time_End.splice(_index + 1);
+    // this.EndTimearr = this.timingarryend;
+
     this.Time_End = [];
-    this.Time_End = this.AllEndtime;
-    let _index = this.Time_End.indexOf(this.Startts);
-    if (_index + 1 === this.Time_End.length) {
-      _index = -1;
-    }
-    this.timingarryend = this.Time_End.splice(_index + 1);
-    this.EndTimearr = this.timingarryend;
+    this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+    let _from = this.Time_End.indexOf(this.Startts);
+    const eventmaxDuration=286;
+    let _to=_from+eventmaxDuration;
+    this.EndTimearr=this.Time_End.slice(_from,_to);
     // provide valid starttiming and endtimearr.    end
     });
 }
@@ -2030,7 +2047,7 @@ checkAddressURL(str) {
 
 
 
-  addstarttime() {
+  addstarttime1() {
 
     this.Alltimes = [];
     this.EndTimearr = [];
@@ -2050,14 +2067,15 @@ checkAddressURL(str) {
     this.timingarryend = [];
     this.Time_End = [];
     this.Time_End = this.AllEndtime;
-  
     let _index = this.Time_End.indexOf(this.Startts);
     if (_index + 1 === this.Time_End.length) {
       _index = -1;
     }
     this.timingarryend = this.Time_End.splice(_index + 1);
-
     this.EndTimearr = this.timingarryend;
+
+
+
     this.timearr1 = this.Startts.split(":");
     let vahr = this.timearr1[0];
     let mins = this.timearr1[1].toString();
@@ -2130,6 +2148,25 @@ checkAddressURL(str) {
 
     console.log(this.EndTimearr, "End Time Updated")
   }
+
+
+//test
+addstarttime(){
+  const completetime=this._arrayObj.map((element)=>{
+      return element.TSStart;
+   });
+   const endtime_arr=[...completetime,...completetime];
+   let _from = completetime.indexOf(this.Startts);
+   const eventmaxDuration=286;
+   let _to=_from+eventmaxDuration;
+   this.EndTimearr=endtime_arr.slice(_from,_to);
+
+   this.Endtms = new Date(new Date('2000-01-01 ' + this.Startts).getTime() + 15 * 60000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+
+   console.log(this.EndTimearr, "this.Startts")
+  }
+   //test
+
 
 
   onfocus(val) {
@@ -3954,10 +3991,14 @@ parseTime(time: string): Date {
 
 
 getDurationInHoursMinutes(start: string, end: string): string {
-  const duration = Math.abs(this.parseTime(end).getTime() - this.parseTime(start).getTime()) / 60000;
-  const hours = Math.floor(duration / 60);
-  const minutes = Math.floor(duration % 60);
-  return hours ? `${hours}h : ${minutes}m` : `${minutes}m`;
+  const toMinutes = (t: string) => {
+    let [time, period] = t.match(/(\d+:\d+)([AP]M)/).slice(1);
+    let [h, m] = time.split(':').map(Number);
+    return ((h % 12) + (period === 'PM' ? 12 : 0)) * 60 + m;
+  };
+
+  let duration = (toMinutes(end) - toMinutes(start) + 1440) % 1440;
+  return `${Math.floor(duration / 60)}h : ${duration % 60}m`;
 }
 
 
@@ -4444,16 +4485,23 @@ DublicateTaskandEvent() {
         else
 
         this.validStartTimearr=[...this.StartTimearr];
-        this.timingarryend = [];
-        this.Time_End = [];
-        this.Time_End = [...this.StartTimearr];
-        let _index = this.Time_End.indexOf(this.Startts);
-        if (_index + 1 === this.Time_End.length) {
-          _index = -1;
-        }
-        this.timingarryend = this.Time_End.splice(_index + 1);
-        this.EndTimearr = this.timingarryend;
+        // this.timingarryend = [];
+        // this.Time_End = [];
+        // this.Time_End = [...this.StartTimearr];
+        // let _index = this.Time_End.indexOf(this.Startts);
+        // if (_index + 1 === this.Time_End.length) {
+        //   _index = -1;
+        // }
+        // this.timingarryend = this.Time_End.splice(_index + 1);
+        // this.EndTimearr = this.timingarryend;
     // valid starttimearr and endtimearr setting end.
+        this.Time_End = [];
+        this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+        let _from = this.Time_End.indexOf(this.Startts);
+        const eventmaxDuration=286;
+        let _to=_from+eventmaxDuration;
+        this.EndTimearr=this.Time_End.slice(_from,_to);
+    
     });
   this.customEventModal_dismiss();
   this.customTaskModal_dismiss()
@@ -4775,16 +4823,25 @@ ReshudingTaskandEvent() {
         } else
 
         this.validStartTimearr=[...this.StartTimearr];
-        this.timingarryend = [];
-        this.Time_End = [];
-        this.Time_End = [...this.StartTimearr];
-        let _index = this.Time_End.indexOf(this.Startts);
-        if (_index + 1 === this.Time_End.length) {
-          _index = -1;
-        }
-        this.timingarryend = this.Time_End.splice(_index + 1);
-        this.EndTimearr = this.timingarryend;
+        // this.timingarryend = [];
+        // this.Time_End = [];
+        // this.Time_End = [...this.StartTimearr];
+        // let _index = this.Time_End.indexOf(this.Startts);
+        // if (_index + 1 === this.Time_End.length) {
+        //   _index = -1;
+        // }
+        // this.timingarryend = this.Time_End.splice(_index + 1);
+        // this.EndTimearr = this.timingarryend;
         // valid starttimearr and endtimearr setting end.
+        this.Time_End = [];
+        this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+        let _from = this.Time_End.indexOf(this.Startts);
+        const eventmaxDuration=286;
+        let _to=_from+eventmaxDuration;
+        this.EndTimearr=this.Time_End.slice(_from,_to);
+
+
+
     });
    this.customEventModal_dismiss();
    this.customTaskModal_dismiss();
@@ -4992,7 +5049,7 @@ RecurrValueMonthly:boolean=false;
 
       if (finalarray.length > 0) {
         finalarray.forEach(element => {
-
+          this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
           const date1: Date = new Date(this._StartDate);
           if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
             this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
@@ -6964,6 +7021,47 @@ convertToISO(dateString: string) {
   return `${year}-${month}-${day}`;
 }
 
+
+
+
+viewconfirm() {
+  const _arraytext = [];
+  if (this.selectedrecuvalue == "2" || this.selectedrecuvalue == "3") {
+    for (let index = 0; index < this.dayArr.length; index++) {
+      if (this.dayArr[index].checked) {
+        const day = this.dayArr[index].value;
+        _arraytext.push(day);
+      }
+    }
+    for (let index = 0; index < this.MonthArr.length; index++) {
+      if (this.MonthArr[index].checked == true) {
+        const day = this.MonthArr[index].value;
+        _arraytext.push(day);
+      }
+    }
+  }
+  else {
+    _arraytext.push(this.maxDate);
+  }
+  if (this._OldRecurranceId != this.selectedrecuvalue || this._OldRecurranceValues != _arraytext.toString()) {
+    var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+    radio1.disabled = false;
+    radio1.checked = true;
+    var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+    radio2.disabled = false;
+    radio2.checked = false;
+  }
+  else if (this._OldRecurranceId == this.selectedrecuvalue && this._OldRecurranceValues == _arraytext.toString()) {
+    document.getElementById("div_thisevent").style.display = "block";
+    var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+    radio1.disabled = false;
+    radio1.checked = true;
+    var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+    radio2.disabled = false;
+    radio2.checked = false;  
+    this._PopupConfirmedValue = 1;
+  }
+}
 
 /////////////////////////////////////////// Monthly section end /////////////////////////////////////////////////////////
 

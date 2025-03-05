@@ -888,7 +888,7 @@
                                                                     <!-- <div class="dark-title">21 Thu, January 2024</div> -->
                                                                     <!-- <div class="dark-title">{{ startTime | date:'d EEE,MMMM YYYY'}} -->
                                                         
-                                                                   <div class="dark-title">{{item.Schedule_date | date:'EEEE, MMMM d, yyyy'}}
+                                                                   <div class="dark-title">{{item.Schedule_date | date:'EEEE, MMMM d, yyyy'}} <span  *ngIf="item.Schedule_date !== oneByTwoEndDate" class="mid-night">{{oneByTwoEndDate | date:'EEEE, MMMM d, yyyy'}}</span>
                                                                     </div>
                                                                     <span class="deadline-count d-none">
                                                                         <span class="deadline-count-btn">
@@ -3196,12 +3196,12 @@
                                                     </a>
                                                     <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
                                                         <div class="d-flex align-items-center justify-content-between">
-                                                        
-                                                           
-                                                           
-                                                            <div
-                                                                class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1">
+                                   
+                                                            <div *ngIf="item.Status != 'Accepted'" class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1">
                                                                 <span  class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>
+                                                           </div>
+                                                           <div *ngIf="item.Status == 'Accepted'" (click)="moreDetails(item.ActionCode)" class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1 custom-hover">
+                                                                 <span  class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>
                                                            </div>
                                                         </div>
                                                         <!-- <span class="desc ml-2 mb-2">Testing all the functionality after Publishing File on live</span> -->
@@ -3508,12 +3508,10 @@
                                                                                                                                     C7.58,7.273,7.237,7.597,6.75,7.582C6.292,7.567,5.996,7.238,6.008,6.756z"></path></g></svg>
                                                                     </a>
                                                                     <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
-                                                                        <div
-                                                                            class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1">
-                                                                            
-
-                                                                            <span class="kt-inbox__subject  h5">{{item.Task_Name}}</span>
+                                                                        <div (click)="newDetailsaction(item.Project_Code.trim(),item.ActionCode.trim())" class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 custom-hover">
+                                                                             <span class="kt-inbox__subject  h5">{{item.Task_Name}}</span>
                                                                         </div>
+
                                                                         <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
                                                                         <div class="my-2">
 
@@ -6755,9 +6753,9 @@
                                     <ul class="attendees-note-userlist" *ngFor="let item of AssignedTask">
                                         <li class="attendees-note-user">
 
-                                            <div class="mb-2 card" >
+                                            <div class="card w-100" >
                                                     <div class="card-body p-2 Replied_border_left_true_warning mr-2">
-                                                        <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
+                                                        <div data-type="inbox" class="d-flex flex-wrap">
 
                                                             <a *ngIf="item.Status == 'Accepted'" (click)="moreDetails(item.ActionCode)" tabindex="0" role="button" placement="right" data-trigger="focus" data-toggle="tooltip" matTooltip="Click to view the project details" class="btn px-0 info-btn curser-pointer">
                                                                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" xml:space="preserve" style="enable-background: new 0 0 20 20;"><g><path fill="currentColor" d="M19.293,9.976c0.13,4.913-4.07,9.247-9.273,9.223c-5.177-0.024-9.292-4.078-9.315-9.196
@@ -6792,13 +6790,14 @@
                                                             </div>
                                                             <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
                                                                 <div class="d-flex align-items-center justify-content-between">
-                                                                    <div>
-
-                                                                    </div>&nbsp; <div
-                                                                        class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1">
-                                                                        <span class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>
-                                                                    
+                                                                  
+                                                                  
+                                                                    <div *ngIf="item.Status != 'Accepted'" class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1">
+                                                                        <span class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>                 
                                                                     </div>
+                                                                    <div *ngIf="item.Status == 'Accepted'" (click)="moreDetails(item.ActionCode)" class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 flex-1 custom-hover">
+                                                                    <span class="kt-inbox__subject h5 mybutton">{{item.Task_Name}}</span>                 
+                                                                </div>
                                                                 </div>
 
                                                                 <div class="my-2">
@@ -6916,11 +6915,8 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="d-flex flex-column flex-grow-1 my-lg-0 my-2 pr-2 w-75">
-                                                                        <div
-                                                                            class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1">
-                                                                          
-
-                                                                            <span class="kt-inbox__subject  h5">{{item.Task_Name}}</span>
+                                                                        <div (click)="newDetailsaction(item.Project_Code.trim(),item.ActionCode.trim())" class="text-dark-75 font-weight-bolder text-hover-primary font-size-lg ml-1 custom-hover">
+                                                                          <span class="kt-inbox__subject  h5">{{item.Task_Name}}</span>
                                                                        </div>
                                                                         <span class="desc ml-2 mb-2">{{item.Task_Description}}</span>
                                                                         <div class="my-2">
