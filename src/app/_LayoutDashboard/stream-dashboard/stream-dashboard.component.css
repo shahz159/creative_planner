@@ -2569,8 +2569,11 @@ span.p-b-percent-count {
 }
 
 ::ng-deep .banner-item.activity-item.owl-theme .owl-nav.disabled+.owl-dots {
-    margin-top: -21px !important;
-    position: relative;
+    margin-top: 0px !important;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 ::ng-deep .banner-item.activity-item.owl-theme .owl-dots .owl-dot span {
