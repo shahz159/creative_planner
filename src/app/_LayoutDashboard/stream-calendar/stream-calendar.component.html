@@ -5494,8 +5494,8 @@
 
              </div>
             </div>
-            <div class="quickaction-ul"  *ngFor="let item of draftdata_meet | filter : SearchOfDraftItem">
-                <div class="quickaction-li">
+            <div class="quickaction-ul">
+                <div class="quickaction-li"  *ngFor="let item of draftdata_meet | filter : SearchOfDraftItem">
 
                     <div class="quickaction-li-icon" *ngIf="item.project_type == 2" >
                         <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="blue-color"
@@ -5621,8 +5621,8 @@
                         class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched  border-0    " />
                 </div>
             </div>
-            <div class="quickaction-ul" *ngFor="let item of multiapproval_json | filter : SearchOfRequestItem" >
-                <div class="quickaction-li">
+            <div class="quickaction-ul" >
+                <div class="quickaction-li" *ngFor="let item of multiapproval_json | filter : SearchOfRequestItem">
                     <div class="quickaction-li-icon">
                         <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="blue-color"
                                         width="20px" height="20px" viewBox="0 0 20 20" version="1.1" >
@@ -5698,8 +5698,8 @@
                         class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched  border-0    " />
                 </div>
             </div>
-            <div class="quickaction-ul" *ngFor="let bookmark of meetingbookmarks  | filter : SearchOfBookmarkItem">
-                <div class="quickaction-li">
+            <div class="quickaction-ul">
+                <div class="quickaction-li" *ngFor="let bookmark of meetingbookmarks  | filter : SearchOfBookmarkItem">
                     <div *ngIf="bookmark.Schedule_type == 2" class="quickaction-li-icon">
                         <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="blue-color"
                                         width="20px" height="20px" viewBox="0 0 20 20" version="1.1" >
