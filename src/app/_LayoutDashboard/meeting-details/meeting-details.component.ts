@@ -584,6 +584,10 @@ export class MeetingDetailsComponent implements OnInit {
   _FutureEventAttachment: number = 0;
   AdminName:any;
   isLoading: boolean = true;
+  oneByTwoEndDate:any;
+
+
+
 
   meeting_details() {
  
@@ -798,13 +802,19 @@ export class MeetingDetailsComponent implements OnInit {
       }
 
       var St_Time = this.EventScheduledjson[0].St_Time;
-      var End_date = this.EventScheduledjson[0].Ed_Time;
+      var End_date = this.EventScheduledjson[0].Ed_Time; debugger
+      var StartDate = this.EventScheduledjson[0].StartDate;
+      this.oneByTwoEndDate = this.EventScheduledjson[0].SEndDate;
 
-      var startTime = moment(St_Time, "hh:mm A");
-      var endTime = moment(End_date, "hh:mm A");
+      // var startTime = moment(St_Time, "hh:mm A");
+      // var endTime = moment(End_date, "hh:mm A");
+
+      var startTime = moment(`${StartDate} ${St_Time}`, "YYYY-MM-DD hh:mm A");
+      var endTime = moment(`${this.oneByTwoEndDate} ${End_date}`, "YYYY-MM-DD hh:mm A")
+
 
       // Calculate the duration between the start time and end time
-      var duration = moment.duration(endTime.diff(startTime));
+      var duration = moment.duration(endTime.diff(startTime));  debugger
 
       // Format the duration as hours:minutes
       this.hours = Math.floor(duration.asHours());
