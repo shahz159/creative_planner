@@ -17,9 +17,8 @@
             <ul class="kt-menu__nav pt-0">
 
                 <li class="kt-menu__item" >
-                    <!-- routerLink="dashboard" routerLinkActive="active" [routerLinkActiveOptions]={exact:true} -->
-                    <a (click)="navigateToSection('/backend/dashboard')" [ngClass]="{'active':getActiveLink().startsWith('/backend/dashboard')}"
-                        class="kt-menu__link kt-menu__toggle">
+                    <!-- (click)="navigateToSection('/backend/dashboard')" [ngClass]="{'active':getActiveLink().startsWith('/backend/dashboard')}" -->
+                    <a routerLink="dashboard" routerLinkActive="active" [routerLinkActiveOptions]={exact:true} class="kt-menu__link kt-menu__toggle">
                         <!-- <i class="kt-menu__link-icon flaticon2-protection" id="dashboard"></i> -->
                         <svg style="width: 22px!important; height: 22px!important" class="kt-menu__link-icon" id="dashboard" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                             <g id="surface1">
@@ -32,8 +31,8 @@
                     </a>
                 </li>
                 <li class="kt-menu__item d-none" >
-                    <!-- routerLink="Streamdashboard" routerLinkActive="active"  [routerLinkActiveOptions]={exact:true} -->
-                    <a (click)="navigateToSection('/backend/Streamdashboard')" class="kt-menu__link kt-menu__toggle" [ngClass]="{'active':getActiveLink().startsWith('/backend/Streamdashboard')}">
+                    <!-- (click)="navigateToSection('/backend/Streamdashboard')" [ngClass]="{'active':getActiveLink().startsWith('/backend/Streamdashboard')}"  -->
+                    <a routerLink="Streamdashboard" routerLinkActive="active"  [routerLinkActiveOptions]={exact:true}  class="kt-menu__link kt-menu__toggle">
                         <!-- <i class="kt-menu__link-icon flaticon2-protection" id="dashboard"></i> -->
                         <svg style="width: 22px!important; height: 22px!important" class="kt-menu__link-icon" id="dashboard" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                             <g id="surface1">
@@ -46,8 +45,8 @@
                     </a>
                 </li>
                 <li class="kt-menu__item d-none">
-                    <!-- routerLink="StreamCalendar" routerLinkActive="active"   [routerLinkActiveOptions]={exact:true} -->
-                    <a (click)="navigateToSection('/backend/StreamCalendar')" class="kt-menu__link kt-menu__toggle" [ngClass]="{'active':getActiveLink().startsWith('/backend/StreamCalendar')}" >
+                    <!-- (click)="navigateToSection('/backend/StreamCalendar')" [ngClass]="{'active':getActiveLink().startsWith('/backend/StreamCalendar')}" -->
+                    <a routerLink="StreamCalendar" routerLinkActive="active"   [routerLinkActiveOptions]={exact:true} class="kt-menu__link kt-menu__toggle">
                         <!-- <i class="kt-menu__link-icon flaticon2-protection" id="dashboard"></i> -->
                         <!-- <svg  style="width: 28px!important; height: 28px!important" class="kt-menu__link-icon" width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 2a1 1 0 0 0-1 1v1.001c-.961.014-1.34.129-1.721.333a2.272 2.272 0 0 0-.945.945C3.116 5.686 3 6.09 3 7.205v10.59c0 1.114.116 1.519.334 1.926.218.407.538.727.945.945.407.218.811.334 1.926.334h11.59c1.114 0 1.519-.116 1.926-.334.407-.218.727-.538.945-.945.218-.407.334-.811.334-1.926V7.205c0-1.115-.116-1.519-.334-1.926a2.272 2.272 0 0 0-.945-.945C19.34 4.13 18.961 4.015 18 4V3a1 1 0 1 0-2 0v1H8V3a1 1 0 0 0-1-1zM5 9v8.795c0 .427.019.694.049.849.012.06.017.074.049.134a.275.275 0 0 0 .124.125c.06.031.073.036.134.048.155.03.422.049.849.049h11.59c.427 0 .694-.019.849-.049a.353.353 0 0 0 .134-.049.275.275 0 0 0 .125-.124.353.353 0 0 0 .048-.134c.03-.155.049-.422.049-.849L19.004 9H5zm8.75 4a.75.75 0 0 0-.75.75v2.5c0 .414.336.75.75.75h2.5a.75.75 0 0 0 .75-.75v-2.5a.75.75 0 0 0-.75-.75h-2.5z" fill="currentColor"></path></g></svg> -->
                         <svg xmlns="http://www.w3.org/2000/svg" id="scheduleevent" style="width: 24px!important; height: 24px!important" class="kt-menu__link-icon"  width="19" height="21" viewBox="0 0 19 21" fill="none">
@@ -58,9 +57,8 @@
                     </a>
                 </li>
                 <li class="kt-menu__item">
-                    <!-- routerLink="Portfolio" routerLinkActive="active" -->
-                    <a (click)="navigateToSection('/backend/Portfolio')" class="kt-menu__link kt-menu__toggle"  [ngClass]="{'active':getActiveLink().startsWith('/backend/Portfolio')}"
-                        >
+                    <!-- (click)="navigateToSection('/backend/Portfolio')" [ngClass]="{'active':getActiveLink().startsWith('/backend/Portfolio')}" -->
+                    <a routerLink="Portfolio" routerLinkActive="active" class="kt-menu__link kt-menu__toggle">
                         <!-- <i class="kt-menu__link-icon fas fa-list" id="Portfolio"></i> -->
                         <svg xmlns="http://www.w3.org/2000/svg"  style="width: 28px!important; height: 28px!important" class="kt-menu__link-icon" id="Portfolio" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                             <defs></defs>
@@ -75,8 +73,8 @@
                     </a>
                 </li>
                 <li  [ngClass]="{'d-none':_UserRole!=AdminID}" class="kt-menu__item">
-                    <!-- routerLink="PerformanceDashboard" routerLinkActive="active" -->
-                    <a (click)="navigateToSection('/backend/masterforms/UserList')" class="kt-menu__link" [ngClass]="{'active':getActiveLink()=='/backend/masterforms/UserList'}">
+                    <!-- (click)="navigateToSection('/backend/masterforms/UserList')" [ngClass]="{'active':getActiveLink()=='/backend/masterforms/UserList'}" -->
+                    <a routerLink="masterforms/UserList" routerLinkActive="active" class="kt-menu__link">
                         <!-- <i class="kt-menu__link-icon flaticon2-graph"></i> title="Performance Dashboard" title="Dashboard"-->
                         <!-- <i class=" kt-menu__link-icon far fa-chart-bar"  id="performance"></i> -->
                         <i class="material-icons kt-menu__link-icon fs-1">person</i><span class="kt-menu__link-text">User Registration</span>
@@ -107,10 +105,11 @@
                         <ul class="kt-menu__subnav">
                             <ng-container *ngFor="let item of menu">
                                 <li class="kt-menu__item" aria-haspopup="true">
-                                    <a (click)="navigateToSection('/backend/masterforms/'+item)"  class="kt-menu__link">
+                                    <!-- (click)="navigateToSection('/backend/masterforms/'+item)" -->
+                                    <a [routerLink]="'masterforms/'+item" class="kt-menu__link">
                                         <span class="kt-menu__link-text">
-                                                {{item}}
-                                            </span>
+                                            {{item}}
+                                        </span>
                                     </a>
                                 </li>
                             </ng-container>
@@ -118,17 +117,16 @@
                     </div>
                 </li>
                 <li class="kt-menu__item">
-                    <!-- routerLink="createproject"  routerLinkActive="active" -->
-                    <a (click)="navigateToSection('/backend/createproject')"   class="kt-menu__link kt-menu__toggle"  [ngClass]="{'active':getActiveLink().startsWith('/backend/createproject')}">
+                    <!-- (click)="navigateToSection('/backend/createproject')"  [ngClass]="{'active':getActiveLink().startsWith('/backend/createproject')}" -->
+                    <a routerLink="createproject"  routerLinkActive="active" class="kt-menu__link kt-menu__toggle">
                         <svg id="New_Project" class="kt-menu__link-icon" fill="currentColor" width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="-10 -30 120 160" enable-background="new 0 0 100 100" xml:space="preserve"><g><g><path fill="currentColor" d="M95,79.564c0,2.236-1.855,4.091-4.091,4.091h-7.255v7.255c0,2.236-1.855,4.091-4.091,4.091    c-2.291,0-4.091-1.855-4.091-4.091v-7.255h-7.309c-1.091,0-2.127-0.436-2.891-1.2c-0.709-0.764-1.2-1.745-1.2-2.891    c0-2.291,1.855-4.091,4.091-4.091h7.309v-7.309c0-2.236,1.8-4.091,4.091-4.091c0.818,0,1.636,0.273,2.291,0.709    c1.091,0.709,1.8,1.964,1.8,3.382v7.309h7.255C93.145,75.473,95,77.273,95,79.564z"/><path fill="currentColor" d="M57.691,21.364v-0.545c-0.055-4.2-3.436-7.636-7.691-7.636s-7.691,3.436-7.691,7.636v0.545H57.691z     M34.127,21.364v-0.545C34.127,12.091,41.218,5,50,5s15.873,7.091,15.873,15.818v0.545h13.636C88.073,21.364,95,28.291,95,36.855    v11.236v0.491v12.982c0,2.236-1.855,4.091-4.091,4.091c-0.818,0-1.636-0.273-2.291-0.709c-1.091-0.709-1.8-1.964-1.8-3.382V48.582    v-0.491V36.855c0-2.018-0.818-3.818-2.127-5.182c-1.364-1.364-3.164-2.127-5.182-2.127H61.782H38.218H20.491    c-2.018,0-3.818,0.764-5.182,2.127c-1.309,1.364-2.127,3.164-2.127,5.182v11.236v0.491v30.927c0,4.036,3.273,7.309,7.309,7.309    h41.018c2.236,0,4.091,1.8,4.091,4.091c0,2.236-1.855,4.091-4.091,4.091H20.491C11.982,94.945,5,88.073,5,79.509V48.582v-0.491    V36.855c0-8.564,6.927-15.491,15.491-15.491H34.127z"/></g></g></svg>
                         <span class="kt-menu__link-text"> New project</span>
                         <i class="kt-menu__ver-arrow la la-angle-right"></i>
                     </a>
                 </li>
                 <li class="kt-menu__item">
-                    <!-- routerLink="ProjectsSummary" routerLinkActive="active"  -->
-                    <a (click)="navigateToSection('/backend/ProjectsSummary')"  class="kt-menu__link kt-menu__toggle"  [ngClass]="{'active':getActiveLink().startsWith('/backend/ProjectsSummary')}"
-                       >
+                    <!-- (click)="navigateToSection('/backend/ProjectsSummary')"  [ngClass]="{'active':getActiveLink().startsWith('/backend/ProjectsSummary')}" -->
+                    <a routerLink="ProjectsSummary" routerLinkActive="active"   class="kt-menu__link kt-menu__toggle">
                         <!-- <i class="kt-menu__link-icon fab fa-wpforms"  id="summary"></i> -->
                         <svg id="summary" fill="currentColor" style="width: 24px!important; height: 24px!important" class="kt-menu__link-icon" width="64px" height="64px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="m 13,2.15688 0,9.68624 C 13,12.49386 12.491071,13 11.842857,13 L 2.1571429,13 C 1.5169643,12.99732 1,12.49922 1,11.84044 L 1,2.15688 C 1,1.51149 1.5035714,1 2.1571429,1 L 11.845536,1 C 12.488393,1 13,1.50346 13,2.15688 Z m -0.999107,9.68356 0,-9.68356 c 0,-0.0803 -0.06964,-0.15532 -0.155357,-0.15532 l -0.249107,0 L 8.6419643,3.99933 7,2.66302 5.3607143,3.99933 2.40625,1.99888 l -0.2491071,0 c -0.085714,0 -0.1553572,0.075 -0.1553572,0.15533 l 0,9.68623 c 0,0.0803 0.069643,0.15532 0.1553572,0.15532 l 9.6883931,0 c 0.08571,0.003 0.155357,-0.0723 0.155357,-0.15532 z m -6.9776787,-6.71636 0,0.99085 -1.96875,0 0,-0.99085 1.96875,0 z m 0,1.99241 0,0.99889 -1.96875,0 0,-0.99889 1.96875,0 z m 0.2973214,-3.94465 1.4464286,-1.17028 -3.1741072,0 1.7276786,1.17028 z m 5.6250003,1.95224 0,0.99085 -5.2500003,0 0,-0.99085 5.2500003,0 z m 0,1.99241 0,0.99889 -5.2500003,0 0,-0.99889 5.2500003,0 z M 8.6794643,3.17184 10.407143,2.00156 l -3.1714287,0 1.44375,1.17028 z m 2.2660717,5.94242 0,0.99888 -2.6625003,0 0,-0.99888 2.6625003,0 z"></path></g></svg>
                         <span class="kt-menu__link-text">Projects summary </span>
@@ -137,8 +135,8 @@
                 </li>
                 <!-- /////////<i class="fa-regular "></i>  title="Projects Summary"  title="Timeline"  title="To Do Projects"-->
                 <li class="kt-menu__item"  style="display: none;">
-                    <!-- routerLink="ToDoProjects" routerLinkActive="active" -->
-                    <a  (click)="navigateToSection('/backend/ToDoProjects')"  class="kt-menu__link kt-menu__toggle"  [ngClass]="{'active':getActiveLink().startsWith('/backend/ToDoProjects')}">
+                    <!-- (click)="navigateToSection('/backend/ToDoProjects')" [ngClass]="{'active':getActiveLink().startsWith('/backend/ToDoProjects')}" -->
+                    <a routerLink="ToDoProjects" routerLinkActive="active" class="kt-menu__link kt-menu__toggle">
 
                     <svg id="todo"  style="width: 24px!important; height: 24px!important" class="kt-menu__link-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                         <g id="surface1">
@@ -178,8 +176,8 @@
                     </a>
                 </li>
                 <li class="kt-menu__item">
-                    <!-- routerLink="Timeline" routerLinkActive="active" -->
-                    <a (click)="navigateToSection('/backend/Timeline')" class="kt-menu__link kt-menu__toggle" [ngClass]="{'active':getActiveLink().startsWith('/backend/Timeline')}">
+                    <!-- (click)="navigateToSection('/backend/Timeline')" [ngClass]="{'active':getActiveLink().startsWith('/backend/Timeline')}" -->
+                    <a routerLink="Timeline" routerLinkActive="active" class="kt-menu__link kt-menu__toggle" >
                         <!-- <i class="kt-menu__link-icon fab fa-tumblr-square"  id="timeline"></i> -->
                         <!-- <svg fill="currentColor" style="width: 24px!important; height: 24px!important" class="kt-menu__link-icon"  width="64px" height="64px" id="timeline" viewBox="-10 -2 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12.441 12.953s-.307.34-.89.34c-.584 0-.845-.34-.845-.845V9.59h1.887V7.857h-1.887V5H9.285C9.062 6.282 8.187 7.35 7 7.874V9.59h1.386v3.291c0 .457.446 2.119 2.72 2.119 1.335 0 1.888-.83 1.888-.83l-.553-1.217z"></path><path d="M4 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4zm0-2h12a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4z"></path></g></svg> -->
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" id="timeline" class="kt-menu__link-icon" fill="none" style="width: 21px !important;height: 21px !important;">
@@ -192,8 +190,8 @@
                 </li>
 
                 <li class="kt-menu__item">
-                    <!-- routerLink="PerformanceDashboard" routerLinkActive="active" -->
-                    <a (click)="navigateToSection('/backend/PerformanceDashboard')" class="kt-menu__link kt-menu__toggle" [ngClass]="{'active':getActiveLink()=='/backend/PerformanceDashboard'}">
+                    <!-- (click)="navigateToSection('/backend/PerformanceDashboard')" [ngClass]="{'active':getActiveLink()=='/backend/PerformanceDashboard'}" -->
+                    <a  routerLink="PerformanceDashboard" routerLinkActive="active" class="kt-menu__link kt-menu__toggle">
                         <!-- <i class="kt-menu__link-icon flaticon2-graph"></i> title="Performance Dashboard" title="Dashboard"-->
                         <!-- <i class=" kt-menu__link-icon far fa-chart-bar"  id="performance"></i> -->
 

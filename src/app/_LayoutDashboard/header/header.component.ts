@@ -91,7 +91,7 @@ export class HeaderComponent implements OnInit {
   isNotificationsLoading:boolean=false;
   urlcomponent:any;
   newfeaturetippy:any;
-  _confirmBeforeRouting:string;
+  // _confirmBeforeRouting:string;
   AdminID=502;
   
   ngOnInit(): void {
@@ -162,9 +162,9 @@ export class HeaderComponent implements OnInit {
       });
 
 
-      this.bsService.ConfirmBeforeRoute.subscribe((modalScreen:any)=>{
-        this._confirmBeforeRouting=modalScreen;
-      })
+      // this.bsService.ConfirmBeforeRoute.subscribe((modalScreen:any)=>{
+      //   this._confirmBeforeRouting=modalScreen;
+      // })
 
 
   }
@@ -260,40 +260,39 @@ export class HeaderComponent implements OnInit {
   }
 
 
- viewTimelineBtnClicked(){
-     if(this._confirmBeforeRouting){
+//  viewTimelineBtnClicked(){
+//      if(this._confirmBeforeRouting){
 
-      if(this._confirmBeforeRouting=='AT-3RD-STEP-PC')
-      {
-          // moving from 3rd step
-          Swal.fire({
-            title:'Project Not Submitted',
-            text:"Click 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
-            showConfirmButton:true,
-            confirmButtonText:'Keep as draft',
-            showCancelButton:true,
-            cancelButtonText:'Back',
-            // icon:'warning'
-          }).then((decision)=>{
-              if(decision.isConfirmed){
-                this.bsService.ConfirmBeforeRoute.emit(null);
-                this.viewTimeline();
-              }
-          });
-      }
+//       if(this._confirmBeforeRouting=='AT-3RD-STEP-PC')
+//       {
+//           // moving from 3rd step
+//           Swal.fire({
+//             title:'Project Not Submitted',
+//             text:"Click 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
+//             showConfirmButton:true,
+//             confirmButtonText:'Keep as draft',
+//             showCancelButton:true,
+//             cancelButtonText:'Back',
+//             // icon:'warning'
+//           }).then((decision)=>{
+//               if(decision.isConfirmed){
+//                 this.bsService.ConfirmBeforeRoute.emit(null);
+//                 this.viewTimeline();
+//               }
+//           });
+//       }
 
- }
- else
- this.viewTimeline();
+//  }
+//  else
+//  this.viewTimeline();
 
- }
+//  }
 
 
   viewTimeline() {
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");
     document.getElementById("rightbar-overlay").style.display = "none";
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
-    debugger
     this.router.navigate(["../backend/Timeline"],{queryParams:{section:this.timelineType}});
   }
 
@@ -594,62 +593,91 @@ export class HeaderComponent implements OnInit {
     myWindow.focus();
   }
 
- onLogoutBtnClicked(){
-    if(this._confirmBeforeRouting){
-          if(this._confirmBeforeRouting=='AT-3RD-STEP-PC')
-          {
-              // moving from 3rd step
-              Swal.fire({
-                title:'Project Not Submitted',
-                text:"Click 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
-                showConfirmButton:true,
-                confirmButtonText:'Keep as draft',
-                showCancelButton:true,
-                cancelButtonText:'Back',
-                // icon:'warning'
-              }).then((decision)=>{
-                  if(decision.isConfirmed){
-                    this.bsService.ConfirmBeforeRoute.emit(null);
-                    this.logout();
-                  }
-              });
-          }
+//  onLogoutBtnClicked(){
+//     if(this._confirmBeforeRouting){
+//           if(this._confirmBeforeRouting=='AT-3RD-STEP-PC')
+//           {
+//               // moving from 3rd step
+//               Swal.fire({
+//                 title:'Project Not Submitted',
+//                 text:"Click 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
+//                 showConfirmButton:true,
+//                 confirmButtonText:'Keep as draft',
+//                 showCancelButton:true,
+//                 cancelButtonText:'Back',
+//                 // icon:'warning'
+//               }).then((decision)=>{
+//                   if(decision.isConfirmed){
+//                     this.bsService.ConfirmBeforeRoute.emit(null);
+//                     this.logout();
+//                   }
+//               });
+//           }
 
-    }
-    else
-    this.logout();
- }
+//     }
+//     else
+//     this.logout();
+//  }
 
- logout() {
+// old
+//  logout() {
+//   // Stop loading bar if active
+//   if (this.loadingBar_state) {
+//     this.loadingBar_state.stop();
+//   }
+
+//   // Clear only authentication-related keys
+//   sessionStorage.clear(); // Assuming all session storage is authentication-related
+//   localStorage.removeItem('isLoggedIn');
+//   localStorage.removeItem('EmpNo');
+//   localStorage.removeItem('OrganizationId');
+//   localStorage.removeItem('UserfullName');
+//   localStorage.removeItem('_Currentuser');
+//   localStorage.removeItem('IsStreamDownload');
+//   localStorage.removeItem('DMS_UserInfo');
+//   localStorage.removeItem('currentUser');
+
+//   sessionStorage.clear();
+//   localStorage.clear();
+//     // localStorage.setItem('language', this.storedLanguage);
+//     // alert(this.storedLanguage)
+//     this.router.navigate(['login']).then(() => {
+//       window.location.reload();
+//     });
+//   // Call AuthService logout for any additional logic
+//   this.authService.logout();
+
+//   // Navigate to login page
+//   // this.router.navigate(['/login']);
+// }
+
+// new 
+logout(){
   // Stop loading bar if active
   if (this.loadingBar_state) {
     this.loadingBar_state.stop();
   }
-
-  // Clear only authentication-related keys
-  sessionStorage.clear(); // Assuming all session storage is authentication-related
-  localStorage.removeItem('isLoggedIn');
-  localStorage.removeItem('EmpNo');
-  localStorage.removeItem('OrganizationId');
-  localStorage.removeItem('UserfullName');
-  localStorage.removeItem('_Currentuser');
-  localStorage.removeItem('IsStreamDownload');
-  localStorage.removeItem('DMS_UserInfo');
-  localStorage.removeItem('currentUser');
-
-  sessionStorage.clear();
-  localStorage.clear();
-    // localStorage.setItem('language', this.storedLanguage);
-    // alert(this.storedLanguage)
-    this.router.navigate(['login']).then(() => {
-      window.location.reload();
-    });
-  // Call AuthService logout for any additional logic
-  this.authService.logout();
-
-  // Navigate to login page
-  // this.router.navigate(['/login']);
+  this.router.navigate(['login']).then((isNavigationSuccess)=>{
+     if(isNavigationSuccess)
+     {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('EmpNo');
+      localStorage.removeItem('OrganizationId');
+      localStorage.removeItem('UserfullName');
+      localStorage.removeItem('_Currentuser');
+      localStorage.removeItem('IsStreamDownload');
+      localStorage.removeItem('DMS_UserInfo');
+      localStorage.removeItem('currentUser');
+      sessionStorage.clear();
+      localStorage.clear();
+      this.authService.logout();  // clear stored token and login status.
+      window.location.reload();  // force reload the page.
+     }
+  })
 }
+
+
+
 
   featuremodel() {
     // document.getElementById("newfeatures").style.display = "block";
@@ -970,35 +998,35 @@ onLeaveSubmit(){
 
 
 
-sectionActive:string;
-navigate(section:string){
-  if(this._confirmBeforeRouting){
-      if(this._confirmBeforeRouting=='AT-3RD-STEP-PC'){
-          // moving from 3rd step
-          Swal.fire({
-            title:'Project Not Submitted',
-            text:"Click 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
-            showConfirmButton:true,
-            confirmButtonText:'Keep as draft',
-            showCancelButton:true,
-            cancelButtonText:'Back',
-            // icon:'warning'
-          }).then((decision)=>{
-              if(decision.isConfirmed){
-                this.bsService.ConfirmBeforeRoute.emit(null);
-                this.sectionActive=section;
-                this.router.navigate([this.sectionActive]);
-              }
-          });
-      }
+// sectionActive:string;
+// navigate(section:string){
+//   if(this._confirmBeforeRouting){
+//       if(this._confirmBeforeRouting=='AT-3RD-STEP-PC'){
+//           // moving from 3rd step
+//           Swal.fire({
+//             title:'Project Not Submitted',
+//             text:"Click 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
+//             showConfirmButton:true,
+//             confirmButtonText:'Keep as draft',
+//             showCancelButton:true,
+//             cancelButtonText:'Back',
+//             // icon:'warning'
+//           }).then((decision)=>{
+//               if(decision.isConfirmed){
+//                 this.bsService.ConfirmBeforeRoute.emit(null);
+//                 this.sectionActive=section;
+//                 this.router.navigate([this.sectionActive]);
+//               }
+//           });
+//       }
 
-  }
-  else{
-    this.sectionActive=section;
-    this.router.navigate([this.sectionActive]);
-  }
+//   }
+//   else{
+//     this.sectionActive=section;
+//     this.router.navigate([this.sectionActive]);
+//   }
 
-}
+// }
 
 
 }

@@ -4197,6 +4197,11 @@ if(this.End_Date&&invaildPrjEnddate){
             this.newproject_Cost=costVal;
             console.log("cost:",costVal);
         }
+        else{  // on failure
+            // temporary
+             this.newproject_Cost=alhrVal*10;
+             // temporary
+        }
       });
     }
     
@@ -4260,7 +4265,7 @@ if(this.End_Date&&invaildPrjEnddate){
   }
 
 
-  getNewActnCost(){   debugger
+  getNewActnCost(){  
     let alhrVal:any=this.editAllocatedhours;
     if(alhrVal){
 
@@ -4271,6 +4276,12 @@ if(this.End_Date&&invaildPrjEnddate){
             const costVal=res.Data;
             this.newaction_Cost=costVal;
             console.log("cost:",costVal);
+        }
+        else{  // on failure
+          // test for new users (Temporary)
+                const cost=newAlhr*10;
+                this.newaction_Cost=cost;
+          // test for new users (Temporary)
         }
       });
     }
@@ -9449,7 +9460,7 @@ cancelAction(index) {
             this.getProjectDetails(this.URL_ProjectCode);
           }
           else if (this._Message == '2' || this._Message == '0') {
-            this.notifyService.showError("Project cancel failed", "Failed");
+            this.notifyService.showError("Action cancel failed", "Failed");
           }
         });
 

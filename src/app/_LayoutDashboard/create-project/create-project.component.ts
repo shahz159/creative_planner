@@ -132,6 +132,7 @@ export class CreateProjectComponent implements OnInit {
   saveAsTemplate:boolean=false;
   notProvided:boolean=false;
   notificationMsg:number=0;
+  confirmBeforeRoute:boolean=false; // if true then confirmation appears when user tries to leave this create project page.
 
 
   constructor(private router: Router,private location: Location,
@@ -744,7 +745,8 @@ createSRTProject=async()=>{
                 }
                 else{
                   this.Move_to_Add_action_tab();    // moved to step 3
-                  this.BsService.ConfirmBeforeRoute.emit('AT-3RD-STEP-PC'); // we are on step3 screen.
+                  this.confirmBeforeRoute=true;  // confirmation to user if he tries to leave page without submit.
+                  // this.BsService.ConfirmBeforeRoute.emit('AT-3RD-STEP-PC'); // we are on step3 screen.
 
                 }
 
@@ -1047,7 +1049,8 @@ contentType:any="";
         cancelButtonText:'Back',
     }).then((decision)=>{
         if(decision.isConfirmed){
-          this.BsService.ConfirmBeforeRoute.emit(null);   // if back to options from 3rd step. removes sidebar,header confirmations.
+          this.confirmBeforeRoute=false;  // no confirmation if user tries to navigate out from create project page.
+          // this.BsService.ConfirmBeforeRoute.emit(null);   // if back to options from 3rd step. removes sidebar,header confirmations.
           this.back_to_options();
           this.reset();
           }
@@ -1979,7 +1982,8 @@ sendApproval=async()=>{
     this.createProjectService.NewUpdateNewProjectApproval(this.ProjectDto).subscribe((res:any)=>{ 
       if(res&&res.message==='Success'){
             this.notification.showSuccess("Project sent to project owner "+this.owner_json.find((item)=>item.EmpNo==this.PrjOwner).EmpName+' for approval',"Success");
-            this.BsService.ConfirmBeforeRoute.emit(null);
+            // this.BsService.ConfirmBeforeRoute.emit(null);
+            this.confirmBeforeRoute=false;
             this.router.navigate(['./backend/ProjectsSummary']);
             //  this.closeInfo();
         }
@@ -2678,8 +2682,9 @@ this.detectMembersWithoutActions();   // update 'hasNoActionMembers' may needed 
 
 
 // lock sidebar and header
-this.BsService.ConfirmBeforeRoute.emit('AT-3RD-STEP-PC'); // we are on step3 screen.
+// this.BsService.ConfirmBeforeRoute.emit('AT-3RD-STEP-PC'); // we are on step3 screen.
 // lock sidebar and header
+this.confirmBeforeRoute=true; // confirmation to appear when user tries to leave create project page without submit.
 
 }
 
@@ -3111,6 +3116,12 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
             const costVal=res.Data;
             this.newaction_Cost=costVal;
             console.log("cost:",costVal);
+        }
+        else{  // on failure
+          // test for new users (Temporary)
+                const cost=newAlhr*10;
+                this.newaction_Cost=cost;
+          // test for new users (Temporary)
         }
       });
     }
@@ -3692,11 +3703,6 @@ promptIfNameTypeMismatch(){
   }
 
 }
-
-
-
-
-
 
 
 
