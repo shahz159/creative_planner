@@ -2000,21 +2000,14 @@
 
 <div id="unassign-editsidebar" class="sideInfobar animate-right offcanvas">
 
-
-
-
-
 <div class="unassign-editsidebar-body">
-
   <div class="d-flex align-items-center mb-2 " style="gap: 20px;">
-    <div class="form-check ">
-        <input class="form-check-input" type="radio" name="projectOption" id="projectRadio1" (change)="toggleProjectoptions('option1')" checked>
+     <div class="form-check ">
+        <input class="form-check-input" type="radio" name="projectOption" id="projectRadio1" (change)="toggleProjectoptions('option1')">
         <label class="form-check-label ml-2" for="projectRadio1">
          <h5>Project/Task</h5>
         </label>
       </div>
-
-      <!-- *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length<=1" -->
       <div class="form-check"  *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length<=1" >
         <input class="form-check-input" type="radio" name="projectOption" id="projectRadio2" (change)="toggleProjectoptions('option2')">
         <label class="form-check-label" for="projectRadio2">

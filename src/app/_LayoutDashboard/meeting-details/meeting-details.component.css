@@ -3032,19 +3032,20 @@ span.cancl-icon {
 
 .asseticn.info-icn {
     fill: #14aaf5;
-  }
+}
 
-  .asseticn.warn-icn {
+.asseticn.warn-icn {
     fill: #fcbd01;
-  }
+}
 
-  .asseticn.suc-icn {
+.asseticn.suc-icn {
     fill: #00bf9c;
-  }
+}
 
-  .asseticn.dark-icn {
+.asseticn.dark-icn {
     fill: #6d6e6f;
-  }
+}
+
 .memo_attachment_img {
     margin-right: 5px;
 }
@@ -3631,7 +3632,7 @@ span.admin-check-svg {
     cursor: pointer;
 }
 
-.SMail:hover{
+.SMail:hover {
     color: #2786fb !important;
 }
 
@@ -8592,14 +8593,16 @@ svg.asseticn.prim-icn.memo_attachment_img {
     height: 18px;
 }
 
-  .details-label {
+.details-label {
     position: relative;
 }
-  .add-s {
+
+.add-s {
     position: absolute;
     right: 0;
     bottom: 0;
 }
+
 .copy-meeting-link {
     width: auto;
     height: auto;
@@ -8631,46 +8634,51 @@ svg.asseticn.prim-icn.memo_attachment_img {
 
 
 
-.error-notification{
+.error-notification {
     display: flex;
     align-items: center;
     column-gap: 8px;
     padding: 1px 10px 1px 10px;
     border-radius: 5px;
     /* box-shadow: 2px 2px 12px 0px #e9e9e93b; */
-  
-  }
-  
-  .error-notification.Supported{
+
+}
+
+.error-notification.Supported {
     background-color: #e7f4f6;
     width: 69%;
-  
-  }
 
-  .error-notification.i-notification{
+}
+
+.error-notification.i-notification {
     background-color: #e7f4f6;
     width: 60%;
-  
-  }
-  
-  .error-notification .notif-img{
+
+}
+
+.error-notification .notif-img {
     min-width: 20px;
     max-width: 15px;
     min-height: 15px;
     max-height: 15px;
     fill: transparent;
-    stroke: #2786fb;;
-  }
-  .error-notification .notif-msg{
+    stroke: #2786fb;
+    ;
+}
+
+.error-notification .notif-msg {
     flex-grow: 1;
     font-family: var(--font-family-sans-serif);
     /* font-weight: 500; */
     font-size: 12px;
-    color:#2786fb;;
-  }
-  .meeting-attendes .kt-chat__messages {
+    color: #2786fb;
+    ;
+}
+
+.meeting-attendes .kt-chat__messages {
     height: calc(100vh - 134px);
 }
+
 .kt-meeting-content p::-webkit-scrollbar {
     width: 5px;
 }
@@ -8680,27 +8688,30 @@ svg.asseticn.prim-icn.memo_attachment_img {
     height: 0px;
     display: block;
 }
+
 .kt-meeting-content p::-webkit-scrollbar-thumb {
     background-color: #8cabfa;
     border-radius: 50px;
 }
+
 .kt-meeting-content p::-webkit-scrollbar-track {
     background-color: #e9ebee;
     border-radius: 50px;
 }
 
-.kt-badge.kt-badge--unifieds{
+.kt-badge.kt-badge--unifieds {
     color: #282a3c;
     background: rgb(166 167 180 / 10%);
 }
 
-.search-o-c-div{
+.search-o-c-div {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: end;
     width: 100%;
 }
+
 .search-head-open {
     color: #666666;
     width: 30px;
@@ -8712,10 +8723,12 @@ svg.asseticn.prim-icn.memo_attachment_img {
     justify-content: center;
     cursor: pointer;
 }
+
 .search-head-open svg {
     width: 18px;
     height: 18px;
 }
+
 .search-head-filter {
     background-color: #e0edff;
     color: #666666;
@@ -8729,7 +8742,8 @@ svg.asseticn.prim-icn.memo_attachment_img {
     transition: all 0.3s ease 0s !important;
     overflow: hidden;
 }
-.search-head-filter.search-head-filter-open{
+
+.search-head-filter.search-head-filter-open {
     width: 250px;
     padding-left: 10px;
 }
@@ -8739,6 +8753,7 @@ svg.asseticn.prim-icn.memo_attachment_img {
     border: 0;
     height: calc(1.5em + 1.3rem + -6px);
 }
+
 .search-head-close {
     color: #666666;
     width: 30px;
@@ -8751,6 +8766,7 @@ svg.asseticn.prim-icn.memo_attachment_img {
     cursor: pointer;
     padding-right: 0.75rem;
 }
+
 .search-head-close svg {
     width: 14px;
     height: 14px;
@@ -8811,6 +8827,7 @@ svg.asseticn.prim-icn.memo_attachment_img {
     height: 30px;
     line-height: 2;
 }
+
 .file-upload-progress .progress-bar-label {
     flex: 1;
     text-align: center;
@@ -8843,7 +8860,7 @@ svg.asseticn.prim-icn.memo_attachment_img {
     height: 20px;
 }
 
-  .file-upload-progress .file-upload-upload-label{
+.file-upload-progress .file-upload-upload-label {
     position: fixed;
     top: 30px;
     left: 0;
@@ -8858,22 +8875,108 @@ svg.asseticn.prim-icn.memo_attachment_img {
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
     animation-direction: alternate;
-  }
-  @keyframes texthighlight-jump{
-    from{
-         transform: scale(1);
-         opacity: 0.91;
-    }
-    to{
-      transform: scale(1.025);
-      opacity: 1;
-    }
-  }
+}
 
-.max-charater{
+@keyframes texthighlight-jump {
+    from {
+        transform: scale(1);
+        opacity: 0.91;
+    }
+
+    to {
+        transform: scale(1.025);
+        opacity: 1;
+    }
+}
+
+.max-charater {
     font-size: 13px;
     font-weight: 400;
     font-family: var(--font-family-sans-serif);
     -ms-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
+}
+
+
+.kt-badge.kt-badge--unified-accepted {
+    color: white !important;
+    background: #0272d0 !important;
+}
+
+.info-chip {
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    padding: 0.1rem 1rem;
+    user-select: none;
+    display: flex;
+    column-gap: 10px;
+}
+
+.info-chip-label {
+    line-height: 2;
+    font-weight: 500;
+    font-size: 11px;
+}
+
+.info-chip-value {
+    line-height: 1.8;
+    color: #242424;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: lowercase;
+}
+
+
+.info-chip-redirect-btn {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    background-color: white;
+    border-width: 0;
+    color: #8a8aff;
+    fill: #8a8aff;
+    cursor: pointer;
+    transition-property: background-color;
+    transition-duration: 0.4s;
+}
+
+
+.info-chip-redirect-btn:hover {
+    background-color: #c3c3c321;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+}
+
+.info-chip-label {
+    line-height: 2;
+    font-weight: 500;
+    font-size: 11px;
+}
+
+a.info-btn {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .25s ease-in;
+    color: #8c8c8c;
+}
+a.info-btn svg {
+    width: 26px;
+    height: 26px;
+}
+a.info-btn:hover {
+    background: #e6e6ff;
+    color: #7d7ebb;
+}
+a.info-btn.info-btn-disable {
+    color: #d1d1d1;
+    cursor: default;
+}
+a.info-btn.info-btn-disable:hover {
+    background: #ffffff;
+    color: #d1d1d1;
 }

@@ -2,19 +2,19 @@ export const environment = {
   production: true,
   //baseUrl: 'http://217.145.247.43/EPNewAPI/api/'
   //----Test Server----
- baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
-//  baseUrl:'https://cswebapps.com/StreamPlannerAPI/api/',
- baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
- Language_file_url:'https://cswebapps.com/testcreativeplanner/assets/i18n/'
- ,assetsurl:'/testcreativeplanner/'
- ,ImageUrl:'/testcreativeplanner/assets/'
- ,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/'
+//  baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
+// //  baseUrl:'https://cswebapps.com/StreamPlannerAPI/api/',
+//  baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
+ Language_file_url:'https://cswebapps.com/creativeplanner/assets/i18n/'
+ ,assetsurl:'/creativeplanner/'
+ ,ImageUrl:'/creativeplanner/assets/'
+ ,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/',
 // --------Azure API-------- 
 // baseUrl:'https://creativeplannerapi.azurewebsites.net/api/',
 //  baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/'
    //-----Live Server----
-//  baseUrl:'https://cswebapps.com/PortfolioAPI/api/',
-//  baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/'
+ baseUrl:'https://cswebapps.com/PortfolioAPI/api/',
+ baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/'
 };
   //Devbox Server
   //baseUrl:'https://cswebapps.com/PortfolioAPI/api/'

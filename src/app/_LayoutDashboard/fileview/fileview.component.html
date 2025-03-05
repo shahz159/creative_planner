@@ -14,11 +14,11 @@
                             <ng-container *ngIf="!Schedule_ID">
                                 <ng-container *ngIf="url_master_code&&(url_project_code!=url_master_code);else plabel">
                                     <span class="Running" >Action</span>
-                                    <span matTooltip="Click to see the action." (click)="newDetailsaction(url_master_code,url_project_code)" class="kt-fils-v-uname">{{filename}}</span>
+                                    <span [matTooltip]="!noRedirectionToSource?'Click to see the action.':''" (click)="!noRedirectionToSource?newDetailsaction(url_master_code,url_project_code):0" [ngClass]="{'kt-fils-v-uname':!noRedirectionToSource}">{{filename}}</span>
                                 </ng-container>
                                 <ng-template #plabel>
                                     <span class="Running">Project</span>
-                                    <span matTooltip="Click to see the project." (click)="newDetailsaction(url_project_code)" class="kt-fils-v-uname">{{filename}}</span>
+                                    <span [matTooltip]="!noRedirectionToSource?'Click to see the project.':''" (click)="!noRedirectionToSource?newDetailsaction(url_project_code):0" [ngClass]="{'kt-fils-v-uname':!noRedirectionToSource}">{{filename}}</span>
                                 </ng-template>  
                         </ng-container>
                             <ng-container *ngIf="Schedule_ID">
