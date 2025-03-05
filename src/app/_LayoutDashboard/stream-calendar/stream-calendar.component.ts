@@ -2725,7 +2725,7 @@ this.eventtaskitemtimeModal_dismiss();
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
-      finalarray.forEach(element => {
+      finalarray.forEach(element => { debugger
 
         const date1: Date = new Date(this._StartDate);
         // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {

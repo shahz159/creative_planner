@@ -82,14 +82,14 @@
                         <span id="sch-nme" style="display: inline-block;">Schedule</span>
                     </a>
 
-                    <div class="dropdown-menu kt-change-dropdown-menu" aria-labelledby="dropdownChangeMenuLink">
+                    <div class="dropdown-menu kt-change-dropdown-menu dropdown-menu-right" aria-labelledby="dropdownChangeMenuLink">
                         <a class="dropdown-item" href="javascript:void(0)" (click)="day_div()">Day</a>
                         <a class="dropdown-item" href="javascript:void(0)" (click)="week_div()">Week</a>
                         <a class="dropdown-item" href="javascript:void(0)" (click)="month_div()">Month</a> 
                         <a class="dropdown-item" href="javascript:void(0)" (click)="sch_div()">Schedule</a>
                     </div> 
                 </div> 
-               <div class="kt-header-switch">
+               <div class="kt-header-switch d-none">
                     <div matTooltip="Schedule" class="switch-calendar active" id="switch-calendar" (click)="switch_calender()">
                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -102,7 +102,7 @@
                             </g>
                         </svg>
                     </div>
-                     <div matTooltip="My tasks" class="switch-task  d-none" id="switch-task" (click)="switch_task()">
+                     <div matTooltip="My tasks" class="switch-task" id="switch-task" (click)="switch_task()">
                         <svg width="64px" height="64px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
                             fill="none">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
