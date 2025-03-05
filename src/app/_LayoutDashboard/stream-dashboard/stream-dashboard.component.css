@@ -344,7 +344,7 @@
     /* height: calc(100vh - 464px); */
     /* height: 536px; */
     /* height: 238px; */
-    height: 356px;
+    height: 306px;
     overflow: auto;
     /* padding: 0px 8px; */
 }
@@ -468,24 +468,33 @@ tr.action-row:hover {
 .picsum-img-wrapper img {
     height: 210px;
     /* max-height: 200px; */
-    border-radius: 0.5rem 0.5rem 0 0;
+    border-radius: 0.5rem 0.5rem;
 }
 
 @media screen and (min-width : 1500px) {
     .picsum-img-wrapper img {
-        height: 240px;
+        height: 230px;
     }
 }
+
 @media screen and (min-width : 1600px) {
     .picsum-img-wrapper img {
         height: 280px;
     }
+    .tab-scroll {
+        height: 356px;
+    }
 }
+
 @media screen and (min-width : 1700px) {
     .picsum-img-wrapper img {
         height: 300px;
     }
+    .tab-scroll {
+        height: 376px;
+    }
 }
+
 .svg-bg {
     position: absolute;
     top: 0;
@@ -1402,7 +1411,7 @@ span.dar-dot {
 }
 
 .NotWorking {
-    background-color: #D32F2F!important;
+    background-color: #D32F2F !important;
     color: white !important;
 }
 
@@ -2201,6 +2210,7 @@ span.head-title-count {
     .upcoming-events-li .date {
         min-width: 60px;
     }
+
     .action-tile-item-name-v1 {
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -2401,9 +2411,9 @@ span.p-b-percent-count {
 }
 
 .week-report-item {
-    border: 1px solid #e3e3e3;
-    border-radius: 10px;
-    padding: 6px;
+    /* border: 1px solid #e3e3e3;
+    border-radius: 10px; */
+    padding: 12px;
     margin-bottom: 0rem;
 }
 
@@ -2428,8 +2438,8 @@ span.p-b-percent-count {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-left: 10px;
-    margin-bottom: 8px;
+    /* margin-left: 10px; */
+    margin-bottom: 10px;
 }
 
 .week-report-icon {
@@ -2503,9 +2513,11 @@ span.p-b-percent-count {
 .week-report-more-btn[aria-expanded="true"] .week-report-more-icon svg {
     transform: rotate(180deg);
 }
+
 .dar-label {
     white-space: nowrap;
 }
+
 @media only screen and (min-width: 1024px) and (max-width: 1180px) {
     .action-tile-item-name-v1 {
         white-space: nowrap;
@@ -2513,8 +2525,9 @@ span.p-b-percent-count {
         overflow: hidden;
         width: 70px;
     }
+
     .picsum-img-wrapper img {
-        height: 170px;
+        height: 190px;
     }
 }
 
@@ -2544,7 +2557,7 @@ span.p-b-percent-count {
     /* green color */
 }
 
-.no-portfolio-div{
+.no-portfolio-div {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2554,20 +2567,60 @@ span.p-b-percent-count {
     width: 74%;
     margin: 0 auto;
 }
+
 ::ng-deep .banner-item.activity-item.owl-theme .owl-nav.disabled+.owl-dots {
     margin-top: -21px !important;
     position: relative;
 }
+
 ::ng-deep .banner-item.activity-item.owl-theme .owl-dots .owl-dot span {
     height: 4px;
     background: #fdfdfd59;
     border-radius: 2px;
 }
-::ng-deep .banner-item.activity-item.owl-theme .owl-dots .owl-dot.active span, ::ng-deep .banner-item.activity-item.owl-theme .owl-dots .owl-dot:hover span {
+
+::ng-deep .banner-item.activity-item.owl-theme .owl-dots .owl-dot.active span,
+::ng-deep .banner-item.activity-item.owl-theme .owl-dots .owl-dot:hover span {
     background: #ffffff;
     width: 40px;
 }
+
 .banner-card {
     background-color: transparent;
     box-shadow: none;
+}
+
+.weekactivity-card {
+    height: 294px;
+}
+
+.weekactivity-card .nav-pills .nav-item .nav-link,
+.weekactivity-card .nav-tabs .nav-item .nav-link {
+    padding: 2px 4px;
+    font-size: 12px;
+    border: 1px solid #e4e4e4;
+}
+
+.weekactivity-card .nav-pills .nav-item .nav-link:active,
+.weekactivity-card .nav-pills .nav-item .nav-link.active,
+.weekactivity-card .nav-pills .nav-item .nav-link.active:hover,
+.weekactivity-card .nav-pills .nav-item .nav-link:hover {
+    background-color: #dcebff !important;
+    color: #294f80;
+    border: 1px solid #d1e5ff;
+}
+
+.weekactivity-card .tab-content {
+    height: 100%;
+    flex: 1 1 auto;
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+}
+
+.weekactivity-card .tab-content>.tab-pane {
+    height: 100%;
+}
+
+.week-report-item {
+    height: 100%;
 }

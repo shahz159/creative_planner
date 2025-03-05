@@ -20,6 +20,7 @@
     justify-content: space-between;
     border-bottom: 1px solid #dadce0;
     min-height: 58px;
+    gap: 2rem;
 }
 
 .kt-header-logo {
@@ -28,6 +29,7 @@
     gap: 4px;
     font-size: 22px;
     color: #3c4043;
+    white-space: nowrap;
 }
 
 .kt-header-logo svg {
@@ -121,6 +123,7 @@
 .kt-date-div {
     font-size: 20px;
     color: #3c4043;
+    white-space: nowrap;
 }
 
 .kt-date-div-inner {
@@ -2786,7 +2789,7 @@ ul.card-task-item-project-ul li:hover::before {
 
 .month-slot-body {
     margin: 0;
-    overflow: auto;
+    overflow: scroll;
     flex: 1 1 0%;
     display: flex;
     flex-direction: column;
@@ -2981,7 +2984,7 @@ ul.card-task-item-project-ul li:hover::before {
 }
 
 .events-more-main {
-    height: 120px;
+    max-height: 120px;
     width: 210px;
     padding: 0px 4px 4px 4px;
     overflow: auto;
@@ -3941,6 +3944,7 @@ span.part-count {
     border-radius: 8px;
     min-height: 40px;
 }
+
 .month-slot-body::-webkit-scrollbar {
     background: transparent;
     height: 8px;
@@ -3953,6 +3957,7 @@ span.part-count {
     border-radius: 8px;
     min-height: 40px;
 }
+
 .schedule-event-task-scroll::-webkit-scrollbar {
     background: transparent;
     height: 8px;
@@ -3991,6 +3996,7 @@ span.part-count {
     border-radius: 8px;
     min-height: 40px;
 }
+
 .kt-calendar-left::-webkit-scrollbar {
     background: transparent;
     height: 8px;
@@ -4003,6 +4009,7 @@ span.part-count {
     border-radius: 8px;
     min-height: 40px;
 }
+
 .kt-list-nav-main-cal-scroll::-webkit-scrollbar {
     background: transparent;
     height: 8px;
@@ -4023,6 +4030,19 @@ span.part-count {
 }
 
 .kt-list-nav-task-cal-scroll::-webkit-scrollbar-thumb {
+    border: 4px solid #fff;
+    background: #dadce0;
+    border-radius: 8px;
+    min-height: 40px;
+}
+
+.quickaction-ul::-webkit-scrollbar {
+    background: transparent;
+    height: 8px;
+    width: 16px;
+}
+
+.quickaction-ul::-webkit-scrollbar-thumb {
     border: 4px solid #fff;
     background: #dadce0;
     border-radius: 8px;
@@ -4911,6 +4931,8 @@ ul.schedule-select-list li .slect-close:hover svg {
 
 .quickaction-ul {
     padding: 0px 6px;
+    height: calc(100vh - 130px);
+    overflow: auto;
 }
 
 .quickaction-li {
@@ -5389,11 +5411,13 @@ span.previous-dots {
     line-height: 1;
     align-items: flex-start;
 }
+
 .day-day-time.day-task.time-30-min .day-day-time-label {
     font-size: 9px;
     line-height: 1;
     align-items: center;
 }
+
 .day-day-time.day-task.time-30-min .day-day-time-time {
     font-size: 9px;
     line-height: 1;
@@ -5405,11 +5429,13 @@ span.previous-dots {
     line-height: 1;
     align-items: flex-start;
 }
+
 .day-day-time.day-event.time-30-min .day-day-time-label {
     font-size: 9px;
     line-height: 1;
     align-items: center;
 }
+
 .day-day-time.day-event.time-30-min .day-day-time-time {
     font-size: 9px;
     line-height: 1;
@@ -5423,11 +5449,13 @@ span.previous-dots {
     line-height: 1;
     align-items: flex-start;
 }
+
 .week-day-time.week-task.time-30-min .week-day-time-label {
     font-size: 9px;
     line-height: 1;
     align-items: center;
 }
+
 .week-day-time.week-task.time-30-min .week-day-time-time {
     font-size: 9px;
     line-height: 1;
@@ -5438,12 +5466,49 @@ span.previous-dots {
     line-height: 1;
     align-items: flex-start;
 }
+
 .week-day-time.week-event.time-30-min .week-day-time-label {
     font-size: 9px;
     line-height: 1;
     align-items: center;
 }
+
 .week-day-time.week-event.time-30-min .week-day-time-time {
     font-size: 9px;
     line-height: 1;
+}
+
+.time-line {
+    position: absolute;
+    z-index: 90;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+}
+
+.time-line:before {
+    border-radius: 50%;
+    content: "";
+    position: absolute;
+    height: 12px;
+    margin-left: -6px;
+    top: -6.6px;
+    width: 12px;
+    z-index: 1;
+    background-color: #ffffff;
+    border: 3px solid #4377ff;
+}
+
+.time-line:after {
+    content: "";
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+    width: 100%;
+    height: 1px;
+    background-color: #1a73e7;
+}
+
+::ng-deep .modal-time-item-control .ng-dropdown-panel .ng-dropdown-panel-items {
+    max-height: 90px;
 }

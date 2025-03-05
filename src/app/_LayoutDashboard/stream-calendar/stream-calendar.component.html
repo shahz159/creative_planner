@@ -1268,11 +1268,12 @@
                                 </div>
                                 <div class="day-slot-body">
                                     <div class="day-slot-body-row" *ngFor="let item of dayMappedList">
+                                        
                                         <div class="day-slot-row-label">
                                             <span class="day-slot-row-label-time">{{item.hour}}</span>
                                         </div>                                                                              
                                         <div class="day-body-col">    
-                                        
+                                            <div class="time-line" style="top: 48px;"></div>
                                              <div *ngFor="let event of item.events; let i = index" class="day-day-time" [ngClass]="{'day-event':event.Schedule_Type == 2,'day-task': event.Schedule_Type == 1,'time-15-min' : (getDurationInPixels(event.start, event.end)) <= 12 ,'time-30-min' : (getDurationInPixels(event.start, event.end)) <= 24 && (getDurationInPixels(event.start, event.end)) > 12 }"  (click)="customEventModal(event.Schedule_Type);GetClickEventJSON_Calender(event.Schedule_ID,event.className)"   [ngStyle]="{'z-index': i + 1, 'top': ((event.start | date:'m') / 5 * 4) + 'px', 'right': '0', 'width':  (100 - (i * 20)) + '%', 'height':  (getDurationInPixels(event.start, event.end)) + 'px'}">
                                                 <div class="day-day-time-label">
                                                      <span class="task-icon">
@@ -1533,6 +1534,7 @@
                                             <span class="week-slot-row-label-time">{{item.hour}}</span>
                                         </div>
                                             <div class="week-body-col"  *ngFor="let event of item.events">
+                                                <div class="time-line" style="top: 48px;"></div>
                                                 <div class="week-day-time" *ngFor="let subdate of event.subdate;let i = index" [ngClass]="{'week-event':subdate.Schedule_Type == 2,'week-task': subdate.Schedule_Type == 1, 'time-15-min' : (getDurationInPixels(subdate.start, subdate.end)) <= 12 ,'time-30-min' : (getDurationInPixels(subdate.start, subdate.end)) <= 24 && (getDurationInPixels(event.start, event.end)) > 12 }" (click)="customEventModal(subdate.Schedule_Type);GetClickEventJSON_Calender(subdate.Schedule_ID,subdate.className)" [ngStyle]="{'z-index': i + 1, 'top': ((subdate.start | date:'m') / 5 * 4) + 'px', 'right': '0', 'width':  (100 - (i * 20)) + '%', 'height':  (getDurationInPixels(subdate.start, subdate.end)) + 'px'}">
                                                     <div class="week-day-time-label">
                                                         <span class="task-icon">
@@ -5496,8 +5498,8 @@
 
              </div>
             </div>
-            <div class="quickaction-ul"  *ngFor="let item of draftdata_meet | filter : SearchOfDraftItem">
-                <div class="quickaction-li">
+            <div class="quickaction-ul">
+                <div class="quickaction-li"  *ngFor="let item of draftdata_meet | filter : SearchOfDraftItem">
 
                     <div class="quickaction-li-icon" *ngIf="item.project_type == 2" >
                         <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="blue-color"
@@ -5623,8 +5625,8 @@
                         class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched  border-0    " />
                 </div>
             </div>
-            <div class="quickaction-ul" *ngFor="let item of multiapproval_json | filter : SearchOfRequestItem" >
-                <div class="quickaction-li">
+            <div class="quickaction-ul" >
+                <div class="quickaction-li" *ngFor="let item of multiapproval_json | filter : SearchOfRequestItem">
                     <div class="quickaction-li-icon">
                         <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="blue-color"
                                         width="20px" height="20px" viewBox="0 0 20 20" version="1.1" >
@@ -5700,8 +5702,8 @@
                         class="form-control right-flter-bd ng-untouched ng-pristine ng-valid ng-touched  border-0    " />
                 </div>
             </div>
-            <div class="quickaction-ul" *ngFor="let bookmark of meetingbookmarks  | filter : SearchOfBookmarkItem">
-                <div class="quickaction-li">
+            <div class="quickaction-ul">
+                <div class="quickaction-li" *ngFor="let bookmark of meetingbookmarks  | filter : SearchOfBookmarkItem">
                     <div *ngIf="bookmark.Schedule_type == 2" class="quickaction-li-icon">
                         <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="blue-color"
                                         width="20px" height="20px" viewBox="0 0 20 20" version="1.1" >
