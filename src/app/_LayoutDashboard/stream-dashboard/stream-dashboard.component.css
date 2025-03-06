@@ -1014,7 +1014,7 @@ tr.action-row:hover {
 }
 .tm-link-redirect:hover{
   color: #1a73e8;
-  text-decoration: underline;
+  /* text-decoration: underline; */
 }
 
 .picsum-img-wrapper {
