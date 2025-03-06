@@ -1008,6 +1008,15 @@ tr.action-row:hover {
     color: #999;
 }
 
+
+.tm-link-redirect{
+  cursor: pointer;
+}
+.tm-link-redirect:hover{
+  color: #1a73e8;
+  text-decoration: underline;
+}
+
 .picsum-img-wrapper {
     width: 100%;
 }
