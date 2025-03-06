@@ -297,7 +297,7 @@
 
                                     <div class="tab-scroll">
                                         <div class="timeline">
-
+                                           <ng-container *ngIf="recentActivities&&recentActivities.length>0;else noRecentActivitiesData">
                                             <div *ngFor="let activity of recentActivities" class="timeline-container">
                                                 <div class="timeline-icon">
                                                
@@ -466,18 +466,20 @@
 
                                                 </div>
                                                 <div class="timeline-body">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <h4 class="timeline-title">{{activity.Value}} <ng-container  *ngIf="activity.Project_Name"> - "<span (click)="openInDetailsPage(activity.Project_Code,activity.Project_Code!=activity.Action_Code?activity.Action_Code:undefined)" class="tm-link-redirect"> {{activity.Project_Name}} </span>"</ng-container> </h4>
+                                                    <div class="d-flex align-items-center justify-content-between gap-3">
+                                                        <h4 class="timeline-title compl-remarks-span" style="-webkit-line-clamp: 1;">{{activity.Value}} <ng-container  *ngIf="activity.Project_Name"> - "<span (click)="openInDetailsPage(activity.Project_Code,activity.Project_Code!=activity.Action_Code?activity.Action_Code:undefined)" class="tm-link-redirect"> {{activity.Project_Name}} </span>"</ng-container> </h4>
                                                         <div class="text-muted ml-2 fs-8 d-flex align-items-center gap-1">
-                                                            <span>{{activity.ModifiedDate |date:'dd-MM-yyyy'}}</span> 
-                                                            <span>at {{formatTimes(activity.ModifiedTime)}}</span>
+                                                            <span class="text-nowrap">{{activity.ModifiedDate |date:'dd-MM-yyyy'}}</span> 
+                                                            <span class="text-nowrap">at {{formatTimes(activity.ModifiedTime)}}</span>
                                                         </div>
                                                     </div>
-                                                    <div class="d-flex justify-content-between">
+                                                    <div class="d-flex justify-content-between gap-3">
                                                         <p class="timeline-content mb-2 d-flex flex-column">
                                                             <span class="fs-7" *ngIf="activity.oldValue !==''"><span class="fs-8 text-info">From : </span>{{activity.oldValue}}</span>
                                                             <span class="fs-7" *ngIf="activity.oldValue !==''; else newvalue"><span class="fs-8 text-info">To : </span>{{activity.NewValue}}</span>
-                                                            <ng-template #newvalue>{{activity.NewValue}}</ng-template>
+                                                            <ng-template #newvalue>
+                                                              <span #textdesbx class="compl-remarks-span" (click)="$event.stopPropagation(); textdesbx.classList.contains('compl-remarks-span')?textdesbx.classList.remove('compl-remarks-span'):textdesbx.classList.add('compl-remarks-span')" >{{activity.NewValue}}</span>  
+                                                            </ng-template>
                                                         </p>
 
                                                         <div class="d-flex align-items-start mt-1">
@@ -486,12 +488,21 @@
                                                              <span  class="user-Ltr bg-primary text-inverse-warning fw-bold" style="font-size: 11px;width: 100%;height: 100%;display: flex;align-items: center;justify-content: center;">{{activity.Modifiedby[0]}}</span>
                                                            </div>
                                                           </div>
-                                                          <div class="text-muted fs-8" style="font-weight:500">{{activity.Modifiedby}}</div>
+                                                          <div class="text-muted fs-8 text-nowrap" style="font-weight:500">{{activity.Modifiedby}}</div>
                                                         </div>
                                                     </div>
                                                    
                                                 </div>
                                             </div>
+                                           </ng-container>
+                                           <ng-template #noRecentActivitiesData>
+                                            <div class="no-recentactivity-present">
+                                                <img src="./assets/images/noTimelinePresent.png" class="nra-image"/>
+                                                <div class="bnk-txt mt-3 d-flex justify-content-center">
+                                                    <h3 class="blank-txt fs-6 nra-label">No activity found.</h3>
+                                                </div>
+                                            </div>
+                                        </ng-template>
 
 
                                             <!-- <div class="timeline-container sent">
@@ -984,6 +995,16 @@
 
                                         </ul>
 
+
+                                        <ng-container *ngIf="(CompletedCount??0)+(DelayCount??0)+(DelayActionCount??0)+(TotalExpiryInMonth??0)+(AssignedProjects??0)+(AssignActionCount??0)+(ProjectsNotStarted??0)+(RejectedCount??0)==0"> 
+                                            <div class="no-recentactivity-present">
+                                                <img src="./assets/images/noTimelinePresent.png" class="nra-image"/>
+                                                <div class="bnk-txt mt-3 d-flex justify-content-center">
+                                                    <h3 class="blank-txt fs-6 nra-label">No suggestions.</h3>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+
                                     </div>
                                 </div>
                             </div>
@@ -1405,7 +1426,8 @@
                             <div class="activity-report">
                                 <div class="activity-report-content">
                                     <p style="margin-bottom: 0rem;">
-                                        "Happy Tuesday! It's a new week to tackle your goals. You have pending actions to complete, or feel free to start a new task to kick things off. Let’s make this week productive!"
+                                        "Happy Ramadan! As we embrace this month of reflection and discipline, let's stay focused on our goals while balancing work and personal commitments. Plan effectively, collaborate efficiently, and make steady progress. Wishing you a productive and fulfilling Ramadan!"
+                                        <!-- "Happy Tuesday! It's a new week to tackle your goals. You have pending actions to complete, or feel free to start a new task to kick things off. Let’s make this week productive!" -->
                                     </p>
                                 </div>
                             </div>

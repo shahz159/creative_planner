@@ -922,7 +922,7 @@ tr.action-row:hover {
     left: -32px;
     top: 40px;
     width: 2px;
-    height: 16px;
+    height: 69%;
     background: #c9c9c9;
 }
 
@@ -2636,3 +2636,33 @@ span.p-b-percent-count {
 .week-report-item {
     height: 100%;
 }
+
+.compl-remarks-span {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    max-height: 3em;
+    line-height: 1.5em;
+    cursor: default;
+}
+
+
+.no-recentactivity-present {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 35vh;
+  }
+  
+.no-recentactivity-present .nra-image {
+    width: 18%;
+}
+  
+.no-recentactivity-present .nra-label{
+    color: #b2b3b3;
+    font-weight: 400;
+}
+  
