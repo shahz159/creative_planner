@@ -6837,7 +6837,7 @@ this.monthDateBinde = this.openBoxSelectedDate;
 if(this.openPopupBox == true && (this.openBoxSelectedDate == this.today && timeHour >= now.getHours()) || this.openPopupBox == true && this.openBoxSelectedDate > this.today ){
     this.Task_type(2);    
   }else if(  this.openPopupBox == true){
-    this.notifyService.showInfo("Your selected date is invalid. Please select a valid date.", "Failed"); 
+    this.notifyService.showInfo("Your selected time is invalid. Please select a valid time.", "Failed"); 
   }else{
     this.openPopupBox = true
   }
@@ -6845,13 +6845,14 @@ if(this.openPopupBox == true && (this.openBoxSelectedDate == this.today && timeH
 
 
 
-updateTimeLine() { 
+updateTimeLine() { debugger
   const now = new Date();
   let hours = now.getHours(); 
   const minutes = now.getMinutes();
-  const isPM = hours >= 12;
-  const formattedHour = (hours % 12 || 12) + (isPM ? " PM" : " AM");
-  this.currentHourIndex = this.hoursList.findIndex(hour => hour.includes(formattedHour));
+  // const isPM = hours >= 12;
+  // const formattedHour = (hours % 12 || 12) + (isPM ? " PM" : " AM");
+  // this.currentHourIndex = this.hoursList.findIndex(hour => hour.includes(formattedHour));
+  this.currentHourIndex = hours
   this.currentTimeTop = (minutes / 60) * 48;
 }
 /////////////////////////////////////////// Day section end /////////////////////////////////////////////////////////
@@ -6873,7 +6874,7 @@ weeklyScheduleJson(weekFromToday) {
   const startOfWeek = moment(selectedDate).startOf('isoWeek');
   this.weekDates = Array.from({ length: 7 }, (_, i) => startOfWeek.clone().add(i, 'days').format('YYYY-MM-DD'));
 
-   if (this.weekDates.includes(this.today)) { 
+   if (this.weekDates.includes(this.today)) {  
      this.timeLineVisible= true;
      this.updateTimeLine();
      this.timeLineInterval = setInterval(() => this.updateTimeLine(), 60000);
@@ -6930,7 +6931,7 @@ monthTimeBinding(data,time){ debugger
     if(this.openPopupBox == true && (this.monthDateBinde == this.today && timeHour >= now.getHours()) || this.openPopupBox == true && this.monthDateBinde > this.today ){
       this.Task_type(2);    
     }else if(  this.openPopupBox == true){
-      this.notifyService.showInfo("Your selected date is invalid. Please select a valid date.", "Failed"); 
+      this.notifyService.showInfo("Your selected date and time is invalid. Please select a valid date and time.", "Failed"); 
     }else{
       this.openPopupBox = true
     }

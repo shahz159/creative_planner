@@ -882,68 +882,21 @@
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="d-flex align-items-start justify-content-between">
-                                                                <div class="kt-metric-day  deadline-main" style="    display: flex;
-                                                                align-items: center;
+                                                                <div class="kt-metric-day  deadline-main w-100" style="    display: flex;
+                                                                align-items: center;    justify-content: space-between;
                                                                 gap: 3px;">
                                                                     <!-- <div class="dark-title">21 Thu, January 2024</div> -->
                                                                     <!-- <div class="dark-title">{{ startTime | date:'d EEE,MMMM YYYY'}} -->
                                                         
-                                                                   <div class="dark-title">{{item.Schedule_date | date:'EEEE, MMMM d, yyyy'}} <span  *ngIf="item.Schedule_date !== oneByTwoEndDate" class="mid-night">{{oneByTwoEndDate | date:'EEEE, MMMM d, yyyy'}}</span>
-                                                                    </div>
-                                                                    <span class="deadline-count d-none">
-                                                                        <span class="deadline-count-btn">
-                                                                        22
-                                                                        </span>
-                                                                        <div class="dropdown-menu">
-                                                                            <ul class="deadline-timeline" >
-                                                                            <!-- loop this li part only -->
-                                                                            <li class="deadline-timeline-item" >
-                                                                                <div class="deadline-timeline-item-title">
-                                                                                    <!-- {{item.Value}} -->
-                                                                                    Project Deadline changed 6th Time
-                                                                                </div>
-                                                                                <div class="deadline-timeline-item-by"><b>By</b> 
-                                                                                    <!-- {{item.Modifiedby}}  -->
-                                                                                    Project Deadline changed 6th Time
-                                                                                </div>
-                                                                                <div class="deadline-timeline-item-from"><b>From</b>
-                                                                                    31-12-2023
-                                                                                    <!-- {{item.oldValue }} -->
-                                                                                    <b>To</b>
-                                                                                    <!-- {{item.NewValue }} -->
-                                                                                    31-12-2023
-                                                                                    </div>
-                                                                                <div class="deadline-timeline-item-on">
-                                                                                    <div class="d-flex align-items-center">
-                                                                                        <span class="svg-icon">
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                                                                                <path fill="none" d="M0 0h24v24H0z"></path>
-                                                                                                <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z"></path>
-                                                                                            </svg>
-                                                                                        </span>
-                                                                                        <span>
-                                                                                            <!-- {{item.ModifiedDate |date :'dd-MM-YYYY'}} -->
-                                                                                            31-12-2023
-                                                                                        </span>
-                                                                                    </div>
-                                                                                    <div class="d-flex align-items-center">
-                                                                                        <span class="svg-icon">
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                                                                                <path fill="none" d="M0 0h24v24H0z"></path>
-                                                                                                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-8h4v2h-6V7h2v5z"></path>
-                                                                                            </svg>
-                                                                                        </span>
-                                                                                        <span>
-                                                                                            <!-- {{item.sortdate | date:'h:mm a'}} -->
-                                                                                            10:04 AM
-                                                                                        </span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </li>
-                                                                            </ul>
+                                                                        <div class="dark-title">
+                                                                            <span>{{item.Schedule_date | date:'EEEE, MMMM d, yyyy'}} </span>
                                                                         </div>
-                                                                    </span>
-                                                                    <!-- <div class="muted-title">Date</div> -->
+
+                                                                        <div class="dark-title">  
+                                                                            <span  *ngIf="item.Schedule_date !== oneByTwoEndDate">{{oneByTwoEndDate | date:'EEEE, MMMM d, yyyy'}}</span>
+                                                                        </div>
+                                                                    
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>
