@@ -1,8 +1,9 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
+declare const dcodeIO:any;
 export class OldPwdValidators {
     
-    static OldPasswordMethod(control: AbstractControl) : Promise<ValidationErrors | null> {
-        return new Promise((resolve,reject) => {
+    static OldPasswordMethod(control: AbstractControl) : Promise<ValidationErrors | null> {  
+        return new Promise((resolve,reject) => {  debugger
             let OldPassword:any=localStorage.getItem('oldPassword');
             if(control.value !==OldPassword)
               resolve({ OldPasswordMethod: true });
@@ -18,4 +19,25 @@ export class OldPwdValidators {
         }
         return null;
       }
+
+// new
+      static OldPasswordMethod2(control: AbstractControl) : Promise<ValidationErrors | null> {  
+        return new Promise((resolve,reject) => { 
+          let currentUserSP=localStorage.getItem('currentUser_SP');
+          if(currentUserSP){
+             const _currentUserSPobj=JSON.parse(currentUserSP)[0];
+             const _CryptedPassword=_currentUserSPobj.Password;   // current existing password (in encrypted form).
+             const inputOldPassword=control.value;     // old password input by user.  (in plain text form).
+             const isMatched=dcodeIO.bcrypt.compareSync(inputOldPassword, _CryptedPassword);
+             if(isMatched)
+             resolve(null);
+             else 
+             resolve({ OldPasswordMethod: true });
+          }
+          else
+          resolve(null);
+         
+        });    
+      }
+
 }

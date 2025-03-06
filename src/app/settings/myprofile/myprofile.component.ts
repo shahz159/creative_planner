@@ -5,6 +5,10 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { OldPwdValidators } from '../myprofile/old-pwd-validators';
 import { PolicyService } from 'src/app/_Services/policy.service';
 import { NotificationService } from 'src/app/_Services/notification.service';
+import { AuthenticationService } from 'src/app/_Services/authentication.service';
+import { UserDTO } from 'src/app/_Models/user-dto';
+import {AuthService} from '../../_Services/auth.service';
+import { Router } from '@angular/router';
 declare var $: any;
 declare const ApexCharts: any;
 @Component({
@@ -33,15 +37,20 @@ export class MyprofileComponent implements OnInit {
   Password: any;
   LoginUserName: any;
   userProfileImage:string;
+  _objUserdto:UserDTO;
 
   constructor(fb: FormBuilder,
     private EmpDetailsService: EmployeeDetailsService,
     private PolicyService: PolicyService,
     private notifyService: NotificationService,
+    private authenticationService:AuthenticationService,
+    private authService: AuthService,
+    private router:Router
   ) {
     this.objEmployeeDTO = new EmployeeDTO;
-    this.form1 = fb.group({
-      'oldPwd': ['', Validators.required, OldPwdValidators.OldPasswordMethod],
+    this._objUserdto=new UserDTO();
+    this.form1 = fb.group({                         
+      'oldPwd': ['', Validators.required, OldPwdValidators.OldPasswordMethod2],
       'newPwd': ['', Validators.required],
       'confirmPwd': ['', Validators.required]
     }, {
@@ -51,6 +60,7 @@ export class MyprofileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.EmpDetailsService.GetEmployeeDetails(this._EmpNo)
       .subscribe(data => {
         this.EmployeeDetails_List = JSON.parse(data[0]['EmpDetailsJson']);
@@ -70,8 +80,16 @@ export class MyprofileComponent implements OnInit {
         this.LoginUserName = this.EmployeeDetails_List[0]['UserName'];
       });
 
-      const dmsuserinfo=localStorage.getItem('DMS_UserInfo');
+      const dmsuserinfo=localStorage.getItem('DMS_UserInfo'); 
       if(dmsuserinfo){  this.userProfileImage=JSON.parse(dmsuserinfo).UserProfile;  }
+
+      let currentUserSP=localStorage.getItem('currentUser_SP');
+      if(currentUserSP){
+         const _currentUserSPobj=JSON.parse(currentUserSP)[0];
+         this._CryptedPassword=_currentUserSPobj.Password;
+         this._LoginUserId=_currentUserSPobj.createdby;
+      }
+      
   }
 
   ngAfterViewInit() {
@@ -111,6 +129,76 @@ export class MyprofileComponent implements OnInit {
 
       });
   }
+
+// new update password
+_CryptedPassword:any;
+_LoginUserId:any;
+
+UpdatePassword(){  debugger
+  
+  let oldpassword=this.form1.get('oldPwd').value;
+  let newpassword=this.form1.get('newPwd').value;
+  let newpassword2=this.form1.get('confirmPwd').value;
+
+  if(!oldpassword || !newpassword || !newpassword2){
+    console.error("please enter all required form fields.");
+    return;
+  }
+  else if(newpassword!=newpassword2){
+    console.error("new password does not match");
+    return;
+  }
+
+
+  this._objUserdto.ChryptedOldPassword=this._CryptedPassword;
+  this._objUserdto.OldPassWord=oldpassword;
+  this._objUserdto.createdby=this._LoginUserId;
+  this._objUserdto.NewPassword=newpassword2;
+ 
+  this.authenticationService.UpdatePassword(this._objUserdto)
+    .subscribe(data => {
+      console.log('update pw:',data);
+      this._objUserdto = data as UserDTO;
+      if (this._objUserdto.message == "1") {
+        this.notifyService.showSuccess("Password updated.","Success"); 
+        this.logout();
+        // logout  or update encrypted password in local storage.
+      }
+      else if(this._objUserdto.message == "2"){
+        this.notifyService.showError("Password not updated.","Failed");  
+      }
+      else{
+        this.notifyService.showError("Internal server error.","Failed");  
+      }
+      this.form1.reset(); 
+    }
+  );
+  
+}
+
+
+
+logout(){
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('EmpNo');
+      localStorage.removeItem('OrganizationId');
+      localStorage.removeItem('UserfullName');
+      localStorage.removeItem('_Currentuser');
+      localStorage.removeItem('IsStreamDownload');
+      localStorage.removeItem('DMS_UserInfo');
+      localStorage.removeItem('currentUser');
+      sessionStorage.clear();
+      localStorage.clear();
+      this.router.navigate(['login']).then((isNavigationSuccess)=>{
+     if(isNavigationSuccess)
+     {
+      this.authService.logout();  // clear stored token and login status.
+      window.location.reload();  // force reload the page.
+     }
+  })
+}
+
+// new update password
 
   closeInfo(){
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");

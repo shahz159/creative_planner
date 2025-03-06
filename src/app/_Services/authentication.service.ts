@@ -80,8 +80,8 @@ export class AuthenticationService {
     localStorage.removeItem('currentUser_SP');
     this.currentUserSubject.next(this._userdto);
   }
-  UpdatePassword(_userdto: UserDTO) {
-    return this.http.post(this.rootUrl + 'AuthenticationAPI/NewUpdatePasswordANG', _userdto);
+  UpdatePassword(_userdto: UserDTO) {  
+    return this.http.post(this.rootUrl + 'Notification/NewUpdatePasswordANG', _userdto);
   }
 
   UpdateTourCount(dto: UserDTO) {
