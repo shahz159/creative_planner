@@ -7,6 +7,7 @@ import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { StatusDTO } from 'src/app/_Models/status-dto';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ApprovalsService } from 'src/app/_Services/approvals.service';
 
 
 
@@ -44,19 +45,21 @@ export class StreamDashboardComponent implements OnInit {
   constructor(public service: ProjectTypeService,
     private cdr: ChangeDetectorRef, private router: Router,
     private _snackBar: MatSnackBar,
-    private CalenderService: CalenderService
+    private CalenderService: CalenderService,
+     public approvalservice: ApprovalsService
   ) {
     this._calenderDto = new CalenderDTO;
     this._objStatusDTO = new StatusDTO;
    }
 
   ngOnInit(): void {
+    this.Current_user_ID = localStorage.getItem('EmpNo');
+    this.UserfullName = localStorage.getItem("UserfullName");
+
     this.loadDashboardBanners();
     // this.initializeOwlCarousels();
     this.initializeOwlCarousels2();
     // this.initializeOwlCarousels3();
-    this.Current_user_ID = localStorage.getItem('EmpNo');
-    this.UserfullName = localStorage.getItem("UserfullName");
     this.todayDate = new Date();
     this.meetingDetails();
     this.portfolioSerivce();
@@ -69,6 +72,7 @@ export class StreamDashboardComponent implements OnInit {
       this.isLoading = false;
     }, 3000);
 
+    this.getRecentActivities();  // fetch recent activities
   }
 
 
@@ -630,9 +634,52 @@ export class StreamDashboardComponent implements OnInit {
     });
    }
 
-
-
    // dashboard banners end.
+
+
+
+
+// recent activity section .  start
+recentActivities:any[]=[];
+totalRecentActivities:number=0;
+getRecentActivities(){
+     const empNo=this.Current_user_ID;
+     this.approvalservice.NewGetUserActivity(empNo).subscribe((res)=>{
+            console.log("getRecentActivities:",res);
+            if(res&&res[0]){
+                  this.recentActivities=JSON.parse(res[0].ActivityList);
+                  this.totalRecentActivities=res[0].ActivityCount;
+                
+                  // adding _type property
+                  this.recentActivities.forEach((_actvy)=>{
+                    let result='others';
+                    if(_actvy.Value){
+
+                    const _Value=_actvy.Value.trim();
+
+                          result=/New Action- ".*"/.test(_Value)?'New Action':
+                                (/Timeline added .*/.test(_Value)|| _Value=='Project Timeline added')?'Timeline added':
+                                /Action Complete- ".*"/.test(_Value)?'Action Complete':
+                                /Action -".*" Hold/.test(_Value)?'Action Hold':
+                                /Action -".*" Start date changed/.test(_Value)?'Action Startdate changed':
+                                /Action -".*" Deadline changed/.test(_Value)?'Action Deadline changed':
+                                ['Project Name changed','Project Responsible changed','Project Description changed','Client changed','Category changed'].includes(_Value)?'Project Details changed':
+                                [/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/,/Action -".*" Owner changed/,/Action -".*" Responsible changed/].some(rg=>rg.test(_Value))?'Action Details changed':
+                                (['Project Complete Approved','Project Complete Rejected','Project Audit Approved','Project Audit Rejected'].includes(_Value)||
+                                  [/Project Complete Submitted to ".*"/,/Project Audit Submitted to ".*"/,/Project Complete transferred to ".*"/,/Project next version assigned to ".*"/].some(rg=>rg.test(_Value)))?'Project Complete':
+                                _Value;
+                    }
+                    _actvy._type=result.trim();
+                  });
+                  // adding _type property
+
+                  console.log('recent activities:',this.recentActivities,'total recent activities:',this.totalRecentActivities);
+            }
+     });
+}
+
+
+// recent activity section .  end
 
 
 
