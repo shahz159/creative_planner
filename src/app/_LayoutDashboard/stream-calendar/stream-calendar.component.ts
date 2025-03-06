@@ -504,6 +504,7 @@ export class StreamCalendarComponent implements OnInit {
     this.dayMeetingSection = 'Schedule';
     this.timeLineVisible= false;
     clearInterval(this.timeLineInterval);
+    this.getEventsForWeeks(0);
   }
   teams_icon(){
     document.getElementById("teams-icon").style.display = "inline-block";
@@ -664,6 +665,8 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("createEventTaskModalBackdrop").classList.remove("show");
 
     this.mtgOnDays=[];
+    this.formattedDayTime = null;
+    this.monthDateBinde = null;
     this.Link_Details = null;
     this.Meeting_Id = null;
     this.Meeting_password = null;
@@ -1262,13 +1265,16 @@ Task_type(value) {
     //       ac.updatePosition();
     //   });
     // })
-  }
+  }debugger
   if(this.formattedDayTime){
    this._StartDate = this.monthDateBinde;
+   this._SEndDate =  this.monthDateBinde;
    this.Startts= this.formattedDayTime;
    this.Endtms = this.Startts.replace(/(\d+):(\d+) (\wM)/, (_, h, m, p) => 
     `${String((h = +h % 12 + 1)).padStart(2, '0')}:${m} ${h === 12 ? (p === "AM" ? "PM" : "AM") : p}`
   );
+  }else{
+    this._StartDate = this.today;
   }
 
 
@@ -1287,8 +1293,7 @@ Task_type(value) {
   this.daysSelectedII.push(jsonData);
   console.log(this.ScheduleType, "ScheduleType")
   
-  this.formattedDayTime = null;
-  this.monthDateBinde = null;
+ 
 }
 
 
@@ -2649,7 +2654,7 @@ this.eventtaskitemtimeModal_dismiss();
       this.EventNumber = timestamp;
     }
    
-    let finalarray = [];
+    let finalarray = []; 
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
     var start = moment(this.minDate);
@@ -2659,10 +2664,11 @@ this.eventtaskitemtimeModal_dismiss();
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
 
-
+      debugger
        // new code start 69
+       // 
   
-       if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate)){
+       if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate) || this.formattedDayTime){
          let startDate = new Date(this._StartDate);
          this.AllDatesSDandED = [{
              Date: startDate.toISOString().split('T')[0],  // Get YYYY-MM-DD format
@@ -2674,7 +2680,11 @@ this.eventtaskitemtimeModal_dismiss();
            }];
        
          this.daysSelectedII = this.AllDatesSDandED ;
-         this._SEndDate =this._StartDate.toISOString().split('T')[0];
+         if(this.formattedDayTime){
+          this._StartDate = new Date(this._StartDate);
+          this.formattedDayTime = null;
+         }
+         this._SEndDate = this._StartDate.toISOString().split('T')[0];
          this._StartDate = new Date(new Date(this._StartDate).setHours(0, 0, 0, 0)); 
        }
 
@@ -2715,25 +2725,15 @@ this.eventtaskitemtimeModal_dismiss();
         }
       }
     }
-    // else if (this.selectedrecuvalue === "4") {
-    //   this.daysSelectedII = this.getBiWeeklyDates(startDate);
-    // }
-    // else if (this.selectedrecuvalue === "5") {
-    //   this.daysSelectedII = this.getLastDaysOfEachMonth();
-    // }
+   
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
-      finalarray.forEach(element => { debugger
+      finalarray.forEach(element => { 
 
         const date1: Date = new Date(this._StartDate);
-        // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
-        //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
-        // }
-        // else {
-        //   this._SEndDate = this._StartDate;
-        // }
+     
         const date2: Date = new Date(this._SEndDate);
 
         const diffInMs: number = date2.getTime() - date1.getTime();
@@ -2745,10 +2745,9 @@ this.eventtaskitemtimeModal_dismiss();
         else {
           var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
         }
-        // var dd = moment(date3).add(diffInDays, 'days')
-        // var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+   
         var dd = moment(date3).add(diffInDays, 'days')
-        // console.log(dd, date3, diffInDays, date2, this._SEndDate, "update edit")
+      
         var SEndDates = "SEndDate";
         element[SEndDates] = (dd.format(format2));
 
@@ -2785,8 +2784,6 @@ this.eventtaskitemtimeModal_dismiss();
         var vMasterCode = "MasterCode";
         element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
 
-        // var columnName = "Link_Type";
-        // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
         var vUser_Name = "User_Name";
         element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
 
@@ -2826,16 +2823,9 @@ this.eventtaskitemtimeModal_dismiss();
       
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
-        // var vLink_Details = "Link_Details";
-        // let link_d=this.Link_Details;
-        // if(this.Link_Details){
-        //   link_d=this.Link_Details.replace(/&#160;/g, ' ');
-        //   link_d=this.anchoredIt(link_d);
-        // }
-        // element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
      
         if (this.Description_Type && this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, '').length > 0) {
-          // Remove occurrences of &nbsp; and &#160; while collapsing spaces
+   
           this.Description_Type = this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, ' ').trim();
        } else if(this.Description_Type!=null ){
          this.Description_Type = this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, ' ').trim();
@@ -3054,6 +3044,7 @@ this.eventtaskitemtimeModal_dismiss();
 
           this.GetScheduledJson();
           this.Title_Name = null;
+        
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
           this.agendaInput=undefined;
