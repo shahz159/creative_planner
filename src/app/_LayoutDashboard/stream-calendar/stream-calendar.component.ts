@@ -665,6 +665,8 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("createEventTaskModalBackdrop").classList.remove("show");
 
     this.mtgOnDays=[];
+    this.formattedDayTime = null;
+    this.monthDateBinde = null;
     this.Link_Details = null;
     this.Meeting_Id = null;
     this.Meeting_password = null;
@@ -1263,7 +1265,7 @@ Task_type(value) {
     //       ac.updatePosition();
     //   });
     // })
-  }
+  }debugger
   if(this.formattedDayTime){
    this._StartDate = this.monthDateBinde;
    this._SEndDate =  this.monthDateBinde;
@@ -1271,6 +1273,8 @@ Task_type(value) {
    this.Endtms = this.Startts.replace(/(\d+):(\d+) (\wM)/, (_, h, m, p) => 
     `${String((h = +h % 12 + 1)).padStart(2, '0')}:${m} ${h === 12 ? (p === "AM" ? "PM" : "AM") : p}`
   );
+  }else{
+    this._StartDate = this.today;
   }
 
 
@@ -1289,8 +1293,7 @@ Task_type(value) {
   this.daysSelectedII.push(jsonData);
   console.log(this.ScheduleType, "ScheduleType")
   
-  this.formattedDayTime = null;
-  this.monthDateBinde = null;
+ 
 }
 
 
@@ -2663,9 +2666,9 @@ this.eventtaskitemtimeModal_dismiss();
 
       debugger
        // new code start 69
-       // || this.formattedDayTime
+       // 
   
-       if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate)){
+       if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate) || this.formattedDayTime){
          let startDate = new Date(this._StartDate);
          this.AllDatesSDandED = [{
              Date: startDate.toISOString().split('T')[0],  // Get YYYY-MM-DD format
@@ -2677,7 +2680,11 @@ this.eventtaskitemtimeModal_dismiss();
            }];
        
          this.daysSelectedII = this.AllDatesSDandED ;
-         this._SEndDate =this._StartDate.toISOString().split('T')[0];
+         if(this.formattedDayTime){
+          this._StartDate = new Date(this._StartDate);
+          this.formattedDayTime = null;
+         }
+         this._SEndDate = this._StartDate.toISOString().split('T')[0];
          this._StartDate = new Date(new Date(this._StartDate).setHours(0, 0, 0, 0)); 
        }
 
@@ -3037,6 +3044,7 @@ this.eventtaskitemtimeModal_dismiss();
 
           this.GetScheduledJson();
           this.Title_Name = null;
+        
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
           this.agendaInput=undefined;
