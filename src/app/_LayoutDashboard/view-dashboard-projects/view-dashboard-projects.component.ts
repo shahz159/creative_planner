@@ -112,7 +112,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
 
       const isFilterapplied=Object.keys(filterconfig).length>0;
      //
-
+   debugger
       if (section) {
         // Handle the case when you are coming from the dashboard
         if (section === 'Projects') {
@@ -232,7 +232,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
 
 
 
-  GetCompletedProjects() {
+  GetCompletedProjects() {  debugger
     // this.Mode = this.service._getMessage();
     let EmpNo = this.Current_user_ID;
     let Pgno: number = this.CurrentPageNo;
@@ -271,7 +271,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
       this._ProjectDataList = [];
 
       this.service._GetCompletedProjects(this._ObjCompletedProj)
-        .subscribe((data) => {
+        .subscribe((data) => { debugger
 
           if (JSON.parse(data[0]['JsonData_Json']).length == 0) {
             this.notSelectedAnything_msg = "Sorry, No records found in " + this._Statustitle;

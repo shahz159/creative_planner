@@ -410,6 +410,8 @@
                                                         <svg *ngSwitchCase="'Project Auditor added'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#1f79ef" style="width: 20px; height: 20px; "><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 20V19C4 16.2386 6.23858 14 9 14H12.75M17.5355 13.9645V17.5M17.5355 17.5V21.0355M17.5355 17.5H21.0711M17.5355 17.5H14M15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z" stroke="#1f79ef" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g>
                                                         </svg>
                         
+                                                        <svg *ngSwitchCase="'Task Complete'" style="width:19px !important; height:21px !important;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8 6H16M8 10H16M8 14H11M6 22H18C19.1046 22 20 21.1046 20 20V4C20 2.89543 19.1046 2 18 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22Z" stroke="#9494ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g>
+                                                        </svg>
                         
                                                         <svg *ngSwitchCase="'StandardTask Completed'" fill="#ffffff"  style="width:21px !important; height:26px !important;" viewBox="0 0 24 24" id="approved-file-3" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color" stroke="#ffffff" stroke-width="0.144"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path id="primary" d="M20,2H9a1,1,0,0,0-.71.29l-2,2A1,1,0,0,0,6,5v8a6.5,6.5,0,0,1,6,9h8a2,2,0,0,0,2-2V4A2,2,0,0,0,20,2Z" style="fill: #d6ffde;"></path><path id="secondary" d="M5,22a1,1,0,0,1-.71-.29l-2-2a1,1,0,0,1,1.42-1.42L5,19.59l3.29-3.3a1,1,0,0,1,1.42,1.42l-4,4A1,1,0,0,1,5,22ZM8,5A1,1,0,0,0,9,4V2a1,1,0,0,0-.71.29l-2,2A1,1,0,0,0,6,5Zm11,8a1,1,0,0,0-1-1H14a1,1,0,0,0,0,2h4A1,1,0,0,0,19,13Zm0-4a1,1,0,0,0-1-1H10a1,1,0,0,0,0,2h8A1,1,0,0,0,19,9Z" style="fill: #35d52a;"></path></g>
                                                         </svg>
@@ -423,6 +425,14 @@
                                                             </g>
                                                             <g transform="matrix(2.83 0 0 3.21 347.95 798.89)"><path style="stroke: rgb(227 54 46);stroke-width: 0.4px;stroke-dasharray: none;stroke-linecap: butt;stroke-dashoffset: 64;stroke-linejoin: miter;stroke-miterlimit: 4;fill: rgb(211 47 47);fill-rule: nonzero;opacity: 1;" vector-effect="non-scaling-stroke" transform="translate(-50, -50)" d="M 16.28 19.945 L 19.957 16.32 C 22.060000000000002 14.166 25.578000000000003 14.166 27.681 16.32 L 50.007000000000005 38.595 L 72.333 16.32 C 74.43599999999999 14.166 77.954 14.166 80.054 16.32 L 83.68 19.945 C 85.834 22.046 85.834 25.566000000000003 83.68 27.668 L 61.405 49.993 L 83.68 72.32 C 85.834 74.422 85.834 77.939 83.68 80.04299999999999 L 80.054 83.72099999999999 C 77.95400000000001 85.82 74.436 85.82 72.333 83.72099999999999 L 50.007 61.393 L 27.681 83.721 C 25.578 85.82000000000001 22.060000000000002 85.82000000000001 19.957 83.721 L 16.28 80.043 C 14.180000000000001 77.93900000000001 14.180000000000001 74.42200000000001 16.28 72.32000000000001 L 38.606 49.99300000000001 L 16.28 27.667 C 14.18 25.566 14.18 22.046 16.28 19.945 z" stroke-linecap="round"></path></g>
                                                         </svg>
+
+                                                        <ng-container *ngSwitchCase="'Not Achieved'">
+                                                            <svg  style="width:19px !important; height:21px !important;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8 6H16M8 10H16M8 14H11M6 22H18C19.1046 22 20 21.1046 20 20V4C20 2.89543 19.1046 2 18 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22Z" stroke="#9494ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g>
+                                                            </svg>
+                                                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 14px;height: 20px;position: absolute; left: 16px; top: 12px; fill: red;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Close_Circle"> <path id="Vector" d="M9 9L11.9999 11.9999M11.9999 11.9999L14.9999 14.9999M11.9999 11.9999L9 14.9999M11.9999 11.9999L14.9999 9M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="white" stroke-width="1.512" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g>
+                                                            </svg>
+                                                        </ng-container>
+
                                                         <svg *ngSwitchCase="'Project Cancel'" width="64px" height="64px" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor" stroke="currentColor" class="si-glyph si-glyph-deny">
                                                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs></defs>
                                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M9.016,0.06 C4.616,0.06 1.047,3.629 1.047,8.029 C1.047,12.429 4.615,15.998 9.016,15.998 C13.418,15.998 16.985,12.429 16.985,8.029 C16.985,3.629 13.418,0.06 9.016,0.06 L9.016,0.06 Z M3.049,8.028 C3.049,4.739 5.726,2.062 9.016,2.062 C10.37,2.062 11.616,2.52 12.618,3.283 L4.271,11.631 C3.508,10.629 3.049,9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.544,13.583 5.569,12.889 L13.878,4.58 C14.571,5.555 14.982,6.743 14.982,8.028 C14.981,11.317 12.306,13.994 9.016,13.994 L9.016,13.994 Z" fill="red" class="si-glyph-fill"></path>
@@ -459,6 +469,18 @@
                                                         <svg *ngSwitchCase="'Rejected'" width="64px" height="64px" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-deny" fill="currentColor" stroke="currentColor">
                                                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g> <g id="SVGRepo_iconCarrier"><defs> </defs>
                                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M9.016,0.06 C4.616,0.06 1.047,3.629 1.047,8.029 C1.047,12.429 4.615,15.998 9.016,15.998 C13.418,15.998 16.985,12.429 16.985,8.029 C16.985,3.629 13.418,0.06 9.016,0.06 L9.016,0.06 Z M3.049,8.028 C3.049,4.739 5.726,2.062 9.016,2.062 C10.37,2.062 11.616,2.52 12.618,3.283 L4.271,11.631 C3.508,10.629 3.049,9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.544,13.583 5.569,12.889 L13.878,4.58 C14.571,5.555 14.982,6.743 14.982,8.028 C14.981,11.317 12.306,13.994 9.016,13.994 L9.016,13.994 Z" fill="red" class="si-glyph-fill"> </path></g></g>
+                                                        </svg>
+
+
+
+                                                        <svg *ngSwitchCase="'New Project Reject Release'" fill="#5867dd" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width:24px; height:24px;" viewBox="-73.84 -73.84 715.70 715.70" xml:space="preserve" stroke-width="7.952238000000001"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M72.553,400.503c11.12,11.119,29.156,11.119,40.282,0l71.849-83.238c11.12-11.119,7.387-20.141-8.342-20.141h-46.444 c-3.929-52.24,14.688-104.059,52.999-142.37c71.194-71.188,187.022-71.188,258.209,0c34.486,34.486,53.477,80.331,53.477,129.102 c0,48.77-18.996,94.616-53.477,129.102c-49.395,49.395-121.219,66.23-187.511,43.936c-19.205-6.488-40.043,3.867-46.512,23.09 c-6.469,19.223,3.868,40.043,23.09,46.512c27.124,9.131,54.903,13.574,82.388,13.574c66.623,0,131.439-26.156,180.461-75.184 c48.36-48.355,74.994-112.645,74.994-181.036c0-68.392-26.634-132.676-74.994-181.036c-99.823-99.823-262.243-99.823-362.06,0 c-52.424,52.424-78.636,122.871-74.75,194.304H14.744c-15.728,0-19.461,9.014-8.341,20.141L72.553,400.503z"></path> </g> </g> </g>
+                                                        </svg>
+
+
+
+                                                        <svg *ngSwitchDefault xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="blue">
+                                                            <path opacity="0.3"  d="M2 4V16C2 16.6 2.4 17 3 17H13L16.6 20.6C17.1 21.1 18 20.8 18 20V17H21C21.6 17 22 16.6 22 16V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4Z" fill="blue"></path>
+                                                            <path d="M18 9H6C5.4 9 5 8.6 5 8C5 7.4 5.4 7 6 7H18C18.6 7 19 7.4 19 8C19 8.6 18.6 9 18 9ZM16 12C16 11.4 15.6 11 15 11H6C5.4 11 5 11.4 5 12C5 12.6 5.4 13 6 13H15C15.6 13 16 12.6 16 12Z" fill="darkblue"></path>
                                                         </svg>
 
 
@@ -779,7 +801,6 @@
 
                                         <ul class="upcoming-events-ul">
 
-
                                           <li>
                                             <div class="upcoming-events-li" *ngIf="CompletedCount > 0" (click)="notification()">
                                                 <div class="date">
@@ -793,18 +814,16 @@
                                                     </svg>
                                                 </div>
                                                 <div class="content">
-                                                    <div class="title">Under approval</div>
-                                                    <div class="owner">You have {{CompletedCount}} projects currently under approval, which is a positive sign of progress.
+                                                    <div class="title">Approvals</div>
+                                                    <div class="owner">You have {{CompletedCount}} approval {{CompletedCount>1?'requests':'request'}}, which is a positive sign of progress.
                                                     </div>
                                                     <div class="timing"></div>
                                                 </div>
                                             </div>
-                                        </li>
+                                          </li>
 
-
-
-                                             <li>
-                                                <div class="upcoming-events-li" *ngIf="this.DelayCount> 0" (click)="Delay_Click('Projects')">
+                                           <li>
+                                                <div class="upcoming-events-li" *ngIf="DelayCount> 0" (click)="Delay_Click('Projects')">
                                                     <div class="date">
                                                         <svg xmlns="http://www.w3.org/2000/svg" id="Portfolio"
                                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
@@ -830,10 +849,10 @@
                                                         <div class="timing"></div>
                                                     </div>
                                                 </div>
-                                            </li>
+                                           </li>
 
-                                            <li>
-                                              <div class="upcoming-events-li" *ngIf="this.DelayActionCount > 0" (click)="Delay_Click('Actions')">
+                                           <li>
+                                              <div class="upcoming-events-li" *ngIf="DelayActionCount > 0" (click)="Delay_Click('Actions')">
                                                   <div class="date">
                                                       <svg width="64px" height="64px" viewBox="0 0 16 16"
                                                           xmlns="http://www.w3.org/2000/svg" fill="none">
@@ -858,9 +877,10 @@
                                                       <div class="timing"></div>
                                                   </div>
                                               </div>
-                                          </li>
-                                          <li>
-                                            <div class="upcoming-events-li" *ngIf="this.TotalExpiryInMonth> 0" (click)="ExpiryInOneMonth_Click()">
+                                           </li>
+
+                                           <li>
+                                            <div class="upcoming-events-li" *ngIf="TotalExpiryInMonth> 0" (click)="ExpiryInOneMonth_Click()">
                                                 <div class="date">
                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
@@ -891,11 +911,12 @@
                                                 </div>
                                                 <div class="content">
                                                     <div class="title">Delay in one month</div>
-                                                    <div class="owner">It's essential to prioritize and address these {{this.TotalExpiryInMonth}} delays to maintain overall progress.</div>
+                                                    <div class="owner">It's essential to prioritize and address these {{TotalExpiryInMonth}} delays to maintain overall progress.</div>
                                                     <div class="timing"></div>
                                                 </div>
                                             </div>
-                                        </li>
+                                           </li>
+
                                             <li>
                                                 <div class="upcoming-events-li" *ngIf="AssignedProjects > 0" (click)="Delay_Click('Assigned Project')">
                                                     <div class="date">
@@ -923,6 +944,7 @@
                                                     </div>
                                                 </div>
                                             </li>
+
                                             <li>
                                                 <div class="upcoming-events-li" *ngIf="AssignActionCount > 0"  (click)="AssignedActions_Click()">
                                                     <div class="date">
@@ -948,8 +970,7 @@
                                                 </div>
                                             </li>
 
-
-                                            <li>
+                                           <li>
                                               <div class="upcoming-events-li" *ngIf="ProjectsNotStarted > 0" (click)="Not_Started()">
                                                   <div class="date">
 
@@ -968,10 +989,9 @@
                                                       <div class="timing"></div>
                                                   </div>
                                               </div>
-                                          </li>
+                                           </li>
 
-
-                                          <li>
+                                           <li>
                                             <div class="upcoming-events-li" *ngIf="RejectedCount > 0" (click)="Rejected_Click()">
                                                 <div class="date">
 
@@ -990,11 +1010,9 @@
                                                     <div class="timing"></div>
                                                 </div>
                                             </div>
-                                        </li>
-
+                                           </li>
 
                                         </ul>
-
 
                                         <ng-container *ngIf="(CompletedCount??0)+(DelayCount??0)+(DelayActionCount??0)+(TotalExpiryInMonth??0)+(AssignedProjects??0)+(AssignActionCount??0)+(ProjectsNotStarted??0)+(RejectedCount??0)==0"> 
                                             <div class="no-recentactivity-present">
