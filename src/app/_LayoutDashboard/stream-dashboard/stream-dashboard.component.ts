@@ -693,6 +693,24 @@ getRecentActivities(){
 }
 
 
+
+openInDetailsPage(pcode,acode:string|undefined) {
+  let qparams='';
+      if(acode!==undefined){
+        qparams=`?actionCode=${acode}`;
+      }
+      let name: string = 'Details';
+      var url = document.baseURI + name;
+      var myurl = `${url}/${pcode}${qparams}`;
+      var myWindow = window.open(myurl,pcode);
+      myWindow?.focus();
+}
+
+
+
+
+
+
 // recent activity section .  end
 
 
