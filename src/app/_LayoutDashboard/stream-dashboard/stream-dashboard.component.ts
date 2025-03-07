@@ -339,6 +339,20 @@ export class StreamDashboardComponent implements OnInit {
 
       console.log(this.scheduleItems, "Calendar Data");
     });
+
+
+    // this.scheduleItems = (this.scheduleItems || []).flatMap(item => {
+    //   if (!item.startTime || !item.endTime) return [];
+    //   const [start, end] = [new Date(`2000-01-01T${item.startTime}`), new Date(`2000-01-01T${item.endTime}`)];
+    //   return end <= start ? [
+    //     { ...item, endTime: "23:59", part: "1/2" },
+    //     { ...item, startTime: "00:00", part: "2/2" }
+    //   ] : [item];
+    // });
+    
+    
+    
+    
   }
 
   isToday(date: Date): boolean {
