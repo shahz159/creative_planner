@@ -5275,7 +5275,7 @@ RecurrValueMonthly:boolean=false;
         console.log(this._calenderDto,'new updaet data') 
         this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
           (data => {
-          
+    
             // alert(data['Schedule_date'])
             this.Attamentdraftid= data['draftid']
            frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);

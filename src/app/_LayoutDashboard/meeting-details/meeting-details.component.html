@@ -921,7 +921,7 @@
                                                                             </svg>
                                                                         </div>
                                                                         <div class="text-center">
-                                                                            <div class="timeline-up">{{hours}} hr {{minutes}} min </div>
+                                                                            <div class="timeline-up">{{getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time)}} </div>
                                                                             <div class="timeline-down">Average attendance time
                                                                             </div>
                                                                         </div>
@@ -945,11 +945,11 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="kt-metric-time"  >
-                                                                <ng-container *ngIf="hours>0">
+                                                                <!-- <ng-container *ngIf="hours>0">
                                                                     <div class="dark-title" >{{hours}} hr {{minutes}} min</div>
-                                                                </ng-container>
-                                                                    <div class="dark-title"  *ngIf="hours==0">{{formattedDuration}} Min</div>
-                                                                
+                                                                </ng-container> -->
+                                                                    <!-- <div class="dark-title"  *ngIf="hours==0">{{formattedDuration}} Min</div> -->
+                                                                    <div class="dark-title">{{getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time)}}</div>
                                                                     <div class="muted-title">Duration</div>
                                                                 </div>
                                                             </div>

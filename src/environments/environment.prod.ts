@@ -5,16 +5,18 @@ export const environment = {
 //  baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
 // //  baseUrl:'https://cswebapps.com/StreamPlannerAPI/api/',
 //  baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
- Language_file_url:'https://cswebapps.com/creativeplanner/assets/i18n/'
+//  Language_file_url:'https://cswebapps.com/creativeplanner/assets/i18n/'
+Language_file_url:'https://creativeplanner.azurewebsites.net/site/wwwroot/assets/i18n/'
  ,assetsurl:'/creativeplanner/'
- ,ImageUrl:'/creativeplanner/assets/'
+//  ,ImageUrl:'/creativeplanner/assets/'
+,ImageUrl:'/site/wwwroot/assets/'
  ,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/',
 // --------Azure API-------- 
-// baseUrl:'https://creativeplannerapi.azurewebsites.net/api/',
-//  baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/'
-   //-----Live Server----
- baseUrl:'https://cswebapps.com/PortfolioAPI/api/',
+baseUrl:'https://creativeplannerapi.azurewebsites.net/api/',
  baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/'
+   //-----Live Server----
+//  baseUrl:'https://cswebapps.com/PortfolioAPI/api/',
+//  baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/'
 };
   //Devbox Server
   //baseUrl:'https://cswebapps.com/PortfolioAPI/api/'
