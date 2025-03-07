@@ -801,25 +801,25 @@ export class MeetingDetailsComponent implements OnInit {
         this.GetDMSList();
       }
 
-      var St_Time = this.EventScheduledjson[0].St_Time;
-      var End_date = this.EventScheduledjson[0].Ed_Time; debugger
-      var StartDate = this.EventScheduledjson[0].StartDate;
+      // var St_Time = this.EventScheduledjson[0].St_Time;
+      // var End_date = this.EventScheduledjson[0].Ed_Time; debugger
+      // var StartDate = this.EventScheduledjson[0].StartDate;
       this.oneByTwoEndDate = this.EventScheduledjson[0].SEndDate;
 
       // var startTime = moment(St_Time, "hh:mm A");
       // var endTime = moment(End_date, "hh:mm A");
 
-      var startTime = moment(`${StartDate} ${St_Time}`, "YYYY-MM-DD hh:mm A");
-      var endTime = moment(`${this.oneByTwoEndDate} ${End_date}`, "YYYY-MM-DD hh:mm A")
+      // var startTime = moment(`${StartDate} ${St_Time}`, "YYYY-MM-DD hh:mm A");
+      // var endTime = moment(`${this.oneByTwoEndDate} ${End_date}`, "YYYY-MM-DD hh:mm A")
 
 
       // Calculate the duration between the start time and end time
-      var duration = moment.duration(endTime.diff(startTime));  debugger
-
+      // var duration = moment.duration(endTime.diff(startTime)); 
+     
       // Format the duration as hours:minutes
-      this.hours = Math.floor(duration.asHours());
-      this.minutes = duration.minutes();
-      this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
+      // this.hours = Math.floor(duration.asHours());
+      // this.minutes = duration.minutes();
+      // this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
     
     }); 
         console.log(this.Project_code,'<3-------Project_code----2>', this.portfolio_Scheduledjson);
@@ -827,6 +827,20 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
+
+
+
+
+  getDurationInHoursMinutes(start: string, end: string): string {
+    const toMinutes = (t: string) => {
+      let [time, period] = t.match(/(\d+:\d+)([AP]M)/).slice(1);
+      let [h, m] = time.split(':').map(Number);
+      return ((h % 12) + (period === 'PM' ? 12 : 0)) * 60 + m;
+    };
+  
+    let duration = (toMinutes(end) - toMinutes(start) + 1440) % 1440;
+    return `${Math.floor(duration / 60)} hr : ${duration % 60} min`;
+  }
 
   // getFileIcon(item: any): string {
   //   const extension = item.File_Name.split('.').pop()?.toLowerCase();
