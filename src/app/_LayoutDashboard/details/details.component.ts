@@ -2453,6 +2453,7 @@ multipleback(){
 
 
         this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']));
+        if(!this.multiapproval_list){ this.multiapproval_list=[];   }
         this.pendingAprvls=[];  // must be empty before calculation.
         if(this.multiapproval_list){
           this.multiapproval_list=this.multiapproval_list.filter((_aprvl)=>_aprvl.Emp_No.trim()==this.Current_user_ID);

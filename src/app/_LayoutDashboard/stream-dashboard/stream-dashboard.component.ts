@@ -194,7 +194,7 @@ export class StreamDashboardComponent implements OnInit {
         this.AssignActionCount = data[0]['AssignActionCount'];
         sessionStorage.setItem('AssignActionCount', this.AssignActionCount);
 
-        this.CompletedCount = data[0]['CompletedCount'];
+        this.CompletedCount = data[0]['CompletedCount'];    // Under approval projects count.
         sessionStorage.setItem('CompletedCount', this.CompletedCount);
 
         this.TotalExpiryInMonth = data[0]['ExpiryOneMonth'];
@@ -711,7 +711,7 @@ getRecentActivities(){
                     const _Value=_actvy.Value.trim();
 
                           result=/New Action- ".*"/.test(_Value)?'New Action':
-                                (/Timeline added .*/.test(_Value)|| _Value=='Project Timeline added')?'Timeline added':
+                                (/Timeline added .*/.test(_Value)|| _Value=='Project Timeline added'||_Value=='Timeline submitted')?'Timeline added':
                                 /Action Complete- ".*"/.test(_Value)?'Action Complete':
                                 /Action -".*" Hold/.test(_Value)?'Action Hold':
                                 /Action -".*" Start date changed/.test(_Value)?'Action Startdate changed':
