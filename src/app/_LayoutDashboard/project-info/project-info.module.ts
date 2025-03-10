@@ -27,6 +27,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 // FullCalendarModule.registerPlugins([
 //   dayGridPlugin,
@@ -50,8 +51,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     MatIconModule,
     MatAutocompleteModule,
     MatCheckboxModule,
-    Ng2SearchPipeModule
-  
+    Ng2SearchPipeModule,
+    MatTooltipModule,
 
   ],
   declarations: [ ProjectInfoComponent, FocusOnClickDirective, TruncatePipe],
