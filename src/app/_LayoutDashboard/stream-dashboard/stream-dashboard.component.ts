@@ -173,11 +173,14 @@ export class StreamDashboardComponent implements OnInit {
   UserfullName: any
   todayDate: any
   getAll :any
+  today: any = new Date().toISOString().substring(0, 10);
+
+
   GetDashboardSummary() {
     this.Emp_No = localStorage.getItem('EmpNo');
     this.service._GetDashboardSummaryCount(this.Emp_No)
       .subscribe((data) => {
-        console.log(data,"GetDashboardSummary()GetDashboardSummary()GetDashboardSummary()")
+        // console.log(data,"GetDashboardSummary()GetDashboardSummary()GetDashboardSummary()")
 
 
 
@@ -186,7 +189,7 @@ export class StreamDashboardComponent implements OnInit {
 
         this.DelayActionCount = data[0]['DelayActionCount'];
         sessionStorage.setItem('DelayActionCount', this.DelayActionCount);
-        console.log( this.DelayActionCount," this.DelayActionCount this.DelayActionCount")
+        // console.log( this.DelayActionCount," this.DelayActionCount this.DelayActionCount")
 
         this.AssignActionCount = data[0]['AssignActionCount'];
         sessionStorage.setItem('AssignActionCount', this.AssignActionCount);
@@ -211,7 +214,7 @@ export class StreamDashboardComponent implements OnInit {
 
         this.YesterdaysDAR_Status = data[0]['YesterdaysDAR_Status'];
         sessionStorage.setItem('YesterdaysDAR_Status', this.YesterdaysDAR_Status);
-        console.log(this.YesterdaysDAR_Status,"this.YesterdaysDAR_Statusthis.YesterdaysDAR_Status")
+        // console.log(this.YesterdaysDAR_Status,"this.YesterdaysDAR_Statusthis.YesterdaysDAR_Status")
 
         this.RejectedCount = data[0]['RejectedCount'];
         sessionStorage.setItem('RejectedCount', this.RejectedCount);
@@ -321,48 +324,83 @@ export class StreamDashboardComponent implements OnInit {
 
   //   }
   meetingDetails(): void {
-    debugger
+   
     this.CalenderService.NewDashboardScheduled(this._calenderDto).subscribe((data) => {
-      console.log( JSON.parse(data['Scheduledtime']),'test json list')
-      const items = JSON.parse(data['Scheduledtime']);
+   
+      this.scheduleItems = JSON.parse(data['Scheduledtime']);
 
-      // Convert date strings to Date objects and filter out past dates
-      const today = new Date();
-      today.setHours(0, 0, 0, 0); // Normalize to start of the day for comparison
+      this.scheduleItems.forEach((day, index, arr) => {
+        day.Events.forEach(event => {
+          if (new Date(event.endTime).getDate() !== new Date(event.startTime).getDate()) {
+            let nextDay = arr.find(d => d.Schedule_date === event.endTime.split(" ")[0]);
+            
+            if (!nextDay) {
+              nextDay = { Schedule_date: event.endTime.split(" ")[0], Events: [] };
+              arr.push(nextDay);
+            }
+            
+            if (!nextDay.Events.some(e => e.Schedule_ID === event.Schedule_ID)) {
+              nextDay.Events.push({ ...event, Task_Name: `${event.Task_Name} 2/2` });
+            }
+      
+            event.Task_Name += " 1/2"; 
+          }
+        });
+      });
+      
 
-      this.scheduleItems = items
-        .map((item: any) => ({
-          ...item,
-          Schedule_date: new Date(item.Schedule_date)
-        }))
-        .filter((item: any) => item.Schedule_date >= today); // Filter for future dates including today
+     this.scheduleItems = this.scheduleItems.map(day => {
+      let updatedEvents = day.Events.map(event => ({
+          ...event,
+          Task_Name: event.Task_Name.replace("2/2 1/2", "2/2")
+      }));
+      
 
-      console.log(this.scheduleItems, "Calendar Data");
-    });
-
-
-    // this.scheduleItems = (this.scheduleItems || []).flatMap(item => {
-    //   if (!item.startTime || !item.endTime) return [];
-    //   const [start, end] = [new Date(`2000-01-01T${item.startTime}`), new Date(`2000-01-01T${item.endTime}`)];
-    //   return end <= start ? [
-    //     { ...item, endTime: "23:59", part: "1/2" },
-    //     { ...item, startTime: "00:00", part: "2/2" }
-    //   ] : [item];
-    // });
-    
-    
-    
-    
+      let specialEvents = updatedEvents.filter(event => event.Task_Name.includes("2/2"));
+      let otherEvents = updatedEvents.filter(event => !event.Task_Name.includes("2/2"));
+      
+      return {
+          ...day,
+          Events: [...specialEvents, ...otherEvents]
+      };
+  });
+  
+      console.log(this.scheduleItems, "Calendar Data 1");
+    }); 
   }
 
-  isToday(date: Date): boolean {
-    const today = new Date();
-    return (
-      date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear()
-    );
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  // isToday(date: Date): boolean {
+  //   const today = new Date();
+  //   return (
+  //     date.getDate() === today.getDate() &&
+  //     date.getMonth() === today.getMonth() &&
+  //     date.getFullYear() === today.getFullYear()
+  //   );
+  // }
 
 
 
@@ -374,7 +412,7 @@ export class StreamDashboardComponent implements OnInit {
       this.initializeOwlCarousels();   // 
         // this.userFound = true
 
-      console.log(this.portfoiloData, "this.portfoiloDatathis.portfoiloData")
+      // console.log(this.portfoiloData, "this.portfoiloDatathis.portfoiloData")
 
     })
 
@@ -430,7 +468,7 @@ export class StreamDashboardComponent implements OnInit {
       this.darArray = JSON.parse(data['DAR_Details_Json']);
 
       const week_Arr = this.darArray[0].WeekSubmissionStatus;
-      console.log(week_Arr,'week_Arrweek_Arrweek_Arr')
+      // console.log(week_Arr,'week_Arrweek_Arrweek_Arr')
       this.weekArr.forEach((item,index)=>{
 
         if(week_Arr[index]){
@@ -438,7 +476,7 @@ export class StreamDashboardComponent implements OnInit {
         }
 
       })
-    console.log(this.darArray,'darArraydarArray')
+    // console.log(this.darArray,'darArraydarArray')
 
 
     })
@@ -452,7 +490,7 @@ export class StreamDashboardComponent implements OnInit {
   getEmployee(){
     this.service.GetEmployeePerformance(this.Emp_No).subscribe((data)=>{
           this.employeeReport =   JSON.parse(data['EmployeeReport'])
-      console.log(this.employeeReport,"GetEmployeePerformanceGetEmployeePerformance")
+      // console.log(this.employeeReport,"GetEmployeePerformanceGetEmployeePerformance")
     })
   }
 
@@ -583,20 +621,21 @@ export class StreamDashboardComponent implements OnInit {
 
   
 
-  formatTimes(time: string): string {
-    if(time){
-      const [hours, minutes] = time.split(':');
-      const date = new Date();
-      date.setHours(parseInt(hours, 10));
-      date.setMinutes(parseInt(minutes, 10));
+  formatTimes(dateTime?: string): string {
+    if (!dateTime) return ''; // Handle undefined/null cases safely
   
-      const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
-      const x=date.toLocaleTimeString('en-US', options);
-      return x;
-    }
-    return '';
+    const timePart = dateTime.split(' ')[1]; // Extract time part safely
+    if (!timePart) return ''; // Ensure there's a time component
+  
+    const [hours, minutes] = timePart.split(':');
+    if (!hours || !minutes) return ''; // Ensure valid hours and minutes
+  
+    const date = new Date();
+    date.setHours(parseInt(hours, 10));
+    date.setMinutes(parseInt(minutes, 10));
+  
+    return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
   }
-
 
 
 
@@ -606,7 +645,7 @@ export class StreamDashboardComponent implements OnInit {
   loadDashboardBanners(){
       
    this.CalenderService.NewUsersDashboard().subscribe((res:any)=>{ 
-        console.log("for dashboard banners :",res); 
+        // console.log("for dashboard banners :",res); 
         if(res){    
             const djson=JSON.parse(res.DashboardJson); 
             this.dashboardBanners=JSON.parse(djson[0].BannerJson);
@@ -659,7 +698,7 @@ totalRecentActivities:number=0;
 getRecentActivities(){
      const empNo=this.Current_user_ID;
      this.approvalservice.NewGetUserActivity(empNo).subscribe((res)=>{
-            console.log("getRecentActivities:",res);
+            // console.log("getRecentActivities:",res);
             if(res&&res[0]){
                   this.recentActivities=JSON.parse(res[0].ActivityList);
                   this.totalRecentActivities=res[0].ActivityCount;
@@ -687,7 +726,7 @@ getRecentActivities(){
                   });
                   // adding _type property
 
-                  console.log('recent activities:',this.recentActivities,'total recent activities:',this.totalRecentActivities);
+                  // console.log('recent activities:',this.recentActivities,'total recent activities:',this.totalRecentActivities);
             }
      });
 }
