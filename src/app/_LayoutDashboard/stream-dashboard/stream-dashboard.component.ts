@@ -365,10 +365,12 @@ export class StreamDashboardComponent implements OnInit {
       };
   });
   
-  debugger
+
   if (this.scheduleItems.length == 9) {
     this.scheduleItems.pop();
   }
+
+     this.scheduleItems.sort((a, b) => a.Schedule_date.localeCompare(b.Schedule_date));
       console.log(this.scheduleItems, "Calendar Data 1");
     }); 
   }
