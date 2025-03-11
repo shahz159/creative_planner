@@ -365,6 +365,10 @@ export class StreamDashboardComponent implements OnInit {
       };
   });
   
+  debugger
+  if (this.scheduleItems.length == 9) {
+    this.scheduleItems.pop();
+  }
       console.log(this.scheduleItems, "Calendar Data 1");
     }); 
   }

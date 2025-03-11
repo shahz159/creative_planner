@@ -5887,11 +5887,14 @@
                                                             Done
                                                         </div>
                                                         <ng-template #Meeting_status>
-                                                            <div *ngIf="today == item.Schedule_date;else allExpireDate"  class="Kt-Pd-Status Today_Meeting " >
+                                                            <div *ngIf="today == item.Schedule_date && item.Pending_meeting == false ;else allExpireDate"  class="Kt-Pd-Status Today_Meeting">
                                                                Today meeting
                                                             </div>
                                                             <ng-template  #allExpireDate>
-                                                            <div class="Kt-Pd-Status Expired " >
+                                                                <div *ngIf="item.Pending_meeting == true"  class="Kt-Pd-Status Today_Meeting">
+                                                                    Pending meeting
+                                                                 </div>    
+                                                            <div *ngIf="item.Pending_meeting == false" class="Kt-Pd-Status Expired">
                                                                 Expired
                                                             </div>
                                                           </ng-template>
@@ -6458,8 +6461,11 @@
                                                 </div>
                                                 <div class="pn-details">
                                                     <div class="pn-label">Meeting Status</div>
-                                                    <div  class="Kt-Pd-Status purple " >
+                                                    <div *ngIf="data.Pending_meeting == false" class="Kt-Pd-Status purple " >
                                                         Upcoming
+                                                    </div>
+                                                    <div *ngIf="data.Pending_meeting == true" class="Kt-Pd-Status purple " >
+                                                        Pending meeting
                                                     </div>
                                                 </div>
                                             </div>
