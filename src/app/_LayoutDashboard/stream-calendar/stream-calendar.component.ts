@@ -2730,8 +2730,8 @@ this.eventtaskitemtimeModal_dismiss();
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
-      finalarray.forEach(element => { 
-
+      finalarray.forEach(element => {  debugger
+       this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this._StartDate);
      
         const date2: Date = new Date(this._SEndDate);
@@ -3319,7 +3319,7 @@ if(this.noSelectedDate == true && weeksFromToday === 0  && this.selectDay){
   }, 0);
 }
 this.noSelectedDate = false;
-const startDate = formattedDate || today;
+const startDate = formattedDate || today; 
 
   this.firstDate = new Date(startDate);
   this.firstDate.setDate(startDate.getDate() + (this.currentWeekOffset * 7));
@@ -3330,14 +3330,18 @@ const startDate = formattedDate || today;
   this.lastDate = new Date(this.firstDate);
   this.lastDate.setDate(this.firstDate.getDate() + 7);
 
+  this.firstDate.setDate(this.firstDate.getDate() - 1);
+
   if(this.Searchingfunc==false){
     this.Calendarjson = this.Searchingjson;
   }else{
-    this.Calendarjson = this.Scheduledjson.filter(e => {
+    this.Calendarjson = this.Scheduledjson.filter(e => {  
       const eventDate = new Date(e.start.split(" ")[0]);
       return eventDate >= this.firstDate && eventDate <= this.lastDate;
     });
   }
+
+  this.firstDate.setDate(this.firstDate.getDate() + 1);
  
     this.groupedMeetingsArray = Object.entries(this.Calendarjson.reduce((acc, current) => {
       const date = current.start.split(' ')[0]; 
@@ -3394,6 +3398,18 @@ const startDate = formattedDate || today;
       ), {})
     );
 
+    this.filteredMeetingsArray.shift();  
+     
+
+    if (this.filteredMeetingsArray.length > 0) {  debugger
+      const lastMeetingDate = new Date(this.filteredMeetingsArray[this.filteredMeetingsArray.length - 1].date);
+      this.lastDates.setHours(0, 0, 0, 0);
+      lastMeetingDate.setHours(0, 0, 0, 0);
+      if (lastMeetingDate >  this.lastDates) {
+        this.filteredMeetingsArray.pop();
+      }
+    }
+  
 
       console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
        
@@ -5588,24 +5604,10 @@ sweet_end() {
 
 
 onCustomBtnClicked(){
- Swal.fire({
-    title: `Repeat meeting`,
-    text: `A meeting cannot be scheduled more than once on the same day. To change the meeting time, please edit the existing meeting`,
-    showCancelButton: true,
-    confirmButtonText: 'OK',
-    cancelButtonText: 'Cancel',
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Call your second function when OK is clicked
-      $('#propse11').removeClass('show');
-      this.repeatEvent();
-    } 
-    // else if (result.isDismissed) {
-      // Skip all when Cancel is clicked
-      // continue; // Skip this file
-    // }
-  })
+$('#propse11').removeClass('show');
+  this.repeatEvent();
 }
+
 
 
 
@@ -5876,8 +5878,8 @@ repeatEventTime(){
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
     if (finalarray.length > 0) {
-      finalarray.forEach(element => {
-  
+      finalarray.forEach(element => { debugger
+        this.repeatStartDate = moment(this.repeatStartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this.repeatStartDate);
         const date2: Date = new Date(this._SEndDate);
   
@@ -6542,6 +6544,7 @@ filterDraft(type : 'date'|'meeting'):void{
     this.repeatStartDate =null;
     this._StartDate=this.disablePreviousTodayDate;
     this.repeatStartDate = this.disablePreviousTodayDate; 
+    this._SEndDate = this.disablePreviousTodayDate;
    
   }
 

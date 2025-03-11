@@ -420,6 +420,7 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     this._StartDate = this.disablePreviousTodayDate;
+    this._SEndDate = this.disablePreviousTodayDate;
     this.disablePreviousDate = this.disablePreviousTodayDate;
     //  this.meeting_details();
   }
@@ -822,7 +823,7 @@ export class MeetingDetailsComponent implements OnInit {
       // this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
     
     }); 
-        console.log(this.Project_code,'<3-------Project_code----2>', this.portfolio_Scheduledjson);
+       
   }
 
 
@@ -1250,7 +1251,7 @@ export class MeetingDetailsComponent implements OnInit {
       // }
       
 
-      console.log( this._MemosSubjectList, this.ModifiedJson ,' this._MemosSubjectList ');
+      // console.log( this._MemosSubjectList, this.ModifiedJson ,' this._MemosSubjectList ');
      });
 
       
@@ -3279,8 +3280,9 @@ onFileChange(event) {
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
-      finalarray.forEach(element => {
-
+      finalarray.forEach(element => { debugger
+        this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
+       
         const date1: Date = new Date(this._StartDate);
         // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
         //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
@@ -3288,6 +3290,7 @@ onFileChange(event) {
         // else {
         //   this._SEndDate = this._StartDate;
         // }
+        
         const date2: Date = new Date(this._SEndDate);
 
         const diffInMs: number = date2.getTime() - date1.getTime();
@@ -6541,6 +6544,7 @@ addstarttime(){
     this.rapeatLink_Details=true;
     this.maxDate = null;
     this.isValidURL=true;
+    this.mtgOnDays = null;
     this.RecurrValue= false;
     this.switChRecurrenceValue=false;
     this.RecurrValueMonthly=false;
@@ -8243,26 +8247,8 @@ onParticipantFilter(){
 
 
   onCustomBtnClicked(){
-   
-    Swal.fire({
-      title: `Repeat meeting`,
-      text: `A meeting cannot be scheduled more than once on the same day. To change the meeting time, please edit the existing meeting`,
-      showCancelButton: true,
-      confirmButtonText: 'OK',
-      cancelButtonText: 'Cancel',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Call your second function when OK is clicked
-        $('#propse11').removeClass('show');
-        this.repeatEvent();
-      } 
-      // else if (result.isDismissed) {
-        // Skip all when Cancel is clicked
-        // continue; // Skip this file
-      // }
-    }) 
+    this.repeatEvent();
   }
-
 
 
 
