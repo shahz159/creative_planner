@@ -29,6 +29,8 @@ import { CreateProjectComponent } from '../create-project/create-project.compone
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
 import { ShareModule } from 'src/app/Shared/share/share.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 
 
@@ -59,7 +61,8 @@ import { ShareModule } from 'src/app/Shared/share/share.module';
     AsyncPipe,
     MatCheckboxModule,
     ScrollingModule,
-    ShareModule
+    ShareModule,
+    MatTooltipModule
 
     ],
   providers: [

@@ -4235,6 +4235,7 @@ if(this.End_Date&&invaildPrjEnddate){
   OGActionClient: any
   ActionmaxAllocation:number=0;
   newaction_Cost:any;
+  isActnStartDateEditable:boolean=false;
 
   /// Action Edits start   
   initializeSelectedValues() {
@@ -4256,12 +4257,19 @@ if(this.End_Date&&invaildPrjEnddate){
     this.ActionCode = this.projectActionInfo[this.currentActionView].Project_Code;
     this.ActionName = this.projectActionInfo[this.currentActionView].Project_Name;
     this.ActionDescription = this.projectActionInfo[this.currentActionView].Project_Description;
-    this.ActionstartDate = this.projectActionInfo[this.currentActionView].StartDate
-    this.ActionendDate = this.projectActionInfo[this.currentActionView].EndDate
-    this.ActionDuration = this.projectActionInfo[this.currentActionView].Duration
+    this.ActionstartDate = this.projectActionInfo[this.currentActionView].StartDate;
+    this.ActionendDate = this.projectActionInfo[this.currentActionView].EndDate;
+    this.ActionDuration = this.projectActionInfo[this.currentActionView].Duration;
     this.ActionAllocatedHours = this.projectActionInfo[this.currentActionView].AllocatedHours;
     this.editAllocatedhours = this.ActionAllocatedHours;
     this.newaction_Cost=this.projectActionInfo[this.currentActionView].Project_Cost;
+
+
+ // is action start date editable or not?
+    const actns_date=new Date(this.ActionstartDate); actns_date.setHours(0,0,0,0);
+    const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+    this.isActnStartDateEditable=actns_date>=cr_date;
+   // is action start date editable or not?
     this.onActionDateChanged();
   }
 

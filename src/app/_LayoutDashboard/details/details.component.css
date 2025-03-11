@@ -1057,6 +1057,9 @@ button.Kt-Approval-btns {
 .kt-projcect-act-list .kt-p-box .kt-info-lable-v {
   font-size: 12px;
 }
+.kt-projcect-act-list .kt-p-box .kt-info-lable-v.resp-name {
+  font-size: 11px;
+}
 
 .kt-action-p-tittle h4 {
   font-size: 14px;
@@ -4924,6 +4927,11 @@ p.kt-dt-l {
   direction: ltr;
   margin-left: 5px;
   margin-right: 5px;
+}
+
+.kt-project-acion-content .action-index-label{
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .flipped {
@@ -10222,3 +10230,8 @@ span.time-value {
   -ms-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
 }
+
+
+
+
+
