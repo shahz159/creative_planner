@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   //localServer
-   baseUrl:'http://localhost:1221/api/',
+  //  baseUrl:'http://localhost:1221/api/',
   // baseUrl:'http://cswebapps.com/PortfolioAPI/api/',
    baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/',
   //  baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
@@ -15,7 +15,7 @@ export const environment = {
    ,assetsurl:'../../../'
    ,ImageUrl:'/assets/',
   // SignalUrl: 'http://localhost:1221/signalr'
-  // baseUrl:'https://cswebapps.com/PortfolioAPI/api/'
+  baseUrl:'https://cswebapps.com/PortfolioAPI/api/'
   // baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/'
 //DMS Live Server
 //baseUrl:'http://localhost:1221/api/'
