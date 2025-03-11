@@ -17,7 +17,7 @@ import { ApprovalsService } from 'src/app/_Services/approvals.service';
   styleUrls: ['./stream-dashboard.component.css']
 })
 export class StreamDashboardComponent implements OnInit {
-  Emp_No: string;
+  Emp_No: any;
   DelayCount: any = sessionStorage.getItem('DelayCount');
   DelayActionCount: any = sessionStorage.getItem('DelayActionCount');
   AssignActionCount: any = sessionStorage.getItem('AssignActionCount');

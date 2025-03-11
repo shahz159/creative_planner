@@ -363,7 +363,7 @@ export class ProjectTypeService {
     this.ObjStatusDTO.SelectedStatus = objStatus.SelectedStatus;
 
     this.ObjStatusDTO.PageNumber = objStatus.PageNumber;
-    this.ObjStatusDTO.RowsOfPage = 30;
+    this.ObjStatusDTO.RowsOfPage = 32;
     this.ObjStatusDTO.SearchText = objStatus.SearchText;
 
     return this.http.post(this.rootUrl + "TestAPI/NewGetPortfolioStatusColor", this.ObjStatusDTO)
