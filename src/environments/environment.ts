@@ -7,9 +7,9 @@ export const environment = {
   //localServer
    baseUrl:'http://localhost:1221/api/',
   // baseUrl:'http://cswebapps.com/PortfolioAPI/api/',
-  //  baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/',
+   baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/',
   //  baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
-   baseUrlCore:'http://localhost:5201/api/',
+  //  baseUrlCore:'http://localhost:5201/api/',
    Language_file_url:''
    ,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/'
    ,assetsurl:'../../../'
