@@ -3361,7 +3361,9 @@ const startDate = formattedDate || today;
             const title = parts[0]; 
             
             const linkIndex = parts.findIndex(part => part.includes("Link"));
-            const location = parts.length > 2 && linkIndex > 1 ? parts[1] : null;
+           
+            const location = parts.length > 2 && linkIndex > 2 && !parts[1].includes('👨‍💼') ? parts[1] : null;
+            
             let attendees = linkIndex > 1 ? parts.slice(1, linkIndex).map(s => s.trim()) : null;
         
             if (attendees && attendees.length) {
