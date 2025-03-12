@@ -495,7 +495,7 @@
                                                         <h4 class="timeline-title compl-remarks-span" style="-webkit-line-clamp: 1;">{{activity.Value}} <ng-container  *ngIf="activity.Project_Name"> - "<span (click)="openInDetailsPage(activity.Project_Code,activity.Project_Code!=activity.Action_Code?activity.Action_Code:undefined)" class="tm-link-redirect"> {{activity.Project_Name}} </span>"</ng-container> </h4>
                                                         <div class="text-muted ml-2 fs-8 d-flex align-items-center gap-1">
                                                             <span class="text-nowrap">{{activity.ModifiedDate |date:'dd-MM-yyyy'}}</span> 
-                                                            <span class="text-nowrap">at {{formatTimes(activity.ModifiedTime)}}</span>
+                                                            <span class="text-nowrap">at {{activity.ModifiedTime12Hr}}</span>
                                                         </div>
                                                     </div>
                                                     <div class="d-flex justify-content-between gap-3">
