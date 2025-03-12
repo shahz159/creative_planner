@@ -1265,7 +1265,7 @@ Task_type(value) {
     //       ac.updatePosition();
     //   });
     // })
-  }debugger
+  }
   if(this.formattedDayTime){
    this._StartDate = this.monthDateBinde;
    this._SEndDate =  this.monthDateBinde;
@@ -2664,7 +2664,7 @@ this.eventtaskitemtimeModal_dismiss();
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
 
-      debugger
+  
        // new code start 69
        // 
   
@@ -2730,7 +2730,7 @@ this.eventtaskitemtimeModal_dismiss();
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
-      finalarray.forEach(element => {  debugger
+      finalarray.forEach(element => {
        this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this._StartDate);
      
@@ -3138,7 +3138,7 @@ this.eventtaskitemtimeModal_dismiss();
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
           this.draftcount = this.draftdata_meet.length;
           this.filterDraft('date');
-          console.log(this.draftdata_meet,'testing process')
+         
         }
         else {
           this.draftdata_meet = null;
@@ -3352,13 +3352,16 @@ const startDate = formattedDate || today;
       return acc;
   }, {})).map(([date, events]) => ({ date, events }));
 
+ 
+
       this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({
         ...day,
-        events: day.events.map(event => {
+        events: day.events.map(event => { debugger
             const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
             const title = parts[0]; 
+            
             const linkIndex = parts.findIndex(part => part.includes("Link"));
-    
+            const location = parts.length > 2 && linkIndex > 1 ? parts[1] : null;
             let attendees = linkIndex > 1 ? parts.slice(1, linkIndex).map(s => s.trim()) : null;
         
             if (attendees && attendees.length) {
@@ -3371,8 +3374,8 @@ const startDate = formattedDate || today;
             }
     
             const link = linkIndex !== -1 ? parts[linkIndex].split(' ')[0] : null;
-    
-            return { ...event, title, attendees, link };
+            
+            return { ...event, title, attendees, link, location };
         })
     }));
 
@@ -3401,7 +3404,7 @@ const startDate = formattedDate || today;
     this.filteredMeetingsArray.shift();  
      
 
-    if (this.filteredMeetingsArray.length > 0) {  debugger
+    if (this.filteredMeetingsArray.length > 0) {  
       const lastMeetingDate = new Date(this.filteredMeetingsArray[this.filteredMeetingsArray.length - 1].date);
       this.lastDates.setHours(0, 0, 0, 0);
       lastMeetingDate.setHours(0, 0, 0, 0);
@@ -3410,8 +3413,7 @@ const startDate = formattedDate || today;
       }
     }
   
-
-      console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
+console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
        
 }
 
@@ -4418,7 +4420,7 @@ DublicateTaskandEvent() {
 
         this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
           this.Memos_List = JSON.parse(data['JsonData']);
-          console.log(this.Memos_List, "test iiii");
+        
 
           let arr3 = [];
           var str = (this.EventScheduledjson[0]['DMS_Name']);
@@ -5878,7 +5880,7 @@ repeatEventTime(){
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
     if (finalarray.length > 0) {
-      finalarray.forEach(element => { debugger
+      finalarray.forEach(element => { 
         this.repeatStartDate = moment(this.repeatStartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this.repeatStartDate);
         const date2: Date = new Date(this._SEndDate);
@@ -6090,7 +6092,7 @@ getMeetingApprovals(){
     //  $("#cal-main").addClass("col-lg-12");
 
    }
-     console.log(this.multiapproval_json,'appraval data in the dashboard')
+    
  })
 }
 
@@ -6205,7 +6207,7 @@ GetPending_Request() {
       this.Pending_request = data as [];
       this.pendingcount = this.Pending_request.length;
       this.filterPending('date');
-      console.log(this.Pending_request, "111100000")
+     
     });
 }
 
@@ -6616,7 +6618,7 @@ BookmarkMeetingsList() {
 
           this.meetingbookmarks = JSON.parse(data['meetingbookmarks']);
           this.totalbookmarkslist =this.meetingbookmarks.length;
-          console.log(this.meetingbookmarks,'book mark list data')
+         
   })
 }
 
@@ -6807,7 +6809,7 @@ dayScheduleJson(dayFromToday: number){
 
             this.dayMappedList = this.dayMappedList.map(hour => ({
               ...hour,
-              events: hour.events.map(event => {
+              events: hour.events.map(event => { 
                   const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
                   const title = parts[0];
                   const link = parts.find(part => part.includes("Link"))?.split(' ')[0] || null;
@@ -6830,7 +6832,7 @@ formattedDayTime:any;
 monthDateBinde:any;
 
 
-dayTimeBinding(time:any){ debugger
+dayTimeBinding(time:any){ 
 const now = new Date();  
 let [hour, period] = time.split(" ");
 let timeHour = (period === "PM" && +hour !== 12) ? +hour + 12 : (period === "AM" && +hour === 12) ? 0 : +hour;
@@ -6848,7 +6850,7 @@ if(this.openPopupBox == true && (this.openBoxSelectedDate == this.today && timeH
 
 
 
-updateTimeLine() { debugger
+updateTimeLine() { 
   const now = new Date();
   let hours = now.getHours(); 
   const minutes = now.getMinutes();
@@ -6925,7 +6927,7 @@ weeklyScheduleJson(weekFromToday) {
 
 
 
-monthTimeBinding(data,time){ debugger
+monthTimeBinding(data,time){ 
   this.monthDateBinde = data;
   const now = new Date();  
   let [hour, period] = time.split(" ");

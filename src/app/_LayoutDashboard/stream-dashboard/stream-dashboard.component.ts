@@ -328,7 +328,7 @@ export class StreamDashboardComponent implements OnInit {
     this.CalenderService.NewDashboardScheduled(this._calenderDto).subscribe((data) => {
    
       this.scheduleItems = JSON.parse(data['Scheduledtime']);
-
+      console.log(this.scheduleItems, "Calendar Data 1");
       this.scheduleItems.forEach((day, index, arr) => {
         day.Events.forEach(event => {
           if (new Date(event.endTime).getDate() !== new Date(event.startTime).getDate()) {
@@ -371,7 +371,7 @@ export class StreamDashboardComponent implements OnInit {
   }
 
      this.scheduleItems.sort((a, b) => a.Schedule_date.localeCompare(b.Schedule_date));
-      console.log(this.scheduleItems, "Calendar Data 1");
+      console.log(this.scheduleItems, "Calendar Data 2");
     }); 
   }
 
