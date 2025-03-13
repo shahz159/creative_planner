@@ -3419,12 +3419,14 @@ const startDate = formattedDate || today;
                 attendees[0] = match ? `+${parseInt(match[1], 10) + 1}` : `+1`; 
             }
     
+
             const link = linkIndex !== -1 ? parts[linkIndex].split(' ')[0] : null;
+            attendees = attendees.map(a => a.replace('+', ''));
             
             return { ...event, title, attendees, link, location };
         })
     }));
-    console.log(this.groupedMeetingsArray, 'groupedMeetingsArray');
+    
    
     this.filteredMeetingsArray = Object.values( 
       this.groupedMeetingsArray.flatMap(group =>
