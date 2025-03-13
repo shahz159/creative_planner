@@ -46,7 +46,7 @@ export class StreamDashboardComponent implements OnInit {
     private cdr: ChangeDetectorRef, private router: Router,
     private _snackBar: MatSnackBar,
     private CalenderService: CalenderService,
-     public approvalservice: ApprovalsService
+     public approvalservice: ApprovalsService,
   ) {
     this._calenderDto = new CalenderDTO;
     this._objStatusDTO = new StatusDTO;
@@ -55,6 +55,9 @@ export class StreamDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.UserfullName = localStorage.getItem("UserfullName");
+   
+
+
 
     this.loadDashboardBanners();
     // this.initializeOwlCarousels();
@@ -368,10 +371,18 @@ export class StreamDashboardComponent implements OnInit {
 
   if (this.scheduleItems.length == 9) {
     this.scheduleItems.pop();
-  }
+  } 
+ 
 
      this.scheduleItems.sort((a, b) => a.Schedule_date.localeCompare(b.Schedule_date));
       console.log(this.scheduleItems, "Calendar Data 2");
+ 
+     
+      if( this.scheduleItems.some(data => data.Schedule_date <  this.today)){
+        this.scheduleItems.shift(); 
+      }
+      
+
     }); 
   }
 
@@ -762,6 +773,15 @@ openInDetailsPage(pcode,acode:string|undefined) {
 
 
 
+
+
+openCalendar(Schedule_ID,className) { 
+  let name: string = 'backend/StreamCalendar';
+  var url = document.baseURI + name;
+  var myurl = `${url}?calenderId=${Schedule_ID},${className}`;
+  var myWindow = window.open(myurl, "_self");
+  myWindow.focus();
+}
 
 
 

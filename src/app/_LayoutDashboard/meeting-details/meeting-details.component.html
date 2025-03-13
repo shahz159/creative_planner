@@ -109,8 +109,7 @@
                                                      <div class="col-lg-3 pl-1">
                                                         <div class="kt-metric-app">
                                                             <span *ngIf="Link_Detail.includes('meet.google.com')">
-                                                                <a href="{{Link_Detail.substring(Link_Detail.indexOf('https://')) }}"
-                                                                    target="_blank">
+                                                                <a [href]="Link_Detail.split(',')[0].replace('Meeting link:-', '').trim()"  target="_blank">
                                                                     <div class="app-logo">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 60 20" gmyle="enable-background:new 0 0 60 20;" xml:space="preserve">
                                                                             <style type="text/css">
@@ -360,8 +359,7 @@
                                                                 </a>
                                                             </span>
                                                             <span *ngIf="Link_Detail.includes('skype')">
-                                                                <a href="{{Link_Detail.substring(Link_Detail.indexOf('https://')) }}"
-                                                                target="_blank">
+                                                                <a [href]="Link_Detail.split(',')[0].replace('Meeting link:-', '').trim()"  target="_blank">
                                                                 <div class="app-logo">
                                                                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                     viewBox="0 0 60 20" style="enable-background:new 0 0 60 20;" xml:space="preserve">
@@ -464,8 +462,7 @@
                                                                 </a>
                                                             </span>
                                                             <span *ngIf="Link_Detail.includes('zoom')">
-                                                                <a href="{{Link_Detail.substring(Link_Detail.indexOf('https://')) }}"
-                                                                target="_blank">
+                                                                <a [href]="Link_Detail.split(',')[0].replace('Meeting link:-', '').trim()"  target="_blank">
                                                                 <div class="app-logo">
                                                                     <svg id="a006688c-438d-453f-b2de-6094eaffcc48" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 60 20">
                                                                         <defs>
@@ -550,8 +547,7 @@
                                                                 </a>
                                                             </span>
                                                             <span *ngIf="Link_Detail.includes('teams')">
-                                                                <a href="{{Link_Detail.substring(Link_Detail.indexOf('https://')) }}"
-                                                                target="_blank">
+                                                                <a [href]="Link_Detail.split(',')[0].replace('Meeting link:-', '').trim()"  target="_blank">
                                                                 <div class="app-logo">
                                                                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                                 viewBox="0 0 60 20" style="enable-background:new 0 0 60 20;" xml:space="preserve">
@@ -831,8 +827,7 @@
 
 
                                                             <span *ngIf="Link_Detail !='' && (!Link_Detail.includes('meet.google.com') && !Link_Detail.includes('skype') && !Link_Detail.includes('zoom') && !Link_Detail.includes('teams'))">
-                                                                <a href="{{Link_Detail.substring(Link_Detail.indexOf('https://')) }}"
-                                                                target="_blank">
+                                                                <a [href]="Link_Detail.split(',')[0].replace('Meeting link:-', '').trim()"  target="_blank">
                                                                 <div class="app-logo">
                                                                     <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                                                     width="20px" height="20px" viewBox="0 0 20 20" version="1.1" style="color: #2786fb;">
