@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import * as moment from 'moment'
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
+import { ActivatedRoute, ActivatedRouteSnapshot, Params, Router } from '@angular/router';
 
 
 declare var $: any;
@@ -227,6 +228,8 @@ export class StreamCalendarComponent implements OnInit {
     public datepipe: DatePipe,
     public approvalservice: ApprovalsService,
     public service: ProjectTypeService,
+    private activatedRoute:ActivatedRoute,
+    private router: Router
   ) { 
     this._lstMultipleFiales = [];
     this._calenderDto = new CalenderDTO;
@@ -249,11 +252,41 @@ export class StreamCalendarComponent implements OnInit {
     }
   }
 
-
-
+  scheduleId_UrlParams:any;
+  
   ngOnInit(): void {
- 
+   
     this.Current_user_ID = localStorage.getItem('EmpNo');
+
+    // calender event popup open by qparams
+    this.scheduleId_UrlParams=this.activatedRoute.snapshot.queryParamMap.get('calenderId'); 
+
+    if(this.scheduleId_UrlParams){
+      this.router.navigate(['/backend/StreamCalendar'], { queryParams: { calenderId: null } });
+      this.CalenderDataLoaded=new EventEmitter<boolean>();
+      this.CalenderDataLoaded.subscribe((isLoaded)=>{  
+        if(isLoaded){
+          if(this.scheduleId_UrlParams){
+            console.log(this.scheduleId_UrlParams,'this.scheduleId_UrlParams')
+            const [scheduleIds, color] = this.scheduleId_UrlParams.split(',');
+            this.customEventModal(scheduleIds);
+            this.GetClickEventJSON_Calender(scheduleIds, color);
+            this.scheduleId_UrlParams=null;
+           
+          }
+            }
+      this.CalenderDataLoaded.unsubscribe();  
+      this.CalenderDataLoaded=null;    
+      });
+    }
+  
+
+
+ 
+  // calender event popup open by qparams
+
+
+
     this.initAutosize();
     this.initFirstclass();
     this.MinLastNameLength = true;
@@ -597,6 +630,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("customEventModalBackdrop").classList.remove("show");
 
     $('#propse11').removeClass('show');
+    // this.router.navigate(['/backend/StreamCalendar']);
   }
   customTaskModal(){
     document.getElementById("customTaskModal").style.display = "block";
@@ -3208,7 +3242,7 @@ this.eventtaskitemtimeModal_dismiss();
   }
 
 
-
+  CalenderDataLoaded:EventEmitter<boolean>;
   GetScheduledJson() {
 
     this._calenderDto.EmpNo = this.Current_user_ID;
@@ -3280,12 +3314,22 @@ this.eventtaskitemtimeModal_dismiss();
           allDaySlot: false,
           //69 datesSet: () => { this.TwinEvent = []; }
         };
-      });
+
+     
+        if(this.CalenderDataLoaded){
+          this.CalenderDataLoaded.emit(true);
+        }
+  
+   
+
+
+    });
+
   }
 
   isCalendarVisible: boolean = false;
 
-getEventsForWeeks(weeksFromToday: number) {
+getEventsForWeeks(weeksFromToday: number) { 
  
   const today = new Date();
   today.setHours(0, 0, 0, 0); 
@@ -3330,12 +3374,12 @@ const startDate = formattedDate || today;
   this.lastDate = new Date(this.firstDate);
   this.lastDate.setDate(this.firstDate.getDate() + 7);
 
-  this.firstDate.setDate(this.firstDate.getDate() - 1);
+  this.firstDate.setDate(this.firstDate.getDate() - 1); 
 
   if(this.Searchingfunc==false){
     this.Calendarjson = this.Searchingjson;
   }else{
-    this.Calendarjson = this.Scheduledjson.filter(e => {  
+    this.Calendarjson = this.Scheduledjson.filter(e => { 
       const eventDate = new Date(e.start.split(" ")[0]);
       return eventDate >= this.firstDate && eventDate <= this.lastDate;
     });
@@ -3354,9 +3398,9 @@ const startDate = formattedDate || today;
 
  
 
-      this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({
+      this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({ 
         ...day,
-        events: day.events.map(event => { debugger
+        events: day.events.map(event => {  
             const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
             const title = parts[0]; 
             
@@ -3380,11 +3424,11 @@ const startDate = formattedDate || today;
             return { ...event, title, attendees, link, location };
         })
     }));
-
+    console.log(this.groupedMeetingsArray, 'groupedMeetingsArray');
    
-    this.filteredMeetingsArray = Object.values(
+    this.filteredMeetingsArray = Object.values( 
       this.groupedMeetingsArray.flatMap(group =>
-        group.events.flatMap(event => {
+        group.events.flatMap(event => { 
           const [startDate] = event.start.split(' ');
           const [endDate] = event.end.split(' ');
           const nextDate = new Date(startDate);
@@ -3402,8 +3446,11 @@ const startDate = formattedDate || today;
         (acc[date] ??= { date, events: [] }).events.push(...events), acc
       ), {})
     );
-
-    this.filteredMeetingsArray.shift();  
+   
+    if(this.filteredMeetingsArray.some(data => new Date(data.date) < new Date(this.firstDate))){
+      this.filteredMeetingsArray.shift(); 
+    }
+     
      
 
     if (this.filteredMeetingsArray.length > 0) {  
@@ -3848,7 +3895,7 @@ Insert_indraft() {
 
 
 
-GetClickEventJSON_Calender(arg,meetingClassNeme) {
+GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
  
   this.meetingClassNemes=meetingClassNeme;
    this.EventScheduledjson = [];
@@ -3944,7 +3991,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
 
       this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
-     
+      
       this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
       this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
 

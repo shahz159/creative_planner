@@ -555,6 +555,7 @@
                         </div>
                     </div>
                     <div class="sch-evt-ul sch-evt-border" *ngFor="let group of filteredMeetingsArray" >
+                       
                         <div class="sch-evt-heading sch-evt-p sch-evt-border-bottom" >
                             <div>
                                 <span class="sch-evt-date curser-pointer" (click)="weekToDay(group.date)" [ngClass]="{'active':group.date==today}"> {{group.date| date: 'd'}}</span>
@@ -613,11 +614,17 @@
                                 <div class="sch-evt-info">
                                     <span class="sch-evt-p sch-evt-pl-0" *ngIf="meetingItem.className=='fc-green'"><s>{{meetingItem.title}}</s></span>
                                     <span class="sch-evt-p sch-evt-pl-0" *ngIf="meetingItem.className=='fc-red'"><s>{{meetingItem.title}}</s></span>
-                                    <span class="sch-evt-p sch-evt-pl-0" *ngIf="meetingItem.className!='fc-green' && meetingItem.className!='fc-red'">{{meetingItem.title}} <span *ngIf="meetingItem.location" matTooltip="Location">| <svg  width="17px" height="17px" viewBox="0 2 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>{{meetingItem.location}}</span></span>
+                                    <span class="sch-evt-p sch-evt-pl-0" *ngIf="meetingItem.className!='fc-green' && meetingItem.className!='fc-red'">
+                                    <svg *ngIf="meetingItem.Status == 'Accepted'" matTooltip="Confirm meeting" xmlns="https://www.w3.org/2000/svg" width="14" height="14" style="margin-right: 4px;">
+                                        <path fill="#2786fb" d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
+                                        <path fill="none" stroke="#fff" stroke-width="1.5" d="M3.5 6.5L6 9l5-5">
+                                        </path>
+                                    </svg> 
+                                    {{meetingItem.title}} <span *ngIf="meetingItem.location" matTooltip="Location">| <svg  width="17px" height="17px" viewBox="0 2 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>{{meetingItem.location}}</span></span>
                                 </div>
                             </div>
                             <div class="sch-evt-mem">
-                                <div class="sch-evt-e-c" [ngClass]="{'sch-evt-border-right': meetingItem.attendees && meetingItem.link!=0}" *ngIf="meetingItem.attendees" matTooltip="Attendee">
+                                <div class="sch-evt-e-c" [ngClass]="{'sch-evt-border-right': meetingItem.attendees && meetingItem.link!=0}" *ngIf="meetingItem.attendees" matTooltip="Total attendee/Accepted">
                                     <div class="sch-evt-svg-bg">
                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -633,7 +640,7 @@
                                             </g>
                                         </svg>
                                     </div>
-                                    {{meetingItem.attendees}}
+                                    {{meetingItem.attendees}}/<ng-container *ngIf="meetingItem.AcceptAttendees">{{meetingItem.AcceptAttendees}}</ng-container><ng-container *ngIf="!meetingItem.AcceptAttendees">0</ng-container>
                                 </div>
                                 <div class="sch-evt-e-c" *ngIf="meetingItem.link!=0"  matTooltip="Link">
                                     <div class="sch-evt-svg-bg">
@@ -759,8 +766,7 @@
                                 </div>
                             </div>
                         </div> -->
-
-
+                    
                     </div>
                     <div class="d-flex align-items-center"style="height: 90%; flex-direction: column;" *ngIf="filteredMeetingsArray.length == 0">
                         <img src="./assets/images/waste.png" alt="" style="width: 35%; opacity: 0.6;">

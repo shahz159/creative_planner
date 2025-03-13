@@ -122,7 +122,7 @@
                                     <!-- <div class="card-title">Upcoming Events</div> -->
                                     <div class="tab-scroll">
                                         <div class="upcoming-event-v2 v2-border" *ngFor="let item of scheduleItems" >
-                                            <ng-container *ngIf="item.Schedule_date >= today">
+                                           
                                                 <div class="upcoming-event-v2-heading v2-p v2-border-bottom">
                                                     <div>
                                                         <span  [ngClass]="{'date-badge': true, 'active': item.Schedule_date === today}">{{item.Schedule_date | date : 'dd'}}</span>
@@ -189,28 +189,17 @@
                                                         <div class="upcoming-event-v2-info">
                                                             <span class="v2-p v2-pl-0" *ngIf="item1.className=='fc-green'"><s>{{item1.Task_Name}}</s></span>
                                                             <span class="v2-p v2-pl-0" *ngIf="item1.className=='fc-red'"><s>{{item1.Task_Name}}</s></span>
-                                                            <span class="v2-p v2-pl-0" *ngIf="item1.className!='fc-green' && item1.className!='fc-red'">{{item1.Task_Name}} <span *ngIf="item1.Location" matTooltip="Location">| <svg  width="17px" height="17px" viewBox="0 2 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>{{item1.Location}}</span></span>
+                                                            <span class="v2-p v2-pl-0" *ngIf="item1.className!='fc-green' && item1.className!='fc-red'">
+                                                                <svg *ngIf="item1.Status == 'Accepted'" matTooltip="Confirm meeting" xmlns="https://www.w3.org/2000/svg" width="14" height="14" style="margin-right: 4px;">
+                                                                    <path fill="#2786fb" d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
+                                                                    <path fill="none" stroke="#fff" stroke-width="1.5" d="M3.5 6.5L6 9l5-5">
+                                                                    </path>
+                                                                </svg>
+                                                                {{item1.Task_Name}} 
+                                                                <span *ngIf="item1.Location" matTooltip="Location">| <svg  width="17px" height="17px" viewBox="0 2 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>{{item1.Location}}</span></span>
                                                         </div>
                                                     </div>
                                                     <div style="display: flex;align-items: center;">
-                                                        <div class="v2-e-c v2-border-right"  *ngIf="item1.AddGuestsCount" matTooltip="Attendees">
-                                                            <div class="v2-svg-bg">
-                                                                <svg width="64px" height="64px" viewBox="0 0 24 24"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                                        stroke-linejoin="round"></g>
-                                                                    <g id="SVGRepo_iconCarrier">
-                                                                        <path
-                                                                            d="M22 21V19C22 17.1362 20.7252 15.5701 19 15.126M15.5 3.29076C16.9659 3.88415 18 5.32131 18 7C18 8.67869 16.9659 10.1159 15.5 10.7092M17 21C17 19.1362 17 18.2044 16.6955 17.4693C16.2895 16.4892 15.5108 15.7105 14.5307 15.3045C13.7956 15 12.8638 15 11 15H8C6.13623 15 5.20435 15 4.46927 15.3045C3.48915 15.7105 2.71046 16.4892 2.30448 17.4693C2 18.2044 2 19.1362 2 21M13.5 7C13.5 9.20914 11.7091 11 9.5 11C7.29086 11 5.5 9.20914 5.5 7C5.5 4.79086 7.29086 3 9.5 3C11.7091 3 13.5 4.79086 13.5 7Z"
-                                                                            stroke="currentColor" stroke-width="2"
-                                                                            stroke-linecap="round" stroke-linejoin="round">
-                                                                        </path>
-                                                                    </g>
-                                                                </svg>
-                                                            </div>
-                                                           +{{item1.AddGuestsCount}}
-                                                        </div>
                                                         <div class="v2-e-c"  *ngIf="item1.Link!=0" matTooltip="Links">
                                                             <div class="v2-svg-bg">
                                                                 <svg width="64px" height="64px" viewBox="0 0 24 24"
@@ -228,9 +217,62 @@
                                                             </div>
                                                           {{item1.Link}}
                                                         </div>
+                                                        <div class="v2-e-c"  *ngIf="item1.AddGuestsCount">
+                                                            <div class="v2-svg-bg">
+                                                                <svg width="64px" height="64px" viewBox="0 0 24 24"
+                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                                        stroke-linejoin="round"></g>
+                                                                    <g id="SVGRepo_iconCarrier">
+                                                                        <path
+                                                                            d="M22 21V19C22 17.1362 20.7252 15.5701 19 15.126M15.5 3.29076C16.9659 3.88415 18 5.32131 18 7C18 8.67869 16.9659 10.1159 15.5 10.7092M17 21C17 19.1362 17 18.2044 16.6955 17.4693C16.2895 16.4892 15.5108 15.7105 14.5307 15.3045C13.7956 15 12.8638 15 11 15H8C6.13623 15 5.20435 15 4.46927 15.3045C3.48915 15.7105 2.71046 16.4892 2.30448 17.4693C2 18.2044 2 19.1362 2 21M13.5 7C13.5 9.20914 11.7091 11 9.5 11C7.29086 11 5.5 9.20914 5.5 7C5.5 4.79086 7.29086 3 9.5 3C11.7091 3 13.5 4.79086 13.5 7Z"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                                        </path>
+                                                                    </g>
+                                                                </svg>
+                                                            </div>
+                                                           +{{item1.AddGuestsCount}}/<ng-container *ngIf="item1.AcceptAttendees">{{item1.AcceptAttendees}}</ng-container><ng-container *ngIf="!item1.AcceptAttendees">0</ng-container>
+                                                        </div>
+                                                        <!-- <div class="v2-e-c"  matTooltip="Yes">
+                                                            <div class="v2-svg-bg">
+                                                                <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
+                                                                    <path fill="#CEEAD6"
+                                                                        d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
+                                                                    <path fill="none" stroke="#137333" stroke-width="1.5" d="M3.5 6.5L6 9l5-5">
+                                                                    </path>
+                                                                </svg>
+                                                            </div>
+                                                            +1
+                                                        </div>
+                                                        <div class="v2-e-c"  matTooltip="No">
+                                                            <div class="v2-svg-bg">
+                                                                <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
+                                                                    <path fill="#FAD2CF"
+                                                                        d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
+                                                                    <path fill="none" stroke="#B31412" stroke-width="1.5" d="M4 10l6-6M10 10L4 4">
+                                                                    </path>
+                                                                </svg>
+                                                            </div>
+                                                            +1
+                                                        </div> -->
+                                                        
+                                                        
+                                                    </div>
+                                                    <div class="upcoming-event-item-actions-ul">
+                                                        <!-- <div class="upcoming-event-item-actions-li">
+                                                            Yes
+                                                        </div>
+                                                        <div class="upcoming-event-item-actions-li">
+                                                            No
+                                                        </div> -->
+                                                        <div (click)="openCalendar(item1.Schedule_ID,item1.className)" class="upcoming-event-item-actions-li">
+                                                            <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </ng-container>
+
                                             
 
                                             <!-- <div class="upcoming-event-v2-item  v2-border-bottom">
@@ -289,7 +331,7 @@
                                         </div>
 
 
-                                        <div class="d-flex align-items-center justify-content-between"style="height: 90%; flex-direction: column;" *ngIf="scheduleItems&&scheduleItems.length == 0">
+                                        <div class="d-flex align-items-center justify-content-between"style="height: 90%; flex-direction: column;" *ngIf="scheduleItems&&scheduleItems.length == 0" >
                                           <img src="./assets/images/waste.png" alt="" style="width: 35%; opacity: 0.6;">
                                           <p style=" font-size: 18px; font-weight: 500; color: #a7a7a7;">No events/tasks are created or scheduled</p>
                                         </div>
