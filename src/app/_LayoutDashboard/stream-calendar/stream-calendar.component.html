@@ -624,7 +624,7 @@
                                 </div>
                             </div>
                             <div class="sch-evt-mem">
-                                <div class="sch-evt-e-c" [ngClass]="{'sch-evt-border-right': meetingItem.attendees && meetingItem.link!=0}" *ngIf="meetingItem.attendees" matTooltip="Accepted/Total attendee">
+                                <div class="sch-evt-e-c" [ngClass]="{'sch-evt-border-right': meetingItem.attendees && meetingItem.link!=0}" *ngIf="meetingItem.attendees!=0" matTooltip="Accepted/Total attendee">
                                     <div class="sch-evt-svg-bg">
                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">

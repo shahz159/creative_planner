@@ -3421,8 +3421,9 @@ const startDate = formattedDate || today;
     
 
             const link = linkIndex !== -1 ? parts[linkIndex].split(' ')[0] : null;
-            attendees = attendees.map(a => a.replace('+', ''));
-            
+        
+           attendees = (attendees || []).map(a => a.replace('+', ''));
+         
             return { ...event, title, attendees, link, location };
         })
     }));
