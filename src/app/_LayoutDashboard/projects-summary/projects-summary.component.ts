@@ -486,7 +486,10 @@ Dateselectionrange: string = 'Date selection range';
       this.ObjUserDetails.ActiveStatus = "Active";
     }
 
-    this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
+    this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe((data:any) => {
+      if(data){
+         data.forEach((ob)=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
+      }
       this._ProjectDataList = data;
 
       this.ActualDataList = data;
@@ -523,7 +526,10 @@ Dateselectionrange: string = 'Date selection range';
         this.ObjUserDetails.ActiveStatus = "Active";
       }
 
-      this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
+      this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe((data:any) => {
+        if(data){
+          data.forEach((ob)=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
+        }
         this._ProjectDataList = data;
 
          console.log("Summary Data---->",this._ProjectDataList);
@@ -1166,7 +1172,10 @@ debugger
     }
     //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails)
-      .subscribe(data => {
+      .subscribe((data:any) => {
+        if(data){
+          data.forEach((ob)=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
+       }
         //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
         this._ProjectDataList = data;
         this.un_FilteredProjects = data;
@@ -1213,7 +1222,10 @@ debugger
       console.log("object passing to api:",this.ObjUserDetails);
       //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails)
-        .subscribe(data => {
+        .subscribe((data:any) => {
+          if(data){
+            data.forEach((ob)=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
+           }
           //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
           this._ProjectDataList = data;
           this.un_FilteredProjects = data;

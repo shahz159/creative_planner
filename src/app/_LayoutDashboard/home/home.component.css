@@ -1634,8 +1634,11 @@
   }
 
   h3.kt-portlet__head-title strong {
-    display: flex;
-    align-items: center;
+      display: flex;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #48465b;
   }
 
   span.head-title-count {
@@ -1851,7 +1854,7 @@
 
   .portfolio-pagination label {
     margin-bottom: 0px;
-    font-size: 18px;
+    font-size: 13px;
     color: #5f6368;
     margin-right: 8px !important;
   }

@@ -1886,6 +1886,8 @@ debugger
     this.formFieldsRequired = false;
 
   }
+
+  isTaskCompleteSidebarOpen:boolean=false;  // whether standard tasks complete sidebar open or close.
   ApprovalSideBar() {
     document.getElementById("Approval_view").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -1898,9 +1900,20 @@ debugger
           aprv1.click();
         }
       },300)
+    this.isTaskCompleteSidebarOpen=true;  // standard tasks complete sidebar is active/open.  
+  }
+
+  closeApprovalSideBar(){
+    document.getElementById("Approval_view").classList.remove("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "none";
+    // document.getElementById("newdetails").classList.remove("position-fixed");
+    $('#newdetails').removeClass('position-fixed');
+    this.backmainapproval();
+    this.isTaskCompleteSidebarOpen=false;  // standard tasks complete sidebar is closed.  
   }
 
 
+  isPendingApprovalSidebarOpen:boolean=false;  // whether pending approval sidebar open or close.
   MultipleApprovalSideBar() {
     document.getElementById("multiple_view").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -1913,15 +1926,7 @@ debugger
         aprv1.click();
       }
     },300)
-
-  }
-
-
-  closeApprovalSideBar(){
-    document.getElementById("Approval_view").classList.remove("kt-quick-active--on");
-    document.getElementById("rightbar-overlay").style.display = "none";
-    // document.getElementById("newdetails").classList.remove("position-fixed");
-    $('#newdetails').removeClass('position-fixed');
+    this.isPendingApprovalSidebarOpen=true;   // pending approval sidebar is open/active.
   }
 
   closeMultipleSideBar(){
@@ -1929,7 +1934,7 @@ debugger
     document.getElementById("rightbar-overlay").style.display = "none";
     // document.getElementById("newdetails").classList.remove("position-fixed");
     $('#newdetails').removeClass('position-fixed');
-
+    this.isPendingApprovalSidebarOpen=false;   // pending approval sidebar is closed.
   }
 
 
@@ -1965,6 +1970,8 @@ multipleback(){
     this.formFieldsRequired=false;
     this.isLoadingData=undefined;
     this.invalidFileSelected=false;
+    this.isTaskCompleteSidebarOpen=false;
+    this.isPendingApprovalSidebarOpen=false;
     document.getElementById("Action_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Project_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
@@ -2437,6 +2444,7 @@ multipleback(){
   submitby:any;
   multiapproval_list:any=[];
   pendingAprvls:any=[];
+  rejectreleaseComments:any;
 
   approvalsFetching:boolean=false;
   getapprovalStats() {   
@@ -2449,8 +2457,8 @@ multipleback(){
       console.log(this.requestDetails, "approvals");
       if (this.requestDetails.length > 0) {
         this.isPrjContainAprvls=true; //to show pending aprvl label of prj status section.
-        this.requestType = (this.requestDetails[0]['Request_type']);
-
+        this.requestType = (this.requestDetails[0]['Request_type']);  
+        this.rejectreleaseComments=JSON.parse(this.requestDetails[0]['rejectreleaseComments']);
 
         this.multiapproval_list = JSON.parse((this.requestDetails[0]['multiapproval_json']));
         if(!this.multiapproval_list){ this.multiapproval_list=[];   }
@@ -2555,10 +2563,14 @@ multipleback(){
         // if there are no std task aprv request
          this.standardjson=[];
          this.totalStdTskApvs=0;
-         this.multiapproval_list=[]
+         this.multiapproval_list=[];
          this.currentStdAprView=undefined;
-         this.closeApprovalSideBar();
-         this.closeMultipleSideBar();
+         if(this.isTaskCompleteSidebarOpen){
+          this.closeApprovalSideBar();
+         }
+         if(this.isPendingApprovalSidebarOpen){
+          this.closeMultipleSideBar();
+         }
         // if there is no std task aprv request
       }
       this.getRequestAcessdetails();
@@ -5276,15 +5288,7 @@ check_allocation() {
                        this.notifyService.showError("Unable to upload file attachment","Failed");
                     }
                   }
-                    
-                    
-                    
-                    
-                    
-                    
-                
-                
-                
+ 
                 );
                 }
                 else{
@@ -11416,7 +11420,7 @@ onPrjAuditSubmitClicked(){
           console.log(res);
           this.auditBtnDisabled=false;    // audit processing end
           if(res&&res.message){
-            this.getapprovalStats();
+            this.getapprovalStats();    
             this.getProjectDetails(this.URL_ProjectCode);
             this.GetPeopleDatils();
             this.notifyService.showSuccess(res.message,'Success');

@@ -621,7 +621,7 @@ export class StreamDashboardComponent implements OnInit {
 
   
 
-  formatTimes(dateTime?: string): string {
+  formatTimes(dateTime?: string): string {   debugger
     if (!dateTime) return ''; // Handle undefined/null cases safely
   
     const timePart = dateTime.split(' ')[1]; // Extract time part safely
@@ -634,8 +634,12 @@ export class StreamDashboardComponent implements OnInit {
     date.setHours(parseInt(hours, 10));
     date.setMinutes(parseInt(minutes, 10));
   
-    return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    const tmValue=date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    return tmValue;
   }
+
+
+
 
 
 
@@ -699,17 +703,17 @@ getRecentActivities(){
      const empNo=this.Current_user_ID;
      this.approvalservice.NewGetUserActivity(empNo).subscribe((res)=>{
             // console.log("getRecentActivities:",res);
-            if(res&&res[0]){
-                  this.recentActivities=JSON.parse(res[0].ActivityList);
+            if(res&&res[0]){  
+                  this.recentActivities=JSON.parse(res[0].ActivityList);   console.log("recent actv:",this.recentActivities);
                   this.totalRecentActivities=res[0].ActivityCount;
                 
-                  // adding _type property
+                
                   this.recentActivities.forEach((_actvy)=>{
+
+                   //1. adding _type property
                     let result='others';
                     if(_actvy.Value){
-
                     const _Value=_actvy.Value.trim();
-
                           result=/New Action- ".*"/.test(_Value)?'New Action':
                                 (/Timeline added .*/.test(_Value)|| _Value=='Project Timeline added'||_Value=='Timeline submitted')?'Timeline added':
                                 /Action Complete- ".*"/.test(_Value)?'Action Complete':
@@ -723,13 +727,48 @@ getRecentActivities(){
                                 _Value;
                     }
                     _actvy._type=result.trim();
-                  });
-                  // adding _type property
+                  // added _type property.
 
+                  //2. adding ModifiedTime12Hr property
+                  let timeVal=_actvy.ModifiedTime;
+                  if(timeVal){
+                        const [hours, minutes] = timeVal.split(':');
+                        const date = new Date();
+                        date.setHours(parseInt(hours, 10));
+                        date.setMinutes(parseInt(minutes, 10));
+                        const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
+                        timeVal=date.toLocaleTimeString('en-US', options);     
+                  }
+                  else{  timeVal='';  }
+                  _actvy.ModifiedTime12Hr=timeVal;
+                  //2. added ModifiedTime12Hr property
+
+
+                  });
+                 
                   // console.log('recent activities:',this.recentActivities,'total recent activities:',this.totalRecentActivities);
             }
      });
 }
+
+
+
+// formatTimes(time: string): string {
+//   if(time){
+//     const [hours, minutes] = time.split(':');
+//     const date = new Date();
+//     date.setHours(parseInt(hours, 10));
+//     date.setMinutes(parseInt(minutes, 10));
+
+//     const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
+//     const x=date.toLocaleTimeString('en-US', options);
+//     return x;
+//   }
+//   return '';
+// }
+
+
+
 
 
 

@@ -432,6 +432,8 @@ export class PortfolioProjectsComponent implements OnInit {
         this.createdBy = this._PortfolioDetailsById[0]['Created_By'];
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
 
+        console.log('PORTFOLIO PROJECT BY PID:',this._ProjectsListBy_Pid);
+
         this.lastProject = this._ProjectsListBy_Pid.length;
         console.log( this.lastProject,'lastProject')
         this.Employeshare =JSON.parse(data[0]['Employee_Json']);
@@ -459,7 +461,11 @@ debugger
           this.filteredEmployees.push(obj)
         }
 
-      })
+        // parse newrejectJson 
+        item.newrejectJson=item.newrejectJson?JSON.parse(item.newrejectJson):null;
+        // parse newrejectJson 
+
+      });
         console.log(this.filteredEmployees,"this.filteredEmployeesthis.filteredEmployees")
 
         // this.delayPrjsofPort = []
@@ -759,10 +765,6 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
 
           this.hasFilterResult();
       });
-
-
-
-
 
 
   }
@@ -1279,7 +1281,7 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
             .subscribe((data) => {
               //console.log("qwerty" + data);
               this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
-
+              this._ProjectsListBy_Pid.forEach(ob=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
               this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
               this.TotalProjects = this._ProjectsListBy_Pid.length;
               var rez = {};
@@ -1380,7 +1382,7 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
               this._ListProjStat = data as StatusDTO[];
               this.cdr.detectChanges();
             });
-        })
+        });
       }
       else {
         this.notifyService.showInfo("Action Cancelled. ", '');
