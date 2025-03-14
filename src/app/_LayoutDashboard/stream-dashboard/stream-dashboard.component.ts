@@ -621,14 +621,32 @@ export class StreamDashboardComponent implements OnInit {
   }
 
 
-  newMeetingDetails(Schedule_ID) {
+  // newMeetingDetails(Schedule_ID) {
+  //   let name: string = 'Meeting-Details';
+  //   var url = document.baseURI + name;
+  //   var myurl = `${url}/${Schedule_ID}`;
+  //   var myWindow = window.open(myurl);
+  //   myWindow.focus();
+  // }
+
+
+  openCalendarAndDetails(Schedule_ID,className) { debugger
+   if(Schedule_ID && className == undefined){
     let name: string = 'Meeting-Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${Schedule_ID}`;
     var myWindow = window.open(myurl);
     myWindow.focus();
-  }
+   }else if(Schedule_ID && className != undefined){
+    let name: string = 'backend/StreamCalendar';
+    var url = document.baseURI + name;
+    var myurl = `${url}?calenderId=${Schedule_ID},${className}`;
+    var myWindow = window.open(myurl, "_self");
+    myWindow.focus();
+   }
 
+  }
+  
 
 
   gotoCalendar(){
@@ -775,13 +793,6 @@ openInDetailsPage(pcode,acode:string|undefined) {
 
 
 
-openCalendar(Schedule_ID,className) { 
-  let name: string = 'backend/StreamCalendar';
-  var url = document.baseURI + name;
-  var myurl = `${url}?calenderId=${Schedule_ID},${className}`;
-  var myWindow = window.open(myurl, "_self");
-  myWindow.focus();
-}
 
 
 
