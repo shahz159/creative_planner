@@ -860,7 +860,6 @@ tr.action-row:hover {
     align-items: center;
     justify-content: space-between;
     color: #575757;
-    cursor: pointer;
     transition: all 0.15s ease-in-out;
 }
 
