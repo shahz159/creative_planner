@@ -17,7 +17,7 @@ import { ApprovalsService } from 'src/app/_Services/approvals.service';
   styleUrls: ['./stream-dashboard.component.css']
 })
 export class StreamDashboardComponent implements OnInit {
-  Emp_No: string;
+  Emp_No: any;
   DelayCount: any = sessionStorage.getItem('DelayCount');
   DelayActionCount: any = sessionStorage.getItem('DelayActionCount');
   AssignActionCount: any = sessionStorage.getItem('AssignActionCount');
@@ -46,7 +46,7 @@ export class StreamDashboardComponent implements OnInit {
     private cdr: ChangeDetectorRef, private router: Router,
     private _snackBar: MatSnackBar,
     private CalenderService: CalenderService,
-     public approvalservice: ApprovalsService
+     public approvalservice: ApprovalsService,
   ) {
     this._calenderDto = new CalenderDTO;
     this._objStatusDTO = new StatusDTO;
@@ -55,6 +55,9 @@ export class StreamDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.UserfullName = localStorage.getItem("UserfullName");
+   
+
+
 
     this.loadDashboardBanners();
     // this.initializeOwlCarousels();
@@ -328,7 +331,7 @@ export class StreamDashboardComponent implements OnInit {
     this.CalenderService.NewDashboardScheduled(this._calenderDto).subscribe((data) => {
    
       this.scheduleItems = JSON.parse(data['Scheduledtime']);
-
+      console.log(this.scheduleItems, "Calendar Data 1");
       this.scheduleItems.forEach((day, index, arr) => {
         day.Events.forEach(event => {
           if (new Date(event.endTime).getDate() !== new Date(event.startTime).getDate()) {
@@ -365,7 +368,21 @@ export class StreamDashboardComponent implements OnInit {
       };
   });
   
-      console.log(this.scheduleItems, "Calendar Data 1");
+
+  if (this.scheduleItems.length == 9) {
+    this.scheduleItems.pop();
+  } 
+ 
+
+     this.scheduleItems.sort((a, b) => a.Schedule_date.localeCompare(b.Schedule_date));
+      console.log(this.scheduleItems, "Calendar Data 2");
+ 
+     
+      if( this.scheduleItems.some(data => data.Schedule_date <  this.today)){
+        this.scheduleItems.shift(); 
+      }
+      
+
     }); 
   }
 
@@ -604,7 +621,7 @@ export class StreamDashboardComponent implements OnInit {
   }
 
 
-  newMeetingDetails(Schedule_ID) {
+  newMeetingDetails(Schedule_ID) { debugger
     let name: string = 'Meeting-Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${Schedule_ID}`;
@@ -612,6 +629,15 @@ export class StreamDashboardComponent implements OnInit {
     myWindow.focus();
   }
 
+
+  openCalendar(Schedule_ID,className) { 
+    let name: string = 'backend/StreamCalendar';
+    var url = document.baseURI + name;
+    var myurl = `${url}?calenderId=${Schedule_ID},${className}`;
+    var myWindow = window.open(myurl, "_self");
+    myWindow.focus(); 
+  }
+  
 
 
   gotoCalendar(){
@@ -783,6 +809,8 @@ openInDetailsPage(pcode,acode:string|undefined) {
       var myWindow = window.open(myurl,pcode);
       myWindow?.focus();
 }
+
+
 
 
 

@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import * as moment from 'moment'
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
+import { ActivatedRoute, ActivatedRouteSnapshot, Params, Router } from '@angular/router';
 
 
 declare var $: any;
@@ -227,6 +228,8 @@ export class StreamCalendarComponent implements OnInit {
     public datepipe: DatePipe,
     public approvalservice: ApprovalsService,
     public service: ProjectTypeService,
+    private activatedRoute:ActivatedRoute,
+    private router: Router
   ) { 
     this._lstMultipleFiales = [];
     this._calenderDto = new CalenderDTO;
@@ -249,11 +252,41 @@ export class StreamCalendarComponent implements OnInit {
     }
   }
 
-
-
+  scheduleId_UrlParams:any;
+  
   ngOnInit(): void {
- 
+   
     this.Current_user_ID = localStorage.getItem('EmpNo');
+
+    // calender event popup open by qparams
+    this.scheduleId_UrlParams=this.activatedRoute.snapshot.queryParamMap.get('calenderId'); 
+
+    if(this.scheduleId_UrlParams){
+      this.router.navigate(['/backend/StreamCalendar'], { queryParams: { calenderId: null } });
+      this.CalenderDataLoaded=new EventEmitter<boolean>();
+      this.CalenderDataLoaded.subscribe((isLoaded)=>{  
+        if(isLoaded){
+          if(this.scheduleId_UrlParams){
+            console.log(this.scheduleId_UrlParams,'this.scheduleId_UrlParams')
+            const [scheduleIds, color] = this.scheduleId_UrlParams.split(',');
+            this.customEventModal(scheduleIds);
+            this.GetClickEventJSON_Calender(scheduleIds, color);
+            this.scheduleId_UrlParams=null;
+           
+          }
+            }
+      this.CalenderDataLoaded.unsubscribe();  
+      this.CalenderDataLoaded=null;    
+      });
+    }
+  
+
+
+ 
+  // calender event popup open by qparams
+
+
+
     this.initAutosize();
     this.initFirstclass();
     this.MinLastNameLength = true;
@@ -597,6 +630,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("customEventModalBackdrop").classList.remove("show");
 
     $('#propse11').removeClass('show');
+    // this.router.navigate(['/backend/StreamCalendar']);
   }
   customTaskModal(){
     document.getElementById("customTaskModal").style.display = "block";
@@ -1265,7 +1299,7 @@ Task_type(value) {
     //       ac.updatePosition();
     //   });
     // })
-  }debugger
+  }
   if(this.formattedDayTime){
    this._StartDate = this.monthDateBinde;
    this._SEndDate =  this.monthDateBinde;
@@ -2664,7 +2698,7 @@ this.eventtaskitemtimeModal_dismiss();
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
 
-      debugger
+  
        // new code start 69
        // 
   
@@ -2730,8 +2764,8 @@ this.eventtaskitemtimeModal_dismiss();
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
-      finalarray.forEach(element => { 
-
+      finalarray.forEach(element => {
+       this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this._StartDate);
      
         const date2: Date = new Date(this._SEndDate);
@@ -3138,7 +3172,7 @@ this.eventtaskitemtimeModal_dismiss();
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
           this.draftcount = this.draftdata_meet.length;
           this.filterDraft('date');
-          console.log(this.draftdata_meet,'testing process')
+         
         }
         else {
           this.draftdata_meet = null;
@@ -3208,7 +3242,7 @@ this.eventtaskitemtimeModal_dismiss();
   }
 
 
-
+  CalenderDataLoaded:EventEmitter<boolean>;
   GetScheduledJson() {
 
     this._calenderDto.EmpNo = this.Current_user_ID;
@@ -3280,12 +3314,22 @@ this.eventtaskitemtimeModal_dismiss();
           allDaySlot: false,
           //69 datesSet: () => { this.TwinEvent = []; }
         };
-      });
+
+     
+        if(this.CalenderDataLoaded){
+          this.CalenderDataLoaded.emit(true);
+        }
+  
+   
+
+
+    });
+
   }
 
   isCalendarVisible: boolean = false;
 
-getEventsForWeeks(weeksFromToday: number) {
+getEventsForWeeks(weeksFromToday: number) { 
  
   const today = new Date();
   today.setHours(0, 0, 0, 0); 
@@ -3319,7 +3363,7 @@ if(this.noSelectedDate == true && weeksFromToday === 0  && this.selectDay){
   }, 0);
 }
 this.noSelectedDate = false;
-const startDate = formattedDate || today;
+const startDate = formattedDate || today; 
 
   this.firstDate = new Date(startDate);
   this.firstDate.setDate(startDate.getDate() + (this.currentWeekOffset * 7));
@@ -3330,14 +3374,18 @@ const startDate = formattedDate || today;
   this.lastDate = new Date(this.firstDate);
   this.lastDate.setDate(this.firstDate.getDate() + 7);
 
+  this.firstDate.setDate(this.firstDate.getDate() - 1); 
+
   if(this.Searchingfunc==false){
     this.Calendarjson = this.Searchingjson;
   }else{
-    this.Calendarjson = this.Scheduledjson.filter(e => {
+    this.Calendarjson = this.Scheduledjson.filter(e => { 
       const eventDate = new Date(e.start.split(" ")[0]);
       return eventDate >= this.firstDate && eventDate <= this.lastDate;
     });
   }
+
+  this.firstDate.setDate(this.firstDate.getDate() + 1);
  
     this.groupedMeetingsArray = Object.entries(this.Calendarjson.reduce((acc, current) => {
       const date = current.start.split(' ')[0]; 
@@ -3348,13 +3396,18 @@ const startDate = formattedDate || today;
       return acc;
   }, {})).map(([date, events]) => ({ date, events }));
 
-      this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({
+ 
+
+      this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({ 
         ...day,
-        events: day.events.map(event => {
+        events: day.events.map(event => {  
             const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
             const title = parts[0]; 
+            
             const linkIndex = parts.findIndex(part => part.includes("Link"));
-    
+           
+            const location = parts.length > 2 && linkIndex > 2 && !parts[1].includes('👨‍💼') ? parts[1] : null;
+            
             let attendees = linkIndex > 1 ? parts.slice(1, linkIndex).map(s => s.trim()) : null;
         
             if (attendees && attendees.length) {
@@ -3366,16 +3419,19 @@ const startDate = formattedDate || today;
                 attendees[0] = match ? `+${parseInt(match[1], 10) + 1}` : `+1`; 
             }
     
+
             const link = linkIndex !== -1 ? parts[linkIndex].split(' ')[0] : null;
-    
-            return { ...event, title, attendees, link };
+        
+           attendees = (attendees || []).map(a => a.replace('+', ''));
+         
+            return { ...event, title, attendees, link, location };
         })
     }));
-
+    
    
-    this.filteredMeetingsArray = Object.values(
+    this.filteredMeetingsArray = Object.values( 
       this.groupedMeetingsArray.flatMap(group =>
-        group.events.flatMap(event => {
+        group.events.flatMap(event => { 
           const [startDate] = event.start.split(' ');
           const [endDate] = event.end.split(' ');
           const nextDate = new Date(startDate);
@@ -3393,9 +3449,23 @@ const startDate = formattedDate || today;
         (acc[date] ??= { date, events: [] }).events.push(...events), acc
       ), {})
     );
+   
+    if(this.filteredMeetingsArray.some(data => new Date(data.date) < new Date(this.firstDate))){
+      this.filteredMeetingsArray.shift(); 
+    }
+     
+     
 
-
-      console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
+    if (this.filteredMeetingsArray.length > 0) {  
+      const lastMeetingDate = new Date(this.filteredMeetingsArray[this.filteredMeetingsArray.length - 1].date);
+      this.lastDates.setHours(0, 0, 0, 0);
+      lastMeetingDate.setHours(0, 0, 0, 0);
+      if (lastMeetingDate >  this.lastDates) {
+        this.filteredMeetingsArray.pop();
+      }
+    }
+  
+console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
        
 }
 
@@ -3828,7 +3898,7 @@ Insert_indraft() {
 
 
 
-GetClickEventJSON_Calender(arg,meetingClassNeme) {
+GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
  
   this.meetingClassNemes=meetingClassNeme;
    this.EventScheduledjson = [];
@@ -3924,7 +3994,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
 
       this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
-     
+      
       this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
       this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
 
@@ -4402,7 +4472,7 @@ DublicateTaskandEvent() {
 
         this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
           this.Memos_List = JSON.parse(data['JsonData']);
-          console.log(this.Memos_List, "test iiii");
+        
 
           let arr3 = [];
           var str = (this.EventScheduledjson[0]['DMS_Name']);
@@ -5588,24 +5658,10 @@ sweet_end() {
 
 
 onCustomBtnClicked(){
- Swal.fire({
-    title: `Repeat meeting`,
-    text: `A meeting cannot be scheduled more than once on the same day. To change the meeting time, please edit the existing meeting`,
-    showCancelButton: true,
-    confirmButtonText: 'OK',
-    cancelButtonText: 'Cancel',
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Call your second function when OK is clicked
-      $('#propse11').removeClass('show');
-      this.repeatEvent();
-    } 
-    // else if (result.isDismissed) {
-      // Skip all when Cancel is clicked
-      // continue; // Skip this file
-    // }
-  })
+$('#propse11').removeClass('show');
+  this.repeatEvent();
 }
+
 
 
 
@@ -5876,8 +5932,8 @@ repeatEventTime(){
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
     if (finalarray.length > 0) {
-      finalarray.forEach(element => {
-  
+      finalarray.forEach(element => { 
+        this.repeatStartDate = moment(this.repeatStartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this.repeatStartDate);
         const date2: Date = new Date(this._SEndDate);
   
@@ -6088,7 +6144,7 @@ getMeetingApprovals(){
     //  $("#cal-main").addClass("col-lg-12");
 
    }
-     console.log(this.multiapproval_json,'appraval data in the dashboard')
+    
  })
 }
 
@@ -6203,7 +6259,7 @@ GetPending_Request() {
       this.Pending_request = data as [];
       this.pendingcount = this.Pending_request.length;
       this.filterPending('date');
-      console.log(this.Pending_request, "111100000")
+     
     });
 }
 
@@ -6542,6 +6598,7 @@ filterDraft(type : 'date'|'meeting'):void{
     this.repeatStartDate =null;
     this._StartDate=this.disablePreviousTodayDate;
     this.repeatStartDate = this.disablePreviousTodayDate; 
+    this._SEndDate = this.disablePreviousTodayDate;
    
   }
 
@@ -6613,7 +6670,7 @@ BookmarkMeetingsList() {
 
           this.meetingbookmarks = JSON.parse(data['meetingbookmarks']);
           this.totalbookmarkslist =this.meetingbookmarks.length;
-          console.log(this.meetingbookmarks,'book mark list data')
+         
   })
 }
 
@@ -6804,7 +6861,7 @@ dayScheduleJson(dayFromToday: number){
 
             this.dayMappedList = this.dayMappedList.map(hour => ({
               ...hour,
-              events: hour.events.map(event => {
+              events: hour.events.map(event => { 
                   const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
                   const title = parts[0];
                   const link = parts.find(part => part.includes("Link"))?.split(' ')[0] || null;
@@ -6827,7 +6884,7 @@ formattedDayTime:any;
 monthDateBinde:any;
 
 
-dayTimeBinding(time:any){ debugger
+dayTimeBinding(time:any){ 
 const now = new Date();  
 let [hour, period] = time.split(" ");
 let timeHour = (period === "PM" && +hour !== 12) ? +hour + 12 : (period === "AM" && +hour === 12) ? 0 : +hour;
@@ -6845,7 +6902,7 @@ if(this.openPopupBox == true && (this.openBoxSelectedDate == this.today && timeH
 
 
 
-updateTimeLine() { debugger
+updateTimeLine() { 
   const now = new Date();
   let hours = now.getHours(); 
   const minutes = now.getMinutes();
@@ -6922,7 +6979,7 @@ weeklyScheduleJson(weekFromToday) {
 
 
 
-monthTimeBinding(data,time){ debugger
+monthTimeBinding(data,time){ 
   this.monthDateBinde = data;
   const now = new Date();  
   let [hour, period] = time.split(" ");

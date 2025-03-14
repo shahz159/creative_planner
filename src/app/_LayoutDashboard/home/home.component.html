@@ -53,7 +53,7 @@
                             </button> -->
                             <!-- <button class="btn btn-label-info btn-hover-info btn-upper btn-sm btn-bold ml-1 mr-2"
                                 (click)="Portfolio_CurrentPage = Portfolio_CurrentPage + 1;getPortfolio_List()"
-                                [disabled]="NoOfRecordsPerPage<30">
+                                [disabled]="NoOfRecordsPerPage<32">
                                 <i class="fas fa-angle-right mr-0"></i>
                             </button> -->
                             <!-- <button class="kt-todo__icon" data-toggle="kt-tooltip" title="Next"
@@ -294,22 +294,22 @@
                         </button> -->
                             <button class="btn btn-label-info btn-hover-info btn-upper btn-sm btn-bold ml-1 mr-2" *ngIf="activeClassAll==true"
                                 (click)="Portfolio_CurrentPage = Portfolio_CurrentPage + 1;getPortfolio_List()"
-                                [disabled]="NoOfRecordsPerPage < 30">
+                                [disabled]="NoOfRecordsPerPage < 32">
                                 <i class="fas fa-angle-right mr-0"></i>
                             </button>
                             <button class="btn btn-label-info btn-hover-info btn-upper btn-sm btn-bold ml-1 mr-2" *ngIf="activeClassFav==true"
                                 (click)="Portfolio_FavoritePage = Portfolio_FavoritePage + 1;Favourite_Portfolios()"
-                                [disabled]="NoOfRecordsPerPage < 30">
+                                [disabled]="NoOfRecordsPerPage < 32">
                                 <i class="fas fa-angle-right mr-0"></i>
                             </button>
                             <button class="btn btn-label-info btn-hover-info btn-upper btn-sm btn-bold ml-1 mr-2" *ngIf="activeClassOwners==true"
                                 (click)="Portfolio_OwnerPage = Portfolio_OwnerPage + 1;Owners_Portfolios()"
-                                [disabled]="NoOfRecordsPerPage < 30">
+                                [disabled]="NoOfRecordsPerPage < 32">
                                 <i class="fas fa-angle-right mr-0"></i>
                             </button>
                             <button class="btn btn-label-info btn-hover-info btn-upper btn-sm btn-bold ml-1 mr-2" *ngIf="activeClassShare==true"
                                 (click)="Portfolio_SharedPage = Portfolio_SharedPage + 1;Shared_Portfolios()"
-                                [disabled]="NoOfRecordsPerPage < 30">
+                                [disabled]="NoOfRecordsPerPage < 32">
                                 <i class="fas fa-angle-right mr-0"></i>
                             </button>
                             <!-- <button class="kt-todo__icon" data-toggle="kt-tooltip" title="Next"
@@ -478,7 +478,7 @@
                      <label class="mx-1" *ngIf="activeClassAll==true&&this._ListProjStat&&_ListProjStat.length == 30">{{this._ListProjStat&&this._ListProjStat.length * Portfolio_CurrentPage - (this._ListProjStat&&this._ListProjStat.length) + 1}} - {{this._ListProjStat&&this._ListProjStat.length  * Portfolio_CurrentPage}}   of {{countAll|number}}</label>
                      <label class="mx-1" *ngIf="activeClassAll==true&&this._ListProjStat&&_ListProjStat.length < 30">{{countAll  - (this._ListProjStat&&this._ListProjStat.length) +1 }}  - {{countAll}}   of {{countAll}}</label>
 
-
+ 
                      <label class="mx-1" *ngIf="activeClassFav==true&&this._ListProjStat&&_ListProjStat.length == 30">{{this._ListProjStat&&this._ListProjStat.length * Portfolio_FavoritePage - (this._ListProjStat&&this._ListProjStat.length) + 1}} - {{this._ListProjStat&&this._ListProjStat.length  * Portfolio_FavoritePage}} of {{countFav|number}}</label>
                      <label  class="mx-1" *ngIf="activeClassFav==true&&this._ListProjStat&&_ListProjStat.length < 30"> {{countFav  - (this._ListProjStat&&this._ListProjStat.length) +1 }}  - {{countFav}}   of {{countFav}}</label>
 
