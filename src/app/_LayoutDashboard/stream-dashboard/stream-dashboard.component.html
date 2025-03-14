@@ -129,7 +129,7 @@
                                                         {{item.Schedule_date | date : 'EEE, MMM, yyyy'}}
                                                     </div>
                                                 </div>
-                                                <div class="upcoming-event-v2-item  v2-border-bottom" *ngFor="let item1 of item.Events" (click)="newMeetingDetails(item1.Schedule_ID)">
+                                                <div class="upcoming-event-v2-item  v2-border-bottom" *ngFor="let item1 of item.Events" (click)="openCalendarAndDetails(item1.Schedule_ID,undefined)">
                                                     <div style="display: flex;align-items: center;" >
                                                         <div class="v2-p v2-pr-0">
                                                           <span *ngIf="item1.Schedule_Type==2">
@@ -268,7 +268,7 @@
                                                         <div class="upcoming-event-item-actions-li">
                                                             No
                                                         </div> -->
-                                                        <div (click)="openCalendar(item1.Schedule_ID,item1.className)" class="upcoming-event-item-actions-li">
+                                                        <div (click)="openCalendarAndDetails(item1.Schedule_ID,item1.className)" matTooltip="View in calendar"  class="upcoming-event-item-actions-li">
                                                             <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>
                                                         </div>
                                                     </div>
