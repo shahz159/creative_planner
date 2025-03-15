@@ -92,7 +92,7 @@
                             </ng-container>
 
                             of
-                            <span *ngIf="_totalProjectsCount>=1000"> {{_totalProjectsCount.toLocaleString()}}</span>
+                            <span *ngIf="_totalProjectsCount>=1000"> {{_totalProjectsCount}}</span>
                             <span *ngIf="_totalProjectsCount<1000"> {{_totalProjectsCount}}</span>
                         </div>
 
@@ -296,7 +296,7 @@
                                               <div class="col-md-6">
                                                 <div class="form-group mb-0" (click)="closeOnOtherClick('employee')">
                                                   <mat-form-field class="drp-dwn-field w-100"   *ngIf="EmpCountInFilter||[]">
-                                                    <mat-label >Employees</mat-label>
+                                                    <mat-label >Users</mat-label>
                                                      <mat-chip-list #selected_employee>
                                                       <mat-chip *ngFor="let emptoshare of emplyToselect" class="Data_chip_kt"  (removed)="removeSelectedemployee(emptoshare); getNewFilterResult();">
                                                         {{getObjOf(EmpCountInFilter,emptoshare,'Emp_No')?.Name}}
@@ -771,7 +771,7 @@
                                             </div>
 
                                             <div class="col-lg-4">
-                                                <h6 class="mb-0">Employees </h6>
+                                                <h6 class="mb-0">Users </h6>
                                                 <div class="kt-nav__separator"></div>
                                                 <div class="height-scroll">
                                                     <label class="kt-checkbox kt-checkbox--info">
@@ -1328,12 +1328,7 @@
 
                                                   <div class="dropdown ">
 
-
-
                                                       <a class="kt-todo__icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-
-
                                                         <svg viewBox="0 0 24 24" style="height:28px;cursor:pointer" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -1344,8 +1339,6 @@
                                                           </g>
                                                         </svg>
                                                       </a>
-
-
 
 
                                                     <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter"
@@ -1380,9 +1373,7 @@
                                                           </button>
                                                         </li>
 
-
                                                         <li>
-
                                                           <button class="btn btn-filtr">
                                                             <div class="d-flex align-items-center">
                                                               <!-- <span class="count in-pro"> {{CountInprocess}}</span> -->
@@ -1395,7 +1386,6 @@
                                                             </div>
                                                           </button>
                                                         </li>
-
 
                                                         <li>
                                                           <button class="btn btn-filtr">
@@ -1411,8 +1401,6 @@
                                                           </button>
                                                         </li>
 
-
-
                                                         <li>
                                                           <button class="btn btn-filtr">
                                                             <div class="d-flex align-items-center">
@@ -1426,8 +1414,6 @@
                                                             </div>
                                                           </button>
                                                         </li>
-
-
 
                                                         <li>
                                                           <button class="btn btn-filtr">
@@ -1443,12 +1429,6 @@
                                                           </button>
                                                         </li>
 
-
-
-
-
-
-
                                                         <li>
                                                           <button class="btn btn-filtr">
                                                             <div class="d-flex align-items-center">
@@ -1463,8 +1443,6 @@
                                                           </button>
                                                         </li>
 
-
-
                                                         <li>
                                                           <button class="btn btn-filtr">
                                                             <div class="d-flex align-items-center">
@@ -1478,8 +1456,6 @@
                                                             </div>
                                                           </button>
                                                         </li>
-
-
 
                                                         <li>
                                                           <button class="btn btn-filtr">
@@ -1508,8 +1484,6 @@
                                                             </div>
                                                           </button>
                                                         </li>
-
-
 
                                                         <ng-container *ngIf="showDeletedPrjOnly">
                                                           <li>
@@ -1672,34 +1646,18 @@
                                                         </div>
                                                     </td>
 
-
-                                                    <!-- <td>
-                                                        <p class="kt-widget__title mb-0" title="{{item.Project_Name}}">
-                                                            {{item.Project_Name| slice:0:limit}}
-                                                            <ng-container *ngIf="item.Project_Name.length>71">...
-                                                            </ng-container>
-                                                        </p>
-                                                    </td> -->
-
-
-
                                                     <td>
                                                       <p #prjtextcBx class="kt-widget__title mb-0 compl-remarks-span" title="{{item.Project_Name}}"
                                                       (click)="$event.stopPropagation(); prjtextcBx.classList.contains('compl-remarks-span')?prjtextcBx.classList.remove('compl-remarks-span'):prjtextcBx.classList.add('compl-remarks-span')" >
                                                           {{item.Project_Name}}
                                                       </p>
-                                                  </td>
-
-
+                                                    </td>
 
                                                     <td>
                                                       <span class="count2" title="Completed/All" *ngIf="item.Actioncount > 0">
                                                             {{item.CompletedActioncount}}/{{ item.Actioncount }}
                                                       </span>
                                                     </td>
-
-
-                                                    <!--  -->
 
                                                     <td [ngClass]="{'d-none':!isprojtype}" class="projtypeclass">
                                                         <div style="display: flex; flex-direction: column; ">
@@ -1713,25 +1671,15 @@
                                                         </div>
                                                     </td>
 
-
-
                                                     <!-- owner data start -->
-
                                                     <td [ngClass]="{'d-none':!isowner}" class="owner_class" ><div class="kt-widget__other">{{item.Project_Owner}}</div>
-
-
-
                                                     </td>
-
-                                               <!-- owner data end -->
-
-
+                                                    <!-- owner data end -->
 
                                                     <td  [ngClass]="{'d-none':!isrespon}"  class="responclass"  >
-                                                      <div class="kt-widget__other"   title="{{item.Emp_First_Name}}"
-                                                     >
-                                                   {{ item.Team_Res }}
-                                                 </div>
+                                                      <div class="kt-widget__other"   title="{{item.Emp_First_Name}}">
+                                                      {{ item.Team_Res }}
+                                                     </div>
 
 
 
@@ -1755,9 +1703,6 @@
                                                             {{item.RejectedBy}}
                                                         </span> -->
 
-
-
-
                                                    <span *ngIf="item.Status=='Forward Under Approval'">
                                                       <div *ngIf="item.ForwardTo" class="d-flex align-items-center">
                                                         <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Arrow_Sub_Down_Right"> <path id="Vector" d="M13 11L18 16M18 16L13 21M18 16H10.1969C9.07899 16 8.5192 16 8.0918 15.7822C7.71547 15.5905 7.40973 15.2839 7.21799 14.9076C7 14.4798 7 13.9201 7 12.8V3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
@@ -1768,48 +1713,30 @@
 
                                                     </td>
 
-
-                                           <!-- client data start -->
+                                                   <!-- client data start -->
                                                     <td  [ngClass]="{'d-none':!isclient}" class="client_class"  ><div class="kt-widget__other">{{item.Client_Name}}</div>
-
-                                                        </td>
-
-                                             <!-- client data end -->
-
-
-
-                                                 <!-- cost data start -->
-                                                    <td  *ngIf="item.Project_Cost; else SAR" [ngClass]="{'d-none':!iscost}" class="classCost" ><div class="kt-widget__other">{{item.Project_Cost |currency:'SAR '}}</div>
-
                                                     </td>
+                                                    <!-- client data end -->
 
+                                                   <!-- cost data start -->
+                                                    <td  *ngIf="item.Project_Cost; else SAR" [ngClass]="{'d-none':!iscost}" class="classCost" ><div class="kt-widget__other">{{item.Project_Cost |currency:'SAR '}}</div>
+                                                    </td>
                                                     <ng-template  #SAR>
                                                     <td  [ngClass]="{'d-none':!iscost}" class="classCost" ><div class="kt-widget__other">SAR 0.0</div>
-
                                                     </td></ng-template>
-
-                                         <!-- cost data end -->
-
-
-                                              <!-- department data start -->
-                                              <td  [ngClass]="{'d-none':!isDepartment}" class="class_depart" ><div class="kt-widget__other">{{item.Com_Name}}</div>
-
-                                              </td>
-
-                                   <!-- department data end -->
+                                                   <!-- cost data end -->
 
 
-
-
-
-
+                                                   <!-- department data start -->
+                                                    <td  [ngClass]="{'d-none':!isDepartment}" class="class_depart" ><div class="kt-widget__other">{{item.Com_Name}}</div>
+                                                    </td>
+                                                  <!-- department data end -->
 
 
                                                     <td [ngClass]="{'d-none':!isdeadline}" class="class_deadline"  >
                                                         <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                             <span class="kt-widget__other text-nowrap">{{item.SubmissionType1}}</span>
-
-                          <div  class="text-nowrap font" *ngIf="item.SubmissionType === 'Weekly'||'Daily'|| 'Annually'||'Monthly'  ">{{formatTime(item.StandardDuration)}}</div>
+                                                             <div  class="text-nowrap font" *ngIf="item.SubmissionType === 'Weekly'||'Daily'|| 'Annually'||'Monthly'  ">{{formatTime(item.StandardDuration)}}</div>
                                                         </div>
                                                         <ng-template #Projecttype>
                                                             <span class="kt-widget__other text-nowrap">
@@ -1817,11 +1744,7 @@
                                                         </ng-template>
                                                     </td>
 
-
-
-
-
-                                                    <td  [ngClass]="{'d-none':!isstatus}"    class="stat-td statusClass">
+                                                    <td  [ngClass]="{'d-none':!isstatus}" class="stat-td statusClass">
                                                       <!-- <div *ngIf="_MainProjectStatus=='Delay'">
                                                           <span class="text-danger font-weight-400">Delay</span>
                                                       </div> -->
@@ -1834,14 +1757,104 @@
                                                           <ng-container [ngSwitch]="item.Status?item.Status.trim():''">
 
                                                                   <span class="Completed_color font-weight-400" *ngSwitchCase="'Completed'">{{item.Status}}</span>
-                                                                  <span class="Under_Approval_color font-weight-400" *ngSwitchCase="'Under Approval'">New approval</span>
+                                                                 
+                                                                  <ng-container *ngSwitchCase="'Under Approval'">
+                                                                    <span class="Under_Approval_color font-weight-400">
+                                                                        New approval
+                                                                        <ng-container *ngIf="item.RejectReleaseCount&&item.RejectReleaseCount>0">
+                                                                            <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <span>({{item.RejectReleaseCount}})</span>
+                                                                                <svg width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="fill: #fff; stroke: #fff;stroke-width: 0.6px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z"></path></g>
+                                                                                </svg>
+                                                                            </span> 
+                                                                            <div  class="dropdown-menu dropdown-menu-xl px-2 new-p-rejects-drpdwn" id="dropd">
+                                                                                <div class="drop-ul">
+                                                
+                                                                                <div *ngFor="let obj of item.newrejectJson; let isLast=last" class="timeline">
+                                                                                    <div class="timeline-container sent" [ngClass]="{'last-item':isLast}">
+                                                                                    <div class="timeline-icon">
+                                                
+                                                                                            <svg *ngIf="obj.Value=='New Project Reject Release'" fill="#5867dd" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-73.84 -73.84 715.70 715.70" xml:space="preserve" stroke-width="7.952238000000001" style="width: 24px; height: 24px;" class="ng-star-inserted">
+                                                                                            <g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g><g><path d="M72.553,400.503c11.12,11.119,29.156,11.119,40.282,0l71.849-83.238c11.12-11.119,7.387-20.141-8.342-20.141h-46.444 c-3.929-52.24,14.688-104.059,52.999-142.37c71.194-71.188,187.022-71.188,258.209,0c34.486,34.486,53.477,80.331,53.477,129.102 c0,48.77-18.996,94.616-53.477,129.102c-49.395,49.395-121.219,66.23-187.511,43.936c-19.205-6.488-40.043,3.867-46.512,23.09 c-6.469,19.223,3.868,40.043,23.09,46.512c27.124,9.131,54.903,13.574,82.388,13.574c66.623,0,131.439-26.156,180.461-75.184 c48.36-48.355,74.994-112.645,74.994-181.036c0-68.392-26.634-132.676-74.994-181.036c-99.823-99.823-262.243-99.823-362.06,0 c-52.424,52.424-78.636,122.871-74.75,194.304H14.744c-15.728,0-19.461,9.014-8.341,20.141L72.553,400.503z"></path></g></g></g>
+                                                                                            </svg>
+                                                                                        
+                                                                                            <svg *ngIf="obj.Value=='New Project Rejected'" width="64px" height="64px" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor" stroke="currentColor" class="si-glyph si-glyph-deny ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M9.016,0.06 C4.616,0.06 1.047,3.629 1.047,8.029 C1.047,12.429 4.615,15.998 9.016,15.998 C13.418,15.998 16.985,12.429 16.985,8.029 C16.985,3.629 13.418,0.06 9.016,0.06 L9.016,0.06 Z M3.049,8.028 C3.049,4.739 5.726,2.062 9.016,2.062 C10.37,2.062 11.616,2.52 12.618,3.283 L4.271,11.631 C3.508,10.629 3.049,9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.544,13.583 5.569,12.889 L13.878,4.58 C14.571,5.555 14.982,6.743 14.982,8.028 C14.981,11.317 12.306,13.994 9.016,13.994 L9.016,13.994 Z" fill="red" class="si-glyph-fill"></path></g></g>
+                                                                                            </svg>
+                                                                                            
+                                                                                            <svg *ngIf="obj.Value=='New Project'" width="64px" height="64px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" style="width: 24px; height: 24px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g  id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g  id="Combined-Shape" fill="#0287ca" transform="translate(87, 65.346667) scale(0.9)"><path  d="M192,-7.10542736e-15 L384,110.851252 L384,242.986 L341.333,242.986 L341.333,157.655 L213.333,231.555 L213.333,431.088 L192,443.405007 L0,332.553755 L0,110.851252 L192,-7.10542736e-15 Z M341.333333,264.32 L341.333,328.32 L405.333333,328.32 L405.333333,370.986667 L341.333,370.986 L341.333333,434.986667 L298.666667,434.986667 L298.666,370.986 L234.666667,370.986667 L234.666667,328.32 L298.666,328.32 L298.666667,264.32 L341.333333,264.32 Z M42.666,157.654 L42.6666667,307.920144 L170.666,381.82 L170.666,231.555 L42.666,157.654 Z M192,49.267223 L66.1333333,121.936377 L192,194.605531 L317.866667,121.936377 L192,49.267223 Z"></path></g></g></g>
+                                                                                            </svg>
+                                                                                        
+                                                                                    </div>
+                                                                                    <div class="timeline-body">
+                                                                                        <div class="d-flex align-items-center justify-content-between">
+                                                                                            <h4 class="timeline-title">{{obj.Value}}</h4>
+                                                                                            <p class="timeline-subtitle d-flex flex-column align-items-end">{{obj.ModifiedDate|date:'dd-MM-yyyy'}}</p>
+                                                                                        </div>
+                                                                                        <div class="timeline-content" [ngClass]="{'msg-type':obj.NewValue}">{{obj.NewValue}}</div>
+                                                                                        <div class="timeline-submitby fs-8  text-right" >{{obj.Modifiedby}}</div>
+                                                                                    </div>
+                                                                                
+                                                                                    </div>  
+                                                                                </div>
+                                                
+                                                                                </div>
+                                                                            </div> 
+                                                                        </ng-container>
+                                                                    </span>
+                                                                  
+                                                                    <!--new project reject release dropdown start-->
+                                                                    <!-- <ng-container *ngIf="item.RejectReleaseCount&&item.RejectReleaseCount>0">
+                                                                            <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                                                                            <span class="newaprvl-label2">( {{item.RejectReleaseCount+(item.RejectReleaseCount==1?'st':item.RejectReleaseCount==2?'nd':item.RejectReleaseCount==3?'rd':item.RejectReleaseCount>3?'th':'')}} submission )</span>
+                                                                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="fill: #8c8c8c; stroke: #8c8c8c;stroke-width: 0.6px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z"></path></g>
+                                                                            </svg>
+                                                                            </div>
+                                                                            
+                                                                            <div  class="dropdown-menu dropdown-menu-xl px-2 new-p-rejects-drpdwn" id="dropd">
+                                                                                <div class="drop-ul">
+                                                
+                                                                                <div *ngFor="let obj of item.newrejectJson; let isLast=last" class="timeline">
+                                                                                    <div class="timeline-container sent" [ngClass]="{'last-item':isLast}">
+                                                                                    <div class="timeline-icon">
+                                                
+                                                                                            <svg *ngIf="obj.Value=='New Project Reject Release'" fill="#5867dd" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-73.84 -73.84 715.70 715.70" xml:space="preserve" stroke-width="7.952238000000001" style="width: 24px; height: 24px;" class="ng-star-inserted">
+                                                                                            <g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g><g><path d="M72.553,400.503c11.12,11.119,29.156,11.119,40.282,0l71.849-83.238c11.12-11.119,7.387-20.141-8.342-20.141h-46.444 c-3.929-52.24,14.688-104.059,52.999-142.37c71.194-71.188,187.022-71.188,258.209,0c34.486,34.486,53.477,80.331,53.477,129.102 c0,48.77-18.996,94.616-53.477,129.102c-49.395,49.395-121.219,66.23-187.511,43.936c-19.205-6.488-40.043,3.867-46.512,23.09 c-6.469,19.223,3.868,40.043,23.09,46.512c27.124,9.131,54.903,13.574,82.388,13.574c66.623,0,131.439-26.156,180.461-75.184 c48.36-48.355,74.994-112.645,74.994-181.036c0-68.392-26.634-132.676-74.994-181.036c-99.823-99.823-262.243-99.823-362.06,0 c-52.424,52.424-78.636,122.871-74.75,194.304H14.744c-15.728,0-19.461,9.014-8.341,20.141L72.553,400.503z"></path></g></g></g>
+                                                                                            </svg>
+                                                                           
+                                                                                            <svg *ngIf="obj.Value=='New Project Rejected'" width="64px" height="64px" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor" stroke="currentColor" class="si-glyph si-glyph-deny ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M9.016,0.06 C4.616,0.06 1.047,3.629 1.047,8.029 C1.047,12.429 4.615,15.998 9.016,15.998 C13.418,15.998 16.985,12.429 16.985,8.029 C16.985,3.629 13.418,0.06 9.016,0.06 L9.016,0.06 Z M3.049,8.028 C3.049,4.739 5.726,2.062 9.016,2.062 C10.37,2.062 11.616,2.52 12.618,3.283 L4.271,11.631 C3.508,10.629 3.049,9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.544,13.583 5.569,12.889 L13.878,4.58 C14.571,5.555 14.982,6.743 14.982,8.028 C14.981,11.317 12.306,13.994 9.016,13.994 L9.016,13.994 Z" fill="red" class="si-glyph-fill"></path></g></g>
+                                                                                            </svg>
+
+                                                                                            <svg *ngIf="obj.Value=='New Project'" width="64px" height="64px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" style="width: 24px; height: 24px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g  id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g  id="Combined-Shape" fill="#0287ca" transform="translate(87, 65.346667) scale(0.9)"><path  d="M192,-7.10542736e-15 L384,110.851252 L384,242.986 L341.333,242.986 L341.333,157.655 L213.333,231.555 L213.333,431.088 L192,443.405007 L0,332.553755 L0,110.851252 L192,-7.10542736e-15 Z M341.333333,264.32 L341.333,328.32 L405.333333,328.32 L405.333333,370.986667 L341.333,370.986 L341.333333,434.986667 L298.666667,434.986667 L298.666,370.986 L234.666667,370.986667 L234.666667,328.32 L298.666,328.32 L298.666667,264.32 L341.333333,264.32 Z M42.666,157.654 L42.6666667,307.920144 L170.666,381.82 L170.666,231.555 L42.666,157.654 Z M192,49.267223 L66.1333333,121.936377 L192,194.605531 L317.866667,121.936377 L192,49.267223 Z"></path></g></g></g>
+                                                                                            </svg>
+                                                                                          
+                                                                                    </div>
+                                                                                    <div class="timeline-body">
+                                                                                        <div class="d-flex align-items-center justify-content-between">
+                                                                                            <h4 class="timeline-title">{{obj.Value}}</h4>
+                                                                                            <p class="timeline-subtitle d-flex flex-column align-items-end">{{obj.ModifiedDate|date:'dd-MM-yyyy'}}</p>
+                                                                                        </div>
+                                                                                        <div class="timeline-content" [ngClass]="{'msg-type':obj.NewValue}">{{obj.NewValue}}</div>
+                                                                                        <div class="timeline-submitby fs-8  text-right" >{{obj.Modifiedby}}</div>
+                                                                                    </div>
+                                                                                
+                                                                                    </div>  
+                                                                                </div>
+                                                
+                                                                                </div>
+                                                                            </div>
+                                                                    </ng-container> -->
+                                                                    <!--new project reject release dropdown start-->
+                
+                                                                  </ng-container>
+                                                                  
+                                                                 
                                                                   <span class="font-weight-400" *ngSwitchCase="'New Project Rejected'">
-
-
                                                                     <div  class="attach-tippy-div">
-                                                                      <span class="New_Project_Rejected_color font-weight-400">New project rejected</span>
-                                                                      <span class="attach-tippy">
+                                                                      <span class="New_Project_Rejected_color font-weight-400">New project rejected <span *ngIf="item.RejectReleaseCount&&item.RejectReleaseCount>1">({{item.RejectReleaseCount}})</span></span>
 
+                                                                      <span class="attach-tippy">
                                                                       <span class=" st-line curser-pointer" >
                                                                          <div style="width: max-content;">Rejected by: <h6>{{item.RejectedBy}} </h6></div>
                                                                           <div>on: {{item.RejectFromDate | date: 'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.RejectFromDate))}})</div>
@@ -1850,14 +1863,12 @@
                                                                       </span>
 
                                                                       <span class="New_Approval_Project font-weight-400">
-                                                                          {{item.RejectedBy}}
+                                                                        by {{item.RejectedBy}}
                                                                       </span>
 
                                                                   </div>
 
-
-
-                                                                    </span>
+                                                                 </span>
                                                                   <span class="Not_Started font-weight-400" *ngSwitchCase="'Not Started'">Not Started</span>
                                                                   <span class="Cancelled_color font-weight-400" *ngSwitchCase="'Cancelled'">Cancelled</span>
                                                                   <span class="Cancellation_Under_Approval_color font-weight-400" *ngSwitchCase="'Cancellation Under Approval'">Cancellation approval</span>
@@ -1868,6 +1879,7 @@
                                                                   </span>
                                                                   <span class="Hold_color font-weight-400" *ngSwitchCase="'Project Hold'">Hold</span>
                                                                   <span class="Completion_Under_Approval_color font-weight-400" *ngSwitchCase="'Completion Under Approval'">Completion Under Approval</span>
+                                                                 
                                                                   <div *ngIf="item.Pendingapprover" class="pulsing-div">
                                                                       <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
                                                                       <span class="pulsing-dot-label"> {{item.Pendingapprover}}</span>
@@ -1885,26 +1897,118 @@
                                                                       <!-- <span class="vi font-weight-400 "> {{item.Status}} </span> -->
                                                                       <span class="Delay_color font-weight-400" *ngIf="!item.Status.toLowerCase().includes('delay')" >{{(item.Status) }}</span>
                                                                     </div>
-                                                                    </ng-container>
+                                                                 </ng-container>
 
                                                           </ng-container>
                                                       </ng-container>
                                                       <ng-container  *ngIf="(item.Exec_BlockName!='Standard Tasks' && item.Exec_BlockName!='Routine Tasks')">
-                                                          <div *ngIf="item.Status=='Under Approval'" class="attach-tippy">
+                                                            
+                                                         <div *ngIf="item.Status=='Under Approval'" class="attach-tippy">
+                                                                
                                                             <span *ngIf="item.approvalfromdate"  class=" st-line">Pending approval since: {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
                                                             </span>
-                                                            <!-- <span class="">  </span> -->
+
+                                                              <span class="Under_Approval_color font-weight-400">
+                                                                New approval 
+
+                                                                <ng-container *ngIf="item.RejectReleaseCount&&item.RejectReleaseCount>0">
+                                                                    <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        <span>({{item.RejectReleaseCount}})</span>
+                                                                        <svg width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="fill: #fff; stroke: #fff;stroke-width: 0.6px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z"></path></g>
+                                                                        </svg>
+                                                                    </span> 
+                                                                    <div  class="dropdown-menu dropdown-menu-xl px-2 new-p-rejects-drpdwn" id="dropd">
+                                                                        <div class="drop-ul">
+                                        
+                                                                        <div *ngFor="let obj of item.newrejectJson; let isLast=last" class="timeline">
+                                                                            <div class="timeline-container sent" [ngClass]="{'last-item':isLast}">
+                                                                            <div class="timeline-icon">
+                                        
+                                                                                    <svg *ngIf="obj.Value=='New Project Reject Release'" fill="#5867dd" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-73.84 -73.84 715.70 715.70" xml:space="preserve" stroke-width="7.952238000000001" style="width: 24px; height: 24px;" class="ng-star-inserted">
+                                                                                    <g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g><g><path d="M72.553,400.503c11.12,11.119,29.156,11.119,40.282,0l71.849-83.238c11.12-11.119,7.387-20.141-8.342-20.141h-46.444 c-3.929-52.24,14.688-104.059,52.999-142.37c71.194-71.188,187.022-71.188,258.209,0c34.486,34.486,53.477,80.331,53.477,129.102 c0,48.77-18.996,94.616-53.477,129.102c-49.395,49.395-121.219,66.23-187.511,43.936c-19.205-6.488-40.043,3.867-46.512,23.09 c-6.469,19.223,3.868,40.043,23.09,46.512c27.124,9.131,54.903,13.574,82.388,13.574c66.623,0,131.439-26.156,180.461-75.184 c48.36-48.355,74.994-112.645,74.994-181.036c0-68.392-26.634-132.676-74.994-181.036c-99.823-99.823-262.243-99.823-362.06,0 c-52.424,52.424-78.636,122.871-74.75,194.304H14.744c-15.728,0-19.461,9.014-8.341,20.141L72.553,400.503z"></path></g></g></g>
+                                                                                    </svg>
+                                                                                
+                                                                                    <svg *ngIf="obj.Value=='New Project Rejected'" width="64px" height="64px" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor" stroke="currentColor" class="si-glyph si-glyph-deny ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M9.016,0.06 C4.616,0.06 1.047,3.629 1.047,8.029 C1.047,12.429 4.615,15.998 9.016,15.998 C13.418,15.998 16.985,12.429 16.985,8.029 C16.985,3.629 13.418,0.06 9.016,0.06 L9.016,0.06 Z M3.049,8.028 C3.049,4.739 5.726,2.062 9.016,2.062 C10.37,2.062 11.616,2.52 12.618,3.283 L4.271,11.631 C3.508,10.629 3.049,9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.544,13.583 5.569,12.889 L13.878,4.58 C14.571,5.555 14.982,6.743 14.982,8.028 C14.981,11.317 12.306,13.994 9.016,13.994 L9.016,13.994 Z" fill="red" class="si-glyph-fill"></path></g></g>
+                                                                                    </svg>
+                                                                                    
+                                                                                    <svg *ngIf="obj.Value=='New Project'" width="64px" height="64px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" style="width: 24px; height: 24px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g  id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g  id="Combined-Shape" fill="#0287ca" transform="translate(87, 65.346667) scale(0.9)"><path  d="M192,-7.10542736e-15 L384,110.851252 L384,242.986 L341.333,242.986 L341.333,157.655 L213.333,231.555 L213.333,431.088 L192,443.405007 L0,332.553755 L0,110.851252 L192,-7.10542736e-15 Z M341.333333,264.32 L341.333,328.32 L405.333333,328.32 L405.333333,370.986667 L341.333,370.986 L341.333333,434.986667 L298.666667,434.986667 L298.666,370.986 L234.666667,370.986667 L234.666667,328.32 L298.666,328.32 L298.666667,264.32 L341.333333,264.32 Z M42.666,157.654 L42.6666667,307.920144 L170.666,381.82 L170.666,231.555 L42.666,157.654 Z M192,49.267223 L66.1333333,121.936377 L192,194.605531 L317.866667,121.936377 L192,49.267223 Z"></path></g></g></g>
+                                                                                    </svg>
+                                                                                
+                                                                            </div>
+                                                                            <div class="timeline-body">
+                                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                                    <h4 class="timeline-title">{{obj.Value}}</h4>
+                                                                                    <p class="timeline-subtitle d-flex flex-column align-items-end">{{obj.ModifiedDate|date:'dd-MM-yyyy'}}</p>
+                                                                                </div>
+                                                                                <div class="timeline-content" [ngClass]="{'msg-type':obj.NewValue}">{{obj.NewValue}}</div>
+                                                                                <div class="timeline-submitby fs-8  text-right" >{{obj.Modifiedby}}</div>
+                                                                            </div>
+                                                                        
+                                                                            </div>  
+                                                                        </div>
+                                        
+                                                                        </div>
+                                                                    </div> 
+                                                                </ng-container>
+
+                                                              </span>
+                                                                 
 
 
 
-                                                              <span class="Under_Approval_color font-weight-400">New approval</span>
+                                                           <!--new project reject release dropdown start-->
+                                                            <!-- <ng-container *ngIf="item.RejectReleaseCount&&item.RejectReleaseCount>0">
+                                                              <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <span class="newaprvl-label2">( {{item.RejectReleaseCount+(item.RejectReleaseCount==1?'st':item.RejectReleaseCount==2?'nd':item.RejectReleaseCount==3?'rd':item.RejectReleaseCount>3?'th':'')}} submission )</span>
+                                                                 <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="fill: #8c8c8c; stroke: #8c8c8c;stroke-width: 0.6px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z"></path></g>
+                                                                 </svg>
+                                                              </div>
+                                                              
+                                                                <div class="dropdown-menu dropdown-menu-xl px-2 new-p-rejects-drpdwn" id="dropd">
+                                                                    <div class="drop-ul">
+                                    
+                                                                    <div *ngFor="let obj of item.newrejectJson; let isLast=last" class="timeline">
+                                                                        <div class="timeline-container sent" [ngClass]="{'last-item':isLast}">
+                                                                        <div class="timeline-icon">
+                                    
+                                                                                <svg *ngIf="obj.Value=='New Project Reject Release'" fill="#5867dd" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-73.84 -73.84 715.70 715.70" xml:space="preserve" stroke-width="7.952238000000001" style="width: 24px; height: 24px;" class="ng-star-inserted">
+                                                                                <g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g><g><path d="M72.553,400.503c11.12,11.119,29.156,11.119,40.282,0l71.849-83.238c11.12-11.119,7.387-20.141-8.342-20.141h-46.444 c-3.929-52.24,14.688-104.059,52.999-142.37c71.194-71.188,187.022-71.188,258.209,0c34.486,34.486,53.477,80.331,53.477,129.102 c0,48.77-18.996,94.616-53.477,129.102c-49.395,49.395-121.219,66.23-187.511,43.936c-19.205-6.488-40.043,3.867-46.512,23.09 c-6.469,19.223,3.868,40.043,23.09,46.512c27.124,9.131,54.903,13.574,82.388,13.574c66.623,0,131.439-26.156,180.461-75.184 c48.36-48.355,74.994-112.645,74.994-181.036c0-68.392-26.634-132.676-74.994-181.036c-99.823-99.823-262.243-99.823-362.06,0 c-52.424,52.424-78.636,122.871-74.75,194.304H14.744c-15.728,0-19.461,9.014-8.341,20.141L72.553,400.503z"></path></g></g></g>
+                                                                                </svg>
+                                                                    
+                                                                                <svg *ngIf="obj.Value=='New Project Rejected'" width="64px" height="64px" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor" stroke="currentColor" class="si-glyph si-glyph-deny ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M9.016,0.06 C4.616,0.06 1.047,3.629 1.047,8.029 C1.047,12.429 4.615,15.998 9.016,15.998 C13.418,15.998 16.985,12.429 16.985,8.029 C16.985,3.629 13.418,0.06 9.016,0.06 L9.016,0.06 Z M3.049,8.028 C3.049,4.739 5.726,2.062 9.016,2.062 C10.37,2.062 11.616,2.52 12.618,3.283 L4.271,11.631 C3.508,10.629 3.049,9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.544,13.583 5.569,12.889 L13.878,4.58 C14.571,5.555 14.982,6.743 14.982,8.028 C14.981,11.317 12.306,13.994 9.016,13.994 L9.016,13.994 Z" fill="red" class="si-glyph-fill"></path></g></g>
+                                                                                </svg>
+                                                                                
+                                                                                <svg *ngIf="obj.Value=='New Project'" width="64px" height="64px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" style="width: 24px; height: 24px;" class="ng-star-inserted"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g  id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g  id="Combined-Shape" fill="#0287ca" transform="translate(87, 65.346667) scale(0.9)"><path  d="M192,-7.10542736e-15 L384,110.851252 L384,242.986 L341.333,242.986 L341.333,157.655 L213.333,231.555 L213.333,431.088 L192,443.405007 L0,332.553755 L0,110.851252 L192,-7.10542736e-15 Z M341.333333,264.32 L341.333,328.32 L405.333333,328.32 L405.333333,370.986667 L341.333,370.986 L341.333333,434.986667 L298.666667,434.986667 L298.666,370.986 L234.666667,370.986667 L234.666667,328.32 L298.666,328.32 L298.666667,264.32 L341.333333,264.32 Z M42.666,157.654 L42.6666667,307.920144 L170.666,381.82 L170.666,231.555 L42.666,157.654 Z M192,49.267223 L66.1333333,121.936377 L192,194.605531 L317.866667,121.936377 L192,49.267223 Z"></path></g></g></g>
+                                                                                </svg>
+                                                                             
+                                                                        </div>
+                                                                        <div class="timeline-body">
+                                                                            <div class="d-flex align-items-center justify-content-between">
+                                                                                <h4 class="timeline-title">{{obj.Value}}</h4>
+                                                                                <p class="timeline-subtitle d-flex flex-column align-items-end">{{obj.ModifiedDate|date:'dd-MM-yyyy'}}</p>
+                                                                            </div>
+                                                                            <div class="timeline-content" [ngClass]="{'msg-type':obj.NewValue}">{{obj.NewValue}}</div>
+                                                                            <div class="timeline-submitby fs-8  text-right" >{{obj.Modifiedby}}</div>
+                                                                        </div>
+                                                                    
+                                                                        </div>  
+                                                                    </div>
+                                    
+                                                                    </div>
+                                                                </div>
+                                                            </ng-container> -->
+                                                           <!--new project reject release dropdown start-->
+
                                                               <div class="pulsing-div">
                                                                   <ng-container *ngIf="item.PendingapproverEmpNo">
                                                                       <span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span>
                                                                   </ng-container>
                                                                   <span class="pulsing-dot-label">{{item.Pendingapprover}}</span>
                                                               </div>
-                                                          </div>
+
+                                                         </div>
 
                                                           <div *ngIf="item.Status=='Delay'" class="attach-tippy" >
                                                               <span class="vi font-weight-400 st-line"> {{item.Delaydays}} days delay</span>
@@ -1914,21 +2018,6 @@
                                                               </span>
 
                                                           </div>
-
-<!--
-                                                          <span class="attach-tippy">
-
-                                                          </span> -->
-<!--
-                                                          <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
-                                                            <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
-                                                             <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span> -->
-
-
-
-
-
-                                                          <!-- Other Status -->
 
                                                           <div *ngIf="item.Status=='InProcess'">
                                                               <span class="InProcess_color font-weight-400">In-process</span>
@@ -1950,11 +2039,8 @@
                                                               <span class="pulsing-dot-label">  </span>
                                                           </div> -->
 
-
-
-
                                                           <div *ngIf="item.Status=='New Project Rejected'" class="attach-tippy-div">
-                                                            <span class="New_Project_Rejected_color font-weight-400">New project rejected</span>
+                                                            <span class="New_Project_Rejected_color font-weight-400">New project rejected  <span *ngIf="item.RejectReleaseCount&&item.RejectReleaseCount>1">({{item.RejectReleaseCount}})</span> </span>
                                                             <span class="attach-tippy">
 
                                                             <span class=" st-line curser-pointer" >
@@ -1965,16 +2051,10 @@
                                                             </span>
 
                                                             <span class="New_Approval_Project font-weight-400">
-                                                                {{item.RejectedBy}}
+                                                                by {{item.RejectedBy}}
                                                             </span>
 
-                                                        </div>
-
-
-
-
-
-
+                                                         </div>
 
                                                           <div *ngIf="item.Status=='Project Hold'" class="attach-tippy">
                                                             <span *ngIf="item.approvalfromdate"  class=" st-line">Hold since: {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
@@ -1987,8 +2067,6 @@
                                                                 </div>
                                                           </div>
 
-
-
                                                           <div *ngIf="item.Status=='ToDo Completed'">
                                                               <span class="ToDo_Completed_color font-weight-400">ToDo
                                                                   completed</span>
@@ -1998,36 +2076,34 @@
                                                               </span>
                                                           </div>
                                                           <div *ngIf="item.Status=='Completion Under Approval'">
+                                                            <div class="d-flex">
+                                                                <span *ngIf="item.AuditStatus=='Audit Pending';else compl_aprvl_status" class="AuditUnderApproval font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                                    Audit Approval
+                                                                </span>
+                                                                <ng-template #compl_aprvl_status>
+                                                                    <span class="Completion_Under_Approval_color font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                                        Completion approval
+                                                                    </span>
+                                                                </ng-template>
 
-
-                                                    <div class="d-flex">
-                                                              <span *ngIf="item.AuditStatus=='Audit Pending';else compl_aprvl_status" class="AuditUnderApproval font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
-                                                                  Audit Approval
-                                                              </span>
-                                                              <ng-template #compl_aprvl_status>
-                                                                  <span class="Completion_Under_Approval_color font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
-                                                                      Completion approval
-                                                                  </span>
-                                                              </ng-template>
-
-                                                              <span class="attach-tippy">
-                                                                <b *ngIf="item.FileUrl" class="fa fa-paperclip text-info attachment cursor-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
-                                                            <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
-                                                               <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
-                                                                <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
-                                                            </span></div>
+                                                                <span class="attach-tippy">
+                                                                    <b *ngIf="item.FileUrl" class="fa fa-paperclip text-info attachment cursor-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
+                                                                <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
+                                                                <div style="width: max-content;">Submit by: <h6>{{item.Submitby}} </h6></div>
+                                                                    <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
+                                                                </span>
+                                                            </div>
 
                                                             <!-- <span class="New_Approval_Project font-weight-400">{{item.Pendingapprover}}
                                                           </span> -->
-                                                          <div class="pulsing-div">
-                                                              <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
-                                                              <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
-                                                          </div>
+                                                            <div class="pulsing-div">
+                                                                <ng-container *ngIf="item.PendingapproverEmpNo"><span *ngIf="item.PendingapproverEmpNo.trim()==Current_user_ID" class="pulsing-dot pulsing-dot-stat"></span></ng-container>
+                                                                <span class="pulsing-dot-label"> {{item.Pendingapprover}} </span>
+                                                            </div>
                                                           </div>
 
                                                           <div *ngIf="item.Status=='Cancellation Under Approval'" class="attach-tippy">
                                                             <span *ngIf="item.approvalfromdate" class=" st-line status-text">Pending approval since : {{item.approvalfromdate | date :'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
-
                                                             </span>
                                                               <span class="Cancellation_Under_Approval_color font-weight-400">Cancellation approval
                                                               </span>
@@ -2058,8 +2134,6 @@
 
                                                           <div *ngIf="item.Status=='Forward Under Approval'" class="attach-tippy">
                                                               <span class="st-line">Pending approval since : {{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})
-
-
                                                               </span>
                                                               <span class="Forward_Under_Approval_color font-weight-400">Forward approval
                                                               </span>
@@ -2130,7 +2204,6 @@
 
                                                   </td>
 
-
                                                     <td  [ngClass]="{'d-none':!islastupdate}" class="clas_lasup"  data-toggle="tooltip" data-placement="top"
                                                         title="{{item.LastUpdate|date:'medium'}}">
                                                         <span class="kt-widget__other text-info">
@@ -2200,7 +2273,7 @@
                                                             </span>
                                                           </div>
                                                     </td>
-<td></td>
+                                                   <td></td>
                                                     <!-- <td (click)="_onRowClick(item.Project_Code,item.Project_Name)"
                                                         class="curser-pointer">
                                                         <a><i class="fa fa-link text-primary"></i></a>

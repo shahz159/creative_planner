@@ -874,11 +874,11 @@
                                                     </div>
 
 
-                                                    <button *ngIf="(projectInfo.Status==='Project Hold')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"  class="btn-inside-notifi  release-now-shrtcut"  (click)=" $event.stopPropagation();   openPrjReleaseSideBar()">
+                                                    <button *ngIf="(projectInfo.Status==='Project Hold')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"  class="btn-inside-notifi  release-now-shrtcut"  (click)="openPrjReleaseSideBar()">
                                                         Project release
                                                       </button>
 
-                                                    <button  *ngIf="(projectInfo.Status==='New Project Rejected')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"    class="btn-inside-notifi  re-release-prj-shrtcut" (click)="$event.stopPropagation();  openNewPrjReleaseSideBar()">
+                                                    <button  *ngIf="(projectInfo.Status==='New Project Rejected')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"    class="btn-inside-notifi  re-release-prj-shrtcut" (click)="openNewPrjReleaseSideBar()">
                                                         New project release
                                                      </button>
 
@@ -999,33 +999,45 @@
                                                             <div class="col-lg-12" [ngClass]="{'d-none':pageContentType=='ACTION_DETAILS'}">
                                                                 <div class="kt-prg-progress">
                                                                     <ul type="none">
-                                                                        <li *ngIf="TOTAL_ACTIONS_UNDER_APPROVAL"><span
-                                                                                class="B-Bot P_Not-Started"></span> New action approval
-                                                                            <b>({{
-                                                                                TOTAL_ACTIONS_UNDER_APPROVAL}})</b> </li>
-                                                                        <li *ngIf="TOTAL_ACTIONS_IN_PROCESS"><span
-                                                                                class="B-Bot P_In_Progress"></span>In-process
+
+                                                                        <li *ngIf="TOTAL_ACTIONS_UNDER_APPROVAL">
+                                                                            <span class="B-Bot P_Not-Started"></span>New action approval
+                                                                            <b>({{TOTAL_ACTIONS_UNDER_APPROVAL}})</b> 
+                                                                        </li>
+
+                                                                        <li *ngIf="TOTAL_ACTIONS_IN_PROCESS">
+                                                                            <span class="B-Bot P_In_Progress"></span>In-process
                                                                             <b>({{TOTAL_ACTIONS_IN_PROCESS}})</b>
                                                                         </li>
-                                                                        <li *ngIf="TOTAL_ACTIONS_IN_DELAY"><span
-                                                                                class="B-Bot P_Delay"></span> Delay
+
+                                                                        <li *ngIf="TOTAL_ACTIONS_IN_DELAY">
+                                                                            <span class="B-Bot P_Delay"></span> Delay
                                                                             <b>({{TOTAL_ACTIONS_IN_DELAY}})</b>
                                                                         </li>
-                                                                        <li *ngIf="TOTAL_ACTIONS_REJECTED" class="w-50P"><span
-                                                                                class="B-Bot P_New_Project_Rejected w-50P"></span>
-                                                                            New
-                                                                            Project rejected <b>({{TOTAL_ACTIONS_REJECTED}})</b>
+
+                                                                        <!-- class="w-50P" -->
+                                                                        <li *ngIf="TOTAL_ACTIONS_REJECTED" >
+                                                                            <!-- w-50P -->
+                                                                            <span class="B-Bot P_New_Project_Rejected "></span>
+                                                                            New Project rejected <b>({{TOTAL_ACTIONS_REJECTED}})</b>
                                                                         </li>
-                                                                        <li *ngIf="TOTAL_ACTIONS_IN_CUA" class="w-50P"><span
-                                                                                class="B-Bot P_Completion_under_Approval w-50P"></span>
+
+                                                                        <!-- class="w-50P" -->
+                                                                        <li *ngIf="TOTAL_ACTIONS_IN_CUA" >
+                                                                            <!-- w-50P -->
+                                                                            <span class="B-Bot P_Completion_under_Approval "></span>
                                                                             Completion approval
-                                                                            <b>({{TOTAL_ACTIONS_IN_CUA}})</b></li>
-                                                                        <li *ngIf="TOTAL_ACTIONS_IN_FUA" class="w-50P"><span
-                                                                                class="B-Bot P_ForwardUnderApproval w-50P"></span>
+                                                                            <b>({{TOTAL_ACTIONS_IN_CUA}})</b>
+                                                                        </li>
+
+                                                                        <!-- class="w-50P" -->
+                                                                        <li *ngIf="TOTAL_ACTIONS_IN_FUA" >
+                                                                            <!-- w-50P -->
+                                                                            <span class="B-Bot P_ForwardUnderApproval "></span>
                                                                             Forward approval <b>({{TOTAL_ACTIONS_IN_FUA}})</b>
                                                                         </li>
-                                                                        <li *ngIf="TOTAL_ACTIONS_DONE"><span
-                                                                                class="B-Bot P_Done"></span>
+
+                                                                        <li *ngIf="TOTAL_ACTIONS_DONE"><span class="B-Bot P_Done"></span>
                                                                             Completed <b>({{TOTAL_ACTIONS_DONE}})</b></li>
                                                                         <li *ngIf="TOTAL_ACTIONS_IN_HOLD"><span
                                                                                 class="B-Bot P_Hold"></span>
@@ -2334,7 +2346,40 @@
                   </span>
               </div>
 
-              <div class="notification new-prjrejected-notf" style="cursor:pointer;"  *ngIf="['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected'].includes(activity)">
+
+             <ng-container *ngIf="['New Project Rejected','New Action Rejected','Project Complete Rejected','Rejected'].includes(activity)">
+               
+                <div *ngIf="activity=='New Project Rejected'" class="notification delay-notification" style="cursor:pointer;">
+                    <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#ff2727" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title>
+                        <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g>
+                    </svg>
+
+
+                    <div class="notif-msg" style="color: #ff2727;">
+                        <div>
+                          {{activity}} for
+                            "{{lastactivity[0].rejectType}}"
+                            by
+                            {{lastactivity[0].Empname}}
+                            on <b>{{lastactivity[0].Rec_date|date:'dd-MM-yyyy'}}</b>. <br/>
+                            Remark: "{{lastactivity[0].Req_Coments}}"
+                        </div>    
+
+                        <div *ngIf="Current_user_ID==projectInfo.ResponsibleEmpNo">
+                            <span class="fs-7" style="text-decoration: underline">Next steps: </span><br/>
+                            <span class="fs-7">
+                                1.Make necessary adjustments to the project based on the rejection reasons and provided feedback.<br/>
+                                2.Submit the revised project for re-evaluation and approval.<br/>
+                                3.If the revised project meets the required standards, it will proceed to the project owner for final approval.<br/>
+                                <!-- 4.If the revised project is still not approved, it will be returned to the project authority for further modifications and re-submission. -->
+                               </span>
+                        </div>
+                    </div>
+                      
+                </div>
+
+
+                <div *ngIf="activity!='New Project Rejected'" class="notification new-prjrejected-notf" style="cursor:pointer;">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.576 31.576" width="30px" height="30px" >
                       <g id="SVGRepo_iconCarrier">
                           <path d="M16.779,23.888H6.215c-1.079,0-1.968-0.844-1.968-1.923V4.446c0-1.079,0.889-1.928,1.968-1.928h13.677 c1.08,0,1.984,0.849,1.984,1.928v11.917l1.231,1.383l1.257-1.407c0.016-0.017,0.03-0.031,0.03-0.048V2.57 c0-1.419-1.14-2.57-2.56-2.57H4.169C2.807,0,1.73,1.104,1.73,2.466v21.44c0,1.42,1.123,2.574,2.543,2.574H15.22 c0.018,0,0.036-0.054,0.055-0.074l1.879-2.092L16.779,23.888z"></path>
@@ -2363,9 +2408,7 @@
                           on <b>{{lastactivity[0].Rec_date|date:'dd-MM-yyyy'}}</b>. <br/>
                           Remark: "{{lastactivity[0].Req_Coments}}"
                     </ng-template>
-
                   </span>
-
                   <button *ngIf="activity=='Project Complete Rejected'" class="rj-btn" (click)="View_Activity('PROJECT-ACTIVITIES',{activityType:'Project Complete',byEmp:'all'});">
                     <svg stroke="#838383" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -2376,8 +2419,16 @@
                         </g>
                     </svg>
                 </button>
-
               </div>
+
+
+
+             </ng-container>
+
+
+
+
+          
 
               <div class="notification prjhold-notf" style="cursor:pointer;"  *ngIf="projectInfo&&projectInfo.Status==='Project Hold'">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.576 31.576" width="27px" height="27px"   >
@@ -3342,6 +3393,36 @@
                                                         </div>
 
 
+
+
+                                              <!--new project reject release (New approval) start-->
+                                           
+                                        <ng-container *ngIf="requestType=='New Project Reject Release'&&Current_user_ID==approvalEmpId">
+                                            <!-- <div style="color: red;font-weight: 500; margin-top: 10px; margin-bottom: 5px;">
+                                                This request was previously rejected 2 times by Aquib Shahbaz
+                                            </div> -->
+                                            <div class="col-lg-12 mb-3 px-3 pb-2 pt-1" style="background-color: #e4e7f9; border-radius: 14px; border: 1px solid #6388e336; color: #4f4f4f;">
+                                                <div class="fs-7 mb-2" style="font-weight: 600;color: #7b7b7b;">Last rejection details</div>
+                                               <div class="fs-7 d-flex justify-content-between">
+                                                <div>
+                                                     <b>Rejection type : </b><span>{{rejectreleaseComments[0].rejectType}}</span>
+                                                </div>
+                                                <div>
+                                                     <b>Rejected on : </b><span>{{rejectreleaseComments[0].Rec_date}}</span>
+                                                </div>
+                                               </div>
+                                                <div class="fs-7">
+                                                    <b>Remarks :</b>
+                                                    <span>{{rejectreleaseComments[0].Req_Coments}}</span>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                         
+                                            <!-- new project reject release  (New approval) end-->
+
+
+
+                                               <!--extra message to the project auditor during approval-->
                                                     <div class="col-lg-12 mb-3 p-3 mt-3" *ngIf="projectInfo.AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId"
                                                         style="background-color: #e4e7f9;
                                                         border-radius: 14px;
@@ -3362,8 +3443,10 @@
                                                             3. If you reject the project approval, then it will return back to the project responsible for the project re-submission.
                                                         </span>
                                                     </div>
+                                            <!--extra message to the project auditor during approval-->
 
 
+                                            <!--extra message to the project owner after project is successfully audited by the auditor -->
                                                     <div class="col-lg-12 mb-3 p-3 mt-3" *ngIf="projectInfo.AuditStatus=='Audit Complete' && Current_user_ID==approvalEmpId"
                                                     style="background-color:white;border-radius:2px;border:1px solid #6388e3;">
                                                     <div class="d-flex justify-content-between">
@@ -3375,7 +3458,7 @@
                                                         <span *ngIf="projectInfo.Auditor_acceptremarks">{{projectInfo.Auditor_acceptremarks}}</span>
                                                     </div>
                                                    </div>
-
+                                            <!--extra message to the project owner after project is successfully audited by the auditor -->
 
 
 
@@ -4796,16 +4879,12 @@
                                                                     projectInfo.ResponsibleEmpNo===Current_user_ID
                                                                     )">
 
-                                                                <button *ngIf="projectActionInfo[currentActionView].Status==='Project Hold'" class="Ct-btn Bt-hold ml-2"
+                                                                <button *ngIf="projectActionInfo[currentActionView].Status==='Project Hold'&&projectInfo.Status!='Project Hold'" class="Ct-btn Bt-hold ml-2"
                                                                     (click)="openPrjReleaseSideBar()">Action release</button>
 
                                                                 <button  *ngIf="projectActionInfo[currentActionView].Status==='Delay'||projectActionInfo[currentActionView].Status==='InProcess'"   class="Ct-btn Bt-hold ml-2" (click)="openPrjHoldSideBar()">Action hold</button>
 
                                                                 </ng-container>
-
-
-
-
 
 
                                                                 <button class="Ct-btn Bt-Submit ml-2" *ngIf="
@@ -4848,7 +4927,7 @@
                                                              projectActionInfo[currentActionView].Project_Owner===Current_user_ID||
                                                              projectInfo.OwnerEmpNo===Current_user_ID||
                                                              isHierarchy==true
-                                                             )&&projectActionInfo[currentActionView].Status=='New Project Rejected'">New action release</button>
+                                                             )&&projectActionInfo[currentActionView].Status=='New Project Rejected'&&projectInfo.Status!='New Project Rejected'">New action release</button>
 
 
                                                             </div>
@@ -14047,11 +14126,11 @@
                         </div>
           
                         <div class="col-lg-4 text-left">
-                          <div class="form-group Ic_ed">
+                          <div *ngIf="isActnStartDateEditable" class="form-group Ic_ed">
                                <div class="kt-info-lable-v">Start date</div>
                                <div class="input-icon Sub_In_ed rounded-2 date-border-v d-flex">
                                   <input class="form-control" [(ngModel)]="ActionstartDate" [min]="todayDate|date:'YYYY-MM-dd'" matInput [matDatepicker]="aStartDatePicker"
-                                      (click)="aStartDatePicker.open();" placeholder="Select Start Date" class="form-control border-0 " name="date" [disabled]="isActnStartDateEditable==false" [ngClass]="{'readonly':isActnStartDateEditable==false}"   />
+                                      (click)="aStartDatePicker.open();" placeholder="Select Start Date" class="form-control border-0 " name="date"  />
                                   <div class="input-group-append h-2">
                                       <mat-datepicker-toggle matSuffix [for]="aStartDatePicker" class="btn-secondary border-0"></mat-datepicker-toggle>
                                       <mat-datepicker class="form-group " #aStartDatePicker></mat-datepicker>
@@ -14059,6 +14138,13 @@
                               </div>
                               <span style="color:red" *ngIf="!ActionstartDate&&formFieldsRequired">Please select start date.</span>
                           </div>
+                          <div *ngIf="!isActnStartDateEditable" class="form-group Ic_ed">
+                            <div class="kt-info-lable-v"> Start date</div>
+                            <div class="input-icon Sub_In_ed">
+                                <input type="text" class="form-control readonly"
+                                    [value]="ActionstartDate | date : 'dd-MM-yyyy'" placeholder="Select start date"  readonly/>
+                            </div>
+                           </div> 
                         </div> 
           
                         <div class="col-lg-4 text-left">
@@ -14983,7 +15069,7 @@
       <div  class="kt-portlet__foot py-3">
           <div  class="form-group mb-0">
               <button  type="submit" class="btn btn-info btn-sm mr-2" (click)="rejectAllStdTaskAprvs()" >Submit </button>
-              <button  type="submit" class="btn btn-secondary btn-sm "  >Close</button>
+              <button  type="submit" class="btn btn-secondary btn-sm " (click)="closeApprovalSideBar()" >Close</button>
           </div>
           </div>
   </div>

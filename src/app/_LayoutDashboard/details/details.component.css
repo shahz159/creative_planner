@@ -1738,8 +1738,11 @@ div#DemoList-table div.demo i {
 }
 
 .kt-prg-progress ul li {
-  width: 33%;
+  /* width: 33%;
+  margin-bottom: 9px; */
   margin-bottom: 9px;
+  margin-right: 10px;
+  text-wrap-mode: nowrap;
 }
 
 li.w-50P {
