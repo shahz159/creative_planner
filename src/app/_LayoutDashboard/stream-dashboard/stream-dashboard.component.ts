@@ -52,14 +52,14 @@ export class StreamDashboardComponent implements OnInit {
     this._objStatusDTO = new StatusDTO;
    }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.UserfullName = localStorage.getItem("UserfullName");
    
 
 
 
-    this.loadDashboardBanners();
+    await this.loadDashboardBanners();
     // this.initializeOwlCarousels();
     this.initializeOwlCarousels2();
     // this.initializeOwlCarousels3();
@@ -672,9 +672,10 @@ export class StreamDashboardComponent implements OnInit {
    // dashboard banners start.  
    dashboardBanners:any=[];
    dashboardBannersImages:any=[];
-  loadDashboardBanners(){
+   
+  async loadDashboardBanners(){
       
-   this.CalenderService.NewUsersDashboard().subscribe((res:any)=>{ 
+   this.CalenderService.NewUsersDashboard().subscribe(async (res:any)=>{ 
         // console.log("for dashboard banners :",res); 
         if(res){    
             const djson=JSON.parse(res.DashboardJson); 
@@ -687,6 +688,7 @@ export class StreamDashboardComponent implements OnInit {
                           var _Obj = {};
                           _Obj["path"] = Attch.FileUrl;
                           _Obj["type"] = 'image';
+                          _Obj["sasUrl"] = '';
                           this.dashboardBannersImages.push(_Obj);
                         });
                       }
@@ -694,6 +696,7 @@ export class StreamDashboardComponent implements OnInit {
             }
 
             if(this.dashboardBannersImages.length>0){
+              await this.loadSasUrlsForImages();
               $(document).ready(() =>{
                 $('.banner-item').owlCarousel({
                   loop: true,
@@ -719,7 +722,18 @@ export class StreamDashboardComponent implements OnInit {
 
    // dashboard banners end.
 
-
+   async loadSasUrlsForImages() {
+    for (let image of this.dashboardBannersImages) {
+      const expiryTime = new Date();
+      expiryTime.setMinutes(expiryTime.getMinutes() + 5); // 5 minutes expiry
+ 
+      try {
+        image.sasUrl = await this.CalenderService.getSasUrl(image.path, expiryTime);
+      } catch (error) {
+        console.error(`Error fetching SAS URL for ${image.path}`, error);
+      }
+    }
+  }
 
 
 // recent activity section .  start

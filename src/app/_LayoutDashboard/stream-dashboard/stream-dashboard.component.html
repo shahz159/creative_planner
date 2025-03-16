@@ -1321,7 +1321,7 @@
                                 <ng-container *ngIf="dashboardBanners&&dashboardBanners.length>0; else noDbbanner">
                                     <div class="activity-report" *ngFor="let bannerImg of dashboardBannersImages">
                                         <div class="activity-report-content">
-                                            <img [src]="bannerImg.path" alt="Angular Carousel 1" class="w-100">
+                                            <img [src]="bannerImg.sasUrl" alt="Angular Carousel 1" class="w-100">
                                         </div>
                                     </div>
                                 </ng-container>

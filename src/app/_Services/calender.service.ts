@@ -58,7 +58,14 @@ export class CalenderService {
   }
 
 
-
+  async getSasUrl(filePath: string, expiryTime: Date): Promise<string> {
+    const expiryTimeString = expiryTime.toISOString(); // Convert to UTC string
+    const response = await this.http.get<{ sasUrl: string }>(
+      `${this.rootUrlcore}Azure/NewGenerateSASTokenUrl?filePath=${encodeURIComponent(filePath)}&expiryTime=${expiryTimeString}`
+    ).toPromise();
+   
+    return response.sasUrl;
+  }
 
 
 
