@@ -3,12 +3,12 @@ export const environment = {
 
 // ----------------Live Stream Planner-------------------------------
 
-Language_file_url:'https://cswebapps.com/creativeplanner/assets/i18n/'
-,assetsurl:'/creativeplanner/'
-,ImageUrl:'/creativeplanner/assets/'
-,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/',
- baseUrl:'https://cswebapps.com/PortfolioAPI/api/',
- baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/'
+// Language_file_url:'https://cswebapps.com/creativeplanner/assets/i18n/'
+// ,assetsurl:'/creativeplanner/'
+// ,ImageUrl:'/creativeplanner/assets/'
+// ,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/',
+//  baseUrl:'https://cswebapps.com/PortfolioAPI/api/',
+//  baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/'
 
 
  //---------------Live azure Stream Planner-----------------------------
