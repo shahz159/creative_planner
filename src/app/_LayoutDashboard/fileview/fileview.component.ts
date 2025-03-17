@@ -55,6 +55,8 @@ export class FileviewComponent implements OnInit {
   invalid: boolean =false;
   objProjectDto: ProjectDetailsDTO;
   noRedirectionToSource:boolean=false;  // by default redirection is allowed.
+  _originalUrl: string;
+
 
   constructor(private route: ActivatedRoute,public service: ProjectTypeService,private notifyService: NotificationService
   ) {   
@@ -70,7 +72,7 @@ export class FileviewComponent implements OnInit {
     var decoder = new TextDecoder();
     this.url_project_code=this.route.snapshot.params['projectcode'];
     let surl = this.route.snapshot.params['url'];
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(async params => {
 
       let surl = params['url'];
       const arr = surl.split(',').map(element => {
@@ -81,6 +83,9 @@ export class FileviewComponent implements OnInit {
       const arruid = uid.split(',').map(element => {
         return Number(element);
       });
+      this.src = decoder.decode(new Uint8Array(arr));
+      this._originalUrl = decoder.decode(new Uint8Array(arr));
+      await this.getTemporaryUrl(this.src);
 
         if (decoder.decode(new Uint8Array(arruid)).toString() != this.Current_user_ID.toString()) {
           this.viewer='';
@@ -141,7 +146,7 @@ export class FileviewComponent implements OnInit {
       console.log(this.filename,"filename123");
 
       if(this.viewer==null || this.viewer=='' || this.viewer ==undefined){
-        this.service.PathExtention(this.src).subscribe(
+        this.service.PathExtention(this._originalUrl).subscribe(
           da => {
             scontenttype = da["ContentType"];
             let contenttype = scontenttype;//decoder.decode(new Uint8Array(arrct));
@@ -193,6 +198,23 @@ export class FileviewComponent implements OnInit {
       this.Schedule_ID=params['Schedule_ID'];
     });
   }
+
+
+  async getTemporaryUrl(src: string) {
+     
+    //  (let image of this.dashboardBannersImages)   
+    const expiryTime = new Date();
+      expiryTime.setMinutes(expiryTime.getMinutes() + 5); // 5 minutes expiry
+ 
+      try {
+        src = await this.service.getSasUrl(src, expiryTime);
+        this.src = src;
+      } catch (error) {
+        console.error(`Error fetching SAS URL for ${src}`, error);
+      }
+    // }
+  }
+
   incrementZoom(amount: number) {
     this.zoom += amount;
   }

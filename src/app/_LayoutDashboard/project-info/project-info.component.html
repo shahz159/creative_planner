@@ -494,6 +494,31 @@
                 </div>
 
             </div>
+            <ng-container *ngIf="requestType=='New Project Reject Release'&&Current_user_ID==approvalEmpId">
+                <!-- <div style="color: red;font-weight: 500; margin-top: 10px; margin-bottom: 5px;">
+                    This request was previously rejected 2 times by Aquib Shahbaz
+                </div> -->
+                <div class="col-lg-12 mb-3 px-3 pb-2 pt-1" style="background-color: #e4e7f9; border-radius: 14px; border: 1px solid #6388e336; color: #4f4f4f;">
+                    <div class="fs-7 mb-2" style="font-weight: 600;color: #7b7b7b;">Last rejection details</div>
+                   <div class="fs-7 d-flex justify-content-between">
+                    <div>
+                         <b>Rejection type : </b><span>{{rejectreleaseComments[0].rejectType}}</span>
+                    </div>
+                    <div>
+                         <b>Rejected on : </b><span>{{rejectreleaseComments[0].Rec_date}}</span>
+                    </div>
+                   </div>
+                   <div class="fs-7 d-flex justify-content-between">
+                    <div>
+                        <b>Remarks :</b>
+                        <span>{{rejectreleaseComments[0].Req_Coments}}</span>
+                    </div>
+                    <div>
+                        <b>Rejected by : </b><span>{{rejectreleaseComments[0].Empname}}</span>
+                   </div>
+                </div>
+                </div>
+            </ng-container>
             <div class="col-lg-12 mb-3 p-3" *ngIf="ProjectStatesJson[0].AuditStatus=='Audit Pending' && Current_user_ID==approvalEmpId"
                         style="    background-color: #e4e7f9;
                         border-radius: 14px;
