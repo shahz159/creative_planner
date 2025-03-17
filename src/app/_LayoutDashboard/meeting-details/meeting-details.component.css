@@ -8985,3 +8985,14 @@ a.info-btn.info-btn-disable:hover {
 .custom-hover:hover{
     color: #2786f0 !important;
 }
+
+.icn-hvr.active {
+    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px;
+    border-radius: 5px;
+    background-color: #fff;
+    z-index: 2;
+  }
+  
+  .icn-hvr {
+    margin: 1px 5px;
+  }

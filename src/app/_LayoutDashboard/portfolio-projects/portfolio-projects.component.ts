@@ -190,9 +190,9 @@ export class PortfolioProjectsComponent implements OnInit {
   ProjDto:ProjectDetailsDTO|undefined;
   formFieldsRequired:boolean=false;
   isLoadingData:boolean|undefined;
-  mtg_section:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'='TODAY';
-
-
+  // mtg_section:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'='TODAY';
+  mtg_section:'Previous'|'UPCOMING'='Previous';
+  today: any = new Date().toISOString().substring(0, 10);
 
   _StatusCountDB: any;
   TotalProjects: any;
@@ -445,7 +445,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
       this.filteredEmployees = [];
       this._ProjectsListBy_Pid.forEach(item=>{
-debugger
+
         const x=this.filteredEmployees.find(emp=>item.Emp_No === emp.Emp_No)
         if(x){
             x.totalProjects+=1;
@@ -2497,7 +2497,7 @@ Insert_indraft() {
   projectInfo: any;
 
   upcomingMeetings: any;
-  todaymeetings: any;
+  Previousmeetings: any;
   last7dmeetings: any;
   lastMonthMeetings: any;
   olderMeetings: any;
@@ -2518,142 +2518,226 @@ Insert_indraft() {
 
 
   openMeetingSidebar() {
-
+   
    document.getElementById("Meetings_SideBar").classList.add("kt-quick-Mettings--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementById("newdetails").classList.add("position-fixed");
     this.currentSidebarOpened='MEETINGS';
     // sidebar is open
+    this.mtg_section = 'Previous';
     this.GetmeetingDetails(); // get all meeting details.
   }
 
-  GetmeetingDetails() {
-    // first initialize all meetings variables to empty . and to avoid any miscalculation .  this is mandatory before calculating.
-    this.meetingList = [];
-    this.meeting_arry = [];
-    this.meetinglength = 0;
+  // GetmeetingDetails() {
+  //   // first initialize all meetings variables to empty . and to avoid any miscalculation .  this is mandatory before calculating.
+  //   this.meetingList = [];
+  //   this.meeting_arry = [];
+  //   this.meetinglength = 0;
 
+  //   this.upcomingMeetings = [];
+  //   this.todaymeetings = [];
+  //   this.last7dmeetings = [];
+  //   this.lastMonthMeetings = [];
+  //   this.olderMeetings = [];
+  //   this.mtgFromD = '';
+  //   this.mtgUptoD = '';
+  //   this.mtgsInRange = [];
+  //   this.mLdng = false;
+
+  //   this.tdMtgCnt = 0;   // Today Meetings Count
+  //   this.upcMtgCnt = 0;  // Upcoming Meetings Count
+  //   this.lstMthCnt = 0;  // Last Month Meetings Count
+  //   this.lst7dCnt = 0;   // Last 7 Days Meetings Count
+  //   this.oldMtgCnt = 0;  // Older Meetings Count
+
+  //   this.ObjSubTaskDTO.portfolio_id = this.Url_portfolioId;
+  //   this.ObjSubTaskDTO.startdate = null;
+  //   this.ObjSubTaskDTO.enddate = null;
+  //   this.isLoadingData=true;
+
+  //   this.service._GetMeetingListportfolio(this.ObjSubTaskDTO)
+  //     .subscribe(data => {
+  //       if (data && Array.isArray(data) && data.length > 0 && data[0]?.['MeetingFor_projects']?.length > 0) {
+  //         this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
+  //         this.Addguest= this.meetingList[0].Addguest
+  //         this.MeetingParticipants= JSON.parse(this.Addguest);
+  //         console.log('meeting we have:', this.meetingList);
+  //         this.meeting_arry = this.meetingList;
+  //         if (this.meeting_arry.length > 0)
+  //           this.meetinglength = this.meeting_arry.length;
+  //         this.meeting_arry.forEach(element => {
+  //           element.usersjson = JSON.parse(element.Addguest);
+  //         });
+
+  //       }
+  //       else {
+  //         this.meetinglength = 0;
+  //       }
+
+  //       // AFTER GETTING ALL MEETINGS DETAILS
+
+  //       this.upcomingMeetings = this.getUpcomingMeeting();
+  //       this.upcomingMeetings.reverse();
+  //       console.log(this.upcomingMeetings,'linklkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')                                        // get upcoming meetings.
+  //       this.upcMtgCnt = this.upcomingMeetings.length;                           // store totalno of meetings.
+  //       this.upcomingMeetings = this.groupMeetingsByDate(this.upcomingMeetings);
+
+
+  //       this.todaymeetings = this.getMeetingsByDate(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));     // get todays meetings.
+  //       this.tdMtgCnt = this.todaymeetings.length;                                                        // store totalno of meetings.
+  //       this.todaymeetings = this.groupMeetingsByDate(this.todaymeetings);                                 // format them.
+  //       console.log(this.todaymeetings,"this.todaymeetings")
+
+  //       for (let i = 1; i <= 7; i++) {
+  //         const date = new Date();                     // get the current date.
+  //         date.setDate(date.getDate() - i);
+  //         this.last7dmeetings = this.last7dmeetings.concat(this.getMeetingsByDate(this.datepipe.transform(date, 'yyyy-MM-dd')));
+  //       }                                                                                               // get last 7 days meetings.
+  //       this.lst7dCnt = this.last7dmeetings.length;                                                    // store totalno of meetings.
+  //       this.last7dmeetings = this.groupMeetingsByDate(this.last7dmeetings);
+  //       console.log (this.last7dmeetings,"last7dmeetings")                        // format them.
+  //       const date1 = new Date();                 // currentdate.
+  //       date1.setMonth(date1.getMonth() - 1);    // date1 is prev month.
+  //       this.meeting_arry.forEach(m => {
+
+  //         const sd = new Date(m.Schedule_date);
+  //         if (sd.getMonth() === date1.getMonth() && sd.getFullYear() === date1.getFullYear()) {  // when meeting held in last month
+  //           this.lastMonthMeetings.push(m);
+  //         }
+  //         else if (!(sd.getTime() > date1.getTime())) {   // when meeting held date is even order than last months
+  //           this.olderMeetings.push(m);
+  //         }
+  //       });
+
+  //       this.lstMthCnt = this.lastMonthMeetings.length;
+  //       this.oldMtgCnt = this.olderMeetings.length;
+
+  //       this.lastMonthMeetings = this.groupMeetingsByDate(this.lastMonthMeetings);      // format them.
+  //       console.log(this.lastMonthMeetings,"this.lastMonthMeetings")
+  //       this.olderMeetings = this.groupMeetingsByDate(this.olderMeetings);
+  //       console.log(this.olderMeetings,"olderrr meetings")    // format them.
+
+  //       this.isLoadingData=false;
+
+
+
+  //       if(this.upcomingMeetings.length>0 && this.todaymeetings.length>0){
+  //         this.mtg_section='Previous';
+  //        }else if (this.upcomingMeetings.length>0){
+  //          this.mtg_section='UPCOMING';
+  //        }
+
+
+  //      // by default today section is opened, below line set the first meeting to open if present.
+  //      setTimeout(()=>{
+  //         this.toggleMtgsSection(this.mtg_section);
+  //      },1000);
+  //      // by default today section is opened, below line set the first meeting to open if present.
+  //     });
+  //   //
+
+  // }
+
+  totalpreviousmeetings:any;
+  totalupcomingmeetings:any;
+
+  GetmeetingDetails(){
+    this.Previousmeetings = [];
     this.upcomingMeetings = [];
-    this.todaymeetings = [];
-    this.last7dmeetings = [];
-    this.lastMonthMeetings = [];
-    this.olderMeetings = [];
-    this.mtgFromD = '';
-    this.mtgUptoD = '';
-    this.mtgsInRange = [];
-    this.mLdng = false;
-
-    this.tdMtgCnt = 0;   // Today Meetings Count
-    this.upcMtgCnt = 0;  // Upcoming Meetings Count
-    this.lstMthCnt = 0;  // Last Month Meetings Count
-    this.lst7dCnt = 0;   // Last 7 Days Meetings Count
-    this.oldMtgCnt = 0;  // Older Meetings Count
-
     this.ObjSubTaskDTO.portfolio_id = this.Url_portfolioId;
     this.ObjSubTaskDTO.startdate = null;
     this.ObjSubTaskDTO.enddate = null;
+
+
     this.isLoadingData=true;
-
-    this.service._GetMeetingListportfolio(this.ObjSubTaskDTO)
-      .subscribe(data => {
+    this.service._GetMeetingListportfolio(this.ObjSubTaskDTO).subscribe(data => {
+     
         if (data && Array.isArray(data) && data.length > 0 && data[0]?.['MeetingFor_projects']?.length > 0) {
-          this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
-          this.Addguest= this.meetingList[0].Addguest
-          this.MeetingParticipants= JSON.parse(this.Addguest);
-          console.log('meeting we have:', this.meetingList);
-          this.meeting_arry = this.meetingList;
-          if (this.meeting_arry.length > 0)
-            this.meetinglength = this.meeting_arry.length;
-          this.meeting_arry.forEach(element => {
-            element.usersjson = JSON.parse(element.Addguest);
-          });
+  
+            this.meetingList = JSON.parse(data[0]['MeetingFor_projects']);
+            this.meetingList.map(meetings => {
+              meetings.Addguest=JSON.parse(meetings.Addguest)
+           })
+              
+              if (Array.isArray(this.meetingList)) {
+                this.Previousmeetings = this.meetingList.filter(meeting => new Date(meeting.Schedule_date) <= new Date(this.today));
+                this.totalpreviousmeetings = this.Previousmeetings.length;
+              
+                this.Previousmeetings.forEach(meeting => {
 
+                  if (meeting.Addguest.length > 3) {
+                    const remainingGuests = meeting.Addguest.slice(3);
+                    meeting.Addguest = meeting.Addguest.slice(0, 3);
+                    meeting['RemainingGuests'] = remainingGuests.map(data=>data.TM_DisplayName)
+                    meeting['RemainingGuestsCount'] = remainingGuests.length;
+          
+                  } else {
+                    meeting['RemainingGuests'] = [];
+                  }
+                });
+                console.log(this.Previousmeetings,'Previousmeetings')
+               
+               
+                this.upcomingMeetings = this.meetingList.filter(upmeeting=> new Date(upmeeting.Schedule_date) > new Date(this.today) )
+              
+                this.upcomingMeetings.forEach(meeting => {
+                  if (meeting.Addguest.length > 3) {
+                    const remainingGuests = meeting.Addguest.slice(3);
+                    meeting.Addguest = meeting.Addguest.slice(0, 3);
+                    meeting['RemainingGuests'] = remainingGuests.map(data=>data.TM_DisplayName)
+                    meeting['RemainingGuestsCount'] = remainingGuests.length;
+                  } else {
+                    meeting['RemainingGuestsCount'] = 0;
+                  }
+                });
+               
+                this.upcomingMeetings.reverse()
+                this.totalupcomingmeetings =this.upcomingMeetings.length;
+
+                console.log(this.upcomingMeetings,'upcomingMeetings') 
+              }                
+          
+        //  setTimeout(()=>{
+        //   this.toggleMtgsSection(this.mtg_section);
+        //   },500);
         }
-        else {
-          this.meetinglength = 0;
-        }
-
-        // AFTER GETTING ALL MEETINGS DETAILS
-
-        this.upcomingMeetings = this.getUpcomingMeeting();
-        this.upcomingMeetings.reverse();
-        console.log(this.upcomingMeetings,'linklkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')                                        // get upcoming meetings.
-        this.upcMtgCnt = this.upcomingMeetings.length;                           // store totalno of meetings.
-        this.upcomingMeetings = this.groupMeetingsByDate(this.upcomingMeetings);
-
-
-        this.todaymeetings = this.getMeetingsByDate(this.datepipe.transform(new Date(), 'yyyy-MM-dd'));     // get todays meetings.
-        this.tdMtgCnt = this.todaymeetings.length;                                                        // store totalno of meetings.
-        this.todaymeetings = this.groupMeetingsByDate(this.todaymeetings);                                 // format them.
-        console.log(this.todaymeetings,"this.todaymeetings")
-
-        for (let i = 1; i <= 7; i++) {
-          const date = new Date();                     // get the current date.
-          date.setDate(date.getDate() - i);
-          this.last7dmeetings = this.last7dmeetings.concat(this.getMeetingsByDate(this.datepipe.transform(date, 'yyyy-MM-dd')));
-        }                                                                                               // get last 7 days meetings.
-        this.lst7dCnt = this.last7dmeetings.length;                                                    // store totalno of meetings.
-        this.last7dmeetings = this.groupMeetingsByDate(this.last7dmeetings);
-        console.log (this.last7dmeetings,"last7dmeetings")                        // format them.
-        const date1 = new Date();                 // currentdate.
-        date1.setMonth(date1.getMonth() - 1);    // date1 is prev month.
-        this.meeting_arry.forEach(m => {
-
-          const sd = new Date(m.Schedule_date);
-          if (sd.getMonth() === date1.getMonth() && sd.getFullYear() === date1.getFullYear()) {  // when meeting held in last month
-            this.lastMonthMeetings.push(m);
-          }
-          else if (!(sd.getTime() > date1.getTime())) {   // when meeting held date is even order than last months
-            this.olderMeetings.push(m);
-          }
-        });
-
-        this.lstMthCnt = this.lastMonthMeetings.length;
-        this.oldMtgCnt = this.olderMeetings.length;
-
-        this.lastMonthMeetings = this.groupMeetingsByDate(this.lastMonthMeetings);      // format them.
-        console.log(this.lastMonthMeetings,"this.lastMonthMeetings")
-        this.olderMeetings = this.groupMeetingsByDate(this.olderMeetings);
-        console.log(this.olderMeetings,"olderrr meetings")    // format them.
-
         this.isLoadingData=false;
+        })
+  } 
 
 
 
-        if(this.upcomingMeetings.length>0 && this.todaymeetings.length>0){
-          this.mtg_section='TODAY';
-         }else if (this.upcomingMeetings.length>0){
-           this.mtg_section='UPCOMING';
-         }
-
-
-       // by default today section is opened, below line set the first meeting to open if present.
-       setTimeout(()=>{
-          this.toggleMtgsSection(this.mtg_section);
-       },1000);
-       // by default today section is opened, below line set the first meeting to open if present.
-      });
-    //
-
-  }
-
-
-
-
-  toggleMtgsSection(sec:'UPCOMING'|'TODAY'|'LAST7DAYS'|'LASTMONTH'|'OLDER'|'CUSTOM'){
+  toggleMtgsSection(sec:'Previous'|'UPCOMING'){ 
 
     this.mtg_section=sec;
-    const bx=this.mtg_section=='UPCOMING'?'#upcoming_meetings_tabpanel div#upcoming-mtg-0-btn':
-             this.mtg_section=='TODAY'?'#today_meetings_tabpanel div#today-mtg-0-btn':
-             this.mtg_section=='LAST7DAYS'?'#last_7_days_meetings_tabpanel div#last7d-mtg-0-Btn':
-             this.mtg_section=='LASTMONTH'?'#last_month_meetings_tabpanel div#lastmonth-mtg-0-Btn':
-             null;
-    if(bx){
-        const btn:any=document.querySelector(bx);
-        if(btn&&btn.getAttribute('aria-expanded')=='false'){
-          btn.click();
-        }
-    }
+    // const bx= this.mtg_section=='Previous'?'#Previous_meetings_tabpanel div#Previous-mtg-0-btn':
+    //           this.mtg_section=='UPCOMING'?'#upcoming_meetings_tabpanel div#upcoming-mtg-0-btn':
+    //         // this.mtg_section=='TODAY'?'#today_meetings_tabpanel div#today-mtg-0-btn':
+    //         //  this.mtg_section=='LAST7DAYS'?'#last_7_days_meetings_tabpanel div#last7d-mtg-0-Btn':
+    //         //  this.mtg_section=='LASTMONTH'?'#last_month_meetings_tabpanel div#lastmonth-mtg-0-Btn':
+    //          null;
+    // if(bx){
+    //     const btn:any=document.querySelector(bx);
+    //     if(btn&&btn.getAttribute('aria-expanded')=='false'){
+    //       btn.click();
+    //     }
+    // }
+    
+    // if(this.mtg_section == 'Previous' ){
+    //   this.Previousmeetings = [];
+
+    //   if (Array.isArray(this.meetingList)) {
+    //     this.Previousmeetings = this.meetingList.filter(meeting => new Date(meeting.Schedule_date) <= new Date(this.today));
+    //     console.log(this.Previousmeetings,'Previousmeetings')
+    //   }
+     
+    // }else if(this.mtg_section == 'UPCOMING' ){
+    //   this.upcomingMeetings = [];
+    //   if (Array.isArray(this.meetingList)) {
+    //   this.upcomingMeetings = this.meetingList.filter(upmeeting=> new Date(upmeeting.Schedule_date) > new Date(this.today) )
+    //   console.log(this.upcomingMeetings,'upcomingMeetings') 
+    // }}
+    // this.isLoadingData=false;
   }
 
 
@@ -2682,7 +2766,7 @@ Insert_indraft() {
     this.meetinglength = 0;
     this.allAgendas = [];
     this.upcomingMeetings = [];
-    this.todaymeetings = [];
+    this.Previousmeetings = [];
     this.last7dmeetings = [];
     this.lastMonthMeetings = [];
     this.olderMeetings = [];
@@ -4555,7 +4639,7 @@ getChangeSubtaskDetais(Project_Code) {
       this.meeting_arry = [];
       this.meetinglength = 0;
       this.upcomingMeetings = [];
-      this.todaymeetings = [];
+      this.Previousmeetings = [];
       this.last7dmeetings = [];
       this.lastMonthMeetings = [];
       this.olderMeetings = [];
@@ -7099,7 +7183,7 @@ closeReleasePrjSidebar() {
 
 
 onPrjsReleaseSubmit(){
-debugger
+
   if(this.releasePrjsRemarks&&this.releasePrjsRemarks.trim()){
   this.approvalObj.Project_Code = this.releasableHoldPrjs.map(ob=>ob.Project_Code).join(',');
   this.approvalObj.Request_type = 'Project Release';
@@ -7151,7 +7235,7 @@ _ReplyId:any
 
 shareOnWhatsApp(): void {
   // URL encode the link
-  debugger
+
   const link = 'https://cswebapps.com/creativeplanner/portfolioprojects/' +  this._Pid
   const encodedLink = encodeURIComponent(link);
 
@@ -7163,7 +7247,7 @@ shareOnWhatsApp(): void {
 }
 
 shareOnFacebook(): void {
-  debugger
+  
   // URL encode the link
   const link = 'https://cswebapps.com/creativeplanner/portfolioprojects/' +  this._Pid
   const encodedLink = encodeURIComponent(link);
@@ -7203,7 +7287,7 @@ handleButtonClick(): void {
 }
 
 copyLinkToClipboard(): void {
-  debugger
+
   navigator.clipboard.writeText(this.link).then(() => {
     // const language = localStorage.getItem('language');
     // Display message based on language preference
@@ -7229,6 +7313,13 @@ copyLinkToClipboard(): void {
 }
 
 
-
+OnCardClickUpcoming(Schedule_ID: any) {
+  // sessionStorage.setItem('portfolioId', Schedule_ID);
+  let name: string = 'Meeting-Details';
+  var url = document.baseURI + name;
+  var myurl = `${url}/${Schedule_ID}`;
+  var myWindow = window.open(myurl, Schedule_ID);
+  myWindow.focus();
+}
 
 }
