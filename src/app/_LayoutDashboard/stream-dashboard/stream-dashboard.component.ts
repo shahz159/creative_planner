@@ -343,10 +343,10 @@ export class StreamDashboardComponent implements OnInit {
             }
             
             if (!nextDay.Events.some(e => e.Schedule_ID === event.Schedule_ID)) {
-              nextDay.Events.push({ ...event, Task_Name: `${event.Task_Name} 2/2` });
+              nextDay.Events.push({ ...event, Task_Name: `${event.Task_Name} (2/2)` });
             }
       
-            event.Task_Name += " 1/2"; 
+            event.Task_Name += " (1/2)"; 
           }
         });
       });
@@ -355,12 +355,12 @@ export class StreamDashboardComponent implements OnInit {
      this.scheduleItems = this.scheduleItems.map(day => {
       let updatedEvents = day.Events.map(event => ({
           ...event,
-          Task_Name: event.Task_Name.replace("2/2 1/2", "2/2")
+          Task_Name: event.Task_Name.replace("(2/2) (1/2)", "(2/2)")
       }));
       
 
-      let specialEvents = updatedEvents.filter(event => event.Task_Name.includes("2/2"));
-      let otherEvents = updatedEvents.filter(event => !event.Task_Name.includes("2/2"));
+      let specialEvents = updatedEvents.filter(event => event.Task_Name.includes("(2/2)"));
+      let otherEvents = updatedEvents.filter(event => !event.Task_Name.includes("(2/2)"));
       
       return {
           ...day,
