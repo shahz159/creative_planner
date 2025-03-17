@@ -1479,6 +1479,7 @@ Prj_Code:any;
   contenttype: any;
   submitby:any;
   standardid:any;
+  rejectreleaseComments:any;
 
   getapprovalStats() {
     this.approvalEmpId = null;
@@ -1505,6 +1506,7 @@ Prj_Code:any;
           this.new_cost = (this.requestDetails[0]['new_cost']);
           this.new_duration = (this.requestDetails[0]['new_duration']);
           this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
+          this.rejectreleaseComments=JSON.parse(this.requestDetails[0]['rejectreleaseComments']);
           this.Submitted_By = (this.requestDetails[0]['Submitted_By']);   console.log('Submitted_By:',this.Submitted_By);
           this.AuditRequestBY=(this.requestDetails[0]['AuditRequestBY']); 
           const fullName = this.Submitted_By && this.Submitted_By.split(' ');

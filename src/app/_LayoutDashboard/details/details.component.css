@@ -1738,8 +1738,11 @@ div#DemoList-table div.demo i {
 }
 
 .kt-prg-progress ul li {
-  width: 33%;
+  /* width: 33%;
+  margin-bottom: 9px; */
   margin-bottom: 9px;
+  margin-right: 10px;
+  text-wrap-mode: nowrap;
 }
 
 li.w-50P {
@@ -10233,6 +10236,12 @@ span.time-value {
 
 
 
+.last-rejection-bx{
+  background-color: #e4e7f9; 
+  border-radius: 14px; 
+  border: 1px solid #6388e336; 
+  color: #4f4f4f;
+}
 
 
 
@@ -10549,3 +10558,7 @@ span.time-value {
 
 
 
+.last-rejection-bx .last-rej-label{
+  font-weight: 600;
+  color: #7b7b7b;
+}

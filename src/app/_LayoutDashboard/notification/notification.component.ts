@@ -97,7 +97,7 @@ export class NotificationComponent implements OnInit {
     this.Current_user_Name=localStorage.getItem('UserfullName');
     this.newNotificationLeave();     // fetch all leave responses.
     this.newNotificationLeaveRequests();  // fetch all leave requests.
-    this.setPageContent('PROJECT APPROVALS');   // show project approval by default on the page.
+    this.setPageContent('PROJECT APPROVALS');   // show projects approval by default on the page.
   }
 
 
@@ -122,13 +122,13 @@ export class NotificationComponent implements OnInit {
         // this._NotificationActivityList = data as NotificationActivityDTO[];
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
-
         this._totalProjectsCount = (data[0]['notificationcount']);
         this.WScount = (data[0]['WScount']);
         this.WRcount = (data[0]['WRcount']);
         if(this._NotificationActivity){
             this.notilength = this._NotificationActivity.length;
             this._CurrentpageRecords = this._NotificationActivity.length;
+            this._NotificationActivity.forEach((ob:any)=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
         }
         //Emp
         if (this.selectedItem_Emp.length == 0) {
@@ -201,6 +201,7 @@ export class NotificationComponent implements OnInit {
         // this._NotificationActivityList = data as NotificationActivityDTO[];
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
+
         this._totalProjectsCount = (data[0]['notificationcount']);
         this.notificationsLoading = false;
         this.WScount = (data[0]['WScount']);
@@ -702,9 +703,8 @@ export class NotificationComponent implements OnInit {
     this.service.GetViewAllDashboardnotifications(this.notificationDTO)
       .subscribe(data => {
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
-console.log( this._NotificationActivity," this._NotificationActivity")
-
-
+        console.log( this._NotificationActivity," this._NotificationActivity")
+        this._NotificationActivity.forEach((ob:any)=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
 
         //Emp
         if (this.selectedItem_Emp.length == 0) {
@@ -907,10 +907,8 @@ console.log( this._NotificationActivity," this._NotificationActivity")
   selectAllCheckbox: boolean = false;
 
   selectall(ev){
-    debugger
     if (this.selectAllCheckbox) {
       this.selectedItems = [...this._NotificationActivity];
-
     } else {
       this.selectedItems = this.selectedItems.filter(item => !this._NotificationActivity.includes(item));
     }
