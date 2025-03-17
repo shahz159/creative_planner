@@ -10236,5 +10236,15 @@ span.time-value {
 
 
 
+.last-rejection-bx{
+  background-color: #e4e7f9; 
+  border-radius: 14px; 
+  border: 1px solid #6388e336; 
+  color: #4f4f4f;
+}
 
 
+.last-rejection-bx .last-rej-label{
+  font-weight: 600;
+  color: #7b7b7b;
+}

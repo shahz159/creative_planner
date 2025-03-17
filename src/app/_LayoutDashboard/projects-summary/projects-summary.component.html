@@ -92,7 +92,7 @@
                             </ng-container>
 
                             of
-                            <span *ngIf="_totalProjectsCount>=1000"> {{_totalProjectsCount}}</span>
+                            <span *ngIf="_totalProjectsCount>=1000"> {{_totalProjectsCount.toLocaleString()}}</span>
                             <span *ngIf="_totalProjectsCount<1000"> {{_totalProjectsCount}}</span>
                         </div>
 
