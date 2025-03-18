@@ -1909,7 +1909,7 @@
                                         
                                             <!-- <div  class="PA_title"><span>Meeting</span>
                                             </div> -->
-                                            <div *ngIf="Status1=='Owner' && !meetingInProgress && Meetingstatuscom!='Completed'"  class="PA_title PA_Edit_btn curser-pointer" (click)="ReshudingTaskandEvent()">
+                                            <div *ngIf="Status1=='Owner' && Meetingstatuscom!='Completed'"  class="PA_title PA_Edit_btn curser-pointer" (click)="ReshudingTaskandEvent()">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                     viewBox="0 0 18 18" fill="none">
                                                     <path
@@ -5808,11 +5808,11 @@
                     <ul class="nav nav-tabs" id="myMeeting" role="tablist">
                         <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="previousmeeting-tab" data-toggle="tab" data-target="#previousmeeting" type="button" role="tab" 
-                        aria-controls="previousmeeting" aria-selected="true" (click)="NewGetRecurrenceMeetings(0)" >Previous meetings</button>
+                        aria-controls="previousmeeting" aria-selected="true" (click)="NewGetRecurrenceMeetings(0)" ><span class="lbl-hdn">Previous </span></button>
                         </li>
                         <li class="nav-item" role="presentation">
                         <button class="nav-link" id="upcomingmeeting-tab" data-toggle="tab" data-target="#upcomingmeeting" type="button" role="tab" 
-                        aria-controls="upcomingmeeting" aria-selected="false" (click)="NewGetRecurrenceMeetings(1)" >Upcoming meetings</button>
+                        aria-controls="upcomingmeeting" aria-selected="false" (click)="NewGetRecurrenceMeetings(1)" ><span class="lbl-hdn">upcoming </span></button>
                         </li>
                     </ul>
                     <div class="tab-content sidehf_scroll  scroll-y" id="myMeetingContent">

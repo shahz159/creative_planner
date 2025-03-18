@@ -3910,12 +3910,12 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
   this._calenderDto.Schedule_ID = arg;
   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
     ((data) => {
-     
+       
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       this.loading = false;
       var Schedule_date =this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
-      this.AdminMeeting_Status = data['AdminMeeting_Status'];
+      this.AdminMeeting_Status = data['AdminMeeting_Status']; 
       this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
       this.propose_date=Schedule_date;
       console.log(this.EventScheduledjson, "Testing12");
@@ -3923,7 +3923,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       this.Link_Detail = this.EventScheduledjson[0].Link_Details;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
       this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
-      this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
+      this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type; 
       this.Status1 = this.EventScheduledjson[0].Status.trim();
       this.Proposedate = this.EventScheduledjson[0].Schedule_date;
       this.PropStart = this.EventScheduledjson[0].St_Time;
@@ -3962,13 +3962,13 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       if (result && result[0])
         this.Link_Detail = result[0].slice(6, result[0].length - 1);
 
-    
+      debugger
       //69 document.getElementById("deleteendit").style.display = "flex";
       if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
 
        document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
-       document.getElementById("deleteendit").style.display =this.Meeting_status==true?'none':'flex';
-        document.getElementById("main-foot").style.display = "none";
+       document.getElementById("deleteendit").style.display =this.Meeting_status==true || this.AdminMeeting_Status==1 ?'none':'flex';
+       document.getElementById("main-foot").style.display = "none";
       
       }
       else if ((this.Schedule_type1 == 'Event') && (this.Meeting_status==false) && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
@@ -3981,12 +3981,12 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
         document.getElementById("hiddenedit").style.display = "flex";
         document.getElementById("deleteendit").style.display = "flex";
-       document.getElementById("main-foot").style.display = "none";
+        document.getElementById("main-foot").style.display = "none";
   
       }
       else {
         document.getElementById("hiddenedit").style.display = "none";
-        document.getElementById("deleteendit").style.display =this.Meeting_status==true?'none':'flex';
+        document.getElementById("deleteendit").style.display =this.Meeting_status==true || this.AdminMeeting_Status==1?'none':'flex';
         document.getElementById("main-foot").style.display = "none";
      
       }

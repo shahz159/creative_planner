@@ -1088,7 +1088,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   startMeetingOfAttendees() {   
-    if(this.Isadmin==false){
+    if(this.Status1!='Owner'){
       this.Event_acceptandReject(1);
     }
    
@@ -1143,7 +1143,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-  Event_acceptandReject(val) {
+  Event_acceptandReject(val) { debugger
     this.EventAction_type=val
     if (this.EventAction_type == 1) {
      
@@ -3280,7 +3280,7 @@ onFileChange(event) {
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
-      finalarray.forEach(element => { debugger
+      finalarray.forEach(element => {
         this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
        
         const date1: Date = new Date(this._StartDate);
@@ -3446,7 +3446,7 @@ onFileChange(event) {
 
 
 
-      debugger
+   
       if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
         frmData.append("Attachment", "true");
         _attachmentValue = 1;
@@ -3562,7 +3562,7 @@ onFileChange(event) {
                     var myJSON = JSON.stringify(event);
                     this._azureMessage = (JSON.parse(myJSON).body).message;
 
-                    if(this._azureMessage=="1"){  debugger
+                    if(this._azureMessage=="1"){ 
                       this.filesUploadingCount = 0;
                       this.processingFile = true;
                       this.CalenderService._AzureUploadCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
