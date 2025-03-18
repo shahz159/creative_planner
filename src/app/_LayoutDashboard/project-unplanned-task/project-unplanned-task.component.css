@@ -3129,6 +3129,10 @@ li.kt-category-list:hover .kt-cat-action {
   cursor: pointer;
 }
 
+.kt-main-list-item.active {
+  background-color: #f6f5f5;
+}
+
 .kt-main-list-item:hover {
   background-color: #f6f5f5;
 }
@@ -5846,4 +5850,17 @@ span.run-icon-group-icon svg {
   align-items: center;
   justify-content: center;
   height: calc(100vh - 400px);
+}
+
+
+.accordion-loader-spinner{
+  height: 250px;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.accordion-loader-spinner .spinner-border{
+  width: 30px; 
+  height: 30px;
 }

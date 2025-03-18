@@ -575,90 +575,85 @@ dayArr: any = [
   }
 
   ngOnInit(): void {
-    this.getRACISandNonRACIS();
-    this.GetProjectsByUserName();
-    // this.totalproject()
-    this.getProjectTypeList();
-    this.CurrentUser_ID = localStorage.getItem('EmpNo');
-    this.getCatid();
-    this.GetAssignFormEmployeeDropdownList();
-    this.getrunwayCount();
     this.Current_user_ID = localStorage.getItem('EmpNo');
+    this.CurrentUser_ID = localStorage.getItem('EmpNo');
     this.MinLastNameLength = true;
 
-    this.ProjectTypeService.GetPortfoliosForAssignTask().subscribe(
-      (data) => {  console.log("asdf::::::",data)
-        this.PortfolioList = data as PortfolioDTO;
-        console.log(this.PortfolioList,"portfoliosubn;");
-      });
-
-      tippy('#tippy1', {
-        content: "Runway tasks",
-        arrow: true,
-        animation: 'scale-extreme',
-        //animation: 'tada',
-        theme: 'gradient',
-        animateFill: true,
-        inertia: true,
-        // trigger: 'click',
-        // delay: [1000, 200]
-      });
-
-      tippy('#tippy2', {
-        content: "Add category",
-        arrow: true,
-        animation: 'scale-extreme',
-        //animation: 'tada',
-        theme: 'gradient',
-        animateFill: true,
-        inertia: true,
-        // trigger: 'click',
-        // delay: [1000, 200]
-      });
-
-      tippy('#tippy3', {
-        content: "Add task",
-        arrow: true,
-        animation: 'scale-extreme',
-        //animation: 'tada',
-        theme: 'gradient',
-        animateFill: true,
-        inertia: true,
-        // trigger: 'click',
-        // delay: [1000, 200]
-      });
-
-      tippy('.mybutton', {
-        content: "Enter rack name",
-        arrow: true,
-        animation: 'scale-extreme',
-        //animation: 'tada',
-        theme: 'gradient',
-        animateFill: true,
-        inertia: true,
-        // trigger: 'click',
-        // delay: [1000, 200]
-      });
-
-
-    //   window.onload = () => {
-    //   tippy('#tippy1', {
-    //     arrow: true,
-    //     animation: 'scale-extreme',
-    //     //animation: 'tada',
-    //     theme: 'gradient',
-    //     animateFill: true,
-    //     inertia: true,
-    //     // trigger: 'click',
-    //     // delay: [1000, 200]
-    //   });
-    // }
+    this.getRACISandNonRACIS();
+    this.GetProjectsByUserName();  // Fetch projects list. used in sidebars.
+    // this.totalproject()
+    this.getProjectTypeList();   // Fetch possible project types array. used in sidebars.
+    this.getCatid();
+    this.GetAssignFormEmployeeDropdownList();  // Fetch employees list. used in sidebars.
+    this.getrunwayCount();   // Fetch all categories count values eg: accepted count, pending count, rejected count and others .
+    this.fetchPortfolios();  // Fetch portfolios list. used in sidebars.
+    this.setTippys(); // Setting tippys. 
 
     this.totalproject();
     this.openTab()
-    // this.initAutosize();
-
   }
+
+
+setTippys(){
+
+   tippy('#tippy1', {
+    content: "Runway tasks",
+    arrow: true,
+    animation: 'scale-extreme',
+    //animation: 'tada',
+    theme: 'gradient',
+    animateFill: true,
+    inertia: true,
+    // trigger: 'click',
+    // delay: [1000, 200]
+   });
+
+   tippy('#tippy2', {
+    content: "Add category",
+    arrow: true,
+    animation: 'scale-extreme',
+    //animation: 'tada',
+    theme: 'gradient',
+    animateFill: true,
+    inertia: true,
+    // trigger: 'click',
+    // delay: [1000, 200]
+  });
+
+  tippy('#tippy3', {
+    content: "Add task",
+    arrow: true,
+    animation: 'scale-extreme',
+    //animation: 'tada',
+    theme: 'gradient',
+    animateFill: true,
+    inertia: true,
+    // trigger: 'click',
+    // delay: [1000, 200]
+  });
+
+  tippy('.mybutton', {
+    content: "Enter rack name",
+    arrow: true,
+    animation: 'scale-extreme',
+    //animation: 'tada',
+    theme: 'gradient',
+    animateFill: true,
+    inertia: true,
+    // trigger: 'click',
+    // delay: [1000, 200]
+  });
+
+}
+
+fetchPortfolios(){
+  this.ProjectTypeService.GetPortfoliosForAssignTask().subscribe(
+    (data) => {  console.log("asdf::::::",data)
+      this.PortfolioList = data as PortfolioDTO;
+      console.log(this.PortfolioList,"portfoliosubn;");
+    });
+}
+
 
 
 
@@ -1213,6 +1208,7 @@ date_menuclo(dialogId:string){
 
   ActionedSubtask_Json = [];
   ActionedAssigned_Josn = [];
+  ActualActionedAssigned_Josn=[];
   CountsJson: any;
   Clientjson:any;
   EmployeeLists:any;
@@ -1312,6 +1308,95 @@ date_menuclo(dialogId:string){
   userCategory:any[] = []
   SystemCategory:any[] = []
 
+
+  refetchPageContent(){
+    this._ObjCompletedProj.PageNumber = 1;
+    this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
+    this._ObjCompletedProj.CategoryId = this.newCatid;
+    this._ObjCompletedProj.Mode = 'Todo';
+    this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe((data) => {
+         this.CategoryList = JSON.parse(data[0]['CategoryList']);
+
+         // Prepare SystemCategory using CategoryList
+         this.SystemCategory = [];
+         this.CategoryList.forEach((item)=>{
+           if(  item.Category_ID == 2411 || item.Category_ID == 3595){
+             this.SystemCategory.push(item)
+           }
+         });
+
+        // Prepare userCategory using CategoryList
+        this.userCategory = [];
+        this.CategoryList.forEach((item)=>{
+        if(item.Category_ID !== 2411 && item.Category_ID !== 3595){
+          this.userCategory.push(item)
+        }
+        });
+
+        //Prepare accordian runways
+        this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+        this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+        this.openTab();
+
+        if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
+
+
+          //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
+          this._CategoryActive = true;
+
+          this.IfNoTaskFound = "";
+          this._Categoryid = data[0]["CategoryId"];
+          this._CategoryName = data[0]["CategoryName"];
+          this.ShowTaskList_Div = false;
+          this.Label_TaskName = false;
+          this.Textbox_EditTaskName = true;
+          this._taskName = "";
+
+          /// Get Tasks On Category Click  /////
+          this._ObjCompletedProj.PageNumber = 1;
+          this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
+          this._ObjCompletedProj.CategoryId = this._Categoryid;
+          this._ObjCompletedProj.Mode = 'Todo';
+          // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
+        }
+        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        let _Accepted =0;
+        let _Pending =0;
+        let _Rejected=0;
+        this.ActionedAssigned_Josn.forEach(element => {
+          if(element.Status=="Accepted"){
+            _Accepted=_Accepted+1;
+          }
+          else if(element.Status == "Pending"){
+            _Pending=_Pending+1;
+          }
+          else if(element.Status == "Rejected"){
+            _Rejected=_Rejected+1;
+          }
+        });
+        this.CountsAccepted= _Accepted;
+        this.CountsPending= _Pending;
+        this.CountsRejected= _Rejected;
+
+    })
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   GetTodoProjects() {
 
     this.isTodoProjectsLoaded=false;
@@ -1320,32 +1405,69 @@ date_menuclo(dialogId:string){
     this._ObjCompletedProj.CategoryId = this.newCatid;
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
-      (data) => {
+      (data) => {     debugger
         this.isTodoProjectsLoaded=true;
         // console.log("Data---->", data);
-        this.CategoryList = JSON.parse(data[0]['CategoryList']);
-        console.log(this.CategoryList,"this.CategoryListthis.CategoryListthis.CategoryListthis.CategoryList")
+        this.CategoryList = JSON.parse(data[0]['CategoryList']);   console.log(this.CategoryList,"this.CategoryList");
 
-
+        // Prepare SystemCategory using CategoryList
         this.SystemCategory = [];
         this.CategoryList.forEach((item)=>{
           if(  item.Category_ID == 2411 || item.Category_ID == 3595){
             this.SystemCategory.push(item)
           }
-        })
+        });
 
+        // Prepare userCategory using CategoryList
         this.userCategory = [];
         this.CategoryList.forEach((item)=>{
         if(item.Category_ID !== 2411 && item.Category_ID !== 3595){
           this.userCategory.push(item)
         }
-        })
+        });
+ 
+        //Prepare accordian runways
 
-        this._TodoList = JSON.parse(data[0]['JsonData_Json']);
-        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-        this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
-        this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-this.openTab()
+        if (this.newCatid == '-1'||this.newCatid == '-2'||this.newCatid == '-3'){  //Accepted, Pending, Rejected
+          this.ActualActionedAssigned_Josn=JSON.parse(data[0]['ActionedAssigned_Josn']);
+          this.ActionedAssigned_Josn=[...this.ActualActionedAssigned_Josn];
+          // prepare filter box sort by emps dropdown. 
+          const allemps:any=[];
+          this.ActionedAssigned_Josn.forEach((ob:any)=>{
+              const k=allemps.findIndex(_e=>_e.empNo==ob.Emp_No);
+              if(k==-1){
+                allemps.push({ empNo:ob.Emp_No, empName:ob.AssignedTo, total:1});
+              }
+              else{
+                allemps[k].total+=1;
+              }
+          });
+          this.employeeOptions=allemps;
+          console.log('allemps:',allemps);
+          // prepare filter box sort by emps dropdown. 
+        
+        }
+        else if(this._selectedcatid == '-4'){      // UnAssign
+          this._TodoList = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        }
+        else if(this._selectedcatid == '-5'){     // Completed
+          this._CompletedList = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        }
+        else{    // All, System category, user category
+                this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+                this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+                this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+                this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        }
+
+
+
+        // this._TodoList = JSON.parse(data[0]['JsonData_Json']);
+        // this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
+        // this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
+        this.openTab();
+
         console.log(this._TodoList,"this._TodoList");
         console.log(this.ActionedAssigned_Josn,"this.ActionedAssigned_Josn");
         console.log(this._CompletedList,"this._CompletedList");
@@ -1353,7 +1475,7 @@ this.openTab()
 
         if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
 
-
+debugger
           //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
           this._CategoryActive = true;
 
@@ -1499,24 +1621,7 @@ this.openTab()
 
   public EmployeeList: any;
   public filterText: any;
-  // GetActionToProjectEmployeeDropdownList() {
-
-  //   this.ProjectTypeService.SubTaskDetailsService_ToDo_Page(this.selectedProjectCode, this.Comp_No).subscribe(
-  //     (data) => {
-  //       this.EmployeeList = JSON.parse(data[0]['RacisEmployee_Json']);
-
-  //       this.dropdownSettings_Employee = {
-  //         singleSelection: true,
-  //         idField: 'Emp_No',
-  //         textField: 'Name',
-  //         itemsShowLimit: 1,
-  //         allowSearchFilter: true,
-  //         closeDropDownOnSelection: true,
-  //         searchAutofocus:true
-  //       };
-
-  //     })
-  // }
+  
 
   onFilterChange(event) {
     this.filterText = event
@@ -1530,7 +1635,6 @@ this.openTab()
 
   //Fetching Employee For Assigning Projects
   GetAssignFormEmployeeDropdownList() {
-
     this.isDropdownDataLoaded=false;
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
@@ -1540,17 +1644,7 @@ this.openTab()
       (data) => {
         this.isDropdownDataLoaded=true;
         this.EmployeeList = JSON.parse(data[0]&&data[0]['EmployeeList']);
-
-console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeList')
-
-        this.dropdownSettings_Employee = {
-          singleSelection: true,
-          idField: 'Emp_No',
-          textField: 'DisplayName',
-          itemsShowLimit: 3,
-          allowSearchFilter: true,
-          closeDropDownOnSelection: true
-        };
+        console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeList')
       });
   }
 
@@ -1611,17 +1705,17 @@ console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeLi
     this.Mdl_CategoryName= "";
   }
 
-  CallOnSubmitCategory() {
-    // console.log('A');
-    this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
-    // this.GetTodoProjects();
+  // CallOnSubmitCategory() {
+  //   // console.log('A');
+  //   this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
+  //   // this.GetTodoProjects();
 
-    // setTimeout(function(){
-    //   alert(this._selectedcatid);
-    //   this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
-    // },3000);
+  //   // setTimeout(function(){
+  //   //   alert(this._selectedcatid);
+  //   //   this.OnCategoryClick(this._selectedcatid, this._selectedcatname);
+  //   // },3000);
 
-  }
+  // }
 
   Mdl_CategoryName: string = "";
   CategoryList: any;
@@ -1635,10 +1729,11 @@ console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeLi
         (data) => {
           //console.log(data);
           //this._TodoList = JSON.parse(data['TodoList']);
-          this.GetTodoProjects();
+          // this.GetTodoProjects();
           // this.CategoryList = JSON.parse(data['CategoryList']);
           let message: string = data['Message'];
           this.notifyService.showSuccess("Successfully", message);
+          this.refetchPageContent();  // rebind
 
           // this.Mdl_CategoryName = "";
         });
@@ -1649,7 +1744,23 @@ console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeLi
     this.clearFeilds()
   }
 
-  _Categoryid: number;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  _Categoryid: any;
   _CategoryName: string;
   ShowTaskList_Div: boolean = true;
   _CategoryActive: boolean;
@@ -1657,6 +1768,19 @@ console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeLi
   CountsPending: any;
   CountsRejected: any;
   Countunassign:any;
+  employeeOptions:{empNo:string, empName:string}[]=[];   // list of all employees info for dropdown used in filter dropdown.
+
+
+  sortListByEmployee(_option:string){
+    
+    this.ActionedAssigned_Josn=this.ActualActionedAssigned_Josn.filter((ob:any)=>{
+          return _option=='totalProjects'||ob.Emp_No==_option;
+    });   
+  }
+
+
+
+  isCategoryContentLoading:boolean=false;
 
   OnCategoryClick(C_id, C_Name) {
     // _Id = C_id;
@@ -1682,32 +1806,53 @@ debugger
     this._ObjCompletedProj.CategoryId = this._Categoryid;
     this._ObjCompletedProj.Mode = 'Todo';
     // alert(this._Categoryid);
+    this.isCategoryContentLoading=true;
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
       (data) => {   debugger
+        this.isCategoryContentLoading=false;
 console.log(data,"Checking data of tasks")
 
 this._TodoList = [];
 this._CompletedList = [];
 this.ActionedSubtask_Json = [];
 this.ActionedAssigned_Josn = [];
+this.ActualActionedAssigned_Josn=[];
+this.employeeOptions=[];  
+this.setActiveButton('totalProjects');  // set to default
+ // clear prev data.
 
+if (this._selectedcatid == '-1'||this._selectedcatid == '-2'||this._selectedcatid == '-3'){  //Accepted, Pending, Rejected
+  this.ActualActionedAssigned_Josn=JSON.parse(data[0]['ActionedAssigned_Josn']);
+  this.ActionedAssigned_Josn=[...this.ActualActionedAssigned_Josn];
+  // prepare filter box sort by emps dropdown. 
+  const allemps:any=[];
+  this.ActionedAssigned_Josn.forEach((ob:any)=>{
+      const k=allemps.findIndex(_e=>_e.empNo==ob.Emp_No);
+      if(k==-1){
+        allemps.push({ empNo:ob.Emp_No, empName:ob.AssignedTo, total:1});
+      }
+      else{
+        allemps[k].total+=1;
+      }
+  });
+  this.employeeOptions=allemps;
+  console.log('allemps:',allemps);
+  // prepare filter box sort by emps dropdown. 
 
-if (this._selectedcatid == '-1'||this._selectedcatid == '-2'||this._selectedcatid == '-3'){
-  this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
 }
-else if(this._selectedcatid == '-4'){
+else if(this._selectedcatid == '-4'){      // UnAssign
   this._TodoList = JSON.parse(data[0]['ActionedAssigned_Josn']);
 }
-else if(this._selectedcatid == '-5'){
+else if(this._selectedcatid == '-5'){     // Completed
   this._CompletedList = JSON.parse(data[0]['ActionedAssigned_Josn']);
 }
-else{
+else{    // All, System category, user category
         this._TodoList = JSON.parse(data[0]['JsonData_Json']);
         this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
 }
-        this.openTab()
+        this.openTab();
         console.log(this.ActionedAssigned_Josn,"accept,pend")
 
         let _Accepted =0;
@@ -1736,11 +1881,24 @@ else{
         // console.log(this.CountsAccepted);
       });
       // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
-      this.totalproject()
+      this.totalproject();
+      
       document.getElementById('addtsk').classList.remove('d-none');
       document.getElementById("accordionRunway").classList.remove("acc-runway-no-button");
   }
 
+
+
+
+
+
+
+
+
+
+
+
+  
 
   assignvalue:any
   ProjectTypelist: any;
@@ -1930,8 +2088,8 @@ selectedAttendeesList = new Set<any>();
 
   ObjUserDetails: UserDetailsDTO;
   _ProjectDataList: any;
-  dropdownSettings_Projects = {};
-  dropdownSettings_Employee = {};
+
+
 
   GetProjectsByUserName() {
     // this.LoadingBar.start();
@@ -1942,19 +2100,6 @@ selectedAttendeesList = new Set<any>();
       const all_projects_ofuser = JSON.parse(data[0]['DropdownProjects_Json']);
       //for listdown only valid projects.
       this._ProjectDataList=all_projects_ofuser.filter(p=>['Cancelled','Project Hold'].includes(p.Status)==false);
-      this.dropdownSettings_Projects = {
-        singleSelection: true,
-        idField: 'Project_Code',
-        textField: 'Project_Name',
-        itemsShowLimit: 1,
-        allowSearchFilter: true,
-        closeDropDownOnSelection: true,
-        clearSearchFilter: true,
-        searchPlaceholderText: "Search by project name",
-        maxHeight: "500px",
-        allowRemoteDataSearch: true,
-        noDataAvailablePlaceholderText: 'Please wait..'
-      };
       console.log("Project List for Dropdown...",this._ProjectDataList);
     });
   }
@@ -2101,7 +2246,7 @@ renameTask(task_id:any,new_name:any){
       this._ObjAssigntaskDTO.CreatedBy = this.CurrentUser_ID;
       this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
         (data) => {
-          this.OnCategoryClick(this._Categoryid, this._CategoryName)
+          this.OnCategoryClick(this._Categoryid, this._CategoryName); // rebinding
           let message: string = data['Message'];
           this.notifyService.showInfo("Rename successfully", message);
           (<HTMLInputElement>document.getElementById("spanTextbox_" + this._AssignId)).style.display = "none";
@@ -2202,7 +2347,8 @@ renameTask(task_id:any,new_name:any){
           // console.log(data);
           let message = data['Message'];
           this.notifyService.showSuccess("", message);
-          this.GetTodoProjects();
+          // this.GetTodoProjects(); 
+          this.refetchPageContent();
           this.OnCategoryClick(Cid, this.Cat_Name);
           this.OnCat_Cancel(Cid);
         });
@@ -2230,7 +2376,8 @@ renameTask(task_id:any,new_name:any){
           (data) => {
             let message = data['Message'];
             this.notifyService.showInfo("", message);
-            this.GetTodoProjects();
+            // this.GetTodoProjects();
+            this.refetchPageContent();
 
             this.IfNoTaskFound;
             this.ShowTaskList_Div = true;
@@ -2387,15 +2534,16 @@ formattedTaskNames :any;
 copyofItem: { Task_Name: string, Assign_Id: any }[] = [];
 Creation_Date:any
 
-unassign_edit1(id, task, date){
+unassign_edit1(id, task, date){  debugger
 
 this.copyofItem.push({
   Task_Name: task,
   Assign_Id: id
 });
 this.selectedtaskNames=JSON.parse(JSON.stringify(this.copyofItem));   // copy of selected items.
-this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ')
-this.Creation_Date = date
+this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ');
+this.selected_taskId =  this.selectedtaskNames.map(task=>task.Assign_Id).join(', ');
+this.Creation_Date = date;
 
 
   document.getElementById('unassign-editsidebar').classList.add('kt-action-panel--on');
@@ -2536,7 +2684,6 @@ toggleProjectoptions(option: string) {
 activeButton: string = 'totalProjects';
 
 setActiveButton(buttonName: string) {
-
   this.activeButton = buttonName;
 }
 
@@ -2803,7 +2950,8 @@ assignTasksub1(){   debugger
       console.log(data,'atattachmeatattachmeatattachmeatattachme')
         let message: string = data['message'];
         this.notifyService.showSuccess("Task sent to assign projects.", message);
-        this.GetTodoProjects();
+        // this.GetTodoProjects();
+        this.refetchPageContent();  // rebind
 
       });
  this.checkedTaskNames = []
@@ -2856,7 +3004,8 @@ selectedEmpNo: string = null;
 completionattachment:boolean=true;
 actionCost:any;
 
-actionSubmit=async()=>{
+actionSubmit=async()=>{  debugger
+ 
 
 // Action cost calculate.
 this.actionCost=null;  // must be empty before calculating.
@@ -2866,15 +3015,20 @@ if(res&&res.Status){
       console.log("action cost:",this.actionCost);
 }
 else{
-  this.notifyService.showError('','Internal server error');
-  console.error('Unable to get action cost value.')
-  return;
+
+  // test for new users (Temporary)
+  const cost=this._allocated*10;
+  this.actionCost=cost;
+  // test for new users (Temporary)
+
+  // this.notifyService.showError('','Internal server error');
+  // console.error('Unable to get action cost value.')
+  // return;
 }
 // Action cost calculate.
 
-
   this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
-  this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
+  this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {  
 
     this.Sub_ProjectCode = data['SubTask_ProjectCode'];
     this.EmpNo_Autho = data['Team_Autho'];
@@ -2888,7 +3042,7 @@ else{
     }
 
 
-    this.ObjSubTaskDTO.SubProject_Name = this.selected_taskName
+    this.ObjSubTaskDTO.SubProject_Name = this.selected_taskName;
     this.ObjSubTaskDTO.SubtaskDescription = "";
     this.ObjSubTaskDTO.ProjectBlock = this.ProjectBlock;
     this.ObjSubTaskDTO.StartDate = this._StartDate;
@@ -2933,7 +3087,7 @@ else{
     fd.append("AssignTo", this.selectedEmpNo);
     fd.append("Remarks", this._remarks);
     fd.append("EmployeeName", localStorage.getItem('UserfullName'));
-    fd.append("AssignIds", this.selected_taskId.toString());
+    fd.append("AssignIds", this.selected_taskId.toString());     
     fd.append("Owner", this.owner);
     fd.append("proState",this.completionattachment.toString());
     fd.append("actionCost",this.actionCost);
@@ -2987,7 +3141,8 @@ else{
           this.notifyService.showError("Something went wrong", "Action not created");
         }
       }
-      this.GetTodoProjects();
+      // this.GetTodoProjects();  // rebinding.
+      this.refetchPageContent(); // rebinding.
       this.resetAssign()
       this.unassign_closeInfo()
     });
@@ -3246,13 +3401,13 @@ this.vart = d
 isReadOnly: boolean = true;
 pendingUpdatesection(){
 
-  if(this.employeSelect ===null || this.employeSelect === undefined &&this.task__name==null|| this.task__name == undefined || this.task__name.trim() ==""){
-    this.formFieldsRequired = true
-return
-  }
-else{
-  this.formFieldsRequired = false
-}
+      if(this.employeSelect ===null || this.employeSelect === undefined &&this.task__name==null|| this.task__name == undefined || this.task__name.trim() ==""){
+        this.formFieldsRequired = true
+        return
+      }
+      else{
+      this.formFieldsRequired = false
+      }
 
       var datestrStart;
       var datestrEnd;
@@ -3344,7 +3499,8 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
         }
           let message: string = data['Message'];
           this.notifyService.showSuccess("Task sent to assign projects.",message);
-          this.GetTodoProjects();
+          // this.GetTodoProjects();
+          this.refetchPageContent();  //rebind
     });
 
         this.closeditassignPending()
