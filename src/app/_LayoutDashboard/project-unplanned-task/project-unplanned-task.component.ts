@@ -711,7 +711,7 @@ fetchPortfolios(){
   expandTask(taskId:number){
 
     this.categoryTasksLoaded=new EventEmitter<any>();
-    this.categoryTasksLoaded.subscribe(()=>{ debugger
+    this.categoryTasksLoaded.subscribe(()=>{ 
       // when all tasks of the category loaded.
       const listindex=[this._TodoList,this.ActionedAssigned_Josn,this._CompletedList,this.ActionedSubtask_Json].findIndex((list)=>{
         return list&&list.find((item)=>item.Assign_Id==taskId);
@@ -1405,7 +1405,7 @@ date_menuclo(dialogId:string){
     this._ObjCompletedProj.CategoryId = this.newCatid;
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
-      (data) => {     debugger
+      (data) => {     
         this.isTodoProjectsLoaded=true;
         // console.log("Data---->", data);
         this.CategoryList = JSON.parse(data[0]['CategoryList']);   console.log(this.CategoryList,"this.CategoryList");
@@ -1475,13 +1475,16 @@ date_menuclo(dialogId:string){
 
         if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
 
-debugger
+
           //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
           this._CategoryActive = true;
 
           this.IfNoTaskFound = "";
-          this._Categoryid = data[0]["CategoryId"];
-          this._CategoryName = data[0]["CategoryName"];
+          this._Categoryid = data[0]["CategoryId"];   
+          const category_name=data[0]["CategoryName"];
+          this._CategoryName=category_name?category_name:this._Categoryid=='-1'?'Accepted':this._Categoryid=='-2'?'Pending':this._Categoryid=='-3'?'Rejected':
+          this._Categoryid=='-4'?'Unassign':this._Categoryid=='-5'?'Completed':this._Categoryid=='-6'?'All':'';
+
           this.ShowTaskList_Div = false;
           this.Label_TaskName = false;
           this.Textbox_EditTaskName = true;
@@ -1785,7 +1788,7 @@ debugger
   OnCategoryClick(C_id, C_Name) {
     // _Id = C_id;
     // _Name = C_Name;
-debugger
+
     this._selectedcatname = C_Name;
     this._selectedcatid = C_id;
     this.BsService.setNewCategoryID(this._selectedcatid);
@@ -1807,8 +1810,10 @@ debugger
     this._ObjCompletedProj.Mode = 'Todo';
     // alert(this._Categoryid);
     this.isCategoryContentLoading=true;
+
+    
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
-      (data) => {   debugger
+      (data) => {   
         this.isCategoryContentLoading=false;
 console.log(data,"Checking data of tasks")
 
@@ -2534,7 +2539,7 @@ formattedTaskNames :any;
 copyofItem: { Task_Name: string, Assign_Id: any }[] = [];
 Creation_Date:any
 
-unassign_edit1(id, task, date){  debugger
+unassign_edit1(id, task, date){  
 
 this.copyofItem.push({
   Task_Name: task,
@@ -2860,7 +2865,7 @@ setMaxDate(dateField){
 
 
 
-assignTasksub1(){   debugger
+assignTasksub1(){   
     this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ');
     this.selected_taskId =  this.selectedtaskNames.map(task=>task.Assign_Id).join(', ');
     console.log( this.selected_taskName,"pending")
@@ -3004,7 +3009,7 @@ selectedEmpNo: string = null;
 completionattachment:boolean=true;
 actionCost:any;
 
-actionSubmit=async()=>{  debugger
+actionSubmit=async()=>{ 
  
 
 // Action cost calculate.

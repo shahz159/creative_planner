@@ -4067,6 +4067,7 @@ input:checked + .slider:before {
   min-width: 370px;
   max-height: 340px;
   overflow-y: auto;
+  box-shadow:0 0 20px 6px #8a878775;
 }
 
 .new-p-rejects-drpdwn::-webkit-scrollbar{
