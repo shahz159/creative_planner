@@ -1800,7 +1800,7 @@ a.text-hover-primary:hover i {
 }
 
 input.form-control.add_assign_task_input::-webkit-input-placeholder {
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .b-r-20 {
@@ -5854,10 +5854,11 @@ span.run-icon-group-icon svg {
 
 
 .accordion-loader-spinner{
-  height: 250px;
   display:flex;
   align-items: center;
   justify-content: center;
+  margin-top: 1rem;
+  height: calc(100vh - 185px);
 }
 
 .accordion-loader-spinner .spinner-border{

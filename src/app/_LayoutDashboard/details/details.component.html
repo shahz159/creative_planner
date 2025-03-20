@@ -1305,10 +1305,10 @@
                                                                         <div class="kt-p-box border-r-0">
                                                                             <div class="kt-p-action-No fs-8 mb-0 d-flex justify-content-between">
                                                                                
-                                                                                <span  matTooltip="action responsible" *ngIf="action&&action.Responsible" class="kt-info-lable-v resp-name">
+                                                                                <span matTooltip="action responsible" *ngIf="action&&action.Responsible" class="kt-info-lable-v resp-name">
                                                                                     by {{action.Responsible}}
                                                                                 </span>
-                                                                                <div class="kt-info-lable-v text-end">
+                                                                                <div  matTooltip="action deadline" class="kt-info-lable-v text-end">
                                                                                     {{action&&action.EndDate| date : 'dd-MM-yyyy'}}
                                                                                 </div>
 

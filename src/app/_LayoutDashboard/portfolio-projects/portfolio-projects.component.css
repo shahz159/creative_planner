@@ -6488,6 +6488,7 @@ a.btn-v-icons {
   min-width: 370px;
   max-height: 340px;
   overflow-y: auto;
+  box-shadow:0 0 20px 6px #8a878775;
 }
 
 .new-p-rejects-drpdwn::-webkit-scrollbar{
@@ -6601,6 +6602,9 @@ a.btn-v-icons {
   border: 1px dashed #ccc;
   padding: 0.35em;
   border-radius: 8px 8px 8px 8px;
+  text-transform: none;
+  color: #8b8b8b;
+  font-weight: 400;
 }
 
 

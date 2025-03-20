@@ -2228,13 +2228,16 @@ this.closeAutocompleteDrpDwn('proDDwn')
  islastupdate = true;
  isdeadline = true;
  isrespon = true;
- isprojtype = true
- isdeleted = true
- isrefer = true
- iscost = true
- isowner = false
- isclient = false
- isDepartment = false
+ isprojtype = true;
+ isdeleted = true;
+ isrefer = true;
+ iscost = true;
+ isowner = false;
+ isclient = false;
+ isDepartment = false;
+ isstartdate=false;
+ iscreateddate=false;
+ iscompletiondate=false;
 
    togglevisibilityforClass(className: string, event: any): void {
 
@@ -2252,7 +2255,10 @@ this.closeAutocompleteDrpDwn('proDDwn')
        'classCost' :'iscost',
        'owner_class' :'isowner',
        'client_class': 'isclient',
-       'class_depart'  : 'isDepartment'
+       'class_depart'  : 'isDepartment',
+       'class_startdate':'isstartdate',
+       'class_completiondate':'iscompletiondate',
+       'class_creationdate':'iscreateddate'
      };
 
      // Check if the className exists in the map and update the corresponding state variable
@@ -2783,7 +2789,7 @@ prj_statuses:any=[];
 isGanttchartVisible:boolean=false;
 PrjsGanttChart:any;
 
-loadGanttChart(){
+loadGanttChart(){ debugger
   console.log("current projects on the page:",this._ProjectDataList);
   let _ProjectsListBy_Pid1=this._ProjectDataList.filter(prj=>['001','002','011'].includes(prj.Project_Block));  // showing only core,secondary and todo type projects.
   this.isGanttchartVisible=_ProjectsListBy_Pid1.length>0;
@@ -2794,12 +2800,12 @@ loadGanttChart(){
   this.prj_statuses=Array.from(new Set(this.prj_statuses));
   const todays_date=new Date().getTime();
 
-  const _series=_ProjectsListBy_Pid1.map((prj,_index)=>{
+  const _series=_ProjectsListBy_Pid1.map((prj,_index)=>{   
       let p_status=prj.Status=='Completion Under Approval'?(prj.AuditStatus=='Audit Pending'?'Audit Approval':'Completion Under Approval'):prj.Status;
       const color=this.all_status[p_status]||this.all_status['other'];
       let data_ar=[];
       const prj_startd=new Date(prj.DPG);
-      const prj_endd=new Date(prj.DeadLine);
+      const prj_endd=new Date(prj.DeadLine); 
       const curdate=new Date();
 
     if(prj_startd<curdate&&prj_endd>curdate){

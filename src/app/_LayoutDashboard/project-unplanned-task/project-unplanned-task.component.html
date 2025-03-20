@@ -745,7 +745,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter" id="dropd">
 
-                                <ul *ngIf="['-1','-2','-3'].includes(_Categoryid.toString())==false" class="drop-ul">
+                                <ul *ngIf="_Categoryid&&['-1','-2','-3'].includes(_Categoryid.toString())==false" class="drop-ul">
                                     <li class="dropdown-header">Filter by</li>
                                     <li>
                                         <button class="btn btn-filtr "[class.active]="activeButton === 'totalProjects'" (click)="setActiveButton('totalProjects');totalproject()">
@@ -841,7 +841,7 @@
 
 
 
-                              <ul *ngIf="['-1','-2','-3'].includes(_Categoryid.toString())==true" class="drop-ul">
+                              <ul *ngIf="_Categoryid&&['-1','-2','-3'].includes(_Categoryid.toString())==true" class="drop-ul">
                                 <li class="dropdown-header">Sort by</li>
                                 <li>
                                     <button class="btn btn-filtr" [class.active]="activeButton === 'totalProjects'" (click)="setActiveButton('totalProjects'); sortListByEmployee('totalProjects');">

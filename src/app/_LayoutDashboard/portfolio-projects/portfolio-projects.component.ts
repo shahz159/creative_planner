@@ -769,6 +769,13 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
 
   }
 
+  isProjectRestorable(dp_code:string):boolean{
+      const _at=this._ProjectsListBy_Pid.findIndex((prj)=>{
+          return prj.Project_Code==dp_code
+      });
+      return _at==-1;
+  }
+
   btnEdit() {
     this.Max50Char = true;
   }
@@ -5555,7 +5562,7 @@ var options = {
  const delaydays_=Math.abs(_ProjectsListBy_Pid1[index].Delaydays);
  const prj_res=_ProjectsListBy_Pid1[index].Team_Res;
  const prj_alhrs=_ProjectsListBy_Pid1[index].AllocatedHours;
- const used_hrs=_ProjectsListBy_Pid1[index].UsedHours;
+ const used_hrs=_ProjectsListBy_Pid1[index].UsedHours.toFixed(2);
 
 const _cd=new Date();
 const d1=new Date(_ProjectsListBy_Pid1[index].DPG);
@@ -6645,13 +6652,16 @@ isstatus = true;
 islastupdate = true;
 isdeadline = true;
 isrespon = true;
-isprojtype = true
-isdeleted = true
-isrefer = true
-iscost = true
-isowner = false
-isclient = false
-isDepartment = false
+isprojtype = true;
+isdeleted = true;
+isrefer = true;
+iscost = true;
+isowner = false;
+isclient = false;
+isDepartment = false;
+isstartdate=false;
+iscreateddate=false;
+iscompletiondate=false;
 
   togglevisibilityforClass(className: string, event: any): void {
 
@@ -6669,7 +6679,10 @@ isDepartment = false
       'classCost' :'iscost',
       'owner_class' :'isowner',
       'client_class': 'isclient',
-      'class_depart'  : 'isDepartment'
+      'class_depart'  : 'isDepartment',
+      'class_startdate':'isstartdate',
+      'class_completiondate':'iscompletiondate',
+      'class_creationdate':'iscreateddate'
     };
 
     // Check if the className exists in the map and update the corresponding state variable
