@@ -397,7 +397,7 @@
                                   <div class="kt-main-list-item-count">7</div>
                               </div>
                           </div> -->
-                          <div class="kt-main-list-item" (click)="OnCategoryClick('-6','All');hideAddTask()">
+                          <div class="kt-main-list-item" [ngClass]="{'active':_Categoryid=='-6'}"  (click)="OnCategoryClick('-6','All');hideAddTask()">
                             <div class="kt-main-list-item-icon imp-c">
                               <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M139.61 35.5a12 12 0 0 0-17 0L58.93 98.81l-22.7-22.12a12 12 0 0 0-17 0L3.53 92.41a12 12 0 0 0 0 17l47.59 47.4a12.78 12.78 0 0 0 17.61 0l15.59-15.62L156.52 69a12.09 12.09 0 0 0 .09-17zm0 159.19a12 12 0 0 0-17 0l-63.68 63.72-22.7-22.1a12 12 0 0 0-17 0L3.53 252a12 12 0 0 0 0 17L51 316.5a12.77 12.77 0 0 0 17.6 0l15.7-15.69 72.2-72.22a12 12 0 0 0 .09-16.9zM64 368c-26.49 0-48.59 21.5-48.59 48S37.53 464 64 464a48 48 0 0 0 0-96zm432 16H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z"></path></g></svg>
                             </div>
@@ -407,7 +407,7 @@
                                 <div class="kt-main-list-item-count"  *ngIf="!allCount">0</div>
                             </div>
                         </div>
-                          <div class="kt-main-list-item" (click)="OnCategoryClick('-1','Accepted');hideAddTask()">
+                          <div class="kt-main-list-item" [ngClass]="{'active':_Categoryid=='-1'}"  (click)="OnCategoryClick('-1','Accepted');hideAddTask()">
                               <div class="kt-main-list-item-icon acc-c">
                                   <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                               </div>
@@ -417,7 +417,7 @@
                                   <div class="kt-main-list-item-count"  *ngIf="!acceptCount">0</div>
                               </div>
                           </div>
-                          <div class="kt-main-list-item" (click)="OnCategoryClick('-2','Pending');hideAddTask()">
+                          <div class="kt-main-list-item" [ngClass]="{'active':_Categoryid=='-2'}"  (click)="OnCategoryClick('-2','Pending');hideAddTask()">
                               <div class="kt-main-list-item-icon pen-c">
                                   <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20 3H4M20 21H4M5 3C5 5.51022 6.21228 7.86592 8.25493 9.32495L15.7451 14.675C17.7877 16.1341 19 18.4898 19 21M19 3C19 5.51022 17.7877 7.86592 15.7451 9.32495L8.25493 14.675C6.21228 16.1341 5 18.4898 5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                               </div>
@@ -427,7 +427,7 @@
                                   <div class="kt-main-list-item-count" *ngIf="!pendingCount">0</div>
                               </div>
                           </div>
-                          <div class="kt-main-list-item" (click)="OnCategoryClick('-3','Rejected');hideAddTask()">
+                          <div class="kt-main-list-item" [ngClass]="{'active':_Categoryid=='-3'}"  (click)="OnCategoryClick('-3','Rejected');hideAddTask()">
                               <div class="kt-main-list-item-icon rej-c">
                                   <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>times</title> <path d="M17.769 16l9.016-9.016c0.226-0.226 0.366-0.539 0.366-0.884 0-0.691-0.56-1.251-1.251-1.251-0.346 0-0.658 0.14-0.885 0.367v0l-9.015 9.015-9.016-9.015c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l9.015 9.016-9.015 9.015c-0.227 0.226-0.367 0.539-0.367 0.885 0 0.691 0.56 1.251 1.251 1.251 0.345 0 0.658-0.14 0.884-0.366v0l9.016-9.016 9.015 9.016c0.227 0.228 0.541 0.369 0.888 0.369 0.691 0 1.251-0.56 1.251-1.251 0-0.347-0.141-0.661-0.369-0.887l-0-0z"></path> </g></svg>
                               </div>
@@ -437,7 +437,7 @@
                                   <div class="kt-main-list-item-count" *ngIf="!rejectCount">0</div>
                               </div>
                           </div>
-                          <div class="kt-main-list-item" (click)="OnCategoryClick('-4','Unassign');hideAddTask()">
+                          <div class="kt-main-list-item" [ngClass]="{'active':_Categoryid=='-4'}"  (click)="OnCategoryClick('-4','Unassign');hideAddTask()">
                             <div class="kt-main-list-item-icon rej-c">
                               <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 21C4 17.134 7.13401 14 11 14C11.695 14 12.3663 14.1013 13 14.2899M20 18L14 18M15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z" stroke="#ff5900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                             </div>
@@ -447,7 +447,7 @@
                                  <div class="kt-main-list-item-count" *ngIf="!UnassignCount">0</div>
                             </div>
                         </div>
-                        <div class="kt-main-list-item" (click)="OnCategoryClick('-5','Completed');hideAddTask()">
+                        <div class="kt-main-list-item" [ngClass]="{'active':_Categoryid=='-5'}"  (click)="OnCategoryClick('-5','Completed');hideAddTask()">
                           <div class="kt-main-list-item-icon rej-c">
                             <svg width="64px" height="64px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#388e3c" fill-rule="evenodd" d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z"></path> </g></svg>
                           </div>
@@ -460,7 +460,7 @@
 
                       </div>
                       <hr class="kt-left-hr">
-              <div   *ngIf="SystemCategory&&SystemCategory.length>0||userCategory&&userCategory.length>0" class="kt-info-box-cat">
+              <div *ngIf="SystemCategory&&SystemCategory.length>0||userCategory&&userCategory.length>0" class="kt-info-box-cat">
                   <div class="d-flex align-items-center">
                       <div class="kt-info-box-tittle mt-0 mb-2" style="padding-left: 10px;    color: #4865cf;">
                           <div class="kt-title-icon">
@@ -735,19 +735,9 @@
                                               fill="#000000"></path>
                                       </g>
                                   </svg>
-                                  <input type="search" autocomplete="off" name="PortfolioSearch" placeholder="Search task" [(ngModel)]="_SearchTask"  (ngModelChange)="filterLists()"
-                                      class="form-control right-flter-b border-0" />
-
+                                  <input type="search" autocomplete="off" name="PortfolioSearch" placeholder="Search task" [(ngModel)]="_SearchTask"  (ngModelChange)="filterLists()" class="form-control right-flter-b border-0" />
                               </div>
-
-
-                              </div>
-
-                              <!-- <span   class="mr-2" style="background-color: white;"  (click)="_SearchTask='';filterLists()">
-                                <svg fill="#000000" viewBox="0 0 200 200" style="width:40px;height:40px" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title></title><path d="M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z"></path></g></svg>
-                              </span> -->
-
-
+                            </div>
 
                           <div class="dropdown">
                             <a class="kt-todo__icon" data-toggle="dropdown"  title="Click to filter tasks">
@@ -755,7 +745,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter" id="dropd">
 
-                                <ul class="drop-ul">
+                                <ul *ngIf="_Categoryid&&['-1','-2','-3'].includes(_Categoryid.toString())==false" class="drop-ul">
                                     <li class="dropdown-header">Filter by</li>
                                     <li>
                                         <button class="btn btn-filtr "[class.active]="activeButton === 'totalProjects'" (click)="setActiveButton('totalProjects');totalproject()">
@@ -847,7 +837,52 @@
                                             </div>
                                         </button>
                                     </li>
-                              </ul>
+                                </ul>
+
+
+
+                              <ul *ngIf="_Categoryid&&['-1','-2','-3'].includes(_Categoryid.toString())==true" class="drop-ul">
+                                <li class="dropdown-header">Sort by</li>
+                                <li>
+                                    <button class="btn btn-filtr" [class.active]="activeButton === 'totalProjects'" (click)="setActiveButton('totalProjects'); sortListByEmployee('totalProjects');">
+                                        <div class="d-flex align-items-center">
+                                            <span class="count total-project">{{ActualActionedAssigned_Josn.length}}</span>
+                                            <div class="fil-lbl">All</div>
+                                            <span class="chck-icn">
+                                              <svg xmlns="http://www.w3.org/2000/svg"
+                                                    width="16" height="16"
+                                                    fill="currentColor" class="bi bi-check2"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                    </path>
+                                                </svg>
+                                           </span>
+                                        </div>
+                                    </button>
+                                </li>
+                                <li *ngFor="let empOption of employeeOptions">
+                                    <button class="btn btn-filtr" [class.active]="activeButton === empOption.empNo"  (click)="setActiveButton(empOption.empNo); sortListByEmployee(empOption.empNo);">
+                                        <div class="d-flex align-items-center">
+                                            <span class="count total-project untask">{{empOption.total}}</span>
+                                            <div class="fil-lbl">{{empOption.empName}}</div>
+                                            <span class="chck-icn">
+                                              <svg xmlns="http://www.w3.org/2000/svg"
+                                                    width="16" height="16"
+                                                    fill="currentColor" class="bi bi-check2"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
+                                                    </path>
+                                                </svg>
+                                           </span>
+                                        </div>
+                                    </button>
+                                </li>
+                               
+                             </ul>
+
+
                               </div>
                           </div>
                           </div>
@@ -927,7 +962,14 @@
 
                       <div class="row" >
                           <div class="col-lg-12" >
-                              <div class="accordion accordion-runway" [ngClass]="getAccordionClass()" id="accordionRunway">
+                                <div [ngClass]="{'d-none':isCategoryContentLoading==false}" class="accordion-loader-spinner">
+                                    <div class="spinner-border text-white fs-7" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                               
+                                 <div [ngClass]="{'d-none':isCategoryContentLoading}" class="accordion accordion-runway" [ngClass]="getAccordionClass()" id="accordionRunway">
+
                                   <div  class="runway-card d-none"  id="taskdd">
                                     <div class="runway-card-header" id="headingOne" [ngClass]="{'d-none':_TodoList&&_TodoList.length==0}">
                                         <a id="UnassigntaskBtn" class="" type="button" data-toggle="collapse" data-target="#collapseUnassign" aria-expanded="false" aria-controls="collapseUnassign">
@@ -1159,7 +1201,6 @@
                                       </div>
                                     </div>
                                   </div>
-
 
                                   <div class="runway-card d-none" id='ActionToProjects'>
                                     <!-- *ngIf="((ActionedSubtask_Json.length) > 0)" -->
@@ -1453,29 +1494,7 @@
                                     </div>
                                   </div>
 
-                                  <!-- <div id="noSearchFoundMessage" style="display:none;">
-                                    <h1  style="color:white">No search found</h1>
-
-
-
-                                  </div> -->
-
-                                  <div id="noSearchFoundMessage"  style="display:none;" class="smart-images">
-
-                                    <div class="no-c">
-                                      <img   style="width: 380px;height:380px" src="https://cswebapps.com/creativeplanner/assets/images/noActionPresent.png">
-                                    <h1 class="space">No search found.</h1>
-                                    </div>
-                                  </div>
-
-
-
-
-
-
-
-                                  <div class="runway-card d-none" id="AssignedTask">
-                                    <!-- *ngIf="ActionedAssigned_Josn.length>0" -->
+                                   <div class="runway-card d-none" id="AssignedTask">
                                     <div class="runway-card-header" id="headingFour" [ngClass]="{'d-none':ActionedAssigned_Josn&&ActionedAssigned_Josn.length==0}">
                                         <a id="AssignedTaskProjectBtn" class="collapsed" type="button" data-toggle="collapse" data-target="#collapseActiontask" aria-expanded="false" aria-controls="collapseActiontask">
                                          <span> Assigned Task/Project &nbsp;<span class="task-count ass-tas" >{{ActionedAssigned_Josn&&ActionedAssigned_Josn.length}}</span></span>
@@ -1486,20 +1505,17 @@
                                       <div class="runway-card-body scrollbar1">
 
                                           <div [id]="'AssignedTaskProjectItem-'+item.Assign_Id"  class="mb-2 card Replied_border_left_true_warning" *ngFor="let item of ActionedAssigned_Josn|filter:_SearchTask;;let i=index;">
-                                              <!-- <div class="overlay-card"   ></div> -->
+                                            
                                               <div class="card-body p-2">
                                                   <div data-type="inbox" class="d-flex flex-wrap align-items-center my-1">
                                                       <div class="symbol symbol-60 symbol-2by3 flex-shrink-0 m-auto">
                                                           <div class="kt-inbox__actions">
-                                                              <!-- <input type="radio" class="subtask-radio" [disabled]="true"> -->
                                                           </div>
                                                       </div>
                                                           <div class="action-div-item w-100" >
                                                           <div class="position-relative dropright">
                                                               <a    class="btn px-0 info-btn curser-pointer run-info mr-2"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                               <svg  (click)="editassignPending(item.Assign_Id)"  xmlns="http://www.w3.org/2000/svg"  class="svg-icon"  style="width: 28px; height: 28px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M506.231111 65.009619c-246.822478 0-446.911586 200.090131-446.911586 446.912609 0 246.823502 200.090131 446.912609 446.911586 446.912609 246.823502 0 446.912609-200.089108 446.912609-446.912609C953.144744 265.098727 753.054613 65.009619 506.231111 65.009619zM810.142819 704.729489 598.136288 781.818215l-192.736653-77.088726-212.009601 77.088726L193.390034 319.270511l212.009601-77.088726 192.736653 77.088726 212.007555-77.088726L810.143842 704.729489z"/><path d="M771.597945 297.214169 617.40719 353.262696 617.40719 733.788316 771.597945 677.735695Z"/><path d="M424.670537 670.923546 578.862315 732.583884 578.862315 353.075431 424.670537 291.417139Z"/><path d="M231.939001 726.785831 386.126686 670.736281 386.126686 290.214754 231.939001 346.262258Z"/></svg>
-
-
                                                           </a>
                                                           <input class="inputforfocus" type="text" style="position:absolute; height: 0; width: 0; border: 0; outline: 0; background: transparent;"/>
                                                       </div>
@@ -1567,12 +1583,7 @@
                                                                    'pendings':item.Status=='Pending'}">
                                                               <div> {{item.Status=='Under Approval'?'New Project Under Approval':item.Status}}</div>
                                                                </span>
-                                                              <!-- <span class="kt-inbox__label kt-badge kt-badge--unified-info kt-badge-light-bold kt-badge--inline" *ngIf="item.Status =='Pending'">
-                                                              Assigned Task/Project
-                                                              <mat-icon style="cursor:none;" color='success' class="ml-2 mr-2">task_alt
-                                                              </mat-icon>
-                                                              <b> {{item.AssignedTo}}</b>
-                                                          </span> -->
+                                                              
                                                           </div>
                                                           <div class="my-1   d-none" >
                                                               <label data-toggle="tooltip" title="Project type!" *ngIf="item.Project_type"
@@ -1609,12 +1620,7 @@
                                                                       class="kt-inbox__label kt-badge kt-badge kt-badge-light-bold kt-badge--inline hold">
                                                                       <div> Hold </div>
                                                                </span>
-                                                              <!-- <span
-                                                                  class="kt-inbox__label kt-badge kt-badge kt-badge--unified-danger kt-badge-light-bold kt-badge--inline tippy3"
-                                                                  data-tippy-content="Another Tooltip">
-                                                                  <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
-                                                                  <div> {{item.Status}}</div>
-                                                              </span> -->
+                                                             
                                                                   <span *ngIf="item.Start_Date" data-toggle="tooltip" title="Start date!" class="kt-inbox__label kt-badge kt-badge kt-badge--unified-primary kt-badge-light-bold kt-badge--inline">
                                                                       <div><img src="https://cswebapps.com/creativeplanner/assets/icons/strat-prim.png" alt="actiondate" class="badge-img"></div>
                                                                       <div> {{item.Start_Date|date : 'd MMM, y'}}</div>
@@ -1623,45 +1629,30 @@
                                                                       <div><img src="https://cswebapps.com/creativeplanner/assets/icons/end-prim.png" alt="actiondate" class="badge-img"></div>
                                                                       <div> {{item.End_Date|date: 'd MMM, y'}}</div>
                                                                   </span>
-                                                                  <!-- <span class="kt-inbox__label kt-badge kt-badge kt-badge--unified-success kt-badge-light-bold kt-badge--inline">
-                                                                      <div><img src="../assets/icons/done-suc.png" alt="actiondate" class="badge-img"></div>
-                                                                      <div> Jun 29, 2022</div>
-                                                                  </span> -->
-                                                                <!--status-->
-                                                                  <!-- <span class="kt-inbox__label kt-badge text-white kt-badge-light-bold bg-coral kt-badge--inline cursor-pointer" *ngIf="item.Project_Code != null && item.Status !='Pending'" (click)="openInfo(item.Project_Code,item.Project_Name)">
-                                                                      <div><i class="fas fa-code-branch mr-2"></i></div>
-                                                                      <div>{{item.Project_Code}}
-                                                                      </div>
-                                                                  </span> -->
-                                                                <!--status end-->
+                                                                
                                                           </div>
                                                           <div class="mt-2 d-none">
-                                                              <!-- <span class="kt-inbox__label kt-badge kt-badge-light-bold kt-badge--inline cursor-pointer" *ngIf="item.FileName != ''"  (click)="LoadDocument(item.Reference)">
-                                                                  <div ><i class="fas fa-link mr-2"></i></div>
-                                                                  <div >{{item.FileName}}
-                                                                  </div>
-                                                              </span> -->
+                                                             
                                                               <span data-toggle="tooltip" title="Attachment" class="mr-3 text-nowrap mb-2 d-inline-block"  *ngIf="item.FileName !==''" (click)="LoadDocument(item.Reference)"><i
                                                                   class="fas fa-file-pdf text-muted mr-1"></i>
                                                               <a class="text-info curser-pointer" title="Click To Open File"
                                                                   (click)="LoadDocument(item.Reference)"><b>{{item.FileName}}</b></a></span>
-                                                              <!-- <span class="desc remks ml-2">{{item.Remarks}}</span> -->
+                                                             
                                                               <span  data-toggle="tooltip" title="Remarks" class="mx-3 text-nowrap mb-2 d-inline-block" *ngIf="item.Remarks != '' && item.Remarks!= 'undefined' && item.Remarks != 'null'">
                                                                   <i class="fas fa-registered text-muted mr-1"></i>
                                                                   <b>{{item.Remarks}}</b>
                                                               </span>
                                                           </div>
                                                       </div>
-                                                      <!-- <div class="kt-inbox__datetime">
-                                                      </div> -->
+                                                      
                                                   </div>
                                               </div>
                                           </div>
                                       </div>
                                     </div>
-                                  </div>
+                                   </div> 
 
-                                  <div   class="runway-card d-none" id="Completed">
+                                  <div class="runway-card d-none" id="Completed">
                                     <!-- *ngIf="_CompletedList&&_CompletedList.length>0" -->
                                     <div  class="runway-card-header" id="headingTwo" [ngClass]="{'d-none':(_CompletedList&&_CompletedList.length>0)==false}">
                                         <a id="CompletedBtn" class=" collapsed" type="button" data-toggle="collapse" data-target="#collapseCompleted" aria-expanded="false" aria-controls="collapseCompleted">
@@ -1715,8 +1706,15 @@
                                     </div>
                                   </div>
 
+                                  <div id="noSearchFoundMessage"  style="display:none;" class="smart-images">
+                                    <div class="no-c">
+                                      <img style="width: 380px;height:380px" src="https://cswebapps.com/creativeplanner/assets/images/noActionPresent.png">
+                                    <h1 class="space">No search found.</h1>
+                                    </div>
+                                  </div>
 
                                 </div>
+                              
                           </div>
                       </div>
                   </div>
@@ -1772,7 +1770,7 @@
             </div>
           </div>
 
-          </div>
+     </div>
       </div>
   </div>
 
@@ -1997,7 +1995,6 @@
 <!-- </div> -->
 
 <!-- unassign edit side bar start -->
-
 <div id="unassign-editsidebar" class="sideInfobar animate-right offcanvas">
 
 <div class="unassign-editsidebar-body">
@@ -2071,364 +2068,361 @@
 
 
 
-    <div class="unassign-editsidebar-radio mt-2">
+<div class="unassign-editsidebar-radio mt-2">
     <!-- Radio buttons group -->
+    <div *ngIf="selectedOption === 'option1'">
+        <!-- <div class="form-group mb-0">
+            <label>Assign to : <strong><span style="color:rgb(217,48,37)">*</span></strong> </label>
+            <ng-select  #assign="ngModel"   required (change)="EmployeeOnSelecting($event)"   [ngClass]="{'error-vd': !Selec&&formFieldsRequired}"   [(ngModel)]="Selec"    placeholder="Select employee" >
+
+                <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList">
+                    {{item.DisplayName }}
+                </ng-option>
+            </ng-select>
+            <span *ngIf="!Selec&&formFieldsRequired" style="color:red">Please enter assign</span>
+        </div> -->
+        <div class="form-group mb-2"  >
+        <mat-form-field class="drp-dwn-field w-100" *ngIf="EmployeeList">
+            <mat-label>Assign to <span class="text-danger">*</span></mat-label>
+            <mat-chip-list #selectedPortfolios>
+            <mat-chip *ngFor="let prtfolioId of employeSelect" class="Data_chip_kt"   (removed)="removeSelectedemployee(prtfolioId)">
+                {{getObjOf(EmployeeList,prtfolioId,'Emp_No')?.DisplayName}}
+                <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+                </button>
+            </mat-chip>
+
+            </mat-chip-list>
+            <div class="d-flex">
+            <input class="flex-1" [matChipInputFor]="selectedPortfolios"
+                [matAutocomplete]="PortfoliosDrpDwn" #PortfolioTF />
+
+            <button *ngIf="isemployeeDrpDwnOpen"
+                class="bg-transparent border-0 "  (click)="this.isemployeeDrpDwnOpen=false; closeAutocompleteDrpDwn('employeeDrpDwn');">
+                <mat-icon class="close-icon save-mat-selection">done</mat-icon></button>
+
+                <button *ngIf="!isemployeeDrpDwnOpen"
+                class="bg-transparent border-0" (click)="this.isemployeeDrpDwnOpen=true; openAutocompleteDrpDwn('employeeDrpDwn');">
+                <mat-icon class="add-icon"
+                    >add</mat-icon></button>
+            </div>
 
 
-<div *ngIf="selectedOption === 'option1'">
-  <!-- <div class="form-group mb-0">
-    <label>Assign to : <strong><span style="color:rgb(217,48,37)">*</span></strong> </label>
-    <ng-select  #assign="ngModel"   required (change)="EmployeeOnSelecting($event)"   [ngClass]="{'error-vd': !Selec&&formFieldsRequired}"   [(ngModel)]="Selec"    placeholder="Select employee" >
+        <mat-autocomplete aria-label="employeeDrpDwn" #PortfoliosDrpDwn="matAutocomplete"
+        (optionSelected)="onEmployeeselected($event); PortfolioTF.value=''; "
+        (opened)="isemployeeDrpDwnOpen=true" (closed)="isemployeeDrpDwnOpen=false; ">
 
-          <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList">
-            {{item.DisplayName }}
-        </ng-option>
-    </ng-select>
-    <span *ngIf="!Selec&&formFieldsRequired" style="color:red">Please enter assign</span>
-</div> -->
-<div class="form-group mb-2"  >
-  <mat-form-field class="drp-dwn-field w-100" *ngIf="EmployeeList">
-    <mat-label>Assign to <span class="text-danger">*</span></mat-label>
-     <mat-chip-list #selectedPortfolios>
-      <mat-chip *ngFor="let prtfolioId of employeSelect" class="Data_chip_kt"   (removed)="removeSelectedemployee(prtfolioId)">
-        {{getObjOf(EmployeeList,prtfolioId,'Emp_No')?.DisplayName}}
-        <button matChipRemove>
-          <mat-icon>cancel</mat-icon>
-        </button>
-      </mat-chip>
+        <mat-option *ngFor="let prt of (EmployeeList|filter:PortfolioTF.value)?.slice(0,1000)" [value]="prt.Emp_No">
 
-    </mat-chip-list>
-    <div class="d-flex">
-      <input class="flex-1" [matChipInputFor]="selectedPortfolios"
-          [matAutocomplete]="PortfoliosDrpDwn" #PortfolioTF />
-
-      <button *ngIf="isemployeeDrpDwnOpen"
-          class="bg-transparent border-0 "  (click)="this.isemployeeDrpDwnOpen=false; closeAutocompleteDrpDwn('employeeDrpDwn');">
-          <mat-icon class="close-icon save-mat-selection">done</mat-icon></button>
-
-          <button *ngIf="!isemployeeDrpDwnOpen"
-          class="bg-transparent border-0" (click)="this.isemployeeDrpDwnOpen=true; openAutocompleteDrpDwn('employeeDrpDwn');">
-          <mat-icon class="add-icon"
-              >add</mat-icon></button>
-      </div>
-
-
-  <mat-autocomplete aria-label="employeeDrpDwn" #PortfoliosDrpDwn="matAutocomplete"
-  (optionSelected)="onEmployeeselected($event); PortfolioTF.value=''; "
-  (opened)="isemployeeDrpDwnOpen=true" (closed)="isemployeeDrpDwnOpen=false; ">
-
-  <mat-option *ngFor="let prt of (EmployeeList|filter:PortfolioTF.value)?.slice(0,1000)" [value]="prt.Emp_No">
-
-    <mat-checkbox  color="primary" [checked]="employeSelect?employeSelect.indexOf(prt.Emp_No)!==-1:false"></mat-checkbox>
-        {{prt.DisplayName}}
-</mat-option>
-</mat-autocomplete>
-</mat-form-field>
-
-<span *ngIf="!employeSelect&&formFieldsRequired" class="text-danger">Please select assign.</span>
-</div>
-&nbsp;
-      <!-- Divs that will be conditionally displayed -->
-
-        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
-          <label>Project type :</label>
-          <ng-select  [(ngModel)]="selectedProjecttype" placeholder="Select project type" (change)="_EndDate=selectedProjecttype=='011'?null: _EndDate;setMaxDate(_StartDate)">
-            <ng-option [value]="item.Exec_BlockNo" *ngFor="let item of ProjectTypelist"   >
-                {{item.Exec_BlockName }}
-            </ng-option>
-          </ng-select>
-      </div>
-
-
-
-      <!-- <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
-        <label>Project type :<span class="text-danger">*</span> <strong >
-  </strong></label>
-        <ng-select required     [ngClass]="{'error-vd':!selectedProjecttype && formFieldsRequired}" [(ngModel)]="selectedProjecttype" placeholder="Select project type" >
-            <ng-option [value]="item.Exec_BlockNo" *ngFor="let item of ProjectTypelist" >
-                <span>{{item.Exec_BlockName}} </span>
-            </ng-option>
-        </ng-select> -->
-        <!-- <span *ngIf="!selectedProjectCode && formFieldsRequired"  style="color:red" >Please select project</span> -->
-
-
-
-    <!-- </div> -->
-
-
-
-      &nbsp;
-          <div class="form-group mb-2"  >
-            <mat-form-field class="drp-dwn-field w-100" *ngIf="PortfolioList">
-              <mat-label>Link Portfolio</mat-label>
-               <mat-chip-list #selectedPortfolios>
-                <mat-chip *ngFor="let prtfolioId of port_id" class="Data_chip_kt" (removed)="removeSelectedPortfolio(prtfolioId)">
-                  {{getObjOf(PortfolioList,prtfolioId,'Portfolio_ID')?.Portfolio_Name}}-{{getObjOf(PortfolioList,prtfolioId,'Portfolio_ID')?.TM_DisplayName}}
-                  <button matChipRemove>
-                    <mat-icon>cancel</mat-icon>
-                  </button>
-                </mat-chip>
-
-              </mat-chip-list>
-              <div class="d-flex">
-                <input class="flex-1" [matChipInputFor]="selectedPortfolios"
-                    [matAutocomplete]="PortfoliosDrpDwn" #PortfolioTF />
-
-                <button *ngIf="isPortfolioDrpDwnOpen"
-                    class="bg-transparent border-0 "  (click)="this.isPortfolioDrpDwnOpen=false; closeAutocompleteDrpDwn('PortfolioDrpDwn');">
-                    <mat-icon class="close-icon save-mat-selection">done</mat-icon></button>
-
-                    <button *ngIf="!isPortfolioDrpDwnOpen"
-                    class="bg-transparent border-0" (click)="this.isPortfolioDrpDwnOpen=true; openAutocompleteDrpDwn('PortfolioDrpDwn');">
-                    <mat-icon class="add-icon"
-                        >add</mat-icon></button>
-                </div>
-
-
-            <mat-autocomplete aria-label="PortfolioDrpDwn" #PortfoliosDrpDwn="matAutocomplete"
-            (optionSelected)="onPortfolioSelected($event); PortfolioTF.value=''; "
-            (opened)="isPortfolioDrpDwnOpen=true" (closed)="isPortfolioDrpDwnOpen=false; ">
-
-            <mat-option *ngFor="let prt of (PortfolioList|filter:PortfolioTF.value)?.slice(0,1000)" [value]="prt.Portfolio_ID">
-
-              <mat-checkbox  color="primary" [checked]="port_id?port_id.indexOf(prt.Portfolio_ID)!==-1:false"></mat-checkbox>
-                  {{prt.Portfolio_Name}} - {{prt.TM_DisplayName}}
-          </mat-option>
-         </mat-autocomplete>
+            <mat-checkbox  color="primary" [checked]="employeSelect?employeSelect.indexOf(prt.Emp_No)!==-1:false"></mat-checkbox>
+                {{prt.DisplayName}}
+        </mat-option>
+        </mat-autocomplete>
         </mat-form-field>
 
+        <span *ngIf="!employeSelect&&formFieldsRequired" class="text-danger">Please select assign.</span>
+        </div>
+        &nbsp;
+            <!-- Divs that will be conditionally displayed -->
 
-    </div>
-
-
-
-<ng-container>
-<ng-container *ngIf="selectedProjecttype !=='003' && selectedProjecttype!=='008'" >
-<div class="d-flex gap-1 ">
-  <div class="form-group flex-1">
-      <label>Start date : </label>
-      <!-- <span class="text-danger">*</span> -->
-      <div class="input-group" (click)="startdatechecker()">
-          <input matInput [matDatepicker]="picker1" (click)="picker1.open()" [min]="disablePreviousDate" (dateChange)="setMaxDate(_StartDate)" [(ngModel)]="_StartDate"
-              placeholder="Start date" class="form-control">
-          <div class="input-group-text p-0">
-              <mat-datepicker-toggle matSuffix  (click)="startdatechecker()" [for]="picker1"></mat-datepicker-toggle>
-              <mat-datepicker #picker1></mat-datepicker>
-          </div>
-      </div>
-      <div *ngIf="selectedProjecttype=='011'" style="color:grey">To do list not more than 3 Days </div>
-      <span *ngIf="noStartDate==true" style="color:red">Please select start date.</span>
-  </div>
-
-<div class="form-group flex-1" *ngIf="_StartDate!=null">
-      <label>End date :</label>
-      <!-- <span class="text-danger">*</span> -->
-      <div class="input-group" (click)="datesCheck()">
-          <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate" [max]="selectedProjecttype==='011'?maxDate:''" [(ngModel)]="_EndDate"
-              placeholder="End date" class="form-control">
-          <div class="input-group-text p-0">
-              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-              <mat-datepicker #picker2></mat-datepicker>
-          </div>
-      </div>
-      <span *ngIf ="!_EndDate" style="color:red">Please select end date.</span>
-  </div>
-  <div class="form-group flex-1" *ngIf="_StartDate==null">
-      <label>End date :</label>
-      <!-- <span class="text-danger">*</span> -->
-      <div class="input-group" (click)="enddateChecker()">
-          <input matInput [matDatepicker]="picker2" [matDatepickerFilter]="myFilter"
-              (click)="picker2.open()"
-              placeholder="End Date" class="form-control" >
-          <div class="input-group-text p-0">
-              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-              <mat-datepicker #picker2></mat-datepicker>
-          </div>
-      </div>
-  </div>
-</div>
-</ng-container>
-
-</ng-container>
-
-
-<div class="form-group">
-<label for="exampleFormControlFile1">Remarks</label>
-<textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
-  style="height: 111px;"></textarea>
-</div>
-
-<div class="form-group  mb-2">
-<div class="custom-file pl-1">
-  <button type="button" class="btn btn-primary cursor-pointer btn btn-sm" (click)="selectFile()">Choose file</button>
-  <span *ngIf="file" class="selected-file">{{ file.name }}</span>
-  <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
-  <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
-  <div class="text-info">Add any attachment for reference.</div>
-</div>
-<!-- <span class="text-muted">Add any attachment for reference</span> -->
-</div>
-</div>
-
-
-<div *ngIf="selectedOption === 'option2'" >
-
-
-  <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"  id="AssignedToEmp" >
-    <label> Assign to :<span class="text-danger">*</span> </label>
-
-    <ng-select id='AssignedToEmp'  bindLabel="RACIS"
-        bindValue="Emp_No" groupBy="usergroup"
-
-      placeholder="Select employee"
-        [searchable]="true" name="RACIS" [ngClass]="{'error-vd': !selectedEmpNo&&formFieldsRequired}"
-        [(ngModel)]="selectedEmpNo"
-        required
-
-        #assignedToEmpf="ngModel"
-        >
-        <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList">
-          {{item.DisplayName }}
-      </ng-option>
-
-
-    </ng-select>
-    <span *ngIf ="!selectedEmpNo&&formFieldsRequired" style="color:red">Please select employee to assign.</span>
-</div>
+                <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0">
+                <label>Project type :</label>
+                <ng-select  [(ngModel)]="selectedProjecttype" placeholder="Select project type" (change)="_EndDate=selectedProjecttype=='011'?null: _EndDate;setMaxDate(_StartDate)">
+                    <ng-option [value]="item.Exec_BlockNo" *ngFor="let item of ProjectTypelist"   >
+                        {{item.Exec_BlockName }}
+                    </ng-option>
+                </ng-select>
+            </div>
 
 
 
+            <!-- <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
+                <label>Project type :<span class="text-danger">*</span> <strong >
+        </strong></label>
+                <ng-select required     [ngClass]="{'error-vd':!selectedProjecttype && formFieldsRequired}" [(ngModel)]="selectedProjecttype" placeholder="Select project type" >
+                    <ng-option [value]="item.Exec_BlockNo" *ngFor="let item of ProjectTypelist" >
+                        <span>{{item.Exec_BlockName}} </span>
+                    </ng-option>
+                </ng-select> -->
+                <!-- <span *ngIf="!selectedProjectCode && formFieldsRequired"  style="color:red" >Please select project</span> -->
 
 
 
-  <!-- <div class="form-group">
-    <label>Select project :<span class="text-danger">*</span></label>
-    <ng-select required #action="ngModel" (change)="ProjectOnSelect();"  [ngClass]="{'error-vd':!selectedProjectCode && formFieldsRequired}" [(ngModel)]="selectedProjectCode" placeholder="Select project">
-        <ng-option [value]="item.Project_Code"  *ngFor="let item of _ProjectDataList">
-            {{item.Project_Name}}
-        </ng-option>
-    </ng-select>
-    <span *ngIf="!selectedProjectCode && formFieldsRequired"  style="color:red" >Please select project</span>
-  </div> -->
-
-
-  <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
-    <label>Select project :<span class="text-danger">*</span> <strong >
-</strong></label>
-    <ng-select required    (change)="ProjectOnSelect();"  [ngClass]="{'error-vd':!selectedProjectCode && formFieldsRequired}" [(ngModel)]="selectedProjectCode" placeholder="Select project" >
-        <ng-option [value]="item.Project_Code" *ngFor="let item of _ProjectDataList" >
-            <span>{{item.Project_Name}} </span>
-        </ng-option>
-    </ng-select>
-    <span *ngIf="!selectedProjectCode && formFieldsRequired"  style="color:red" >Please select project.</span>
+            <!-- </div> -->
 
 
 
-</div>
+            &nbsp;
+                <div class="form-group mb-2"  >
+                    <mat-form-field class="drp-dwn-field w-100" *ngIf="PortfolioList">
+                    <mat-label>Link Portfolio</mat-label>
+                    <mat-chip-list #selectedPortfolios>
+                        <mat-chip *ngFor="let prtfolioId of port_id" class="Data_chip_kt" (removed)="removeSelectedPortfolio(prtfolioId)">
+                        {{getObjOf(PortfolioList,prtfolioId,'Portfolio_ID')?.Portfolio_Name}}-{{getObjOf(PortfolioList,prtfolioId,'Portfolio_ID')?.TM_DisplayName}}
+                        <button matChipRemove>
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                        </mat-chip>
+
+                    </mat-chip-list>
+                    <div class="d-flex">
+                        <input class="flex-1" [matChipInputFor]="selectedPortfolios"
+                            [matAutocomplete]="PortfoliosDrpDwn" #PortfolioTF />
+
+                        <button *ngIf="isPortfolioDrpDwnOpen"
+                            class="bg-transparent border-0 "  (click)="this.isPortfolioDrpDwnOpen=false; closeAutocompleteDrpDwn('PortfolioDrpDwn');">
+                            <mat-icon class="close-icon save-mat-selection">done</mat-icon></button>
+
+                            <button *ngIf="!isPortfolioDrpDwnOpen"
+                            class="bg-transparent border-0" (click)="this.isPortfolioDrpDwnOpen=true; openAutocompleteDrpDwn('PortfolioDrpDwn');">
+                            <mat-icon class="add-icon"
+                                >add</mat-icon></button>
+                        </div>
+
+
+                    <mat-autocomplete aria-label="PortfolioDrpDwn" #PortfoliosDrpDwn="matAutocomplete"
+                    (optionSelected)="onPortfolioSelected($event); PortfolioTF.value=''; "
+                    (opened)="isPortfolioDrpDwnOpen=true" (closed)="isPortfolioDrpDwnOpen=false; ">
+
+                    <mat-option *ngFor="let prt of (PortfolioList|filter:PortfolioTF.value)?.slice(0,1000)" [value]="prt.Portfolio_ID">
+
+                    <mat-checkbox  color="primary" [checked]="port_id?port_id.indexOf(prt.Portfolio_ID)!==-1:false"></mat-checkbox>
+                        {{prt.Portfolio_Name}} - {{prt.TM_DisplayName}}
+                </mat-option>
+                </mat-autocomplete>
+                </mat-form-field>
+
+
+            </div>
 
 
 
+        <ng-container>
+        <ng-container *ngIf="selectedProjecttype !=='003' && selectedProjecttype!=='008'" >
+        <div class="d-flex gap-1 ">
+        <div class="form-group flex-1">
+            <label>Start date : </label>
+            <!-- <span class="text-danger">*</span> -->
+            <div class="input-group" (click)="startdatechecker()">
+                <input matInput [matDatepicker]="picker1" (click)="picker1.open()" [min]="disablePreviousDate" (dateChange)="setMaxDate(_StartDate)" [(ngModel)]="_StartDate"
+                    placeholder="Start date" class="form-control">
+                <div class="input-group-text p-0">
+                    <mat-datepicker-toggle matSuffix  (click)="startdatechecker()" [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </div>
+            </div>
+            <div *ngIf="selectedProjecttype=='011'" style="color:grey">To do list not more than 3 Days </div>
+            <span *ngIf="noStartDate==true" style="color:red">Please select start date.</span>
+        </div>
+
+        <div class="form-group flex-1" *ngIf="_StartDate!=null">
+            <label>End date :</label>
+            <!-- <span class="text-danger">*</span> -->
+            <div class="input-group" (click)="datesCheck()">
+                <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate" [max]="selectedProjecttype==='011'?maxDate:''" [(ngModel)]="_EndDate"
+                    placeholder="End date" class="form-control">
+                <div class="input-group-text p-0">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </div>
+            </div>
+            <span *ngIf ="!_EndDate" style="color:red">Please select end date.</span>
+        </div>
+        <div class="form-group flex-1" *ngIf="_StartDate==null">
+            <label>End date :</label>
+            <!-- <span class="text-danger">*</span> -->
+            <div class="input-group" (click)="enddateChecker()">
+                <input matInput [matDatepicker]="picker2" [matDatepickerFilter]="myFilter"
+                    (click)="picker2.open()"
+                    placeholder="End Date" class="form-control" >
+                <div class="input-group-text p-0">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </div>
+            </div>
+        </div>
+        </div>
+        </ng-container>
+
+        </ng-container>
 
 
+        <div class="form-group">
+        <label for="exampleFormControlFile1">Remarks</label>
+        <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
+        style="height: 111px;"></textarea>
+        </div>
 
-
-  <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
-    <label>Action owner  <strong >
-</strong></label>
-    <ng-select required #ownerno="ngModel" [(ngModel)]="owner" placeholder="Select owner" >
-        <ng-option [value]="item.Emp_No" *ngFor="let item of ownerArr" [disabled]="item.Emp_No==selectedEmpNo" >
-            <span>{{item.RACIS}} </span>
-        </ng-option>
-    </ng-select>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
- <div class="d-flex gap-1">
-   <div class="form-group flex-1 details-date">
-          <label>Start Date :<span class="text-danger">*</span></label>
-          <div class="d-flex date-border" [ngClass]="{'error-date': formFieldsRequired&&!_StartDate}">
-              <input matInput [matDatepicker]="picker3" (click)="picker3.open();this._EndDate=null" [ngClass]="{'error-vd':!_StartDate &&formFieldsRequired}"   [min]="disablePreviousDate" [(ngModel)]="_StartDate"
-                  placeholder="Start Date" class="form-control">
-              <div class="input-group-text p-0">
-                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                  <mat-datepicker #picker3></mat-datepicker>
-              </div>
-
-          </div>
-          <span *ngIf="!_StartDate&&formFieldsRequired" class="text-danger">Please select start date.</span>
-      </div>
-      <div class="form-group flex-1 details-date">
-          <label>End Date :<span class="text-danger">*</span></label>
-          <div class="d-flex date-border"  [ngClass]="{'error-date': formFieldsRequired&&!_EndDate}"  >
-              <input matInput [matDatepicker]="picker4"  (click)="picker4.open()" [min]="_StartDate" [(ngModel)]="_EndDate"
-                  placeholder="End Date" class="form-control">
-              <div class="input-group-text p-0">
-                  <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
-                  <mat-datepicker #picker4></mat-datepicker>
-              </div>
-
-          </div>
-          <span *ngIf="!_EndDate&&formFieldsRequired" class="text-danger">Please select end date.</span>
-      </div>
-</div>
-
-<ng-container >
-
-<div class="form-group" >                          <!--*ngIf;="selectedEmpNo == Current_user_ID"-->
-<label>Allocated hours :<span class="text-danger">*</span></label>
-<!-- [ngClass];="{'form-control':maxlimit==true,'form-control-danger':maxlimit==false}" -->
-<input id="hour-input" #allocated="ngModel"   type="tel" class="form-control" pattern="[0-9]*"   placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='')"
-    (click)="alertMaxAllocation()"  (change)="_alchr=!_allocated"
-    [ngClass]="{'error-border': _allocated > maxAllocation}"
-    [ngClass]="{'error-border': (_allocated==0)}"
-
-    [ngClass]="{'error-border': this.formFieldsRequired&&!_allocated}"
-    >
-<!-- <span *ngIf;="allocated.touched&&!_allocated"; style="color:red">Allocated; hours; required!; Enter; non-decimal; value&nbsp;</span> -->
-<span *ngIf="_allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span>
-<span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
-<span *ngIf="this.formFieldsRequired&&!_allocated" style="color:red">Allocated hours required. Hours should not be in decimal. </span>
-<span *ngIf="(_allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value, It accept only numeric and non-negative value. </span>
-<span *ngIf="this._StartDate == null || this._EndDate == null" >{{ _message}} </span>
-<!-- <span *ngIf="formFieldsRequired&&!_allocated" style="color:red"> Please enter allocated hour</span> -->
-
-</div>
-
-</ng-container>
-
-
-
-
-
-
-
-<div class="form-group">
-<label for="exampleFormControlFile1">Remarks</label>
-<textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
-    style="height: 111px;"></textarea>
-</div>
-
-  <div class="form-group  mb-2">
-    <div class="custom-file pl-1">
+        <div class="form-group  mb-2">
+        <div class="custom-file pl-1">
         <button type="button" class="btn btn-primary cursor-pointer btn btn-sm" (click)="selectFile()">Choose file</button>
         <span *ngIf="file" class="selected-file">{{ file.name }}</span>
         <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
         <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
         <div class="text-info">Add any attachment for reference.</div>
-      </div>
-      <!-- <span class="text-muted">Add any attachment for reference</span> -->
-</div>
-</div>
+        </div>
+        <!-- <span class="text-muted">Add any attachment for reference</span> -->
+        </div>
+    </div>
+
+    <div *ngIf="selectedOption === 'option2'" >
+
+
+        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"  id="AssignedToEmp" >
+            <label> Assign to :<span class="text-danger">*</span> </label>
+
+            <ng-select id='AssignedToEmp'  bindLabel="RACIS"
+                bindValue="Emp_No" groupBy="usergroup"
+
+            placeholder="Select employee"
+                [searchable]="true" name="RACIS" [ngClass]="{'error-vd': !selectedEmpNo&&formFieldsRequired}"
+                [(ngModel)]="selectedEmpNo"
+                required
+
+                #assignedToEmpf="ngModel"
+                >
+                <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList">
+                {{item.DisplayName }}
+            </ng-option>
+
+
+            </ng-select>
+            <span *ngIf ="!selectedEmpNo&&formFieldsRequired" style="color:red">Please select employee to assign.</span>
+        </div>
+
+
+
+
+
+
+        <!-- <div class="form-group">
+            <label>Select project :<span class="text-danger">*</span></label>
+            <ng-select required #action="ngModel" (change)="ProjectOnSelect();"  [ngClass]="{'error-vd':!selectedProjectCode && formFieldsRequired}" [(ngModel)]="selectedProjectCode" placeholder="Select project">
+                <ng-option [value]="item.Project_Code"  *ngFor="let item of _ProjectDataList">
+                    {{item.Project_Name}}
+                </ng-option>
+            </ng-select>
+            <span *ngIf="!selectedProjectCode && formFieldsRequired"  style="color:red" >Please select project</span>
+        </div> -->
+
+
+        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
+            <label>Select project :<span class="text-danger">*</span> <strong >
+        </strong></label>
+            <ng-select required    (change)="ProjectOnSelect();"  [ngClass]="{'error-vd':!selectedProjectCode && formFieldsRequired}" [(ngModel)]="selectedProjectCode" placeholder="Select project" >
+                <ng-option [value]="item.Project_Code" *ngFor="let item of _ProjectDataList" >
+                    <span>{{item.Project_Name}} </span>
+                </ng-option>
+            </ng-select>
+            <span *ngIf="!selectedProjectCode && formFieldsRequired"  style="color:red" >Please select project.</span>
+
+
+
+        </div>
+
+
+
+
+
+
+
+        <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0" >
+            <label>Action owner  <strong >
+        </strong></label>
+            <ng-select required #ownerno="ngModel" [(ngModel)]="owner" placeholder="Select owner" >
+                <ng-option [value]="item.Emp_No" *ngFor="let item of ownerArr" [disabled]="item.Emp_No==selectedEmpNo" >
+                    <span>{{item.RACIS}} </span>
+                </ng-option>
+            </ng-select>
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <div class="d-flex gap-1">
+        <div class="form-group flex-1 details-date">
+                <label>Start Date :<span class="text-danger">*</span></label>
+                <div class="d-flex date-border" [ngClass]="{'error-date': formFieldsRequired&&!_StartDate}">
+                    <input matInput [matDatepicker]="picker3" (click)="picker3.open();this._EndDate=null" [ngClass]="{'error-vd':!_StartDate &&formFieldsRequired}"   [min]="disablePreviousDate" [(ngModel)]="_StartDate"
+                        placeholder="Start Date" class="form-control">
+                    <div class="input-group-text p-0">
+                        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                        <mat-datepicker #picker3></mat-datepicker>
+                    </div>
+
+                </div>
+                <span *ngIf="!_StartDate&&formFieldsRequired" class="text-danger">Please select start date.</span>
+            </div>
+            <div class="form-group flex-1 details-date">
+                <label>End Date :<span class="text-danger">*</span></label>
+                <div class="d-flex date-border"  [ngClass]="{'error-date': formFieldsRequired&&!_EndDate}"  >
+                    <input matInput [matDatepicker]="picker4"  (click)="picker4.open()" [min]="_StartDate" [(ngModel)]="_EndDate"
+                        placeholder="End Date" class="form-control">
+                    <div class="input-group-text p-0">
+                        <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                        <mat-datepicker #picker4></mat-datepicker>
+                    </div>
+
+                </div>
+                <span *ngIf="!_EndDate&&formFieldsRequired" class="text-danger">Please select end date.</span>
+            </div>
+        </div>
+
+        <ng-container >
+
+        <div class="form-group" >                          <!--*ngIf;="selectedEmpNo == Current_user_ID"-->
+        <label>Allocated hours :<span class="text-danger">*</span></label>
+        <!-- [ngClass];="{'form-control':maxlimit==true,'form-control-danger':maxlimit==false}" -->
+        <input id="hour-input" #allocated="ngModel"   type="tel" class="form-control" pattern="[0-9]*"   placeholder="Enter action duration in hrs" [(ngModel)]="_allocated" min="0" oninput="validity.valid||(value='')"
+            (click)="alertMaxAllocation()"  (change)="_alchr=!_allocated"
+            [ngClass]="{'error-border': _allocated > maxAllocation}"
+            [ngClass]="{'error-border': (_allocated==0)}"
+
+            [ngClass]="{'error-border': this.formFieldsRequired&&!_allocated}"
+            >
+        <!-- <span *ngIf;="allocated.touched&&!_allocated"; style="color:red">Allocated; hours; required!; Enter; non-decimal; value&nbsp;</span> -->
+        <span *ngIf="_allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span>
+        <span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
+        <span *ngIf="this.formFieldsRequired&&!_allocated" style="color:red">Allocated hours required. Hours should not be in decimal. </span>
+        <span *ngIf="(_allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value, It accept only numeric and non-negative value. </span>
+        <span *ngIf="this._StartDate == null || this._EndDate == null" >{{ _message}} </span>
+        <!-- <span *ngIf="formFieldsRequired&&!_allocated" style="color:red"> Please enter allocated hour</span> -->
+
+        </div>
+
+        </ng-container>
+
+
+
+
+
+
+
+        <div class="form-group">
+        <label for="exampleFormControlFile1">Remarks</label>
+        <textarea class="form-control" aria-label="With textarea" [(ngModel)]="_remarks"
+            style="height: 111px;"></textarea>
+        </div>
+
+        <div class="form-group  mb-2">
+            <div class="custom-file pl-1">
+                <button type="button" class="btn btn-primary cursor-pointer btn btn-sm" (click)="selectFile()">Choose file</button>
+                <span *ngIf="file" class="selected-file">{{ file.name }}</span>
+                <span *ngIf="file" class="delete-icon cursor-pointer" (click)="this.file=null">✖</span>
+                <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" />
+                <div class="text-info">Add any attachment for reference.</div>
+            </div>
+            <!-- <span class="text-muted">Add any attachment for reference</span> -->
+        </div>
+    </div>
 </div>
 
 
@@ -2492,15 +2486,14 @@
 
 <div id="ProjectAssignpending" class="sideInfobar animate-right offcanvas">
 
-
 <ng-container *ngIf="ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status !== 'Pending'">
-  <ng-container    >
+<ng-container>
 <div class="unassign-editsidebar-body">
   <div class="text-right w-100 mb-3">
     <button class="btn btn-sm btn-outline-info" *ngIf="ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Project_Code != null && ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status !='Pending'" (click)="newDetails(ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Project_Code)">View Project</button>
     <button class="btn btn-sm rejected" *ngIf="ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status =='Rejected'" >{{ActionedAssigned_Josn[editTaskat]&&ActionedAssigned_Josn[editTaskat].Status}}</button>
   <div class="unassign-editsidebar-head mb-0" style="align-items: flex-start;">
-      <div class="" >
+      <div class="">
           <!-- <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" fill="currentColor"></path> </g></svg> -->
       </div>
 
@@ -2521,22 +2514,18 @@
 
 
 
-<div >
+<div>
 
-<div  class="non-clickable"  >
+<div  class="non-clickable">
 
 
-<div class="form-group mb-2"  >
-
+<div class="form-group mb-2">
   <mat-label>Assign to</mat-label>
    <mat-chip-list #selectedPortfolios>
     <mat-chip *ngFor="let prtfolioId of employeSelect" class="Data_chip_kt"   (removed)="removeSelectedemployee(prtfolioId)">
       {{getObjOf(EmployeeList,prtfolioId,'Emp_No')?.DisplayName}}
-
     </mat-chip>
-
   </mat-chip-list>
-
 </div>
 </div>
 
@@ -2673,7 +2662,7 @@ style="height: 111px;"></textarea>
 <!-- <input type="file" class="form-control-file" id="uploadFile" #fileInput style="display: none;" (change)="onFileChanged($event)" /> -->
 </div>
 </div>
-</div>
+  </div>
 
 </div>
 </ng-container>

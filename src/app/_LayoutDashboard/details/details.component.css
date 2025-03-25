@@ -1024,7 +1024,7 @@ button.Kt-Approval-btns {
   border: 1px solid #527ce2;
   font-size: 12px !important;
   /* padding: 3px 5px; */
-  padding: 0.4em 0.6em 0.3em 0.6em;
+  padding: 0.4em 0.6em 0.3em 0.6em !important;
   border-radius: 4px !important;
   border-width: 1px !important;
   font-weight: 500 !important;
@@ -1101,18 +1101,18 @@ span.Status-Delay {
   font-size: 14px;
 }
 
-.kt-p-action-Status .actn-attch-btn {
+.action-index-label .actn-attch-btn {
   padding: 6px;
   line-height: 0;
   border-radius: 5px;
 }
 
-.kt-p-action-Status .actn-attch-btn svg {
+.action-index-label .actn-attch-btn svg {
   width: 17px;
   height: 17px;
 }
 
-.kt-p-action-Status .actn-attch-btn:hover {
+.action-index-label .actn-attch-btn:hover {
   background-color: #e5eaf8;
 }
 
@@ -4748,7 +4748,9 @@ span.Kt-m-count {
 }
 
 
-
+.graphmodal{
+   background-color: #323131a8;
+}
 
 ::ng-deep .modal-backdrop.show {
   z-index: 1;
@@ -4932,10 +4934,18 @@ p.kt-dt-l {
   margin-right: 5px;
 }
 
-.kt-project-acion-content .action-index-label{
-  font-weight: 500;
-  font-size: 14px;
+.kt-project-acion-content .action-index-label
+{
+    font-weight: 500;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 3px;
 }
+
+
+
 
 .flipped {
   direction: rtl;

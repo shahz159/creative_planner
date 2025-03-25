@@ -55,10 +55,6 @@ export class StreamDashboardComponent implements OnInit {
   async ngOnInit() {
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.UserfullName = localStorage.getItem("UserfullName");
-   
-
-
-
     await this.loadDashboardBanners();
     // this.initializeOwlCarousels();
     this.initializeOwlCarousels2();
@@ -672,6 +668,7 @@ debugger
    // dashboard banners start.  
    dashboardBanners:any=[];
    dashboardBannersImages:any=[];
+   showDashboardBanners:boolean=false;
    
   async loadDashboardBanners(){
       
@@ -697,24 +694,29 @@ debugger
 
             if(this.dashboardBannersImages.length>0){
               await this.loadSasUrlsForImages();
-              $(document).ready(() =>{
-                $('.banner-item').owlCarousel({
-                  loop: true,
-                  margin: 0,
-                  autoplay: true,
-                  autoplayTimeout:3700,
-                  autoplayHoverPause: false,
-                  nav: false,
-                  dots: true,
-                  navText: [
-                   '<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>',
-                      '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>'
-                  ],
-                  responsive: {
-                    356: { items: 1 }
-                  }
+             
+                $(document).ready(() =>{  
+
+                  $('.banner-item').owlCarousel({
+                    loop: true,
+                    margin: 0,
+                    autoplay: true,
+                    autoplayTimeout:3700,
+                    autoplayHoverPause: true,
+                    nav: false,
+                    dots: true,
+                    navText: [
+                     '<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>',
+                        '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>'
+                    ],
+                    responsive: {
+                      356: { items: 1 }
+                    }
+                  });
+            
                 });
-              }); 
+       
+             
             }
          }
     });

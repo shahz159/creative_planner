@@ -472,13 +472,13 @@ tr.action-row:hover {
 }
 
 @media screen and (min-width : 1500px) {
-    .picsum-img-wrapper img {
+    .picsum-img-wrapper, .picsum-img-wrapper img {
         height: 230px;
     }
 }
 
 @media screen and (min-width : 1600px) {
-    .picsum-img-wrapper img {
+    .picsum-img-wrapper, .picsum-img-wrapper img {
         height: 280px;
     }
     .tab-scroll {
@@ -487,7 +487,7 @@ tr.action-row:hover {
 }
 
 @media screen and (min-width : 1700px) {
-    .picsum-img-wrapper img {
+    .picsum-img-wrapper, .picsum-img-wrapper img {
         height: 300px;
     }
     .tab-scroll {
@@ -2708,3 +2708,5 @@ span.p-b-percent-count {
     width: 16px;
     height: 16px;
 }
+
+

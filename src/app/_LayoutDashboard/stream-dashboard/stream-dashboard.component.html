@@ -1336,17 +1336,17 @@
 
                                <div class="picsum-img-wrapper text-center">
                                <div class="activity-card banner-card">
-                                <div class="activity-item banner-item owl-carousel owl-theme d-block">
+                                <div class="activity-item banner-item owl-carousel owl-theme d-flex">
                                      
                                 <ng-container *ngIf="dashboardBanners&&dashboardBanners.length>0; else noDbbanner">
-                                    <div class="activity-report" *ngFor="let bannerImg of dashboardBannersImages">
+                                <div class="activity-report" *ngFor="let bannerImg of dashboardBannersImages" style="min-width:100%; min-height:100%;">
                                         <div class="activity-report-content">
-                                            <img [src]="bannerImg.sasUrl" alt="Angular Carousel 1" class="w-100">
+                                            <img [src]="bannerImg.sasUrl" alt="Angular Carousel 1" class="w-100" style="min-height:100%">
                                         </div>
-                                    </div>
+                                    </div> 
                                 </ng-container>
                                 <ng-template #noDbbanner>
-                                    <div class="activity-report">
+                                    <div class="activity-report" style="min-width:100%;">
                                         <div class="activity-report-content">
                                             <img src="./assets/images/cp-robot.png" alt="Angular Carousel 1" class="w-100"/>
                                         </div>
