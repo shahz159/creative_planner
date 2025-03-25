@@ -354,7 +354,7 @@ NewPending_table(obj:CalenderDTO){ debugger
   }
 
   NewUpdateCalender(obj: CalenderDTO){
-
+debugger
     this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.flagid = obj.flagid;

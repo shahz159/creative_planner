@@ -368,22 +368,22 @@ export class StreamDashboardComponent implements OnInit {
       };
   });
   
-
-  if (this.scheduleItems.length == 9) {
+debugger
+  if (this.scheduleItems.length == 10) {
     this.scheduleItems.pop();
   } 
- 
+  if(this.scheduleItems.length == 9){
+    this.scheduleItems.pop();
+  }
 
-     this.scheduleItems.sort((a, b) => a.Schedule_date.localeCompare(b.Schedule_date));
-      console.log(this.scheduleItems, "Calendar Data 2");
- 
-     
-      if( this.scheduleItems.some(data => data.Schedule_date <  this.today)){
+  this.scheduleItems.sort((a, b) => a.Schedule_date.localeCompare(b.Schedule_date));
+
+   if( this.scheduleItems.some(data => data.Schedule_date <  this.today)){
         this.scheduleItems.shift(); 
-      }
-      
+    }
+  });
 
-    }); 
+    console.log(this.scheduleItems, "Calendar Data 2");
   }
 
 
@@ -621,7 +621,7 @@ export class StreamDashboardComponent implements OnInit {
   }
 
 
-  newMeetingDetails(Schedule_ID) { debugger
+  newMeetingDetails(Schedule_ID) { 
     let name: string = 'Meeting-Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${Schedule_ID}`;
@@ -647,7 +647,7 @@ export class StreamDashboardComponent implements OnInit {
 
   
 
-  formatTimes(dateTime?: string): string {   debugger
+  formatTimes(dateTime?: string): string {
     if (!dateTime) return ''; // Handle undefined/null cases safely
   
     const timePart = dateTime.split(' ')[1]; // Extract time part safely

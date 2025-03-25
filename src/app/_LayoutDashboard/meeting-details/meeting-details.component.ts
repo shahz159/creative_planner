@@ -586,7 +586,7 @@ export class MeetingDetailsComponent implements OnInit {
   AdminName:any;
   isLoading: boolean = true;
   oneByTwoEndDate:any;
-
+  Meeing_Name:any;
 
 
 
@@ -601,7 +601,7 @@ export class MeetingDetailsComponent implements OnInit {
       var Schedule_date = this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
       this.Agendas_List = this.EventScheduledjson[0].Agendas;
-     
+      this.Meeing_Name = (this.EventScheduledjson[0]['Task_Name']);
       this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
       this.Startts = (this.EventScheduledjson[0]['St_Time']);
       this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
@@ -659,8 +659,7 @@ export class MeetingDetailsComponent implements OnInit {
         this.userFound = racisUserIds.includes(this.Current_user_ID);
       }
 
-
-     setTimeout(()=>{
+     setTimeout(()=>{ 
       this.taskcount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
       this.notescount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
       
@@ -1143,7 +1142,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-  Event_acceptandReject(val) { debugger
+  Event_acceptandReject(val) { 
     this.EventAction_type=val
     if (this.EventAction_type == 1) {
      
@@ -2625,17 +2624,17 @@ export class MeetingDetailsComponent implements OnInit {
     // if (event.keyCode === 32 || event.keyCode === 13 || this.leave == true || event.type === 'paste' || event.keyCode === 8) {
     
       // Replace newline characters with <br> tags
-   
+  
       if(event.type === 'paste'){     
         this.savePastedText(event);
         // const pastedText = event.clipboardData?.getData('text/plain') || '';
         // this.Notes_Type= this.Notes_Type + pastedText ;
       }
  
-
+    
      if(this.currentAgendaView != undefined && this.currentAgendaView != null && this.CurrentNotesCount[this.currentAgendaView]){
-      this.Notes_Type.trim();
-      if (this.Notes_Type) {
+      this.Notes_Type= this.Notes_Type = this.Notes_Type.replace(/<\/?p[^>]*>|<\/?o:p>/g, '').trim();
+      if (this.Notes_Type) {  
         this.CurrentNotesCount[this.currentAgendaView].NotesCount = 1;
       } else {
       this.CurrentNotesCount[this.currentAgendaView].NotesCount = 0;
@@ -2763,6 +2762,7 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    console.log('Attachments_ary',this.Attachments_ary);
   }
 
 
@@ -2793,7 +2793,7 @@ export class MeetingDetailsComponent implements OnInit {
 onFileChange(event) {
   if (event.target.files.length > 0) {
     const allowedTypes = [
-      "image/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+      "image/*", "video/*", "audio/*", "application/pdf", "text/plain", "text/html", "application/msword", 
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       "application/json", "application/xml", "application/vnd.ms-powerpoint",
       "application/vnd.openxmlformats-officedocument.presentationml.presentation",
@@ -2861,7 +2861,7 @@ onFileChange(event) {
   onFileChange1(event) {
     if (event.target.files.length > 0) {
       const allowedTypes = [
-        "image/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+        "image/*", "video/*", "audio/*", "application/pdf", "text/plain", "text/html", "application/msword", 
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "application/json", "application/xml", "application/vnd.ms-powerpoint",
         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
@@ -2878,7 +2878,7 @@ onFileChange(event) {
           // Show a sweet alert popup for unsupported file types
           Swal.fire({
             title: `This File "${fileName}" cannot be accepted!`,
-            text: `Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+            text: `Supported file types: Images, "video/*", "audio/*", PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
             });
           continue;
         }
@@ -4215,7 +4215,9 @@ onFileChange(event) {
 
 
   /////////////////////////////////////////// All Attendees Notes sidebar Start //////////////////////////////////////////////////////////////////
-
+ 
+  totalNotesCount:number=0;
+  totalTasksCount:number=0;
   AllAttendees_notes: any = []
   Employeeslist: any;
   meetingStarted: boolean = false;
@@ -4226,10 +4228,13 @@ onFileChange(event) {
   TaskCount: any;
   agendasList: any;
   exact_start: any;
-
+  smailcount:any;
   taskcount: any = [];
   notescount: any = [];
   Status_type: any;
+  portFocount:any;
+  projecount:any;
+  attachcount:any;
 
 
   GetAttendeesnotes() {
@@ -4242,14 +4247,15 @@ onFileChange(event) {
 
     this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
       ((data: any) => {
-    
-        
+       
         this.exact_start = (data['Start_time']);
         this.agendasList = JSON.parse(data['Agendas']);
-       
+        this.smailcount = this.agendasList[0]?.smailcount;
+        this.portFocount = this.agendasList[0]?.portcount;
+        this.projecount = this.agendasList[0]?.projectcount;
+        this.attachcount = this.agendasList[0]?.attachcount;
 
         if(this.agendasList != null){
-     
             if(this.Agendas_List&&this.Agendas_List.length>0){                  
               if (this.agendasList.length != this.Agendas_List.length) {
                 const result=this.Agendas_List.length-this.agendasList.length;
@@ -4289,6 +4295,7 @@ onFileChange(event) {
         this.taskcount.forEach(item => item.count = 0);   //1. clear previous task count data.
         this.status_type = '';
         this.NotesCount = JSON.parse(data['NotesCount']);
+
         this.NotesCount.forEach(item => {
           const i = this.notescount.findIndex(item1 => item1.agendaid == item.AgendaId);
           if (i > -1)
@@ -4304,6 +4311,14 @@ onFileChange(event) {
         });    // 2. update new task count data.
 
        
+        this.totalNotesCount=this.notescount.reduce((sum,item)=>{
+             return sum+item.count;
+        },0)
+
+        this.totalTasksCount=this.taskcount.reduce((sum,item)=>{
+          return sum+item.count;
+         },0)
+  
         this.meetingStarted = data.AdminMeeting_Status === 'True' ? true : false
         if (this.meetingStarted || this.meetingStarted != true) {
       
@@ -4337,10 +4352,10 @@ onFileChange(event) {
         // this.Employeeslist=objectsWithEmployees[0].Employees;
       });
     // this.meeting_details();
-  
+    //  console.log(this.taskcount,'---------------',this.notescount)
   }
 
-
+ 
 
 
 
@@ -7991,7 +8006,7 @@ onParticipantFilter(){
     this.selectedFiles = [];  // Clear selected files after download
   }
 
-  downloadFile(url: string, fileName: string) {
+  downloadFile(url: string, fileName: string) {debugger
     fetch(url)
       .then(response => response.blob())
       .then(blob => {
@@ -8006,6 +8021,7 @@ onParticipantFilter(){
       })
       .catch(error => console.error('Error downloading file:', error));
   }
+  
 
   clearSelectedCheckboxes() {
     const checkboxes = document.querySelectorAll('input[type="checkbox"][name="Checkboxes15"]');
@@ -8960,25 +8976,27 @@ LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, ty
     //   FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
     // }
     let name = "ArchiveView/" + this.Schedule_ID;
+    let meetingName =  this.Meeing_Name;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(FileUrl);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");
     filename = filename.replace(/&/g, "%26");
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type +"&"+"Schedule_ID="+this.Schedule_ID;;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type +"&"+"Schedule_ID="+this.Schedule_ID +"&"+ "Title_Name=" + meetingName;
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
-  else if (iscloud == true) {
+  else if (iscloud == true) {debugger
     let name = "ArchiveView/" + this.Schedule_ID;
+    let meetingName =  this.Meeing_Name;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(url1);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");
     filename = filename.replace(/&/g, "%26");
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type +"&"+"Schedule_ID="+this.Schedule_ID;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type +"&"+"Schedule_ID="+this.Schedule_ID +"&"+ "Title_Name=" + meetingName;
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
@@ -9056,9 +9074,18 @@ MeetingBookmark(flagid:any) {
 
 
 
+openSidebarAP(item: any) {
 
+  if (item > 0) {
+    this.Slide_AssignTask();
+  }
+}
 
-
+openSidebarPMN(count:any){
+  if (count > 0) {
+    this.Slide_meeting();
+  }
+}
 
 
 }

@@ -3469,6 +3469,7 @@ console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
        
 }
 
+
 filterMeetingsOnIconClick() {
   // Trigger search using the same method as input or Enter key
   const mockEvent = { key: 'Enter' } as KeyboardEvent;
@@ -3896,7 +3897,7 @@ Insert_indraft() {
 
 /////////////////////////////////////////// Created On (Schedule event popup box) Start /////////////////////////////////////////////////////////
 
-
+Meeing_Name:any;
 
 GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
  
@@ -3919,6 +3920,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
       this.propose_date=Schedule_date;
       console.log(this.EventScheduledjson, "Testing12");
+      this.Meeing_Name = (this.EventScheduledjson[0]['Task_Name']);
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       this.Link_Detail = this.EventScheduledjson[0].Link_Details;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
@@ -3962,7 +3964,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       if (result && result[0])
         this.Link_Detail = result[0].slice(6, result[0].length - 1);
 
-      debugger
+    
       //69 document.getElementById("deleteendit").style.display = "flex";
       if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
 
@@ -6217,26 +6219,28 @@ LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, ty
     // else if (this.projectInfo.AuthorityEmpNo != this.projectInfo.ResponsibleEmpNo) {
     //   FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
     // }
-    let name = "ArchiveView/" + pcode;
+    let name = "ArchiveView/" + this.Schedule_ID;
+    let meetingName =  this.Meeing_Name;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(FileUrl);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");
     filename = filename.replace(/&/g, "%26");
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type +"&"+"Schedule_ID="+this.Schedule_ID +"&"+ "Title_Name=" + meetingName;
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
-  else if (iscloud == true) {
-    let name = "ArchiveView/" + pcode;
+  else if (iscloud == true) {debugger
+    let name = "ArchiveView/" + this.Schedule_ID;
+    let meetingName =  this.Meeing_Name;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(url1);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");
     filename = filename.replace(/&/g, "%26");
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type +"&"+"Schedule_ID="+this.Schedule_ID +"&"+ "Title_Name=" + meetingName;
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
