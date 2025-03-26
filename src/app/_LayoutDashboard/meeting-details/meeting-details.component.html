@@ -1166,14 +1166,14 @@
                                                                         <div class="d-flex align-items-center justify-content-between">
                                                                             <div class="agenda-count" >Agenda {{i+1}}</div> 
                                                                             <div class="agenda-details" style="gap: 5px">
-                                                                                <div class="agenda-details-item "  [ngClass]="{'active': CurrentTaskCount &&  CurrentTaskCount[i] && CurrentTaskCount[i].TaskCount > 0}">
+                                                                                <div class="agenda-details-item "  [ngClass]="{'active': CurrentTaskCount &&  CurrentTaskCount[i] && CurrentTaskCount[i].TaskCount > 0, 'curser-pointer':taskcount[i] && taskcount[i].count > 0}" (click)="openSidebarAP(taskcount[i].count)">
                                                                                     <span class="a-icon">                                
                                                                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 6L21 6.00072M11 12L21 12.0007M11 18L21 18.0007M3 11.9444L4.53846 13.5L8 10M3 5.94444L4.53846 7.5L8 4M4.5 18H4.51M5 18C5 18.2761 4.77614 18.5 4.5 18.5C4.22386 18.5 4 18.2761 4 18C4 17.7239 4.22386 17.5 4.5 17.5C4.77614 17.5 5 17.7239 5 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                                 </span>
                                                                                     <span *ngIf="taskcount && taskcount[i]" class="agenda-details-item-count">{{taskcount[i].count}}</span>
                                                                                 </div>
                                                                                 <!-- <div class="a-v-line" [[ngClass]="{'active': notescount[i].count > 0}"></div> -->
-                                                                                <div class="agenda-details-item" [ngClass]="{'active': CurrentNotesCount && CurrentNotesCount[i] && CurrentNotesCount[i].NotesCount > 0}" >
+                                                                                <div class="agenda-details-item" [ngClass]="{'active': CurrentNotesCount && CurrentNotesCount[i] && CurrentNotesCount[i].NotesCount > 0,'curser-pointer':notescount[i] && notescount[i].count > 0}" (click)="openSidebarPMN(notescount[i].count)">
                                                                                     <span class="a-icon">
                                                                                         <svg  xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="currentColor" height="16" width="16"><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path>
                                                                                         </svg>
@@ -1262,7 +1262,7 @@
                                                                         <div class="d-flex align-items-center justify-content-between">
                                                                             <div class="agenda-count">Agenda {{i+1}}</div>
                                                                             <div class="agenda-details" style="gap: 5px">
-                                                                                <div class="agenda-details-item"  [ngClass]="{'active': CurrentTaskCount && CurrentTaskCount[i].TaskCount > 0}">
+                                                                                <div class="agenda-details-item"  [ngClass]="{'active': CurrentTaskCount && CurrentTaskCount[i].TaskCount > 0}" >
                                                                                     <span class="a-icon">                                
                                                                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 6L21 6.00072M11 12L21 12.0007M11 18L21 18.0007M3 11.9444L4.53846 13.5L8 10M3 5.94444L4.53846 7.5L8 4M4.5 18H4.51M5 18C5 18.2761 4.77614 18.5 4.5 18.5C4.22386 18.5 4 18.2761 4 18C4 17.7239 4.22386 17.5 4.5 17.5C4.77614 17.5 5 17.7239 5 18Z" stroke="#858190" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                                                 
@@ -1579,12 +1579,6 @@
                                                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M5 6c0-1.4 0-2.1.272-2.635a2.5 2.5 0 0 1 1.093-1.093C6.9 2 7.6 2 9 2h6c1.4 0 2.1 0 2.635.272a2.5 2.5 0 0 1 1.092 1.093C19 3.9 19 4.6 19 6v13.208c0 1.056 0 1.583-.217 1.856a1 1 0 0 1-.778.378c-.349.002-.764-.324-1.593-.976L12 17l-4.411 3.466c-.83.652-1.245.978-1.594.976a1 1 0 0 1-.778-.378C5 20.791 5 20.264 5 19.208V6z" fill="currentColor"></path></g></svg>
                                             </div>
 
-
-
-
-
-
-
                                         </div>
 
                                         <div class="kt-meeting-status completed mt-0"   *ngIf="Meetingstatuscom!=Completed">
@@ -1617,7 +1611,7 @@
                                                 <span class="kt-meeting-status-title">Resume</span>
                                             </div>
                                         </ng-container> -->
-                                        <div class="kt-meeting-status started mt-0"   *ngIf="meetingInProgress">
+                                        <div class="kt-meeting-status started mt-0 d-none"   *ngIf="meetingInProgress">
                                             <span class="kt-meeting-status-icon">
                                                 <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
                                                     version="1.1" viewBox="0 0 32 32" width="14px" xml:space="preserve"
@@ -1786,17 +1780,17 @@
                                 <div class="meeting-attendance-title">Average attendance time</div>
                             </div>
                         </div> -->
-                        <div class="meeting-started" *ngIf="meetingInProgress">
-                            <div class="icon-content"><span>
-                            <span class="s-dot"></span>
-                            Meeting has been started</span>
+                        <div class="meeting-started d-none" >
+                           <div class="icon-content"><span>
+                             <span class="s-dot"></span>
+                             Meeting has been started</span>
                             <!-- <span class="s-time">00h 51m 54s</span> -->
-                            </div>
-                        <div class="s-info">
+                           </div>
+                         <div class="s-info">
                             <div class="s-attended">
                                 <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_1251_98416)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M9 0C5.96243 0 3.5 2.46243 3.5 5.5C3.5 8.53757 5.96243 11 9 11C12.0376 11 14.5 8.53757 14.5 5.5C14.5 2.46243 12.0376 0 9 0ZM5.5 5.5C5.5 3.567 7.067 2 9 2C10.933 2 12.5 3.567 12.5 5.5C12.5 7.433 10.933 9 9 9C7.067 9 5.5 7.433 5.5 5.5Z" fill="#000000"></path> <path d="M15.5 0C14.9477 0 14.5 0.447715 14.5 1C14.5 1.55228 14.9477 2 15.5 2C17.433 2 19 3.567 19 5.5C19 7.433 17.433 9 15.5 9C14.9477 9 14.5 9.44771 14.5 10C14.5 10.5523 14.9477 11 15.5 11C18.5376 11 21 8.53757 21 5.5C21 2.46243 18.5376 0 15.5 0Z" fill="#000000"></path> <path d="M19.0837 14.0157C19.3048 13.5096 19.8943 13.2786 20.4004 13.4997C22.5174 14.4246 24 16.538 24 19V21C24 21.5523 23.5523 22 23 22C22.4477 22 22 21.5523 22 21V19C22 17.3613 21.0145 15.9505 19.5996 15.3324C19.0935 15.1113 18.8625 14.5217 19.0837 14.0157Z" fill="#000000"></path> <path d="M6 13C2.68629 13 0 15.6863 0 19V21C0 21.5523 0.447715 22 1 22C1.55228 22 2 21.5523 2 21V19C2 16.7909 3.79086 15 6 15H12C14.2091 15 16 16.7909 16 19V21C16 21.5523 16.4477 22 17 22C17.5523 22 18 21.5523 18 21V19C18 15.6863 15.3137 13 12 13H6Z" fill="#000000"></path> </g> <defs> <clipPath id="clip0_1251_98416"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>
                                 {{completionReports}}/{{totalUser_Scheduledjson+1}} attended the meeting
-                            </div>
+                         </div>
                         <!-- <div class="s-agenda">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none"><g clip-path="url(#clip0_365_5615)"><path d="M13.9299 6.82339L12.5754 6.06971C12.5372 6.04848 12.4919 6.04848 12.4538 6.06971L11.0993 6.82339C11.0111 6.87248 10.906 6.80354 10.906 6.69668V1.01611L12.517 1.02015C13.4046 1.02239 14.1231 1.7979 14.1231 2.75379V6.69665C14.1231 6.80351 14.018 6.87248 13.9299 6.82339Z" fill="currentColor" fill-opacity="0.65"></path><path d="M13.9908 7.31465C13.8998 7.31465 13.8088 7.29077 13.7274 7.24546L12.5148 6.57075L11.302 7.24552C11.2208 7.29077 11.1298 7.31465 11.0388 7.31465C10.8897 7.31471 10.7482 7.25316 10.6405 7.14144C10.5274 7.02417 10.4651 6.86626 10.4651 6.69677V1.01613C10.4651 0.889932 10.5117 0.768936 10.5947 0.679806C10.6774 0.590897 10.7895 0.541016 10.9063 0.541016C10.9067 0.541016 10.907 0.541016 10.9073 0.541016L12.5183 0.545054C13.6466 0.547894 14.5646 1.53877 14.5646 2.75381V6.69667C14.5645 7.03748 14.3071 7.31465 13.9908 7.31465ZM11.3475 1.49239V6.15072L12.2515 5.64771C12.4131 5.55757 12.616 5.55754 12.7782 5.64771L13.6822 6.15072V2.75387C13.6822 2.06153 13.1592 1.49696 12.5162 1.49535L11.3475 1.49239Z" fill="currentColor"></path><path d="M12.7191 16.5767H4.2491C2.88229 16.5767 1.77026 15.3792 1.77026 13.9072V3.09237C1.77026 1.62038 2.88226 0.422852 4.2491 0.422852H12.7192C13.8223 0.422852 14.7197 1.38934 14.7197 2.57731V9.92513C14.7197 10.1875 14.5222 10.4002 14.2785 10.4002C14.0349 10.4002 13.8374 10.1875 13.8374 9.92513V2.57731C13.8373 1.9133 13.3357 1.37309 12.7191 1.37309H4.24907C3.36876 1.37309 2.6526 2.14434 2.6526 3.09237V13.9072C2.6526 14.8552 3.36876 15.6265 4.24907 15.6265H12.7191C13.3357 15.6265 13.8373 15.0863 13.8373 14.4222V12.4029C13.8373 12.1405 14.0349 11.9278 14.2785 11.9278C14.5221 11.9278 14.7197 12.1405 14.7197 12.4029V14.4223C14.7197 15.6102 13.8222 16.5767 12.7191 16.5767Z" fill="currentColor"></path><path d="M4.26442 16.5766C4.02076 16.5766 3.82324 16.3639 3.82324 16.1015V3.27346C3.82324 3.01112 4.02076 2.79834 4.26442 2.79834C4.50809 2.79834 4.70561 3.01108 4.70561 3.27346V16.1015C4.70561 16.3639 4.50809 16.5766 4.26442 16.5766Z" fill="currentColor"></path><path d="M3.97616 4.93657H1.77028C1.52662 4.93657 1.3291 4.72382 1.3291 4.46145C1.3291 4.19907 1.52662 3.98633 1.77028 3.98633H3.97616C4.21982 3.98633 4.41734 4.19907 4.41734 4.46145C4.41734 4.72382 4.21982 4.93657 3.97616 4.93657Z" fill="currentColor"></path><path d="M3.97616 8.97465H1.77028C1.52662 8.97465 1.3291 8.76191 1.3291 8.49953C1.3291 8.23719 1.52662 8.02441 1.77028 8.02441H3.97616C4.21982 8.02441 4.41734 8.23716 4.41734 8.49953C4.41734 8.76188 4.21982 8.97465 3.97616 8.97465Z" fill="currentColor"></path><path d="M3.97616 13.0132H1.77028C1.52662 13.0132 1.3291 12.8005 1.3291 12.5381C1.3291 12.2757 1.52662 12.063 1.77028 12.063H3.97616C4.21982 12.063 4.41734 12.2757 4.41734 12.5381C4.41734 12.8005 4.21982 13.0132 3.97616 13.0132Z" fill="currentColor"></path><path d="M10.8292 12.8947H7.27037C6.91301 12.8947 6.62329 12.5827 6.62329 12.1978V10.7408C6.62329 10.3559 6.91298 10.0439 7.27037 10.0439H10.8292C11.1866 10.0439 11.4763 10.3559 11.4763 10.7408V12.1978C11.4762 12.5827 11.1866 12.8947 10.8292 12.8947Z" fill="currentColor" fill-opacity="0.65"></path><path d="M10.829 13.3698H7.27015C6.67006 13.3698 6.18188 12.844 6.18188 12.1978V10.7408C6.18188 10.0946 6.67006 9.56885 7.27015 9.56885H10.829C11.4291 9.56885 11.9172 10.0946 11.9172 10.7408V12.1978C11.9172 12.844 11.4291 13.3698 10.829 13.3698ZM7.27018 10.5191C7.15665 10.5191 7.06428 10.6186 7.06428 10.7408V12.1978C7.06428 12.3201 7.15665 12.4195 7.27018 12.4195H10.829C10.9425 12.4195 11.0349 12.3201 11.0349 12.1978V10.7408C11.0349 10.6186 10.9425 10.5191 10.829 10.5191H7.27018Z" fill="currentColor"></path></g><defs><clipPath id="clip0_365_5615"><rect width="15" height="16.1538" fill="currentColor" transform="translate(0.524414 0.422852)"></rect></clipPath></defs></svg>
                             New agenda added by <b>Md Waseem Akram</b>
@@ -1806,6 +1800,57 @@
                             New task added to agenda 1 by <b>Md Waseem Akram</b>
                         </div> -->
                         </div>
+                        </div>
+                        <div class="meeting-attendance-main" *ngIf="meetingInProgress">
+                            <div class="legend-border">
+                                <div class="meeting-attendance-heading">Meeting Summary</div>
+                                <div class="meeting-icon-content">
+                                    <span><span class="s-dot"></span> Meeting has been started </span>
+                                <div class="meeting-attendance-count">
+                                    {{formatTime(elapsedTime)}}
+                                </div>
+                                </div>
+
+                            
+                            <div class="accordion">
+                                <div id="meeting-attendance-accordion-collapse" class="collapse show">
+                                    <div class="meeting-attendance meeting-attendance-accordion-div">
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="View_Meeting_Attendees()" >
+                                            <div class="meeting-attendance-count">{{completionReports}}/{{totalUser_Scheduledjson+1}}</div>
+                                            <div class="meeting-attendance-title">Attended</div>
+                                        </div>
+                                        <div class="meeting-attendance-item" >
+                                            <div class="meeting-attendance-count">{{totalAgendaList}}</div>
+                                            <div class="meeting-attendance-title">Agenda</div>
+                                        </div>
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="Slide_meeting()" >
+                                            <div class="meeting-attendance-count">{{totalNotesCount}}</div>
+                                            <div class="meeting-attendance-title">Notes</div>
+                                        </div>
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="Slide_AssignTask()">
+                                            <div class="meeting-attendance-count">{{totalTasksCount}}</div>
+                                            <div class="meeting-attendance-title">Tasks</div>
+                                        </div>
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="addNewDMS()">
+                                            <div class="meeting-attendance-count">{{smailcount}}</div>
+                                            <div class="meeting-attendance-title">SMail</div>
+                                        </div>
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="AddPortfolio()">
+                                            <div class="meeting-attendance-count">{{portFocount}}</div>
+                                            <div class="meeting-attendance-title">Portfolio</div>
+                                        </div>
+                                        <div class="meeting-attendance-item cursor-pointer"  (click)="AddProjects()">
+                                            <div class="meeting-attendance-count">{{projecount}}</div>
+                                            <div class="meeting-attendance-title">Project</div>
+                                        </div>
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="Attachment_views()">
+                                            <div class="meeting-attendance-count">{{attachcount}}</div>
+                                            <div class="meeting-attendance-title">Attachments</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
                         </div>
                         <div class="meeting-attendance-main" *ngIf="Meetingstatuscom=='Completed'">
                             <div class="legend-border" *ngFor="let data of CompletedMeeting_notes;let i = index ">
@@ -4352,7 +4397,7 @@
 
         <div id="Meeting_Attendees" class="meeting-attendes sideInfobar animate-right">
             <div class="kt-portlet">
-                <div class="kt-portlet__head">
+                <div class="kt-portlet__head_Attendees">
                     <div class="offcanvas-header d-flex align-items-center justify-content-between p-0" >
                         <ul class="nav nav-tabs" id="myTabMeetingAttendees" role="tablist">
                             <li class="nav-item" role="presentation">
@@ -7204,7 +7249,7 @@
                                             <span> from device</span>
                                         </span>
                                     </label>
-                                    <input id="uploadFile" type="file"  accept="image/*, .pdf, .txt, .html, .htm, .doc, .docx, .json, .xml, .ppt, .pptx, .xlsx, .xls"
+                                    <input id="uploadFile" type="file"  accept="image/*, video/*, audio/*, .pdf, .txt, .html, .htm, .doc, .docx, .json, .xml, .ppt, .pptx, .xlsx, .xls"
                                      (change)="onFileChange($event)" [(ngModel)]="SelectedAttachmentFile" multiple="multiple" />
                                 </div>
 
@@ -7212,7 +7257,7 @@
 
                                 <div class="error-notification " >
                                     <!-- <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg> -->
-                                   <span  class="notif-msg">*Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
+                                   <span  class="notif-msg">*Supported file types: Images, Video, Audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
                                 </div>
                             </span>
                             <ng-container *ngFor='let url of _lstMultipleFiales'>
@@ -8907,7 +8952,7 @@
                             <div class="se-col-11">
                                 <div class="schedule-file">
                                     <div class="file-input" id="file__input">
-                                    <input (change)="onFileChange1($event)" class="file-input-file" accept="image/*, .pdf, .txt, .html, .htm, .doc, .docx, .json, .xml, .ppt, .pptx, .xlsx, .xls" id="customFile" type="file" multiple="multiple" name="files[]"/>
+                                    <input (change)="onFileChange1($event)" class="file-input-file" accept="image/*, video/*, audio/*, .pdf, .txt, .html, .htm, .doc, .docx, .json, .xml, .ppt, .pptx, .xlsx, .xls" id="customFile" type="file" multiple="multiple" name="files[]"/>
                                     <label class="file-input-label" for="customFile">
                                         <span class="file-input-button">
         
@@ -8919,7 +8964,7 @@
                               
                                     <div class="error-notification mt-1" >
                                         <!-- <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="notif-img"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g clip-path="url(#clip0_429_11160)"><circle cx="12" cy="11.9999" r="11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></circle><rect x="12" y="8" width="0.01" height="0.01" stroke-width="3" stroke-linejoin="round"></rect><path d="M12 12V16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_429_11160"><rect width="24" height="24" fill="white"></rect></clipPath></defs></g></svg> -->
-                                       <span  class="notif-msg">*Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
+                                       <span  class="notif-msg">*Supported file types: Images, Video, Audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
                                     </div>
 
                                 <ul class="schedule-file-list">

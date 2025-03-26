@@ -364,22 +364,22 @@ export class StreamDashboardComponent implements OnInit {
       };
   });
   
-
-  if (this.scheduleItems.length == 9) {
+debugger
+  if (this.scheduleItems.length == 10) {
     this.scheduleItems.pop();
   } 
- 
+  if(this.scheduleItems.length == 9){
+    this.scheduleItems.pop();
+  }
 
-     this.scheduleItems.sort((a, b) => a.Schedule_date.localeCompare(b.Schedule_date));
-      console.log(this.scheduleItems, "Calendar Data 2");
- 
-     
-      if( this.scheduleItems.some(data => data.Schedule_date <  this.today)){
+  this.scheduleItems.sort((a, b) => a.Schedule_date.localeCompare(b.Schedule_date));
+
+   if( this.scheduleItems.some(data => data.Schedule_date <  this.today)){
         this.scheduleItems.shift(); 
-      }
-      
+    }
+  });
 
-    }); 
+    console.log(this.scheduleItems, "Calendar Data 2");
   }
 
 
@@ -643,7 +643,7 @@ export class StreamDashboardComponent implements OnInit {
 
   
 
-  formatTimes(dateTime?: string): string {   
+  formatTimes(dateTime?: string): string {
     if (!dateTime) return ''; // Handle undefined/null cases safely
   
     const timePart = dateTime.split(' ')[1]; // Extract time part safely

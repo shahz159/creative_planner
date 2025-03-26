@@ -599,15 +599,15 @@ label.kt-list-nav-item-label {
 
 
 .kt-list-nav-item-check .form-check-input#checkmymeetings {
-    border-color: #3788d8;
+    border-color: #294899;
 }
 
 .kt-list-nav-item-check .form-check-input#checkconmeetings {
-    border-color: #9b30ff;
+    border-color: #2786fb;
 }
 
 .kt-list-nav-item-check .form-check-input#checkpenmeetings {
-    border-color: #9b30ff;
+    border-color: #FF9900;
 }
 
 .kt-list-nav-item-check .form-check-input#checkrejmeetings {
@@ -629,18 +629,21 @@ label.kt-list-nav-item-label {
 
 
 .kt-list-nav-item-check .form-check-input:checked#checkmymeetings {
-    background-color: #3788d8;
-    border-color: #3788d8;
+    /* background-color: #3788d8; */
+    background-color: #294899;
+    border-color: #294899;
 }
 
 .kt-list-nav-item-check .form-check-input:checked#checkconmeetings {
-    background-color: #9b30ff;
-    border-color: #9b30ff;
+    /* background-color: #9b30ff; */
+    background-color: #2786fb;
+    border-color: #2786fb;
 }
 
 .kt-list-nav-item-check .form-check-input:checked#checkpenmeetings {
-    background-color: #9b30ff;
-    border-color: #9b30ff;
+    /* background-color: #9b30ff; */
+    background-color: #FF9900; 
+    border-color: #FF9900;
 }
 
 .kt-list-nav-item-check .form-check-input:checked#checkrejmeetings {
@@ -5520,3 +5523,26 @@ span.previous-dots {
 }
 
 
+span#schedule-date {
+    min-width: 200px;
+    cursor: default;
+    user-select: none;
+}
+
+span#week-date {
+    min-width: 200px;
+    cursor: default;
+    user-select: none;
+}
+
+span#month-date {
+    min-width: 146px;
+    cursor: default;
+    user-select: none;
+}
+
+span#day-date {
+    min-width: 146px;
+    cursor: default;
+    user-select: none;
+}
