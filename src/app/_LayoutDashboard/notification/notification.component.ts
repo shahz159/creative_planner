@@ -139,7 +139,7 @@ export class NotificationComponent implements OnInit {
         }
          //Request
          if (this.selectedItem_Request.length == 0) {
-          this.RequestCountFilter = JSON.parse(data[0]['Request_json']);
+          this.RequestCountFilter = JSON.parse(data[0]['Request_json']);   console.log('rrcf:',this.RequestCountFilter);
         }
         else {
           this.RequestCountFilter = this.selectedItem_Request[0];

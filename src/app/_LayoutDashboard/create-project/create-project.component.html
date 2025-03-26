@@ -460,8 +460,9 @@
                                     </div>
                                     <div class="kt-act-info">
                                       <div class="kt-act-ttl-v" >
+                                        <!-- LoadDocument(record.Reference) -->
                                         <h6 title="Project name">{{record.Task_Name}}  <span *ngIf="record.FileName" class="fa fa-paperclip  attachment cursor-pointer"  [style.height.px]="10"
-                                          [style.width.px]="10" title="Reference attachment" (click)="LoadDocument(record.Reference)"></span></h6>
+                                          [style.width.px]="10" title="Reference attachment" (click)="LoadDocument1(0,true,record.FileName,record.Reference,getFileExtension(record.Reference),record.submitby)"></span></h6>
                                         <div class="d-flex">
                                           <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic" title="Start date and End date" ><svg
                                                 xmlns="http://www.w3.org/2000/svg" width="15px" height="15px"
@@ -2384,7 +2385,7 @@
 
                                             </div>
                                             <div class="kt-info-data-v">
-                                              <b class="word-break text-info curser-pointer " (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" >{{fileAttachment.name}}</b>
+                                              <b class="word-break text-info curser-pointer " (click)="LoadDocument1(projectInfo.Project_Code,projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" >{{fileAttachment.name}}</b>
                                             </div>
                                           </div>
                                           <div *ngSwitchCase="false">
@@ -2680,7 +2681,7 @@
                                   </div>
                                   <div class="kt-info-data-v">
                                     <b
-                                      class="word-break text-info cursor-pointer" (click)="LoadDocument1(PrjActionsInfo[currentActionView].IsCloud,PrjActionsInfo[currentActionView].Sourcefile,PrjActionsInfo[currentActionView].CompleteProofDoc,PrjActionsInfo[currentActionView].contenttype,PrjActionsInfo[currentActionView].Responsible)">{{PrjActionsInfo[currentActionView].Sourcefile}}</b>
+                                      class="word-break text-info cursor-pointer" (click)="LoadDocument1(PrjActionsInfo[currentActionView].Project_Code,PrjActionsInfo[currentActionView].IsCloud,PrjActionsInfo[currentActionView].Sourcefile,PrjActionsInfo[currentActionView].CompleteProofDoc,PrjActionsInfo[currentActionView].contenttype,PrjActionsInfo[currentActionView].Responsible)">{{PrjActionsInfo[currentActionView].Sourcefile}}</b>
                                   </div>
                                 </div>
                               </div>

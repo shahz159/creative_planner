@@ -2796,7 +2796,7 @@
                                                     (projectInfo.Status!='Completed'&&projectInfo.Status!=='Cancelled')&&
                                                     (
 
-                                                    (['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false) ||
+                                                    (['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval','Completion Under Approval'].includes(projectInfo.Status.trim())==false) ||
                                                     (projectInfo.Project_Type == 'Standard Tasks') ||
                                                     (['001','002','011'].includes(projectInfo.Project_Block)&&['Project Hold','Cancelled','New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval','Deadline Extend Under Approval'].includes(projectInfo.Status.trim())==false) ||
                                                     (['001','002','011'].includes(projectInfo.Project_Block)&&((projectInfo.Status==='Project Hold')||(projectInfo.Status!=='Project Hold'&&(projectInfo.Status==='InProcess' || projectInfo.Status==='Delay')))) ||
@@ -3410,17 +3410,17 @@
                                             <!-- <div style="color: red;font-weight: 500; margin-top: 10px; margin-bottom: 5px;">
                                                 This request was previously rejected 2 times by Aquib Shahbaz
                                             </div> -->
-                                            <div class="col-lg-12 mb-3 px-3 pb-2 pt-1 last-rejection-bx">
+                                            <div class="col-lg-12 mb-3 mt-3 px-3 pb-2 pt-1 last-rejection-bx">
                                                 <div class="fs-7 mb-2 last-rej-label">Last rejection details</div>
-                                               <div class="fs-7 d-flex justify-content-between">
+                                               <div class="fs-7 d-flex justify-content-between gap-2">
                                                 <div>
                                                      <b>Rejection type : </b><span>{{rejectreleaseComments[0].rejectType}}</span>
                                                 </div>
-                                                <div>
+                                                <div class="text-nowrap">
                                                      <b>Rejected on : </b><span>{{rejectreleaseComments[0].Rec_date|date:'dd-MM-yyyy'}}</span>
                                                 </div>
                                                </div>
-                                               <div class="fs-7 d-flex justify-content-between">
+                                               <div class="fs-7 d-flex justify-content-between gap-2">
                                                 <div>
                                                     <b>Remarks :</b>
                                                     <span>{{rejectreleaseComments[0].Req_Coments}}</span>
@@ -15388,9 +15388,9 @@
                               </div>
 
 
-                                   <!--new project reject release (New approval) start-->
+                             <!--new project reject release (New approval) start-->
                                            
-                                   <ng-container *ngIf="aprv.Type=='New Project Reject Release'">
+                                <ng-container *ngIf="aprv.Type=='New Project Reject Release'">
                                     <!-- <div style="color: red;font-weight: 500; margin-top: 10px; margin-bottom: 5px;">
                                         This request was previously rejected 2 times by Aquib Shahbaz
                                     </div> -->
@@ -15415,7 +15415,7 @@
                                     </div>
                                 </ng-container>
                                  
-                                    <!-- new project reject release  (New approval) end-->
+                             <!-- new project reject release  (New approval) end-->
 
 
 
@@ -15760,7 +15760,7 @@
                                       <div class="kt-info-lable-v">Remarks</div>
                                         <div class="kt-info-data-v px-2 " data-toggle="tooltip"  style="overflow:unset; white-space:unset; text-overflow:unset;">
                                                 <div [id]="'pending-aprvl-remark-'+i" (click)="expandRemarks('pending-aprvl-remark-'+i)"  class="compl-remarks-span px-2 curser-pointer" title="Click to view more or collapse">
-                                                    {{requestComments}}
+                                                    {{aprv.Remarks}}
                                                 </div>
                                         </div>
                                   </div>

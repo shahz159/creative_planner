@@ -3128,8 +3128,8 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
   }
 
 
-
-LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {  debugger
+ 
+LoadDocument1(prj_code:any,iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {  
 
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
@@ -3159,7 +3159,7 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
   }
 
   else if (iscloud == true) {
-    let name = "ArchiveView/" + this.projectInfo.Project_Code;
+    let name = "ArchiveView/" + prj_code;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(url1);
@@ -3171,6 +3171,11 @@ LoadDocument1(iscloud: boolean, filename: string, url1: string, type: string, su
     myWindow.focus();
   }
 }
+
+
+
+
+
 
 
 
