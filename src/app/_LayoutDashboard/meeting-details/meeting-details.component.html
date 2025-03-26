@@ -1805,32 +1805,20 @@
                             <div class="legend-border">
                                 <div class="meeting-attendance-heading">Meeting Summary</div>
                                 <div class="meeting-icon-content">
-                                    <span>
-                                        <span class="s-dot"></span> Meeting has been started
-                                </span>
-                        </div>
+                                    <span><span class="s-dot"></span> Meeting has been started </span>
+                                <div class="meeting-attendance-count">
+                                    {{formatTime(elapsedTime)}}
+                                </div>
+                                </div>
 
-                            <div class="meeting-attendance">
-                                <div class="meeting-attendance-item">
-                                    <div class="meeting-attendance-count">
-                                        {{formatTime(elapsedTime)}}
-                                        <!-- <span><span>00</span><span class="time-value">h</span></span>
-                                        <span><span>10</span><span class="time-value">m</span></span>
-                                        <span><span>35</span><span class="time-value">s</span></span> -->
-                                    </div>
-                                    <div class="meeting-attendance-title">Ongoing Timer</div>
-                                </div>
-                                <div class="meeting-attendance-item">
-                                    <div class="meeting-attendance-count">{{completionReports}}/{{totalUser_Scheduledjson+1}}</div>
-                                    <div class="meeting-attendance-title">Attended</div>
-                                </div>
-                                
-                                
-        
-                            </div>
+                            
                             <div class="accordion">
                                 <div id="meeting-attendance-accordion-collapse" class="collapse show">
                                     <div class="meeting-attendance meeting-attendance-accordion-div">
+                                        <div class="meeting-attendance-item" >
+                                            <div class="meeting-attendance-count">{{completionReports}}/{{totalUser_Scheduledjson+1}}</div>
+                                            <div class="meeting-attendance-title">Attended</div>
+                                        </div>
                                         <div class="meeting-attendance-item" >
                                             <div class="meeting-attendance-count">{{totalAgendaList}}</div>
                                             <div class="meeting-attendance-title">Agenda</div>
