@@ -8964,25 +8964,29 @@ a.info-btn {
     transition: all .25s ease-in;
     color: #8c8c8c;
 }
+
 a.info-btn svg {
     width: 26px;
     height: 26px;
 }
+
 a.info-btn:hover {
     background: #e6e6ff;
     color: #7d7ebb;
 }
+
 a.info-btn.info-btn-disable {
     color: #d1d1d1;
     cursor: default;
 }
+
 a.info-btn.info-btn-disable:hover {
     background: #ffffff;
     color: #d1d1d1;
 }
 
 
-.custom-hover:hover{
+.custom-hover:hover {
     color: #2786f0 !important;
 }
 
@@ -8991,8 +8995,19 @@ a.info-btn.info-btn-disable:hover {
     border-radius: 5px;
     background-color: #fff;
     z-index: 2;
-  }
-  
-  .icn-hvr {
+}
+
+.icn-hvr {
     margin: 1px 5px;
-  }
+}
+
+.meeting-icon-content {
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    margin-top: 10px;
+    text-align: justify;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

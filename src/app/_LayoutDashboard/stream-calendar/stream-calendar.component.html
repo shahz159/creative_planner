@@ -1,7 +1,7 @@
 <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid" *ngIf="loadingDMS == true ;else pleasewait">
     <div class=" kt-calendar">
         <div class="kt-calendar-header">
-            <div class="kt-header-logo">
+            <div class="kt-header-logo curser-pointer" (click)="GetScheduledJson()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="19" height="21" viewBox="0 0 19 21" fill="none">
                     <path d="M4.1825 10.6709H6.1825V12.6709H4.1825V10.6709ZM16.1825 2.6709H15.1825V0.670898H13.1825V2.6709H5.1825V0.670898H3.1825V2.6709H2.1825C1.0825 2.6709 0.182495 3.5709 0.182495 4.6709V18.6709C0.182495 19.7709 1.0825 20.6709 2.1825 20.6709H16.1825C17.2825 20.6709 18.1825 19.7709 18.1825 18.6709V4.6709C18.1825 3.5709 17.2825 2.6709 16.1825 2.6709ZM16.1825 4.6709V6.6709H2.1825V4.6709H16.1825ZM2.1825 18.6709V8.6709H16.1825V18.6709H2.1825ZM8.1825 14.6709H10.1825V16.6709H8.1825V14.6709ZM12.1825 14.6709H14.1825V16.6709H12.1825V14.6709ZM12.1825 10.6709H14.1825V12.6709H12.1825V10.6709Z" fill="#518EF6">
                     </path>
@@ -89,7 +89,7 @@
                         <a class="dropdown-item" href="javascript:void(0)" (click)="sch_div()">Schedule</a>
                     </div> 
                 </div> 
-               <div class="kt-header-switch d-none">
+               <div class="kt-header-switch">
                     <div matTooltip="Schedule" class="switch-calendar active" id="switch-calendar" (click)="switch_calender()">
                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -566,7 +566,8 @@
                         <div class="sch-evt-item  sch-evt-border-bottom" *ngFor="let meetingItem of group.events"  (click)="customEventModal(meetingItem.Schedule_Type);GetClickEventJSON_Calender(meetingItem.Schedule_ID,meetingItem.className)">
                             <div style="display: flex;align-items: center;">
                                 <div class="sch-evt-p sch-evt-pr-0">
-                                  <svg *ngIf="meetingItem.Schedule_Type==1 &&  meetingItem.className!='fc-green'" width="18px" height="18px" viewBox="0 0 20 20"
+                                    <div class="position-relative">
+                                        <svg *ngIf="meetingItem.Schedule_Type==1 &&  meetingItem.className!='fc-green'" width="18px" height="18px" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg" fill="none">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
@@ -607,6 +608,20 @@
                                             </path>
                                         </g>
                                   </svg>
+                                  <svg *ngIf="meetingItem.Status == 'Accepted'" xmlns="https://www.w3.org/2000/svg" width="14" height="14" class="ng-star-inserted" style=" position: absolute; top: 10px; left: -6px;"><path fill="#2786fb" d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path><path fill="none" stroke="#fff" stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path></svg>
+
+                                  <svg *ngIf="meetingItem.Status == 'Rejected'" xmlns="https://www.w3.org/2000/svg" width="14" height="14" class="ng-star-inserted" style=" position: absolute; top: 10px; left: -6px;"><path fill="#B31412" d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path><path fill="none" stroke="#fff" stroke-width="1.5" d="M4 10l6-6M10 10L4 4"></path></svg>
+
+                                  <svg *ngIf="meetingItem.Status == 'May be'" xmlns="https://www.w3.org/2000/svg" width="14" height="14" class="ng-star-inserted" style=" position: absolute; top: 10px; left: -6px;"><path fill="#3C4043" d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path><path fill="none" stroke="#fff" stroke-width="1.5" d="M5 5c0-1.1.9-2 2-2s2 .9 2 2-1 1.5-1.5 2S7 8 7 9M7 10v1.5"></path></svg>
+
+                                  <svg *ngIf="meetingItem.Status == 'Pending' ||  (meetingItem.Status == 'Pending' && meetingItem.className =='fc-suc') " xmlns="http://www.w3.org/2000/svg" width="14.5" height="14.5" viewBox="0 0 22 22" fill="none" style=" position: absolute; top: 10px; left: -6px;"><path d="M11 21.5C16.799 21.5 21.5 16.799 21.5 11C21.5 5.20101 16.799 0.5 11 0.5C5.20101 0.5 0.5 5.20101 0.5 11C0.5 16.799 5.20101 21.5 11 21.5Z" fill="#FF9900"></path><path d="M10 9H12V18H10V9Z" fill="white"></path><path d="M10.75 7.5C11.7165 7.5 12.5 6.7165 12.5 5.75C12.5 4.7835 11.7165 4 10.75 4C9.7835 4 9 4.7835 9 5.75C9 6.7165 9.7835 7.5 10.75 7.5Z" fill="white"></path></svg>
+
+                                  <svg *ngIf="meetingItem.Status == 'Owner' && meetingItem.className!='fc-green' && meetingItem.className!='fc-suc'" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 20 20" fill="none" style=" position: absolute; top: 10px; left: -6px;"><path d="M20 10C20 15.523 15.523 20 10 20C4.477 20 0 15.523 0 10C0 4.477 4.477 0 10 0C15.523 0 20 4.477 20 10Z" fill="#294899"></path><path d="M14.8068 17.011C13.3926 17.9834 11.7161 18.5028 9.9998 18.5C8.28352 18.5028 6.607 17.9834 5.1928 17.011C4.5888 16.596 4.3308 15.806 4.6828 15.163C5.4098 13.83 6.9098 13 9.9998 13C13.0898 13 14.5898 13.83 15.3178 15.163C15.6678 15.806 15.4108 16.596 14.8068 17.011ZM9.9998 10C10.7954 10 11.5585 9.68393 12.1211 9.12132C12.6837 8.55871 12.9998 7.79565 12.9998 7C12.9998 6.20435 12.6837 5.44129 12.1211 4.87868C11.5585 4.31607 10.7954 4 9.9998 4C9.20415 4 8.44109 4.31607 7.87848 4.87868C7.31587 5.44129 6.9998 6.20435 6.9998 7C6.9998 7.79565 7.31587 8.55871 7.87848 9.12132C8.44109 9.68393 9.20415 10 9.9998 10Z" fill="white"></path></svg>
+                                   
+                                  <svg *ngIf="(meetingItem.className=='fc-green' || meetingItem.className =='fc-suc') && meetingItem.Status != 'Pending'" xmlns="https://www.w3.org/2000/svg" width="14" height="14" class="ng-star-inserted" style=" position: absolute; top: 10px; left: -6px;"><path fill="#06ab34" d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path><path fill="none" stroke="#fff" stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path></svg>
+
+                            </div>
+                                  
                                 </div>
                                 <div class="sch-evt-time sch-evt-p  sch-evt-pr-0" *ngIf="meetingItem.className=='fc-red'"><s>{{meetingItem.start | date: 'h:mm a'}} - {{meetingItem.end | date: 'h:mm a'}}</s> </div>                         
                                 <div class="sch-evt-time sch-evt-p  sch-evt-pr-0" *ngIf="meetingItem.className=='fc-green'"><s>{{meetingItem.start | date: 'h:mm a'}} - {{meetingItem.end | date: 'h:mm a'}}</s> </div>
@@ -614,12 +629,7 @@
                                 <div class="sch-evt-info">
                                     <span class="sch-evt-p sch-evt-pl-0" *ngIf="meetingItem.className=='fc-green'"><s>{{meetingItem.title}}</s></span>
                                     <span class="sch-evt-p sch-evt-pl-0" *ngIf="meetingItem.className=='fc-red'"><s>{{meetingItem.title}}</s></span>
-                                    <span class="sch-evt-p sch-evt-pl-0" *ngIf="meetingItem.className!='fc-green' && meetingItem.className!='fc-red'">
-                                    <svg *ngIf="meetingItem.Status == 'Accepted'" matTooltip="Confirm meeting" xmlns="https://www.w3.org/2000/svg" width="14" height="14" style="margin-right: 4px;">
-                                        <path fill="#2786fb" d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
-                                        <path fill="none" stroke="#fff" stroke-width="1.5" d="M3.5 6.5L6 9l5-5">
-                                        </path>
-                                    </svg> 
+                                    <span class="sch-evt-p sch-evt-pl-0" *ngIf="meetingItem.className!='fc-green' && meetingItem.className!='fc-red'">                               
                                     {{meetingItem.title}} <span *ngIf="meetingItem.location" matTooltip="Location">| <svg  width="17px" height="17px" viewBox="0 2 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>{{meetingItem.location}}</span></span>
                                 </div>
                             </div>
