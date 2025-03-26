@@ -1815,7 +1815,7 @@
                             <div class="accordion">
                                 <div id="meeting-attendance-accordion-collapse" class="collapse show">
                                     <div class="meeting-attendance meeting-attendance-accordion-div">
-                                        <div class="meeting-attendance-item" >
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="View_Meeting_Attendees()" >
                                             <div class="meeting-attendance-count">{{completionReports}}/{{totalUser_Scheduledjson+1}}</div>
                                             <div class="meeting-attendance-title">Attended</div>
                                         </div>
@@ -4397,7 +4397,7 @@
 
         <div id="Meeting_Attendees" class="meeting-attendes sideInfobar animate-right">
             <div class="kt-portlet">
-                <div class="kt-portlet__head">
+                <div class="kt-portlet__head_Attendees">
                     <div class="offcanvas-header d-flex align-items-center justify-content-between p-0" >
                         <ul class="nav nav-tabs" id="myTabMeetingAttendees" role="tablist">
                             <li class="nav-item" role="presentation">
