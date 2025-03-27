@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import * as moment from 'moment';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { ProjectMoreDetailsService } from '../../_Services/project-more-details.service';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import Swal from 'sweetalert2';
@@ -220,19 +220,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     public cdr:ChangeDetectorRef
 
   ) {
-
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
     this.objPortfolioDto = new PortfolioDTO();
     this.approvalObj = new ApprovalDTO();
   }
-
-
-
-
-
-
-
 
 
   onKeyPress() {
@@ -261,6 +253,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         this.router.navigate(["../backend/ProjectsSummary"]);
       }
     });
+
+    
+
+
 
 
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
