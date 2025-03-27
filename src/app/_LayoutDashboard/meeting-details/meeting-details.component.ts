@@ -886,10 +886,13 @@ export class MeetingDetailsComponent implements OnInit {
   meetingRestriction(actualMeeting) {
 
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(today.getDate() - 8);
     const meetingDate = new Date(actualMeeting);
-
+    meetingDate.setHours(0, 0, 0, 0);
+    sevenDaysAgo.setHours(0, 0, 0, 0);
+  
 debugger
     if (meetingDate >= sevenDaysAgo && meetingDate <= today) {
       this.delayMeeting = true;
