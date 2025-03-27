@@ -67,7 +67,7 @@ export class FileviewComponent implements OnInit {
 
 
   ngOnInit(): void { 
-
+debugger
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.IsStreamDownload = localStorage.getItem('IsStreamDownload');
     var decoder = new TextDecoder();
