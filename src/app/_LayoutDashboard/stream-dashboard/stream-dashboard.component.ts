@@ -702,7 +702,7 @@ debugger
                     margin: 0,
                     autoplay: true,
                     autoplayTimeout:3700,
-                    autoplayHoverPause: true,
+                    autoplayHoverPause: false,
                     nav: false,
                     dots: true,
                     navText: [
