@@ -5865,3 +5865,27 @@ span.run-icon-group-icon svg {
   width: 30px; 
   height: 30px;
 }
+
+
+/* multi select dropdown start */
+
+@media screen and (min-width: 1440px) {
+  .multi-selected-list .schedule-select-user-list-item .user-name {
+      width: 130px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  ul.schedule-select-user-list.multi-selected-list li{
+      width: 195px;
+  }
+}
+
+#multiselect-2-dialog .project-filter.show{
+  display:flex;
+  flex-direction: column;
+}
+
+#multiselect-2-dialog .project-filter .project-filter-item{
+   flex-grow:1;
+}

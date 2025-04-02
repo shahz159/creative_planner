@@ -488,8 +488,12 @@ Dateselectionrange: string = 'Date selection range';
 
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe((data:any) => {
       if(data){
-         data.forEach((ob)=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
+         data.forEach((ob)=>{
+          ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+          ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
+         });
       }
+
       this._ProjectDataList = data;
 
       this.ActualDataList = data;
@@ -528,10 +532,13 @@ Dateselectionrange: string = 'Date selection range';
 
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe((data:any) => {
         if(data){
-          data.forEach((ob)=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
+          data.forEach((ob)=>{
+            ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+            ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
+           });
         }
-        this._ProjectDataList = data;
 
+        this._ProjectDataList = data;
          console.log("Summary Data---->",this._ProjectDataList);
 
          this.un_FilteredProjects = data;
@@ -1174,7 +1181,10 @@ debugger
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails)
       .subscribe((data:any) => {
         if(data){
-          data.forEach((ob)=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
+          data.forEach((ob)=>{
+            ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+            ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
+           });
        }
         //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
         this._ProjectDataList = data;
@@ -1224,7 +1234,10 @@ debugger
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails)
         .subscribe((data:any) => {
           if(data){
-            data.forEach((ob)=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
+            data.forEach((ob)=>{
+              ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+              ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
+             });
            }
           //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
           this._ProjectDataList = data;
@@ -2227,6 +2240,7 @@ this.closeAutocompleteDrpDwn('proDDwn')
  isstatus = true;
  islastupdate = true;
  isdeadline = true;
+ isallocatedhrs=true;
  isrespon = true;
  isprojtype = true;
  isdeleted = true;
@@ -2258,7 +2272,8 @@ this.closeAutocompleteDrpDwn('proDDwn')
        'class_depart'  : 'isDepartment',
        'class_startdate':'isstartdate',
        'class_completiondate':'iscompletiondate',
-       'class_creationdate':'iscreateddate'
+       'class_creationdate':'iscreateddate',
+       'class_allocatedhours':'isallocatedhrs'
      };
 
      // Check if the className exists in the map and update the corresponding state variable
@@ -2297,6 +2312,8 @@ this.closeAutocompleteDrpDwn('proDDwn')
     return '';
 
   }
+
+
 
 
 
@@ -3319,6 +3336,24 @@ debugger
 //   });
 //  this.value()
 // }
+
+
+// method to convert HH:MM to hours value.
+convertToDecimalHours(hm:string){
+  const h=Number.parseInt(hm.split(':')[0]);
+  const m=Number.parseInt(hm.split(':')[1]);
+  const alhr=h+(m/60);
+  return alhr;
+}
+// method to convert HH:MM to hours value.
+
+
+
+
+
+
+
+
 }
 
 

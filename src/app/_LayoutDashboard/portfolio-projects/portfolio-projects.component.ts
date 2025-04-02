@@ -432,6 +432,7 @@ export class PortfolioProjectsComponent implements OnInit {
         this.createdBy = this._PortfolioDetailsById[0]['Created_By'];
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
 
+      
         console.log('PORTFOLIO PROJECT BY PID:',this._ProjectsListBy_Pid);
 
         this.lastProject = this._ProjectsListBy_Pid.length;
@@ -461,9 +462,8 @@ export class PortfolioProjectsComponent implements OnInit {
           this.filteredEmployees.push(obj)
         }
 
-        // parse newrejectJson 
-        item.newrejectJson=item.newrejectJson?JSON.parse(item.newrejectJson):null;
-        // parse newrejectJson 
+        item.newrejectJson=item.newrejectJson?JSON.parse(item.newrejectJson):null;  // parses newrejectJson str into object.
+        item.hoursInDecimal=(item.Project_Block=='003'||item.Project_Block=='008')?this.convertToDecimalHours(item.StandardDuration):item.AllocatedHours; // create new property : 'hoursInDecimal'  
 
       });
         console.log(this.filteredEmployees,"this.filteredEmployeesthis.filteredEmployees")
@@ -768,6 +768,17 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
 
 
   }
+
+
+  
+// method to convert HH:MM to hours value.
+convertToDecimalHours(hm:string){
+  const h=Number.parseInt(hm.split(':')[0]);
+  const m=Number.parseInt(hm.split(':')[1]);
+  const alhr=h+(m/60);
+  return alhr;
+}
+// method to convert HH:MM to hours value.
 
   isProjectRestorable(dp_code:string):boolean{
       const _at=this._ProjectsListBy_Pid.findIndex((prj)=>{
@@ -1288,7 +1299,10 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
             .subscribe((data) => {
               //console.log("qwerty" + data);
               this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
-              this._ProjectsListBy_Pid.forEach(ob=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
+              this._ProjectsListBy_Pid.forEach(ob=>{
+                ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+                ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
+              });
               this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
               this.TotalProjects = this._ProjectsListBy_Pid.length;
               var rez = {};
@@ -6651,6 +6665,7 @@ isracis = false;
 isstatus = true;
 islastupdate = true;
 isdeadline = true;
+isallocatedhrs=true;
 isrespon = true;
 isprojtype = true;
 isdeleted = true;
@@ -6682,7 +6697,8 @@ iscompletiondate=false;
       'class_depart'  : 'isDepartment',
       'class_startdate':'isstartdate',
       'class_completiondate':'iscompletiondate',
-      'class_creationdate':'iscreateddate'
+      'class_creationdate':'iscreateddate',
+      'class_allocatedhours':'isallocatedhrs'
     };
 
     // Check if the className exists in the map and update the corresponding state variable
@@ -6694,24 +6710,27 @@ iscompletiondate=false;
 
 
   formatTime(input: string): string {
-    // Check if the input is already in the correct format
-    if (/^\d{2} Hr : \d{2} Mins$/.test(input)) {
-      return input; // If the format is correct, return it as-is
+    if(input){
+        // Check if the input is already in the correct format
+        if (/^\d{2} Hr : \d{2} Mins$/.test(input)) {
+          return input; // If the format is correct, return it as-is
+        }
+
+        // Extract hours and minutes using regex for formatting if needed
+        const matches = input.match(/(\d+)Hr:(\d+)Mins/);
+
+        if (!matches) {
+          return 'Invalid Format'; // Handle unexpected format
+        }
+
+        // Extract hours and minutes
+        const hours = parseInt(matches[1], 10) || 0;
+        const minutes = parseInt(matches[2], 10) || 0;
+
+        // Format the string
+        return `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
     }
-
-    // Extract hours and minutes using regex for formatting if needed
-    const matches = input.match(/(\d+)Hr:(\d+)Mins/);
-
-    if (!matches) {
-      return 'Invalid Format'; // Handle unexpected format
-    }
-
-    // Extract hours and minutes
-    const hours = parseInt(matches[1], 10) || 0;
-    const minutes = parseInt(matches[2], 10) || 0;
-
-    // Format the string
-    return `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+    return '';
   }
 
   calculateDateDifference(date1: string, date2: string): number {

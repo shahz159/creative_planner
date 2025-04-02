@@ -128,7 +128,10 @@ export class NotificationComponent implements OnInit {
         if(this._NotificationActivity){
             this.notilength = this._NotificationActivity.length;
             this._CurrentpageRecords = this._NotificationActivity.length;
-            this._NotificationActivity.forEach((ob:any)=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
+            this._NotificationActivity.forEach((ob:any)=>{
+              ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+              ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.DurationTime):ob.Duration; // create new property : 'hoursInDecimal'  
+            });
         }
         //Emp
         if (this.selectedItem_Emp.length == 0) {
@@ -209,6 +212,10 @@ export class NotificationComponent implements OnInit {
         if(this._NotificationActivity){
             this.notilength = this._NotificationActivity.length;
             this._CurrentpageRecords = this._NotificationActivity.length;
+            this._NotificationActivity.forEach((ob:any)=>{
+              ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+              ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.DurationTime):ob.Duration; // create new property : 'hoursInDecimal'  
+            });
         }
         //Emp
         if (this.selectedItem_Emp.length == 0) {
@@ -704,7 +711,10 @@ export class NotificationComponent implements OnInit {
       .subscribe(data => {
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log( this._NotificationActivity," this._NotificationActivity")
-        this._NotificationActivity.forEach((ob:any)=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
+        this._NotificationActivity.forEach((ob:any)=>{
+          ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+          ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.DurationTime):ob.Duration; // create new property : 'hoursInDecimal'  
+         });
 
         //Emp
         if (this.selectedItem_Emp.length == 0) {
@@ -1479,6 +1489,42 @@ onAcceptWithCmtsBtnClicked(){
 // accept selected approvals with comments end.
 
 
+formatTime(input: string): string {
+  if(input){
 
+ // Check if the input is already in the correct format
+ if (/^\d{2} Hr : \d{2} Mins$/.test(input)) {
+  return input; // If the format is correct, return it as-is
+}
+
+// Extract hours and minutes using regex for formatting if needed
+const matches = input.match(/(\d+)Hr:(\d+)Mins/);
+
+if (!matches) {
+  return 'Invalid Format'; // Handle unexpected format
+}
+
+// Extract hours and minutes
+const hours = parseInt(matches[1], 10) || 0;
+const minutes = parseInt(matches[2], 10) || 0;
+
+// Format the string
+return `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+
+  }
+
+  return '';
+
+}
+
+
+// method to convert HH:MM to hours value.
+convertToDecimalHours(hm:string){
+  const h=Number.parseInt(hm.split(':')[0]);
+  const m=Number.parseInt(hm.split(':')[1]);
+  const alhr=h+(m/60);
+  return alhr;
+}
+// method to convert HH:MM to hours value.
 
 }
