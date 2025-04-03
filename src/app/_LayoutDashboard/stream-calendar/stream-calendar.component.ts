@@ -18,6 +18,7 @@ import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { ActivatedRoute, ActivatedRouteSnapshot, Params, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 declare var $: any;
@@ -229,6 +230,7 @@ export class StreamCalendarComponent implements OnInit {
     public approvalservice: ApprovalsService,
     public service: ProjectTypeService,
     private activatedRoute:ActivatedRoute,
+     private _snackBar: MatSnackBar,
     private router: Router
   ) { 
     this._lstMultipleFiales = [];
@@ -684,6 +686,25 @@ export class StreamCalendarComponent implements OnInit {
     this.MonthArr1=[];
     this._EndDate1=moment().add(3, 'months').format("YYYY-MM-DD").toString();
   }
+
+
+  shareoptionModal() {
+    document.getElementById("shareoptionModal").style.display = "block";
+    document.getElementById("shareoptionModal").classList.add("show");
+    document.getElementById("shareoptionModalBackdrop").style.display = "block";
+    document.getElementById("shareoptionModalBackdrop").classList.add("show");
+    this.generateLink()
+  }
+  
+  shareoptionModal_dismiss() {
+    document.getElementById("shareoptionModal").style.display = "none";
+    document.getElementById("shareoptionModal").classList.remove("show");
+    document.getElementById("shareoptionModalBackdrop").style.display = "none";
+    document.getElementById("shareoptionModalBackdrop").classList.remove("show");
+  }
+
+
+
 
 
   createEventTaskModal(){
@@ -1159,7 +1180,7 @@ onFileChange(event) {
  
   if (event.target.files.length > 0) {
     const allowedTypes = [
-      "image/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+      "image/*", "video/*", "audio/*", "application/pdf", "text/plain", "text/html", "application/msword", 
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       "application/json", "application/xml", "application/vnd.ms-powerpoint",
       "application/vnd.openxmlformats-officedocument.presentationml.presentation",
@@ -1175,7 +1196,7 @@ onFileChange(event) {
         // Show a sweet alert popup for unsupported file types
         Swal.fire({
           title: `This File "${fileName}" cannot be accepted!`,
-          text: `Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+          text: `Supported file types: Images, video, audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
           });
         continue;
       }
@@ -3172,7 +3193,7 @@ this.eventtaskitemtimeModal_dismiss();
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
           this.draftcount = this.draftdata_meet.length;
           this.filterDraft('date');
-         
+          console.log(data,'draftdata_meet')
         }
         else {
           this.draftdata_meet = null;
@@ -3797,7 +3818,7 @@ Insert_indraft() {
     
     const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
     this._calenderDto.DraftAgendas=mtgAgendas;
- 
+     console.log(this._calenderDto,'Draft meeting')
   this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
     (data => {
          
@@ -3898,6 +3919,7 @@ Insert_indraft() {
 /////////////////////////////////////////// Created On (Schedule event popup box) Start /////////////////////////////////////////////////////////
 
 Meeing_Name:any;
+Created_by:any;
 
 GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
  
@@ -3921,6 +3943,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       this.propose_date=Schedule_date;
       console.log(this.EventScheduledjson, "Testing12");
       this.Meeing_Name = (this.EventScheduledjson[0]['Task_Name']);
+      this.Created_by = this.EventScheduledjson[0].Created_by
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       this.Link_Detail = this.EventScheduledjson[0].Link_Details;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
@@ -6630,7 +6653,7 @@ BookMarks:boolean;
 MeetingBookmark(flagid:any) {
   if (this.isSubmitting) return;
   this.isSubmitting = true;
-  debugger
+ 
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.flagid = flagid;
@@ -6638,7 +6661,7 @@ MeetingBookmark(flagid:any) {
   this.CalenderService.NewUpdateMeetingBookmark(this._calenderDto).subscribe
     ((data) => {
       if(data['message'] == '1'){
-    
+        debugger
         this._calenderDto.Schedule_ID=this.Schedule_ID;
 
         this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
@@ -7117,5 +7140,83 @@ viewconfirm() {
 }
 
 /////////////////////////////////////////// Monthly section end /////////////////////////////////////////////////////////
+
+
+
+
+
+
+link: string = '';
+generateLink(): void {
+  this.link = 'https://cswebapps.com/creativeplanner/StreamCalendar/' +  this.Schedule_ID
+}
+
+
+
+shareOnWhatsApp(): void {
+  // URL encode the link
+
+  const link = 'https://cswebapps.com/creativeplanner/StreamCalendar/' +  this.Schedule_ID
+  const encodedLink = encodeURIComponent(link);
+
+  // Create the WhatsApp share URL
+  const whatsappUrl = `https://wa.me/?text=${encodedLink}`;
+
+  // Open the URL in a new tab/window
+  window.open(whatsappUrl, '_blank');
+}
+
+shareOnFacebook(): void {
+  
+  // URL encode the link
+  const link = 'https://cswebapps.com/creativeplanner/portfolioprojects/' +  this.Schedule_ID
+  const encodedLink = encodeURIComponent(link);
+  // Create the Facebook share URL
+  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedLink}`;
+
+  // Open the URL in a new tab/window
+  window.open(facebookShareUrl, '_blank');
+}
+
+shareOnTwitter(): void {
+  // URL encode the components
+  const link = 'https://cswebapps.com/creativeplanner/portfolioprojects/' +  this.Schedule_ID
+  const encodedUrl = encodeURIComponent(link);
+
+  // Create the Twitter Intent URL
+  let twitterIntentUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}`;
+
+  // Open the URL in a new tab/window
+  window.open(twitterIntentUrl, '_blank');
+}
+
+
+
+copyLinkToClipboard(): void {
+
+  navigator.clipboard.writeText(this.link).then(() => {
+      this._snackBar.open('link copied to clipboard', 'End now', {
+        duration: 5000,
+        horizontalPosition: "right",
+        verticalPosition: "bottom",
+      });
+  
+  }).catch(err => {
+    console.error('Could not copy text: ', err);
+  });
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

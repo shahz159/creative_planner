@@ -634,7 +634,24 @@
                                 </div>
                             </div>
                             <div class="sch-evt-mem">
-                                <div class="sch-evt-e-c" [ngClass]="{'sch-evt-border-right': meetingItem.attendees && meetingItem.link!=0}" *ngIf="meetingItem.attendees!=0" matTooltip="Accepted/Total attendee">
+                                <div class="sch-evt-e-c" [ngClass]="{'sch-evt-border-right': meetingItem.link && meetingItem.attendees !=0}" *ngIf="meetingItem.link!=0"  matTooltip="Links">
+                                    <div class="sch-evt-svg-bg">
+                                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                stroke-linejoin="round"></g>
+                                            <g id="SVGRepo_iconCarrier">
+                                                <path
+                                                    d="M9.16488 17.6505C8.92513 17.8743 8.73958 18.0241 8.54996 18.1336C7.62175 18.6695 6.47816 18.6695 5.54996 18.1336C5.20791 17.9361 4.87912 17.6073 4.22153 16.9498C3.56394 16.2922 3.23514 15.9634 3.03767 15.6213C2.50177 14.6931 2.50177 13.5495 3.03767 12.6213C3.23514 12.2793 3.56394 11.9505 4.22153 11.2929L7.04996 8.46448C7.70755 7.80689 8.03634 7.47809 8.37838 7.28062C9.30659 6.74472 10.4502 6.74472 11.3784 7.28061C11.7204 7.47809 12.0492 7.80689 12.7068 8.46448C13.3644 9.12207 13.6932 9.45086 13.8907 9.7929C14.4266 10.7211 14.4266 11.8647 13.8907 12.7929C13.7812 12.9825 13.6314 13.1681 13.4075 13.4078M10.5919 10.5922C10.368 10.8319 10.2182 11.0175 10.1087 11.2071C9.57284 12.1353 9.57284 13.2789 10.1087 14.2071C10.3062 14.5492 10.635 14.878 11.2926 15.5355C11.9502 16.1931 12.279 16.5219 12.621 16.7194C13.5492 17.2553 14.6928 17.2553 15.621 16.7194C15.9631 16.5219 16.2919 16.1931 16.9495 15.5355L19.7779 12.7071C20.4355 12.0495 20.7643 11.7207 20.9617 11.3787C21.4976 10.4505 21.4976 9.30689 20.9617 8.37869C20.7643 8.03665 20.4355 7.70785 19.7779 7.05026C19.1203 6.39267 18.7915 6.06388 18.4495 5.8664C17.5212 5.3305 16.3777 5.3305 15.4495 5.8664C15.2598 5.97588 15.0743 6.12571 14.8345 6.34955"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                                </path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    {{meetingItem.link}}
+                                </div>
+                                <div class="sch-evt-e-c"  *ngIf="meetingItem.attendees!=0" matTooltip="Accepted/Total attendee">
                                     <div class="sch-evt-svg-bg">
                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -652,23 +669,7 @@
                                     </div>
                                    <ng-container *ngIf="meetingItem.AcceptAttendees">{{meetingItem.AcceptAttendees}}</ng-container><ng-container *ngIf="!meetingItem.AcceptAttendees">0</ng-container>/{{meetingItem.attendees}}
                                 </div>
-                                <div class="sch-evt-e-c" *ngIf="meetingItem.link!=0"  matTooltip="Link">
-                                    <div class="sch-evt-svg-bg">
-                                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                stroke-linejoin="round"></g>
-                                            <g id="SVGRepo_iconCarrier">
-                                                <path
-                                                    d="M9.16488 17.6505C8.92513 17.8743 8.73958 18.0241 8.54996 18.1336C7.62175 18.6695 6.47816 18.6695 5.54996 18.1336C5.20791 17.9361 4.87912 17.6073 4.22153 16.9498C3.56394 16.2922 3.23514 15.9634 3.03767 15.6213C2.50177 14.6931 2.50177 13.5495 3.03767 12.6213C3.23514 12.2793 3.56394 11.9505 4.22153 11.2929L7.04996 8.46448C7.70755 7.80689 8.03634 7.47809 8.37838 7.28062C9.30659 6.74472 10.4502 6.74472 11.3784 7.28061C11.7204 7.47809 12.0492 7.80689 12.7068 8.46448C13.3644 9.12207 13.6932 9.45086 13.8907 9.7929C14.4266 10.7211 14.4266 11.8647 13.8907 12.7929C13.7812 12.9825 13.6314 13.1681 13.4075 13.4078M10.5919 10.5922C10.368 10.8319 10.2182 11.0175 10.1087 11.2071C9.57284 12.1353 9.57284 13.2789 10.1087 14.2071C10.3062 14.5492 10.635 14.878 11.2926 15.5355C11.9502 16.1931 12.279 16.5219 12.621 16.7194C13.5492 17.2553 14.6928 17.2553 15.621 16.7194C15.9631 16.5219 16.2919 16.1931 16.9495 15.5355L19.7779 12.7071C20.4355 12.0495 20.7643 11.7207 20.9617 11.3787C21.4976 10.4505 21.4976 9.30689 20.9617 8.37869C20.7643 8.03665 20.4355 7.70785 19.7779 7.05026C19.1203 6.39267 18.7915 6.06388 18.4495 5.8664C17.5212 5.3305 16.3777 5.3305 15.4495 5.8664C15.2598 5.97588 15.0743 6.12571 14.8345 6.34955"
-                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                                                </path>
-                                            </g>
-                                        </svg>
-                                    </div>
-                                    {{meetingItem.link}}
-                                </div>
+                             
                             </div>
                         </div>
                         <!-- <div class="sch-evt-item  sch-evt-border-bottom"  (click)="customEventModal()">
@@ -3162,7 +3163,7 @@
                                 <div class="create-event-file-main">
                                     <div id="create-event-file-inner" class="create-event-file-inner">
 
-                                        <input (change)="onFileChange($event)" accept="image/*, .pdf, .txt, .html, .htm, .doc, .docx, .json, .xml, .ppt, .pptx, .xlsx, .xls" id="customFile" type="file" multiple="multiple" name="files[]" 
+                                        <input (change)="onFileChange($event)" accept="image/*,, video/*, audio/*, .pdf, .txt, .html, .htm, .doc, .docx, .json, .xml, .ppt, .pptx, .xlsx, .xls" id="customFile" type="file" multiple="multiple" name="files[]" 
                                         class="create-event-file-input">
 
                                         <label for="customFile" class="create-event-file-input-label">
@@ -3173,7 +3174,7 @@
                                     </div>
                                 </div>
                                 <div class="error-notification mt-1" >
-                                    <span  class="notif-massage">*Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
+                                    <span  class="notif-massage">*Supported file types: Images, Video, Audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
                                 </div>
                                 <ul class="create-event-file-list">
                                     <li  *ngFor='let url of _lstMultipleFiales'>
@@ -4343,6 +4344,11 @@
                         <div id="hiddenedit" class="custom-evt-tsk-action-icon" matTooltip="Edit" (click)="changeScheduleType(2);ReshudingTaskandEvent();updateCharacterCount()">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Edit_Pencil_01"> <path id="Vector" d="M12 8.00012L4 16.0001V20.0001L8 20.0001L16 12.0001M12 8.00012L14.8686 5.13146L14.8704 5.12976C15.2652 4.73488 15.463 4.53709 15.691 4.46301C15.8919 4.39775 16.1082 4.39775 16.3091 4.46301C16.5369 4.53704 16.7345 4.7346 17.1288 5.12892L18.8686 6.86872C19.2646 7.26474 19.4627 7.46284 19.5369 7.69117C19.6022 7.89201 19.6021 8.10835 19.5369 8.3092C19.4628 8.53736 19.265 8.73516 18.8695 9.13061L18.8686 9.13146L16 12.0001M12 8.00012L16 12.0001" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
                         </div>
+
+                        <!-- <div  class="custom-evt-tsk-action-icon" matTooltip="Share event" (click)="shareoptionModal()">
+                            <svg  width="1.3em" height="1.3em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M9 12C9 13.3807 7.88071 14.5 6.5 14.5C5.11929 14.5 4 13.3807 4 12C4 10.6193 5.11929 9.5 6.5 9.5C7.88071 9.5 9 10.6193 9 12Z" stroke="currentColor" stroke-width="1.5"></path><path  d="M14 6.5L9 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path  d="M14 17.5L9 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path  d="M19 18.5C19 19.8807 17.8807 21 16.5 21C15.1193 21 14 19.8807 14 18.5C14 17.1193 15.1193 16 16.5 16C17.8807 16 19 17.1193 19 18.5Z" stroke="currentColor" stroke-width="1.5"></path><path  d="M19 5.5C19 6.88071 17.8807 8 16.5 8C15.1193 8 14 6.88071 14 5.5C14 4.11929 15.1193 3 16.5 3C17.8807 3 19 4.11929 19 5.5Z" stroke="currentColor" stroke-width="1.5"></path></g></svg>
+                        </div>   -->
+
                         <div id="deleteendit" class="custom-evt-tsk-action-icon" matTooltip="Delete">
                             <span *ngIf="_AllEventTasksCount > 1 && _FutureEventTasksCount >= 0" (click)="deleteRecurringEvent()" data-toggle="modal" data-target="#delevent">
                                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -5842,3 +5848,92 @@
     </div>
 </div>
 <!-- Bookmark list sidebar end -->
+
+
+
+
+
+
+
+
+  <!-- share option Modal Start -->
+  <div class="modal-backdrop fade" id="shareoptionModalBackdrop" style="display: none"></div>
+  <div class="shareoption-modal modal fade" id="shareoptionModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="dmsUsageModalTitle" aria-modal="true" style="display: none">
+      <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">
+                      <span>Share event</span>
+                  </h5>
+                  <div class="shareoption-modal-close" title="Close" (click)="shareoptionModal_dismiss()">
+                      <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                          <g id="SVGRepo_iconCarrier">
+                              <path
+                                  d="M17.769 16l9.016-9.016c0.226-0.226 0.366-0.539 0.366-0.884 0-0.691-0.56-1.251-1.251-1.251-0.346 0-0.658 0.14-0.885 0.367v0l-9.015 9.015-9.016-9.015c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l9.015 9.016-9.015 9.015c-0.227 0.226-0.367 0.539-0.367 0.885 0 0.691 0.56 1.251 1.251 1.251 0.345 0 0.658-0.14 0.884-0.366v0l9.016-9.016 9.015 9.016c0.227 0.228 0.541 0.369 0.888 0.369 0.691 0 1.251-0.56 1.251-1.251 0-0.347-0.141-0.661-0.369-0.887l-0-0z">
+                              </path>
+                          </g>
+                      </svg>
+                  </div>
+              </div>
+              <div class="modal-body p-0">
+                  <div class="share-option-main">
+                      <div class="share-option-main-inner">
+                          <div class="share-option-user-img">
+                              <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/blank-profile-picture.png" alt="img">
+                          </div>
+                          <div class="share-option-user-details">
+                              <h5 class="share-option-user-name">{{Created_by}}</h5>
+                              <h6 class="share-option-user-subject"> {{ Meeing_Name }}</h6>
+                          </div>
+                      </div>
+                      <div class="share-link-div">
+                          <div class="share-link-label">Link to share</div>
+                          <div class="share-link-control">
+                              <input class="share-link-input" readonly="" type="text" [value]="link">
+                              <button class="share-link-button" (click)="copyLinkToClipboard()"> COPY LINK</button>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="share-link-social">
+                      <div class="share-link-social-item" (click)="shareOnWhatsApp()">
+                          <svg enable-background="new 0 0 512 512" id="Layer_1" version="1.1" viewBox="0 0 512 512" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                              <g>
+                                  <path
+                                      d="M500.4,241.8c-0.6,63.4-16.9,113-50.8,156.1c-36.4,46.3-83.8,75.7-141.8,87.6   c-44.8,9.1-88.4,5.1-131.2-10.4c-9.5-3.5-18.8-7.6-27.7-12.5c-2.7-1.5-5-1.7-8-0.7c-40.5,13.1-81.1,26.1-121.7,39   c-1.8,0.6-4.2,2.3-5.6,1c-1.6-1.6,0.4-4,1-5.9c8.1-24.1,16.2-48.3,24.4-72.4c5-14.7,9.8-29.3,15-43.9c1.4-3.8,0.9-6.7-1.2-10.2   c-10.3-17.6-17.9-36.4-23.3-56.1c-10.1-37-11.2-74.4-3.3-111.8c8.6-40.8,26.6-77.2,54.3-108.6c33.5-38,74.8-63.1,123.9-75.2   c31.3-7.7,62.9-8.9,94.7-3.7c41.6,6.8,79.1,23.3,111.8,49.9c34,27.7,58.8,62.1,74.4,103.4C493.9,189.7,500.7,226.2,500.4,241.8z    M74.6,441.5c24.8-8,48.5-15.6,72-23.3c3.1-1,5.6-0.8,8.3,1c9,6,18.7,10.8,28.7,15c32.5,13.8,66.3,18.8,101.2,14.3   c42.8-5.5,80.4-22.7,112-52.6c39.8-37.7,61.1-83.9,63-138.5c1.8-53.5-15.4-100.5-51.3-140.4c-34.1-37.9-76.9-59.5-127.4-64.9   c-43.9-4.7-85,4.8-123,27.6c-32.5,19.6-57.4,46.3-74.7,80c-19.1,37.1-25.6,76.5-20.1,117.8c4.1,31.2,15.3,59.9,33.3,85.7   c2,2.9,2.6,5.3,1.4,8.7c-3.7,10.2-7,20.5-10.5,30.7C83.3,415.2,79.2,427.8,74.6,441.5z"
+                                      fill="#51C85D" />
+                                  <path
+                                      d="M141,194.7c0.5-23.8,8.9-41.5,24.8-55.6c5.1-4.6,11.4-6.6,18.5-5.6c3,0.4,6,0.7,9,0.5   c5.6-0.3,9.4,2.4,11.3,7.3c6.7,17.4,13.2,34.8,19.7,52.3c2.2,6-1.6,10.7-4.8,15c-3.7,5.1-8.2,9.6-12.6,14.1   c-4.5,4.6-5.1,7.2-2,12.8c18.1,32.9,43.5,58.2,78,73.8c1.2,0.5,2.4,1.2,3.6,1.8c4.6,2.1,8.7,1.6,12.2-2.4   c6.4-7.5,13.4-14.4,19.3-22.3c3.9-5.2,6.6-6.1,12.5-3.5c17.6,7.6,34.1,17.2,50.9,26.5c3.1,1.7,4.2,4.3,4.1,7.9   c-0.9,29.5-17.8,44.9-47.5,51.7c-14.4,3.3-27.7-0.3-40.9-5.1c-27.7-10-54.4-21.8-76.8-41.6c-17.8-15.8-33.5-33.4-46.8-53.1   c-10.2-15.2-20.8-30.1-26.7-47.8C143.4,212,140.9,202.4,141,194.7z"
+                                      fill="#51C85D" />
+                              </g>
+                          </svg>
+                          <span>WhatsApp</span>
+                      </div>
+                      <div class="share-link-social-item" (click)="shareOnTwitter()">
+                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" width="24px" height="24px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+                              <path
+                                  d="M14.095479,10.316482L22.286354,1h-1.940718l-7.115352,8.087682L7.551414,1H1l8.589488,12.231093L1,23h1.940717  l7.509372-8.542861L16.448587,23H23L14.095479,10.316482z M11.436522,13.338465l-0.871624-1.218704l-6.924311-9.68815h2.981339  l5.58978,7.82155l0.867949,1.218704l7.26506,10.166271h-2.981339L11.436522,13.338465z" />
+                          </svg>
+                          <span>X</span>
+                      </div>
+                      <div class="share-link-social-item" (click)="shareOnFacebook()">
+                          <svg enable-background="new 0 0 32 32" height="32px" id="Layer_1" version="1.0" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                              <path
+                                  d="M18,32V18h6l1-6h-7V9c0-2,1.002-3,3-3h3V0c-1,0-3.24,0-5,0c-5,0-7,3-7,8v4H6v6h6v14H18z"
+                                  fill="#3B5998" id="f_1_" />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                          </svg>
+                          <span>Facebook</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- share option Modal End -->

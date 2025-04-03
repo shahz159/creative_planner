@@ -211,7 +211,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-    // this.GetDMSList();
+   
     this.addAgenda();
     // this.GetMeetingnotes_data();
     this.getDetailsScheduleId()
@@ -587,16 +587,18 @@ export class MeetingDetailsComponent implements OnInit {
   isLoading: boolean = true;
   oneByTwoEndDate:any;
   Meeing_Name:any;
+  deletedMeeting:any;
 
 
 
   meeting_details() {
- 
+
     this._calenderDto.Schedule_ID = this.Schedule_ID;
 
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
-
+      debugger
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+      this.deletedMeeting = this.EventScheduledjson.length;
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       var Schedule_date = this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
@@ -802,7 +804,7 @@ export class MeetingDetailsComponent implements OnInit {
       }
 
       // var St_Time = this.EventScheduledjson[0].St_Time;
-      // var End_date = this.EventScheduledjson[0].Ed_Time; debugger
+      // var End_date = this.EventScheduledjson[0].Ed_Time; 
       // var StartDate = this.EventScheduledjson[0].StartDate;
       this.oneByTwoEndDate = this.EventScheduledjson[0].SEndDate;
 
@@ -893,7 +895,7 @@ export class MeetingDetailsComponent implements OnInit {
     meetingDate.setHours(0, 0, 0, 0);
     sevenDaysAgo.setHours(0, 0, 0, 0);
   
-debugger
+
     if (meetingDate >= sevenDaysAgo && meetingDate <= today) {
       this.delayMeeting = true;
     }
@@ -1219,7 +1221,7 @@ debugger
     // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetMemosByEmployeeId();  //drpdwn
-    this.GetDMSList();
+    this.meeting_details();
     this.linkSMail=true;
   }
 
@@ -1252,8 +1254,8 @@ debugger
       //   );
       // }
       
-
-      // console.log( this._MemosSubjectList, this.ModifiedJson ,' this._MemosSubjectList ');
+      console.log( this._MemosSubjectList,' this._MemosSubjectList ');
+      //  console.log( this._MemosSubjectList, this.ModifiedJson ,' this._MemosSubjectList ');
      });
 
       
@@ -1511,13 +1513,14 @@ debugger
     // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "block";
+    this.meeting_details();
     this.GetProjectAndsubtashDrpforCalender();
     this.linkProject==true
   }
 
   subtashDrpLoading:boolean=false;
 
-  GetProjectAndsubtashDrpforCalender() {
+  GetProjectAndsubtashDrpforCalender() { 
     this.subtashDrpLoading=true;
     this._calenderDto.Project_Code = null;
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
@@ -1532,8 +1535,8 @@ debugger
 
 
         this.originalProjectList = this.ProjectListArray;
-
-        this.PortfolioLists = JSON.parse(data['Portfolio_drp'])
+     
+        this.PortfolioLists = JSON.parse(data['Portfolio_drp']) 
         var recordPortfolio = this.portfolio_Scheduledjson.map(item => item.numberval)
         this.PortfolioLists = this.PortfolioLists.filter(item => !recordPortfolio.includes(item.portfolio_id))
         this.originalPortfolio_list = this.PortfolioLists
@@ -2760,11 +2763,12 @@ debugger
 
   /////////////////////////////////////////// List of Attachment sidebar start /////////////////////////////////////////////////////////
 
-  Attachment_views() {
+  Attachment_views() { 
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    this.meeting_details();
     console.log('Attachments_ary',this.Attachments_ary);
   }
 
@@ -2812,7 +2816,7 @@ onFileChange(event) {
         // Show a sweet alert popup for unsupported file types
         Swal.fire({
           title: `This File "${fileName}" cannot be accepted!`,
-          text: `Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+          text: `Supported file types: Images, video, audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
           //  "This file cannot be accepted!"
           });
         continue;
@@ -4253,6 +4257,7 @@ onFileChange(event) {
        
         this.exact_start = (data['Start_time']);
         this.agendasList = JSON.parse(data['Agendas']);
+        // console.log('---------------',this.agendasList)
         this.smailcount = this.agendasList[0]?.smailcount;
         this.portFocount = this.agendasList[0]?.portcount;
         this.projecount = this.agendasList[0]?.projectcount;
@@ -8009,7 +8014,7 @@ onParticipantFilter(){
     this.selectedFiles = [];  // Clear selected files after download
   }
 
-  downloadFile(url: string, fileName: string) {debugger
+  downloadFile(url: string, fileName: string) {
     fetch(url)
       .then(response => response.blob())
       .then(blob => {
@@ -8990,7 +8995,7 @@ LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, ty
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
-  else if (iscloud == true) {debugger
+  else if (iscloud == true) {
     let name = "ArchiveView/" + this.Schedule_ID;
     let meetingName =  this.Meeing_Name;
     var rurl = document.baseURI + name;

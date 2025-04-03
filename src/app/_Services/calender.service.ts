@@ -214,7 +214,7 @@ export class CalenderService {
 
 
 
-  Newdraft_Meetingnotes(obj:CalenderDTO){
+  Newdraft_Meetingnotes(obj:CalenderDTO){ debugger
     this.obj_CalenderDTO.draftid=obj.draftid;
     this.obj_CalenderDTO.Dms = obj.Dms;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
@@ -547,7 +547,7 @@ GetRecurrenceMeetingsService(obj:CalenderDTO){
 
 
 NewUpdateMeetingBookmark(obj:CalenderDTO){
-
+debugger
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID,
   this.obj_CalenderDTO.Emp_No=obj.Emp_No,
   this.obj_CalenderDTO.flagid=obj.flagid
