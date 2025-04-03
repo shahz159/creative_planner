@@ -6227,7 +6227,7 @@ svg>g[class^="raphael-group-fjUjWDEW"]>text {
   display: block;
 }
 
-.deadline-count #p-deadline-extends-drpdwn-2
+.deadline-count #p-deadline-extends-drpdwn-2, .deadline-count #a-deadline-extends-drpdwn
 {
   transform: translate3d(-157px, 9px, 0px);
 }
@@ -10224,7 +10224,7 @@ span.time-value {
 
 
 
-#p-deadline-extends-drpdwn-1,#p-deadline-extends-drpdwn-2{
+#p-deadline-extends-drpdwn-1,#p-deadline-extends-drpdwn-2,#a-deadline-extends-drpdwn{
   position: absolute;
   top: 5px;
   background-color: white;

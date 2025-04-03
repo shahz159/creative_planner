@@ -90,7 +90,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
   delayType2: string='Actions';
 
 
-  ngOnInit() {
+  ngOnInit() {  debugger
     console.log("------base Url-------->", this.router.url);
     this.A2Z = true;
     this.Z2A = false;
@@ -282,6 +282,13 @@ export class ViewDashboardProjectsComponent implements OnInit {
           else {
             this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
             console.log(this._ProjectDataList,'_ProjectDataListxxxxxxxxxxxxxx')
+          
+            if(this._ProjectDataList){
+                if(this.Mode=='Rejected'){
+                  this._ProjectDataList.forEach((ob)=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
+                }
+            }
+
             this.EmpCountInFilter = JSON.parse(data[0]['Employee_Json']);
             this.TypeContInFilter = JSON.parse(data[0]['ProjectType_Json']);
             this.StatusCountFilter = JSON.parse(data[0]['Status_Json']);
@@ -593,6 +600,12 @@ debugger
         .subscribe(data => {
 
           this._ProjectDataList = JSON.parse(data[0]['JsonData_Json']);
+          if(this._ProjectDataList){
+            if(this.Mode=='Rejected'){
+              this._ProjectDataList.forEach((ob)=>ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null);
+            }
+          }
+          
           this._CurrentpageRecords = this._ProjectDataList.length;
           if (this._ProjectDataList.length == 0) {
             this._filtersMessage = "No projects matched your search";

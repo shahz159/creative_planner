@@ -4973,9 +4973,22 @@
                                                                     {{ getDelayText(projectActionInfo[currentActionView]) }}
                                                                     </div>
                                                                     <div class="extra-at-status deadline-main" *ngIf="(action_deadlineExtendlist&&action_deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
-                                                                        <span style="color: #d32f2f;">{{action_deadlineExtendlist.length}} {{action_deadlineExtendlist.length==1?'time':'times'}} deadline changed</span>
+                                                                        <span class="pin-msg-btn d-flex collapsed" style="color: #d32f2f;" data-toggle="collapse" data-target="#a-deadline-extends-drpdwn" aria-expanded="false">
+                                                                            {{action_deadlineExtendlist.length}} {{action_deadlineExtendlist.length==1?'time':'times'}} deadline changed
+                                                                            <div class="pin-msg-btn-caret">
+                                                                                <svg  width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                    <g  id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                                    <g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                                                    <g  id="SVGRepo_iconCarrier">
+                                                                                        <g  id="Arrow / Caret_Down_MD">
+                                                                                            <path id="Vector" d="M16 10L12 14L8 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                                        </g>
+                                                                                    </g>
+                                                                                </svg>
+                                                                            </div>
+                                                                        </span>
                                                                         <span class="deadline-count">
-                                                                            <div class="dropdown-menu onleft">
+                                                                            <div class=" bounce-effect collapse" id="a-deadline-extends-drpdwn" aria-labelledby="a-deadline-extends-drpdwn" aria-hidden="true">
                                                                              <ul class="deadline-timeline">
                                                                                 <!-- loop this li part only -->
                                                                                 <li class="deadline-timeline-item" *ngFor="let item of action_deadlineExtendlist;let i = index">

@@ -583,14 +583,15 @@ dayArr: any = [
     this.GetProjectsByUserName();  // Fetch projects list. used in sidebars.
     // this.totalproject()
     this.getProjectTypeList();   // Fetch possible project types array. used in sidebars.
-    this.getCatid();
+    this.getCatid();         // Fetch the previously opened category ID from the API or use the category ID from query params (if provided) and displays the category.
     this.GetAssignFormEmployeeDropdownList();  // Fetch employees list. used in sidebars.
     this.getrunwayCount();   // Fetch all categories count values eg: accepted count, pending count, rejected count and others .
     this.fetchPortfolios();  // Fetch portfolios list. used in sidebars.
     this.setTippys(); // Setting tippys. 
+    this.getSidebarDropdownData();  // fetches required dropdowns data required in the sidebar area.
 
-    this.totalproject();
-    this.openTab()
+    this.totalproject();     // removes d-none from 4 accordians
+    this.openTab();
   }
 
 
@@ -767,6 +768,10 @@ fetchPortfolios(){
           //this.GetAssignTask();
           this.notifyService.showSuccess("Successfully", "Added");
           // this.closeInfo();
+
+          // show user the task he added without need him to open the accordian
+          this.openTab();   // 1. clear all accordian current state. 2. open the first accordian.   
+
         });
     }
     else {
@@ -1466,7 +1471,16 @@ date_menuclo(dialogId:string){
         // this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
         // this._CompletedList = JSON.parse(data[0]['Completedlist_Json']);
         // this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-        this.openTab();
+        debugger
+        if(['-1','-2','-3','-4','-5','-6'].includes(this.newCatid.toString())){
+          this.showAddTaskOption(false);
+
+        }
+        else{
+          this.showAddTaskOption(true);
+        }
+        
+        this.openTab();   
 
         console.log(this._TodoList,"this._TodoList");
         console.log(this.ActionedAssigned_Josn,"this.ActionedAssigned_Josn");
@@ -1857,7 +1871,7 @@ else{    // All, System category, user category
         this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
 }
-        this.openTab();
+        this.openTab();   
         console.log(this.ActionedAssigned_Josn,"accept,pend")
 
         let _Accepted =0;
@@ -1888,8 +1902,6 @@ else{    // All, System category, user category
       // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
       this.totalproject();
       
-      document.getElementById('addtsk').classList.remove('d-none');
-      document.getElementById("accordionRunway").classList.remove("acc-runway-no-button");
   }
 
 
@@ -2579,6 +2591,16 @@ this.Creation_Date = date;
   })
  //
 
+   
+
+  //
+
+
+
+
+  //
+
+
 
 }
 
@@ -2705,9 +2727,21 @@ setStatus(status: string) {
   this.currentStatus = status;
 }
 
-hideAddTask(){
-  document.getElementById('addtsk').classList.add('d-none');
-  document.getElementById('accordionRunway').classList.add('acc-runway-no-button');
+//method to show/hide Add Task option on page.
+showAddTaskOption(show:boolean){
+   if(show)
+   {
+     document.getElementById('addtsk').classList.remove('d-none');
+     document.getElementById("accordionRunway").classList.remove("acc-runway-no-button");
+   }
+   else
+   {
+     document.getElementById('addtsk').classList.add('d-none');
+     if(this.newCatid!=-6){
+      document.getElementById('accordionRunway').classList.add('acc-runway-no-button');
+     }
+     
+   }
 }
 
 getVisibleHeaderCount(): number {
@@ -2865,7 +2899,7 @@ setMaxDate(dateField){
 
 
 
-assignTasksub1(){   
+assignTasksub1(){    debugger
     this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ');
     this.selected_taskId =  this.selectedtaskNames.map(task=>task.Assign_Id).join(', ');
     console.log( this.selected_taskName,"pending")
@@ -3541,8 +3575,10 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
 
 
 
-  openTab() {
+  openTab() {  debugger
    // Now, check which condition matches and add 'show' to the appropriate element
+
+  //1. clear all accordians current state to default state (closed state).    
    document.getElementById('collapseUnassign').classList.remove('show');
    document.getElementById('UnassigntaskBtn').setAttribute('aria-expanded','false');
    document.getElementById('collapseActionproject').classList.remove('show');
@@ -3551,24 +3587,29 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
    document.getElementById('AssignedTaskProjectBtn').setAttribute('aria-expanded','false');
    document.getElementById('collapseCompleted').classList.remove('show');
    document.getElementById('CompletedBtn').setAttribute('aria-expanded','false');
+  // clear all accordians current state to default state (closed state).
 
 
+  //2. opens accordians which have data in it.  ( opens first accordian )
     if (this._TodoList.length > 0) {
       document.getElementById('collapseUnassign').classList.add('show');
       document.getElementById('UnassigntaskBtn').setAttribute('aria-expanded','true');
-
-    } else if (this.ActionedSubtask_Json.length > 0) {
+    } 
+    else if (this.ActionedSubtask_Json.length > 0) {
       document.getElementById('collapseActionproject').classList.add('show');
       document.getElementById('ActiontoprojectsBtn').setAttribute('aria-expanded','true');
     }
     else if (this.ActionedAssigned_Josn.length > 0){
       document.getElementById('collapseActiontask').classList.add('show');
       document.getElementById('AssignedTaskProjectBtn').setAttribute('aria-expanded','true');
-    } else if (this._CompletedList.length > 0) {
+    } 
+    else if (this._CompletedList.length > 0) {
       document.getElementById('collapseCompleted').classList.add('show');
       document.getElementById('CompletedBtn').setAttribute('aria-expanded','true');
 // this.openTab()
-}}
+    }
+   // opens accordians which have data in it.  ( opens first accordian )
+}
 
 
 
@@ -4587,6 +4628,15 @@ if(this.editTask && this.selectedrecuvalue =='2'){
   }
 
 
+  getSidebarDropdownData(){
+    this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
+    ((data) => {
+      this.ProjectListArray = JSON.parse(data['Projectlist']);
+      this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
+      this.Portfoliolist_1 = JSON.parse(data['Portfolio_drp']);
+      this.companies_Arr=JSON.parse(data['Client_json']);   
+    });
+  }
 
 
   GetTimeslabfordate() {
@@ -7792,7 +7842,210 @@ filterDraft(type : 'date'|'meeting'):void{
     }
 
 
+
+// new popup selection dialog start.
+
+  multiselect_dialog:'EMPLOYEES'|'PORTFOLIOS';
+  filtered_list:any=[];
+  selectedItems:any=[];
+  hasmultiselectFilter:boolean=false;
+  multiselectFilterConfig:any={};
+  // companies_Arr2:any=[];
+  // _EmployeeListForDropdown2:any=[];
+
+  openMultiSelectDialog(model_type:'EMPLOYEES'|'PORTFOLIOS'){
+      this.multiselect_dialog=model_type;
+      document.getElementById("multiselect-2-modal-backdrop").style.display = "block";
+      document.getElementById("multiselect-2-dialog").style.display = "block";
+      this.searchItems('');
+      const searchField:any=document.querySelector(`#multiselect-2-dialog input#InputSearch`);
+      if(searchField)searchField.focus();
+  }
+
+
+
+//   if(this.multiselect_dialog=='EMPLOYEES'){
+
+//     const allemp  this.EmployeeList.map((ob)=>ob.Emp_Comp_No);
+//     this.companies_Arr2=this.companies_Arr.filter((comp)=>{
+//            this.EmployeeList.find((emp)=>{})   comp.ClientId
+//     });
+
+
+// }
+// else if(this.multiselect_dialog=='PORTFOLIOS'){
+   
+// }
+
+
+ //  keyname='DisplayName';
+          //  arrtype=this.EmployeeList;
+          //  selectedinto='employeSelect';
+          //  property_name='Emp_No';
+
+
+
+
+//  keyname='Portfolio_Name';
+          //  arrtype=this.PortfolioList;
+          //  selectedinto='port_id';
+          //  property_name='Portfolio_ID';
+
+
+  closeMultiSelectDialog(){
+      this.multiselect_dialog=null;
+      this.selectedItems=[];
+      this.filtered_list=[];
+      this.multiselectFilterConfig={};
+      this.hasmultiselectFilter=false;
+      document.getElementById("multiselect-2-modal-backdrop").style.display = "none";
+      document.getElementById("multiselect-2-dialog").style.display = "none";
+  }
+ 
+  searchItems(_searchText:string){
+
+    let keyname;
+    let arrtype;
+    let selectedinto;
+    let property_name;
+    if(this.multiselect_dialog=='EMPLOYEES')
+    {
+       keyname='DisplayName';
+       arrtype=this.EmployeeList;
+       selectedinto='employeSelect';
+       property_name='Emp_No';
+    }
+    else if(this.multiselect_dialog=='PORTFOLIOS')
+    {
+       keyname='Portfolio_Name';
+       arrtype=this.PortfolioList;
+       selectedinto='port_id';
+       property_name='Portfolio_ID';
+    }
+
+
+    const result=arrtype.filter(item=>{
+      const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
+      let nameMatched:boolean=false;
+      if(unselected)
+      nameMatched=item[keyname].toLowerCase().trim().includes(_searchText.toLowerCase().trim())
+      return nameMatched;
+    });
+
+   
+
+    this.filtered_list=result;
+  }
+
+  onItemClicked(hasChecked:boolean,_item:any){
+     if(hasChecked){
+       this.selectedItems.push(_item);
+     }
+     else{
+      const _index=this.selectedItems.indexOf(_item);
+      if(_index>-1){
+        this.selectedItems.splice(_index,1);
+      }
+     }
+   
+  }
+
+
+  removeSelectedItem(listtype:'EMPLOYEES'|'PORTFOLIOS',item:string){
+    switch(listtype){
+       case 'EMPLOYEES':{
+        const rmindx=this.employeSelect.findIndex(em=>em==item);
+        this.employeSelect.splice(rmindx,1);
+       };break;
+       case 'PORTFOLIOS':{
+        const rmindx=this.port_id.findIndex(ptf=>ptf==item);
+        this.port_id.splice(rmindx,1);
+       };break;
+       default:{};
+    }
+  }
+
+
+  addSelectedItems(){
+
+    if(this.multiselect_dialog=='EMPLOYEES'){
+      if (!this.employeSelect)   // if employeSelect is null,undefined,''
+      this.employeSelect = [];
+      
+      this.employeSelect=[...this.employeSelect,...this.selectedItems];
+    }
+    else if(this.multiselect_dialog=='PORTFOLIOS'){
+      if (!this.port_id)   // if port_id is null,undefined,''
+      this.port_id = [];
+      
+      this.port_id=[...this.port_id,...this.selectedItems];
+    }
+    
+    this.closeMultiSelectDialog();
+ 
+  
+  }
+ 
+
+  showItemsFilter() {
+    document.querySelector("#multiselect-2-dialog #project-filter").classList.add("show");
+    document.querySelector("#multiselect-2-dialog #filter-icon").classList.add("active");
+  }
+  closeItemsFilter() {
+    document.querySelector("#multiselect-2-dialog #project-filter").classList.remove("show");
+    document.querySelector("#multiselect-2-dialog #filter-icon").classList.remove("active");
+  }
+
+ 
+  showUsersByFilterConfig(){ 
+    const fresult=this.EmployeeList.filter((_emp:any)=>{   
+      const isEmpIn:boolean=(!this.multiselectFilterConfig.bycompany)||_emp.Emp_Comp_No==this.multiselectFilterConfig.bycompany;
+      let includeEmp:boolean=false;
+      if(isEmpIn)
+      includeEmp=!(this.employeSelect&&this.employeSelect.includes(_emp.Emp_No));
+      return includeEmp;
+   });
+
+   this.filtered_list=fresult;
+   this.hasmultiselectFilter=true;
+  }
+
+  showPortfoliosByFilterConfig(){  
+    const fresult=this.PortfolioList.filter((prtf:any)=>{    
+      const x=(prtf.CompanyId==this.multiselectFilterConfig.bycompany||!this.multiselectFilterConfig.bycompany);
+      const y=(prtf.Created_By==this.multiselectFilterConfig.byuser||!this.multiselectFilterConfig.byuser);
+      const z=x&&y;
+      const isSelected:boolean=this.port_id&&this.port_id.includes(prtf.Portfolio_ID);
+      return isSelected?false:z;
+   });
+
+   this.filtered_list=fresult;
+   this.hasmultiselectFilter=true;
+  }
+
+
+  removeFilterConfig(){
+    this.multiselectFilterConfig.byuser=null;
+    this.multiselectFilterConfig.bycompany=null;
+    this.hasmultiselectFilter=false;
+    this.searchItems('');
+   
+  }
+    
+ 
+// new popup selection dialog end.
+
+
+
 }
 
-// new Date(this.todayDate.getFullYear(),this.todayDate.getMonth(),this.todayDate.getDate(),0,0,0,0)
+
+
+
+
+
+
+
+
+
 

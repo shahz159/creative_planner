@@ -1279,6 +1279,13 @@
                                                         <i class="fas fa-sort"></i> Deadline
                                                     </th>
 
+                                                    <th [ngClass]="{'d-none':!isallocatedhrs}"  [appSort]="_ProjectDataList" data-order="desc"
+                                                     data-name="hoursInDecimal" tabindex="0" aria-controls="project-4"
+                                                    rowspan="1" colspan="1" class="curser-pointer"
+                                                    aria-label="Allocated hours: activate to sort column ascending">
+                                                    <i class="fas fa-sort"></i> Allocated hours
+                                                    </th>
+                                                    
                                                     <ng-container  *ngIf="(StatusCountFilter&&StatusCountFilter.length!=0&&StatusCountFilter[0].Name!='Delay')" >
                                                         <th [ngClass]="{'d-none':!isstatus}"  [appSort]="_ProjectDataList" data-order="desc"
                                                                 data-name="Status" tabindex="0" aria-controls="project-4"
@@ -1465,6 +1472,18 @@
                                                           </button>
                                                         </li>
 
+                                                        <li>
+                                                            <button class="btn btn-filtr">
+                                                              <div class="d-flex align-items-center">
+                                                                <!-- <span class="count del"> {{CountDelay}} </span> -->
+                                                                <div class="fil-lbl">Allocated hours</div>
+                                                                <label class="switch">
+                                                                  <input type="checkbox" [checked]="isallocatedhrs" (change)="togglevisibilityforClass('class_allocatedhours',$event);">
+                                                                  <span class="slider"></span>
+                                                                </label>
+                                                              </div>
+                                                            </button>
+                                                          </li>
 
                                                         <li>
                                                           <button class="btn btn-filtr">
@@ -1739,7 +1758,7 @@
                                                    <!-- department data end -->
 
                                                    <!--created date start-->
-                                                    <td [ngClass]="{'d-none':!iscreateddate}" class="class_deadline">
+                                                    <td [ngClass]="{'d-none':!iscreateddate}" class="class_createddate">
                                                         <span class="kt-widget__other text-nowrap">
                                                        {{item.CreatedOn|date:'dd-MM-yyyy'}} 
                                                         </span>
@@ -1747,7 +1766,7 @@
                                                    <!--created date start-->
 
                                                    <!--project start date  start-->
-                                                  <td [ngClass]="{'d-none':!isstartdate}" class="class_deadline">
+                                                  <td [ngClass]="{'d-none':!isstartdate}" class="class_startdate">
                                                       <span class="kt-widget__other text-nowrap">
                                                          {{item.DPG|date:'dd-MM-yyyy'}}
                                                       </span>
@@ -1755,10 +1774,10 @@
                                                    <!--project end date  start-->
 
                                                    <!--project deadline start-->
-                                                  <td [ngClass]="{'d-none':!isdeadline}" class="class_deadline"  >
+                                                  <td [ngClass]="{'d-none':!isdeadline}" class="class_deadline">
                                                     <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else Projecttype">
                                                         <span class="kt-widget__other text-nowrap">{{item.SubmissionType1}}</span>
-                                                         <div  class="text-nowrap font" *ngIf="item.SubmissionType === 'Weekly'||'Daily'|| 'Annually'||'Monthly'  ">{{formatTime(item.StandardDuration)}}</div>
+                                                         <div  class="text-nowrap font" *ngIf="isallocatedhrs==false&&(item.SubmissionType === 'Weekly'||'Daily'|| 'Annually'||'Monthly')">{{formatTime(item.StandardDuration)}}</div>
                                                     </div>
                                                     <ng-template #Projecttype>
                                                         <span class="kt-widget__other text-nowrap">
@@ -1766,6 +1785,19 @@
                                                     </ng-template>
                                                   </td>
                                                    <!--project deadline end-->
+
+                                                  <!--project allocated hrs start-->
+                                                  <td [ngClass]="{'d-none':!isallocatedhrs}" class="class_allocatedhours">
+                                                    <div *ngIf="item.Exec_BlockName=='Standard Tasks' || item.Exec_BlockName=='Routine Tasks';else cst_alhr">
+                                                        <span class="kt-widget__other text-nowrap">{{formatTime(item.StandardDuration)}}</span>
+                                                    </div>
+                                                    <ng-template #cst_alhr>
+                                                        <span class="kt-widget__other text-nowrap">
+                                                            {{item.AllocatedHours|number}} hrs
+                                                        </span>
+                                                    </ng-template>
+                                                  </td>
+                                                  <!--project allocated hrs end-->
 
                                                   <!--status start-->
                                                    <td  [ngClass]="{'d-none':!isstatus}" class="stat-td statusClass">
@@ -2291,7 +2323,7 @@
                                                   <!--racis end--> 
 
                                                   <!--completion date start-->
-                                                  <td [ngClass]="{'d-none':!iscompletiondate}" class="class_deadline">
+                                                  <td [ngClass]="{'d-none':!iscompletiondate}" class="class_completiondate">
                                                     <span *ngIf="item.Status=='Completed';else notcompletedyet" class="kt-widget__other text-nowrap">
                                                         {{item.completedate|date:'dd-MM-yyyy'}}
                                                     </span>

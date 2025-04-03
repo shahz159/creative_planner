@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import * as moment from 'moment';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { ProjectMoreDetailsService } from '../../_Services/project-more-details.service';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import Swal from 'sweetalert2';
@@ -220,19 +220,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     public cdr:ChangeDetectorRef
 
   ) {
-
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.objProjectDto = new ProjectDetailsDTO();
     this.objPortfolioDto = new PortfolioDTO();
     this.approvalObj = new ApprovalDTO();
   }
-
-
-
-
-
-
-
 
 
   onKeyPress() {
@@ -261,6 +253,10 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         this.router.navigate(["../backend/ProjectsSummary"]);
       }
     });
+
+    
+
+
 
 
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
@@ -3172,18 +3168,385 @@ approvalSubmitting:boolean=false;
 
   proState:boolean=false;
   processingActnComplete:boolean=false;
-  actionCompleted() {
 
-   const fieldsprvided:boolean=(this._remarks&&this._remarks.trim())&&(this.proState?this.selectedFile:true);
 
-    if (!fieldsprvided) { // when the user not provided the required fields then .
-      this.formFieldsRequired=true;
-      this.notifyService.showInfo("Please fill in the mandatory fields.", '');
+completeAction(){   
+  // action completion without file attachment.
+  const fd = new FormData();
+  fd.append("Master_Code", this._MasterCode);
+  fd.append("Emp_No", this.Current_user_ID);
+  fd.append("Projectblock", this.projectInfo.Project_Block);
+  fd.append("Project_Code",this.Sub_ProjectCode);   
+  fd.append("Team_Autho", this.Sub_Autho);    
+  fd.append("Project_Name", this._Subtaskname);  
+  fd.append("Remarks", this._remarks);    
+  fd.append("contentType",'');   
+  fd.append("Attachment","false");
+
+  this.processingActnComplete=true;   // action completion process started. 
+  this.service._UpdateSubtaskByProjectCodeCore(fd)
+    .subscribe((event: HttpEvent<any>) => {
+
+          switch (event.type) {
+            case HttpEventType.Sent:console.log('Request has been made!');break;
+            case HttpEventType.ResponseHeader:console.log('Response header has been received!');break;
+            case HttpEventType.UploadProgress:
+              const actnprogress = Math.round(event.loaded / event.total * 100);
+              console.log(actnprogress, "progress");
+              if (actnprogress == 100) console.log('progress completed');
+              break;
+            case HttpEventType.Response:{
+              var myJSON = JSON.stringify(event);
+              this._Message = (JSON.parse(myJSON).body).message;
+              if(this._Message==='Success'){
+                  this.notifyService.showSuccess("Successfully updated", 'Action completed');
+ 
+                  // clear form, close sidebar, rebind page.
+                  this._remarks = "";
+                  this._inputAttachments = "";
+                  this.selectedFile = null;
+                  this.invalidFileSelected=false;
+                  this.getProjectDetails(this.URL_ProjectCode);
+                  this.calculateProjectActions();     // recalculate the project actions.
+                  this.closeActCompSideBar();   // close action completion sidebar.
+              }
+              else{
+                  this.notifyService.showError('Unable to complete this Action.','Something went wrong!');   
+              }
+              this.processingActnComplete=false;  // action completion process ended.
+            }
+          }
+       });
+
+}
+
+
+completeActionWithAttachment(){
+   // action completion with file attachment.
+   if(this.selectedFile){
+ 
+    const fd = new FormData();
+    fd.append("Project_Code", this.Sub_ProjectCode);
+    fd.append("Master_Code", this._MasterCode);
+    fd.append("Team_Autho", this.Sub_Autho);
+    fd.append("Emp_No", this.Current_user_ID);
+    fd.append("Projectblock", this.projectInfo.Project_Block);
+    fd.append("Remarks", this._remarks);
+    fd.append("Project_Name", this._Subtaskname);
+    fd.append("contentType",this.contentType);
+    fd.append("Attachment","true");
+    fd.append('file', this.selectedFile);   // file input to azure.
+
+    this.processingActnComplete=true;  // action completion with file attach upload process started.
+    this.setFilesUploadingBarVisible(true);   // show the file uploading bar.
+    this.fileInUpload={filename:this.selectedFile.name, uploaded:0, processingUploadFile:false};  // add file attach info into uploading bar.
+
+    this.service._AzureUploadActionComplete(fd).subscribe({
+      next:(event1: HttpEvent<any>)=>{
+              
+        switch (event1.type) {
+          case HttpEventType.Sent: console.log('Request sent!'); break;
+          case HttpEventType.ResponseHeader: console.log('Response header received!'); break;
+          case HttpEventType.UploadProgress:
+            const progress = Math.round(event1.loaded / event1.total * 100);
+            this.fileInUpload.uploaded=progress;
+            if(this.fileInUpload.uploaded==100){
+              setTimeout(()=>{
+                this.fileInUpload.processingUploadFile=true; //when server processing the file upload.
+              },1000);
+            }
+            console.log(`Upload progress: ${this.fileInUpload.uploaded}%`);
+            break;
+          case HttpEventType.Response:{ 
+            console.log('Response received:', event1.body);
+            if(event1&&event1.body==1){
+              this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");
+              this.getAttachments(1);   // rebind the file attachment sidebar data.
+           // once after file attach provided has successfully uploaded to azure.
+           //now action status update
+           fd.delete('file');       
+           this.service._UpdateSubtaskByProjectCodeCore(fd)
+           .subscribe((event: HttpEvent<any>) => {
+              switch (event.type) {
+                case HttpEventType.Sent:console.log('Request has been made!');break;
+                case HttpEventType.ResponseHeader:console.log('Response header has been received!');break;
+                case HttpEventType.UploadProgress:
+                  const actnprogress = Math.round(event.loaded / event.total * 100);
+                  console.log(actnprogress, "progress");
+                  if (actnprogress == 100) console.log('progress completed');
+                  break;
+                case HttpEventType.Response:{
+                  var myJSON = JSON.stringify(event);
+                  this._Message = (JSON.parse(myJSON).body).message;
+                  if(this._Message==='Success'){
+                      this.notifyService.showSuccess("Successfully updated", 'Action completed');
+
+                      // clear form, close sidebar, rebind page.
+                      this._remarks = "";
+                      this._inputAttachments = "";
+                      this.selectedFile = null;
+                      this.invalidFileSelected=false;
+                      this.getProjectDetails(this.URL_ProjectCode);
+                      this.calculateProjectActions();     // recalculate the project actions.
+                      this.closeActCompSideBar();   // close action completion sidebar.
+                  }
+                  else{
+                      this.notifyService.showError('Unable to complete this Action.','Something went wrong!');   
+                  }
+                  this.processingActnComplete=false;  // action completion process ended.
+                }
+              }
+           })
+
+            }
+            else{
+              this.notifyService.showError("Unable to upload file attachment.", "Internal server error");
+              this.processingActnComplete=false;  // action completion ended.
+            }
+            this.setFilesUploadingBarVisible(false);   // hide the file uploading bar.     
+            this.fileInUpload=null;        // clear uploading file info.
+
+          };break;
+        }
+
+       },
+      error:(e)=>{
+        this.processingActnComplete=false;  // action completed processing ended.
+        this.fileInUpload=null;                  // clear file attach uploading info.
+        this.setFilesUploadingBarVisible(false);      // hide the file uploading bar.
+        this.notifyService.showError("Unable to upload file attachment.", "Failed");
+        console.error("ERROR AT FILE ATTACHMENT UPLOADING",e);
+      }
+    });
+
+   }
+   else
+   console.log("Cannot find file attachment. unable to complete action.");  
+
+}
+
+
+completeBothActionAndProject(){
+  let actnAttchUpload=0;
+  let prjAttchUpload=0;
+  let isActionCompleted=false;
+  let isProjectCompleted=false;
+  this.processingActnComplete=true;   // action completion process started.
+  this.processingPrjComplete=true;    // project completion process started.
+
+  // 1. Fileuploading bar visible.
+  this.fileInUpload={filename:this.selectedFile.name, uploaded:0, processingUploadFile:false};  // show file attach info in the file uploading bar.
+  this.setFilesUploadingBarVisible(true);   // shows the file uploading bar.
+  
+  // 2. Action completion with file attachment.
+  const fd = new FormData();
+  fd.append("Project_Code", this.Sub_ProjectCode);
+  fd.append("Master_Code", this._MasterCode);
+  fd.append("Team_Autho", this.Sub_Autho);
+  fd.append("Emp_No", this.Current_user_ID);
+  fd.append("Projectblock", this.projectInfo.Project_Block);
+  fd.append("Remarks", this._remarks);
+  fd.append("Project_Name", this._Subtaskname);
+  fd.append("contentType",this.contentType);
+  fd.append("Attachment","true");
+  fd.append('file',  this.selectedFile);
+  this.service._AzureUploadActionComplete(fd).subscribe({
+      next: (event1: HttpEvent<any>) => {
+        switch (event1.type) {
+          case HttpEventType.Sent:
+            console.log('Request sent!');
+            break;
+          case HttpEventType.ResponseHeader:
+            console.log('Response header received!');
+            break;
+          case HttpEventType.UploadProgress:
+            const progress = Math.round(event1.loaded / event1.total * 100);
+            actnAttchUpload=progress;
+            this.fileInUpload.uploaded=(actnAttchUpload+prjAttchUpload)/2;
+            if(this.fileInUpload.uploaded==100){
+              setTimeout(()=>{
+                this.fileInUpload.processingUploadFile=true; //when server processing the file upload.
+              },1000);
+            }
+            console.log(`actn Upload progress: ${actnAttchUpload}%`);
+            break;
+          case HttpEventType.Response:{
+            console.log('Response received:', event1.body);
+            if(event1&&event1.body==1){
+              this.notifyService.showSuccess(this.fileInUpload.filename,"Action attachment uploaded successfully");
+
+              // once after action file attachment uploaded successfully.
+              // update action status
+              fd.delete('file');
+              this.service._UpdateSubtaskByProjectCodeCore(fd)
+              .subscribe((event: HttpEvent<any>) => {
+               switch (event.type) {
+                 case HttpEventType.Response:{
+                   var myJSON = JSON.stringify(event);
+                   this._Message = (JSON.parse(myJSON).body).message;
+                   if(this._Message=="Success")
+                   {
+                     this.notifyService.showSuccess("Successfully updated", 'Action completed.');
+                     isActionCompleted=true;
+                     afterActionAndProjectCompleted();
+                   }
+                   else{
+                     this.notifyService.showError('Unable to complete this action','Something went wrong');  
+                   }
+
+                   this.processingActnComplete=false; // action completion process ended.
+                 }
+               }
+
+              });
+
+
+             //  isActionCompleted=true;
+             //  this.processingActnComplete=false; 
+             //  afterActionAndProjectCompleted();
+            }
+            else{
+              this.notifyService.showError('Unable to upload attachment on this action','Internal server error');  
+              this.processingActnComplete=false; 
+            }
+          };break;
+        }
+
+      },
+      error:(e)=>{
+        this.notifyService.showError('Unable to upload attachment on this action','Failed');  
+        this.processingActnComplete=false; 
+      }
+   }  
+  );
+
+
+  // 3. Project completion with file attachment.
+  const fd1 = new FormData();
+  fd1.append("Project_Code", this.URL_ProjectCode);
+  fd1.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
+  fd1.append("Remarks", this._remarks);
+  fd1.append("Projectblock", this.projectInfo.Project_Block);
+  fd1.append("Emp_No", this.Current_user_ID);
+  fd1.append("Project_Name", this.projectInfo.Project_Name);
+  fd1.append("contentType",this.contentType);
+  fd1.append("Attachment","true");
+  fd1.append('file',  this.selectedFile);
+  this.service._AzureUploadProjectComplete(fd1).subscribe({
+
+       next:(event1: HttpEvent<any>) => {
+                 switch (event1.type) {
+                   case HttpEventType.Sent:
+                     console.log('Request sent!');
+                     break;
+                   case HttpEventType.ResponseHeader:
+                     console.log('Response header received!');
+                     break;
+                   case HttpEventType.UploadProgress:
+                     const progress = Math.round(event1.loaded / event1.total * 100);
+                     prjAttchUpload=progress;
+                     this.fileInUpload.uploaded=(actnAttchUpload+prjAttchUpload)/2;
+                     if(this.fileInUpload.uploaded==100){
+                      setTimeout(()=>{
+                        this.fileInUpload.processingUploadFile=true; //when server processing the file upload.
+                      },1000);
+                    }
+                     console.log(`prj Upload progress: ${prjAttchUpload}%`);
+                     break;
+                   case HttpEventType.Response:{ 
+                     console.log('Response received:', event1.body);
+                     if(event1&&event1.body==1){
+                       this.notifyService.showSuccess(this.fileInUpload.filename,"Project attachment uploaded successfully ");
+                      // once after project attachment uploaded successfully.
+                      // now update project status.
+                      fd1.delete('file');
+                       this.service._UpdateProjectCompleteCore(fd1).
+                       subscribe((event: HttpEvent<any>) => {
+
+                         switch (event.type) {
+                           case HttpEventType.Sent:
+                             console.log('Request has been made!');
+                             break;
+                           case HttpEventType.ResponseHeader:
+                             console.log('Response header has been received!');
+                             break;
+                           case HttpEventType.UploadProgress:
+                             this.progress = Math.round(event.loaded / event.total * 100);
+                             console.log(this.progress, "progress");
+                             break;
+                           case HttpEventType.Response:{
+                             var myJSON = JSON.stringify(event);
+                             this._Message = (JSON.parse(myJSON).body).message;
+                             this.notifyService.showSuccess(this._Message, 'Success');
+
+                             isProjectCompleted=true;
+                             this.processingPrjComplete=false;
+                             afterActionAndProjectCompleted();
+
+                            }
+                         }
+
+                       });
+                      
+                       // isProjectCompleted=true;
+                       // this.processingPrjComplete=false;
+                       // afterActionAndProjectCompleted();
+                     }
+                     else{
+                       this.notifyService.showError("Unable to upload file attachment.", "Internal server error");
+                       this.processingPrjComplete=false;
+                     }
+                   };break;
+                 }
+                
+       },
+       error:(e)=>{
+                    console.log('failed while uploading file attach for project',e);
+                    this.processingPrjComplete=false;
+                    this.notifyService.showError("Unable to upload file attachment of project","Failed");
+       }
+
+  });
+
+
+   //4. after project and action completion.
+   const afterActionAndProjectCompleted=()=>{
+    if(isActionCompleted&&isProjectCompleted)
+    {
+      this.selectedFile = null;
+      this._inputAttachments = '';
+      this._remarks = '';
+      this.invalidFileSelected=false;
+      this.processingActnComplete=false;
+      this.processingPrjComplete=false;
+      this.fileInUpload=null;
+      this.setFilesUploadingBarVisible(false);
+
+      this.closeInfo();
+      this.getProjectDetails(this.URL_ProjectCode);
+      this.getAttachments(1);
+      this.calculateProjectActions();
+      this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
     }
-    else if (
-      (this.TOTAL_ACTIONS_UNDER_APPROVAL+this.TOTAL_ACTIONS_IN_FUA+this.TOTAL_ACTIONS_IN_CNUA+this.TOTAL_ACTIONS_IN_CUA+this.TOTAL_ACTIONS_IN_HOLD)==0&&
-      (this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_IN_DELAY) === 1&&
-      (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.Authority_EmpNo || this.isHierarchy === true)) {   // if user is O,R,A or is in heirarchy and there is only one action in inprocess or delay state.
+   }
+
+
+}
+
+
+actionCompleted(){
+  const fieldsprvided:boolean=(this._remarks&&this._remarks.trim())&&(this.proState?this.selectedFile:true);
+
+  if (!fieldsprvided) { // when the user not provided the required fields then .
+    this.formFieldsRequired=true;
+    this.notifyService.showInfo("Please fill in the mandatory fields.", '');
+  }
+  else if(
+    (this.TOTAL_ACTIONS_UNDER_APPROVAL+this.TOTAL_ACTIONS_IN_FUA+this.TOTAL_ACTIONS_IN_CNUA+this.TOTAL_ACTIONS_IN_CUA+this.TOTAL_ACTIONS_IN_HOLD)==0&&
+    (this.TOTAL_ACTIONS_IN_PROCESS + this.TOTAL_ACTIONS_IN_DELAY) === 1&&
+    (this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.Authority_EmpNo || this.isHierarchy === true)) {   
+      // if user is O,R,A or is in heirarchy and there is only one action in inprocess or delay state.
+
       Swal.fire({
         title: 'Proceed With Project Submission ?',
         html: `<div class="text-justify">
@@ -3195,482 +3558,40 @@ approvalSubmitting:boolean=false;
         cancelButtonText: 'Complete Action',
         cancelButtonColor:'#3085d6'
       }).then((res: any) => {
-
-        if (res.value) {   // when user proceed also with the main project submission.  ( completing both action and project.)
-          if (this.selectedFile == null) {
+       
+        if(res.value){
+          // when user chooses to complete both action and the project.
+          if (this.selectedFile == null||this.selectedFile==undefined) {
             this.notifyService.showInfo("Please attach the completion file to complete the main project", "Note");
           }
-          else {
-
-            let actnAttchUpload=0;
-            let prjAttchUpload=0;
-            let isActionCompleted=false;
-            let isProjectCompleted=false;
-            this.processingActnComplete=true;
-            this.processingPrjComplete=true;
-     
-
-          // 1. Fileuploading bar visible.
-          this.fileInUpload={filename:this.selectedFile.name, uploaded:0, processingUploadFile:false};
-          this.setFilesUploadingBarVisible(true);
-
-
-            // 2.  ACTION SUBMISSION
-            const fd = new FormData();
-            fd.append("Project_Code", this.Sub_ProjectCode);
-            fd.append("Master_Code", this._MasterCode);
-            fd.append("Team_Autho", this.Sub_Autho);
-            fd.append("Emp_No", this.Current_user_ID);
-            fd.append("Projectblock", this.projectInfo.Project_Block);
-            fd.append("Remarks", this._remarks);
-            fd.append("Project_Name", this._Subtaskname);
-            fd.append("contentType",this.contentType);
-            if(this.selectedFile){
-              fd.append("Attachment","true");
-            }
-            else{
-              fd.append("Attachment","false")
-            }
-            // this.service._UpdateSubtaskByProjectCode(fd)
-            this.service._UpdateSubtaskByProjectCodeCore(fd)
-              .subscribe((event: HttpEvent<any>) => {
-
-                switch (event.type) {
-                  case HttpEventType.Response:{
-                    var myJSON = JSON.stringify(event);
-                    this._Message = (JSON.parse(myJSON).body).message;
-                    console.log(myJSON,"acitonproject")
-                    if(this._Message==='Success')
-                    {
-                      this.notifyService.showSuccess("Successfully updated", 'Action completed.');
-                      if (this.selectedFile) {
-
-                        fd.append("Project_Code", this.Sub_ProjectCode);
-                        fd.append("Team_Autho", this.Sub_Autho);
-                        fd.append("Emp_No", this.Current_user_ID);
-                        fd.append("Project_Name", this._Subtaskname);
-                        fd.append('file',  this.selectedFile);
-                        this.service._AzureUploadActionComplete(fd).subscribe({
-                            next: (event1: HttpEvent<any>) => {
-                              switch (event1.type) {
-                                case HttpEventType.Sent:
-                                  console.log('Request sent!');
-                                  break;
-                                case HttpEventType.ResponseHeader:
-                                  console.log('Response header received!');
-                                  break;
-                                case HttpEventType.UploadProgress:
-                                  const progress = Math.round(event1.loaded / event1.total * 100);
-                                  actnAttchUpload=progress;
-                                  this.fileInUpload.uploaded=(actnAttchUpload+prjAttchUpload)/2;
-                                  console.log(`actn Upload progress: ${actnAttchUpload}%`);
-                                  break;
-                                case HttpEventType.Response:{
-                                  console.log('Response received:', event1.body);
-                                  if(event1&&event1.body==1){
-                                    this.notifyService.showSuccess(this.fileInUpload.filename,"Action attachment uploaded successfully");
-                                    isActionCompleted=true;
-                                    this.processingActnComplete=false; 
-                                    afterActionAndProjectCompleted();
-                                  }
-                                  else{
-                                    this.notifyService.showError('Unable to upload attachment on this action','Internal server error');  
-                                    this.processingActnComplete=false; 
-                                  }
-                                };break;
-                              }
-    
-                              console.log(event1,"azure data");
-                              var myJSON = JSON.stringify(event1);
-                            //  this._Message = (JSON.parse(myJSON).body);
-                            },
-                            error:(e)=>{
-                              this.notifyService.showError('Unable to upload attachment on this action','Failed');  
-                              this.processingActnComplete=false; 
-                            }
-                         }  
-                      );
-                      }
-                      else{
-                        this.processingActnComplete=false; 
-                      }
-                      // after the action is successfully completed
-                      // this.closeInfo();
-                      // this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
-                      // this.getAttachments(1);
-                      // this.calculateProjectActions();
-                      // this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
-                    }
-                    else{
-                       this.notifyService.showError('Unable to complete this action','Something went wrong');  
-                       this.processingActnComplete=false; 
-                    }
-                  };break;
-                }
-
-              });
-            // ACTION SUBMITTED
-
-
-            // 3.  PROJECT SUBMISSION.
-            const fd1 = new FormData();
-            fd1.append("Project_Code", this.URL_ProjectCode);
-            fd1.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
-            fd1.append("Remarks", this._remarks);
-            fd1.append("Projectblock", this.projectInfo.Project_Block);
-            fd1.append("Emp_No", this.Current_user_ID);
-            fd1.append("Project_Name", this.projectInfo.Project_Name);
-            fd1.append("contentType",this.contentType);
-            if(this.selectedFile){
-              fd1.append("Attachment","true");
-            }
-            else{
-              fd1.append("Attachment","false")
-            }
-            console.log(fd1, "complete");
-            // this.service._fileuploadService(fd1).
-            this.service._UpdateProjectCompleteCore(fd1).
-              subscribe((event: HttpEvent<any>) => {
-                switch (event.type) {
-                  case HttpEventType.Sent:
-                    console.log('Request has been made!');
-                    break;
-                  case HttpEventType.ResponseHeader:
-                    console.log('Response header has been received!');
-                    break;
-                  case HttpEventType.UploadProgress:
-                    this.progress = Math.round(event.loaded / event.total * 100);
-                    console.log(this.progress, "progress");
-                    if (this.progress == 100) {
-                      this.notifyService.showInfo("File uploaded successfully", "Project updated");
-                    }
-                    break;
-                  case HttpEventType.Response:{
-                    console.log('File upload done!', event.body);
-                    var myJSON = JSON.stringify(event);
-                    this._Message = (JSON.parse(myJSON).body).message;
-                    this.notifyService.showSuccess(this._Message, 'Success');
-                    if(this.selectedFile){
-                      fd1.append('file',  this.selectedFile);
-                      this.service._AzureUploadProjectComplete(fd1).subscribe({
-
-                          next:(event1: HttpEvent<any>) => {
-                            switch (event1.type) {
-                              case HttpEventType.Sent:
-                                console.log('Request sent!');
-                                break;
-                              case HttpEventType.ResponseHeader:
-                                console.log('Response header received!');
-                                break;
-                              case HttpEventType.UploadProgress:
-                                const progress = Math.round(event1.loaded / event1.total * 100);
-                                prjAttchUpload=progress;
-                                this.fileInUpload.uploaded=(actnAttchUpload+prjAttchUpload)/2;
-                                console.log(`prj Upload progress: ${prjAttchUpload}%`);
-                                break;
-                              case HttpEventType.Response:{ 
-                                console.log('Response received:', event1.body);
-                                if(event1&&event1.body==1){
-                                  this.notifyService.showSuccess(this.fileInUpload.filename,"Project attachment uploaded successfully ");
-                                  isProjectCompleted=true;
-                                  this.processingPrjComplete=false;
-                                  afterActionAndProjectCompleted();
-                                }
-                                else{
-                                  this.notifyService.showError("Unable to upload file attachment.", "Internal server error");
-                                  this.processingPrjComplete=false;
-                                }
-                              };break;
-                            }
-                            console.log(event1,"azure data");
-                            var myJSON = JSON.stringify(event1);
-                          //  this._Message = (JSON.parse(myJSON).body);
-                          },
-                          error:(e)=>{
-                               console.log('failed while uploading file attach for project',e);
-                               this.processingPrjComplete=false;
-                               this.notifyService.showError("Unable to upload file attachment of project","Failed");
-                          }
-
-                        });
-                    }
-                  }
-
-                }
-              });
-              // PROJECT SUBMITTED.
-
-
-            //4. after project and action completion.
-              const afterActionAndProjectCompleted=()=>{
-                if(isActionCompleted&&isProjectCompleted)
-                {
-                  this.selectedFile = null;
-                  this._inputAttachments = '';
-                  this._remarks = '';
-                  this.invalidFileSelected=false;
-                  this.processingActnComplete=false;
-                  this.processingPrjComplete=false;
-                  this.fileInUpload=null;
-                  this.setFilesUploadingBarVisible(false);
-
-                  this.closeInfo();
-                  this.getProjectDetails(this.URL_ProjectCode);
-                  this.getAttachments(1);
-                  this.calculateProjectActions();
-                  this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
-                }
-              }
-
-
-          }
-        }
-        else if (res.dismiss === Swal.DismissReason.cancel) {
-          const fd = new FormData();
-          fd.append("Project_Code", this.Sub_ProjectCode);
-          fd.append("Master_Code", this._MasterCode);
-          fd.append("Team_Autho", this.Sub_Autho);
-          fd.append("Emp_No", this.Current_user_ID);
-          fd.append("Projectblock", this.projectInfo.Project_Block);
-          fd.append("Remarks", this._remarks);
-          fd.append("Project_Name", this._Subtaskname);
-          fd.append("contentType",this.contentType);
-          if(this.selectedFile){
-            fd.append("Attachment","true");
-          }
           else{
-            fd.append("Attachment","false")
+         // action and project both completion with same file attachment.
+            this.completeBothActionAndProject();
           }
-          console.log(this.selectedFile, "action file");
-
-            this.service._UpdateSubtaskByProjectCodeCore(fd)
-            .subscribe((event: HttpEvent<any>) => {
-               if (event.type === HttpEventType.Response){
-                 var myJSON = JSON.stringify(event);
-                 this._Message = (JSON.parse(myJSON).body).message;
-                 console.log(event,myJSON,this._Message,"action data");
-                //  alert(this._Message);
-
-                 if(this._Message=='Success'){
-                  this.notifyService.showSuccess("Successfully updated", 'Action completed');
-                  this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
-
-                  if(this.selectedFile) {
-                  this.setFilesUploadingBarVisible(true);
-                  this.fileInUpload={filename:this.selectedFile.name, uploaded:0, processingUploadFile:false};
-                  fd.append('file',  this.selectedFile);
-                  this.service._AzureUploadActionComplete(fd).subscribe({
-                    next:(event1: HttpEvent<any>) => {
-                      switch (event1.type) {
-                        case HttpEventType.Sent:
-                          console.log('Request sent!');
-                          break;
-                        case HttpEventType.ResponseHeader:
-                          console.log('Response header received!');
-                          break;
-                        case HttpEventType.UploadProgress:
-                          const progress = Math.round(event1.loaded / event1.total * 100);
-                          this.fileInUpload.uploaded=progress;
-                          if(this.fileInUpload.uploaded==100){
-                            setTimeout(()=>{
-                              this.fileInUpload.processingUploadFile=true; //when server processing the file upload.
-                            },1000);
-                          }
-                          console.log(`Upload progress: ${this.fileInUpload.uploaded}%`);
-                          break;
-                        case HttpEventType.Response:{  
-                          console.log('Response received:', event1.body);
-                          if(event1&&event1.body==1){
-                            this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully ");
-                            this.getAttachments(1);  // rebind file attachments sidebar.
-                          }
-                          else{
-                            this.notifyService.showError("Unable to upload file attachment.", "Internal server error");
-                          }
-
-                          this.setFilesUploadingBarVisible(false);
-                          this.processingActnComplete=false;
-                          this.fileInUpload=null;
-
-                        };break;
-                      }
-
-                      console.log(event1,"azure data");
-                      var myJSON = JSON.stringify(event1);
-                    //  this._Message = (JSON.parse(myJSON).body);
-
-                    },
-                    error:(e)=>{
-                        this.notifyService.showError("Unable to upload file attachment.", "Failed");
-                        this.setFilesUploadingBarVisible(false); 
-                        this.processingActnComplete=false;
-                        this.fileInUpload=null;
-                        console.error("ERROR AT FILE ATTACHMENT UPLOADING",e);
-                    }
-                  });
-                  }
-                  else{
-                    this.processingActnComplete=false;
-                  }
-
-                this._remarks = "";
-                this._inputAttachments = "";
-                this.selectedFile = null;
-                this.invalidFileSelected=false;
-                this.getProjectDetails(this.URL_ProjectCode);
-                this.calculateProjectActions();     // recalculate the project actions.
-                this.closeActCompSideBar(); // close action completion sidebar.
-
-                 }
-                 else{
-                  this.notifyService.showError('Unable to complete this Action.','Something went wrong!');
-                  this.processingActnComplete=false;
-                 }
-
-               }
-            });
-
         }
+        else if(res.dismiss === Swal.DismissReason.cancel){
+           // when user chooses to complete action only.
+           if(this.selectedFile){ 
+              this.completeActionWithAttachment();
+           }
+           else{  
+              this.completeAction();
+           }
+        }
+      });
 
-      });   //swal end
-
+  }
+  else{
+    // if user is O,R,A or is in Heirarchy and there are some actions in the project which are in process and delay states.
+    if(this.selectedFile){
+       this.completeActionWithAttachment();
     }
-    else {
-      // if user is O,R,A or is in Heirarchy and there are some actions in the project which are in process and delay states.
-
-      const fd = new FormData();
-      fd.append("Project_Code", this.Sub_ProjectCode);
-      fd.append("Master_Code", this._MasterCode);
-      fd.append("Team_Autho", this.Sub_Autho);
-      fd.append("Emp_No", this.Current_user_ID);
-      fd.append("Projectblock", this.projectInfo.Project_Block);
-      fd.append("Remarks", this._remarks);
-      fd.append("Project_Name", this._Subtaskname);
-      fd.append("contentType",this.contentType);
-      if(this.selectedFile){
-        fd.append("Attachment","true");
-      }
-      else{
-        fd.append("Attachment","false")
-      }
-      this.processingActnComplete=true;
-      this.service._UpdateSubtaskByProjectCodeCore(fd)
-        .subscribe((event: HttpEvent<any>) => {
-
-          switch (event.type) {
-            case HttpEventType.Sent:console.log('Request has been made!');break;
-            case HttpEventType.ResponseHeader:console.log('Response header has been received!');break;
-            case HttpEventType.UploadProgress:
-              const actnprogress = Math.round(event.loaded / event.total * 100);
-              console.log(actnprogress, "progress");
-              if (actnprogress == 100) console.log('progress completed');
-              break;
-            case HttpEventType.Response:{
- 
-              var myJSON = JSON.stringify(event);
-              this._Message = (JSON.parse(myJSON).body).message;
-              if(this._Message==='Success')
-              {
-                if(this.selectedFile){  console.log("selectedFile:",this.selectedFile);
-
-                  this.setFilesUploadingBarVisible(true);   // show the file uploading bar.
-                  this.fileInUpload={filename:this.selectedFile.name, uploaded:0, processingUploadFile:false};
-                  fd.append('file', this.selectedFile);
-                  this.service._AzureUploadActionComplete(fd).subscribe({
-                    next:(event1: HttpEvent<any>) => {
-
-                    switch (event1.type) {
-                      case HttpEventType.Sent:
-                        console.log('Request sent!');
-                        break;
-                      case HttpEventType.ResponseHeader:
-                        console.log('Response header received!');
-                        break;
-                      case HttpEventType.UploadProgress:
-                        const progress = Math.round(event1.loaded / event1.total * 100);
-                        this.fileInUpload.uploaded=progress;
-                        if(this.fileInUpload.uploaded==100){
-                          setTimeout(()=>{
-                            this.fileInUpload.processingUploadFile=true; //when server processing the file upload.
-                          },1000);
-                        }
-                        console.log(`Upload progress: ${this.fileInUpload.uploaded}%`);
-                        break;
-                      case HttpEventType.Response:{ 
-                        console.log('Response received:', event1.body);
-                        if(event1&&event1.body==1){
-                          this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");
-                          this.getAttachments(1);   // rebind the file attachment sidebar data.
-                        }
-                        else{
-                          this.notifyService.showError("Unable to upload file attachment.", "Internal server error");
-                        }
-                        this.setFilesUploadingBarVisible(false); 
-                        this.processingActnComplete=false;
-                        this.fileInUpload=null;
-
-                      };break;
-                    }
-
-                    console.log(event1,"azure data");
-                    var myJSON = JSON.stringify(event1);
-                  //  this._Message = (JSON.parse(myJSON).body);
-
-                    },
-                    error:(e)=>{
-                       this.processingActnComplete=false;
-                       this.fileInUpload=null;
-                       this.setFilesUploadingBarVisible(false); 
-                       this.notifyService.showError("Unable to upload file attachment.", "Failed");
-                       console.error("ERROR AT FILE ATTACHMENT UPLOADING",e);
-                    }
-                  });
-
-                }
-                else{  // processing actn complete done where file attachment not provided.
-                  this.processingActnComplete=false;
-                }
-                this.notifyService.showSuccess("Successfully updated", 'Action completed');
-
-                // after the action is successfully completed
-                // let prjAction = this.projectActionInfo.find((prjAct: any) => prjAct.Project_Code === this.Sub_ProjectCode)
-                // const prjActionindex = this.projectActionInfo.indexOf(prjAction)
-                // if (prjActionindex !== -1) {
-                //   const prjActionComp = { ...prjAction,CD:new Date(), Status: 'Completed', Remarks: fd.get('Remarks'), IndexId: prjAction.IndexId };
-                //   this.projectActionInfo.splice(prjActionindex, 1, prjActionComp);
-                //   this.clearFilterConfigs();
-                // }  // updated project action.
-
-                this._remarks = "";
-                this._inputAttachments = "";
-                this.selectedFile = null;
-                this.invalidFileSelected=false;
-                this.getProjectDetails(this.URL_ProjectCode);
-                this.calculateProjectActions();     // recalculate the project actions.
-                this.closeActCompSideBar();   // close action completion sidebar.
-              }
-              else
-              {
-                this.notifyService.showError('Unable to complete this Action.','Something went wrong!');
-                this.processingActnComplete=false;
-              }
-            };break;
-
-          }
-        }
-      
-      
-      );
-
+    else{
+       this.completeAction();
     }
 
   }
-
-
-
-
-
-
+}
 
   // Action completion sidebar code end at here.
 
@@ -5166,171 +5087,210 @@ check_allocation() {
 
 
   processingPrjComplete:boolean=false;
-  updateMainProject() {
-// for checking whether mandatory fields are provided or not.
 
 
-  if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) &&
-  (!(this.selectedFile&&this._remarks&&this._remarks.trim()))){
-    this.formFieldsRequired=true;
-    return;
- }
+  completeProject(){
+    const fd = new FormData();
+    fd.append("Project_Code", this._MasterCode);
+    fd.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
+    fd.append("Remarks", this._remarks);
+    fd.append("Projectblock", this.projectInfo.Project_Block);
+    fd.append("Emp_No", this.Current_user_ID);
+    fd.append("Project_Name", this.projectInfo.Project_Name);
+    fd.append("contentType",'');
+    fd.append("Attachment",'false');
+    this.processingPrjComplete=true;    // project completion process started.
 
+    this.service._UpdateProjectCompleteCore(fd).
+    subscribe((event: HttpEvent<any>) => {
 
-  if((this.projectInfo.Project_Type=='To do List' || this.isAction==true)&&(!(this._remarks&&this._remarks.trim()))){
-     this.formFieldsRequired=true;
-     return;
-  }
-// for checking whether mandatory fields are provided or not.
-
-    // if (this.projectInfo.Project_Type == 'To do List') {
-    //   this.selectedFile = null;
-    // }
-
-    if (this.isAction == false) {
-      const fd = new FormData();
-      fd.append("Project_Code", this._MasterCode);
-      fd.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
-      fd.append("Remarks", this._remarks);
-      fd.append("Projectblock", this.projectInfo.Project_Block);
-      fd.append("Emp_No", this.Current_user_ID);
-      fd.append("Project_Name", this.projectInfo.Project_Name);
-      fd.append("contentType",this.contentType);
-      if(this.selectedFile){
-        fd.append("Attachment","true");
-      }
-      else{
-        fd.append("Attachment","false")
-      }
-      // this.service._fileuploadService(fd).
-      this.processingPrjComplete=true;
-      this.service._UpdateProjectCompleteCore(fd).
-        subscribe((event: HttpEvent<any>) => {
-          switch (event.type) {
-            case HttpEventType.Sent:
-              console.log('Request has been made!');
-              break;
-            case HttpEventType.ResponseHeader:
-              console.log('Response header has been received!');
-              break;
-            case HttpEventType.UploadProgress:
-              this.progress = Math.round(event.loaded / event.total * 100);
-              console.log(this.progress, "progress");
-              break;
-            case HttpEventType.Response:{
-              console.log('File upload done!', event.body);
-              var myJSON = JSON.stringify(event);
-              this._Message = (JSON.parse(myJSON).body).message;
-
-              if(this._Message=='Actions are in under approval.'){
-                this.notifyService.showError(this._Message, 'Failed');
-                this.processingPrjComplete=false;
-              }
-              else{
-                // if (this.progress == 100) {
-                //   this.notifyService.showInfo("File uploaded successfully", "Project updated");
-                // }
-
-                this.notifyService.showSuccess(this._Message, 'Success');
-
-                if(this.selectedFile){
-
-                  this.setFilesUploadingBarVisible(true);
-                  this.fileInUpload={filename:this.selectedFile.name, uploaded:0, processingUploadFile:false};
-                  
-                  fd.append('file',  this.selectedFile);
-                  this.service._AzureUploadProjectComplete(fd).subscribe({
-                    next:(event1: HttpEvent<any>) => {
-
-                      switch (event1.type) {
-                        case HttpEventType.Sent:
-                          console.log('Request sent!');
-                          break;
-                        case HttpEventType.ResponseHeader:
-                          console.log('Response header received!');
-                          break;
-                        case HttpEventType.UploadProgress:
-                          const progress = Math.round(event1.loaded / event1.total * 100);
-                          this.fileInUpload.uploaded=progress;
-                          if(this.fileInUpload.uploaded==100){
-                            setTimeout(()=>{
-                              this.fileInUpload.processingUploadFile=true; //when server processing the file upload.
-                            },1000);
-                          }
-                          console.log(`Upload progress: ${this.fileInUpload.uploaded}%`);
-                          break;
-                        case HttpEventType.Response:{
-                          console.log('Response received:', event1.body);
-                          if(event1.body==1){ 
-                            this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");
-                          }
-                          else{
-                            this.notifyService.showError("Unable to upload file attachment","Internal server error");
-                            console.log("error at prjattch upload",event1);
-                          }
-
-                          this.processingPrjComplete=false;  
-                          this.fileInUpload=null;
-                          this.setFilesUploadingBarVisible(false);
-
-                        };break;
-                      }
-  
-                      console.log(event1,"azure data");
-                      var myJSON = JSON.stringify(event1);
-                    //  this._Message = (JSON.parse(myJSON).body);
-                    },
-                    error:(e)=>{
-                       console.log("error during project attach upload:",e);
-                       this.processingPrjComplete=false;  
-                       this.fileInUpload=null;
-                       this.setFilesUploadingBarVisible(false);
-                       this.notifyService.showError("Unable to upload file attachment","Failed");
-                    }
-                  }
- 
-                );
-                }
-                else{
-                  this.processingPrjComplete=false;
-                }
-
-                this.GetActivityDetails();
-                this.closeInfoProject();
-                this.getProjectDetails(this.URL_ProjectCode);
-                this.getapprovalStats();
-              }
-            };break;
-
+      switch (event.type) {
+        case HttpEventType.Sent:
+          console.log('Request has been made!');
+          break;
+        case HttpEventType.ResponseHeader:
+          console.log('Response header has been received!');
+          break;
+        case HttpEventType.UploadProgress:
+          this.progress = Math.round(event.loaded / event.total * 100);
+          console.log(this.progress, "progress");
+          break;
+        case HttpEventType.Response:{
+          console.log('after project completion :', event.body);
+          var myJSON = JSON.stringify(event);
+          this._Message = (JSON.parse(myJSON).body).message;
+          if(this._Message=='Actions are in under approval.'){
+            this.notifyService.showError(this._Message, 'Failed');
+          }
+          else{
+            this.notifyService.showSuccess(this._Message, 'Success');
+            
+            this.GetActivityDetails();
+            this.closeInfoProject();
+            this.getProjectDetails(this.URL_ProjectCode);
+            this.getapprovalStats();
 
           }
-
-        });
-    }
-    else if (this.isAction == true) {
-      const fd = new FormData();
-      fd.append("Project_Code", this.URL_ProjectCode);
-      fd.append("Master_Code", this.mainMastercode);
-      fd.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
-      fd.append("Projectblock", this.projectInfo.Project_Block);
-      fd.append("Remarks", this._remarks);
-      fd.append('file', this.selectedFile);
-      fd.append("Project_Name", this.projectInfo.Project_Name);
-
-      this.service._UpdateSubtaskByProjectCode(fd)
-        .subscribe(data => {
-          this._remarks = "";
-          this._inputAttachments = "";
-          // this.GetProjectDetails();
-          // this.GetSubtask_Details();
-          this.getProjectDetails(this.URL_ProjectCode);
-          this.closeInfoProject();
-
-        });
-      this.notifyService.showSuccess("Successfully updated", 'Action completed');
-    }
+          this.processingPrjComplete=false; // project completion process ended.
+        }
+      }
+    });
 
   }
+
+  completeProjectWithAttachment(){
+
+    const fd = new FormData();
+    fd.append("Project_Code", this._MasterCode);
+    fd.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
+    fd.append("Remarks", this._remarks);
+    fd.append("Projectblock", this.projectInfo.Project_Block);
+    fd.append("Emp_No", this.Current_user_ID);
+    fd.append("Project_Name", this.projectInfo.Project_Name);
+    fd.append("contentType",this.contentType);
+    fd.append("Attachment",'true');
+    fd.append('file',  this.selectedFile);
+    this.processingPrjComplete=true;    // project completion process started.
+
+    // 1. File attach uploading.
+    this.setFilesUploadingBarVisible(true);   // show file uploading bar.
+    this.fileInUpload={filename:this.selectedFile.name, uploaded:0, processingUploadFile:false};   // store file uploading info.
+
+    this.service._AzureUploadProjectComplete(fd).subscribe({
+      next:(event1: HttpEvent<any>) => {
+
+        switch (event1.type) {
+          case HttpEventType.Sent:
+            console.log('Request sent!');
+            break;
+          case HttpEventType.ResponseHeader:
+            console.log('Response header received!');
+            break;
+          case HttpEventType.UploadProgress:
+            const progress = Math.round(event1.loaded / event1.total * 100);
+            this.fileInUpload.uploaded=progress;
+            if(this.fileInUpload.uploaded==100){
+              setTimeout(()=>{
+                this.fileInUpload.processingUploadFile=true; //when server processing the file upload.
+              },1000);
+            }
+            console.log(`Upload progress: ${this.fileInUpload.uploaded}%`);
+            break;
+          case HttpEventType.Response:{
+            console.log('Response received:', event1.body);
+            if(event1&&event1.body==1){ 
+              this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");
+    // 2. Project status updation            
+              //once file attachment uploaded successfully update project status.
+
+              this.service._UpdateProjectCompleteCore(fd).
+              subscribe((event: HttpEvent<any>) => {
+
+                switch (event.type) {
+                  case HttpEventType.Sent:
+                    console.log('Request has been made!');
+                    break;
+                  case HttpEventType.ResponseHeader:
+                    console.log('Response header has been received!');
+                    break;
+                  case HttpEventType.UploadProgress:
+                    this.progress = Math.round(event.loaded / event.total * 100);
+                    console.log(this.progress, "progress");
+                    break;
+                  case HttpEventType.Response:{
+                    console.log('after project completion :', event.body);
+                    var myJSON = JSON.stringify(event);
+                    this._Message = (JSON.parse(myJSON).body).message;
+                    if(this._Message=='Actions are in under approval.'){
+                      this.notifyService.showError(this._Message, 'Failed');
+                    }
+                    else{
+                      this.notifyService.showSuccess(this._Message, 'Success');
+                      
+                      this.GetActivityDetails();
+                      this.closeInfoProject();
+                      this.getProjectDetails(this.URL_ProjectCode);
+                      this.getapprovalStats();
+
+                    }
+                    this.processingPrjComplete=false; // project completion process ended.
+                  }
+                }
+
+              });
+
+            }
+            else{
+              this.notifyService.showError("Unable to upload file attachment","Internal server error");
+              console.log("error at prjattch upload",event1);
+              this.processingPrjComplete=false;  // project completion process ended.
+            }
+
+            this.fileInUpload=null;            // clear file uploading info.
+            this.setFilesUploadingBarVisible(false);   // hide file uploading bar.
+          };break;
+        }
+
+      },
+      error:(e)=>{
+          console.log("error during project attach upload:",e);
+          this.processingPrjComplete=false;      // project completion process ended.
+          this.fileInUpload=null;               // clear file uploading info.
+          this.setFilesUploadingBarVisible(false);    // hide file uploading bar.
+          this.notifyService.showError("Unable to upload file attachment","Failed");
+      }
+    });
+
+  }
+
+  updateMainProject(){
+    // 1. Validations :checking whether mandatory fields are provided or not.
+    if((this.projectInfo.Project_Type!='To do List' && this.isAction==false) &&
+    (!(this.selectedFile&&this._remarks&&this._remarks.trim()))){
+      this.formFieldsRequired=true;
+      return;
+    }
+
+    if((this.projectInfo.Project_Type=='To do List' || this.isAction==true)&&(!(this._remarks&&this._remarks.trim()))){
+      this.formFieldsRequired=true;
+      return;
+    }
+   // for checking whether mandatory fields are provided or not.
+
+   //2. complete project with or without file attachment.
+   if(this.isAction==false){
+       if(this.selectedFile)
+        this.completeProjectWithAttachment();
+       else
+        this.completeProject();
+   }
+   else if (this.isAction == true) {
+    const fd = new FormData();
+    fd.append("Project_Code", this.URL_ProjectCode);
+    fd.append("Master_Code", this.mainMastercode);
+    fd.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
+    fd.append("Projectblock", this.projectInfo.Project_Block);
+    fd.append("Remarks", this._remarks);
+    fd.append('file', this.selectedFile);
+    fd.append("Project_Name", this.projectInfo.Project_Name);
+
+    this.service._UpdateSubtaskByProjectCode(fd)
+      .subscribe(data => {
+        this._remarks = "";
+        this._inputAttachments = "";
+        // this.GetProjectDetails();
+        // this.GetSubtask_Details();
+        this.getProjectDetails(this.URL_ProjectCode);
+        this.closeInfoProject();
+
+      });
+    this.notifyService.showSuccess("Successfully updated", 'Action completed');
+   }
+
+  }
+
+
+
   // Files Attachment Working Area Start
 
   flSrtOrd: string;
@@ -8473,120 +8433,119 @@ holdcontinue(Pcode:any){
   ShowProgress: boolean = false;
   processingStd:boolean=false;
 
-  achieveStandard() {
-    if(!(this._remarks&&this._remarks.trim())||this.selectedFile==null){
+  achieveStandard(){
+      // 1. Validations : check all mandatory fields are provided or not.
+      if(!(this._remarks&&this._remarks.trim())||this.selectedFile==null){
         this.formFieldsRequired=true;
         return;
-    }
+      }
+      
+      // 2. Prepare formdata 
+      const fd = new FormData();
+      fd.append("Project_Code", this._MasterCode);
+      fd.append("Team_Autho", this.Authority);
+      fd.append("Remarks", this._remarks);
+      fd.append("Projectblock", this.ProjectBlock);
+      fd.append("Emp_No", this.Current_user_ID);
+      fd.append("Project_Name", this.projectInfo.Project_Name);
+      fd.append("achievetype","1");
+      if(this.selectedFile){
+        fd.append("contentType",this.contentType);
+        fd.append("Attachment",'true');
+        fd.append('file',  this.selectedFile);
+      }
+      else{
+        fd.append("contentType",'');
+        fd.append("Attachment",'false');
+      }
 
-    const fd = new FormData();
-    fd.append("Project_Code", this._MasterCode);
-    fd.append("Team_Autho", this.Authority);
-    fd.append("Remarks", this._remarks);
-    fd.append("Projectblock", this.ProjectBlock);
-    fd.append("Emp_No", this.Current_user_ID);
-    fd.append("Project_Name", this.projectInfo.Project_Name);
-    fd.append("contentType",this.contentType);
-    fd.append("achievetype","1");
-    if(this.selectedFile){
-      fd.append("Attachment","true");
-    }
-    else{
-      fd.append("Attachment","false")
-    }
+      this.processingStd=true;  // standard task completion process started.
 
-    console.log(this._MasterCode, this._remarks, this.selectedFile, this.Current_user_ID, "fd");
-    this.processingStd=true;
-    // this.service._UpdateStandardTaskSubmission(fd).
-    this.service._UpdateStandardTaskSubmissionCore(fd).
-      subscribe((event: HttpEvent<any>) => {
-     
-        switch (event.type) {
-          case HttpEventType.Sent:
-            console.log('Request has been made!');
-            break;
-          case HttpEventType.ResponseHeader:
-            console.log('Response header has been received!');
-            break;
-          case HttpEventType.UploadProgress:
-            this.ShowProgress=true;
-            this.progress = Math.round(event.loaded / event.total * 100);
-            console.log(this.progress, "progress");
-            if (this.progress == 100) {
-              this.ShowProgress=false;
-              this.notifyService.showInfo("File uploaded successfully", "Project updated");
-            }
-            break;
-          case HttpEventType.Response:{
-          
-            var myJSON = JSON.stringify(event);
-            this._Message = (JSON.parse(myJSON).body).message;
-            this.notifyService.showSuccess(this._Message, 'Success');
-            console.log('File upload done!', event.body);
-            if (this.selectedFile) {
+      // 3. Upload file attachment 
+      this.setFilesUploadingBarVisible(true);  // show the file uploading bar.
+      this.fileInUpload={filename:this.selectedFile.name, uploaded:0, processingUploadFile:false};   // store file uploading info.
+      this.service._AzureUploadStandardTaskComplete(fd).subscribe({
+        next:(event1: HttpEvent<any>) => {
 
-              this.setFilesUploadingBarVisible(true);
-              this.fileInUpload={filename:this.selectedFile.name, uploaded:0, processingUploadFile:false};
-              fd.append('file',  this.selectedFile);
-              this.service._AzureUploadStandardTaskComplete(fd).subscribe({
-                  next:(event1: HttpEvent<any>) => {
-    
-                    switch (event1.type) {
-                      case HttpEventType.Sent:
-                        console.log('Request sent!');
-                        break;
-                      case HttpEventType.ResponseHeader:
-                        console.log('Response header received!');
-                        break;
-                      case HttpEventType.UploadProgress:
-                        const progress = Math.round(event1.loaded / event1.total * 100);
-                        this.fileInUpload.uploaded=progress;
-                        if(this.fileInUpload.uploaded==100){
-                          setTimeout(()=>{
-                            this.fileInUpload.processingUploadFile=true; //when server processing the file upload.
-                          },1000);
-                        }
-                        console.log(`Upload progress: ${this.fileInUpload.uploaded}%`);
-                        break;
-                      case HttpEventType.Response:{
-                        console.log('Response received:', event1.body);
-                        if(event1.body==1){
-                          this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");
-                        }
-                        else{
-                          this.notifyService.showError("Unable to upload file attachment","Internal server error");
-                        }
-                        this.processingStd=false;
-                        this.setFilesUploadingBarVisible(false);
-                        this.fileInUpload=null;
-                        
-                      };break;
+          switch (event1.type) {
+            case HttpEventType.Sent:
+              console.log('Request sent!');
+              break;
+            case HttpEventType.ResponseHeader:
+              console.log('Response header received!');
+              break;
+            case HttpEventType.UploadProgress:
+              const progress = Math.round(event1.loaded / event1.total * 100);
+              this.fileInUpload.uploaded=progress;
+              if(this.fileInUpload.uploaded==100){
+                setTimeout(()=>{
+                  this.fileInUpload.processingUploadFile=true; //when server processing the file upload.
+                },1000);
+              }
+              console.log(`Upload progress: ${this.fileInUpload.uploaded}%`);
+              break;
+            case HttpEventType.Response:{
+              console.log('Response received:', event1&&event1.body);
+              if(event1&&event1.body==1){
+                this.notifyService.showSuccess(this.fileInUpload.filename,"Uploaded successfully");
+              // once after file attachment uploaded 
+        //4. update standard task.
+
+              this.service._UpdateStandardTaskSubmissionCore(fd).
+              subscribe((event: HttpEvent<any>) => {
+
+                switch (event.type) {
+                  case HttpEventType.Sent:
+                    console.log('Request has been made!');
+                    break;
+                  case HttpEventType.ResponseHeader:
+                    console.log('Response header has been received!');
+                    break;
+                  case HttpEventType.UploadProgress:
+                    this.ShowProgress=true;
+                    this.progress = Math.round(event.loaded / event.total * 100);
+                    if (this.progress == 100) {
+                      this.ShowProgress=false;
                     }
-        
-                    console.log(event1,"azure data");
-                    var myJSON = JSON.stringify(event1);
-                  //  this._Message = (JSON.parse(myJSON).body);
-                  },
-                  error:(e)=>{
-                    this.notifyService.showError("Unable to upload file attachment","Failed");
-                    this.setFilesUploadingBarVisible(false);
-                    this.fileInUpload=null;
-                    this.processingStd=false;
-                  }
-              });
-            }
-            else{
-              this.processingStd=false;
-            }
-            this.closeInfo();
-            this.getProjectDetails(this.URL_ProjectCode);
-            this.getapprovalStats();
-          };break;
-               
-        }
+                    console.log(this.progress, "progress");
+                    break;
+                  case HttpEventType.Response:{
+                    var myJSON = JSON.stringify(event);
+                    this._Message = (JSON.parse(myJSON).body).message;
+                    this.notifyService.showSuccess(this._Message, 'Success');
+                    this.processingStd=false;   // process ended.
 
-        // this._projectSummary.GetProjectsByUserName('RACIS Projects');
+                    this.closeInfo();
+                    this.getProjectDetails(this.URL_ProjectCode);
+                    this.getapprovalStats();
+
+                  }
+                }
+
+                });   
+
+              }
+              else{
+                this.notifyService.showError("Unable to upload file attachment","Internal server error");
+                this.processingStd=false;  // process ended.
+              }
+            
+              this.setFilesUploadingBarVisible(false);   // hide the file uploading bar.
+              this.fileInUpload=null;           // clear file uploading info.
+              
+            };break;
+          }
+
+        },
+        error:(e)=>{
+          this.notifyService.showError("Unable to upload file attachment","Failed");
+          this.setFilesUploadingBarVisible(false);   // hide the file uploading bar.
+          this.fileInUpload=null;     // clear file uploading info.
+          this.processingStd=false;  // standard task completion process ended.
+        }
       });
+
+
   }
 
   notachieveStandard() {
