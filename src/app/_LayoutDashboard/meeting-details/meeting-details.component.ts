@@ -596,7 +596,7 @@ export class MeetingDetailsComponent implements OnInit {
     this._calenderDto.Schedule_ID = this.Schedule_ID;
 
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
-      debugger
+    
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       this.deletedMeeting = this.EventScheduledjson.length;
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
@@ -3881,6 +3881,7 @@ onFileChange(event) {
   ActionedSubtask_Json: any = [];
   assigncount: number;
   isSubmitting: boolean = false;
+  assignTaskExists:any;
 
   onInputChange() {
     // Here you can reset the isSubmitting flag if needed based on input change
@@ -3892,13 +3893,16 @@ onFileChange(event) {
 
     if (this.isSubmitting) return;
 
+    this.assignTaskExists = [...this._TodoList, ...this._CompletedList, ...this.ActionedAssigned_Josn, ...this.ActionedSubtask_Json]
+    .some(item => item.Task_Name?.trim() === this._Demotext.trim());
 
-    if (_Demotext.length <= 100) {
-      if (_Demotext != "" && _Demotext != undefined && _Demotext != null) {
+ 
+    if (_Demotext.length <= 100 && !this.assignTaskExists) {
+      if (_Demotext != "" && _Demotext != undefined && _Demotext != null) { 
         this.isSubmitting = true;
         this._ObjAssigntaskDTO.CategoryId = 2411;
         this._ObjAssigntaskDTO.TypeOfTask = "ToDo";
-        this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+        this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;  
         this._ObjAssigntaskDTO.TaskName = _Demotext;
         this._ObjAssigntaskDTO.Schedule_ID = this.Schedule_ID;
         this._ObjAssigntaskDTO.Agenda_Id = this.AgendaId;
@@ -3921,7 +3925,7 @@ onFileChange(event) {
          
           });
       }
-    } else {
+    } else if(!this.assignTaskExists) {
       this.notifyService.showWarning("Maximum 100 characters are allowed", 'Please shorten it.');
     }
 
@@ -4109,9 +4113,12 @@ onFileChange(event) {
                 this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
                 this.Clientjson = JSON.parse(data[0]['Client_json'])
           
-
                 this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-                console.log(this.ActionedSubtask_Json,'ActionedSubtask_Json')
+
+
+
+                console.log( this._TodoList, this._CompletedList, this.ActionedAssigned_Josn, this.ActionedSubtask_Json,'task')
+
 
                 this.assigncount = this.ActionedAssigned_Josn.length;
                 this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
