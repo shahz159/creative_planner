@@ -9073,4 +9073,25 @@ a.info-btn.info-btn-disable:hover {
     font-weight: 400;
   }
   
+.live-actv
+{
+    position: relative; 
+}
 
+.live-actv .actv-time
+{
+    position: absolute; 
+    right: 0; 
+    font-size: 10px;
+}
+
+
+.live-actv.latest{
+    color: #403f3f;
+    font-size: 12px;
+} 
+
+.live-actv.previous{
+    color: #bdbaba;
+    font-size: 11.4px;
+}

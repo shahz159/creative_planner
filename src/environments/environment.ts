@@ -12,11 +12,11 @@ export const environment = {
   
   
   //-----------Live server----------------
-  // baseUrl:'http://cswebapps.com/PortfolioAPI/api/',
+  //  baseUrl:'http://cswebapps.com/PortfolioAPI/api/',
   //  baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/',
 
 
-  //-----------Test server----------------
+  // -----------Test server----------------
   baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
   baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/', 
    

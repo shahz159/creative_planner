@@ -69,6 +69,8 @@ export class StreamCalendarComponent implements OnInit {
   scstartdate: any = new Date();
   _labelName: string;
   today: any = new Date().toISOString().substring(0, 10);
+  durationOfTodayLine:any
+
   gmtOffset = `GMT+${(-new Date().getTimezoneOffset() / 60) | 0}:${String(Math.abs(new Date().getTimezoneOffset()) % 60).padStart(2, '0')}`;
   ProjectCode: string; Status: string; ProjectType: string; Owner: string;
   event: any;
@@ -368,6 +370,9 @@ export class StreamCalendarComponent implements OnInit {
      this.Getdraft_datalistmeeting(); 
      this.getMeetingApprovals();
      this.BookmarkMeetingsList();
+
+
+  
   }
 
 
@@ -565,6 +570,22 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("skype-icon").style.display = "none";
     document.getElementById("zoom-icon").style.display = "inline-block";
   }
+
+  customPendingTaskModal() {
+    document.getElementById("customPendingTaskModal").style.display = "block";
+    document.getElementById("customPendingTaskModal").classList.add("show");
+    document.getElementById("customPendingTaskModalBackdrop").style.display = "block";
+    document.getElementById("customPendingTaskModalBackdrop").classList.add("show");
+  }
+  customPendingTaskModal_dismiss() {
+    document.getElementById("customPendingTaskModal").style.display = "none";
+    document.getElementById("customPendingTaskModal").classList.remove("show");
+    document.getElementById("customPendingTaskModalBackdrop").style.display = "none";
+    document.getElementById("customPendingTaskModalBackdrop").classList.remove("show"); 
+  }
+
+
+
   change_event(){
     this.createTaskEvent=true;
     // document.getElementById("event-title").style.display = "block";
@@ -3355,6 +3376,8 @@ getEventsForWeeks(weeksFromToday: number) {
   const today = new Date();
   today.setHours(0, 0, 0, 0); 
 
+  this.durationOfTodayLine = new Date().toLocaleString('sv-SE', { hour12: false }).slice(0, 16).replace('T', ' ');
+
  
   if (weeksFromToday === 3) {
    
@@ -3486,7 +3509,10 @@ const startDate = formattedDate || today;
       }
     }
   
-console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
+
+     
+ 
+   console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays',this.durationOfTodayLine);
        
 }
 
@@ -4088,7 +4114,7 @@ getDurationInHoursMinutes(start: string, end: string): string {
 }
 
 
-newDetails(ProjectCode) {
+newDetails(ProjectCode) { debugger
   let name: string = 'Details';
   var url = document.baseURI + name;
   var myurl = `${url}/${ProjectCode}`;
@@ -4096,7 +4122,7 @@ newDetails(ProjectCode) {
   myWindow.focus();
 }
 
-OnCardClick(P_id: any) {
+OnCardClick(P_id: any) { debugger
   sessionStorage.setItem('portfolioId', P_id);
   let name: string = 'portfolioprojects';
   var url = document.baseURI + name;
@@ -6393,6 +6419,8 @@ filterPending(type: 'date' | 'meeting'): void {
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
 
+        console.log(this.Project_NameScheduledjson,'this.Project_NameScheduledjson')
+
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
@@ -7212,8 +7240,23 @@ copyLinkToClipboard(): void {
 
 
 
+// getLastEventWithValidEnd(events: any[], durationOfTodayLine: string): any {
+//   return [...events]
+//     .filter(e => e.end < durationOfTodayLine)
+//     .sort((a, b) => b.end.localeCompare(a.end))[0];
+// }
 
 
+getLastEventWithValidEnd(events: any[], duration: string): any {
+  let last = null;
+  for (let i = 0; i < events.length; i++) {
+    if (events[i].end < duration) {
+      if (last && last.end === events[i].end) continue;
+      last = events[i];
+    }
+  }
+  return last;
+}
 
 
 

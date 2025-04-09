@@ -588,9 +588,20 @@ export class MeetingDetailsComponent implements OnInit {
   oneByTwoEndDate:any;
   Meeing_Name:any;
   deletedMeeting:any;
-
-
-
+  
+  live_activ = [
+    { actvName: 'New agenda added by Aquib Shahbaz', time: '5 sec ago' },
+    { actvName: 'Agenda completed by Waseem Akram', time: '1 min ago' },
+    { actvName: 'Task assigned to Ayesha Khan', time: '3 mins ago' },
+    { actvName: 'Meeting notes updated by Bilal Raza', time: '5 mins ago' },
+    { actvName: 'New task created by Usman Tariq', time: '10 mins ago' },
+    { actvName: 'Agenda 3 marked as pending by Sarah Ali', time: '15 mins ago' },
+    { actvName: 'Reminder set by Waseem Akram', time: '20 mins ago' },
+    { actvName: 'Participant Ali Raza joined the meeting', time: '25 mins ago' },
+    { actvName: 'Follow-up note added by Aquib Shahbaz', time: '30 mins ago' },
+    { actvName: 'Task completed by Ayesha Khan', time: '35 mins ago' }
+  ];
+  
   meeting_details() {
 
     this._calenderDto.Schedule_ID = this.Schedule_ID;
@@ -645,6 +656,8 @@ export class MeetingDetailsComponent implements OnInit {
       this._AllEventAttachment = this.EventScheduledjson[0]['AllEventsCount'];
       this._FutureEventAttachment = this.EventScheduledjson[0]['FutureCount'];
       this.AdminName=this.EventScheduledjson[0].AdminName
+
+      console.log(this.Actiontask,this.AssignedTask,this.Todotask,'new task agenda')
 
 
       this.totalTodotask = this.Todotask.length;
