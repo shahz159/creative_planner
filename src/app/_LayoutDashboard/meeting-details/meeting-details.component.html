@@ -2944,7 +2944,7 @@
                                             </div>
                                             <!-- *ngIf="Meetingstatuscom==Completed && Isadmin==true" -->
                                             <div class="todo-main">
-                                                <div class="task-header" [ngClass]="{'error-border': _Demotext?.length>100}"  *ngIf="Meetingstatuscom!='Completed'">
+                                                <div class="task-header" [ngClass]="{'error-border': _Demotext?.length>100 , 'error-border': assignTaskExists}"  *ngIf="Meetingstatuscom!='Completed'">
                                                     <!-- *ngIf="Meetingstatuscom!=Completed && todocount>0" -->
                                                     <div class="task-tools">
                                                         <div class="task-count"></div>
@@ -3045,6 +3045,14 @@
                                     </div> -->
                                     </div>
                                     <div *ngIf="_Demotext?.length>100" style="color:red">Maximum 100 characters are allowed!</div>
+
+                                    <div *ngIf="assignTaskExists" class="error-container">
+                                        <svg fill="#f21818" width="15px" height="15px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg" id="warning" class="icon glyph" stroke="#f21818" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,16a1,1,0,1,1,1-1A1,1,0,0,1,12,18Zm1-5a1,1,0,0,1-2,0V7a1,1,0,0,1,2,0Z"></path></g></svg>
+                                        <span class="error-text"> Task name already used. Try another.</span>
+                                      </div>
+
+
+                                    <!-- <div  style="color:red">Task name already exists. Use a new name.</div> -->
 
                                 </div>
                             </ng-container>                                

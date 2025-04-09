@@ -9047,3 +9047,30 @@ a.info-btn.info-btn-disable:hover {
 
 
 
+
+
+
+
+.error-container {
+    display: flex;
+    align-items: center;
+    color: #d93025; /* Google-style red color */
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  
+  .error-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    fill: #d93025;
+  }
+  
+  .error-text {
+    color: #d93025;
+    font-size: 11px;
+    font-weight: 400;
+  }
+  
+
