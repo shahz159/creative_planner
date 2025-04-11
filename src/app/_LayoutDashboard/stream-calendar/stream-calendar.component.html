@@ -565,7 +565,7 @@
                         </div>
                         <div class="sch-evt-control">
 
-                            <div *ngIf="group.date==today" class="sch-evt-item sch-evt-pendingtask-item sch-evt-border-bottom" (click)="customPendingTaskModal()">
+                            <div *ngIf="group.date==today && daySummaryReport.StandardDelayed" class="sch-evt-item sch-evt-pendingtask-item sch-evt-border-bottom" (click)="customPendingTaskModal()">
                                 <div style="display: flex;align-items: center;">
                                     <div class="sch-evt-p sch-evt-pr-0">
                                       <div class="position-relative">
@@ -586,7 +586,7 @@
                                     <div class="sch-evt-info">
                                         <span class="sch-evt-p sch-evt-pl-0 sch-evt-line-clamp">                                                                                                                                                                                                       
                                                   <span class="pending-task-count active" >{{daySummaryReport.StandardDelayed}}</span>                                                                                                                                                                                       
-                                                  standard tasks </span>
+                                                  Pending tasks </span>
                                     </div>
                                 </div>
                                 <!-- <div  class="time-line" style="bottom: 0px;"></div> -->
@@ -594,8 +594,21 @@
 
                             <div class="sch-evt-item  sch-evt-border-bottom" *ngFor="let meetingItem of group.events let i = index"  (click)="customEventModal(meetingItem.Schedule_Type);GetClickEventJSON_Calender(meetingItem.Schedule_ID,meetingItem.className)">
                           
-                                <div *ngIf="group.date === today && meetingItem === getLastEventWithValidEnd(group.events, durationOfTodayLine)"
+                                <!-- <div *ngIf="group.date === today && meetingItem === getLastEventWithValidEnd(group.events, durationOfTodayLine); else topshowline"
                                 class="time-line" style="bottom: 0px;"></div>
+
+                                <ng-template #topshowline>
+                                    <div *ngIf="group.date === today" class="time-line" style="top: 0px;"></div>
+                                </ng-template> -->
+
+
+                                <div *ngIf="group.date === today && ( meetingItem === getLastEventWithValidEnd(group.events, durationOfTodayLine) ||
+                                    (!getLastEventWithValidEnd(group.events, durationOfTodayLine) && meetingItem === group.events[0]))"
+                                    class="time-line"
+                                    [style.bottom.px]="getLastEventWithValidEnd(group.events, durationOfTodayLine) ? 0 : null"
+                                    [style.top.px]="!getLastEventWithValidEnd(group.events, durationOfTodayLine) ? 0 : null">
+                                 </div>
+
                                
                             
                                 <div style="display: flex;align-items: center;">
@@ -5992,7 +6005,7 @@
                 <div class="custom-pending-tsk-head">
                     <div class="custom-pending-tsk-label">
                       <h4 class="mb-0">Pending Tasks</h4>
-                      <div class="pen-tsk-sub">In the past 365 days</div>
+                      <!-- <div class="pen-tsk-sub">In the past 365 days</div> -->
                     </div>
                     <div class="custom-pending-tsk-action">                 
                         <div class="custom-pending-tsk-action-icon" matTooltip="Close"  (click)="customPendingTaskModal_dismiss()">
@@ -6001,30 +6014,46 @@
                     </div>
                 </div>
                 <div class="custom-pending-tsk-body">
-                    <div class="custom-pending-tsk-item">
+                    <div class="custom-pending-tsk-item" *ngFor="let item of PendingTasks; let i = index">
                         <div class="custom-pending-tsk-date">
                             <div class="c-p-t-d-box">
-                                <div class="c-p-t-d-box-month">Apr, fri</div>
-                                <div class="c-p-t-d-box-date">04</div>
+                                <div class="c-p-t-d-box-date">{{ (1 + i) < 10 ? '0' + (1 + i) : (1 + i) }}</div>
                             </div>
                         </div>
-                        <div class="custom-pending-tsk-control">
+                        <div class="custom-pending-tsk-control" (click)="newDetails(item.Project_Code)">
                             <div class="custom-pending-tsk-ul">
                                 <div class="custom-pending-tsk-li">
-                                    <div class="custom-pending-tsk-title">Meeting Details Design Enhancement Task</div>
-                                    <div class="custom-pending-tsk-time">4:15 PM - 4:30 PM</div>
+                                    <div class="custom-pending-tsk-title">{{item.Project_Name}}</div>
+                                    <div class="custom-pending-tsk-time">
+                                        <span>{{item.DurationTime}}</span>
+                                        <span>|</span>
+                                        <span *ngIf="item.SubmissionType == '1'">Daily</span>
+                                        <span *ngIf="item.SubmissionType == '2'">Weekly</span>
+                                        <span *ngIf="item.SubmissionType == '3'">Monthly</span>
+                                        <span *ngIf="item.SubmissionType == '4'">Quarterly</span>
+                                        <span *ngIf="item.SubmissionType == '5'">Half Yearly</span>
+                                        <span *ngIf="item.SubmissionType == '6'">Annually</span>
+                                        <span>|</span>
+                                        <span>{{item.Status}}</span>
+                                    </div>
                                     <div class="custom-pending-tsk-li-actions">
-                                        <div class="custom-pending-tsk-li-actions-item">
+                                        <!-- <div class="custom-pending-tsk-li-actions-item">
                                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15.4998 5.49994L18.3282 8.32837M3 20.9997L3.04745 20.6675C3.21536 19.4922 3.29932 18.9045 3.49029 18.3558C3.65975 17.8689 3.89124 17.4059 4.17906 16.9783C4.50341 16.4963 4.92319 16.0765 5.76274 15.237L17.4107 3.58896C18.1918 2.80791 19.4581 2.80791 20.2392 3.58896C21.0202 4.37001 21.0202 5.63634 20.2392 6.41739L8.37744 18.2791C7.61579 19.0408 7.23497 19.4216 6.8012 19.7244C6.41618 19.9932 6.00093 20.2159 5.56398 20.3879C5.07171 20.5817 4.54375 20.6882 3.48793 20.9012L3 20.9997Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                         </div>
                                         <div class="custom-pending-tsk-li-actions-item">
                                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                                        </div>
+                                        </div> -->
+                                        <!-- <div  class="sch-evt-mem"> -->
+                                            <button class="btn px-1 py-1 btn-outline-info fs-10 ng-star-inserted"><svg  width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg></button>
+                                        <!-- </div> -->
                                     </div>
+                                    
+                                      
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <button (click)="viewStandardTasks('DELAYED')" class="btn btn-viewall"> View all</button>
                 </div>
 
             </div>

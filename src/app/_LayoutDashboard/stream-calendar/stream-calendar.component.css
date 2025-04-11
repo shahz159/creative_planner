@@ -446,7 +446,7 @@ span.date-change-icon-next svg {
 
 
 
-  
+
 
 
 
@@ -5915,4 +5915,19 @@ span#day-date {
 
 .custom-pending-tsk-time {
     font-size: 11.5px;
+}
+
+.custom-pending-tsk-time {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+button.btn.btn-viewall {
+    float: right;
+    padding: 0px;
+    margin-right: 2rem;
+}
+button.btn.btn-viewall:hover {
+    text-decoration: underline;
 }

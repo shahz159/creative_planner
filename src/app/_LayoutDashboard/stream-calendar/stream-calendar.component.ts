@@ -6757,6 +6757,7 @@ Bookmark_Delete(Scheduleid:any) {
 daySummaryReport:any;
 dueTodayTasksCount:{taskType:string,count:number}[]=[];
 reportCount:any;
+PendingTasks:any;
 
 getDayReportSummary(){
   this.service.NewGetEmployeePerformance(this.Current_user_ID).subscribe((res:any)=>{
@@ -6774,7 +6775,14 @@ getDayReportSummary(){
       this.reportCount = ["NewProjectRejected", "AssignedTasksDue", "ActionsDelayed", "ProjectsDelayed", "StandardDelayed"]
       .filter(key => this.daySummaryReport[key] > 0).length;
 
-      console.log("daySummaryReport:",this.reportCount);
+
+      this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
+      console.log("daySummaryReport:",this.PendingTasks);
+
+
+
+
+      
 
       if(this.reportCount){
         this.showLoader=true;
