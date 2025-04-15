@@ -1000,6 +1000,32 @@ export class MeetingDetailsComponent implements OnInit {
     clearInterval(this.timer);
     this.meetingPaused = true;
   }
+
+
+  pauseAttendeesMeeting() {
+    clearInterval(this.timer);
+    this.meetingPaused = true;
+  }
+
+  resumeAttendeesMeeting() {
+  
+    this.startTimes = new Date(new Date().getTime() - this.elapsedTime);
+   
+    this.timer = setInterval(() => {
+      this.elapsedTime = new Date().getTime() - this.startTimes.getTime();
+      // if (this.elapsedTime >= this.duration) {
+      //   this.stopMeeting();
+      // }
+    }, 1000);
+  }
+
+
+
+
+
+
+
+
   startTimes: any
   endTime: Date;
 
@@ -4251,7 +4277,7 @@ onFileChange(event) {
   totalTasksCount:number=0;
   AllAttendees_notes: any = []
   Employeeslist: any;
-  meetingStarted: boolean = false;
+  meetingStarted: any;
   hasMeetingStatus: boolean = false;
   hasMeetingStarted: boolean = false;
   hasMeetingEnd: boolean = false;
@@ -4267,6 +4293,7 @@ onFileChange(event) {
   projecount:any;
   attachcount:any;
   TaskList:any;
+  showAttendeeNotify:any
 
   GetAttendeesnotes() {
 
@@ -4285,7 +4312,7 @@ onFileChange(event) {
         this.TaskList = JSON.parse(this.agendasList[0].TaskList) 
          
 
-        console.log(this.agendasList,'---------------',this.TaskList)
+        console.log(data,'---------------')
         this.smailcount = this.agendasList[0]?.smailcount;
         this.portFocount = this.agendasList[0]?.portcount;
         this.projecount = this.agendasList[0]?.projectcount;
@@ -4355,7 +4382,10 @@ onFileChange(event) {
           return sum+item.count;
          },0)
   
-        this.meetingStarted = data.AdminMeeting_Status === 'True' ? true : false
+
+        this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
+        this.showAttendeeNotify = data.AdminMeeting_Status;
+        console.log(this.showAttendeeNotify,'showAttendeeNotify')
         if (this.meetingStarted || this.meetingStarted != true) {
       
           if (data['Checkdatetimejson'] != '') {
@@ -4369,12 +4399,24 @@ onFileChange(event) {
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
 
           if (this.meetingStarted == true && !this.hasMeetingStarted) {
+            console.log('Call admin')
             this.startMeetingOfAttendees();
             this.InsertAttendeeMeetingTime();
             this.hasMeetingStarted = true;
             this.hasMeetingEnd = false;
           }
+          else if (this.showAttendeeNotify=='2' ) {
+            this.pauseAttendeesMeeting();
+            // this.InsertAttendeeMeetingTime();
+          
+          }
+          //   else if (this.showAttendeeNotify=='3') {
+          //   this.resumeAttendeesMeeting();
+          //   // this.InsertAttendeeMeetingTime();
+          
+          // }
           else if (this.meetingStarted != true && !this.hasMeetingEnd && this.meetingOfAttendees == false) {
+            console.log('Call Attendees')
             this.stopMeetingAttendees();
             this.InsertAttendeeMeetingTime();
             this.hasMeetingEnd = true;

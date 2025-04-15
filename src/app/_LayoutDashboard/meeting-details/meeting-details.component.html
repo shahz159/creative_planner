@@ -1620,7 +1620,7 @@
                                         </div>
                                         <div style="display: flex; align-items: center; gap: 8px;" *ngIf="Meetingstatuscom==Completed">
                                         
-                                            <ng-container *ngIf="meetingInProgress">
+                                            <ng-container *ngIf="Isadmin==true && meetingInProgress">
                                             <div class="kt-meeting-status hold" *ngIf="play" (click)="pauseMeeting()" matTooltip="Hold" >
                                                 <span class="kt-meeting-status-icon">
                                                     <svg xmlns="http://www.w3.org/2000/svg" height="14px" width="14px" viewBox="0 0 1024 1024" version="1.1"><path d="M298.666667 128c23.552 0 42.666667 21.504 42.666666 48v672C341.333333 874.496 322.218667 896 298.666667 896s-42.666667-21.504-42.666667-48V176C256 149.504 275.114667 128 298.666667 128z m426.666666 0c23.552 0 42.666667 21.504 42.666667 48v672c0 26.496-19.114667 48-42.666667 48s-42.666667-21.504-42.666666-48V176C682.666667 149.504 701.781333 128 725.333333 128z" fill="currentColor"/></svg>
@@ -1718,7 +1718,7 @@
                         
 
 
-                        <div class="kt-Note-msg mt-3 d-flex" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress) && (upcomingMeeting == true || delayMeeting == true || delayMeeting == false)">
+                        <div class="kt-Note-msg mt-3 d-flex" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress) && (upcomingMeeting == true || delayMeeting == true || delayMeeting == false) || ( showAttendeeNotify=='2' && meetingInProgress && Isadmin==false)">
                                 <div class="kt-note-icon" style="align-self:flex-start">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25"
@@ -1769,6 +1769,26 @@
                                 </div>
                                 </container>
                         
+
+
+                                <container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true">
+                                    <div class="notification pause-notification mydelay-action-notf" *ngIf="Isadmin==false && showAttendeeNotify=='2'">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#FFC01E"
+                                        height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
+                                            <path d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z">
+                                            </path>
+                                        </svg>
+                                   
+                                    <span class="notif-msg" style=" color: #FFC01E;" >
+                                        The meeting is currently paused. Please wait for the admin, {{AdminName}}, to resume it.</span>
+                                    </div>
+                                    </container>
+
+
+
+
+
+
                                 <container  *ngIf="delayMeeting == false && AutoComplete != true">
                                     <div class="notification delay-Start mydelay-action-notf">
                                         <svg  viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727" class="notif-img"><g _ngcontent-nuu-c397="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-nuu-c397="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-nuu-c397="" id="SVGRepo_iconCarrier"><g _ngcontent-nuu-c397=""><path _ngcontent-nuu-c397="" d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path><path _ngcontent-nuu-c397="" d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path></g></g></svg>

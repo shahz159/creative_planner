@@ -6108,6 +6108,12 @@ span.previous-dot.active {
     color: red;
 }
 
+
+.pause-notification {
+    background-color: #FFF6DF;
+    color: red;
+}
+
 .delay-Start {
     background-color: #fd7e7a38 !important;
 
@@ -8677,7 +8683,6 @@ svg.asseticn.prim-icn.memo_attachment_img {
     /* font-weight: 500; */
     font-size: 12px;
     color: #2786fb;
-    ;
 }
 
 .meeting-attendes .kt-chat__messages {
