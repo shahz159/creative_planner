@@ -315,9 +315,9 @@ NewPending_table(obj:CalenderDTO){ debugger
   }
 
   _AzureUploadCalendarAttachments(data) {
-    console.log(data,'attachment data')
-
-    console.log(this.rootUrlcore + "Azure/NewAddCalendarAttachmentCore",'attachment url')
+   
+   
+    console.log(this.rootUrlcore + "Azure/NewAddCalendarAttachmentCore",'attachment url2')
     return this.http.post(this.rootUrlcore + "Azure/NewAddCalendarAttachmentCore", data
       , {
         reportProgress: true,

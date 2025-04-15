@@ -4454,30 +4454,30 @@
                             <div class="custom-evt-tsk-item-date">{{item.Schedule_date| date:'EEEE, MMMM d, YYYY'}}</div>
                             <div class="custom-evt-tsk-item-time">
                                 <span>{{ parseTime(item.NewSt_Time) | date: 'h:mm a' }} - {{ parseTime(item.NewEd_Time) | date: 'h:mm a' }} ({{ getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time) }})</span>
-                                <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==true" class="event item-badge" >
-                                {{item.Schedule_Type}}
+                                <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && this.Status1=='Owner'" class="event item-badge" >
+                                {{item.Schedule_Type}} 
                                 </span>
 
-                            <span *ngIf="Status1 !='Rejected' && item.Recurrence!='Do not repeat' && Isadmin==true && Meeting_status==false" class="info item-badge">
-                                {{item.Recurrence}}
+                            <span *ngIf="Status1 !='Rejected' && item.Recurrence!='Do not repeat' && this.Status1=='Owner' && Meeting_status==false" class="info item-badge">
+                                {{item.Recurrence}} 
                             </span>
-                            <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && Isadmin==false" [ngClass]="{'info item-badge': Isadmin==true , 'purple item-badge': Isadmin==false }" >
-                                {{item.Schedule_Type}}
+                            <span *ngIf="Status1 !='Rejected'  && Meeting_status==false && this.Status1!='Owner'" [ngClass]="{'info item-badge': this.Status1=='Owner' , 'purple item-badge': this.Status1!='Owner' }" >
+                                {{item.Schedule_Type}} 
                             </span>
-                            <span *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && Isadmin==false && Meeting_status==false" class="purple item-badge">
-                                {{item.Recurrence}}
+                            <span *ngIf=" Status1 !='Rejected' && item.Recurrence!='Do not repeat'  && this.Status1!='Owner' && Meeting_status==false" class="purple item-badge">
+                                {{item.Recurrence}} 
                             </span>
                             <span *ngIf="Meeting_status==true" class="success item-badge">
-                                {{item.Schedule_Type}}
+                                {{item.Schedule_Type}} 
                             </span>
                             <span *ngIf="item.Recurrence!='Do not repeat' && Meeting_status==true" class="success item-badge">
-                                {{item.Recurrence}}
+                                {{item.Recurrence}} 
                             </span>
                             <span *ngIf="Status1 =='Rejected'" class="danger item-badge">
-                                {{item.Schedule_Type}}
+                                {{item.Schedule_Type}} 
                             </span>
                             <span *ngIf="Status1 =='Rejected' && item.Recurrence!='Do not repeat'" class="danger item-badge">
-                                {{item.Recurrence}}
+                                {{item.Recurrence}} 
                             </span>
                             </div>
                         </div>

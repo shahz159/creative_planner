@@ -1620,21 +1620,21 @@
                                         </div>
                                         <div style="display: flex; align-items: center; gap: 8px;" *ngIf="Meetingstatuscom==Completed">
                                         
-                                            <!-- <ng-container *ngIf="meetingInProgress">
-                                            <div class="kt-meeting-status hold" *ngIf="play" (click)="pauseMeeting()" >
+                                            <ng-container *ngIf="meetingInProgress">
+                                            <div class="kt-meeting-status hold" *ngIf="play" (click)="pauseMeeting()" matTooltip="Hold" >
                                                 <span class="kt-meeting-status-icon">
                                                     <svg xmlns="http://www.w3.org/2000/svg" height="14px" width="14px" viewBox="0 0 1024 1024" version="1.1"><path d="M298.666667 128c23.552 0 42.666667 21.504 42.666666 48v672C341.333333 874.496 322.218667 896 298.666667 896s-42.666667-21.504-42.666667-48V176C256 149.504 275.114667 128 298.666667 128z m426.666666 0c23.552 0 42.666667 21.504 42.666667 48v672c0 26.496-19.114667 48-42.666667 48s-42.666667-21.504-42.666666-48V176C682.666667 149.504 701.781333 128 725.333333 128z" fill="currentColor"/></svg>
                                                 </span>
-                                                <span class="kt-meeting-status-title">Hold</span>
+                                                <!-- <span class="kt-meeting-status-title">Hold</span> -->
                                             </div>
-                                            <div class="kt-meeting-status play" *ngIf="pause" (click)="resumeMeeting()">
+                                            <div class="kt-meeting-status play" *ngIf="pause" (click)="resumeMeeting()" matTooltip="Resume" >
                                                 <span class="kt-meeting-status-icon" >
-
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" fill="currentcolor" viewBox="0 0 1024 1024" version="1.1"><path d="M791.04 384L378.88 147.626667a145.92 145.92 0 0 0-218.88 128v474.453333A145.92 145.92 0 0 0 305.92 896a146.346667 146.346667 0 0 0 72.96-19.626667L791.04 640a145.92 145.92 0 0 0 0-252.586667z m-42.666667 178.773333l-412.16 239.786667a61.44 61.44 0 0 1-60.586666 0 60.586667 60.586667 0 0 1-30.293334-52.48V273.92a60.586667 60.586667 0 0 1 30.293334-52.48A64.426667 64.426667 0 0 1 305.92 213.333333a65.706667 65.706667 0 0 1 30.293333 8.106667l412.16 238.08a60.586667 60.586667 0 0 1 0 104.96z"/></svg>
                                                 </span>
-                                                <span class="kt-meeting-status-title">Resume</span>
+                                                <!-- <span class="kt-meeting-status-title">Resume</span> -->
                                             </div>
-                                        </ng-container> -->
+                                        </ng-container>
+
                                         <div class="kt-meeting-status started mt-0 d-none"   *ngIf="meetingInProgress">
                                             <span class="kt-meeting-status-icon">
                                                 <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
@@ -1901,14 +1901,14 @@
                                 </div>
 
 
-                               <div class="accordion">
+                               <!-- <div class="accordion">
                                 <ul  class="mb-0 text-dark">
                                     <li class="live-actv" [ngClass]="{'latest':isLast,'previous':isLast==false}" *ngFor="let actv of live_activ.slice(live_activ.length-2,live_activ.length); let i=index; let isLast=last;">
                                         {{actv.actvName}}
                                         <span class="actv-time">{{actv.time}}</span>
                                     </li>
                                 </ul>
-                                </div>
+                                </div> -->
 
 
                             </div>
@@ -2965,7 +2965,7 @@
                                                     <div class="agenda-input-field">
                                                         <svg width="20px" height="20px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icon" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="currentColor"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="currentColor"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="currentColor"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="currentColor"></path></g></svg>
                                                         <input class="task-input" id="todo-input" name="text"
-                                                            [(ngModel)]="_Demotext" (keyup.enter)="EnterSubmit(_Demotext)"
+                                                            [(ngModel)]="_Demotext" (keyup.enter)="EnterSubmit(_Demotext)" (blur)="EnterSubmit(_Demotext)"
                                                             placeholder="Add a new task..." autofocus="true"
                                                             (input)="onInputChange()"
                                                             >
@@ -10631,9 +10631,10 @@
    <div class="container">
     <div class="d-flex align-items-md-center flex-column">
         <div class="text-center acc-section">
-            <h1 class="text-primary main_acc">Meeting not found or has been deleted</h1>
+           
+            <h1 class="text-primary main_acc">Oops! looks like you’ve landed in the wrong place</h1>
             <h5 class="acc-desc  user-not-found-msg  hide-content">
-                For further information, please contact the meeting organizer.
+                Please request the organizer to give access to this meeting.
             </h5>
         </div>
         <div class="acc-img_sec">

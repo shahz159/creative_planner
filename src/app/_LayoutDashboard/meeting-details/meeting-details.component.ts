@@ -609,6 +609,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
     
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+      console.log(this.EventScheduledjson,'EventScheduledjson')
       this.deletedMeeting = this.EventScheduledjson.length;
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       var Schedule_date = this.EventScheduledjson[0].Schedule_date
@@ -994,6 +995,8 @@ export class MeetingDetailsComponent implements OnInit {
   pauseMeeting() {
     this.play = false;
     this.pause = true;
+    this.status_Type = 'Pause'
+    this.InsertAttendeeMeetingTime();
     clearInterval(this.timer);
     this.meetingPaused = true;
   }
@@ -1004,6 +1007,8 @@ export class MeetingDetailsComponent implements OnInit {
     this.play = true;
     this.pause = false;
     //69 this.startTimes
+    this.status_Type = 'Resume'
+    this.InsertAttendeeMeetingTime();
     this.startTimes = new Date(new Date().getTime() - this.elapsedTime);
     this.meetingPaused = false;
     this.timer = setInterval(() => {
@@ -3906,8 +3911,7 @@ onFileChange(event) {
 
     if (this.isSubmitting) return;
 
-    this.assignTaskExists = [...this._TodoList, ...this._CompletedList, ...this.ActionedAssigned_Josn, ...this.ActionedSubtask_Json]
-    .some(item => item.Task_Name?.trim() === this._Demotext.trim());
+    this.assignTaskExists = [...this.TaskList].some(item => item.Task_Name?.trim() === this._Demotext.trim());
 
  
     if (_Demotext.length <= 100 && !this.assignTaskExists) {
@@ -4262,7 +4266,7 @@ onFileChange(event) {
   portFocount:any;
   projecount:any;
   attachcount:any;
-
+  TaskList:any;
 
   GetAttendeesnotes() {
 
@@ -4277,7 +4281,11 @@ onFileChange(event) {
        
         this.exact_start = (data['Start_time']);
         this.agendasList = JSON.parse(data['Agendas']);
-        // console.log('---------------',this.agendasList)
+
+        this.TaskList = JSON.parse(this.agendasList[0].TaskList) 
+         
+
+        console.log(this.agendasList,'---------------',this.TaskList)
         this.smailcount = this.agendasList[0]?.smailcount;
         this.portFocount = this.agendasList[0]?.portcount;
         this.projecount = this.agendasList[0]?.projectcount;

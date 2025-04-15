@@ -3077,6 +3077,7 @@ this.eventtaskitemtimeModal_dismiss();
                     this._azureMessage = (JSON.parse(myJSON).body).message;
 
                     if(this._azureMessage=="1"){
+                      console.log(frmData,"frmData")
                       this.CalenderService._AzureUploadCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
                         console.log(event1,"azure data");
                         var myJSON = JSON.stringify(event1);

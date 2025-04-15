@@ -309,7 +309,7 @@ export class ProjectTypeService {
   GetCompanies() {
     return this.http.post(this.rootUrl + "TestAPI/NewGetCompanies", this.obj_CompanyDTO)
   }
-  LoginCredentials(objLoginDetails) {
+  LoginCredentials(objLoginDetails) { 
     return this.http.post(this.rootUrl + "TestAPI/NewGetLoginDetails", objLoginDetails);
     // .subscribe(data => {
     //   this.User_Details = data as LoginDTO[];
@@ -317,7 +317,7 @@ export class ProjectTypeService {
     // });
   }
 
-  login(uobjLoginDetails) {
+  login(uobjLoginDetails) { 
     this._userobj.userId = uobjLoginDetails.UserName;
     this._userobj.OldPassWord = uobjLoginDetails.Password;
     return this.http.post<any>('https://cswebapps.com/dmscoretestapi/api/Login/StreamLoginAPI', this._userobj);
