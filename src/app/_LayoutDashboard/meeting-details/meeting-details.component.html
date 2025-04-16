@@ -1620,14 +1620,14 @@
                                         </div>
                                         <div style="display: flex; align-items: center; gap: 8px;" *ngIf="Meetingstatuscom==Completed">
                                         
-                                            <ng-container *ngIf="Isadmin==true && meetingInProgress">
-                                            <div class="kt-meeting-status hold" *ngIf="play" (click)="pauseMeeting()" matTooltip="Pause" >
+                                            <ng-container *ngIf="Isadmin==true && (showAttendeeNotify == '1'  || showAttendeeNotify == '2' ||  showAttendeeNotify == '3')">
+                                            <div class="kt-meeting-status hold" *ngIf="showAttendeeNotify == '1' || showAttendeeNotify == '3'" (click)="pauseMeeting()" matTooltip="Pause" >
                                                 <span class="kt-meeting-status-icon">
                                                     <svg xmlns="http://www.w3.org/2000/svg" height="14px" width="14px" viewBox="0 0 1024 1024" version="1.1"><path d="M298.666667 128c23.552 0 42.666667 21.504 42.666666 48v672C341.333333 874.496 322.218667 896 298.666667 896s-42.666667-21.504-42.666667-48V176C256 149.504 275.114667 128 298.666667 128z m426.666666 0c23.552 0 42.666667 21.504 42.666667 48v672c0 26.496-19.114667 48-42.666667 48s-42.666667-21.504-42.666666-48V176C682.666667 149.504 701.781333 128 725.333333 128z" fill="currentColor"/></svg>
                                                 </span>
                                                 <!-- <span class="kt-meeting-status-title">Hold</span> -->
                                             </div>
-                                            <div class="kt-meeting-status play" *ngIf="pause" (click)="resumeMeeting()" matTooltip="Resume" >
+                                            <div class="kt-meeting-status play" *ngIf="showAttendeeNotify == '2' " (click)="resumeMeeting()" matTooltip="Resume" >
                                                 <span class="kt-meeting-status-icon" >
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" fill="currentcolor" viewBox="0 0 1024 1024" version="1.1"><path d="M791.04 384L378.88 147.626667a145.92 145.92 0 0 0-218.88 128v474.453333A145.92 145.92 0 0 0 305.92 896a146.346667 146.346667 0 0 0 72.96-19.626667L791.04 640a145.92 145.92 0 0 0 0-252.586667z m-42.666667 178.773333l-412.16 239.786667a61.44 61.44 0 0 1-60.586666 0 60.586667 60.586667 0 0 1-30.293334-52.48V273.92a60.586667 60.586667 0 0 1 30.293334-52.48A64.426667 64.426667 0 0 1 305.92 213.333333a65.706667 65.706667 0 0 1 30.293333 8.106667l412.16 238.08a60.586667 60.586667 0 0 1 0 104.96z"/></svg>
                                                 </span>
@@ -1677,7 +1677,7 @@
                                             </div>
                                            </ng-container>
                                         <ng-container *ngIf="Isadmin==true && delayMeeting==true">
-                                            <div class="kt-meeting-status started mt-0" *ngIf="!meetingInProgress && !meetingStopped" matTooltip="Start"  (click)="startMeeting();InsertAttendeeMeetingTime();">
+                                            <div class="kt-meeting-status started mt-0" *ngIf="showAttendeeNotify == '0' && !meetingStopped" matTooltip="Start"  (click)="startMeeting();InsertAttendeeMeetingTime();">
                                                 <span class="kt-meeting-status-icon" >
                                                     <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
                                                         version="1.1" viewBox="0 0 32 32" width="14px" xml:space="preserve"
@@ -1692,7 +1692,7 @@
                                             </div>
 
                                             
-                                        <div class="kt-meeting-status leave mt-0" *ngIf="meetingInProgress" matTooltip="End Meeting"  data-toggle="modal" data-target="#exampleModal" (click)="meeting_details();meeting_details_1()">
+                                        <div class="kt-meeting-status leave mt-0" *ngIf="showAttendeeNotify == '1' || showAttendeeNotify == '2' || showAttendeeNotify == '3'" matTooltip="End Meeting"  data-toggle="modal" data-target="#exampleModal" (click)="meeting_details();meeting_details_1()">
                                             <span class="kt-meeting-status-icon">
                                                 <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M1.27396 8.94048C3.01237 7.88621 6.8401 6 12 6C17.1599 6 20.9876 7.88621 22.726 8.94048C23.7251 9.54634 24.1355 10.6912 23.9609 11.7514L23.5032 14.5308C23.2353 16.157 21.704 17.2467 20.101 16.9518L17.6354 16.4982C16.5887 16.3056 15.8888 15.2984 16.0637 14.2365L16.2935 12.8413C15.7061 12.4933 14.3714 11.9088 12 11.9088C9.62863 11.9088 8.29388 12.4933 7.70655 12.8413L7.93635 14.2365C8.11123 15.2984 7.41126 16.3056 6.36463 16.4982L3.89895 16.9518C2.29601 17.2467 0.764683 16.157 0.49684 14.5308L0.0390736 11.7514C-0.135542 10.6912 0.274923 9.54635 1.27396 8.94048ZM12 7.96961C7.30768 7.96961 3.82761 9.68804 2.2745 10.6299C2.04751 10.7676 1.8986 11.061 1.95897 11.4276L2.41674 14.207C2.50602 14.749 3.01646 15.1123 3.55077 15.014L6.01645 14.5603L5.76984 13.063C5.66906 12.4511 5.85834 11.6997 6.51793 11.2691C7.34118 10.7317 9.06148 9.93922 12 9.93922C14.9385 9.93922 16.6588 10.7317 17.4821 11.2691C18.1417 11.6997 18.3309 12.4511 18.2302 13.063L17.9836 14.5603L20.4492 15.014C20.9835 15.1123 21.494 14.749 21.5833 14.207L22.041 11.4276C22.1014 11.061 21.9525 10.7676 21.7255 10.6299C20.1724 9.68804 16.6923 7.96961 12 7.96961Z" fill="currentColor"></path> </g></svg>
                                             </span>
@@ -1718,7 +1718,7 @@
                         
 
 
-                        <div class="kt-Note-msg mt-3 d-flex" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress) && (upcomingMeeting == true || delayMeeting == true || delayMeeting == false) || ( showAttendeeNotify=='2' && meetingInProgress && Isadmin==false)">
+                        <div class="kt-Note-msg mt-3 d-flex" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress && showAttendeeNotify!='3') && (upcomingMeeting == true || delayMeeting == true || delayMeeting == false)">
                                 <div class="kt-note-icon" style="align-self:flex-start">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25"
@@ -1744,7 +1744,7 @@
                                 </div>
                                 <div class="notifications-list">
                                             
-                                <container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true" >
+                                <container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true && showAttendeeNotify!='2' && showAttendeeNotify!='3'" >
                                 <div class="notification delay-notification mydelay-action-notf" *ngIf="Isadmin==true && !meetingInProgress">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
                                     height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
@@ -1756,6 +1756,26 @@
                                     The meeting has not started yet. Please start the meeting.</span>
                                 </div>
                             </container>
+
+
+
+
+
+                            <container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true && showAttendeeNotify=='2'" >
+                                <div class="notification pause-notification mydelay-action-notf" *ngIf="Isadmin==true && !meetingInProgress">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#FFC01E"
+                                    height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
+                                        <path d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z">
+                                        </path>
+                                    </svg>
+                               
+                                <span class="notif-msg" style=" color: #FFC01E;" >
+                                    The meeting is currently paused. Please resume the meeting to continue.</span>
+                                </div>
+                            </container>
+
+
+
                                 <container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true">
                                 <div class="notification delay-notification mydelay-action-notf" *ngIf="Isadmin==false && meetingStarted==false"    >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
@@ -1871,7 +1891,7 @@
                         </div> -->
                         </div>
                         </div>
-                        <div class="meeting-attendance-main" *ngIf="meetingInProgress">
+                        <div class="meeting-attendance-main" *ngIf="meetingInProgress || showAttendeeNotify == '2' || showAttendeeNotify == '3'">
                             <div class="legend-border">
                                 <div class="meeting-attendance-heading">Meeting Summary</div>
                                 <div class="meeting-icon-content">
