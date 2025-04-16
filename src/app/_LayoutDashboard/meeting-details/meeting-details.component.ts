@@ -3861,7 +3861,7 @@ onFileChange(event) {
 
             //  }, 1000);
 
-          }, 5000);
+          }, 1000);
         }
         // this.Userstatus = this.CompletedMeeting_notes[0]['Status'];
         // this.Meetingnotescom = this.CompletedMeeting_notes[0]['Notes'];
