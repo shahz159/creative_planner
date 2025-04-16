@@ -980,9 +980,7 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
 
-  compareTimer() {
-
-  }
+ 
 
   parseTime(time: string): Date {
     const [hours, minutes, seconds] = time.split(':').map(Number);
@@ -993,35 +991,14 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   pauseMeeting() {
+
     this.play = false;
     this.pause = true;
+    clearInterval(this.timer);
+    this.meetingPaused = true;
     this.status_Type = 'Pause'
     this.InsertAttendeeMeetingTime();
-    clearInterval(this.timer);
-    this.meetingPaused = true;
   }
-
-
-  pauseAttendeesMeeting() {
-    clearInterval(this.timer);
-    this.meetingPaused = true;
-  }
-
-  resumeAttendeesMeeting() {
-  
-    this.startTimes = new Date(new Date().getTime() - this.elapsedTime);
-   
-    this.timer = setInterval(() => {
-      this.elapsedTime = new Date().getTime() - this.startTimes.getTime();
-      // if (this.elapsedTime >= this.duration) {
-      //   this.stopMeeting();
-      // }
-    }, 1000);
-  }
-
-
-
-
 
 
 
@@ -1132,7 +1109,7 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
 
-
+  timerAttendees:any;
 
 
   startMeetingOfAttendees() {   
@@ -1176,7 +1153,7 @@ export class MeetingDetailsComponent implements OnInit {
 
     this.elapsedTime = differenceInMilliseconds;
 
-    this.timer = setInterval(() => {
+    this.timerAttendees = setInterval(() => {
       this.elapsedTime = this.elapsedTime + 1000;
 
       // if (this.elapsedTime >= this.duration) {
@@ -1186,6 +1163,27 @@ export class MeetingDetailsComponent implements OnInit {
 
     // console.log(this.elapsedTime,'ijfbviabfvbsvskjvbzsib')
   }
+
+  pauseTimer() {
+    clearInterval(this.timerAttendees);
+  }
+  
+  resumeTimer() {
+    this.timerAttendees = setInterval(() => {
+      this.elapsedTime += 1000;
+      // if (this.elapsedTime >= this.duration) {
+      //   this.stopMeetingAttendees();
+      // }
+    }, 1000);
+  }
+
+
+
+
+
+
+
+
 
 
 
@@ -1220,7 +1218,7 @@ export class MeetingDetailsComponent implements OnInit {
 
   stopMeetingAttendees() {
 
-    clearInterval(this.timer);
+    clearInterval(this.timerAttendees);
     this.meetingInProgress = false;
     // this.meetingStopped = true;
     this.status_Type = 'End';
@@ -3861,9 +3859,9 @@ onFileChange(event) {
             // this.saveAttendeeTime();
             this.GetAttendeesnotes();
 
-            //  console.log('1')
+            //  }, 1000);
 
-          }, 1000);
+          }, 5000);
         }
         // this.Userstatus = this.CompletedMeeting_notes[0]['Status'];
         // this.Meetingnotescom = this.CompletedMeeting_notes[0]['Notes'];
@@ -4281,6 +4279,8 @@ onFileChange(event) {
   hasMeetingStatus: boolean = false;
   hasMeetingStarted: boolean = false;
   hasMeetingEnd: boolean = false;
+  hasAttendeesPauseMeeting:boolean = false;
+  hasAttendeesresumeMeeting:boolean = false;
   NotesCount: any;
   TaskCount: any;
   agendasList: any;
@@ -4398,23 +4398,32 @@ onFileChange(event) {
 
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
 
-          if (this.meetingStarted == true && !this.hasMeetingStarted) {
+          if (this.meetingStarted == true && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
             console.log('Call admin')
             this.startMeetingOfAttendees();
             this.InsertAttendeeMeetingTime();
             this.hasMeetingStarted = true;
             this.hasMeetingEnd = false;
+            this.hasAttendeesPauseMeeting = false;
+            this.hasAttendeesresumeMeeting = false;
           }
-          else if (this.showAttendeeNotify=='2' ) {
-            this.pauseAttendeesMeeting();
-            // this.InsertAttendeeMeetingTime();
+          else if (this.showAttendeeNotify=='2' && !this.hasAttendeesPauseMeeting) {
+            this.pauseTimer()
+            this.InsertAttendeeMeetingTime();
+             this.hasAttendeesPauseMeeting = true;
+             this.hasMeetingStarted = false;
+             this.hasMeetingEnd = false;
+             this.hasAttendeesresumeMeeting = false;
+          }
+            else if (this.showAttendeeNotify=='3' && !this.hasAttendeesresumeMeeting) {
+            this.resumeTimer();
+            this.InsertAttendeeMeetingTime();
+            this.hasAttendeesresumeMeeting = true;
+            this.hasAttendeesPauseMeeting = false;
+             this.hasMeetingStarted = false;
+             this.hasMeetingEnd = false; 
           
           }
-          //   else if (this.showAttendeeNotify=='3') {
-          //   this.resumeAttendeesMeeting();
-          //   // this.InsertAttendeeMeetingTime();
-          
-          // }
           else if (this.meetingStarted != true && !this.hasMeetingEnd && this.meetingOfAttendees == false) {
             console.log('Call Attendees')
             this.stopMeetingAttendees();
