@@ -1008,7 +1008,7 @@ export class MeetingDetailsComponent implements OnInit {
   endTime: Date;
 
   resumeMeeting() {
-
+ debugger
     this.play = true;
     this.pause = false;
     //69 this.startTimes
@@ -1099,7 +1099,7 @@ export class MeetingDetailsComponent implements OnInit {
     this._calenderDto.Schedule_ID = this.Scheduleid;
     this._calenderDto.Status = this.status_Type;
     this._calenderDto.StartTime = this.startTime == undefined ? null : formatTime(this.startTime);
-    this._calenderDto.Start_time = this.currentTime; 
+    this._calenderDto.Start_time = this.currentTime; debugger
     this._calenderDto.EndTime = this.endTime == undefined ? null : formatTime(this.endTime);
     // console.log(this._calenderDto,'time of meeting');
     this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe
@@ -1114,7 +1114,7 @@ export class MeetingDetailsComponent implements OnInit {
   timerAttendees:any;
 
 
-  startMeetingOfAttendees() {    debugger
+  startMeetingOfAttendees() {   
     if(this.Status1!='Owner'){
       this.Event_acceptandReject(1);
     }
@@ -1152,7 +1152,7 @@ export class MeetingDetailsComponent implements OnInit {
     // console.log('current', this.currentTime);
     // console.log('exact', this.exact_start);
     // console.log('latest', this.latestTime);
-
+debugger
     this.elapsedTime = differenceInMilliseconds;
 
     this.timerAttendees = setInterval(() => {
@@ -4406,9 +4406,9 @@ onFileChange(event) {
             this.AllAttendees_notes = [];
           }
 
-          console.log(this.showAttendeeNotify, "meet")
+          //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
 
-          if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
+          if (this.meetingStarted == true && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
            
             this.startMeetingOfAttendees();
             this.InsertAttendeeMeetingTime();
