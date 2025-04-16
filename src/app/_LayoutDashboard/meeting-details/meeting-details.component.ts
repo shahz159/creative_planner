@@ -997,6 +997,7 @@ export class MeetingDetailsComponent implements OnInit {
     clearInterval(this.timer);
     this.meetingPaused = true;
     this.status_Type = 'Pause'
+    // this.endtime
     this.InsertAttendeeMeetingTime();
   }
 
@@ -1007,6 +1008,7 @@ export class MeetingDetailsComponent implements OnInit {
   endTime: Date;
 
   resumeMeeting() {
+ debugger
     this.play = true;
     this.pause = false;
     //69 this.startTimes
@@ -1097,7 +1099,7 @@ export class MeetingDetailsComponent implements OnInit {
     this._calenderDto.Schedule_ID = this.Scheduleid;
     this._calenderDto.Status = this.status_Type;
     this._calenderDto.StartTime = this.startTime == undefined ? null : formatTime(this.startTime);
-    this._calenderDto.Start_time = this.currentTime;
+    this._calenderDto.Start_time = this.currentTime; debugger
     this._calenderDto.EndTime = this.endTime == undefined ? null : formatTime(this.endTime);
     // console.log(this._calenderDto,'time of meeting');
     this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe
@@ -1150,7 +1152,7 @@ export class MeetingDetailsComponent implements OnInit {
     // console.log('current', this.currentTime);
     // console.log('exact', this.exact_start);
     // console.log('latest', this.latestTime);
-
+debugger
     this.elapsedTime = differenceInMilliseconds;
 
     this.timerAttendees = setInterval(() => {
@@ -1165,10 +1167,17 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   pauseTimer() {
+   
     clearInterval(this.timerAttendees);
   }
   
-  resumeTimer() {
+  resumeTimer(from?) {
+     if(from){
+      if (from) {
+        const [h, m, s] = from.split(':').map(Number);
+        this.elapsedTime = (h * 3600 + m * 60 + s) * 1000;
+      }
+     }
     this.timerAttendees = setInterval(() => {
       this.elapsedTime += 1000;
       // if (this.elapsedTime >= this.duration) {
@@ -3816,7 +3825,7 @@ onFileChange(event) {
       (data => {
 
         this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
-        // console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
+        console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
         this.meeting_details();
         if (this.CompletedMeeting_notes != null && this.CompletedMeeting_notes != undefined && this.CompletedMeeting_notes != '') {
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
@@ -4312,7 +4321,7 @@ onFileChange(event) {
         this.TaskList = JSON.parse(this.agendasList[0].TaskList) 
          
 
-        console.log(data,'---------------')
+        console.log(this.exact_start,'---------------')
         this.smailcount = this.agendasList[0]?.smailcount;
         this.portFocount = this.agendasList[0]?.portcount;
         this.projecount = this.agendasList[0]?.projectcount;
@@ -4385,7 +4394,7 @@ onFileChange(event) {
 
         this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
         this.showAttendeeNotify = data.AdminMeeting_Status;
-        console.log(this.showAttendeeNotify,'showAttendeeNotify')
+        // console.log(this.showAttendeeNotify,'showAttendeeNotify')
         if (this.meetingStarted || this.meetingStarted != true) {
       
           if (data['Checkdatetimejson'] != '') {
@@ -4416,7 +4425,7 @@ onFileChange(event) {
              this.hasAttendeesresumeMeeting = false;
           }
             else if (this.showAttendeeNotify=='3' && !this.hasAttendeesresumeMeeting) {
-            this.resumeTimer();
+            this.resumeTimer(this.exact_start);
             this.InsertAttendeeMeetingTime();
             this.hasAttendeesresumeMeeting = true;
             this.hasAttendeesPauseMeeting = false;
