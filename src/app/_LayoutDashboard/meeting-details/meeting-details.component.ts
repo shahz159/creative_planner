@@ -4408,7 +4408,7 @@ onFileChange(event) {
 
           console.log(this.showAttendeeNotify, "meet")
 
-          if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify=='3') {
+          if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
            
             this.startMeetingOfAttendees();
             this.InsertAttendeeMeetingTime();
