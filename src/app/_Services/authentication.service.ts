@@ -39,7 +39,7 @@ export class AuthenticationService {
   }
 
   //Login Service
-  login(username: string, password: string) {
+  login(username: string, password: string) { debugger
     this._userobj.userId = username;
     this._userobj.OldPassWord = password;
     //  alert(this._userobj.OldPassWord);
@@ -47,7 +47,7 @@ export class AuthenticationService {
     //  /AuthenticationAPI/NewLoginDetailsJSON   ----- old api
     // Login/DMSLoginAPI ---- dot net core api
     //  return this.http.get<any>(this.rootUrl + '/AuthenticationAPI/GetLoginDetailsJSON?userId=' + username + "&password=" + password, {
-
+      console.log(this.rootUrl + "Notification/NewLoginDetailsJSON", this._userobj,'login url')
     return this.http.post<any>(this.rootUrl + "Notification/NewLoginDetailsJSON", this._userobj, {
     })
       .pipe(map(user => {    

@@ -1474,6 +1474,7 @@ date_menuclo(dialogId:string){
         debugger
         if(['-1','-2','-3','-4','-5','-6'].includes(this.newCatid.toString())){
           this.showAddTaskOption(false);
+
         }
         else{
           this.showAddTaskOption(true);
@@ -2736,10 +2737,12 @@ showAddTaskOption(show:boolean){
    else
    {
      document.getElementById('addtsk').classList.add('d-none');
-     document.getElementById('accordionRunway').classList.add('acc-runway-no-button');
+     if(this.newCatid!=-6){
+      document.getElementById('accordionRunway').classList.add('acc-runway-no-button');
+     }
+     
    }
 }
-
 
 getVisibleHeaderCount(): number {
   let count = 0;

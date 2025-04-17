@@ -497,7 +497,7 @@ export class CompanyComponent implements OnInit {
     return this.companyformGroup.controls;
   }
   OnCreate() {
-    
+    debugger
     try {
       if (this.companyformGroup.invalid) {
         return;

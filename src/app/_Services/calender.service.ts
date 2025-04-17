@@ -214,7 +214,7 @@ export class CalenderService {
 
 
 
-  Newdraft_Meetingnotes(obj:CalenderDTO){
+  Newdraft_Meetingnotes(obj:CalenderDTO){ debugger
     this.obj_CalenderDTO.draftid=obj.draftid;
     this.obj_CalenderDTO.Dms = obj.Dms;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
@@ -315,9 +315,9 @@ NewPending_table(obj:CalenderDTO){ debugger
   }
 
   _AzureUploadCalendarAttachments(data) {
-    console.log(data,'attachment data')
-
-    console.log(this.rootUrlcore + "Azure/NewAddCalendarAttachmentCore",'attachment url')
+   
+   
+    console.log(this.rootUrlcore + "Azure/NewAddCalendarAttachmentCore",'attachment url2')
     return this.http.post(this.rootUrlcore + "Azure/NewAddCalendarAttachmentCore", data
       , {
         reportProgress: true,
@@ -547,7 +547,7 @@ GetRecurrenceMeetingsService(obj:CalenderDTO){
 
 
 NewUpdateMeetingBookmark(obj:CalenderDTO){
-
+debugger
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID,
   this.obj_CalenderDTO.Emp_No=obj.Emp_No,
   this.obj_CalenderDTO.flagid=obj.flagid

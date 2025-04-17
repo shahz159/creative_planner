@@ -211,7 +211,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-    // this.GetDMSList();
+   
     this.addAgenda();
     // this.GetMeetingnotes_data();
     this.getDetailsScheduleId()
@@ -587,16 +587,30 @@ export class MeetingDetailsComponent implements OnInit {
   isLoading: boolean = true;
   oneByTwoEndDate:any;
   Meeing_Name:any;
-
-
-
+  deletedMeeting:any;
+  
+  live_activ = [
+    { actvName: 'New agenda added by Aquib Shahbaz', time: '5 sec ago' },
+    { actvName: 'Agenda completed by Waseem Akram', time: '1 min ago' },
+    { actvName: 'Task assigned to Ayesha Khan', time: '3 mins ago' },
+    { actvName: 'Meeting notes updated by Bilal Raza', time: '5 mins ago' },
+    { actvName: 'New task created by Usman Tariq', time: '10 mins ago' },
+    { actvName: 'Agenda 3 marked as pending by Sarah Ali', time: '15 mins ago' },
+    { actvName: 'Reminder set by Waseem Akram', time: '20 mins ago' },
+    { actvName: 'Participant Ali Raza joined the meeting', time: '25 mins ago' },
+    { actvName: 'Follow-up note added by Aquib Shahbaz', time: '30 mins ago' },
+    { actvName: 'Task completed by Ayesha Khan', time: '35 mins ago' }
+  ];
+  
   meeting_details() {
- 
+
     this._calenderDto.Schedule_ID = this.Schedule_ID;
 
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
-
+    
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+      console.log(this.EventScheduledjson,'EventScheduledjson')
+      this.deletedMeeting = this.EventScheduledjson.length;
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       var Schedule_date = this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
@@ -643,6 +657,8 @@ export class MeetingDetailsComponent implements OnInit {
       this._AllEventAttachment = this.EventScheduledjson[0]['AllEventsCount'];
       this._FutureEventAttachment = this.EventScheduledjson[0]['FutureCount'];
       this.AdminName=this.EventScheduledjson[0].AdminName
+
+      console.log(this.Actiontask,this.AssignedTask,this.Todotask,'new task agenda')
 
 
       this.totalTodotask = this.Todotask.length;
@@ -802,7 +818,7 @@ export class MeetingDetailsComponent implements OnInit {
       }
 
       // var St_Time = this.EventScheduledjson[0].St_Time;
-      // var End_date = this.EventScheduledjson[0].Ed_Time; debugger
+      // var End_date = this.EventScheduledjson[0].Ed_Time; 
       // var StartDate = this.EventScheduledjson[0].StartDate;
       this.oneByTwoEndDate = this.EventScheduledjson[0].SEndDate;
 
@@ -893,7 +909,7 @@ export class MeetingDetailsComponent implements OnInit {
     meetingDate.setHours(0, 0, 0, 0);
     sevenDaysAgo.setHours(0, 0, 0, 0);
   
-debugger
+
     if (meetingDate >= sevenDaysAgo && meetingDate <= today) {
       this.delayMeeting = true;
     }
@@ -964,9 +980,7 @@ debugger
   }
 
 
-  compareTimer() {
-
-  }
+ 
 
   parseTime(time: string): Date {
     const [hours, minutes, seconds] = time.split(':').map(Number);
@@ -977,18 +991,29 @@ debugger
 
 
   pauseMeeting() {
+
     this.play = false;
     this.pause = true;
     clearInterval(this.timer);
     this.meetingPaused = true;
+    this.status_Type = 'Pause'
+    // this.endtime
+    this.InsertAttendeeMeetingTime();
   }
+
+
+
+
   startTimes: any
   endTime: Date;
 
   resumeMeeting() {
+ debugger
     this.play = true;
     this.pause = false;
     //69 this.startTimes
+    this.status_Type = 'Resume'
+    this.InsertAttendeeMeetingTime();
     this.startTimes = new Date(new Date().getTime() - this.elapsedTime);
     this.meetingPaused = false;
     this.timer = setInterval(() => {
@@ -1074,7 +1099,7 @@ debugger
     this._calenderDto.Schedule_ID = this.Scheduleid;
     this._calenderDto.Status = this.status_Type;
     this._calenderDto.StartTime = this.startTime == undefined ? null : formatTime(this.startTime);
-    this._calenderDto.Start_time = this.currentTime;
+    this._calenderDto.Start_time = this.currentTime; debugger
     this._calenderDto.EndTime = this.endTime == undefined ? null : formatTime(this.endTime);
     // console.log(this._calenderDto,'time of meeting');
     this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe
@@ -1086,7 +1111,7 @@ debugger
   }
 
 
-
+  timerAttendees:any;
 
 
   startMeetingOfAttendees() {   
@@ -1127,10 +1152,10 @@ debugger
     // console.log('current', this.currentTime);
     // console.log('exact', this.exact_start);
     // console.log('latest', this.latestTime);
-
+debugger
     this.elapsedTime = differenceInMilliseconds;
 
-    this.timer = setInterval(() => {
+    this.timerAttendees = setInterval(() => {
       this.elapsedTime = this.elapsedTime + 1000;
 
       // if (this.elapsedTime >= this.duration) {
@@ -1140,6 +1165,35 @@ debugger
 
     // console.log(this.elapsedTime,'ijfbviabfvbsvskjvbzsib')
   }
+
+  pauseTimer() {
+   
+    clearInterval(this.timerAttendees);
+  }
+  
+  resumeTimer(from?) {
+    if (from) {
+      const now = new Date();
+      const [h, m, s] = from.split(':').map(Number);
+      const startTime = new Date(now);
+      startTime.setHours(h, m, s, 0);
+      this.elapsedTime = now.getTime() - startTime.getTime();
+    }
+    this.timerAttendees = setInterval(() => {
+      this.elapsedTime += 1000;
+      // if (this.elapsedTime >= this.duration) {
+      //   this.stopMeetingAttendees();
+      // }
+    }, 1000);
+  }
+
+
+
+
+
+
+
+
 
 
 
@@ -1174,7 +1228,7 @@ debugger
 
   stopMeetingAttendees() {
 
-    clearInterval(this.timer);
+    clearInterval(this.timerAttendees);
     this.meetingInProgress = false;
     // this.meetingStopped = true;
     this.status_Type = 'End';
@@ -1219,7 +1273,7 @@ debugger
     // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetMemosByEmployeeId();  //drpdwn
-    this.GetDMSList();
+    this.meeting_details();
     this.linkSMail=true;
   }
 
@@ -1252,8 +1306,8 @@ debugger
       //   );
       // }
       
-
-      // console.log( this._MemosSubjectList, this.ModifiedJson ,' this._MemosSubjectList ');
+      console.log( this._MemosSubjectList,' this._MemosSubjectList ');
+      //  console.log( this._MemosSubjectList, this.ModifiedJson ,' this._MemosSubjectList ');
      });
 
       
@@ -1511,13 +1565,14 @@ debugger
     // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     document.getElementById("rightbar-overlay").style.display = "block";
+    this.meeting_details();
     this.GetProjectAndsubtashDrpforCalender();
     this.linkProject==true
   }
 
   subtashDrpLoading:boolean=false;
 
-  GetProjectAndsubtashDrpforCalender() {
+  GetProjectAndsubtashDrpforCalender() { 
     this.subtashDrpLoading=true;
     this._calenderDto.Project_Code = null;
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
@@ -1532,8 +1587,8 @@ debugger
 
 
         this.originalProjectList = this.ProjectListArray;
-
-        this.PortfolioLists = JSON.parse(data['Portfolio_drp'])
+     
+        this.PortfolioLists = JSON.parse(data['Portfolio_drp']) 
         var recordPortfolio = this.portfolio_Scheduledjson.map(item => item.numberval)
         this.PortfolioLists = this.PortfolioLists.filter(item => !recordPortfolio.includes(item.portfolio_id))
         this.originalPortfolio_list = this.PortfolioLists
@@ -2760,11 +2815,12 @@ debugger
 
   /////////////////////////////////////////// List of Attachment sidebar start /////////////////////////////////////////////////////////
 
-  Attachment_views() {
+  Attachment_views() { 
     document.getElementById("Attachment_view").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     // document.getElementById("meetingdetails").classList.add("position-fixed");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+    this.meeting_details();
     console.log('Attachments_ary',this.Attachments_ary);
   }
 
@@ -2812,7 +2868,7 @@ onFileChange(event) {
         // Show a sweet alert popup for unsupported file types
         Swal.fire({
           title: `This File "${fileName}" cannot be accepted!`,
-          text: `Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+          text: `Supported file types: Images, video, audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
           //  "This file cannot be accepted!"
           });
         continue;
@@ -3770,7 +3826,7 @@ onFileChange(event) {
       (data => {
 
         this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
-        // console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
+        console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
         this.meeting_details();
         if (this.CompletedMeeting_notes != null && this.CompletedMeeting_notes != undefined && this.CompletedMeeting_notes != '') {
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
@@ -3813,7 +3869,7 @@ onFileChange(event) {
             // this.saveAttendeeTime();
             this.GetAttendeesnotes();
 
-            //  console.log('1')
+            //  }, 1000);
 
           }, 1000);
         }
@@ -3877,6 +3933,7 @@ onFileChange(event) {
   ActionedSubtask_Json: any = [];
   assigncount: number;
   isSubmitting: boolean = false;
+  assignTaskExists:any;
 
   onInputChange() {
     // Here you can reset the isSubmitting flag if needed based on input change
@@ -3888,13 +3945,15 @@ onFileChange(event) {
 
     if (this.isSubmitting) return;
 
+    this.assignTaskExists = [...this.TaskList].some(item => item.Task_Name?.trim() === this._Demotext.trim());
 
-    if (_Demotext.length <= 100) {
-      if (_Demotext != "" && _Demotext != undefined && _Demotext != null) {
+ 
+    if (_Demotext.length <= 100 && !this.assignTaskExists) {
+      if (_Demotext != "" && _Demotext != undefined && _Demotext != null) { 
         this.isSubmitting = true;
         this._ObjAssigntaskDTO.CategoryId = 2411;
         this._ObjAssigntaskDTO.TypeOfTask = "ToDo";
-        this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+        this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;  
         this._ObjAssigntaskDTO.TaskName = _Demotext;
         this._ObjAssigntaskDTO.Schedule_ID = this.Schedule_ID;
         this._ObjAssigntaskDTO.Agenda_Id = this.AgendaId;
@@ -3917,7 +3976,7 @@ onFileChange(event) {
          
           });
       }
-    } else {
+    } else if(!this.assignTaskExists) {
       this.notifyService.showWarning("Maximum 100 characters are allowed", 'Please shorten it.');
     }
 
@@ -4105,9 +4164,12 @@ onFileChange(event) {
                 this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
                 this.Clientjson = JSON.parse(data[0]['Client_json'])
           
-
                 this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
-                console.log(this.ActionedSubtask_Json,'ActionedSubtask_Json')
+
+
+
+                console.log( this._TodoList, this._CompletedList, this.ActionedAssigned_Josn, this.ActionedSubtask_Json,'task')
+
 
                 this.assigncount = this.ActionedAssigned_Josn.length;
                 this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
@@ -4223,10 +4285,12 @@ onFileChange(event) {
   totalTasksCount:number=0;
   AllAttendees_notes: any = []
   Employeeslist: any;
-  meetingStarted: boolean = false;
+  meetingStarted: any;
   hasMeetingStatus: boolean = false;
   hasMeetingStarted: boolean = false;
   hasMeetingEnd: boolean = false;
+  hasAttendeesPauseMeeting:boolean = false;
+  hasAttendeesresumeMeeting:boolean = false;
   NotesCount: any;
   TaskCount: any;
   agendasList: any;
@@ -4238,7 +4302,8 @@ onFileChange(event) {
   portFocount:any;
   projecount:any;
   attachcount:any;
-
+  TaskList:any;
+  showAttendeeNotify:any
 
   GetAttendeesnotes() {
 
@@ -4253,6 +4318,11 @@ onFileChange(event) {
        
         this.exact_start = (data['Start_time']);
         this.agendasList = JSON.parse(data['Agendas']);
+
+        this.TaskList = JSON.parse(this.agendasList[0].TaskList) 
+         
+
+        console.log(this.exact_start,'---------------')
         this.smailcount = this.agendasList[0]?.smailcount;
         this.portFocount = this.agendasList[0]?.portcount;
         this.projecount = this.agendasList[0]?.projectcount;
@@ -4322,7 +4392,10 @@ onFileChange(event) {
           return sum+item.count;
          },0)
   
-        this.meetingStarted = data.AdminMeeting_Status === 'True' ? true : false
+
+        this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
+        this.showAttendeeNotify = data.AdminMeeting_Status;
+        // console.log(this.showAttendeeNotify,'showAttendeeNotify')
         if (this.meetingStarted || this.meetingStarted != true) {
       
           if (data['Checkdatetimejson'] != '') {
@@ -4335,13 +4408,34 @@ onFileChange(event) {
 
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
 
-          if (this.meetingStarted == true && !this.hasMeetingStarted) {
+          if (this.meetingStarted == true && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
+           
             this.startMeetingOfAttendees();
             this.InsertAttendeeMeetingTime();
             this.hasMeetingStarted = true;
             this.hasMeetingEnd = false;
+            this.hasAttendeesPauseMeeting = false;
+            this.hasAttendeesresumeMeeting = false;
+          }
+          else if (this.showAttendeeNotify=='2' && !this.hasAttendeesPauseMeeting) {
+            this.pauseTimer()
+            this.InsertAttendeeMeetingTime();
+             this.hasAttendeesPauseMeeting = true;
+             this.hasMeetingStarted = false;
+             this.hasMeetingEnd = false;
+             this.hasAttendeesresumeMeeting = false;
+          }
+            else if (this.showAttendeeNotify=='3' && !this.hasAttendeesresumeMeeting) {
+            this.resumeTimer(this.exact_start);
+            this.InsertAttendeeMeetingTime();
+            this.hasAttendeesresumeMeeting = true;
+            this.hasAttendeesPauseMeeting = false;
+             this.hasMeetingStarted = false;
+             this.hasMeetingEnd = false; 
+          
           }
           else if (this.meetingStarted != true && !this.hasMeetingEnd && this.meetingOfAttendees == false) {
+            console.log('Call Attendees')
             this.stopMeetingAttendees();
             this.InsertAttendeeMeetingTime();
             this.hasMeetingEnd = true;
@@ -8009,7 +8103,7 @@ onParticipantFilter(){
     this.selectedFiles = [];  // Clear selected files after download
   }
 
-  downloadFile(url: string, fileName: string) {debugger
+  downloadFile(url: string, fileName: string) {
     fetch(url)
       .then(response => response.blob())
       .then(blob => {
@@ -8990,7 +9084,7 @@ LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, ty
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
-  else if (iscloud == true) {debugger
+  else if (iscloud == true) {
     let name = "ArchiveView/" + this.Schedule_ID;
     let meetingName =  this.Meeing_Name;
     var rurl = document.baseURI + name;

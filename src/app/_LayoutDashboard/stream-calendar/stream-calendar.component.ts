@@ -18,6 +18,7 @@ import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
 import { ActivatedRoute, ActivatedRouteSnapshot, Params, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 declare var $: any;
@@ -68,6 +69,8 @@ export class StreamCalendarComponent implements OnInit {
   scstartdate: any = new Date();
   _labelName: string;
   today: any = new Date().toISOString().substring(0, 10);
+  durationOfTodayLine:any
+
   gmtOffset = `GMT+${(-new Date().getTimezoneOffset() / 60) | 0}:${String(Math.abs(new Date().getTimezoneOffset()) % 60).padStart(2, '0')}`;
   ProjectCode: string; Status: string; ProjectType: string; Owner: string;
   event: any;
@@ -229,6 +232,7 @@ export class StreamCalendarComponent implements OnInit {
     public approvalservice: ApprovalsService,
     public service: ProjectTypeService,
     private activatedRoute:ActivatedRoute,
+     private _snackBar: MatSnackBar,
     private router: Router
   ) { 
     this._lstMultipleFiales = [];
@@ -366,6 +370,9 @@ export class StreamCalendarComponent implements OnInit {
      this.Getdraft_datalistmeeting(); 
      this.getMeetingApprovals();
      this.BookmarkMeetingsList();
+
+
+  
   }
 
 
@@ -563,6 +570,22 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("skype-icon").style.display = "none";
     document.getElementById("zoom-icon").style.display = "inline-block";
   }
+
+  customPendingTaskModal() {
+    document.getElementById("customPendingTaskModal").style.display = "block";
+    document.getElementById("customPendingTaskModal").classList.add("show");
+    document.getElementById("customPendingTaskModalBackdrop").style.display = "block";
+    document.getElementById("customPendingTaskModalBackdrop").classList.add("show");
+  }
+  customPendingTaskModal_dismiss() {
+    document.getElementById("customPendingTaskModal").style.display = "none";
+    document.getElementById("customPendingTaskModal").classList.remove("show");
+    document.getElementById("customPendingTaskModalBackdrop").style.display = "none";
+    document.getElementById("customPendingTaskModalBackdrop").classList.remove("show"); 
+  }
+
+
+
   change_event(){
     this.createTaskEvent=true;
     // document.getElementById("event-title").style.display = "block";
@@ -684,6 +707,25 @@ export class StreamCalendarComponent implements OnInit {
     this.MonthArr1=[];
     this._EndDate1=moment().add(3, 'months').format("YYYY-MM-DD").toString();
   }
+
+
+  shareoptionModal() {
+    document.getElementById("shareoptionModal").style.display = "block";
+    document.getElementById("shareoptionModal").classList.add("show");
+    document.getElementById("shareoptionModalBackdrop").style.display = "block";
+    document.getElementById("shareoptionModalBackdrop").classList.add("show");
+    this.generateLink()
+  }
+  
+  shareoptionModal_dismiss() {
+    document.getElementById("shareoptionModal").style.display = "none";
+    document.getElementById("shareoptionModal").classList.remove("show");
+    document.getElementById("shareoptionModalBackdrop").style.display = "none";
+    document.getElementById("shareoptionModalBackdrop").classList.remove("show");
+  }
+
+
+
 
 
   createEventTaskModal(){
@@ -1159,7 +1201,7 @@ onFileChange(event) {
  
   if (event.target.files.length > 0) {
     const allowedTypes = [
-      "image/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+      "image/*", "video/*", "audio/*", "application/pdf", "text/plain", "text/html", "application/msword", 
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       "application/json", "application/xml", "application/vnd.ms-powerpoint",
       "application/vnd.openxmlformats-officedocument.presentationml.presentation",
@@ -1175,7 +1217,7 @@ onFileChange(event) {
         // Show a sweet alert popup for unsupported file types
         Swal.fire({
           title: `This File "${fileName}" cannot be accepted!`,
-          text: `Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+          text: `Supported file types: Images, video, audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
           });
         continue;
       }
@@ -3035,6 +3077,7 @@ this.eventtaskitemtimeModal_dismiss();
                     this._azureMessage = (JSON.parse(myJSON).body).message;
 
                     if(this._azureMessage=="1"){
+                      console.log(frmData,"frmData")
                       this.CalenderService._AzureUploadCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
                         console.log(event1,"azure data");
                         var myJSON = JSON.stringify(event1);
@@ -3172,7 +3215,7 @@ this.eventtaskitemtimeModal_dismiss();
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
           this.draftcount = this.draftdata_meet.length;
           this.filterDraft('date');
-         
+          console.log(data,'draftdata_meet')
         }
         else {
           this.draftdata_meet = null;
@@ -3334,6 +3377,8 @@ getEventsForWeeks(weeksFromToday: number) {
   const today = new Date();
   today.setHours(0, 0, 0, 0); 
 
+  this.durationOfTodayLine = new Date().toLocaleString('sv-SE', { hour12: false }).slice(0, 16).replace('T', ' ');
+
  
   if (weeksFromToday === 3) {
    
@@ -3465,7 +3510,10 @@ const startDate = formattedDate || today;
       }
     }
   
-console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
+
+     
+ 
+   console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays',this.durationOfTodayLine);
        
 }
 
@@ -3797,7 +3845,7 @@ Insert_indraft() {
     
     const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
     this._calenderDto.DraftAgendas=mtgAgendas;
- 
+     console.log(this._calenderDto,'Draft meeting')
   this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
     (data => {
          
@@ -3898,6 +3946,7 @@ Insert_indraft() {
 /////////////////////////////////////////// Created On (Schedule event popup box) Start /////////////////////////////////////////////////////////
 
 Meeing_Name:any;
+Created_by:any;
 
 GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
  
@@ -3921,6 +3970,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       this.propose_date=Schedule_date;
       console.log(this.EventScheduledjson, "Testing12");
       this.Meeing_Name = (this.EventScheduledjson[0]['Task_Name']);
+      this.Created_by = this.EventScheduledjson[0].Created_by
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       this.Link_Detail = this.EventScheduledjson[0].Link_Details;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
@@ -4065,7 +4115,7 @@ getDurationInHoursMinutes(start: string, end: string): string {
 }
 
 
-newDetails(ProjectCode) {
+newDetails(ProjectCode) { debugger
   let name: string = 'Details';
   var url = document.baseURI + name;
   var myurl = `${url}/${ProjectCode}`;
@@ -4073,7 +4123,7 @@ newDetails(ProjectCode) {
   myWindow.focus();
 }
 
-OnCardClick(P_id: any) {
+OnCardClick(P_id: any) { debugger
   sessionStorage.setItem('portfolioId', P_id);
   let name: string = 'portfolioprojects';
   var url = document.baseURI + name;
@@ -6370,6 +6420,8 @@ filterPending(type: 'date' | 'meeting'): void {
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
 
+        console.log(this.Project_NameScheduledjson,'this.Project_NameScheduledjson')
+
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
         this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
@@ -6630,7 +6682,7 @@ BookMarks:boolean;
 MeetingBookmark(flagid:any) {
   if (this.isSubmitting) return;
   this.isSubmitting = true;
-  debugger
+ 
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.flagid = flagid;
@@ -6638,7 +6690,7 @@ MeetingBookmark(flagid:any) {
   this.CalenderService.NewUpdateMeetingBookmark(this._calenderDto).subscribe
     ((data) => {
       if(data['message'] == '1'){
-    
+        debugger
         this._calenderDto.Schedule_ID=this.Schedule_ID;
 
         this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
@@ -6706,6 +6758,7 @@ Bookmark_Delete(Scheduleid:any) {
 daySummaryReport:any;
 dueTodayTasksCount:{taskType:string,count:number}[]=[];
 reportCount:any;
+PendingTasks:any;
 
 getDayReportSummary(){
   this.service.NewGetEmployeePerformance(this.Current_user_ID).subscribe((res:any)=>{
@@ -6723,7 +6776,14 @@ getDayReportSummary(){
       this.reportCount = ["NewProjectRejected", "AssignedTasksDue", "ActionsDelayed", "ProjectsDelayed", "StandardDelayed"]
       .filter(key => this.daySummaryReport[key] > 0).length;
 
-      console.log("daySummaryReport:",this.reportCount);
+
+      this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
+      console.log("daySummaryReport:",this.PendingTasks);
+
+
+
+
+      
 
       if(this.reportCount){
         this.showLoader=true;
@@ -7117,5 +7177,98 @@ viewconfirm() {
 }
 
 /////////////////////////////////////////// Monthly section end /////////////////////////////////////////////////////////
+
+
+
+
+
+
+link: string = '';
+generateLink(): void {
+  this.link = 'https://cswebapps.com/creativeplanner/StreamCalendar/' +  this.Schedule_ID
+}
+
+
+
+shareOnWhatsApp(): void {
+  // URL encode the link
+
+  const link = 'https://cswebapps.com/creativeplanner/StreamCalendar/' +  this.Schedule_ID
+  const encodedLink = encodeURIComponent(link);
+
+  // Create the WhatsApp share URL
+  const whatsappUrl = `https://wa.me/?text=${encodedLink}`;
+
+  // Open the URL in a new tab/window
+  window.open(whatsappUrl, '_blank');
+}
+
+shareOnFacebook(): void {
+  
+  // URL encode the link
+  const link = 'https://cswebapps.com/creativeplanner/portfolioprojects/' +  this.Schedule_ID
+  const encodedLink = encodeURIComponent(link);
+  // Create the Facebook share URL
+  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedLink}`;
+
+  // Open the URL in a new tab/window
+  window.open(facebookShareUrl, '_blank');
+}
+
+shareOnTwitter(): void {
+  // URL encode the components
+  const link = 'https://cswebapps.com/creativeplanner/portfolioprojects/' +  this.Schedule_ID
+  const encodedUrl = encodeURIComponent(link);
+
+  // Create the Twitter Intent URL
+  let twitterIntentUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}`;
+
+  // Open the URL in a new tab/window
+  window.open(twitterIntentUrl, '_blank');
+}
+
+
+
+copyLinkToClipboard(): void {
+
+  navigator.clipboard.writeText(this.link).then(() => {
+      this._snackBar.open('link copied to clipboard', 'End now', {
+        duration: 5000,
+        horizontalPosition: "right",
+        verticalPosition: "bottom",
+      });
+  
+  }).catch(err => {
+    console.error('Could not copy text: ', err);
+  });
+
+}
+
+
+
+
+
+
+// getLastEventWithValidEnd(events: any[], durationOfTodayLine: string): any {
+//   return [...events]
+//     .filter(e => e.end < durationOfTodayLine)
+//     .sort((a, b) => b.end.localeCompare(a.end))[0];
+// }
+
+
+getLastEventWithValidEnd(events: any[], duration: string): any {
+  let last = null;
+  for (let i = 0; i < events.length; i++) {
+    if (events[i].end < duration) {
+      if (last && last.end === events[i].end) continue;
+      last = events[i];
+    }
+  }
+  return last;
+}
+
+
+
+
 
 }
