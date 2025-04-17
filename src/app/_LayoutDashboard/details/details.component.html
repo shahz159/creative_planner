@@ -784,7 +784,7 @@
 
 
 
-                                                              <div class="extra-at-status deadline-main pr-1" *ngIf="projectInfo.Status==='Delay'&&(deadlineExtendlist&&deadlineExtendlist.length>0)" style="border-color:#d32f2f;">
+                                                              <div class="extra-at-status deadline-main pr-1" *ngIf="(projectInfo.Status==='Delay'||projectInfo.Status==='InProcess')&&(deadlineExtendlist&&deadlineExtendlist.length>0)" [ngStyle]="{'border-color':projectInfo.Status==='InProcess'?'#65aae1':'#d32f2f'}">
 
                                                                 <span  class=" pin-msg-btn d-flex collapsed" data-toggle="collapse" data-target="#p-deadline-extends-drpdwn-1" aria-expanded="false" style="color: #d32f2f;">
                                                                     {{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} deadline changed
@@ -2954,7 +2954,57 @@
                                                       </div>
 
                                                       <div class="kt-project-type" *ngSwitchCase="'InProcess'">
-                                                            <div class="Kt-Pd-Status Inprocess ">In-process</div>
+                                                        <div class="d-flex">
+                                                            <div class="Kt-Pd-Status Inprocess text-nowrap">In-process</div>
+                                                            <div class="extra-at-status deadline-main" *ngIf="(deadlineExtendlist&&deadlineExtendlist.length>0)" style="border-color:#65aae1;">
+                                                                <span class="pin-msg-btn d-flex collapsed" style="color: #d32f2f;" data-toggle="collapse" data-target="#p-deadline-extends-drpdwn-2" aria-expanded="false">
+                                                                    {{deadlineExtendlist.length}} {{deadlineExtendlist.length==1?'time':'times'}} deadline changed
+                                                                    <div  class="pin-msg-btn-caret">
+                                                                        <svg  width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                            <g  id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                            <g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                                            <g  id="SVGRepo_iconCarrier">
+                                                                                <g  id="Arrow / Caret_Down_MD">
+                                                                                    <path id="Vector" d="M16 10L12 14L8 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                                </g>
+                                                                            </g>
+                                                                        </svg>
+                                                                    </div>
+                                                                </span>
+                                                                <span class="deadline-count">
+                                                                    <div id="p-deadline-extends-drpdwn-2" aria-labelledby="p-deadline-extends-drpdwn-2" aria-hidden="true" class="bounce-effect collapse">
+                                                                     <ul class="deadline-timeline">
+                                                                        <!-- loop this li part only -->
+                                                                        <li class="deadline-timeline-item" *ngFor="let item of deadlineExtendlist;let i = index">
+                                                                            <div class="deadline-timeline-item-title">{{item.Value}}</div>
+                                                                            <div class="deadline-timeline-item-by"><b>By</b> {{item.Modifiedby}}  </div>
+                                                                            <div class="deadline-timeline-item-from"><b>From</b> {{item.oldValue }} <b>To</b> {{item.NewValue }}</div>
+                                                                            <div class="deadline-timeline-item-on">
+                                                                                <div class="d-flex align-items-center">
+                                                                                    <span class="svg-icon">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                                                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                                                                            <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z"></path>
+                                                                                        </svg>
+                                                                                    </span>
+                                                                                    <span>{{item.ModifiedDate |date :'dd-MM-yyyy'}}</span>
+                                                                                </div>
+                                                                                <div class="d-flex align-items-center">
+                                                                                    <span class="svg-icon">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                                                                            <path fill="none" d="M0 0h24v24H0z"></path>
+                                                                                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-8h4v2h-6V7h2v5z"></path>
+                                                                                        </svg>
+                                                                                    </span>
+                                                                                    <span>{{item.sortdate | date:'h:mm a'}}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                     </ul>
+                                                                    </div>
+                                                                 </span>
+                                                            </div>
+                                                        </div>
                                                       </div>
 
                                                       <div class="kt-project-type" *ngSwitchCase="'New Project Rejected'">
@@ -3693,9 +3743,63 @@
                                                                     <span *ngIf="!rejectType&&notProvided" style="color:red">please select reject type.</span>
                                                                 </div>
                                                                 <div class="col-lg-12 mt-3 mb-3 p-0" *ngIf="isRejectOptionsVisible">
-                                                                    <div class="appr-comts"
-                                                                        *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
-                                                                        <div class="exs-cmts card">
+                                                                    <div class="appr-comts" *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
+
+                                                                        <div class="reject-comments-sec">
+                                                                            <fieldset class="existing-comments-sec">
+                                                                                <div *ngIf="rejectlength>1" class="comment-search-bx">
+                                                                                    <div class="input-group">
+                                                                                        <input [(ngModel)]="rCmts_searchtxt"  type="search" placeholder="Search" class="form-control project-search kt-quick-search__input pl-3 ng-pristine ng-valid ng-touched" style="border-radius:5px;">
+                                                                                        <div class="btn-group mr-2" role="group">
+                                                                                            <div class="btn btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle prev-cmt-drp" data-toggle="dropdown" aria-expanded="false">
+                                                                                              <span class="fs-7" style="font-weight:500; flex: 1; text-align: left;">{{rejectCmts_SortOrder}}</span>
+                                                                                            </div>
+                                                                                            <div class="dropdown-menu drop-cus" style="margin-top:4px; transform:translate3d(-111px, 39px, 0px); padding: 3px 2px 3px 2px; box-shadow:none; border:1px solid #ccc !important; " >
+                                                                                                <a class="dropdown-item gap-2 align-items-center" [ngClass]="{'active':rejectCmts_SortOrder=='Newest'}"  (click)="sortRejectCmtsBy('Newest');">Newest</a>
+                                                                                                <a class="dropdown-item gap-2 align-items-center" [ngClass]="{'active':rejectCmts_SortOrder=='Most Used'}"  (click)="sortRejectCmtsBy('Most Used');">Most Used</a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <legend>Existing comments</legend>
+                                                                               <div class="all-comments-list scroll-y">
+                                                
+                                                                                <div class="cmts-items" *ngFor="let item of rejectcommentsList|filter:rCmts_searchtxt?rCmts_searchtxt.trim():'';let i=index">
+                                                                                   <div class="cmts-value">
+                                                                                    <h6 [ngClass]="exist_comment.indexOf(item.Req_Coments) != -1 ? 'text-info' : ''">
+                                                                                        <span class="flex-grow-1">{{item.Req_Coments}}</span>
+                                                                                     </h6>
+                                                                                     <small *ngIf="item.Usage_Count>1" class="used-cnt">Used {{item.Usage_Count}} times</small>
+                                                                                   </div>
+                                                                                    <div class="cmts-actns">
+                                                                                        <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) == -1"
+                                                                                            (click)="clickonselect(item.Req_Coments)">
+                                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                                                                <path
+                                                                                                    d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
+                                                                                                </path>
+                                                                                            </svg>
+                                                                                        </span>
+                                                                                        <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) != -1"
+                                                                                            (click)="clickondeselect(item.Req_Coments,i)">
+                                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                                                                <path
+                                                                                                    d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z">
+                                                                                                </path>
+                                                                                            </svg>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div *ngIf="(rejectcommentsList|filter:rCmts_searchtxt?rCmts_searchtxt.trim():'').length==0" class="d-flex justify-content-center align-items-center gap-1 py-5">
+                                                                                    <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Menu / Close_LG"> <path id="Vector" d="M21 21L12 12M12 12L3 3M12 12L21.0001 3M12 12L3 21.0001" stroke="#858585" stroke-width="2.256" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg> 
+                                                                                   <span class="text-muted">No Result Found</span>
+                                                                                 </div>
+                                                                              </div>
+                                                                            </fieldset>
+                                                                         </div>
+
+
+                                                                        <!-- <div class="exs-cmts card">
                                                                             <div class="card-header" *ngIf="rejectlength>0">
                                                                                 <h6 class="mb-0">Existing comments</h6>
                                                                             </div>
@@ -3729,7 +3833,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
+                                                                        </div> -->
                                                                     </div>
                                                                 </div>
                                                                 <ng-container *ngIf="selectedType=='3'">
@@ -4246,15 +4350,26 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col text-center"
-                                                        *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else submission1">
-                                                        <div class="kt-info-lable-v">
-                                                            Deadline
+                                                    <ng-container  *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else submission1">
+                                                        <div *ngIf="deadlineExtendlist&&deadlineExtendlist.length>0" class="col text-center">
+                                                            <div class="kt-info-lable-v">
+                                                                Original Deadline
+                                                            </div>
+                                                            <div class="kt-info-data-v original-deadline">
+                                                                {{projectInfo&&projectInfo.originaldeadline|date:'dd-MM-yyyy'}}
+                                                            </div>
                                                         </div>
-                                                        <div class="kt-info-data-v">
-                                                            {{projectInfo&&projectInfo.EndDate | date : 'dd-MM-yyyy'}}
+    
+                                                        <div class="col text-center">
+                                                            <div class="kt-info-lable-v">
+                                                                {{(deadlineExtendlist&&deadlineExtendlist.length>0)?'Revised Deadline':'Deadline'}}
+                                                            </div>
+                                                            <div class="kt-info-data-v">
+                                                                {{projectInfo&&projectInfo.EndDate | date : 'dd-MM-yyyy'}}
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    </ng-container>
+                                                  
 
                                                     <ng-template #submission1>
                                                         <div class="col text-center">
@@ -5035,7 +5150,57 @@
 
 
                                                             <div *ngSwitchCase="'InProcess'" class="kt-project-type">
+                                                                <div class="d-flex">
                                                                 <div class="Kt-Pd-Status Inprocess "> In-process </div>
+                                                                <div class="extra-at-status deadline-main" *ngIf="(action_deadlineExtendlist&&action_deadlineExtendlist.length>0)" style="border-color:#65aae1;">
+                                                                    <span class="pin-msg-btn d-flex collapsed" style="color: #d32f2f;" data-toggle="collapse" data-target="#a-deadline-extends-drpdwn" aria-expanded="false">
+                                                                        {{action_deadlineExtendlist.length}} {{action_deadlineExtendlist.length==1?'time':'times'}} deadline changed
+                                                                        <div class="pin-msg-btn-caret">
+                                                                            <svg  width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <g  id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                                                <g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                                                <g  id="SVGRepo_iconCarrier">
+                                                                                    <g  id="Arrow / Caret_Down_MD">
+                                                                                        <path id="Vector" d="M16 10L12 14L8 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                                    </g>
+                                                                                </g>
+                                                                            </svg>
+                                                                        </div>
+                                                                    </span>
+                                                                    <span class="deadline-count">
+                                                                        <div class=" bounce-effect collapse" id="a-deadline-extends-drpdwn" aria-labelledby="a-deadline-extends-drpdwn" aria-hidden="true">
+                                                                         <ul class="deadline-timeline">
+                                                                            <!-- loop this li part only -->
+                                                                            <li class="deadline-timeline-item" *ngFor="let item of action_deadlineExtendlist;let i = index">
+                                                                                <div class="deadline-timeline-item-title">Action Deadline Changed {{item.count+(item.count>3?'th':item.count==3?'rd':item.count==2?'nd':'st')}} Time</div>
+                                                                                <div class="deadline-timeline-item-by"><b>By</b> {{item.Modifiedby}}  </div>
+                                                                                <div class="deadline-timeline-item-from"><b>From</b> {{item.oldValue }} <b>To</b> {{item.NewValue }}</div>
+                                                                                <div class="deadline-timeline-item-on">
+                                                                                    <div class="d-flex align-items-center">
+                                                                                        <span class="svg-icon">
+                                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                                                                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                                                                                <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z"></path>
+                                                                                            </svg>
+                                                                                        </span>
+                                                                                        <span>{{item.ModifiedDate |date :'dd-MM-yyyy'}}</span>
+                                                                                    </div>
+                                                                                    <div class="d-flex align-items-center">
+                                                                                        <span class="svg-icon">
+                                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                                                                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                                                                                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-8h4v2h-6V7h2v5z"></path>
+                                                                                            </svg>
+                                                                                        </span>
+                                                                                        <span>{{item.sortdate | date:'h:mm a'}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                         </ul>
+                                                                        </div>
+                                                                     </span>
+                                                                </div>
+                                                              </div>
                                                             </div>
 
                                                             <div *ngSwitchCase="'New Project Rejected'" class="kt-project-type">
@@ -5272,8 +5437,7 @@
                                                             <div class="kt-pdv">
 
                                                             <!--approval reject-->
-                                                                <div *ngIf="isRejectOptionsVisible">
-                                                                    Reject type<span style="color:red">*</span>
+                                                                <div *ngIf="isRejectOptionsVisible">Reject type<span style="color:red">*</span>
                                                                     <ng-select required #action="ngModel" name="rej_type" [ngClass]="{'error-border':(!rejectType&&notProvided)}"
                                                                         placeholder="Select Reject Type" id="rej_type"
                                                                         [(ngModel)]="rejectType"
@@ -5285,11 +5449,65 @@
                                                                     </ng-select>
                                                                     <span *ngIf="!rejectType&&notProvided" style="color:red">please select reject type.</span>
                                                                 </div>
-                                                                <div class="col-lg-12 mt-3 mb-3 p-0"
-                                                                    *ngIf="isRejectOptionsVisible">
-                                                                    <div class="appr-comts"
-                                                                        *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
-                                                                        <div class="exs-cmts card">
+                                                                <div class="col-lg-12 mt-3 mb-3 p-0" *ngIf="isRejectOptionsVisible">
+                                                                    <div class="appr-comts"  *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
+
+                                                                        <div class="reject-comments-sec">
+                                                                            <fieldset class="existing-comments-sec">
+                                                                                <div *ngIf="rejectlength>1" class="comment-search-bx">
+                                                                                    <div class="input-group">
+                                                                                        <input [(ngModel)]="rCmts_searchtxt"  type="search" placeholder="Search" class="form-control project-search kt-quick-search__input pl-3 ng-pristine ng-valid ng-touched" style="border-radius:5px;">
+                                                                                        <div class="btn-group mr-2" role="group">
+                                                                                            <div class="btn btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle prev-cmt-drp" data-toggle="dropdown" aria-expanded="false">
+                                                                                              <span class="fs-7" style="font-weight:500; flex: 1; text-align: left;">{{rejectCmts_SortOrder}}</span>
+                                                                                            </div>
+                                                                                            <div class="dropdown-menu drop-cus" style="margin-top:4px; transform:translate3d(-111px, 39px, 0px); padding: 3px 2px 3px 2px; box-shadow:none; border:1px solid #ccc !important; " >
+                                                                                                <a class="dropdown-item gap-2 align-items-center"   [ngClass]="{'active':rejectCmts_SortOrder=='Newest'}" (click)="sortRejectCmtsBy('Newest');">Newest</a>
+                                                                                                <a class="dropdown-item gap-2 align-items-center" [ngClass]="{'active':rejectCmts_SortOrder=='Most Used'}" (click)="sortRejectCmtsBy('Most Used');">Most Used</a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <legend>Existing comments</legend>
+                                                                               <div class="all-comments-list scroll-y">
+                                                
+                                                                                <div class="cmts-items" *ngFor="let item of rejectcommentsList|filter:rCmts_searchtxt?rCmts_searchtxt.trim():'';let i=index">
+                                                                                   <div class="cmts-value">
+                                                                                    <h6 [ngClass]="exist_comment.indexOf(item.Req_Coments) != -1 ? 'text-info' : ''">
+                                                                                        <span class="flex-grow-1">{{item.Req_Coments}}</span>
+                                                                                     </h6>
+                                                                                     <small *ngIf="item.Usage_Count>1" class="used-cnt">Used {{item.Usage_Count}} times</small>
+                                                                                   </div>
+                                                                                    <div class="cmts-actns">
+                                                                                        <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) == -1"
+                                                                                            (click)="clickonselect(item.Req_Coments)">
+                                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                                                                <path
+                                                                                                    d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
+                                                                                                </path>
+                                                                                            </svg>
+                                                                                        </span>
+                                                                                        <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) != -1"
+                                                                                            (click)="clickondeselect(item.Req_Coments,i)">
+                                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                                                                <path
+                                                                                                    d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z">
+                                                                                                </path>
+                                                                                            </svg>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div *ngIf="(rejectcommentsList|filter:rCmts_searchtxt?rCmts_searchtxt.trim():'').length==0" class="d-flex justify-content-center align-items-center gap-1 py-5">
+                                                                                    <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Menu / Close_LG"> <path id="Vector" d="M21 21L12 12M12 12L3 3M12 12L21.0001 3M12 12L3 21.0001" stroke="#858585" stroke-width="2.256" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg> 
+                                                                                   <span class="text-muted">No Result Found</span>
+                                                                                 </div>
+                                                                              </div>
+                                                                            </fieldset>
+                                                                         </div>
+
+
+
+                                                                        <!-- <div class="exs-cmts card">
                                                                             <div class="card-header" *ngIf="rejectlength>0">
                                                                                 <h6 class="mb-0">Existing comments</h6>
                                                                             </div>
@@ -5323,7 +5541,8 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
+                                                                        </div> -->
+
                                                                     </div>
                                                                 </div>
                                                                 <ng-container *ngIf="selectedType=='3'">
@@ -5687,19 +5906,27 @@
                                                                 Start date
                                                             </div>
                                                             <div class="kt-info-data-v">
-
                                                                 {{projectActionInfo[currentActionView].StartDate|date:'dd-MM-yyyy'}}
                                                             </div>
                                                         </div>
 
+
+                                                        <div *ngIf="action_deadlineExtendlist&&action_deadlineExtendlist.length>0" class="col text-center">
+                                                            <div class="kt-info-lable-v">
+                                                                Original Deadline
+                                                            </div>
+                                                            <div class="kt-info-data-v original-deadline">
+                                                                {{projectActionInfo[currentActionView].originaldeadline|date:'dd-MM-yyyy'}}
+                                                            </div>
+                                                        </div>
+
+
                                                         <div class="col text-center">
                                                             <div class="kt-info-lable-v">
-                                                                Deadline
+                                                                {{(action_deadlineExtendlist&&action_deadlineExtendlist.length>0)?'Revised Deadline':'Deadline'}}
                                                             </div>
                                                             <div class="kt-info-data-v">
-                                                                {{projectActionInfo[currentActionView].EndDate| date :
-                                                                'dd-MM-yyyy'}}
-
+                                                                {{projectActionInfo[currentActionView].EndDate| date :'dd-MM-yyyy'}}
                                                             </div>
                                                         </div>
 
@@ -13570,13 +13797,26 @@
                                 <div class="form-group mb-2">
                                     <label class="pe-label">Project name</label>
                                     <div class="input-icon project-name_ed curser-pointer">
-                                        <input type="text" class="form-control" [(ngModel)]="ProjectName" (ngModelChange)="isPrjNameValid=isValidString(ProjectName.trim(),3)"
-                                         [ngClass]="{'error-border':!(this.ProjectName&&this.ProjectName.trim()!='')&&formFieldsRequired}"
+                                        <input type="text" class="form-control" [(ngModel)]="ProjectName" (ngModelChange)="isPrjNameValid=isValidString(ProjectName.trim(),3); isPrjNameInUse(ProjectName);  "
+                                         [ngClass]="{'error-border':(!(this.ProjectName&&this.ProjectName.trim()!='')&&formFieldsRequired)||(isPrjNameUsed)}"
                                             placeholder="Enter project name" />
                                     </div>
-                                    <span *ngIf="isPrjNameValid=='TOOSHORT'&&formFieldsRequired"  style="color:rgb(217,48,37)">Please enter atleast 3 words, Maximum 100 characters are allowed. </span>
-                                    <span *ngIf="ProjectName&&ProjectName.length>100" style="color:rgb(217,48,37)">Maximum 100 characters are allowed.</span>
-                               </div>
+
+                                    <div class="d-flex flex-column">
+                                        <ng-container *ngIf="((isPrjNameValid=='TOOSHORT'&&formFieldsRequired)||(ProjectName&&ProjectName.length>100)); else ispnameinuse">
+                                            <span *ngIf="isPrjNameValid=='TOOSHORT'&&formFieldsRequired"  style="color:rgb(217,48,37)">Please enter atleast 3 words, Maximum 100 characters are allowed. </span>
+                                            <span *ngIf="ProjectName&&ProjectName.length>100" style="color:rgb(217,48,37)">Maximum 100 characters are allowed.</span>
+                                        </ng-container>
+                                        <ng-template #ispnameinuse>
+                                          <span *ngIf="isPrjNameUsed" style="color:rgb(217,48,37)">
+                                            <svg width="15px" height="15px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#000000" stroke="#fff" stroke-width="36px"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                              <g id="SVGRepo_iconCarrier"><path fill="#e80202" d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm0 192a58.432 58.432 0 0 0-58.24 63.744l23.36 256.384a35.072 35.072 0 0 0 69.76 0l23.296-256.384A58.432 58.432 0 0 0 512 256zm0 512a51.2 51.2 0 1 0 0-102.4 51.2 51.2 0 0 0 0 102.4z"></path></g>
+                                            </svg>
+                                            The project name is already in use. Please enter a unique name.
+                                          </span>
+                                        </ng-template>
+                                      </div>
+                                </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="form-group mb-2">
@@ -14813,11 +15053,66 @@
                                             </ng-select>
                                             <span *ngIf="!rejectType&&notProvided" style="color:red">please select reject type.</span>
                                         </div>
-                                        <div class="col-lg-12 mt-3 mb-3 p-0"
-                                            *ngIf="isRejectOptionsVisible">
-                                            <div class="appr-comts"
-                                                *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
-                                                <div class="exs-cmts card">
+                                        <div class="col-lg-12 mt-3 mb-3 p-0" *ngIf="isRejectOptionsVisible">
+                                            <div class="appr-comts" *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
+
+                                                <div class="reject-comments-sec">
+                                                    <fieldset class="existing-comments-sec">
+                                                        <div *ngIf="rejectlength>1" class="comment-search-bx">
+                                                            <div class="input-group">
+                                                                <input [(ngModel)]="rCmts_searchtxt"  type="search" placeholder="Search" class="form-control project-search kt-quick-search__input pl-3 ng-pristine ng-valid ng-touched" style="border-radius:5px;">
+                                                                <div class="btn-group mr-2" role="group">
+                                                                    <div class="btn btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle prev-cmt-drp" data-toggle="dropdown" aria-expanded="false">
+                                                                      <span class="fs-7" style="font-weight:500; flex: 1; text-align: left;">{{rejectCmts_SortOrder}}</span>
+                                                                    </div>
+                                                                    <div class="dropdown-menu drop-cus" style="margin-top:4px; transform:translate3d(-111px, 39px, 0px); padding: 3px 2px 3px 2px; box-shadow:none; border:1px solid #ccc !important; " >
+                                                                        <a class="dropdown-item gap-2 align-items-center" [ngClass]="{'active':rejectCmts_SortOrder=='Newest'}"  (click)="sortRejectCmtsBy('Newest');">Newest</a>
+                                                                        <a class="dropdown-item gap-2 align-items-center" [ngClass]="{'active':rejectCmts_SortOrder=='Most Used'}" (click)="sortRejectCmtsBy('Most Used');">Most Used</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <legend>Existing comments</legend>
+                                                       <div class="all-comments-list scroll-y">
+                        
+                                                        <div class="cmts-items" *ngFor="let item of rejectcommentsList|filter:rCmts_searchtxt?rCmts_searchtxt.trim():'';let i=index">
+                                                           <div class="cmts-value">
+                                                            <h6 [ngClass]="exist_comment.indexOf(item.Req_Coments) != -1 ? 'text-info' : ''">
+                                                                <span class="flex-grow-1">{{item.Req_Coments}}</span>
+                                                             </h6>
+                                                             <small *ngIf="item.Usage_Count>1" class="used-cnt">Used {{item.Usage_Count}} times</small>
+                                                           </div>
+                                                            <div class="cmts-actns">
+                                                                <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) == -1"
+                                                                    (click)="clickonselect(item.Req_Coments)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                                        <path
+                                                                            d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
+                                                                        </path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) != -1"
+                                                                    (click)="clickondeselect(item.Req_Coments,i)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                                        <path
+                                                                            d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z">
+                                                                        </path>
+                                                                    </svg>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div *ngIf="(rejectcommentsList|filter:rCmts_searchtxt?rCmts_searchtxt.trim():'').length==0" class="d-flex justify-content-center align-items-center gap-1 py-5">
+                                                            <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Menu / Close_LG"> <path id="Vector" d="M21 21L12 12M12 12L3 3M12 12L21.0001 3M12 12L3 21.0001" stroke="#858585" stroke-width="2.256" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg> 
+                                                           <span class="text-muted">No Result Found</span>
+                                                         </div>
+
+                                                      </div>
+                                                    </fieldset>
+                                                 </div>
+
+
+                                                <!-- <div class="exs-cmts card">
                                                     <div class="card-header" *ngIf="rejectlength>0">
                                                         <h6 class="mb-0">Existing comments</h6>
                                                     </div>
@@ -14851,7 +15146,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
+
+
+
                                             </div>
                                         </div>
                                         <ng-container *ngIf="selectedType=='3'">
@@ -15126,8 +15424,65 @@
 
                       <ng-container *ngIf="rejectType&&rejectlength>0">
                       <label class="mb-2">Select from existing comments</label>
-                      <div class="appr-comts">
-                          <div class="exs-cmts card">
+                      <div class="appr-comts mb-2">
+
+                        <div class="reject-comments-sec">
+                            <fieldset class="existing-comments-sec">
+                                <div *ngIf="rejectlength>1" class="comment-search-bx">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="rCmts_searchtxt"  type="search" placeholder="Search" class="form-control project-search kt-quick-search__input pl-3 ng-pristine ng-valid ng-touched" style="border-radius:5px;">
+                                        <div class="btn-group mr-2" role="group">
+                                            <div class="btn btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle prev-cmt-drp" data-toggle="dropdown" aria-expanded="false">
+                                              <span class="fs-7" style="font-weight:500; flex: 1; text-align: left;">{{rejectCmts_SortOrder}}</span>
+                                            </div>
+                                            <div class="dropdown-menu drop-cus" style="margin-top:4px; transform:translate3d(-111px, 39px, 0px); padding: 3px 2px 3px 2px; box-shadow:none; border:1px solid #ccc !important; " >
+                                                <a class="dropdown-item gap-2 align-items-center"  [ngClass]="{'active':rejectCmts_SortOrder=='Newest'}"  (click)="sortRejectCmtsBy('Newest');">Newest</a>
+                                                <a class="dropdown-item gap-2 align-items-center" [ngClass]="{'active':rejectCmts_SortOrder=='Most Used'}"  (click)="sortRejectCmtsBy('Most Used');">Most Used</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <legend>Existing comments</legend>
+                               <div class="all-comments-list scroll-y">
+    
+                                <div class="cmts-items" *ngFor="let item of rejectcommentsList|filter:rCmts_searchtxt?rCmts_searchtxt.trim():'';let i=index">
+                                   <div class="cmts-value">
+                                    <h6 [ngClass]="exist_comment.indexOf(item.Req_Coments) != -1 ? 'text-info' : ''">
+                                        <span class="flex-grow-1">{{item.Req_Coments}}</span>
+                                     </h6>
+                                     <small *ngIf="item.Usage_Count>1" class="used-cnt">Used {{item.Usage_Count}} times</small>
+                                   </div>
+                                    <div class="cmts-actns">
+                                        <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) == -1"
+                                            (click)="clickonselect(item.Req_Coments)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <path
+                                                    d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
+                                                </path>
+                                            </svg>
+                                        </span>
+                                        <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) != -1"
+                                            (click)="clickondeselect(item.Req_Coments,i)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <path
+                                                    d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z">
+                                                </path>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+    
+                                <div *ngIf="(rejectcommentsList|filter:rCmts_searchtxt?rCmts_searchtxt.trim():'').length==0" class="d-flex justify-content-center align-items-center gap-1 py-5">
+                                    <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Menu / Close_LG"> <path id="Vector" d="M21 21L12 12M12 12L3 3M12 12L21.0001 3M12 12L3 21.0001" stroke="#858585" stroke-width="2.256" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg> 
+                                   <span class="text-muted">No Result Found</span>
+                                 </div>
+    
+                              </div>
+                            </fieldset>
+                         </div>
+
+
+                          <!-- <div class="exs-cmts card">
                               <div class="card-header">
                                   <h6 class="mb-0">Existing comments</h6>
                               </div>
@@ -15162,11 +15517,10 @@
                                   </div>
 
                               </div>
-                          </div>
+                          </div> -->
                       </div>
+
                     </ng-container>
-
-
 
                       <div class="form-group" *ngIf="rejectType">
                         <label class="mb-2">Enter comments</label>
@@ -15252,9 +15606,6 @@
                       <!-- Request type start  -->
 
                           <div class="kt-info-box border-0 diff-div">
-
-
-
 
                               <div class="d-flex justify-content-between align-items-center">
 
@@ -15648,9 +15999,66 @@
                                           <span *ngIf="!rejectType&&notProvided" style="color:red">please select reject type.</span>
                                       </div>
                                       <div class="col-lg-12 mt-3 mb-3 p-0" *ngIf="isRejectOptionsVisible">
-                                          <div class="appr-comts"
-                                              *ngIf="rejectType && selectedType=='3'  && rejectlength>0">
-                                              <div class="exs-cmts card">
+                                          <div class="appr-comts" *ngIf="rejectType && selectedType=='3' && rejectlength>0">
+                                            
+                                            <div class="reject-comments-sec">
+                                                <fieldset class="existing-comments-sec">
+                                                    <div *ngIf="rejectlength>1" class="comment-search-bx">
+                                                        <div class="input-group">
+                                                            <input [(ngModel)]="rCmts_searchtxt"  type="search" placeholder="Search" class="form-control project-search kt-quick-search__input pl-3 ng-pristine ng-valid ng-touched" style="border-radius:5px;">
+                                                            <div class="btn-group mr-2" role="group">
+                                                                <div class="btn btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle prev-cmt-drp" data-toggle="dropdown" aria-expanded="false">
+                                                                  <span class="fs-7" style="font-weight:500; flex: 1; text-align: left;">{{rejectCmts_SortOrder}}</span>
+                                                                </div>
+                                                                <div class="dropdown-menu drop-cus" style="margin-top:4px; transform:translate3d(-111px, 39px, 0px); padding: 3px 2px 3px 2px; box-shadow:none; border:1px solid #ccc !important; " >
+                                                                    <a class="dropdown-item gap-2 align-items-center" [ngClass]="{'active':rejectCmts_SortOrder=='Newest'}"  (click)="sortRejectCmtsBy('Newest');">Newest</a>
+                                                                    <a class="dropdown-item gap-2 align-items-center" [ngClass]="{'active':rejectCmts_SortOrder=='Most Used'}" (click)="sortRejectCmtsBy('Most Used');">Most Used</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <legend>Existing comments</legend>
+                                                   <div class="all-comments-list scroll-y">
+                    
+                                                    <div class="cmts-items" *ngFor="let item of rejectcommentsList|filter:rCmts_searchtxt?rCmts_searchtxt.trim():'';let i=index">
+                                                       <div class="cmts-value">
+                                                        <h6 [ngClass]="exist_comment.indexOf(item.Req_Coments) != -1 ? 'text-info' : ''">
+                                                            <span class="flex-grow-1">{{item.Req_Coments}}</span>
+                                                         </h6>
+                                                         <small *ngIf="item.Usage_Count>1" class="used-cnt">Used {{item.Usage_Count}} times</small>
+                                                       </div>
+                                                        <div class="cmts-actns">
+                                                            <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) == -1"
+                                                                (click)="clickonselect(item.Req_Coments)">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                            <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) != -1"
+                                                                (click)="clickondeselect(item.Req_Coments,i)">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z">
+                                                                    </path>
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div *ngIf="(rejectcommentsList|filter:rCmts_searchtxt?rCmts_searchtxt.trim():'').length==0" class="d-flex justify-content-center align-items-center gap-1 py-5">
+                                                        <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Menu / Close_LG"> <path id="Vector" d="M21 21L12 12M12 12L3 3M12 12L21.0001 3M12 12L3 21.0001" stroke="#858585" stroke-width="2.256" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg> 
+                                                       <span class="text-muted">No Result Found</span>
+                                                     </div>
+                    
+                    
+                                                  </div>
+                                                </fieldset>
+                                             </div>
+
+                                           <!-- 
+                                            <div class="exs-cmts card">
                                                   <div class="card-header p-2" *ngIf="rejectlength>0">
                                                       <h6 class="mb-0">Existing comments</h6>
                                                   </div>
@@ -15684,7 +16092,8 @@
                                                           </div>
                                                       </div>
                                                   </div>
-                                              </div>
+                                              </div> -->
+
                                           </div>
                                       </div>
                                       <ng-container *ngIf="selectedType=='3'">
@@ -15996,6 +16405,63 @@
                       <ng-container *ngIf="rejectType&&rejectlength>0">
                       <label class="mb-2">Select from existing comments</label>
                       <div class="appr-comts">
+
+                        <div class="reject-comments-sec">
+                            <fieldset class="existing-comments-sec">
+                                <div *ngIf="rejectlength>1" class="comment-search-bx">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="rCmts_searchtxt"  type="search" placeholder="Search" class="form-control project-search kt-quick-search__input pl-3 ng-pristine ng-valid ng-touched" style="border-radius:5px;">
+                                        <div class="btn-group mr-2" role="group">
+                                            <div class="btn btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle prev-cmt-drp" data-toggle="dropdown" aria-expanded="false">
+                                              <span class="fs-7" style="font-weight:500; flex: 1; text-align: left;">{{rejectCmts_SortOrder}}</span>
+                                            </div>
+                                            <div class="dropdown-menu drop-cus" style="margin-top:4px; transform:translate3d(-111px, 39px, 0px); padding: 3px 2px 3px 2px; box-shadow:none; border:1px solid #ccc !important; " >
+                                                <a class="dropdown-item gap-2 align-items-center" [ngClass]="{'active':rejectCmts_SortOrder=='Newest'}"  (click)="sortRejectCmtsBy('Newest');">Newest</a>
+                                                <a class="dropdown-item gap-2 align-items-center" [ngClass]="{'active':rejectCmts_SortOrder=='Most Used'}" (click)="sortRejectCmtsBy('Most Used');">Most Used</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <legend>Existing comments</legend>
+                               <div class="all-comments-list scroll-y">
+
+                                <div class="cmts-items" *ngFor="let item of rejectcommentsList|filter:rCmts_searchtxt?rCmts_searchtxt.trim():'';let i=index">
+                                   <div class="cmts-value">
+                                    <h6 [ngClass]="exist_comment.indexOf(item.Req_Coments) != -1 ? 'text-info' : ''">
+                                        <span class="flex-grow-1">{{item.Req_Coments}}</span>
+                                     </h6>
+                                     <small *ngIf="item.Usage_Count>1" class="used-cnt">Used {{item.Usage_Count}} times</small>
+                                   </div>
+                                    <div class="cmts-actns">
+                                        <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) == -1"
+                                            (click)="clickonselect(item.Req_Coments)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <path
+                                                    d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
+                                                </path>
+                                            </svg>
+                                        </span>
+                                        <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) != -1"
+                                            (click)="clickondeselect(item.Req_Coments,i)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <path
+                                                    d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z">
+                                                </path>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="(rejectcommentsList|filter:rCmts_searchtxt?rCmts_searchtxt.trim():'').length==0" class="d-flex justify-content-center align-items-center gap-1 py-5">
+                                    <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Menu / Close_LG"> <path id="Vector" d="M21 21L12 12M12 12L3 3M12 12L21.0001 3M12 12L3 21.0001" stroke="#858585" stroke-width="2.256" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg> 
+                                   <span class="text-muted">No Result Found</span>
+                                 </div>
+
+                              </div>
+                            </fieldset>
+                         </div>
+
+                         <!-- 
                           <div class="exs-cmts card">
                               <div class="card-header">
                                   <h6 class="mb-0">Existing comments</h6>
@@ -16031,7 +16497,8 @@
                                   </div>
 
                               </div>
-                          </div>
+                          </div> -->
+
                       </div>
                     </ng-container>
                       <div class="form-group" *ngIf="rejectType">

@@ -111,7 +111,7 @@ export class ApprovalsService {
 
   }
 
-  GetGlobalRejectComments(obj: ApprovalDTO) {
+  GetGlobalRejectComments(obj: ApprovalDTO) { 
     this.obj_approvalDTO.Emp_no=obj.Emp_no;
     this.obj_approvalDTO.rejectType = obj.rejectType;
     this.obj_approvalDTO.Project_Code = obj.Project_Code;

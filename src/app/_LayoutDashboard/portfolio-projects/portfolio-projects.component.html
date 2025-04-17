@@ -38,7 +38,6 @@
                             </div>
                             <div style="font-size: smaller;font-weight: 400;" data-toggle="tooltip" title="Portfolio Owner">{{_PortfolioOwner}}</div>
                         </h3>
-
                     </div>
               <!-- <div class="portfolio-top-action">
                     <div class="kt-quick-search kt-quick-search--inline ml-3">
@@ -73,19 +72,19 @@
 
                         <div class="kt-todo__details">
 
+                                    <a [title]="isPortfolioFavourite?'Remove from favourites':'Add to favourites'" class="kt-todo__icon favPrt-btn"  [ngClass]="{'active':isPortfolioFavourite}" (click)="setPortfolioAsFavourite(!isPortfolioFavourite)">
+                                        <svg height="18px" width="17px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 489.914 489.914" xml:space="preserve"><g id="SVGRepo_bgCarrier"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M483.871,204.522c5.38-4.725,7.395-12.197,5.123-18.98c-2.272-6.785-8.394-11.538-15.53-12.07l-142.249-10.618 c-6.607-0.502-12.376-4.609-14.982-10.682L259.738,21.184c-2.838-6.555-9.331-10.793-16.484-10.714 c-7.137,0.066-13.549,4.401-16.259,11.021l-54.056,132.016c-2.497,6.125-8.204,10.346-14.792,10.956l-142.04,13.245 c-7.117,0.66-13.146,5.527-15.29,12.343c-2.142,6.817,0.017,14.263,5.461,18.884l108.845,92.216 c5.046,4.288,7.299,11.005,5.851,17.452L89.682,457.786c-1.565,6.978,1.19,14.212,7.023,18.369c5.834,4.141,13.566,4.4,19.658,0.627 l121.315-75.039c5.624-3.477,12.715-3.545,18.417-0.159l122.686,72.767c6.14,3.642,13.888,3.256,19.624-0.998 c5.738-4.254,8.381-11.555,6.671-18.496l-33.839-138.575c-1.579-6.43,0.547-13.198,5.511-17.561L483.871,204.522z"></path> </g></svg>
+                                    </a>
 
-                          <a title="Share portfolio" class="kt-todo__icon" (click)="shareoptionModal()">
-
-                         <svg  width="1.3em" height="1.3em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M9 12C9 13.3807 7.88071 14.5 6.5 14.5C5.11929 14.5 4 13.3807 4 12C4 10.6193 5.11929 9.5 6.5 9.5C7.88071 9.5 9 10.6193 9 12Z" stroke="currentColor" stroke-width="1.5"></path><path  d="M14 6.5L9 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path  d="M14 17.5L9 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path  d="M19 18.5C19 19.8807 17.8807 21 16.5 21C15.1193 21 14 19.8807 14 18.5C14 17.1193 15.1193 16 16.5 16C17.8807 16 19 17.1193 19 18.5Z" stroke="currentColor" stroke-width="1.5"></path><path  d="M19 5.5C19 6.88071 17.8807 8 16.5 8C15.1193 8 14 6.88071 14 5.5C14 4.11929 15.1193 3 16.5 3C17.8807 3 19 4.11929 19 5.5Z" stroke="currentColor" stroke-width="1.5"></path></g></svg>
-
-                        </a>
+                                    <a title="Share portfolio" class="kt-todo__icon" (click)="shareoptionModal()">
+                                    <svg  width="1.3em" height="1.3em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M9 12C9 13.3807 7.88071 14.5 6.5 14.5C5.11929 14.5 4 13.3807 4 12C4 10.6193 5.11929 9.5 6.5 9.5C7.88071 9.5 9 10.6193 9 12Z" stroke="currentColor" stroke-width="1.5"></path><path  d="M14 6.5L9 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path  d="M14 17.5L9 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path  d="M19 18.5C19 19.8807 17.8807 21 16.5 21C15.1193 21 14 19.8807 14 18.5C14 17.1193 15.1193 16 16.5 16C17.8807 16 19 17.1193 19 18.5Z" stroke="currentColor" stroke-width="1.5"></path><path  d="M19 5.5C19 6.88071 17.8807 8 16.5 8C15.1193 8 14 6.88071 14 5.5C14 4.11929 15.1193 3 16.5 3C17.8807 3 19 4.11929 19 5.5Z" stroke="currentColor" stroke-width="1.5"></path></g></svg>
+                                    </a>
 
 
                                  <ng-container  *ngIf="_MessageIfNotOwner == ''">
                                     <a class="kt-todo__icon" title="View {{Project_Graph}}" *ngIf="Project_Graph=='Graphs'" (click)="ProjectsGraphsClick()">
                                         <i class="fas fa-chart-pie"></i>
                                     </a>
-
 
                                     <a class="kt-todo__icon" title="Click back to {{Project_Graph}}" *ngIf="Project_Graph=='Projects'" (click)="ProjectsGraphsClick()">
                                         <i class="fab fa-wpforms"></i>
@@ -97,38 +96,20 @@
                                         <i class="fas fa-plus"></i>
                                     </a>
 
-
                                     <a class="kt-todo__icon" title="Portfolio access" *ngIf="Project_Graph=='Graphs'"  (click)="share_Users()">
-                                        <!-- <i class="fas fa-share-alt"></i>
-                                          -->
                                           <svg viewBox="0 0 16 16" fill="currentColor" height="19" width="19" xmlns="http://www.w3.org/2000/svg" class="iconify iconify--mdi"><path  d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"></path></svg>
                                     </a>
 
-
-
-
-
-
-
-
-
-
-                                    <a    class="kt-todo__icon "   (click)="openMeetingSidebar()"     title="View or link meeting">
+                                    <a  class="kt-todo__icon " (click)="openMeetingSidebar()" title="View or link meeting">
                                       <svg xmlns="http://www.w3.org/2000/svg" height="18" width="18" class="iconify iconify--mdi" viewBox="0 0 1024 1024" version="1.1" fill="currentColor"><path d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z"/></svg>
-
-
-                                  </a>
+                                    </a>
                                 </ng-container>
 
 
                                     <div class="dropdown">
                                       <ng-container *ngIf="_MessageIfNotOwner == ''">
-
-
                                         <a class="kt-todo__icon"  [ngClass]="{'filter-dot':showDot}"  data-toggle="dropdown" title="Click to filter the projects" aria-haspopup="true" aria-expanded="false" ><svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" aria-hidden="true" role="img" font-size="1.5rem" width="1em" height="1em" viewBox="0 -1 17 17" class="iconify iconify--mdi"><path _ngcontent-lde-c401="" d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"></path></svg></a>
-
                                       </ng-container>
-
 
                                         <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter" id="dropd">
 
@@ -559,7 +540,7 @@
 <div  class="notifications-list ">
    -->
 
-   <div class="kt-Note-msg d-flex" *ngIf="this.delayPrjsofPort&&this.delayPrjsofPort.length > 0 || this.forwardPrjPort&&this.forwardPrjPort.length > 0 ||this.completionPrjPort&&this.completionPrjPort.length > 0 || this.newapprovalPrjport&&this.newapprovalPrjport.length > 0" >
+   <div class="kt-Note-msg d-flex" *ngIf="(this.delayPrjsofPort&&this.delayPrjsofPort.length > 0) || (this.forwardPrjPort&&this.forwardPrjPort.length > 0) ||(this.completionPrjPort&&this.completionPrjPort.length > 0) || (this.newapprovalPrjport&&this.newapprovalPrjport.length > 0)||(this.cancellationPort&&this.cancellationPort.length>0)" >
    <div class="kt-note-icon" style="align-self: flex-start;"><svg xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px"
     viewBox="0 0 66 65" xml:space="preserve">
@@ -1399,7 +1380,7 @@
 
 
                                                <!--ctrl btns start-->      
-                                                   <td tabindex="0" class="icond" style="    padding-left: 28px;">
+                                                   <td tabindex="0" class="icond" style="padding-left: 28px;">
                                                 <span class="table-card brdr success" [ngClass]="{'danger':item1.Status=='Delay' || item1.Status=='New Project Rejected' || item1.Status=='Project Complete Rejected',
 
                                                 'success':item1.Status=='Completed',
@@ -2041,7 +2022,7 @@
                                                                   <div>Comment : {{item1.Rejectcomments}}</div></span>
                                                               </span> -->
 
-                                                              <span class="New_Project_Rejected">{{item1.RejectedBy}}</span>
+                                                              <!-- <span class="New_Project_Rejected">{{item1.RejectedBy}}</span> -->
                                                             </div>
 
 
@@ -2963,12 +2944,12 @@
                                         <mat-autocomplete aria-label="employee2shareDrpDwn" #employee2shareDrpDwn="matAutocomplete"
                                         (optionSelected)="onEmployeeSelected($event); employeeShare2TF.value=''; "
                                         (opened)="isEmployeeDrpDwnOpen=true" (closed)="isEmployeeDrpDwnOpen=false; ">
+                                        
                                     <ng-container *ngFor="let emp of (Employeshare|filter:employeeShare2TF.value).slice(0,1000)">
                                         <mat-option *ngIf="!_SharedToEmps.includes(emp.Emp_No)" [value]="emp.Emp_No">
                                             <mat-checkbox  color="primary" [checked]="shareToEmplys?shareToEmplys.indexOf(emp.Emp_No)!==-1:false"></mat-checkbox>
                                                 {{emp.DisplayName}} - {{emp.TM_DisplayName}}
                                         </mat-option>
-
                                     </ng-container>
 
                                     <mat-option *ngIf="(Employeshare|filter:employeeShare2TF.value).slice(0,1000).length==0" style="pointer-events:none;"  >
@@ -2981,9 +2962,6 @@
                                       </svg>
                                       <span style="color:#757575" class="ml-2">No results found.</span>
                                   </mat-option>
-
-
-
 
                                      </mat-autocomplete>
                                     </mat-form-field>
@@ -7476,7 +7454,7 @@
         </svg>
       </a>
     </div>
-    <div class="kt-portlet--body mb-0">
+    <div class="kt-portlet__body sidehf_scroll scroll-y mb-0" style="padding:25px;">
 
       <div class="brb-1 pb-1">
 
@@ -7678,61 +7656,77 @@
                 type!!</span>
             </div>
 
-            <label class="mb-2" *ngIf="rejectType && rejectcomments>0">Select From
-              Existing comments</label>
-            <div class="appr-comts" *ngIf="rejectType && rejectcomments>0">
-
-              <div class="exs-cmts card">
-                <div class="card-header">
-                  <h6 class="mb-0">Existing comments</h6>
+            <label class="mb-2" *ngIf="rejectType && rejectcomments>0">Select From Existing comments</label>
+            <div class="appr-comts mb-3" *ngIf="rejectType && rejectcomments>0">
+                <div class="reject-comments-sec">
+                    <fieldset class="existing-comments-sec">
+                        <div *ngIf="rejectcomments>1" class="comment-search-bx">
+                            <div class="input-group">
+                                <input [(ngModel)]="rCmts_searchtxt"  type="search" placeholder="Search" class="form-control project-search kt-quick-search__input pl-3 ng-pristine ng-valid ng-touched" style="border-radius:5px;">
+                                <div class="btn-group mr-2" role="group">
+                                    <div class="btn btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle prev-cmt-drp" data-toggle="dropdown" aria-expanded="false">
+                                      <span class="fs-7" style="font-weight:500; flex: 1; text-align: left;">{{rejectCmts_SortOrder}}</span>
+                                    </div>
+                                    <div class="dropdown-menu drop-cus" style="margin-top:4px; transform:translate3d(-111px, 39px, 0px); padding: 3px 2px 3px 2px; box-shadow:none; border:1px solid #ccc !important; " >
+                                        <a class="dropdown-item gap-2 align-items-center" [ngClass]="{'active':rejectCmts_SortOrder=='Newest'}"  (click)="sortRejectCmtsBy('Newest');">Newest</a>
+                                        <a class="dropdown-item gap-2 align-items-center" [ngClass]="{'active':rejectCmts_SortOrder=='Most Used'}"  (click)="sortRejectCmtsBy('Most Used');">Most Used</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <legend>Existing comments</legend>
+                       <div class="all-comments-list scroll-y">
+                        <div class="cmts-items" *ngFor="let item of rejectcommentsList|filter:rCmts_searchtxt?rCmts_searchtxt.trim():'';let i=index">
+                           <div class="cmts-value">
+                            <h6 [ngClass]="exist_comment.indexOf(item.Req_Coments) != -1 ? 'text-info' : ''">
+                                <span class="flex-grow-1">{{item.Req_Coments}}</span>
+                             </h6>
+                             <small *ngIf="item.Usage_Count>1" class="used-cnt">Used {{item.Usage_Count}} times</small>
+                           </div>
+                            <div class="cmts-actns">
+                                <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) == -1"
+                                    (click)="clickonselect(item.Req_Coments)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path
+                                            d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
+                                        </path>
+                                    </svg>
+                                </span>
+                                <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) != -1"
+                                    (click)="clickondeselect(item.Req_Coments,i)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <div *ngIf="(rejectcommentsList|filter:rCmts_searchtxt?rCmts_searchtxt.trim():'').length==0" class="d-flex justify-content-center align-items-center gap-1 py-5">
+                            <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Menu / Close_LG"> <path id="Vector" d="M21 21L12 12M12 12L3 3M12 12L21.0001 3M12 12L3 21.0001" stroke="#858585" stroke-width="2.256" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg> 
+                           <span class="text-muted">No Result Found</span>
+                        </div>
+                      </div>
+                    </fieldset>
                 </div>
-                <div class="crd-bdy scroll-y">
-                  <div class="cmts-items" *ngFor="let item of rejectcommentsList;let i=index">
-                    <h6 [ngClass]="exist_comment.indexOf(item.Req_Coments) != -1 ? 'text-info' : ''">
-                      {{item.Req_Coments}}</h6>
-                    <div class="cmts-actns">
-                      <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) == -1"
-                        (click)="clickonselect(item.Req_Coments)">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                          <path
-                            d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z">
-                          </path>
-                        </svg>
-                      </span>
-                      <span class="cmts-svg" *ngIf="exist_comment.indexOf(item.Req_Coments) != -1"
-                        (click)="clickondeselect(item.Req_Coments,i)">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                          <path
-                            d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z">
-                          </path>
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
             </div>
-
 
             <div class="form-group" *ngIf="rejectType">
               <label class="mb-2">Enter comments</label><span style="color:red">*</span>
               <!-- <div [innerHTML]="comments"></div> -->
               <textarea class="form-control h-100px" [(ngModel)]="comments"></textarea>
             </div>
-
-
-            <div class="d-flex justify-content-end mb-2">
-              <button class="btn btn-sm btn-secondary mr-2" (click)="resetReject()">Reset</button>
-              <button type="submit" class="btn btn-sm btn-info" [disabled]="!comments || !rejectType"
-                (click)="submitReject()">Submit</button>
-            </div>
+            
           </div>
         </div>
       </div>
 
     </div>
+    <div class="kt-portlet__foot py-3 d-flex justify-content-end gap-1">
+        <button class="btn btn-secondary mr-2" (click)="resetReject()">Reset</button>
+        <button type="submit" class="btn btn-info" [disabled]="!comments || !rejectType" (click)="submitReject()">Submit</button>
+    </div>
+
   </div>
 </div>
 

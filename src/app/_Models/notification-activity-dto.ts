@@ -15,6 +15,7 @@ export class NotificationActivityDTO {
     SelectedType:any;
     SelectedStatus:any;
     SelectedRequest:any;
+    SelectedCompany:any;
     SearchText:any;
     sendtype:any;
 }

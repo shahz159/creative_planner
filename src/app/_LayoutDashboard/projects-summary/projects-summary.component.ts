@@ -472,6 +472,9 @@ Dateselectionrange: string = 'Date selection range';
   cancellationPort:any=[]
 
 
+  
+
+
     GetProjectsByUserName(type) {
     this.Type=type;
     this.BsService.setProjectSummaryType(type);
@@ -500,7 +503,14 @@ Dateselectionrange: string = 'Date selection range';
       this.cancelcheck=this.ActualDataList[0]['cancel'];
       this.cancelcount=this.ActualDataList[0]['cancelcount'];
       this.un_FilteredProjects = this.ActualDataList;
-        this.getNotificationsofprojects();
+      this.getNotificationsofprojects();
+      const aprvlsExist=this[this.currentUA=='Under Approval'?'newUA':this.currentUA=='Forward Under Approval'?'forwardUA':this.currentUA=='Cancellation Under Approval'?'cancellationUA':'completionUA'].length;
+      if(this.currentUA&&aprvlsExist>0){
+        this.filterPrjs(this.Current_user_ID,this.currentUA);
+      }
+      else
+      this.currentUA=null;
+
       if (this._ProjectDataList.length > 0) {
       }
 
@@ -540,9 +550,18 @@ Dateselectionrange: string = 'Date selection range';
 
         this._ProjectDataList = data;
          console.log("Summary Data---->",this._ProjectDataList);
-
+debugger
          this.un_FilteredProjects = data;
          this.getNotificationsofprojects();
+        const aprvlsExist=this[this.currentUA=='Under Approval'?'newUA':this.currentUA=='Forward Under Approval'?'forwardUA':this.currentUA=='Cancellation Under Approval'?'cancellationUA':'completionUA'].length;
+        if(this.currentUA&&aprvlsExist>0){
+          this.filterPrjs(this.Current_user_ID,this.currentUA);
+        }
+        else 
+        this.currentUA=null;
+       
+         
+
         this.userFound = true
         this.ActualDataList = data;
         this.cancelcheck=this.ActualDataList[0]['cancel'];
@@ -1086,9 +1105,9 @@ dates:any
 
   //Apply Filters
   SearchbyText() {
+    this.currentUA=null;   // clear notif selection is present.
     if(this.searchText ==''){
       this.searchResult = false;
-
       this.CurrentPageNo = 1;
       this.applyFilters();
       this.edited = false
@@ -1101,38 +1120,47 @@ dates:any
     }
   }
 
-  filterPrjs(empNo:string,status:string){
+  // filterPrjs(empNo:string,status:'Completion Under Approval'|'Cancellation Under Approval'|'Under Approval'|'Forward Under Approval'){
+     
+  //    this.currentUA=status;
 
-     this._ProjectDataList = this.un_FilteredProjects.filter(item => {
-      if(status == 'Delay')
-      return ((item.Emp_No == empNo || item.Owner == this.Current_user_ID)  && (item.Status == status));
-      else
-      // return (item.PendingapproverEmpNo==empNo &&['Completion Under Approval','Cancellation Under Approval','Under Approval','Forward Under Approval'].includes(status))
-      if (status === 'Completion Under Approval'){
-        return item.PendingapproverEmpNo==empNo && item.Status == status;
-      }
-      else if (status === 'Cancellation Under Approval'){
-        return item.PendingapproverEmpNo==empNo && item.Status == status;
-      }
-      else if (status === 'Under Approval'){
-        return item.PendingapproverEmpNo==empNo && item.Status == status;
-      }
-      else if (status === 'Forward Under Approval'){
-        return item.PendingapproverEmpNo==empNo && item.Status == status;
+  //    this._ProjectDataList = this.un_FilteredProjects.filter(item => {
+  //       return item.Status==status&&item.PendingapproverEmpNo==empNo;
 
-      }
+  //     // if(status == 'Delay')
+  //     // return ((item.Emp_No == empNo || item.Owner == this.Current_user_ID)  && (item.Status == status));
+  //     // else
+  //     // return (item.PendingapproverEmpNo==empNo &&['Completion Under Approval','Cancellation Under Approval','Under Approval','Forward Under Approval'].includes(status))
+  //     // if (status === 'Completion Under Approval'){
+  //     //   return item.PendingapproverEmpNo==empNo && item.Status == status;
+  //     // }
+  //     // else if (status === 'Cancellation Under Approval'){
+  //     //   return item.PendingapproverEmpNo==empNo && item.Status == status;
+  //     // }
+  //     // else if (status === 'Under Approval'){
+  //     //   return item.PendingapproverEmpNo==empNo && item.Status == status;
+  //     // }
+  //     // else if (status === 'Forward Under Approval'){
+  //     //   return item.PendingapproverEmpNo==empNo && item.Status == status;
+  //     // }
 
-      });
+  //     });
 
-    // this.enterStatus=[];
-    // this.emplyToselect=[];
-    // this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>item.Emp_No==empNo);
-    // this.checkedItems_Status=this.StatusCountFilter.filter(item=>item.Name==status);
+  //   // this.enterStatus=[];
+  //   // this.emplyToselect=[];
+  //   // this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>item.Emp_No==empNo);
+  //   // this.checkedItems_Status=this.StatusCountFilter.filter(item=>item.Name==status);
 
-    // this.applyFilters();
-    // this.edited = false;
+  //   // this.applyFilters();
+  //   // this.edited = false;
+  // }
+
+  filterPrjs(empNo:string,status:'Completion Under Approval'|'Cancellation Under Approval'|'Under Approval'|'Forward Under Approval'){
+    this.currentUA=status;
+    this._ProjectDataList = this.un_FilteredProjects.filter(item => {
+      return item.Status==status&&item.PendingapproverEmpNo==empNo;
+    });
   }
-
 
 
 
@@ -1323,7 +1351,7 @@ debugger
   resetFilters() {
     // this.getDropdownsDataFromDB()
     this.searchText = "";
-
+  
     this.search_Type = [];
     this.CurrentPageNo = 1;
     this.edited=false;
@@ -1379,6 +1407,7 @@ debugger
     this.selectedItem_Company.length = 0;
     this.isChecked=false;
     this.isapprovlFound = false
+    this.currentUA=null;
     this.resetFilters();
 
   }
@@ -1670,18 +1699,18 @@ debugger
     this._onRowClick(this.pCode, this.pName);
   }
 
-  search(event) {
-    if(this.searchText ==""){
-      this.searchResult = true;
-      this.SearchbyText();
-    }
-    else{
-      this.searchResult = true;
-      this.SearchbyText();
-    }
+  // search(event) {
+  //   if(this.searchText ==""){
+  //     this.searchResult = true;
+  //     this.SearchbyText();
+  //   }
+  //   else{
+  //     this.searchResult = true;
+  //     this.SearchbyText();
+  //   }
 
-    //console.log("Searh Text---->",event)
-  }
+  //   //console.log("Searh Text---->",event)
+  // }
 
   requestDetails:any;
   requestDate: any;
@@ -2372,7 +2401,7 @@ this.closeAutocompleteDrpDwn('proDDwn')
   rejectpros() {
     this.approvalObj.Project_Code = null;
     this.approvalservice.GetGlobalRejectList(this.approvalObj).subscribe((data) => {
-      this.reject_list = JSON.parse(data[0]['reject_list']);
+      this.reject_list = JSON.parse(data[0]['reject_list']);  
     });
     document.getElementById("rejectbar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -2506,8 +2535,7 @@ if( this.approvingRequest.length > 0 ){
 
   this.approvalservice.NewUpdateAcceptApprovalsService(this.approvingRequest).subscribe(data =>{
     console.log(data,"accept-data");
-      const checkbox = document.getElementById('snocheck') as HTMLInputElement;
-      checkbox.checked = false;
+      this.isAllPrjSelected=false;  this.value();
       this.notifyService.showSuccess("Project(s) approved successfully.",'Success');
 
       this.approvingRequest=[];
@@ -2556,7 +2584,19 @@ else{
   reject_list: any;
   allSelectedProjects = [];
   isapprovlFound:boolean = false
+  rejectCmts_SortOrder:'Most Used'|'Newest'='Most Used';
+  rCmts_searchtxt:string='';
 
+  sortRejectCmtsBy(sortby:'Most Used'|'Newest'){
+      this.rCmts_searchtxt='';
+      this.rejectCmts_SortOrder=sortby;
+      let key=(sortby=='Most Used')?'Usage_Count':(sortby=='Newest')?'MostRecentCommentID':null;
+      if(key){
+        this.rejectcommentsList.sort((cmt1,cmt2)=>{
+          return cmt2[key]-cmt1[key];
+        });
+      }
+  }
 
 
   resetReject(){
@@ -2564,9 +2604,14 @@ else{
     this.comments = "";
     this.exist_comment =[];
     this.rejectType=null;
+    this.rCmts_searchtxt='';
+    this.rejectCmts_SortOrder='Most Used';
   }
 
-  rejectApproval() {
+  rejectApproval() {  
+
+    this.rejectCmts_SortOrder='Most Used';
+    this.rCmts_searchtxt='';
     this.noRejectType = false;
     this.reject_list.forEach(element => {
       if (this.rejectType == element.TypeID) {
@@ -2574,44 +2619,30 @@ else{
       }
     });
 
-    if(this.allSelectedProjects.length==1){
-      this.approvalObj.Project_Code=(this.allSelectedProjects[0]['Project_Code1'])
-      if ((this.allSelectedProjects[0]['Req_Type']) == 'New Project')
-        this.approvalObj.Status = 'New Project Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'New Project Reject Release')
-        this.approvalObj.Status = 'New Project Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'New Project Hold')
-        this.approvalObj.Status = 'New Project Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Complete')
-        this.approvalObj.Status = 'Project Complete Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Complete Reject Release')
-        this.approvalObj.Status = 'Project Complete Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Complete Hold')
-        this.approvalObj.Status = 'Project Complete Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Deadline Extend')
-        this.approvalObj.Status = 'Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Deadline Extend Hold')
-        this.approvalObj.Status = 'Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Standardtask Enactive')
-        this.approvalObj.Status = 'Enactive-Reject';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Forward')
-        this.approvalObj.Status = 'Forward Reject';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Hold')
-        this.approvalObj.Status = 'Project Hold Reject';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Revert Back')
-        this.approvalObj.Status = 'Revert Reject';
-        else if ((this.allSelectedProjects[0]['Req_Type']) == 'Task Complete')
-        this.approvalObj.Status = 'Task-Reject';
-      else{
-        this.approvalObj.Status = 'Rejected';
-      }
-    }
 
-
+   const requests_ar=this.allSelectedProjects.map((p:any)=>{
+   return p.Type=='New Project'?'New Project Rejected':
+          p.Type=='New Project Reject Release'?'New Project Rejected':
+          p.Type=='New Project Hold'?'New Project Rejected':
+          p.Type=='Project Complete'?'Project Complete Rejected':
+          p.Type=='Project Complete Reject Release'?'Project Complete Rejected':
+          p.Type=='Project Complete Hold'?'Project Complete Rejected':
+          p.Type=='Deadline Extend'?'Rejected':
+          p.Type=='Deadline Extend Hold'?'Rejected':
+          p.Type=='Standardtask Enactive'?'Enactive-Reject':
+          p.Type=='Project Forward'?'Forward Reject':
+          p.Type=='Project Hold'?'Project Hold Reject':
+          p.Type=='Revert Back'?'Revert Reject':
+          p.Type=='Task Complete'?'Task-Reject':
+          'Rejected';
+    });
+   
+    this.approvalObj.Status = requests_ar.join(',');
     this.approvalObj.Emp_no = this.Current_user_ID;
     this.approvalObj.rejectType = this.rejectType;
+    // this.approvalObj.Project_Code=(this.allSelectedProjects[0]['Project_Code']); 
       this.approvalservice.GetGlobalRejectComments(this.approvalObj).subscribe(data => {
-      this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
+      this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);   console.log('reject_CommentsList:',this.rejectcommentsList);
       this.rejectcomments=this.rejectcommentsList.length;
     });
 
@@ -2628,14 +2659,16 @@ else{
 
       this.approvalservice.NewUpdateRejectApprovalsService(this.approvingRequest).subscribe(data =>{
         console.log(data,"reject-data");
-
+        
+        this.isAllPrjSelected=false; this.value();
         this.allSelectedProjects=[];
-        this.approvingRequest = []
+        this.approvingRequest = [];
         this.GetProjectsByUserName(this.type1);
-        this.isapprovlFound = false
+        this.isapprovlFound = false;
       });
-      const checkbox = document.getElementById('snocheck') as HTMLInputElement;
-      checkbox.checked = false;
+      // const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+      // checkbox.checked = false;
+     
       this.allSelectedProjects=[];
       this.notifyService.showSuccess("Project(s) rejected successfully.",'Success');
     }
@@ -3287,11 +3320,12 @@ onGanttChartClose(){
 
 
 
+currentUA:'Completion Under Approval'|'Forward Under Approval'|'Under Approval'|'Cancellation Under Approval';
 completionUA:any=[];
 forwardUA:any=[];
 newUA:any=[];
 cancellationUA:any=[];
-mydelayProjects:any=[];
+// mydelayProjects:any=[];
 
 
 
@@ -3301,10 +3335,9 @@ getNotificationsofprojects(){
   this.forwardUA=[];
   this.newUA=[];
   this.cancellationUA=[];
-  this.mydelayProjects = [];
+  // this.mydelayProjects = [];
 
   // item.Status === 'Delay' && (item.Emp_No == this.Current_user_ID || item.OwnerEmpNo == this.Current_user_ID
-debugger
   this.un_FilteredProjects.forEach((p)=>{
     if(p.PendingapproverEmpNo==empno&&p.Status==='Completion Under Approval')
       this.completionUA.push(p);

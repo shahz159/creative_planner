@@ -610,7 +610,24 @@ export class CreateProjectComponent implements OnInit {
 
 createSRTProject=async()=>{
 
-  // 1. project cost calculate.
+
+// 1. validation: when project name already exists in database.
+const nameVres:any=await this.createProjectService.NewGetProjectnameValidation(this.Current_user_ID,this.PrjName).toPromise();
+if(nameVres&&nameVres.message==1){
+      Swal.fire({
+        title:'Project Name Already Exists',
+        html:`<div style="text-align:justify">  
+              The project name "<b>${this.PrjName}</b>" is already in use. Please change it and try again.
+             </div>`,
+        showConfirmButton:true,
+        confirmButtonText:'Ok',
+     });
+  return;
+}
+//
+
+
+  // 2. project cost calculate.
   let alhr:number|null=null;
   if(['003','008'].includes(this.Prjtype)){
     const h=Number.parseInt(this.Allocated_Hours.split(':')[0]);
@@ -643,7 +660,7 @@ createSRTProject=async()=>{
   return;
  //
 
- // 2. confirm with user and create project.
+ // 3. confirm with user and create project.
   const choice=await Swal.fire({
     title:"Are you sure?",
     text:`You will be going to spend "${this.PrjCost}.00 SAR" on this Project. Do you want to Continue?`,
@@ -1086,7 +1103,7 @@ contentType:any="";
     this.isPrjNameValid=this.isValidString(this.PrjName,3);
     this.isPrjDesValid=this.isValidString(this.PrjDes,5);
     
-    if((this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.isPrjNameValid==='VALID'&&this.PrjName.length<=100)&&(this.PrjDes&&this.isPrjDesValid==='VALID'&&this.PrjDes.length<=500))&&
+    if((this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.isPrjNameValid==='VALID'&&this.PrjName.length<=100&&this.isPrjNameUsed==false)&&(this.PrjDes&&this.isPrjDesValid==='VALID'&&this.PrjDes.length<=500))&&
         (
           (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours?this.Allocated_Hours<=this.maxAllocation:true))||
           (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours&&this.Allocated_Hours<=this.maxAllocation)) ||
@@ -1376,7 +1393,10 @@ onProjectOwnerChanged(){
 
     // Data binding on step1   start.
     this.PrjName=this.bind_Project[0].Task_Name;                                        // Project name
-    if(this.PrjName){ this.isPrjNameValid=this.isValidString(this.PrjName.trim(),3); }  // if project name given then validate it.
+    if(this.PrjName){ 
+      this.isPrjNameValid=this.isValidString(this.PrjName.trim(),3); 
+      this.isPrjNameInUse(this.PrjName);    
+    }  // if project name given then validate it.
     
     this.PrjDes=this.bind_Project[0].Task_Description;                             // Project description
     if(this.PrjDes){  this.isPrjDesValid=this.isValidString(this.PrjDes,5);  }    // if project description given then validate it.
@@ -1677,18 +1697,25 @@ initializeSelectedValue() {
     this._remarks = this.projectInfo.Remarks;
   
     this.setPrjMaxAllocatableHrs(); // calculate 'p_maxAllocatableHrs' value using startdate and enddate.
+
+    this.isPrjNameInUse(this.ProjeditName);   // checks the name binding to project name input is unique or not. 
 }
 
 
 
-projectEdit() {   
+projectEdit=async()=>{    
 
 this.isPrjNameValids=this.isValidString(this.ProjeditName,3);
 this.isPrjDesValids=this.isValidString(this.ProjeditDescription,5);   
 
+if(this.isPrjNameValid=='VALID'){
+  const nameVres:any=await this.createProjectService.NewGetProjectnameValidation(this.Current_user_ID,this.ProjeditName).toPromise();
+  this.isPrjNameUsed=nameVres.message=='1'?true:false;
+}
+
 // CHECK ALL INPUT DATA ARE VALID OR NOT.
 if(
-  this.ProjeditName&&this.isPrjNameValids=='VALID'&&this.ProjeditName.length<=100&&
+  this.ProjeditName&&this.isPrjNameValids=='VALID'&&this.ProjeditName.length<=100&&this.isPrjNameUsed==false&&
   this.ProjeditDescription&&this.isPrjDesValids==='VALID'&&this.ProjeditDescription.length<=500&&
   this.selectedOwnResp&&
   this.selectedcategory&&
@@ -1992,9 +2019,32 @@ sendApproval=async()=>{
       }
     });
   }
+  debugger
 
+// 1. validation: when project name already exists in database.
+const nameVres:any=await this.createProjectService.NewGetProjectnameValidation(this.Current_user_ID,this.projectInfo.Project_Name).toPromise();
+if(nameVres&&nameVres.message==1){
 
-// 1.validation: when project start date is less than the current date.
+      Swal.fire({
+        title:'Project Name Already Exists',
+        html:`<div style="text-align:justify">  
+              The project name "<b>${this.projectInfo.Project_Name}</b>" is already in use. Please change it and try again.
+             </div>`,
+        showConfirmButton:true,
+        showCancelButton:true,
+        confirmButtonText:'Rename',
+        cancelButtonText:'Cancel'
+     }).then(choice=>{
+          if(choice.isConfirmed){
+            this.Project_details_edit(); 
+          }
+     });
+
+  return;
+}
+//
+
+// 2.validation: when project start date is less than the current date.
   const _prjstrtd= new Date(this.projectInfo.StartDate);
   const _prjendd= new Date(this.projectInfo.EndDate);
   const _curtd=new Date(this.todayDate.getFullYear(),this.todayDate.getMonth(),this.todayDate.getDate(),0,0,0,0);
@@ -2029,7 +2079,7 @@ sendApproval=async()=>{
 //
 
 
-// 2.validation: if project has no actions.
+// 3.validation: if project has no actions.
 const pdur=Math.abs(moment(_prjstrtd).diff(moment(_prjendd),'days'));
 let noactnDialogType:'MANDATORY'|'NOT_MANDATORY';
 noactnDialogType=pdur>=15?'MANDATORY':pdur<15?'NOT_MANDATORY':null;
@@ -2062,7 +2112,7 @@ if(this.PrjActionsInfo.length==0){
 
 
 
-// 3.validation: checking all actions in the project have valid dates or not.
+// 4.validation: checking all actions in the project have valid dates or not.
 if(this.PrjActionsInfo.length>0)   // if project contains actions
 {
    const actnsWithWrongDates=this.PrjActionsInfo.filter((actn:any)=>{
@@ -2113,7 +2163,7 @@ if(this.PrjActionsInfo.length>0)   // if project contains actions
 }
 //
 
-// 4.validation: Confirm Project Allocated hours
+// 5.validation: Confirm Project Allocated hours
   const hrsToActns=this.PrjActionsInfo.reduce((sum,acn)=>(sum+Number.parseFloat(acn.AllocatedHours)),0);
   const hrsUnallocated=this.projectInfo.AllocatedHours-hrsToActns;
   if(hrsUnallocated>0){
@@ -2156,7 +2206,7 @@ if(this.PrjActionsInfo.length>0)   // if project contains actions
 
 
 
-// 5.validation: if any RACIS member doesn't have atleast one action in the project.
+// 6.validation: if any RACIS member doesn't have atleast one action in the project.
 this.detectMembersWithoutActions();
 if(this.hasNoActionMembers.length>0){
 
@@ -2182,7 +2232,7 @@ const people_names=this.hasNoActionMembers.reduce((members,new_member,index,arr)
 }
 //
 
-// 6.Calculate project cost
+// 7.Calculate project cost
 if(this.PrjActionsInfo.length>0)  // check if there are actions in the project then calculate project cost using those actions cost.
 {
   this.PrjCost=this.PrjActionsInfo.reduce((sum,_draftactn)=>{
@@ -2218,7 +2268,7 @@ else
 //
 
 
-// 7.validation: project cost confirmation from user.
+// 8.validation: project cost confirmation from user.
  const final_choice=await Swal.fire({
        title:'Project Budget',
        html:`
@@ -2371,10 +2421,16 @@ openTemplate(template:any){
     if(['001','002'].includes(this.Prjtype)){
       const actions=JSON.parse(res[0].Action_Json);
       console.log('*action we are gettings:',actions);
+      if(actions)
       this.PrjTemplActions=actions.filter(action=>action.template);
+      else 
+      this.PrjTemplActions=[];
     }
 
-
+    if(this.PrjName){ 
+      this.isPrjNameValid=this.isValidString(this.PrjName.trim(),3); 
+      this.isPrjNameInUse(this.PrjName);    
+    }  // if project name given then validate it.
 
 
   })
@@ -2702,6 +2758,7 @@ reset(){
   this.ngDropdwonPort=[];
   this.fileAttachment=null;
   this.invalidFileSelected=false;
+  this.isPrjNameUsed=false;
     // step1 form clear.   end
 
     // step2 form clear.   start
@@ -2742,11 +2799,33 @@ isPrjNameValid:'TOOSHORT'|'VALID'='VALID';
 isPrjDesValid:'TOOSHORT'|'VALID'='VALID';
 
 
-
 isPrjNameValids:'TOOSHORT'|'VALID'='VALID';
 isPrjDesValids:'TOOSHORT'|'VALID'='VALID';
 
 
+// project name already exists start.
+
+isPrjNameUsed:boolean=false;
+pname_Intervalid:any;
+isPrjNameInUse(project_name:string){
+  if(this.pname_Intervalid){ clearTimeout(this.pname_Intervalid);  }
+  this.pname_Intervalid=setTimeout(()=>{
+    if(project_name&&project_name.trim()){
+      this.createProjectService.NewGetProjectnameValidation(this.Current_user_ID,project_name).subscribe((res:any)=>{ 
+        if(res){
+          if(res.message=='1')
+            this.isPrjNameUsed=true;
+          else 
+            this.isPrjNameUsed=false;
+        }
+    });
+  } 
+  },500);
+}
+
+
+
+// project name already exists end.
 
 isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
  if(inputString){

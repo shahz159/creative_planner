@@ -7847,8 +7847,7 @@ filterDraft(type : 'date'|'meeting'):void{
   selectedItems:any=[];
   hasmultiselectFilter:boolean=false;
   multiselectFilterConfig:any={};
-  // companies_Arr2:any=[];
-  // _EmployeeListForDropdown2:any=[];
+
 
   openMultiSelectDialog(model_type:'EMPLOYEES'|'PORTFOLIOS'){
       this.multiselect_dialog=model_type;
@@ -7858,35 +7857,6 @@ filterDraft(type : 'date'|'meeting'):void{
       const searchField:any=document.querySelector(`#multiselect-2-dialog input#InputSearch`);
       if(searchField)searchField.focus();
   }
-
-
-
-//   if(this.multiselect_dialog=='EMPLOYEES'){
-
-//     const allemp  this.EmployeeList.map((ob)=>ob.Emp_Comp_No);
-//     this.companies_Arr2=this.companies_Arr.filter((comp)=>{
-//            this.EmployeeList.find((emp)=>{})   comp.ClientId
-//     });
-
-
-// }
-// else if(this.multiselect_dialog=='PORTFOLIOS'){
-   
-// }
-
-
- //  keyname='DisplayName';
-          //  arrtype=this.EmployeeList;
-          //  selectedinto='employeSelect';
-          //  property_name='Emp_No';
-
-
-
-
-//  keyname='Portfolio_Name';
-          //  arrtype=this.PortfolioList;
-          //  selectedinto='port_id';
-          //  property_name='Portfolio_ID';
 
 
   closeMultiSelectDialog(){

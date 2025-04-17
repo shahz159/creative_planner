@@ -272,6 +272,8 @@ export class PortfolioProjectsComponent implements OnInit {
   disablePreviousDate = new Date();
 
 
+
+
   constructor(
     private el: ElementRef,
     private projectMoreDetailsService: ProjectMoreDetailsService,
@@ -401,7 +403,7 @@ export class PortfolioProjectsComponent implements OnInit {
   cancellationPort:any=[]
   checking: boolean = false;
   isPendingChecked : boolean = false
-
+  isPortfolioFavourite:boolean=false;  
 
   GetPortfolioProjectsByPid() {
     this._PortFolio_Namecardheader = sessionStorage.getItem('portfolioname');
@@ -422,7 +424,7 @@ export class PortfolioProjectsComponent implements OnInit {
     this._ProjectsListBy_Pid = [];
     //this.LoadingBar_state.start();
     this.service.GetProjectsBy_portfolioId(this._Pid)
-      .subscribe((data) => {
+      .subscribe((data) => { debugger
         this._MessageIfNotOwner = data[0]['message'];
         console.log(this._MessageIfNotOwner,'this._MessageIfNotOwner')
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);
@@ -431,8 +433,10 @@ export class PortfolioProjectsComponent implements OnInit {
         this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];
         this.createdBy = this._PortfolioDetailsById[0]['Created_By'];
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
+        const _isFav=this._PortfolioDetailsById[0][this.Current_user_ID==this.createdBy?'IsFavourite':'IsFavourite1'];
+        this.isPortfolioFavourite=_isFav!=undefined?_isFav:false;
 
-      
+        console.log('PORTFOLIO DETAILS:',this._PortfolioDetailsById);
         console.log('PORTFOLIO PROJECT BY PID:',this._ProjectsListBy_Pid);
 
         this.lastProject = this._ProjectsListBy_Pid.length;
@@ -485,9 +489,8 @@ export class PortfolioProjectsComponent implements OnInit {
 
 
 
-        this.forwardPrjPort = []
-
-        this._ProjectsListBy_Pid.forEach((item=>{
+  this.forwardPrjPort = []
+  this._ProjectsListBy_Pid.forEach((item=>{
           if(item.Status =='Forward Under Approval' && item.PendingapproverEmpNo&&item.PendingapproverEmpNo == this.Current_user_ID){
             const obj = {
               prjname : item.Project_Name,
@@ -497,12 +500,11 @@ export class PortfolioProjectsComponent implements OnInit {
               };
               this.forwardPrjPort.push(obj)
           }
-        }))
-console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
+  }))
+  console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
 
 
   this.completionPrjPort = []
-
   this._ProjectsListBy_Pid.forEach((item)=>{
     if (item.Status === 'Completion Under Approval'  && item.PendingapproverEmpNo&&item.PendingapproverEmpNo === this.Current_user_ID){
       const obj = {
@@ -513,15 +515,11 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
       }
       this.completionPrjPort.push(obj)
     }
-  })
+  });
   console.log(this.completionPrjPort,"this.completionPrjPort.completionPrjPort")
 
 
-
-
-
   this.newapprovalPrjport = []
-
   this._ProjectsListBy_Pid.forEach((item)=>{
 
     if (item.Status === "Under Approval"  &&item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
@@ -534,11 +532,11 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
       }
       this.newapprovalPrjport.push(obj)
     }
-  })
+  });
   console.log(this.newapprovalPrjport,"this.newapprovalPrjport.newapprovalPrjport")
 
-   this.cancellationPort = []
 
+  this.cancellationPort = []
   this._ProjectsListBy_Pid.forEach((item)=>{
 
     if (item.Status === "Cancellation Under Approval"  && item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
@@ -551,20 +549,13 @@ console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
       }
       this.cancellationPort.push(obj)
     }
-  })
+  });
   console.log(this.cancellationPort,"this.cancellationPort.cancellationPort")
 
 
-    // this.checking = this._ProjectsListBy_Pid.some((emp) => {
-
-    // return emp.Team_Res === this.UserfullName || emp.Project_Owner===this.UserfullName ;
-    // });
-
-
-
-    this.isPendingChecked = this._ProjectsListBy_Pid.some((emp)=>{
+  this.isPendingChecked = this._ProjectsListBy_Pid.some((emp)=>{
       return emp.PendingapproverEmpNo&&emp.PendingapproverEmpNo == this.Current_user_ID
-    })
+  })
 
 
 
@@ -7020,7 +7011,7 @@ if( this.approvingRequest.length > 0 ){
       this.approvingRequest=[];
       this.allSelectedProjects=[];
 
-      this.GetPortfolioProjectsByPid()
+      this.GetPortfolioProjectsByPid();
       this.isapprovlFound = false
     if(withCmts){     // close the accept with comments sidebar if approving with comments is on.
         this.closeInfo();
@@ -7102,9 +7093,25 @@ rejectcommentsList: any;
 comments: string;
 exist_comment: any[] = [];
 rejectcomments:any;
+rejectCmts_SortOrder:'Most Used'|'Newest'='Most Used';
+rCmts_searchtxt:string='';
+
+sortRejectCmtsBy(sortby:'Most Used'|'Newest'){
+    this.rCmts_searchtxt='';
+    this.rejectCmts_SortOrder=sortby;
+    let key=(sortby=='Most Used')?'Usage_Count':(sortby=='Newest')?'MostRecentCommentID':null;
+    if(key){
+      this.rejectcommentsList.sort((cmt1,cmt2)=>{
+        return cmt2[key]-cmt1[key];
+      });
+    }
+}
+
 
 
 rejectApproval() {
+  this.rejectCmts_SortOrder='Most Used';    debugger
+  this.rCmts_searchtxt='';
   this.noRejectType = false;
   this.reject_list.forEach(element => {
     if (this.rejectType == element.TypeID) {
@@ -7112,42 +7119,27 @@ rejectApproval() {
     }
   });
 
-  if(this.allSelectedProjects.length==1){
-    this.approvalObj.Project_Code=(this.allSelectedProjects[0]['Project_Code1'])
-    if ((this.allSelectedProjects[0]['Req_Type']) == 'New Project')
-      this.approvalObj.Status = 'New Project Rejected';
-    else if ((this.allSelectedProjects[0]['Req_Type']) == 'New Project Reject Release')
-      this.approvalObj.Status = 'New Project Rejected';
-    else if ((this.allSelectedProjects[0]['Req_Type']) == 'New Project Hold')
-      this.approvalObj.Status = 'New Project Rejected';
-    else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Complete')
-      this.approvalObj.Status = 'Project Complete Rejected';
-    else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Complete Reject Release')
-      this.approvalObj.Status = 'Project Complete Rejected';
-    else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Complete Hold')
-      this.approvalObj.Status = 'Project Complete Rejected';
-    else if ((this.allSelectedProjects[0]['Req_Type']) == 'Deadline Extend')
-      this.approvalObj.Status = 'Rejected';
-    else if ((this.allSelectedProjects[0]['Req_Type']) == 'Deadline Extend Hold')
-      this.approvalObj.Status = 'Rejected';
-    else if ((this.allSelectedProjects[0]['Req_Type']) == 'Standardtask Enactive')
-      this.approvalObj.Status = 'Enactive-Reject';
-    else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Forward')
-      this.approvalObj.Status = 'Forward Reject';
-    else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Hold')
-      this.approvalObj.Status = 'Project Hold Reject';
-    else if ((this.allSelectedProjects[0]['Req_Type']) == 'Revert Back')
-      this.approvalObj.Status = 'Revert Reject';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Task Complete')
-      this.approvalObj.Status = 'Task-Reject';
-    else{
-      this.approvalObj.Status = 'Rejected';
-    }
-  }
+  const requests_ar=this.allSelectedProjects.map((p:any)=>{
+    return p.Type=='New Project'?'New Project Rejected':
+           p.Type=='New Project Reject Release'?'New Project Rejected':
+           p.Type=='New Project Hold'?'New Project Rejected':
+           p.Type=='Project Complete'?'Project Complete Rejected':
+           p.Type=='Project Complete Reject Release'?'Project Complete Rejected':
+           p.Type=='Project Complete Hold'?'Project Complete Rejected':
+           p.Type=='Deadline Extend'?'Rejected':
+           p.Type=='Deadline Extend Hold'?'Rejected':
+           p.Type=='Standardtask Enactive'?'Enactive-Reject':
+           p.Type=='Project Forward'?'Forward Reject':
+           p.Type=='Project Hold'?'Project Hold Reject':
+           p.Type=='Revert Back'?'Revert Reject':
+           p.Type=='Task Complete'?'Task-Reject':
+           'Rejected';
+     });
 
-
+  this.approvalObj.Status=requests_ar.join(',');
   this.approvalObj.Emp_no = this.Current_user_ID;
   this.approvalObj.rejectType = this.rejectType;
+  // this.approvalObj.Project_Code=(this.allSelectedProjects[0]['Project_Code1'])
     this.approvalservice.GetGlobalRejectComments(this.approvalObj).subscribe(data => {
     this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
     this.rejectcomments=this.rejectcommentsList.length;
@@ -7161,6 +7153,8 @@ resetReject(){
   this.comments = "";
   this.exist_comment =[];
   this.rejectType=null;
+  this.rejectCmts_SortOrder='Most Used';   
+  this.rCmts_searchtxt='';
 }
 
 submitReject(){
@@ -7355,5 +7349,29 @@ OnCardClickUpcoming(Schedule_ID: any) {
   var myWindow = window.open(myurl, Schedule_ID);
   myWindow.focus();
 }
+
+
+
+
+// method : to mark portfolio as favourite/unfavourite start.
+setPortfolioAsFavourite(isFavourite:boolean){
+  const fav_flag=!isFavourite;
+  this.service.SetFavourite_Service(this.Url_portfolioId, fav_flag, this.Current_user_ID).subscribe((data:any) => {   
+        console.log('set portfolio fav res:',data);
+        if(data){
+            this.isPortfolioFavourite=!data.IsFavourite; 
+
+            if (this.isPortfolioFavourite == true) {
+              this._snackBar.open('Added to Favourites', '', {duration: 1500, });
+            }
+            else {
+              this._snackBar.open('Removed From Favourites', '', {duration: 1500, });
+            }  
+        }
+  });
+}
+// mark portfolio as favorite/unfavourite end.
+
+
 
 }
