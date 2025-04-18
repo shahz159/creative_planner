@@ -1172,13 +1172,35 @@ debugger
   }
   
   resumeTimer(from?) {
+    // if (from) {
+    //   const now = new Date();
+    //   const [h, m, s] = from.split(':').map(Number);
+    //   const startTime = new Date(now);
+    //   startTime.setHours(h, m, s, 0);
+    //   this.elapsedTime = now.getTime() - startTime.getTime();
+    // }
+
     if (from) {
       const now = new Date();
+      const saudiOffset = 3 * 60; // Saudi UTC+3
+      const localOffset = now.getTimezoneOffset(); // Local offset from UTC
+      const saudiNow = new Date(now.getTime() + (saudiOffset + localOffset) * 60 * 1000);
+    
       const [h, m, s] = from.split(':').map(Number);
-      const startTime = new Date(now);
+      const startTime = new Date(saudiNow);
       startTime.setHours(h, m, s, 0);
-      this.elapsedTime = now.getTime() - startTime.getTime();
+    
+      // If startTime is in the future, assume it's from the previous day
+      if (startTime > saudiNow) {
+        startTime.setDate(startTime.getDate() - 1);
+      }
+    
+      this.elapsedTime = saudiNow.getTime() - startTime.getTime();
     }
+    
+
+
+
     this.timerAttendees = setInterval(() => {
       this.elapsedTime += 1000;
       // if (this.elapsedTime >= this.duration) {
@@ -4395,7 +4417,9 @@ onFileChange(event) {
 
         this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
         this.showAttendeeNotify = data.AdminMeeting_Status;
+
         console.log(this.showAttendeeNotify,'showAttendeeNotify')
+
         if (this.meetingStarted || this.meetingStarted != true) {
       
           if (data['Checkdatetimejson'] != '') {
@@ -4408,7 +4432,7 @@ onFileChange(event) {
 
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
 
-          if (this.meetingStarted == true && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
+          if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
             alert('start')
             this.startMeetingOfAttendees();
             this.InsertAttendeeMeetingTime();
@@ -4430,6 +4454,7 @@ onFileChange(event) {
               alert('resume')
             this.resumeTimer(this.exact_start);
             this.InsertAttendeeMeetingTime();
+            this.elapsedTime;
             this.hasAttendeesresumeMeeting = true;
             this.hasAttendeesPauseMeeting = false;
              this.hasMeetingStarted = false;
