@@ -517,18 +517,20 @@ getTimelineProjects(){
     this.projectList=JSON.parse(data[0]['ProjectList']); console.log("allprjs list:",this.projectList);
    
     // adding possession property
-    let arr:any=[];
-    this.projectList.forEach((p)=>{
+      let arr1:any=[];
+      let arr2:any=[];
+      this.projectList.forEach((p)=>{
          if(p.Team_Res.trim()==this.Current_user_ID){
-            p.possession='My responsible projects';
-            arr.unshift(p);
+           p.possession='My responsible projects';
+           arr1.push(p);
          }
          else{
-            p.possession='RACIS projects';
-            arr.push(p);
+           p.possession='RACIS projects';
+           arr2.push(p);
          }
-    });
-    this.projectList=arr;
+      });
+     this.projectList=[...arr1, ...arr2];
+
     // adding possession property
 
   });

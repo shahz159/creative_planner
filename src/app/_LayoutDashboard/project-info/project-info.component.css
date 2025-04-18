@@ -1753,3 +1753,102 @@ span.Status-Delay {
 .txt-expnd-btn:hover svg{
   stroke-width: 2.6px;
 }
+
+
+
+.reject-comments-sec{
+
+}
+
+.reject-comments-sec .comment-search-bx{
+  margin-bottom: 10px;
+}
+
+
+
+.reject-comments-sec  .existing-comments-sec
+{
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  padding: 0px 10px 1px 10px;
+}
+
+
+.reject-comments-sec  .existing-comments-sec legend
+{
+  width: fit-content;
+  margin-left: 0;
+  font-size: 13px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-weight: 400;
+}
+
+.reject-comments-sec .existing-comments-sec .all-comments-list{
+  overflow: auto;
+  max-height: 200px;
+}
+.reject-comments-sec  .existing-comments-sec .all-comments-list .cmts-items{
+  display: flex;
+  align-items: center;
+  padding: 5px 15px;
+  border-bottom: 1px solid #e4e7e8;
+}
+
+.reject-comments-sec  .existing-comments-sec .all-comments-list .cmts-items:hover .cmts-actns .cmts-svg svg {
+  transform: scale(1.1);
+  fill: #2786fb;
+}
+
+.prev-cmt-drp{
+  min-width: 130px;
+  margin-left: 10px;
+  border: 1px solid #e2e5ec;
+}
+
+
+.cmts-items .cmts-value{
+  flex: 1; 
+  display:flex;
+  align-items: center;
+}
+
+
+.cmts-items .cmts-value .used-cnt{
+  font-size: 11px;
+  color: #aeadad;
+  visibility: hidden;
+  margin-right:8px;
+}
+
+.cmts-items:hover .cmts-value .used-cnt{
+   visibility:visible;
+}
+
+/* .cmts-items h6{
+  display: flex;
+  align-items: center;
+}
+.cmts-items .cmt-cnt{
+  position: relative;
+  z-index: 0;
+  margin-left: -10px;
+  transition: all .3s ease;
+  margin-right: 10px;
+}
+
+.cmts-items .cmt-cnt .symbol-label{
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  color: #575757;
+} */
+
+
+
+
+/* .cmts-items .cmts-value{
+  display: flex;
+  flex: 1;
+} */

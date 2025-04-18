@@ -2913,6 +2913,8 @@ tr.odd.project-list_AC.active {
   padding: 2px 10px;
   border-radius: 3px;
   color: white;
+  display:inline-block;
+  text-wrap-mode:nowrap;
 }
 
 .Delay_color {
@@ -2920,7 +2922,9 @@ tr.odd.project-list_AC.active {
   color: white;
   padding: 2px 10px;
   border-radius: 3px;
-  font-size: 13px
+  font-size: 13px;
+  text-wrap-mode: nowrap;
+  display: inline-block;
 }
 
 .ToDo_Completed_color {
@@ -3011,6 +3015,8 @@ tr.odd.project-list_AC.active {
   padding: 2px 10px;
   border-radius: 3px;
   color: white;
+  text-wrap-mode: nowrap;
+  display: inline-block;
 }
 
 .New_Project_Rejected_color {
@@ -3020,6 +3026,7 @@ tr.odd.project-list_AC.active {
   border-radius: 3px;
   width: max-content;
   display: inline-block;
+  text-wrap-mode: nowrap;
 }
 
 .Not_Started_color {
@@ -3730,15 +3737,16 @@ input:checked + .slider:before {
 .eve-area {
   width: 100%;
   position: relative;
-  display: -webkit-box;
+  /* display: -webkit-box;
   display: -webkit-flex;
-  display: flex;
+  display: flex; */
+  display:block;
   min-height: 32px;
   padding-right: 16px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-align-items: center;
-  align-items: center;
+  /* -webkit-align-items: center;
+  align-items: center; */
   outline: none;
   -webkit-transition: background-color 100ms linear;
   transition: background-color 100ms linear;
@@ -4181,6 +4189,7 @@ input:checked + .slider:before {
   border: 1px dashed #ccc;
   padding: 0.35em;
   border-radius: 8px 8px 8px 8px;
+  text-wrap-mode: wrap;
 }
 
 
@@ -4189,6 +4198,98 @@ input:checked + .slider:before {
   font-weight: 500;
 }
 
+
+.currentUA-in-view{
+  text-decoration: underline;
+}
+
 /* test */
 
 /*new project reject release below new approval status end*/
+
+
+
+/*reject approval's existing comments new design start*/
+
+
+.reject-comments-sec{
+
+}
+
+.reject-comments-sec .comment-search-bx{
+  margin-bottom: 10px;
+}
+
+
+
+.reject-comments-sec  .existing-comments-sec
+{
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  padding: 0px 10px 1px 10px;
+}
+
+
+.reject-comments-sec  .existing-comments-sec legend
+{
+  width: fit-content;
+  margin-left: 0;
+  font-size: 13px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-weight: 400;
+}
+
+.reject-comments-sec .existing-comments-sec .all-comments-list{
+  overflow: auto;
+  max-height: 200px;
+}
+.reject-comments-sec  .existing-comments-sec .all-comments-list .cmts-items{
+  display: flex;
+  align-items: center;
+  padding: 5px 15px;
+  border-bottom: 1px solid #e4e7e8;
+}
+
+.reject-comments-sec  .existing-comments-sec .all-comments-list .cmts-items:hover .cmts-actns .cmts-svg svg {
+  transform: scale(1.1);
+  fill: #2786fb;
+}
+
+.prev-cmt-drp{
+  min-width: 130px;
+  margin-left: 10px;
+  border: 1px solid #e2e5ec;
+}
+
+
+.cmts-items .cmts-value{
+  flex: 1; 
+  display:flex;
+  align-items: center;
+}
+
+
+.cmts-items .cmts-value .used-cnt{
+  font-size: 11px;
+  color: #aeadad;
+  visibility: hidden;
+  margin-right:8px;
+}
+
+.cmts-items:hover .cmts-value .used-cnt{
+   visibility:visible;
+}
+
+
+
+/*reject approval's existing comments new design end*/
+
+
+#rejectbar.kt-quick-panel--on {
+  width: 50% !important;
+}
+
+#acceptbar.kt-quick-panel--on {
+  width: 50% !important;
+}

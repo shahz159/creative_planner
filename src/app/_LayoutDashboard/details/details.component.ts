@@ -1546,7 +1546,7 @@ debugger
           });
       // ACTION DEADLINE CHANGED HOW MANY NUMBER OF TIMES.
 
-   // adding _type property
+     // adding _type property
       this.ActionActivity_List.forEach((_actvy)=>{
         let result='others';
         if(_actvy.Value){
@@ -1968,6 +1968,7 @@ multipleback(){
     this.invalidFileSelected=false;
     this.isTaskCompleteSidebarOpen=false;
     this.isPendingApprovalSidebarOpen=false;
+    this.isPrjNameUsed=false;  // It is used in project edit sidebar.
     document.getElementById("Action_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Project_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
@@ -2414,6 +2415,8 @@ multipleback(){
   _Urlid: any;
   _fullname: any;
 
+  rejectCmts_SortOrder:'Most Used'|'Newest'='Most Used';
+  rCmts_searchtxt:string='';
 
 
   resetApproval() {
@@ -2706,6 +2709,8 @@ fetchingStdTaskAprvls:boolean=false;
     this.exist_comment = [];
     this.comments = "";
     this.noRejectType = false;
+    this.rejectCmts_SortOrder='Most Used';
+    this.rCmts_searchtxt='';
     // alert(this.rejectType)
     if (this.rejectType != null && this.rejectType != "") {
       this.reject_list.forEach(element => {
@@ -2756,6 +2761,17 @@ fetchingStdTaskAprvls:boolean=false;
   }
 
 
+  sortRejectCmtsBy(sortby:'Most Used'|'Newest'){
+      this.rCmts_searchtxt='';
+      this.rejectCmts_SortOrder=sortby;
+      
+      let key=(sortby=='Most Used')?'Usage_Count':(sortby=='Newest')?'MostRecentCommentID':null;
+      if(key){
+        this.rejectcommentsList.sort((cmt1,cmt2)=>{
+          return cmt2[key]-cmt1[key];
+        });
+      }
+  }
 
 
   showStdTaskAprvReq(index){
@@ -3851,11 +3867,14 @@ actionCompleted(){
 
  isPrjStartDateEditable:boolean=false;
   
-  onAction_updateProject(val) {
+  onAction_updateProject=async(val)=>{  
 
   this.isPrjNameValid=this.isValidString(this.ProjectName,3);
   this.isPrjDesValid=this.isValidString(this.ProjectDescription,5);
 
+
+  const _pnameresp:any=await this.createProjectService.NewGetProjectnameValidation(this.Current_user_ID,this.ProjectName).toPromise();
+  this.isPrjNameUsed=_pnameresp.message=='1'?true:false;
 
 
 // for given new project start date, are there any actions starting earlier to such date?
@@ -3880,7 +3899,7 @@ const invaildPrjEnddate=actnsAfterPrjdeadline.length>0;
 
 //validation:1 check all mandatory fields are provided or not
    if(!(
-        (this.ProjectName&&this.ProjectName.trim()!=''&&(this.ProjectName&&this.isPrjNameValid==='VALID'&&this.ProjectName.length <=100)  )&&
+        (this.ProjectName&&this.ProjectName.trim()!=''&&(this.ProjectName&&this.isPrjNameValid==='VALID'&&this.ProjectName.length <=100)&&(this.isPrjNameUsed==false) )&&
         (this.ProjectDescription&&this.ProjectDescription.trim()!=''&&this.ProjectDescription?(this.characterCount<=500)&&(this.ProjectDescription&&this.isPrjDesValid==='VALID'&&this.ProjectDescription.length <=500) :false)
       ))
    {
@@ -3952,7 +3971,6 @@ if(this.End_Date&&invaildPrjEnddate){
   return;
 }
 //
-
 
 
 // project update process start 
@@ -12786,6 +12804,31 @@ OnCardClickUpcoming(Schedule_ID: any) {
 }
 
 
+
+// project name already exists start.
+
+isPrjNameUsed:boolean=false;
+pname_Intervalid:any;
+isPrjNameInUse(project_name:string){
+if(this.pname_Intervalid){  clearTimeout(this.pname_Intervalid); }  
+this.pname_Intervalid=setTimeout(()=>{
+      if(project_name&&project_name.trim()&&project_name.trim()!=this.projectInfo.Project_Name.trim()){      
+          this.createProjectService.NewGetProjectnameValidation(this.Current_user_ID,project_name.trim()).subscribe((res:any)=>{ 
+            if(res){
+              if(res.message=='1')
+                this.isPrjNameUsed=true;
+              else 
+                this.isPrjNameUsed=false;
+            }
+        });
+      }
+      else 
+      this.isPrjNameUsed=false;
+ },500);
+  
+}
+
+// project name already exists end.
 
 
 }

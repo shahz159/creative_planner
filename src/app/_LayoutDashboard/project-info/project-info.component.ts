@@ -1658,11 +1658,28 @@ Prj_Code:any;
   reject_list: any;
   rejectType: any;
   rejectlength: any;
+  rejectCmts_SortOrder:'Most Used'|'Newest'='Most Used';
+  rCmts_searchtxt:string='';
+
+  sortRejectCmtsBy(sortby:'Most Used'|'Newest'){
+      this.rCmts_searchtxt='';
+      this.rejectCmts_SortOrder=sortby;
+      
+      let key=(sortby=='Most Used')?'Usage_Count':(sortby=='Newest')?'MostRecentCommentID':null;
+      if(key){
+        this.rejectcommentsList.sort((cmt1,cmt2)=>{
+          return cmt2[key]-cmt1[key];
+        });
+      }
+  }
+
 
   rejectApproval() {
     this.exist_comment = [];
     this.comments = "";
     this.noRejectType = false;
+    this.rejectCmts_SortOrder='Most Used';
+    this.rCmts_searchtxt='';
     // alert(this.rejectType)
     if (this.rejectType != null && this.rejectType != "") {
       this.reject_list.forEach(element => {

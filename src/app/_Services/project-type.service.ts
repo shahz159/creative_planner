@@ -399,13 +399,14 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewGetHierarchyofOwnerforMoredetails", this._ObjProjectDTO)
   }
 
-  GetViewAllDashboardnotifications(obj: NotificationActivityDTO) {
+  GetViewAllDashboardnotifications(obj: NotificationActivityDTO) {  debugger
     this.ObjNotificationDto.Emp_No = obj.Emp_No;
     this.ObjNotificationDto.PageNumber = obj.PageNumber;
     this.ObjNotificationDto.PageSize = obj.PageSize;
     this.ObjNotificationDto.SelectedType = obj.SelectedType;
     this.ObjNotificationDto.SelectedRequest = obj.SelectedRequest;
     this.ObjNotificationDto.SelectedStatus = obj.SelectedStatus;
+    this.ObjNotificationDto.SelectedCompany= obj.SelectedCompany;
     this.ObjNotificationDto.SelectedEmp_No = obj.SelectedEmp_No;
     this.ObjNotificationDto.SearchText = obj.SearchText;
     this.ObjNotificationDto.sendtype = obj.sendtype;
