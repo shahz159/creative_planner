@@ -2561,7 +2561,7 @@ debugger
 
   showAgendaDetails(item, index) {
    
-    if (this.meetingInProgress == true || this.Meetingstatuscom == 'Completed') {
+    if (this.meetingStarted == true || this.Meetingstatuscom == 'Completed') {
       this.AgendaId = item.AgendaId
       this.currentAgendaView = index
       this.GetAssigned_SubtaskProjects()
@@ -4395,7 +4395,7 @@ onFileChange(event) {
 
         this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
         this.showAttendeeNotify = data.AdminMeeting_Status;
-        // console.log(this.showAttendeeNotify,'showAttendeeNotify')
+        console.log(this.showAttendeeNotify,'showAttendeeNotify')
         if (this.meetingStarted || this.meetingStarted != true) {
       
           if (data['Checkdatetimejson'] != '') {
@@ -4409,7 +4409,7 @@ onFileChange(event) {
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
 
           if (this.meetingStarted == true && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
-           
+            alert('start')
             this.startMeetingOfAttendees();
             this.InsertAttendeeMeetingTime();
             this.hasMeetingStarted = true;
@@ -4418,6 +4418,7 @@ onFileChange(event) {
             this.hasAttendeesresumeMeeting = false;
           }
           else if (this.showAttendeeNotify=='2' && !this.hasAttendeesPauseMeeting) {
+            alert('pause')
             this.pauseTimer()
             this.InsertAttendeeMeetingTime();
              this.hasAttendeesPauseMeeting = true;
@@ -4426,6 +4427,7 @@ onFileChange(event) {
              this.hasAttendeesresumeMeeting = false;
           }
             else if (this.showAttendeeNotify=='3' && !this.hasAttendeesresumeMeeting) {
+              alert('resume')
             this.resumeTimer(this.exact_start);
             this.InsertAttendeeMeetingTime();
             this.hasAttendeesresumeMeeting = true;

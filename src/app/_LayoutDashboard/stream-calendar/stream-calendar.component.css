@@ -4675,6 +4675,10 @@ ul.schedule-select-list li .slect-close:hover svg {
     animation: meetblink 1s infinite;
 }
 
+
+
+
+
 @keyframes meetblink {
     0% {
         opacity: 0
