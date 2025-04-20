@@ -1145,14 +1145,18 @@ export class MeetingDetailsComponent implements OnInit {
 
     let timeA = this.parseTime(this.exact_start);
     let timeB = this.parseTime(this.latestTime);
+    
+   
+    timeA = new Date("Sun Apr 20 2025 11:37:45 GMT+0530 (India Standard Time)"); timeA.setMinutes(timeA.getMinutes() + 1);
+   
 
     let differenceInMilliseconds = timeB.getTime() - timeA.getTime();
 
-    // console.log('Difference in milliseconds:', differenceInMilliseconds);
+    console.log('Difference in milliseconds:', differenceInMilliseconds);
     // console.log('current', this.currentTime);
-    // console.log('exact', this.exact_start);
+   
     // console.log('latest', this.latestTime);
-debugger
+
     this.elapsedTime = differenceInMilliseconds;
 
     this.timerAttendees = setInterval(() => {
@@ -1171,34 +1175,17 @@ debugger
     clearInterval(this.timerAttendees);
   }
   
-  resumeTimer(from?) {
-    // if (from) {
-    //   const now = new Date();
-    //   const [h, m, s] = from.split(':').map(Number);
-    //   const startTime = new Date(now);
-    //   startTime.setHours(h, m, s, 0);
-    //   this.elapsedTime = now.getTime() - startTime.getTime();
-    // }
-
-    if (from) {
+  resumeTimer(from?) {  
+   
+    from = new Date(`1970-01-01T${from}Z`).setMinutes(new Date(`1970-01-01T${from}Z`).getMinutes() - 1); from = new Date(from).toISOString().substr(11, 8);
+       
+    if (from) { debugger
       const now = new Date();
-      const saudiOffset = 3 * 60; // Saudi UTC+3
-      const localOffset = now.getTimezoneOffset(); // Local offset from UTC
-      const saudiNow = new Date(now.getTime() + (saudiOffset + localOffset) * 60 * 1000);
-    
       const [h, m, s] = from.split(':').map(Number);
-      const startTime = new Date(saudiNow);
+      const startTime = new Date(now);
       startTime.setHours(h, m, s, 0);
-    
-      // If startTime is in the future, assume it's from the previous day
-      if (startTime > saudiNow) {
-        startTime.setDate(startTime.getDate() - 1);
-      }
-    
-      this.elapsedTime = saudiNow.getTime() - startTime.getTime();
+      this.elapsedTime = now.getTime() - startTime.getTime();
     }
-    
-
 
 
     this.timerAttendees = setInterval(() => {
@@ -4344,7 +4331,9 @@ onFileChange(event) {
         this.TaskList = JSON.parse(this.agendasList[0].TaskList) 
          
 
-        console.log(this.exact_start,'---------------')
+        
+      console.log(this.exact_start,'---------------')
+
         this.smailcount = this.agendasList[0]?.smailcount;
         this.portFocount = this.agendasList[0]?.portcount;
         this.projecount = this.agendasList[0]?.projectcount;
@@ -4418,7 +4407,7 @@ onFileChange(event) {
         this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
         this.showAttendeeNotify = data.AdminMeeting_Status;
 
-        console.log(this.showAttendeeNotify,'showAttendeeNotify')
+        // console.log(this.showAttendeeNotify,'showAttendeeNotify')
 
         if (this.meetingStarted || this.meetingStarted != true) {
       
@@ -4433,7 +4422,7 @@ onFileChange(event) {
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
 
           if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
-            alert('start')
+           
             this.startMeetingOfAttendees();
             this.InsertAttendeeMeetingTime();
             this.hasMeetingStarted = true;
@@ -4442,7 +4431,7 @@ onFileChange(event) {
             this.hasAttendeesresumeMeeting = false;
           }
           else if (this.showAttendeeNotify=='2' && !this.hasAttendeesPauseMeeting) {
-            alert('pause')
+           
             this.pauseTimer()
             this.InsertAttendeeMeetingTime();
              this.hasAttendeesPauseMeeting = true;
@@ -4451,7 +4440,7 @@ onFileChange(event) {
              this.hasAttendeesresumeMeeting = false;
           }
             else if (this.showAttendeeNotify=='3' && !this.hasAttendeesresumeMeeting) {
-              alert('resume')
+             
             this.resumeTimer(this.exact_start);
             this.InsertAttendeeMeetingTime();
             this.elapsedTime;
