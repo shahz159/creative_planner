@@ -1146,9 +1146,8 @@ export class MeetingDetailsComponent implements OnInit {
     let timeA = this.parseTime(this.exact_start);
     let timeB = this.parseTime(this.latestTime);
     
-
     let differenceInMilliseconds = timeB.getTime() - timeA.getTime();
-    differenceInMilliseconds += 60000;
+
 
     console.log('milliseconds:', differenceInMilliseconds);
     // console.log('current', this.currentTime);
@@ -1156,6 +1155,10 @@ export class MeetingDetailsComponent implements OnInit {
     // console.log('latest', this.latestTime);
 
     this.elapsedTime = differenceInMilliseconds;
+    if(this.elapsedTime>60000){
+      this.elapsedTime += 60000;
+    }
+   
 
     this.timerAttendees = setInterval(() => {
       this.elapsedTime = this.elapsedTime + 1000;
@@ -1182,7 +1185,30 @@ export class MeetingDetailsComponent implements OnInit {
       startTime.setHours(h, m, s, 0);
       this.elapsedTime = now.getTime() - startTime.getTime();
       this.elapsedTime += 60000      
+
     }
+
+
+    // if (from) {
+    //   const now = new Date();
+    //   const saudiOffset = 3 * 60; // Saudi UTC+3
+    //   const localOffset = now.getTimezoneOffset(); // Local offset from UTC
+    //   const saudiNow = new Date(now.getTime() + (saudiOffset + localOffset) * 60 * 1000);
+    
+    //   const [h, m, s] = from.split(':').map(Number);
+    //   const startTime = new Date(saudiNow);
+    //   startTime.setHours(h, m, s, 0);
+    
+    //   // If startTime is in the future, assume it's from the previous day
+    //   if (startTime > saudiNow) {
+    //     startTime.setDate(startTime.getDate() - 1);
+    //   }
+    
+    //   this.elapsedTime = saudiNow.getTime() - startTime.getTime();
+    //   console.log(this.elapsedTime,'this.elapsedTime')
+    //   this.elapsedTime += 60000 
+    // }
+
 
 
     this.timerAttendees = setInterval(() => {
@@ -4419,7 +4445,7 @@ onFileChange(event) {
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
 
           if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
-           
+          
             this.startMeetingOfAttendees();
             this.InsertAttendeeMeetingTime();
             this.hasMeetingStarted = true;
@@ -4437,7 +4463,7 @@ onFileChange(event) {
              this.hasAttendeesresumeMeeting = false;
           }
             else if (this.showAttendeeNotify=='3' && !this.hasAttendeesresumeMeeting) {
-             
+            
             this.resumeTimer(this.exact_start);
             this.InsertAttendeeMeetingTime();
             this.elapsedTime;
@@ -4448,7 +4474,7 @@ onFileChange(event) {
           
           }
           else if (this.meetingStarted != true && !this.hasMeetingEnd && this.meetingOfAttendees == false) {
-            console.log('Call Attendees')
+           
             this.stopMeetingAttendees();
             this.InsertAttendeeMeetingTime();
             this.hasMeetingEnd = true;
