@@ -1146,13 +1146,11 @@ export class MeetingDetailsComponent implements OnInit {
     let timeA = this.parseTime(this.exact_start);
     let timeB = this.parseTime(this.latestTime);
     
-   
-    timeA = new Date("Sun Apr 20 2025 11:37:45 GMT+0530 (India Standard Time)"); timeA.setMinutes(timeA.getMinutes() + 1);
-   
 
     let differenceInMilliseconds = timeB.getTime() - timeA.getTime();
+    differenceInMilliseconds += 60000;
 
-    console.log('Difference in milliseconds:', differenceInMilliseconds);
+    console.log('milliseconds:', differenceInMilliseconds);
     // console.log('current', this.currentTime);
    
     // console.log('latest', this.latestTime);
@@ -1176,15 +1174,14 @@ export class MeetingDetailsComponent implements OnInit {
   }
   
   resumeTimer(from?) {  
-   
-    from = new Date(`1970-01-01T${from}Z`).setMinutes(new Date(`1970-01-01T${from}Z`).getMinutes() - 1); from = new Date(from).toISOString().substr(11, 8);
-       
-    if (from) { debugger
+      
+    if (from) { 
       const now = new Date();
       const [h, m, s] = from.split(':').map(Number);
       const startTime = new Date(now);
       startTime.setHours(h, m, s, 0);
       this.elapsedTime = now.getTime() - startTime.getTime();
+      this.elapsedTime += 60000      
     }
 
 
