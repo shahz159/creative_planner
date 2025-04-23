@@ -1145,15 +1145,20 @@ export class MeetingDetailsComponent implements OnInit {
 
     let timeA = this.parseTime(this.exact_start);
     let timeB = this.parseTime(this.latestTime);
-
+    
     let differenceInMilliseconds = timeB.getTime() - timeA.getTime();
 
-    // console.log('Difference in milliseconds:', differenceInMilliseconds);
+
+    console.log('milliseconds:', differenceInMilliseconds);
     // console.log('current', this.currentTime);
-    // console.log('exact', this.exact_start);
+   
     // console.log('latest', this.latestTime);
-debugger
+
     this.elapsedTime = differenceInMilliseconds;
+    if(this.elapsedTime>60000){
+      this.elapsedTime += 60000;
+    }
+   
 
     this.timerAttendees = setInterval(() => {
       this.elapsedTime = this.elapsedTime + 1000;
@@ -1171,14 +1176,41 @@ debugger
     clearInterval(this.timerAttendees);
   }
   
-  resumeTimer(from?) {
-    if (from) {
+  resumeTimer(from?) {  
+      
+    if (from) { 
       const now = new Date();
       const [h, m, s] = from.split(':').map(Number);
       const startTime = new Date(now);
       startTime.setHours(h, m, s, 0);
       this.elapsedTime = now.getTime() - startTime.getTime();
+      this.elapsedTime += 60000      
+
     }
+
+
+    // if (from) {
+    //   const now = new Date();
+    //   const saudiOffset = 3 * 60; // Saudi UTC+3
+    //   const localOffset = now.getTimezoneOffset(); // Local offset from UTC
+    //   const saudiNow = new Date(now.getTime() + (saudiOffset + localOffset) * 60 * 1000);
+    
+    //   const [h, m, s] = from.split(':').map(Number);
+    //   const startTime = new Date(saudiNow);
+    //   startTime.setHours(h, m, s, 0);
+    
+    //   // If startTime is in the future, assume it's from the previous day
+    //   if (startTime > saudiNow) {
+    //     startTime.setDate(startTime.getDate() - 1);
+    //   }
+    
+    //   this.elapsedTime = saudiNow.getTime() - startTime.getTime();
+    //   console.log(this.elapsedTime,'this.elapsedTime')
+    //   this.elapsedTime += 60000 
+    // }
+
+
+
     this.timerAttendees = setInterval(() => {
       this.elapsedTime += 1000;
       // if (this.elapsedTime >= this.duration) {
@@ -2561,7 +2593,7 @@ debugger
 
   showAgendaDetails(item, index) {
    
-    if (this.meetingInProgress == true || this.Meetingstatuscom == 'Completed') {
+    if (this.meetingStarted == true || this.Meetingstatuscom == 'Completed') {
       this.AgendaId = item.AgendaId
       this.currentAgendaView = index
       this.GetAssigned_SubtaskProjects()
@@ -4322,7 +4354,9 @@ onFileChange(event) {
         this.TaskList = JSON.parse(this.agendasList[0].TaskList) 
          
 
-        console.log(this.exact_start,'---------------')
+        
+      console.log(this.exact_start,'---------------')
+
         this.smailcount = this.agendasList[0]?.smailcount;
         this.portFocount = this.agendasList[0]?.portcount;
         this.projecount = this.agendasList[0]?.projectcount;
@@ -4395,7 +4429,9 @@ onFileChange(event) {
 
         this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
         this.showAttendeeNotify = data.AdminMeeting_Status;
+
         // console.log(this.showAttendeeNotify,'showAttendeeNotify')
+
         if (this.meetingStarted || this.meetingStarted != true) {
       
           if (data['Checkdatetimejson'] != '') {
@@ -4408,8 +4444,8 @@ onFileChange(event) {
 
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
 
-          if (this.meetingStarted == true && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
-           
+          if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
+          
             this.startMeetingOfAttendees();
             this.InsertAttendeeMeetingTime();
             this.hasMeetingStarted = true;
@@ -4418,6 +4454,7 @@ onFileChange(event) {
             this.hasAttendeesresumeMeeting = false;
           }
           else if (this.showAttendeeNotify=='2' && !this.hasAttendeesPauseMeeting) {
+           
             this.pauseTimer()
             this.InsertAttendeeMeetingTime();
              this.hasAttendeesPauseMeeting = true;
@@ -4426,8 +4463,10 @@ onFileChange(event) {
              this.hasAttendeesresumeMeeting = false;
           }
             else if (this.showAttendeeNotify=='3' && !this.hasAttendeesresumeMeeting) {
+            
             this.resumeTimer(this.exact_start);
             this.InsertAttendeeMeetingTime();
+            this.elapsedTime;
             this.hasAttendeesresumeMeeting = true;
             this.hasAttendeesPauseMeeting = false;
              this.hasMeetingStarted = false;
@@ -4435,7 +4474,7 @@ onFileChange(event) {
           
           }
           else if (this.meetingStarted != true && !this.hasMeetingEnd && this.meetingOfAttendees == false) {
-            console.log('Call Attendees')
+           
             this.stopMeetingAttendees();
             this.InsertAttendeeMeetingTime();
             this.hasMeetingEnd = true;
