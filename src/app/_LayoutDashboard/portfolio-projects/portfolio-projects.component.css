@@ -6773,3 +6773,116 @@ style="fill: transparent;stroke-width: 44px; stroke: #5867dd;" */
 
 
 /*reject approval's existing comments new design end*/
+
+
+/*new dms link and view sidebar css start*/
+#LinkSideBar.sideInfobar .closebtn {
+  top: 13px;
+  right: 25px;
+}
+
+#LinkSideBar-header {
+  background-color: #f5f6fc;
+}
+
+#LinkSideBar-header .kt-inbox__icon
+{
+  margin-left: 0.5rem;
+}
+
+#LinkSideBar-header .closebtn:hover svg{
+  fill: #fff;
+}
+
+
+.schedule-select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: calc(1.5em + 1.3rem + 6px);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 0.65rem 1rem;
+  padding-left: 4px;
+  padding-bottom: 0px;
+  color: #8f8f8f;
+  background-color: #ffffff;
+  background-clip: padding-box;
+  border-bottom: 1px solid #a5a5a5;
+  border-radius: 0px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+
+.se-col-11 {
+  flex: 0 0 94.66667%;
+  max-width: 94.66667%;
+  position: relative;
+  width: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.sidebar-content-loading {
+  padding-top: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#LinkSideBar.sideInfobar.kt-quick-panel--on {
+  width: 50% !important;
+}
+
+#LinkSideBar.sideInfobar .shadow-sm, #LinkSideBar1.sideInfobar .shadow-sm {
+  box-shadow: 0 0.1rem 0.1rem 0 rgb(0 0 0 / 5%) !important;
+}
+
+.actns-ldr {
+  position: absolute;
+  top: 10px;
+  right: 40px;
+  font-size: 8px;
+  width: 20px;
+  height: 20px;
+}
+/*new dms link and view sidebar css end*/
+
+
+/*new portfolio link, unlink and view sidebar css start*/
+
+#LinkSideBar1.sideInfobar.kt-quick-panel--on {
+  width: 50% !important;
+}
+
+#LinkSideBar1.sideInfobar .kt-inbox__icon {
+  border: 0;
+  background: none;
+  box-shadow: none;
+  outline: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  width: 35px;
+  transition: all .3s ease;
+  cursor: pointer;
+  margin: 0;
+  border-radius: 4px;
+}
+
+#LinkSideBar1.sideInfobar #LinkSideBar-header .iconify--mdi {
+  font-size: 22px;
+  height: 22px;
+  width: 22px;
+  color: #a0a0a1;
+  color: #858190;
+  fill: #858190;
+}
+
+#LinkSideBar1.sideInfobar #LinkSideBar-header .closebtn{
+   top:13px;
+}
+/*new portfolio link, unlink and view sidebar css end*/
