@@ -15,7 +15,7 @@
                             <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
                                 <a [ngClass]="Type==type1 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog(type1);">{{type1}}</a>
                                 <a [ngClass]="Type==type2 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog1(type2);  setFilterInfo('Date',undefined); ">{{type2}}</a>
-                                <a class="d-none" [ngClass]="Type==type3 ? 'dropdown-item active' : 'dropdown-item'"  (click)="openDarInbox()">{{type3}}</a>
+                                <a [ngClass]="Type==type3 ? 'dropdown-item active' : 'dropdown-item'"  (click)="openDarInbox()">{{type3}}</a>
                             </div>
                         </div>
                     </div>
