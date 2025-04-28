@@ -121,7 +121,7 @@ export class ApprovalsService {
 
   }
 
-  GetEmployeeLeaveDetail(submitby,Leave_code){   debugger
+  GetEmployeeLeaveDetail(submitby,Leave_code){   
     this.obj_approvalDTO.Emp_no=submitby.trim();
     this.obj_approvalDTO.Leave_Code=Leave_code.trim();
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetEmployeeLeaveDetails", this.obj_approvalDTO)
@@ -290,6 +290,62 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
   NewGetUserActivity(empNo:string){  
     this.obj_approvalDTO.Emp_no=empNo;
     return this.http.post(this.rootUrl+"ApprovalAPI/NewGetUserActivity",this.obj_approvalDTO);
+  }
+
+
+
+  Email_GenerateAs(emailOf:'NEW_LEAVE'|'MANAGER_APPROVE'|'MANAGER_REJECT'|'HR_APPROVE_CASUAL'|'HR_APPROVE_LOCAL'|'HR_APPROVE_INTERNATIONAL'|'HR_REJECT',
+    leaveid,leavename,leavefrom,leaveto,Empid,Empname,Empemail,Empcomp,CompCode,managerid,managername,manageremail,hrid,hrname,hremail,
+    Com_PayrollId,Com_PayrollName,Com_PayrollEmail,PayrollCompany,Com_TicketingId,Com_TicketingName,Com_TicketingEmail,TicketingCompany,Com_ExitentryId,
+    Com_ExitentryName,Com_ExitentryEmail,ExitentryCompany){
+debugger
+      // SAME INPUTS props to all
+    this.obj_approvalDTO.leaveid=leaveid;
+    this.obj_approvalDTO.leavename=leavename;
+    this.obj_approvalDTO.leavefrom=leavefrom;
+    this.obj_approvalDTO.leaveto=leaveto;
+    this.obj_approvalDTO.Empid=Empid;
+    this.obj_approvalDTO.Empname=Empname;
+    this.obj_approvalDTO.Empemail=Empemail;
+    this.obj_approvalDTO.Empcomp=Empcomp;
+    this.obj_approvalDTO.CompCode=CompCode;
+    this.obj_approvalDTO.managerid=managerid;
+    this.obj_approvalDTO.managername=managername;
+    this.obj_approvalDTO.manageremail=manageremail;
+    this.obj_approvalDTO.hrid=hrid;
+    this.obj_approvalDTO.hrname=hrname;
+    this.obj_approvalDTO.hremail=hremail;
+    this.obj_approvalDTO.Com_PayrollId=Com_PayrollId;
+    this.obj_approvalDTO.Com_PayrollName=Com_PayrollName;
+    this.obj_approvalDTO.Com_PayrollEmail=Com_PayrollEmail;
+    this.obj_approvalDTO.PayrollCompany=PayrollCompany;
+    this.obj_approvalDTO.Com_TicketingId=Com_TicketingId;
+    this.obj_approvalDTO.Com_TicketingName=Com_TicketingName;
+    this.obj_approvalDTO.Com_TicketingEmail=Com_TicketingEmail;
+    this.obj_approvalDTO.TicketingCompany=TicketingCompany;
+    this.obj_approvalDTO.Com_ExitentryId=Com_ExitentryId;
+    this.obj_approvalDTO.Com_ExitentryName=Com_ExitentryName;
+    this.obj_approvalDTO.Com_ExitentryEmail=Com_ExitentryEmail;
+    this.obj_approvalDTO.ExitentryCompany=ExitentryCompany;
+     // SAME INPUT props to all
+
+    let controllerPath='';
+    if(emailOf=='NEW_LEAVE')
+      controllerPath='ApprovalAPI/NewTM_Leave';
+    else if(emailOf=='MANAGER_APPROVE')
+      controllerPath='ApprovalAPI/Manger_ConfirmationEmail';
+    else if(emailOf=='MANAGER_REJECT')
+      controllerPath='ApprovalAPI/Rejection_MangerEmail';
+    else if(emailOf=='HR_APPROVE_CASUAL')
+      controllerPath='ApprovalAPI/HR_CasualEmail';
+    else if(emailOf=='HR_APPROVE_LOCAL')
+      controllerPath='ApprovalAPI/HR_LocalConfirmationEmail';
+    else if(emailOf=='HR_APPROVE_INTERNATIONAL')
+      controllerPath='ApprovalAPI/HR_NationalConfirmationEmail';
+    else if(emailOf=='HR_REJECT')
+      controllerPath='ApprovalAPI/Rejection_HREmail';
+
+    return this.http.post(this.rootUrl+controllerPath,this.obj_approvalDTO);
   }
 
 

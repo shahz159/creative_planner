@@ -439,6 +439,7 @@ export class NotificationComponent implements OnInit {
   empLeaveDetails:any;
   managerApproval:any;
   hrApproval:any;
+  Lvemail_json:any;
 
   currentReqIndex: number = -1;
   currentResIndex:number=-1;
@@ -446,7 +447,9 @@ export class NotificationComponent implements OnInit {
   open_leave_requisition(index, submitby, leavecode) {
     this.currentReqIndex = index;
     this.approvalservice.GetEmployeeLeaveDetail(submitby, leavecode).subscribe((data) => {
+      console.log("data leavr",data);
       this.LeaveDetail = JSON.parse(data[0]['LeaveDetails_json']);
+      this.Lvemail_json=JSON.parse(data[0]['email_json'])[0]; console.log('Lvemail_json:',this.Lvemail_json);
       this.lv_startdate=moment(this.LeaveDetail[0].VacFrom);
       this.lv_enddate=moment(this.LeaveDetail[0].VacTo);
       console.log(this.LeaveDetail, "leavedetailss")
@@ -473,6 +476,7 @@ export class NotificationComponent implements OnInit {
     this.lv_startdate=null;
     this.lv_enddate=null;
     this.aprv_cmts=null;
+    this.Lvemail_json=null;
     this.notProvided=false;
     this.leaveDecision=undefined;
   }
@@ -538,6 +542,7 @@ export class NotificationComponent implements OnInit {
   newNotificationLeaveRequests() {
     this.notificationsLoading = true;
     this.service.GetEmployeeLeaveRequests(this.Current_user_ID).subscribe((data) => {
+      console.log("leave data",data);
       this.leave_Requests = JSON.parse(data[0]['LeaveRequests_json']);
       this.notificationsLoading = false;
       console.log(this.leave_Requests, "_newNotificationLeaveRequest");
@@ -1342,25 +1347,74 @@ onSubmitLRbtn(){
   this.approvalObj.ToDate=to_date;
   this.approvalObj.Remarks=this.aprv_cmts;
   try{
-  this.approvalservice.approveLeaveRequest(this.approvalObj).subscribe((res:any)=>{
-      console.log("approveleaveRequest:",res);
-      if(res&&res.message){
-           if(res.message=='Not Updated')
-           this.notifyService.showError(res.message,'Failed');
-           else{
-               this.notifyService.showSuccess(res.message,'Success');
-               this.close_requisition_Info();
-               this.newNotificationLeaveRequests();
-           }
 
-      }
-      else
-      this.notifyService.showError('Something went wrong.','');
-  });
-   }catch(e){
+    this.approvalservice.approveLeaveRequest(this.approvalObj).subscribe((res:any)=>{
+        console.log("approveleaveRequest:",res);
+        if(res&&res.message){
+            if(res.message=='Not Updated')
+            this.notifyService.showError(res.message,'Failed');
+            else{
+                this.notifyService.showSuccess(res.message,'Success');
+                 
+           
+                
+                // EMAIL GENERATION START
+                let extra_args:[any,any,any,any,any,any,any,any,any,any,any,any,any,any,any,any,any,any,any,any, any, any, any,any, any, any, any]
+                =[this.leave_Requests[this.currentReqIndex].Leave_Code.trim(),this.leave_Requests[this.currentReqIndex].Leave_Type,fr_date,to_date,this.Lvemail_json.Empid,this.Lvemail_json.EmpName,this.Lvemail_json.Empemail,this.Lvemail_json.Empcomp,this.Lvemail_json.CompCode,
+                this.Lvemail_json.managerid.trim(),this.Lvemail_json.managerName,this.Lvemail_json.manageremail,this.Lvemail_json.hrid,this.Lvemail_json.hrname,this.Lvemail_json.hremail,this.Lvemail_json.Com_PayrollId,this.Lvemail_json.Com_PayrollName,this.Lvemail_json.Com_PayrollEmail,this.Lvemail_json.PayrollCompany,this.Lvemail_json.Com_TicketingId,
+                this.Lvemail_json.Com_TicketingName,this.Lvemail_json.Com_TicketingEmail,this.Lvemail_json.TicketingCompany,this.Lvemail_json.Com_ExitentryId,this.Lvemail_json.Com_ExitentryName,this.Lvemail_json.Com_ExitentryEmail,this.Lvemail_json.ExitentryCompany ];
+
+                if(this.Current_user_ID==this.Lvemail_json.managerid.trim()){
+                   // When leave request is at Manager stage.
+                    if(type=='Approve'){
+                      this.approvalservice.Email_GenerateAs('MANAGER_APPROVE',...extra_args).subscribe((emres)=>{
+                        console.log('email res:',emres);
+                      });  // when manager approving leave request
+                    }
+                    else if(type=='Reject'){
+                      this.approvalservice.Email_GenerateAs('MANAGER_REJECT',...extra_args).subscribe((emres)=>{
+                        console.log('email res:',emres);
+                      });  // when manager rejecting leave request
+                    }
+                }
+                else if(this.Current_user_ID==this.Lvemail_json.hrid){
+                    // When leave request is at HR stage.                 
+                    if(type=='Approve'){
+                       
+                        if(this.leave_Requests[this.currentReqIndex].Leave_Type=='Casual Leave'){
+                          this.approvalservice.Email_GenerateAs('HR_APPROVE_CASUAL',...extra_args).subscribe((emres)=>{  
+                            console.log('emailres:',emres);   
+                           }); // when hr approving casual leave  
+                        }
+                        else if(this.leave_Requests[this.currentReqIndex].Leave_Type=='Annual Leave'){
+                          this.approvalservice.Email_GenerateAs(this.LeaveDetail[0].Trip=='international'?'HR_APPROVE_INTERNATIONAL':'HR_APPROVE_LOCAL',...extra_args).subscribe((emres)=>{  
+                            console.log('email res:',emres);   
+                           });  // when hr approving annual, local/international leave.
+                        }  
+                    }
+                    else if(type=='Reject'){
+                      this.approvalservice.Email_GenerateAs('HR_REJECT',...extra_args).subscribe((emres)=>{  
+                        console.log('email res:',emres); 
+                      });  // when hr is rejecting leave request
+                    }
+
+                }
+                // EMAIL GENERATION END
+               
+                this.close_requisition_Info();
+                this.newNotificationLeaveRequests();
+
+            }
+
+        }
+        else
+        this.notifyService.showError('Something went wrong.','');
+    });
+  
+  }catch(e){
         console.log('error after leave response submitted:',e);
         this.notifyService.showError('Something went wrong.','');
-   }
+  }
 
   }
   else
