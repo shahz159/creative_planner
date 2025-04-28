@@ -1654,7 +1654,7 @@
                                             <svg width="64px" height="64px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>Repeat-Play</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Repeat-Play"> <rect id="Rectangle" fill-rule="nonzero" x="0" y="0" width="24" height="24"> </rect> <path d="M5,18.0002 L17,18.0002 C18.6569,18.0002 20,16.657 20,15.0002 L20,14" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M16,2 L19.2929,5.29289 C19.6834,5.68342 19.6834,6.31658 19.2929,6.70711 L16,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M8,14 L4.70711,17.2929 C4.31658,17.6834 4.31658,18.3166 4.70711,18.7071 L8,22" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M19,6 L7,6 C5.34315,6 4,7.34315 4,9 L4,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> </g> </g> </g></svg>
                                         </div>
                                            
-                                        <ng-container *ngIf="meetingInProgress || Meetingstatuscom=='Completed'">
+                                        <ng-container *ngIf="showAttendeeNotify != '0' || Meetingstatuscom=='Completed'">
                                             <div  class="kt-project-notes"  matTooltip="Private notes" (click)="View_Private_Notes()">
                                                 <!-- <span class="title">Private notes</span> -->
                                                 <svg width="16px" height="16px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" version="1.1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect height="12.5" width="10.5" y="1.75" x="2.75"></rect> <path d="m5.75 7.75h4.5m-4.5 3h2.5m-2.5-6h4.5"></path> </g></svg>
@@ -1718,7 +1718,7 @@
                         
 
 
-                        <div class="kt-Note-msg mt-3 d-flex" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress && showAttendeeNotify!='3') && (upcomingMeeting == true || delayMeeting == true || delayMeeting == false)">
+                        <div class="kt-Note-msg mt-3 d-flex" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress && showAttendeeNotify!='3' || showAttendeeNotify=='2') && (upcomingMeeting == true || delayMeeting == true || delayMeeting == false)">
                                 <div class="kt-note-icon" style="align-self:flex-start">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25"
@@ -1762,7 +1762,7 @@
 
 
                             <container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true && showAttendeeNotify=='2'" >
-                                <div class="notification pause-notification mydelay-action-notf" *ngIf="Isadmin==true && !meetingInProgress">
+                                <div class="notification pause-notification mydelay-action-notf" *ngIf="Isadmin==true">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#FFC01E"
                                     height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
                                         <path d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z">
