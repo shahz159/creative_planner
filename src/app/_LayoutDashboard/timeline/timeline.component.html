@@ -7,17 +7,19 @@
             <!--begin:: Widgets/Authors Profit-->
             <div class="kt-portlet kt-portlet--bordered-semi mb-2">
                 <div class="kt-portlet__head align-items-center">
-                    <div class="kt-portlet__head-label">
+                    <div class="kt-portlet__head-label gap-3">
                         <div class="dropdown">
-                            <h3 class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{Type}}
+                            <h3 class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box header-tab-btn"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" [ngClass]="{'active':Type==type1||Type==type2}" >
+                                {{(Type==type1||Type==type2)?Type:type1}}
                             </h3>
                             <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
                                 <a [ngClass]="Type==type1 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog(type1);">{{type1}}</a>
                                 <a [ngClass]="Type==type2 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog1(type2);  setFilterInfo('Date',undefined); ">{{type2}}</a>
-                                <a [ngClass]="Type==type3 ? 'dropdown-item active' : 'dropdown-item'"  (click)="openDarInbox()">{{type3}}</a>
                             </div>
                         </div>
+                        <h3 class="kt-portlet__head-title header-tab-btn cursor-pointer" style="padding: 8px 8px 8px 8px;"  [ngClass]="{'active':Type==type3}" >
+                            <a (click)="openDarInbox()">{{type3}}</a>
+                        </h3>
                     </div>
                     <div class="d-flex align-items-center">
                         <!-- <div class="d-flex align-items-center mr-2">

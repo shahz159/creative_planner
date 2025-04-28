@@ -11,7 +11,7 @@
       <div class="kt-portlet kt-portlet--bordered-semi mb-2 ">
         <div class="kt-portlet__head">
           <div class="d-flex">
-            <div class="kt-portlet__head-label dropdown">
+           <div class="kt-portlet__head-label dropdown">
 
               <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -113,7 +113,23 @@
               <div *ngIf="sendtype=='Res' && selectedItems.length >0">
                 <button class="btn btn-outline-success btn-sm mr-2" (click)="clearResponses()">Clear responses</button>
               </div>
+            </div> 
+
+            <!--test new-->
+            <!-- <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title mr-4 cursor-pointer">
+               <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
+               Project approvals
+            </h3>
             </div>
+            <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title mr-4 cursor-pointer">
+               <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
+               Leave approvals
+            </h3>
+            </div> -->
+
+           <!-- test new-->
           </div>
 
           <div *ngIf="currentPageContent=='PROJECT APPROVALS'||currentPageContent=='INFORMATION'"  class="kt-portlet__head-label mr-2">

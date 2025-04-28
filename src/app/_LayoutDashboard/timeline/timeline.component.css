@@ -2881,3 +2881,31 @@ a.info-btn svg {
 
 /*dar info css start.*/
 
+
+
+/*header tab btns*/
+
+.header-tab-btn
+{ 
+  border-bottom:3px solid transparent;
+  cursor: pointer;
+  padding: 8px 8px 8px 8px !important;
+}
+.header-tab-btn:hover{
+  border-bottom-color: #eeeeee;  
+}
+.header-tab-btn.active{
+  border-bottom-color: #4377ff; 
+}
+
+.header-tab-btn.dropdown-toggle::after{
+  transition-duration: 0.5s;
+}
+
+.header-tab-btn.dropdown-toggle[aria-expanded=true]::after{
+  transform: rotate(180deg);
+  transition-duration: 0.5s;
+}
+
+
+/*header tab btns*/
