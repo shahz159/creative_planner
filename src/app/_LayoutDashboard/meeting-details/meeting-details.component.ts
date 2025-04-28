@@ -1150,10 +1150,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
     console.log('milliseconds:', differenceInMilliseconds);
-    // console.log('current', this.currentTime);
-   
-    // console.log('latest', this.latestTime);
-
+ 
     this.elapsedTime = differenceInMilliseconds;
     if(this.elapsedTime>60000){
       this.elapsedTime += 40000;
@@ -1167,49 +1164,13 @@ export class MeetingDetailsComponent implements OnInit {
       //   this.stopMeetingAttendees();
       // }
     }, 1000);
-
     // console.log(this.elapsedTime,'ijfbviabfvbsvskjvbzsib')
   }
-
-  pauseTimer() {
-   
+  pauseTimer(from?,pauseTimes?) { 
     clearInterval(this.timerAttendees);
-  }
-  
-  // resumeTimer(from?) {  
-      
-  //   if (from) { 
-  //     const now = new Date();
-  //     const [h, m, s] = from.split(':').map(Number);
-  //     const startTime = new Date(now);
-  //     startTime.setHours(h, m, s, 0);
-  //     this.elapsedTime = now.getTime() - startTime.getTime();
-  //     this.elapsedTime += 60000;
-    
-
-  //   }
-
-  //   // this.timerAttendees = setInterval(() => {
-  //   //   this.elapsedTime += 1000;
-  //   //   // if (this.elapsedTime >= this.duration) {
-  //   //   //   this.stopMeetingAttendees();
-  //   //   // }
-  //   // }, 1000);
 
 
-  //   setTimeout(() => {
-  //     this.timerAttendees = setInterval(() => {
-  //       this.elapsedTime += 1000;
-  //       // if (this.elapsedTime >= this.duration) {
-  //       //   this.stopMeetingAttendees();
-  //       // }
-  //     }, 1000);
-  //   }, 1000); // ← Delay the start by 1 second
-  // }
-  
 
-
-  resumeTimer(from?) {
     if (from) {
       const now = new Date();
       const [h, m, s] = from.split(':').map(Number);
@@ -1218,6 +1179,33 @@ export class MeetingDetailsComponent implements OnInit {
   
       // elapsedTime = now - startTime + 60000
       this.elapsedTime = now.getTime() - startTime.getTime() + 40000;
+    }
+
+    if (pauseTimes) { 
+      this.elapsedTime -= pauseTimes * 60 * 1000; // <-- minutes to milliseconds
+    }
+    this.startTimes = new Date(new Date().getTime() - this.elapsedTime); 
+
+   
+    this.elapsedTime = new Date().getTime() - this.startTimes.getTime();
+ 
+  }
+  
+  
+
+  resumeTimer(from?,pauseTimes?) { 
+    if (from) {
+      const now = new Date();
+      const [h, m, s] = from.split(':').map(Number);
+      const startTime = new Date(now);
+      startTime.setHours(h, m, s, 0);
+  
+      // elapsedTime = now - startTime + 60000
+      this.elapsedTime = now.getTime() - startTime.getTime() + 40000;
+    }
+
+    if (pauseTimes) { 
+      this.elapsedTime -= pauseTimes * 60 * 1000; // <-- minutes to milliseconds
     }
   
     this.startTimes = new Date(new Date().getTime() - this.elapsedTime); // <-- same like resumeMeeting
@@ -4347,7 +4335,8 @@ onFileChange(event) {
   projecount:any;
   attachcount:any;
   TaskList:any;
-  showAttendeeNotify:any
+  showAttendeeNotify:any;
+  pausetime:any;
 
   GetAttendeesnotes() {
 
@@ -4365,14 +4354,15 @@ onFileChange(event) {
 
         this.TaskList = JSON.parse(this.agendasList[0].TaskList) 
          
-
-        
-      // console.log(this.exact_start,'---------------')
-
+        this.pausetime = this.agendasList[0].pausetime
         this.smailcount = this.agendasList[0]?.smailcount;
         this.portFocount = this.agendasList[0]?.portcount;
         this.projecount = this.agendasList[0]?.projectcount;
         this.attachcount = this.agendasList[0]?.attachcount;
+
+        console.log(this.exact_start,'Start_time')
+        console.log(this.pausetime,'pausetime');
+
 
         if(this.agendasList != null){
             if(this.Agendas_List&&this.Agendas_List.length>0){                  
@@ -4459,7 +4449,7 @@ onFileChange(event) {
           console.log(this.Isadmin,'showAttendeeNotify')
 
           if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
-          
+         
             this.startMeetingOfAttendees();
             this.InsertAttendeeMeetingTime();
             this.hasMeetingStarted = true;
@@ -4468,9 +4458,8 @@ onFileChange(event) {
             this.hasAttendeesresumeMeeting = false;
           }
           else if (this.showAttendeeNotify=='2' && !this.hasAttendeesPauseMeeting) {
-          
-           
-              this.pauseTimer()
+     
+              this.pauseTimer(this.exact_start,this.pausetime)
               this.InsertAttendeeMeetingTime();
               this.hasAttendeesPauseMeeting = true;
               this.hasMeetingStarted = false;
@@ -4481,8 +4470,7 @@ onFileChange(event) {
           }
             else if (this.showAttendeeNotify=='3' && !this.hasAttendeesresumeMeeting) {
              
-       
-              this.resumeTimer(this.exact_start);
+              this.resumeTimer(this.exact_start,this.pausetime);
               this.InsertAttendeeMeetingTime();      
               this.hasAttendeesresumeMeeting = true;
               this.hasAttendeesPauseMeeting = false;
