@@ -2294,7 +2294,7 @@ multipleback(){
 
 
   // ADD DMS STARTS HERE
-  addDMSToTheProject() {
+  addDMSToTheProject() {   
     try {
       this.SelectDms=this.SelectDms.map((item)=>({"MailId": item}))
       if (this.SelectDms.length) {
@@ -3054,7 +3054,7 @@ approvalSubmitting:boolean=false;
 
   getPortfoliosDetails() {
     this.isLoadingData=true;
-    this.service.getPortfolios(this.URL_ProjectCode).subscribe((res) => {
+    this.service.getPortfolios(this.URL_ProjectCode).subscribe((res) => {    debugger
       if (res != null && res != undefined) {
         this._portfoliolist = JSON.parse(res[0].Portfolio_json);
         this.getPortfolios()
@@ -4804,14 +4804,15 @@ check_allocation() {
       this._portfolioLength = 0;
     }
     else
-      this._portfolioLength = this._portfoliolist.length;
+    this._portfolioLength = this._portfoliolist.length;
+
 
     this.service.GetTotalPortfoliosBy_Employeeid().subscribe
-      ((data) => {
+      ((data) => {    debugger
         this.totalPortfolios = (data[0]['TotalPortfolios']);
       });
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
-      ((data) => {
+      ((data) => {   debugger
         this._portfoliosList = data as [];
          console.log('porfolios at details:',this._portfoliosList);
         this.originalportfolios=this._portfoliosList
@@ -4927,7 +4928,7 @@ check_allocation() {
 
     this.Portfolio=this.Portfolio.map((res)=>({"Port_Id": res}))
     this.selectedportID = JSON.stringify(this.Portfolio);
-    if (this.selectedportID != null) {
+    if (this.selectedportID != null) {   
 
       this.objPortfolioDto.SelectedPortIdsJson = this.selectedportID;
       this.objPortfolioDto.Project_Code = this.URL_ProjectCode;
@@ -4957,7 +4958,7 @@ check_allocation() {
   }
 
 
-  DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {
+  DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {  debugger
     this.deletedBy = this.Current_user_ID;
 
     this._portfoliolist.forEach(element => {

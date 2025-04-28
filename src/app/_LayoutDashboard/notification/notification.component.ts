@@ -554,7 +554,7 @@ export class NotificationComponent implements OnInit {
     this.service.GetEmployeeLeaveResponses(this.Current_user_ID).subscribe((data) => {
       this.notificationsLoading=false;
       this._newNotificationLeave = JSON.parse(data[0]['LeaveResponses_json']);
-      console.log(this._newNotificationLeave, '+++++++++++++++++++++++++ ')
+      console.log(this._newNotificationLeave, '+++++++++++++++++++++++++ ');
       if(this._newNotificationLeave){
         const lv_codes=Array.from(new Set(this._newNotificationLeave.map(_leave=>_leave.Leave_Code)));
         this._newNotificationLeave=lv_codes.map((_lc)=>this._newNotificationLeave.find(lobj=>lobj.Leave_Code==_lc));

@@ -1508,7 +1508,9 @@ onRejectProjectDialogClosed(){
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     document.getElementById("kt_wrapper").style.zIndex="unset";
     // document.getElementById("kt-bodyc").classList.remove("overflow-hidden");
+    this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection if present.
     this.router.navigate(["/backend/createproject/"]);
+
   }
 
   /////////////////////////////////////////add Project End/////////////////////////////
@@ -2111,7 +2113,6 @@ if(this.PrjActionsInfo.length==0){
 //
 
 
-
 // 4.validation: checking all actions in the project have valid dates or not.
 if(this.PrjActionsInfo.length>0)   // if project contains actions
 {
@@ -2162,6 +2163,38 @@ if(this.PrjActionsInfo.length>0)   // if project contains actions
   }
 }
 //
+
+
+
+// 4.validation: if project has actions, but none are assigned to the person who is creating(Current_user_ID).
+// meaning if project has actions then atleast one action must belong to the person who is creating(Current_user_ID).
+if(this.PrjActionsInfo.length>0){
+  const isPrjRespHasActns=this.PrjActionsInfo.some((draftactn)=>{
+   return draftactn.Team_Res==this.Current_user_ID;
+  });
+  
+  if(isPrjRespHasActns==false){
+     
+     Swal.fire({
+       title:"Action Required",
+       text:"You need to assign at least one action to yourself before proceeding.",
+       showConfirmButton:true,
+       showCancelButton:true,
+       confirmButtonText:'Assign Action',
+       cancelButtonText:'Cancel'
+     }).then(choice=>{
+         if(choice.isConfirmed){
+          this.BsService.setSelectedTemplAction({...this.BsService._templAction.value,assignedTo:this.Current_user_ID});
+          this.openActionSideBar();  
+         }
+     });
+
+   return;  
+  }
+}
+//
+
+
 
 // 5.validation: Confirm Project Allocated hours
   const hrsToActns=this.PrjActionsInfo.reduce((sum,acn)=>(sum+Number.parseFloat(acn.AllocatedHours)),0);

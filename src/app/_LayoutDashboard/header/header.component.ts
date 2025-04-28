@@ -301,11 +301,13 @@ export class HeaderComponent implements OnInit {
     document.getElementById("main-section_header").classList.toggle("d-none");
   }
   applyleave(){
+
     document.getElementById("apply-leave").classList.add("open_sidebar");
     document.getElementById("leave-aprv-rightbar-overlay").style.display = "block";
     document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     this.getLA_drpdwns();
+    
   }
 
   closeleave(){

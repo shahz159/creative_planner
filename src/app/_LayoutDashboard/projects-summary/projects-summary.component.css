@@ -2800,7 +2800,7 @@ button.Kt-Approval-btns {
   z-index: 99999999999999999999 !important;
 }
 
-::ng-deep .modal-backdrop.fade.show {
+::ng-deep .modal-backdrop:not(#schedule-event-modal-backdrop).fade.show {
   display: none !important;
 }
 
@@ -4293,3 +4293,348 @@ input:checked + .slider:before {
 #acceptbar.kt-quick-panel--on {
   width: 50% !important;
 }
+
+
+/*new dms link and view sidebar css start*/
+#LinkSideBar.sideInfobar .closebtn {
+  top: 13px;
+  right: 25px;
+}
+
+#LinkSideBar-header {
+  background-color: #f5f6fc;
+}
+
+#LinkSideBar-header .kt-inbox__icon
+{
+  margin-left: 0.5rem;
+}
+
+#LinkSideBar-header .closebtn:hover svg{
+  fill: #fff;
+}
+
+
+.schedule-select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: calc(1.5em + 1.3rem + 6px);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 0.65rem 1rem;
+  padding-left: 4px;
+  padding-bottom: 0px;
+  color: #8f8f8f;
+  background-color: #ffffff;
+  background-clip: padding-box;
+  border-bottom: 1px solid #a5a5a5;
+  border-radius: 0px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+
+.se-col-11 {
+  flex: 0 0 94.66667%;
+  max-width: 94.66667%;
+  position: relative;
+  width: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.sidebar-content-loading {
+  padding-top: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#LinkSideBar.sideInfobar.kt-quick-panel--on {
+  width: 50% !important;
+}
+
+#LinkSideBar.sideInfobar .shadow-sm, #LinkSideBar1.sideInfobar .shadow-sm {
+  box-shadow: 0 0.1rem 0.1rem 0 rgb(0 0 0 / 5%) !important;
+}
+
+.actns-ldr {
+  position: absolute;
+  top: 10px;
+  right: 40px;
+  font-size: 8px;
+  width: 20px;
+  height: 20px;
+}
+/*new dms link and view sidebar css end*/
+
+/*new portfolio link, unlink and view sidebar css start*/
+
+#LinkSideBar1.sideInfobar.kt-quick-panel--on {
+  width: 50% !important;
+}
+
+#LinkSideBar1.sideInfobar .kt-inbox__icon {
+  border: 0;
+  background: none;
+  box-shadow: none;
+  outline: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  width: 35px;
+  transition: all .3s ease;
+  cursor: pointer;
+  margin: 0;
+  border-radius: 4px;
+}
+
+#LinkSideBar1.sideInfobar #LinkSideBar-header .iconify--mdi {
+  font-size: 22px;
+  height: 22px;
+  width: 22px;
+  color: #a0a0a1;
+  color: #858190;
+  fill: #858190;
+}
+
+#LinkSideBar1.sideInfobar #LinkSideBar-header .closebtn{
+   top:13px;
+}
+/*new portfolio link, unlink and view sidebar css end*/
+
+
+
+/* project modal selection dialog box start*/
+
+.schedule-event .form-control {
+  border: 2px solid #ebedf2;
+  height: calc(1.5em + 1.3rem + 6px);
+}
+
+.schedule-event.modal .modal-header {
+  padding: 0.5rem 1.25rem;
+  background-color: #ebebeb;
+  align-items: center;
+}
+
+.schedule-event.modal .modal-header .modal-title {
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: #000000;
+  text-transform: capitalize;
+}
+
+.schedule-event.modal .modal-header .modal-titles {
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: #000000;
+  /* text-transform: capitalize; */
+}
+
+
+.schedule-event.modal .modal-header .close {
+  color: #493c3c;
+  opacity: 1;
+}
+
+.schedule-event.modal .modal-body {
+  padding-bottom: 0px;
+}
+
+.schedule-event.modal .modal-footer {
+  justify-content: flex-start;
+  padding: 0.5rem 1rem;
+  border-top: 0px solid #ebedf2;
+}
+
+
+
+.modal-search {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: calc(1.5em + 1.3rem + 6px);
+  padding: 0.65rem 0.55rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 2px solid #ebedf2;
+  border-radius: 8px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.search-svg svg {
+  width: 24px;
+  height: 24px;
+}
+
+.modal-icon {
+  width: 40px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-icon:hover {
+  /* background: #e5e1e1; */
+  background-color: #cbcbcb36;
+}
+
+#filter-icon.active {
+  /* background: #e5e1e1; */
+  background-color: #c3c3c35c;
+}
+
+.modal-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+input.search-input {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 1.3rem + 0px);
+  padding: 0rem 0.60rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 0px solid #ebedf2;
+  border-radius: 4px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  outline: 0;
+}
+
+
+ul.modal-project-list {
+  border: 2px solid #ebedf2;
+  border-radius: 8px;
+  padding: 0.65rem;
+  padding-left: 14px;
+  list-style: none;
+  height: 400px;
+  overflow: auto;
+  scrollbar-width: thin;
+  margin-bottom: 0px;
+}
+
+li.modal-project-list-item {
+  color: #000;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-weight: 400;
+  margin-top: 1.5em;
+}
+
+span.project-name {
+  line-height: normal;
+}
+
+
+.btn-add-primary {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+  background-color: #2786fb !important;
+  border-color: #2786fb !important;
+  color: #ffffff !important;
+  width: 80px
+}
+
+.btn-close-secondary {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+  background-color: #e2e5ec;
+  border: 1px solid #e2e5ec;
+  color: #595d6e;
+  width: 80px;
+}
+
+
+
+.project-filter {
+  border: 2px solid #ebedf2;
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  padding-left: 14px;
+  list-style: none;
+  min-height: 200px;
+  margin-bottom: 0px;
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0px 0px 6px #dbdbdb;
+  display: none;
+}
+
+.project-filter.show {
+  display: block;
+}
+
+.project-filter-item {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.project-filter .form-control {
+  border: 2px solid #ebedf2;
+}
+
+.project-filter-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.5rem 0rem;
+  gap: 8px;
+}
+
+.item-label {
+  width: 20%;
+  color: #000;
+}
+
+.item-select {
+  width: 100%;
+}
+
+input.search-input {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 1.3rem + 0px);
+  padding: 0rem 0.60rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 0px solid #ebedf2;
+  border-radius: 4px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  outline: 0;
+}
+
+.search-svg svg {
+  width: 24px;
+  height: 24px;
+}
+/* project modal dialog box end*/

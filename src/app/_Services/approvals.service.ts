@@ -121,7 +121,7 @@ export class ApprovalsService {
 
   }
 
-  GetEmployeeLeaveDetail(submitby,Leave_code){
+  GetEmployeeLeaveDetail(submitby,Leave_code){   debugger
     this.obj_approvalDTO.Emp_no=submitby.trim();
     this.obj_approvalDTO.Leave_Code=Leave_code.trim();
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetEmployeeLeaveDetails", this.obj_approvalDTO)

@@ -23,7 +23,15 @@ export class EmployeeDetailsService {
 
   GetEmployeeDetails(EmpNo) {
     this.objEmployeeDTO.Emp_No = EmpNo;
+    console.log(this.rootUrl + "Policy/NewGetEmployeeDetails");
     return this.http.post(this.rootUrl + "Policy/NewGetEmployeeDetails", this.objEmployeeDTO);
+  }
+
+
+  ProfileUpload(data){
+    console.log(data ,"ProfileUpload Data");
+    console.log(this.rootUrl + 'UsersAPI/NewAddUserProfile');
+    return this.http.post(this.rootUrl + 'UsersAPI/NewAddUserProfile',data);
   }
 
 }
