@@ -1008,7 +1008,7 @@ export class MeetingDetailsComponent implements OnInit {
   endTime: Date;
 
   resumeMeeting() {
- debugger
+
     this.play = true;
     this.pause = false;
     //69 this.startTimes
@@ -1156,7 +1156,7 @@ export class MeetingDetailsComponent implements OnInit {
 
     this.elapsedTime = differenceInMilliseconds;
     if(this.elapsedTime>60000){
-      this.elapsedTime += 60000;
+      this.elapsedTime += 40000;
     }
    
 
@@ -1176,50 +1176,62 @@ export class MeetingDetailsComponent implements OnInit {
     clearInterval(this.timerAttendees);
   }
   
-  resumeTimer(from?) {  
+  // resumeTimer(from?) {  
       
-    if (from) { 
+  //   if (from) { 
+  //     const now = new Date();
+  //     const [h, m, s] = from.split(':').map(Number);
+  //     const startTime = new Date(now);
+  //     startTime.setHours(h, m, s, 0);
+  //     this.elapsedTime = now.getTime() - startTime.getTime();
+  //     this.elapsedTime += 60000;
+    
+
+  //   }
+
+  //   // this.timerAttendees = setInterval(() => {
+  //   //   this.elapsedTime += 1000;
+  //   //   // if (this.elapsedTime >= this.duration) {
+  //   //   //   this.stopMeetingAttendees();
+  //   //   // }
+  //   // }, 1000);
+
+
+  //   setTimeout(() => {
+  //     this.timerAttendees = setInterval(() => {
+  //       this.elapsedTime += 1000;
+  //       // if (this.elapsedTime >= this.duration) {
+  //       //   this.stopMeetingAttendees();
+  //       // }
+  //     }, 1000);
+  //   }, 1000); // ← Delay the start by 1 second
+  // }
+  
+
+
+  resumeTimer(from?) {
+    if (from) {
       const now = new Date();
       const [h, m, s] = from.split(':').map(Number);
       const startTime = new Date(now);
       startTime.setHours(h, m, s, 0);
-      this.elapsedTime = now.getTime() - startTime.getTime();
-      this.elapsedTime += 60000      
-
+  
+      // elapsedTime = now - startTime + 60000
+      this.elapsedTime = now.getTime() - startTime.getTime() + 40000;
     }
-
-
-    // if (from) {
-    //   const now = new Date();
-    //   const saudiOffset = 3 * 60; // Saudi UTC+3
-    //   const localOffset = now.getTimezoneOffset(); // Local offset from UTC
-    //   const saudiNow = new Date(now.getTime() + (saudiOffset + localOffset) * 60 * 1000);
-    
-    //   const [h, m, s] = from.split(':').map(Number);
-    //   const startTime = new Date(saudiNow);
-    //   startTime.setHours(h, m, s, 0);
-    
-    //   // If startTime is in the future, assume it's from the previous day
-    //   if (startTime > saudiNow) {
-    //     startTime.setDate(startTime.getDate() - 1);
-    //   }
-    
-    //   this.elapsedTime = saudiNow.getTime() - startTime.getTime();
-    //   console.log(this.elapsedTime,'this.elapsedTime')
-    //   this.elapsedTime += 60000 
-    // }
-
-
-
+  
+    this.startTimes = new Date(new Date().getTime() - this.elapsedTime); // <-- same like resumeMeeting
+  
+    if (this.timerAttendees) {
+      clearInterval(this.timerAttendees);
+    }
+  
     this.timerAttendees = setInterval(() => {
-      this.elapsedTime += 1000;
-      // if (this.elapsedTime >= this.duration) {
-      //   this.stopMeetingAttendees();
-      // }
+      this.elapsedTime = new Date().getTime() - this.startTimes.getTime(); // <-- same logic
     }, 1000);
   }
-
-
+  
+  
 
 
 
@@ -4355,7 +4367,7 @@ onFileChange(event) {
          
 
         
-      console.log(this.exact_start,'---------------')
+      // console.log(this.exact_start,'---------------')
 
         this.smailcount = this.agendasList[0]?.smailcount;
         this.portFocount = this.agendasList[0]?.portcount;
@@ -4430,7 +4442,7 @@ onFileChange(event) {
         this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
         this.showAttendeeNotify = data.AdminMeeting_Status;
 
-        // console.log(this.showAttendeeNotify,'showAttendeeNotify')
+    
 
         if (this.meetingStarted || this.meetingStarted != true) {
       
@@ -4443,6 +4455,8 @@ onFileChange(event) {
           }
 
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
+          console.log(this.showAttendeeNotify,'showAttendeeNotify')
+          console.log(this.Isadmin,'showAttendeeNotify')
 
           if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
           
@@ -4454,23 +4468,28 @@ onFileChange(event) {
             this.hasAttendeesresumeMeeting = false;
           }
           else if (this.showAttendeeNotify=='2' && !this.hasAttendeesPauseMeeting) {
+          
            
-            this.pauseTimer()
-            this.InsertAttendeeMeetingTime();
-             this.hasAttendeesPauseMeeting = true;
-             this.hasMeetingStarted = false;
-             this.hasMeetingEnd = false;
-             this.hasAttendeesresumeMeeting = false;
+              this.pauseTimer()
+              this.InsertAttendeeMeetingTime();
+              this.hasAttendeesPauseMeeting = true;
+              this.hasMeetingStarted = false;
+              this.hasMeetingEnd = false;
+              this.hasAttendeesresumeMeeting = false;
+          
+        
           }
             else if (this.showAttendeeNotify=='3' && !this.hasAttendeesresumeMeeting) {
-            
-            this.resumeTimer(this.exact_start);
-            this.InsertAttendeeMeetingTime();
-            this.elapsedTime;
-            this.hasAttendeesresumeMeeting = true;
-            this.hasAttendeesPauseMeeting = false;
-             this.hasMeetingStarted = false;
-             this.hasMeetingEnd = false; 
+             
+       
+              this.resumeTimer(this.exact_start);
+              this.InsertAttendeeMeetingTime();      
+              this.hasAttendeesresumeMeeting = true;
+              this.hasAttendeesPauseMeeting = false;
+              this.hasMeetingStarted = false;
+              this.hasMeetingEnd = false; 
+          
+          
           
           }
           else if (this.meetingStarted != true && !this.hasMeetingEnd && this.meetingOfAttendees == false) {
