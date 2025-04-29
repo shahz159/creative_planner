@@ -1099,7 +1099,7 @@ export class MeetingDetailsComponent implements OnInit {
     this._calenderDto.Schedule_ID = this.Scheduleid;
     this._calenderDto.Status = this.status_Type;
     this._calenderDto.StartTime = this.startTime == undefined ? null : formatTime(this.startTime);
-    this._calenderDto.Start_time = this.currentTime; debugger
+    this._calenderDto.Start_time = this.currentTime; 
     this._calenderDto.EndTime = this.endTime == undefined ? null : formatTime(this.endTime);
     // console.log(this._calenderDto,'time of meeting');
     this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe
@@ -1166,30 +1166,64 @@ export class MeetingDetailsComponent implements OnInit {
     }, 1000);
     // console.log(this.elapsedTime,'ijfbviabfvbsvskjvbzsib')
   }
-  pauseTimer(from?,pauseTimes?) { 
-    clearInterval(this.timerAttendees);
 
 
 
-    if (from) {
-      const now = new Date();
-      const [h, m, s] = from.split(':').map(Number);
-      const startTime = new Date(now);
-      startTime.setHours(h, m, s, 0);
+
+  // pauseTimer(LastPauseTime?, exact_start?,pausetime?) {
+  //   clearInterval(this.timerAttendees);
   
-      // elapsedTime = now - startTime + 60000
-      this.elapsedTime = now.getTime() - startTime.getTime() + 40000;
-    }
+  //   if (LastPauseTime && exact_start) {
+  //     // Convert LastPauseTime to Date object (ISO format is already good)
+  //     const pauseTime = new Date(LastPauseTime).getTime();
+  
+  //     // Convert exact_start (hh:mm:ss) to today's Date object
+  //     const [h, m, s] = exact_start.split(':').map(Number);
+  //     const now = new Date();
+  //     const startTime = new Date(now.setHours(h, m, s, 0)).getTime();
+  
+  //     // Calculate the duration between LastPauseTime and exact_start
+  //     const pauseDuration = pauseTime - startTime; // Duration in ms
+      
+  //     console.log(pauseDuration,'pauseDuration')
 
-    if (pauseTimes) { 
-      this.elapsedTime -= pauseTimes * 60 * 1000; // <-- minutes to milliseconds
-    }
-    this.startTimes = new Date(new Date().getTime() - this.elapsedTime); 
+  //     this.elapsedTime += pauseDuration; // Add to elapsedTime
+  //   }
+  // }
+  
+  
+
+  pauseTimer(LastPauseTime?, exact_start?, pausetime?) {
+    clearInterval(this.timerAttendees);
+  
+    if (LastPauseTime && exact_start) {
+      const pauseTime = new Date(LastPauseTime).getTime();
+  
+      const [h, m, s] = exact_start.split(':').map(Number);
+      const now = new Date();
+      const startTime = new Date(now.setHours(h, m, s, 0)).getTime();
+  
+      // Raw duration in milliseconds
+      let pauseDuration = pauseTime - startTime;
+  
+      // Subtract pausetime (in minutes)
+      if (pausetime) {
+        pauseDuration -= pausetime * 60 * 1000;
+
+        const staticHours = 2, staticMinutes = 30, staticSeconds = 0;
+        const staticDuration = ((staticHours * 60 + staticMinutes) * 60 + staticSeconds) * 1000;
+    
+        pauseDuration += staticDuration;
+      }
+
+      this.elapsedTime = 0;
+      // Add to elapsed time
+      this.elapsedTime += pauseDuration;
 
    
-    this.elapsedTime = new Date().getTime() - this.startTimes.getTime();
- 
+    }
   }
+  
   
   
 
@@ -4337,6 +4371,7 @@ onFileChange(event) {
   TaskList:any;
   showAttendeeNotify:any;
   pausetime:any;
+  LastPauseTime:any;
 
   GetAttendeesnotes() {
 
@@ -4353,16 +4388,17 @@ onFileChange(event) {
         this.agendasList = JSON.parse(data['Agendas']);
 
         this.TaskList = JSON.parse(this.agendasList[0].TaskList) 
-         
+        
+        this.LastPauseTime = this.agendasList[0].LastPauseTime
         this.pausetime = this.agendasList[0].pausetime
         this.smailcount = this.agendasList[0]?.smailcount;
         this.portFocount = this.agendasList[0]?.portcount;
         this.projecount = this.agendasList[0]?.projectcount;
         this.attachcount = this.agendasList[0]?.attachcount;
 
-        console.log(this.exact_start,'Start_time')
+        console.log(this.LastPauseTime,'LastPauseTime')
+        console.log(this.exact_start,'exact_start');
         console.log(this.pausetime,'pausetime');
-
 
         if(this.agendasList != null){
             if(this.Agendas_List&&this.Agendas_List.length>0){                  
@@ -4445,8 +4481,8 @@ onFileChange(event) {
           }
 
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
-          console.log(this.showAttendeeNotify,'showAttendeeNotify')
-          console.log(this.Isadmin,'showAttendeeNotify')
+          // console.log(this.showAttendeeNotify,'showAttendeeNotify')
+          // console.log(this.Isadmin,'showAttendeeNotify')
 
           if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
          
@@ -4459,7 +4495,7 @@ onFileChange(event) {
           }
           else if (this.showAttendeeNotify=='2' && !this.hasAttendeesPauseMeeting) {
      
-              this.pauseTimer(this.exact_start,this.pausetime)
+              this.pauseTimer(this.LastPauseTime,this.exact_start,this.pausetime)
               this.InsertAttendeeMeetingTime();
               this.hasAttendeesPauseMeeting = true;
               this.hasMeetingStarted = false;
