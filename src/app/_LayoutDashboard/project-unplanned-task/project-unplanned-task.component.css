@@ -1800,7 +1800,7 @@ a.text-hover-primary:hover i {
 }
 
 input.form-control.add_assign_task_input::-webkit-input-placeholder {
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .b-r-20 {
@@ -3127,6 +3127,10 @@ li.kt-category-list:hover .kt-cat-action {
   align-items: center;
   padding: 10px 10px;
   cursor: pointer;
+}
+
+.kt-main-list-item.active {
+  background-color: #f6f5f5;
 }
 
 .kt-main-list-item:hover {
@@ -5846,4 +5850,42 @@ span.run-icon-group-icon svg {
   align-items: center;
   justify-content: center;
   height: calc(100vh - 400px);
+}
+
+
+.accordion-loader-spinner{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  height: calc(100vh - 185px);
+}
+
+.accordion-loader-spinner .spinner-border{
+  width: 30px; 
+  height: 30px;
+}
+
+
+/* multi select dropdown start */
+
+@media screen and (min-width: 1440px) {
+  .multi-selected-list .schedule-select-user-list-item .user-name {
+      width: 130px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  ul.schedule-select-user-list.multi-selected-list li{
+      width: 195px;
+  }
+}
+
+#multiselect-2-dialog .project-filter.show{
+  display:flex;
+  flex-direction: column;
+}
+
+#multiselect-2-dialog .project-filter .project-filter-item{
+   flex-grow:1;
 }

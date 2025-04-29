@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatCalendar, MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import * as moment from 'moment'
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -17,6 +17,8 @@ import Swal from 'sweetalert2';
 import { ApprovalDTO } from 'src/app/_Models/approval-dto';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
 import { ProjectTypeService } from 'src/app/_Services/project-type.service';
+import { ActivatedRoute, ActivatedRouteSnapshot, Params, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 declare var $: any;
@@ -67,6 +69,8 @@ export class StreamCalendarComponent implements OnInit {
   scstartdate: any = new Date();
   _labelName: string;
   today: any = new Date().toISOString().substring(0, 10);
+  durationOfTodayLine:any
+
   gmtOffset = `GMT+${(-new Date().getTimezoneOffset() / 60) | 0}:${String(Math.abs(new Date().getTimezoneOffset()) % 60).padStart(2, '0')}`;
   ProjectCode: string; Status: string; ProjectType: string; Owner: string;
   event: any;
@@ -227,6 +231,9 @@ export class StreamCalendarComponent implements OnInit {
     public datepipe: DatePipe,
     public approvalservice: ApprovalsService,
     public service: ProjectTypeService,
+    private activatedRoute:ActivatedRoute,
+     private _snackBar: MatSnackBar,
+    private router: Router
   ) { 
     this._lstMultipleFiales = [];
     this._calenderDto = new CalenderDTO;
@@ -249,11 +256,41 @@ export class StreamCalendarComponent implements OnInit {
     }
   }
 
-
-
+  scheduleId_UrlParams:any;
+  
   ngOnInit(): void {
- 
+   
     this.Current_user_ID = localStorage.getItem('EmpNo');
+
+    // calender event popup open by qparams
+    this.scheduleId_UrlParams=this.activatedRoute.snapshot.queryParamMap.get('calenderId'); 
+
+    if(this.scheduleId_UrlParams){
+      this.router.navigate(['/backend/StreamCalendar'], { queryParams: { calenderId: null } });
+      this.CalenderDataLoaded=new EventEmitter<boolean>();
+      this.CalenderDataLoaded.subscribe((isLoaded)=>{  
+        if(isLoaded){
+          if(this.scheduleId_UrlParams){
+            console.log(this.scheduleId_UrlParams,'this.scheduleId_UrlParams')
+            const [scheduleIds, color] = this.scheduleId_UrlParams.split(',');
+            this.customEventModal(scheduleIds);
+            this.GetClickEventJSON_Calender(scheduleIds, color);
+            this.scheduleId_UrlParams=null;
+           
+          }
+            }
+      this.CalenderDataLoaded.unsubscribe();  
+      this.CalenderDataLoaded=null;    
+      });
+    }
+  
+
+
+ 
+  // calender event popup open by qparams
+
+
+
     this.initAutosize();
     this.initFirstclass();
     this.MinLastNameLength = true;
@@ -333,6 +370,9 @@ export class StreamCalendarComponent implements OnInit {
      this.Getdraft_datalistmeeting(); 
      this.getMeetingApprovals();
      this.BookmarkMeetingsList();
+
+
+  
   }
 
 
@@ -504,6 +544,7 @@ export class StreamCalendarComponent implements OnInit {
     this.dayMeetingSection = 'Schedule';
     this.timeLineVisible= false;
     clearInterval(this.timeLineInterval);
+    this.getEventsForWeeks(0);
   }
   teams_icon(){
     document.getElementById("teams-icon").style.display = "inline-block";
@@ -529,6 +570,22 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("skype-icon").style.display = "none";
     document.getElementById("zoom-icon").style.display = "inline-block";
   }
+
+  customPendingTaskModal() {
+    document.getElementById("customPendingTaskModal").style.display = "block";
+    document.getElementById("customPendingTaskModal").classList.add("show");
+    document.getElementById("customPendingTaskModalBackdrop").style.display = "block";
+    document.getElementById("customPendingTaskModalBackdrop").classList.add("show");
+  }
+  customPendingTaskModal_dismiss() {
+    document.getElementById("customPendingTaskModal").style.display = "none";
+    document.getElementById("customPendingTaskModal").classList.remove("show");
+    document.getElementById("customPendingTaskModalBackdrop").style.display = "none";
+    document.getElementById("customPendingTaskModalBackdrop").classList.remove("show"); 
+  }
+
+
+
   change_event(){
     this.createTaskEvent=true;
     // document.getElementById("event-title").style.display = "block";
@@ -596,6 +653,7 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("customEventModalBackdrop").classList.remove("show");
 
     $('#propse11').removeClass('show');
+    // this.router.navigate(['/backend/StreamCalendar']);
   }
   customTaskModal(){
     document.getElementById("customTaskModal").style.display = "block";
@@ -651,6 +709,25 @@ export class StreamCalendarComponent implements OnInit {
   }
 
 
+  shareoptionModal() {
+    document.getElementById("shareoptionModal").style.display = "block";
+    document.getElementById("shareoptionModal").classList.add("show");
+    document.getElementById("shareoptionModalBackdrop").style.display = "block";
+    document.getElementById("shareoptionModalBackdrop").classList.add("show");
+    this.generateLink()
+  }
+  
+  shareoptionModal_dismiss() {
+    document.getElementById("shareoptionModal").style.display = "none";
+    document.getElementById("shareoptionModal").classList.remove("show");
+    document.getElementById("shareoptionModalBackdrop").style.display = "none";
+    document.getElementById("shareoptionModalBackdrop").classList.remove("show");
+  }
+
+
+
+
+
   createEventTaskModal(){
     document.getElementById("createEventTaskModal").style.display = "block";
     document.getElementById("createEventTaskModal").classList.add("show");
@@ -663,6 +740,9 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("createEventTaskModalBackdrop").style.display = "none";
     document.getElementById("createEventTaskModalBackdrop").classList.remove("show");
 
+    this.mtgOnDays=[];
+    this.formattedDayTime = null;
+    this.monthDateBinde = null;
     this.Link_Details = null;
     this.Meeting_Id = null;
     this.Meeting_password = null;
@@ -713,6 +793,15 @@ export class StreamCalendarComponent implements OnInit {
   Repeat_date_time_menu() {
  
     document.getElementById("repeat-date-time-menu").classList.add("show");
+
+    //test
+   this.Time_End = [];
+   this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+   let _from = this.Time_End.indexOf(this.Startts);
+   const eventmaxDuration=286;
+   let _to=_from+eventmaxDuration;
+   this.EndTimearr=this.Time_End.slice(_from,_to);
+   //test
   }
 
   Repeat_date_time_menu_close() {
@@ -1112,7 +1201,7 @@ onFileChange(event) {
  
   if (event.target.files.length > 0) {
     const allowedTypes = [
-      "image/*", "application/pdf", "text/plain", "text/html", "application/msword", 
+      "image/*", "video/*", "audio/*", "application/pdf", "text/plain", "text/html", "application/msword", 
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       "application/json", "application/xml", "application/vnd.ms-powerpoint",
       "application/vnd.openxmlformats-officedocument.presentationml.presentation",
@@ -1128,7 +1217,7 @@ onFileChange(event) {
         // Show a sweet alert popup for unsupported file types
         Swal.fire({
           title: `This File "${fileName}" cannot be accepted!`,
-          text: `Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
+          text: `Supported file types: Images, video, audio, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.`
           });
         continue;
       }
@@ -1255,10 +1344,13 @@ Task_type(value) {
   }
   if(this.formattedDayTime){
    this._StartDate = this.monthDateBinde;
+   this._SEndDate =  this.monthDateBinde;
    this.Startts= this.formattedDayTime;
    this.Endtms = this.Startts.replace(/(\d+):(\d+) (\wM)/, (_, h, m, p) => 
     `${String((h = +h % 12 + 1)).padStart(2, '0')}:${m} ${h === 12 ? (p === "AM" ? "PM" : "AM") : p}`
   );
+  }else{
+    this._StartDate = this.today;
   }
 
 
@@ -1277,8 +1369,7 @@ Task_type(value) {
   this.daysSelectedII.push(jsonData);
   console.log(this.ScheduleType, "ScheduleType")
   
-  this.formattedDayTime = null;
-  this.monthDateBinde = null;
+ 
 }
 
 
@@ -1668,15 +1759,22 @@ GetTimeslabfordate() {
     });
     this.validStartTimearr=this.StartTimearr.slice(index);
 
-    this.timingarryend = [];
+    // this.timingarryend = [];
+    // this.Time_End = [];
+    // this.Time_End = this.AllEndtime;
+    // let _index = this.Time_End.indexOf(this.Startts);
+    // if (_index + 1 === this.Time_End.length) {
+    //   _index = -1;
+    // }
+    // this.timingarryend = this.Time_End.splice(_index + 1);
+    // this.EndTimearr = this.timingarryend;
+
     this.Time_End = [];
-    this.Time_End = this.AllEndtime;
-    let _index = this.Time_End.indexOf(this.Startts);
-    if (_index + 1 === this.Time_End.length) {
-      _index = -1;
-    }
-    this.timingarryend = this.Time_End.splice(_index + 1);
-    this.EndTimearr = this.timingarryend;
+    this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+    let _from = this.Time_End.indexOf(this.Startts);
+    const eventmaxDuration=286;
+    let _to=_from+eventmaxDuration;
+    this.EndTimearr=this.Time_End.slice(_from,_to);
     // provide valid starttiming and endtimearr.    end
     });
 }
@@ -2030,7 +2128,7 @@ checkAddressURL(str) {
 
 
 
-  addstarttime() {
+  addstarttime1() {
 
     this.Alltimes = [];
     this.EndTimearr = [];
@@ -2050,14 +2148,15 @@ checkAddressURL(str) {
     this.timingarryend = [];
     this.Time_End = [];
     this.Time_End = this.AllEndtime;
-  
     let _index = this.Time_End.indexOf(this.Startts);
     if (_index + 1 === this.Time_End.length) {
       _index = -1;
     }
     this.timingarryend = this.Time_End.splice(_index + 1);
-
     this.EndTimearr = this.timingarryend;
+
+
+
     this.timearr1 = this.Startts.split(":");
     let vahr = this.timearr1[0];
     let mins = this.timearr1[1].toString();
@@ -2130,6 +2229,25 @@ checkAddressURL(str) {
 
     console.log(this.EndTimearr, "End Time Updated")
   }
+
+
+//test
+addstarttime(){
+  const completetime=this._arrayObj.map((element)=>{
+      return element.TSStart;
+   });
+   const endtime_arr=[...completetime,...completetime];
+   let _from = completetime.indexOf(this.Startts);
+   const eventmaxDuration=286;
+   let _to=_from+eventmaxDuration;
+   this.EndTimearr=endtime_arr.slice(_from,_to);
+
+   this.Endtms = new Date(new Date('2000-01-01 ' + this.Startts).getTime() + 15 * 60000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+
+   console.log(this.EndTimearr, "this.Startts")
+  }
+   //test
+
 
 
   onfocus(val) {
@@ -2612,7 +2730,7 @@ this.eventtaskitemtimeModal_dismiss();
       this.EventNumber = timestamp;
     }
    
-    let finalarray = [];
+    let finalarray = []; 
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
     var start = moment(this.minDate);
@@ -2622,10 +2740,11 @@ this.eventtaskitemtimeModal_dismiss();
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
 
-
-       // new code start 69
   
-       if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate)){
+       // new code start 69
+       // 
+  
+       if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate) || this.formattedDayTime){
          let startDate = new Date(this._StartDate);
          this.AllDatesSDandED = [{
              Date: startDate.toISOString().split('T')[0],  // Get YYYY-MM-DD format
@@ -2637,7 +2756,11 @@ this.eventtaskitemtimeModal_dismiss();
            }];
        
          this.daysSelectedII = this.AllDatesSDandED ;
-         this._SEndDate =this._StartDate.toISOString().split('T')[0];
+         if(this.formattedDayTime){
+          this._StartDate = new Date(this._StartDate);
+          this.formattedDayTime = null;
+         }
+         this._SEndDate = this._StartDate.toISOString().split('T')[0];
          this._StartDate = new Date(new Date(this._StartDate).setHours(0, 0, 0, 0)); 
        }
 
@@ -2678,25 +2801,15 @@ this.eventtaskitemtimeModal_dismiss();
         }
       }
     }
-    // else if (this.selectedrecuvalue === "4") {
-    //   this.daysSelectedII = this.getBiWeeklyDates(startDate);
-    // }
-    // else if (this.selectedrecuvalue === "5") {
-    //   this.daysSelectedII = this.getLastDaysOfEachMonth();
-    // }
+   
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
       finalarray.forEach(element => {
-
+       this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this._StartDate);
-        // if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
-        //   this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
-        // }
-        // else {
-        //   this._SEndDate = this._StartDate;
-        // }
+     
         const date2: Date = new Date(this._SEndDate);
 
         const diffInMs: number = date2.getTime() - date1.getTime();
@@ -2708,10 +2821,9 @@ this.eventtaskitemtimeModal_dismiss();
         else {
           var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
         }
-        // var dd = moment(date3).add(diffInDays, 'days')
-        // var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
+   
         var dd = moment(date3).add(diffInDays, 'days')
-        // console.log(dd, date3, diffInDays, date2, this._SEndDate, "update edit")
+      
         var SEndDates = "SEndDate";
         element[SEndDates] = (dd.format(format2));
 
@@ -2748,8 +2860,6 @@ this.eventtaskitemtimeModal_dismiss();
         var vMasterCode = "MasterCode";
         element[vMasterCode] = this.MasterCode == undefined ? "" : this.MasterCode.toString();
 
-        // var columnName = "Link_Type";
-        // element[columnName] = this.Link_Type == undefined ? "" : this.Link_Type;
         var vUser_Name = "User_Name";
         element[vUser_Name] = this.ngEmployeeDropdown == undefined ? "" : this.ngEmployeeDropdown.toString();
 
@@ -2789,16 +2899,9 @@ this.eventtaskitemtimeModal_dismiss();
       
         var vLink_Details = "Link_Details";
         element[vLink_Details]=this._onlinelink?(this.Link_Details?this.Link_Details:''):'';
-        // var vLink_Details = "Link_Details";
-        // let link_d=this.Link_Details;
-        // if(this.Link_Details){
-        //   link_d=this.Link_Details.replace(/&#160;/g, ' ');
-        //   link_d=this.anchoredIt(link_d);
-        // }
-        // element[vLink_Details]=this._onlinelink?(this.Link_Details?link_d:''):'';
      
         if (this.Description_Type && this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, '').length > 0) {
-          // Remove occurrences of &nbsp; and &#160; while collapsing spaces
+   
           this.Description_Type = this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, ' ').trim();
        } else if(this.Description_Type!=null ){
          this.Description_Type = this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, ' ').trim();
@@ -2974,6 +3077,7 @@ this.eventtaskitemtimeModal_dismiss();
                     this._azureMessage = (JSON.parse(myJSON).body).message;
 
                     if(this._azureMessage=="1"){
+                      console.log(frmData,"frmData")
                       this.CalenderService._AzureUploadCalendarAttachments(frmData).subscribe((event1: HttpEvent<any>) => {
                         console.log(event1,"azure data");
                         var myJSON = JSON.stringify(event1);
@@ -3017,6 +3121,7 @@ this.eventtaskitemtimeModal_dismiss();
 
           this.GetScheduledJson();
           this.Title_Name = null;
+        
           this.ngEmployeeDropdown = null;
           this.Description_Type = null;
           this.agendaInput=undefined;
@@ -3110,7 +3215,7 @@ this.eventtaskitemtimeModal_dismiss();
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
           this.draftcount = this.draftdata_meet.length;
           this.filterDraft('date');
-          console.log(this.draftdata_meet,'testing process')
+          console.log(data,'draftdata_meet')
         }
         else {
           this.draftdata_meet = null;
@@ -3180,7 +3285,7 @@ this.eventtaskitemtimeModal_dismiss();
   }
 
 
-
+  CalenderDataLoaded:EventEmitter<boolean>;
   GetScheduledJson() {
 
     this._calenderDto.EmpNo = this.Current_user_ID;
@@ -3252,15 +3357,27 @@ this.eventtaskitemtimeModal_dismiss();
           allDaySlot: false,
           //69 datesSet: () => { this.TwinEvent = []; }
         };
-      });
+
+     
+        if(this.CalenderDataLoaded){
+          this.CalenderDataLoaded.emit(true);
+        }
+  
+   
+
+
+    });
+
   }
 
   isCalendarVisible: boolean = false;
 
-getEventsForWeeks(weeksFromToday: number) {
+getEventsForWeeks(weeksFromToday: number) { 
  
   const today = new Date();
   today.setHours(0, 0, 0, 0); 
+
+  this.durationOfTodayLine = new Date().toLocaleString('sv-SE', { hour12: false }).slice(0, 16).replace('T', ' ');
 
  
   if (weeksFromToday === 3) {
@@ -3291,7 +3408,7 @@ if(this.noSelectedDate == true && weeksFromToday === 0  && this.selectDay){
   }, 0);
 }
 this.noSelectedDate = false;
-const startDate = formattedDate || today;
+const startDate = formattedDate || today; 
 
   this.firstDate = new Date(startDate);
   this.firstDate.setDate(startDate.getDate() + (this.currentWeekOffset * 7));
@@ -3302,14 +3419,18 @@ const startDate = formattedDate || today;
   this.lastDate = new Date(this.firstDate);
   this.lastDate.setDate(this.firstDate.getDate() + 7);
 
+  this.firstDate.setDate(this.firstDate.getDate() - 1); 
+
   if(this.Searchingfunc==false){
     this.Calendarjson = this.Searchingjson;
   }else{
-    this.Calendarjson = this.Scheduledjson.filter(e => {
+    this.Calendarjson = this.Scheduledjson.filter(e => { 
       const eventDate = new Date(e.start.split(" ")[0]);
       return eventDate >= this.firstDate && eventDate <= this.lastDate;
     });
   }
+
+  this.firstDate.setDate(this.firstDate.getDate() + 1);
  
     this.groupedMeetingsArray = Object.entries(this.Calendarjson.reduce((acc, current) => {
       const date = current.start.split(' ')[0]; 
@@ -3320,13 +3441,18 @@ const startDate = formattedDate || today;
       return acc;
   }, {})).map(([date, events]) => ({ date, events }));
 
-      this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({
+ 
+
+      this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({ 
         ...day,
-        events: day.events.map(event => {
+        events: day.events.map(event => {  
             const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
             const title = parts[0]; 
+            
             const linkIndex = parts.findIndex(part => part.includes("Link"));
-    
+           
+            const location = parts.length > 2 && linkIndex > 2 && !parts[1].includes('👨‍💼') ? parts[1] : null;
+            
             let attendees = linkIndex > 1 ? parts.slice(1, linkIndex).map(s => s.trim()) : null;
         
             if (attendees && attendees.length) {
@@ -3338,16 +3464,19 @@ const startDate = formattedDate || today;
                 attendees[0] = match ? `+${parseInt(match[1], 10) + 1}` : `+1`; 
             }
     
+
             const link = linkIndex !== -1 ? parts[linkIndex].split(' ')[0] : null;
-    
-            return { ...event, title, attendees, link };
+        
+           attendees = (attendees || []).map(a => a.replace('+', ''));
+         
+            return { ...event, title, attendees, link, location };
         })
     }));
-
+    
    
-    this.filteredMeetingsArray = Object.values(
+    this.filteredMeetingsArray = Object.values( 
       this.groupedMeetingsArray.flatMap(group =>
-        group.events.flatMap(event => {
+        group.events.flatMap(event => { 
           const [startDate] = event.start.split(' ');
           const [endDate] = event.end.split(' ');
           const nextDate = new Date(startDate);
@@ -3365,11 +3494,29 @@ const startDate = formattedDate || today;
         (acc[date] ??= { date, events: [] }).events.push(...events), acc
       ), {})
     );
+   
+    if(this.filteredMeetingsArray.some(data => new Date(data.date) < new Date(this.firstDate))){
+      this.filteredMeetingsArray.shift(); 
+    }
+     
+     
 
+    if (this.filteredMeetingsArray.length > 0) {  
+      const lastMeetingDate = new Date(this.filteredMeetingsArray[this.filteredMeetingsArray.length - 1].date);
+      this.lastDates.setHours(0, 0, 0, 0);
+      lastMeetingDate.setHours(0, 0, 0, 0);
+      if (lastMeetingDate >  this.lastDates) {
+        this.filteredMeetingsArray.pop();
+      }
+    }
+  
 
-      console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
+     
+ 
+   console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays',this.durationOfTodayLine);
        
 }
+
 
 filterMeetingsOnIconClick() {
   // Trigger search using the same method as input or Enter key
@@ -3698,7 +3845,7 @@ Insert_indraft() {
     
     const mtgAgendas=JSON.stringify(this.allAgendas.length>0?this.allAgendas:[]);
     this._calenderDto.DraftAgendas=mtgAgendas;
- 
+     console.log(this._calenderDto,'Draft meeting')
   this.CalenderService.Newdraft_Meetingnotes(this._calenderDto).subscribe
     (data => {
          
@@ -3798,9 +3945,10 @@ Insert_indraft() {
 
 /////////////////////////////////////////// Created On (Schedule event popup box) Start /////////////////////////////////////////////////////////
 
+Meeing_Name:any;
+Created_by:any;
 
-
-GetClickEventJSON_Calender(arg,meetingClassNeme) {
+GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
  
   this.meetingClassNemes=meetingClassNeme;
    this.EventScheduledjson = [];
@@ -3812,20 +3960,22 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
   this._calenderDto.Schedule_ID = arg;
   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
     ((data) => {
-     
+       
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       this.loading = false;
       var Schedule_date =this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
-      this.AdminMeeting_Status = data['AdminMeeting_Status'];
+      this.AdminMeeting_Status = data['AdminMeeting_Status']; 
       this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
       this.propose_date=Schedule_date;
       console.log(this.EventScheduledjson, "Testing12");
+      this.Meeing_Name = (this.EventScheduledjson[0]['Task_Name']);
+      this.Created_by = this.EventScheduledjson[0].Created_by
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       this.Link_Detail = this.EventScheduledjson[0].Link_Details;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson
       this.Project_dateScheduledjson = this.EventScheduledjson[0].Schedule_date;
-      this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type;
+      this.Schedule_type1 = this.EventScheduledjson[0].Schedule_Type; 
       this.Status1 = this.EventScheduledjson[0].Status.trim();
       this.Proposedate = this.EventScheduledjson[0].Schedule_date;
       this.PropStart = this.EventScheduledjson[0].St_Time;
@@ -3869,8 +4019,8 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
       if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
 
        document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
-       document.getElementById("deleteendit").style.display =this.Meeting_status==true?'none':'flex';
-        document.getElementById("main-foot").style.display = "none";
+       document.getElementById("deleteendit").style.display =this.Meeting_status==true || this.AdminMeeting_Status==1 ?'none':'flex';
+       document.getElementById("main-foot").style.display = "none";
       
       }
       else if ((this.Schedule_type1 == 'Event') && (this.Meeting_status==false) && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
@@ -3883,12 +4033,12 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
       else if ((this.Schedule_type1 == 'Task') && (this.Project_dateScheduledjson >= this._StartDate)) {
         document.getElementById("hiddenedit").style.display = "flex";
         document.getElementById("deleteendit").style.display = "flex";
-       document.getElementById("main-foot").style.display = "none";
+        document.getElementById("main-foot").style.display = "none";
   
       }
       else {
         document.getElementById("hiddenedit").style.display = "none";
-        document.getElementById("deleteendit").style.display =this.Meeting_status==true?'none':'flex';
+        document.getElementById("deleteendit").style.display =this.Meeting_status==true || this.AdminMeeting_Status==1?'none':'flex';
         document.getElementById("main-foot").style.display = "none";
      
       }
@@ -3896,7 +4046,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme) {
 
       this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
-     
+      
       this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
       this.DMS_Scheduledjson = this.DMS_Scheduledjson.split(',');
 
@@ -3954,14 +4104,18 @@ parseTime(time: string): Date {
 
 
 getDurationInHoursMinutes(start: string, end: string): string {
-  const duration = Math.abs(this.parseTime(end).getTime() - this.parseTime(start).getTime()) / 60000;
-  const hours = Math.floor(duration / 60);
-  const minutes = Math.floor(duration % 60);
-  return hours ? `${hours}h : ${minutes}m` : `${minutes}m`;
+  const toMinutes = (t: string) => {
+    let [time, period] = t.match(/(\d+:\d+)([AP]M)/).slice(1);
+    let [h, m] = time.split(':').map(Number);
+    return ((h % 12) + (period === 'PM' ? 12 : 0)) * 60 + m;
+  };
+
+  let duration = (toMinutes(end) - toMinutes(start) + 1440) % 1440;
+  return `${Math.floor(duration / 60)}h : ${duration % 60}m`;
 }
 
 
-newDetails(ProjectCode) {
+newDetails(ProjectCode) { debugger
   let name: string = 'Details';
   var url = document.baseURI + name;
   var myurl = `${url}/${ProjectCode}`;
@@ -3969,7 +4123,7 @@ newDetails(ProjectCode) {
   myWindow.focus();
 }
 
-OnCardClick(P_id: any) {
+OnCardClick(P_id: any) { debugger
   sessionStorage.setItem('portfolioId', P_id);
   let name: string = 'portfolioprojects';
   var url = document.baseURI + name;
@@ -4370,7 +4524,7 @@ DublicateTaskandEvent() {
 
         this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
           this.Memos_List = JSON.parse(data['JsonData']);
-          console.log(this.Memos_List, "test iiii");
+        
 
           let arr3 = [];
           var str = (this.EventScheduledjson[0]['DMS_Name']);
@@ -4444,16 +4598,23 @@ DublicateTaskandEvent() {
         else
 
         this.validStartTimearr=[...this.StartTimearr];
-        this.timingarryend = [];
-        this.Time_End = [];
-        this.Time_End = [...this.StartTimearr];
-        let _index = this.Time_End.indexOf(this.Startts);
-        if (_index + 1 === this.Time_End.length) {
-          _index = -1;
-        }
-        this.timingarryend = this.Time_End.splice(_index + 1);
-        this.EndTimearr = this.timingarryend;
+        // this.timingarryend = [];
+        // this.Time_End = [];
+        // this.Time_End = [...this.StartTimearr];
+        // let _index = this.Time_End.indexOf(this.Startts);
+        // if (_index + 1 === this.Time_End.length) {
+        //   _index = -1;
+        // }
+        // this.timingarryend = this.Time_End.splice(_index + 1);
+        // this.EndTimearr = this.timingarryend;
     // valid starttimearr and endtimearr setting end.
+        this.Time_End = [];
+        this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+        let _from = this.Time_End.indexOf(this.Startts);
+        const eventmaxDuration=286;
+        let _to=_from+eventmaxDuration;
+        this.EndTimearr=this.Time_End.slice(_from,_to);
+    
     });
   this.customEventModal_dismiss();
   this.customTaskModal_dismiss()
@@ -4775,16 +4936,25 @@ ReshudingTaskandEvent() {
         } else
 
         this.validStartTimearr=[...this.StartTimearr];
-        this.timingarryend = [];
-        this.Time_End = [];
-        this.Time_End = [...this.StartTimearr];
-        let _index = this.Time_End.indexOf(this.Startts);
-        if (_index + 1 === this.Time_End.length) {
-          _index = -1;
-        }
-        this.timingarryend = this.Time_End.splice(_index + 1);
-        this.EndTimearr = this.timingarryend;
+        // this.timingarryend = [];
+        // this.Time_End = [];
+        // this.Time_End = [...this.StartTimearr];
+        // let _index = this.Time_End.indexOf(this.Startts);
+        // if (_index + 1 === this.Time_End.length) {
+        //   _index = -1;
+        // }
+        // this.timingarryend = this.Time_End.splice(_index + 1);
+        // this.EndTimearr = this.timingarryend;
         // valid starttimearr and endtimearr setting end.
+        this.Time_End = [];
+        this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+        let _from = this.Time_End.indexOf(this.Startts);
+        const eventmaxDuration=286;
+        let _to=_from+eventmaxDuration;
+        this.EndTimearr=this.Time_End.slice(_from,_to);
+
+
+
     });
    this.customEventModal_dismiss();
    this.customTaskModal_dismiss();
@@ -4992,7 +5162,7 @@ RecurrValueMonthly:boolean=false;
 
       if (finalarray.length > 0) {
         finalarray.forEach(element => {
-
+          this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
           const date1: Date = new Date(this._StartDate);
           if (this.Startts.includes("PM") && this.Endtms.includes("AM")) {
             this._SEndDate = moment(this._StartDate, "YYYY-MM-DD").add(1, 'days');
@@ -5227,7 +5397,7 @@ RecurrValueMonthly:boolean=false;
         console.log(this._calenderDto,'new updaet data') 
         this.CalenderService.NewUpdateCalender(this._calenderDto).subscribe
           (data => {
-          
+    
             // alert(data['Schedule_date'])
             this.Attamentdraftid= data['draftid']
            frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
@@ -5540,24 +5710,10 @@ sweet_end() {
 
 
 onCustomBtnClicked(){
- Swal.fire({
-    title: `Repeat meeting`,
-    text: `A meeting cannot be scheduled more than once on the same day. To change the meeting time, please edit the existing meeting`,
-    showCancelButton: true,
-    confirmButtonText: 'OK',
-    cancelButtonText: 'Cancel',
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Call your second function when OK is clicked
-      $('#propse11').removeClass('show');
-      this.repeatEvent();
-    } 
-    // else if (result.isDismissed) {
-      // Skip all when Cancel is clicked
-      // continue; // Skip this file
-    // }
-  })
+$('#propse11').removeClass('show');
+  this.repeatEvent();
 }
+
 
 
 
@@ -5828,8 +5984,8 @@ repeatEventTime(){
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
     if (finalarray.length > 0) {
-      finalarray.forEach(element => {
-  
+      finalarray.forEach(element => { 
+        this.repeatStartDate = moment(this.repeatStartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this.repeatStartDate);
         const date2: Date = new Date(this._SEndDate);
   
@@ -6040,7 +6196,7 @@ getMeetingApprovals(){
     //  $("#cal-main").addClass("col-lg-12");
 
    }
-     console.log(this.multiapproval_json,'appraval data in the dashboard')
+    
  })
 }
 
@@ -6113,26 +6269,28 @@ LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, ty
     // else if (this.projectInfo.AuthorityEmpNo != this.projectInfo.ResponsibleEmpNo) {
     //   FileUrl = (FileUrl + this.projectInfo.ResponsibleEmpNo + "/" + pcode + "/" + url1);
     // }
-    let name = "ArchiveView/" + pcode;
+    let name = "ArchiveView/" + this.Schedule_ID;
+    let meetingName =  this.Meeing_Name;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(FileUrl);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");
     filename = filename.replace(/&/g, "%26");
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type +"&"+"Schedule_ID="+this.Schedule_ID +"&"+ "Title_Name=" + meetingName;
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
-  else if (iscloud == true) {
-    let name = "ArchiveView/" + pcode;
+  else if (iscloud == true) {debugger
+    let name = "ArchiveView/" + this.Schedule_ID;
+    let meetingName =  this.Meeing_Name;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
     let url = encoder.encode(url1);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");
     filename = filename.replace(/&/g, "%26");
-    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type;
+    var myurl = rurl + "/url?url=" + url + "&" + "uid=" + encodeduserid + "&" + "filename=" + filename + "&" + "submitby=" + submitby + "&" + "type=" + type +"&"+"Schedule_ID="+this.Schedule_ID +"&"+ "Title_Name=" + meetingName;
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
@@ -6155,7 +6313,7 @@ GetPending_Request() {
       this.Pending_request = data as [];
       this.pendingcount = this.Pending_request.length;
       this.filterPending('date');
-      console.log(this.Pending_request, "111100000")
+     
     });
 }
 
@@ -6261,6 +6419,8 @@ filterPending(type: 'date' | 'meeting'): void {
    
         }
         this.Project_NameScheduledjson = JSON.parse(this.EventScheduledjson[0].Project_code);
+
+        console.log(this.Project_NameScheduledjson,'this.Project_NameScheduledjson')
 
         this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
         this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
@@ -6494,6 +6654,7 @@ filterDraft(type : 'date'|'meeting'):void{
     this.repeatStartDate =null;
     this._StartDate=this.disablePreviousTodayDate;
     this.repeatStartDate = this.disablePreviousTodayDate; 
+    this._SEndDate = this.disablePreviousTodayDate;
    
   }
 
@@ -6521,7 +6682,7 @@ BookMarks:boolean;
 MeetingBookmark(flagid:any) {
   if (this.isSubmitting) return;
   this.isSubmitting = true;
-
+ 
   this._calenderDto.Schedule_ID = this.Schedule_ID;
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.flagid = flagid;
@@ -6529,7 +6690,7 @@ MeetingBookmark(flagid:any) {
   this.CalenderService.NewUpdateMeetingBookmark(this._calenderDto).subscribe
     ((data) => {
       if(data['message'] == '1'){
-    
+        debugger
         this._calenderDto.Schedule_ID=this.Schedule_ID;
 
         this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
@@ -6565,7 +6726,7 @@ BookmarkMeetingsList() {
 
           this.meetingbookmarks = JSON.parse(data['meetingbookmarks']);
           this.totalbookmarkslist =this.meetingbookmarks.length;
-          console.log(this.meetingbookmarks,'book mark list data')
+         
   })
 }
 
@@ -6597,6 +6758,7 @@ Bookmark_Delete(Scheduleid:any) {
 daySummaryReport:any;
 dueTodayTasksCount:{taskType:string,count:number}[]=[];
 reportCount:any;
+PendingTasks:any;
 
 getDayReportSummary(){
   this.service.NewGetEmployeePerformance(this.Current_user_ID).subscribe((res:any)=>{
@@ -6614,7 +6776,14 @@ getDayReportSummary(){
       this.reportCount = ["NewProjectRejected", "AssignedTasksDue", "ActionsDelayed", "ProjectsDelayed", "StandardDelayed"]
       .filter(key => this.daySummaryReport[key] > 0).length;
 
-      console.log("daySummaryReport:",this.reportCount);
+
+      this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
+      console.log("daySummaryReport:",this.PendingTasks);
+
+
+
+
+      
 
       if(this.reportCount){
         this.showLoader=true;
@@ -6756,7 +6925,7 @@ dayScheduleJson(dayFromToday: number){
 
             this.dayMappedList = this.dayMappedList.map(hour => ({
               ...hour,
-              events: hour.events.map(event => {
+              events: hour.events.map(event => { 
                   const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
                   const title = parts[0];
                   const link = parts.find(part => part.includes("Link"))?.split(' ')[0] || null;
@@ -6779,7 +6948,7 @@ formattedDayTime:any;
 monthDateBinde:any;
 
 
-dayTimeBinding(time:any){ debugger
+dayTimeBinding(time:any){ 
 const now = new Date();  
 let [hour, period] = time.split(" ");
 let timeHour = (period === "PM" && +hour !== 12) ? +hour + 12 : (period === "AM" && +hour === 12) ? 0 : +hour;
@@ -6789,7 +6958,7 @@ this.monthDateBinde = this.openBoxSelectedDate;
 if(this.openPopupBox == true && (this.openBoxSelectedDate == this.today && timeHour >= now.getHours()) || this.openPopupBox == true && this.openBoxSelectedDate > this.today ){
     this.Task_type(2);    
   }else if(  this.openPopupBox == true){
-    this.notifyService.showInfo("Your selected date is invalid. Please select a valid date.", "Failed"); 
+    this.notifyService.showInfo("Your selected time is invalid. Please select a valid time.", "Failed"); 
   }else{
     this.openPopupBox = true
   }
@@ -6801,9 +6970,10 @@ updateTimeLine() {
   const now = new Date();
   let hours = now.getHours(); 
   const minutes = now.getMinutes();
-  const isPM = hours >= 12;
-  const formattedHour = (hours % 12 || 12) + (isPM ? " PM" : " AM");
-  this.currentHourIndex = this.hoursList.findIndex(hour => hour.includes(formattedHour));
+  // const isPM = hours >= 12;
+  // const formattedHour = (hours % 12 || 12) + (isPM ? " PM" : " AM");
+  // this.currentHourIndex = this.hoursList.findIndex(hour => hour.includes(formattedHour));
+  this.currentHourIndex = hours
   this.currentTimeTop = (minutes / 60) * 48;
 }
 /////////////////////////////////////////// Day section end /////////////////////////////////////////////////////////
@@ -6825,7 +6995,7 @@ weeklyScheduleJson(weekFromToday) {
   const startOfWeek = moment(selectedDate).startOf('isoWeek');
   this.weekDates = Array.from({ length: 7 }, (_, i) => startOfWeek.clone().add(i, 'days').format('YYYY-MM-DD'));
 
-   if (this.weekDates.includes(this.today)) { 
+   if (this.weekDates.includes(this.today)) {  
      this.timeLineVisible= true;
      this.updateTimeLine();
      this.timeLineInterval = setInterval(() => this.updateTimeLine(), 60000);
@@ -6873,7 +7043,7 @@ weeklyScheduleJson(weekFromToday) {
 
 
 
-monthTimeBinding(data,time){ debugger
+monthTimeBinding(data,time){ 
   this.monthDateBinde = data;
   const now = new Date();  
   let [hour, period] = time.split(" ");
@@ -6882,7 +7052,7 @@ monthTimeBinding(data,time){ debugger
     if(this.openPopupBox == true && (this.monthDateBinde == this.today && timeHour >= now.getHours()) || this.openPopupBox == true && this.monthDateBinde > this.today ){
       this.Task_type(2);    
     }else if(  this.openPopupBox == true){
-      this.notifyService.showInfo("Your selected date is invalid. Please select a valid date.", "Failed"); 
+      this.notifyService.showInfo("Your selected date and time is invalid. Please select a valid date and time.", "Failed"); 
     }else{
       this.openPopupBox = true
     }
@@ -6965,17 +7135,140 @@ convertToISO(dateString: string) {
 }
 
 
+
+
+viewconfirm() {
+  const _arraytext = [];
+  if (this.selectedrecuvalue == "2" || this.selectedrecuvalue == "3") {
+    for (let index = 0; index < this.dayArr.length; index++) {
+      if (this.dayArr[index].checked) {
+        const day = this.dayArr[index].value;
+        _arraytext.push(day);
+      }
+    }
+    for (let index = 0; index < this.MonthArr.length; index++) {
+      if (this.MonthArr[index].checked == true) {
+        const day = this.MonthArr[index].value;
+        _arraytext.push(day);
+      }
+    }
+  }
+  else {
+    _arraytext.push(this.maxDate);
+  }
+  if (this._OldRecurranceId != this.selectedrecuvalue || this._OldRecurranceValues != _arraytext.toString()) {
+    var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+    radio1.disabled = false;
+    radio1.checked = true;
+    var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+    radio2.disabled = false;
+    radio2.checked = false;
+  }
+  else if (this._OldRecurranceId == this.selectedrecuvalue && this._OldRecurranceValues == _arraytext.toString()) {
+    document.getElementById("div_thisevent").style.display = "block";
+    var radio1 = document.getElementById('r1') as HTMLInputElement | null;
+    radio1.disabled = false;
+    radio1.checked = true;
+    var radio2 = document.getElementById('r2') as HTMLInputElement | null;
+    radio2.disabled = false;
+    radio2.checked = false;  
+    this._PopupConfirmedValue = 1;
+  }
+}
+
 /////////////////////////////////////////// Monthly section end /////////////////////////////////////////////////////////
-customPendingTaskModal() {
-  document.getElementById("customPendingTaskModal").style.display = "block";
-  document.getElementById("customPendingTaskModal").classList.add("show");
-  document.getElementById("customPendingTaskModalBackdrop").style.display = "block";
-  document.getElementById("customPendingTaskModalBackdrop").classList.add("show");
+
+
+
+
+
+
+link: string = '';
+generateLink(): void {
+  this.link = 'https://cswebapps.com/creativeplanner/StreamCalendar/' +  this.Schedule_ID
 }
-customPendingTaskModal_dismiss() {
-  document.getElementById("customPendingTaskModal").style.display = "none";
-  document.getElementById("customPendingTaskModal").classList.remove("show");
-  document.getElementById("customPendingTaskModalBackdrop").style.display = "none";
-  document.getElementById("customPendingTaskModalBackdrop").classList.remove("show"); 
+
+
+
+shareOnWhatsApp(): void {
+  // URL encode the link
+
+  const link = 'https://cswebapps.com/creativeplanner/StreamCalendar/' +  this.Schedule_ID
+  const encodedLink = encodeURIComponent(link);
+
+  // Create the WhatsApp share URL
+  const whatsappUrl = `https://wa.me/?text=${encodedLink}`;
+
+  // Open the URL in a new tab/window
+  window.open(whatsappUrl, '_blank');
 }
+
+shareOnFacebook(): void {
+  
+  // URL encode the link
+  const link = 'https://cswebapps.com/creativeplanner/portfolioprojects/' +  this.Schedule_ID
+  const encodedLink = encodeURIComponent(link);
+  // Create the Facebook share URL
+  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedLink}`;
+
+  // Open the URL in a new tab/window
+  window.open(facebookShareUrl, '_blank');
+}
+
+shareOnTwitter(): void {
+  // URL encode the components
+  const link = 'https://cswebapps.com/creativeplanner/portfolioprojects/' +  this.Schedule_ID
+  const encodedUrl = encodeURIComponent(link);
+
+  // Create the Twitter Intent URL
+  let twitterIntentUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}`;
+
+  // Open the URL in a new tab/window
+  window.open(twitterIntentUrl, '_blank');
+}
+
+
+
+copyLinkToClipboard(): void {
+
+  navigator.clipboard.writeText(this.link).then(() => {
+      this._snackBar.open('link copied to clipboard', 'End now', {
+        duration: 5000,
+        horizontalPosition: "right",
+        verticalPosition: "bottom",
+      });
+  
+  }).catch(err => {
+    console.error('Could not copy text: ', err);
+  });
+
+}
+
+
+
+
+
+
+// getLastEventWithValidEnd(events: any[], durationOfTodayLine: string): any {
+//   return [...events]
+//     .filter(e => e.end < durationOfTodayLine)
+//     .sort((a, b) => b.end.localeCompare(a.end))[0];
+// }
+
+
+getLastEventWithValidEnd(events: any[], duration: string): any {
+  let last = null;
+  for (let i = 0; i < events.length; i++) {
+    if (events[i].end < duration) {
+      if (last && last.end === events[i].end) continue;
+      last = events[i];
+    }
+  }
+  return last;
+}
+
+
+
+
+
 }

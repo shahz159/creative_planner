@@ -203,8 +203,8 @@ export class ActionToProjectComponent implements OnInit {
       this.Sub_ProjectName=ta.name;
       this._Description=ta.description;
          if(ta.assignedTo!==''){
-                   this.selectedEmpNo=ta.assignedTo;
-                   this.disableAssignedField=true;
+              this.selectedEmpNo=ta.assignedTo;
+              this.disableAssignedField=true;
         }
     });
 
@@ -422,16 +422,16 @@ export class ActionToProjectComponent implements OnInit {
 
   EmployeeOnSelect(obj) {
     // this.selectedEmpNo = obj['Emp_No'];
-    debugger
-    if(obj['Emp_No'] == this.Owner_Empno){
-      this.selectedEmpNo='';
-      this._selectemp = true;
-      this.notifyService.showInfo("Action cannot be assigned to project owner","");
-    }
-    else{
+   
+    // if(obj['Emp_No'] == this.Owner_Empno){
+    //   this.selectedEmpNo='';
+    //   this._selectemp = true;
+    //   this.notifyService.showInfo("Action cannot be assigned to project owner","");
+    // }
+    // else{
       this._selectemp = false;
       this.selectedEmpNo = obj['Emp_No'];
-    }
+    // }
   }
 
   EmployeeOnDeselect(obj) {
@@ -1397,11 +1397,12 @@ getFileExtension(fileName: any): string | null {
     document.getElementById("mysideInfobar").classList.remove("kt-action-panel--on");
     }
     else if(this._Urlid==4){
+    this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection if present.
     this.router.navigate(["./Details", this.selectedProjectCode]);
     document.getElementById("mysideInfobar1").classList.remove("kt-action-panel--on");
     }
     else if(this._Urlid==5){
-
+    this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection if present.
     this.router.navigate(["./backend/createproject"]);
     document.getElementById("mysideInfobar12").classList.remove("kt-action-panel--on");
     document.getElementById("kt-bodyc").classList.remove("overflow-hidden");

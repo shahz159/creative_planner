@@ -16,7 +16,7 @@ export class CalenderService {
   readonly rootUrl = this.commonUrl.apiurl;
   readonly rootUrlcore = this.commonUrl.apiurlcore;
   
-  GetCalenderProjectandsubList(obj: CalenderDTO) {
+  GetCalenderProjectandsubList(obj: CalenderDTO) {  
     let EmpNo = localStorage.getItem('EmpNo');
     this.obj_CalenderDTO.EmpNo = EmpNo;
     this.obj_CalenderDTO.Project_Code = obj.Project_Code;
@@ -58,7 +58,14 @@ export class CalenderService {
   }
 
 
-
+  async getSasUrl(filePath: string, expiryTime: Date): Promise<string> {
+    const expiryTimeString = expiryTime.toISOString(); // Convert to UTC string
+    const response = await this.http.get<{ sasUrl: string }>(
+      `${this.rootUrlcore}Azure/NewGenerateSASTokenUrl?filePath=${encodeURIComponent(filePath)}&expiryTime=${expiryTimeString}`
+    ).toPromise();
+   
+    return response.sasUrl;
+  }
 
 
 
@@ -207,7 +214,7 @@ export class CalenderService {
 
 
 
-  Newdraft_Meetingnotes(obj:CalenderDTO){
+  Newdraft_Meetingnotes(obj:CalenderDTO){ debugger
     this.obj_CalenderDTO.draftid=obj.draftid;
     this.obj_CalenderDTO.Dms = obj.Dms;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
@@ -308,9 +315,9 @@ NewPending_table(obj:CalenderDTO){ debugger
   }
 
   _AzureUploadCalendarAttachments(data) {
-    console.log(data,'attachment data')
-
-    console.log(this.rootUrlcore + "Azure/NewAddCalendarAttachmentCore",'attachment url')
+   
+   
+    console.log(this.rootUrlcore + "Azure/NewAddCalendarAttachmentCore",'attachment url2')
     return this.http.post(this.rootUrlcore + "Azure/NewAddCalendarAttachmentCore", data
       , {
         reportProgress: true,
@@ -347,7 +354,7 @@ NewPending_table(obj:CalenderDTO){ debugger
   }
 
   NewUpdateCalender(obj: CalenderDTO){
-
+debugger
     this.obj_CalenderDTO.ScheduleJson = obj.ScheduleJson;
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.flagid = obj.flagid;
@@ -540,7 +547,7 @@ GetRecurrenceMeetingsService(obj:CalenderDTO){
 
 
 NewUpdateMeetingBookmark(obj:CalenderDTO){
-
+debugger
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID,
   this.obj_CalenderDTO.Emp_No=obj.Emp_No,
   this.obj_CalenderDTO.flagid=obj.flagid

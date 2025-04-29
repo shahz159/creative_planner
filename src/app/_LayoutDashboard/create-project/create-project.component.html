@@ -460,8 +460,9 @@
                                     </div>
                                     <div class="kt-act-info">
                                       <div class="kt-act-ttl-v" >
+                                        <!-- LoadDocument(record.Reference) -->
                                         <h6 title="Project name">{{record.Task_Name}}  <span *ngIf="record.FileName" class="fa fa-paperclip  attachment cursor-pointer"  [style.height.px]="10"
-                                          [style.width.px]="10" title="Reference attachment" (click)="LoadDocument(record.Reference)"></span></h6>
+                                          [style.width.px]="10" title="Reference attachment" (click)="LoadDocument1(0,true,record.FileName,record.Reference,getFileExtension(record.Reference),record.submitby)"></span></h6>
                                         <div class="d-flex">
                                           <div class="kt-vi-act-dtl"><span class="kt-act-svg-ic" title="Start date and End date" ><svg
                                                 xmlns="http://www.w3.org/2000/svg" width="15px" height="15px"
@@ -1533,11 +1534,21 @@
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project name<span class="text-danger">*</span></label>
                                   <input class="form-control" type="text"
-                                    placeholder="Enter project name" [ngClass]="{'error-border': (!PrjName&&notProvided)||(isPrjNameValid==='TOOSHORT')||(PrjName&&PrjName.length>100)}" [(ngModel)]="PrjName"  #PrjNameF="ngModel" (ngModelChange)="isPrjNameValid=isValidString(PrjName.trim(),3)" />
+                                    placeholder="Enter project name" [ngClass]="{'error-border': (!PrjName&&notProvided)||(isPrjNameValid==='TOOSHORT')||(PrjName&&PrjName.length>100)||(isPrjNameUsed)}" [(ngModel)]="PrjName"  #PrjNameF="ngModel" (ngModelChange)="isPrjNameValid=isValidString(PrjName.trim(),3);  isPrjNameInUse(PrjName);" />
                                     <div class="d-flex flex-column">
-                                      <span *ngIf="!PrjName&&notProvided" style="color:rgb(217,48,37)">Please enter project name.</span>
-                                      <span *ngIf="PrjName&&PrjName.length>100" style="color:rgb(217,48,37)" >Maximum 100 characters are allowed.</span>
-                                      <span *ngIf="isPrjNameValid==='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter at least 3 words, maximum 100 characters are allowed.</span>
+                                      <ng-container *ngIf="((!PrjName&&notProvided)||(PrjName&&PrjName.length>100)||(isPrjNameValid==='TOOSHORT')); else ispnameinuse">
+                                        <span *ngIf="!PrjName&&notProvided" style="color:rgb(217,48,37)">Please enter project name.</span>
+                                        <span *ngIf="PrjName&&PrjName.length>100" style="color:rgb(217,48,37)" >Maximum 100 characters are allowed.</span>
+                                        <span *ngIf="isPrjNameValid==='TOOSHORT'" style="color:rgb(217,48,37)">Please enter at least 3 words, maximum 100 characters are allowed.</span>
+                                      </ng-container>
+                                      <ng-template #ispnameinuse>
+                                        <span *ngIf="isPrjNameUsed" style="color:rgb(217,48,37)">
+                                          <svg width="15px" height="15px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#000000" stroke="#fff" stroke-width="36px"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                            <g id="SVGRepo_iconCarrier"><path fill="#e80202" d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm0 192a58.432 58.432 0 0 0-58.24 63.744l23.36 256.384a35.072 35.072 0 0 0 69.76 0l23.296-256.384A58.432 58.432 0 0 0 512 256zm0 512a51.2 51.2 0 1 0 0-102.4 51.2 51.2 0 0 0 0 102.4z"></path></g>
+                                          </svg>
+                                          The project name is already in use. Please enter a unique name.
+                                        </span>
+                                      </ng-template>
                                     </div>
                                     <!-- <span *ngIf="isPrjNameValid==='TOOLONG'"  style="color:rgb(217,48,37)">Maximum 100 Words allowed</span> -->
                                 </div>
@@ -2384,7 +2395,7 @@
 
                                             </div>
                                             <div class="kt-info-data-v">
-                                              <b class="word-break text-info curser-pointer " (click)="LoadDocument1(projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" >{{fileAttachment.name}}</b>
+                                              <b class="word-break text-info curser-pointer " (click)="LoadDocument1(projectInfo.Project_Code,projectInfo.IsCloud,projectInfo.Sourcefile,projectInfo.CompleteProofDoc,projectInfo.contenttype,projectInfo.Responsible)" >{{fileAttachment.name}}</b>
                                             </div>
                                           </div>
                                           <div *ngSwitchCase="false">
@@ -2680,7 +2691,7 @@
                                   </div>
                                   <div class="kt-info-data-v">
                                     <b
-                                      class="word-break text-info cursor-pointer" (click)="LoadDocument1(PrjActionsInfo[currentActionView].IsCloud,PrjActionsInfo[currentActionView].Sourcefile,PrjActionsInfo[currentActionView].CompleteProofDoc,PrjActionsInfo[currentActionView].contenttype,PrjActionsInfo[currentActionView].Responsible)">{{PrjActionsInfo[currentActionView].Sourcefile}}</b>
+                                      class="word-break text-info cursor-pointer" (click)="LoadDocument1(PrjActionsInfo[currentActionView].Project_Code,PrjActionsInfo[currentActionView].IsCloud,PrjActionsInfo[currentActionView].Sourcefile,PrjActionsInfo[currentActionView].CompleteProofDoc,PrjActionsInfo[currentActionView].contenttype,PrjActionsInfo[currentActionView].Responsible)">{{PrjActionsInfo[currentActionView].Sourcefile}}</b>
                                   </div>
                                 </div>
                               </div>
@@ -2754,11 +2765,23 @@
                                   <label class="pe-label">Project name</label>
                                   <div class="input-icon project-name_ed curser-pointer">
                                       <input type="text" class="form-control" placeholder="Enter project name" [(ngModel)]="ProjeditName"  
-                                      [ngClass]="{'error-border':(!ProjeditName&&notProvided)||(isPrjNameValids=='TOOSHORT')||(ProjeditName&&ProjeditName.length > 100)}" 
-                                      (ngModelChange)="isPrjNameValids=isValidString(ProjeditName.trim(),3)"/>
+                                      [ngClass]="{'error-border':(!ProjeditName&&notProvided)||(isPrjNameValids=='TOOSHORT')||(ProjeditName&&ProjeditName.length > 100)||(isPrjNameUsed)}" 
+                                      (ngModelChange)="isPrjNameValids=isValidString(ProjeditName.trim(),3); isPrjNameInUse(ProjeditName);  "/>
                                       <div class="d-flex flex-column">
-                                        <span *ngIf="isPrjNameValids=='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter atleast 3 words, Maximum 100 characters are allowed. </span>
-                                        <span *ngIf="ProjeditName&&ProjeditName.length > 100"  style="color:rgb(217,48,37)">Maximum 100 characters are allowed.</span>
+                                  
+                                        <ng-container *ngIf="((isPrjNameValids=='TOOSHORT')||(ProjeditName&&ProjeditName.length > 100)); else ispnameinuse2">
+                                          <span *ngIf="isPrjNameValids=='TOOSHORT'"  style="color:rgb(217,48,37)">Please enter atleast 3 words, Maximum 100 characters are allowed. </span>
+                                          <span *ngIf="ProjeditName&&ProjeditName.length > 100"  style="color:rgb(217,48,37)">Maximum 100 characters are allowed.</span>  
+                                        </ng-container>
+                                        <ng-template #ispnameinuse2>
+                                          <span *ngIf="isPrjNameUsed" style="color:rgb(217,48,37)">
+                                            <svg width="15px" height="15px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#000000" stroke="#fff" stroke-width="36px"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                              <g id="SVGRepo_iconCarrier"><path fill="#e80202" d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm0 192a58.432 58.432 0 0 0-58.24 63.744l23.36 256.384a35.072 35.072 0 0 0 69.76 0l23.296-256.384A58.432 58.432 0 0 0 512 256zm0 512a51.2 51.2 0 1 0 0-102.4 51.2 51.2 0 0 0 0 102.4z"></path></g>
+                                            </svg>
+                                            The project name is already in use. Please enter a unique name.
+                                          </span>
+                                        </ng-template>
+                                      
                                       </div>
                                   </div>
                               </div>

@@ -23,7 +23,7 @@
                         </ng-container>
                             <ng-container *ngIf="Schedule_ID">
                                 <span class="Running" >Meeting</span>
-                                <span matTooltip="Click to see the meeting." (click)="viewMeeting(Schedule_ID)" class="kt-fils-v-uname">{{filename}}</span>
+                                <span matTooltip="Click to see the meeting." (click)="viewMeeting(Schedule_ID)" class="kt-fils-v-uname">{{Title_Name}} ({{filename}})</span>
                             </ng-container>
                         </div>
                         <a  class="kt-inbox__message mt-2">

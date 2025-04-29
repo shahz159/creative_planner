@@ -16,6 +16,7 @@ export class RoleService {
   _obj: RoleDTO
   objRole_list: RoleDTO[];
   constructor(private http: HttpClient, private commonUrl: ApiurlService) {
+    debugger
     this.currentUserSubject = new BehaviorSubject<UserDTO>(JSON.parse(localStorage.getItem('currentUser_SP')));
     this.currentUser = this.currentUserSubject.asObservable();
     this._obj = new RoleDTO();
@@ -24,14 +25,14 @@ export class RoleService {
   public get currentUserValue(): UserDTO {
     return this.currentUserSubject.value[0];
   }
-  getrolelist(_values: RoleDTO) {
+  getrolelist(_values: RoleDTO) { debugger
     this._obj.Search= _values.Search;
     this._obj.PageNumber= _values.PageNumber;
     this._obj.PageSize = _values.PageSize;
     this._obj.OrganizationId = this.currentUserValue.organizationid;
     this._obj.RoleId = this.currentUserValue.RoleId;
     this._obj.CreatedBy = this.currentUserValue.createdby;
-  
+
     return this.http.post(this.rootUrl + "RoleAPI/NewGetRoles", this._obj)
   }
   insertroledetails(_values: RoleDTO) {  

@@ -16,7 +16,7 @@
             
             <ul class="kt-menu__nav pt-0">
 
-                <li class="kt-menu__item" >
+                <li class="kt-menu__item d-none" >
                     <!-- (click)="navigateToSection('/backend/dashboard')" [ngClass]="{'active':getActiveLink().startsWith('/backend/dashboard')}" -->
                     <a routerLink="dashboard" routerLinkActive="active" [routerLinkActiveOptions]={exact:true} class="kt-menu__link kt-menu__toggle">
                         <!-- <i class="kt-menu__link-icon flaticon2-protection" id="dashboard"></i> -->
@@ -116,14 +116,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="kt-menu__item">
-                    <!-- (click)="navigateToSection('/backend/createproject')"  [ngClass]="{'active':getActiveLink().startsWith('/backend/createproject')}" -->
-                    <a routerLink="createproject"  routerLinkActive="active" class="kt-menu__link kt-menu__toggle">
-                        <svg id="New_Project" class="kt-menu__link-icon" fill="currentColor" width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="-10 -30 120 160" enable-background="new 0 0 100 100" xml:space="preserve"><g><g><path fill="currentColor" d="M95,79.564c0,2.236-1.855,4.091-4.091,4.091h-7.255v7.255c0,2.236-1.855,4.091-4.091,4.091    c-2.291,0-4.091-1.855-4.091-4.091v-7.255h-7.309c-1.091,0-2.127-0.436-2.891-1.2c-0.709-0.764-1.2-1.745-1.2-2.891    c0-2.291,1.855-4.091,4.091-4.091h7.309v-7.309c0-2.236,1.8-4.091,4.091-4.091c0.818,0,1.636,0.273,2.291,0.709    c1.091,0.709,1.8,1.964,1.8,3.382v7.309h7.255C93.145,75.473,95,77.273,95,79.564z"/><path fill="currentColor" d="M57.691,21.364v-0.545c-0.055-4.2-3.436-7.636-7.691-7.636s-7.691,3.436-7.691,7.636v0.545H57.691z     M34.127,21.364v-0.545C34.127,12.091,41.218,5,50,5s15.873,7.091,15.873,15.818v0.545h13.636C88.073,21.364,95,28.291,95,36.855    v11.236v0.491v12.982c0,2.236-1.855,4.091-4.091,4.091c-0.818,0-1.636-0.273-2.291-0.709c-1.091-0.709-1.8-1.964-1.8-3.382V48.582    v-0.491V36.855c0-2.018-0.818-3.818-2.127-5.182c-1.364-1.364-3.164-2.127-5.182-2.127H61.782H38.218H20.491    c-2.018,0-3.818,0.764-5.182,2.127c-1.309,1.364-2.127,3.164-2.127,5.182v11.236v0.491v30.927c0,4.036,3.273,7.309,7.309,7.309    h41.018c2.236,0,4.091,1.8,4.091,4.091c0,2.236-1.855,4.091-4.091,4.091H20.491C11.982,94.945,5,88.073,5,79.509V48.582v-0.491    V36.855c0-8.564,6.927-15.491,15.491-15.491H34.127z"/></g></g></svg>
-                        <span class="kt-menu__link-text"> New project</span>
-                        <i class="kt-menu__ver-arrow la la-angle-right"></i>
-                    </a>
-                </li>
+               
                 <li class="kt-menu__item">
                     <!-- (click)="navigateToSection('/backend/ProjectsSummary')"  [ngClass]="{'active':getActiveLink().startsWith('/backend/ProjectsSummary')}" -->
                     <a routerLink="ProjectsSummary" routerLinkActive="active"   class="kt-menu__link kt-menu__toggle">
@@ -172,6 +165,14 @@
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M10.25 11.27H8.81V14.5H7V10.105V5.71H10.26C11.29 5.71 12.09 5.94 12.66 6.4C13.22 6.87 13.5 7.5 13.5 8.36C13.5 8.96 13.37 9.46 13.11 9.86C12.85 10.26 12.46 10.58 11.93 10.81L13.83 14.4V14.5H11.89L10.25 11.27ZM10.27 9.81H8.81V7.18H10.26C10.75 7.18 11.11 7.29 11.34 7.53C11.58 7.77 11.69 8.09 11.69 8.5C11.69 8.91 11.57 9.23 11.32 9.46C11.07 9.69 10.72 9.81 10.27 9.81Z" fill="currentColor"></path>
                             </svg>
                         <span class="kt-menu__link-text">Runway task</span>
+                        <i class="kt-menu__ver-arrow la la-angle-right"></i>
+                    </a>
+                </li>
+                <li class="kt-menu__item">
+                    <!-- (click)="navigateToSection('/backend/createproject')"  [ngClass]="{'active':getActiveLink().startsWith('/backend/createproject')}" -->
+                    <a routerLink="createproject"  routerLinkActive="active" class="kt-menu__link kt-menu__toggle">
+                        <svg id="New_Project" class="kt-menu__link-icon" fill="currentColor" width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="-10 -30 120 160" enable-background="new 0 0 100 100" xml:space="preserve"><g><g><path fill="currentColor" d="M95,79.564c0,2.236-1.855,4.091-4.091,4.091h-7.255v7.255c0,2.236-1.855,4.091-4.091,4.091    c-2.291,0-4.091-1.855-4.091-4.091v-7.255h-7.309c-1.091,0-2.127-0.436-2.891-1.2c-0.709-0.764-1.2-1.745-1.2-2.891    c0-2.291,1.855-4.091,4.091-4.091h7.309v-7.309c0-2.236,1.8-4.091,4.091-4.091c0.818,0,1.636,0.273,2.291,0.709    c1.091,0.709,1.8,1.964,1.8,3.382v7.309h7.255C93.145,75.473,95,77.273,95,79.564z"/><path fill="currentColor" d="M57.691,21.364v-0.545c-0.055-4.2-3.436-7.636-7.691-7.636s-7.691,3.436-7.691,7.636v0.545H57.691z     M34.127,21.364v-0.545C34.127,12.091,41.218,5,50,5s15.873,7.091,15.873,15.818v0.545h13.636C88.073,21.364,95,28.291,95,36.855    v11.236v0.491v12.982c0,2.236-1.855,4.091-4.091,4.091c-0.818,0-1.636-0.273-2.291-0.709c-1.091-0.709-1.8-1.964-1.8-3.382V48.582    v-0.491V36.855c0-2.018-0.818-3.818-2.127-5.182c-1.364-1.364-3.164-2.127-5.182-2.127H61.782H38.218H20.491    c-2.018,0-3.818,0.764-5.182,2.127c-1.309,1.364-2.127,3.164-2.127,5.182v11.236v0.491v30.927c0,4.036,3.273,7.309,7.309,7.309    h41.018c2.236,0,4.091,1.8,4.091,4.091c0,2.236-1.855,4.091-4.091,4.091H20.491C11.982,94.945,5,88.073,5,79.509V48.582v-0.491    V36.855c0-8.564,6.927-15.491,15.491-15.491H34.127z"/></g></g></svg>
+                        <span class="kt-menu__link-text"> New project</span>
                         <i class="kt-menu__ver-arrow la la-angle-right"></i>
                     </a>
                 </li>

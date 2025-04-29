@@ -58,9 +58,6 @@ export class CreateprojectService {
 
 
 
-
-
-
   GetCPProjectCost(prjDTO:ProjectDetailsDTO){
       return this.http.post('https://cswebapps.com/ProjectCostAPI/api/ProjectCost/GetCPProjectCost',prjDTO);
   }
@@ -70,6 +67,12 @@ export class CreateprojectService {
      return this.http.post(this.rootUrl+'Projects/NewDeleteDraft',prjDTO);
   }
 
+  NewGetProjectnameValidation(empNo:string,projectName:string){
+     const _pdto=new ProjectDetailsDTO();
+     _pdto.Emp_No=empNo;
+     _pdto.Project_Name=projectName;
+     return this.http.post(this.rootUrl+'Projects/NewGetProjectnameValidation',_pdto);
+  }
 
 
 }

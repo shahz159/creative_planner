@@ -514,22 +514,25 @@ getTimelineProjects(){
   this.service._GetTimelineProjects(this.ObjSubTaskDTO).subscribe
   (data=>{ 
     this.loadingTimelineProjects=false;
-    this.projectList=JSON.parse(data[0]['ProjectList']); console.log(this.projectList);
-    
-    let arr:any=[];
-    this.projectList.forEach((p)=>{
+    this.projectList=JSON.parse(data[0]['ProjectList']); console.log("allprjs list:",this.projectList);
+   
+    // adding possession property
+      let arr1:any=[];
+      let arr2:any=[];
+      this.projectList.forEach((p)=>{
          if(p.Team_Res.trim()==this.Current_user_ID){
-            p.possession='My responsible projects';
-            arr.unshift(p);
+           p.possession='My responsible projects';
+           arr1.push(p);
          }
          else{
-            p.possession='RACIS projects';
-            arr.push(p);
+           p.possession='RACIS projects';
+           arr2.push(p);
          }
-    });
-    this.projectList=arr;
+      });
+     this.projectList=[...arr1, ...arr2];
 
-    
+    // adding possession property
+
   });
 }
 
@@ -1580,7 +1583,7 @@ timeArr: any = [
   "23:00", "23:15", "23:30", "23:45"
 ];
 
-tmCapacity=93;  // 23 hrs per day limit.   
+tmCapacity=93;  //93 : 23 hrs per day limit.   41 : hrs per day limit
 timedata3:any[]=[];  
 disabledLunchOption:boolean=false;
 remainingLunchTime:number=0;
@@ -1602,6 +1605,7 @@ selectDateForTimeline(inputDate){
   this.timedata3=this.getTimeStamps(moment(inputDate).format("YYYY-MM-DD"),this.timeArr);   // initializing with default values.
   this.getTimelineReportByDate(this.timeline_of); 
 }
+
 
 getStartTiming1(){   
   let list:any=[]; 
@@ -1644,7 +1648,6 @@ getStartTiming1(){
 
 
 @ViewChild('endtimeselect') endtimesel:any;
-
 getEndTiming1(){
   let list:any=[];
   // based on start time decide endtime.  if: no timeline found on selected date.
@@ -1718,6 +1721,23 @@ getTimeDiff(time1:number,time2:number):string{
         return dfInMins<60?`${dfInMins} mins`:`${(dfInMins/60).toFixed(1)} hrs`;
    }
    return '';
+}
+
+onStartTimeSelected(){  
+  const hasExceededLimit=this.hasDurationExceedsLimit();
+  this.endtime=(!(this.starttime&&this.endtime)||(this.starttime.value==this.endtime.value)||(hasExceededLimit))?null:this.endtime;
+}
+
+
+hasDurationExceedsLimit():boolean{ 
+    if(this.starttime&&this.endtime)  
+    {
+       const maxAllocatableMins=(this.tmCapacity-1)*15;
+       const durationInMins=((this.endtime.value-this.starttime.value)/(1000*60));
+       return durationInMins>maxAllocatableMins; 
+    }
+    else 
+     return false;
 }
 
 // full time available end.
@@ -2218,91 +2238,48 @@ configureEmployeeFilter(include:boolean,empObj:any){
 }
 
 
+// DAR Request sidebar context code start
+darDecision:"ACCEPT"|"ACCEPT_WITH_BONUS"|"REJECT"|undefined=undefined;
+aprv_cmts:string|undefined;
+previousCmts:any=[];
 
-//  //when user unselect any company and some emps are found set as filterconfig.
-//  if(include==false&&this.filterRecordsByEmp.length>0)
-//   {   // as company is unselected unselect all its associated emp from filterconfig. since it may unused select query.
-//     if(this.filterRecordsByCompany.length>0){
-//       const empNos=this.employeesList.map((ob:any)=>ob.Emp_No);
-//       this.filterRecordsByEmp=this.filterRecordsByEmp.filter((emp:any)=>empNos.includes(emp.Emp_No));  
-//     }
-//     else{ // after unselection we found no company left as selected.
-//       this.filterRecordsByEmp=[]; 
-//       this.companiesList=JSON.parse(res[0]['CompanyType_Json']);
-//     } 
-     
-//   }
+onDarReqDecisionChanged(decision:"ACCEPT"|"ACCEPT_WITH_BONUS"|"REJECT"){
+  this.darDecision=decision;
+  this.drprev_comments();
+}
 
+closeDarReqAprvlSec(){
+  this.darDecision=undefined;
+  this.aprv_cmts=undefined;
+  // this.previousCmts=[];
+  // this.cmts_Loading=false;
+}
 
+drprev_comments()
+{
+    // let aprvDto=new ApprovalDTO();
+    // aprvDto.Emp_no=this.Current_user_ID;
+    // aprvDto.Request_type=(this.leaveDecision=='APPROVE'||this.leaveDecision=='APPROVEBUT')?'Approved Leave':'Leave Rejected';
+    // this.cmts_Loading=true;
+    // this.approvalservice.NewGetLeaveComments(aprvDto).subscribe((res:any)=>{
+    //  this.cmts_Loading=false;
+    //  if(res)
+    //  {
+    //   this.previousCmts=JSON.parse(res.previousComments_JSON);
+    //  }
+    // });
+}
 
-
-// configureCompanyFilter(include:boolean,companyObj:any){
-  
-//   if(include){
-//     this.filterRecordsByCompany.push(companyObj);
-//   }else{
-//     const rindex=this.filterRecordsByCompany.findIndex((ob:any)=>ob.Company_No==companyObj.Company_No);
-//     this.filterRecordsByCompany.splice(rindex,1);
-//   }
-
-//   this.objStatusDto.Type=this.currentDarSection=='DAR_REQUESTS'?'D':this.currentDarSection=='DAR_RESPONSES'?'P':'D';
-//   this.objStatusDto.EmpNo=this.Current_user_ID;
-//   this.objStatusDto.SelectedCompany=this.filterRecordsByCompany.map((ob:any)=>ob.Company_No).join(',');
-//   this.objStatusDto.SelectedEmp_No='';
-//   this.objStatusDto.startdate='';
-//   this.objStatusDto.enddate='';
-//   this.service.NewGetTimelinedropdown(this.objStatusDto).subscribe((res)=>{  
-//     console.log('timeline dropdown:',res);
-//     if(res&&res[0]){   
-//       this.employeesList=JSON.parse(res[0]['CompanyType_Json']);
-//       const totalprjJsonstr=JSON.parse(res[0]['TotalProjectsCount_Json']);
-//       this.total_records=totalprjJsonstr[0]['TotalProjects'];
-//       this.lastPageNo=Math.ceil(this.total_records/this.page_size);
-//     }  
-// });
+submitDARReq_Response(){
+   
+}
 
 
 
 
 
 
-// }
-
-// configureEmployeeFilter(include:boolean,empObj:any){
-//    if(include){
-//     this.filterRecordsByEmp.push(empObj);
-//    }else{
-//     const rindex=this.filterRecordsByEmp.findIndex((ob:any)=>ob.Emp_No==empObj.Emp_No);
-//     if(rindex>-1)
-//     this.filterRecordsByEmp.splice(rindex,1);
-//    }
-//   //  this.getFilterDropdownData();
-//   this.objStatusDto.Type=this.currentDarSection=='DAR_REQUESTS'?'D':this.currentDarSection=='DAR_RESPONSES'?'P':'D';
-//   this.objStatusDto.EmpNo=this.Current_user_ID;
-//   this.objStatusDto.SelectedCompany=this.filterRecordsByCompany.map((ob:any)=>ob.Company_No).join(',');
-//   this.objStatusDto.SelectedEmp_No=this.filterRecordsByEmp.map((ob:any)=>ob.Emp_No).join(',');
-//   this.objStatusDto.startdate='';
-//   this.objStatusDto.enddate='';
-//   this.service.NewGetTimelinedropdown(this.objStatusDto).subscribe((res)=>{  
-//     console.log('timeline dropdown:',res);
-//     if(res&&res[0]){  
-//       const _compn=JSON.parse(res[0]['CompanyType_Json']); 
-//       console.log(_compn);
-
-
-
-
-//       // this.companiesList=JSON.parse(res[0]['CompanyType_Json']);   console.log('companies of emps selected:',this.companiesList);
-//       const totalprjJsonstr=JSON.parse(res[0]['TotalProjectsCount_Json']);
-//       this.total_records=totalprjJsonstr[0]['TotalProjects'];
-//       this.lastPageNo=Math.ceil(this.total_records/this.page_size);
-
-//     }
-//   });
-// }
-
-
-
+// DAR Request sidebar context code start
 
 // dar inbox end.
 

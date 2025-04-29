@@ -19,9 +19,48 @@
                     <div class="text-center">
                         <div class="mb-3">
                             <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-                                <img [src]="userProfileImage&&userProfileImage!='NA'?'https://yrglobaldocuments.blob.core.windows.net/documents/'+userProfileImage:'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'" alt="image"/>
+                                <img class="prf-pic-display" [src]="userProfileImage&&userProfileImage!='NA'?'https://yrglobaldocuments.blob.core.windows.net/userprofileimages/'+userProfileImage:'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'" alt="image"/>
+                               
+                               <label [title]="(userProfileImage&&userProfileImage!='NA')?'Change profile picture':'Upload profile picture'"   class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow bg-white prf-pic-change-btn"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="fa fa-pen icon-sm text-muted pen-icon"></i>
+                                  <!-- <input type="file" accept=".png, .jpg, .jpeg" name="profile_avatar"/> -->
+                                  <input  type="hidden" name="profile_avatar_remove">
+                                </label>
+                                <div class="dropdown-menu dropdown-menu-xl px-2 selection-minibox">
+                                    <div class="drop-ul">
+                                       <div class="minibox-option" (click)="uploadlocal.click();">
+                                        <svg class="option-icon" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="stroke: #797979;stroke-width: 1.5px; fill:none;">
+                                            <g id="SVGRepo_iconCarrier">
+                                              <path d="M4 9V6.47214C4 6.16165 4.07229 5.85542 4.21115 5.57771L5 4H10L11 6H21C21.5523 6 22 6.44772 22 7V9V18C22 19.1046 21.1046 20 20 20H18" stroke-linecap="round" stroke-linejoin="round"></path>
+                                              <path d="M17.2362 9H2.30925C1.64988 9 1.17099 9.62698 1.34449 10.2631L3.59806 18.5262C3.83537 19.3964 4.62569 20 5.52759 20H19.6908C20.3501 20 20.829 19.373 20.6555 18.7369L18.201 9.73688C18.0823 9.30182 17.6872 9 17.2362 9Z" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </g>
+                                          </svg>
+                                         <span class="option-label" for="upload-from-storage">
+                                            Upload from Device
+                                         </span>
+                                         <input #uploadlocal  (change)="pickImageFromStorage($event)"  id="upload-from-storage" type="file" accept=".png, .jpg, .jpeg" name="profile_avatar" style="opacity: 0;width: 0; height: 0;">
+                                       </div>
+                                       <div class="minibox-option" (click)="pickImageFromCamera()">
+                                        <svg class="option-icon" width="21px" height="21px" viewBox="-2.16 -2.16 28.32 28.32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M9.15023 3.01742C9.13605 3.03985 9.12278 3.0676 9.11298 3.09958C9.11044 3.10789 9.10778 3.11617 9.10502 3.12442L8.36963 5.31787C8.23301 5.72537 7.85129 6 7.4215 6H3C2.44772 6 2 6.44772 2 7V20C2 20.5523 2.44771 21 3 21H21C21.5523 21 22 20.5523 22 20V7C22 6.44771 21.5523 6 21 6H16.331C15.9011 6 15.5194 5.72528 15.3828 5.31769L14.6479 3.12423C14.6452 3.11605 14.6425 3.10783 14.64 3.09958C14.6302 3.0676 14.6169 3.03985 14.6027 3.01742C14.5986 3.01089 14.5946 3.00509 14.5908 3H9.16221C9.1584 3.00509 9.15437 3.01089 9.15023 3.01742ZM7.20525 2.49911C7.43535 1.76672 8.10563 1 9.06392 1H14.6891C15.6474 1 16.3177 1.76679 16.5478 2.49922L17.0506 4H21C22.6569 4 24 5.34315 24 7V20C24 21.6569 22.6569 23 21 23H3C1.34315 23 0 21.6569 0 20V7C0 5.34315 1.34315 4 3 4H6.70206L7.20525 2.49911ZM7 13C7 10.2386 9.23858 8 12 8C14.7614 8 17 10.2386 17 13C17 15.7614 14.7614 18 12 18C9.23858 18 7 15.7614 7 13ZM12 10C10.3431 10 9 11.3431 9 13C9 14.6569 10.3431 16 12 16C13.6569 16 15 14.6569 15 13C15 11.3431 13.6569 10 12 10Z"></path> </g>
+                                        </svg>
+                                        <span class="option-label">Take a Photo</span>
+                                       </div>
+                                    </div>
+                                 </div>
                                 <i class="fas fa-user d-none" alt="user"></i>
+
+                                <!-- <img [src]="inputImage.dataUrl"/> -->
+
+                                <!-- <div class="d-flex justify-content-between mt-2">
+                                    <button class="btn btn-secondary btn">Retake</button>
+                                    <button class="btn btn-primary btn"> Update</button>
+                                </div> -->
+
+
                             </div>
+                           
+                           
                         </div>
                     </div>
 
@@ -239,6 +278,20 @@
                             </div> -->
                         </div>
                     </div>
+                    
+                    <!--test-->
+                    <!-- <div>
+                           <video id="video-vd" width="300px" height="300px" controls ></video>
+                            <canvas id="canvas-vd"></canvas>
+                            <img id="img-vd"/>
+                            <button id="button-vd">start Camera</button>
+                            <button id="capture-vd">capture image</button>
+                    </div> -->
+
+                    <!--test-->
+
+
+
                 </div>
                 <div class="card1 brdr-0" id="edit-pro">
                     <div class="card-header bg-transparent">
@@ -365,8 +418,8 @@
                     <div class="p-3">
                         <div class="row">
                             <div class="col-lg-6 ml-5 pt-5">
-
-                                <form class="form-horizontal" [formGroup]="form1" (ngSubmit)="OnSubmit()">
+                                <!-- OnSubmit()    UpdatePassword() -->
+                                <form class="form-horizontal" [formGroup]="form1" (ngSubmit)="UpdatePassword()">
                                     <div class="row mb-4">
                                         <label for="" class="col-4 col-xl-3 col-form-label">Current password</label>
                                         <div class="col-8 col-xl-9">
@@ -440,3 +493,65 @@
     </div>
 </div>
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
+
+
+
+
+
+
+
+
+<!-- image preview dialog box start-->
+<div class="modal-backdrop fade show" id="image-preview-backdrop" style="display: none; z-index: 1000" ></div>
+
+<div class="schedule-event modal fade show" id="image-preview-dialog" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="projectmodalLabel" aria-hidden="true" style="display: none">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header gap-1">
+            <h5 class="modal-titles  flex-grow-1" id="projectmodalLabel" >Preview Image</h5>
+        </div>
+        <div class="modal-body">
+            <img *ngIf="inputImageLoaded==100"  class="choosed-image" [src]="inputImage.dataUrl" />
+            <div *ngIf="inputImageLoaded<100" class="d-flex flex-column align-items-center justify-content-between">
+               <div class="spinner-border mb-3" style="width: 25px;height: 25px;border-width: 1.7px;" role="status">
+                   <span class="sr-only">Loading...</span>
+               </div>
+               <span class="text-muted">Preparing image preview...</span>
+               <!-- {{inputImageLoaded}}% -->
+            </div>
+        </div>
+        <div class="modal-footer">
+                    <button class="btn btn-secondary" (click)="clearInputs(); closeImageUpload()"><i class="fas fa-times fs-7" style="color: #b0aeae;"></i>Cancel</button> 
+                    <!-- <button  class="btn btn-info" (click)="0"><i class="fas fa-redo fs-7"></i>Retake</button> -->
+                    <button [disabled]="uploadingProfileImage" class="btn btn-info" (click)="uploadProfileImage(inputImage.file)"><i class="fas fa-check fs-7"></i>Update</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- image preview dialog box end-->
+
+
+
+<!--Camera input dialog modal Start -->
+<div class="modal fade graphmodal" id="camera-input-dialog" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="actns-graphmodalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content" style="height:90vh;">
+        <div class="modal-header">
+          <div class="actnsGrph-of-user">
+            <h5 id="graphmodalLabel" class="modal-title">Capture Your Photo</h5>
+          </div>
+        </div>
+        <div class="modal-body camera-screen-container">
+              <video id="camera-screen" class="camera-screen"></video>
+              <canvas id="capture-image-cv" style="display:none"></canvas>
+        </div>
+        <div class="modal-footer">
+              <button class="btn btn-secondary" (click)="cancelCameraCapture()">Cancel</button>
+              <button class="btn btn-info" (click)="snapShotImage()">Capture Image</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!--Camera input dialog modal Start -->

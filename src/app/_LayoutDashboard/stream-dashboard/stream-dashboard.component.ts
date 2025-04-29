@@ -7,6 +7,7 @@ import { CalenderDTO } from 'src/app/_Models/calender-dto';
 import { StatusDTO } from 'src/app/_Models/status-dto';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ApprovalsService } from 'src/app/_Services/approvals.service';
 
 
 
@@ -16,7 +17,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./stream-dashboard.component.css']
 })
 export class StreamDashboardComponent implements OnInit {
-  Emp_No: string;
+  Emp_No: any;
   DelayCount: any = sessionStorage.getItem('DelayCount');
   DelayActionCount: any = sessionStorage.getItem('DelayActionCount');
   AssignActionCount: any = sessionStorage.getItem('AssignActionCount');
@@ -44,19 +45,20 @@ export class StreamDashboardComponent implements OnInit {
   constructor(public service: ProjectTypeService,
     private cdr: ChangeDetectorRef, private router: Router,
     private _snackBar: MatSnackBar,
-    private CalenderService: CalenderService
+    private CalenderService: CalenderService,
+     public approvalservice: ApprovalsService,
   ) {
     this._calenderDto = new CalenderDTO;
     this._objStatusDTO = new StatusDTO;
    }
 
-  ngOnInit(): void {
-    this.loadDashboardBanners();
+  async ngOnInit() {
+    this.Current_user_ID = localStorage.getItem('EmpNo');
+    this.UserfullName = localStorage.getItem("UserfullName");
+    await this.loadDashboardBanners();
     // this.initializeOwlCarousels();
     this.initializeOwlCarousels2();
     // this.initializeOwlCarousels3();
-    this.Current_user_ID = localStorage.getItem('EmpNo');
-    this.UserfullName = localStorage.getItem("UserfullName");
     this.todayDate = new Date();
     this.meetingDetails();
     this.portfolioSerivce();
@@ -69,6 +71,7 @@ export class StreamDashboardComponent implements OnInit {
       this.isLoading = false;
     }, 3000);
 
+    this.getRecentActivities();  // fetch recent activities
   }
 
 
@@ -169,11 +172,14 @@ export class StreamDashboardComponent implements OnInit {
   UserfullName: any
   todayDate: any
   getAll :any
+  today: any = new Date().toISOString().substring(0, 10);
+
+
   GetDashboardSummary() {
     this.Emp_No = localStorage.getItem('EmpNo');
     this.service._GetDashboardSummaryCount(this.Emp_No)
       .subscribe((data) => {
-        console.log(data,"GetDashboardSummary()GetDashboardSummary()GetDashboardSummary()")
+        // console.log(data,"GetDashboardSummary()GetDashboardSummary()GetDashboardSummary()")
 
 
 
@@ -182,12 +188,12 @@ export class StreamDashboardComponent implements OnInit {
 
         this.DelayActionCount = data[0]['DelayActionCount'];
         sessionStorage.setItem('DelayActionCount', this.DelayActionCount);
-        console.log( this.DelayActionCount," this.DelayActionCount this.DelayActionCount")
+        // console.log( this.DelayActionCount," this.DelayActionCount this.DelayActionCount")
 
         this.AssignActionCount = data[0]['AssignActionCount'];
         sessionStorage.setItem('AssignActionCount', this.AssignActionCount);
 
-        this.CompletedCount = data[0]['CompletedCount'];
+        this.CompletedCount = data[0]['CompletedCount'];    // Under approval projects count.
         sessionStorage.setItem('CompletedCount', this.CompletedCount);
 
         this.TotalExpiryInMonth = data[0]['ExpiryOneMonth'];
@@ -207,7 +213,7 @@ export class StreamDashboardComponent implements OnInit {
 
         this.YesterdaysDAR_Status = data[0]['YesterdaysDAR_Status'];
         sessionStorage.setItem('YesterdaysDAR_Status', this.YesterdaysDAR_Status);
-        console.log(this.YesterdaysDAR_Status,"this.YesterdaysDAR_Statusthis.YesterdaysDAR_Status")
+        // console.log(this.YesterdaysDAR_Status,"this.YesterdaysDAR_Statusthis.YesterdaysDAR_Status")
 
         this.RejectedCount = data[0]['RejectedCount'];
         sessionStorage.setItem('RejectedCount', this.RejectedCount);
@@ -317,34 +323,97 @@ export class StreamDashboardComponent implements OnInit {
 
   //   }
   meetingDetails(): void {
-    debugger
+   
     this.CalenderService.NewDashboardScheduled(this._calenderDto).subscribe((data) => {
-      console.log( JSON.parse(data['Scheduledtime']),'test json list')
-      const items = JSON.parse(data['Scheduledtime']);
+   
+      this.scheduleItems = JSON.parse(data['Scheduledtime']);
+      console.log(this.scheduleItems, "Calendar Data 1");
+      this.scheduleItems.forEach((day, index, arr) => {
+        day.Events.forEach(event => {
+          if (new Date(event.endTime).getDate() !== new Date(event.startTime).getDate()) {
+            let nextDay = arr.find(d => d.Schedule_date === event.endTime.split(" ")[0]);
+            
+            if (!nextDay) {
+              nextDay = { Schedule_date: event.endTime.split(" ")[0], Events: [] };
+              arr.push(nextDay);
+            }
+            
+            if (!nextDay.Events.some(e => e.Schedule_ID === event.Schedule_ID)) {
+              nextDay.Events.push({ ...event, Task_Name: `${event.Task_Name} (2/2)` });
+            }
+      
+            event.Task_Name += " (1/2)"; 
+          }
+        });
+      });
+      
 
-      // Convert date strings to Date objects and filter out past dates
-      const today = new Date();
-      today.setHours(0, 0, 0, 0); // Normalize to start of the day for comparison
+     this.scheduleItems = this.scheduleItems.map(day => {
+      let updatedEvents = day.Events.map(event => ({
+          ...event,
+          Task_Name: event.Task_Name.replace("(2/2) (1/2)", "(2/2)")
+      }));
+      
 
-      this.scheduleItems = items
-        .map((item: any) => ({
-          ...item,
-          Schedule_date: new Date(item.Schedule_date)
-        }))
-        .filter((item: any) => item.Schedule_date >= today); // Filter for future dates including today
-
-      console.log(this.scheduleItems, "Calendar Data");
-    });
+      let specialEvents = updatedEvents.filter(event => event.Task_Name.includes("(2/2)"));
+      let otherEvents = updatedEvents.filter(event => !event.Task_Name.includes("(2/2)"));
+      
+      return {
+          ...day,
+          Events: [...specialEvents, ...otherEvents]
+      };
+  });
+  
+debugger
+  if (this.scheduleItems.length == 10) {
+    this.scheduleItems.pop();
+  } 
+  if(this.scheduleItems.length == 9){
+    this.scheduleItems.pop();
   }
 
-  isToday(date: Date): boolean {
-    const today = new Date();
-    return (
-      date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear()
-    );
+  this.scheduleItems.sort((a, b) => a.Schedule_date.localeCompare(b.Schedule_date));
+
+   if( this.scheduleItems.some(data => data.Schedule_date <  this.today)){
+        this.scheduleItems.shift(); 
+    }
+  });
+
+    console.log(this.scheduleItems, "Calendar Data 2");
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  // isToday(date: Date): boolean {
+  //   const today = new Date();
+  //   return (
+  //     date.getDate() === today.getDate() &&
+  //     date.getMonth() === today.getMonth() &&
+  //     date.getFullYear() === today.getFullYear()
+  //   );
+  // }
 
 
 
@@ -356,7 +425,7 @@ export class StreamDashboardComponent implements OnInit {
       this.initializeOwlCarousels();   // 
         // this.userFound = true
 
-      console.log(this.portfoiloData, "this.portfoiloDatathis.portfoiloData")
+      // console.log(this.portfoiloData, "this.portfoiloDatathis.portfoiloData")
 
     })
 
@@ -412,7 +481,7 @@ export class StreamDashboardComponent implements OnInit {
       this.darArray = JSON.parse(data['DAR_Details_Json']);
 
       const week_Arr = this.darArray[0].WeekSubmissionStatus;
-      console.log(week_Arr,'week_Arrweek_Arrweek_Arr')
+      // console.log(week_Arr,'week_Arrweek_Arrweek_Arr')
       this.weekArr.forEach((item,index)=>{
 
         if(week_Arr[index]){
@@ -420,7 +489,7 @@ export class StreamDashboardComponent implements OnInit {
         }
 
       })
-    console.log(this.darArray,'darArraydarArray')
+    // console.log(this.darArray,'darArraydarArray')
 
 
     })
@@ -434,7 +503,7 @@ export class StreamDashboardComponent implements OnInit {
   getEmployee(){
     this.service.GetEmployeePerformance(this.Emp_No).subscribe((data)=>{
           this.employeeReport =   JSON.parse(data['EmployeeReport'])
-      console.log(this.employeeReport,"GetEmployeePerformanceGetEmployeePerformance")
+      // console.log(this.employeeReport,"GetEmployeePerformanceGetEmployeePerformance")
     })
   }
 
@@ -548,7 +617,7 @@ export class StreamDashboardComponent implements OnInit {
   }
 
 
-  newMeetingDetails(Schedule_ID) {
+  newMeetingDetails(Schedule_ID) { 
     let name: string = 'Meeting-Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${Schedule_ID}`;
@@ -556,6 +625,15 @@ export class StreamDashboardComponent implements OnInit {
     myWindow.focus();
   }
 
+
+  openCalendar(Schedule_ID,className) { 
+    let name: string = 'backend/StreamCalendar';
+    var url = document.baseURI + name;
+    var myurl = `${url}?calenderId=${Schedule_ID},${className}`;
+    var myWindow = window.open(myurl, "_self");
+    myWindow.focus(); 
+  }
+  
 
 
   gotoCalendar(){
@@ -565,19 +643,24 @@ export class StreamDashboardComponent implements OnInit {
 
   
 
-  formatTimes(time: string): string {
-    if(time){
-      const [hours, minutes] = time.split(':');
-      const date = new Date();
-      date.setHours(parseInt(hours, 10));
-      date.setMinutes(parseInt(minutes, 10));
+  formatTimes(dateTime?: string): string {
+    if (!dateTime) return ''; // Handle undefined/null cases safely
   
-      const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
-      const x=date.toLocaleTimeString('en-US', options);
-      return x;
-    }
-    return '';
+    const timePart = dateTime.split(' ')[1]; // Extract time part safely
+    if (!timePart) return ''; // Ensure there's a time component
+  
+    const [hours, minutes] = timePart.split(':');
+    if (!hours || !minutes) return ''; // Ensure valid hours and minutes
+  
+    const date = new Date();
+    date.setHours(parseInt(hours, 10));
+    date.setMinutes(parseInt(minutes, 10));
+  
+    const tmValue=date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    return tmValue;
   }
+
+
 
 
 
@@ -585,10 +668,12 @@ export class StreamDashboardComponent implements OnInit {
    // dashboard banners start.  
    dashboardBanners:any=[];
    dashboardBannersImages:any=[];
-  loadDashboardBanners(){
+   showDashboardBanners:boolean=false;
+   
+  async loadDashboardBanners(){
       
-   this.CalenderService.NewUsersDashboard().subscribe((res:any)=>{ 
-        console.log("for dashboard banners :",res); 
+   this.CalenderService.NewUsersDashboard().subscribe(async (res:any)=>{ 
+        // console.log("for dashboard banners :",res); 
         if(res){    
             const djson=JSON.parse(res.DashboardJson); 
             this.dashboardBanners=JSON.parse(djson[0].BannerJson);
@@ -600,6 +685,7 @@ export class StreamDashboardComponent implements OnInit {
                           var _Obj = {};
                           _Obj["path"] = Attch.FileUrl;
                           _Obj["type"] = 'image';
+                          _Obj["sasUrl"] = '';
                           this.dashboardBannersImages.push(_Obj);
                         });
                       }
@@ -607,32 +693,147 @@ export class StreamDashboardComponent implements OnInit {
             }
 
             if(this.dashboardBannersImages.length>0){
-              $(document).ready(() =>{
-                $('.banner-item').owlCarousel({
-                  loop: true,
-                  margin: 0,
-                  autoplay: true,
-                  autoplayTimeout:3700,
-                  autoplayHoverPause: false,
-                  nav: false,
-                  dots: true,
-                  navText: [
-                   '<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>',
-                      '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>'
-                  ],
-                  responsive: {
-                    356: { items: 1 }
-                  }
+              await this.loadSasUrlsForImages();
+             
+                $(document).ready(() =>{  
+
+                  $('.banner-item').owlCarousel({
+                    loop: true,
+                    margin: 0,
+                    autoplay: true,
+                    autoplayTimeout:3700,
+                    autoplayHoverPause: false,
+                    nav: false,
+                    dots: true,
+                    navText: [
+                     '<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>',
+                        '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>'
+                    ],
+                    responsive: {
+                      356: { items: 1 }
+                    }
+                  });
+            
                 });
-              }); 
+       
+             
             }
          }
     });
    }
 
-
-
    // dashboard banners end.
+
+   async loadSasUrlsForImages() {
+    for (let image of this.dashboardBannersImages) {
+      const expiryTime = new Date();
+      expiryTime.setMinutes(expiryTime.getMinutes() + 5); // 5 minutes expiry
+ 
+      try {
+        image.sasUrl = await this.CalenderService.getSasUrl(image.path, expiryTime);
+      } catch (error) {
+        console.error(`Error fetching SAS URL for ${image.path}`, error);
+      }
+    }
+  }
+
+
+// recent activity section .  start
+recentActivities:any[]=[];
+totalRecentActivities:number=0;
+getRecentActivities(){
+     const empNo=this.Current_user_ID;
+     this.approvalservice.NewGetUserActivity(empNo).subscribe((res)=>{
+            // console.log("getRecentActivities:",res);
+            if(res&&res[0]){  
+                  this.recentActivities=JSON.parse(res[0].ActivityList);   console.log("recent actv:",this.recentActivities);
+                  this.totalRecentActivities=res[0].ActivityCount;
+                
+                
+                  this.recentActivities.forEach((_actvy)=>{
+
+                   //1. adding _type property
+                    let result='others';
+                    if(_actvy.Value){
+                    const _Value=_actvy.Value.trim();
+                          result=/New Action- ".*"/.test(_Value)?'New Action':
+                                (/Timeline added .*/.test(_Value)|| _Value=='Project Timeline added'||_Value=='Timeline submitted')?'Timeline added':
+                                /Action Complete- ".*"/.test(_Value)?'Action Complete':
+                                /Action -".*" Hold/.test(_Value)?'Action Hold':
+                                /Action -".*" Start date changed/.test(_Value)?'Action Startdate changed':
+                                /Action -".*" Deadline changed/.test(_Value)?'Action Deadline changed':
+                                ['Project Name changed','Project Responsible changed','Project Description changed','Client changed','Category changed'].includes(_Value)?'Project Details changed':
+                                [/Action Name changed for the Action -".*"/, /Description changed for the Action - ".*"/,/Action -".*" Owner changed/,/Action -".*" Responsible changed/].some(rg=>rg.test(_Value))?'Action Details changed':
+                                (['Project Complete Approved','Project Complete Rejected','Project Audit Approved','Project Audit Rejected'].includes(_Value)||
+                                  [/Project Complete Submitted to ".*"/,/Project Audit Submitted to ".*"/,/Project Complete transferred to ".*"/,/Project next version assigned to ".*"/].some(rg=>rg.test(_Value)))?'Project Complete':
+                                _Value;
+                    }
+                    _actvy._type=result.trim();
+                  // added _type property.
+
+                  //2. adding ModifiedTime12Hr property
+                  let timeVal=_actvy.ModifiedTime;
+                  if(timeVal){
+                        const [hours, minutes] = timeVal.split(':');
+                        const date = new Date();
+                        date.setHours(parseInt(hours, 10));
+                        date.setMinutes(parseInt(minutes, 10));
+                        const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
+                        timeVal=date.toLocaleTimeString('en-US', options);     
+                  }
+                  else{  timeVal='';  }
+                  _actvy.ModifiedTime12Hr=timeVal;
+                  //2. added ModifiedTime12Hr property
+
+
+                  });
+                 
+                  // console.log('recent activities:',this.recentActivities,'total recent activities:',this.totalRecentActivities);
+            }
+     });
+}
+
+
+
+// formatTimes(time: string): string {
+//   if(time){
+//     const [hours, minutes] = time.split(':');
+//     const date = new Date();
+//     date.setHours(parseInt(hours, 10));
+//     date.setMinutes(parseInt(minutes, 10));
+
+//     const options :any = { hour: 'numeric', minute: 'numeric', hour12: true };
+//     const x=date.toLocaleTimeString('en-US', options);
+//     return x;
+//   }
+//   return '';
+// }
+
+
+
+
+
+
+openInDetailsPage(pcode,acode:string|undefined) {
+  let qparams='';
+      if(acode!==undefined){
+        qparams=`?actionCode=${acode}`;
+      }
+      let name: string = 'Details';
+      var url = document.baseURI + name;
+      var myurl = `${url}/${pcode}${qparams}`;
+      var myWindow = window.open(myurl,pcode);
+      myWindow?.focus();
+}
+
+
+
+
+
+
+
+
+// recent activity section .  end
 
 
 

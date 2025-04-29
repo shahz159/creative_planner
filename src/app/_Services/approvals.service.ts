@@ -111,7 +111,7 @@ export class ApprovalsService {
 
   }
 
-  GetGlobalRejectComments(obj: ApprovalDTO) {
+  GetGlobalRejectComments(obj: ApprovalDTO) { 
     this.obj_approvalDTO.Emp_no=obj.Emp_no;
     this.obj_approvalDTO.rejectType = obj.rejectType;
     this.obj_approvalDTO.Project_Code = obj.Project_Code;
@@ -121,7 +121,7 @@ export class ApprovalsService {
 
   }
 
-  GetEmployeeLeaveDetail(submitby,Leave_code){
+  GetEmployeeLeaveDetail(submitby,Leave_code){   
     this.obj_approvalDTO.Emp_no=submitby.trim();
     this.obj_approvalDTO.Leave_Code=Leave_code.trim();
     return this.http.post(this.rootUrl + "ApprovalAPI/NewGetEmployeeLeaveDetails", this.obj_approvalDTO)
@@ -281,14 +281,69 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
   
 
   NewGetEmployeeLeaveResponse(obj:ApprovalDTO){
-
      this.obj_approvalDTO.Emp_no=obj.Emp_no;
      this.obj_approvalDTO.Leave_Code=obj.Leave_Code;
      this.obj_approvalDTO.Request_type=obj.Request_type;
      return this.http.post(this.rootUrl+"ApprovalAPI/NewGetEmployeeLeaveResponse",this.obj_approvalDTO);
   }
 
+  NewGetUserActivity(empNo:string){  
+    this.obj_approvalDTO.Emp_no=empNo;
+    return this.http.post(this.rootUrl+"ApprovalAPI/NewGetUserActivity",this.obj_approvalDTO);
+  }
 
+
+
+  Email_GenerateAs(emailOf:'NEW_LEAVE'|'MANAGER_APPROVE'|'MANAGER_REJECT'|'HR_APPROVE_CASUAL'|'HR_APPROVE_LOCAL'|'HR_APPROVE_INTERNATIONAL'|'HR_REJECT', leaveEmailInfo:ApprovalDTO){
+debugger
+      // SAME INPUTS props to all
+    this.obj_approvalDTO.leaveid=leaveEmailInfo.leaveid;
+    this.obj_approvalDTO.leavename=leaveEmailInfo.leavename;
+    this.obj_approvalDTO.leavefrom=leaveEmailInfo.leavefrom;
+    this.obj_approvalDTO.leaveto=leaveEmailInfo.leaveto;
+    this.obj_approvalDTO.Empid=leaveEmailInfo.Empid;
+    this.obj_approvalDTO.Empname=leaveEmailInfo.Empname;
+    this.obj_approvalDTO.Empemail=leaveEmailInfo.Empemail;
+    this.obj_approvalDTO.Empcomp=leaveEmailInfo.Empcomp;
+    this.obj_approvalDTO.CompCode=leaveEmailInfo.CompCode;
+    this.obj_approvalDTO.managerid=leaveEmailInfo.managerid;
+    this.obj_approvalDTO.managername=leaveEmailInfo.managername;
+    this.obj_approvalDTO.manageremail=leaveEmailInfo.manageremail;
+    this.obj_approvalDTO.hrid=leaveEmailInfo.hrid;
+    this.obj_approvalDTO.hrname=leaveEmailInfo.hrname;
+    this.obj_approvalDTO.hremail=leaveEmailInfo.hremail;
+    this.obj_approvalDTO.Com_PayrollId=leaveEmailInfo.Com_PayrollId;
+    this.obj_approvalDTO.Com_PayrollName=leaveEmailInfo.Com_PayrollName;
+    this.obj_approvalDTO.Com_PayrollEmail=leaveEmailInfo.Com_PayrollEmail;
+    this.obj_approvalDTO.PayrollCompany=leaveEmailInfo.PayrollCompany;
+    this.obj_approvalDTO.Com_TicketingId=leaveEmailInfo.Com_TicketingId;
+    this.obj_approvalDTO.Com_TicketingName=leaveEmailInfo.Com_TicketingName;
+    this.obj_approvalDTO.Com_TicketingEmail=leaveEmailInfo.Com_TicketingEmail;
+    this.obj_approvalDTO.TicketingCompany=leaveEmailInfo.TicketingCompany;
+    this.obj_approvalDTO.Com_ExitentryId=leaveEmailInfo.Com_ExitentryId;
+    this.obj_approvalDTO.Com_ExitentryName=leaveEmailInfo.Com_ExitentryName;
+    this.obj_approvalDTO.Com_ExitentryEmail=leaveEmailInfo.Com_ExitentryEmail;
+    this.obj_approvalDTO.ExitentryCompany=leaveEmailInfo.ExitentryCompany;
+     // SAME INPUT props to all
+
+    let controllerPath='';
+    if(emailOf=='NEW_LEAVE')
+      controllerPath='ApprovalAPI/NewTM_Leave';
+    else if(emailOf=='MANAGER_APPROVE')
+      controllerPath='ApprovalAPI/Manger_ConfirmationEmail';
+    else if(emailOf=='MANAGER_REJECT')
+      controllerPath='ApprovalAPI/Rejection_MangerEmail';
+    else if(emailOf=='HR_APPROVE_CASUAL')
+      controllerPath='ApprovalAPI/HR_CasualEmail';
+    else if(emailOf=='HR_APPROVE_LOCAL')
+      controllerPath='ApprovalAPI/HR_LocalConfirmationEmail';
+    else if(emailOf=='HR_APPROVE_INTERNATIONAL')
+      controllerPath='ApprovalAPI/HR_NationalConfirmationEmail';
+    else if(emailOf=='HR_REJECT')
+      controllerPath='ApprovalAPI/Rejection_HREmail';
+
+    return this.http.post(this.rootUrl+controllerPath,this.obj_approvalDTO);
+  }
 
 
 }

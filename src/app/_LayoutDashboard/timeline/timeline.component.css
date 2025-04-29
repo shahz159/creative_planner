@@ -172,6 +172,9 @@
   width: 1.15rem;
 }
 
+
+
+
 .timeline .timeline-content {
   width: 100%;
   overflow: auto;
@@ -236,7 +239,7 @@
   vertical-align: middle;
 }
 
-.time-table tbody tr:hover {
+.time-table:not(.work-archv-report) tbody tr:hover {
   background: #f2f5f9;
   transition: all 0.1s ease-in-out;
 }
@@ -526,9 +529,9 @@ a.dropdown-item {
 
 .time-table td:nth-child(4) {
   /* white-space: nowrap; */
-  text-overflow: ellipsis;
+  /* text-overflow: ellipsis;
   overflow: hidden;
-  max-width: 0;
+  max-width: 0; */
 }
 
 .error-border,
@@ -2594,6 +2597,60 @@ a.info-btn svg {
   vertical-align: middle;
 }
 
+
+.kt-reject-form-view {
+  margin-top: 13px;
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 2px 4px 20px 1px #ccc;
+}
+
+.kt-info-pg-footer {
+  margin: 5px 10px;
+}
+
+.btn-project-stv {
+  width: 100px;
+  background-color: #f0f0f0;
+}
+
+.Bt-Submit {
+  background-color: transparent;
+  color: #2786fb; 
+  font-size: 14px;
+  border: 1px solid #2786fb;
+  opacity: 1;
+  font-size: 13px;
+  letter-spacing: 0;
+  font-weight: 500;
+  border-radius: 3px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.Bt-Submit:hover {
+  background-color: #2786fb;
+  color: #fff;
+}
+
+.Bt-close {
+  /* padding: 4px 1px; */
+  background-color: transparent;
+  color: #a7a7a7;
+  font-size: 14px;
+  border: 1px solid #a7a7a7;
+  opacity: 1;
+  font-size: 13px;
+  letter-spacing: 0;
+  font-weight: 500;
+  border-radius: 3px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.Bt-close:hover{
+  background-color: #a7a7a7;
+  color: #fff;
+}
+
+
 /*dar sidebar css end*/
 
 
@@ -2823,3 +2880,32 @@ a.info-btn svg {
   }
 
 /*dar info css start.*/
+
+
+
+/*header tab btns*/
+
+.header-tab-btn
+{ 
+  border-bottom:3px solid transparent;
+  cursor: pointer;
+  padding: 8px 8px 8px 8px !important;
+}
+.header-tab-btn:hover{
+  border-bottom-color: #eeeeee;  
+}
+.header-tab-btn.active{
+  border-bottom-color: #4377ff; 
+}
+
+.header-tab-btn.dropdown-toggle::after{
+  transition-duration: 0.5s;
+}
+
+.header-tab-btn.dropdown-toggle[aria-expanded=true]::after{
+  transform: rotate(180deg);
+  transition-duration: 0.5s;
+}
+
+
+/*header tab btns*/

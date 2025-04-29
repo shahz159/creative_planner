@@ -127,7 +127,14 @@ export class ProjectTypeService {
 
 
 
-
+  async getSasUrl(filePath: string, expiryTime: Date): Promise<string> {
+    const expiryTimeString = expiryTime.toISOString(); // Convert to UTC string
+    const response = await this.http.get<{ sasUrl: string }>(
+      `${this.rootUrlcore}Azure/NewGenerateSASTokenUrl?filePath=${encodeURIComponent(filePath)}&expiryTime=${expiryTimeString}`
+    ).toPromise();
+   
+    return response.sasUrl;
+  }
 
 
   GetPortfoliosBy_ProjectId(pid) {
@@ -302,7 +309,7 @@ export class ProjectTypeService {
   GetCompanies() {
     return this.http.post(this.rootUrl + "TestAPI/NewGetCompanies", this.obj_CompanyDTO)
   }
-  LoginCredentials(objLoginDetails) {
+  LoginCredentials(objLoginDetails) { 
     return this.http.post(this.rootUrl + "TestAPI/NewGetLoginDetails", objLoginDetails);
     // .subscribe(data => {
     //   this.User_Details = data as LoginDTO[];
@@ -310,7 +317,7 @@ export class ProjectTypeService {
     // });
   }
 
-  login(uobjLoginDetails) {
+  login(uobjLoginDetails) { 
     this._userobj.userId = uobjLoginDetails.UserName;
     this._userobj.OldPassWord = uobjLoginDetails.Password;
     return this.http.post<any>('https://cswebapps.com/dmscoretestapi/api/Login/StreamLoginAPI', this._userobj);
@@ -363,7 +370,7 @@ export class ProjectTypeService {
     this.ObjStatusDTO.SelectedStatus = objStatus.SelectedStatus;
 
     this.ObjStatusDTO.PageNumber = objStatus.PageNumber;
-    this.ObjStatusDTO.RowsOfPage = 30;
+    this.ObjStatusDTO.RowsOfPage = 32;
     this.ObjStatusDTO.SearchText = objStatus.SearchText;
 
     return this.http.post(this.rootUrl + "TestAPI/NewGetPortfolioStatusColor", this.ObjStatusDTO)
@@ -392,13 +399,14 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewGetHierarchyofOwnerforMoredetails", this._ObjProjectDTO)
   }
 
-  GetViewAllDashboardnotifications(obj: NotificationActivityDTO) {
+  GetViewAllDashboardnotifications(obj: NotificationActivityDTO) {  debugger
     this.ObjNotificationDto.Emp_No = obj.Emp_No;
     this.ObjNotificationDto.PageNumber = obj.PageNumber;
     this.ObjNotificationDto.PageSize = obj.PageSize;
     this.ObjNotificationDto.SelectedType = obj.SelectedType;
     this.ObjNotificationDto.SelectedRequest = obj.SelectedRequest;
     this.ObjNotificationDto.SelectedStatus = obj.SelectedStatus;
+    this.ObjNotificationDto.SelectedCompany= obj.SelectedCompany;
     this.ObjNotificationDto.SelectedEmp_No = obj.SelectedEmp_No;
     this.ObjNotificationDto.SearchText = obj.SearchText;
     this.ObjNotificationDto.sendtype = obj.sendtype;

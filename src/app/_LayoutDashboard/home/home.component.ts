@@ -1305,6 +1305,7 @@ export class HomeComponent implements OnInit {
   AddFavourites(portfolioId, isfav) {
 // debugger
     // this.LoadingBar_state.start();
+    console.log('=>',portfolioId,isfav);
     this.service.SetFavourite_Service(portfolioId, isfav, this.Current_user_ID).subscribe((data) => {
       //  console.log("retrun Data----->",data1)
 

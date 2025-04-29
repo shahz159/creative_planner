@@ -24,6 +24,10 @@ import tippy from 'node_modules/tippy.js';
 import { MatAutocompleteTrigger,MatAutocomplete } from '@angular/material/autocomplete';
 import * as ApexCharts from 'apexcharts';
 import { DatePipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
+import { CalenderService } from 'src/app/_Services/calender.service';
+import { CalenderDTO } from '../../_Models/calender-dto';
 
 //import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 // import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
@@ -38,7 +42,7 @@ import { DatePipe } from '@angular/common';
 export class ProjectsSummaryComponent implements OnInit {
   // maskEditorAppliedMessage: string;
   // @ViewChild('popOver') public popover: NgbPopover;
-  dropdownSettings_Memo: IDropdownSettings = {};
+  // dropdownSettings_Memo: IDropdownSettings = {};
   ngDropdwonMemo: any;
   edited: boolean = false;
   canceledit: boolean =false;
@@ -72,6 +76,8 @@ Dateselectionrange: string = 'Date selection range';
     private notifyService: NotificationService,
     private route:ActivatedRoute,
     public datepipe: DatePipe,
+    private dialog: MatDialog,
+    private CalenderService: CalenderService
     ) {
     this.ObjUserDetails = new UserDetailsDTO();
     this._objDropdownDTO = new DropdownDTO();
@@ -130,7 +136,6 @@ Dateselectionrange: string = 'Date selection range';
    }
 
 
-
     // this.getDropdownsDataFromDB();
 
 // JQUERY
@@ -158,7 +163,8 @@ Dateselectionrange: string = 'Date selection range';
 
     });
 
-
+    this.GetMemosByEmployeeId();    // fetch all memos of current user.
+    this.GetProjectAndsubtashDrpforCalender();  // fetch all emp list, companies list and portfolios list . (used in dms link and portfolio link sidebar)
   //  alert(123)
     // this.GetApplicationDetails();
    // this.GetProjectsByUserName(this.type1);
@@ -172,82 +178,72 @@ Dateselectionrange: string = 'Date selection range';
 
 
 
-  Memos_List: any;
-  _ActualMemoslist: any;
+  // Memos_List: any;
+  // _ActualMemoslist: any;
 
-  GetMemosByEmployeeId() {
-    this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
-      subscribe((data) => {
-        this.Memos_List = JSON.parse(data['JsonData']);
-        this._ActualMemoslist = JSON.parse(data['JsonData']);
-        // console.log("Actual Memo List By EmpId--->", this._ActualMemoslist)
-        this._totalMemos = this._ActualMemoslist.length;
-        // console.log("Memos List", JSON.parse(data['JsonData']));
-        this.dropdownSettings_Memo = {
-          singleSelection: false,
-          idField: 'MailId',
-          textField: 'Subject',
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 1,
-          allowSearchFilter: true
-        };
-      });
-  }
+  // GetMemosByEmployeeId() {
+  //   this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
+  //     subscribe((data) => {
+  //       this.Memos_List = JSON.parse(data['JsonData']);
+  //       this._ActualMemoslist = JSON.parse(data['JsonData']);
+  //       this._totalMemos = this._ActualMemoslist.length;
+     
+  //     });
+  // }
 
   _dbMemoIdList: any;
   _SelectedIdsfromDb: any;
   _JsonString: string;
   Selected_Projectcode: string;
 
-  _onRowClick(projectCode, ProjName) {
-    this._SelectedIdsfromDb = [];
-    this.Selected_Projectcode = projectCode;
-    // console.log("projt Code------->",projectCode);
-    this._displayProjName = ProjName;
-    this.GetMemosByEmployeeId();
-    this._LinkService._GetOnlyMemoIdsByProjectCode(projectCode).
-      subscribe((data) => {
-        let Table_data: any = data;
-        // console.log("Memos Id Form DB--->", data);
-        if (Table_data.length > 0) {
-          this._JsonString = JSON.stringify(data[0]['JsonData']);
-          //console.log("Memos Ids-------->", (this._JsonString));
-          this._dbMemoIdList = JSON.parse(data[0]['JsonData']);
-          let arr1: any = this._ActualMemoslist;
-          // console.log("Actula Memo List On Row Click--->", this._ActualMemoslist);
-          let arr2: any = this._dbMemoIdList;
-          this._SelectedIdsfromDb = _.map(arr2, (d) => { return d.MailId });
-          //Rejecting Same Ids
-          this.Memos_List = _.reject(arr1, (d) => {
-            var findId = _.find(this._SelectedIdsfromDb, (sId) => { return sId === d.MailId });
-            if (findId) {
-              return true;
-            }
-            else {
-              return false;
-            }
-          })
-          let arr = [];
-          this._SelectedIdsfromDb.forEach(item => {
-            arr.push({ MailId: item })
-            this._SelectedIdsfromDb = arr;
-          });
-          if (this._dbMemoIdList == undefined) {
-            this._mappedMemos = 0;
-          }
-          else {
-            this._mappedMemos = this._dbMemoIdList.length;
-          }
-          //   // console.log("On Row Click----selectedIdfrom DB---->",this._SelectedIdsfromDb);
-        }
-        else {
-          this._mappedMemos = 0;
-          // console.log("No Memos linked For This Project...")
-        }
-      });
-    document.getElementById("LinkSideBar").style.width = "360px";
-  }
+  // _onRowClick(projectCode, ProjName) {
+  //   this._SelectedIdsfromDb = [];
+  //   this.Selected_Projectcode = projectCode;
+  //   // console.log("projt Code------->",projectCode);
+  //   this._displayProjName = ProjName;
+  //   this.GetMemosByEmployeeId();
+  //   this._LinkService._GetOnlyMemoIdsByProjectCode(projectCode).
+  //     subscribe((data) => {
+  //       let Table_data: any = data;
+  //       // console.log("Memos Id Form DB--->", data);
+  //       if (Table_data.length > 0) {
+  //         this._JsonString = JSON.stringify(data[0]['JsonData']);
+  //         //console.log("Memos Ids-------->", (this._JsonString));
+  //         this._dbMemoIdList = JSON.parse(data[0]['JsonData']);
+  //         let arr1: any = this._ActualMemoslist;
+  //         // console.log("Actula Memo List On Row Click--->", this._ActualMemoslist);
+  //         let arr2: any = this._dbMemoIdList;
+  //         this._SelectedIdsfromDb = _.map(arr2, (d) => { return d.MailId });
+  //         //Rejecting Same Ids
+  //         this.Memos_List = _.reject(arr1, (d) => {
+  //           var findId = _.find(this._SelectedIdsfromDb, (sId) => { return sId === d.MailId });
+  //           if (findId) {
+  //             return true;
+  //           }
+  //           else {
+  //             return false;
+  //           }
+  //         })
+  //         let arr = [];
+  //         this._SelectedIdsfromDb.forEach(item => {
+  //           arr.push({ MailId: item })
+  //           this._SelectedIdsfromDb = arr;
+  //         });
+  //         if (this._dbMemoIdList == undefined) {
+  //           this._mappedMemos = 0;
+  //         }
+  //         else {
+  //           this._mappedMemos = this._dbMemoIdList.length;
+  //         }
+  //         //   // console.log("On Row Click----selectedIdfrom DB---->",this._SelectedIdsfromDb);
+  //       }
+  //       else {
+  //         this._mappedMemos = 0;
+  //         // console.log("No Memos linked For This Project...")
+  //       }
+  //     });
+  //   document.getElementById("LinkSideBar").style.width = "360px";
+  // }
 
   closeLinkSideBar() {
     document.getElementById("LinkSideBar").style.width = "0";
@@ -472,6 +468,9 @@ Dateselectionrange: string = 'Date selection range';
   cancellationPort:any=[]
 
 
+  
+
+
     GetProjectsByUserName(type) {
     this.Type=type;
     this.BsService.setProjectSummaryType(type);
@@ -486,14 +485,28 @@ Dateselectionrange: string = 'Date selection range';
       this.ObjUserDetails.ActiveStatus = "Active";
     }
 
-    this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
+    this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe((data:any) => {
+      if(data){
+         data.forEach((ob)=>{
+          ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+          ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
+         });
+      }
+
       this._ProjectDataList = data;
 
       this.ActualDataList = data;
       this.cancelcheck=this.ActualDataList[0]['cancel'];
       this.cancelcount=this.ActualDataList[0]['cancelcount'];
       this.un_FilteredProjects = this.ActualDataList;
-        this.getNotificationsofprojects();
+      this.getNotificationsofprojects();
+      const aprvlsExist=this[this.currentUA=='Under Approval'?'newUA':this.currentUA=='Forward Under Approval'?'forwardUA':this.currentUA=='Cancellation Under Approval'?'cancellationUA':'completionUA'].length;
+      if(this.currentUA&&aprvlsExist>0){
+        this.filterPrjs(this.Current_user_ID,this.currentUA);
+      }
+      else
+      this.currentUA=null;
+
       if (this._ProjectDataList.length > 0) {
       }
 
@@ -523,13 +536,28 @@ Dateselectionrange: string = 'Date selection range';
         this.ObjUserDetails.ActiveStatus = "Active";
       }
 
-      this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe(data => {
-        this._ProjectDataList = data;
+      this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe((data:any) => {
+        if(data){
+          data.forEach((ob)=>{
+            ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+            ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
+           });
+        }
 
+        this._ProjectDataList = data;
          console.log("Summary Data---->",this._ProjectDataList);
 
          this.un_FilteredProjects = data;
          this.getNotificationsofprojects();
+        const aprvlsExist=this[this.currentUA=='Under Approval'?'newUA':this.currentUA=='Forward Under Approval'?'forwardUA':this.currentUA=='Cancellation Under Approval'?'cancellationUA':'completionUA'].length;
+        if(this.currentUA&&aprvlsExist>0){
+          this.filterPrjs(this.Current_user_ID,this.currentUA);
+        }
+        else 
+        this.currentUA=null;
+       
+         
+
         this.userFound = true
         this.ActualDataList = data;
         this.cancelcheck=this.ActualDataList[0]['cancel'];
@@ -1073,9 +1101,9 @@ dates:any
 
   //Apply Filters
   SearchbyText() {
+    this.currentUA=null;   // clear notif selection is present.
     if(this.searchText ==''){
       this.searchResult = false;
-
       this.CurrentPageNo = 1;
       this.applyFilters();
       this.edited = false
@@ -1088,38 +1116,47 @@ dates:any
     }
   }
 
-  filterPrjs(empNo:string,status:string){
+  // filterPrjs(empNo:string,status:'Completion Under Approval'|'Cancellation Under Approval'|'Under Approval'|'Forward Under Approval'){
+     
+  //    this.currentUA=status;
 
-     this._ProjectDataList = this.un_FilteredProjects.filter(item => {
-      if(status == 'Delay')
-      return ((item.Emp_No == empNo || item.Owner == this.Current_user_ID)  && (item.Status == status));
-      else
-      // return (item.PendingapproverEmpNo==empNo &&['Completion Under Approval','Cancellation Under Approval','Under Approval','Forward Under Approval'].includes(status))
-      if (status === 'Completion Under Approval'){
-        return item.PendingapproverEmpNo==empNo && item.Status == status;
-      }
-      else if (status === 'Cancellation Under Approval'){
-        return item.PendingapproverEmpNo==empNo && item.Status == status;
-      }
-      else if (status === 'Under Approval'){
-        return item.PendingapproverEmpNo==empNo && item.Status == status;
-      }
-      else if (status === 'Forward Under Approval'){
-        return item.PendingapproverEmpNo==empNo && item.Status == status;
+  //    this._ProjectDataList = this.un_FilteredProjects.filter(item => {
+  //       return item.Status==status&&item.PendingapproverEmpNo==empNo;
 
-      }
+  //     // if(status == 'Delay')
+  //     // return ((item.Emp_No == empNo || item.Owner == this.Current_user_ID)  && (item.Status == status));
+  //     // else
+  //     // return (item.PendingapproverEmpNo==empNo &&['Completion Under Approval','Cancellation Under Approval','Under Approval','Forward Under Approval'].includes(status))
+  //     // if (status === 'Completion Under Approval'){
+  //     //   return item.PendingapproverEmpNo==empNo && item.Status == status;
+  //     // }
+  //     // else if (status === 'Cancellation Under Approval'){
+  //     //   return item.PendingapproverEmpNo==empNo && item.Status == status;
+  //     // }
+  //     // else if (status === 'Under Approval'){
+  //     //   return item.PendingapproverEmpNo==empNo && item.Status == status;
+  //     // }
+  //     // else if (status === 'Forward Under Approval'){
+  //     //   return item.PendingapproverEmpNo==empNo && item.Status == status;
+  //     // }
 
-      });
+  //     });
 
-    // this.enterStatus=[];
-    // this.emplyToselect=[];
-    // this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>item.Emp_No==empNo);
-    // this.checkedItems_Status=this.StatusCountFilter.filter(item=>item.Name==status);
+  //   // this.enterStatus=[];
+  //   // this.emplyToselect=[];
+  //   // this.checkedItems_Emp=this.EmpCountInFilter.filter(item=>item.Emp_No==empNo);
+  //   // this.checkedItems_Status=this.StatusCountFilter.filter(item=>item.Name==status);
 
-    // this.applyFilters();
-    // this.edited = false;
+  //   // this.applyFilters();
+  //   // this.edited = false;
+  // }
+
+  filterPrjs(empNo:string,status:'Completion Under Approval'|'Cancellation Under Approval'|'Under Approval'|'Forward Under Approval'){
+    this.currentUA=status;
+    this._ProjectDataList = this.un_FilteredProjects.filter(item => {
+      return item.Status==status&&item.PendingapproverEmpNo==empNo;
+    });
   }
-
 
 
 
@@ -1166,7 +1203,13 @@ debugger
     }
     //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails)
-      .subscribe(data => {
+      .subscribe((data:any) => {
+        if(data){
+          data.forEach((ob)=>{
+            ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+            ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
+           });
+       }
         //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
         this._ProjectDataList = data;
         this.un_FilteredProjects = data;
@@ -1213,7 +1256,13 @@ debugger
       console.log("object passing to api:",this.ObjUserDetails);
       //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails)
-        .subscribe(data => {
+        .subscribe((data:any) => {
+          if(data){
+            data.forEach((ob)=>{
+              ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+              ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
+             });
+           }
           //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
           this._ProjectDataList = data;
           this.un_FilteredProjects = data;
@@ -1298,7 +1347,7 @@ debugger
   resetFilters() {
     // this.getDropdownsDataFromDB()
     this.searchText = "";
-
+  
     this.search_Type = [];
     this.CurrentPageNo = 1;
     this.edited=false;
@@ -1354,6 +1403,7 @@ debugger
     this.selectedItem_Company.length = 0;
     this.isChecked=false;
     this.isapprovlFound = false
+    this.currentUA=null;
     this.resetFilters();
 
   }
@@ -1428,6 +1478,8 @@ debugger
     document.getElementById("sumdet").classList.remove("position-fixed");
     document.getElementById("acceptbar").classList.remove("kt-quick-panel--on");
     document.getElementById("rejectbar").classList.remove("kt-quick-panel--on");
+    document.getElementById('LinkSideBar').classList.remove('kt-quick-panel--on');
+    document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");
     document.getElementsByClassName("side_view")[0].classList.remove("position-fixed");
     this.router.navigate(["/backend/ProjectsSummary/"]);
     $('#Project_info_slider_bar').removeClass('open_sidebar_info');
@@ -1445,90 +1497,643 @@ debugger
 
 
   //----------------------project info js end ------------
-  _totalMemos: number;
   _mappedMemos: number;
   _leftMemos: number;
+  _DBMemosIDList: any;
+   // _OpenMemosInfo(_projectCode, _projectName) {
+  //   if(_projectCode !=undefined && _projectName != undefined){
+  //   this._dbMemoIdList = [];
+  //   this._displayProjName = _projectName;
+  //   this._LinkService._GetOnlyMemoIdsByProjectCode(_projectCode).
+  //     subscribe((data) => {
+  //       let Table_data: any = data;
+  //       //console.log("Linked Db Memos Data---->",data);
+  //       let Dbdata: any = data[0]['JsonData'];
+  //       // console.log(Dbdata);
+  //       //console.log("DBdata Memos Data---->",Dbdata);
+  //       if (Dbdata == '[]') {
+  //         this._MemosSubjectList = [];
+  //         this._MemosNotFound = "No memos linked";
+  //       }
+  //       if (Table_data.length > 0 && data[0]['JsonData'] != '[]') {
+  //         this._MemosNotFound = "";
+  //         this._DBMemosIDList = JSON.parse(data[0]['JsonData']);
+  //         this._JsonString = data[0]['JsonData'];
+  //         this._LinkService._GetMemosSubject(this._JsonString).
+  //           subscribe((data) => {
+  //             // console.log("------------>", data);
+  //             this._MemosSubjectList = JSON.parse(data['JsonData']);
+  //             //console.log("Subject Name ------------>", this._MemosSubjectList);
+  //           });
+  //       }
+  //       else {
+  //         this._MemosSubjectList = [];
+  //         this._MemosNotFound = "No memos linked";
+  //       }
+  //     });
+  //   //Displaying Right Side Bar...
+  //   document.getElementById("MemosSideBar").style.width = "350px";
+  //   document.getElementById("prtfloSideBar").style.width = "0";
+  // }else{
+  //   document.getElementById("MemosSideBar").style.width = "0";
+  //   document.getElementById("prtfloSideBar").style.width = "0";
+  //   this.notifyService.showInfo("",'No Smail link in this project.')
+  // }
+  // }
+
+  // _CloseMemosidebar() {
+  //   document.getElementById("MemosSideBar").style.width = "0";
+  //   document.getElementById("prtfloSideBar").style.width = "0";
+  // }
+
+
+
+  //*******dms view, link and unlink new start**************
+
+  _ActualMemoslist: any;  // total memos of the current user.
+  _totalMemos: number;   // total memos of the current user. (count)
+  IsTotalMemosListLoading:boolean=false;   // whether total memos list is loaded or not.
+  _linkedMemos: number = 0;
+  IsMemoListLoading:boolean=false;
+  SelectDms: any=[]; 
+  _MemosNotFound: string = ""; 
   _MemosSubjectList: any;
   _displayProjName: string;
-  _MemosNotFound: string = "";
-  _DBMemosIDList: any;
+  _selectedProjCode:any;
+  Memos_List:any;  
 
-  _OpenMemosInfo(_projectCode, _projectName) {
-    if(_projectCode !=undefined && _projectName != undefined){
-    this._dbMemoIdList = [];
-    this._displayProjName = _projectName;
-    this._LinkService._GetOnlyMemoIdsByProjectCode(_projectCode).
+    
+GetMemosByEmployeeId() {
+    this.IsTotalMemosListLoading=true;
+    this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
       subscribe((data) => {
-        let Table_data: any = data;
-        //console.log("Linked Db Memos Data---->",data);
-        let Dbdata: any = data[0]['JsonData'];
-        // console.log(Dbdata);
-        //console.log("DBdata Memos Data---->",Dbdata);
-        if (Dbdata == '[]') {
-          this._MemosSubjectList = [];
-          this._MemosNotFound = "No memos linked";
-        }
-        if (Table_data.length > 0 && data[0]['JsonData'] != '[]') {
-          this._MemosNotFound = "";
-          this._DBMemosIDList = JSON.parse(data[0]['JsonData']);
-          this._JsonString = data[0]['JsonData'];
-          this._LinkService._GetMemosSubject(this._JsonString).
-            subscribe((data) => {
-              // console.log("------------>", data);
-              this._MemosSubjectList = JSON.parse(data['JsonData']);
-              //console.log("Subject Name ------------>", this._MemosSubjectList);
+          this._ActualMemoslist = JSON.parse(data['JsonData']);  console.log('actual memos list:',this._ActualMemoslist);
+          this._totalMemos = this._ActualMemoslist.length;
+          this.IsTotalMemosListLoading=false;
+      });
+}
+
+_OpenMemosInfo1(_projectCode, _projectName){
+
+  this._selectedProjCode=_projectCode;  
+  this._displayProjName=_projectName; 
+  this.getProjectMemos();
+  document.getElementById('LinkSideBar').classList.add('kt-quick-panel--on');
+  document.getElementById("rightbar-overlay").style.display = "block";
+}
+
+_CloseMemosidebar1(){
+  document.getElementById('LinkSideBar').classList.remove('kt-quick-panel--on');
+  document.getElementById("rightbar-overlay").style.display = "none";
+  this._MemosSubjectList = [];
+  this._MemosNotFound = "";
+  this._displayProjName="";
+  this._selectedProjCode=null;
+  this._JsonString="";
+  this.IsMemoListLoading=false;
+  this.Memos_List=[];
+  this._linkedMemos=0;
+}
+
+
+getProjectMemos(){
+  this.IsMemoListLoading=true;   // started fetching dms memos of the selected project.
+  this._LinkService._GetOnlyMemoIdsByProjectCode(this._selectedProjCode).subscribe((data) => {  
+      let Table_data: any = data;
+      this.IsMemoListLoading=false;  // successfully fetched 1st response
+      
+      if(Table_data&&Table_data.length>0&&Table_data[0]['JsonData']&&Table_data[0]['JsonData']!='[]'){
+        this._MemosNotFound = "";
+        this._JsonString = Table_data[0]['JsonData'];
+        this.IsMemoListLoading=true;  // started fetching 2nd response.
+        this._LinkService._GetMemosSubject(this._JsonString).
+        subscribe((data) => {    
+          this._MemosSubjectList = JSON.parse(data['JsonData']);
+          this._linkedMemos = this._MemosSubjectList.length;
+          this.IsMemoListLoading=false;   // successfully fetched memos linked on the selected project.
+          console.log("Subject Name ------------>", this._MemosSubjectList);
+          console.log('all memos:',this._ActualMemoslist);
+
+            
+          // at this point we have projmemos and totalmemos available. we dont need to show memos in the ngselect which are already selected so
+          this.Memos_List = this._ActualMemoslist.filter((item: any) => {
+            let selectornot = true;
+            for (let i = 0; i < this._MemosSubjectList.length; i++) {
+              if (this._MemosSubjectList[i].MailId === item.MailId) { selectornot = false; break; }
+            }
+            return selectornot;
+          });
+          console.log('all memos linkable:',this.Memos_List);
+          // now only unselected memos will be visible.
+       
+
+            // ensure Link_Status of selected project obj shows correct value after memo link or unlink   (required due to project summary array)
+            const _project=this._ProjectDataList.find((ob)=>{
+              return ob.Project_Code==this._selectedProjCode;
             });
+            _project.Link_Status=this._linkedMemos>0?true:false;
+            //
+
+        });
+      }
+      else{
+           // null, undefined, '', [], JsonData=[]
+           this.Memos_List=this._ActualMemoslist;    // when no memo linked in the project. all memos are linkable.
+           this._MemosSubjectList = [];
+           this._MemosNotFound = "No memos linked";
+           this._linkedMemos=0;
+
+           // ensure Link_Status of selected project obj shows correct value after memo link or unlink   (required due to project summary array)
+            const _project=this._ProjectDataList.find((ob)=>{
+            return ob.Project_Code==this._selectedProjCode;
+            });
+           _project.Link_Status=false;
+           //
+      }
+    });
+}
+
+
+unLinkSMail(memoId: number) {
+
+
+  const memo_name=this._MemosSubjectList.find(item=>item.MailId==memoId);
+  const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+    data: {
+      mode: 'delete',
+      title1: 'Confirmation ',
+      message1: memo_name.Subject
+    }
+  });
+  confirmDialog.afterClosed().subscribe((result: any) => {
+    if (result === true) {    // user confirmed to do deletion.
+      let projectcode = this._selectedProjCode;
+      let appId: number = 101;
+      let totalmemos = this._MemosSubjectList; // current total memos list.
+      let userid: number = +this.Current_user_ID;
+      if (this._linkedMemos) {   // if there is atleast one memo.
+        let memotodelete: any = totalmemos.find((amemo: any) => amemo.MailId === memoId);
+        if (memotodelete) {   // memo found
+          let index = totalmemos.indexOf(memotodelete);    // it will never return -1 at this point.
+          totalmemos.splice(index, 1);
+          let memosAfterDeletion: string = JSON.stringify(totalmemos.map((item: any) => ({ MailId: item.MailId }))) // [{MailId:123,Subject:'asd'},{MailId:234,Subject:'hdf'}]->[{MailId:123},{MailId:234}]->'[{MailId:123},{MailId:234}]'
+          this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, memosAfterDeletion, userid).subscribe((res: any) => {
+            if (res.Message === 'Updated Successfully') {
+              this.notifyService.showInfo("", "Memo removed.");
+              this._linkedMemos--;
+              this.getProjectMemos();
+            }
+          });
         }
-        else {
-          this._MemosSubjectList = [];
-          this._MemosNotFound = "No memos linked";
+      }
+      else {  // if there is no memos to delete.
+        this.notifyService.showError("No Memos Present", '');
+      }
+    }
+    else {   // when deletion operation has cancelled.
+      this.notifyService.showInfo("Action cancelled. ", '');
+    }
+  });
+
+}
+
+//******dms view, link and unlink new end.*************
+
+
+
+// *********portfolio view, link and unlink start.******************
+_projName:any;   // selected project name
+_projCode:any;   // selected project code
+_projId:any;  // selected project id.
+portfolio_List:any;  // selected project's portfolios list.
+_portfolioLength: number=0;  // selected project's portfolios count value.
+allPortfolioslist:any[]=[];    // list of all portfolios of current user.
+Portfoliolist_1:any=[];  // list of all unlinked portfolios.
+Portfolio: any = [];  // choosed portfolios in modal.
+selectedportID: any;  
+
+
+_OpenfortfolioInfo1(project_Code,project_Name,project_id){
+  this._projName=project_Name;
+  this._projCode=project_Code;
+  this._projId=project_id;
+  document.getElementById("LinkSideBar1").classList.add("kt-quick-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "block";
+  this.getPortfoliosLinkedToProject();  // fetches all linked portfolios on the selected project.
+
+}
+
+getPortfoliosLinkedToProject(){
+  this.service.getPortfolios(this._projCode).subscribe((res) => {   
+    if (res != null && res != undefined) {  debugger
+      this.portfolio_List = JSON.parse(res[0].Portfolio_json);   // linked portfolios on the project.
+      console.log('portfolio_List:',this.portfolio_List);
+
+      if ((this.portfolio_List.length == 1) && (this.portfolio_List[0]['Portfolio_Name'] == '')) 
+      this._portfolioLength = 0;
+      else
+      this._portfolioLength = this.portfolio_List.length;        // linked portfolios on the project. (count value)
+
+      // once we got both linked portfolios list & all portfolios list, create list of unlinked portfolios list for dropdown.
+      this.Portfoliolist_1=this._portfolioLength>0?(this.allPortfolioslist.filter((portfItem:any)=>{
+            return !this.portfolio_List.some(att => att.Portfolio_ID == portfItem.portfolio_id)
+      })):[...this.allPortfolioslist];
+      //
+
+      // ensure availableports shows same data as portfolio link or unlink   (required due to project summary array)
+      const _project=this._ProjectDataList.find((ob)=>{
+        return ob.Project_Code==this._projCode
+       });
+
+       if(this._portfolioLength>0){
+        const _availableports=this.portfolio_List.map((portfolioOb:any)=>({ Portfolio_ID: portfolioOb.Portfolio_ID, Portfolio_Name:portfolioOb.Portfolio_Name }));
+        _project.availableports=JSON.stringify(_availableports);
+       }
+       else {
+        _project.availableports=null;
+       }
+      //
+    }
+  });
+}
+
+
+closeLinkSideBar1() {
+  document.getElementById("LinkSideBar1").classList.remove("kt-quick-panel--on");
+  document.getElementById("rightbar-overlay").style.display = "none";
+  this._projName='';
+  this._projCode=null;
+  this._projId=null;
+  this.portfolio_List=[];
+  this.Portfoliolist_1=[];
+  this.Portfolio=[];
+  this.selectedportID=null;
+  this._portfolioLength=0;
+}
+
+OnCardClick(P_id: any) {
+  sessionStorage.setItem('portfolioId', P_id);
+  let name: string = 'portfolioprojects';
+  var url = document.baseURI + name;
+  var myurl = `${url}/${P_id}`;
+  var myWindow = window.open(myurl, P_id);
+  myWindow.focus();
+}
+
+
+
+addProjectToPortfolio() {  
+  if(this.Portfolio==' '||this.Portfolio==null){
+    this.notifyService.showInfo("Please select porfolio(s) to link",'Request cancelled');
+    return;
+  }
+
+  this.Portfolio=this.Portfolio.map((res)=>({"Port_Id": res}))
+  this.selectedportID = JSON.stringify(this.Portfolio);
+  if (this.selectedportID != null) {   
+
+
+    const objPortfolioDto = new PortfolioDTO();
+    objPortfolioDto.SelectedPortIdsJson = this.selectedportID;
+    objPortfolioDto.Project_Code = this._projCode;
+    objPortfolioDto.Emp_No = this.Current_user_ID;
+    this.service.InsertPortfolioIdsByProjectCode(objPortfolioDto).
+      subscribe((data) => {  
+
+        this._Message = (data['message']);
+
+        if (this._Message == 'Updated Successfully') {
+          this.getPortfoliosLinkedToProject();
+
+          // this.getPortfoliosDetails();
+          this.Portfolio=[];
+          this.notifyService.showSuccess("Project successfully added to selected portfolio(s).", this._Message);
+          
+        } else {
+          this.notifyService.showInfo("Please select atleast one portfolio and try again.", "");
         }
       });
-    //Displaying Right Side Bar...
-    document.getElementById("MemosSideBar").style.width = "350px";
-    document.getElementById("prtfloSideBar").style.width = "0";
-  }else{
-    document.getElementById("MemosSideBar").style.width = "0";
-    document.getElementById("prtfloSideBar").style.width = "0";
-    this.notifyService.showInfo("",'No Smail link in this project.')
-  }
+
   }
 
-  _CloseMemosidebar() {
-    document.getElementById("MemosSideBar").style.width = "0";
-    document.getElementById("prtfloSideBar").style.width = "0";
+}
+
+unlinkPortfolioFromProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {  debugger
+    const deletedBy = this.Current_user_ID;
+    let portfolioName;
+    this.portfolio_List.forEach(element => {
+      if (port_id == element.Portfolio_ID)
+        portfolioName = element.Portfolio_Name
+    });
+   
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        mode: 'delete',
+        title1: 'Confirmation ',
+        message1: portfolioName
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+
+      if (result === true) {
+        this.service.DeleteProject(Proj_id, port_id, Pcode, proj_Name, createdBy, deletedBy).subscribe((data) => {
+          this.getPortfoliosLinkedToProject();   //rebind
+          this.notifyService.showSuccess("Deleted successfully. ", '');
+        });
+      }
+      else {
+        this.notifyService.showInfo("Action cancelled. ", '');
+      }
+    });
+}
+
+onPortfolioFilter(){
+  const fresult=this.Portfoliolist_1.filter((prtf:any)=>{
+       const x=(prtf.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
+       const y=(prtf.Created_By===this.basedOnFilter.byuser||!this.basedOnFilter.byuser);
+       const z=x&&y;
+       const isSelected:boolean=this.Portfolio&&this.Portfolio.includes(prtf.portfolio_id);
+       return isSelected?false:z;
+  });
+  this.FilteredResults=fresult;
+  this.isFilteredOn=true;
+}
+
+//**********  portfolio view, link and unlink end.  *************
+
+
+// popup selection modal for dms and portfolio sidebar   start
+projectmodaltype:'portfolio'|'SMail'|undefined;
+FilteredResults:any=[];     // it is used to store the filtered result.
+isFilteredOn:boolean=false;
+choosedItems:any=[];
+companies_Arr:any;
+_EmployeeListForDropdown:any;
+basedOnFilter:any={};
+
+projectmodal(modaltype:'portfolio'|'SMail'){
+
+  document.getElementById("schedule-event-modal-backdrop").style.display = "block";
+  document.getElementById("projectmodal").style.display = "block";
+  this.projectmodaltype=modaltype;
+  this.onInputSearch('');     
+  const searchField:any=document.querySelector(`#projectmodal ${this.projectmodaltype=='SMail'?'input#SMail_InputSearch':'input#Portfolio_InputSearch'}`);
+  if(searchField)searchField.focus();
+}
+
+
+close_projectmodal(){
+  this.isFilteredOn=false;
+  this.basedOnFilter.byuser=null;
+  this.basedOnFilter.bycompany=null;    // clear filter applied.
+  this.close_project_filter();  // close filter dropdown 
+  document.getElementById("schedule-event-modal-backdrop").style.display = "none";
+  document.getElementById("projectmodal").style.display = "none";
+  this.choosedItems=[];   // clear selections.
+  this.FilteredResults=[];             // clear filtered result.
+  this.projectmodaltype=undefined; // no model open.
+}
+
+
+onInputSearch(inputText:any){   
+
+  let keyname;
+  let arrtype;
+  let selectedinto;
+  let property_name;
+  
+  let _Emp;
+  if(this.isFilteredOn){
+    _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
   }
 
+  if(this.projectmodaltype=='portfolio')
+  {
+     keyname='Portfolio_Name';
+     arrtype=this.Portfoliolist_1;  //unlinked portfolios list
+     selectedinto='Portfolio';
+     property_name='portfolio_id';
+  }
+  else if(this.projectmodaltype=='SMail')
+  {
+    keyname='Subject';
+    arrtype=this.Memos_List;  // unlinked dms memos list 
+    selectedinto='SelectDms';
+    property_name='MailId';
+  }
 
-  portfolio_List:any;
-  _displayprtflioName:any;
+  const result=arrtype.filter(item=>{  
+    let nameMatched:boolean=false;
+    let filterMatched:boolean=false;
 
-  _OpenfortfolioInfo(index:number,Project_Name) {
-   if(index!=undefined &&Project_Name!=undefined){
-    this._displayprtflioName=Project_Name
-    this.portfolio_List=JSON.parse(this._ProjectDataList[index]['availableports']);
 
-     //Displaying Right Side Bar...
-     document.getElementById("prtfloSideBar").style.width = "350px";
-     document.getElementById("MemosSideBar").style.width = "0";
-   }else{
-        document.getElementById("prtfloSideBar").style.width = "0";
-        document.getElementById("MemosSideBar").style.width = "0";
-      this.notifyService.showInfo("",'No portfolio link in this project.')
+// by search text
+    const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
+    if(unselected)
+    nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim());
+
+// by filter
+   if(nameMatched&&this.isFilteredOn){
+      if(this.projectmodaltype=='SMail'){
+        // 'item' act as a memo object here
+        let hasMemo:boolean=false;
+        hasMemo=(!this.basedOnFilter.byuser)||(item.DisplayName.toLowerCase().trim()===_Emp.TM_DisplayName.toLowerCase().trim());
+    
+        let isSelected:boolean=false;
+        isSelected=this.SelectDms&&this.SelectDms.includes(item.MailId);
+
+        filterMatched=isSelected?false:hasMemo;
+      }
+      else if(this.projectmodaltype=='portfolio'){
+            // portfolio filter section here
+       // 'item' act as a portfolio object here
+       const x=(item.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
+       const y=(item.Created_By===this.basedOnFilter.byuser||!this.basedOnFilter.byuser);
+       const z=x&&y;
+       const isSelected:boolean=this.Portfolio&&this.Portfolio.includes(item.portfolio_id);
+       filterMatched=isSelected?false:z;
+
+      }
    }
 
+    return nameMatched&&(this.isFilteredOn?filterMatched:true);
+  });
+
+  this.FilteredResults=result;
+
+  console.log(this.FilteredResults,'FilteredAttendees')
+}
+
+
+onItemChoosed(choosed:any,choosedItem:any){
+  if(choosed){
+    this.choosedItems.push(choosedItem);
   }
-
-
-  OnCardClick(P_id: any) {
-    sessionStorage.setItem('portfolioId', P_id);
-    let name: string = 'portfolioprojects';
-    var url = document.baseURI + name;
-    var myurl = `${url}/${P_id}`;
-    var myWindow = window.open(myurl, P_id);
-    myWindow.focus();
+  else{
+    const i=this.choosedItems.findIndex(item=>(item===choosedItem));
+    if(i>-1)
+    this.choosedItems.splice(i,1);
   }
+}
 
+
+
+keepChoosedItems(){
+  switch(this.projectmodaltype)
+  {
+      case 'portfolio':{
+            if (!this.Portfolio)   // if Portfolio is null,undefined,''
+            this.Portfolio = [];
+
+           this.Portfolio=[...this.Portfolio,...this.choosedItems];  // array of portfolio ids.
+      };break;
+
+     case 'SMail':{
+          if(!this.SelectDms)   // if SelectDms is null,undefined,''
+            this.SelectDms=[];
+
+          this.SelectDms=[...this.SelectDms,...this.choosedItems];   // array of all selected dms id.
+     };break;
+  }
+  this.close_projectmodal();
+}
+
+project_filter() {
+  document.getElementById("project-filter").classList.add("show");
+  document.getElementById("filter-icon").classList.add("active");
+}
+close_project_filter() {
+  document.getElementById("project-filter").classList.remove("show");
+  document.getElementById("filter-icon").classList.remove("active");
+}
+
+onDMSFilter(){
+  const _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
+   const fresult=this.Memos_List.filter((_memo:any)=>{
+
+    let hasMemo:boolean=false;
+    hasMemo=(!this.basedOnFilter.byuser)||(_memo.DisplayName.toLowerCase().trim()===_Emp.TM_DisplayName.toLowerCase().trim());
+
+    let isSelected:boolean=false;
+    isSelected=this.SelectDms&&this.SelectDms.includes(_memo.MailId);
+
+    return isSelected?false:hasMemo;
+   });
+
+   this.FilteredResults=fresult;
+   this.isFilteredOn=true;
+}
+
+clearAppliedFiltered(){
+  this.basedOnFilter.byuser=null;
+  this.basedOnFilter.bycompany=null;
+    switch(this.projectmodaltype){
+      
+        case 'portfolio':{
+          this.onPortfolioFilter();
+        };break;
+        case 'SMail':{
+          this.onDMSFilter();
+        };break;
+       
+        default:{};
+    }
+    this.isFilteredOn=false;
+}
+
+
+subtashDrpLoading:boolean = false;
+GetProjectAndsubtashDrpforCalender() {
+   this.subtashDrpLoading=true;
+    const _calenderDto = new CalenderDTO();
+    this.CalenderService.GetCalenderProjectandsubList(_calenderDto).subscribe
+      ((data) => {
+        this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
+        this.companies_Arr=JSON.parse(data['Client_json']);
+        this.allPortfolioslist=JSON.parse(data['Portfolio_drp']);
+        console.log("_EmployeeListForDropdown",this._EmployeeListForDropdown);
+        console.log('companies_Arr :',this.companies_Arr);
+        console.log('all portfolios :',this.allPortfolioslist);
+        this.subtashDrpLoading=false;
+      });
+}
+
+
+
+// ADD DMS STARTS HERE
+addDMSToTheProject() {  
+  try {
+    this.SelectDms=this.SelectDms.map((item)=>({"MailId": item}))
+    if (this.SelectDms.length) {
+      // when user has selected memo.  when selectedMemos.length>0
+      let totalmemos:any = [];
+      if (this._MemosSubjectList)
+        totalmemos = this._MemosSubjectList.map((item: any) => ({ MailId: item.MailId })); // get current memos list.
+
+      let newmemos = this.SelectDms.map((item: any) => ({ MailId: item.MailId }));  // get selected memos.
+      newmemos.forEach((memo: { MailId: number }) => {
+        totalmemos.push(memo);
+      });   // adding selected memos to the totalmemos
+
+
+      let projectcode: number = this._selectedProjCode;
+      let appId: number = 101;//this._ApplicationId;
+      let dmsMemo = JSON.stringify(totalmemos); //[{MailId:123,Subject:'abc'}]->[{MailId:123}]->'[{MailId:123}]'
+      let userid: number = +this.Current_user_ID;
+
+      this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => { 
+        console.log("Response=>", res);
+        if (res.Message === "Updated Successfully"||res.Message==="Linked Successfully") {
+          this.notifyService.showSuccess("", "SMail successfully added.");
+          this.getProjectMemos();  // rebind project memos list and update new linkable memos list.
+        }
+
+      });
+    }
+    else {
+      // when user tries to click addlink btn without selecting memo.   when selectedMemos.length=0
+      this.notifyService.showInfo("Request Cancelled", "Please select memo(s) to link");
+    }
+
+  }
+  catch (e) {  // if we faces any error during the process.
+    console.log(e);
+    this.notifyService.showInfo("Request Cancelled", "Error!");
+  }
+  // this.GetMemosByEmployeeId();    // get new data.
+  this.SelectDms = new Array();
+  // this.linkSMail=false;
+  // //this.closeLinkSideBar();         //closes the sidebar.
+}
+// ADD DMS END HERE
+
+
+// popup selection modal for dms and portfolio sidebar   end
+
+
+
+
+
+  // _displayprtflioName:any;
+
+  // _OpenfortfolioInfo(index:number,Project_Name) {  
+  //  if(index!=undefined &&Project_Name!=undefined){
+  //   this._displayprtflioName=Project_Name
+  //   this.portfolio_List=JSON.parse(this._ProjectDataList[index]['availableports']);
+
+  //    //Displaying Right Side Bar...
+  //    document.getElementById("prtfloSideBar").style.width = "350px";
+  //    document.getElementById("MemosSideBar").style.width = "0";
+  //  }else{
+  //       document.getElementById("prtfloSideBar").style.width = "0";
+  //       document.getElementById("MemosSideBar").style.width = "0";
+  //     this.notifyService.showInfo("",'No portfolio link in this project.')
+  //  }
+
+  // }
+
+
+ 
 
 
 
@@ -1641,22 +2246,22 @@ debugger
     myWindow.focus();
   }
 
-  AddDms() {
-    this._onRowClick(this.pCode, this.pName);
-  }
+  // AddDms() {
+  //   this._onRowClick(this.pCode, this.pName);
+  // }
 
-  search(event) {
-    if(this.searchText ==""){
-      this.searchResult = true;
-      this.SearchbyText();
-    }
-    else{
-      this.searchResult = true;
-      this.SearchbyText();
-    }
+  // search(event) {
+  //   if(this.searchText ==""){
+  //     this.searchResult = true;
+  //     this.SearchbyText();
+  //   }
+  //   else{
+  //     this.searchResult = true;
+  //     this.SearchbyText();
+  //   }
 
-    //console.log("Searh Text---->",event)
-  }
+  //   //console.log("Searh Text---->",event)
+  // }
 
   requestDetails:any;
   requestDate: any;
@@ -2215,14 +2820,18 @@ this.closeAutocompleteDrpDwn('proDDwn')
  isstatus = true;
  islastupdate = true;
  isdeadline = true;
+ isallocatedhrs=true;
  isrespon = true;
- isprojtype = true
- isdeleted = true
- isrefer = true
- iscost = true
- isowner = false
- isclient = false
- isDepartment = false
+ isprojtype = true;
+ isdeleted = true;
+ isrefer = true;
+ iscost = true;
+ isowner = false;
+ isclient = false;
+ isDepartment = false;
+ isstartdate=false;
+ iscreateddate=false;
+ iscompletiondate=false;
 
    togglevisibilityforClass(className: string, event: any): void {
 
@@ -2240,7 +2849,11 @@ this.closeAutocompleteDrpDwn('proDDwn')
        'classCost' :'iscost',
        'owner_class' :'isowner',
        'client_class': 'isclient',
-       'class_depart'  : 'isDepartment'
+       'class_depart'  : 'isDepartment',
+       'class_startdate':'isstartdate',
+       'class_completiondate':'iscompletiondate',
+       'class_creationdate':'iscreateddate',
+       'class_allocatedhours':'isallocatedhrs'
      };
 
      // Check if the className exists in the map and update the corresponding state variable
@@ -2279,6 +2892,8 @@ this.closeAutocompleteDrpDwn('proDDwn')
     return '';
 
   }
+
+
 
 
 
@@ -2337,7 +2952,7 @@ this.closeAutocompleteDrpDwn('proDDwn')
   rejectpros() {
     this.approvalObj.Project_Code = null;
     this.approvalservice.GetGlobalRejectList(this.approvalObj).subscribe((data) => {
-      this.reject_list = JSON.parse(data[0]['reject_list']);
+      this.reject_list = JSON.parse(data[0]['reject_list']);  
     });
     document.getElementById("rejectbar").classList.add("kt-quick-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -2471,8 +3086,7 @@ if( this.approvingRequest.length > 0 ){
 
   this.approvalservice.NewUpdateAcceptApprovalsService(this.approvingRequest).subscribe(data =>{
     console.log(data,"accept-data");
-      const checkbox = document.getElementById('snocheck') as HTMLInputElement;
-      checkbox.checked = false;
+      this.isAllPrjSelected=false;  this.value();
       this.notifyService.showSuccess("Project(s) approved successfully.",'Success');
 
       this.approvingRequest=[];
@@ -2521,7 +3135,19 @@ else{
   reject_list: any;
   allSelectedProjects = [];
   isapprovlFound:boolean = false
+  rejectCmts_SortOrder:'Most Used'|'Newest'='Most Used';
+  rCmts_searchtxt:string='';
 
+  sortRejectCmtsBy(sortby:'Most Used'|'Newest'){
+      this.rCmts_searchtxt='';
+      this.rejectCmts_SortOrder=sortby;
+      let key=(sortby=='Most Used')?'Usage_Count':(sortby=='Newest')?'MostRecentCommentID':null;
+      if(key){
+        this.rejectcommentsList.sort((cmt1,cmt2)=>{
+          return cmt2[key]-cmt1[key];
+        });
+      }
+  }
 
 
   resetReject(){
@@ -2529,9 +3155,14 @@ else{
     this.comments = "";
     this.exist_comment =[];
     this.rejectType=null;
+    this.rCmts_searchtxt='';
+    this.rejectCmts_SortOrder='Most Used';
   }
 
-  rejectApproval() {
+  rejectApproval() {  
+
+    this.rejectCmts_SortOrder='Most Used';
+    this.rCmts_searchtxt='';
     this.noRejectType = false;
     this.reject_list.forEach(element => {
       if (this.rejectType == element.TypeID) {
@@ -2539,44 +3170,30 @@ else{
       }
     });
 
-    if(this.allSelectedProjects.length==1){
-      this.approvalObj.Project_Code=(this.allSelectedProjects[0]['Project_Code1'])
-      if ((this.allSelectedProjects[0]['Req_Type']) == 'New Project')
-        this.approvalObj.Status = 'New Project Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'New Project Reject Release')
-        this.approvalObj.Status = 'New Project Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'New Project Hold')
-        this.approvalObj.Status = 'New Project Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Complete')
-        this.approvalObj.Status = 'Project Complete Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Complete Reject Release')
-        this.approvalObj.Status = 'Project Complete Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Complete Hold')
-        this.approvalObj.Status = 'Project Complete Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Deadline Extend')
-        this.approvalObj.Status = 'Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Deadline Extend Hold')
-        this.approvalObj.Status = 'Rejected';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Standardtask Enactive')
-        this.approvalObj.Status = 'Enactive-Reject';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Forward')
-        this.approvalObj.Status = 'Forward Reject';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Project Hold')
-        this.approvalObj.Status = 'Project Hold Reject';
-      else if ((this.allSelectedProjects[0]['Req_Type']) == 'Revert Back')
-        this.approvalObj.Status = 'Revert Reject';
-        else if ((this.allSelectedProjects[0]['Req_Type']) == 'Task Complete')
-        this.approvalObj.Status = 'Task-Reject';
-      else{
-        this.approvalObj.Status = 'Rejected';
-      }
-    }
 
-
+   const requests_ar=this.allSelectedProjects.map((p:any)=>{
+   return p.Type=='New Project'?'New Project Rejected':
+          p.Type=='New Project Reject Release'?'New Project Rejected':
+          p.Type=='New Project Hold'?'New Project Rejected':
+          p.Type=='Project Complete'?'Project Complete Rejected':
+          p.Type=='Project Complete Reject Release'?'Project Complete Rejected':
+          p.Type=='Project Complete Hold'?'Project Complete Rejected':
+          p.Type=='Deadline Extend'?'Rejected':
+          p.Type=='Deadline Extend Hold'?'Rejected':
+          p.Type=='Standardtask Enactive'?'Enactive-Reject':
+          p.Type=='Project Forward'?'Forward Reject':
+          p.Type=='Project Hold'?'Project Hold Reject':
+          p.Type=='Revert Back'?'Revert Reject':
+          p.Type=='Task Complete'?'Task-Reject':
+          'Rejected';
+    });
+   
+    this.approvalObj.Status = requests_ar.join(',');
     this.approvalObj.Emp_no = this.Current_user_ID;
     this.approvalObj.rejectType = this.rejectType;
+    // this.approvalObj.Project_Code=(this.allSelectedProjects[0]['Project_Code']); 
       this.approvalservice.GetGlobalRejectComments(this.approvalObj).subscribe(data => {
-      this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
+      this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);   console.log('reject_CommentsList:',this.rejectcommentsList);
       this.rejectcomments=this.rejectcommentsList.length;
     });
 
@@ -2593,14 +3210,16 @@ else{
 
       this.approvalservice.NewUpdateRejectApprovalsService(this.approvingRequest).subscribe(data =>{
         console.log(data,"reject-data");
-
+        
+        this.isAllPrjSelected=false; this.value();
         this.allSelectedProjects=[];
-        this.approvingRequest = []
+        this.approvingRequest = [];
         this.GetProjectsByUserName(this.type1);
-        this.isapprovlFound = false
+        this.isapprovlFound = false;
       });
-      const checkbox = document.getElementById('snocheck') as HTMLInputElement;
-      checkbox.checked = false;
+      // const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+      // checkbox.checked = false;
+     
       this.allSelectedProjects=[];
       this.notifyService.showSuccess("Project(s) rejected successfully.",'Success');
     }
@@ -2771,7 +3390,7 @@ prj_statuses:any=[];
 isGanttchartVisible:boolean=false;
 PrjsGanttChart:any;
 
-loadGanttChart(){
+loadGanttChart(){ debugger
   console.log("current projects on the page:",this._ProjectDataList);
   let _ProjectsListBy_Pid1=this._ProjectDataList.filter(prj=>['001','002','011'].includes(prj.Project_Block));  // showing only core,secondary and todo type projects.
   this.isGanttchartVisible=_ProjectsListBy_Pid1.length>0;
@@ -2782,12 +3401,12 @@ loadGanttChart(){
   this.prj_statuses=Array.from(new Set(this.prj_statuses));
   const todays_date=new Date().getTime();
 
-  const _series=_ProjectsListBy_Pid1.map((prj,_index)=>{
+  const _series=_ProjectsListBy_Pid1.map((prj,_index)=>{   
       let p_status=prj.Status=='Completion Under Approval'?(prj.AuditStatus=='Audit Pending'?'Audit Approval':'Completion Under Approval'):prj.Status;
       const color=this.all_status[p_status]||this.all_status['other'];
       let data_ar=[];
       const prj_startd=new Date(prj.DPG);
-      const prj_endd=new Date(prj.DeadLine);
+      const prj_endd=new Date(prj.DeadLine); 
       const curdate=new Date();
 
     if(prj_startd<curdate&&prj_endd>curdate){
@@ -3252,11 +3871,12 @@ onGanttChartClose(){
 
 
 
+currentUA:'Completion Under Approval'|'Forward Under Approval'|'Under Approval'|'Cancellation Under Approval';
 completionUA:any=[];
 forwardUA:any=[];
 newUA:any=[];
 cancellationUA:any=[];
-mydelayProjects:any=[];
+// mydelayProjects:any=[];
 
 
 
@@ -3266,10 +3886,9 @@ getNotificationsofprojects(){
   this.forwardUA=[];
   this.newUA=[];
   this.cancellationUA=[];
-  this.mydelayProjects = [];
+  // this.mydelayProjects = [];
 
   // item.Status === 'Delay' && (item.Emp_No == this.Current_user_ID || item.OwnerEmpNo == this.Current_user_ID
-debugger
   this.un_FilteredProjects.forEach((p)=>{
     if(p.PendingapproverEmpNo==empno&&p.Status==='Completion Under Approval')
       this.completionUA.push(p);
@@ -3301,6 +3920,24 @@ debugger
 //   });
 //  this.value()
 // }
+
+
+// method to convert HH:MM to hours value.
+convertToDecimalHours(hm:string){
+  const h=Number.parseInt(hm.split(':')[0]);
+  const m=Number.parseInt(hm.split(':')[1]);
+  const alhr=h+(m/60);
+  return alhr;
+}
+// method to convert HH:MM to hours value.
+
+
+
+
+
+
+
+
 }
 
 

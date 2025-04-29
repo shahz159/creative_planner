@@ -55,6 +55,9 @@ export class FileviewComponent implements OnInit {
   invalid: boolean =false;
   objProjectDto: ProjectDetailsDTO;
   noRedirectionToSource:boolean=false;  // by default redirection is allowed.
+  _originalUrl: string;
+  Title_Name:any;
+
 
   constructor(private route: ActivatedRoute,public service: ProjectTypeService,private notifyService: NotificationService
   ) {   
@@ -64,14 +67,14 @@ export class FileviewComponent implements OnInit {
 
 
   ngOnInit(): void { 
-
+debugger
     this.Current_user_ID = localStorage.getItem('EmpNo');
     this.IsStreamDownload = localStorage.getItem('IsStreamDownload');
     var decoder = new TextDecoder();
     this.url_project_code=this.route.snapshot.params['projectcode'];
     let surl = this.route.snapshot.params['url'];
-    this.route.queryParams.subscribe(params => {
-
+    this.route.queryParams.subscribe(async params => {
+      debugger
       let surl = params['url'];
       const arr = surl.split(',').map(element => {
         return Number(element);
@@ -81,6 +84,9 @@ export class FileviewComponent implements OnInit {
       const arruid = uid.split(',').map(element => {
         return Number(element);
       });
+      this.src = decoder.decode(new Uint8Array(arr));
+      this._originalUrl = decoder.decode(new Uint8Array(arr));
+      await this.getTemporaryUrl(this.src);
 
         if (decoder.decode(new Uint8Array(arruid)).toString() != this.Current_user_ID.toString()) {
           this.viewer='';
@@ -101,11 +107,11 @@ export class FileviewComponent implements OnInit {
             let Imagetext = ".jpg, .jpeg, .webp, .avif, .jfif, .svg, .ico, .gif .image/jpg, .image/png, .png"
             let Image = Imagetext.includes(type.toLocaleLowerCase());
 
-            // let Audiotext = ".mp3, .wav, .ogg"
-            // let Audio = Audiotext.includes(contenttype.toLocaleLowerCase());
+            let Audiotext = ".mp3, .wav, .ogg"
+            let Audio = Audiotext.includes(type.toLocaleLowerCase());
 
-            // let Videotext = ".mp4, .mov, .wmv, .avi, .webm"
-            // let Video = Videotext.includes(contenttype.toLocaleLowerCase());
+            let Videotext = ".mp4, .mov, .wmv, .avi, .webm"
+            let Video = Videotext.includes(type.toLocaleLowerCase());
 
             if (office) {
               this.viewer = "office";
@@ -120,12 +126,12 @@ export class FileviewComponent implements OnInit {
             else if (Image) {
               this.viewer = "image";
             }
-            // else if (Audio) {
-            //   this.viewer = "Audio";
-            // }
-            // else if (Video) {
-            //   this.viewer = "Video";
-            // }
+            else if (Audio) {
+              this.viewer = "Audio";
+            }
+            else if (Video) {
+              this.viewer = "Video";
+            }
             else {
               this.viewer = "";
             }
@@ -141,7 +147,7 @@ export class FileviewComponent implements OnInit {
       console.log(this.filename,"filename123");
 
       if(this.viewer==null || this.viewer=='' || this.viewer ==undefined){
-        this.service.PathExtention(this.src).subscribe(
+        this.service.PathExtention(this._originalUrl).subscribe(
           da => {
             scontenttype = da["ContentType"];
             let contenttype = scontenttype;//decoder.decode(new Uint8Array(arrct));
@@ -188,11 +194,29 @@ export class FileviewComponent implements OnInit {
           });
       }
 
-      this.url_master_code=params['mastercode'];
+      this.url_master_code=params['mastercode']; 
       this.noRedirectionToSource=params['noRedirection']?params['noRedirection']=='true':false;
       this.Schedule_ID=params['Schedule_ID'];
+      this.Title_Name=params['Title_Name'];
     });
   }
+
+
+  async getTemporaryUrl(src: string) {
+     
+    //  (let image of this.dashboardBannersImages)   
+    const expiryTime = new Date();
+      expiryTime.setMinutes(expiryTime.getMinutes() + 5); // 5 minutes expiry
+ 
+      try {
+        src = await this.service.getSasUrl(src, expiryTime);
+        this.src = src;
+      } catch (error) {
+        console.error(`Error fetching SAS URL for ${src}`, error);
+      }
+    // }
+  }
+
   incrementZoom(amount: number) {
     this.zoom += amount;
   }
@@ -302,7 +326,7 @@ export class FileviewComponent implements OnInit {
 
   }
 
-  download(url, filename) {
+  download(url, filename) { 
 
     this.objProjectDto.Project_Code=this.url_project_code;
     this.objProjectDto.Emp_No=this.Current_user_ID;
@@ -312,8 +336,8 @@ export class FileviewComponent implements OnInit {
         this.notifyService.showSuccess("Downloaded successfully","Success");
     });
 
-      fetch(url).then(function (t) {
-        return t.blob().then((b) => {
+      fetch(url).then(function (t) { 
+        return t.blob().then((b) => {debugger
           var a = document.createElement("a");
           a.href = URL.createObjectURL(b);
           a.setAttribute("download", filename);

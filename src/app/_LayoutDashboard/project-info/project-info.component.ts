@@ -447,6 +447,9 @@ Prj_Code:any;
       // });
   }
 
+
+
+  
   isExpanded: boolean = false;
 
   toggleExpand() {
@@ -1476,6 +1479,7 @@ Prj_Code:any;
   contenttype: any;
   submitby:any;
   standardid:any;
+  rejectreleaseComments:any;
 
   getapprovalStats() {
     this.approvalEmpId = null;
@@ -1502,6 +1506,7 @@ Prj_Code:any;
           this.new_cost = (this.requestDetails[0]['new_cost']);
           this.new_duration = (this.requestDetails[0]['new_duration']);
           this.comments_list = JSON.parse(this.requestDetails[0]['comments_Json']);
+          this.rejectreleaseComments=JSON.parse(this.requestDetails[0]['rejectreleaseComments']);
           this.Submitted_By = (this.requestDetails[0]['Submitted_By']);   console.log('Submitted_By:',this.Submitted_By);
           this.AuditRequestBY=(this.requestDetails[0]['AuditRequestBY']); 
           const fullName = this.Submitted_By && this.Submitted_By.split(' ');
@@ -1653,11 +1658,28 @@ Prj_Code:any;
   reject_list: any;
   rejectType: any;
   rejectlength: any;
+  rejectCmts_SortOrder:'Most Used'|'Newest'='Most Used';
+  rCmts_searchtxt:string='';
+
+  sortRejectCmtsBy(sortby:'Most Used'|'Newest'){
+      this.rCmts_searchtxt='';
+      this.rejectCmts_SortOrder=sortby;
+      
+      let key=(sortby=='Most Used')?'Usage_Count':(sortby=='Newest')?'MostRecentCommentID':null;
+      if(key){
+        this.rejectcommentsList.sort((cmt1,cmt2)=>{
+          return cmt2[key]-cmt1[key];
+        });
+      }
+  }
+
 
   rejectApproval() {
     this.exist_comment = [];
     this.comments = "";
     this.noRejectType = false;
+    this.rejectCmts_SortOrder='Most Used';
+    this.rCmts_searchtxt='';
     // alert(this.rejectType)
     if (this.rejectType != null && this.rejectType != "") {
       this.reject_list.forEach(element => {

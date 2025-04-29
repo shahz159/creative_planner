@@ -472,13 +472,13 @@ tr.action-row:hover {
 }
 
 @media screen and (min-width : 1500px) {
-    .picsum-img-wrapper img {
+    .picsum-img-wrapper, .picsum-img-wrapper img {
         height: 230px;
     }
 }
 
 @media screen and (min-width : 1600px) {
-    .picsum-img-wrapper img {
+    .picsum-img-wrapper, .picsum-img-wrapper img {
         height: 280px;
     }
 
@@ -488,7 +488,7 @@ tr.action-row:hover {
 }
 
 @media screen and (min-width : 1700px) {
-    .picsum-img-wrapper img {
+    .picsum-img-wrapper, .picsum-img-wrapper img {
         height: 300px;
     }
 
@@ -862,7 +862,6 @@ tr.action-row:hover {
     align-items: center;
     justify-content: space-between;
     color: #575757;
-    cursor: pointer;
     transition: all 0.15s ease-in-out;
 }
 
@@ -924,7 +923,7 @@ tr.action-row:hover {
     left: -32px;
     top: 40px;
     width: 2px;
-    height: 16px;
+    height: 69%;
     background: #c9c9c9;
 }
 
@@ -1008,6 +1007,15 @@ tr.action-row:hover {
 
 .timeline .timeline-container .timeline-body .timeline-content {
     color: #999;
+}
+
+
+.tm-link-redirect{
+  cursor: pointer;
+}
+.tm-link-redirect:hover{
+  color: #1a73e8;
+  /* text-decoration: underline; */
 }
 
 .picsum-img-wrapper {
@@ -2630,6 +2638,34 @@ span.p-b-percent-count {
     height: 100%;
 }
 
+.compl-remarks-span {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    max-height: 3em;
+    line-height: 1.5em;
+    cursor: default;
+}
+
+
+.no-recentactivity-present {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 35vh;
+  }
+  
+.no-recentactivity-present .nra-image {
+    width: 18%;
+}
+  
+.no-recentactivity-present .nra-label{
+    color: #b2b3b3;
+    font-weight: 400;
+}
 .upcoming-event-v2-item {
     position: relative;
 }
@@ -2650,7 +2686,7 @@ span.p-b-percent-count {
 
 .upcoming-event-v2-item:hover .upcoming-event-item-actions-ul {
     transition: all 0.2s ease-in-out;
-    width: 150px;
+    width: 61px;
 }
 
 .upcoming-event-item-actions-li {
@@ -2673,4 +2709,9 @@ span.p-b-percent-count {
 .upcoming-event-item-actions-li svg {
     width: 16px;
     height: 16px;
+}
+
+
+.sch-evt-border-right {
+    border-right: 1px solid #dadce0;
 }

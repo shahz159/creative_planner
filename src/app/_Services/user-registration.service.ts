@@ -173,7 +173,7 @@ export class UserRegistrationService {
     this._obj.CreatedBy = this.currentUserValue.createdby;
     return this.http.post(this.rootUrl + "UsersAPI/NewUserStatus", this._obj);
   }
-  GetUserListByPagination(_values: UserRegistrationDTO,_CreatedBy: number,organizationid:number) {
+  GetUserListByPagination(_values: UserRegistrationDTO,_CreatedBy: number,organizationid:number) {  
     this._obj.Sortby= _values.Sortby;
     this._obj.message = _values.message;
     this._obj.PageNumber = _values.PageNumber;

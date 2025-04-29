@@ -74,6 +74,7 @@ export class NotificationComponent implements OnInit {
   TypeContInFilter = [];
   StatusCountFilter = [];
   RequestCountFilter = [];
+  CompanyCountInFilter=[];
 
   notificationDTO: NotificationActivityDTO;
   approvalObj = new ApprovalDTO();
@@ -97,7 +98,7 @@ export class NotificationComponent implements OnInit {
     this.Current_user_Name=localStorage.getItem('UserfullName');
     this.newNotificationLeave();     // fetch all leave responses.
     this.newNotificationLeaveRequests();  // fetch all leave requests.
-    this.setPageContent('PROJECT APPROVALS');   // show project approval by default on the page.
+    this.setPageContent('PROJECT APPROVALS');   // show projects approval by default on the page.
   }
 
 
@@ -114,43 +115,61 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.SelectedStatus = null;
     this.notificationDTO.SelectedEmp_No = null;
     this.notificationDTO.SelectedType = null;
+    this.notificationDTO.SelectedCompany=null;
     this.notificationDTO.SearchText = null;
     this.notificationDTO.sendtype = type;
     this.notificationsLoading = true;
     this.service.GetViewAllDashboardnotifications(this.notificationDTO).subscribe(
-      (data) => {
+      (data) => {   
+        console.log(data);
         // this._NotificationActivityList = data as NotificationActivityDTO[];
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
-
         this._totalProjectsCount = (data[0]['notificationcount']);
         this.WScount = (data[0]['WScount']);
         this.WRcount = (data[0]['WRcount']);
         if(this._NotificationActivity){
             this.notilength = this._NotificationActivity.length;
             this._CurrentpageRecords = this._NotificationActivity.length;
+            this._NotificationActivity.forEach((ob:any)=>{
+              ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+              ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.DurationTime):ob.Duration; // create new property : 'hoursInDecimal'  
+            });
         }
+
         //Emp
         if (this.selectedItem_Emp.length == 0) {
-          this.EmpCountInFilter = JSON.parse(data[0]['Employee_json']);
+          this.EmpCountInFilter = JSON.parse(data[0]['Employee_json']);     console.log('emp countin filter:',this.EmpCountInFilter);
         }
         else {
           this.EmpCountInFilter = this.selectedItem_Emp[0];
         }
+
          //Request
          if (this.selectedItem_Request.length == 0) {
-          this.RequestCountFilter = JSON.parse(data[0]['Request_json']);
+          this.RequestCountFilter = JSON.parse(data[0]['Request_json']);   console.log('rrcf:',this.RequestCountFilter);
         }
         else {
           this.RequestCountFilter = this.selectedItem_Request[0];
         }
+
         //Type
         if (this.selectedItem_Type.length == 0) {
-          this.TypeContInFilter = JSON.parse(data[0]['ProjectType_json']);
+          this.TypeContInFilter = JSON.parse(data[0]['ProjectType_json']);   console.log('project types json:',this.TypeContInFilter);
         }
         else {
           this.TypeContInFilter = this.selectedItem_Type[0];
         }
+  
+       // Company
+       if (this.selectedItem_Company.length==0) {
+        this.CompanyCountInFilter = JSON.parse(data[0]['Client_json']);     console.log('Client_json:',this.CompanyCountInFilter);
+       }
+       else {
+        this.CompanyCountInFilter = this.selectedItem_Company[0];
+       }
+
+
         //Status
         if (this.selectedItem_Status.length == 0) {
           this.StatusCountFilter = JSON.parse(data[0]['Status_json']);
@@ -158,6 +177,7 @@ export class NotificationComponent implements OnInit {
         else {
           this.StatusCountFilter = this.selectedItem_Status[0];
         }
+
         this._totalProjectsCount = JSON.parse(data[0]['notificationcount']);
         if (this._NotificationActivity.length == 0) {
           this._filtersMessage = "No more projects matched your search";
@@ -170,6 +190,7 @@ export class NotificationComponent implements OnInit {
           this.emptyspace=true;
         }
       });
+
         let _vl = this._totalProjectsCount / 20;
         let _vl1 = _vl % 1;
         if (_vl1 > 0.000) {
@@ -193,6 +214,7 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.SelectedStatus = null;
     this.notificationDTO.SelectedEmp_No = null;
     this.notificationDTO.SelectedType = null;
+    this.notificationDTO.SelectedCompany=null;
     this.notificationDTO.SearchText = null;
     this.notificationDTO.sendtype = type;
     this.notificationsLoading = true;
@@ -201,6 +223,7 @@ export class NotificationComponent implements OnInit {
         // this._NotificationActivityList = data as NotificationActivityDTO[];
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         console.log(this._NotificationActivity,"ws");
+
         this._totalProjectsCount = (data[0]['notificationcount']);
         this.notificationsLoading = false;
         this.WScount = (data[0]['WScount']);
@@ -208,6 +231,10 @@ export class NotificationComponent implements OnInit {
         if(this._NotificationActivity){
             this.notilength = this._NotificationActivity.length;
             this._CurrentpageRecords = this._NotificationActivity.length;
+            this._NotificationActivity.forEach((ob:any)=>{
+              ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+              ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.DurationTime):ob.Duration; // create new property : 'hoursInDecimal'  
+            });
         }
         //Emp
         if (this.selectedItem_Emp.length == 0) {
@@ -230,6 +257,15 @@ export class NotificationComponent implements OnInit {
         else {
           this.TypeContInFilter = this.selectedItem_Type[0];
         }
+
+        //Company
+        if (this.selectedItem_Company.length == 0) {
+          this.CompanyCountInFilter = JSON.parse(data[0]['Client_json']);
+        }
+        else {
+          this.CompanyCountInFilter = this.selectedItem_Company[0];
+        }
+
         //Status
         if (this.selectedItem_Status.length == 0) {
           this.StatusCountFilter = JSON.parse(data[0]['Status_json']);
@@ -403,6 +439,7 @@ export class NotificationComponent implements OnInit {
   empLeaveDetails:any;
   managerApproval:any;
   hrApproval:any;
+  Lvemail_json:any;
 
   currentReqIndex: number = -1;
   currentResIndex:number=-1;
@@ -410,7 +447,9 @@ export class NotificationComponent implements OnInit {
   open_leave_requisition(index, submitby, leavecode) {
     this.currentReqIndex = index;
     this.approvalservice.GetEmployeeLeaveDetail(submitby, leavecode).subscribe((data) => {
+      console.log("data leavr",data);
       this.LeaveDetail = JSON.parse(data[0]['LeaveDetails_json']);
+      this.Lvemail_json=JSON.parse(data[0]['email_json'])[0]; console.log('Lvemail_json:',this.Lvemail_json);
       this.lv_startdate=moment(this.LeaveDetail[0].VacFrom);
       this.lv_enddate=moment(this.LeaveDetail[0].VacTo);
       console.log(this.LeaveDetail, "leavedetailss")
@@ -437,6 +476,7 @@ export class NotificationComponent implements OnInit {
     this.lv_startdate=null;
     this.lv_enddate=null;
     this.aprv_cmts=null;
+    this.Lvemail_json=null;
     this.notProvided=false;
     this.leaveDecision=undefined;
   }
@@ -502,6 +542,7 @@ export class NotificationComponent implements OnInit {
   newNotificationLeaveRequests() {
     this.notificationsLoading = true;
     this.service.GetEmployeeLeaveRequests(this.Current_user_ID).subscribe((data) => {
+      console.log("leave data",data);
       this.leave_Requests = JSON.parse(data[0]['LeaveRequests_json']);
       this.notificationsLoading = false;
       console.log(this.leave_Requests, "_newNotificationLeaveRequest");
@@ -518,7 +559,7 @@ export class NotificationComponent implements OnInit {
     this.service.GetEmployeeLeaveResponses(this.Current_user_ID).subscribe((data) => {
       this.notificationsLoading=false;
       this._newNotificationLeave = JSON.parse(data[0]['LeaveResponses_json']);
-      console.log(this._newNotificationLeave, '+++++++++++++++++++++++++ ')
+      console.log(this._newNotificationLeave, '+++++++++++++++++++++++++ ');
       if(this._newNotificationLeave){
         const lv_codes=Array.from(new Set(this._newNotificationLeave.map(_leave=>_leave.Leave_Code)));
         this._newNotificationLeave=lv_codes.map((_lc)=>this._newNotificationLeave.find(lobj=>lobj.Leave_Code==_lc));
@@ -531,14 +572,17 @@ export class NotificationComponent implements OnInit {
   checkedItems_Type: any = [];
   checkedItems_Emp: any = [];
   checkedItems_Request: any = [];
+  checkedItems_Company:any=[];
   selectedType_String: string;
   selectedEmp_String: string;
-  selectedStatus_String: string;
   selectedRequest_String: string;
+  selectedCompany_String:string;
+  selectedStatus_String: string;
   selectedItem_Status = [];
   selectedItem_Type = [];
   selectedItem_Emp = [];
   selectedItem_Request = [];
+  selectedItem_Company=[];
 
 
   isStatusChecked(item) {
@@ -564,7 +608,9 @@ export class NotificationComponent implements OnInit {
       }
     });
     if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
-      && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
+      && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0
+      && this.selectedItem_Company.length==0
+    ) {
       this.edited = false;
     }
     else {
@@ -580,6 +626,7 @@ export class NotificationComponent implements OnInit {
         return this.checkedItems_Request = arr;
       }
     });
+
     let arr2 = [];
     this.RequestCountFilter.filter((item) => {
       if (item.checked == true) {
@@ -588,6 +635,7 @@ export class NotificationComponent implements OnInit {
       }
     });
     this.selectedItem_Request.push(arr2);
+
     this.RequestCountFilter.forEach(element => {
       if (element.checked == false) {
         this.selectedItem_Request.length = 0;
@@ -595,7 +643,9 @@ export class NotificationComponent implements OnInit {
       }
     });
     if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
-      && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
+      && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0
+      && this.selectedItem_Company.length==0
+     ) {
       this.edited = false;
     }
     else {
@@ -611,6 +661,7 @@ export class NotificationComponent implements OnInit {
         return this.checkedItems_Type = arr;
       }
     });
+
     let arr2 = [];
     this.TypeContInFilter.filter((item) => {
       if (item.checked == true) {
@@ -619,6 +670,7 @@ export class NotificationComponent implements OnInit {
       }
     });
     this.selectedItem_Type.push(arr2);
+
     this.TypeContInFilter.forEach(element => {
       if (element.checked == false) {
         this.selectedItem_Type.length = 0;
@@ -626,7 +678,9 @@ export class NotificationComponent implements OnInit {
       }
     });
     if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
-      && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
+      && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0
+      && this.selectedItem_Company.length==0
+    ) {
       this.edited = false;
     }
     else {
@@ -651,6 +705,7 @@ export class NotificationComponent implements OnInit {
       }
     });
     this.selectedItem_Emp.push(arr2);
+
     this.EmpCountInFilter.forEach(element => {
       if (element.checked == false) {
         this.selectedItem_Emp.length = 0;
@@ -658,13 +713,55 @@ export class NotificationComponent implements OnInit {
       }
     });
     if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
-        && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
+        && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0
+        && this.selectedItem_Company.length==0
+      ) {
       this.edited = false;
     }
     else {
       this.edited = true;
     }
   }
+
+
+  isCompanyChecked(item) {
+    let arr = [];
+    this.CompanyCountInFilter.forEach(element => {
+      if (element.checked == true) {
+        arr.push({ Emp_No: element.Emp_No });
+        return this.checkedItems_Company = arr;
+      }
+    });
+
+    let arr2 = [];
+    this.CompanyCountInFilter.filter((item) => {
+      if (item.checked == true) {
+        this.applyFilters();
+        return arr2.push(item);
+      }
+    });
+    this.selectedItem_Company.push(arr2);
+
+    this.CompanyCountInFilter.forEach(element => {
+      if (element.checked == false) {
+        this.selectedItem_Company.length = 0;
+        this.resetFilters();
+      }
+    });
+    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
+        && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0
+        && this.selectedItem_Company.length ==0
+      ) {
+      this.edited = false;
+    }
+    else {
+      this.edited = true;
+    }
+  }
+
+
+
+
   //Apply Filters
   SearchbyText() {
     this.CurrentPageNo = 1;
@@ -673,9 +770,7 @@ export class NotificationComponent implements OnInit {
 
 
   applyFilters() {
-
-
-
+   debugger
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
     }).join(',');
@@ -684,6 +779,9 @@ export class NotificationComponent implements OnInit {
     }).join(',');
     this.selectedType_String = this.checkedItems_Type.map(select => {
       return select.Block_No;
+    }).join(',');
+    this.selectedCompany_String = this.checkedItems_Company.map(select => {
+      return select.Emp_No;
     }).join(',');
     this.selectedStatus_String = this.checkedItems_Status.map(select => {
       return select.Status;
@@ -694,17 +792,20 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.SelectedStatus = this.selectedStatus_String;
     this.notificationDTO.SelectedRequest = this.selectedRequest_String;
     this.notificationDTO.SelectedType = this.selectedType_String;
+    this.notificationDTO.SelectedCompany = this.selectedCompany_String;
     this.notificationDTO.PageNumber = this.CurrentPageNo;
     this.notificationDTO.PageSize = 20;
     this.notificationDTO.SearchText = this.searchText;
     this.notificationDTO.sendtype = this.sendtype;
 
     this.service.GetViewAllDashboardnotifications(this.notificationDTO)
-      .subscribe(data => {
+      .subscribe(data => {   debugger
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
-console.log( this._NotificationActivity," this._NotificationActivity")
-
-
+        console.log( this._NotificationActivity," this._NotificationActivity")
+        this._NotificationActivity.forEach((ob:any)=>{
+          ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+          ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.DurationTime):ob.Duration; // create new property : 'hoursInDecimal'  
+         });
 
         //Emp
         if (this.selectedItem_Emp.length == 0) {
@@ -732,8 +833,6 @@ console.log( this._NotificationActivity," this._NotificationActivity")
         }
         else {
           // this.RequestCountFilter = this.selectedItem_Request[0];
-
-
 // new
           const reqjsonnew=JSON.parse(data[0]['Request_json']);
           let _updateddata=reqjsonnew.filter(item=>item.Name==this.selectedItem_Request[0][0].Name);
@@ -746,17 +845,14 @@ console.log( this._NotificationActivity," this._NotificationActivity")
              this.selectedItem_Request.length=0;
           }
 // new
-
-
-
         }
+
         //Type
         if (this.selectedItem_Type.length == 0) {
           this.TypeContInFilter = JSON.parse(data[0]['ProjectType_json']);
         }
         else {
           // this.TypeContInFilter = this.selectedItem_Type[0];
-
 // new
           const prjtypejson=JSON.parse(data[0]['ProjectType_json']);
           let _updateddata=prjtypejson.filter(item=>item.Block_No==this.selectedItem_Type[0][0].Block_No);
@@ -768,12 +864,33 @@ console.log( this._NotificationActivity," this._NotificationActivity")
              this.TypeContInFilter=prjtypejson;
              this.selectedItem_Type.length=0;
           }
-
 // new
 
-
-
         }
+
+
+        //Company
+        if (this.selectedItem_Company.length == 0) {
+          this.CompanyCountInFilter = JSON.parse(data[0]['Client_json']);
+        }
+        else {
+          // this.TypeContInFilter = this.selectedItem_Type[0];
+      // new
+          const newcompanyjson=JSON.parse(data[0]['Client_json']);
+          let _updateddata=newcompanyjson.filter(item=>item.Emp_No==this.selectedItem_Company[0][0].Emp_No);
+          if(_updateddata.length>0){
+            _updateddata[0].checked=true;
+            this.CompanyCountInFilter=_updateddata;
+          }
+          else if(_updateddata.length==0){
+            this.CompanyCountInFilter=newcompanyjson;
+            this.selectedItem_Company.length=0;
+          }
+      // new
+        }
+
+
+
         //Status
         if (this.selectedItem_Status.length == 0) {
           this.StatusCountFilter = JSON.parse(data[0]['Status_json']);
@@ -811,7 +928,9 @@ console.log( this._NotificationActivity," this._NotificationActivity")
 
 
         if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
-          && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0) {
+          && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0
+          && this.selectedItem_Company.length==0
+         ) {
           this.edited = false;
         }
         else {
@@ -850,6 +969,10 @@ console.log( this._NotificationActivity," this._NotificationActivity")
       this.selectedEmp_String = null;
       this.checkedItems_Emp = [];
     }
+    if (this.selectedItem_Company.length == 0) {
+      this.selectedCompany_String = null;
+      this.checkedItems_Company = [];
+    }
     this.applyFilters();
   }
 
@@ -861,6 +984,7 @@ console.log( this._NotificationActivity," this._NotificationActivity")
     this.selectedItem_Status.length = 0;
     this.selectedItem_Request.length = 0;
     this.selectedItem_Emp.length = 0
+    this.selectedItem_Company.length=0;
     this.resetFilters();
   }
 
@@ -907,10 +1031,8 @@ console.log( this._NotificationActivity," this._NotificationActivity")
   selectAllCheckbox: boolean = false;
 
   selectall(ev){
-    debugger
     if (this.selectAllCheckbox) {
       this.selectedItems = [...this._NotificationActivity];
-
     } else {
       this.selectedItems = this.selectedItems.filter(item => !this._NotificationActivity.includes(item));
     }
@@ -1008,9 +1130,24 @@ acceptSelectedValues(_comments?:string) {
   comments: string;
   exist_comment: any[] = [];
   rejectcomments:any;
+  rejectCmts_SortOrder:'Most Used'|'Newest'='Most Used';
+  rCmts_searchtxt:string='';
+
+  sortRejectCmtsBy(sortby:'Most Used'|'Newest'){
+      this.rCmts_searchtxt='';
+      this.rejectCmts_SortOrder=sortby;
+      let key=(sortby=='Most Used')?'Usage_Count':(sortby=='Newest')?'MostRecentCommentID':null;
+      if(key){
+        this.rejectcommentsList.sort((cmt1,cmt2)=>{
+          return cmt2[key]-cmt1[key];
+        });
+      }
+  }
 
 
-  rejectApproval() {
+  rejectApproval() {   debugger
+    this.rCmts_searchtxt='';
+    this.rejectCmts_SortOrder='Most Used';
     this.noRejectType = false;
     this.reject_list.forEach(element => {
       if (this.rejectType == element.TypeID) {
@@ -1018,42 +1155,28 @@ acceptSelectedValues(_comments?:string) {
       }
     });
 
-    if(this.selectedItems.length==1){
-      this.approvalObj.Project_Code=(this.selectedItems[0]['Project_Code1'])
-      if ((this.selectedItems[0]['Req_Type']) == 'New Project')
-        this.approvalObj.Status = 'New Project Rejected';
-      else if ((this.selectedItems[0]['Req_Type']) == 'New Project Reject Release')
-        this.approvalObj.Status = 'New Project Rejected';
-      else if ((this.selectedItems[0]['Req_Type']) == 'New Project Hold')
-        this.approvalObj.Status = 'New Project Rejected';
-      else if ((this.selectedItems[0]['Req_Type']) == 'Project Complete')
-        this.approvalObj.Status = 'Project Complete Rejected';
-      else if ((this.selectedItems[0]['Req_Type']) == 'Project Complete Reject Release')
-        this.approvalObj.Status = 'Project Complete Rejected';
-      else if ((this.selectedItems[0]['Req_Type']) == 'Project Complete Hold')
-        this.approvalObj.Status = 'Project Complete Rejected';
-      else if ((this.selectedItems[0]['Req_Type']) == 'Deadline Extend')
-        this.approvalObj.Status = 'Rejected';
-      else if ((this.selectedItems[0]['Req_Type']) == 'Deadline Extend Hold')
-        this.approvalObj.Status = 'Rejected';
-      else if ((this.selectedItems[0]['Req_Type']) == 'Standardtask Enactive')
-        this.approvalObj.Status = 'Enactive-Reject';
-      else if ((this.selectedItems[0]['Req_Type']) == 'Project Forward')
-        this.approvalObj.Status = 'Forward Reject';
-      else if ((this.selectedItems[0]['Req_Type']) == 'Project Hold')
-        this.approvalObj.Status = 'Project Hold Reject';
-      else if ((this.selectedItems[0]['Req_Type']) == 'Revert Back')
-        this.approvalObj.Status = 'Revert Reject';
-        else if ((this.selectedItems[0]['Req_Type']) == 'Task Complete')
-        this.approvalObj.Status = 'Task-Reject';
-      else{
-        this.approvalObj.Status = 'Rejected';
-      }
-    }
+    const requests_ar=this.selectedItems.map((p:any)=>{
+    return p.Req_Type=='New Project'?'New Project Rejected':
+           p.Req_Type=='New Project Reject Release'?'New Project Rejected':
+           p.Req_Type=='New Project Hold'?'New Project Rejected':
+           p.Req_Type=='Project Complete'?'Project Complete Rejected':
+           p.Req_Type=='Project Complete Reject Release'?'Project Complete Rejected':
+           p.Req_Type=='Project Complete Hold'?'Project Complete Rejected':
+           p.Req_Type=='Deadline Extend'?'Rejected':
+           p.Req_Type=='Deadline Extend Hold'?'Rejected':
+           p.Req_Type=='Standardtask Enactive'?'Enactive-Reject':
+           p.Req_Type=='Project Forward'?'Forward Reject':
+           p.Req_Type=='Project Hold'?'Project Hold Reject':
+           p.Req_Type=='Revert Back'?'Revert Reject':
+           p.Req_Type=='Task Complete'?'Task-Reject':
+           'Rejected';
+     });
 
 
+    this.approvalObj.Status=requests_ar.join(',');
     this.approvalObj.Emp_no = this.Current_user_ID;
     this.approvalObj.rejectType = this.rejectType;
+    // this.approvalObj.Project_Code=(this.selectedItems[0]['Project_Code1']); 
       this.approvalservice.GetGlobalRejectComments(this.approvalObj).subscribe(data => {
       this.rejectcommentsList = JSON.parse(data[0]['reject_CommentsList']);
       this.rejectcomments=this.rejectcommentsList.length;
@@ -1093,6 +1216,8 @@ acceptSelectedValues(_comments?:string) {
     this.comments = "";
     this.exist_comment =[];
     this.rejectType=null;
+    this.rCmts_searchtxt='';
+    this.rejectCmts_SortOrder='Most Used';
   }
 
   submitReject(){
@@ -1222,25 +1347,96 @@ onSubmitLRbtn(){
   this.approvalObj.ToDate=to_date;
   this.approvalObj.Remarks=this.aprv_cmts;
   try{
-  this.approvalservice.approveLeaveRequest(this.approvalObj).subscribe((res:any)=>{
-      console.log("approveleaveRequest:",res);
-      if(res&&res.message){
-           if(res.message=='Not Updated')
-           this.notifyService.showError(res.message,'Failed');
-           else{
-               this.notifyService.showSuccess(res.message,'Success');
-               this.close_requisition_Info();
-               this.newNotificationLeaveRequests();
-           }
 
-      }
-      else
-      this.notifyService.showError('Something went wrong.','');
-  });
-   }catch(e){
+    this.approvalservice.approveLeaveRequest(this.approvalObj).subscribe((res:any)=>{
+        console.log("approveleaveRequest:",res);
+        if(res&&res.message){
+            if(res.message=='Not Updated')
+            this.notifyService.showError(res.message,'Failed');
+            else{
+                this.notifyService.showSuccess(res.message,'Success');
+                 
+                // EMAIL GENERATION START
+                let lvaprvDto=new ApprovalDTO();
+                lvaprvDto.leaveid=this.leave_Requests[this.currentReqIndex].Leave_Code.trim();
+                lvaprvDto.leavename=this.leave_Requests[this.currentReqIndex].Leave_Type;
+                lvaprvDto.leavefrom=fr_date;
+                lvaprvDto.leaveto=to_date;
+                lvaprvDto.Empid=this.Lvemail_json.Empid;
+                lvaprvDto.Empname=this.Lvemail_json.EmpName;
+                lvaprvDto.Empemail=this.Lvemail_json.Empemail;
+                lvaprvDto.Empcomp=this.Lvemail_json.Empcomp;
+                lvaprvDto.CompCode=this.Lvemail_json.CompCode;
+                lvaprvDto.managerid=this.Lvemail_json.managerid.trim();
+                lvaprvDto.managername=this.Lvemail_json.managerName;
+                lvaprvDto.manageremail=this.Lvemail_json.manageremail;
+                lvaprvDto.hrid=this.Lvemail_json.hrid;
+                lvaprvDto.hrname=this.Lvemail_json.hrname;
+                lvaprvDto.hremail=this.Lvemail_json.hremail;
+                lvaprvDto.Com_PayrollId=this.Lvemail_json.Com_PayrollId;
+                lvaprvDto.Com_PayrollName=this.Lvemail_json.Com_PayrollName;
+                lvaprvDto.Com_PayrollEmail=this.Lvemail_json.Com_PayrollEmail;
+                lvaprvDto.PayrollCompany=this.Lvemail_json.PayrollCompany;
+                lvaprvDto.Com_TicketingId=this.Lvemail_json.Com_TicketingId;
+                lvaprvDto.Com_TicketingName=this.Lvemail_json.Com_TicketingName;
+                lvaprvDto.Com_TicketingEmail=this.Lvemail_json.Com_TicketingEmail;
+                lvaprvDto.TicketingCompany=this.Lvemail_json.TicketingCompany;
+                lvaprvDto.Com_ExitentryId=this.Lvemail_json.Com_ExitentryId;
+                lvaprvDto.Com_ExitentryName=this.Lvemail_json.Com_ExitentryName;
+                lvaprvDto.Com_ExitentryEmail=this.Lvemail_json.Com_ExitentryEmail;
+                lvaprvDto.ExitentryCompany=this.Lvemail_json.ExitentryCompany;
+
+                if(this.Current_user_ID==this.Lvemail_json.managerid.trim()){
+                   // When leave request is at Manager stage.
+                    if(type=='Approve'){
+                      this.approvalservice.Email_GenerateAs('MANAGER_APPROVE',lvaprvDto).subscribe((emres)=>{
+                        console.log('email res:',emres);
+                      });  // when manager approving leave request
+                    }
+                    else if(type=='Reject'){
+                      this.approvalservice.Email_GenerateAs('MANAGER_REJECT',lvaprvDto).subscribe((emres)=>{
+                        console.log('email res:',emres);
+                      });  // when manager rejecting leave request
+                    }
+                }
+                else if(this.Current_user_ID==this.Lvemail_json.hrid){
+                    // When leave request is at HR stage.                 
+                    if(type=='Approve'){
+                       
+                        if(this.leave_Requests[this.currentReqIndex].Leave_Type=='Casual Leave'){
+                          this.approvalservice.Email_GenerateAs('HR_APPROVE_CASUAL',lvaprvDto).subscribe((emres)=>{  
+                            console.log('emailres:',emres);   
+                           }); // when hr approving casual leave  
+                        }
+                        else if(this.leave_Requests[this.currentReqIndex].Leave_Type=='Annual Leave'){
+                          this.approvalservice.Email_GenerateAs(this.LeaveDetail[0].Trip=='international'?'HR_APPROVE_INTERNATIONAL':'HR_APPROVE_LOCAL',lvaprvDto).subscribe((emres)=>{  
+                            console.log('email res:',emres);   
+                           });  // when hr approving annual, local/international leave.
+                        }  
+                    }
+                    else if(type=='Reject'){
+                      this.approvalservice.Email_GenerateAs('HR_REJECT',lvaprvDto).subscribe((emres)=>{  
+                        console.log('email res:',emres); 
+                      });  // when hr is rejecting leave request
+                    }
+
+                }
+                // EMAIL GENERATION END
+               
+                this.close_requisition_Info();
+                this.newNotificationLeaveRequests();
+
+            }
+
+        }
+        else
+        this.notifyService.showError('Something went wrong.','');
+    });
+  
+  }catch(e){
         console.log('error after leave response submitted:',e);
         this.notifyService.showError('Something went wrong.','');
-   }
+  }
 
   }
   else
@@ -1481,6 +1677,42 @@ onAcceptWithCmtsBtnClicked(){
 // accept selected approvals with comments end.
 
 
+formatTime(input: string): string {
+  if(input){
 
+ // Check if the input is already in the correct format
+ if (/^\d{2} Hr : \d{2} Mins$/.test(input)) {
+  return input; // If the format is correct, return it as-is
+}
+
+// Extract hours and minutes using regex for formatting if needed
+const matches = input.match(/(\d+)Hr:(\d+)Mins/);
+
+if (!matches) {
+  return 'Invalid Format'; // Handle unexpected format
+}
+
+// Extract hours and minutes
+const hours = parseInt(matches[1], 10) || 0;
+const minutes = parseInt(matches[2], 10) || 0;
+
+// Format the string
+return `${hours.toString().padStart(2, '0')} Hr : ${minutes.toString().padStart(2, '0')} Mins`;
+
+  }
+
+  return '';
+
+}
+
+
+// method to convert HH:MM to hours value.
+convertToDecimalHours(hm:string){
+  const h=Number.parseInt(hm.split(':')[0]);
+  const m=Number.parseInt(hm.split(':')[1]);
+  const alhr=h+(m/60);
+  return alhr;
+}
+// method to convert HH:MM to hours value.
 
 }

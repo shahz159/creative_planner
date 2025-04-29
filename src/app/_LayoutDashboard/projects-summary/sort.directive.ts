@@ -11,7 +11,7 @@ export class SortDirective {
   constructor(private renderer: Renderer2, private targetElem: ElementRef) { }
 
   @HostListener("click")
-  sortData() {    debugger
+  sortData() {    
     // Create Object of Sort Class
     const sort = new Sort();
     // Get Reference Of Current Clicked Element
