@@ -49,4 +49,36 @@ export class ApprovalDTO {
     CountryId:string;
     AuditRequestBY:string;
 
+
+
+// specially in leave email generation context
+    leaveid:any;
+    leavename:string;
+    leavefrom:any;
+    leaveto:any;
+    Empid:any;
+    Empname:string;
+    Empemail:string;
+    Empcomp:any;
+    CompCode:any;
+    managerid:any;
+    managername:string;
+    manageremail:string;
+    hrid:any;
+    hrname:string;
+    hremail:string;
+    Com_PayrollId:any;
+    Com_PayrollName:string;
+    Com_PayrollEmail:string;
+    PayrollCompany:any;
+    Com_TicketingId:any;
+    Com_TicketingName:string;
+    Com_TicketingEmail:string;
+    TicketingCompany:any;
+    Com_ExitentryId:any;
+    Com_ExitentryName:string;
+    Com_ExitentryEmail:string;
+    ExitentryCompany:any;
+// specially in leave email generation context
+
 }

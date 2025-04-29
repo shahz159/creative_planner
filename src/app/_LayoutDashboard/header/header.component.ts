@@ -20,6 +20,7 @@ import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import Swal from 'sweetalert2';
 import { TranslateService } from '@ngx-translate/core';
 import { DashboardComponent } from '../dashboard/dashboard.component';
+import { ApprovalsService } from '../../_Services/approvals.service';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -61,7 +62,8 @@ export class HeaderComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,private notifyService: NotificationService,
     public loadingBarServce:LoadingBarService,
-    private bsService:BsServiceService, private translate : TranslateService
+    private bsService:BsServiceService, private translate : TranslateService,
+    private approvalService:ApprovalsService
     ) {
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.notificationDTO = new NotificationActivityDTO();
@@ -757,6 +759,7 @@ max_date2:Date|undefined;
 invalidStartDate:boolean=false;
 invalidEndDate:boolean=false;
 notProvided:boolean=false;
+Lvemail_json:any;
 
 selectedLeaveType:number|undefined;
 dayType:'full'|'first half'|'second half'='full';
@@ -946,7 +949,8 @@ getLA_drpdwns(){
           if(res){
             this.allLeavesTypes=JSON.parse(res[0].LeaveType_drp);
             this.allCountriesList=JSON.parse(res[0].Countries);
-            console.log('lc:',this.allLeavesTypes,this.allCountriesList);
+            this.Lvemail_json=JSON.parse(res[0].email_json)[0];
+            console.log('lc:',this.allLeavesTypes,this.allCountriesList,this.Lvemail_json);
           }
     });
 }
@@ -955,6 +959,7 @@ getLA_drpdwns(){
 
 onLeaveSubmit(){
 
+  // form validation
   if(!(
         this.selectedLeaveType&&
         (this.leaveStartsOn&&this.invalidStartDate==false)&&
@@ -965,7 +970,7 @@ onLeaveSubmit(){
      this.notProvided=true;
      return;
   }
-
+// form validation
 
 
   this.aprvDtoObj.Emp_no=this.Current_user_ID;
@@ -990,45 +995,50 @@ onLeaveSubmit(){
        console.log('leave submit:',res);
         if(res){
           this.notifyService.showSuccess(res.message,'Success');
+
+          // email generation here
+          const leaveName=this.allLeavesTypes.find((ob)=>ob.LeaveId==this.selectedLeaveType).LeaveType;
+          const leaveid=res.leaveid;
+
+          this.aprvDtoObj.leaveid=leaveid;
+          this.aprvDtoObj.leavename=leaveName;
+          this.aprvDtoObj.leavefrom=this.leaveStartsOn.format('YYYY-MM-DD');
+          this.aprvDtoObj.leaveto=this.leaveEndsOn.format('YYYY-MM-DD');
+          this.aprvDtoObj.Empid=this.Lvemail_json.Empid;
+          this.aprvDtoObj.Empname=this.Lvemail_json.EmpName;
+          this.aprvDtoObj.Empemail=this.Lvemail_json.Empemail;
+          this.aprvDtoObj.Empcomp=this.Lvemail_json.Empcomp;
+          this.aprvDtoObj.CompCode=this.Lvemail_json.CompCode;
+          this.aprvDtoObj.managerid=this.Lvemail_json.managerid.trim();
+          this.aprvDtoObj.managername=this.Lvemail_json.managerName;
+          this.aprvDtoObj.manageremail=this.Lvemail_json.manageremail;
+          this.aprvDtoObj.hrid=this.Lvemail_json.hrid;
+          this.aprvDtoObj.hrname=this.Lvemail_json.hrname;
+          this.aprvDtoObj.hremail=this.Lvemail_json.hremail;
+          this.aprvDtoObj.Com_PayrollId=this.Lvemail_json.Com_PayrollId;
+          this.aprvDtoObj.Com_PayrollName=this.Lvemail_json.Com_PayrollName;
+          this.aprvDtoObj.Com_PayrollEmail=this.Lvemail_json.Com_PayrollEmail;
+          this.aprvDtoObj.PayrollCompany=this.Lvemail_json.PayrollCompany;
+          this.aprvDtoObj.Com_TicketingId=this.Lvemail_json.Com_TicketingId;
+          this.aprvDtoObj.Com_TicketingName=this.Lvemail_json.Com_TicketingName;
+          this.aprvDtoObj.Com_TicketingEmail=this.Lvemail_json.Com_TicketingEmail;
+          this.aprvDtoObj.TicketingCompany=this.Lvemail_json.TicketingCompany;
+          this.aprvDtoObj.Com_ExitentryId=this.Lvemail_json.Com_ExitentryId;
+          this.aprvDtoObj.Com_ExitentryName=this.Lvemail_json.Com_ExitentryName;
+          this.aprvDtoObj.Com_ExitentryEmail=this.Lvemail_json.Com_ExitentryEmail;
+          this.aprvDtoObj.ExitentryCompany=this.Lvemail_json.ExitentryCompany;
+
+
+          this.approvalService.Email_GenerateAs('NEW_LEAVE',this.aprvDtoObj).subscribe((emres)=>{
+            console.log("email res:",emres);
+          });
+          // email generation here
+
           this.closeleave();
         }
   });
 }
 
 // leave application end
-
-
-
-
-// sectionActive:string;
-// navigate(section:string){
-//   if(this._confirmBeforeRouting){
-//       if(this._confirmBeforeRouting=='AT-3RD-STEP-PC'){
-//           // moving from 3rd step
-//           Swal.fire({
-//             title:'Project Not Submitted',
-//             text:"Click 'Submit project' to send the project for approval. Leaving this page will keep the project as a draft.",
-//             showConfirmButton:true,
-//             confirmButtonText:'Keep as draft',
-//             showCancelButton:true,
-//             cancelButtonText:'Back',
-//             // icon:'warning'
-//           }).then((decision)=>{
-//               if(decision.isConfirmed){
-//                 this.bsService.ConfirmBeforeRoute.emit(null);
-//                 this.sectionActive=section;
-//                 this.router.navigate([this.sectionActive]);
-//               }
-//           });
-//       }
-
-//   }
-//   else{
-//     this.sectionActive=section;
-//     this.router.navigate([this.sectionActive]);
-//   }
-
-// }
-
 
 }
