@@ -1170,26 +1170,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-  // pauseTimer(LastPauseTime?, exact_start?,pausetime?) {
-  //   clearInterval(this.timerAttendees);
   
-  //   if (LastPauseTime && exact_start) {
-  //     // Convert LastPauseTime to Date object (ISO format is already good)
-  //     const pauseTime = new Date(LastPauseTime).getTime();
-  
-  //     // Convert exact_start (hh:mm:ss) to today's Date object
-  //     const [h, m, s] = exact_start.split(':').map(Number);
-  //     const now = new Date();
-  //     const startTime = new Date(now.setHours(h, m, s, 0)).getTime();
-  
-  //     // Calculate the duration between LastPauseTime and exact_start
-  //     const pauseDuration = pauseTime - startTime; // Duration in ms
-      
-  //     console.log(pauseDuration,'pauseDuration')
-
-  //     this.elapsedTime += pauseDuration; // Add to elapsedTime
-  //   }
-  // }
   
   
 
@@ -1207,14 +1188,14 @@ export class MeetingDetailsComponent implements OnInit {
       let pauseDuration = pauseTime - startTime;
   
       // Subtract pausetime (in minutes)
-      if (pausetime) {
+      // if (pausetime) {
         pauseDuration -= pausetime * 60 * 1000;
 
         const staticHours = 2, staticMinutes = 30, staticSeconds = 4;
         const staticDuration = ((staticHours * 60 + staticMinutes) * 60 + staticSeconds) * 1000;
     
         pauseDuration += staticDuration;
-      }
+      // }
 
       this.elapsedTime = 0;
       // Add to elapsed time
