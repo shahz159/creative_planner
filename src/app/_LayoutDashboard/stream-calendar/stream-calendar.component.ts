@@ -6966,5 +6966,16 @@ convertToISO(dateString: string) {
 
 
 /////////////////////////////////////////// Monthly section end /////////////////////////////////////////////////////////
-
+customPendingTaskModal() {
+  document.getElementById("customPendingTaskModal").style.display = "block";
+  document.getElementById("customPendingTaskModal").classList.add("show");
+  document.getElementById("customPendingTaskModalBackdrop").style.display = "block";
+  document.getElementById("customPendingTaskModalBackdrop").classList.add("show");
+}
+customPendingTaskModal_dismiss() {
+  document.getElementById("customPendingTaskModal").style.display = "none";
+  document.getElementById("customPendingTaskModal").classList.remove("show");
+  document.getElementById("customPendingTaskModalBackdrop").style.display = "none";
+  document.getElementById("customPendingTaskModalBackdrop").classList.remove("show"); 
+}
 }

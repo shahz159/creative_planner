@@ -1859,6 +1859,68 @@
                         </div> -->
                         </div>
                         </div>
+                        <div class="meeting-attendance-main" >
+                            <div class="legend-border">
+                                <div class="meeting-attendance-heading">Meeting Summary</div>
+                                <div class="meeting-icon-content">
+                                    <span>
+                                        <span class="s-dot"></span> Meeting has been started
+                                    </span>
+                                </div>
+
+                            <div class="meeting-attendance">
+                                <div class="meeting-attendance-item">
+                                    <div class="meeting-attendance-count">
+                                        <span><span>00</span><span class="time-value">h</span></span>
+                                        <span><span>10</span><span class="time-value">m</span></span>
+                                        <span><span>35</span><span class="time-value">s</span></span>
+                                    </div>
+                                    <div class="meeting-attendance-title">Ongoing Timer</div>
+                                </div>
+                                <div class="meeting-attendance-item">
+                                    <div class="meeting-attendance-count">11/20</div>
+                                    <div class="meeting-attendance-title">Attended</div>
+                                </div>
+                                
+                                
+        
+                            </div>
+                            <div class="accordion">
+                                <div id="meeting-attendance-accordion-collapse" class="collapse show">
+                                    <div class="meeting-attendance meeting-attendance-accordion-div">
+                                        <div class="meeting-attendance-item" >
+                                            <div class="meeting-attendance-count">8</div>
+                                            <div class="meeting-attendance-title">Agenda</div>
+                                        </div>
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="Slide_meeting()" >
+                                            <div class="meeting-attendance-count">11</div>
+                                            <div class="meeting-attendance-title">Notes</div>
+                                        </div>
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="Slide_AssignTask()">
+                                            <div class="meeting-attendance-count">5</div>
+                                            <div class="meeting-attendance-title">Tasks</div>
+                                        </div>
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="addNewDMS()">
+                                            <div class="meeting-attendance-count">0</div>
+                                            <div class="meeting-attendance-title">SMail</div>
+                                        </div>
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="AddPortfolio()">
+                                            <div class="meeting-attendance-count">0</div>
+                                            <div class="meeting-attendance-title">Portfolio</div>
+                                        </div>
+                                        <div class="meeting-attendance-item cursor-pointer"  (click)="AddProjects()">
+                                            <div class="meeting-attendance-count">2</div>
+                                            <div class="meeting-attendance-title">Project</div>
+                                        </div>
+                                        <div class="meeting-attendance-item cursor-pointer" (click)="Attachment_views()">
+                                            <div class="meeting-attendance-count">1</div>
+                                            <div class="meeting-attendance-title">Attachments</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
                         <div class="meeting-attendance-main" *ngIf="Meetingstatuscom=='Completed'">
                             <div class="legend-border" *ngFor="let data of CompletedMeeting_notes;let i = index ">
                                 <div class="meeting-attendance-heading">Meeting Report</div>
