@@ -1356,23 +1356,45 @@ onSubmitLRbtn(){
             else{
                 this.notifyService.showSuccess(res.message,'Success');
                  
-           
-                
                 // EMAIL GENERATION START
-                let extra_args:[any,any,any,any,any,any,any,any,any,any,any,any,any,any,any,any,any,any,any,any, any, any, any,any, any, any, any]
-                =[this.leave_Requests[this.currentReqIndex].Leave_Code.trim(),this.leave_Requests[this.currentReqIndex].Leave_Type,fr_date,to_date,this.Lvemail_json.Empid,this.Lvemail_json.EmpName,this.Lvemail_json.Empemail,this.Lvemail_json.Empcomp,this.Lvemail_json.CompCode,
-                this.Lvemail_json.managerid.trim(),this.Lvemail_json.managerName,this.Lvemail_json.manageremail,this.Lvemail_json.hrid,this.Lvemail_json.hrname,this.Lvemail_json.hremail,this.Lvemail_json.Com_PayrollId,this.Lvemail_json.Com_PayrollName,this.Lvemail_json.Com_PayrollEmail,this.Lvemail_json.PayrollCompany,this.Lvemail_json.Com_TicketingId,
-                this.Lvemail_json.Com_TicketingName,this.Lvemail_json.Com_TicketingEmail,this.Lvemail_json.TicketingCompany,this.Lvemail_json.Com_ExitentryId,this.Lvemail_json.Com_ExitentryName,this.Lvemail_json.Com_ExitentryEmail,this.Lvemail_json.ExitentryCompany ];
+                let lvaprvDto=new ApprovalDTO();
+                lvaprvDto.leaveid=this.leave_Requests[this.currentReqIndex].Leave_Code.trim();
+                lvaprvDto.leavename=this.leave_Requests[this.currentReqIndex].Leave_Type;
+                lvaprvDto.leavefrom=fr_date;
+                lvaprvDto.leaveto=to_date;
+                lvaprvDto.Empid=this.Lvemail_json.Empid;
+                lvaprvDto.Empname=this.Lvemail_json.EmpName;
+                lvaprvDto.Empemail=this.Lvemail_json.Empemail;
+                lvaprvDto.Empcomp=this.Lvemail_json.Empcomp;
+                lvaprvDto.CompCode=this.Lvemail_json.CompCode;
+                lvaprvDto.managerid=this.Lvemail_json.managerid.trim();
+                lvaprvDto.managername=this.Lvemail_json.managerName;
+                lvaprvDto.manageremail=this.Lvemail_json.manageremail;
+                lvaprvDto.hrid=this.Lvemail_json.hrid;
+                lvaprvDto.hrname=this.Lvemail_json.hrname;
+                lvaprvDto.hremail=this.Lvemail_json.hremail;
+                lvaprvDto.Com_PayrollId=this.Lvemail_json.Com_PayrollId;
+                lvaprvDto.Com_PayrollName=this.Lvemail_json.Com_PayrollName;
+                lvaprvDto.Com_PayrollEmail=this.Lvemail_json.Com_PayrollEmail;
+                lvaprvDto.PayrollCompany=this.Lvemail_json.PayrollCompany;
+                lvaprvDto.Com_TicketingId=this.Lvemail_json.Com_TicketingId;
+                lvaprvDto.Com_TicketingName=this.Lvemail_json.Com_TicketingName;
+                lvaprvDto.Com_TicketingEmail=this.Lvemail_json.Com_TicketingEmail;
+                lvaprvDto.TicketingCompany=this.Lvemail_json.TicketingCompany;
+                lvaprvDto.Com_ExitentryId=this.Lvemail_json.Com_ExitentryId;
+                lvaprvDto.Com_ExitentryName=this.Lvemail_json.Com_ExitentryName;
+                lvaprvDto.Com_ExitentryEmail=this.Lvemail_json.Com_ExitentryEmail;
+                lvaprvDto.ExitentryCompany=this.Lvemail_json.ExitentryCompany;
 
                 if(this.Current_user_ID==this.Lvemail_json.managerid.trim()){
                    // When leave request is at Manager stage.
                     if(type=='Approve'){
-                      this.approvalservice.Email_GenerateAs('MANAGER_APPROVE',...extra_args).subscribe((emres)=>{
+                      this.approvalservice.Email_GenerateAs('MANAGER_APPROVE',lvaprvDto).subscribe((emres)=>{
                         console.log('email res:',emres);
                       });  // when manager approving leave request
                     }
                     else if(type=='Reject'){
-                      this.approvalservice.Email_GenerateAs('MANAGER_REJECT',...extra_args).subscribe((emres)=>{
+                      this.approvalservice.Email_GenerateAs('MANAGER_REJECT',lvaprvDto).subscribe((emres)=>{
                         console.log('email res:',emres);
                       });  // when manager rejecting leave request
                     }
@@ -1382,18 +1404,18 @@ onSubmitLRbtn(){
                     if(type=='Approve'){
                        
                         if(this.leave_Requests[this.currentReqIndex].Leave_Type=='Casual Leave'){
-                          this.approvalservice.Email_GenerateAs('HR_APPROVE_CASUAL',...extra_args).subscribe((emres)=>{  
+                          this.approvalservice.Email_GenerateAs('HR_APPROVE_CASUAL',lvaprvDto).subscribe((emres)=>{  
                             console.log('emailres:',emres);   
                            }); // when hr approving casual leave  
                         }
                         else if(this.leave_Requests[this.currentReqIndex].Leave_Type=='Annual Leave'){
-                          this.approvalservice.Email_GenerateAs(this.LeaveDetail[0].Trip=='international'?'HR_APPROVE_INTERNATIONAL':'HR_APPROVE_LOCAL',...extra_args).subscribe((emres)=>{  
+                          this.approvalservice.Email_GenerateAs(this.LeaveDetail[0].Trip=='international'?'HR_APPROVE_INTERNATIONAL':'HR_APPROVE_LOCAL',lvaprvDto).subscribe((emres)=>{  
                             console.log('email res:',emres);   
                            });  // when hr approving annual, local/international leave.
                         }  
                     }
                     else if(type=='Reject'){
-                      this.approvalservice.Email_GenerateAs('HR_REJECT',...extra_args).subscribe((emres)=>{  
+                      this.approvalservice.Email_GenerateAs('HR_REJECT',lvaprvDto).subscribe((emres)=>{  
                         console.log('email res:',emres); 
                       });  // when hr is rejecting leave request
                     }

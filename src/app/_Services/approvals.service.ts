@@ -294,39 +294,36 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
 
 
 
-  Email_GenerateAs(emailOf:'NEW_LEAVE'|'MANAGER_APPROVE'|'MANAGER_REJECT'|'HR_APPROVE_CASUAL'|'HR_APPROVE_LOCAL'|'HR_APPROVE_INTERNATIONAL'|'HR_REJECT',
-    leaveid,leavename,leavefrom,leaveto,Empid,Empname,Empemail,Empcomp,CompCode,managerid,managername,manageremail,hrid,hrname,hremail,
-    Com_PayrollId,Com_PayrollName,Com_PayrollEmail,PayrollCompany,Com_TicketingId,Com_TicketingName,Com_TicketingEmail,TicketingCompany,Com_ExitentryId,
-    Com_ExitentryName,Com_ExitentryEmail,ExitentryCompany){
+  Email_GenerateAs(emailOf:'NEW_LEAVE'|'MANAGER_APPROVE'|'MANAGER_REJECT'|'HR_APPROVE_CASUAL'|'HR_APPROVE_LOCAL'|'HR_APPROVE_INTERNATIONAL'|'HR_REJECT', leaveEmailInfo:ApprovalDTO){
 debugger
       // SAME INPUTS props to all
-    this.obj_approvalDTO.leaveid=leaveid;
-    this.obj_approvalDTO.leavename=leavename;
-    this.obj_approvalDTO.leavefrom=leavefrom;
-    this.obj_approvalDTO.leaveto=leaveto;
-    this.obj_approvalDTO.Empid=Empid;
-    this.obj_approvalDTO.Empname=Empname;
-    this.obj_approvalDTO.Empemail=Empemail;
-    this.obj_approvalDTO.Empcomp=Empcomp;
-    this.obj_approvalDTO.CompCode=CompCode;
-    this.obj_approvalDTO.managerid=managerid;
-    this.obj_approvalDTO.managername=managername;
-    this.obj_approvalDTO.manageremail=manageremail;
-    this.obj_approvalDTO.hrid=hrid;
-    this.obj_approvalDTO.hrname=hrname;
-    this.obj_approvalDTO.hremail=hremail;
-    this.obj_approvalDTO.Com_PayrollId=Com_PayrollId;
-    this.obj_approvalDTO.Com_PayrollName=Com_PayrollName;
-    this.obj_approvalDTO.Com_PayrollEmail=Com_PayrollEmail;
-    this.obj_approvalDTO.PayrollCompany=PayrollCompany;
-    this.obj_approvalDTO.Com_TicketingId=Com_TicketingId;
-    this.obj_approvalDTO.Com_TicketingName=Com_TicketingName;
-    this.obj_approvalDTO.Com_TicketingEmail=Com_TicketingEmail;
-    this.obj_approvalDTO.TicketingCompany=TicketingCompany;
-    this.obj_approvalDTO.Com_ExitentryId=Com_ExitentryId;
-    this.obj_approvalDTO.Com_ExitentryName=Com_ExitentryName;
-    this.obj_approvalDTO.Com_ExitentryEmail=Com_ExitentryEmail;
-    this.obj_approvalDTO.ExitentryCompany=ExitentryCompany;
+    this.obj_approvalDTO.leaveid=leaveEmailInfo.leaveid;
+    this.obj_approvalDTO.leavename=leaveEmailInfo.leavename;
+    this.obj_approvalDTO.leavefrom=leaveEmailInfo.leavefrom;
+    this.obj_approvalDTO.leaveto=leaveEmailInfo.leaveto;
+    this.obj_approvalDTO.Empid=leaveEmailInfo.Empid;
+    this.obj_approvalDTO.Empname=leaveEmailInfo.Empname;
+    this.obj_approvalDTO.Empemail=leaveEmailInfo.Empemail;
+    this.obj_approvalDTO.Empcomp=leaveEmailInfo.Empcomp;
+    this.obj_approvalDTO.CompCode=leaveEmailInfo.CompCode;
+    this.obj_approvalDTO.managerid=leaveEmailInfo.managerid;
+    this.obj_approvalDTO.managername=leaveEmailInfo.managername;
+    this.obj_approvalDTO.manageremail=leaveEmailInfo.manageremail;
+    this.obj_approvalDTO.hrid=leaveEmailInfo.hrid;
+    this.obj_approvalDTO.hrname=leaveEmailInfo.hrname;
+    this.obj_approvalDTO.hremail=leaveEmailInfo.hremail;
+    this.obj_approvalDTO.Com_PayrollId=leaveEmailInfo.Com_PayrollId;
+    this.obj_approvalDTO.Com_PayrollName=leaveEmailInfo.Com_PayrollName;
+    this.obj_approvalDTO.Com_PayrollEmail=leaveEmailInfo.Com_PayrollEmail;
+    this.obj_approvalDTO.PayrollCompany=leaveEmailInfo.PayrollCompany;
+    this.obj_approvalDTO.Com_TicketingId=leaveEmailInfo.Com_TicketingId;
+    this.obj_approvalDTO.Com_TicketingName=leaveEmailInfo.Com_TicketingName;
+    this.obj_approvalDTO.Com_TicketingEmail=leaveEmailInfo.Com_TicketingEmail;
+    this.obj_approvalDTO.TicketingCompany=leaveEmailInfo.TicketingCompany;
+    this.obj_approvalDTO.Com_ExitentryId=leaveEmailInfo.Com_ExitentryId;
+    this.obj_approvalDTO.Com_ExitentryName=leaveEmailInfo.Com_ExitentryName;
+    this.obj_approvalDTO.Com_ExitentryEmail=leaveEmailInfo.Com_ExitentryEmail;
+    this.obj_approvalDTO.ExitentryCompany=leaveEmailInfo.ExitentryCompany;
      // SAME INPUT props to all
 
     let controllerPath='';

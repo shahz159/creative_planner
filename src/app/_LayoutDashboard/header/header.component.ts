@@ -999,9 +999,37 @@ onLeaveSubmit(){
           // email generation here
           const leaveName=this.allLeavesTypes.find((ob)=>ob.LeaveId==this.selectedLeaveType).LeaveType;
           const leaveid=res.leaveid;
-          this.approvalService.Email_GenerateAs('NEW_LEAVE',leaveid,leaveName,this.leaveStartsOn.format('YYYY-MM-DD'),this.leaveEndsOn.format('YYYY-MM-DD'),this.Lvemail_json.Empid,this.Lvemail_json.EmpName,this.Lvemail_json.Empemail,this.Lvemail_json.Empcomp,this.Lvemail_json.CompCode,
-          this.Lvemail_json.managerid.trim(),this.Lvemail_json.managerName,this.Lvemail_json.manageremail,this.Lvemail_json.hrid,this.Lvemail_json.hrname,this.Lvemail_json.hremail,this.Lvemail_json.Com_PayrollId,this.Lvemail_json.Com_PayrollName,this.Lvemail_json.Com_PayrollEmail,this.Lvemail_json.PayrollCompany,
-          this.Lvemail_json.Com_TicketingId,this.Lvemail_json.Com_TicketingName,this.Lvemail_json.Com_TicketingEmail,this.Lvemail_json.TicketingCompany,this.Lvemail_json.Com_ExitentryId,this.Lvemail_json.Com_ExitentryName,this.Lvemail_json.Com_ExitentryEmail,this.Lvemail_json.ExitentryCompany).subscribe((emres)=>{
+
+          this.aprvDtoObj.leaveid=leaveid;
+          this.aprvDtoObj.leavename=leaveName;
+          this.aprvDtoObj.leavefrom=this.leaveStartsOn.format('YYYY-MM-DD');
+          this.aprvDtoObj.leaveto=this.leaveEndsOn.format('YYYY-MM-DD');
+          this.aprvDtoObj.Empid=this.Lvemail_json.Empid;
+          this.aprvDtoObj.Empname=this.Lvemail_json.EmpName;
+          this.aprvDtoObj.Empemail=this.Lvemail_json.Empemail;
+          this.aprvDtoObj.Empcomp=this.Lvemail_json.Empcomp;
+          this.aprvDtoObj.CompCode=this.Lvemail_json.CompCode;
+          this.aprvDtoObj.managerid=this.Lvemail_json.managerid.trim();
+          this.aprvDtoObj.managername=this.Lvemail_json.managerName;
+          this.aprvDtoObj.manageremail=this.Lvemail_json.manageremail;
+          this.aprvDtoObj.hrid=this.Lvemail_json.hrid;
+          this.aprvDtoObj.hrname=this.Lvemail_json.hrname;
+          this.aprvDtoObj.hremail=this.Lvemail_json.hremail;
+          this.aprvDtoObj.Com_PayrollId=this.Lvemail_json.Com_PayrollId;
+          this.aprvDtoObj.Com_PayrollName=this.Lvemail_json.Com_PayrollName;
+          this.aprvDtoObj.Com_PayrollEmail=this.Lvemail_json.Com_PayrollEmail;
+          this.aprvDtoObj.PayrollCompany=this.Lvemail_json.PayrollCompany;
+          this.aprvDtoObj.Com_TicketingId=this.Lvemail_json.Com_TicketingId;
+          this.aprvDtoObj.Com_TicketingName=this.Lvemail_json.Com_TicketingName;
+          this.aprvDtoObj.Com_TicketingEmail=this.Lvemail_json.Com_TicketingEmail;
+          this.aprvDtoObj.TicketingCompany=this.Lvemail_json.TicketingCompany;
+          this.aprvDtoObj.Com_ExitentryId=this.Lvemail_json.Com_ExitentryId;
+          this.aprvDtoObj.Com_ExitentryName=this.Lvemail_json.Com_ExitentryName;
+          this.aprvDtoObj.Com_ExitentryEmail=this.Lvemail_json.Com_ExitentryEmail;
+          this.aprvDtoObj.ExitentryCompany=this.Lvemail_json.ExitentryCompany;
+
+
+          this.approvalService.Email_GenerateAs('NEW_LEAVE',this.aprvDtoObj).subscribe((emres)=>{
             console.log("email res:",emres);
           });
           // email generation here
