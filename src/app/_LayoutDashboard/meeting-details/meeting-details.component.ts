@@ -1210,7 +1210,7 @@ export class MeetingDetailsComponent implements OnInit {
       if (pausetime) {
         pauseDuration -= pausetime * 60 * 1000;
 
-        const staticHours = 2, staticMinutes = 30, staticSeconds = 0;
+        const staticHours = 2, staticMinutes = 30, staticSeconds = 4;
         const staticDuration = ((staticHours * 60 + staticMinutes) * 60 + staticSeconds) * 1000;
     
         pauseDuration += staticDuration;
@@ -1235,7 +1235,7 @@ export class MeetingDetailsComponent implements OnInit {
       startTime.setHours(h, m, s, 0);
   
       // elapsedTime = now - startTime + 60000
-      this.elapsedTime = now.getTime() - startTime.getTime() + 40000;
+      this.elapsedTime = now.getTime() - startTime.getTime() + 39980;
     }
 
     if (pauseTimes) { 
