@@ -3814,7 +3814,7 @@
                     <div class="custom-evt-tsk-label">
                       <div class="date-info">Created On</div>
                       <div class="date-value">{{creation_date|date:'EEEE, MMMM d, YYYY'}}</div>
-                      <div [ngClass]="{'icon-active': (AdminMeeting_Status==1 ||  AdminMeeting_Status==2),'live': Isadmin==true && (AdminMeeting_Status==1 || AdminMeeting_Status==2),'join': Isadmin==false && (AdminMeeting_Status==1 || AdminMeeting_Status==2)}"  matTooltip="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event'"  (click)="newMeetingDetails()">
+                      <div [ngClass]="{'icon-active': (AdminMeeting_Status==1 ||  AdminMeeting_Status==2),'live': Isadmin==true && (AdminMeeting_Status==1 || AdminMeeting_Status==2),'join': Isadmin==false && (AdminMeeting_Status==1 || AdminMeeting_Status==2)}"  [matTooltip]="Isadmin ? 'View meeting' : 'Join meeting'" *ngIf="Meeting_status==false && Schedule_type1=='Event'"  (click)="newMeetingDetails()">
                            <ng-container  *ngIf="AdminMeeting_Status==1 || AdminMeeting_Status==2">
                             <span  *ngIf="Isadmin==true && AdminMeeting_Status!=2" class="meet-blink">Meeting started.</span>
                             <span *ngIf="Isadmin==false  && AdminMeeting_Status!=2" class="meet-blink">Meeting started.</span>
@@ -3826,7 +3826,7 @@
                     </div>
                     </div>
                     <div class="custom-evt-tsk-action">
-                        <div class="custom-evt-tsk-action-icon"  [ngClass]="{'icon-active': (AdminMeeting_Status==1 || AdminMeeting_Status==2),'live': Isadmin==true && (AdminMeeting_Status==1 || AdminMeeting_Status==2),'join': Isadmin==false && (AdminMeeting_Status==1 || AdminMeeting_Status==2)}"  matTooltip="View meeting" *ngIf="Meeting_status==false && Schedule_type1=='Event' && pending_status==false "  (click)="newMeetingDetails()">
+                        <div class="custom-evt-tsk-action-icon"  [ngClass]="{'icon-active': (AdminMeeting_Status==1 || AdminMeeting_Status==2),'live': Isadmin==true && (AdminMeeting_Status==1 || AdminMeeting_Status==2),'join': Isadmin==false && (AdminMeeting_Status==1 || AdminMeeting_Status==2)}"  [matTooltip]="Isadmin ? 'View meeting' : 'Join meeting'" *ngIf="Meeting_status==false && Schedule_type1=='Event' && pending_status==false "  (click)="newMeetingDetails()">
                             <svg width="64px" height="64px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"> <path d="M7.421 4.356A1.25 1.25 0 005.5 5.411v5.178a1.25 1.25 0 001.921 1.055l4.069-2.59a1.25 1.25 0 000-2.109L7.42 4.356zM10.353 8L7 10.134V5.866L10.353 8z"></path> <path d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"></path> </g> </g></svg>
                                <ng-container  *ngIf="AdminMeeting_Status==1 || AdminMeeting_Status==2">
                                 <span  *ngIf="Isadmin==true" class="meet-blink-dot"></span>
