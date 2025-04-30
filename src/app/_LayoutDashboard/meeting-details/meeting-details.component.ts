@@ -567,7 +567,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-
+  statusOneCount :any;
   delayMeeting: any;
   upcomingMeeting: any;
   meetingDuration: any;
@@ -619,7 +619,9 @@ export class MeetingDetailsComponent implements OnInit {
       this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
       this.Startts = (this.EventScheduledjson[0]['St_Time']);
       this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
+      this.statusOneCount = this.Agendas_List.filter(values=>values.Status === "1").length;
 
+      console.log(this.statusOneCount,'statusOneCount')
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
       this.totalUser_Scheduledjson=this.User_Scheduledjson.length;
       this.user_linkedOnMtg=this.User_Scheduledjson?this.User_Scheduledjson.map(user => user.stringval):[];
@@ -658,7 +660,7 @@ export class MeetingDetailsComponent implements OnInit {
       this._FutureEventAttachment = this.EventScheduledjson[0]['FutureCount'];
       this.AdminName=this.EventScheduledjson[0].AdminName
 
-      console.log(this.Actiontask,this.AssignedTask,this.Todotask,'new task agenda')
+    
 
 
       this.totalTodotask = this.Todotask.length;
@@ -746,6 +748,8 @@ export class MeetingDetailsComponent implements OnInit {
       this.ModifiedJson=this.EventScheduledjson[0].ModifiedJson
 
       this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
+
+      console.log(this.portfolio_Scheduledjson,'portfolio_Scheduledjson')
 
       this.totalportfolios = this.portfolio_Scheduledjson.length;
       this.portfolio_Scheduledjson.forEach(element => {
@@ -4377,9 +4381,11 @@ onFileChange(event) {
         this.projecount = this.agendasList[0]?.projectcount;
         this.attachcount = this.agendasList[0]?.attachcount;
 
-        console.log(this.LastPauseTime,'LastPauseTime')
-        console.log(this.exact_start,'exact_start');
-        console.log(this.pausetime,'pausetime');
+
+     
+        // console.log(this.LastPauseTime,'LastPauseTime')
+        // console.log(this.exact_start,'exact_start');
+        // console.log(this.pausetime,'pausetime');
 
         if(this.agendasList != null){
             if(this.Agendas_List&&this.Agendas_List.length>0){                  
@@ -4463,7 +4469,7 @@ onFileChange(event) {
 
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
           // console.log(this.showAttendeeNotify,'showAttendeeNotify')
-          // console.log(this.Isadmin,'showAttendeeNotify')
+          console.log(this.showAttendeeNotify,'showAttendeeNotify')
 
           if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
          

@@ -587,14 +587,13 @@
     color: #527ce2;
     font-weight: 400;
     padding: 4px 10px;
-    display: flex
-;
+    display: flex;
     align-items: center;
     gap: 4px;
     line-height: normal;
     font-size: 12px;
     cursor: pointer;
-     min-height: auto;
+    min-height: auto;
 }
 
 .options.event:hover {
@@ -786,14 +785,13 @@ span.kt-meeting-status-icon {
     color: #2352c4;
     font-weight: 400;
     padding: 4px 10px;
-    display: flex
-;
+    display: flex;
     align-items: center;
     gap: 4px;
     line-height: normal;
     font-size: 12px;
     cursor: pointer;
-     min-height: auto;
+    min-height: auto;
 }
 
 .kt-project-notes:hover {
@@ -9023,7 +9021,7 @@ a.info-btn.info-btn-disable:hover {
 }
 
 
-.kt-portlet .kt-portlet__head_Attendees{
+.kt-portlet .kt-portlet__head_Attendees {
     display: flex;
     align-items: stretch;
     justify-content: space-between;
@@ -9059,44 +9057,167 @@ a.info-btn.info-btn-disable:hover {
 .error-container {
     display: flex;
     align-items: center;
-    color: #d93025; /* Google-style red color */
+    color: #d93025;
+    /* Google-style red color */
     font-family: Arial, sans-serif;
     font-size: 14px;
     margin-top: 4px;
-  }
-  
-  .error-icon {
+}
+
+.error-icon {
     width: 16px;
     height: 16px;
     margin-right: 6px;
     fill: #d93025;
-  }
-  
-  .error-text {
+}
+
+.error-text {
     color: #d93025;
     font-size: 11px;
     font-weight: 400;
-  }
-  
-.live-actv
-{
-    position: relative; 
 }
 
-.live-actv .actv-time
-{
-    position: absolute; 
-    right: 0; 
+.live-actv {
+    position: relative;
+}
+
+.live-actv .actv-time {
+    position: absolute;
+    right: 0;
     font-size: 10px;
 }
 
 
-.live-actv.latest{
+.live-actv.latest {
     color: #403f3f;
     font-size: 12px;
-} 
+}
 
-.live-actv.previous{
+.live-actv.previous {
     color: #bdbaba;
     font-size: 11.4px;
+}
+
+.kt-meeting-details-wrapper {
+    margin-top: 1em;
+    display: flex;
+    position: relative;
+    cursor: default;
+}
+
+.kt-meeting-left-sec {
+    border-radius: 5px;
+    background: #F3F8FF;
+    padding: 10px;
+    width: 100%;
+    transition: all 0.75s ease-in-out;
+}
+
+.kt-meeting-left-li {
+    margin-bottom: 16px;
+}
+
+.kt-meeting-left-li-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.kt-meeting-left-li-head-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kt-meeting-left-li-head-icon svg,
+.kt-meeting-left-li-head-icon img {
+    width: 20px;
+    height: 20px;
+    color: #8d8d8d;
+}
+
+.kt-meeting-left-li-head-label {
+    color: #787878;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.kt-meeting-left-li-group {
+    margin-left: 28px;
+}
+
+.kt-meeting-right-sec {
+    flex: 1;
+    margin-left: 50px;
+}
+
+.kt-meeting-left-sec.kt-minimize {
+    width: 40px;
+    position: absolute;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    /* bottom: 0; */
+    height: 100%;
+    overflow: hidden;
+    box-shadow: 0 2px 16px #cccccc80;
+}
+
+.kt-meeting-left-sec.kt-minimize .kt-meeting-left-li-head-label {
+    display: none;
+}
+
+.kt-meeting-left-sec.kt-minimize .kt-meeting-left-li-group {
+    display: none;
+}
+
+.kt-meeting-left-sec.kt-minimize .kt-meeting-left-add {
+    display: none;
+}
+
+.kt-meeting-left-sec.kt-minimize:hover {
+    width: 60%;
+}
+
+.kt-meeting-left-sec.kt-minimize:hover .kt-meeting-left-li-head-label,
+.kt-meeting-left-sec.kt-minimize:hover .kt-meeting-left-li-group,
+.kt-meeting-left-sec.kt-minimize:hover .kt-meeting-left-add {
+    display: block;
+    transition: all 0.75s ease-in-out;
+}
+
+.kt-meeting-left-add {
+    cursor: pointer;
+}
+
+.kt-meeting-left-add svg {
+    width: 18px;
+    height: 18px;
+}
+
+.kt-meeting-title-count{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0px 4px;
+    font-size: 11px;
+    color: #757575;
+    background-color: #fafafa;
+}
+
+.kt-meeting-left-li-head-icon{
+    position: relative;
+}
+.kt-meeting-left-li-head-count{
+    background: #b9dcf4;
+    border-radius: 4px;
+    font-size: 10.5px;
+    padding: 0.1rem 0.4rem 0.1rem 0.4rem;
+    min-width: 0.5rem;
+    min-height: 1rem;
+    line-height: 1;
+    margin-left: 5px;
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    z-index: 1;
 }
