@@ -203,7 +203,7 @@ debugger
 
 
   async getTemporaryUrl(src: string) {
-     
+    console.error(`fetching URL for ${src}`,'original URL');
     //  (let image of this.dashboardBannersImages)   
     const expiryTime = new Date();
       expiryTime.setMinutes(expiryTime.getMinutes() + 5); // 5 minutes expiry
@@ -211,6 +211,7 @@ debugger
       try {
         src = await this.service.getSasUrl(src, expiryTime);
         this.src = src;
+        console.error(`fetching SAS URL for ${src}`);
       } catch (error) {
         console.error(`Error fetching SAS URL for ${src}`, error);
       }
