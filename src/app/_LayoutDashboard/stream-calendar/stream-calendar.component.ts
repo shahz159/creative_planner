@@ -3969,6 +3969,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
       this.propose_date=Schedule_date;
       console.log(this.EventScheduledjson, "Testing12");
+      console.log(this.AdminMeeting_Status, "AdminMeeting_Status");
       this.Meeing_Name = (this.EventScheduledjson[0]['Task_Name']);
       this.Created_by = this.EventScheduledjson[0].Created_by
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
@@ -4019,7 +4020,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
 
        document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
-       document.getElementById("deleteendit").style.display =this.Meeting_status==true || this.AdminMeeting_Status==1 ?'none':'flex';
+       document.getElementById("deleteendit").style.display =this.Meeting_status==true || this.AdminMeeting_Status==1 || this.AdminMeeting_Status==2?'none':'flex';
        document.getElementById("main-foot").style.display = "none";
       
       }

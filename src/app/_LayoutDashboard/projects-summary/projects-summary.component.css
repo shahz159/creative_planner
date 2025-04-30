@@ -2802,7 +2802,7 @@ button.Kt-Approval-btns {
 
 ::ng-deep .modal-backdrop:not(#schedule-event-modal-backdrop):not(#nextVersion-portfoliolink-backdrop).fade.show {
   display: none !important;
-}
+} */
 
 div#Guideline_view {
   background-color: #0000004a;

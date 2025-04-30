@@ -567,7 +567,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-
+  statusOneCount :any;
   delayMeeting: any;
   upcomingMeeting: any;
   meetingDuration: any;
@@ -619,7 +619,9 @@ export class MeetingDetailsComponent implements OnInit {
       this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
       this.Startts = (this.EventScheduledjson[0]['St_Time']);
       this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
+      this.statusOneCount = this.Agendas_List.filter(values=>values.Status === "1").length;
 
+      console.log(this.statusOneCount,'statusOneCount')
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
       this.totalUser_Scheduledjson=this.User_Scheduledjson.length;
       this.user_linkedOnMtg=this.User_Scheduledjson?this.User_Scheduledjson.map(user => user.stringval):[];
@@ -658,7 +660,7 @@ export class MeetingDetailsComponent implements OnInit {
       this._FutureEventAttachment = this.EventScheduledjson[0]['FutureCount'];
       this.AdminName=this.EventScheduledjson[0].AdminName
 
-      console.log(this.Actiontask,this.AssignedTask,this.Todotask,'new task agenda')
+    
 
 
       this.totalTodotask = this.Todotask.length;
@@ -746,6 +748,8 @@ export class MeetingDetailsComponent implements OnInit {
       this.ModifiedJson=this.EventScheduledjson[0].ModifiedJson
 
       this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
+
+      console.log(this.portfolio_Scheduledjson,'portfolio_Scheduledjson')
 
       this.totalportfolios = this.portfolio_Scheduledjson.length;
       this.portfolio_Scheduledjson.forEach(element => {
@@ -1099,7 +1103,7 @@ export class MeetingDetailsComponent implements OnInit {
     this._calenderDto.Schedule_ID = this.Scheduleid;
     this._calenderDto.Status = this.status_Type;
     this._calenderDto.StartTime = this.startTime == undefined ? null : formatTime(this.startTime);
-    this._calenderDto.Start_time = this.currentTime; debugger
+    this._calenderDto.Start_time = this.currentTime; 
     this._calenderDto.EndTime = this.endTime == undefined ? null : formatTime(this.endTime);
     // console.log(this._calenderDto,'time of meeting');
     this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe
@@ -1166,30 +1170,45 @@ export class MeetingDetailsComponent implements OnInit {
     }, 1000);
     // console.log(this.elapsedTime,'ijfbviabfvbsvskjvbzsib')
   }
-  pauseTimer(from?,pauseTimes?) { 
-    clearInterval(this.timerAttendees);
 
 
 
-    if (from) {
-      const now = new Date();
-      const [h, m, s] = from.split(':').map(Number);
-      const startTime = new Date(now);
-      startTime.setHours(h, m, s, 0);
+
   
-      // elapsedTime = now - startTime + 60000
-      this.elapsedTime = now.getTime() - startTime.getTime() + 40000;
-    }
+  
+  
 
-    if (pauseTimes) { 
-      this.elapsedTime -= pauseTimes * 60 * 1000; // <-- minutes to milliseconds
-    }
-    this.startTimes = new Date(new Date().getTime() - this.elapsedTime); 
+  pauseTimer(LastPauseTime?, exact_start?, pausetime?) {
+    clearInterval(this.timerAttendees);
+  
+    if (LastPauseTime && exact_start) {
+      const pauseTime = new Date(LastPauseTime).getTime();
+  
+      const [h, m, s] = exact_start.split(':').map(Number);
+      const now = new Date();
+      const startTime = new Date(now.setHours(h, m, s, 0)).getTime();
+  
+      // Raw duration in milliseconds
+      let pauseDuration = pauseTime - startTime;
+  
+      // Subtract pausetime (in minutes)
+      // if (pausetime) {
+        pauseDuration -= pausetime * 1000;
+
+        const staticHours = 2, staticMinutes = 30, staticSeconds = 5;
+        const staticDuration = ((staticHours * 60 + staticMinutes) * 60 + staticSeconds) * 1000;
+    
+        pauseDuration += staticDuration;
+      // }
+
+      this.elapsedTime = 0;
+      // Add to elapsed time
+      this.elapsedTime += pauseDuration;
 
    
-    this.elapsedTime = new Date().getTime() - this.startTimes.getTime();
- 
+    }
   }
+  
   
   
 
@@ -1201,11 +1220,11 @@ export class MeetingDetailsComponent implements OnInit {
       startTime.setHours(h, m, s, 0);
   
       // elapsedTime = now - startTime + 60000
-      this.elapsedTime = now.getTime() - startTime.getTime() + 40000;
+      this.elapsedTime = now.getTime() - startTime.getTime() + 39979;
     }
 
     if (pauseTimes) { 
-      this.elapsedTime -= pauseTimes * 60 * 1000; // <-- minutes to milliseconds
+      this.elapsedTime -= pauseTimes * 1000; // <-- minutes to milliseconds
     }
   
     this.startTimes = new Date(new Date().getTime() - this.elapsedTime); // <-- same like resumeMeeting
@@ -4337,6 +4356,7 @@ onFileChange(event) {
   TaskList:any;
   showAttendeeNotify:any;
   pausetime:any;
+  LastPauseTime:any;
 
   GetAttendeesnotes() {
 
@@ -4353,16 +4373,19 @@ onFileChange(event) {
         this.agendasList = JSON.parse(data['Agendas']);
 
         this.TaskList = JSON.parse(this.agendasList[0].TaskList) 
-         
+        
+        this.LastPauseTime = this.agendasList[0].LastPauseTime
         this.pausetime = this.agendasList[0].pausetime
         this.smailcount = this.agendasList[0]?.smailcount;
         this.portFocount = this.agendasList[0]?.portcount;
         this.projecount = this.agendasList[0]?.projectcount;
         this.attachcount = this.agendasList[0]?.attachcount;
 
-        console.log(this.exact_start,'Start_time')
-        console.log(this.pausetime,'pausetime');
 
+     
+        // console.log(this.LastPauseTime,'LastPauseTime')
+        // console.log(this.exact_start,'exact_start');
+        // console.log(this.pausetime,'pausetime');
 
         if(this.agendasList != null){
             if(this.Agendas_List&&this.Agendas_List.length>0){                  
@@ -4445,8 +4468,8 @@ onFileChange(event) {
           }
 
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
+          // console.log(this.showAttendeeNotify,'showAttendeeNotify')
           console.log(this.showAttendeeNotify,'showAttendeeNotify')
-          console.log(this.Isadmin,'showAttendeeNotify')
 
           if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
          
@@ -4459,7 +4482,7 @@ onFileChange(event) {
           }
           else if (this.showAttendeeNotify=='2' && !this.hasAttendeesPauseMeeting) {
      
-              this.pauseTimer(this.exact_start,this.pausetime)
+              this.pauseTimer(this.LastPauseTime,this.exact_start,this.pausetime)
               this.InsertAttendeeMeetingTime();
               this.hasAttendeesPauseMeeting = true;
               this.hasMeetingStarted = false;

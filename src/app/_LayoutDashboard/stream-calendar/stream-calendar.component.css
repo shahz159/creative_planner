@@ -1827,20 +1827,23 @@ ul.card-task-item-project-ul li:hover::before {
     overflow: auto;
     scrollbar-width: thin;
     padding-right: 4px;
-    display: flex;
+    /* display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 8px;
 }
 
 .create-event-file-list li {
-    width: 30%;
+    /* width: 30%; */
     padding: 0px 5px;
     padding-left: 0px;
-    margin-right: 10px;
+    /* margin-right: 10px; */
     font-size: 11px;
     color: #000000;
     border-radius: 4px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 8px;
     cursor: default;
     background-color: #e9f2fc;
 }
@@ -1874,9 +1877,13 @@ ul.card-task-item-project-ul li:hover::before {
 }
 
 .create-event-file-name {
-    width: 80%;
+    /* width: 80%;
     white-space: nowrap;
     text-overflow: ellipsis;
+    overflow: hidden; */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
     overflow: hidden;
 }
 
@@ -2650,7 +2657,7 @@ ul.card-task-item-project-ul li:hover::before {
     visibility: hidden;
     -webkit-box-flex: 0;
     flex: none;
-    /* width: 17px; */
+    width: 17px;
 }
 
 .week-slot-body {
@@ -2818,6 +2825,7 @@ ul.card-task-item-project-ul li:hover::before {
     visibility: hidden;
     -webkit-box-flex: 0;
     flex: none;
+    min-width: 17px;
 }
 
 .month-slot-body {
@@ -4293,7 +4301,7 @@ span.part-count {
     padding: 0.65rem;
     padding-left: 14px;
     list-style: none;
-    height: 400px;
+    height: calc(100vh - 340px);
     overflow: auto;
     scrollbar-width: thin;
     margin-bottom: 0px;
@@ -4333,11 +4341,13 @@ ul.schedule-select-user-list {
     max-height: 120px;
     overflow: auto;
     scrollbar-width: thin;
-    padding-right: 4px;
+    /* padding-right: 4px;
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-
+    flex-wrap: wrap; */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 8px;
 }
 
 ul.schedule-select-user-list li {
@@ -4347,21 +4357,25 @@ ul.schedule-select-user-list li {
     font-size: 11px;
     color: #000000;
     border-radius: 4px;
-    margin-bottom: 0.5rem;
-    margin-right: 10px;
+    margin-bottom: 8px;
+    /* margin-right: 10px; */
     cursor: default;
     background-color: #f7f7f7;
-    width: 200px;
+    /* width: 200px; */
 }
 
 .schedule-select-user-list-item .user-name {
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    width: 140px;
+    width: 140px; */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
 }
 
-@media screen and (min-width: 1440px) {
+/* @media screen and (min-width: 1440px) {
     ul.schedule-select-user-list li {
         width: 240px;
     }
@@ -4369,7 +4383,7 @@ ul.schedule-select-user-list li {
     .schedule-select-user-list-item .user-name {
         width: 180px;
     }
-}
+} */
 
 ul.schedule-select-user-list li .schedule-select-user-list-item {
     display: flex;
@@ -4525,10 +4539,13 @@ ul.schedule-select-list {
     max-height: 120px;
     overflow: auto;
     scrollbar-width: thin;
-    padding-right: 4px;
+    /* padding-right: 4px;
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 8px;
 }
 
 ul.schedule-select-list li {
@@ -4537,11 +4554,11 @@ ul.schedule-select-list li {
     font-size: 11px;
     color: #1a2a77;
     border-radius: 4px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 8px;
     cursor: default;
-    margin-right: 10px;
+    /* margin-right: 10px;
     max-width: 180px;
-    min-width: 180px;
+    min-width: 180px; */
 }
 
 ul.schedule-select-list li .schedule-select-list-item {
@@ -4566,14 +4583,22 @@ ul.schedule-select-list li .slect-close:hover svg {
 }
 
 .schedule-select-list-title {
-    width: 90%;
+    /* width: 90%;
     white-space: nowrap;
     text-overflow: ellipsis;
+    overflow: hidden; */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
     overflow: hidden;
 }
 
 .schedule-select-list-user {
     color: #6C757D;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
 }
 
 .rep-chk {
