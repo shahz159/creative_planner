@@ -2800,7 +2800,7 @@ button.Kt-Approval-btns {
   z-index: 99999999999999999999 !important;
 }
 
-::ng-deep .modal-backdrop:not(#schedule-event-modal-backdrop).fade.show {
+::ng-deep .modal-backdrop:not(#schedule-event-modal-backdrop):not(#nextVersion-portfoliolink-backdrop).fade.show {
   display: none !important;
 }
 

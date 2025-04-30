@@ -64,8 +64,8 @@ export const MY_DATE_FORMATS = {
 export class CreateProjectComponent implements OnInit {
   @ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;
   Current_user_ID:string;
-  ProjectDto:ProjectDetailsDTO|undefined;
-
+  Current_user_Info:any;
+  
 
   Authority_json:any;
   Category_json:any;
@@ -133,7 +133,8 @@ export class CreateProjectComponent implements OnInit {
   notProvided:boolean=false;
   notificationMsg:number=0;
   confirmBeforeRoute:boolean=false; // if true then confirmation appears when user tries to leave this create project page.
-
+  ProjectDto:ProjectDetailsDTO|undefined;
+  maxAllocHrsToProject:number=0;  // maximum allocatable hrs on the project user can give. (for standard and routine type projects only).
 
   constructor(private router: Router,private location: Location,
     private createProjectService:CreateprojectService,
@@ -278,6 +279,7 @@ export class CreateProjectComponent implements OnInit {
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
          this.Team_json=JSON.parse(res[0].Team_json);
          this.allUser_json=JSON.parse(res[0].allUser_json);
+         this.Current_user_Info=JSON.parse(res[0].tasks_json)[0];       // Current user information. eg: id, name, designation, position, total Standard Count,....etc
      
          this.heirarchical_owner=JSON.parse(res[0].owner_json);
          let owner_values=JSON.parse(res[0].owner_json);
@@ -1107,7 +1109,7 @@ contentType:any="";
         (
           (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours?this.Allocated_Hours<=this.maxAllocation:true))||
           (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours&&this.Allocated_Hours<=this.maxAllocation)) ||
-          ['003','008'].includes(this.Prjtype)&&this.prjsubmission&&this.Allocated_Hours&&(this.prjsubmission==6?this.Annual_date:true)
+          (['003','008'].includes(this.Prjtype)&&this.prjsubmission&&(this.Allocated_Hours&&this.isAllocHrsOverflow==false)&&(this.prjsubmission==6?this.Annual_date:true))
         ) 
      ){
           // when all mandatory fields of step1 are provided.
@@ -1126,6 +1128,29 @@ contentType:any="";
     else{
       // when some mandatory fields are missing.
       this.notProvided=true;
+
+
+      // when allocated hrs input exceeds max allocatable hrs value. for routine & standard project
+      if(this.Prjtype&&['003','008'].includes(this.Prjtype)&&(this.Allocated_Hours&&this.isAllocHrsOverflow)){
+
+          const totalPrjsExisting=this.Prjtype=='003'?this.Current_user_Info.Standard_Count:this.Current_user_Info.Routine_Count;
+          const existingPrjsType=this.Prjtype=='003'?'Standard Tasks':'Routine Tasks';
+          const _consumedHrs=this.Prjtype=='003'?this.Current_user_Info.Standard_Total_Hours:this.Current_user_Info.Routine_Total_Hours;
+    
+           Swal.fire({
+                title:'Invalid Allocated Hours provided',
+                html:`<div style=" text-align: justify;">
+                      <div> You have total <b style=" color: blue;">${totalPrjsExisting}</b>  ${existingPrjsType} projects.</div> 
+                        <b>Allocated : </b><span>${_consumedHrs} hours already</span> 
+                       <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You can allocated upto ${this.maxAllocHrsToProject} hrs to this project</div>
+                    </div>`,
+                showConfirmButton:true,
+                confirmButtonText:'Ok'
+           });
+      }
+      //
+
+
    }
 
   }
@@ -3822,31 +3847,59 @@ promptIfNameTypeMismatch(){
 }
 
 
+// standard, routine max allocatable hrs validation start.
+
+perWeekAllocHrs:number=48;       // Maximum hrs allocatable per week.
+COMPANY_HEAD_ALLOC_RATIO=0.70;  // 70% of 48hrs to the company head
+TEAM_HEAD_ALLOC_RATIO=0.50;    // 50% of 48hrs to the team head
+TEAM_MEMBER_ALLOC_RATIO=0.25;    //25% of 48hrs to the team member
+isAllocHrsOverflow:boolean=false;
+
+computeMaxAllocHrsToProject(){  debugger
+  this.maxAllocHrsToProject=0;  // clear old value if present.
+
+  let maxAllocHrsVal;
+  if(this.Current_user_Info.Position=='Team Member'){
+    maxAllocHrsVal=this.perWeekAllocHrs*this.TEAM_MEMBER_ALLOC_RATIO;    //48*0.25=12 hrs maximum user can give to the new project.
+  }
+  else if(this.Current_user_Info.Position=='Dept. Head'){
+    maxAllocHrsVal=this.perWeekAllocHrs*this.TEAM_HEAD_ALLOC_RATIO;  
+  }
+  else if(this.Current_user_Info.Position=='Company Head'){
+    maxAllocHrsVal=this.perWeekAllocHrs*this.COMPANY_HEAD_ALLOC_RATIO;  
+  }
 
 
+  if(this.Prjtype=='008'&&this.Current_user_Info.Routine_Count>0) 
+  { // when user selected routine type + user already has some routine task type projects.
+    this.maxAllocHrsToProject=maxAllocHrsVal-this.Current_user_Info.Routine_Total_Hours;
+  }
+  else if(this.Prjtype=='003'&&this.Current_user_Info.Standard_Count>0){
+   // when user selected standard task type + user already has some standard task type projects.
+   this.maxAllocHrsToProject=maxAllocHrsVal-this.Current_user_Info.Standard_Total_Hours;
+  }
+  
+//  alert(this.maxAllocHrsToProject);
 }
 
-// calculateDateDifference(): void {
-//
 
-//   if (this.assigntask_json) {
-
-//     const start = new Date(this.assigntask_json&& this.assigntask_json.Start_Date);
-//     const end = new Date(this.assigntask_json&& this.assigntask_json.End_Date);
-
-
-//     if ((start.getTime()) && (end.getTime())) {
-//       if (end >= start) {
-//         const timeDifference = end.getTime() - start.getTime();
-//         this.daysDifference = timeDifference / (1000 * 3600 * 24);
-//       } }}
+// whenever standard or routine type project's allocated input hrs changed.
+onAllocInputHrsChanged(){  debugger
+    const h=Number.parseInt(this.Allocated_Hours.split(':')[0]);
+    const m=Number.parseInt(this.Allocated_Hours.split(':')[1]);
+    const input_alhr=h+(m/60);
+    this.isAllocHrsOverflow=input_alhr>this.maxAllocHrsToProject;
+}
+// whenever standard or routine type project's allocated input hrs changed.
 
 
 
-//   console.log(`Days difference: ${this.daysDifference}`);
-// }
 
-// }
+
+
+// standard, routine max allocatable hrs validation end.
+
+}
 
 
 

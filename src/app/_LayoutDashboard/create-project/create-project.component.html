@@ -1571,8 +1571,8 @@
                               <div class="col-lg-4 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Project type<span class="text-danger">*</span></label>
-                                  <ng-select class="kt-form-vd" placeholder="Select project type" [(ngModel)]="Prjtype" (change)="changeprojecttype();  promptIfNameTypeMismatch(); setMaxPrjEndDate(); "
-                                    #PrjTYPE="ngModel"  [ngClass]="{'error-vd': !Prjtype&&notProvided}" (ngModelChange)=" notificationMsg=(notificationMsg!==0)?((Prjtype==='001'||Prjtype==='002')?1:2):notificationMsg"    >
+                                  <ng-select class="kt-form-vd" placeholder="Select project type" [(ngModel)]="Prjtype" (change)="changeprojecttype();  promptIfNameTypeMismatch(); setMaxPrjEndDate();  ((Prjtype==='003'||Prjtype==='008')?computeMaxAllocHrsToProject():0); "
+                                    #PrjTYPE="ngModel"  [ngClass]="{'error-vd': !Prjtype&&notProvided}" (ngModelChange)=" notificationMsg=(notificationMsg!==0)?((Prjtype==='001'||Prjtype==='002')?1:2):notificationMsg; ">
                                     <ng-option *ngFor="let item of ProjectType_json"
                                       [value]="item.Typeid" >{{item.ProjectType }} </ng-option>
                                   </ng-select>
@@ -1703,11 +1703,12 @@
                               </div>
                               <div [ngClass]="{'col-lg-6 mb-3': prjsubmission!='6','col-lg-4 mb-3':  prjsubmission=='6'}" class=""  *ngIf="Prjtype == '003'||Prjtype=='008'">
                                       <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0" [ngSwitch]="prjsubmission">
+                                    
                                     <div class="input-icon Sub_In_ed" *ngSwitchDefault>
                                       <label>Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="">
-                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [ngClass]="{'error-vd': !Allocated_Hours&& notProvided}" [(ngModel)]="Allocated_Hours"  #Alloc="ngModel">
+                                        <ng-select  placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [ngClass]="{'error-vd': !Allocated_Hours&& notProvided}" [(ngModel)]="Allocated_Hours"  #Alloc="ngModel">
                                         </ng-select>
                                         <span *ngIf="!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)">Please select allocated hour.</span>
                                       </div>
@@ -1716,75 +1717,81 @@
                                       <label>Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="">
-                                        <ng-select placeholder="select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours"   [ngClass]="{'error-vd': !Allocated_Hours && notProvided}" >
+                                        <ng-select [ngClass]="{'error-border':isAllocHrsOverflow}" (change)="onAllocInputHrsChanged()"  placeholder="select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours"   [ngClass]="{'error-vd': !Allocated_Hours && notProvided}" >
                                           <ng-option *ngFor="let item of Daily_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
                                         <span *ngIf="!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)" >Please select allocated hour.</span>
                                         <div style="color:#646c9a"> Max duration limit is 60 Minutes only.</div>
+                                        <div *ngIf="isAllocHrsOverflow" style="color:red">You cannot allocate more than {{maxAllocHrsToProject}} hours.</div>
                                       </div>
                                     </div>
                                     <div class="input-icon Sub_In_ed" *ngSwitchCase="2">
                                       <label> Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="">
-                                        <ng-select placeholder="Select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}">
+                                        <ng-select (change)="onAllocInputHrsChanged()"  placeholder="Select allocated hours" class="curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}">
                                           <ng-option *ngFor="let item of Week_array" [value]="item">{{item}}</ng-option>
                                         </ng-select>
                                         <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours.</div>
                                         <span style="color:#646c9a"> Max duration limit is 2 hours only.</span>
+                                        <div *ngIf="isAllocHrsOverflow" style="color:red">You cannot allocate more than {{maxAllocHrsToProject}} hours.</div>
                                       </div>
                                     </div>
                                     <div class="" *ngSwitchCase="3">
                                       <label>Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="">
-                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}">
+                                        <ng-select (change)="onAllocInputHrsChanged()"  placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}">
                                           <ng-option *ngFor="let item of Month_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
                                         <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours.</div>
                                         <span style="color:#646c9a">Max duration limit is 4 hours only.</span>
+                                        <div *ngIf="isAllocHrsOverflow" style="color:red">You cannot allocate more than {{maxAllocHrsToProject}} hours.</div>
                                       </div>
                                     </div>
                                     <div class="" *ngSwitchCase="4">
                                       <label> Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="">
-                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}">
+                                        <ng-select (change)="onAllocInputHrsChanged()"  placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}">
                                           <ng-option *ngFor="let item of Quarter_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
                                         <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours.</div>
                                         <span style="color:#646c9a"> Max duration limit is 8 hours only.</span>
+                                        <div *ngIf="isAllocHrsOverflow" style="color:red">You cannot allocate more than {{maxAllocHrsToProject}} hours.</div>
                                       </div>
                                     </div>
                                     <div class="" *ngSwitchCase="5">
                                       <label> Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="">
-                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}">
+                                        <ng-select (change)="onAllocInputHrsChanged()"  placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}">
                                           <ng-option *ngFor="let item of Halfyear_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
                                         <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours.</div>
                                         <span style="color:#646c9a"> Max duration limit is 10 hours only.</span>
+                                        <div *ngIf="isAllocHrsOverflow" style="color:red">You cannot allocate more than {{maxAllocHrsToProject}} hours.</div>
                                       </div>
                                     </div>
                                     <div class="" *ngSwitchCase="6">
                                        <label>Allocated hours<span class="text-danger">*</span></label>
                                       <div class="">
-                                        <ng-select placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}"  >
+                                        <ng-select (change)="onAllocInputHrsChanged()"  placeholder="Select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours" [ngClass]="{'error-vd': !Allocated_Hours && notProvided}"  >
                                           <ng-option *ngFor="let item of Annual_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
                                         <div *ngIf="!Allocated_Hours && notProvided" style="color:rgb(217,48,37)"  >Please select allocated hours.</div>
                                         <span style="color:#646c9a"> Max duration limit is 16 hours only.</span>
+                                        <div *ngIf="isAllocHrsOverflow" style="color:red">You cannot allocate more than {{maxAllocHrsToProject}} hours.</div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                                <div class="col-lg-4 mb-3"  *ngIf="(Prjtype=='003' || Prjtype=='008') && prjsubmission=='6'">
+                              </div>
+                              <div class="col-lg-4 mb-3"  *ngIf="(Prjtype=='003' || Prjtype=='008') && prjsubmission=='6'">
                                   <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                     <div class="" >
                                       <label>Recurrence<span class="text-danger">*</span></label>
@@ -1805,7 +1812,7 @@
                                       <span *ngIf="!Annual_date&&notProvided" style="color:rgb(217,48,37)">Please select recurrence.</span>
                                     </div>
                                   </div>
-                                </div>
+                              </div>
 
                                 <div class="col-lg-12 mb-3">
                                   <div class="d-flex align-items-end" style="column-gap:10px">
