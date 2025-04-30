@@ -23,22 +23,22 @@ export const environment = {
 
 //----------------Test Stream planner--------------------------------
 
-Language_file_url:'https://cswebapps.com/testcreativeplanner/assets/i18n/'
-,assetsurl:'/testcreativeplanner/'
-,ImageUrl:'/testcreativeplanner/assets/'
-,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/',
- baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
- baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
+// Language_file_url:'https://cswebapps.com/testcreativeplanner/assets/i18n/'
+// ,assetsurl:'/testcreativeplanner/'
+// ,ImageUrl:'/testcreativeplanner/assets/'
+// ,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/',
+//  baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
+//  baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
 
 
 //------------------Stream planner-Test demo--------------------------
 
-// Language_file_url:'https://cswebapps.com/streamplanner/assets/i18n/'
-// ,assetsurl:'/streamplanner/'
-// ,ImageUrl:'/streamplanner/assets/'
-// ,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/',
-//  baseUrl:'https://cswebapps.com/StreamPlannerAPI/api/',
-//  baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
+Language_file_url:'https://cswebapps.com/streamplanner/assets/i18n/'
+,assetsurl:'/streamplanner/'
+,ImageUrl:'/streamplanner/assets/'
+,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/',
+ baseUrl:'https://cswebapps.com/StreamPlannerAPI/api/',
+ baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
 
 
 };
