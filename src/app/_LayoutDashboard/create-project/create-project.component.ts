@@ -135,6 +135,8 @@ export class CreateProjectComponent implements OnInit {
   confirmBeforeRoute:boolean=false; // if true then confirmation appears when user tries to leave this create project page.
   ProjectDto:ProjectDetailsDTO|undefined;
   maxAllocHrsToProject:number=0;  // maximum allocatable hrs on the project user can give. (for standard and routine type projects only).
+  isStandardTaskCreatable:boolean=false;   // whether current user is allowed to create standard task or not.
+  isRoutineTaskCreatable:boolean=false;  // whether current user is allowed to create routine task or not.
 
   constructor(private router: Router,private location: Location,
     private createProjectService:CreateprojectService,
@@ -323,6 +325,23 @@ export class CreateProjectComponent implements OnInit {
 
           this.PrjClient=this.Client_json[0].EmpClient;
           this.setRACIS();
+
+
+         // determine whether current user can create standard task / routine task type projects or not.
+         let maxAllocHrsVal;
+         if(this.Current_user_Info.Position=='Team Member'){
+           maxAllocHrsVal=this.perWeekAllocHrs*this.TEAM_MEMBER_ALLOC_RATIO;    //48*0.25=12 hrs maximum user can give to the new project.
+         }
+         else if(this.Current_user_Info.Position=='Dept. Head'){
+           maxAllocHrsVal=this.perWeekAllocHrs*this.DEPT_HEAD_ALLOC_RATIO;  
+         }
+         else if(this.Current_user_Info.Position=='Company Head'){
+           maxAllocHrsVal=this.perWeekAllocHrs*this.COMPANY_HEAD_ALLOC_RATIO;  
+         }
+        
+         this.isStandardTaskCreatable=this.Current_user_Info.Standard_Total_Hours<maxAllocHrsVal;
+         this.isRoutineTaskCreatable=this.Current_user_Info.Routine_Total_Hours<maxAllocHrsVal;
+         // 
 
       }
       // this.getFindName();
@@ -1136,13 +1155,15 @@ contentType:any="";
           const totalPrjsExisting=this.Prjtype=='003'?this.Current_user_Info.Standard_Count:this.Current_user_Info.Routine_Count;
           const existingPrjsType=this.Prjtype=='003'?'Standard Tasks':'Routine Tasks';
           const _consumedHrs=this.Prjtype=='003'?this.Current_user_Info.Standard_Total_Hours:this.Current_user_Info.Routine_Total_Hours;
+          const _allocatablehrs=this.formatHrsToHHMM(this.maxAllocHrsToProject);
+          
+
     
            Swal.fire({
                 title:'Invalid Allocated Hours provided',
-                html:`<div style=" text-align: justify;">
-                      <div> You have total <b style=" color: blue;">${totalPrjsExisting}</b>  ${existingPrjsType} projects.</div> 
-                        <b>Allocated : </b><span>${_consumedHrs} hours already</span> 
-                       <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You can allocated upto ${this.maxAllocHrsToProject} hrs to this project</div>
+                html:`<div style="text-align: justify;">
+                      <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+                       <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs} to this project.</div>
                     </div>`,
                 showConfirmButton:true,
                 confirmButtonText:'Ok'
@@ -1150,10 +1171,10 @@ contentType:any="";
       }
       //
 
-
    }
 
   }
+
 
   Back_to_project_details_tab(){
     $('.right-side-dv').addClass('d-none');
@@ -3851,7 +3872,7 @@ promptIfNameTypeMismatch(){
 
 perWeekAllocHrs:number=48;       // Maximum hrs allocatable per week.
 COMPANY_HEAD_ALLOC_RATIO=0.70;  // 70% of 48hrs to the company head
-TEAM_HEAD_ALLOC_RATIO=0.50;    // 50% of 48hrs to the team head
+DEPT_HEAD_ALLOC_RATIO=0.50;    // 50% of 48hrs to the team head
 TEAM_MEMBER_ALLOC_RATIO=0.25;    //25% of 48hrs to the team member
 isAllocHrsOverflow:boolean=false;
 
@@ -3863,7 +3884,7 @@ computeMaxAllocHrsToProject(){  debugger
     maxAllocHrsVal=this.perWeekAllocHrs*this.TEAM_MEMBER_ALLOC_RATIO;    //48*0.25=12 hrs maximum user can give to the new project.
   }
   else if(this.Current_user_Info.Position=='Dept. Head'){
-    maxAllocHrsVal=this.perWeekAllocHrs*this.TEAM_HEAD_ALLOC_RATIO;  
+    maxAllocHrsVal=this.perWeekAllocHrs*this.DEPT_HEAD_ALLOC_RATIO;  
   }
   else if(this.Current_user_Info.Position=='Company Head'){
     maxAllocHrsVal=this.perWeekAllocHrs*this.COMPANY_HEAD_ALLOC_RATIO;  
@@ -3879,21 +3900,39 @@ computeMaxAllocHrsToProject(){  debugger
    this.maxAllocHrsToProject=maxAllocHrsVal-this.Current_user_Info.Standard_Total_Hours;
   }
   
-//  alert(this.maxAllocHrsToProject);
+  
+  // after calculating max allocatable hrs value, if we found allocated hrs input present then verify it.
+   if(this.Allocated_Hours){
+     this.onAllocInputHrsChanged();
+   }
+ //
+
 }
+
+//time formatter useful utility method
+formatHrsToHHMM(hours){
+  if(hours){
+    const hrval=Math.floor(hours);
+    const mnval=Math.floor((hours-hrval)*60);
+    const tmstr=`${hrval} Hrs : ${mnval} Mins`;
+    return tmstr;
+  }
+  return '';
+}
+
+//
+
+
 
 
 // whenever standard or routine type project's allocated input hrs changed.
-onAllocInputHrsChanged(){  debugger
+onAllocInputHrsChanged(){  
     const h=Number.parseInt(this.Allocated_Hours.split(':')[0]);
     const m=Number.parseInt(this.Allocated_Hours.split(':')[1]);
     const input_alhr=h+(m/60);
     this.isAllocHrsOverflow=input_alhr>this.maxAllocHrsToProject;
 }
 // whenever standard or routine type project's allocated input hrs changed.
-
-
-
 
 
 
