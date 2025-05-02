@@ -1028,6 +1028,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       if(['001','002','011'].includes(this.projectInfo.Project_Block)){
 
         const _deadlineextendlist=this.projectInfo['deadlineExtendlist'];
+        console.log('from backend deadlineextendlist:',_deadlineextendlist);
         if(_deadlineextendlist){
           var deadlineExtend=JSON.parse(_deadlineextendlist);
           this.deadlineExtendlist=Object.values(deadlineExtend);
