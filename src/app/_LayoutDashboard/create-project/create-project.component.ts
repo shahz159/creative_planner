@@ -64,8 +64,8 @@ export const MY_DATE_FORMATS = {
 export class CreateProjectComponent implements OnInit {
   @ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;
   Current_user_ID:string;
-  ProjectDto:ProjectDetailsDTO|undefined;
-
+  Current_user_Info:any;
+  
 
   Authority_json:any;
   Category_json:any;
@@ -133,7 +133,10 @@ export class CreateProjectComponent implements OnInit {
   notProvided:boolean=false;
   notificationMsg:number=0;
   confirmBeforeRoute:boolean=false; // if true then confirmation appears when user tries to leave this create project page.
-
+  ProjectDto:ProjectDetailsDTO|undefined;
+  maxAllocHrsToProject:number=0;  // maximum allocatable hrs on the project user can give. (for standard and routine type projects only).
+  isStandardTaskCreatable:boolean=false;   // whether current user is allowed to create standard task or not.
+  isRoutineTaskCreatable:boolean=false;  // whether current user is allowed to create routine task or not.
 
   constructor(private router: Router,private location: Location,
     private createProjectService:CreateprojectService,
@@ -278,6 +281,7 @@ export class CreateProjectComponent implements OnInit {
          this.Responsible_json=JSON.parse(res[0].Responsible_json);
          this.Team_json=JSON.parse(res[0].Team_json);
          this.allUser_json=JSON.parse(res[0].allUser_json);
+         this.Current_user_Info=JSON.parse(res[0].tasks_json)[0];       // Current user information. eg: id, name, designation, position, total Standard Count,....etc
      
          this.heirarchical_owner=JSON.parse(res[0].owner_json);
          let owner_values=JSON.parse(res[0].owner_json);
@@ -321,6 +325,23 @@ export class CreateProjectComponent implements OnInit {
 
           this.PrjClient=this.Client_json[0].EmpClient;
           this.setRACIS();
+
+
+         // determine whether current user can create standard task / routine task type projects or not.
+         let maxAllocHrsVal;
+         if(this.Current_user_Info.Position=='Team Member'){
+           maxAllocHrsVal=this.perWeekAllocHrs*this.TEAM_MEMBER_ALLOC_RATIO;    //48*0.25=12 hrs maximum user can give to the new project.
+         }
+         else if(this.Current_user_Info.Position=='Dept. Head'){
+           maxAllocHrsVal=this.perWeekAllocHrs*this.DEPT_HEAD_ALLOC_RATIO;  
+         }
+         else if(this.Current_user_Info.Position=='Company Head'){
+           maxAllocHrsVal=this.perWeekAllocHrs*this.COMPANY_HEAD_ALLOC_RATIO;  
+         }
+        
+         this.isStandardTaskCreatable=this.Current_user_Info.Standard_Total_Hours<maxAllocHrsVal;
+         this.isRoutineTaskCreatable=this.Current_user_Info.Routine_Total_Hours<maxAllocHrsVal;
+         // 
 
       }
       // this.getFindName();
@@ -1107,7 +1128,7 @@ contentType:any="";
         (
           (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours?this.Allocated_Hours<=this.maxAllocation:true))||
           (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours&&this.Allocated_Hours<=this.maxAllocation)) ||
-          ['003','008'].includes(this.Prjtype)&&this.prjsubmission&&this.Allocated_Hours&&(this.prjsubmission==6?this.Annual_date:true)
+          (['003','008'].includes(this.Prjtype)&&this.prjsubmission&&(this.Allocated_Hours&&this.isAllocHrsOverflow==false)&&(this.prjsubmission==6?this.Annual_date:true))
         ) 
      ){
           // when all mandatory fields of step1 are provided.
@@ -1126,9 +1147,34 @@ contentType:any="";
     else{
       // when some mandatory fields are missing.
       this.notProvided=true;
+
+
+      // when allocated hrs input exceeds max allocatable hrs value. for routine & standard project
+      if(this.Prjtype&&['003','008'].includes(this.Prjtype)&&(this.Allocated_Hours&&this.isAllocHrsOverflow)){
+
+          const totalPrjsExisting=this.Prjtype=='003'?this.Current_user_Info.Standard_Count:this.Current_user_Info.Routine_Count;
+          const existingPrjsType=this.Prjtype=='003'?'Standard Tasks':'Routine Tasks';
+          const _consumedHrs=this.Prjtype=='003'?this.Current_user_Info.Standard_Total_Hours:this.Current_user_Info.Routine_Total_Hours;
+          const _allocatablehrs=this.formatHrsToHHMM(this.maxAllocHrsToProject);
+          
+
+    
+           Swal.fire({
+                title:'Invalid Allocated Hours provided',
+                html:`<div style="text-align: justify;">
+                      <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+                       <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs} to this project.</div>
+                    </div>`,
+                showConfirmButton:true,
+                confirmButtonText:'Ok'
+           });
+      }
+      //
+
    }
 
   }
+
 
   Back_to_project_details_tab(){
     $('.right-side-dv').addClass('d-none');
@@ -3822,31 +3868,77 @@ promptIfNameTypeMismatch(){
 }
 
 
+// standard, routine max allocatable hrs validation start.
 
+perWeekAllocHrs:number=48;       // Maximum hrs allocatable per week.
+COMPANY_HEAD_ALLOC_RATIO=0.70;  // 70% of 48hrs to the company head
+DEPT_HEAD_ALLOC_RATIO=0.50;    // 50% of 48hrs to the team head
+TEAM_MEMBER_ALLOC_RATIO=0.25;    //25% of 48hrs to the team member
+isAllocHrsOverflow:boolean=false;
+
+computeMaxAllocHrsToProject(){  debugger
+  this.maxAllocHrsToProject=0;  // clear old value if present.
+
+  let maxAllocHrsVal;
+  if(this.Current_user_Info.Position=='Team Member'){
+    maxAllocHrsVal=this.perWeekAllocHrs*this.TEAM_MEMBER_ALLOC_RATIO;    //48*0.25=12 hrs maximum user can give to the new project.
+  }
+  else if(this.Current_user_Info.Position=='Dept. Head'){
+    maxAllocHrsVal=this.perWeekAllocHrs*this.DEPT_HEAD_ALLOC_RATIO;  
+  }
+  else if(this.Current_user_Info.Position=='Company Head'){
+    maxAllocHrsVal=this.perWeekAllocHrs*this.COMPANY_HEAD_ALLOC_RATIO;  
+  }
+
+
+  if(this.Prjtype=='008'&&this.Current_user_Info.Routine_Count>0) 
+  { // when user selected routine type + user already has some routine task type projects.
+    this.maxAllocHrsToProject=maxAllocHrsVal-this.Current_user_Info.Routine_Total_Hours;
+  }
+  else if(this.Prjtype=='003'&&this.Current_user_Info.Standard_Count>0){
+   // when user selected standard task type + user already has some standard task type projects.
+   this.maxAllocHrsToProject=maxAllocHrsVal-this.Current_user_Info.Standard_Total_Hours;
+  }
+  
+  
+  // after calculating max allocatable hrs value, if we found allocated hrs input present then verify it.
+   if(this.Allocated_Hours){
+     this.onAllocInputHrsChanged();
+   }
+ //
 
 }
 
-// calculateDateDifference(): void {
+//time formatter useful utility method
+formatHrsToHHMM(hours){
+  if(hours){
+    const hrval=Math.floor(hours);
+    const mnval=Math.floor((hours-hrval)*60);
+    const tmstr=`${hrval} Hrs : ${mnval} Mins`;
+    return tmstr;
+  }
+  return '';
+}
+
 //
 
-//   if (this.assigntask_json) {
-
-//     const start = new Date(this.assigntask_json&& this.assigntask_json.Start_Date);
-//     const end = new Date(this.assigntask_json&& this.assigntask_json.End_Date);
-
-
-//     if ((start.getTime()) && (end.getTime())) {
-//       if (end >= start) {
-//         const timeDifference = end.getTime() - start.getTime();
-//         this.daysDifference = timeDifference / (1000 * 3600 * 24);
-//       } }}
 
 
 
-//   console.log(`Days difference: ${this.daysDifference}`);
-// }
+// whenever standard or routine type project's allocated input hrs changed.
+onAllocInputHrsChanged(){  
+    const h=Number.parseInt(this.Allocated_Hours.split(':')[0]);
+    const m=Number.parseInt(this.Allocated_Hours.split(':')[1]);
+    const input_alhr=h+(m/60);
+    this.isAllocHrsOverflow=input_alhr>this.maxAllocHrsToProject;
+}
+// whenever standard or routine type project's allocated input hrs changed.
 
-// }
+
+
+// standard, routine max allocatable hrs validation end.
+
+}
 
 
 

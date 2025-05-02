@@ -545,6 +545,12 @@ export class NotificationComponent implements OnInit {
       console.log("leave data",data);
       this.leave_Requests = JSON.parse(data[0]['LeaveRequests_json']);
       this.notificationsLoading = false;
+      // manually creating new property 
+            this.leave_Requests.forEach((lvobj)=>{
+                    const mobj=moment(lvobj.Req_Date,'M/D/YYYY h:mm:ss a');
+                    lvobj.ReqDateFormatted=mobj.format('YYYY-MM-DDTHH:mm:ss');  // creating new property.
+            });
+      // 
       console.log(this.leave_Requests, "_newNotificationLeaveRequest");
     });
 
@@ -563,6 +569,12 @@ export class NotificationComponent implements OnInit {
       if(this._newNotificationLeave){
         const lv_codes=Array.from(new Set(this._newNotificationLeave.map(_leave=>_leave.Leave_Code)));
         this._newNotificationLeave=lv_codes.map((_lc)=>this._newNotificationLeave.find(lobj=>lobj.Leave_Code==_lc));
+        // manually formatting the Req_Date value into required date format
+        this._newNotificationLeave.forEach((ob:any)=>{
+              const mobj=moment(ob.Req_Date,'M/D/YYYY h:mm:ss a');
+              ob.ReqDateFormatted=mobj.format('YYYY-MM-DDTHH:mm:ss');  // creating new property.
+        });
+        // manually formatting the Req_Date value into required date format
       }
     });
   }
@@ -1714,5 +1726,36 @@ convertToDecimalHours(hm:string){
   return alhr;
 }
 // method to convert HH:MM to hours value.
+
+
+
+// leave requests section table 
+
+
+clicks2: number = 0;
+A2Z2: boolean = true;
+Z2A2: boolean = false;
+
+sortLeavesByEmpName() {
+  this.clicks2 += 1;
+  if (this.clicks2 != 1) {
+    this.A2Z2 = true;
+    this.Z2A2 = false;
+    this.clicks2 = 0;
+  } else {
+    this.A2Z2 = false;
+    this.Z2A2 = true;
+  }
+}
+
+
+
+
+
+
+
+// leave requests section table
+
+
 
 }

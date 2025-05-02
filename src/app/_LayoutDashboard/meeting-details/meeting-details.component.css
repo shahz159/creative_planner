@@ -9255,22 +9255,21 @@ a.info-btn.info-btn-disable:hover {
 .kt-meeting-left-ul {
     max-height: 300px;
     overflow-y: auto;
-    scrollbar-width: none; /* Firefox: hides scrollbar */
-    padding-top: 10px;
+    scrollbar-width: none; 
+
   }
   
-  /* Chrome, Edge, Safari - hide scrollbar initially */
+
   .kt-meeting-left-ul::-webkit-scrollbar {
     width: 0px;
   }
-  
-  /* Show scrollbar on hover */
+ 
   .kt-meeting-left-ul:hover {
-    scrollbar-width: thin; /* Firefox */
-    scrollbar-color: #8bb3ff #f1f5ff; /* Firefox */
+    scrollbar-width: thin; 
+    scrollbar-color: #8bb3ff #f1f5ff; 
   }
   
-  /* Webkit scroll (Chrome, Edge) on hover */
+
   .kt-meeting-left-ul:hover::-webkit-scrollbar {
     width: 8px;
   }

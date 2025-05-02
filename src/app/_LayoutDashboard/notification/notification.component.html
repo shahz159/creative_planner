@@ -4,156 +4,49 @@
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid margin-height side_view pt-3"
   id="notifi">
 
+
   <div class="row">
 
     <div class="col-lg-12">
       <!--begin:: Widgets/Authors Profit-->
+
+    
+
+
       <div class="kt-portlet kt-portlet--bordered-semi mb-2 ">
-        <div class="kt-portlet__head">
-          <div class="d-flex">
-           <div class="kt-portlet__head-label dropdown">
 
-              <h3 class="kt-portlet__head-title mr-4 cursor-pointer dropdown-toggle select-box" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-                <strong *ngIf="currentPageContent=='PROJECT APPROVALS'">Project approval</strong>
-                <strong *ngIf="currentPageContent=='INFORMATION'">Information</strong>
-                <strong *ngIf="currentPageContent=='LEAVE REQUESTS'">Leave requests</strong>
-                <strong *ngIf="currentPageContent=='LEAVE RESPONSES'">Leave responses</strong>
-              </h3>
+        <div *ngIf="currentPageContent=='PROJECT APPROVALS'||currentPageContent=='INFORMATION'" class="kt-portlet__head align-items-center">
 
-              <div class="dropdown-menu dropdown-menu-xl px-2" id="dropd" style="margin-top: 21px; margin-left: -24px;">
-      
-                <div class="drop-ul">
-
-                <span (click)="setPageContent('PROJECT APPROVALS')">
-                    <button id="tot" class="btn btn-filtr" [ngClass]="{'active':currentPageContent=='PROJECT APPROVALS'}">
-                          <div class="d-flex align-items-center">
-                              <span class="count tot  pj-aprvls">{{WScount}}</span>
-                              <div  class="fil-lbl">Project approval</div>
-                              <span class="chck-icn">
-                                  <svg xmlns="http://www.w3.org/2000/svg"
-                                      width="16" height="16"
-                                      fill="currentColor" class="bi bi-check2"
-                                      viewBox="0 0 16 16">
-                                      <path
-                                          d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                      </path>
-                                  </svg>
-                              </span>
-                          </div>
-                    </button>
-                </span>
-
-                <span (click)="setPageContent('INFORMATION')" >
-                  <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':currentPageContent=='INFORMATION'}">
-                          <div class="d-flex align-items-center">
-                              <span class="count infors">{{WRcount}}</span>
-                              <div class="fil-lbl">Information</div>
-                              <span class="chck-icn">
-                                  <svg xmlns="http://www.w3.org/2000/svg"
-                                      width="16" height="16"
-                                      fill="currentColor" class="bi bi-check2"
-                                      viewBox="0 0 16 16">
-                                      <path
-                                          d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                      </path>
-                                  </svg>
-                              </span>
-                          </div>
-                  </button>
-                </span>
-
-                <span (click)="setPageContent('LEAVE REQUESTS')">
-                    <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':currentPageContent=='LEAVE REQUESTS'}">
-                        <div class="d-flex align-items-center">
-                            <span *ngIf="leave_Requests" class="count lv-reqs">{{leave_Requests.length}}</span>
-                            <div class="fil-lbl">Leave requests</div>
-                            <span class="chck-icn">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    width="16" height="16"
-                                    fill="currentColor" class="bi bi-check2"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                    </path>
-                                </svg>
-                            </span>
-                        </div>
-                    </button>
-                </span>
-
-                <span (click)="setPageContent('LEAVE RESPONSES')">
-                  <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':currentPageContent=='LEAVE RESPONSES'}">
-                      <div class="d-flex align-items-center">
-                          <span *ngIf="_newNotificationLeave" class="count lv-resps">{{_newNotificationLeave.length}}</span>
-                          <div class="fil-lbl">Leave responses</div>
-                          <span class="chck-icn">
-                              <svg xmlns="http://www.w3.org/2000/svg"
-                                  width="16" height="16"
-                                  fill="currentColor" class="bi bi-check2"
-                                  viewBox="0 0 16 16">
-                                  <path
-                                      d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                  </path>
-                              </svg>
-                          </span>
-                      </div>
-                  </button>
-                </span>
-
-            
-          
-
-
-                 </div>
-          
-             </div>
-            
-              <div *ngIf="sendtype=='Res' && selectedItems.length >0">
-                <button class="btn btn-outline-success btn-sm mr-2" (click)="clearResponses()">Clear responses</button>
-              </div>
-            </div> 
-
-            <!--test new-->
-            <!-- <div class="kt-portlet__head-label">
-              <h3 class="kt-portlet__head-title mr-4 cursor-pointer">
-               <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-               Project approvals
-            </h3>
-            </div>
-            <div class="kt-portlet__head-label">
-              <h3 class="kt-portlet__head-title mr-4 cursor-pointer">
-               <i class="kt-menu__link-icon fas fa-bell mr-2 text-primary"></i>
-               Leave approvals
-            </h3>
-            </div> -->
-
-           <!-- test new-->
-          </div>
-
-          <div *ngIf="currentPageContent=='PROJECT APPROVALS'||currentPageContent=='INFORMATION'"  class="kt-portlet__head-label mr-2">
-            <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3">
-              <div class="kt-header__topbar-wrapper">
-                <div class="kt-quick-search kt-quick-search--inline">
-                  <div class="kt-quick-search__form">
-                    <div class="input-group">
-                      <input type="text" [(ngModel)]="searchText" autofocus
-                        (keydown.enter)="search($event.target.value)"
-                        class="form-control project-search kt-quick-search__input pl-3" placeholder="Search Projects"
-                        style="width: 300px">
-                      <div class="input-group-prepend">
-                        <button class="input-group-text" type="submit" (click)="search($event.target.value)">
-                          <i class="flaticon2-search-1"></i>
-                        </button>
-                      </div>
-
+          <!--search box start-->
+          <div class="kt-header__topbar-item kt-header__topbar-item--search mr-3 flex-grow-1">
+            <div class="kt-header__topbar-wrapper">
+              <div class="kt-quick-search kt-quick-search--inline w-50">
+                <div class="kt-quick-search__form">
+                  <div class="input-group">
+                    <input type="text" [(ngModel)]="searchText" autofocus
+                      (keydown.enter)="search($event.target.value)"
+                      class="form-control project-search kt-quick-search__input pl-3" placeholder="Search Projects"
+                      style="width: 300px">
+                    <div class="input-group-prepend">
+                      <button class="input-group-text" type="submit" (click)="search($event.target.value)">
+                        <i class="flaticon2-search-1"></i>
+                      </button>
                     </div>
+
                   </div>
                 </div>
               </div>
             </div>
-            <!-- Pagination starts -->
+          </div>
+          <!--search box end-->
+
+
+
+
+          <!-- *ngIf="currentPageContent=='PROJECT APPROVALS'||currentPageContent=='INFORMATION'" -->
+          <div class="kt-portlet__head-label mr-2">
+          
+            <!-- Pagination numbers starts -->
             <div class="mr-3">
               <ng-container *ngIf="CurrentPageNo==1">
                 {{CurrentPageNo}} - {{_CurrentpageRecords}}
@@ -170,15 +63,19 @@
               <span *ngIf="_totalProjectsCount>=1000"> {{_totalProjectsCount.toLocaleString()}}</span>
               <span *ngIf="_totalProjectsCount<1000"> {{_totalProjectsCount}}</span>
             </div>
-            <!-- Pagination ends -->
-
+            <!-- Pagination numbers ends -->
+      
+          <!--pagination back&next btns-->  
             <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
               (click)="CurrentPageNo = CurrentPageNo - 1;applyFilters()" [disabled]="CurrentPageNo==1">
               <i class="fas fa-angle-left mr-0"></i></button>
-
+      
             <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
               (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters()" [disabled]="_CurrentpageRecords<20">
               <i class="fas fa-angle-right mr-0"></i></button>
+          <!--pagination back&next btns-->      
+            
+          <!-- sort asc -->    
             <div class="mr-2">
               <a class="btn btn-label-primary btn-sm" data-toggle="kt-tooltip" title="Click to sort Asc">
                 <i class="fa fa-sort-alpha-down-alt font-16 mr-0"></i>
@@ -188,7 +85,8 @@
                                 <i class="fas fa-sort-alpha-up font-16 mr-0"></i>
                             </a> -->
             </div>
-            <!-- Filters -->
+          
+          <!-- Filters -->
             <div class="stores-sec mr-1">
               <ul class="nav navbar-nav filters">
                 <li class="dropdown mega-dropdown" id="filtermenu">
@@ -210,7 +108,7 @@
                         </div>
                       </div>
                       <hr />
-
+      
                       <div class="row">
                         <div class="col-md-12">
                           <input type="text" class="form-control kt-quick-search__input pl-3"
@@ -295,17 +193,50 @@
                 </li>
               </ul>
             </div>
-            <button title="Click to reset the filter"  class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll()">
+          <!-- Filters -->
+          
+          <!--clear filter btn-->
+          <button title="Click to reset the filter"  class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1" (click)="resetAll()">
               <i class="fas fa-sync-alt mr-0"></i>
-            </button>
-
+          </button>
+      
           </div>
+
+
         </div>
+
+        <div class="kt-portlet__head" style=" align-items: stretch;">
+          <nav class="w-100">
+            <div class="nav nav-pills flex-column flex-sm-row gap-2" id="nav-tab" role="tablist" style="margin-bottom: 0px !important; height:100%;">
+              <button class="flex-sm-fill text-sm-center nav-link nt-nav-tab" id="nav-project-approval-tab" type="button" role="tab" aria-controls="nav-project-approval" aria-selected="true" (click)="setPageContent('PROJECT APPROVALS')" [ngClass]="{'active':currentPageContent=='PROJECT APPROVALS'}" >
+                <svg height="21px" width="21px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 503.607 503.607" xml:space="preserve" style="stroke: black;stroke-width: 10px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(1 1)"> <g> <g> <path d="M385.098,57.754h-41.967v-8.393c0-9.233-7.554-16.787-16.787-16.787h-25.18V24.18c0-14.269-10.911-25.18-25.18-25.18 h-50.361c-14.269,0-25.18,11.751-25.18,25.18v8.393h-25.18c-9.233,0-16.787,7.554-16.787,16.787v8.393h-41.967 c-23.502,0-41.967,18.466-41.967,41.967v360.918c0,23.502,18.466,41.967,41.967,41.967h268.59 c23.502,0,41.967-18.466,41.967-41.967V99.721C427.066,76.22,408.6,57.754,385.098,57.754z M175.262,49.361h33.574 c5.036,0,8.393-3.357,8.393-8.393V24.18c0-5.036,3.357-8.393,8.393-8.393h50.361c5.036,0,8.393,4.197,8.393,8.393v16.787 c0,5.036,3.357,8.393,8.393,8.393h33.574v16.787v41.967H175.262V66.148V49.361z M410.279,460.639 c0,14.269-10.911,25.18-25.18,25.18h-268.59c-14.269,0-25.18-10.911-25.18-25.18V99.721c0-14.269,10.911-25.18,25.18-25.18 h41.967v33.574c0,9.233,7.554,16.787,16.787,16.787h151.082c9.233,0,16.787-7.554,16.787-16.787V74.541h41.967 c14.269,0,25.18,10.911,25.18,25.18V460.639z"></path> <path d="M335.577,198.764c-10.072-9.233-26.02-9.233-35.253,0L167.708,325.505l-17.297,68.497l-6.204,6.204 c-3.357,3.357-3.357,8.393,0,11.751c1.679,1.679,3.357,2.518,5.875,2.518c2.518,0,4.197-0.839,5.875-2.518l7.386-7.386 l66.476-16.115L362.436,255c8.393-8.393,8.393-20.984,0-29.377L335.577,198.764z M187.338,330.421l87.794-83.803l36.512,36.512 l-85.798,85.798L187.338,330.421z M179.875,346.698l29.59,29.59l-39.239,9.649L179.875,346.698z M350.685,244.088l-27.171,27.171 l-36.236-36.236l24.797-23.67c3.357-3.357,8.393-3.357,11.751,0l26.859,26.859C352.364,239.892,352.364,242.41,350.685,244.088z"></path> </g> </g> </g> </g></svg>
+                Project Approvals <span *ngIf="WScount>0" class="count tot  pj-aprvls" style="background-color:#7E22CE">{{WScount|number}}</span>
+              </button>
+              
+              <button class="flex-sm-fill text-sm-center nav-link nt-nav-tab" id="nav-leave-request-tab" type="button" role="tab" aria-controls="nav-leave-request" aria-selected="false" (click)="setPageContent('LEAVE REQUESTS')" [ngClass]="{'active':currentPageContent=='LEAVE REQUESTS'}">
+                <svg width="21px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="stroke: #0a0a0a;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7.00012 3V21M7.00012 21L3.00012 17M7.00012 21L11.0001 17M14.0001 21H21.0001M14.0001 15H19.0001M14.0001 9H17.0001M14.0001 3H15.0001" stroke-width="2.064" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                Leave Approvals
+                <span *ngIf="leave_Requests&&leave_Requests.length>0" class="count lv-reqs" style="background-color:#7E22CE">{{leave_Requests.length|number}}</span>
+              </button>
+
+              <button class="flex-sm-fill text-sm-center nav-link nt-nav-tab" id="nav-information-tab" type="button" role="tab" aria-controls="nav-information" aria-selected="false" (click)="setPageContent('INFORMATION')" [ngClass]="{'active':currentPageContent=='INFORMATION'}">
+                <svg width="24px" height="23px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="stroke: #000000;stroke-width: 1.8px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Warning / Info"> <path id="Vector" d="M12 11V16M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21ZM12.0498 8V8.1L11.9502 8.1002V8H12.0498Z" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                Information <span *ngIf="WRcount>0" class="count infors" style="background-color:#2563EB">{{WRcount|number}}</span>
+              </button>
+            
+              <button class="flex-sm-fill text-sm-center nav-link nt-nav-tab" id="nav-leave-response-tab" type="button" role="tab" aria-controls="nav-leave-response" aria-selected="false" (click)="setPageContent('LEAVE RESPONSES')" [ngClass]="{'active':currentPageContent=='LEAVE RESPONSES'}">
+                <svg fill="#8c8c8c" width="22px" height="22px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16,9.29289322 L17.1464466,8.14644661 C17.3417088,7.95118446 17.6582912,7.95118446 17.8535534,8.14644661 C18.0488155,8.34170876 18.0488155,8.65829124 17.8535534,8.85355339 L15.8535534,10.8535534 C15.6582912,11.0488155 15.3417088,11.0488155 15.1464466,10.8535534 L13.1464466,8.85355339 C12.9511845,8.65829124 12.9511845,8.34170876 13.1464466,8.14644661 C13.3417088,7.95118446 13.6582912,7.95118446 13.8535534,8.14644661 L15,9.29289322 L15,3.5 C15,3.22385763 15.2238576,3 15.5,3 C15.7761424,3 16,3.22385763 16,3.5 L16,9.29289322 L16,9.29289322 Z M4,15 L9.5,15 C9.77614237,15 10,15.2238576 10,15.5 C10,16.3284271 10.6715729,17 11.5,17 L12.5,17 C13.3284271,17 14,16.3284271 14,15.5 C14,15.2238576 14.2238576,15 14.5,15 L20,15 L20,8.5 C20,8.22385763 20.2238576,8 20.5,8 C20.7761424,8 21,8.22385763 21,8.5 L21,18.5 C21,19.8807119 19.8807119,21 18.5,21 L5.5,21 C4.11928813,21 3,19.8807119 3,18.5 L3,5.5 C3,4.11928813 4.11928813,3 5.5,3 L10.5,3 C10.7761424,3 11,3.22385763 11,3.5 C11,3.77614237 10.7761424,4 10.5,4 L5.5,4 C4.67157288,4 4,4.67157288 4,5.5 L4,15 Z M4,16 L4,18.5 C4,19.3284271 4.67157288,20 5.5,20 L18.5,20 C19.3284271,20 20,19.3284271 20,18.5 L20,16 L14.9499909,16 C14.7183558,17.1411202 13.709479,18 12.5,18 L11.5,18 C10.290521,18 9.28164422,17.1411202 9.05000906,16 L4,16 Z"></path> </g></svg>
+                Leave Responses <span *ngIf="_newNotificationLeave&&_newNotificationLeave.length>0" class="count lv-resps" style="background-color:#2563EB" >{{_newNotificationLeave.length|number}}</span>
+              </button>
+            </div>
+          </nav>
+        </div>
+
       </div>
 
-      <div *ngIf="sendtype=='Req' && selectedItems.length >0" class=" bg-white p-2 px-3 rounded d-flex align-items-center justify-content-between">
+      <div *ngIf="selectedItems.length>0" class="bg-white p-2 px-3 my-2 rounded d-flex align-items-center justify-content-between">
 
-        <div class="">
+        <div *ngIf="sendtype=='Req'">
 
           <div class="btn-group mr-2" role="group">
             <button type="button" class="btn btn-outline-success btn-sm fs-7 d-inline-flex gap-1 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -329,35 +260,30 @@
         </button>
 
 
+        </div>
+        <div *ngIf="sendtype=='Res'">
+          <button class="btn btn-outline-success btn-sm mr-2" (click)="clearResponses()">Clear responses</button>
+        </div>
 
-          <!-- <button  (click)="acceptSelectedValues()" class="btn btn-outline-success btn-sm mr-2 fs-7  d-inline-flex gap-1   ">
-            <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" style="stroke: currentColor; stroke-width: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="checkmark"> <line class="cls-1" x1="3" x2="12" y1="16" y2="25"></line> <line class="cls-1" x1="12" x2="29" y1="25" y2="7"></line> </g> </g></svg>
-            <span class="fs-8" style="font-weight:500">Accept</span>
-          </button>
-          <button (click)="onAcceptWithCmtsBtnClicked()" class="btn btn-outline-success btn-sm mr-2 fs-7  d-inline-flex gap-1">
-            <svg fill="currentColor" width="17px" height="17px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.093,1.293l-11.2,11.2a.99.99,0,0,0-.242.391l-1.6,4.8A1,1,0,0,0,5,19a1.014,1.014,0,0,0,.316-.051l4.8-1.6a1.006,1.006,0,0,0,.391-.242l11.2-11.2a1,1,0,0,0,0-1.414l-3.2-3.2A1,1,0,0,0,17.093,1.293ZM9.26,15.526l-2.679.893.893-2.679L17.8,3.414,19.586,5.2ZM3,21H20a1,1,0,0,1,0,2H3a1,1,0,0,1,0-2Z"></path></g></svg>
-            <span class="fs-8" style="font-weight:500">Accept with Comments</span>
-          </button> -->
-
-      </div>
-      <span class="fs-6 text-muted font-weight-bold">{{selectedItems.length}} selected</span>
+        <span class="fs-6 text-muted font-weight-bold">{{selectedItems.length}} selected</span>
       </div>
 
 
-      <div class="not-title">
+      <!-- <div class="not-title">
         <h5 *ngIf="currentPageContent=='PROJECT APPROVALS'" id="titlepro">Project approvals</h5>
         <h5 *ngIf="currentPageContent=='INFORMATION'" id="titleinfo">Information</h5>
         <h5 *ngIf="currentPageContent=='LEAVE REQUESTS'" id="titlereq">Leave requests
            <span *ngIf="leave_Requests&&leave_Requests.length>0" class="text-muted fs-8 d-block">Total : {{leave_Requests.length}}</span>
         </h5>
         <h5 *ngIf="currentPageContent=='LEAVE RESPONSES'" id="titleres">Leave responses</h5>
-      </div>
+      </div> -->
 
-      <div class="kt-portlet">
+      <div class="card kt-portlet">
+
+        
 
         <div class="kt-portlet__body kt-portlet__body_scroll px-0 py-0">
-
-
+         
           <div id="project-4_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"  [ngClass]="{'d-none':notificationsLoading}">
             <div class="">
               <div class="">
@@ -366,7 +292,8 @@
 
 
                 <!--Project aprv list start-->
-                <div id="prj-aprv-list" class="table-responsive min_height_fvoo">
+                <div id="prj-aprv-list" class="table-responsive min_height_fvoo p-3">
+                 
                   <table class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
                     <thead>
                       <tr role="row">
@@ -646,9 +573,9 @@
                                                                || item.Req_Type=='ToDo Achieved'">
                                                                {{item.Req_Type=="Request Access"? "Access Approval":item.Req_Type=="New Project"?"New Approval":item.Req_Type}}</span>
 
-                          <span  [ngClass]="{'cancellation' : item.Req_Type =='Project Cancel','Done': item.Req_Type=='Task Complete'|| item.Req_Type=='Approved Action'||item.Req_Type=='StandardTask Completed','Forward': item.Req_Type=='Project Forward','process': item.Req_Type=='Revert Back','not_started': item.Req_Type== 'Not Achieved'|| item.Req_Type=='New Action Rejected', 'hold': item.Req_Type== 'Project Hold','proj_rej':item.Req_Type=='New Project Rejected', 'proj_comp': item.Req_Type== 'Project Complete Rejected'||item.Req_Type=='Standardtask Enactive', 'Deadline': item.Req_Type== 'Deadline Extend','completion': item.Req_Type=='Project Complete'||item.Req_Type=='Project Release' ,'new_act': item.Req_Type=='New Action'||item.Req_Type=='RACIS change' }"
+                          <span  [ngClass]="{'cancellation' : item.Req_Type =='Project Cancel','cancellation' : item.Req_Type=='Project Cancel Reject','Done': item.Req_Type=='Task Complete'|| item.Req_Type=='Approved Action'||item.Req_Type=='StandardTask Completed','Forward': item.Req_Type=='Project Forward','process': item.Req_Type=='Revert Back','not_started': item.Req_Type== 'Not Achieved'|| item.Req_Type=='New Action Rejected', 'hold': item.Req_Type== 'Project Hold','proj_rej':item.Req_Type=='New Project Rejected', 'proj_comp': item.Req_Type== 'Project Complete Rejected'||item.Req_Type=='Standardtask Enactive', 'Deadline': item.Req_Type== 'Deadline Extend','completion': item.Req_Type=='Project Complete'||item.Req_Type=='Project Release' ,'new_act': item.Req_Type=='New Action'||item.Req_Type=='RACIS change' }"
                             *ngIf="item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
-                                                               || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive'
+                                                               || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive' || item.Req_Type=='Project Cancel Reject'
                                                                || item.Req_Type=='New Action Rejected' || item.Req_Type=='Project Cancel'">
                             {{item.Req_Type=='Project Cancel'?'Cancellation Approval':item.Req_Type}}
 
@@ -844,7 +771,7 @@
 
 
                 <!--new leave aprv list start-->
-                 <div id="leave-aprv-list" class="table-responsive">
+                 <div id="leave-aprv-list" class="table-responsive p-3">
                        <ng-container *ngIf="leavePanel==='REQUESTS'">
                         <table *ngIf="leave_Requests&&leave_Requests.length>0; else noitemsfound" class="table table-hover dataTable no-footer dtr-inline" role="grid" style="width: 0px;">
                           <thead>
@@ -861,19 +788,30 @@
                               <th data-name="Leave_Request_type" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
                                 Request type
                               </th>
-                              <th data-name="Leave_Request_by" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
+                              <th data-name="Leave_Request_by" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;"   [appSort]="leave_Requests" data-order="desc" data-name="Emp_Name"
+                                (click)="sortLeavesByEmpName()">
+                                <a [hidden]="Z2A2" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
+                                  <i class="fas fa-sort-alpha-up"></i>
+                                </a>
+                                <a [hidden]="A2Z2" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
+                                  <i class="fa fa-sort-alpha-down-alt"></i>
+                                </a>
                                 Request by
                               </th>
-                              <th data-name="Leave_Request_on" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
+                              <th data-name="Leave_Request_on" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1"[appSort]="leave_Requests" data-order="desc" data-name="ReqDateFormatted">
+                                <i class="fas fa-sort"></i>
                                 Request on
                               </th>
-                              <th data-name="Leave_startdate" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
+                              <th data-name="Leave_startdate" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;" [appSort]="leave_Requests" data-order="desc" data-name="Start_Date">
+                                <i class="fas fa-sort"></i>
                                 Start date
                               </th>
-                              <th data-name="Leave_enddate" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
+                              <th data-name="Leave_enddate" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" [appSort]="leave_Requests" data-order="desc" data-name="End_Date">
+                                <i class="fas fa-sort"></i>
                                 End date
                               </th>
-                              <th data-name="Leave_Duration" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
+                              <th data-name="Leave_Duration" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;" [appSort]="leave_Requests" data-order="desc" data-name="Days_Count" >
+                                <i class="fas fa-sort"></i>
                                 Duration
                               </th>
                               <th data-name="Emp_Comments" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
@@ -960,19 +898,29 @@
                               <th data-name="Leave_Name" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
                                 Leave
                               </th>
-                              <th data-name="Leave_startdate" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
+                              <th data-name="Leave_startdate" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;" [appSort]="_newNotificationLeave" data-order="desc" data-name="Start_Date">
+                                <i class="fas fa-sort"></i>
                                 Start date
                               </th>
-                              <th data-name="Leave_enddate" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
+                              <th data-name="Leave_enddate" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" [appSort]="_newNotificationLeave" data-order="desc" data-name="End_Date">
+                                <i class="fas fa-sort"></i>
                                 End date
                               </th>
                               <th data-name="Leave_Status" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
                                 Status
                               </th>
-                              <th data-name="Response_From" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;">
+                              <th data-name="Response_From" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;" [appSort]="_newNotificationLeave" data-order="desc" data-name="Emp_Name"
+                              (click)="sortLeavesByEmpName()">
+                              <a [hidden]="Z2A2" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
+                                <i class="fas fa-sort-alpha-up"></i>
+                              </a>
+                              <a [hidden]="A2Z2" class="mr-2" data-toggle="kt-tooltip" title="Click to sort">
+                                <i class="fa fa-sort-alpha-down-alt"></i>
+                              </a>
                                 Response From
                               </th>
-                              <th data-name="Response_Received_on" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
+                              <th data-name="Response_Received_on" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" [appSort]="_newNotificationLeave" data-order="desc" data-name="ReqDateFormatted">
+                                <i class="fas fa-sort"></i>
                                 Received on
                               </th>
                               <th data-name="Emp_Comments" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1">
@@ -1056,11 +1004,6 @@
 
                  </div>
                 <!--new leave aprv list end-->
-
-
-
-            
-
 
               </div>
             </div>
@@ -1656,7 +1599,7 @@
                                                     'text-info mb-0':item.Req_Type=='New Project' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
                                                     || item.Req_Type=='ToDo Achieved',
                                                     'text-danger mb-0':item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
-                                                    || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive'
+                                                    || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive' || item.Req_Type=='Project Cancel Reject'
                                                     }" data-toggle="tooltip" title="Request type">
                           {{item.Req_Type=="New Project"?"New approval":item.Req_Type}}
                         </h6>
@@ -2627,7 +2570,7 @@
                                                     'text-info mb-0':item.Req_Type=='New Project' ||  item.Req_Type=='Information' || item.Req_Type=='Deadline Extend'
                                                     || item.Req_Type=='ToDo Achieved',
                                                     'text-danger mb-0':item.Req_Type=='New Project Reject Release' ||  item.Req_Type=='Project Hold' || item.Req_Type=='Task-Reject' || item.Req_Type =='Not Achieved'
-                                                    || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive'
+                                                    || item.Req_Type=='Project Complete Rejected' || item.Req_Type=='New Project Rejected' || item.Req_Type=='Standardtask Enactive' || item.Req_Type=='Project Cancel Reject'
                                                     }" data-toggle="tooltip" title="Request type">
                           {{item.Req_Type=="New Project"?"New approval":item.Req_Type}}
                         </h6>

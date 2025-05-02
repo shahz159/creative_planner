@@ -224,6 +224,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.objProjectDto = new ProjectDetailsDTO();
     this.objPortfolioDto = new PortfolioDTO();
     this.approvalObj = new ApprovalDTO();
+    this._calenderDto = new CalenderDTO();
   }
 
 
@@ -275,7 +276,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.timearrays();
     this.getRejectType();
     this.getusermeetings();
-    // this.GetProjectAndsubtashDrpforCalender()
+    this.GetProjectAndsubtashDrpforCalender();   
 
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     this.disablePreviousDate.setHours(0,0,0,0);
@@ -6274,7 +6275,6 @@ Task_type(value:number){
   this._PopupConfirmedValue = 1;
   // this.MinLastNameLength = true;
   this._subname = false;
-  this._calenderDto = new CalenderDTO();
   this.BlockNameProject1 = [];
   this._lstMultipleFiales = [];
   this._labelName = "Schedule Date :";
@@ -6585,7 +6585,6 @@ Task_type(value:number){
 
   subtashDrpLoading:boolean = false
   GetProjectAndsubtashDrpforCalender() {
-
     this.CalenderService.GetCalenderProjectandsubList(this._calenderDto).subscribe
       ((data) => {
 
@@ -12059,6 +12058,7 @@ getca_Dropdowns(){
     //all portfolios list
     this.service.GetPortfoliosBy_ProjectId(null).subscribe((data) => {
       this._portfoliosList2 = data as [];
+      console.log('_portfoliosList2:',this._portfoliosList2);
     });
 }
 
@@ -12090,6 +12090,133 @@ expandRemarks(id:string){
 }
 
 
+
+// link portfolios to nextversion project. (popup modal selection dialog)
+
+filtered_result:any=[];
+choosed_items:any=[];
+is_filteredon:boolean=false;
+basedon_filter:any={};
+
+linkPortfoliosToNextversion(){
+  document.getElementById("nextVersion-portfoliolink-backdrop").style.display = "block";
+  document.getElementById("nextVersion-portfoliolink-modal").style.display = "block";
+  this.onAprvlModalInputSearch(''); 
+  const searchField:any=document.querySelector(`#nextVersion-portfoliolink-modal #NextVersionPortfolioLink`);
+  if(searchField)searchField.focus();
+}
+
+closeAprvl_multiselect(){
+  this.is_filteredon=false;
+  this.basedon_filter.byuser=null;
+  this.basedon_filter.bycompany=null;    // clear filter applied.
+  this.close_aprvModal_filter();  // close filter dropdown 
+  document.getElementById("nextVersion-portfoliolink-backdrop").style.display = "none";
+  document.getElementById("nextVersion-portfoliolink-modal").style.display = "none";
+  this.choosed_items=[];   // clear selections.
+  this.filtered_result=[];             // clear filtered result.
+}
+
+onPortfolioItemChoosed(choosed,choosedItem){
+  if(choosed){
+    this.choosed_items.push(choosedItem);
+  }
+  else{
+    const i=this.choosed_items.findIndex(item=>(item===choosedItem));
+    if(i>-1)
+    this.choosed_items.splice(i,1);
+  }
+}
+
+onAprvlModalInputSearch(inputText:any){   
+
+  let keyname;
+  let arrtype;
+  let selectedinto;
+  let property_name;
+  
+  let _Emp;
+  if(this.is_filteredon){
+    _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedon_filter.byuser);
+  }
+
+     keyname='Portfolio_Name';
+     arrtype=this._portfoliosList2;  //unlinked portfolios list
+     selectedinto='ngDropdwonPort2';
+     property_name='Portfolio_ID';
+  
+   const result=arrtype.filter(item=>{  
+    let nameMatched:boolean=false;
+    let filterMatched:boolean=false;
+
+
+// by search text
+    const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
+    if(unselected)
+    nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim());
+
+// by filter
+   if(nameMatched&&this.is_filteredon){
+       // 'item' act as a portfolio object here
+       const x=(item.Emp_Comp_No==this.basedon_filter.bycompany||!this.basedon_filter.bycompany);
+       const y=(item.Created_By==this.basedon_filter.byuser||!this.basedon_filter.byuser);
+       const z=x&&y;
+       const isSelected:boolean=this.ngDropdwonPort2&&this.ngDropdwonPort2.includes(item.Portfolio_ID);
+       filterMatched=isSelected?false:z;
+    }
+   
+    return nameMatched&&(this.is_filteredon?filterMatched:true);
+  });
+
+  this.filtered_result=result;
+
+  console.log(this.filtered_result,'FilteredAttendees')
+}
+
+keepModalItemsChoosed(){
+  if (!this.ngDropdwonPort2)   // if ngDropdwonPort2 is null,undefined,''
+  this.ngDropdwonPort2 = [];
+
+  this.ngDropdwonPort2=[...this.ngDropdwonPort2,...this.choosed_items];  // array of portfolio ids.
+  this.closeAprvl_multiselect();
+}
+
+discardModalChoosedItem(item:string){
+  const i=this.ngDropdwonPort2.findIndex(ptf=>ptf==item);
+  if(i>-1)
+  this.ngDropdwonPort2.splice(i,1);
+}
+
+aprvModal_filter() {
+  document.getElementById("nextVproject-filter").classList.add("show");
+  document.getElementById("nextVfilter-icon").classList.add("active");
+}
+close_aprvModal_filter() {
+  document.getElementById("nextVproject-filter").classList.remove("show");
+  document.getElementById("nextVfilter-icon").classList.remove("active");
+}
+
+clearAprvModalFiltered(){
+  this.basedon_filter.byuser=null;
+  this.basedon_filter.bycompany=null;
+  this.onAprvlModalInputSearch(''); 
+  this.is_filteredon=false;
+}
+
+onAprvl_PortfolioFilter(){
+  const fresult=this._portfoliosList2.filter((prtf:any)=>{
+       const x=(prtf.Emp_Comp_No==this.basedon_filter.bycompany||!this.basedon_filter.bycompany);
+       const y=(prtf.Created_By==this.basedon_filter.byuser||!this.basedon_filter.byuser);
+       const z=x&&y;
+       const isSelected:boolean=this.ngDropdwonPort2&&this.ngDropdwonPort2.includes(prtf.portfolio_id);
+       return isSelected?false:z;
+  });
+  this.filtered_result=fresult;
+  this.is_filteredon=true;
+}
+
+
+// link portfolios to nextversion project. (popup modal selection dialog)
 
 
 // conditional accept functionality end
