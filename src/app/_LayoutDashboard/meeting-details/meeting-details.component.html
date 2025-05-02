@@ -2892,7 +2892,7 @@
                                         </div>
 
                                         <ng-container *ngIf="(Agendas_List[currentAgendaView] && Meetingstatuscom=='Completed')">
-                                            <div class="Kt-agenda-done"  *ngIf="Agendas_List[currentAgendaView].Status==1 "> Completed </div>
+                                            <div class="Kt-agenda-done"  *ngIf="Agendas_List[currentAgendaView].Status==1" > Completed </div>
                                         </ng-container>
                                         <div class="kt-btn-notes-div" >
                                             <div *ngIf="currentAgendaView+1>0" class="kt-project-notes kt-attendees" (click)="View_Attendees_Notes()">
@@ -2978,79 +2978,91 @@
                                     </div> -->
 
                                     <!-- <hr class="dotted"> -->
-                                    <div class="kt-meeting-details-wrapper">
-                                        <div class="kt-meeting-left-sec kt-minimize">
-                                            <div class="kt-meeting-left-ul">
+                                    <div class="kt-meeting-details-wrapper" >
+                                        <div class="kt-meeting-left-sec kt-minimize" *ngIf="Agendas_List[currentAgendaView].Status==null || Agendas_List[currentAgendaView].Status==0">
+                                            <div class="kt-meeting-left-ul" >
                                                 <div class="kt-meeting-left-li">
                                                     <div class="kt-meeting-left-li-head">
                                                         <div class="kt-meeting-left-li-head-icon">
-                                                            <img src="./assets/images/Image (4).jfif" width="14px" height="16px" class="black-white">
-                                                            <span class="kt-meeting-left-li-head-count">{{_MemosSubjectList.length}}</span>
-                                                        </div>
-                                                        
+
+                                                            
+                                                                <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject!=undefined">
+                                                                <img src="./assets/images/Image (4).jfif" height="23" width="21px"  matTooltip="View or link SMail">
+                
+                                                                </ng-container >
+                                                                <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
+                                                                <img  src="./assets/images/Image (4).jfif" height="23" width="21px" matTooltip="Not linked" class="black-white ng-star-inserted">
+                                                                </ng-container>
+                
+                                                            <!-- <img src="./assets/images/Image (4).jfif" width="14px" height="16px" class="black-white"> -->
+                                                            <span class="kt-meeting-left-li-head-count">{{smailcount}}</span>
+                                                        </div>    
                                                         <div class="kt-meeting-left-li-head-label">SMail</div>
+                                                        <div class="kt-meeting-left-add" (click)="addNewDMS()">
+                                                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path></g></svg>
+                                                        </div>
                                                     </div>
-                                                    <div class="kt-meeting-left-li-group">
+                                                    <div class="kt-meeting-left-li-group" *ngIf="_MemosSubjectList&&_MemosSubjectList[0].MailId!=0">
                                                         <div class="kt-meeting-left-li-control">
                                                             <div class="kt-meeting-left-li-control-item" *ngFor="let memo of _MemosSubjectList; let i=index">
-                                                                <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.DisplayName}}</a>
+                                                                <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}} - {{memo.DisplayName}}</a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="kt-meeting-left-li">
                                                     <div class="kt-meeting-left-li-head">
-                                                        <div class="kt-meeting-left-li-head-icon">
+                                                        <div class="kt-meeting-left-li-head-icon" [ngClass]="{'active':totalportfolios}">
                                                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8 6.00067L21 6.00139M8 12.0007L21 12.0015M8 18.0007L21 18.0015M3.5 6H3.51M3.5 12H3.51M3.5 18H3.51M4 6C4 6.27614 3.77614 6.5 3.5 6.5C3.22386 6.5 3 6.27614 3 6C3 5.72386 3.22386 5.5 3.5 5.5C3.77614 5.5 4 5.72386 4 6ZM4 12C4 12.2761 3.77614 12.5 3.5 12.5C3.22386 12.5 3 12.2761 3 12C3 11.7239 3.22386 11.5 3.5 11.5C3.77614 11.5 4 11.7239 4 12ZM4 18C4 18.2761 3.77614 18.5 3.5 18.5C3.22386 18.5 3 18.2761 3 18C3 17.7239 3.22386 17.5 3.5 17.5C3.77614 17.5 4 17.7239 4 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                             <span class="kt-meeting-left-li-head-count">{{portfolio_Scheduledjson.length}}</span>
                                                         </div>
                                                         <div class="kt-meeting-left-li-head-label">Portfolio</div>
-                                                        <div class="kt-meeting-left-add">
+                                                        <div class="kt-meeting-left-add "  (click)="AddPortfolio()">
                                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path></g></svg>
                                                         </div>
                                                     </div>
                                                     <div class="kt-meeting-left-li-group">
                                                         <div class="kt-meeting-left-li-control">
                                                             <div class="kt-meeting-left-li-control-item" *ngFor="let data of portfolio_Scheduledjson; let i=index">
-                                                                <a href="javascript:void(0)" (click)="OnCardClick(data.numberval)"> {{data.Portfolio_Name}}</a>
+                                                                <a href="javascript:void(0)" (click)="OnCardClick(data.numberval)"> {{data.Portfolio_Name}} - {{data.Portfolio_owner}}</a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="kt-meeting-left-li">
                                                     <div class="kt-meeting-left-li-head">
-                                                        <div class="kt-meeting-left-li-head-icon">
+                                                        <div class="kt-meeting-left-li-head-icon" [ngClass]="{'active-project':totalproject}" >
                                                             <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="m 13,2.15688 0,9.68624 C 13,12.49386 12.491071,13 11.842857,13 L 2.1571429,13 C 1.5169643,12.99732 1,12.49922 1,11.84044 L 1,2.15688 C 1,1.51149 1.5035714,1 2.1571429,1 L 11.845536,1 C 12.488393,1 13,1.50346 13,2.15688 Z m -0.999107,9.68356 0,-9.68356 c 0,-0.0803 -0.06964,-0.15532 -0.155357,-0.15532 l -0.249107,0 L 8.6419643,3.99933 7,2.66302 5.3607143,3.99933 2.40625,1.99888 l -0.2491071,0 c -0.085714,0 -0.1553572,0.075 -0.1553572,0.15533 l 0,9.68623 c 0,0.0803 0.069643,0.15532 0.1553572,0.15532 l 9.6883931,0 c 0.08571,0.003 0.155357,-0.0723 0.155357,-0.15532 z m -6.9776787,-6.71636 0,0.99085 -1.96875,0 0,-0.99085 1.96875,0 z m 0,1.99241 0,0.99889 -1.96875,0 0,-0.99889 1.96875,0 z m 0.2973214,-3.94465 1.4464286,-1.17028 -3.1741072,0 1.7276786,1.17028 z m 5.6250003,1.95224 0,0.99085 -5.2500003,0 0,-0.99085 5.2500003,0 z m 0,1.99241 0,0.99889 -5.2500003,0 0,-0.99889 5.2500003,0 z M 8.6794643,3.17184 10.407143,2.00156 l -3.1714287,0 1.44375,1.17028 z m 2.2660717,5.94242 0,0.99888 -2.6625003,0 0,-0.99888 2.6625003,0 z"></path></g></svg>
                                                             <span class="kt-meeting-left-li-head-count">{{Project_code.length}}</span>
                                                         </div>
                                                         <div class="kt-meeting-left-li-head-label">Projects</div>
-                                                        <div class="kt-meeting-left-add">
+                                                        <div class="kt-meeting-left-add" (click)="AddProjects()">
                                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path></g></svg>
                                                         </div>
                                                     </div>
                                                     <div class="kt-meeting-left-li-group">
                                                         <div class="kt-meeting-left-li-control">
                                                             <div class="kt-meeting-left-li-control-item" *ngFor="let item of Project_code; let i=index">
-                                                                <a href="javascript:void(0)" (click)="moreDetails(item.stringval)">{{item.Project_Name}}</a>
+                                                                <a href="javascript:void(0)" (click)="moreDetails(item.stringval)">{{item.Project_Name}} - {{item.TM_DisplayName}}</a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="kt-meeting-left-li">
                                                     <div class="kt-meeting-left-li-head">
-                                                        <div class="kt-meeting-left-li-head-icon">
+                                                        <div class="kt-meeting-left-li-head-icon" [ngClass]="{'active':_TotalAttachment}">
                                                             <svg height="64px" width="64px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:currentColor;} </style> <g> <path class="st0" d="M454.821,253.582L273.256,435.14c-11.697,11.697-25.124,20.411-39.484,26.235 c-21.529,8.729-45.165,10.928-67.755,6.55c-22.597-4.378-44.054-15.25-61.597-32.784c-11.69-11.69-20.396-25.118-26.227-39.484 c-8.729-21.529-10.929-45.165-6.55-67.748c4.386-22.597,15.25-44.055,32.778-61.596l203.13-203.13 c7.141-7.134,15.299-12.43,24.035-15.969c13.1-5.318,27.516-6.656,41.263-3.994c13.769,2.677,26.798,9.27,37.498,19.963 c7.133,7.134,12.423,15.292,15.968,24.035c5.318,13.092,6.657,27.502,3.987,41.264c-2.67,13.762-9.262,26.783-19.955,37.498 L213.261,363.064c-2.534,2.528-5.375,4.364-8.436,5.61c-4.571,1.851-9.661,2.335-14.495,1.396 c-4.848-0.954-9.355-3.225-13.15-7.006c-2.534-2.534-4.364-5.368-5.603-8.429c-1.865-4.571-2.342-9.668-1.402-14.495 c0.947-4.841,3.225-9.355,7.005-13.149l175.521-175.528l-29.616-29.617l-175.528,175.52c-6.536,6.536-11.505,14.182-14.801,22.313 c-4.941,12.195-6.166,25.473-3.702,38.202c2.449,12.73,8.686,24.989,18.503,34.799c6.543,6.55,14.182,11.519,22.305,14.809 c12.202,4.948,25.473,6.165,38.21,3.702c12.722-2.449,24.989-8.678,34.806-18.511L439.97,195.602 c11.142-11.149,19.571-24.113,25.167-37.917c8.394-20.717,10.48-43.314,6.294-64.971c-4.179-21.643-14.73-42.432-31.46-59.155 c-11.149-11.142-24.114-19.571-37.918-25.166c-20.717-8.401-43.314-10.48-64.971-6.301c-21.643,4.186-42.431,14.737-59.155,31.468 L74.803,236.695c-15.713,15.691-27.552,33.931-35.426,53.352c-11.817,29.154-14.765,60.97-8.863,91.462 c5.888,30.478,20.717,59.696,44.29,83.254c15.698,15.713,33.931,27.552,53.36,35.426c29.146,11.811,60.97,14.758,91.455,8.863 c30.478-5.895,59.696-20.717,83.254-44.29l181.566-181.564L454.821,253.582z"></path> </g> </g></svg>
                                                             <span class="kt-meeting-left-li-head-count">{{Attachments_ary.length}}</span>
                                                         </div>
                                                         <div class="kt-meeting-left-li-head-label">Attachments</div>
-                                                        <div class="kt-meeting-left-add">
+                                                        <div class="kt-meeting-left-add" (click)="Attachment_views()">
                                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path></g></svg>
                                                         </div>
                                                     </div>
                                                         <div class="kt-meeting-left-li-group">
                                                             <div class="kt-meeting-left-li-control" *ngFor="let item of Attachments_ary; let i=index">
                                                                 <div class="kt-meeting-left-li-control-item" (click)="LoadDocument(item.file_id,true,item.File_Name&&item.File_Name,item.url,item.File_type,item.Created_by)" >
-                                                                    <a href="javascript:void(0)" >{{item.File_Name}}</a>
+                                                                    <a href="javascript:void(0)" >{{item.File_Name}} - {{item.Created_by}}</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -3307,6 +3319,14 @@
             </div>
         </div>
 
+        <div class="d-flex-center " *ngIf="Agendas_List[currentAgendaView].Status==1 && AllAttendees_notes.length==0">
+            <div>
+                <img src="./assets/images/Document Type.png" width="268" height="256" class="portfolioNot_Found" />
+                <div class="bnk-txt">
+                    <h2 class="blank-txt text-center pfl-img">No notes found</h2>
+                </div>
+            </div>
+        </div>  
         <!--   View All Team members notes End  -->
 
 

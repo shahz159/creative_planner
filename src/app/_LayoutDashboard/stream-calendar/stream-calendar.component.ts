@@ -4976,8 +4976,7 @@ RecurrValueMonthly:boolean=false;
       }
 
 
-    if (
-      this.Title_Name &&
+    if (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ) &&
       this.Startts &&
       this.Endtms && this.isValidURL &&
       this.MinLastNameLength

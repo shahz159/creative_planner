@@ -621,7 +621,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
       this.statusOneCount = this.Agendas_List.filter(values=>values.Status === "1").length;
 
-      console.log(this.statusOneCount,'statusOneCount')
+    
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
       this.totalUser_Scheduledjson=this.User_Scheduledjson.length;
       this.user_linkedOnMtg=this.User_Scheduledjson?this.User_Scheduledjson.map(user => user.stringval):[];
@@ -2615,6 +2615,8 @@ export class MeetingDetailsComponent implements OnInit {
     if (this.meetingStarted == true || this.Meetingstatuscom == 'Completed') {
       this.AgendaId = item.AgendaId
       this.currentAgendaView = index
+
+      console.log(this.Agendas_List,'statusOneCount',this.currentAgendaView)
       this.GetAssigned_SubtaskProjects()
     } else if (this.Meetingstatuscom != 'Completed' && this.unnecessnotification==true ) { 
       this.notifyService.showInfo("The meeting hasn't started yet", "")
@@ -4469,7 +4471,7 @@ onFileChange(event) {
 
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
           // console.log(this.showAttendeeNotify,'showAttendeeNotify')
-          console.log(this.showAttendeeNotify,'showAttendeeNotify')
+          // console.log(this.showAttendeeNotify,'showAttendeeNotify')
 
           if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
          
@@ -6813,8 +6815,7 @@ addstarttime(){
     this.isValidURL = /^(https?:\/\/)/.test(this.Link_Details);
     }
 
-    if (
-      this.Title_Name &&
+    if (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ) &&
       this.Startts &&
       this.Endtms &&
       this.MinLastNameLength
