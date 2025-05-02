@@ -1509,7 +1509,7 @@ GetProjectAndsubtashDrpforCalender() {
         this.requestDetails = data as [];
         console.log(this.requestDetails, "approval")
         if (this.requestDetails.length > 0) {
-          this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
+          this.approvalEmpId = (this.requestDetails[0]['Emp_no']).trim();
           this.requestType = (this.requestDetails[0]['Request_type']);
           this.forwardType = (this.requestDetails[0]['ForwardType']);
           this.requestDate = (this.requestDetails[0]['Request_date']);
@@ -2305,13 +2305,25 @@ GetRacisPeople(){
     (data)=>{ 
       this.Project_List=JSON.parse(data[0]['RacisList']);   console.log('Project_List variable :',this.Project_List);
       this.uniqueName_List=new Set(this.Project_List.map(record=>record.RACIS))
-      this.uniqueName_array=[...this.uniqueName_List]
-      this.newArray=this.uniqueName_array.slice(3).map(item=>" "+item+" ")
-      this.three_Records=this.uniqueName_array.slice(0,3)
+      this.uniqueName_array=[...this.uniqueName_List];
+      
+      this.newArray=this.uniqueName_array.slice(3).map(item=>" "+item+" ");
+      if (this.uniqueName_array.length >= 3) {
+        this.three_Records = this.uniqueName_array.slice(0, 3);
+        this.firstRecord = this.three_Records[0][0];
+        this.secondRecord = this.three_Records[1][0];
+        this.thirdRecord = this.three_Records[2][0];
+      } else {
+        this.three_Records = this.uniqueName_array;
+        this.firstRecord = this.three_Records[0]?.[0] || '';
+        this.secondRecord = this.three_Records[1]?.[0] || '';
+        this.thirdRecord = this.three_Records[2]?.[0] || '';
+      }
+      // this.three_Records=this.uniqueName_array.slice(0,3)
 
-      this.firstRecord=this.three_Records[0][0]
-      this.secondRecord=this.three_Records[1][0]
-      this.thirdRecord=this.three_Records[2][0]
+      // this.firstRecord=this.three_Records[0][0]
+      // this.secondRecord=this.three_Records[1][0]
+      // this.thirdRecord=this.three_Records[2][0]
       console.log(this.thirdRecord,'==============>')
 
 
