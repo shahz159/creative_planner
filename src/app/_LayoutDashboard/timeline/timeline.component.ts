@@ -906,7 +906,6 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
         this.a_loading=true;
       }
 
-
       this.service.NewSubTaskDetailsService(prjcode).subscribe((res:any)=>{
 
                  console.log("|||=>",res[0].ProjectStates_Json);
@@ -915,7 +914,7 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
                   this.p_details=JSON.parse(res[0].ProjectStates_Json)[0];
                   this.p_details.project_type=JSON.parse(res[0].ProjectName_Json)[0].Project_Type;
                   this.projectMoreDetailsService.getProjectTimeLine(prjcode, '1', this.Current_user_ID).subscribe((res: any) => {
-
+                    debugger
                       const tlTotalHrs:number = +JSON.parse(res[0].Totalhours);
                       const remainingHrs:number=+((this.p_details.AllocatedHours-tlTotalHrs).toFixed(1));
                       this.p_details={
@@ -925,6 +924,32 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
                         extraHours:remainingHrs<0?(Math.abs(remainingHrs)):0
                       };
                       this.p_loading=false;     console.log('p_loading:',this.p_details);
+
+                   
+                   
+                    //when standard or routine (daily submission) type projects is selected calculate "remainingSRTime" also.   
+                    if((this.p_details.project_type=='Standard Tasks'||this.p_details.project_type=='Routine Tasks')&&this.p_details.Submissiontype=='Daily'){
+                      const h=Number.parseInt(this.p_details.StandardAllocatedHours.split(':')[0]);
+                      const m=Number.parseInt(this.p_details.StandardAllocatedHours.split(':')[1]);
+                      const pmax_alhr=h+(m/60);   // selected standard/routine project's planned allocated hrs value.  (daily max hrs)
+                     
+                      const hrSpendOnPrj=this.tmReportArr.reduce((sum,item)=>{    debugger
+                        if(item.project_code==this.master_code){
+                           const h=Number.parseInt(item.Duration.split(':')[0]);
+                           const m=Number.parseInt(item.Duration.split(':')[1]);
+                           const ralhr=h+(m/60);
+                           return sum+ralhr;
+                        }
+                        else 
+                          return sum;
+                      },0);
+
+                      this.remainingSRTime=(pmax_alhr-hrSpendOnPrj)*60;   console.log('SRTime:',this.remainingSRTime);
+                    }
+                    else{  this.remainingSRTime=0;  } 
+                    //
+
+
                   });
 
                  }
@@ -946,9 +971,15 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
                  }
       });
 
-
     }
 }
+
+
+
+
+
+
+
 
 
 
@@ -962,7 +993,9 @@ onTLSubmitBtnClick(){
  const invalidEndtime=(this.starttime&&this.endtime&&(  
  (this.project_type=='corporate'&&((this.endtime.value-this.starttime.value)/(1000*60))>this.remainingCorporateTime)||
  (this.project_type=='lunch'&&((this.endtime.value-this.starttime.value)/(1000*60))>this.remainingLunchTime)||
+ (this.project_type=='standard'&&this.p_details&&['Standard Tasks','Routine Tasks'].includes(this.p_details.project_type.trim())&&this.p_details.Submissiontype=='Daily'&&(((this.endtime.value-this.starttime.value)/(1000*60))>this.remainingSRTime))||
  (this.endtime.value<this.starttime.value)) );
+
 
  const lunchPersonalCorporate:boolean=['lunch','personal','corporate'].includes(this.project_type);
 
@@ -1422,6 +1455,35 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
             this.remainingCorporateTime=this.allocatedTimeForCorporate-totalCorporateInMins;
             }
             console.log('submitted timelines:',this.submittedTimelines,'last end time was:',this.lastEndtime);
+           //
+
+     
+
+           // recalculation of "remainingSRTime" is required as "tmReportArr" is changed.
+           // if standard or routine type (daily) project is found selected.
+           if(this.master_code&&this.p_details&&(this.p_details.project_type=='Standard Tasks'||this.p_details.project_type=='Routine Tasks')&&this.p_details.Submissiontype=='Daily')
+           {
+            const h=Number.parseInt(this.p_details.StandardAllocatedHours.split(':')[0]);
+            const m=Number.parseInt(this.p_details.StandardAllocatedHours.split(':')[1]);
+            const pmax_alhr=h+(m/60);   // selected standard/routine project's planned allocated hrs value.  (daily max hrs)
+           
+            const hrSpendOnPrj=this.tmReportArr.reduce((sum,item)=>{    
+              if(item.project_code==this.master_code){
+                 const h=Number.parseInt(item.Duration.split(':')[0]);
+                 const m=Number.parseInt(item.Duration.split(':')[1]);
+                 const ralhr=h+(m/60);
+                 return sum+ralhr;
+              }
+              else 
+                return sum;
+            },0);
+            this.remainingSRTime=(pmax_alhr-hrSpendOnPrj)*60;   console.log('SRTime:',this.remainingSRTime);
+           }
+           else{  this.remainingSRTime=0;  }
+         // "remainingSRTime" is used for std/routine type project validation context.    // THIS STEP IS EXECUTED HERE IS JUST TO UPDATE THE "remainingSRTime" variable value if std/routine(daily) type project is found selected.
+      
+
+
         }
 
       });
@@ -1591,6 +1653,7 @@ disabledCorporateOption:boolean=false;
 remainingCorporateTime:number=0;
 allocatedTimeForLunch:number=60;   // atmost 1 hour.   (in minutes)
 allocatedTimeForCorporate:number=60; // atmost 1 hour. (in minutes)
+remainingSRTime:number=0;   // "remainingSRTime" plays important role in standard/routine( daily type) projects timing submission.
 
 selectDateForTimeline(inputDate){     
   this.current_Date = moment(inputDate).format("MM/DD/YYYY");
