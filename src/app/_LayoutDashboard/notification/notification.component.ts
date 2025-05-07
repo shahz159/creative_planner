@@ -91,7 +91,6 @@ export class NotificationComponent implements OnInit {
    }
 
 
-
   ngOnInit(){
     this.router.navigate(["Notifications"]);
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -99,6 +98,7 @@ export class NotificationComponent implements OnInit {
     this.newNotificationLeave();     // fetch all leave responses.
     this.newNotificationLeaveRequests();  // fetch all leave requests.
     this.setPageContent('PROJECT APPROVALS');   // show projects approval by default on the page.
+    this.enableFirstTabSwitch=true;   // automatic switch to the very first tab which has content.
   }
 
 
@@ -128,6 +128,16 @@ export class NotificationComponent implements OnInit {
         this._totalProjectsCount = (data[0]['notificationcount']);
         this.WScount = (data[0]['WScount']);
         this.WRcount = (data[0]['WRcount']);
+      
+// automatic switch to very first tab which has content.
+        this.tabs_Count.projectApprovalCount=this.WScount;
+        this.tabs_Count.informationCount=this.WRcount;
+        if(this.enableFirstTabSwitch){   
+          this.switchToFirstAvailableTab();
+        }
+//         
+
+
         if(this._NotificationActivity){
             this.notilength = this._NotificationActivity.length;
             this._CurrentpageRecords = this._NotificationActivity.length;
@@ -544,6 +554,14 @@ export class NotificationComponent implements OnInit {
     this.service.GetEmployeeLeaveRequests(this.Current_user_ID).subscribe((data) => {
       console.log("leave data",data);
       this.leave_Requests = JSON.parse(data[0]['LeaveRequests_json']);
+
+//  automatic switch to very first tab which has content.
+      this.tabs_Count.leaveRequestsCount=this.leave_Requests.length;
+      if(this.enableFirstTabSwitch){ 
+        this.switchToFirstAvailableTab();
+      }
+//      
+
       this.notificationsLoading = false;
       // manually creating new property 
             this.leave_Requests.forEach((lvobj)=>{
@@ -575,6 +593,15 @@ export class NotificationComponent implements OnInit {
               ob.ReqDateFormatted=mobj.format('YYYY-MM-DDTHH:mm:ss');  // creating new property.
         });
         // manually formatting the Req_Date value into required date format
+      
+
+      // automatic switch to very first tab which has content.
+        this.tabs_Count.leaveResponsesCount=this._newNotificationLeave.length;
+        if(this.enableFirstTabSwitch){   
+          this.switchToFirstAvailableTab();
+        }
+      //
+
       }
     });
   }
@@ -813,6 +840,9 @@ export class NotificationComponent implements OnInit {
     this.service.GetViewAllDashboardnotifications(this.notificationDTO)
       .subscribe(data => {   debugger
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
+        this.WScount = (data[0]['WScount']);
+        this.WRcount = (data[0]['WRcount']);
+
         console.log( this._NotificationActivity," this._NotificationActivity")
         this._NotificationActivity.forEach((ob:any)=>{
           ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
@@ -1749,13 +1779,43 @@ sortLeavesByEmpName() {
 }
 
 
-
-
-
-
-
 // leave requests section table
 
 
+// automatic switch to very first tab section which has content.   start.
+
+enableFirstTabSwitch:boolean=false;   
+
+tabs_Count:{ projectApprovalCount:undefined|number, informationCount:undefined|number, leaveRequestsCount:undefined|number, leaveResponsesCount:undefined|number }={
+  projectApprovalCount:undefined,
+  informationCount:undefined,
+  leaveRequestsCount:undefined,
+  leaveResponsesCount:undefined
+};
+
+switchToFirstAvailableTab(){
+  const hasAllcounts=[this.tabs_Count.projectApprovalCount, this.tabs_Count.informationCount, this.tabs_Count.leaveRequestsCount, this.tabs_Count.leaveResponsesCount].every((e)=>e!==undefined);
+  if(hasAllcounts){
+   this.enableFirstTabSwitch=false;
+   const findex=[this.tabs_Count.projectApprovalCount,this.tabs_Count.informationCount,this.tabs_Count.leaveRequestsCount,this.tabs_Count.leaveResponsesCount].findIndex((_tbc)=>(_tbc&&_tbc>0));
+   if(findex>-1){
+
+    if(findex==0)
+      this.setPageContent('PROJECT APPROVALS');
+    else if(findex==1)
+      this.setPageContent('INFORMATION');
+    else if(findex==2)
+      this.setPageContent('LEAVE REQUESTS');
+    else if(findex==3)
+      this.setPageContent('LEAVE RESPONSES'); 
+
+   }
+
+  }
+}
+
+
+
+//  automatic switch to very first tab section which has content.   end.
 
 }

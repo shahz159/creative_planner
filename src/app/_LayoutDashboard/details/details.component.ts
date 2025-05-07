@@ -1028,6 +1028,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       if(['001','002','011'].includes(this.projectInfo.Project_Block)){
 
         const _deadlineextendlist=this.projectInfo['deadlineExtendlist'];
+        console.log('from backend deadlineextendlist:',_deadlineextendlist);
         if(_deadlineextendlist){
           var deadlineExtend=JSON.parse(_deadlineextendlist);
           this.deadlineExtendlist=Object.values(deadlineExtend);
@@ -3873,9 +3874,15 @@ actionCompleted(){
   this.isPrjNameValid=this.isValidString(this.ProjectName,3);
   this.isPrjDesValid=this.isValidString(this.ProjectDescription,5);
 
+// is project name duplicate 
+  if(this.ProjectName&&this.ProjectName.trim()&&this.ProjectName.trim()!=this.projectInfo.Project_Name.trim()){  
+    const _pnameresp:any=await this.createProjectService.NewGetProjectnameValidation(this.Current_user_ID,this.ProjectName.trim()).toPromise();
+    this.isPrjNameUsed=_pnameresp.message=='1'?true:false;
+   }
+  else 
+  this.isPrjNameUsed=false;
+//
 
-  const _pnameresp:any=await this.createProjectService.NewGetProjectnameValidation(this.Current_user_ID,this.ProjectName).toPromise();
-  this.isPrjNameUsed=_pnameresp.message=='1'?true:false;
 
 
 // for given new project start date, are there any actions starting earlier to such date?

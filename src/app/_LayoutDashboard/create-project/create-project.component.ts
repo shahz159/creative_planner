@@ -135,8 +135,8 @@ export class CreateProjectComponent implements OnInit {
   confirmBeforeRoute:boolean=false; // if true then confirmation appears when user tries to leave this create project page.
   ProjectDto:ProjectDetailsDTO|undefined;
   maxAllocHrsToProject:number=0;  // maximum allocatable hrs on the project user can give. (for standard and routine type projects only).
-  isStandardTaskCreatable:boolean=false;   // whether current user is allowed to create standard task or not.
-  isRoutineTaskCreatable:boolean=false;  // whether current user is allowed to create routine task or not.
+  isStandardTasksLimitExhausted:boolean=false;  // whether user has exhausted the limit of standard tasks hours.
+  isRoutineTasksLimitExhausted:boolean=false; // whether user has exhausted the limit of routine tasks hours.
 
   constructor(private router: Router,private location: Location,
     private createProjectService:CreateprojectService,
@@ -328,19 +328,20 @@ export class CreateProjectComponent implements OnInit {
 
 
          // determine whether current user can create standard task / routine task type projects or not.
-         let maxAllocHrsVal;
          if(this.Current_user_Info.Position=='Team Member'){
-           maxAllocHrsVal=this.perWeekAllocHrs*this.TEAM_MEMBER_ALLOC_RATIO;    //48*0.25=12 hrs maximum user can give to the new project.
+          this.maxAllocHrsByRole=this.perWeekAllocHrs*this.TEAM_MEMBER_ALLOC_RATIO;    //48*0.25=12 hrs maximum user can give to the new project.
          }
          else if(this.Current_user_Info.Position=='Dept. Head'){
-           maxAllocHrsVal=this.perWeekAllocHrs*this.DEPT_HEAD_ALLOC_RATIO;  
+          this.maxAllocHrsByRole=this.perWeekAllocHrs*this.DEPT_HEAD_ALLOC_RATIO;    //48*0.50=24 hrs maximum user can give to the new project.
          }
          else if(this.Current_user_Info.Position=='Company Head'){
-           maxAllocHrsVal=this.perWeekAllocHrs*this.COMPANY_HEAD_ALLOC_RATIO;  
+          this.maxAllocHrsByRole=this.perWeekAllocHrs*this.COMPANY_HEAD_ALLOC_RATIO;  //48*0.70=33.6 hrs maximum user can give to the new project
          }
         
-         this.isStandardTaskCreatable=this.Current_user_Info.Standard_Total_Hours<maxAllocHrsVal;
-         this.isRoutineTaskCreatable=this.Current_user_Info.Routine_Total_Hours<maxAllocHrsVal;
+     
+         this.isStandardTasksLimitExhausted=this.Current_user_Info.Standard_Total_Hours>=this.maxAllocHrsByRole;
+         this.isRoutineTasksLimitExhausted=this.Current_user_Info.Routine_Total_Hours>=this.maxAllocHrsByRole;
+
          // 
 
       }
@@ -1127,8 +1128,9 @@ contentType:any="";
     if((this.Prjtype&&this.PrjClient&&this.PrjCategory&&(this.PrjName&&this.isPrjNameValid==='VALID'&&this.PrjName.length<=100&&this.isPrjNameUsed==false)&&(this.PrjDes&&this.isPrjDesValid==='VALID'&&this.PrjDes.length<=500))&&
         (
           (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours?this.Allocated_Hours<=this.maxAllocation:true))||
-          (['011'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours&&this.Allocated_Hours<=this.maxAllocation)) ||
-          (['003','008'].includes(this.Prjtype)&&this.prjsubmission&&(this.Allocated_Hours&&this.isAllocHrsOverflow==false)&&(this.prjsubmission==6?this.Annual_date:true))
+          (this.Prjtype=='011'&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours&&this.Allocated_Hours<=this.maxAllocation)) ||
+          (this.Prjtype=='003'&&this.prjsubmission&&this.Allocated_Hours&&(this.prjsubmission==6?this.Annual_date:true))||
+          (this.Prjtype=='008'&&this.prjsubmission&&(this.Allocated_Hours&&(this.isAllocHrsOverflow==false))&&(this.prjsubmission==6?this.Annual_date:true))
         ) 
      ){
           // when all mandatory fields of step1 are provided.
@@ -1144,32 +1146,41 @@ contentType:any="";
           this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
           this.notProvided=false;
     }
-    else{
+    else{ 
       // when some mandatory fields are missing.
       this.notProvided=true;
 
 
-      // when allocated hrs input exceeds max allocatable hrs value. for routine & standard project
-      if(this.Prjtype&&['003','008'].includes(this.Prjtype)&&(this.Allocated_Hours&&this.isAllocHrsOverflow)){
-
-          const totalPrjsExisting=this.Prjtype=='003'?this.Current_user_Info.Standard_Count:this.Current_user_Info.Routine_Count;
-          const existingPrjsType=this.Prjtype=='003'?'Standard Tasks':'Routine Tasks';
-          const _consumedHrs=this.Prjtype=='003'?this.Current_user_Info.Standard_Total_Hours:this.Current_user_Info.Routine_Total_Hours;
-          const _allocatablehrs=this.formatHrsToHHMM(this.maxAllocHrsToProject);
+      //(Allocated hrs validation for Routine projects)  when allocated hrs input exceeds max allocatable hrs value. for routine project  
+      if(this.Prjtype&&['008'].includes(this.Prjtype)&&(this.Allocated_Hours&&this.isAllocHrsOverflow)){
+        const isCreatable=!this.isRoutineTasksLimitExhausted;
+        const totalPrjsExisting=this.Current_user_Info.Routine_Count;
+        const existingPrjsType='Routine Tasks';
+        const _consumedHrs=this.Current_user_Info.Routine_Total_Hours; 
+        const _allocatablehrs=this.formatHrsToHHMM(this.maxAllocHrsToProject);  
+         
+         
           
-
-    
            Swal.fire({
-                title:'Invalid Allocated Hours provided',
-                html:`<div style="text-align: justify;">
-                      <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
-                       <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs} to this project.</div>
+                   title:isCreatable?'Invalid Allocated Hours provided':`Cannot Create Routine Task`,
+                   html:isCreatable?
+                     `<div style="text-align: justify;">
+                        <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+                        <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs} to this project.</div>
+                      </div>`:
+                      `<div style="text-align: justify;">
+                      <ul style="padding-left: 18px;">
+                          <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
+                          <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
+                      </ul> 
+                      <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for ${existingPrjsType} Task projects. Please review your existing ones.</div>
                     </div>`,
-                showConfirmButton:true,
-                confirmButtonText:'Ok'
+                  showConfirmButton:true,
+                  confirmButtonText:'Ok'
            });
+
       }
-      //
+      //(Allocated hrs validation for Routine projects)
 
    }
 
@@ -2952,14 +2963,14 @@ changeprojecttype(){
 
   if(!(['001','002','011'].includes(this.prevPrjType)&&['001','002','011'].includes(this.Prjtype))){
 
-
+    //when moving from core or secondary or todo  ---> standard or routine. 
     if(['001','002','011'].includes(this.prevPrjType)&&['003','008'].includes(this.Prjtype)){
           this.prjsubmission=null;
           this.Allocated_Hours=null;
     }
 
 
-
+    //when moving from standard or routine ----> core or secondary or todo.
     if(['003','008'].includes(this.prevPrjType)&&['001','002','011'].includes(this.Prjtype)){
       this.Prjstartdate=null;
       this.Prjenddate=null;
@@ -3875,38 +3886,24 @@ COMPANY_HEAD_ALLOC_RATIO=0.70;  // 70% of 48hrs to the company head
 DEPT_HEAD_ALLOC_RATIO=0.50;    // 50% of 48hrs to the team head
 TEAM_MEMBER_ALLOC_RATIO=0.25;    //25% of 48hrs to the team member
 isAllocHrsOverflow:boolean=false;
+maxAllocHrsByRole:number=0;
 
-computeMaxAllocHrsToProject(){  debugger
-  this.maxAllocHrsToProject=0;  // clear old value if present.
+computeMaxAllocHrsToProject(){
 
-  let maxAllocHrsVal;
-  if(this.Current_user_Info.Position=='Team Member'){
-    maxAllocHrsVal=this.perWeekAllocHrs*this.TEAM_MEMBER_ALLOC_RATIO;    //48*0.25=12 hrs maximum user can give to the new project.
-  }
-  else if(this.Current_user_Info.Position=='Dept. Head'){
-    maxAllocHrsVal=this.perWeekAllocHrs*this.DEPT_HEAD_ALLOC_RATIO;  
-  }
-  else if(this.Current_user_Info.Position=='Company Head'){
-    maxAllocHrsVal=this.perWeekAllocHrs*this.COMPANY_HEAD_ALLOC_RATIO;  
-  }
+ this.maxAllocHrsToProject=0;  // clear old value if present.
+ if(this.Prjtype=='003'){
+  this.maxAllocHrsToProject=this.maxAllocHrsByRole-this.Current_user_Info.Standard_Total_Hours;
+ }
+ else if(this.Prjtype=='008'){
+  this.maxAllocHrsToProject=this.maxAllocHrsByRole-this.Current_user_Info.Routine_Total_Hours;
+ }
 
-
-  if(this.Prjtype=='008'&&this.Current_user_Info.Routine_Count>0) 
-  { // when user selected routine type + user already has some routine task type projects.
-    this.maxAllocHrsToProject=maxAllocHrsVal-this.Current_user_Info.Routine_Total_Hours;
-  }
-  else if(this.Prjtype=='003'&&this.Current_user_Info.Standard_Count>0){
-   // when user selected standard task type + user already has some standard task type projects.
-   this.maxAllocHrsToProject=maxAllocHrsVal-this.Current_user_Info.Standard_Total_Hours;
-  }
-  
-  
-  // after calculating max allocatable hrs value, if we found allocated hrs input present then verify it.
-   if(this.Allocated_Hours){
-     this.onAllocInputHrsChanged();
-   }
- //
-
+// after calculating max allocatable hrs value, if we found allocated hrs input present then verify it.
+this.isAllocHrsOverflow=false;
+ if(this.Allocated_Hours){
+  this.onAllocInputHrsChanged();
+}
+//
 }
 
 //time formatter useful utility method
@@ -3934,6 +3931,87 @@ onAllocInputHrsChanged(){
 }
 // whenever standard or routine type project's allocated input hrs changed.
 
+
+
+
+showSR_ProjectsStats(ptype:'003'|'008'){
+
+  const totalPrjsExisting=ptype=='003'?this.Current_user_Info.Standard_Count:this.Current_user_Info.Routine_Count;
+  const existingPrjsType=ptype=='003'?'Standard Tasks':'Routine Tasks';
+  const _consumedHrs=ptype=='003'?this.Current_user_Info.Standard_Total_Hours:this.Current_user_Info.Routine_Total_Hours;
+  const _allocatablehrs=this.formatHrsToHHMM(this.maxAllocHrsToProject);
+  const _percent=(_consumedHrs/this.maxAllocHrsByRole)*100;
+
+   if(ptype=='003')
+   {
+    const stdtasklimitExhausted=this.isStandardTasksLimitExhausted;
+    if(stdtasklimitExhausted){
+      Swal.fire({
+         title:'Warning',
+         html:`<div style="text-align: justify;">
+                      <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+                      <div style="font-size: 14px;color: orange;font-weight: 500;margin-top: 15px;">You've reached the limit for Standard Task projects.</div>
+              </div>
+              `,
+         showConfirmButton:true,
+         confirmButtonText:'Ok'      
+      });
+    }
+    else{
+      if(_percent>=80){
+        Swal.fire({
+          title:'Warning',
+          html:`<div style="text-align: justify;">
+                        <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+                        <div style="font-size: 14px;color: orange;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs} to this project.</div>
+                </div>
+                `,
+          showConfirmButton:true,
+          confirmButtonText:'Ok'      
+      }); 
+      }
+    }
+ 
+   }
+   else if(ptype=='008')
+   {
+    const isCreatable=!this.isRoutineTasksLimitExhausted;
+    if(isCreatable){
+      
+      if(_percent>=80){
+        Swal.fire({
+          title:'Warning',
+          html:`<div style="text-align: justify;">
+                        <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+                        <div style="font-size: 14px;color: orange;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs} to this project.</div>
+                </div>
+                `,
+          showConfirmButton:true,
+          confirmButtonText:'Ok'      
+      }); 
+      }
+
+    }
+    else{
+       
+        Swal.fire({
+          title:`Cannot Create Routine Task`,
+          html:`
+                <div style="text-align: justify;">
+                    <ul style="padding-left: 18px;">
+                        <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
+                        <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
+                    </ul> 
+                    <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for Standard Task projects. Please review your existing ones.</div>
+                </div>`,
+          showConfirmButton:true,
+          confirmButtonText:'Ok'      
+      });
+
+    } 
+
+   }
+}
 
 
 // standard, routine max allocatable hrs validation end.

@@ -2239,7 +2239,7 @@ this.nofilterResult=(result.length==0);
 
   }
 
-  OnCardClick(P_id: any, P_Name: string, CreatedName: string) {
+  OnCardClick(P_id: any, P_Name: string, CreatedName: string) {  
     sessionStorage.setItem('portfolioId', P_id);
     sessionStorage.setItem('portfolioname', P_Name);
     sessionStorage.setItem('PortfolioOwner', CreatedName);

@@ -7968,8 +7968,7 @@
                           <div class="card brdr-5 shadow-sm mb-2" *ngFor="let item of projectLinkedMemos; let i=index">
                               <div>
                                   <div data-type="inbox" class="kt-inbox__item position-relative py-2 mb-0 border-0 pl-1 pb-3">  
-                                    <!-- openUrl(item.Url)                        -->
-                                      <div class="kt-inbox__details" (click)="0">
+                                      <div class="kt-inbox__details" (click)="openUrl(item.Url)">
                                           <div class="kt-inbox__sender">
                                               <span class="kt-inbox__subject">
                                                   <a href="javascript:void(0)">{{item.Subject}} </a>
