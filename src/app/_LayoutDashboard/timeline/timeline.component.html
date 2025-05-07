@@ -17,9 +17,9 @@
                                 <a [ngClass]="Type==type2 ? 'dropdown-item active' : 'dropdown-item'"  (click)="timelineLog1(type2);  setFilterInfo('Date',undefined); ">{{type2}}</a>
                             </div>
                         </div>
-                        <!-- <h3 class="kt-portlet__head-title header-tab-btn cursor-pointer" style="padding: 8px 8px 8px 8px;"  [ngClass]="{'active':Type==type3}" >
+                        <h3 class="kt-portlet__head-title header-tab-btn cursor-pointer" style="padding: 8px 8px 8px 8px;"  [ngClass]="{'active':Type==type3}" >
                             <a (click)="openDarInbox()">{{type3}}</a>
-                        </h3> -->
+                        </h3>
                     </div>
                     <div class="d-flex align-items-center">
                         <!-- <div class="d-flex align-items-center mr-2">
@@ -1056,80 +1056,84 @@
                            </svg>
                         </div>
                         <div class="add-timeline-item-group">
-                            <div class="form-group w-100 mb-0">
-                            <ng-select [disabled]="loadingTimelineProjects" required #project="ngModel" name="project" [placeholder]="loadingTimelineProjects?'Loading...':'Select Project'" id="projName" [ngClass]="{'error-vd': (fieldRequired&&!master_code)}"  
+                          <div class="form-group w-100 mb-0">
+                            <ng-select [disabled]="loadingTimelineProjects" required #project="ngModel" name="project" [placeholder]="loadingTimelineProjects?'Loading...':'Select Project'" id="projName"
+                             [ngClass]="{'error-vd': (fieldRequired&&!master_code)||(master_code&&p_loading==false&&p_details&&['Standard Tasks','Routine Tasks'].includes(p_details.project_type.trim())&&p_details.Submissiontype=='Daily'&&remainingSRTime<=0) }"  
                             [items]="projectList" bindLabel="Project_Name" bindValue="Project_Code" groupBy="possession"  [(ngModel)]="master_code" (change)="getTimelineActions(); getPADetails(master_code,'PROJECT'); "
                              [searchable]="true"></ng-select> 
-                        <div  class="txtm-cus mt-2 ml-1 d-flex  align-items-center flex-wrap gap-1" *ngIf="master_code&&p_details&&p_loading==false">
-                            <div class="d-flex gap-1 flex-grow-1 flex-wrap">
-                                <ng-container *ngIf="['Core Tasks','Secondary Tasks','To do List'].includes(p_details.project_type); else stdrout_details">
+                            <span style="color:red" *ngIf="master_code&&p_loading==false&&p_details&&['Standard Tasks','Routine Tasks'].includes(p_details.project_type.trim())&&p_details.Submissiontype=='Daily'&&remainingSRTime<=0">
+                            You’ve already used the maximum hours for this project. No additional hours can be allocated.
+                            </span>    
+                            <div  class="txtm-cus mt-2 ml-1 d-flex  align-items-center flex-wrap gap-1" *ngIf="master_code&&p_details&&p_loading==false">
+                                <div class="d-flex gap-1 flex-grow-1 flex-wrap">
+                                    <ng-container *ngIf="['Core Tasks','Secondary Tasks','To do List'].includes(p_details.project_type); else stdrout_details">
+                                        <div class="info-chip">
+                                                <div class="info-chip-label text-nowrap">Achieved hours :</div>
+                                                <div class="info-chip-value">
+                                                    <span  class="text-nowrap" title="used hours" [ngClass]="{'text-red':p_details.usedHours==0}">{{p_details.usedHours>0?(p_details.usedHours+' hrs'):'0'}}</span>
+                                                    <span class="hrs-by">/</span>
+                                                    <span class="text-nowrap" title="allocated hours">{{p_details.AllocatedHours>0?p_details.AllocatedHours:0}} hrs</span>
+                                                </div>
+                                        </div>
+
+                                        <div *ngIf="!(p_details.extraHours>0)" class="info-chip">
+                                                <div class="info-chip-label text-nowrap">Remaining hours :</div>
+                                                <div class="info-chip-value text-nowrap" [ngClass]="{'text-red':p_details.remainingHours==0}">
+                                                    {{p_details.remainingHours>0?(p_details.remainingHours+' hrs'):'0'}}
+                                                </div>
+                                        </div>
+
+                                        <div *ngIf="p_details.extraHours>0" class="info-chip">
+                                            <div class="info-chip-label text-nowrap">Overutilized by :</div>
+                                            <div class="info-chip-value text-nowrap">
+                                                {{p_details.extraHours}} hrs
+                                            </div>
+                                        </div>
+
+                                        <div class="info-chip">
+                                            <div class="info-chip-label text-nowrap">Deadline :</div>
+                                            <div class="info-chip-value text-nowrap" [ngClass]="{'text-red':p_details.Status=='Delay'}" [title]="p_details.Status=='Delay'?('Project is in delay by '+p_details.Delaydays+(p_details.Delaydays>1?' days.':'day.')):'project end date.'">
+                                                {{p_details.EndDate|date:'dd-MM-yyyy'}}
+                                            </div>
+                                        </div>
+                                </ng-container>
+                                <ng-template #stdrout_details>
+
                                     <div class="info-chip">
-                                            <div class="info-chip-label text-nowrap">Achieved hours :</div>
-                                            <div class="info-chip-value">
-                                                <span  class="text-nowrap" title="used hours" [ngClass]="{'text-red':p_details.usedHours==0}">{{p_details.usedHours>0?(p_details.usedHours+' hrs'):'0'}}</span>
-                                                <span class="hrs-by">/</span>
-                                                <span class="text-nowrap" title="allocated hours">{{p_details.AllocatedHours>0?p_details.AllocatedHours:0}} hrs</span>
-                                            </div>
+                                        <div class="info-chip-label text-nowrap">Achieved hours :</div>
+                                        <div class="info-chip-value">
+                                            <span class="text-nowrap" title="used hours" [ngClass]="{'text-red':p_details.usedHours==0}">{{p_details.usedHours>0?(p_details.usedHours+' hrs'):'0'}}</span>
+                                        </div>
                                     </div>
 
-                                    <div *ngIf="!(p_details.extraHours>0)" class="info-chip">
-                                            <div class="info-chip-label text-nowrap">Remaining hours :</div>
-                                            <div class="info-chip-value text-nowrap" [ngClass]="{'text-red':p_details.remainingHours==0}">
-                                                {{p_details.remainingHours>0?(p_details.remainingHours+' hrs'):'0'}}
-                                            </div>
-                                    </div>
 
-                                    <div *ngIf="p_details.extraHours>0" class="info-chip">
-                                        <div class="info-chip-label text-nowrap">Overutilized by :</div>
+                                    <div class="info-chip">
+                                        <div class="info-chip-label text-nowrap">Allocated hours :</div>
                                         <div class="info-chip-value text-nowrap">
-                                            {{p_details.extraHours}} hrs
+                                            {{p_details.StandardAllocatedHours}}
                                         </div>
                                     </div>
 
                                     <div class="info-chip">
-                                        <div class="info-chip-label text-nowrap">Deadline :</div>
-                                        <div class="info-chip-value text-nowrap" [ngClass]="{'text-red':p_details.Status=='Delay'}" [title]="p_details.Status=='Delay'?('Project is in delay by '+p_details.Delaydays+(p_details.Delaydays>1?' days.':'day.')):'project end date.'">
-                                            {{p_details.EndDate|date:'dd-MM-yyyy'}}
+                                        <div class="info-chip-label text-nowrap">Submission type :</div>
+                                        <div class="info-chip-value text-nowrap">
+                                            {{p_details.Submissiontype}}
                                         </div>
                                     </div>
-                               </ng-container>
-                               <ng-template #stdrout_details>
 
-                                <div class="info-chip">
-                                    <div class="info-chip-label text-nowrap">Achieved hours :</div>
-                                    <div class="info-chip-value">
-                                        <span class="text-nowrap" title="used hours" [ngClass]="{'text-red':p_details.usedHours==0}">{{p_details.usedHours>0?(p_details.usedHours+' hrs'):'0'}}</span>
+                                </ng-template>
+                                </div>
+
+                                <div (click)="newDetails(master_code)" class="info-chip info-chip-redirect-btn">
+                                    <div class="info-chip-label">
+                                    <svg stroke-width="0.00016" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="13px" width="13px" stroke="#383838"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>
+                                    View project
                                     </div>
                                 </div>
 
-
-                                <div class="info-chip">
-                                    <div class="info-chip-label text-nowrap">Allocated hours :</div>
-                                    <div class="info-chip-value text-nowrap">
-                                        {{p_details.StandardAllocatedHours}}
-                                    </div>
-                                </div>
-
-                                <div class="info-chip">
-                                    <div class="info-chip-label text-nowrap">Submission type :</div>
-                                    <div class="info-chip-value text-nowrap">
-                                        {{p_details.Submissiontype}}
-                                    </div>
-                                </div>
-
-                              </ng-template>
                             </div>
-
-                              <div (click)="newDetails(master_code)" class="info-chip info-chip-redirect-btn">
-                                <div class="info-chip-label">
-                                  <svg stroke-width="0.00016" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="13px" width="13px" stroke="#383838"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>
-                                  View project
-                                </div>
-                              </div>
-
-                        </div>
-                        <span style="color:red" *ngIf="(fieldRequired&&!master_code)" >Please select a project.</span>
-                            </div>
+                            <span style="color:red" *ngIf="(fieldRequired&&!master_code)" >Please select a project.</span>
+                          </div>
                         </div>
                     </div>
                     <div class="add-timeline-item" *ngIf="showAction==true && project_type=='core'">
@@ -1323,6 +1327,11 @@
                 <span style="color:red" *ngIf="project_type=='lunch'&&(((endtime.value-starttime.value)/(1000*60))>remainingLunchTime)">
                     Maximum <b>{{allocatedTimeForLunch/60}}</b> hour allowed for lunch. <span *ngIf="allocatedTimeForLunch!=remainingLunchTime" style="font-weight: 500;">({{allocatedTimeForLunch-remainingLunchTime}} mins used)</span>
                 </span>
+
+                <span style="color:red" *ngIf="project_type=='standard'&&p_details&&['Standard Tasks','Routine Tasks'].includes(p_details.project_type.trim())&&p_details.Submissiontype=='Daily'&&(((endtime.value-starttime.value)/(1000*60))>remainingSRTime)&&remainingSRTime>0">
+                    Maximum <b>{{remainingSRTime<60?(remainingSRTime+' mins'):((remainingSRTime/60).toFixed(1)+' hrs')}}</b> allowed for the selected project.
+                </span>
+
                 <span style="color:red" *ngIf="(endtime.value<starttime.value)">End time cannot be less than start time.</span>
             </ng-container>
         </div>

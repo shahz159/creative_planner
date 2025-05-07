@@ -2988,7 +2988,7 @@
 
                                                             
                                                                 <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject!=undefined">
-                                                                <img src="./assets/images/Image (4).jfif" height="23" width="21px"  matTooltip="View or link SMail">
+                                                                <img src="./assets/images/Image (4).jfif" height="23" width="21px">
                 
                                                                 </ng-container >
                                                                 <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].Subject==undefined">
@@ -3006,7 +3006,7 @@
                                                     <div class="kt-meeting-left-li-group" *ngIf="_MemosSubjectList&&_MemosSubjectList[0].MailId!=0">
                                                         <div class="kt-meeting-left-li-control">
                                                             <div class="kt-meeting-left-li-control-item" *ngFor="let memo of _MemosSubjectList; let i=index">
-                                                                <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}} - {{memo.DisplayName}}</a>
+                                                                <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -3025,7 +3025,7 @@
                                                     <div class="kt-meeting-left-li-group">
                                                         <div class="kt-meeting-left-li-control">
                                                             <div class="kt-meeting-left-li-control-item" *ngFor="let data of portfolio_Scheduledjson; let i=index">
-                                                                <a href="javascript:void(0)" (click)="OnCardClick(data.numberval)"> {{data.Portfolio_Name}} - {{data.Portfolio_owner}}</a>
+                                                                <a href="javascript:void(0)" (click)="OnCardClick(data.numberval)"> {{data.Portfolio_Name}}</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -3044,7 +3044,7 @@
                                                     <div class="kt-meeting-left-li-group">
                                                         <div class="kt-meeting-left-li-control">
                                                             <div class="kt-meeting-left-li-control-item" *ngFor="let item of Project_code; let i=index">
-                                                                <a href="javascript:void(0)" (click)="moreDetails(item.stringval)">{{item.Project_Name}} - {{item.TM_DisplayName}}</a>
+                                                                <a href="javascript:void(0)" (click)="moreDetails(item.stringval)">{{item.Project_Name}}</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -3063,7 +3063,7 @@
                                                         <div class="kt-meeting-left-li-group">
                                                             <div class="kt-meeting-left-li-control" *ngFor="let item of Attachments_ary; let i=index">
                                                                 <div class="kt-meeting-left-li-control-item" (click)="LoadDocument(item.file_id,true,item.File_Name&&item.File_Name,item.url,item.File_type,item.Created_by)" >
-                                                                    <a href="javascript:void(0)" >{{item.File_Name}} - {{item.Created_by}}</a>
+                                                                    <a href="javascript:void(0)" >{{item.File_Name}}</a>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -9256,6 +9256,7 @@ a.info-btn.info-btn-disable:hover {
     max-height: 300px;
     overflow-y: auto;
     scrollbar-width: none; 
+    padding-top: 10px;
 
   }
   
