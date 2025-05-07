@@ -491,7 +491,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
   this.forwardPrjPort = []
   this._ProjectsListBy_Pid.forEach((item=>{
-          if(item.Status =='Forward Under Approval' && item.PendingapproverEmpNo&&item.PendingapproverEmpNo == this.Current_user_ID){
+          if(item.Status =='Forward Under Approval' &&   item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
             const obj = {
               prjname : item.Project_Name,
               prjcode : item.Project_Code,
@@ -506,7 +506,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
   this.completionPrjPort = []
   this._ProjectsListBy_Pid.forEach((item)=>{
-    if (item.Status === 'Completion Under Approval'  && item.PendingapproverEmpNo&&item.PendingapproverEmpNo === this.Current_user_ID){
+    if (item.Status === 'Completion Under Approval'   && item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
       const obj = {
         prjname : item.Project_Name,
         prjcode : item.Project_Code,
@@ -919,14 +919,9 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
 
   if (iscloud == false) {
-    if (this.Team_Autho == this.Team_Res) {
-      // window.open(FileUrl + this.Responsible_EmpNo + "/" + this.URL_ProjectCode + "/" + docName);
-      FileUrl = (FileUrl +  this.Team_Res + "/" + pcode + "/" + url1);
-
-    }
-    else if (this.Team_Autho !=  this.Team_Res) {
-      FileUrl = (FileUrl + this.Team_Res + "/" + pcode + "/" + url1);
-    }
+    FileUrl = "https://yrglobaldocuments.blob.core.windows.net/documents/EP/uploads/";
+    FileUrl = (FileUrl + submitby + "/" + pcode + "/" + url1);
+    
 
     let name = "ArchiveView/" + pcode;
     var rurl = document.baseURI + name;
@@ -2244,7 +2239,7 @@ this.nofilterResult=(result.length==0);
 
   }
 
-  OnCardClick(P_id: any, P_Name: string, CreatedName: string) {
+  OnCardClick(P_id: any, P_Name: string, CreatedName: string) {  
     sessionStorage.setItem('portfolioId', P_id);
     sessionStorage.setItem('portfolioname', P_Name);
     sessionStorage.setItem('PortfolioOwner', CreatedName);

@@ -91,7 +91,6 @@ export class NotificationComponent implements OnInit {
    }
 
 
-
   ngOnInit(){
     this.router.navigate(["Notifications"]);
     this.Current_user_ID = localStorage.getItem('EmpNo');
@@ -99,6 +98,7 @@ export class NotificationComponent implements OnInit {
     this.newNotificationLeave();     // fetch all leave responses.
     this.newNotificationLeaveRequests();  // fetch all leave requests.
     this.setPageContent('PROJECT APPROVALS');   // show projects approval by default on the page.
+    this.enableFirstTabSwitch=true;   // automatic switch to the very first tab which has content.
   }
 
 
@@ -128,6 +128,16 @@ export class NotificationComponent implements OnInit {
         this._totalProjectsCount = (data[0]['notificationcount']);
         this.WScount = (data[0]['WScount']);
         this.WRcount = (data[0]['WRcount']);
+      
+// automatic switch to very first tab which has content.
+        this.tabs_Count.projectApprovalCount=this.WScount;
+        this.tabs_Count.informationCount=this.WRcount;
+        if(this.enableFirstTabSwitch){   
+          this.switchToFirstAvailableTab();
+        }
+//         
+
+
         if(this._NotificationActivity){
             this.notilength = this._NotificationActivity.length;
             this._CurrentpageRecords = this._NotificationActivity.length;
@@ -544,7 +554,21 @@ export class NotificationComponent implements OnInit {
     this.service.GetEmployeeLeaveRequests(this.Current_user_ID).subscribe((data) => {
       console.log("leave data",data);
       this.leave_Requests = JSON.parse(data[0]['LeaveRequests_json']);
+
+//  automatic switch to very first tab which has content.
+      this.tabs_Count.leaveRequestsCount=this.leave_Requests.length;
+      if(this.enableFirstTabSwitch){ 
+        this.switchToFirstAvailableTab();
+      }
+//      
+
       this.notificationsLoading = false;
+      // manually creating new property 
+            this.leave_Requests.forEach((lvobj)=>{
+                    const mobj=moment(lvobj.Req_Date,'M/D/YYYY h:mm:ss a');
+                    lvobj.ReqDateFormatted=mobj.format('YYYY-MM-DDTHH:mm:ss');  // creating new property.
+            });
+      // 
       console.log(this.leave_Requests, "_newNotificationLeaveRequest");
     });
 
@@ -563,6 +587,21 @@ export class NotificationComponent implements OnInit {
       if(this._newNotificationLeave){
         const lv_codes=Array.from(new Set(this._newNotificationLeave.map(_leave=>_leave.Leave_Code)));
         this._newNotificationLeave=lv_codes.map((_lc)=>this._newNotificationLeave.find(lobj=>lobj.Leave_Code==_lc));
+        // manually formatting the Req_Date value into required date format
+        this._newNotificationLeave.forEach((ob:any)=>{
+              const mobj=moment(ob.Req_Date,'M/D/YYYY h:mm:ss a');
+              ob.ReqDateFormatted=mobj.format('YYYY-MM-DDTHH:mm:ss');  // creating new property.
+        });
+        // manually formatting the Req_Date value into required date format
+      
+
+      // automatic switch to very first tab which has content.
+        this.tabs_Count.leaveResponsesCount=this._newNotificationLeave.length;
+        if(this.enableFirstTabSwitch){   
+          this.switchToFirstAvailableTab();
+        }
+      //
+
       }
     });
   }
@@ -801,6 +840,9 @@ export class NotificationComponent implements OnInit {
     this.service.GetViewAllDashboardnotifications(this.notificationDTO)
       .subscribe(data => {   debugger
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
+        this.WScount = (data[0]['WScount']);
+        this.WRcount = (data[0]['WRcount']);
+
         console.log( this._NotificationActivity," this._NotificationActivity")
         this._NotificationActivity.forEach((ob:any)=>{
           ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
@@ -1714,5 +1756,66 @@ convertToDecimalHours(hm:string){
   return alhr;
 }
 // method to convert HH:MM to hours value.
+
+
+
+// leave requests section table 
+
+
+clicks2: number = 0;
+A2Z2: boolean = true;
+Z2A2: boolean = false;
+
+sortLeavesByEmpName() {
+  this.clicks2 += 1;
+  if (this.clicks2 != 1) {
+    this.A2Z2 = true;
+    this.Z2A2 = false;
+    this.clicks2 = 0;
+  } else {
+    this.A2Z2 = false;
+    this.Z2A2 = true;
+  }
+}
+
+
+// leave requests section table
+
+
+// automatic switch to very first tab section which has content.   start.
+
+enableFirstTabSwitch:boolean=false;   
+
+tabs_Count:{ projectApprovalCount:undefined|number, informationCount:undefined|number, leaveRequestsCount:undefined|number, leaveResponsesCount:undefined|number }={
+  projectApprovalCount:undefined,
+  informationCount:undefined,
+  leaveRequestsCount:undefined,
+  leaveResponsesCount:undefined
+};
+
+switchToFirstAvailableTab(){
+  const hasAllcounts=[this.tabs_Count.projectApprovalCount, this.tabs_Count.informationCount, this.tabs_Count.leaveRequestsCount, this.tabs_Count.leaveResponsesCount].every((e)=>e!==undefined);
+  if(hasAllcounts){
+   this.enableFirstTabSwitch=false;
+   const findex=[this.tabs_Count.projectApprovalCount,this.tabs_Count.informationCount,this.tabs_Count.leaveRequestsCount,this.tabs_Count.leaveResponsesCount].findIndex((_tbc)=>(_tbc&&_tbc>0));
+   if(findex>-1){
+
+    if(findex==0)
+      this.setPageContent('PROJECT APPROVALS');
+    else if(findex==1)
+      this.setPageContent('INFORMATION');
+    else if(findex==2)
+      this.setPageContent('LEAVE REQUESTS');
+    else if(findex==3)
+      this.setPageContent('LEAVE RESPONSES'); 
+
+   }
+
+  }
+}
+
+
+
+//  automatic switch to very first tab section which has content.   end.
 
 }

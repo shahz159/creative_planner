@@ -30,6 +30,8 @@ import { NotificationComponent } from '../notification/notification.component';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-details.service';
+import { CalenderDTO } from '../../_Models/calender-dto';
+import {CalenderService} from '../../_Services/calender.service';
 
 @Component({
   selector: 'app-project-info',
@@ -56,6 +58,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private elementRef: ElementRef,
     private projectMoreDetailsService: ProjectMoreDetailsService,
+    private CalenderService: CalenderService
     ) {
     this.objPortfolioDto = new PortfolioDTO();
     this.objProjectDto = new ProjectDetailsDTO();
@@ -142,16 +145,6 @@ Prj_Code:any;
       // this.getdeadlinecount();
       // this.getProjectHoldDate();
       // this.getapproval_actiondetails();
-
-      // to make mat dropdown fixed at position
-      const PIsb = document.getElementById('Project_info_slider_bar')
-      PIsb.addEventListener('scroll', () => {
-        this.autocompletes.forEach((ac) => {
-          if (ac.panelOpen)
-            ac.updatePosition();
-        });
-      });
-      // to make mat dropdown fixed at position
 
     });
 
@@ -434,6 +427,8 @@ Prj_Code:any;
 
           if(this.ProjectStatesJson[0].Status=='Completion Under Approval'){
             this.get_Dropdowns_data();
+            this.GetProjectAndsubtashDrpforCalender();  // fetch all emp list, companies list and portfolios list . (used in dms link and portfolio link sidebar)
+
           }
 
 
@@ -446,6 +441,25 @@ Prj_Code:any;
       //   }
       // });
   }
+
+_calenderDto:CalenderDTO;
+subtashDrpLoading:boolean = false;
+companies_Arr:any;
+_EmployeeListForDropdown:any;
+GetProjectAndsubtashDrpforCalender() {
+   this.subtashDrpLoading=true;
+    const _calenderDto = new CalenderDTO();
+    this.CalenderService.GetCalenderProjectandsubList(_calenderDto).subscribe
+      ((data) => {
+        this._EmployeeListForDropdown = JSON.parse(data['Employeelist']);
+        this.companies_Arr=JSON.parse(data['Client_json']);
+        // this.allPortfolioslist=JSON.parse(data['Portfolio_drp']);
+        console.log("_EmployeeListForDropdown",this._EmployeeListForDropdown);
+        console.log('companies_Arr :',this.companies_Arr);
+        // console.log('all portfolios :',this.allPortfolioslist);
+        this.subtashDrpLoading=false;
+      });
+}
 
 
 
@@ -504,47 +518,47 @@ Prj_Code:any;
     this._onRowClick(this.projectCode);
   }
 
-  AddPortfolio() {
-    this._openInfoSideBar = true;
-    this._LinkSideBar = true;
-    this._LinkSideBar1 = false;
-    this.getPortfolios();
-  }
+  // AddPortfolio() {
+  //   this._openInfoSideBar = true;
+  //   this._LinkSideBar = true;
+  //   this._LinkSideBar1 = false;
+  //   this.getPortfolios();
+  // }
 
-  getPortfolios() {
+  // getPortfolios() {
 
-    if ((this.ProjectStatesJson.length == 1) && (this.ProjectStatesJson[0]['Portfolio_Name'] == '')) {
-      this._portfolioLength = 0;
+  //   if ((this.ProjectStatesJson.length == 1) && (this.ProjectStatesJson[0]['Portfolio_Name'] == '')) {
+  //     this._portfolioLength = 0;
 
-    }
+  //   }
 
-    else
-      this._portfolioLength = this.ProjectStatesJson.length;
-    // console.log(this._portfoliolist,"lll");
+  //   else
+  //     this._portfolioLength = this.ProjectStatesJson.length;
+  //   // console.log(this._portfoliolist,"lll");
 
-    this.service.GetTotalPortfoliosBy_Employeeid().subscribe
-      ((data) => {
-        this.totalPortfolios = (data[0]['TotalPortfolios']);
-      });
+  //   this.service.GetTotalPortfoliosBy_Employeeid().subscribe
+  //     ((data) => {
+  //       this.totalPortfolios = (data[0]['TotalPortfolios']);
+  //     });
 
-    this.service.GetPortfoliosBy_ProjectId(this.projectCode).subscribe
-      ((data) => {
-        this._portfoliosList = data as [];
+  //   this.service.GetPortfoliosBy_ProjectId(this.projectCode).subscribe
+  //     ((data) => {
+  //       this._portfoliosList = data as [];
 
-        this.dropdownSettings_Portfolio = {
-          singleSelection: false,
-          idField: 'Portfolio_ID',
-          textField: 'Portfolio_Name',
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 4,
-          allowSearchFilter: true,
-          clearSearchFilter: true
-        };
-      });
-    document.getElementById("LinkSideBar1").style.width = "100%";
+  //       this.dropdownSettings_Portfolio = {
+  //         singleSelection: false,
+  //         idField: 'Portfolio_ID',
+  //         textField: 'Portfolio_Name',
+  //         selectAllText: 'Select All',
+  //         unSelectAllText: 'UnSelect All',
+  //         itemsShowLimit: 4,
+  //         allowSearchFilter: true,
+  //         clearSearchFilter: true
+  //       };
+  //     });
+  //   document.getElementById("LinkSideBar1").style.width = "100%";
 
-  }
+  // }
 
   Empty_portDropdown: any;
   _SelectedPorts: any;
@@ -1495,7 +1509,7 @@ Prj_Code:any;
         this.requestDetails = data as [];
         console.log(this.requestDetails, "approval")
         if (this.requestDetails.length > 0) {
-          this.approvalEmpId = (this.requestDetails[0]['Emp_no']);
+          this.approvalEmpId = (this.requestDetails[0]['Emp_no']).trim();
           this.requestType = (this.requestDetails[0]['Request_type']);
           this.forwardType = (this.requestDetails[0]['ForwardType']);
           this.requestDate = (this.requestDetails[0]['Request_date']);
@@ -2291,13 +2305,25 @@ GetRacisPeople(){
     (data)=>{ 
       this.Project_List=JSON.parse(data[0]['RacisList']);   console.log('Project_List variable :',this.Project_List);
       this.uniqueName_List=new Set(this.Project_List.map(record=>record.RACIS))
-      this.uniqueName_array=[...this.uniqueName_List]
-      this.newArray=this.uniqueName_array.slice(3).map(item=>" "+item+" ")
-      this.three_Records=this.uniqueName_array.slice(0,3)
+      this.uniqueName_array=[...this.uniqueName_List];
+      
+      this.newArray=this.uniqueName_array.slice(3).map(item=>" "+item+" ");
+      if (this.uniqueName_array.length >= 3) {
+        this.three_Records = this.uniqueName_array.slice(0, 3);
+        this.firstRecord = this.three_Records[0][0];
+        this.secondRecord = this.three_Records[1][0];
+        this.thirdRecord = this.three_Records[2][0];
+      } else {
+        this.three_Records = this.uniqueName_array;
+        this.firstRecord = this.three_Records[0]?.[0] || '';
+        this.secondRecord = this.three_Records[1]?.[0] || '';
+        this.thirdRecord = this.three_Records[2]?.[0] || '';
+      }
+      // this.three_Records=this.uniqueName_array.slice(0,3)
 
-      this.firstRecord=this.three_Records[0][0]
-      this.secondRecord=this.three_Records[1][0]
-      this.thirdRecord=this.three_Records[2][0]
+      // this.firstRecord=this.three_Records[0][0]
+      // this.secondRecord=this.three_Records[1][0]
+      // this.thirdRecord=this.three_Records[2][0]
       console.log(this.thirdRecord,'==============>')
 
 
@@ -2336,20 +2362,20 @@ Submission:any;
 todayDate=new Date();   // current date.
 _portfoliosList2:any=[];  // all portfolios list.
 ngDropdwonPort2:any=[];   // selected portfolios. array of portfolio ids.
-iscaPortDrpDwnOpen:boolean=false;
+// iscaPortDrpDwnOpen:boolean=false;
 projectAuditor:any;  // project auditor.
 notProvided:boolean=false;
 
 @ViewChildren(MatAutocompleteTrigger) autocompletes:QueryList<MatAutocompleteTrigger>;
-openAutocompleteDrpDwn(Acomp:string){
-  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
-  requestAnimationFrame(()=>autoCompleteDrpDwn.openPanel());
-}
+// openAutocompleteDrpDwn(Acomp:string){
+//   const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+//   requestAnimationFrame(()=>autoCompleteDrpDwn.openPanel());
+// }
 
- closeAutocompleteDrpDwn(Acomp:string){
-  const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
-  requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
-}
+//  closeAutocompleteDrpDwn(Acomp:string){
+//   const autoCompleteDrpDwn=this.autocompletes.find((item)=>item.autocomplete.ariaLabel===Acomp);
+//   requestAnimationFrame(()=>autoCompleteDrpDwn.closePanel());
+// }
 
 
 
@@ -2380,27 +2406,27 @@ get_Dropdowns_data(){
 
 
 
-onca_PortfolioDeSelected(prtid:string){
-  const index=this.ngDropdwonPort2.indexOf(prtid);
-  if(index!==-1){
-   this.ngDropdwonPort2.splice(index,1);
-  }
-}
+// onca_PortfolioDeSelected(prtid:string){
+//   const index=this.ngDropdwonPort2.indexOf(prtid);
+//   if(index!==-1){
+//    this.ngDropdwonPort2.splice(index,1);
+//   }
+// }
 
-onca_PortfolioSelected(e){
-  const prtfChoosed = this._portfoliosList2.find((p:any) => p.Portfolio_ID === e.option.value)
-  if (prtfChoosed) {
-    const index = this.ngDropdwonPort2.indexOf(prtfChoosed.Portfolio_ID);
-    if (index === -1) {
-         this.ngDropdwonPort2.push(prtfChoosed.Portfolio_ID);
-    }
-    else{
-         this.ngDropdwonPort2.splice(index,1);
-    }
+// onca_PortfolioSelected(e){
+//   const prtfChoosed = this._portfoliosList2.find((p:any) => p.Portfolio_ID === e.option.value)
+//   if (prtfChoosed) {
+//     const index = this.ngDropdwonPort2.indexOf(prtfChoosed.Portfolio_ID);
+//     if (index === -1) {
+//          this.ngDropdwonPort2.push(prtfChoosed.Portfolio_ID);
+//     }
+//     else{
+//          this.ngDropdwonPort2.splice(index,1);
+//     }
 
- }
-//  requestAnimationFrame(()=>this.customTrigger.openPanel());
-}
+//  }
+// //  requestAnimationFrame(()=>this.customTrigger.openPanel());
+// }
 
 
 
@@ -2517,6 +2543,147 @@ getStandardText(stdstatus: any): string {
   const formattedDays = days < 10 ? `0${days}` : `${days}`;
   return `${formattedDays} day${days === 1 ? '' : 's'} delay`;
 }
+
+
+
+
+
+// link portfolios to nextversion project. (popup modal selection dialog)
+
+filtered_result:any=[];
+choosed_items:any=[];
+is_filteredon:boolean=false;
+basedon_filter:any={};
+
+linkPortfoliosToNextversion(){
+  document.getElementById("nextVersion-portfoliolink-backdrop").style.display = "block";
+  document.getElementById("nextVersion-portfoliolink-modal").style.display = "block";
+  this.onAprvlModalInputSearch(''); 
+  const searchField:any=document.querySelector(`#nextVersion-portfoliolink-modal #NextVersionPortfolioLink`);
+  if(searchField)searchField.focus();
+}
+
+closeAprvl_multiselect(){
+  this.is_filteredon=false;
+  this.basedon_filter.byuser=null;
+  this.basedon_filter.bycompany=null;    // clear filter applied.
+  this.close_aprvModal_filter();  // close filter dropdown 
+  document.getElementById("nextVersion-portfoliolink-backdrop").style.display = "none";
+  document.getElementById("nextVersion-portfoliolink-modal").style.display = "none";
+  this.choosed_items=[];   // clear selections.
+  this.filtered_result=[];             // clear filtered result.
+}
+
+onPortfolioItemChoosed(choosed,choosedItem){
+  if(choosed){
+    this.choosed_items.push(choosedItem);
+  }
+  else{
+    const i=this.choosed_items.findIndex(item=>(item===choosedItem));
+    if(i>-1)
+    this.choosed_items.splice(i,1);
+  }
+}
+
+onAprvlModalInputSearch(inputText:any){   
+
+  let keyname;
+  let arrtype;
+  let selectedinto;
+  let property_name;
+  
+  let _Emp;
+  if(this.is_filteredon){
+    _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No==this.basedon_filter.byuser);
+  }
+
+     keyname='Portfolio_Name';
+     arrtype=this._portfoliosList2;  //unlinked portfolios list
+     selectedinto='ngDropdwonPort2';
+     property_name='Portfolio_ID';
+  
+   const result=arrtype.filter(item=>{  
+    let nameMatched:boolean=false;
+    let filterMatched:boolean=false;
+
+
+// by search text
+    const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
+    if(unselected)
+    nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim());
+
+// by filter
+   if(nameMatched&&this.is_filteredon){
+       // 'item' act as a portfolio object here
+       const x=(item.Emp_Comp_No==this.basedon_filter.bycompany||!this.basedon_filter.bycompany);
+       const y=(item.Created_By==this.basedon_filter.byuser||!this.basedon_filter.byuser);
+       const z=x&&y;
+       const isSelected:boolean=this.ngDropdwonPort2&&this.ngDropdwonPort2.includes(item.Portfolio_ID);
+       filterMatched=isSelected?false:z;
+    }
+   
+    return nameMatched&&(this.is_filteredon?filterMatched:true);
+  });
+
+  this.filtered_result=result;
+
+  console.log(this.filtered_result,'FilteredAttendees')
+}
+
+keepModalItemsChoosed(){
+  if (!this.ngDropdwonPort2)   // if ngDropdwonPort2 is null,undefined,''
+  this.ngDropdwonPort2 = [];
+
+  this.ngDropdwonPort2=[...this.ngDropdwonPort2,...this.choosed_items];  // array of portfolio ids.
+  this.closeAprvl_multiselect();
+}
+
+discardModalChoosedItem(item:string){
+  const i=this.ngDropdwonPort2.findIndex(ptf=>ptf==item);
+  if(i>-1)
+  this.ngDropdwonPort2.splice(i,1);
+}
+
+aprvModal_filter() {
+  document.getElementById("nextVproject-filter").classList.add("show");
+  document.getElementById("nextVfilter-icon").classList.add("active");
+}
+close_aprvModal_filter() {
+  document.getElementById("nextVproject-filter").classList.remove("show");
+  document.getElementById("nextVfilter-icon").classList.remove("active");
+}
+
+clearAprvModalFiltered(){
+  this.basedon_filter.byuser=null;
+  this.basedon_filter.bycompany=null;
+  this.onAprvlModalInputSearch(''); 
+  this.is_filteredon=false;
+}
+
+onAprvl_PortfolioFilter(){
+  const fresult=this._portfoliosList2.filter((prtf:any)=>{
+       const x=(prtf.Emp_Comp_No==this.basedon_filter.bycompany||!this.basedon_filter.bycompany);
+       const y=(prtf.Created_By==this.basedon_filter.byuser||!this.basedon_filter.byuser);
+       const z=x&&y;
+       const isSelected:boolean=this.ngDropdwonPort2&&this.ngDropdwonPort2.includes(prtf.portfolio_id);
+       return isSelected?false:z;
+  });
+  this.filtered_result=fresult;
+  this.is_filteredon=true;
+}
+
+
+// link portfolios to nextversion project. (popup modal selection dialog)
+
+
+
+
+
+
+
+
+
+
 
 
 

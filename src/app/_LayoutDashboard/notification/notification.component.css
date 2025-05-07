@@ -1231,7 +1231,7 @@ span.count {
   color: #ffffff;
   cursor: auto;
   border-radius: 3px;
-  font-size: 10px;
+  font-size: 11px;
 }
 .fil-lbl {
   flex: 1;
@@ -2108,3 +2108,39 @@ display: inline-block; */
 
 /*reject approval's existing comments new design end*/
 
+
+
+/*new nav tab btn css start*/
+ 
+.nt-nav-tab
+{
+  background-color: transparent !important;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  font-weight: 500;
+  border-bottom: 3px solid transparent;
+  color:#888888;
+}
+
+.nt-nav-tab svg{
+  stroke:#888888 !important;
+}
+
+.nt-nav-tab.active{
+  border-bottom: 3px solid #1e88e5;
+  color: #000;
+}
+.nt-nav-tab.active svg{
+  stroke:#000 !important;
+}
+
+.nt-nav-tab:hover{
+   background-color: #7574740d !important;
+}
+.nt-nav-tab.active:hover{
+  background-color: transparent !important;
+}
+
+/*new nav tabs btn css end*/

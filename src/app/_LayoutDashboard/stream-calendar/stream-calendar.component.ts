@@ -1062,7 +1062,7 @@ LastLengthValidation11() {
 
 updateCharacterCount(): void {
   // Create a temporary div element to strip out HTML tags
-  const tempElement = document.createElement('div');
+  const tempElement = document.createElement('div'); debugger
   tempElement.innerHTML = this.Description_Type;
   const textContent = tempElement.textContent || tempElement.innerText || '';
   this.characterCount = textContent.length;
@@ -3969,6 +3969,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
       this.propose_date=Schedule_date;
       console.log(this.EventScheduledjson, "Testing12");
+      console.log(this.AdminMeeting_Status, "AdminMeeting_Status");
       this.Meeing_Name = (this.EventScheduledjson[0]['Task_Name']);
       this.Created_by = this.EventScheduledjson[0].Created_by
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
@@ -4019,7 +4020,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       if ((this.Schedule_type1 == 'Event') && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
 
        document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
-       document.getElementById("deleteendit").style.display =this.Meeting_status==true || this.AdminMeeting_Status==1 ?'none':'flex';
+       document.getElementById("deleteendit").style.display =this.Meeting_status==true || this.AdminMeeting_Status==1 || this.AdminMeeting_Status==2?'none':'flex';
        document.getElementById("main-foot").style.display = "none";
       
       }
@@ -4904,23 +4905,9 @@ ReshudingTaskandEvent() {
         this._meetingroom = this.Location_Type?true:false;
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
          document.getElementById("subtaskid").style.display = "none";
-        //69 document.getElementById("Guest_Name").style.display = "flex";
-        //69 document.getElementById("meeting-online-add").style.display = "flex";
-        //69 document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
-        //69 document.getElementById("Descrip_Name").style.display = "flex";
-        //69 document.getElementById("core_viw121").style.display = "flex";
-        //69 document.getElementById("core_viw123").style.display = "none";
-        //69 document.getElementById("core_viw222").style.display = "flex";
-        //69 document.getElementById("core_Dms").style.display = "flex";
-
-        //69 const TEsb = document.getElementById('TaskEvent-Sidebar')
-        //69 TEsb.addEventListener('scroll', () => {
-        //69   this.autocompletes.forEach((ac) => {
-        //69     if (ac.panelOpen)
-        //69       ac.updatePosition();
-        //69   });
-        //69 })
+       
       }
+      this.updateCharacterCount();
         // valid starttimearr and endtimearr setting start.
         let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
         let _currentdate=moment();
@@ -4975,8 +4962,7 @@ RecurrValueMonthly:boolean=false;
       }
 
 
-    if (
-      this.Title_Name &&
+    if (this.Title_Name&&( this.Title_Name.trim().length>2&&this.Title_Name.trim().length<=100 ) &&
       this.Startts &&
       this.Endtms && this.isValidURL &&
       this.MinLastNameLength
