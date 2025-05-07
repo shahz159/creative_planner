@@ -1099,7 +1099,7 @@ export class MeetingDetailsComponent implements OnInit {
     this._calenderDto.Schedule_ID = this.Scheduleid;
     this._calenderDto.Status = this.status_Type;
     this._calenderDto.StartTime = this.startTime == undefined ? null : formatTime(this.startTime);
-    this._calenderDto.Start_time = this.currentTime; debugger
+    this._calenderDto.Start_time = this.currentTime; 
     this._calenderDto.EndTime = this.endTime == undefined ? null : formatTime(this.endTime);
     // console.log(this._calenderDto,'time of meeting');
     this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe
