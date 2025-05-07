@@ -4385,9 +4385,9 @@ onFileChange(event) {
 
 
      
-        // console.log(this.LastPauseTime,'LastPauseTime')
-        // console.log(this.exact_start,'exact_start');
-        // console.log(this.pausetime,'pausetime');
+        console.log(this.LastPauseTime,'LastPauseTime')
+        console.log(this.exact_start,'exact_start');
+        console.log(this.pausetime,'pausetime');
 
         if(this.agendasList != null){
             if(this.Agendas_List&&this.Agendas_List.length>0){                  
