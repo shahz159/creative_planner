@@ -587,7 +587,7 @@ export class MeetingDetailsComponent implements OnInit {
   isLoading: boolean = true;
   oneByTwoEndDate:any;
   Meeing_Name:any;
-  deletedMeeting:any;
+  deletedMeeting:boolean = true;
   
   live_activ = [
     { actvName: 'New agenda added by Aquib Shahbaz', time: '5 sec ago' },
@@ -607,10 +607,10 @@ export class MeetingDetailsComponent implements OnInit {
     this._calenderDto.Schedule_ID = this.Schedule_ID;
 
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
-    
+      
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-      console.log(this.EventScheduledjson,'EventScheduledjson')
-      this.deletedMeeting = this.EventScheduledjson.length;
+      if(this.EventScheduledjson != undefined && this.EventScheduledjson != null && this.EventScheduledjson != ''){
+      this.deletedMeeting = true;
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       var Schedule_date = this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
@@ -841,8 +841,11 @@ export class MeetingDetailsComponent implements OnInit {
       // this.minutes = duration.minutes();
       // this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
     
-    }); 
-       
+    } else {
+      this.deletedMeeting = false;
+    }
+       }); 
+   
   }
 
 
@@ -1151,12 +1154,14 @@ export class MeetingDetailsComponent implements OnInit {
     let timeB = this.parseTime(this.latestTime);
     
     let differenceInMilliseconds = timeB.getTime() - timeA.getTime();
-
-
+    
     console.log('milliseconds:', differenceInMilliseconds);
- 
     this.elapsedTime = differenceInMilliseconds;
+
+ 
+
     if(this.elapsedTime>60000){
+ 
       this.elapsedTime += 40000;
     }
    
@@ -1173,8 +1178,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-
-  
+ 
   
   
 
@@ -1242,7 +1246,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-
+  
 
 
 
@@ -4385,9 +4389,9 @@ onFileChange(event) {
 
 
      
-        // console.log(this.LastPauseTime,'LastPauseTime')
-        // console.log(this.exact_start,'exact_start');
-        // console.log(this.pausetime,'pausetime');
+        console.log(this.LastPauseTime,'LastPauseTime')
+        console.log(this.exact_start,'exact_start');
+        console.log(this.pausetime,'pausetime');
 
         if(this.agendasList != null){
             if(this.Agendas_List&&this.Agendas_List.length>0){                  
@@ -5209,6 +5213,7 @@ onFileChange(event) {
               });
             }
           });
+       
 
           this.Location_Type = (this.EventScheduledjson[0]['Location']);
           this._meetingroom = this.Location_Type?true:false;
@@ -5222,7 +5227,7 @@ onFileChange(event) {
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "flex";
           document.getElementById("core_Dms").style.display = "flex";
-
+          this.updateCharacterCount();
 
 
 

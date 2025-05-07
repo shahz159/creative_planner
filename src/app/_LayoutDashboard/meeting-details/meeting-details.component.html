@@ -1,6 +1,6 @@
 <ng-container *ngIf="(userFound!==undefined || meetingAdmin!==undefined) && loadingDMS == true ;else pleasewait">
 
-    <ng-container *ngIf="userFound===true || meetingAdmin===true;else accessdenied">
+ <ng-container *ngIf="userFound===true || meetingAdmin===true;else accessdenied">
         <div class="kt-grid kt-grid--hor kt-grid--root">
             <div class="kt-container-fluid kt-grid__item kt-grid__item--fluid margin-height side_view m-0 p-3 " id="meetingdetails">
                 <div class="row" *ngFor="let item of EventScheduledjson">
@@ -10753,16 +10753,9 @@
 
  <!--  Access denied Start -->
  <ng-template #pleasewait>
-<!-- <div class=" d-flex align-items-center  justify-content-center " style="height:65vh">
-    <div class="spinner-border  w-100px    h-100px " style="color:#6388e3;" role="status">
-   <span class="visually-hidden"></span>
-   </div>
-</div> -->
 
 
-
-
-  <div *ngIf="deletedMeeting == 1" class="smart-glass">
+  <div *ngIf="deletedMeeting" class="smart-glass">
     <h1></h1>
     <div class="logo">
       <div class="circle">
@@ -10779,7 +10772,7 @@
     </div>
   </div>
 
-  <div *ngIf="deletedMeeting == 0">  
+  <div *ngIf="!deletedMeeting">  
    <div class="container">
     <div class="d-flex align-items-md-center flex-column">
         <div class="text-center acc-section">
