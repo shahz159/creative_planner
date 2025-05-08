@@ -167,7 +167,11 @@ export class HeaderComponent implements OnInit {
       // this.bsService.ConfirmBeforeRoute.subscribe((modalScreen:any)=>{
       //   this._confirmBeforeRouting=modalScreen;
       // })
-
+     this.bsService.leaveSidebarToggled.subscribe((openleave:boolean)=>{
+          if(openleave){
+             this.applyleave();
+          }
+     });
 
   }
 
@@ -340,6 +344,7 @@ export class HeaderComponent implements OnInit {
     this.leave_remark=undefined;
 // clear form inputs and set to default.
     console.log('closed closed....')
+    this.bsService.leaveSidebarToggled.emit(false);
   }
   closeInfo() {
     document.getElementById("actyInfobar_header").classList.remove("open_sidebar");

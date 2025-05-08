@@ -4370,22 +4370,20 @@
                                                     </div>
 
                                                     <ng-container  *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List')); else submission1">
-                                                        <div *ngIf="deadlineExtendlist&&deadlineExtendlist.length>0" class="col text-center">
-                                                            <div class="kt-info-lable-v">
-                                                                Original Deadline
-                                                            </div>
-                                                            <div class="kt-info-data-v original-deadline">
-                                                                {{projectInfo&&projectInfo.originaldeadline|date:'dd-MM-yyyy'}}
-                                                            </div>
-                                                        </div>
-    
                                                         <div class="col text-center">
                                                             <div class="kt-info-lable-v">
-                                                                {{(deadlineExtendlist&&deadlineExtendlist.length>0)?'Revised Deadline':'Deadline'}}
+                                                                Deadline
                                                             </div>
-                                                            <div class="kt-info-data-v">
-                                                                {{projectInfo&&projectInfo.EndDate | date : 'dd-MM-yyyy'}}
+                                                            <div class="kt-info-data-v old-new-dates"  *ngIf="deadlineExtendlist&&deadlineExtendlist.length>0; else deadlinenotextend">
+                                                                <span class="old-text" matTooltip="original deadline" style="margin-top:1px">{{projectInfo&&projectInfo.originaldeadline|date:'dd-MM-yyyy'}}</span>
+                                                                <svg class="icon line" xmlns="http://www.w3.org/2000/svg" id="right-arrow" viewBox="0 0 24 24" height="18px" width="18px"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path id="primary" d="M3,12H21m-3,3,3-3L18,9" style="fill: none;stroke: #707070;stroke-linecap: round;stroke-linejoin: round;stroke-width: 2.3;"></path></g></svg>
+                                                                <span class="new-text" matTooltip="revised deadline" >{{projectInfo&&projectInfo.EndDate | date : 'dd-MM-yyyy'}}</span>
                                                             </div>
+                                                            <ng-template #deadlinenotextend>
+                                                                <div class="kt-info-data-v">
+                                                                    {{projectInfo&&projectInfo.EndDate | date : 'dd-MM-yyyy'}}
+                                                                </div>
+                                                            </ng-template>
                                                         </div>
                                                     </ng-container>
                                                   
@@ -5929,26 +5927,21 @@
                                                             </div>
                                                         </div>
 
-
-                                                        <div *ngIf="action_deadlineExtendlist&&action_deadlineExtendlist.length>0" class="col text-center">
-                                                            <div class="kt-info-lable-v">
-                                                                Original Deadline
-                                                            </div>
-                                                            <div class="kt-info-data-v original-deadline">
-                                                                {{projectActionInfo[currentActionView].originaldeadline|date:'dd-MM-yyyy'}}
-                                                            </div>
-                                                        </div>
-
-
                                                         <div class="col text-center">
                                                             <div class="kt-info-lable-v">
-                                                                {{(action_deadlineExtendlist&&action_deadlineExtendlist.length>0)?'Revised Deadline':'Deadline'}}
+                                                                Deadline
                                                             </div>
-                                                            <div class="kt-info-data-v">
-                                                                {{projectActionInfo[currentActionView].EndDate| date :'dd-MM-yyyy'}}
+                                                            <div class="kt-info-data-v old-new-dates"  *ngIf="action_deadlineExtendlist&&action_deadlineExtendlist.length>0; else adeadlinenotextend">
+                                                                <span class="old-text" matTooltip="original deadline" style="margin-top:1px"> {{projectActionInfo[currentActionView].originaldeadline|date:'dd-MM-yyyy'}}</span>
+                                                                <svg class="icon line" xmlns="http://www.w3.org/2000/svg" id="right-arrow" viewBox="0 0 24 24" height="18px" width="18px"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path id="primary" d="M3,12H21m-3,3,3-3L18,9" style="fill: none;stroke: #707070;stroke-linecap: round;stroke-linejoin: round;stroke-width: 2.3;"></path></g></svg>
+                                                                <span class="new-text" matTooltip="revised deadline" >{{projectActionInfo[currentActionView].EndDate| date :'dd-MM-yyyy'}}</span>
                                                             </div>
+                                                            <ng-template #adeadlinenotextend>
+                                                                <div class="kt-info-data-v">
+                                                                    {{projectActionInfo[currentActionView].EndDate| date :'dd-MM-yyyy'}}
+                                                                </div>
+                                                            </ng-template>
                                                         </div>
-
 
                                                         <div class="col text-center">
                                                             <div class="kt-info-lable-v">

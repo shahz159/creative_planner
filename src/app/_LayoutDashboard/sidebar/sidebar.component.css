@@ -33,6 +33,7 @@ li.kt-menu__item:hover a svg path {
 }
 
 
+
 .side-open-close {
     top: 22px;
     right: -40px;
@@ -66,4 +67,8 @@ svg.toggle-arrow-svg {
 ::ng-deep .kt-aside--minimize svg.toggle-arrow-svg {
     transform: rotate(90deg)!important;
     transition: all 0.15s ease-in-out;
+}
+
+.kt-aside-menu .kt-menu__nav>.kt-menu__item>.kt-menu__link.active>.kt-menu__link-icon{
+    fill:#fff;
 }
