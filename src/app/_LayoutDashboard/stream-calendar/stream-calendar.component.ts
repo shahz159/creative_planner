@@ -1062,7 +1062,7 @@ LastLengthValidation11() {
 
 updateCharacterCount(): void {
   // Create a temporary div element to strip out HTML tags
-  const tempElement = document.createElement('div');
+  const tempElement = document.createElement('div'); debugger
   tempElement.innerHTML = this.Description_Type;
   const textContent = tempElement.textContent || tempElement.innerText || '';
   this.characterCount = textContent.length;
@@ -4905,23 +4905,9 @@ ReshudingTaskandEvent() {
         this._meetingroom = this.Location_Type?true:false;
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
          document.getElementById("subtaskid").style.display = "none";
-        //69 document.getElementById("Guest_Name").style.display = "flex";
-        //69 document.getElementById("meeting-online-add").style.display = "flex";
-        //69 document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
-        //69 document.getElementById("Descrip_Name").style.display = "flex";
-        //69 document.getElementById("core_viw121").style.display = "flex";
-        //69 document.getElementById("core_viw123").style.display = "none";
-        //69 document.getElementById("core_viw222").style.display = "flex";
-        //69 document.getElementById("core_Dms").style.display = "flex";
-
-        //69 const TEsb = document.getElementById('TaskEvent-Sidebar')
-        //69 TEsb.addEventListener('scroll', () => {
-        //69   this.autocompletes.forEach((ac) => {
-        //69     if (ac.panelOpen)
-        //69       ac.updatePosition();
-        //69   });
-        //69 })
+       
       }
+      this.updateCharacterCount();
         // valid starttimearr and endtimearr setting start.
         let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
         let _currentdate=moment();
