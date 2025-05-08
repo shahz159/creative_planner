@@ -3239,9 +3239,9 @@ completeAction(){
 }
 
 
-completeActionWithAttachment(){
+completeActionWithAttachment(){    
    // action completion with file attachment.
-   if(this.selectedFile){
+   if(this.selectedFile){    
  
     const fd = new FormData();
     fd.append("Project_Code", this.Sub_ProjectCode);
@@ -8911,8 +8911,8 @@ GetprojectComments() {
 /////////////////Comments end////////////////////////
 
 
-LoadDocument1(pcode:string,iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {
-
+LoadDocument1(pcode:string,iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {  
+debugger
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -8945,6 +8945,12 @@ LoadDocument1(pcode:string,iscloud: boolean, filename: string, url1: string, typ
     let name = "ArchiveView/" + pcode;
     var rurl = document.baseURI + name;
     var encoder = new TextEncoder();
+    
+// "https://yrglobaldocuments.blob.core.windows.net/documents/EP/400172/400208098/action_s5_07_05_2025.docx"     // when S complete S action.
+// "https://yrglobaldocuments.blob.core.windows.net/documents/EP/400172/400208104/action_s6_07_05_2025.pdf"    // when W complete S action.
+
+    // let url = encoder.encode(url1);
+    // ""https://yrglobaldocuments.blob.core.windows.net/documents/EP/400172/400208097/action_s4_07_05_2025.pdf""
     let url = encoder.encode(url1);
     let encodeduserid = encoder.encode(this.Current_user_ID.toString());
     filename = filename.replace(/#/g, "%23");

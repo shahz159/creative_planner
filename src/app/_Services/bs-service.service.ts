@@ -35,7 +35,6 @@ export class BsServiceService {
   private _portId = new BehaviorSubject<any>(null);
   public _templAction = new BehaviorSubject<{name:string,description:string,assignedTo:string}>({name:'',description:'',assignedTo:''});
 
-  
 
   ProjectCreatedEvent:EventEmitter<undefined>=new EventEmitter<undefined>();
 
@@ -45,6 +44,8 @@ export class BsServiceService {
 
   UserLoggedIn:EventEmitter<undefined>=new EventEmitter<undefined>();
 
+  leaveSidebarToggled:EventEmitter<boolean>=new EventEmitter<boolean>(false);  
+  
 
   private dataSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public data$ = this.dataSubject.asObservable();
