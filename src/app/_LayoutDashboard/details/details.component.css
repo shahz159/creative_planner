@@ -10574,22 +10574,23 @@ span.time-value {
 }
 
 
-.kt-info-data-v.original-deadline
-{
-  text-decoration: line-through;
-  text-decoration-color: #d32f2f9c;
-  text-decoration-thickness: 1.2px;
-  color: #757575;
-  opacity: 0.75;
-  transition-duration: 0.8s;
-  transition-delay: 1s;
+.kt-info-data-v.old-new-dates{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  column-gap: 3px;
 }
 
-.kt-info-data-v.original-deadline:hover{
-  text-decoration-color: transparent;
-  opacity: 1;
-  transition-duration: 0.5s;
-  transition-delay: 0s;
+
+.kt-info-data-v.old-new-dates .old-text{
+  font-size: 11px;
+  color: #757575;
+  opacity: 0.75;
+}
+
+.kt-info-data-v.old-new-dates:hover .old-text,
+.kt-info-data-v.old-new-dates:hover .new-text{
+   cursor: default;
 }
 
 
@@ -10666,3 +10667,6 @@ span.time-value {
 }
 
 /*reject cmts end*/
+
+
+
