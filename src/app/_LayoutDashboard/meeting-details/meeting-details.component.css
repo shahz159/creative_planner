@@ -9111,6 +9111,7 @@ a.info-btn.info-btn-disable:hover {
     display: flex;
     position: relative;
     cursor: default;
+    width: 100%;
 }
 
 .kt-meeting-left-sec {
