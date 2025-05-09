@@ -2452,7 +2452,7 @@ multipleback(){
     // this.approvalEmpId = null;
     this.approvalsFetching=true;   // fetching approvals or processing start.
     this.approvalObj.Project_Code = this.URL_ProjectCode;
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {   debugger
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {  
       this.approvalsFetching=false;    // fetched approvals or processing end.
       this.requestDetails = data as [];
       console.log(this.requestDetails, "approvals");

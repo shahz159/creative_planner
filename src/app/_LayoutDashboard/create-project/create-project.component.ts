@@ -326,16 +326,15 @@ export class CreateProjectComponent implements OnInit {
           this.PrjClient=this.Client_json[0].EmpClient;
           this.setRACIS();
 
-
          // determine whether current user can create standard task / routine task type projects or not.
          if(this.Current_user_Info.Position=='Team Member'){
-          this.maxAllocHrsByRole=this.perWeekAllocHrs*this.TEAM_MEMBER_ALLOC_RATIO;    //48*0.25=12 hrs maximum user can give to the new project.
+          this.maxAllocHrsByRole=+(this.perWeekAllocHrs*this.TEAM_MEMBER_ALLOC_RATIO).toFixed(2);    //48*0.25=12 hrs maximum user can give to the new project.
          }
          else if(this.Current_user_Info.Position=='Dept. Head'){
-          this.maxAllocHrsByRole=this.perWeekAllocHrs*this.DEPT_HEAD_ALLOC_RATIO;    //48*0.50=24 hrs maximum user can give to the new project.
+          this.maxAllocHrsByRole=+(this.perWeekAllocHrs*this.DEPT_HEAD_ALLOC_RATIO).toFixed(2);    //48*0.50=24 hrs maximum user can give to the new project.
          }
          else if(this.Current_user_Info.Position=='Company Head'){
-          this.maxAllocHrsByRole=this.perWeekAllocHrs*this.COMPANY_HEAD_ALLOC_RATIO;  //48*0.70=33.6 hrs maximum user can give to the new project
+          this.maxAllocHrsByRole=+(this.perWeekAllocHrs*this.COMPANY_HEAD_ALLOC_RATIO).toFixed(2);  //48*0.70=33.6 hrs maximum user can give to the new project
          }
         
      
