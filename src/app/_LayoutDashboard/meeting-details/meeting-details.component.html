@@ -1605,6 +1605,14 @@
                                                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M5 6c0-1.4 0-2.1.272-2.635a2.5 2.5 0 0 1 1.093-1.093C6.9 2 7.6 2 9 2h6c1.4 0 2.1 0 2.635.272a2.5 2.5 0 0 1 1.092 1.093C19 3.9 19 4.6 19 6v13.208c0 1.056 0 1.583-.217 1.856a1 1 0 0 1-.778.378c-.349.002-.764-.324-1.593-.976L12 17l-4.411 3.466c-.83.652-1.245.978-1.594.976a1 1 0 0 1-.778-.378C5 20.791 5 20.264 5 19.208V6z" fill="currentColor"></path></g></svg>
                                             </div>
 
+
+
+                                            <ng-container *ngIf="Meetingstatuscom=='Completed' || showAttendeeNotify != '0'">
+                                                <div  class="custom-evt-tsk-action-icon"  matTooltip="Private notes" (click)="View_Private_Notes()">                                   
+                                                    <svg width="16px" height="16px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" version="1.1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.3"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect height="12.5" width="10.5" y="1.75" x="2.75"></rect> <path d="m5.75 7.75h4.5m-4.5 3h2.5m-2.5-6h4.5"></path> </g></svg>                            
+                                                </div>
+                                            </ng-container>
+
                                         </div>
                            
 
@@ -1618,12 +1626,7 @@
                                             <div  *ngIf="!isLoading && Status1=='Owner' && item.Recurrence != 'Daily'" matTooltip="Repeat"   class="options event" (click)="Repeat_Meeting()">                                         
                                                 <svg width="64px" height="64px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>Repeat-Play</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Repeat-Play"> <rect id="Rectangle" fill-rule="nonzero" x="0" y="0" width="24" height="24"> </rect> <path d="M5,18.0002 L17,18.0002 C18.6569,18.0002 20,16.657 20,15.0002 L20,14" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M16,2 L19.2929,5.29289 C19.6834,5.68342 19.6834,6.31658 19.2929,6.70711 L16,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M8,14 L4.70711,17.2929 C4.31658,17.6834 4.31658,18.3166 4.70711,18.7071 L8,22" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M19,6 L7,6 C5.34315,6 4,7.34315 4,9 L4,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> </g> </g> </g></svg>
                                             </div>
-    
-                                            <ng-container *ngIf="Meetingstatuscom=='Completed' || showAttendeeNotify != '0'">
-                                                <div  class="kt-project-notes"  matTooltip="Private notes" (click)="View_Private_Notes()">                                   
-                                                    <svg width="16px" height="16px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" version="1.1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect height="12.5" width="10.5" y="1.75" x="2.75"></rect> <path d="m5.75 7.75h4.5m-4.5 3h2.5m-2.5-6h4.5"></path> </g></svg>                            
-                                                </div>
-                                            </ng-container>
+
                                             
                                         <div class="kt-meeting-status completed mt-0"   *ngIf="Meetingstatuscom!=Completed" matTooltip="Done" >
                                             <span class="kt-meeting-status-icon">
@@ -1644,6 +1647,11 @@
 
                                         <div style="display: flex; align-items: center; gap: 8px;" *ngIf="Meetingstatuscom==Completed">
                                         
+
+                                            <div  *ngIf="!isLoading && Status1=='Owner' && item.Recurrence != 'Daily'" matTooltip="Repeat"   class="options event" (click)="Repeat_Meeting()">                                         
+                                                <svg width="64px" height="64px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>Repeat-Play</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Repeat-Play"> <rect id="Rectangle" fill-rule="nonzero" x="0" y="0" width="24" height="24"> </rect> <path d="M5,18.0002 L17,18.0002 C18.6569,18.0002 20,16.657 20,15.0002 L20,14" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M16,2 L19.2929,5.29289 C19.6834,5.68342 19.6834,6.31658 19.2929,6.70711 L16,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M8,14 L4.70711,17.2929 C4.31658,17.6834 4.31658,18.3166 4.70711,18.7071 L8,22" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M19,6 L7,6 C5.34315,6 4,7.34315 4,9 L4,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> </g> </g> </g></svg>
+                                            </div>
+
                                         <ng-container *ngIf="Isadmin==true && (showAttendeeNotify == '1'  || showAttendeeNotify == '2' ||  showAttendeeNotify == '3')">
                                             <div class="kt-meeting-status hold" *ngIf="showAttendeeNotify == '1' || showAttendeeNotify == '3'" (click)="pauseMeeting()" matTooltip="Pause" >
                                                 <span class="kt-meeting-status-icon">
@@ -1673,16 +1681,11 @@
                                             <span class="kt-meeting-status-time">{{formatTime(elapsedTime)}}</span> 
                                         </div> 
 
+                                          
                                       
-                                        <div  *ngIf="!isLoading && Status1=='Owner' && item.Recurrence != 'Daily'" matTooltip="Repeat"   class="options event" (click)="Repeat_Meeting()">                                         
-                                            <svg width="64px" height="64px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>Repeat-Play</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Repeat-Play"> <rect id="Rectangle" fill-rule="nonzero" x="0" y="0" width="24" height="24"> </rect> <path d="M5,18.0002 L17,18.0002 C18.6569,18.0002 20,16.657 20,15.0002 L20,14" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M16,2 L19.2929,5.29289 C19.6834,5.68342 19.6834,6.31658 19.2929,6.70711 L16,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M8,14 L4.70711,17.2929 C4.31658,17.6834 4.31658,18.3166 4.70711,18.7071 L8,22" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M19,6 L7,6 C5.34315,6 4,7.34315 4,9 L4,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> </g> </g> </g></svg>
-                                        </div>
+                                      
 
-                                        <ng-container *ngIf="Meetingstatuscom=='Completed' || showAttendeeNotify != '0'">
-                                            <div  class="kt-project-notes"  matTooltip="Private notes" (click)="View_Private_Notes()">                                   
-                                                <svg width="16px" height="16px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" version="1.1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect height="12.5" width="10.5" y="1.75" x="2.75"></rect> <path d="m5.75 7.75h4.5m-4.5 3h2.5m-2.5-6h4.5"></path> </g></svg>                            
-                                            </div>
-                                        </ng-container>
+                                    
 
                                      
                                         <ng-container *ngIf="Isadmin==true && delayMeeting==true">
@@ -1727,7 +1730,7 @@
                         
 
 
-                        <div class="kt-Note-msg mt-3 d-flex" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress && showAttendeeNotify!='3' || showAttendeeNotify=='2') && (upcomingMeeting == true || delayMeeting == true || delayMeeting == false)">
+                        <div class="kt-Note-msg mt-3 d-flex" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress && showAttendeeNotify!='3' && showAttendeeNotify!='2') && (upcomingMeeting == true || delayMeeting == true || delayMeeting == false)">
                                 <div class="kt-note-icon" style="align-self:flex-start">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25"
@@ -1753,7 +1756,7 @@
                                 </div>
                                 <div class="notifications-list">
                                             
-                                <container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true && showAttendeeNotify!='2' && showAttendeeNotify!='3'" >
+                                <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true && showAttendeeNotify!='2' && showAttendeeNotify!='3'" >
                                 <div class="notification delay-notification mydelay-action-notf" *ngIf="Isadmin==true && !meetingInProgress">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
                                     height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
@@ -1764,13 +1767,13 @@
                                 <span class="notif-msg" style=" color: #00a2eb;" >
                                     The meeting has not started yet. Please start the meeting.</span>
                                 </div>
-                            </container>
+                            </ng-container>
 
 
 
 
 
-                            <container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true && showAttendeeNotify=='2'" >
+                            <!-- <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true && showAttendeeNotify=='2'" >
                                 <div class="notification pause-notification mydelay-action-notf" *ngIf="Isadmin==true">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#FFC01E"
                                     height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
@@ -1781,11 +1784,11 @@
                                 <span class="notif-msg" style=" color: #FFC01E;" >
                                     The meeting is currently paused. Please resume the meeting to continue.</span>
                                 </div>
-                            </container>
+                            </ng-container> -->
 
 
 
-                                <container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true">
+                                <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true">
                                 <div class="notification delay-notification mydelay-action-notf" *ngIf="Isadmin==false && meetingStarted==false"    >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
                                     height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
@@ -1796,11 +1799,11 @@
                                 <span class="notif-msg" style=" color: #00a2eb;" >
                                     The meeting has not started yet. Please wait for the admin - "{{AdminName}}" to start the meeting.</span>
                                 </div>
-                                </container>
+                                </ng-container>
                         
 
 
-                                <container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true">
+                                <!-- <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true">
                                     <div class="notification pause-notification mydelay-action-notf" *ngIf="Isadmin==false && showAttendeeNotify=='2'">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="#FFC01E"
                                         height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
@@ -1811,21 +1814,21 @@
                                     <span class="notif-msg" style=" color: #FFC01E;" >
                                         The meeting is currently paused. Please wait for the admin, {{AdminName}}, to resume it.</span>
                                     </div>
-                                    </container>
+                                    </ng-container> -->
 
 
 
 
 
 
-                                <container  *ngIf="delayMeeting == false && AutoComplete != true">
+                                <ng-container  *ngIf="delayMeeting == false && AutoComplete != true">
                                     <div class="notification delay-Start mydelay-action-notf">
                                         <svg  viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727" class="notif-img"><g _ngcontent-nuu-c397="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-nuu-c397="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-nuu-c397="" id="SVGRepo_iconCarrier"><g _ngcontent-nuu-c397=""><path _ngcontent-nuu-c397="" d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path><path _ngcontent-nuu-c397="" d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path></g></g></svg>
                                     <span class="notif-msg" style="color: #ff2727;">
                                         This meeting expired {{meetingDuration}} days ago and can not be started.</span>
                                     </div>
-                                </container>
-                                <container  *ngIf="upcomingMeeting == true">
+                                </ng-container>
+                                <ng-container  *ngIf="upcomingMeeting == true">
                                     <div class="notification delay-notification mydelay-action-notf">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
                                         height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
@@ -1836,7 +1839,7 @@
                                     <span class="notif-msg" style=" color: #00a2eb;" >
                                         This meeting is scheduled for {{EventScheduledjson[0].Schedule_date| date:'EEEE,MMMM d, yyyy'}}, at {{EventScheduledjson[0].St_Time}}.</span>
                                     </div>
-                                    </container>
+                                    </ng-container>
 
                                 <!-- <container  *ngIf="AutoComplete == true">
                                     <div class="notification notif-AutoComplete mydelay-action-notf">
@@ -2844,11 +2847,23 @@
                                                 <div class="kt-meeting-activity-head">
                                                     Meeting Activity
                                                 </div>
-                                                <div class="kt-meeting-activity-ul">
-                                                 <div class="kt-meeting-activity-li activity-smail">
-                                                        <div class="kt-meeting-activity-li-time">12:30PM</div>
+                                                <div class="kt-meeting-activity-ul" >
+                                                 
+                                                    <div class="kt-meeting-activity-li" *ngFor="let item of allActivityList"  
+                                                    [ngClass]="{'activity-attachment': item.Value === 'Attachemnt(s) added' || item.Value === 'Attachemnt(s) deleted',
+                                                    'activity-smail' : item.Value === 'SM link(s) added' || item.Value === 'SM link(s) deleted' || item.Value === 'SM link(s) changed',
+                                                    'activity-agenda' : item.Value === 'Agendas added' || item.Value === 'Agendas deleted' || item.Value === 'Agenda complete' || item.Value === 'Agenda removed from complete'  || item.Value === 'Agenda notes updated',
+                                                    'activity-portfolio' : item.Value === 'Portfolio(s) added' || item.Value === 'Portfolio(s) deleted' || item.Value === 'Portfolio(s) changed',
+                                                    'activity-project' : item.Value === 'Project(s) added' || item.Value === 'Project(s) deleted' || item.Value === 'Project(s) changed',
+                                                    'activity-participant' : item.Value === 'Attendees added' || item.Value === 'Attendees deleted',
+                                                    'activity-smail' : item.Value === 'Meeting Created' || item.Value === 'Meeting Started'
+
+                                                    }" >
+
+                                                        <div class="kt-meeting-activity-li-time">{{item.Modified_date | date : 'hh:mm a'}}</div>
                                                         <div class="kt-meeting-activity-li-icon">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                                                            
+                                                            <svg *ngIf="item.Value === 'SM link(s) added' || item.Value === 'SM link(s) deleted' || item.Value === 'SM link(s) changed'" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
                                                                 <g clip-path="url(#clip0_1010_54)">
                                                                 <mask id="mask0_1010_54" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="3" y="4" width="16" height="17">
                                                                 <path d="M19 4H3V21H19V4Z" fill="white"/>
@@ -2880,16 +2895,69 @@
                                                                 <rect width="16" height="17" fill="white" transform="translate(3 4)"/>
                                                                 </clipPath>
                                                                 </defs>
-                                                                </svg>
+                                                            </svg>                        
+                                                            <svg *ngIf="item.Value === 'Attachemnt(s) added' || item.Value === 'Attachemnt(s) deleted'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>                                         
+                                                            <svg *ngIf="item.Value === 'Agendas added' || item.Value === 'Agendas deleted' || item.Value === 'Agenda complete' || item.Value === 'Agenda removed from complete' || item.Value === 'Agenda notes updated'" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                                                                <mask id="mask0_1010_54" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="3" y="3" width="16" height="17">
+                                                                <path d="M18.5244 3.42285H3.52441V19.5767H18.5244V3.42285Z" fill="white"/>
+                                                                </mask>
+                                                                <g mask="url(#mask0_1010_54)">
+                                                                <path d="M16.9302 9.82291L15.5757 9.06922C15.5375 9.04799 15.4922 9.04799 15.4541 9.06922L14.0996 9.82291C14.0114 9.872 13.9062 9.80306 13.9062 9.6962V4.01562L15.5173 4.01967C16.4049 4.02191 17.1234 4.79741 17.1234 5.7533V9.69617C17.1234 9.80303 17.0183 9.872 16.9302 9.82291Z" fill="white" fill-opacity="0.65"/>
+                                                                <path d="M16.9905 10.3146C16.8995 10.3146 16.8085 10.2908 16.7271 10.2455L15.5145 9.57075L14.3017 10.2455C14.2205 10.2908 14.1295 10.3146 14.0385 10.3146C13.8894 10.3147 13.7479 10.2532 13.6402 10.1414C13.5271 10.0242 13.4648 9.86626 13.4648 9.69677V4.01613C13.4648 3.88993 13.5114 3.76894 13.5944 3.67981C13.6771 3.5909 13.7892 3.54102 13.906 3.54102H13.907L15.518 3.54505C16.6463 3.54789 17.5643 4.53877 17.5643 5.75381V9.69667C17.5642 10.0375 17.3068 10.3146 16.9905 10.3146ZM14.3472 4.49239V9.15072L15.2512 8.64771C15.4128 8.55757 15.6157 8.55754 15.7779 8.64771L16.6819 9.15072V5.75387C16.6819 5.06153 16.1589 4.49696 15.5159 4.49535L14.3472 4.49239Z" fill="white"/>
+                                                                <path d="M15.7193 19.5767H7.24935C5.88254 19.5767 4.77051 18.3792 4.77051 16.9072V6.09237C4.77051 4.62038 5.88251 3.42285 7.24935 3.42285H15.7194C16.8225 3.42285 17.7199 4.38934 17.7199 5.57731V12.9251C17.7199 13.1875 17.5224 13.4002 17.2787 13.4002C17.0351 13.4002 16.8376 13.1875 16.8376 12.9251V5.57731C16.8375 4.9133 16.3359 4.37309 15.7193 4.37309H7.24932C6.36901 4.37309 5.65285 5.14434 5.65285 6.09237V16.9072C5.65285 17.8552 6.36901 18.6265 7.24932 18.6265H15.7193C16.3359 18.6265 16.8375 18.0863 16.8375 17.4222V15.4029C16.8375 15.1405 17.0351 14.9278 17.2787 14.9278C17.5223 14.9278 17.7199 15.1405 17.7199 15.4029V17.4223C17.7199 18.6102 16.8224 19.5767 15.7193 19.5767Z" fill="white"/>
+                                                                <path d="M7.26442 19.5761C7.02076 19.5761 6.82324 19.3634 6.82324 19.101V6.27297C6.82324 6.01063 7.02076 5.79785 7.26442 5.79785C7.50809 5.79785 7.70561 6.01059 7.70561 6.27297V19.101C7.70561 19.3634 7.50809 19.5761 7.26442 19.5761Z" fill="white"/>
+                                                                <path d="M6.97616 7.93657H4.77028C4.52662 7.93657 4.3291 7.72382 4.3291 7.46145C4.3291 7.19907 4.52662 6.98633 4.77028 6.98633H6.97616C7.21982 6.98633 7.41734 7.19907 7.41734 7.46145C7.41734 7.72382 7.21982 7.93657 6.97616 7.93657Z" fill="white"/>
+                                                                <path d="M6.97616 11.9747H4.77028C4.52662 11.9747 4.3291 11.7619 4.3291 11.4995C4.3291 11.2372 4.52662 11.0244 4.77028 11.0244H6.97616C7.21982 11.0244 7.41734 11.2372 7.41734 11.4995C7.41734 11.7619 7.21982 11.9747 6.97616 11.9747Z" fill="white"/>
+                                                                <path d="M6.97616 16.0137H4.77028C4.52662 16.0137 4.3291 15.801 4.3291 15.5386C4.3291 15.2762 4.52662 15.0635 4.77028 15.0635H6.97616C7.21982 15.0635 7.41734 15.2762 7.41734 15.5386C7.41734 15.801 7.21982 16.0137 6.97616 16.0137Z" fill="white"/>
+                                                                <path d="M13.829 15.8947H10.2701C9.91277 15.8947 9.62305 15.5827 9.62305 15.1978V13.7408C9.62305 13.3559 9.91274 13.0439 10.2701 13.0439H13.829C14.1864 13.0439 14.4761 13.3559 14.4761 13.7408V15.1978C14.476 15.5827 14.1864 15.8947 13.829 15.8947Z" fill="white" fill-opacity="0.65"/>
+                                                                <path d="M13.8288 16.3703H10.2699C9.66982 16.3703 9.18164 15.8445 9.18164 15.1983V13.7413C9.18164 13.0951 9.66982 12.5693 10.2699 12.5693H13.8288C14.4289 12.5693 14.917 13.0951 14.917 13.7413V15.1983C14.917 15.8445 14.4289 16.3703 13.8288 16.3703ZM10.2699 13.5196C10.1564 13.5196 10.064 13.6191 10.064 13.7413V15.1983C10.064 15.3206 10.1564 15.42 10.2699 15.42H13.8288C13.9423 15.42 14.0347 15.3206 14.0347 15.1983V13.7413C14.0347 13.6191 13.9423 13.5196 13.8288 13.5196H10.2699Z" fill="white"/>
+                                                                </g>
+                                                            </svg>
+                                                            <svg *ngIf="item.Value === 'Portfolio(s) added' || item.Value === 'Portfolio(s) deleted' || item.Value === 'Portfolio(s) changed'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" version="1.1"><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path><path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor"></path></g></svg>
+                                                            <svg *ngIf="item.Value === 'Project(s) added' || item.Value === 'Project(s) deleted' || item.Value === 'Project(s) changed'" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                                                                <path d="M19 4.54251V17.4575C19 18.3251 18.3214 19 17.4571 19H4.54286C3.68929 18.9964 3 18.3323 3 17.4539V4.54251C3 3.68199 3.67143 3 4.54286 3H17.4607C18.3179 3 19 3.67128 19 4.54251ZM17.6679 17.4539V4.54251C17.6679 4.43544 17.575 4.33541 17.4607 4.33541H17.1286L13.1893 6.99911L11 5.21736L8.81429 6.99911L4.875 4.33184H4.54286C4.42857 4.33184 4.33571 4.43184 4.33571 4.53895V17.4539C4.33571 17.561 4.42857 17.661 4.54286 17.661H17.4607C17.575 17.665 17.6679 17.5646 17.6679 17.4539ZM8.36429 8.49877V9.81991H5.73929V8.49877H8.36429ZM8.36429 11.1553V12.4872H5.73929V11.1553H8.36429ZM8.76071 5.89579L10.6893 4.33541H6.45714L8.76071 5.89579ZM16.2607 8.49877V9.81991H9.26071V8.49877H16.2607ZM16.2607 11.1553V12.4872H9.26071V11.1553H16.2607ZM13.2393 5.89579L15.5429 4.33541H11.3143L13.2393 5.89579ZM16.2607 13.819V15.1509H12.7107V13.819H16.2607Z" fill="white"/>
+                                                             </svg>
+                                                           
+                                                             <svg *ngIf="item.Value === 'Attendees added' || item.Value === 'Attendees deleted'" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                                                                <path d="M18.875 17.75C18.875 17.75 20 17.75 20 16.625C20 15.5 18.875 12.125 14.375 12.125C9.875 12.125 8.75 15.5 8.75 16.625C8.75 17.75 9.875 17.75 9.875 17.75H18.875ZM9.89975 16.625C9.89144 16.6239 9.88318 16.6224 9.875 16.6205C9.87613 16.3235 10.0629 15.4618 10.73 14.6855C11.351 13.9576 12.4422 13.25 14.375 13.25C16.3066 13.25 17.3979 13.9587 18.02 14.6855C18.6871 15.4618 18.8727 16.3246 18.875 16.6205L18.866 16.6228C18.8608 16.6236 18.8555 16.6244 18.8502 16.625H9.89975ZM14.375 9.875C14.9717 9.875 15.544 9.63795 15.966 9.21599C16.3879 8.79403 16.625 8.22174 16.625 7.625C16.625 7.02826 16.3879 6.45597 15.966 6.03401C15.544 5.61205 14.9717 5.375 14.375 5.375C13.7783 5.375 13.206 5.61205 12.784 6.03401C12.3621 6.45597 12.125 7.02826 12.125 7.625C12.125 8.22174 12.3621 8.79403 12.784 9.21599C13.206 9.63795 13.7783 9.875 14.375 9.875ZM17.75 7.625C17.75 8.06821 17.6627 8.50708 17.4931 8.91656C17.3235 9.32603 17.0749 9.69809 16.7615 10.0115C16.4481 10.3249 16.076 10.5735 15.6666 10.7431C15.2571 10.9127 14.8182 11 14.375 11C13.9318 11 13.4929 10.9127 13.0834 10.7431C12.674 10.5735 12.3019 10.3249 11.9885 10.0115C11.6751 9.69809 11.4265 9.32603 11.2569 8.91656C11.0873 8.50708 11 8.06821 11 7.625C11 6.72989 11.3556 5.87145 11.9885 5.23851C12.6214 4.60558 13.4799 4.25 14.375 4.25C15.2701 4.25 16.1286 4.60558 16.7615 5.23851C17.3944 5.87145 17.75 6.72989 17.75 7.625ZM9.803 12.44C9.35298 12.2983 8.88909 12.2051 8.41925 12.1621C8.15525 12.137 7.89019 12.1246 7.625 12.125C3.125 12.125 2 15.5 2 16.625C2 17.3754 2.37463 17.75 3.125 17.75H7.868C7.70122 17.3988 7.61805 17.0137 7.625 16.625C7.625 15.4888 8.04913 14.3277 8.85125 13.358C9.12463 13.0272 9.443 12.7179 9.803 12.44ZM7.535 13.25C6.86917 14.2504 6.5095 15.4233 6.5 16.625H3.125C3.125 16.3325 3.3095 15.4663 3.98 14.6855C4.59313 13.97 5.6585 13.2725 7.535 13.2511V13.25ZM3.6875 8.1875C3.6875 7.29239 4.04308 6.43395 4.67601 5.80101C5.30895 5.16808 6.16739 4.8125 7.0625 4.8125C7.95761 4.8125 8.81605 5.16808 9.44899 5.80101C10.0819 6.43395 10.4375 7.29239 10.4375 8.1875C10.4375 9.08261 10.0819 9.94105 9.44899 10.574C8.81605 11.2069 7.95761 11.5625 7.0625 11.5625C6.16739 11.5625 5.30895 11.2069 4.67601 10.574C4.04308 9.94105 3.6875 9.08261 3.6875 8.1875ZM7.0625 5.9375C6.46576 5.9375 5.89347 6.17455 5.47151 6.59651C5.04955 7.01847 4.8125 7.59076 4.8125 8.1875C4.8125 8.78424 5.04955 9.35653 5.47151 9.77849C5.89347 10.2004 6.46576 10.4375 7.0625 10.4375C7.65924 10.4375 8.23153 10.2004 8.65349 9.77849C9.07545 9.35653 9.3125 8.78424 9.3125 8.1875C9.3125 7.59076 9.07545 7.01847 8.65349 6.59651C8.23153 6.17455 7.65924 5.9375 7.0625 5.9375Z" fill="white"/>
+                                                            </svg>
+                                                           
+
+                                                             <div *ngIf="item.Value === 'Meeting Created' || item.Value === 'Meeting Started'"  class="kt-meeting-title-activity">
+                                                              <svg  xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none"><path d="M18.5303 1.36195C18.4166 1.28357 18.2856 1.23402 18.1485 1.21759C18.0114 1.20117 17.8724 1.21835 17.7434 1.26767L16.7586 1.63752V1.45024C16.7586 1.10925 16.6231 0.782232 16.382 0.541119C16.1409 0.300007 15.8139 0.164551 15.4729 0.164551H12.0444C11.7034 0.164551 11.3764 0.300007 11.1353 0.541119C10.8942 0.782232 10.7587 1.10925 10.7587 1.45024V3.16448H4.33031C3.76221 3.16516 3.21757 3.39114 2.81586 3.79285C2.41415 4.19456 2.18818 4.73919 2.1875 5.30729V13.5683C1.75867 13.719 1.39706 14.0167 1.16678 14.4086C0.936495 14.8005 0.852413 15.2612 0.929437 15.7092C1.00646 16.1572 1.23962 16.5634 1.58757 16.8559C1.93552 17.1484 2.37579 17.3082 2.83034 17.307H16.9729C17.4274 17.3082 17.8677 17.1484 18.2157 16.8559C18.5636 16.5634 18.7968 16.1572 18.8738 15.7092C18.9508 15.2612 18.8667 14.8005 18.6364 14.4086C18.4062 14.0167 18.0446 13.719 17.6157 13.5683V8.30723C17.6157 8.19357 17.5706 8.08456 17.4902 8.00419C17.4098 7.92382 17.3008 7.87866 17.1872 7.87866C17.0735 7.87866 16.9645 7.92382 16.8841 8.00419C16.8038 8.08456 16.7586 8.19357 16.7586 8.30723V13.45H13.3554C13.1843 13.4503 13.0149 13.4846 12.8571 13.5508C12.6993 13.617 12.5562 13.7138 12.4361 13.8357L12.1018 14.1785C12.0619 14.2193 12.0142 14.2516 11.9616 14.2737C11.909 14.2958 11.8525 14.3071 11.7954 14.3071H8.04722C7.9367 14.3071 7.83045 14.2644 7.75066 14.188L7.35381 13.8074C7.11472 13.5775 6.79578 13.4494 6.46412 13.45H3.04462V5.30729C3.04462 4.96631 3.18007 4.63929 3.42119 4.39818C3.6623 4.15706 3.98932 4.02161 4.33031 4.02161H10.7587V4.87873C10.7587 5.21972 10.8942 5.54674 11.1353 5.78785C11.3764 6.02896 11.7034 6.16442 12.0444 6.16442H15.4729C15.8139 6.16442 16.1409 6.02896 16.382 5.78785C16.6231 5.54674 16.7586 5.21972 16.7586 4.87873V4.69145L17.7404 5.06001C17.8697 5.10981 18.0092 5.12737 18.1469 5.11116C18.2845 5.09496 18.4161 5.04549 18.5303 4.96702C18.6446 4.88829 18.7382 4.78295 18.8028 4.66008C18.8675 4.5372 18.9013 4.40045 18.9014 4.2616V2.06737C18.9013 1.92852 18.8675 1.79177 18.8028 1.66889C18.7382 1.54601 18.6446 1.44068 18.5303 1.36195ZM6.76068 14.4262L7.15753 14.8068C7.39659 15.0367 7.71555 15.1648 8.04722 15.1642H11.7954C11.9666 15.164 12.1359 15.1297 12.2937 15.0635C12.4515 14.9973 12.5946 14.9004 12.7147 14.7785L13.049 14.4357C13.089 14.3951 13.1367 14.3628 13.1893 14.3407C13.2419 14.3187 13.2984 14.3072 13.3554 14.3071H16.9729C17.257 14.3071 17.5296 14.42 17.7305 14.6209C17.9314 14.8218 18.0443 15.0943 18.0443 15.3785C18.0443 15.6627 17.9314 15.9352 17.7305 16.1361C17.5296 16.337 17.257 16.4499 16.9729 16.4499H2.83034C2.54618 16.4499 2.27367 16.337 2.07274 16.1361C1.87181 15.9352 1.75893 15.6627 1.75893 15.3785C1.75893 15.0943 1.87181 14.8218 2.07274 14.6209C2.27367 14.42 2.54618 14.3071 2.83034 14.3071H6.46412C6.57463 14.3071 6.68088 14.3498 6.76068 14.4262ZM15.9015 4.87873C15.9015 4.99239 15.8563 5.1014 15.776 5.18177C15.6956 5.26214 15.5866 5.30729 15.4729 5.30729H12.0444C11.9308 5.30729 11.8218 5.26214 11.7414 5.18177C11.661 5.1014 11.6159 4.99239 11.6159 4.87873V1.45024C11.6159 1.33657 11.661 1.22757 11.7414 1.1472C11.8218 1.06683 11.9308 1.02167 12.0444 1.02167H15.4729C15.5866 1.02167 15.6956 1.06683 15.776 1.1472C15.8563 1.22757 15.9015 1.33657 15.9015 1.45024V4.87873ZM18.0443 4.25903L16.7586 3.77647V2.55207L18.0443 2.06737V4.25903Z" fill="white"></path></svg>
+                                                             </div>
+                                                          
+
+
+
+
+
+
                                                         </div>
                                                         <div class="kt-meeting-activity-li-control">
                                                             <div class="kt-meeting-activity-li-user-info">
-                                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                                <p class="kt-meeting-activity-li-user-name">- By Ramesh Devbox</p>
+                                                                <p>{{item.Value}} "<ng-container *ngIf="hasValidOldValue(item); else newValueOnly">
+                                                                         <ng-container *ngFor="let data of item.Old_Value">
+                                                                         <!-- <br *ngIf="data.name !=='' && data.name !==undefined">  -->
+                                                                         <span *ngIf="data.name !=='' && data.name !==undefined">From : {{data.name}}</span>
+                                                                         </ng-container>
+                                                                         <ng-container *ngFor="let new_data of item.New_Value">
+                                                                             <!-- <br *ngIf="new_data.name !=='' &&  new_data.name !==undefined"> -->
+                                                                              <span *ngIf="new_data.name !=='' &&  new_data.name !==undefined">To : {{new_data.name}}</span>
+                                                                         </ng-container> 
+                                                                     </ng-container>   
+                         
+                                                                     <ng-template #newValueOnly>
+                                                                         <ng-container *ngFor="let new_data of item.New_Value">
+                                                                             <!-- <br *ngIf="new_data.name !=='' &&  new_data.name !==undefined"> -->
+                                                                              <span *ngIf="new_data.name !=='' &&  new_data.name !==undefined"><b>{{new_data.name}}</b></span>
+                                                                         </ng-container>
+                                                                     </ng-template>" </p>
+                                                                <p class="kt-meeting-activity-li-user-name">- By {{item.TM_DisplayName}}</p>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="kt-meeting-activity-li activity-attachment">
+                                                  <!--   <div class="kt-meeting-activity-li activity-attachment">
                                                         <div class="kt-meeting-activity-li-time">14:30PM</div>
                                                         <div class="kt-meeting-activity-li-icon">
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
@@ -2967,7 +3035,7 @@
                                                                 <p class="kt-meeting-activity-li-user-name">- By Ramesh Devbox</p>
                                                             </div>
                                                         </div>
-                                                    </div> 
+                                                    </div> --> 
                                                 </div>
                                             </div>
                                             <ng-template #AgendaList>
@@ -4046,21 +4114,15 @@
                                                         <img src="./assets/images/Image (4).jfif" width="14px" height="16px" class="black-white">
                                                     </div>
                                                     <div class="kt-meeting-left-li-head-label">SMail</div>
-                                                    <div class="kt-meeting-left-add">
+                                                    <div class="kt-meeting-left-add" (click)="addNewDMS()">
                                                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path></g></svg>
                                                     </div>
                                                 </div>
-                                                <div class="kt-meeting-left-li-group">
-                                                    <div class="kt-meeting-left-li-control">
-                                                        <div class="kt-meeting-left-li-control-item">
-                                                            <a href="javascript:void(0)"> All functionality checking and Fixing </a>
-                                                        </div>
-                                                        <div class="kt-meeting-left-li-control-item">
-                                                            <a href="javascript:void(0)"> Approval required memos</a>
-                                                        </div>
-                                                        <div class="kt-meeting-left-li-control-item">
-                                                            <a href="javascript:void(0)"> Approval required memos</a>
-                                                        </div>
+                                                <div class="kt-meeting-left-li-group" >
+                                                    <div class="kt-meeting-left-li-control" *ngFor="let memo of _MemosSubjectList;">
+                                                        <div class="kt-meeting-left-li-control-item" matTooltip="{{memo.Subject}}">
+                                                            <a href="javascript:void(0)" (click)="openUrl(memo.Url)" >{{memo.Subject}}</a>
+                                                        </div>                              
                                                     </div>
                                                 </div>
                                             </div>
@@ -4069,13 +4131,17 @@
                                                     <div class="kt-meeting-left-li-head-icon">
                                                         <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8 6.00067L21 6.00139M8 12.0007L21 12.0015M8 18.0007L21 18.0015M3.5 6H3.51M3.5 12H3.51M3.5 18H3.51M4 6C4 6.27614 3.77614 6.5 3.5 6.5C3.22386 6.5 3 6.27614 3 6C3 5.72386 3.22386 5.5 3.5 5.5C3.77614 5.5 4 5.72386 4 6ZM4 12C4 12.2761 3.77614 12.5 3.5 12.5C3.22386 12.5 3 12.2761 3 12C3 11.7239 3.22386 11.5 3.5 11.5C3.77614 11.5 4 11.7239 4 12ZM4 18C4 18.2761 3.77614 18.5 3.5 18.5C3.22386 18.5 3 18.2761 3 18C3 17.7239 3.22386 17.5 3.5 17.5C3.77614 17.5 4 17.7239 4 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                     </div>
-                                                    <div class="kt-meeting-left-li-head-label">Portfolio</div>
-                                                    <div class="kt-meeting-left-add">
+                                                    <div class="kt-meeting-left-li-head-label">Portfolio(s) </div>
+                                                    <div class="kt-meeting-left-add" (click)="AddPortfolio()">
                                                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path></g></svg>
                                                     </div>
                                                 </div>
                                                 <div class="kt-meeting-left-li-group">
-                                                    
+                                                    <div class="kt-meeting-left-li-control" *ngFor="let data of portfolio_Scheduledjson; let i=index">
+                                                        <div class="kt-meeting-left-li-control-item"  matTooltip="{{data.Portfolio_Name}} - {{data.Portfolio_owner}}">
+                                                            <a href="javascript:void(0)" (click)="OnCardClick(data.numberval)">{{data.Portfolio_Name}}</a>
+                                                        </div>                              
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="kt-meeting-left-li">
@@ -4083,13 +4149,17 @@
                                                     <div class="kt-meeting-left-li-head-icon">
                                                         <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="m 13,2.15688 0,9.68624 C 13,12.49386 12.491071,13 11.842857,13 L 2.1571429,13 C 1.5169643,12.99732 1,12.49922 1,11.84044 L 1,2.15688 C 1,1.51149 1.5035714,1 2.1571429,1 L 11.845536,1 C 12.488393,1 13,1.50346 13,2.15688 Z m -0.999107,9.68356 0,-9.68356 c 0,-0.0803 -0.06964,-0.15532 -0.155357,-0.15532 l -0.249107,0 L 8.6419643,3.99933 7,2.66302 5.3607143,3.99933 2.40625,1.99888 l -0.2491071,0 c -0.085714,0 -0.1553572,0.075 -0.1553572,0.15533 l 0,9.68623 c 0,0.0803 0.069643,0.15532 0.1553572,0.15532 l 9.6883931,0 c 0.08571,0.003 0.155357,-0.0723 0.155357,-0.15532 z m -6.9776787,-6.71636 0,0.99085 -1.96875,0 0,-0.99085 1.96875,0 z m 0,1.99241 0,0.99889 -1.96875,0 0,-0.99889 1.96875,0 z m 0.2973214,-3.94465 1.4464286,-1.17028 -3.1741072,0 1.7276786,1.17028 z m 5.6250003,1.95224 0,0.99085 -5.2500003,0 0,-0.99085 5.2500003,0 z m 0,1.99241 0,0.99889 -5.2500003,0 0,-0.99889 5.2500003,0 z M 8.6794643,3.17184 10.407143,2.00156 l -3.1714287,0 1.44375,1.17028 z m 2.2660717,5.94242 0,0.99888 -2.6625003,0 0,-0.99888 2.6625003,0 z"></path></g></svg>
                                                     </div>
-                                                    <div class="kt-meeting-left-li-head-label">Projects</div>
-                                                    <div class="kt-meeting-left-add">
+                                                    <div class="kt-meeting-left-li-head-label">Project(s)</div>
+                                                    <div class="kt-meeting-left-add" (click)="AddProjects()" >
                                                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path></g></svg>
                                                     </div>
                                                 </div>
                                                 <div class="kt-meeting-left-li-group">
-                                                    
+                                                    <div class="kt-meeting-left-li-control" *ngFor="let item of Project_code; let i=index"  >
+                                                        <div class="kt-meeting-left-li-control-item" matTooltip="{{item.Project_Name}} - {{item.TM_DisplayName}}">
+                                                            <a href="javascript:void(0)" (click)="moreDetails(item.stringval)">{{item.Project_Name}}</a>
+                                                        </div>                              
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="kt-meeting-left-li">
@@ -4098,11 +4168,18 @@
                                                         <svg height="64px" width="64px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:currentColor;} </style> <g> <path class="st0" d="M454.821,253.582L273.256,435.14c-11.697,11.697-25.124,20.411-39.484,26.235 c-21.529,8.729-45.165,10.928-67.755,6.55c-22.597-4.378-44.054-15.25-61.597-32.784c-11.69-11.69-20.396-25.118-26.227-39.484 c-8.729-21.529-10.929-45.165-6.55-67.748c4.386-22.597,15.25-44.055,32.778-61.596l203.13-203.13 c7.141-7.134,15.299-12.43,24.035-15.969c13.1-5.318,27.516-6.656,41.263-3.994c13.769,2.677,26.798,9.27,37.498,19.963 c7.133,7.134,12.423,15.292,15.968,24.035c5.318,13.092,6.657,27.502,3.987,41.264c-2.67,13.762-9.262,26.783-19.955,37.498 L213.261,363.064c-2.534,2.528-5.375,4.364-8.436,5.61c-4.571,1.851-9.661,2.335-14.495,1.396 c-4.848-0.954-9.355-3.225-13.15-7.006c-2.534-2.534-4.364-5.368-5.603-8.429c-1.865-4.571-2.342-9.668-1.402-14.495 c0.947-4.841,3.225-9.355,7.005-13.149l175.521-175.528l-29.616-29.617l-175.528,175.52c-6.536,6.536-11.505,14.182-14.801,22.313 c-4.941,12.195-6.166,25.473-3.702,38.202c2.449,12.73,8.686,24.989,18.503,34.799c6.543,6.55,14.182,11.519,22.305,14.809 c12.202,4.948,25.473,6.165,38.21,3.702c12.722-2.449,24.989-8.678,34.806-18.511L439.97,195.602 c11.142-11.149,19.571-24.113,25.167-37.917c8.394-20.717,10.48-43.314,6.294-64.971c-4.179-21.643-14.73-42.432-31.46-59.155 c-11.149-11.142-24.114-19.571-37.918-25.166c-20.717-8.401-43.314-10.48-64.971-6.301c-21.643,4.186-42.431,14.737-59.155,31.468 L74.803,236.695c-15.713,15.691-27.552,33.931-35.426,53.352c-11.817,29.154-14.765,60.97-8.863,91.462 c5.888,30.478,20.717,59.696,44.29,83.254c15.698,15.713,33.931,27.552,53.36,35.426c29.146,11.811,60.97,14.758,91.455,8.863 c30.478-5.895,59.696-20.717,83.254-44.29l181.566-181.564L454.821,253.582z"></path> </g> </g></svg>
                                                     </div>
                                                     <div class="kt-meeting-left-li-head-label">Attachments</div>
-                                                    <div class="kt-meeting-left-add">
+                                                    <div class="kt-meeting-left-add" (click)="Attachment_views()">
                                                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8V11H16C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13H13V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V13H8C7.44771 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11H11V8Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="currentColor"></path></g></svg>
                                                     </div>
                                                 </div>
-                                                
+                                                <div class="kt-meeting-left-li-group">
+                                                    <div class="kt-meeting-left-li-control" *ngFor="let item of Attachments_ary"  >
+                                                        <div class="kt-meeting-left-li-control-item"  matTooltip="{{item.File_Name}} - {{item.Created_by}}">
+                                                            <a href="javascript:void(0)" (click)="LoadDocument(item.file_id,true,item.File_Name&&item.File_Name,item.url,item.contenttype,item.Created_by)"
+                                                            >{{item.File_Name}}</a>
+                                                        </div>                              
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

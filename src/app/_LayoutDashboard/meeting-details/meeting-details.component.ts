@@ -3925,7 +3925,10 @@ onFileChange(event) {
           this.interval = setInterval(() => {
             // this.saveAttendeeTime();
             this.GetAttendeesnotes();
-
+            if(this.currentAgendaView == undefined){
+              this.GetMeetingActivity();
+            }
+          
             //  }, 1000);
 
           }, 1000);
@@ -4389,9 +4392,9 @@ onFileChange(event) {
 
 
      
-        console.log(this.LastPauseTime,'LastPauseTime')
-        console.log(this.exact_start,'exact_start');
-        console.log(this.pausetime,'pausetime');
+        // console.log(this.LastPauseTime,'LastPauseTime')
+        // console.log(this.exact_start,'exact_start');
+        // console.log(this.pausetime,'pausetime');
 
         if(this.agendasList != null){
             if(this.Agendas_List&&this.Agendas_List.length>0){                  
