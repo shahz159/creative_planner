@@ -9331,6 +9331,35 @@ a.info-btn.info-btn-disable:hover {
     background-color: #ebf4ff;
 }
 
+
+
+.kt-meeting-activity-li.activity-Meeting .kt-meeting-activity-li-icon {
+    background-color: #7ba7d733;
+}
+
+.kt-meeting-activity-li.activity-Meeting .kt-meeting-activity-li-control {
+    background-color: #7ba7d733;
+}
+
+
+
+.kt-meeting-activity-li.activity-pause .kt-meeting-activity-li-icon {
+    background-color: #CAFFD9;
+}
+
+.kt-meeting-activity-li.activity-pause .kt-meeting-activity-li-control {
+    background-color: #CAFFD9;
+}
+
+
+.kt-meeting-activity-li.activity-resume .kt-meeting-activity-li-icon {
+    background-color: #FFF6DF;
+}
+
+.kt-meeting-activity-li.activity-resume .kt-meeting-activity-li-control {
+    background-color: #FFF6DF;
+}
+
 .kt-meeting-activity-li.activity-attachment .kt-meeting-activity-li-icon {
     background-color: #f7d268;
 }
@@ -9532,3 +9561,9 @@ ul.kt-agenda-content.kt-agenda-list li:last-child {
     justify-content: center;
     align-items: center;
 }
+
+
+.private-notes.active svg {
+    color: #0034b2;
+}
+

@@ -256,6 +256,7 @@ export class MeetingDetailsComponent implements OnInit {
     jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
     this.AllDatesSDandED.push(jsonData);
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
+    this.GetMeetingnotes_data();
   }
 
   getDetailsScheduleId() {
@@ -2612,12 +2613,15 @@ export class MeetingDetailsComponent implements OnInit {
    this.unnecessnotification=false
 }
   notifyRepeat:boolean;
-  AgendaId: any
+  AgendaId: any;
+  agendaName:any
 
   showAgendaDetails(item, index) {
    
     if (this.meetingStarted == true || this.Meetingstatuscom == 'Completed') {
+      console.log(item,'item')
       this.AgendaId = item.AgendaId
+      this.agendaName = item.Agenda_Name
       this.currentAgendaView = index
 
       console.log(this.Agendas_List,'statusOneCount',this.currentAgendaView)
@@ -2813,7 +2817,7 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   private_User:any
-
+  privateNotes:any;
 
   GetMeetingnotes_data() {
     console.log('1')
@@ -2831,7 +2835,8 @@ export class MeetingDetailsComponent implements OnInit {
           this.Notes_Type = ''
         } else {
           this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes'];
-
+          this.privateNotes = this.Notes_Type.length;
+          console.log(this.privateNotes,'privateNotes')
         }
         this.GetAttendeesnotes();
 
@@ -9005,6 +9010,15 @@ this.allActivityList.forEach(obj => {
 
 console.log(this.allActivityList,'allActivityList')
   })
+}
+
+
+
+todayActivity = new Date();
+
+getDayDiff(date: string) {
+  const oneDay = 86400000;
+  return Math.floor((this.todayActivity.getTime() - new Date(date).getTime()) / oneDay);
 }
 
 
