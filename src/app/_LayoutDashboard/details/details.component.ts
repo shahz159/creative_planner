@@ -4042,7 +4042,7 @@ if(this.End_Date&&invaildPrjEnddate){
 
     var datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");
     var datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");
-
+debugger
     const jsonobj = {
       Project_Type: type,
       Project_Name: this.ProjectName,
@@ -4068,7 +4068,7 @@ if(this.End_Date&&invaildPrjEnddate){
       this.approvalObj.Remarks = this._remarks;
       this.approvalObj.isApproval = val;
 
-      this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+      this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {   debugger
         console.log(data['message'], "edit response");
         if (data['message'] == '1') {
           this.notifyService.showSuccess("Updated successfully.", "Success");
@@ -4096,7 +4096,7 @@ if(this.End_Date&&invaildPrjEnddate){
       this.approvalObj.Remarks = this._remarks;
       this.approvalObj.isApproval = val;
 
-      this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+      this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {  debugger
         console.log(data['message'], "edit response");
         if (data['message'] == '3') {
           this.notifyService.showSuccess("Project updated and Approved successfully.", "Success");
