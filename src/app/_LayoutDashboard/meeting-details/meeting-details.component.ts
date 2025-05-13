@@ -256,7 +256,6 @@ export class MeetingDetailsComponent implements OnInit {
     jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
     this.AllDatesSDandED.push(jsonData);
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
-    this.GetMeetingnotes_data();
   }
 
   getDetailsScheduleId() {
@@ -588,7 +587,7 @@ export class MeetingDetailsComponent implements OnInit {
   isLoading: boolean = true;
   oneByTwoEndDate:any;
   Meeing_Name:any;
-  deletedMeeting:boolean = true;
+  deletedMeeting:any;
   
   live_activ = [
     { actvName: 'New agenda added by Aquib Shahbaz', time: '5 sec ago' },
@@ -608,10 +607,10 @@ export class MeetingDetailsComponent implements OnInit {
     this._calenderDto.Schedule_ID = this.Schedule_ID;
 
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
-      
+    
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-      if(this.EventScheduledjson != undefined && this.EventScheduledjson != null && this.EventScheduledjson != ''){
-      this.deletedMeeting = true;
+      console.log(this.EventScheduledjson,'EventScheduledjson')
+      this.deletedMeeting = this.EventScheduledjson.length;
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       var Schedule_date = this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
@@ -842,11 +841,8 @@ export class MeetingDetailsComponent implements OnInit {
       // this.minutes = duration.minutes();
       // this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
     
-    } else {
-      this.deletedMeeting = false;
-    }
-       }); 
-   
+    }); 
+       
   }
 
 
@@ -1155,14 +1151,12 @@ export class MeetingDetailsComponent implements OnInit {
     let timeB = this.parseTime(this.latestTime);
     
     let differenceInMilliseconds = timeB.getTime() - timeA.getTime();
-    
+
+
     console.log('milliseconds:', differenceInMilliseconds);
+ 
     this.elapsedTime = differenceInMilliseconds;
-
- 
-
     if(this.elapsedTime>60000){
- 
       this.elapsedTime += 40000;
     }
    
@@ -1179,7 +1173,8 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
- 
+
+  
   
   
 
@@ -1247,7 +1242,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-  
+
 
 
 
@@ -2613,15 +2608,12 @@ export class MeetingDetailsComponent implements OnInit {
    this.unnecessnotification=false
 }
   notifyRepeat:boolean;
-  AgendaId: any;
-  agendaName:any
+  AgendaId: any
 
   showAgendaDetails(item, index) {
    
     if (this.meetingStarted == true || this.Meetingstatuscom == 'Completed') {
-      console.log(item,'item')
       this.AgendaId = item.AgendaId
-      this.agendaName = item.Agenda_Name
       this.currentAgendaView = index
 
       console.log(this.Agendas_List,'statusOneCount',this.currentAgendaView)
@@ -2817,7 +2809,7 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   private_User:any
-  privateNotes:any;
+
 
   GetMeetingnotes_data() {
     console.log('1')
@@ -2835,8 +2827,7 @@ export class MeetingDetailsComponent implements OnInit {
           this.Notes_Type = ''
         } else {
           this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes'];
-          this.privateNotes = this.Notes_Type.length;
-          console.log(this.privateNotes,'privateNotes')
+
         }
         this.GetAttendeesnotes();
 
@@ -3930,10 +3921,7 @@ onFileChange(event) {
           this.interval = setInterval(() => {
             // this.saveAttendeeTime();
             this.GetAttendeesnotes();
-            if(this.currentAgendaView == undefined){
-              this.GetMeetingActivity();
-            }
-          
+
             //  }, 1000);
 
           }, 1000);
@@ -5221,7 +5209,6 @@ onFileChange(event) {
               });
             }
           });
-       
 
           this.Location_Type = (this.EventScheduledjson[0]['Location']);
           this._meetingroom = this.Location_Type?true:false;
@@ -5235,7 +5222,7 @@ onFileChange(event) {
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "flex";
           document.getElementById("core_Dms").style.display = "flex";
-          this.updateCharacterCount();
+
 
 
 
@@ -9010,15 +8997,6 @@ this.allActivityList.forEach(obj => {
 
 console.log(this.allActivityList,'allActivityList')
   })
-}
-
-
-
-todayActivity = new Date();
-
-getDayDiff(date: string) {
-  const oneDay = 86400000;
-  return Math.floor((this.todayActivity.getTime() - new Date(date).getTime()) / oneDay);
 }
 
 
