@@ -4377,8 +4377,8 @@
                                                             <div class="kt-info-data-v old-new-dates"  *ngIf="deadlineExtendlist&&deadlineExtendlist.length>0; else deadlinenotextend">
                                                                 <span class="old-text" matTooltip="original deadline" style="margin-top:1px">{{projectInfo&&projectInfo.originaldeadline|date:'dd-MM-yyyy'}}</span>
                                                                 <svg class="icon line" xmlns="http://www.w3.org/2000/svg" id="right-arrow" viewBox="0 0 24 24" height="18px" width="18px"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path id="primary" d="M3,12H21m-3,3,3-3L18,9" style="fill: none;stroke: #707070;stroke-linecap: round;stroke-linejoin: round;stroke-width: 2.3;"></path></g></svg>
-                                                                <span class="new-text" matTooltip="revised deadline" >{{projectInfo&&projectInfo.EndDate | date : 'dd-MM-yyyy'}}</span>
-                                                            </div>
+                                                                <span class="new-text" [matTooltip]="'revised deadline (changed on '+(deadlineExtendlist[0].ModifiedDate|date : 'dd-MM-yyyy')+')'">{{projectInfo&&projectInfo.EndDate | date : 'dd-MM-yyyy'}}</span>
+                                                            </div>  
                                                             <ng-template #deadlinenotextend>
                                                                 <div class="kt-info-data-v">
                                                                     {{projectInfo&&projectInfo.EndDate | date : 'dd-MM-yyyy'}}
@@ -5934,7 +5934,7 @@
                                                             <div class="kt-info-data-v old-new-dates"  *ngIf="action_deadlineExtendlist&&action_deadlineExtendlist.length>0; else adeadlinenotextend">
                                                                 <span class="old-text" matTooltip="original deadline" style="margin-top:1px"> {{projectActionInfo[currentActionView].originaldeadline|date:'dd-MM-yyyy'}}</span>
                                                                 <svg class="icon line" xmlns="http://www.w3.org/2000/svg" id="right-arrow" viewBox="0 0 24 24" height="18px" width="18px"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path id="primary" d="M3,12H21m-3,3,3-3L18,9" style="fill: none;stroke: #707070;stroke-linecap: round;stroke-linejoin: round;stroke-width: 2.3;"></path></g></svg>
-                                                                <span class="new-text" matTooltip="revised deadline" >{{projectActionInfo[currentActionView].EndDate| date :'dd-MM-yyyy'}}</span>
+                                                                <span class="new-text"[matTooltip]="'revised deadline (changed on '+(action_deadlineExtendlist[0].ModifiedDate|date : 'dd-MM-yyyy')+')'">{{projectActionInfo[currentActionView].EndDate| date :'dd-MM-yyyy'}}</span>
                                                             </div>
                                                             <ng-template #adeadlinenotextend>
                                                                 <div class="kt-info-data-v">
@@ -14216,20 +14216,30 @@
           <div class="kt-portlet__foot">
             <div class="row pt-2 pb-2">
                 <div class="col-lg-12">
-                    <div class="form-group mb-0">
+                    <div class="form-group mb-0" *ngIf="projectInfo">
   
-                      <button type="submit" class="btn btn-info w-110 ml-2" (click)="onAction_updateProject(0)" *ngIf="(projectInfo&&projectInfo.Status!='Under Approval')">Update</button>
-                     
-                      <ng-container *ngIf="(projectInfo&&projectInfo.Status==='Under Approval') && ((Current_user_ID==approvalEmpId && projectInfo&&projectInfo.OwnerEmpNo===Current_user_ID) || isHierarchy==true) ">
-                            <button type="submit" class="btn btn-info  ml-2" (click)="onAction_updateProject(1)">Update & Approve</button> 
-                      </ng-container>
+
+                        <button type="submit" class="btn btn-info w-110 ml-2" (click)="onAction_updateProject(0)">Update</button> 
+                        <ng-container *ngIf="(projectInfo.Status==='Under Approval'||projectInfo.Status==='New Project Rejected')&&((Current_user_ID==approvalEmpId&&projectInfo.OwnerEmpNo===Current_user_ID)||isHierarchy==true)">
+                            <button *ngIf="projectInfo.Status==='Under Approval'" type="submit" class="btn btn-info  ml-2" (click)="onAction_updateProject(1)">Update & Approve</button>
+                            <button *ngIf="projectInfo.Status==='New Project Rejected'" type="submit" class="btn btn-info  ml-2" (click)="onAction_updateProject(2)">Update & release</button> 
+                        </ng-container>
+                        <button type="Cancel" class="btn w-110 btn-secondary ml-2"(click)="closeInfo()">Cancel</button>  
+
+
+
+                       <!-- <ng-container *ngIf="(projectInfo&&projectInfo.Status==='Under Approval') && ((Current_user_ID==approvalEmpId && projectInfo&&projectInfo.OwnerEmpNo===Current_user_ID) || isHierarchy==true) ">
+                          <button type="submit" class="btn btn-info  ml-2" (click)="onAction_updateProject(1)">Update & Approve</button> 
+                       </ng-container>
   
-                      <ng-container *ngIf="(projectInfo&&projectInfo.Status==='New Project Rejected') && ((Current_user_ID==approvalEmpId && projectInfo&&projectInfo.OwnerEmpNo===Current_user_ID) || isHierarchy==true) ">
-                      <button type="submit" class="btn btn-info  ml-2" (click)="onAction_updateProject(2)">Update & release</button>
-                      </ng-container>
-  
-                      <button type="Cancel" class="btn w-110 btn-secondary ml-2"(click)="closeInfo()">Cancel</button>
-  
+                       <ng-container *ngIf="(projectInfo&&projectInfo.Status==='New Project Rejected') && ((Current_user_ID==approvalEmpId && projectInfo&&projectInfo.OwnerEmpNo===Current_user_ID) || isHierarchy==true) ">
+                          <button type="submit" class="btn btn-info  ml-2" (click)="onAction_updateProject(2)">Update & release</button>
+                       </ng-container>
+
+                       <button *ngIf="projectInfo&&projectInfo.Status!='Under Approval'" type="submit" class="btn btn-info w-110 ml-2" (click)="onAction_updateProject(0)">Update</button> 
+
+                       <button type="Cancel" class="btn w-110 btn-secondary ml-2"(click)="closeInfo()">Cancel</button>   -->
+
                     </div>
                 </div>
             </div>
