@@ -28,7 +28,7 @@ export class EmployeeDetailsService {
   }
 
 
-  ProfileUpload(data){
+  ProfileUpload(data){  
     console.log(data ,"ProfileUpload Data");
     console.log(this.rootUrl + 'UsersAPI/NewAddUserProfile');
     return this.http.post(this.rootUrl + 'UsersAPI/NewAddUserProfile',data);

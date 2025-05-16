@@ -257,7 +257,7 @@ logout(){
  inputImageLoaded:number=0; 
  uploadingProfileImage:boolean=false;
 
- uploadProfileImage(userImage:any){
+ uploadProfileImage(userImage:any){   
     const frmData = new FormData();
     frmData.append("imgUpload", userImage);
     frmData.append("UserId", this._LoginUserId.toString());
