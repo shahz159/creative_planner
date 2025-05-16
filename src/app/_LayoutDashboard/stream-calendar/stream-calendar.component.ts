@@ -3441,7 +3441,8 @@ const startDate = formattedDate || today;
       return acc;
   }, {})).map(([date, events]) => ({ date, events }));
 
- 
+ console.log(this.groupedMeetingsArray, 'groupedMeetingsArray');
+      
 
       this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({ 
         ...day,
@@ -3513,7 +3514,7 @@ const startDate = formattedDate || today;
 
      
  
-   console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays',this.durationOfTodayLine);
+   console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
        
 }
 

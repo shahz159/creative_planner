@@ -256,6 +256,8 @@ export class MeetingDetailsComponent implements OnInit {
     jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
     this.AllDatesSDandED.push(jsonData);
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
+    this.GetMeetingnotes_data();
+    this.GetMeetingActivity();
   }
 
   getDetailsScheduleId() {
@@ -409,6 +411,7 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "none";
   }
   View_Private_Notes() {
+    this.currentAgendaView = undefined;
     document.getElementById("Private_Notes").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
@@ -587,7 +590,7 @@ export class MeetingDetailsComponent implements OnInit {
   isLoading: boolean = true;
   oneByTwoEndDate:any;
   Meeing_Name:any;
-  deletedMeeting:any;
+  deletedMeeting:boolean = true;
   
   live_activ = [
     { actvName: 'New agenda added by Aquib Shahbaz', time: '5 sec ago' },
@@ -607,10 +610,10 @@ export class MeetingDetailsComponent implements OnInit {
     this._calenderDto.Schedule_ID = this.Schedule_ID;
 
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
-    
+      
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-      console.log(this.EventScheduledjson,'EventScheduledjson')
-      this.deletedMeeting = this.EventScheduledjson.length;
+      if(this.EventScheduledjson != undefined && this.EventScheduledjson != null && this.EventScheduledjson != ''){
+      this.deletedMeeting = true;
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       var Schedule_date = this.EventScheduledjson[0].Schedule_date
       this.meetingRestriction(Schedule_date);
@@ -841,8 +844,11 @@ export class MeetingDetailsComponent implements OnInit {
       // this.minutes = duration.minutes();
       // this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
     
-    }); 
-       
+    } else {
+      this.deletedMeeting = false;
+    }
+       }); 
+   
   }
 
 
@@ -1151,12 +1157,14 @@ export class MeetingDetailsComponent implements OnInit {
     let timeB = this.parseTime(this.latestTime);
     
     let differenceInMilliseconds = timeB.getTime() - timeA.getTime();
-
-
+    
     console.log('milliseconds:', differenceInMilliseconds);
- 
     this.elapsedTime = differenceInMilliseconds;
+
+ 
+
     if(this.elapsedTime>60000){
+ 
       this.elapsedTime += 40000;
     }
    
@@ -1173,8 +1181,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-
-  
+ 
   
   
 
@@ -1242,7 +1249,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-
+  
 
 
 
@@ -2608,15 +2615,17 @@ export class MeetingDetailsComponent implements OnInit {
    this.unnecessnotification=false
 }
   notifyRepeat:boolean;
-  AgendaId: any
+  AgendaId: any;
+  agendaName:any
 
   showAgendaDetails(item, index) {
-   
+   console.log(item, index,'click agenda')
     if (this.meetingStarted == true || this.Meetingstatuscom == 'Completed') {
+    
       this.AgendaId = item.AgendaId
+      this.agendaName = item.Agenda_Name
       this.currentAgendaView = index
 
-      console.log(this.Agendas_List,'statusOneCount',this.currentAgendaView)
       this.GetAssigned_SubtaskProjects()
     } else if (this.Meetingstatuscom != 'Completed' && this.unnecessnotification==true ) { 
       this.notifyService.showInfo("The meeting hasn't started yet", "")
@@ -2809,7 +2818,7 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   private_User:any
-
+  privateNotes:any;
 
   GetMeetingnotes_data() {
     console.log('1')
@@ -2827,7 +2836,8 @@ export class MeetingDetailsComponent implements OnInit {
           this.Notes_Type = ''
         } else {
           this.Notes_Type = this.Meetingnotes_time[0]['Meeting_notes'];
-
+          this.privateNotes = this.Notes_Type.length;
+          console.log(this.privateNotes,'privateNotes')
         }
         this.GetAttendeesnotes();
 
@@ -3921,7 +3931,10 @@ onFileChange(event) {
           this.interval = setInterval(() => {
             // this.saveAttendeeTime();
             this.GetAttendeesnotes();
-
+            if(this.currentAgendaView == undefined){
+              this.GetMeetingActivity();
+            }
+          
             //  }, 1000);
 
           }, 1000);
@@ -5209,6 +5222,7 @@ onFileChange(event) {
               });
             }
           });
+       
 
           this.Location_Type = (this.EventScheduledjson[0]['Location']);
           this._meetingroom = this.Location_Type?true:false;
@@ -5222,7 +5236,7 @@ onFileChange(event) {
           document.getElementById("core_viw123").style.display = "none";
           document.getElementById("core_viw222").style.display = "flex";
           document.getElementById("core_Dms").style.display = "flex";
-
+          this.updateCharacterCount();
 
 
 
@@ -8917,15 +8931,52 @@ GetMeetingActivity(){
   this.approvalObj.Schedule_Id=this.Scheduleid;
 
   this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
+  this.allActivityList=JSON.parse(data[0].ActivityList);
+  
+console.log(this.allActivityList,'allActivityList');
+ console.log(this.Memos_List,'Memos_List');
 
-    this.allActivityList=JSON.parse(data[0].ActivityList)
-    // console.log(this.allActivityList,'allActivityList321')
+const memoMap = new Map(this.Memos_List.map(m => [m.MailId.toString().trim(), m.Subject.trim()]));
+
+ console.log(memoMap,'allActivityList321');
+this.allActivityList.forEach(item => {
+  if (item.Value.trim() === 'S-Mail link(s) deleted' || item.Value.trim() === 'S-Mail link(s) added') {
+    item.New_Value = item.New_Value
+      .split(',')
+      .map(id => (memoMap.get(id.trim()) || id.trim()).trim())
+      .join(',');
+  }
+});
+
+
+
 
     this.allActivityList = this.allActivityList.map(item => ({
       ...item,
       Old_Value: this.isJson(item.Old_Value) ? JSON.parse(item.Old_Value) : [{ name: item.Old_Value }],
       New_Value: this.isJson(item.New_Value) ? [JSON.parse(item.New_Value)] : [{ name: item.New_Value }]
     }));
+
+
+
+   
+
+    // this.allActivityList.forEach(activity => {
+    //   if (activity.Value.includes("S-Mail link(s) added") || activity.Value.includes("S-Mail link(s) deleted")) {
+    //     ['Old_Value', 'New_Value'].forEach(key => {
+    //       if (activity[key] && activity[key][0]?.name) {
+    //         const mailIds = activity[key][0].name.split(',').map(id => id.trim());
+    //         activity[key][0].name = mailIds
+    //           .map(id => this.Memos_List.find(memo => memo.MailId === Number(id))?.Subject)
+    //           .filter(subject => subject) // Exclude undefined subjects
+    //           .join(',');
+    //       }
+    //     });
+    //   }
+    // });
+
+
+console.log(this.allActivityList,'allActivityList')
 
 
   this.allActivityList.forEach(activity => {
@@ -8953,19 +9004,7 @@ this.allActivityList.forEach(item => {
 });
 
 
-this.allActivityList.forEach(activity => {
-  if (activity.Value.includes("SM link(s)")) {
-    ['Old_Value', 'New_Value'].forEach(key => {
-      if (activity[key] && activity[key][0]?.name) {
-        const mailIds = activity[key][0].name.split(',').map(id => id.trim());
-        activity[key][0].name = mailIds
-          .map(id => this._MemosSubjectList.find(memo => memo.MailId === Number(id))?.Subject)
-          .filter(subject => subject) // Exclude undefined subjects
-          .join(',');
-      }
-    });
-  }
-});
+
 
 // Link details undefined subjects start
 this.allActivityList.forEach(activity => {
@@ -8995,8 +9034,16 @@ this.allActivityList.forEach(obj => {
   }
 });
 
-console.log(this.allActivityList,'allActivityList')
   })
+}
+
+
+
+todayActivity = new Date();
+
+getDayDiff(date: string) {
+  const oneDay = 86400000;
+  return Math.floor((this.todayActivity.getTime() - new Date(date).getTime()) / oneDay);
 }
 
 
@@ -9253,6 +9300,18 @@ openSidebarPMN(count:any){
     this.Slide_meeting();
   }
 }
+
+
+selectAgenda(agendaIndex){
+
+ var item = this.Agendas_List.find(item=>item.AgendaId == agendaIndex)
+ var index = this.Agendas_List.findIndex(index=>index.AgendaId == agendaIndex)
+
+ this.showAgendaDetails(item,index);
+
+this.GetMeetingnotes_data()
+}
+
 
 
 }
