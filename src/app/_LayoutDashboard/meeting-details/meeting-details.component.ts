@@ -257,6 +257,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.AllDatesSDandED.push(jsonData);
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
     this.GetMeetingnotes_data();
+    this.GetMeetingActivity();
   }
 
   getDetailsScheduleId() {
@@ -410,6 +411,7 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("rightbar-overlay").style.display = "none";
   }
   View_Private_Notes() {
+    this.currentAgendaView = undefined;
     document.getElementById("Private_Notes").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
@@ -2617,14 +2619,13 @@ export class MeetingDetailsComponent implements OnInit {
   agendaName:any
 
   showAgendaDetails(item, index) {
-   
+   console.log(item, index,'click agenda')
     if (this.meetingStarted == true || this.Meetingstatuscom == 'Completed') {
-      console.log(item,'item')
+    
       this.AgendaId = item.AgendaId
       this.agendaName = item.Agenda_Name
       this.currentAgendaView = index
 
-      console.log(this.Agendas_List,'statusOneCount',this.currentAgendaView)
       this.GetAssigned_SubtaskProjects()
     } else if (this.Meetingstatuscom != 'Completed' && this.unnecessnotification==true ) { 
       this.notifyService.showInfo("The meeting hasn't started yet", "")
@@ -8930,15 +8931,52 @@ GetMeetingActivity(){
   this.approvalObj.Schedule_Id=this.Scheduleid;
 
   this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
+  this.allActivityList=JSON.parse(data[0].ActivityList);
+  
+console.log(this.allActivityList,'allActivityList');
+ console.log(this.Memos_List,'Memos_List');
 
-    this.allActivityList=JSON.parse(data[0].ActivityList)
-    // console.log(this.allActivityList,'allActivityList321')
+const memoMap = new Map(this.Memos_List.map(m => [m.MailId.toString().trim(), m.Subject.trim()]));
+
+ console.log(memoMap,'allActivityList321');
+this.allActivityList.forEach(item => {
+  if (item.Value.trim() === 'S-Mail link(s) deleted' || item.Value.trim() === 'S-Mail link(s) added') {
+    item.New_Value = item.New_Value
+      .split(',')
+      .map(id => (memoMap.get(id.trim()) || id.trim()).trim())
+      .join(',');
+  }
+});
+
+
+
 
     this.allActivityList = this.allActivityList.map(item => ({
       ...item,
       Old_Value: this.isJson(item.Old_Value) ? JSON.parse(item.Old_Value) : [{ name: item.Old_Value }],
       New_Value: this.isJson(item.New_Value) ? [JSON.parse(item.New_Value)] : [{ name: item.New_Value }]
     }));
+
+
+
+   
+
+    // this.allActivityList.forEach(activity => {
+    //   if (activity.Value.includes("S-Mail link(s) added") || activity.Value.includes("S-Mail link(s) deleted")) {
+    //     ['Old_Value', 'New_Value'].forEach(key => {
+    //       if (activity[key] && activity[key][0]?.name) {
+    //         const mailIds = activity[key][0].name.split(',').map(id => id.trim());
+    //         activity[key][0].name = mailIds
+    //           .map(id => this.Memos_List.find(memo => memo.MailId === Number(id))?.Subject)
+    //           .filter(subject => subject) // Exclude undefined subjects
+    //           .join(',');
+    //       }
+    //     });
+    //   }
+    // });
+
+
+console.log(this.allActivityList,'allActivityList')
 
 
   this.allActivityList.forEach(activity => {
@@ -8966,19 +9004,7 @@ this.allActivityList.forEach(item => {
 });
 
 
-this.allActivityList.forEach(activity => {
-  if (activity.Value.includes("SM link(s)")) {
-    ['Old_Value', 'New_Value'].forEach(key => {
-      if (activity[key] && activity[key][0]?.name) {
-        const mailIds = activity[key][0].name.split(',').map(id => id.trim());
-        activity[key][0].name = mailIds
-          .map(id => this._MemosSubjectList.find(memo => memo.MailId === Number(id))?.Subject)
-          .filter(subject => subject) // Exclude undefined subjects
-          .join(',');
-      }
-    });
-  }
-});
+
 
 // Link details undefined subjects start
 this.allActivityList.forEach(activity => {
@@ -9008,7 +9034,6 @@ this.allActivityList.forEach(obj => {
   }
 });
 
-console.log(this.allActivityList,'allActivityList')
   })
 }
 
@@ -9275,6 +9300,18 @@ openSidebarPMN(count:any){
     this.Slide_meeting();
   }
 }
+
+
+selectAgenda(agendaIndex){
+
+ var item = this.Agendas_List.find(item=>item.AgendaId == agendaIndex)
+ var index = this.Agendas_List.findIndex(index=>index.AgendaId == agendaIndex)
+
+ this.showAgendaDetails(item,index);
+
+this.GetMeetingnotes_data()
+}
+
 
 
 }

@@ -9331,33 +9331,30 @@ a.info-btn.info-btn-disable:hover {
     background-color: #ebf4ff;
 }
 
-
-
-.kt-meeting-activity-li.activity-Meeting .kt-meeting-activity-li-icon {
-    background-color: #7ba7d733;
-}
-
-.kt-meeting-activity-li.activity-Meeting .kt-meeting-activity-li-control {
-    background-color: #7ba7d733;
-}
-
-
-
 .kt-meeting-activity-li.activity-pause .kt-meeting-activity-li-icon {
-    background-color: #CAFFD9;
+    background-color: #FFCD4E;
 }
 
 .kt-meeting-activity-li.activity-pause .kt-meeting-activity-li-control {
-    background-color: #CAFFD9;
+    background-color: #fff6df;
 }
 
 
 .kt-meeting-activity-li.activity-resume .kt-meeting-activity-li-icon {
-    background-color: #FFF6DF;
+    background-color: #0b9b33;
 }
 
 .kt-meeting-activity-li.activity-resume .kt-meeting-activity-li-control {
-    background-color: #FFF6DF;
+    background-color: #d4ffe0;
+}
+
+
+.kt-meeting-activity-li.activity-location .kt-meeting-activity-li-icon {
+    background-color: #FFCD4E;
+}
+
+.kt-meeting-activity-li.activity-location .kt-meeting-activity-li-control {
+    background-color:  #fff6df;
 }
 
 .kt-meeting-activity-li.activity-attachment .kt-meeting-activity-li-icon {
@@ -9399,6 +9396,45 @@ a.info-btn.info-btn-disable:hover {
 .kt-meeting-activity-li.activity-participant .kt-meeting-activity-li-control {
     background-color: #ffede7;
 }
+.kt-meeting-activity-li.activity-meetstart .kt-meeting-activity-li-icon {
+    background-color: #527ce2;
+}
+
+.kt-meeting-activity-li.activity-meetstart .kt-meeting-activity-li-control {
+    background-color: #dce6ff;
+}
+.kt-meeting-activity-li.activity-time .kt-meeting-activity-li-icon {
+    background-color: #aa52e2;
+}
+
+.kt-meeting-activity-li.activity-time .kt-meeting-activity-li-control {
+    background-color: #f1daff;
+}
+.kt-meeting-activity-li.activity-Meeting .kt-meeting-activity-li-icon {
+    background-color: #527ce2;
+}
+
+.kt-meeting-activity-li.activity-Meeting .kt-meeting-activity-li-control {
+    background-color: #dce6ff;
+}
+.kt-meeting-activity-li.activity-notes .kt-meeting-activity-li-icon {
+    background-color: #d24803;
+}
+
+.kt-meeting-activity-li.activity-notes .kt-meeting-activity-li-control {
+    background-color: #ffefe7;
+}
+.kt-meeting-activity-li.activity-task .kt-meeting-activity-li-icon {
+    background-color: #795548;
+}
+
+.kt-meeting-activity-li.activity-task .kt-meeting-activity-li-control {
+    background-color: #eee9e7;
+}
+
+
+
+
 
 
 .info-card-body .kt-info-meeting-box {
@@ -9567,3 +9603,27 @@ ul.kt-agenda-content.kt-agenda-list li:last-child {
     color: #0034b2;
 }
 
+
+
+
+.kt-meeting-action-card.agenda-expand .kt-meeting-box.main-meeting-info {
+    height: 210px;
+    overflow: hidden;
+}
+
+.kt-meeting-action-card.agenda-expand .kt-meeting-box.main-meeting-info .kt-meeting-content p {
+    max-height: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.kt-meeting-action-card.agenda-expand .kt-agenda-scroll {
+    max-height: calc(100vh - 390px);
+}
+
+.kt-meeting-left-li-head-icon.active svg {
+    color: #0034b2;
+    fill: #0034b2;
+}
