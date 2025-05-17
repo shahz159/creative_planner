@@ -8925,7 +8925,7 @@ toggleView() {
 //////////////////////////////////////////////////// Activity sidebar start ////////////////////////////////////////////////////////////
 
 allActivityList:any=[];
-
+meetingStartedTime:any;
 
 GetMeetingActivity(){
   this.approvalObj.Schedule_Id=this.Scheduleid;
@@ -8934,11 +8934,11 @@ GetMeetingActivity(){
   this.allActivityList=JSON.parse(data[0].ActivityList);
   
 console.log(this.allActivityList,'allActivityList');
- console.log(this.Memos_List,'Memos_List');
+//  console.log(this.Memos_List,'Memos_List');
 
 const memoMap = new Map(this.Memos_List.map(m => [m.MailId.toString().trim(), m.Subject.trim()]));
 
- console.log(memoMap,'allActivityList321');
+//  console.log(memoMap,'allActivityList321');
 this.allActivityList.forEach(item => {
   if (item.Value.trim() === 'S-Mail link(s) deleted' || item.Value.trim() === 'S-Mail link(s) added') {
     item.New_Value = item.New_Value
@@ -8958,25 +8958,6 @@ this.allActivityList.forEach(item => {
     }));
 
 
-
-   
-
-    // this.allActivityList.forEach(activity => {
-    //   if (activity.Value.includes("S-Mail link(s) added") || activity.Value.includes("S-Mail link(s) deleted")) {
-    //     ['Old_Value', 'New_Value'].forEach(key => {
-    //       if (activity[key] && activity[key][0]?.name) {
-    //         const mailIds = activity[key][0].name.split(',').map(id => id.trim());
-    //         activity[key][0].name = mailIds
-    //           .map(id => this.Memos_List.find(memo => memo.MailId === Number(id))?.Subject)
-    //           .filter(subject => subject) // Exclude undefined subjects
-    //           .join(',');
-    //       }
-    //     });
-    //   }
-    // });
-
-
-console.log(this.allActivityList,'allActivityList')
 
 
   this.allActivityList.forEach(activity => {
@@ -9025,14 +9006,20 @@ this.allActivityList.forEach(activity => {
 
 // Link details undefined subjects end
 
-this.allActivityList.forEach(obj => {
-  if (["Joined meeting", "Meeting Started"].includes(obj.Value)) {
-    obj.New_Value[0].name = obj.New_Value[0].name.replace(
-      /\bat: (\d{2}):(\d{2}):(\d{2})\b/,
-      (_, h, m) => `at: ${(h % 12 || 12)}:${m} ${+h < 12 ? "AM" : "PM"}`
-    );
-  }
-});
+    this.allActivityList.forEach(obj => {
+      if (["Joined meeting", "Meeting Started"].includes(obj.Value)) {
+        obj.New_Value[0].name = obj.New_Value[0].name.replace(
+          /\bat: (\d{2}):(\d{2}):(\d{2})\b/,
+          (_, h, m) => `at: ${(h % 12 || 12)}:${m} ${+h < 12 ? "AM" : "PM"}`
+        );
+      }
+    });
+
+
+    this.meetingStartedTime = this.allActivityList.find(x => x.Value === 'Meeting Started')?.New_Value[0]?.name;
+
+    console.log(this.allActivityList,'allActivityList')
+
 
   })
 }
