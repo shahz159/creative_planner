@@ -1922,7 +1922,7 @@
                                 <div class="meeting-attendance-heading">Meeting Summary</div>
                                 <div class="meeting-icon-content">
                                     <div>
-                                        <span><span class="s-dot"></span><span *ngIf="showAttendeeNotify != '2'"> Meeting has been started</span>  <span *ngIf="showAttendeeNotify == '2'"> Meeting has been paused</span> </span>
+                                        <span><span class="s-dot"></span><span *ngIf="showAttendeeNotify != '2'"> Meeting has been started "{{meetingStartedTime}}"</span>  <span *ngIf="showAttendeeNotify == '2'"> Meeting has been paused</span> </span>
                                         <div class="meeting-attendance-count meeting-attendance-timer">
                                             {{formatTime(elapsedTime)}}
                                         </div>
