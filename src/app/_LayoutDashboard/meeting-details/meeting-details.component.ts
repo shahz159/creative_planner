@@ -4372,6 +4372,7 @@ onFileChange(event) {
   showAttendeeNotify:any;
   pausetime:any;
   LastPauseTime:any;
+  alertShown:boolean= false;
 
   GetAttendeesnotes() {
 
@@ -4490,15 +4491,17 @@ onFileChange(event) {
             t.setMinutes(t.getMinutes() - 10);
             let newTime = t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
             let time = new Date(new Date()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-
-            // console.log(newTime ,time,'endTime');
-
-          if(newTime==time){         
-          Swal.fire({
+            let End = this.Endtms.replace(/(\d{1,2}:\d{2})/, '$1:00');
+        
+           console.log(newTime <= time , time <= End );
+          if(newTime <= time && time <= End && !this.alertShown){   
+            let diffMinutes = Math.ceil((new Date("2000-01-01 " + End).getTime() - new Date("2000-01-01 " + time).getTime()) / 60000);
+ 
+             Swal.fire({
               title: '⚠️ Ending Soon',
-              text: 'This meeting will end in 10 minutes'
+              text: `This meeting will end in ${diffMinutes} minutes`
             })
-          // continue; // Skip this file
+             this.alertShown = true;
           }
 
           if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
