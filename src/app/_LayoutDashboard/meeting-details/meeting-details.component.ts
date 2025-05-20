@@ -4486,7 +4486,7 @@ onFileChange(event) {
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
           // console.log(this.showAttendeeNotify,'showAttendeeNotify')
           // console.log(this.showAttendeeNotify,'showAttendeeNotify')
-           
+          if (this.Endtms) {
             let t = new Date("2000-01-01 " + this.Endtms);
             t.setMinutes(t.getMinutes() - 10);
             let newTime = t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
@@ -4502,7 +4502,7 @@ onFileChange(event) {
               text: `This meeting will end in ${diffMinutes} minutes`
             })
              this.alertShown = true;
-          }
+          }}
 
           if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
          
