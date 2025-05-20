@@ -1892,7 +1892,7 @@ export class MeetingDetailsComponent implements OnInit {
         (data => {
           this.GetProjectAndsubtashDrpforCalender()
           this.meeting_details();
-          this.notifyService.showSuccess("Portfolio added successfully", "Success");
+          this.notifyService.showSuccess("Portfolio(s) added successfully", "Success");
           this.Portfolio = [];
         });
     } else {
@@ -2037,7 +2037,7 @@ export class MeetingDetailsComponent implements OnInit {
       this._calenderDto.User_list = x;
       this.CalenderService.Newinsertuser_meetingreport(this._calenderDto).subscribe
         (data => {
-          this.notifyService.showSuccess("Participant added successfully", "Success");
+          this.notifyService.showSuccess("Participant(s) added successfully", "Success");
           this.GetProjectAndsubtashDrpforCalender()
           this.meeting_details()
           this.selectedEmployees = [];
@@ -2172,7 +2172,7 @@ export class MeetingDetailsComponent implements OnInit {
           this.projectsSelected = [];
           this.MasterCode = [];        
           this.meeting_details();
-          this.notifyService.showSuccess("Project added successfully", "Success");
+          this.notifyService.showSuccess("Project(s) added successfully", "Success");
           this.GetProjectAndsubtashDrpforCalender()
         });
     } else {
