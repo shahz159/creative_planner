@@ -752,7 +752,7 @@ export class MeetingDetailsComponent implements OnInit {
 
       this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
 
-      console.log(this.portfolio_Scheduledjson,'portfolio_Scheduledjson')
+      console.log(this.EventScheduledjson,'EventScheduledjson')
 
       this.totalportfolios = this.portfolio_Scheduledjson.length;
       this.portfolio_Scheduledjson.forEach(element => {
@@ -4485,6 +4485,21 @@ onFileChange(event) {
           //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
           // console.log(this.showAttendeeNotify,'showAttendeeNotify')
           // console.log(this.showAttendeeNotify,'showAttendeeNotify')
+           
+            let t = new Date("2000-01-01 " + this.Endtms);
+            t.setMinutes(t.getMinutes() - 10);
+            let newTime = t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+            let time = new Date(new Date()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+
+            // console.log(newTime ,time,'endTime');
+
+          if(newTime==time){         
+          Swal.fire({
+              title: '⚠️ Ending Soon',
+              text: 'This meeting will end in 10 minutes'
+            })
+          // continue; // Skip this file
+          }
 
           if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
          
@@ -8933,7 +8948,7 @@ GetMeetingActivity(){
   this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
   this.allActivityList=JSON.parse(data[0].ActivityList);
   
-console.log(this.allActivityList,'allActivityList');
+// console.log(this.allActivityList,'allActivityList');
 //  console.log(this.Memos_List,'Memos_List');
 
 const memoMap = new Map(this.Memos_List.map(m => [m.MailId.toString().trim(), m.Subject.trim()]));
@@ -9018,7 +9033,7 @@ this.allActivityList.forEach(activity => {
 
     this.meetingStartedTime = this.allActivityList.find(x => x.Value === 'Meeting Started')?.New_Value[0]?.name;
 
-    console.log(this.allActivityList,'allActivityList')
+    //  console.log(this.meetingStartedTime,'meetingStartedTime')
 
 
   })
