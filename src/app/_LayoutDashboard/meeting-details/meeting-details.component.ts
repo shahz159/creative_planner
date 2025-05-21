@@ -4502,7 +4502,7 @@ onFileChange(event) {
             let End = this.Endtms.replace(/(\d{1,2}:\d{2})/, '$1:00');
         
           //  console.log(newTime <= time , time <= End );
-          if(newTime <= time && time <= End && !this.alertShown){   
+          if(newTime <= time && time <= End && !this.alertShown && this.showAttendeeNotify != 0){   
             let diffMinutes = Math.ceil((new Date("2000-01-01 " + End).getTime() - new Date("2000-01-01 " + time).getTime()) / 60000);
  
              Swal.fire({
