@@ -591,6 +591,7 @@ export class MeetingDetailsComponent implements OnInit {
   oneByTwoEndDate:any;
   Meeing_Name:any;
   deletedMeeting:boolean = true;
+  Organizer:any;
   
   live_activ = [
     { actvName: 'New agenda added by Aquib Shahbaz', time: '5 sec ago' },
@@ -626,6 +627,9 @@ export class MeetingDetailsComponent implements OnInit {
 
     
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
+
+       console.log('User_Scheduledjson',this.User_Scheduledjson);
+
       this.totalUser_Scheduledjson=this.User_Scheduledjson.length;
       this.user_linkedOnMtg=this.User_Scheduledjson?this.User_Scheduledjson.map(user => user.stringval):[];
 
@@ -675,6 +679,7 @@ export class MeetingDetailsComponent implements OnInit {
         this.meetingAdmin = false
       }
 
+     
       if (this.User_Scheduledjson.length > 0) {
         const racisUserIds = this.User_Scheduledjson.map((user: any) => user.stringval);
         this.userFound = racisUserIds.includes(this.Current_user_ID);
@@ -705,8 +710,11 @@ export class MeetingDetailsComponent implements OnInit {
     
 
       var x = this.Agendas_List.length;
-
+      
       this.Createdby = this.EventScheduledjson[0].Created_by;
+      this.Organizer = this.EventScheduledjson[0].Organizer;
+
+      console.log(this.Organizer,'Organizer')
       this.main_actualDuration = this.EventScheduledjson[0].actual_duration;
 
 
@@ -776,7 +784,7 @@ export class MeetingDetailsComponent implements OnInit {
        }))
 
       this._TotalAttachment = this.Attachments_ary.length;
-      console.log('Attachments_ary',this.Attachments_ary);
+      
 
       this.DMS_Scheduledjson = this.EventScheduledjson[0].DMS_Name;
       this.Project_code = JSON.parse(this.EventScheduledjson[0].Project_code);
@@ -4493,7 +4501,7 @@ onFileChange(event) {
             let time = new Date(new Date()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
             let End = this.Endtms.replace(/(\d{1,2}:\d{2})/, '$1:00');
         
-           console.log(newTime <= time , time <= End );
+          //  console.log(newTime <= time , time <= End );
           if(newTime <= time && time <= End && !this.alertShown){   
             let diffMinutes = Math.ceil((new Date("2000-01-01 " + End).getTime() - new Date("2000-01-01 " + time).getTime()) / 60000);
  

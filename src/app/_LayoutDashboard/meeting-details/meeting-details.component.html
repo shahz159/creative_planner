@@ -1565,6 +1565,7 @@
                                                         d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z">
                                                     </path>
                                                 </svg>
+                                                 <span *ngIf="User_Scheduledjson" class="noti" >{{User_Scheduledjson.length + 1}}</span>
                                             </a>
 
                                             <!-- <a class="kt-inbox__icon" matTooltip="meetings">
@@ -1975,12 +1976,8 @@
                                         </ul>
                                         </div> -->
         
-        
                                     </div>
-                                </div>
-
-                            
-                            
+                                </div>            
                             </div>
                         </div>
                         <div class="meeting-attendance-main" *ngIf="Meetingstatuscom=='Completed'">
@@ -4777,8 +4774,8 @@
                                 </path>
                             </svg>
                                 <h4 class="m-0">Meeting attendees
-                                    <span class="head-muted mee-co">{{User_Scheduledjson.length + 1}}
-                                    </span>
+                                    <!-- <span class="head-muted mee-co">{{User_Scheduledjson.length + 1}}
+                                    </span> -->
                                 </h4>
                             </button>
                             </li>
@@ -4801,16 +4798,71 @@
                                 <path d="M10.8838 0.744141L15.5425 5.40283L10.8838 10.0615" stroke="#7E7E7E"
                                     stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                        </a>
-                        
+                        </a>                       
                     </div>
                 </div>
+
+
+                <div class="" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress && showAttendeeNotify!='3' && showAttendeeNotify!='2') && (upcomingMeeting == true || delayMeeting == true || delayMeeting == false)">
+                           
+                                <div class="notifications-list">
+                                            
+                                <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true && showAttendeeNotify!='2' && showAttendeeNotify!='3'" >
+                                <div class="notification delay-notification mydelay-action-notf m-2" *ngIf="Isadmin==true && !meetingInProgress">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
+                                    height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
+                                    <path _ngcontent-pef-c397=""
+                                    d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z">
+                                    </path>
+                                </svg>
+                                <span class="notif-msg" style=" color: #00a2eb;" >
+                                    The meeting has not started yet.</span>
+                                </div>
+                            </ng-container>
+
+
+
+                                <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true">
+                                <div class="notification delay-notification mydelay-action-notf m-2" *ngIf="Isadmin==false && meetingStarted==false"    >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
+                                    height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
+                                    <path _ngcontent-pef-c397=""
+                                    d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z">
+                                    </path>
+                                </svg>
+                                <span class="notif-msg" style=" color: #00a2eb;" >
+                                    The meeting has not started yet.</span>
+                                </div>
+                                </ng-container>
+                        
+                                <ng-container  *ngIf="delayMeeting == false && AutoComplete != true">
+                                    <div class="notification delay-Start mydelay-action-notf m-2">
+                                        <svg  viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727" class="notif-img"><g _ngcontent-nuu-c397="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-nuu-c397="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-nuu-c397="" id="SVGRepo_iconCarrier"><g _ngcontent-nuu-c397=""><path _ngcontent-nuu-c397="" d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path><path _ngcontent-nuu-c397="" d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path></g></g></svg>
+                                    <span class="notif-msg" style="color: #ff2727;">
+                                        This meeting expired {{meetingDuration}} days ago and can not be started.</span>
+                                    </div>
+                                </ng-container>
+                                <ng-container  *ngIf="upcomingMeeting == true">
+                                    <div class="notification delay-notification mydelay-action-notf m-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
+                                        height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
+                                        <path _ngcontent-pef-c397=""
+                                        d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z">
+                                        </path>
+                                    </svg>
+                                    <span class="notif-msg" style=" color: #00a2eb;" >
+                                        This meeting is scheduled for {{EventScheduledjson[0].Schedule_date| date:'EEEE,MMMM d, yyyy'}}, at {{EventScheduledjson[0].St_Time}}.</span>
+                                    </div>
+                                    </ng-container>
+            
+                            </div>
+                        </div>
 
                 <div class="meeting_attendees_vh kt-portlet__body kt-portlet__body_scroll">
                     <div class="tab-content" id="myTabMeetingAttendeesContent">
                         <div class="tab-pane fade show active" id="meetingattendees" role="tabpanel" aria-labelledby="meetingattendees-tab">
                             <ng-container  *ngIf="Meetingstatuscom!='Completed'">
-                                <div *ngIf="Isadmin==true" class="meeting-search">
+                                <div *ngIf="Isadmin==true" class="meeting-search m-2 rounded">
                                     <div class="input-group mt-2">
                                         <mat-form-field class="drp-dwn-field ">
                                             <mat-label>Add attendees</mat-label>
@@ -4878,7 +4930,7 @@
                             </ng-container>
                                 <div class="kt-chat__messages">
                     
-                                    <div class="w-100 d-flex align-items-center justify-content-between">
+                                    <!-- <div class="w-100 d-flex align-items-center justify-content-between">
                                         <div class="d-flex align-items-center">
                                             <span class="side-icns kt-org-ic" aria-hidden="true">
                                                 <svg width="20" height="20" class="svg-icn"
@@ -4900,7 +4952,13 @@
                                             </span>
                                             <div class="kt-org-v" name="user">
                                                 <span>organizer</span>
-                                                <p>{{Createdby}}</p>
+                                                <p *ngFor="let item of Organizer">
+                                                    {{item.TM_DisplayName}} 
+                                                    
+                                                        <span class="user-role">{{item.Designation_Name}}</span>
+                                                         <span class="user-company">{{item.Com_Name}}</span>
+                                                     
+                                                </p>
                                             </div>
                                         </div>
                                         <ng-container  *ngIf="Meetingstatuscom!='Completed'">
@@ -4940,7 +4998,7 @@
                                         </div>
                                      
                                         <div class="admin-check curser-pointer"
-                                            *ngIf="sched_admin == false && Isadmin==false"
+                                            *ngIf="status=='Owner' && sched_admin == false && Isadmin==false"
                                             (click)="Updating_Adminmeeting(Emp_No)">
                                             <span aria-hidden="true" class="admin-check-svg">
                                             </span>
@@ -4961,10 +5019,201 @@
                                         <span>Offline</span>
                                     </ng-container>
                                     </ng-container>
-                                    </div>
+                                    </div> -->
                     
                     
                                     <ul class="meeting-attendees-userlist">
+                                        <!-- organiser start -->
+                                          <li  class="meeting-attendees-user"  [ngClass]="{'active': activeIndex === i}" *ngFor="let item of Organizer;let i=index">
+                                            <div class="user-info">
+                                                <div class="kt-user-2lt kt-clr-1" >
+                                                    <span >{{getInitials(item.TM_DisplayName)}}</span>
+                                                        <span class="statusicn" aria-hidden="true">
+                                                            <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
+                                                                <!-- *ngIf="item.Status=='Accepted' ||item.onlineStatus=='Start' || item.onlineDuration"> -->
+                                                                <path fill="#CEEAD6"
+                                                                    d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                                                </path>
+                                                                <path fill="none" stroke="#137333" stroke-width="1.5"
+                                                                    d="M3.5 6.5L6 9l5-5">
+                                                                </path>
+                                                            </svg>
+                                                      </span>
+                                                </div>
+                                                <span>
+                                                    <div class="user-name">
+                                                        {{item.TM_DisplayName}}  (organizer)
+                                                    </div>
+                                                    <div>
+                                                        <span class="user-role">{{item.Designation_Name}}</span> <span
+                                                            class="user-company">{{item.Com_Name}}</span>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                            <div class="user-status-info">
+                                                <div class="user-status online" *ngIf="Meetingstatuscom!='Completed' && item.onlineStatus=='Start'">
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13"
+                                                            fill="currentColor">
+                                                            <g>
+                                                                <circle cx="6.31816" cy="6.22539" r="2.825" fill="currentColor" />
+                                                            </g>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Online</span>
+                                                </div>
+                                                <div class="user-status offline"  *ngIf="Meetingstatuscom!='Completed' && item.onlineStatus!='Start'">
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="currentColor">
+                                                            <g>
+                                                            <circle cx="6.31816" cy="6.22539" r="2.825" fill="currentColor"/>
+                                                            </g>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Offline</span>
+                                                </div>
+                                                <div class="join-time" *ngIf="Meetingstatuscom=='Completed' && item.onlineDuration">{{formatCompleteDuration(item.onlineDuration)}}</div>
+                                                <div class="join-time" *ngIf="Meetingstatuscom=='Completed' && !item.onlineDuration">
+                                                
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="currentColor">
+                                                            <g>
+                                                            <circle cx="6.31816" cy="6.22539" r="2.825" fill="currentColor"/>
+                                                            </g>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Offline</span>
+                                                
+                                                </div>
+                                                <ng-container  *ngIf="Meetingstatuscom!='Completed'"> 
+                                                <ng-container   *ngIf="(item.IsAdmin == false && isCheckboxDisabled == false) || (item.IsAdmin == false && item.stringval == Current_user_ID)" >
+                                                <div class="user-status-action">
+                                                    <div class="position-relative">
+                                                        <!-- <span class="admin-hover" (click)="markAdmin(i)"> -->
+                                                         <span class="admin-hover" *ngIf="meetingInProgress==false || (meetingInProgress==true && item.onlineStatus=='Start')" (click)=" Updating_Adminmeeting(item.stringval)">
+                                                            <span *ngIf="item.stringval != Current_user_ID ">Mark as admin</span>
+                                                            <span *ngIf="item.stringval == Current_user_ID ">Back to admin</span>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon"
+                                                                style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
+                                                                viewBox="0 0 1024 1024" version="1.1">
+                                                                <path
+                                                                    d="M315.392 507.904c-81.92-40.96-137.216-122.88-137.216-221.184 0-135.168 110.592-245.76 245.76-245.76s245.76 110.592 245.76 245.76c0 133.12-104.448 241.664-237.568 245.76h-2.048c-202.752 0-368.64 165.888-368.64 368.64 0 12.288-8.192 20.48-20.48 20.48s-20.48-8.192-20.48-20.48c0-186.368 124.928-344.064 294.912-393.216z m108.544-16.384c112.64 0 204.8-92.16 204.8-204.8s-92.16-204.8-204.8-204.8-204.8 92.16-204.8 204.8 92.16 204.8 204.8 204.8z m561.152 135.168l4.096 10.24-49.152 59.392c-8.192 10.24-8.192 26.624 0 36.864l49.152 57.344-4.096 10.24c-10.24 28.672-24.576 57.344-45.056 79.872l-8.192 8.192-75.776-12.288c-12.288-2.048-26.624 6.144-30.72 18.432l-26.624 73.728-10.24 2.048c-38.912 8.192-77.824 8.192-116.736 0l-12.288-2.048-24.576-71.68c-4.096-12.288-18.432-20.48-30.72-18.432l-77.824 12.288-8.192-8.192c-10.24-10.24-18.432-22.528-24.576-34.816-8.192-14.336-16.384-30.72-20.48-47.104l-4.096-10.24 51.2-57.344c8.192-10.24 8.192-26.624 0-34.816l-49.152-59.392 4.096-10.24c10.24-30.72 26.624-57.344 47.104-81.92l8.192-8.192 73.728 12.288c12.288 2.048 26.624-6.144 32.768-18.432l26.624-71.68 10.24-2.048c36.864-8.192 75.776-8.192 114.688 0l12.288 2.048 24.576 69.632c4.096 12.288 18.432 22.528 32.768 20.48l75.776-10.24 8.192 8.192c10.24 12.288 18.432 22.528 24.576 36.864 6.144 10.24 12.288 26.624 18.432 40.96z m-57.344-24.576c-4.096-8.192-8.192-14.336-14.336-22.528l-53.248 6.144c-32.768 4.096-65.536-16.384-75.776-47.104L768 491.52c-24.576-4.096-49.152-4.096-73.728 0l-18.432 49.152c-10.24 30.72-45.056 51.2-77.824 45.056l-51.2-8.192c-12.288 14.336-20.48 32.768-28.672 49.152l34.816 40.96c20.48 24.576 20.48 63.488 0 88.064l-34.816 40.96c4.096 10.24 8.192 18.432 14.336 28.672 4.096 8.192 8.192 14.336 14.336 20.48l55.296-8.192c32.768-4.096 65.536 16.384 75.776 47.104l16.384 49.152c24.576 4.096 51.2 4.096 75.776 0l18.432-51.2c10.24-30.72 45.056-51.2 75.776-45.056l51.2 8.192c10.24-14.336 20.48-30.72 26.624-49.152l-32.768-38.912c-20.48-24.576-22.528-63.488-2.048-88.064l34.816-40.96c-4.096-8.192-8.192-16.384-14.336-26.624z m-196.608 204.8c-51.2 0-92.16-40.96-92.16-92.16s40.96-92.16 92.16-92.16 92.16 40.96 92.16 92.16-43.008 92.16-92.16 92.16z m0-40.96c28.672 0 51.2-22.528 51.2-51.2s-22.528-51.2-51.2-51.2-51.2 22.528-51.2 51.2 22.528 51.2 51.2 51.2z" />
+                                                            </svg>
+                                                        </span>
+
+                                                        <div class="mark-admin-drop" id="mark-admin-drop{{i}}">
+                                                            <div class="form-group mb-0">
+                                                                <label for="exampleFormControlTextarea1">Mark as admin with comments(Optional)</label>
+                                                                <textarea class="form-control" [(ngModel)]="adminComments" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                            </div>
+                                                            <hr>
+                                                            <div class="d-flex align-items-center" style="gap:10px">
+                                                                <!-- <button class="btn btn-sm btn-info"(click)=" Updating_Adminmeeting(item.stringval)">Mark as admin</button> -->
+                                                                <button class="btn btn-sm btn-info">Mark as admin</button>
+                                                                <button class="btn btn-sm btn-secondary" (click)="closemarkAdmin(i)">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <span class="d-none">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="10" viewBox="0 0 15 10"
+                                                            fill="none">
+                                                            <path d="M10.2471 2.9375C11.0698 4.17167 11.0698 5.77941 10.2471 7.01357"
+                                                                stroke="#999999" stroke-linecap="round" />
+                                                            <path d="M12.9658 2.25781C13.8211 3.96847 13.8211 5.98192 12.9658 7.69257"
+                                                                stroke="#999999" stroke-linecap="round" />
+                                                            <path
+                                                                d="M4.4178 2.69922L6.53905 0.931493C7.20277 0.378398 8.21045 0.850366 8.21045 1.71432V8.23253C8.21045 9.09652 7.20277 9.56847 6.53905 9.01541L4.4178 7.24769C4.23467 7.09504 4.00382 7.01148 3.76544 7.01148H2.43601C1.87322 7.01148 1.41699 6.55523 1.41699 5.99246V3.95442C1.41699 3.39163 1.87322 2.93541 2.43601 2.93541H3.76544C4.00382 2.93541 4.23467 2.85183 4.4178 2.69922Z"
+                                                                stroke="#999999" />
+                                                        </svg>
+                                                    </span>
+                                                    <span class="d-none">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" viewBox="0 0 10 9"
+                                                            fill="none">
+                                                            <path
+                                                                d="M8.72951 1.00264C8.99052 0.758116 9.17168 0.541193 8.91068 0.296669C8.64968 0.0521519 8.43676 0.0521519 8.17576 0.296669L0.887506 7.13823C0.626489 7.38273 0.35224 7.8251 0.613256 8.06961C0.874279 8.31411 1.2697 8.02509 1.53072 7.78058L8.72951 1.00264Z"
+                                                                fill="#999999" />
+                                                            <path
+                                                                d="M4.00471 2.1839L6.96959 0.360352L3.85309 3.18643H1.75644V4.88456L0.975305 6.35463C0.836809 6.18272 0.753906 5.96411 0.753906 5.72617V3.18643C0.753906 2.63275 1.20275 2.1839 1.75644 2.1839H4.00471Z"
+                                                                fill="#999999" />
+                                                            <path
+                                                                d="M7.74483 7.86989L4.89722 6.14243L4.23535 6.87371L7.24341 8.72378C7.91136 9.13462 8.77113 8.65407 8.77113 7.86989V2.33789L7.74483 3.37858V7.86989Z"
+                                                                fill="#999999" />
+                                                        </svg>
+                                                    </span>
+                                                    <span class="d-none">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9"
+                                                            fill="none">
+                                                            <path d="M7.82031 1.47363L0.820312 8.47363" stroke="#999999"
+                                                                stroke-linecap="round" stroke-linejoin="round" />
+                                                            <path d="M0.820312 1.47363L7.82031 8.47363" stroke="#999999"
+                                                                stroke-linecap="round" stroke-linejoin="round" />
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </ng-container>
+                    
+                                            <ng-container  *ngIf="item.IsAdmin">
+                                                <div class="user-status-action">
+                                                    <span class="admin-hovers" >
+                                                        <span aria-hidden="true" class="admin-check-svg ml-2">
+                                                            <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
+                                                                <path _ngcontent-hko-c392="" fill="#5867dd"
+                                                                    d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
+                                                                </path>
+                                                                <path _ngcontent-hko-c392="" fill="none" stroke="#fff"
+                                                                    stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span>Admin</span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon"
+                                                            style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
+                                                            viewBox="0 0 1024 1024" version="1.1">
+                                                            <path
+                                                                d="M315.392 507.904c-81.92-40.96-137.216-122.88-137.216-221.184 0-135.168 110.592-245.76 245.76-245.76s245.76 110.592 245.76 245.76c0 133.12-104.448 241.664-237.568 245.76h-2.048c-202.752 0-368.64 165.888-368.64 368.64 0 12.288-8.192 20.48-20.48 20.48s-20.48-8.192-20.48-20.48c0-186.368 124.928-344.064 294.912-393.216z m108.544-16.384c112.64 0 204.8-92.16 204.8-204.8s-92.16-204.8-204.8-204.8-204.8 92.16-204.8 204.8 92.16 204.8 204.8 204.8z m561.152 135.168l4.096 10.24-49.152 59.392c-8.192 10.24-8.192 26.624 0 36.864l49.152 57.344-4.096 10.24c-10.24 28.672-24.576 57.344-45.056 79.872l-8.192 8.192-75.776-12.288c-12.288-2.048-26.624 6.144-30.72 18.432l-26.624 73.728-10.24 2.048c-38.912 8.192-77.824 8.192-116.736 0l-12.288-2.048-24.576-71.68c-4.096-12.288-18.432-20.48-30.72-18.432l-77.824 12.288-8.192-8.192c-10.24-10.24-18.432-22.528-24.576-34.816-8.192-14.336-16.384-30.72-20.48-47.104l-4.096-10.24 51.2-57.344c8.192-10.24 8.192-26.624 0-34.816l-49.152-59.392 4.096-10.24c10.24-30.72 26.624-57.344 47.104-81.92l8.192-8.192 73.728 12.288c12.288 2.048 26.624-6.144 32.768-18.432l26.624-71.68 10.24-2.048c36.864-8.192 75.776-8.192 114.688 0l12.288 2.048 24.576 69.632c4.096 12.288 18.432 22.528 32.768 20.48l75.776-10.24 8.192 8.192c10.24 12.288 18.432 22.528 24.576 36.864 6.144 10.24 12.288 26.624 18.432 40.96z m-57.344-24.576c-4.096-8.192-8.192-14.336-14.336-22.528l-53.248 6.144c-32.768 4.096-65.536-16.384-75.776-47.104L768 491.52c-24.576-4.096-49.152-4.096-73.728 0l-18.432 49.152c-10.24 30.72-45.056 51.2-77.824 45.056l-51.2-8.192c-12.288 14.336-20.48 32.768-28.672 49.152l34.816 40.96c20.48 24.576 20.48 63.488 0 88.064l-34.816 40.96c4.096 10.24 8.192 18.432 14.336 28.672 4.096 8.192 8.192 14.336 14.336 20.48l55.296-8.192c32.768-4.096 65.536 16.384 75.776 47.104l16.384 49.152c24.576 4.096 51.2 4.096 75.776 0l18.432-51.2c10.24-30.72 45.056-51.2 75.776-45.056l51.2 8.192c10.24-14.336 20.48-30.72 26.624-49.152l-32.768-38.912c-20.48-24.576-22.528-63.488-2.048-88.064l34.816-40.96c-4.096-8.192-8.192-16.384-14.336-26.624z m-196.608 204.8c-51.2 0-92.16-40.96-92.16-92.16s40.96-92.16 92.16-92.16 92.16 40.96 92.16 92.16-43.008 92.16-92.16 92.16z m0-40.96c28.672 0 51.2-22.528 51.2-51.2s-22.528-51.2-51.2-51.2-51.2 22.528-51.2 51.2 22.528 51.2 51.2 51.2z" />
+                                                        </svg>
+                                                    </span>
+                                                    <span class="d-none">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="10" viewBox="0 0 15 10"
+                                                            fill="none">
+                                                            <path d="M10.2471 2.9375C11.0698 4.17167 11.0698 5.77941 10.2471 7.01357"
+                                                                stroke="#999999" stroke-linecap="round" />
+                                                            <path d="M12.9658 2.25781C13.8211 3.96847 13.8211 5.98192 12.9658 7.69257"
+                                                                stroke="#999999" stroke-linecap="round" />
+                                                            <path
+                                                                d="M4.4178 2.69922L6.53905 0.931493C7.20277 0.378398 8.21045 0.850366 8.21045 1.71432V8.23253C8.21045 9.09652 7.20277 9.56847 6.53905 9.01541L4.4178 7.24769C4.23467 7.09504 4.00382 7.01148 3.76544 7.01148H2.43601C1.87322 7.01148 1.41699 6.55523 1.41699 5.99246V3.95442C1.41699 3.39163 1.87322 2.93541 2.43601 2.93541H3.76544C4.00382 2.93541 4.23467 2.85183 4.4178 2.69922Z"
+                                                                stroke="#999999" />
+                                                        </svg>
+                                                    </span>
+                                                    <span class="d-none">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" viewBox="0 0 10 9"
+                                                            fill="none">
+                                                            <path
+                                                                d="M8.72951 1.00264C8.99052 0.758116 9.17168 0.541193 8.91068 0.296669C8.64968 0.0521519 8.43676 0.0521519 8.17576 0.296669L0.887506 7.13823C0.626489 7.38273 0.35224 7.8251 0.613256 8.06961C0.874279 8.31411 1.2697 8.02509 1.53072 7.78058L8.72951 1.00264Z"
+                                                                fill="#999999" />
+                                                            <path
+                                                                d="M4.00471 2.1839L6.96959 0.360352L3.85309 3.18643H1.75644V4.88456L0.975305 6.35463C0.836809 6.18272 0.753906 5.96411 0.753906 5.72617V3.18643C0.753906 2.63275 1.20275 2.1839 1.75644 2.1839H4.00471Z"
+                                                                fill="#999999" />
+                                                            <path
+                                                                d="M7.74483 7.86989L4.89722 6.14243L4.23535 6.87371L7.24341 8.72378C7.91136 9.13462 8.77113 8.65407 8.77113 7.86989V2.33789L7.74483 3.37858V7.86989Z"
+                                                                fill="#999999" />
+                                                        </svg>
+                                                    </span>
+                                                    <span class="d-none">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9"
+                                                            fill="none">
+                                                            <path d="M7.82031 1.47363L0.820312 8.47363" stroke="#999999"
+                                                                stroke-linecap="round" stroke-linejoin="round" />
+                                                            <path d="M0.820312 1.47363L7.82031 8.47363" stroke="#999999"
+                                                                stroke-linecap="round" stroke-linejoin="round" />
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                            </div>
+                                        </li>
+                                        <!-- organiser end -->
+                                        
                                         <li  class="meeting-attendees-user"  [ngClass]="{'active': activeIndex === i}" *ngFor="let item of orderedItems;let i=index">
                                             <div class="user-info">
                                                 <div class="kt-user-2lt kt-clr-1" >
