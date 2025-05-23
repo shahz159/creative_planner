@@ -739,7 +739,8 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("createEventTaskModal").classList.remove("show");
     document.getElementById("createEventTaskModalBackdrop").style.display = "none";
     document.getElementById("createEventTaskModalBackdrop").classList.remove("show");
-
+    
+    this.selectAction=false;
     this.mtgOnDays=[];
     this.formattedDayTime = null;
     this.monthDateBinde = null;
@@ -2521,7 +2522,7 @@ this.eventtaskitemtimeModal_dismiss();
       this.notProvided1="";
   }
 
-
+selectAction:any;
 
   GetSubtasklistfromProject(MasterCode) {
 
@@ -2568,7 +2569,7 @@ this.eventtaskitemtimeModal_dismiss();
           this.BlockNameProject1 = JSON.parse(data['Projectlist']);
           this.subtask_loading=false;
         });
-      this._subname = false;
+      this._subname = false;  debugger
       this.ProjectListArray.forEach(element => {
         if (element.Project_Code == MasterCode) {
           this._Exec_BlockName = element.Exec_BlockName;
@@ -2576,10 +2577,12 @@ this.eventtaskitemtimeModal_dismiss();
         }
       });
       if (this._Exec_BlockName == "Standard Tasks" || this._Exec_BlockName == "To do List" || this._Exec_BlockName == "Routine Tasks") {
+        this.selectAction=false;
         (<HTMLInputElement>document.getElementById("subtaskid")).style.display = "none";
-
+          
       }
       else {
+        this.selectAction=true;
         (<HTMLInputElement>document.getElementById("subtaskid")).style.display = "flex";
       }
     }
