@@ -28,4 +28,7 @@ export class StatusDTO {
     enddate:string;
     EmpNo:string;
 
+    rep_date:string;
+    Sno:number;
+
 }
