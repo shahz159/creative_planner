@@ -1207,6 +1207,54 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
+// determine whether current user can create standard task / routine task type projects or not.
+
+      this.Responsible_user_Info=JSON.parse(this.projectInfo.tasks_json)[0];
+      // this.Responsible_user_Info.Routine_Total_Hours=18;
+    
+      if(['003','008'].includes(this.projectInfo.Project_Block)){
+
+        if(this.Responsible_user_Info.Position=='Team Member'){
+            this.maxAllocHrsByRole=+(this.perWeekAllocHrs*this.TEAM_MEMBER_ALLOC_RATIO).toFixed(2);    //48*0.25=12 hrs maximum user can give to the new project.
+        }
+        else if(this.Responsible_user_Info.Position=='Dept. Head'){
+            this.maxAllocHrsByRole=+(this.perWeekAllocHrs*this.DEPT_HEAD_ALLOC_RATIO).toFixed(2);    //48*0.50=24 hrs maximum user can give to the new project.
+        }
+        else if(this.Responsible_user_Info.Position=='Company Head'){
+            this.maxAllocHrsByRole=+(this.perWeekAllocHrs*this.COMPANY_HEAD_ALLOC_RATIO).toFixed(2);  //48*0.70=33.6 hrs maximum user can give to the new project
+        }
+
+        this.isStandardTasksLimitExhausted=this.Responsible_user_Info.Standard_Total_Hours>=this.maxAllocHrsByRole; 
+        this.isRoutineTasksLimitExhausted=this.Responsible_user_Info.Routine_Total_Hours>=this.maxAllocHrsByRole;
+
+        // calculate "maxAllocHrsToProject" (how much allocated hrs can be given to this project)
+
+      const h=Number.parseInt(this.projectInfo.StandardAllocatedHours.split(':')[0]);
+      const m=Number.parseInt(this.projectInfo.StandardAllocatedHours.split(':')[1]);
+      const palhrVal=h+(m/60);
+
+      this.maxAllocHrsToProject=0;  // clear old value if present.
+      let _remaininghrs=0;
+     
+      if(this.projectInfo.Project_Block=='003'){
+          _remaininghrs=this.maxAllocHrsByRole-this.Responsible_user_Info.Standard_Total_Hours;
+      }else if(this.projectInfo.Project_Block=='008'){
+          _remaininghrs=this.maxAllocHrsByRole-this.Responsible_user_Info.Routine_Total_Hours;
+      }
+
+      this.maxAllocHrsToProject=palhrVal+_remaininghrs;
+      
+    
+
+      // if(this.maxAllocHrsToProject<0){   // eg: 32/12  or 23/12 or 44/12 .....
+      //    this.maxAllocHrsToProject=palhrVal;
+      // }
+
+      }
+
+// 
+
+
     });
   }
 
@@ -3869,11 +3917,11 @@ actionCompleted(){
 
  isPrjStartDateEditable:boolean=false;
   
-  onAction_updateProject=async(val)=>{  
+  onAction_updateProject=async(val)=>{     debugger
 
   this.isPrjNameValid=this.isValidString(this.ProjectName,3);
   this.isPrjDesValid=this.isValidString(this.ProjectDescription,5);
-
+  
 // is project name duplicate 
   if(this.ProjectName&&this.ProjectName.trim()&&this.ProjectName.trim()!=this.projectInfo.Project_Name.trim()){  
     const _pnameresp:any=await this.createProjectService.NewGetProjectnameValidation(this.Current_user_ID,this.ProjectName.trim()).toPromise();
@@ -3882,7 +3930,6 @@ actionCompleted(){
   else 
   this.isPrjNameUsed=false;
 //
-
 
 
 // for given new project start date, are there any actions starting earlier to such date?
@@ -3903,19 +3950,327 @@ const actnsAfterPrjdeadline=(this.projectActionInfo && this.projectActionInfo.le
 const invaildPrjEnddate=actnsAfterPrjdeadline.length>0;
 //
 
+ let is_normal_rproject=false;
+ let show_abnormal_rmessage=false;
+
+ if(this.ProjectType=='008'||this.ProjectType=="Routine Tasks"){
+  // this.ProjectType==this.projectInfo.Project_Block
+      if(this.ProjectType==this.projectInfo.Project_Type||this.ProjectType==this.projectInfo.Project_Block){
+         is_normal_rproject=!(this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole&&this.maxAllocHrsToProject<=0);
+         show_abnormal_rmessage=is_normal_rproject==false?(this.convertToDecimalHours(this.projectInfo.StandardAllocatedHours)!=this.convertToDecimalHours(this.Allocated_Hours['$ngOptionLabel']||this.Allocated_Hours)):false;
+      }
+      else 
+      {
+        is_normal_rproject=true;
+      }
+        // is_normal_rproject= (this.ProjectType==this.projectInfo.Project_Block)?( !(this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole&&this.maxAllocHrsToProject<=0)):true;
+ }
+
+// new
+
+  if(!(
+      (this.ProjectName&&this.ProjectName.trim()!=''&&(this.ProjectName&&this.isPrjNameValid==='VALID'&&this.ProjectName.length <=100)&&(this.isPrjNameUsed==false) )&&
+      (this.ProjectDescription&&this.ProjectDescription.trim()!=''&&this.ProjectDescription?(this.characterCount<=500)&&(this.ProjectDescription&&this.isPrjDesValid==='VALID'&&this.ProjectDescription.length <=500) :false)&&        
+      ((this.ProjectType=='008'||this.ProjectType=="Routine Tasks")?(is_normal_rproject?(this.isAllocHrsOverflow==false):(show_abnormal_rmessage==false)):true)
+  )){
+     
+    // error dialogs for routine task project
+      if((this.ProjectType=='008'||this.ProjectType=="Routine Tasks")){
+
+          const totalPrjsExisting=this.Responsible_user_Info.Routine_Count;
+          const existingPrjsType='Routine Tasks';
+          const _consumedHrs=this.Responsible_user_Info.Routine_Total_Hours; 
+          const _allocatablehrs=this.maxAllocHrsToProject;
+
+
+             if(is_normal_rproject&&this.isAllocHrsOverflow){
+                // overflow..    invalid allocated hrs, you can allocated upto 2 hrs .....
+                      if(_allocatablehrs>0){
+                          // when space available in routine container
+                            Swal.fire({
+                                title:'Invalid Allocated Hours provided',
+                                html:`<div style="text-align: justify;">
+                                            <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+                                            <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs}hrs to this project.</div>
+                                      </div>`,
+                                showConfirmButton:true,
+                                confirmButtonText:'Ok'
+                             });
+                      }
+                      else{
+                        // when space not even available in routine container.
+                            Swal.fire({
+                              title: `Cannot Create Routine Task`,
+                              html: `
+                                  <div style="text-align: justify;">
+                                      <ul style="padding-left: 18px;">
+                                          <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
+                                          <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
+                                      </ul> 
+                                      <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for Routine Task projects. Please review your existing ones.</div>
+                                  </div>`,
+                              showConfirmButton: true,
+                              confirmButtonText: 'Ok'
+                            });
+                      }  
+             }
+             else if(show_abnormal_rmessage)
+             {  //  please contact your report manager......
+                  
+                  Swal.fire({
+                     title: `Cannot Proceed with Update`,
+                     html: ` <div style="text-align: justify;">
+                                <ul style="padding-left: 18px;">
+                                    <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
+                                    <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
+                                </ul> 
+                              <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">Issue with allocated hours provided.</div>
+
+                              <div style="transition-delay: 2s;font-size: 13px;color: #ebb103;border: 1px solid #FFF8E1;font-weight: 500;margin-top: 23px;background-color: #fffa5454;padding: 5px;border-radius: 4px;display: flex;align-items: center;column-gap: 3px;">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="22px" height="24px" viewBox="0 0 31.816 31.816" fill="#ebb103" stroke="#ebb103" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round">
+                                      <path d="M16.367 5.137h-1.141c-4.852.307-8.721 4.364-8.721 9.322 0 3.408 1.504 6.131 4.102 7.74v2.683c0 .783.291 1.086.745 1.388.113.073.185.198.193.336.008.135.021.312-.151.354-.703 0-.701.771-.701.771v1.729c0 .387.313.699.701.699h.469c.375 0 .648.311.648.311s1.649 1.348 3.286 1.348c1.66 0 3.285-1.348 3.285-1.348s.273-.311.648-.311h.469c.39 0 .701-.312.701-.699v-1.729s.002-.771-.701-.771c-.172-.041-.158-.221-.149-.354.01-.138.08-.263.192-.336.453-.302.744-.604.744-1.388v-2.683c2.598-1.608 4.103-4.332 4.103-7.74 0-4.958-3.868-9.015-8.721-9.322zM19.037 20.171l-.522.271v2.49c0 .426-.295.788-.709.879l-1.103.231c-.186.041-1.074.188-1.812 0l-1.102-.231c-.414-.091-.709-.453-.709-.879v-2.49l-.523-.271c-2.626-1.35-3.177-3.762-3.177-5.542 0-3.571 2.875-6.476 6.417-6.488 3.542.012 6.417 2.917 6.417 6.488 0 1.78-.55 4.192-3.177 5.542z"></path>
+                                      <path d="M27.568 6.199c.035-.229-.029-.462-.176-.645-.086-.108-.174-.214-.262-.321-.15-.177-.365-.285-.6-.298-.229-.013-.458.071-.626.23l-1.209 1.074c-.316.305-.345.804-.067 1.143.02.02.033.04.053.061.275.342.771.412 1.133.158l1.699-1.192c.167-.117.294-.322.329-.551z"></path>
+                                      <path d="M15.71 3.753c.025-.001.051-.001.076-.001.44-.003.805-.346.832-.786l.133-2.072c.016-.231-.064-.458-.226-.627-.146-.13-.369-.226-.599-.227-.14 0-.278.001-.417.004-.231.006-.451.107-.605.28-.154.173-.231.403-.211.633l.179 2.069c.067.322.436.656.876.65z"></path>
+                                      <path d="M5.223 17.219c-.101-.43-.516-.703-.951-.635l-2.051.337c-.229.037-.432.166-.562.358-.129.189-.175.429-.125.654.03.135.063.27.098.402.057.227.204.416.407.525.203.11.443.139.664.062l1.978-.635c.418-.136.664-.57.56-.998z"></path>
+                                      <path d="M7.215 8.008c.017-.021.032-.042.049-.062.272-.348.229-.845-.097-1.141L5.63 5.41c-.172-.156-.4-.234-.631-.216-.202.014-.416.126-.56.306-.088.109-.173.218-.257.329-.14.186-.197.42-.158.649.039.228.17.429.362.559l1.729 1.151c.27.348.764.267 1.033-.08z"></path>
+                                      <path d="M30.15 16.986c-.135-.188-.34-.313-.569-.346l-2.054-.291c-.436-.062-.846.225-.938.654-.011.021-.016.055-.021.078-.101.43.155.855.579.982l1.988.59c.226.065.463.037.662-.074.198-.117.344-.312.396-.537.031-.139.062-.271.088-.404.048-.313-.002-.547-.135-.737z"></path>
+                                  </svg>
+                                  <span style=" font-weight: 500;">To update, keep allocated hours unchanged.</span>
+                              </div>
+
+                            </div>`,
+                    showConfirmButton: true,
+                    confirmButtonText: 'Ok'
+                  });
+             }
+
+
+      }
+   //  error dialogs for routine task project
+
+
+       this.formFieldsRequired=true;
+       return;
+  }
+  else{
+      this.formFieldsRequired=false;
+  }
+
+
+
+// new
+
 
 
 //validation:1 check all mandatory fields are provided or not
-   if(!(
-        (this.ProjectName&&this.ProjectName.trim()!=''&&(this.ProjectName&&this.isPrjNameValid==='VALID'&&this.ProjectName.length <=100)&&(this.isPrjNameUsed==false) )&&
-        (this.ProjectDescription&&this.ProjectDescription.trim()!=''&&this.ProjectDescription?(this.characterCount<=500)&&(this.ProjectDescription&&this.isPrjDesValid==='VALID'&&this.ProjectDescription.length <=500) :false)
-      ))
-   {
-      this.formFieldsRequired=true;
-      return;
-   }
-   else this.formFieldsRequired=false;  // back to initial value.
+  //  if(!(
+
+  //       (this.ProjectName&&this.ProjectName.trim()!=''&&(this.ProjectName&&this.isPrjNameValid==='VALID'&&this.ProjectName.length <=100)&&(this.isPrjNameUsed==false) )&&
+  //       (this.ProjectDescription&&this.ProjectDescription.trim()!=''&&this.ProjectDescription?(this.characterCount<=500)&&(this.ProjectDescription&&this.isPrjDesValid==='VALID'&&this.ProjectDescription.length <=500) :false)&&        
+  //       ((this.ProjectType=='008'||this.ProjectType=="Routine Tasks")&&this.Allocated_Hours)?
+  //       ((this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole&&this.maxAllocHrsToProject<=0)?(this.convertToDecimalHours(this.projectInfo.StandardAllocatedHours)==this.convertToDecimalHours(this.Allocated_Hours['$ngOptionLabel']||this.Allocated_Hours)):(this.isAllocHrsOverflow==false)):true
+  //  ))
+  //  {
+      
+    
+    //  if((this.ProjectType=='008'||this.ProjectType=="Routine Tasks")&&this.Allocated_Hours&&this.isAllocHrsOverflow){
+          
+
+    //     const isCreatable=!this.isRoutineTasksLimitExhausted; 
+    //     const totalPrjsExisting=this.Responsible_user_Info.Routine_Count;
+    //     const existingPrjsType='Routine Tasks';
+    //     const _consumedHrs=this.Responsible_user_Info.Routine_Total_Hours; 
+    //     const _allocatablehrs=this.maxAllocHrsToProject;  
+
+    //     if(isCreatable){
+    //         Swal.fire({
+    //             title:'Invalid Allocated Hours provided',
+    //             html:`<div style="text-align: justify;">
+    //                         <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+    //                         <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs}hrs to this project.</div>
+    //                   </div>`,
+    //             showConfirmButton:true,
+    //             confirmButtonText:'Ok'
+    //         });
+    //     }
+    //     else{
+    //       Swal.fire({
+    //         title:`Cannot Create Routine Task`,
+    //         html:`
+    //               <div style="text-align: justify;">
+    //                   <ul style="padding-left: 18px;">
+    //                       <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
+    //                       <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
+    //                   </ul> 
+    //                   <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for Routine Task projects. Please review your existing ones.</div>
+    //               </div>`,
+    //         showConfirmButton:true,
+    //         confirmButtonText:'Ok'      
+    //     });
+
+    //     }
+    
+
+
+    //  }
+
+   
+    // current test
+        // if((this.ProjectType=='008'||this.ProjectType=="Routine Tasks")&&this.Allocated_Hours){
+        //       if(this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole&&this.maxAllocHrsToProject<=0)
+        //       {  // 
+        //         //v2
+        //           if(this.convertToDecimalHours(this.projectInfo.StandardAllocatedHours)!=this.convertToDecimalHours(this.Allocated_Hours['$ngOptionLabel']||this.Allocated_Hours)){
+        //             Swal.fire({
+        //               title: 'Allocated Hrs is invalid',
+        //               text: 'please contact your reporting manager, to resolve this issue.',
+        //               showConfirmButton: true,
+        //               confirmButtonText: 'Ok'
+        //             });
+
+        //           }
+
+        //       } 
+        //       else if(this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole&&this.maxAllocHrsToProject>0){
+        //               const totalPrjsExisting=this.Responsible_user_Info.Routine_Count;
+        //               const existingPrjsType='Routine Tasks';
+        //               const _consumedHrs=this.Responsible_user_Info.Routine_Total_Hours; 
+        //               const _allocatablehrs=this.maxAllocHrsToProject;
+        //               Swal.fire({
+        //                         title:'Invalid Allocated Hours provided',
+        //                         html:`<div style="text-align: justify;">
+        //                                     <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+        //                                     <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs}hrs to this project.</div>
+        //                               </div>`,
+        //                         showConfirmButton:true,
+        //                         confirmButtonText:'Ok'
+        //               });
+
+        //       }
+        //       else
+        //       {   //v1
+        //           if(this.isAllocHrsOverflow){
+        //               const isCreatable=!this.isRoutineTasksLimitExhausted; 
+        //               const totalPrjsExisting=this.Responsible_user_Info.Routine_Count;
+        //               const existingPrjsType='Routine Tasks';
+        //               const _consumedHrs=this.Responsible_user_Info.Routine_Total_Hours; 
+        //               const _allocatablehrs=this.maxAllocHrsToProject;  
+        //               if(isCreatable){
+        //                     Swal.fire({
+        //                         title:'Invalid Allocated Hours provided',
+        //                         html:`<div style="text-align: justify;">
+        //                                     <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+        //                                     <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs}hrs to this project.</div>
+        //                               </div>`,
+        //                         showConfirmButton:true,
+        //                         confirmButtonText:'Ok'
+        //                     });
+        //               }
+        //               else{
+        //                   Swal.fire({
+        //                     title:`Cannot Create Routine Task`,
+        //                     html:`
+        //                           <div style="text-align: justify;">
+        //                               <ul style="padding-left: 18px;">
+        //                                   <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
+        //                                   <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
+        //                               </ul> 
+        //                               <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for Routine Task projects. Please review your existing ones.</div>
+        //                           </div>`,
+        //                     showConfirmButton:true,
+        //                     confirmButtonText:'Ok'      
+        //                 });
+
+        //               }
+
+        //           }
+
+        //       }
+              
+              
+        // }
+    // current test
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // if((this.ProjectType=='008'||this.ProjectType=="Routine Tasks")&&this.Allocated_Hours){
+
+      //   (this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole&&this.maxAllocHrsToProject<=0)
+
+
+
+
+
+
+      //     const isroutine_exhausted=this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole;
+      //     if(isroutine_exhausted==true&&this.convertToDecimalHours(this.projectInfo.StandardAllocatedHours)!=this.convertToDecimalHours(this.Allocated_Hours['$ngOptionLabel']||this.Allocated_Hours)){
+      //         // when all routine tasks hrs > maxAlloc hrs by role. eg: 14>12, 25>12, 38>12 ....
+      //         Swal.fire({
+      //             title:'Allocated Hrs is invalid',
+      //             text:'please contact your reporting manager, to resolve this issue.',
+      //             showConfirmButton:true,
+      //             confirmButtonText:'Ok'
+      //         });
+      //     }
+      //     else if(isroutine_exhausted==false&&this.isAllocHrsOverflow){
+      //        // when all routine tasks hrs <=maxAlloc hrs by role. eg:  8<=12, 10<=12, 12<=12 ....
+      //       const isCreatable=!this.isRoutineTasksLimitExhausted; 
+      //       const totalPrjsExisting=this.Responsible_user_Info.Routine_Count;
+      //       const existingPrjsType='Routine Tasks';
+      //       const _consumedHrs=this.Responsible_user_Info.Routine_Total_Hours; 
+      //       const _allocatablehrs=this.maxAllocHrsToProject;  
+      //       if(isCreatable){
+      //             Swal.fire({
+      //                 title:'Invalid Allocated Hours provided',
+      //                 html:`<div style="text-align: justify;">
+      //                             <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+      //                             <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs}hrs to this project.</div>
+      //                       </div>`,
+      //                 showConfirmButton:true,
+      //                 confirmButtonText:'Ok'
+      //             });
+      //       }
+      //       else{
+      //           Swal.fire({
+      //             title:`Cannot Create Routine Task`,
+      //             html:`
+      //                   <div style="text-align: justify;">
+      //                       <ul style="padding-left: 18px;">
+      //                           <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
+      //                           <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
+      //                       </ul> 
+      //                       <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for Routine Task projects. Please review your existing ones.</div>
+      //                   </div>`,
+      //             showConfirmButton:true,
+      //             confirmButtonText:'Ok'      
+      //         });
+
+      //       }
+
+      //     }
+
+      // }
+
+
+  //     this.formFieldsRequired=true;
+  //     return;
+  //  }
+  //  else this.formFieldsRequired=false;  // back to initial value.
 // 
+
+
+
 
 
 //validation:2 when input start date and end date are invalid.
@@ -4135,6 +4490,16 @@ debugger
 
 
   }
+
+
+// method to convert HH:MM to hours value.
+convertToDecimalHours(hm:string){  
+  const h=Number.parseInt(hm.split(':')[0]);
+  const m=Number.parseInt(hm.split(':')[1]);
+  const alhr=h+(m/60);
+  return alhr;
+}
+// method to convert HH:MM to hours value.
 
 
   getNewPrjCost(){ 
@@ -12971,6 +13336,387 @@ this.pname_Intervalid=setTimeout(()=>{
 
 // project name already exists end.
 
+// Standard/Routine task projects alhrs validation inside project edit sidebar   .  start
+
+Responsible_user_Info:any;
+maxAllocHrsByRole:number=0;
+perWeekAllocHrs:number=48;       // Maximum hrs allocatable per week.
+COMPANY_HEAD_ALLOC_RATIO=0.70;  // 70% of 48hrs to the company head
+DEPT_HEAD_ALLOC_RATIO=0.50;    // 50% of 48hrs to the team head
+TEAM_MEMBER_ALLOC_RATIO=0.25;    //25% of 48hrs to the team member
+isStandardTasksLimitExhausted:boolean=false;  // whether user has exhausted the limit of standard tasks hours.
+isRoutineTasksLimitExhausted:boolean=false; // whether user has exhausted the limit of routine tasks hours.
+maxAllocHrsToProject:number=0;  // maximum allocatable hrs on the project user can give. (for standard and routine type projects only).
+isAllocHrsOverflow:boolean=false;  // when input allocated hrs is invalid or exceed max value.
+
+
+
+           
+// whenever standard or routine type project's allocated input hrs changed.
+computeMaxAllocHrsToProject(){   debugger
+  
+      const h=Number.parseInt(this.projectInfo.StandardAllocatedHours.split(':')[0]);
+      const m=Number.parseInt(this.projectInfo.StandardAllocatedHours.split(':')[1]);
+      const palhrVal=h+(m/60);
+
+     this.maxAllocHrsToProject=0;  // clear old value if present.
+     let _remaininghrs=0;
+     
+     if(this.ProjectType=='003'){
+         _remaininghrs=this.maxAllocHrsByRole-this.Responsible_user_Info.Standard_Total_Hours;
+     }else if(this.ProjectType=='008'){
+         _remaininghrs=this.maxAllocHrsByRole-this.Responsible_user_Info.Routine_Total_Hours;
+     }
+
+     if(this.projectInfo.Project_Block==this.ProjectType){
+       this.maxAllocHrsToProject=palhrVal+_remaininghrs;
+
+     }
+     else if(this.projectInfo.Project_Block!=this.ProjectType){
+       this.maxAllocHrsToProject=_remaininghrs;
+     }
+   
+    //  if(this.maxAllocHrsToProject<0){   // eg: 32/12  or 23/12 or 44/12 .....
+    //      this.maxAllocHrsToProject=palhrVal;
+    //   }
+     
+     
+   // after calculating max allocatable hrs value, if we found allocated hrs input present then verify it.
+   this.isAllocHrsOverflow=false;
+   if(this.Allocated_Hours){
+     this.onAllocInputHrsChanged();
+   }
+   //
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+onAllocInputHrsChanged(){   debugger
+
+    const alhr_str=this.Allocated_Hours["$ngOptionLabel"]?this.Allocated_Hours["$ngOptionLabel"]:this.Allocated_Hours;
+    const h=Number.parseInt(alhr_str.split(':')[0]);
+    const m=Number.parseInt(alhr_str.split(':')[1]);
+    const input_alhr=h+(m/60);
+    this.isAllocHrsOverflow=input_alhr>this.maxAllocHrsToProject;
+}
+
+
+showSR_ProjectsStats(ptype:'003'|'008'){  debugger
+  
+   const totalPrjsExisting=ptype=='003'?this.Responsible_user_Info.Standard_Count:this.Responsible_user_Info.Routine_Count;
+   const existingPrjsType=ptype=='003'?'Standard Tasks':'Routine Tasks';
+   const _consumedHrs=ptype=='003'?this.Responsible_user_Info.Standard_Total_Hours:this.Responsible_user_Info.Routine_Total_Hours;
+   const _allocatablehrs=this.maxAllocHrsToProject;
+   const _percent=(_consumedHrs/this.maxAllocHrsByRole)*100;
+
+   if(ptype=='003'){
+      const stdtasklimitExhausted=this.isStandardTasksLimitExhausted;
+      if(stdtasklimitExhausted){
+          Swal.fire({
+            title:'Warning',
+            html:`<div style="text-align: justify;">
+                          <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+                          <div style="font-size: 14px;color: orange;font-weight: 500;margin-top: 15px;">You've reached the limit for Standard Task projects.</div>
+                  </div>
+                  `,
+            showConfirmButton:true,
+            confirmButtonText:'Ok'      
+          });
+      } 
+      else{
+          if(_percent>=80){ 
+             Swal.fire({
+                  title:'Warning',
+                  html:`<div style="text-align: justify;">
+                                <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+                                <div style="font-size: 14px;color: orange;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs} to this project.</div>
+                        </div>
+                        `,
+                  showConfirmButton:true,
+                  confirmButtonText:'Ok'      
+              });
+          }
+      } 
+
+   }
+   else if(ptype=='008'){
+     const isCreatable=!this.isRoutineTasksLimitExhausted; 
+     if(isCreatable){
+         if(_percent>=80){
+              Swal.fire({
+               title:'Warning',
+               html:`<div style="text-align: justify;">
+                        <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+                        <div style="font-size: 14px;color: orange;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs} hours to this project.</div>
+                   </div>`,
+               showConfirmButton:true,
+               confirmButtonText:'Ok'      
+             }); 
+         }
+     }
+     else{
+          Swal.fire({
+          title:`Cannot Create Routine Task`,
+          html:`
+                <div style="text-align: justify;">
+                    <ul style="padding-left: 18px;">
+                        <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
+                        <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
+                    </ul> 
+                    <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for Routine Task projects. Please review your existing ones.</div>
+                </div>`,
+          showConfirmButton:true,
+          confirmButtonText:'Ok'      
+      });
+     }
+
+   }
+}
+
+
+
+
+// Standard/Routine task projects alhrs validation inside project edit sidebar   .  end
+
+
+// project reopen functionality   start.
+
+prjReopenDeadlineRequired:boolean=false;  // Whether deadline required for project reopen.
+rp_newDeadline:any;
+rp_remarks:string;
+rp_sfilename:string;
+rp_sfile:any;
+rp_mindate:any;
+rp_processing:boolean=false;
+rp_formFieldsRequired:boolean=false;
+
+onPrjReopenBtnClicked(){
+
+    Swal.fire({
+      title:'Reopen Project',
+      text:'Are you sure you want to reopen this project?This will allow you to continue work on it.',
+      showCancelButton:true,
+      showConfirmButton:true,
+      confirmButtonText:'Yes, Reopen',
+      cancelButtonText:'Cancel'
+    }).then((choice)=>{
+
+       if(choice.isConfirmed){
+           
+          if(this.projectInfo.Status=='Completed'){
+           
+            Swal.fire({
+              title:'Choose an Option',
+              html:`<div style="text-align: justify;">
+                     <div style="font-weight: 500;">How would you like to reopen the project?</div>
+                      <ul style="margin-top: 2px; padding-left: 20px; list-style-type: disc;">
+                          <li><div style="font-weight:500">Add a new action</div><span style="font-size: 12px; color: #919191;">Adding a new action will automatically reopens this project.</span></li>
+                          <li><div style="font-weight:500">Just reopen the project</div><span style="font-size: 12px; color: #919191;">Reopen this project without any action.</span></li>
+                      </ul> 
+                   </div>`,
+              showCancelButton:true,
+              showConfirmButton:true,
+              confirmButtonText:'Add Action & Reopen',
+              cancelButtonText:'Just Reopen'
+             }).then((choice2)=>{
+                 if(choice2.isConfirmed){
+                  this.showSideBar();     // reopening project by creating a new action inside it.
+                 }
+                 else if(choice2.dismiss==Swal.DismissReason.cancel){
+                  this.openPrjReopenSideBar();   // reopen project directly
+                 }
+                   
+             });
+
+          }
+          else if(this.projectInfo.Status=='Cancelled'){
+             this.openPrjReopenSideBar();    // reopen project directly
+          }
+
+       }
+
+    });
+}
+
+
+openPrjReopenSideBar() {
+  document.getElementById("prj-reopen-sidebar").classList.add("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementById("newdetails").classList.add("position-fixed");
+
+  this.rp_mindate=new Date(); this.rp_mindate.setHours(0,0,0,0);
+  const pdeadline=new Date(this.projectInfo.EndDate); pdeadline.setHours(0,0,0,0);
+  const cdate=new Date();  cdate.setHours(0,0,0,0);
+  this.prjReopenDeadlineRequired=pdeadline<cdate;
+}
+closePrjReopenSideBar() {
+
+  this.rp_remarks='';
+  this.rp_newDeadline=null;
+  this.rp_formFieldsRequired=false;
+  this.rp_mindate=null;
+  this.rp_processing=false;
+  this.rp_sfile=null;
+  this.rp_sfilename='';
+  
+  document.getElementById("prj-reopen-sidebar").classList.remove("kt-quick-active--on");
+  document.getElementById("newdetails").classList.remove("position-fixed");
+  document.getElementById("rightbar-overlay").style.display = "none";
+}
+
+
+
+onRPFileChange(e){
+  if(e.target.files.length>0){
+    const filetype = e.target.files[0].type;
+    const isValidFile=this.permittedFileFormats.some((format)=>{
+          return (filetype==format)||(filetype.startsWith('image/')&&format=='image/*');
+    });
+    if (isValidFile) {
+      this.rp_sfile = <File>e.target.files[0];
+      this.rp_sfilename = e.target.files[0].name;
+      this.invalidFileSelected=false;
+    }
+    else {
+      this.invalidFileSelected=true;
+      this.rp_sfile = null;
+      this.rp_sfilename = '';
+      e.target.value='';
+    }
+  }
+
+  //Reset file input value to allow selecting the same file again
+e.target.value = '';
+}
+
+
+onProjectReopenSubmit(){
+  if((this.rp_remarks&&this.rp_remarks.trim())&&(this.prjReopenDeadlineRequired?this.rp_newDeadline:true)){
+
+    // service call here
+      
+  }
+  else{
+    this.rp_formFieldsRequired=true; 
+  }
+}
+
+
+
+// project reopen functionality  end.
+
+
+// action reopen functionality start.
+
+
+actionReopenDeadlineRequired:boolean=false;  // Whether deadline required for project reopen.
+ra_newDeadline:any;
+ra_remarks:string;
+ra_sfilename:string;
+ra_sfile:any;
+ra_mindate:any;
+ra_processing:boolean=false;
+ra_formFieldsRequired:boolean=false;
+
+onActionReopenBtnClicked(){
+
+  Swal.fire({
+    title:'Reopen Action',
+    html:`<div style="text-align:justify;">
+           Are you sure you want to reopen this action?
+           <div style="font-weight:500;">${this.projectActionInfo[this.currentActionView].Project_Name}</div>
+           <div>This will allow you to continue work on it.</div>
+          </div>`,
+    showCancelButton:true,
+    showConfirmButton:true,
+    confirmButtonText:'Yes, Reopen',
+    cancelButtonText:'Cancel'
+  }).then((choice)=>{
+     if(choice.isConfirmed){   
+      this.openActionReopenSideBar();   
+     }
+  });
+
+}
+
+
+openActionReopenSideBar() {
+  document.getElementById("action-reopen-sidebar").classList.add("kt-quick-active--on");
+  document.getElementById("rightbar-overlay").style.display = "block";
+  document.getElementById("newdetails").classList.add("position-fixed");
+
+  this.ra_mindate=new Date(); this.ra_mindate.setHours(0,0,0,0);
+  const adeadline=new Date(this.projectActionInfo[this.currentActionView].EndDate); adeadline.setHours(0,0,0,0);
+  this.actionReopenDeadlineRequired=adeadline<this.ra_mindate;
+}
+
+closeActionReopenSideBar() {
+
+  this.ra_remarks='';
+  this.ra_newDeadline=null;
+  this.ra_formFieldsRequired=false;
+  this.ra_mindate=null;
+  this.ra_processing=false;
+  this.ra_sfile=null;
+  this.ra_sfilename='';
+  
+  document.getElementById("action-reopen-sidebar").classList.remove("kt-quick-active--on");
+  document.getElementById("newdetails").classList.remove("position-fixed");
+  document.getElementById("rightbar-overlay").style.display = "none";
+}
+
+onRAFileChange(e){
+  if(e.target.files.length>0){
+    const filetype = e.target.files[0].type;
+    const isValidFile=this.permittedFileFormats.some((format)=>{
+          return (filetype==format)||(filetype.startsWith('image/')&&format=='image/*');
+    });
+    if (isValidFile) {
+      this.ra_sfile = <File>e.target.files[0];
+      this.ra_sfilename = e.target.files[0].name;
+      this.invalidFileSelected=false;
+    }
+    else {
+      this.invalidFileSelected=true;
+      this.ra_sfile = null;
+      this.ra_sfilename = '';
+      e.target.value='';
+    }
+  }
+
+  //Reset file input value to allow selecting the same file again
+e.target.value = '';
+}
+
+
+
+onActionReopenSubmit(){
+  if((this.ra_remarks&&this.ra_remarks.trim())&&(this.actionReopenDeadlineRequired?this.ra_newDeadline:true)){
+
+    // service call here
+      
+  }
+  else{
+    this.ra_formFieldsRequired=true; 
+  }
+}
+
+// action reopen functionality end.
 
 }
 

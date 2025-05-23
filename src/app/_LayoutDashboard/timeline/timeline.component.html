@@ -851,8 +851,10 @@
                           
                             <td align="center">
                               <div class="d-flex align-items-center">
+ <!-- openDarReqSidebar(i) -->
                                 <a tabindex="0" class="btn px-0 mb-0 info-btn mr-2" role="button" placement="right"
-                                (click)="openDarReqSidebar(i)" href="javascript:void(0)">
+                               
+                                (click)="0" href="javascript:void(0)">
                                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                   viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                               <g>
@@ -2146,13 +2148,11 @@
          
             <div class="d-flex justify-content-between">
               <div class="kt-project-name">
-                <h4 class="mb-0" style="color: #181818; font-weight: 700;">asd fasdfasd</h4>
+                <h4 *ngIf="darRequestsList&&darRequestsList[selectedDarReqIndex]" class="mb-0" style="color: #181818; font-weight: 700;">DARReport-{{darRequestsList[selectedDarReqIndex].Emp_Rep_No}}</h4>
               </div>
               <span class="kt-widget__other dar-underaprvl text-nowrap align-self-start">Under Approval</span>
             </div>
         
-           
-  
             <div class="kt-info-box pb-3 mt-3">
               <div class="row px-3 pt-3">
                 <div class="col text-center cnt-ovrl1">
@@ -2162,7 +2162,7 @@
                       <rect x="6" y="12" width="3" height="3" rx="0.5" fill="#5c5c5c"></rect> <rect x="10.5" y="12" width="3" height="3" rx="0.5" fill="#5c5c5c"></rect> <rect x="15" y="12" width="3" height="3" rx="0.5" fill="#5c5c5c"></rect> </g></svg>
                     Report date
                   </div>
-                  <div class="kt-info-data-v1 bg-light-shade">20-12-2024</div>
+                  <div class="kt-info-data-v1 bg-light-shade">{{DARrequestInfo&&DARrequestInfo.SubmissionDate|date :'dd-MM-yyyy'}}</div>
                 </div>
                 <div class="col text-center cnt-ovrl1">
                   <div class="kt-info-lable-v1 d-flex align-items-center justify-content-center gap-1">
@@ -2170,8 +2170,8 @@
                     fill: #838080;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M23 12C23 12.3545 22.9832 12.7051 22.9504 13.051C22.3838 12.4841 21.7204 12.014 20.9871 11.6675C20.8122 6.85477 16.8555 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12C3.00683 16.8555 6.85477 20.8122 11.6675 20.9871C12.014 21.7204 12.4841 22.3838 13.051 22.9504C12.7051 22.9832 12.3545 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12Z"></path> <path d="M13 11.8812L13.8426 12.3677C13.2847 12.7802 12.7902 13.2737 12.3766 13.8307L11.5174 13.3346C11.3437 13.2343 11.2115 13.0898 11.1267 12.9235C11 12.7274 11 12.4667 11 12.4667V6C11 5.44771 11.4477 5 12 5C12.5523 5 13 5.44772 13 6V11.8812Z"></path> <path d="M15.2929 17.7071C15.6834 17.3166 16.3166 17.3166 16.7071 17.7071L17.3482 18.3482L19.2473 16.4491C19.6379 16.0586 20.271 16.0586 20.6615 16.4491C21.0521 16.8397 21.0521 17.4728 20.6615 17.8634L18.1213 20.4036C18.0349 20.49 17.9367 20.5573 17.8318 20.6054C17.4488 20.8294 16.9487 20.7772 16.6203 20.4487L15.2929 19.1213C14.9024 18.7308 14.9024 18.0976 15.2929 17.7071Z"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M18 24C21.3137 24 24 21.3137 24 18C24 14.6863 21.3137 12 18 12C14.6863 12 12 14.6863 12 18C12 21.3137 14.6863 24 18 24ZM18 22.0181C15.7809 22.0181 13.9819 20.2191 13.9819 18C13.9819 15.7809 15.7809 13.9819 18 13.9819C20.2191 13.9819 22.0181 15.7809 22.0181 18C22.0181 20.2191 20.2191 22.0181 18 22.0181Z"></path> </g>
                     </svg>
                     Achieved hours
-                  </div>
-                  <div class="kt-info-data-v1">05:30 hrs</div>
+                  </div>  
+                  <div class="kt-info-data-v1">{{DARrequestInfo&&formatDuration(DARrequestInfo.TotalDuration)}}</div>
                 </div>
                 <div class="col text-center cnt-ovrl1">
                   <div class="kt-info-lable-v1 d-flex align-items-center justify-content-center gap-1">
@@ -2179,7 +2179,7 @@
                     </svg>
                     Allotted hours
                   </div>
-                  <div class="kt-info-data-v1 bg-light-shade">08:30 hrs</div>
+                  <div class="kt-info-data-v1 bg-light-shade">{{DARrequestInfo&&formatDuration(DARrequestInfo.TotalNoOfWorkingHours)}}</div>
                 </div>
               </div>
               <div class="row px-3 pt-4">
@@ -2188,14 +2188,14 @@
                     <svg width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" fill="#898989" viewBox="0 0 101 101" id="user"><path fill="#898989" d="M50.4 54.5c10.1 0 18.2-8.2 18.2-18.2S60.5 18 50.4 18s-18.2 8.2-18.2 18.2 8.1 18.3 18.2 18.3zm0-31.7c7.4 0 13.4 6 13.4 13.4s-6 13.4-13.4 13.4S37 43.7 37 36.3s6-13.5 13.4-13.5zM18.8 83h63.4c1.3 0 2.4-1.1 2.4-2.4 0-12.6-10.3-22.9-22.9-22.9H39.3c-12.6 0-22.9 10.3-22.9 22.9 0 1.3 1.1 2.4 2.4 2.4zm20.5-20.5h22.4c9.2 0 16.7 6.8 17.9 15.7H21.4c1.2-8.9 8.7-15.7 17.9-15.7z"></path></svg>
                     Employee Name
                   </div>
-                  <div class="kt-info-data-v1">Md Waseem Akram</div>
+                  <div class="kt-info-data-v1">{{DARrequestInfo&&DARrequestInfo.Dardata[0].EmpName}}</div>
                 </div>
                 <div class="col text-center cnt-ovrl1">
                   <div class="kt-info-lable-v1 d-flex align-items-center justify-content-center gap-1">
                     <svg width="24px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.1" d="M21 11.152C20.7154 12.0872 20.2501 12.9557 19.6405 13.7265C17.9516 15.8622 15.1545 17.25 12 17.25C8.84545 17.25 6.04844 15.8622 4.35949 13.7265C3.74993 12.9557 3.28461 12.0872 3 11.152V17C3 18.8856 3 19.8284 3.58579 20.4142C4.17157 21 5.11438 21 7 21H17C18.8856 21 19.8284 21 20.4142 20.4142C21 19.8284 21 18.8856 21 17V11.152Z" fill="#605c5c"></path> <path d="M3 10C3 9.06812 3 8.60218 3.15224 8.23463C3.35523 7.74458 3.74458 7.35523 4.23463 7.15224C4.60218 7 5.06812 7 6 7V7H18V7C18.9319 7 19.3978 7 19.7654 7.15224C20.2554 7.35523 20.6448 7.74458 20.8478 8.23463C21 8.60218 21 9.06812 21 10V17C21 18.8856 21 19.8284 20.4142 20.4142C19.8284 21 18.8856 21 17 21H16H8H7C5.11438 21 4.17157 21 3.58579 20.4142C3 19.8284 3 18.8856 3 17V10Z" stroke="#605c5c" stroke-width="1.152" stroke-linejoin="round"></path> <path d="M8 7V5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5V7" stroke="#605c5c" stroke-width="1.152" stroke-linejoin="round"></path> <path d="M3 10C3.18614 11.3166 3.73499 12.5338 4.55558 13.5714C6.19462 15.644 8.91777 17 12 17C15.0822 17 17.8054 15.644 19.4444 13.5714C20.265 12.5338 20.8139 11.3166 21 10" stroke="#605c5c" stroke-width="1.152" stroke-linecap="round"></path> <path d="M11.5 13H12.5" stroke="#605c5c" stroke-width="1.152" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                     Position
                   </div>
-                  <div  class="kt-info-data-v1 bg-light-shade">Team Member</div>
+                  <div  class="kt-info-data-v1 bg-light-shade">{{DARrequestInfo&&DARrequestInfo.Position}}</div>
                 </div>
                 <div class="col text-center cnt-ovrl1">
                   <div class="kt-info-lable-v1 d-flex align-items-center justify-content-center gap-1">
@@ -2205,17 +2205,13 @@
                   </svg>
                     Company
                   </div>
-                  <div class="kt-info-data-v1">Devbox Software Pvt Ltd</div>
+                  <div class="kt-info-data-v1">{{DARrequestInfo&&DARrequestInfo.Company}}</div>
                 </div>
               </div>
             </div>
         </div>
      </div>
-  
-  
-  
-  
-  
+    
       </div> 
   
       <div class="container req-form dar-achievement-sec">
@@ -2260,7 +2256,6 @@
              </div>
            </div>
         </div>
-
 
         <div class="kt-reject-form-view" *ngIf="darDecision">
             <div class="mb-2">
@@ -2319,10 +2314,6 @@
         </div>
 
 
-
-
-
-
         <div class="mt-3 mx-3">
             <table class="time-table mb-1 border work-archv-report">
               <thead>
@@ -2335,17 +2326,23 @@
                   <th style="width: 10%;">Time</th>
                </tr>
               </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td><span>Lunch</span></td>
+            <tbody *ngIf="DARrequestInfo&&DARrequestInfo.Dardata">
+              <tr *ngFor="let timeline of DARrequestInfo.Dardata;let i=index" >
+                <td>{{i+1}}</td>
+                <td>
+                  <span *ngIf="timeline.Tasktype=='Lunch'">Lunch</span>
+                  <span *ngIf="timeline.Tasktype=='Personal'">Personal</span>
+                  <span *ngIf="timeline.Tasktype=='Corporate Responsibility'">Corporate Responsibility</span>
+                  <span *ngIf="timeline.ProjectName && timeline.Tasktype!='Lunch' && timeline.Tasktype!='Personal'" class="prj-name fs-6"  (click)="newDetails(timeline.project_code)">{{timeline.ProjectName}}</span>
+                  <span class="d-block" *ngIf="timeline.ActionName && timeline.ActionName!=timeline.ProjectName">
+                        <span class="fs-9 action-label">action</span>
+                        <a href="javascript:void(0)"  class="pro-link fs-8 actn-name" (click)="newDetailsaction(timeline.project_code,timeline.ActionCode)">{{timeline.ActionName}}</a>
+                  </span>
+                </td>
                 <td>
                     <div class="d-flex gap-1">
                         <div #tlDescReportBx class="compl-remarks-span">
-                            If you want to append a path to the root URL while still using relativeTo, you canIf you want to append a path to the root URL while still using relativeTo, you canIf you want to append a path to the root URL while still using relativeTo, you canIf you want to append a path to the root URL while still using relativeTo, you can
-                            If you want to append a path to the root URL while still using relativeTo, you canIf you want to append a path to the root URL while still using relativeTo, you canIf you want to append a path to the root URL while still using relativeTo, you canIf you want to append a path to the root URL while still using relativeTo, you can
-                            If you want to append a path to the root URL while still using relativeTo, you canIf you want to append a path to the root URL while still using relativeTo, you can
-                            If you want to append a path to the root URL while still using relativeTo, you canIf you want to append a path to the root URL while still using relativeTo, you canIf you want to append a path to the root URL while still using relativeTo, you can
+                           {{timeline.WorkAchieved}}
                         </div>
                         <button title="show full" class="txt-expnd-btn align-self-end" *ngIf="tlDescReportBx.scrollHeight>tlDescReportBx.clientHeight" (click)="$event.stopPropagation(); tlDescReportBx.classList.remove('compl-remarks-span'); lessbtn2.classList.remove('d-none'); ">
                             <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -2355,10 +2352,10 @@
                         </button>
                     </div>
                 </td>
-                <td class="text-nowrap">11:30 AM</td>
-                <td class="text-nowrap">12:15 PM</td>
-                <td class="text-nowrap">45 mins</td>
-            </tr>
+                <td class="text-nowrap">{{timeline.starttime}}</td>
+                <td class="text-nowrap">{{timeline.endtime}}</td>
+                <td class="text-nowrap">{{timeline.duration}}</td>
+              </tr>
             </tbody>
           </table>
        </div>

@@ -123,7 +123,10 @@ Dateselectionrange: string = 'Date selection range';
         this.TypeContInFilter=filterprjsby.ProjectType?[{ Block_No: filterprjsby.ProjectType }]:[];
         this.StatusCountFilter=filterprjsby.Status?[{ Name: filterprjsby.Status }]:[];
         this.CompanyCountFilter=filterprjsby.Company?[{Company_No:filterprjsby.Company}]:[];
-                                 
+                             
+        
+        console.log('from timeline filter auto:',this.EmpCountInFilter,this.TypeContInFilter,this.StatusCountFilter,this.CompanyCountFilter);
+
         this.Type=this.type1;
         this.userFound=true;
         sessionStorage.removeItem('filterprjsby');
