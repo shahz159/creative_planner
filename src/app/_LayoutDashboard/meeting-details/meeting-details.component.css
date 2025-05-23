@@ -2792,6 +2792,11 @@ div#DemoList-table div.demo i {
     color: #D32F2F;
 }
 
+.editing-cancel:hover svg {
+  fill: #D32F2F;
+  stroke: #D32F2F;
+}
+
 .editing-save {
     border: 0;
     background-color: transparent;
@@ -7196,6 +7201,12 @@ ul.schedule-select-user-list li {
     }
 }
 
+@media screen and (min-width: 1440px) {
+  ul.schedule-select-user-list.multi-selected-list li{
+      width: 195px;
+  }
+}
+
 ul.schedule-select-user-list li .schedule-select-user-list-item {
     display: flex;
     align-items: center;
@@ -9626,4 +9637,134 @@ ul.kt-agenda-content.kt-agenda-list li:last-child {
 .kt-meeting-left-li-head-icon.active svg {
     color: #0034b2;
     fill: #0034b2;
+}
+
+div#unassign-editsidebar.kt-action-panel--on {
+    width: 34% !important;
+}
+
+.offcanvas {
+  background: #ffffff;
+  -webkit-box-shadow: 0px 1px 9px -3px rgb(0 0 0 / 25%);
+  box-shadow: 0px 1px 9px -3px rgb(0 0 0 / 25%);
+}
+
+.unassign-editsidebar-body {
+  padding: 1.5rem;
+  height: calc(100vh - 58px);
+  color: #686868;
+  overflow: auto;
+}
+
+.unassign-editsidebar-footer {
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #e8e8e8;
+  background-color: #fff;
+}
+
+.unassign-editsidebar-head {
+    display: flex;
+    align-items: center;
+    border: 1px solid #efefef;
+    border-radius: 4px;
+    padding: 0.2rem 0.1rem;
+    margin-bottom: 1.5rem;
+}
+
+
+.unassign-editsidebar-radio {
+  padding: 1rem 0.95rem;
+  color: #686868;
+  border: 1px solid #efefef;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.unassign-editsidebar-radio .form-check {
+    padding-left: 1.5rem;
+}
+
+.unassign-editsidebar-radio .form-check .form-check-input .form-check-inputs {
+  width: 18px;
+  height: 18px;
+}
+
+.unassign-editsidebar-radio .form-check-label {
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.form-check-input:checked[type=radio] {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%235867dd'/%3e%3c/svg%3e");
+}
+
+.form-check-input:checked {
+    background-color: #dde1ff;
+    border-color: #5867dd;
+}
+
+
+.agenda-item:hover .agenda-ctrl-btns .edit-agendaname-btn,
+.agenda-item:hover .agenda-ctrl-btns .remove-agenda-btn {
+  display: inline;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100% !important;
+}
+
+.input-group {
+  transition: transform .2s !important;
+}
+
+.kt-quick-search .kt-quick-search__form .input-group {
+  border: 1px solid #d6dbff;
+  border-radius: 5px;
+}
+
+.edit-agendaname-btn svg {
+  fill: #64B5F6;
+  stroke: #64B5F6;
+}
+
+.todo-list-Assgin {
+  max-height: 20vh;
+  overflow: auto;
+}
+
+.edit-agendaname-btn {
+  display: none;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.radiotitle {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.radiotitle .form-control {
+    border: 0px;
+    font-weight: 500;
+    font-size: 16px;
+    padding-left: 4px;
+    height: auto;
+}
+
+.task-name-editfield-assign {
+  outline: 0;
+  border: 0;
+  flex-grow: 1;
+  font-size: 13px;
+  margin: 0;
+  align-self: stretch;
 }
