@@ -3982,7 +3982,7 @@ const invaildPrjEnddate=actnsAfterPrjdeadline.length>0;
           const _consumedHrs=this.Responsible_user_Info.Routine_Total_Hours; 
           const _allocatablehrs=this.maxAllocHrsToProject;
 
-
+ 
              if(is_normal_rproject&&this.isAllocHrsOverflow){
                 // overflow..    invalid allocated hrs, you can allocated upto 2 hrs .....
                       if(_allocatablehrs>0){
