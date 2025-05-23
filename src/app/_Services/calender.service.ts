@@ -439,7 +439,7 @@ GetInsertAttendeeMeetingTime(obj:CalenderDTO){
 }
 
 
-NewinsertDMS_meetingreport(obj: CalenderDTO){
+NewinsertDMS_meetingreport(obj: CalenderDTO){ debugger
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
   this.obj_CalenderDTO.Dms=obj.Dms;
