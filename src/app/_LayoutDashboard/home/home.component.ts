@@ -763,8 +763,8 @@ export class HomeComponent implements OnInit {
       });
     //Filtering Checkbox de
     //this.getDropdownsDataFromDB();
-  }
-
+  }    
+     
   ActualDataList: any;
   un_FilteredProjects: any = [];
 
