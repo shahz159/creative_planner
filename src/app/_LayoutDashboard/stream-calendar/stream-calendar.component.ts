@@ -1063,7 +1063,7 @@ LastLengthValidation11() {
 
 updateCharacterCount(): void {
   // Create a temporary div element to strip out HTML tags
-  const tempElement = document.createElement('div'); debugger
+  const tempElement = document.createElement('div'); 
   tempElement.innerHTML = this.Description_Type;
   const textContent = tempElement.textContent || tempElement.innerText || '';
   this.characterCount = textContent.length;
@@ -2569,7 +2569,7 @@ selectAction:any;
           this.BlockNameProject1 = JSON.parse(data['Projectlist']);
           this.subtask_loading=false;
         });
-      this._subname = false;  debugger
+      this._subname = false;  
       this.ProjectListArray.forEach(element => {
         if (element.Project_Code == MasterCode) {
           this._Exec_BlockName = element.Exec_BlockName;
@@ -4120,7 +4120,7 @@ getDurationInHoursMinutes(start: string, end: string): string {
 }
 
 
-newDetails(ProjectCode) { debugger
+newDetails(ProjectCode) { 
   let name: string = 'Details';
   var url = document.baseURI + name;
   var myurl = `${url}/${ProjectCode}`;
@@ -4128,7 +4128,7 @@ newDetails(ProjectCode) { debugger
   myWindow.focus();
 }
 
-OnCardClick(P_id: any) { debugger
+OnCardClick(P_id: any) { 
   sessionStorage.setItem('portfolioId', P_id);
   let name: string = 'portfolioprojects';
   var url = document.baseURI + name;
@@ -5301,7 +5301,7 @@ RecurrValueMonthly:boolean=false;
         }
 
         
-        const frmData = new FormData();
+        const frmData = new FormData();  
 
         if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
           frmData.append("Attachment", "true");
@@ -6271,7 +6271,7 @@ LoadDocument(pcode: string, iscloud: boolean, filename: string, url1: string, ty
     var myWindow = window.open(myurl, url.toString());
     myWindow.focus();
   }
-  else if (iscloud == true) {debugger
+  else if (iscloud == true) {
     let name = "ArchiveView/" + this.Schedule_ID;
     let meetingName =  this.Meeing_Name;
     var rurl = document.baseURI + name;
@@ -6680,7 +6680,7 @@ MeetingBookmark(flagid:any) {
   this.CalenderService.NewUpdateMeetingBookmark(this._calenderDto).subscribe
     ((data) => {
       if(data['message'] == '1'){
-        debugger
+      
         this._calenderDto.Schedule_ID=this.Schedule_ID;
 
         this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe

@@ -771,7 +771,7 @@ export class MeetingDetailsComponent implements OnInit {
 
       this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
 
-      console.log(this.EventScheduledjson,'EventScheduledjson')
+     
 
       this.totalportfolios = this.portfolio_Scheduledjson.length;
       this.portfolio_Scheduledjson.forEach(element => {
@@ -806,7 +806,7 @@ export class MeetingDetailsComponent implements OnInit {
         this.checkedproject.push(element.stringval);
       });
 
-
+     console.log(this.portfolio_Scheduledjson,'portfolio_Scheduledjson',this.Project_code)
       // this.Project_code = this.mergeObjects(
       //   this.Project_code || [], 
       //   this.ModifiedJson || [], 
@@ -1760,6 +1760,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   OnCardClick(P_id: any) {
+   
     sessionStorage.setItem('portfolioId', P_id);
     let name: string = 'portfolioprojects';
     var url = document.baseURI + name;
@@ -3916,8 +3917,10 @@ onFileChange(event) {
       
           this.AttendeeCount = this.CompletedMeeting_notes[0].online_count;
           this.actualTime_S = this.CompletedMeeting_notes[0].Actual_Start;
+         
           this.separateTime(this.actualTime_S);
           this.actualTime_E = this.CompletedMeeting_notes[0].Actual_End;
+           console.log( this.actualTime_E,' this.actualTime_E')
           this.separateTime(this.actualTime_E);
           this.actualTime_dur = this.CompletedMeeting_notes[0].Actual_Dur;
           this.convertDuration(this.actualTime_dur);
@@ -5568,18 +5571,18 @@ bindCustomRecurrenceValues(){
 
 
 
-  editAgendaEvent(index: number) {
-    $(`#agenda-label-Event-${index}`).addClass('d-none');
-    $(`#agenda-text-field-Event-${index}`).removeClass('d-none');
-    $(`#agenda-text-field-Event-${index}`).focus();
+  // editAgendaEvent(index: number) {
+  //   $(`#agenda-label-Event-${index}`).addClass('d-none');
+  //   $(`#agenda-text-field-Event-${index}`).removeClass('d-none');
+  //   $(`#agenda-text-field-Event-${index}`).focus();
 
-    $(`#edit-cancel-Event-${index}`).removeClass('d-none');   // cancel btn is visible.
-    $(`#editing-save-Event-${index}`).removeClass('d-none');   // save btn is visible.
+  //   $(`#edit-cancel-Event-${index}`).removeClass('d-none');   // cancel btn is visible.
+  //   $(`#editing-save-Event-${index}`).removeClass('d-none');   // save btn is visible.
 
-    $(`#edit-agendaname-btn-Event-${index}`).addClass('d-none');  // edit btn is invisible.
-    $(`#remove-agenda-btn-Event-${index}`).addClass('d-none');   // delete btn is invisible.
+  //   $(`#edit-agendaname-btn-Event-${index}`).addClass('d-none');  // edit btn is invisible.
+  //   $(`#remove-agenda-btn-Event-${index}`).addClass('d-none');   // delete btn is invisible.
 
-  }
+  // }
 
 
   deleteAgendaEvent(index: number) {
@@ -5600,32 +5603,32 @@ bindCustomRecurrenceValues(){
   }
 
 
-  cancelAgendaEditEvent(index: number) {
-    const tf: any = document.getElementById(`agenda-text-field-Event-${index}`);
-    tf.value = this.allAgendas[index].name;
+  // cancelAgendaEditEvent(index: number) {
+  //   const tf: any = document.getElementById(`agenda-text-field-Event-${index}`);
+  //   tf.value = this.allAgendas[index].name;
 
-    $(`#agenda-label-Event-${index}`).removeClass('d-none');   // label is visible.
-    $(`#agenda-text-field-Event-${index}`).addClass('d-none');   // textfield is invisible.
-    $(`#edit-cancel-Event-${index}`).addClass('d-none');   // cancel btn is visible.
-    $(`#editing-save-Event-${index}`).addClass('d-none');   // save btn is visible.
-    $(`#edit-agendaname-btn-Event-${index}`).removeClass('d-none');  // edit btn is visible.
-    $(`#remove-agenda-btn-Event-${index}`).removeClass('d-none');   // delete btn is visible.
-  }
+  //   $(`#agenda-label-Event-${index}`).removeClass('d-none');   // label is visible.
+  //   $(`#agenda-text-field-Event-${index}`).addClass('d-none');   // textfield is invisible.
+  //   $(`#edit-cancel-Event-${index}`).addClass('d-none');   // cancel btn is visible.
+  //   $(`#editing-save-Event-${index}`).addClass('d-none');   // save btn is visible.
+  //   $(`#edit-agendaname-btn-Event-${index}`).removeClass('d-none');  // edit btn is visible.
+  //   $(`#remove-agenda-btn-Event-${index}`).removeClass('d-none');   // delete btn is visible.
+  // }
 
 
 
-  updateAgendaEvent(index: number) {
-    const tf: any = document.getElementById(`agenda-text-field-Event-${index}`);
-    this.allAgendas[index].name = tf.value;
+  // updateAgendaEvent(index: number) {
+  //   const tf: any = document.getElementById(`agenda-text-field-Event-${index}`);
+  //   this.allAgendas[index].name = tf.value;
 
-    $(`#agenda-label-Event-${index}`).removeClass('d-none'); // label is visible.
-    $(`#agenda-text-field-Event-${index}`).addClass('d-none');  // textfield is invisible.
-    $(`#edit-cancel-Event-${index}`).addClass('d-none');   // cancel btn is visible.
-    $(`#editing-save-Event-${index}`).addClass('d-none');   // save btn is visible.
-    $(`#edit-agendaname-btn-Event-${index}`).removeClass('d-none');  // edit btn is visible.
-    $(`#remove-agenda-btn-Event-${index}`).removeClass('d-none');   // delete btn is visible.
-    // console.log('all agendas after updating:', this.allAgendas);
-  }
+  //   $(`#agenda-label-Event-${index}`).removeClass('d-none'); // label is visible.
+  //   $(`#agenda-text-field-Event-${index}`).addClass('d-none');  // textfield is invisible.
+  //   $(`#edit-cancel-Event-${index}`).addClass('d-none');   // cancel btn is visible.
+  //   $(`#editing-save-Event-${index}`).addClass('d-none');   // save btn is visible.
+  //   $(`#edit-agendaname-btn-Event-${index}`).removeClass('d-none');  // edit btn is visible.
+  //   $(`#remove-agenda-btn-Event-${index}`).removeClass('d-none');   // delete btn is visible.
+  //   // console.log('all agendas after updating:', this.allAgendas);
+  // }
 
 
 
@@ -8967,22 +8970,16 @@ GetMeetingActivity(){
 
   this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
   this.allActivityList=JSON.parse(data[0].ActivityList);
-  
-// console.log(this.allActivityList,'allActivityList');
-//  console.log(this.Memos_List,'Memos_List');
-
-const memoMap = new Map(this.Memos_List.map(m => [m.MailId.toString().trim(), m.Subject.trim()]));
-
-//  console.log(memoMap,'allActivityList321');
-this.allActivityList.forEach(item => {
-  if (item.Value.trim() === 'S-Mail link(s) deleted' || item.Value.trim() === 'S-Mail link(s) added') {
-    item.New_Value = item.New_Value
-      .split(',')
-      .map(id => (memoMap.get(id.trim()) || id.trim()).trim())
-      .join(',');
-  }
-});
-
+  console.log(this.allActivityList,'allActivityList4452');
+ 
+  const memoMap = new Map(this.Memos_List.map(m => [m.MailId.toString(), { id: m.MailId, name: m.Subject }]));
+    this.allActivityList.forEach(item => {
+      if (item.Value.trim() === 'S-Mail link(s) added' || item.Value.trim() === 'S-Mail link(s) deleted') {
+        item.New_Value = JSON.stringify(
+          item.New_Value.split(',').map(id => memoMap.get(id.trim())).filter(Boolean)
+        );
+      }
+    });
 
 
 
@@ -9013,13 +9010,17 @@ this.allActivityList.forEach(item => {
 });
 
 
+
+
+
+
 this.allActivityList.forEach(item => {
   if (Array.isArray(item.New_Value) && Array.isArray(item.New_Value[0])) {
     item.New_Value = item.New_Value[0];
   }
 });
 
-
+  
 
 
 // Link details undefined subjects start
@@ -9053,8 +9054,7 @@ this.allActivityList.forEach(activity => {
 
     this.meetingStartedTime = this.allActivityList.find(x => x.Value === 'Meeting Started')?.New_Value[0]?.name;
 
-    //  console.log(this.meetingStartedTime,'meetingStartedTime')
-
+  console.log(this.allActivityList,'allActivityList');
 
   })
 }
@@ -10197,5 +10197,27 @@ resetActionvalue(){
   this._EndDate = null;
 }
 
+
+startdatechecker(){
+  this.noStartDate=false;
+  this.noEndDate=true;
+  this._EndDate=null;
+}
+
+
+
+actvsFltrBy:{ activityType:string, empType:string }={ activityType:'all',empType:'all' };
+FilteredPrjActivities:any=[];
+
+
+arrangeActivitiesBy(acttype:string,emptype:string){
+  this.actvsFltrBy.activityType=acttype;
+  this.actvsFltrBy.empType=emptype;
+  // this.FilteredPrjActivities=this.Activity_List.filter((actv)=>{
+  //   const x=(this.actvsFltrBy.empType=='all'||actv.Modifiedby==this.actvsFltrBy.empType);
+  //   const y=(this.actvsFltrBy.activityType=='all'||(actv._type==this.actvsFltrBy.activityType));
+  //   return x&&y;
+  // });
+}
 
 }

@@ -9739,12 +9739,12 @@ div#unassign-editsidebar.kt-action-panel--on {
   overflow: auto;
 }
 
-.edit-agendaname-btn {
+/* .edit-agendaname-btn {
   display: none;
   border: 0;
   background-color: transparent;
   cursor: pointer;
-}
+} */
 
 .radiotitle {
   flex: 1;
@@ -9767,4 +9767,46 @@ div#unassign-editsidebar.kt-action-panel--on {
   font-size: 13px;
   margin: 0;
   align-self: stretch;
+}
+
+::ng-deep #unassign-editsidebar .mat-input-element {
+    border: 1px solid #e2e5ec!important;
+    padding-left: 10px !important;
+}
+
+::ng-deep #unassign-editsidebar .mat-icon-button {
+    width: 36px !important;
+    height: 36px !important;
+    line-height: 34px !important;
+}
+
+#unassign-editsidebar .input-group-text {
+    border-radius: 0px 4px 4px 0px;
+    margin-left: -1px;
+}
+
+.meeting-attendees-user .user-status {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 4px;
+}
+
+.dropdown-header-acivity{
+  display: block;
+  padding: 0.5rem 1.5rem;
+  margin-bottom: 0;
+  font-size: .875rem;
+  color: #74788d;
+  white-space: nowrap;
+}
+
+.btn-filtr.active2 {
+  color: #2786fb;
+  background: rgba(39, 134, 251, .1) !important;
+}
+
+
+.btn-filtr.active2 svg {
+  fill: #2786fb !important;
 }
