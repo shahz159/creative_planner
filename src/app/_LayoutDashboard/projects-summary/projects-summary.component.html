@@ -13,8 +13,8 @@
                                {{Type}} Summary
                             </h3>
                             <div class="dropdown-menu main-d" aria-labelledby="dropdownMenuButton">
-                                <a [ngClass]="Type=='RACIS Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type1); currentUA=null;">RACIS projects summary</a>
-                                <a [ngClass]="Type=='ALL Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type2); currentUA=null;">ALL projects summary</a>
+                                <a [ngClass]="Type=='RACIS Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type1); currentUA=null; resetScrollPosition('#projects-list-table'); ">RACIS projects summary</a>
+                                <a [ngClass]="Type=='ALL Projects' ? 'dropdown-item active' : 'dropdown-item'" (click)="GetProjectsByUserName(type2); currentUA=null; resetScrollPosition('#projects-list-table');  ">ALL projects summary</a>
                             </div>
                         </div>
                     </div>
@@ -64,9 +64,9 @@
                                             <input type="text"
                                                 class="form-control project-search kt-quick-search__input pl-3"
                                                 placeholder="Search Projects" [(ngModel)]="searchText" autofocus
-                                                style="width: 300px" (keydown.enter)="SearchbyText()">
+                                                style="width: 300px" (keydown.enter)="SearchbyText(); ">
                                             <div class="input-group-prepend">
-                                                <button class="input-group-text" (click)="SearchbyText()" type="submit">
+                                                <button class="input-group-text" (click)="SearchbyText(); " type="submit">
                                                     <i class="flaticon2-search-1"></i>
 
                                                 </button>
@@ -102,12 +102,12 @@
                         </div> -->
 
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo - 1; applyFilters();this.edited=false; this.currentUA=null;  clearAllCheckboxes()" [disabled]="CurrentPageNo==1">
+                            (click)="CurrentPageNo = CurrentPageNo - 1; applyFilters();this.edited=false; this.currentUA=null;  clearAllCheckboxes();  " [disabled]="CurrentPageNo==1">
                             <i class="fas fa-angle-left mr-0"></i>
                         </button>
                         <!-- [ngClass]="_CurrentpageRecords<30 ? 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1 not-allowed' : 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1'" -->
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters();this.edited=false; this.currentUA=null; clearAllCheckboxes()"
+                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters();this.edited=false; this.currentUA=null; clearAllCheckboxes();"
                             [disabled]="_CurrentpageRecords<30||(_CurrentpageRecords*CurrentPageNo)>_totalProjectsCount">
                             <i class="fas fa-angle-right mr-0"></i></button>
                         <div class="mr-1">
@@ -1171,7 +1171,7 @@
                                     <div class="col-sm-12">
 
                                         <span *ngIf="searchResult == true">About ({{_CurrentpageRecords}}) results found</span>
-                                        <div class="table-scroll">
+                                        <div id="projects-list-table" class="table-scroll">
                                         <table class="table table-hover dataTable no-footer dtr-inline" role="grid"
                                             style="width: 0px;">
                                             <thead>

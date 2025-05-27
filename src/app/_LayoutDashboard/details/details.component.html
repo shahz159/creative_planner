@@ -5358,7 +5358,7 @@
                                                             </button>
                                                         </div>
                                                     </div>
-                                                    <ng-container *ngIf="requestType && Current_user_ID  != approval_Emp">
+                                                    <ng-container *ngIf="(requestDetails&&requestDetails.length>0)&&requestType && Current_user_ID  != approval_Emp">
                                                         <div class="d-flex justify-content-between mt-3">
                                                             <!-- <div class="d-flex"> -->
                                                             <div class="d-flex align-items-center">
@@ -5418,7 +5418,7 @@
                                                         </div>
                                                     </ng-container>
 
-                                                    <ng-container *ngIf="Current_user_ID  == approval_Emp&&['Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval'].includes(projectActionInfo[currentActionView].Status)&&approvalsFetching==false">
+                                                    <ng-container *ngIf="(requestDetails&&requestDetails.length>0)&&Current_user_ID  == approval_Emp&&['Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval'].includes(projectActionInfo[currentActionView].Status)&&approvalsFetching==false">
                                                     <div class="kt-info-box mt-2 diff-div border-0">
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <div class="kt-info-box-tittle mt-3">
@@ -14187,7 +14187,9 @@
                               </ng-container>
                                  <ng-template #routineInvalidAlhrMes>
                                     <div *ngIf="(ProjectType=='008'||ProjectType=='Routine Tasks')&&isAllocHrsOverflow&&maxAllocHrsToProject>0" style="color:red">You cannot allocate more than {{maxAllocHrsToProject}}hrs.</div>
-                                    <div *ngIf="(ProjectType=='008'||ProjectType=='Routine Tasks')&&isAllocHrsOverflow&&maxAllocHrsToProject<=0" style="color:red">You’ve used your full allocation.</div>
+                                    <div *ngIf="(ProjectType=='008'||ProjectType=='Routine Tasks')&&isAllocHrsOverflow&&maxAllocHrsToProject<=0" style="color:red">
+                                       {{Current_user_ID==Responsible_user_Info.EmployeeId?'You’ve used your full allocation.':'used full allocation.'}}
+                                    </div>
                                  </ng-template>
 
                               </div>

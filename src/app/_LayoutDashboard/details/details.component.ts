@@ -3951,16 +3951,18 @@ const invaildPrjEnddate=actnsAfterPrjdeadline.length>0;
 //
 
  let is_normal_rproject=false;
- let show_abnormal_rmessage=false;
+ let show_abnormal_rmessage=false;  // when user is updating a routine project which resides in a routine container which is already exhausted its capacity.
+ // eg: 33 hrs used / 12 hrs max capacity, 50/24 .... etc. in here updation is possible only when allocated hrs is kept unchanged. otherwise system will shows an error dialog.
 
  if(this.ProjectType=='008'||this.ProjectType=="Routine Tasks"){
   // this.ProjectType==this.projectInfo.Project_Block
       if(this.ProjectType==this.projectInfo.Project_Type||this.ProjectType==this.projectInfo.Project_Block){
+        // when we are just updating routine project.
          is_normal_rproject=!(this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole&&this.maxAllocHrsToProject<=0);
          show_abnormal_rmessage=is_normal_rproject==false?(this.convertToDecimalHours(this.projectInfo.StandardAllocatedHours)!=this.convertToDecimalHours(this.Allocated_Hours['$ngOptionLabel']||this.Allocated_Hours)):false;
       }
       else 
-      {
+      {  // when we are converting a standard project to routine project, since this standard project is do not resides in the routine container list.
         is_normal_rproject=true;
       }
         // is_normal_rproject= (this.ProjectType==this.projectInfo.Project_Block)?( !(this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole&&this.maxAllocHrsToProject<=0)):true;
@@ -3981,7 +3983,7 @@ const invaildPrjEnddate=actnsAfterPrjdeadline.length>0;
           const existingPrjsType='Routine Tasks';
           const _consumedHrs=this.Responsible_user_Info.Routine_Total_Hours; 
           const _allocatablehrs=this.maxAllocHrsToProject;
-
+          const isUserIsResponsible=this.Current_user_ID==this.Responsible_user_Info.EmployeeId;
  
              if(is_normal_rproject&&this.isAllocHrsOverflow){
                 // overflow..    invalid allocated hrs, you can allocated upto 2 hrs .....
@@ -3990,7 +3992,7 @@ const invaildPrjEnddate=actnsAfterPrjdeadline.length>0;
                             Swal.fire({
                                 title:'Invalid Allocated Hours provided',
                                 html:`<div style="text-align: justify;">
-                                            <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
+                                            <div>Currently, ${isUserIsResponsible?'you are':this.Responsible_user_Info.EmployeeName+' is'} managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
                                             <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs}hrs to this project.</div>
                                       </div>`,
                                 showConfirmButton:true,
@@ -4004,10 +4006,13 @@ const invaildPrjEnddate=actnsAfterPrjdeadline.length>0;
                               html: `
                                   <div style="text-align: justify;">
                                       <ul style="padding-left: 18px;">
-                                          <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
+                                          <li>${isUserIsResponsible?'you are':this.Responsible_user_Info.EmployeeName+' is'} managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
                                           <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
                                       </ul> 
-                                      <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for Routine Task projects. Please review your existing ones.</div>
+                                      <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">
+                                      ${isUserIsResponsible?`You've reached the limit for Routine Task projects. Please review your existing ones.`:
+                                        this.Responsible_user_Info.EmployeeName+' have reached the limit for Routine Task projects.'}
+                                      </div>
                                   </div>`,
                               showConfirmButton: true,
                               confirmButtonText: 'Ok'
@@ -4021,7 +4026,7 @@ const invaildPrjEnddate=actnsAfterPrjdeadline.length>0;
                      title: `Cannot Proceed with Update`,
                      html: ` <div style="text-align: justify;">
                                 <ul style="padding-left: 18px;">
-                                    <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
+                                    <li>${isUserIsResponsible?'You are':this.Responsible_user_Info.EmployeeName+' is'} managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
                                     <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
                                 </ul> 
                               <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">Issue with allocated hours provided.</div>
@@ -5931,12 +5936,14 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
   fetchingActionApproval:boolean=false;
-  GetApproval(code) {
+  GetApproval(code) {  debugger
+
+    this.requestDetails=[];  // initalize/ clear prev data.
 
     this.fetchingActionApproval=true;   // getting approval on the action if present start.
     this.approvalObj = new ApprovalDTO();
     this.approvalObj.Project_Code = code;
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {  debugger
       this.fetchingActionApproval=false;   // fetching approval on the action if present end.
       this.requestDetails = data as [];
       console.log(data,'jjj----------->')
@@ -5993,6 +6000,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
           console.log(this.complete_List, 'complete');
         }
       }
+
     });
     console.log(this.requestDetails, 'transfer');
   }

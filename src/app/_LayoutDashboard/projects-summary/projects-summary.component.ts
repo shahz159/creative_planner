@@ -1229,12 +1229,18 @@ debugger
           this._filtersMessage2 = "";
           this.emptyspace=true;
         }
+
+
+        // reset scroll position of the table
+        this.resetScrollPosition('#projects-list-table');
+
       });
 
     //Filtering Checkbox de
     this.filterMegadropdownclose()
     this.getDropdownsDataFromDB();
     this.filterMegadropdownclose();
+
     }
     else if(this.Type=='RACIS Projects'){
       moment.locale('en');     
@@ -1287,6 +1293,10 @@ debugger
             this._filtersMessage2 = "";
             this.emptyspace=true;
           }
+
+          // reset scroll position of the table
+          this.resetScrollPosition('#projects-list-table');
+
         });
 
      this.getDropdownsDataFromDB();
@@ -3935,6 +3945,14 @@ convertToDecimalHours(hm:string){
 // method to convert HH:MM to hours value.
 
 
+
+resetScrollPosition(elementId:string){
+  const scrollableContainer = document.querySelector(elementId) as HTMLElement;
+  if (scrollableContainer) {
+    // scrollableContainer.style.scrollBehavior='smooth';
+    scrollableContainer.scrollTop = 0;
+  }
+}
 
 
 
