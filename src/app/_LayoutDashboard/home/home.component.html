@@ -98,7 +98,6 @@
                             </a>
 
                             <!-- Filters -->
-
                             <div class="stores-sec">
                                 <ul class="nav navbar-nav filters">
                                     <li class="dropdown mega-dropdown" id="filtermenu">
@@ -386,6 +385,8 @@
 
             </div>
         </div>
+
+        <!--header section start-->
         <div class="col-lg-12 project-description">
             <div class="kt-portlet kt-portlet--bordered-semi mb-2">
 
@@ -781,10 +782,78 @@
 
             </div>
         </div>
+        <!--header section end-->
 
+        <!--notifications announcement start-->
+
+       <div class="col-lg-12" *ngIf="portfoliosNotifications&&portfoliosNotifications.length>0">
+         <div class="kt-Note-msg d-flex">
+            
+            <div class="kt-note-icon" style="align-self: flex-start;">
+                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px" viewBox="0 0 66 65" xml:space="preserve">
+                        <path
+                            d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z">
+                        </path>
+                        <path
+                            d="M50.47,17.85c0.19,0.32,0.52,0.5,0.87,0.5c0.17,0,0.34-0.04,0.5-0.13l7.95-4.59c0.48-0.28,0.64-0.89,0.37-1.37  s-0.89-0.64-1.37-0.37l-7.95,4.59C50.36,16.76,50.2,17.37,50.47,17.85z">
+                        </path>
+                        <path
+                            d="M62.96,24.48l-9.17,0.4c-0.55,0.02-0.98,0.49-0.96,1.04c0.02,0.54,0.47,0.96,1,0.96c0.01,0,0.03,0,0.04,0l9.17-0.4  c0.55-0.02,0.98-0.49,0.96-1.04S63.5,24.48,62.96,24.48z">
+                        </path>
+                        <path
+                            d="M44.66,11.77c0.17,0.11,0.35,0.16,0.54,0.16c0.33,0,0.65-0.16,0.84-0.46l4.94-7.74c0.3-0.47,0.16-1.08-0.31-1.38  c-0.46-0.3-1.08-0.16-1.38,0.31l-4.93,7.74C44.05,10.85,44.19,11.47,44.66,11.77z">
+                        </path>
+                        <path
+                            d="M21.22,46.55l-5.28,3.05c-0.71,0.41-1.46,0.72-2.24,0.95c0.95,4.69,3.36,8.97,6.88,12.2c1.31,1.21,3.27,1.41,4.81,0.51  c0.04-0.02,0.07-0.04,0.11-0.06c2.25-1.3,2.76-4.35,1.02-6.27C23.89,54,22.06,50.42,21.22,46.55z">
+                        </path>
+                        <path
+                            d="M34.34,26.7c-2.33-4.04-8.51-15.33-8.63-21.6c-2.04,2.65-3.06,7.04-4.45,10.81c-1.62,5.07-3.84,9.09-6.78,11.88l8.99,15.58  c3.88-1.15,8.48-1.06,13.67,0.07c3.95,0.68,8.26,1.98,11.57,1.55C42.94,41.38,35.32,28.39,34.34,26.7z">
+                        </path>
+                        <path
+                            d="M28.32,2.97c-1.77,1.02,0.06,7.65,4.14,15.97c3.46-1.21,7.39,0.17,9.26,3.43c1.88,3.25,1.12,7.35-1.67,9.74  c5.19,7.75,10.06,12.7,11.83,11.67c2.23-1.29-1.24-11.47-7.75-22.74S30.55,1.68,28.32,2.97z">
+                        </path>
+                        <path
+                            d="M38.98,30.4c1.89-1.8,2.36-4.71,1.02-7.03c-1.34-2.33-4.1-3.37-6.6-2.63c0.84,1.63,1.73,3.27,2.67,4.9  C37.01,27.27,37.99,28.87,38.98,30.4z">
+                        </path>
+                  </svg>
+            </div>
+
+            <div class="notification delay-notification">
+            <span class="notif-msg">
+              Need your action on
+              <ng-container *ngFor="let notf of portfoliosNotifications; let i=index;">
+
+                    <span class="delayaction-of-emp"  (click)="filterPortfoliosBy(notf.status)" [ngClass]="{'currentUA-in-view':showType==notf.status}"
+                        [ngStyle]="{  color: notf.status=='Forward Under Approval'?'#9C27B0':
+                                            notf.status=='Under Approval'?'#9c27b0':
+                                            notf.status=='Completion Under Approval'?'#81C784':
+                                            notf.status=='Delay'?'#EE4137':
+                                            notf.status=='Cancellation Under Approval'?'#EE4137':'#000'}">
+                        {{notf.count}} 
+                        {{
+                            notf.status=='Forward Under Approval'?'Forward approval(s)':
+                            notf.status=='Under Approval'?'New approval(s)': 
+                            notf.status=='Completion Under Approval'?'Completion approval(s)':
+                            notf.status=='Delay'?'Delay':
+                            notf.status=='Cancellation Under Approval'?'Cancellation approval(s)':
+                            notf.status
+                        }}</span>
+
+                    <b *ngIf="i<portfoliosNotifications.length-2" style="font-family:Lucida Sans Unicode">, </b>
+                    <span *ngIf="i==portfoliosNotifications.length-2"> and </span>
+                    <b *ngIf="i==portfoliosNotifications.length-1" style="font-family:Lucida Sans Unicode">.</b>
+              </ng-container>
+            
+            </span>
+            </div>
+            
+           </div>
+       </div>
+         
+        <!--notifications announcement end-->
+
+        <!--table start-->
         <div class="col-lg-12">
-
-
             <div class="accordion accordion-solid" id="accordionExample6">
                 <!-- Messages for Empty List -->
                 <div *ngIf="messageForEmpty==true">
@@ -797,15 +866,15 @@
                 </div>
                 <!-- {{_ItemsPerpage}} -->
                 <!--Begin:: Inbox List-->
-                <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid px-0">
+                <div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid px-0"  [ngClass]="{'n-noti-scroll':(portfoliosNotifications&&portfoliosNotifications.length>0)}">
                     <div id="kt_inbox" class="kt-grid kt-grid--desktop kt-grid--ver-desktop kt-inbox">
                         <button id="kt_inbox_aside_close" class="kt-inbox__aside-close">
                             <i class="la la-close"></i>
                         </button>
-                        <div
-                            class="kt-grid__item kt-grid__item--fluid kt-inbox__list kt-inbox__list--shown mb-1 flex-grow-1">
+                        <div class="kt-grid__item kt-grid__item--fluid kt-inbox__list kt-inbox__list--shown mb-1 flex-grow-1">
+                        
                             <div class="n-portfolio-container" id="grid-view-div">
-                                <div class="n-portfolio-ul" >
+                                <div id="portfolios-grid-view" class="n-portfolio-ul" >
                                     <div class="n-portfolio-li" *ngFor="let item of _ListProjStat ;let i=index">
                                         <div class="n-portfolio-head"  [ngClass]="getStatusClass(item.Status)">
                                             <div class="n-portfolio-title"   (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
@@ -969,6 +1038,17 @@
                                                         {{item.Status}}
                                                     </span>
                                                 </div>
+                                                <div *ngIf="item.Status=='Cancellation Under Approval'">
+                                                    <span class="kt-inbox__label kt-badge Delay kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status}}
+                                                    </span>
+                                                </div>
+                                                <div *ngIf="item.Status=='Not Started'">
+                                                    <span class="kt-inbox__label kt-badge kt-badge Delay kt-badge.kt-badge-light-bold kt-badge--inline">
+                                                        {{item.Status}}
+                                                    </span>
+                                                </div>
+
                                             </div>
                                             <div class="n-portfolio-action">
                                                 <div class="p-g-more btn-group">
@@ -1005,7 +1085,7 @@
                                     </div>
                                     </div>
                             </div>
-                            <!-- <div> -->
+                          
                             <div class="p-0 flex-grow-1" id="list-view-div" style="display: none;">
                                 <div class="kt-portlet mb-0"  *ngIf="_ListProjStat&&_ListProjStat.length > 0">
                                     <div class="kt-portlet-header">
@@ -1020,7 +1100,7 @@
                                         <div class="p-h-more-scroll">&nbsp;</div>
                                     </div>
                                     <div class="kt-portlet-body">
-                                        <div class="folder-item-scroll">
+                                        <div id="portfolios-list-view" class="folder-item-scroll">
                                             <div class="folder-item" *ngFor="let item of _ListProjStat ;let i=index">
                                                 <div class="p-b-icon"  >
                                                     <!-- <svg xmlns="http://www.w3.org/2000/svg" id="Portfolio" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" ><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path><path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor"></path></g></svg> -->
@@ -2471,7 +2551,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- </div> -->
+                    
                         </div>
                     </div>
                 </div>
@@ -2482,6 +2562,7 @@
                 <!-- End:: Inbox List -->
             </div>
         </div>
+        <!--table end-->
 
         <!-- Shared Portfolios -->
         <!--End::Row-->
@@ -2491,7 +2572,6 @@
 </ng-container>
 
 <ng-template #pleasewait>
-
   <div class="smart-glass">
       <h1></h1>
       <div class="logo">
@@ -2507,11 +2587,7 @@
         </div>
        </div>
       </div>
-    </div>
-
-
+  </div>
 </ng-template>
-
-
 
 <div id="rightbar-overlay" (click)="closeInfo()"></div>

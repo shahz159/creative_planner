@@ -177,11 +177,26 @@ export class SidebarComponent implements OnInit {
       placement:'right'
     });
 
+    tippy('#applyleave', {
+      content: "Apply Leave",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'gradient',
+      animateFill: true,
+      inertia: true,
+      placement:'right'
+    });
+
     // this.bsService.ConfirmBeforeRoute.subscribe((modalScreen:string)=>{
     //   this._confirmBeforeSwitch=modalScreen;
     // })
 
 this.Menubinding();
+
+     this.bsService.leaveSidebarToggled.subscribe((state:boolean)=>{
+         this.isLeaveApplySidebarOpened=state;
+     })
+
   }
 
   Menubinding() {
@@ -265,6 +280,21 @@ this.Menubinding();
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--show");
     document.getElementById("kt-bodyc").classList.toggle("kt-aside--minimize");
   }
+
+
+
+
+  isLeaveApplySidebarOpened:boolean=false;
+  onLeaveApplyBtnClicked(){
+     this.bsService.leaveSidebarToggled.emit(true);
+  }
+
+
+
+
+
+
+
 
 
   // }

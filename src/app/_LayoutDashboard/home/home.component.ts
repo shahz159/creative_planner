@@ -226,6 +226,8 @@ export class HomeComponent implements OnInit {
   Employeelist_Json: any;
   portfolioName:any
   _portfolioId:any
+
+
   ngOnInit() {
     this.Companylist_Json
     this._raciDetails = true;
@@ -311,6 +313,20 @@ export class HomeComponent implements OnInit {
           this.messageForEmpty = true;
           this.userFound =   this.messageForEmpty
         }
+
+        // for Notification announcement and filter
+        this.originalPortfoliosList=[...this._ListProjStat];
+        this.showType='all';
+        this.createPortfoliosNotifications(); 
+        //
+
+
+       //  reset scroll position on table 
+         this.resetScrollPosition('#grid-view-div #portfolios-grid-view');
+         this.resetScrollPosition('#list-view-div #portfolios-list-view');
+        //
+
+
       });
   }
   // OnNext(val) {
@@ -324,11 +340,11 @@ export class HomeComponent implements OnInit {
   //   }
   // }
 
-  onKeyDownEvent(event: any) {
-    this.searchText = event.target.value;
-    this.applyFilters();
-    //console.log(event.target.value);
-  }
+  // onKeyDownEvent(event: any) {
+  //   this.searchText = event.target.value;
+  //   this.applyFilters();
+  //   //console.log(event.target.value);
+  // }
 
   ServerSide_Search(value) {
     this.searchResult = true;
@@ -411,6 +427,7 @@ export class HomeComponent implements OnInit {
     this.selectedItem_Company.length = 0;
     this.selectedItem_Status.length = 0;
     this.selectedItem_Emp.length = 0
+    this.showType='all';
     this.resetFilters();
   }
 
@@ -737,11 +754,17 @@ export class HomeComponent implements OnInit {
 
           this._filtersMessage2 = "";
         }
+
+        // For Notification announcements and filter
+        this.originalPortfoliosList=[...this._ListProjStat];
+        this.showType='all';
+        this.createPortfoliosNotifications();  
+        //
       });
     //Filtering Checkbox de
     //this.getDropdownsDataFromDB();
-  }
-
+  }    
+     
   ActualDataList: any;
   un_FilteredProjects: any = [];
 
@@ -1337,6 +1360,17 @@ export class HomeComponent implements OnInit {
           this._snackBar.open(this.messagefav, action, {
             duration: 1500,
           });
+     
+          // For Notification announcements and filter
+          this.originalPortfoliosList=[...this._ListProjStat];
+          this.createPortfoliosNotifications();
+          if(this.showType!='all'){
+             this.filterPortfoliosBy(this.showType);
+          }
+          //
+
+
+
 
         });
     })
@@ -1377,7 +1411,6 @@ export class HomeComponent implements OnInit {
 
   Favourite_Portfolios() {
     // this.Portfolio_CurrentPage = 1;
-    debugger
     this.NoSharedmsg = true;
     this.activeClassFav = true;
     this.activeClassAll = false;
@@ -1404,6 +1437,17 @@ export class HomeComponent implements OnInit {
         else {
           this.Nofavmsg = false;
         }
+
+        // For Notification announcement and filter
+        this.originalPortfoliosList=[...this._ListProjStat];
+        this.showType='all';
+        this.createPortfoliosNotifications();
+        //
+
+        //  reset scroll position on table 
+         this.resetScrollPosition('#grid-view-div #portfolios-grid-view');
+         this.resetScrollPosition('#list-view-div #portfolios-list-view');
+        //
       });
     // this._ListProjStat = this.AllPortfolioslist.filter(i => (i.CreatedName == this._CurrentUserFullName));
     // this._ListProjStat = this._ListProjStat.filter(x => x.IsFavourite);
@@ -1445,6 +1489,19 @@ export class HomeComponent implements OnInit {
         else {
           this.NoSharedmsg = false;
         }
+
+      // For Notification announcements and filter  
+      this.originalPortfoliosList=[...this._ListProjStat];
+      this.showType='all';
+      this.createPortfoliosNotifications();  
+      //
+
+
+       // reset scroll position on table 
+         this.resetScrollPosition('#grid-view-div #portfolios-grid-view');
+         this.resetScrollPosition('#list-view-div #portfolios-list-view');
+      //
+
       });
   }
 
@@ -1470,6 +1527,20 @@ export class HomeComponent implements OnInit {
         else {
           this.NoOfPages = data[0]['ownerpages'];
         }
+
+        // For notification announcements and filter
+       this.originalPortfoliosList=[...this._ListProjStat];
+       this.showType='all';
+       this.createPortfoliosNotifications();
+       //
+
+
+       //  reset scroll position on table 
+         this.resetScrollPosition('#grid-view-div #portfolios-grid-view');
+         this.resetScrollPosition('#list-view-div #portfolios-list-view');
+        //
+
+
       });
   }
 
@@ -1496,6 +1567,20 @@ export class HomeComponent implements OnInit {
         else {
           this.NoOfPages = data[0]['NoOfPages'];
         }
+
+        // For Notification announcements and filter
+        this.originalPortfoliosList=[...this._ListProjStat];
+        this.showType='all';
+        this.createPortfoliosNotifications();
+        //
+
+
+         //  reset scroll position on table 
+         this.resetScrollPosition('#grid-view-div #portfolios-grid-view');
+         this.resetScrollPosition('#list-view-div #portfolios-list-view');
+        //
+
+
       });
     //this._ListProjStat = this._ActualPListFor_All;
   }
@@ -1866,7 +1951,24 @@ export class HomeComponent implements OnInit {
                 this.messageForEmpty = true;
               }
               // this.cdr.detectChanges();
-            });
+
+
+
+              // For Notification announcements and filter
+              this.originalPortfoliosList=[...this._ListProjStat];
+              this.createPortfoliosNotifications();
+              if(this.showType!='all'){
+                 const isPortfoliosFound=this.originalPortfoliosList.findIndex(p=>p.Status==this.showType);
+                 if(isPortfoliosFound>-1){
+                   this.filterPortfoliosBy(this.showType);
+                 }
+                 else{
+                   this.showType='all';
+                 }
+              }
+              //
+
+          });
         })
         this.notifyService.showSuccess("Portfolio deleted.", 'Successfully');
       }
@@ -2177,9 +2279,78 @@ getStatusClass(status: string): string {
           return 'status-todo-achieved';
       case 'ToDo Completed':
           return 'status-todo-completed';
+      case  'Cancellation Under Approval':
+           return 'status-cancellation-under-approval';
+      case 'Not Started':
+           return 'status-notstarted';    
       default:
           return '';
   }
 }
 
+
+
+resetScrollPosition(elementId:string){
+  const scrollableContainer = document.querySelector(elementId) as HTMLElement;
+  if (scrollableContainer) {
+    // scrollableContainer.style.scrollBehavior='smooth';
+    scrollableContainer.scrollTop = 0;
+  }
 }
+
+
+// Portfolios Notifications start.
+
+ portfoliosNotifications:any=[];
+ originalPortfoliosList:any=[];
+ showType:string='all';
+
+ createPortfoliosNotifications(){
+    const _notifications:any=[];
+    this.originalPortfoliosList.forEach((_portfolioObj)=>{
+        
+      const n_statuses=['Delay','Completion Under Approval','Under Approval','Forward Under Approval','Cancellation Under Approval'];
+      if(_portfolioObj.Status&&n_statuses.includes(_portfolioObj.Status.trim()))
+      {
+          const nObj=_notifications.find((ob)=>ob.status==_portfolioObj.Status.trim());
+          if(nObj){
+             nObj.count+=1;
+          }
+          else{
+             const obj={
+                 status:_portfolioObj.Status,
+                 count:1
+             }; 
+             _notifications.push(obj);
+          }    
+      }
+
+    });
+
+    this.portfoliosNotifications=_notifications;
+ }
+
+
+ filterPortfoliosBy(byStatus:string){ 
+    this.showType=byStatus;
+    const farr=this.originalPortfoliosList.filter((ob)=>{
+          return ob.Status==byStatus;
+    });
+    this._ListProjStat=farr;
+ }
+
+ clearAppliedFilter(){
+     this.showType='all';
+     this._ListProjStat=[...this.originalPortfoliosList];
+ }
+
+
+
+// Portfolios Notifications end.
+
+
+
+
+
+}
+

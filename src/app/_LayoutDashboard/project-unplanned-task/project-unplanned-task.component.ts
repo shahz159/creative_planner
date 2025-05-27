@@ -2552,6 +2552,7 @@ copyofItem: { Task_Name: string, Assign_Id: any }[] = [];
 Creation_Date:any
 
 unassign_edit1(id, task, date){  
+    console.log( id, task, date,'task date')
 
 this.copyofItem.push({
   Task_Name: task,
@@ -3065,9 +3066,9 @@ else{
   // return;
 }
 // Action cost calculate.
-
+ debugger
   this.ObjSubTaskDTO.MasterCode = this.selectedProjectCode;
-  this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {  
+  this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {   debugger
 
     this.Sub_ProjectCode = data['SubTask_ProjectCode'];
     this.EmpNo_Autho = data['Team_Autho'];
@@ -3147,7 +3148,7 @@ else{
       if (event.type === HttpEventType.Response){
         var myJSON = JSON.stringify(event);
         this._Message = (JSON.parse(myJSON).body).message;
-        // console.log(event,myJSON,this._Message,"action data");
+          console.log(this._Message,"this._Message");
         if(this._Message=='1'){
           if ( this.fileAttachment) {
             fd.append('file',  this.fileAttachment);
@@ -3419,13 +3420,19 @@ startdatechecker(){
   this._EndDate=null;
 }
 myFilter:any;
-enddateChecker(){
+enddateChecker(){  debugger
   this.noStartDate=true;
   this.myFilter = (d: Date | null): boolean => {
-    const day = (d || new Date()).getDay();
-    // Prevent Saturday and Sunday from being selected.
-    return day !== 0 && day !== 1 && day !== 2 && day !== 3 && day !== 4 && day !== 5 && day !== 6 && day !== 7;
+    if(d instanceof Date){
+       const day=d.getDay();
+       return day !== 0 && day !== 1 && day !== 2 && day !== 3 && day !== 4 && day !== 5 && day !== 6 && day !== 7;
+    }
+    else
+    return false;
+    
+   
   };
+
 }
 
 vart:any = null

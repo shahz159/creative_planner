@@ -123,7 +123,10 @@ Dateselectionrange: string = 'Date selection range';
         this.TypeContInFilter=filterprjsby.ProjectType?[{ Block_No: filterprjsby.ProjectType }]:[];
         this.StatusCountFilter=filterprjsby.Status?[{ Name: filterprjsby.Status }]:[];
         this.CompanyCountFilter=filterprjsby.Company?[{Company_No:filterprjsby.Company}]:[];
-                                 
+                             
+        
+        console.log('from timeline filter auto:',this.EmpCountInFilter,this.TypeContInFilter,this.StatusCountFilter,this.CompanyCountFilter);
+
         this.Type=this.type1;
         this.userFound=true;
         sessionStorage.removeItem('filterprjsby');
@@ -1226,12 +1229,18 @@ debugger
           this._filtersMessage2 = "";
           this.emptyspace=true;
         }
+
+
+        // reset scroll position of the table
+        this.resetScrollPosition('#projects-list-table');
+
       });
 
     //Filtering Checkbox de
     this.filterMegadropdownclose()
     this.getDropdownsDataFromDB();
     this.filterMegadropdownclose();
+
     }
     else if(this.Type=='RACIS Projects'){
       moment.locale('en');     
@@ -1284,6 +1293,10 @@ debugger
             this._filtersMessage2 = "";
             this.emptyspace=true;
           }
+
+          // reset scroll position of the table
+          this.resetScrollPosition('#projects-list-table');
+
         });
 
      this.getDropdownsDataFromDB();
@@ -3932,6 +3945,14 @@ convertToDecimalHours(hm:string){
 // method to convert HH:MM to hours value.
 
 
+
+resetScrollPosition(elementId:string){
+  const scrollableContainer = document.querySelector(elementId) as HTMLElement;
+  if (scrollableContainer) {
+    // scrollableContainer.style.scrollBehavior='smooth';
+    scrollableContainer.scrollTop = 0;
+  }
+}
 
 
 

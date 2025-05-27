@@ -1202,4 +1202,14 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl+'TestAPI/NewGetTimelinedropdown',this.ObjStatusDTO);
   }
 
+
+
+  NewGetUserTimeline(darSno:number,Empno:string,darReportDate:string){  debugger
+     this.ObjStatusDTO.Sno=darSno;
+     this.ObjStatusDTO.Emp_No=Empno;
+     this.ObjStatusDTO.rep_date=darReportDate;
+     return this.http.post(this.rootUrl+'TestAPI/NewGetUserTimeline',this.ObjStatusDTO);
+  }
+
+
 }

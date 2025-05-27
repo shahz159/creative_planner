@@ -326,16 +326,15 @@ export class CreateProjectComponent implements OnInit {
           this.PrjClient=this.Client_json[0].EmpClient;
           this.setRACIS();
 
-
          // determine whether current user can create standard task / routine task type projects or not.
          if(this.Current_user_Info.Position=='Team Member'){
-          this.maxAllocHrsByRole=this.perWeekAllocHrs*this.TEAM_MEMBER_ALLOC_RATIO;    //48*0.25=12 hrs maximum user can give to the new project.
+          this.maxAllocHrsByRole=+(this.perWeekAllocHrs*this.TEAM_MEMBER_ALLOC_RATIO).toFixed(2);    //48*0.25=12 hrs maximum user can give to the new project.
          }
          else if(this.Current_user_Info.Position=='Dept. Head'){
-          this.maxAllocHrsByRole=this.perWeekAllocHrs*this.DEPT_HEAD_ALLOC_RATIO;    //48*0.50=24 hrs maximum user can give to the new project.
+          this.maxAllocHrsByRole=+(this.perWeekAllocHrs*this.DEPT_HEAD_ALLOC_RATIO).toFixed(2);    //48*0.50=24 hrs maximum user can give to the new project.
          }
          else if(this.Current_user_Info.Position=='Company Head'){
-          this.maxAllocHrsByRole=this.perWeekAllocHrs*this.COMPANY_HEAD_ALLOC_RATIO;  //48*0.70=33.6 hrs maximum user can give to the new project
+          this.maxAllocHrsByRole=+(this.perWeekAllocHrs*this.COMPANY_HEAD_ALLOC_RATIO).toFixed(2);  //48*0.70=33.6 hrs maximum user can give to the new project
          }
         
      
@@ -1173,7 +1172,7 @@ contentType:any="";
                           <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
                           <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
                       </ul> 
-                      <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for ${existingPrjsType} Task projects. Please review your existing ones.</div>
+                      <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for ${existingPrjsType} projects. Please review your existing ones.</div>
                     </div>`,
                   showConfirmButton:true,
                   confirmButtonText:'Ok'
@@ -3900,7 +3899,7 @@ computeMaxAllocHrsToProject(){
 
 // after calculating max allocatable hrs value, if we found allocated hrs input present then verify it.
 this.isAllocHrsOverflow=false;
- if(this.Allocated_Hours){
+if(this.Allocated_Hours){
   this.onAllocInputHrsChanged();
 }
 //
@@ -4002,7 +4001,7 @@ showSR_ProjectsStats(ptype:'003'|'008'){
                         <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
                         <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
                     </ul> 
-                    <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for Standard Task projects. Please review your existing ones.</div>
+                    <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for Routine Task projects. Please review your existing ones.</div>
                 </div>`,
           showConfirmButton:true,
           confirmButtonText:'Ok'      

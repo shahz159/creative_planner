@@ -779,10 +779,10 @@ span.kt-meeting-status-icon {
 }
 
 .kt-project-notes {
-    border-radius: 5px;
+    /* border-radius: 5px;
     background: #e0e9ff;
     border: 0px solid #527ce2;
-    color: #2352c4;
+    color: #2352c4; */
     font-weight: 400;
     padding: 4px 10px;
     display: flex;
@@ -794,9 +794,9 @@ span.kt-meeting-status-icon {
     min-height: auto;
 }
 
-.kt-project-notes:hover {
+/* .kt-project-notes:hover {
     background-color: #cfddff;
-}
+} */
 
 /* .kt-project-notes .icon {
     margin-left: 8px;
@@ -2790,6 +2790,11 @@ div#DemoList-table div.demo i {
 
 .editing-cancel:hover svg {
     color: #D32F2F;
+}
+
+.editing-cancel:hover svg {
+  fill: #D32F2F;
+  stroke: #D32F2F;
 }
 
 .editing-save {
@@ -7196,6 +7201,12 @@ ul.schedule-select-user-list li {
     }
 }
 
+@media screen and (min-width: 1440px) {
+  ul.schedule-select-user-list.multi-selected-list li{
+      width: 195px;
+  }
+}
+
 ul.schedule-select-user-list li .schedule-select-user-list-item {
     display: flex;
     align-items: center;
@@ -9240,11 +9251,11 @@ a.info-btn.info-btn-disable:hover {
 .kt-meeting-activity-ul::-webkit-scrollbar {
     background: transparent;
     height: 8px;
-    width: 16px;
+    width: 10px;
 }
 
 .kt-meeting-activity-ul::-webkit-scrollbar-thumb {
-    border: 4px solid #fff;
+    border: 2px solid #fff;
     background: #dadce0;
     border-radius: 8px;
     min-height: 40px;
@@ -9290,18 +9301,21 @@ a.info-btn.info-btn-disable:hover {
     background-color: #cccccc3d;
     color: #6a6a6a;
     font-size: 11.5px;
-    padding: 4px;
+    padding: 4px 7px;
     border-radius: 6px;
     display: flex;
     align-items: center;
     gap: 16px;
+    width: 100%;
 }
 
 .kt-meeting-activity-li-user-name {
     margin-top: 4px;
     text-align: right;
 }
-
+.kt-meeting-activity-li-user-info {
+    width: 100%;
+}
 .kt-meeting-activity-li-user-info p {
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -9326,6 +9340,32 @@ a.info-btn.info-btn-disable:hover {
 
 .kt-meeting-activity-li.activity-smail .kt-meeting-activity-li-control {
     background-color: #ebf4ff;
+}
+
+.kt-meeting-activity-li.activity-pause .kt-meeting-activity-li-icon {
+    background-color: #FFCD4E;
+}
+
+.kt-meeting-activity-li.activity-pause .kt-meeting-activity-li-control {
+    background-color: #fff6df;
+}
+
+
+.kt-meeting-activity-li.activity-resume .kt-meeting-activity-li-icon {
+    background-color: #0b9b33;
+}
+
+.kt-meeting-activity-li.activity-resume .kt-meeting-activity-li-control {
+    background-color: #d4ffe0;
+}
+
+
+.kt-meeting-activity-li.activity-location .kt-meeting-activity-li-icon {
+    background-color: #FFCD4E;
+}
+
+.kt-meeting-activity-li.activity-location .kt-meeting-activity-li-control {
+    background-color:  #fff6df;
 }
 
 .kt-meeting-activity-li.activity-attachment .kt-meeting-activity-li-icon {
@@ -9367,6 +9407,45 @@ a.info-btn.info-btn-disable:hover {
 .kt-meeting-activity-li.activity-participant .kt-meeting-activity-li-control {
     background-color: #ffede7;
 }
+.kt-meeting-activity-li.activity-meetstart .kt-meeting-activity-li-icon {
+    background-color: #527ce2;
+}
+
+.kt-meeting-activity-li.activity-meetstart .kt-meeting-activity-li-control {
+    background-color: #dce6ff;
+}
+.kt-meeting-activity-li.activity-time .kt-meeting-activity-li-icon {
+    background-color: #aa52e2;
+}
+
+.kt-meeting-activity-li.activity-time .kt-meeting-activity-li-control {
+    background-color: #f1daff;
+}
+.kt-meeting-activity-li.activity-Meeting .kt-meeting-activity-li-icon {
+    background-color: #527ce2;
+}
+
+.kt-meeting-activity-li.activity-Meeting .kt-meeting-activity-li-control {
+    background-color: #dce6ff;
+}
+.kt-meeting-activity-li.activity-notes .kt-meeting-activity-li-icon {
+    background-color: #d24803;
+}
+
+.kt-meeting-activity-li.activity-notes .kt-meeting-activity-li-control {
+    background-color: #ffefe7;
+}
+.kt-meeting-activity-li.activity-task .kt-meeting-activity-li-icon {
+    background-color: #795548;
+}
+
+.kt-meeting-activity-li.activity-task .kt-meeting-activity-li-control {
+    background-color: #eee9e7;
+}
+
+
+
+
 
 
 .info-card-body .kt-info-meeting-box {
@@ -9486,6 +9565,7 @@ a.info-btn.info-btn-disable:hover {
     /* max-height: none;
     overflow-y: unset;
     overflow-x: unset; */
+    min-height: 140px;
     max-height: calc(100vh - 510px);
     padding-bottom: 0px;
 }
@@ -9518,6 +9598,25 @@ ul.kt-agenda-content.kt-agenda-list li:last-child {
     margin-bottom: 0px;
 }
 
+
+.kt-meeting-title-activity {
+    background-color: #527ce2;
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.private-notes.active svg {
+    color: #0034b2;
+}
+
+
+
+
 .kt-meeting-action-card.agenda-expand .kt-meeting-box.main-meeting-info {
     height: 210px;
     overflow: hidden;
@@ -9533,4 +9632,139 @@ ul.kt-agenda-content.kt-agenda-list li:last-child {
 
 .kt-meeting-action-card.agenda-expand .kt-agenda-scroll {
     max-height: calc(100vh - 390px);
+}
+
+.kt-meeting-left-li-head-icon.active svg {
+    color: #0034b2;
+    fill: #0034b2;
+}
+
+div#unassign-editsidebar.kt-action-panel--on {
+    width: 34% !important;
+}
+
+.offcanvas {
+  background: #ffffff;
+  -webkit-box-shadow: 0px 1px 9px -3px rgb(0 0 0 / 25%);
+  box-shadow: 0px 1px 9px -3px rgb(0 0 0 / 25%);
+}
+
+.unassign-editsidebar-body {
+  padding: 1.5rem;
+  height: calc(100vh - 58px);
+  color: #686868;
+  overflow: auto;
+}
+
+.unassign-editsidebar-footer {
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #e8e8e8;
+  background-color: #fff;
+}
+
+.unassign-editsidebar-head {
+    display: flex;
+    align-items: center;
+    border: 1px solid #efefef;
+    border-radius: 4px;
+    padding: 0.2rem 0.1rem;
+    margin-bottom: 1.5rem;
+}
+
+
+.unassign-editsidebar-radio {
+  padding: 1rem 0.95rem;
+  color: #686868;
+  border: 1px solid #efefef;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.unassign-editsidebar-radio .form-check {
+    padding-left: 1.5rem;
+}
+
+.unassign-editsidebar-radio .form-check .form-check-input .form-check-inputs {
+  width: 18px;
+  height: 18px;
+}
+
+.unassign-editsidebar-radio .form-check-label {
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.form-check-input:checked[type=radio] {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%235867dd'/%3e%3c/svg%3e");
+}
+
+.form-check-input:checked {
+    background-color: #dde1ff;
+    border-color: #5867dd;
+}
+
+
+.agenda-item:hover .agenda-ctrl-btns .edit-agendaname-btn,
+.agenda-item:hover .agenda-ctrl-btns .remove-agenda-btn {
+  display: inline;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100% !important;
+}
+
+.input-group {
+  transition: transform .2s !important;
+}
+
+.kt-quick-search .kt-quick-search__form .input-group {
+  border: 1px solid #d6dbff;
+  border-radius: 5px;
+}
+
+.edit-agendaname-btn svg {
+  fill: #64B5F6;
+  stroke: #64B5F6;
+}
+
+.todo-list-Assgin {
+  max-height: 20vh;
+  overflow: auto;
+}
+
+.edit-agendaname-btn {
+  display: none;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.radiotitle {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.radiotitle .form-control {
+    border: 0px;
+    font-weight: 500;
+    font-size: 16px;
+    padding-left: 4px;
+    height: auto;
+}
+
+.task-name-editfield-assign {
+  outline: 0;
+  border: 0;
+  flex-grow: 1;
+  font-size: 13px;
+  margin: 0;
+  align-self: stretch;
 }
