@@ -2909,3 +2909,28 @@ a.info-btn svg {
 
 
 /*header tab btns*/
+
+
+/*DAR request sidebar css part*/
+.work-archv-report .prj-name,.work-archv-report .actn-name{
+  color: #5867dd;
+  text-decoration: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.work-archv-report .prj-name:hover,.work-archv-report .actn-name:hover{
+  color: #2739c1;
+}
+
+.work-archv-report .action-label{
+  background-color: #76a5e0;
+  color: #ffffff !important;
+  font-weight: 400;
+  padding: 1px 3px 1px 3px;
+  margin-right: 3px;
+  border-radius: 3px;
+}
+
+
+/*DAR request sidebar css part*/

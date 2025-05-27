@@ -5348,8 +5348,10 @@ p.kt-dt-l {
 #prj-hold-sidebar .scroll-auto,
 #prj-cancel-sidebar .scroll-auto {
   height: auto !important;
-  max-height: calc(100vh - 124px);
-  min-height: calc(100vh - 124px);
+  /* max-height: calc(100vh - 124px);
+  min-height: calc(100vh - 124px); */
+  max-height: calc(100vh - 106px);
+  min-height: calc(100vh - 106px);
   overflow: auto !important;
 }
 
@@ -10668,3 +10670,13 @@ span.time-value {
 
 /*reject cmts end*/
 
+#prj-reopen-sidebar .scroll-auto, #action-reopen-sidebar .scroll-auto{
+  height: auto !important;
+  max-height: calc(100vh - 106px);
+  min-height: calc(100vh - 106px);
+  overflow: auto !important;
+  background-color: white;
+}
+/* #prj-reopen-sidebar.sideInfobar .kt-portlet__head{
+  background-color: #fff;
+} */

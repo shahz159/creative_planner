@@ -76,7 +76,11 @@ export const BACKEND_ROUTES: Routes = [
          path: 'masterforms',
          loadChildren: () => import('../_LayoutDashboard/master-forms/master-forms.module').then(m => m.MasterFormsModule),
          canActivate: [AuthGuard],
-     }
+     },
+     {
+         path: 'groups',
+         loadChildren: () => import('../_LayoutDashboard/groups/groups.module').then(m => m.GroupsModule),
+     },
 
 ]
 

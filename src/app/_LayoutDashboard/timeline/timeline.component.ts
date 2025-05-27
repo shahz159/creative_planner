@@ -2144,8 +2144,10 @@ applyFilterOnDarSection(){
     }
 }
 
-openDarReqSidebar(crntIndex:number){
+openDarReqSidebar(crntIndex:number){   debugger
   this.selectedDarReqIndex=crntIndex;
+  const {Sno,Emp_No,Reportdate}=this.darRequestsList[this.selectedDarReqIndex];
+  this.getDarRequestDetails(Sno,Emp_No.toString(),moment(Reportdate).format('MM/DD/YYYY'));
   document.getElementById("rightbar-overlay").style.display = "block";
   document.getElementById("timepage")!.classList.add("position-fixed");
   document.getElementById("dar-req_slider_bar").classList.add("kt-quick-panel--on");
@@ -2249,7 +2251,6 @@ isEmployeeChecked(empId:any){
 }
 
 
-
 selectDarRequest(isSelected:boolean,dreq:any){
   if(isSelected){
       this.darRequestsSelected.push(dreq);
@@ -2301,7 +2302,9 @@ configureEmployeeFilter(include:boolean,empObj:any){
 }
 
 
+
 // DAR Request sidebar context code start
+DARrequestInfo:any;  // it contain selected DAR request more details in it.
 darDecision:"ACCEPT"|"ACCEPT_WITH_BONUS"|"REJECT"|undefined=undefined;
 aprv_cmts:string|undefined;
 previousCmts:any=[];
@@ -2335,6 +2338,24 @@ drprev_comments()
 
 submitDARReq_Response(){
    
+}
+
+
+getDarRequestDetails(DarSno:number,Empno:string,DarReportDate:string){
+    this.service.NewGetUserTimeline(DarSno,Empno,DarReportDate).subscribe((res:any)=>{
+        if(res&&res[0]&&res[0].usertimeline){
+            this.DARrequestInfo=JSON.parse(res[0].usertimeline)[0];
+            console.log('DAR request info:',this.DARrequestInfo);
+            // formating duration, starttime and endtime
+               this.DARrequestInfo.Dardata.forEach(ob=>{  
+                  const k=/00:\d\d/.test(ob.Duration);
+                   ob.duration=k?(ob.Duration.split(':')[1]+' mins'):(ob.Duration+' hrs');
+                   ob.starttime=this.formatTimes(ob.starttime);
+                   ob.endtime=this.formatTimes(ob.endtime);
+                }); 
+            // formating duration, starttime and endtime
+        }
+    })
 }
 
 

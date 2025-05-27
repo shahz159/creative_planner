@@ -1172,7 +1172,7 @@ contentType:any="";
                           <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
                           <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
                       </ul> 
-                      <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for ${existingPrjsType} Task projects. Please review your existing ones.</div>
+                      <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for ${existingPrjsType} projects. Please review your existing ones.</div>
                     </div>`,
                   showConfirmButton:true,
                   confirmButtonText:'Ok'
@@ -3899,7 +3899,7 @@ computeMaxAllocHrsToProject(){
 
 // after calculating max allocatable hrs value, if we found allocated hrs input present then verify it.
 this.isAllocHrsOverflow=false;
- if(this.Allocated_Hours){
+if(this.Allocated_Hours){
   this.onAllocInputHrsChanged();
 }
 //
@@ -4001,7 +4001,7 @@ showSR_ProjectsStats(ptype:'003'|'008'){
                         <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
                         <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
                     </ul> 
-                    <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for Standard Task projects. Please review your existing ones.</div>
+                    <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for Routine Task projects. Please review your existing ones.</div>
                 </div>`,
           showConfirmButton:true,
           confirmButtonText:'Ok'      

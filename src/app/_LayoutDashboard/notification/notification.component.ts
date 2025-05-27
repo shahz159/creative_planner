@@ -199,6 +199,8 @@ export class NotificationComponent implements OnInit {
           this._filtersMessage2 = "";
           this.emptyspace=true;
         }
+
+        this.notificationsLoading = false;
       });
 
         let _vl = this._totalProjectsCount / 20;
@@ -212,7 +214,7 @@ export class NotificationComponent implements OnInit {
         if(this.CurrentPageNo == this.LastPage){
           this.lastPagerecords=20;
         }
-        this.notificationsLoading = false;
+       
     }
     else if(type=='Res'){
       this.selectedItems=[];
@@ -348,8 +350,7 @@ export class NotificationComponent implements OnInit {
           case 'INFORMATION':{
                this.currentPageContent='INFORMATION';
                this.showPrjAprv();    // shows the project approval list table. and hide other list if opened.
-               this.viewAll(this.type2);   //fetch informations.
-               
+               this.viewAll(this.type2);   //fetch informations.   
           };break;
           case 'LEAVE REQUESTS':{
                this.currentPageContent='LEAVE REQUESTS';
@@ -624,38 +625,38 @@ export class NotificationComponent implements OnInit {
   selectedItem_Company=[];
 
 
-  isStatusChecked(item) {
-    let arr = [];
-    this.StatusCountFilter.forEach(element => {
-      if (element.checked == true) {
-        arr.push({ Status: element.Name });
-        return this.checkedItems_Status = arr;
-      }
-    });
-    let arr2 = [];
-    this.StatusCountFilter.filter((item) => {
-      if (item.checked == true) {
-        this.applyFilters();
-        return arr2.push(item);
-      }
-    });
-    this.selectedItem_Status.push(arr2);
-    this.StatusCountFilter.forEach(element => {
-      if (element.checked == false) {
-        this.selectedItem_Status.length = 0;
-        this.resetFilters();
-      }
-    });
-    if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
-      && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0
-      && this.selectedItem_Company.length==0
-    ) {
-      this.edited = false;
-    }
-    else {
-      this.edited = true;
-    }
-  }
+  // isStatusChecked(item) {
+  //   let arr = [];
+  //   this.StatusCountFilter.forEach(element => {
+  //     if (element.checked == true) {
+  //       arr.push({ Status: element.Name });
+  //       return this.checkedItems_Status = arr;
+  //     }
+  //   });
+  //   let arr2 = [];
+  //   this.StatusCountFilter.filter((item) => {
+  //     if (item.checked == true) {
+  //       this.applyFilters();
+  //       return arr2.push(item);
+  //     }
+  //   });
+  //   this.selectedItem_Status.push(arr2);
+  //   this.StatusCountFilter.forEach(element => {
+  //     if (element.checked == false) {
+  //       this.selectedItem_Status.length = 0;
+  //       this.resetFilters();
+  //     }
+  //   });
+  //   if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
+  //     && this.selectedItem_Emp.length == 0 && this.selectedItem_Request.length==0
+  //     && this.selectedItem_Company.length==0
+  //   ) {
+  //     this.edited = false;
+  //   }
+  //   else {
+  //     this.edited = true;
+  //   }
+  // }
 
   isRequestChecked(item) {
     let arr = [];
@@ -981,6 +982,9 @@ export class NotificationComponent implements OnInit {
 
 
 
+        // Reset scroll position to 0.  (after search, filter, pagination, clear )
+         this.resetScrollPosition('#all-list-container');
+        //
       });
 
 
@@ -1817,5 +1821,20 @@ switchToFirstAvailableTab(){
 
 
 //  automatic switch to very first tab section which has content.   end.
+
+
+// scroll to top
+resetScrollPosition(elementId:string){
+  const scrollableContainer = document.querySelector(elementId) as HTMLElement;
+  if (scrollableContainer) {
+    // scrollableContainer.style.scrollBehavior='smooth';
+    scrollableContainer.scrollTop = 0;
+  }
+}
+
+
+// 
+
+
 
 }

@@ -55,6 +55,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
 
+
 // Function to load translations
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

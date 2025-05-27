@@ -11,6 +11,7 @@
 
 .kt-calendar {
     background-color: #fff;
+    border-radius: 6px;
 }
 
 .kt-calendar-header {
