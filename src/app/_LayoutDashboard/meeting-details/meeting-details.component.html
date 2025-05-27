@@ -5,11 +5,11 @@
             <div class="kt-container-fluid kt-grid__item kt-grid__item--fluid margin-height side_view m-0 p-3 " id="meetingdetails">
                 <div class="row" *ngFor="let item of EventScheduledjson">
                     <div class="col-lg-5">
-                        <div class="kt-meeting-action-card card h-100">
+                        <div class="kt-meeting-action-card card h-100 agenda-expand">
                             <div class="kt-meeting-action-card-body card-body">
                                 <div class="kt-meeting-main" >
                                     <div class="kt-meeting-main-active p-2 curser-pointer" [ngClass]="{'Active' : currentAgendaView === undefined}" (click)="currentAgendaProject();GetMeetingnotes_data()">
-                                        <div class="kt-meeting-box">
+                                        <div class="kt-meeting-box main-meeting-info">
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <div class="kt-meeting-title mt-0 mb-2">
                                                     <div class="kt-meeting-title-icon">

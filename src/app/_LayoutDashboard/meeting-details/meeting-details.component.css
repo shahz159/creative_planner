@@ -9111,6 +9111,7 @@ a.info-btn.info-btn-disable:hover {
     display: flex;
     position: relative;
     cursor: default;
+    width: 100%;
 }
 
 .kt-meeting-left-sec {
@@ -9385,11 +9386,11 @@ a.info-btn.info-btn-disable:hover {
 .meeting-notes::-webkit-scrollbar {
     background: transparent;
     height: 8px;
-    width: 16px;
+    width: 10px;
 }
 
 .meeting-notes::-webkit-scrollbar-thumb {
-    border: 4px solid #fff;
+    border: 2px solid #fff;
     background: #dadce0;
     border-radius: 8px;
     min-height: 40px;
@@ -9460,8 +9461,8 @@ a.info-btn.info-btn-disable:hover {
 
 .kt-meeting-action-card-body {
     direction: rtl;
-    max-height: calc(100vh - 50px);
-    overflow: auto;
+    /* max-height: calc(100vh - 50px);
+    overflow: auto; */
 }
 
 .kt-meeting-action-card-body::-webkit-scrollbar {
@@ -9482,15 +9483,16 @@ a.info-btn.info-btn-disable:hover {
 }
 
 .kt-meeting-action-card .kt-agenda-scroll {
-    max-height: none;
+    /* max-height: none;
     overflow-y: unset;
-    overflow-x: unset;
+    overflow-x: unset; */
+    max-height: calc(100vh - 510px);
     padding-bottom: 0px;
 }
 
 .kt-meeting-action-card .kt-agenda-content {
-    margin-left: 0px;
-    margin-right: 0px;
+    /* margin-left: 0px;
+    margin-right: 0px; */
     padding: 5px;
     margin-bottom: 0px;
     padding-bottom: 0px;
@@ -9501,7 +9503,7 @@ a.info-btn.info-btn-disable:hover {
 }
 
 .kt-meeting-action-card .kt-meeting-content p {
-    max-height: none;
+    max-height: 38px;
 }
 
 .kt-meeting-action-card .kt-agenda-item {
@@ -9514,4 +9516,21 @@ ul.kt-agenda-content.kt-agenda-list li {
 
 ul.kt-agenda-content.kt-agenda-list li:last-child {
     margin-bottom: 0px;
+}
+
+.kt-meeting-action-card.agenda-expand .kt-meeting-box.main-meeting-info {
+    height: 210px;
+    overflow: hidden;
+}
+
+.kt-meeting-action-card.agenda-expand .kt-meeting-box.main-meeting-info .kt-meeting-content p {
+    max-height: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.kt-meeting-action-card.agenda-expand .kt-agenda-scroll {
+    max-height: calc(100vh - 390px);
 }
