@@ -2845,7 +2845,7 @@
                                                    </ng-container>
 
 
-                                                    <button *ngIf="(projectInfo.Status=='Completed'||projectInfo.Status=='Cancelled')&&(Current_user_ID==projectInfo.ResponsibleEmpNo||Current_user_ID==projectInfo.OwnerEmpNo||isHierarchy==true)" class="Ct-btn Bt-Submit" style="font-weight: 500 !important;" (click)="onPrjReopenBtnClicked()">
+                                                    <button *ngIf="(projectInfo.Status=='Completed'||projectInfo.Status=='Cancelled')&&(Current_user_ID==projectInfo.OwnerEmpNo||isHierarchy==true)" class="Ct-btn Bt-Submit" style="font-weight: 500 !important;" (click)="onPrjReopenBtnClicked()">
                                                         <svg fill="currentColor" width="17px" height="17px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)" stroke="#b0b0b0" stroke-width="0" style="margin-bottom: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M23,4V17a1,1,0,0,1-1,1H17a1,1,0,0,1,0-2h4V5H3V16h7.586L9.293,14.707a1,1,0,0,1,1.414-1.414l3,3a1,1,0,0,1,0,1.414l-3,3a1,1,0,0,1-1.414-1.414L10.586,18H2a1,1,0,0,1-1-1V4A1,1,0,0,1,2,3H22A1,1,0,0,1,23,4Z"></path></g></svg>
                                                         Reopen Project
                                                     </button>
@@ -4200,7 +4200,8 @@
                                                         <div class="dropdown-menu user-detail-hover">
                                                           <div class="user-info">
                                                               <div class="icon">
-                                                                  <img src="https://cswebapps.com/dmsweb/assets/media/icons/user2.png" class="" alt="">
+                                                                  <img *ngIf="projectInfo.owner_pic" [src]="imagesOrigin+projectInfo.owner_pic"/>
+                                                                  <img *ngIf="!projectInfo.owner_pic" src="https://cswebapps.com/dmsweb/assets/media/icons/user2.png" class="" alt="">
                                                               </div>
                                                               <div class="user-name-email">
                                                                   <p class="name"> {{projectInfo&&projectInfo.Owner}}</p>
@@ -4255,7 +4256,10 @@
                                                         <div class="dropdown-menu user-detail-hover">
                                                           <div class="user-info">
                                                               <div class="icon">
-                                                                  <img src="https://cswebapps.com/dmsweb/assets/media/icons/user2.png" class="" alt="">
+                                                                  
+                                                                  <img *ngIf="projectInfo.resp_pic" [src]="imagesOrigin+projectInfo.resp_pic" class="" alt="">
+                                                                  <img *ngIf="!projectInfo.resp_pic" src="https://cswebapps.com/dmsweb/assets/media/icons/user2.png" class="" alt="">
+                                                                  
                                                               </div>
                                                               <div class="user-name-email">
                                                                   <p class="name"> {{projectInfo&&projectInfo.Responsible}}</p>
@@ -5002,7 +5006,7 @@
                                                         </ng-conatiner>
                                                     </div>
 
-                                                    <button *ngIf="(
+                                                    <!-- <button *ngIf="(
                                                                     (projectInfo.Status=='InProcess'||projectInfo.Status=='Delay')&&
                                                                     (projectActionInfo[currentActionView].Status=='Completed')&&
                                                                     ([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo,projectActionInfo[currentActionView].Project_Owner,projectActionInfo[currentActionView].Team_Res].includes(Current_user_ID)||isHierarchy==true)
@@ -5010,7 +5014,7 @@
                                                          class="Ct-btn Bt-Submit" style="font-weight: 500 !important;" (click)="onActionReopenBtnClicked()">
                                                         <svg fill="currentColor" width="17px" height="17px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)" stroke="#b0b0b0" stroke-width="0" style="margin-bottom: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M23,4V17a1,1,0,0,1-1,1H17a1,1,0,0,1,0-2h4V5H3V16h7.586L9.293,14.707a1,1,0,0,1,1.414-1.414l3,3a1,1,0,0,1,0,1.414l-3,3a1,1,0,0,1-1.414-1.414L10.586,18H2a1,1,0,0,1-1-1V4A1,1,0,0,1,2,3H22A1,1,0,0,1,23,4Z"></path></g></svg>
                                                         Reopen Action
-                                                    </button>
+                                                    </button> -->
 
                                                     <div class="project_more_Action_options"
                                                         *ngIf="([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo,projectActionInfo[currentActionView].Project_Owner,projectActionInfo[currentActionView].Team_Res].includes(Current_user_ID)||isHierarchy==true) &&
@@ -5724,7 +5728,9 @@
                                                     <div class="row mt-4 px-3">
                                                         <div class="col text-center">
                                                             <div class="kt-info-lable-v">
-                                                                <span class="kt-info-lable-icon"><svg width="24px" height="24px"
+                                                                <span class="kt-info-lable-icon">
+                                                                    
+                                                                    <svg width="24px" height="24px"
                                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
                                                                         id="handshake">
                                                                         <g fill="#898989" data-name="Handshake">
@@ -5767,12 +5773,14 @@
                                                             <div class="kt-info-data-v cursor-pointer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 {{projectActionInfo[currentActionView].Owner}}
                                                             </div>
-
+ 
 
                                                             <div class="dropdown-menu user-detail-hover">
                                                               <div class="user-info">
                                                                   <div class="icon">
-                                                                      <img src="https://cswebapps.com/dmsweb/assets/media/icons/user2.png" class="" alt="">
+                                                                      
+                                                                      <img *ngIf="projectActionInfo[currentActionView].owner_pic" [src]="imagesOrigin+projectActionInfo[currentActionView].owner_pic"/>
+                                                                      <img *ngIf="!projectActionInfo[currentActionView].owner_pic" src="https://cswebapps.com/dmsweb/assets/media/icons/user2.png" class="" alt="">
                                                                   </div>
                                                                   <div class="user-name-email">
                                                                       <p class="name"> {{projectActionInfo[currentActionView].Owner}}</p>
@@ -5829,7 +5837,8 @@
                                                             <div class="dropdown-menu user-detail-hover">
                                                               <div class="user-info">
                                                                   <div class="icon">
-                                                                      <img src="https://cswebapps.com/dmsweb/assets/media/icons/user2.png" class="" alt="">
+                                                                      <img *ngIf="projectActionInfo[currentActionView].resp_pic" [src]="imagesOrigin+projectActionInfo[currentActionView].resp_pic"/>
+                                                                      <img *ngIf="!projectActionInfo[currentActionView].resp_pic" src="https://cswebapps.com/dmsweb/assets/media/icons/user2.png" class="" alt="">
                                                                   </div>
                                                                   <div class="user-name-email">
                                                                       <p class="name">{{projectActionInfo[currentActionView].Responsible}}</p>
@@ -9024,7 +9033,8 @@
                                         <div class="user-list">
                                           <div class="user-info" [ngClass]="{'inactive-prjusr':Data.isActive==false}">
                                             <div class="user-icon">
-                                              <span class="user-initial bg-primary text-inverse-warning fw-bold">{{Data.Emp_Name[0]}}</span>
+                                              <span *ngIf="!Data.UserProfile"  class="user-initial bg-primary text-inverse-warning fw-bold">{{Data.Emp_Name[0]}}</span>
+                                              <img *ngIf="Data.UserProfile" style="object-fit:contain" [src]="imagesOrigin+Data.UserProfile"/>
                                             </div>
                                             <div class="flex-grow-1">
                                               <div class="user-details">
@@ -17546,7 +17556,7 @@
                                                       <span *ngIf="!(rp_remarks&&rp_remarks.trim())&&rp_formFieldsRequired"  style="color:red">Please provide remark</span>
                                                 </div>
   
-                                                <div class="form-group mt-3">
+                                                <!-- <div class="form-group mt-3">
                                                     <label>Attachment</label>
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
@@ -17577,7 +17587,7 @@
                                                     <span *ngIf="invalidFileSelected" style="color:red">File type is not supported. Please choose a valid file.</span>
                                                     <span class="text-info">* Supported file types: Images, PDFs, Text, HTML, Word, JSON, XML, PowerPoint, Excel.</span>
                                                     </div>
-                                                </div>
+                                                </div> -->
                       
                                             </div>
                                         </div>

@@ -2142,7 +2142,6 @@
         </a>
       </div>
        <div class="container req-form">
-  
         <div class="d-flex gap-1 mb-3 mt-2 px-3">
           <div class="kt-project-info-body w-100">
          
@@ -2210,8 +2209,7 @@
               </div>
             </div>
         </div>
-     </div>
-    
+       </div>
       </div> 
   
       <div class="container req-form dar-achievement-sec">
@@ -2243,7 +2241,7 @@
                  <span class="kt-detail-iconname">Reject</span>
                </div>
        
-                <div class="kt-detail-link" [ngClass]="{'active':darDecision=='ACCEPT_WITH_BONUS'}" (click)="onDarReqDecisionChanged('ACCEPT_WITH_BONUS')">
+                <div class="kt-detail-link d-none" [ngClass]="{'active':darDecision=='ACCEPT_WITH_BONUS'}" (click)="onDarReqDecisionChanged('ACCEPT_WITH_BONUS')">
                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 1.2em; height: 1.2em; vertical-align: middle; fill: #007c05; ;overflow: hidden;">
                    <path d="M458.24 376.32 138.24 376.32c-15.36 0-25.6 10.24-25.6 25.6 0 15.36 10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6C483.84 389.12 471.04 376.32 458.24 376.32z"></path>
                    <path d="M458.24 642.56 138.24 642.56c-15.36 0-25.6 10.24-25.6 25.6s10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6S471.04 642.56 458.24 642.56z"></path>
@@ -2261,7 +2259,7 @@
             <div class="mb-2">
     
             <div *ngIf="darDecision=='ACCEPT'" class="px-3 text-info mb-2 d-flex flex-column">
-              <span class="text-info fw-medium">* Approve it, to appreciate project team for great work.</span>
+              <span class="text-info fw-medium">* Approve it, to appreciate the project member for great work.</span>
             </div>
     
             <div *ngIf="darDecision=='ACCEPT_WITH_BONUS'" class="px-3 text-info mb-2 d-flex flex-column">
@@ -2276,12 +2274,38 @@
             <div class="kt-pdv">
               <div class="mt-2 px-3">
     
-    
+                <div class="mb-3" *ngIf="darDecision=='REJECT'">
+                  <label>Select Reject Type<span style="color:red">*</span></label>
+                  <ng-select name="darReqRejectType" placeholder="Select Reject Type" id="darReqRejectType" [(ngModel)]="drpercentage"  
+                   [ngClass]="{'error-border':(drpercentage==null||drpercentage==undefined)&&drFormFieldRequired}">
+                        <ng-option [value]="0">Performance Category</ng-option>
+                        <ng-option [value]="10">10%</ng-option>
+                        <ng-option [value]="25">25%</ng-option>
+                        <ng-option [value]="50">50%</ng-option>
+                        <ng-option [value]="75">75%</ng-option>
+                        <ng-option [value]="100">100%</ng-option> 
+                  </ng-select>
+                  <span *ngIf="(drpercentage==null||drpercentage==undefined)&&drFormFieldRequired"  style="color:red">please select reject type.</span> 
+                </div>
+
+                <div class="mb-3" *ngIf="darDecision=='ACCEPT_WITH_BONUS'">
+                  <label>Select Bonus<span style="color:red">*</span></label>
+                  <ng-select name="darReqBonusType" placeholder="Select Bonus" id="darReqBonusType" [(ngModel)]="drpercentage"
+                  [ngClass]="{'error-border':!drpercentage&&drFormFieldRequired}">
+                        <ng-option [value]="10">10%</ng-option>
+                        <ng-option [value]="25">25%</ng-option>
+                        <ng-option [value]="50">50%</ng-option>
+                        <ng-option [value]="75">75%</ng-option>
+                        <ng-option [value]="100">100%</ng-option> 
+                  </ng-select>
+                  <span *ngIf="!drpercentage&&drFormFieldRequired"  style="color:red">please provide bonus.</span> 
+                </div>
+
+              
                 <div class="mb-3">
                   <label>Enter Comments<span style="color:red">*</span></label>
-                  <!-- [ngClass]="{'error-border':!aprv_cmts&&notProvided}"   -->
-                  <textarea placeholder="Enter comments here." [(ngModel)]="aprv_cmts"  id="darReqTextarea" rows="3" class="form-control kt-approval-msg"></textarea>
-                  <!-- <span *ngIf="!aprv_cmts&&notProvided"  style="color:red">please enter your comments</span> -->
+                  <textarea placeholder="Enter comments here." [(ngModel)]="aprv_cmts" [ngClass]="{'error-border':!aprv_cmts&&drFormFieldRequired}" id="darReqTextarea" rows="3" class="form-control kt-approval-msg"></textarea>
+                   <span *ngIf="!aprv_cmts&&drFormFieldRequired"  style="color:red">please enter your comments</span> 
                   <!-- <div *ngIf="cmts_Loading;else prvCmtsLoaded" class="spinner-border spinner-border-sm mt-3 ml-2 d-block" role="status">
                     <span class="sr-only">Loading...</span>
                   </div> -->
@@ -2312,7 +2336,6 @@
               </div>
             </div>
         </div>
-
 
         <div class="mt-3 mx-3">
             <table class="time-table mb-1 border work-archv-report">
@@ -2364,7 +2387,7 @@
     </div>
   </div>
   
-  <!--dar request details view sidebar start-->
+  <!--dar request details view sidebar end-->
 
 
 

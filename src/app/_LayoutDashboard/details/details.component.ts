@@ -193,7 +193,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   noActvy4NDays:number=-1;
   prjResHasActions:boolean=false;   // project responsible has actions or not.
   actnsWithoutProgress:any[]=[];   // actions with no progress since their start date in the project.
-
+  imagesOrigin:string='https://yrglobaldocuments.blob.core.windows.net/userprofileimages/';
+   
 
 
 
@@ -1405,7 +1406,7 @@ debugger
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{
 
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
-            const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', '), isActive:result[0].isActive};
+            const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', '), isActive:result[0].isActive, UserProfile:result[0].UserProfile};
             if(this.Subtask_Res_List){
               const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
               if(p){
@@ -13525,10 +13526,12 @@ onPrjReopenBtnClicked(){
     }).then((choice)=>{
 
        if(choice.isConfirmed){
-           
-          if(this.projectInfo.Status=='Completed'){
-           
-            Swal.fire({
+            
+         if(['001','002'].includes(this.projectInfo.Project_Block)&&this.projectInfo.Status=='Completed')
+         {    //  if project type is core, secondary with status completed. 
+          // (options dialog)
+
+             Swal.fire({
               title:'Choose an Option',
               html:`<div style="text-align: justify;">
                      <div style="font-weight: 500;">How would you like to reopen the project?</div>
@@ -13551,16 +13554,23 @@ onPrjReopenBtnClicked(){
                    
              });
 
-          }
-          else if(this.projectInfo.Status=='Cancelled'){
-             this.openPrjReopenSideBar();    // reopen project directly
-          }
-
+         }
+         else if(
+                 (['001','002'].includes(this.projectInfo.Project_Block)&&this.projectInfo.Status=='Cancelled')||
+                 (['003','008','011'].includes(this.projectInfo.Project_Block)&&['Completed','Cancelled'].includes(this.projectInfo.Status))         
+              ){ 
+           /**  
+            *  if project type is core, secondary but with status cancelled.
+            *  if project type is std, routine, todo with status either completed or cancelled.
+            */
+          // (reopen project directly)
+          this.openPrjReopenSideBar();      
+         }
+         
        }
 
     });
 }
-
 
 openPrjReopenSideBar() {
   document.getElementById("prj-reopen-sidebar").classList.add("kt-quick-active--on");
@@ -13572,6 +13582,7 @@ openPrjReopenSideBar() {
   const cdate=new Date();  cdate.setHours(0,0,0,0);
   this.prjReopenDeadlineRequired=pdeadline<cdate;
 }
+
 closePrjReopenSideBar() {
 
   this.rp_remarks='';
@@ -13581,12 +13592,12 @@ closePrjReopenSideBar() {
   this.rp_processing=false;
   this.rp_sfile=null;
   this.rp_sfilename='';
+  this.prjReopenDeadlineRequired=false;
   
   document.getElementById("prj-reopen-sidebar").classList.remove("kt-quick-active--on");
   document.getElementById("newdetails").classList.remove("position-fixed");
   document.getElementById("rightbar-overlay").style.display = "none";
 }
-
 
 
 onRPFileChange(e){
@@ -13612,18 +13623,36 @@ onRPFileChange(e){
 e.target.value = '';
 }
 
-
-onProjectReopenSubmit(){
+onProjectReopenSubmit(){  debugger
   if((this.rp_remarks&&this.rp_remarks.trim())&&(this.prjReopenDeadlineRequired?this.rp_newDeadline:true)){
 
-    // service call here
+      const _project_Code=this.projectInfo.Project_Code;
+      const _empNo=this.Current_user_ID;
+      const _type=this.projectInfo.Status=='Completed'?'1':this.projectInfo.Status=='Cancelled'?'2':'';
+      const _deadline=this.prjReopenDeadlineRequired?(this.datepipe.transform(this.rp_newDeadline.toDate(),'dd-MM-yyyy')):null;
+      const _remarks=this.rp_remarks;
+ 
+     this.rp_processing=true;  // process started.
+     this.projectMoreDetailsService.NewUpdateProjectReopen(_project_Code,_empNo,_type,_remarks,_deadline).subscribe((res:any)=>{
+          console.log("after preopen:",res);
+          if(res&&res.message==1){
+              this.notifyService.showSuccess("Project Reopen successfully.","Success");
+              this.getProjectDetails(this.URL_ProjectCode);  // rebind project data on page.
+              this.getapprovalStats();   // rebind approval data also.  
+              // this.getstandardapprovalStats();   
+              this.closePrjReopenSideBar();  // close the sidebar.
+          }
+          else{
+              this.notifyService.showError("Something went wrong!","Failed");
+          }
+      this.rp_processing=false; // process ended.    
+     });
       
   }
   else{
     this.rp_formFieldsRequired=true; 
   }
 }
-
 
 
 // project reopen functionality  end.
