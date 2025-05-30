@@ -21,6 +21,8 @@ import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-detail
 import { ActivatedRoute } from '@angular/router';
 import { debug } from 'console';
 import { sort } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
+import { ApprovalsService } from '../../_Services/approvals.service';
+import { ApprovalDTO } from '../../_Models/approval-dto';
 declare var $: any;
 export const MY_DATE_FORMATS = {
   parse: {
@@ -58,6 +60,7 @@ export class TimelineComponent implements OnInit {
   constructor(public service: ProjectTypeService,
     private projectMoreDetailsService: ProjectMoreDetailsService,
     private notifyService: NotificationService,
+    private approvalService:ApprovalsService,
     public datepipe: DatePipe,
     private route : ActivatedRoute,
     private _adapter: DateAdapter<any>,
@@ -2134,7 +2137,7 @@ applyFilterOnDarSection(){
     this.objStatusDto.startdate='';
     this.objStatusDto.enddate='';
     this.service.NewGetTimelinedropdown(this.objStatusDto).subscribe((res)=>{  
-        if(res&&res[0]){   
+        if(res&&res[0]){    
           const totalprjJsonstr=JSON.parse(res[0]['TotalProjectsCount_Json']);
           this.total_records=totalprjJsonstr[0]['TotalProjects'];
           this.lastPageNo=Math.ceil(this.total_records/this.page_size);
@@ -2176,7 +2179,7 @@ getDarRequestsList(){
    this.service.NewGetTimelineInbox(this.objStatusDto).subscribe((res)=>{  
     console.log('pageno:',this.current_pageno,'dar requests list:',res);
     this.darRequestsLoading=false;  
-         if(res&&res[0]){
+         if(res&&res[0]){   
              this.darRequestsList=JSON.parse(res[0]['DarRequests']);
              this.totalDarRequests=res[0]['TotalRequests'];
          }   
@@ -2232,7 +2235,7 @@ getDefaultFilterDropdownData(){
   this.objStatusDto.enddate='';
   this.service.NewGetTimelinedropdown(this.objStatusDto).subscribe((res)=>{  
       console.log('timeline dropdown:',res);
-      if(res&&res[0]){   
+      if(res&&res[0]){     debugger
         this.companiesList=JSON.parse(res[0]['CompanyType_Json']);
         this.employeesList=JSON.parse(res[0]['Emp_Json']);
         const totalprjJsonstr=JSON.parse(res[0]['TotalProjectsCount_Json']);
@@ -2307,7 +2310,9 @@ configureEmployeeFilter(include:boolean,empObj:any){
 DARrequestInfo:any;  // it contain selected DAR request more details in it.
 darDecision:"ACCEPT"|"ACCEPT_WITH_BONUS"|"REJECT"|undefined=undefined;
 aprv_cmts:string|undefined;
+drpercentage:number;
 previousCmts:any=[];
+drFormFieldRequired:boolean=false;
 
 onDarReqDecisionChanged(decision:"ACCEPT"|"ACCEPT_WITH_BONUS"|"REJECT"){
   this.darDecision=decision;
@@ -2317,6 +2322,8 @@ onDarReqDecisionChanged(decision:"ACCEPT"|"ACCEPT_WITH_BONUS"|"REJECT"){
 closeDarReqAprvlSec(){
   this.darDecision=undefined;
   this.aprv_cmts=undefined;
+  this.drpercentage=0;
+  this.drFormFieldRequired=false;
   // this.previousCmts=[];
   // this.cmts_Loading=false;
 }
@@ -2337,7 +2344,51 @@ drprev_comments()
 }
 
 submitDARReq_Response(){
-   
+  debugger
+  if(
+    (this.aprv_cmts&&this.aprv_cmts.trim())&&
+    (this.darDecision=='ACCEPT_WITH_BONUS'?this.drpercentage:true)&&
+    (this.darDecision=='REJECT'?(this.drpercentage!=null&&this.drpercentage!=undefined):true)
+  ){
+    // when mandatory fields are provided.
+    this.drFormFieldRequired=false;
+
+    const darReqResult=new ApprovalDTO();
+    darReqResult.emp_rep_no=this.darRequestsList[this.selectedDarReqIndex].Emp_Rep_No;
+    darReqResult.submittedby=this.Current_user_ID;
+    darReqResult.submittedto=this.darRequestsList[this.selectedDarReqIndex].submittedby;
+    darReqResult.submitdate=this.DARrequestInfo.SubmissionDate;
+    darReqResult.ReportDate=this.darRequestsList[this.selectedDarReqIndex].Reportdate;
+    darReqResult.status=this.darRequestsList[this.selectedDarReqIndex].SubmissionType;
+    darReqResult.Remarks=this.aprv_cmts;
+    darReqResult.DARStatus=this.darDecision=='ACCEPT'?'Accepted':this.darDecision=='REJECT'?'Rejected':this.darDecision=='ACCEPT_WITH_BONUS'?'Bonus Accepted':'';
+    darReqResult.percentage=this.darDecision=='ACCEPT'?0:this.drpercentage;
+
+    this.approvalService.NewUpdateTimelineReport(darReqResult).subscribe((res:any)=>{    debugger
+        if(res){
+           console.log('after the Dar req\'s response submitted',res);
+        }
+
+        if(res&&res.message==1){
+          const smessage=this.darDecision=='ACCEPT'?'DAR request successfully accepted.':this.darDecision=='REJECT'?'DAR request successfully rejected.':this.darDecision=='ACCEPT_WITH_BONUS'?'Bonus Accepted':'';
+          this.notifyService.showSuccess(smessage,"Success");
+          this.getDarRequestsList();   // rebind the dar requests list 
+          this.closeDarReqAprvlSec();   // close the approval section.
+          this.closeDarReqSidebar();    // close the sidebar.
+        }
+        else{
+          this.notifyService.showError("Something went wrong!","Failed");
+        }
+
+     });
+
+  }
+  else{
+      // when mandatory fields are not provided.
+     this.drFormFieldRequired=true;
+  }
+
+
 }
 
 
@@ -2363,7 +2414,7 @@ getDarRequestDetails(DarSno:number,Empno:string,DarReportDate:string){
 
 
 
-// DAR Request sidebar context code start
+// DAR Request sidebar context code end
 
 // dar inbox end.
 
