@@ -3951,7 +3951,7 @@ onFileChange(event) {
             // this.saveAttendeeTime();
             this.GetAttendeesnotes();
             if(this.currentAgendaView == undefined){
-              // this.GetMeetingActivity();
+              this.GetMeetingActivity();
             }
           
             //  }, 1000);
