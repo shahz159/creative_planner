@@ -3132,6 +3132,7 @@ else{
     fd.append("proState",this.completionattachment.toString());
     fd.append("actionCost",this.actionCost);
     fd.append("contentType",this.contentType);
+    fd.append("AssignId", this.task_id.toString());
 
     if (this.ObjSubTaskDTO.Duration != null) {
       fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
