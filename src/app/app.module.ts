@@ -52,6 +52,7 @@ import { TimelineModule } from './_LayoutDashboard/timeline/timeline.module';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { MeetingDetailsModule } from './_LayoutDashboard/meeting-details/meeting-details.module';
 
 
 
@@ -109,6 +110,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatFormFieldModule,
     ScrollingModule,
     TimelineModule,
+
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
