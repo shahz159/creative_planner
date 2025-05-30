@@ -77,7 +77,10 @@ export class MeetingDetailsComponent implements OnInit {
   currentAgendaView: any
   _MasterCode: string;
   CurrentUser_fullname:any;
-
+  meetingAdmin: boolean | undefined;
+  userFound: boolean | undefined;
+  loadingDMS: boolean= false;
+  deletedMeeting:boolean = true;
   subtask_loading:boolean=false;
   loading: boolean = false;
   Current_user_ID: string;
@@ -184,7 +187,7 @@ export class MeetingDetailsComponent implements OnInit {
   activeAgendaIndex: number = 0
   _PopupConfirmedValue: number;
   today: any = new Date().toISOString().substring(0, 10);
-  loadingDMS: boolean;
+ 
 
   
     
@@ -192,6 +195,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   ngOnInit(): void {
+  
     this.loadingDMS = false;
     this.MinLastNameLength = true;
 
@@ -216,10 +220,6 @@ export class MeetingDetailsComponent implements OnInit {
    
     this.meeting_details();
 
-
-
-
-   
     this.addAgenda();
     // this.GetMeetingnotes_data();
     this.getDetailsScheduleId()
@@ -232,6 +232,9 @@ export class MeetingDetailsComponent implements OnInit {
     this.getMeetingApprovals();
     this.fetchPortfolios();
     this.GetProjectsByUserName();
+    this.GetMemosActivity();
+
+
 
     setTimeout(() => {
       this.loadingDMS = true;
@@ -558,9 +561,7 @@ export class MeetingDetailsComponent implements OnInit {
   hours: any
   minutes: any
   hasStatusOne: boolean = false
-  userFound: boolean | undefined;
   EmpNo: any;
-  meetingAdmin: boolean | undefined;
   Actiontask: any;
   AssignedTask: any;
   Todotask: any;
@@ -601,8 +602,8 @@ export class MeetingDetailsComponent implements OnInit {
   isLoading: boolean = true;
   oneByTwoEndDate:any;
   Meeing_Name:any;
-  deletedMeeting:boolean = true;
   Organizer:any;
+  DMS_Details:any;
   
   live_activ = [
     { actvName: 'New agenda added by Aquib Shahbaz', time: '5 sec ago' },
@@ -639,7 +640,7 @@ export class MeetingDetailsComponent implements OnInit {
     
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
 
-       console.log('User_Scheduledjson',this.User_Scheduledjson);
+       console.log('EventScheduledjson',this.EventScheduledjson);
 
       this.totalUser_Scheduledjson=this.User_Scheduledjson.length;
       this.user_linkedOnMtg=this.User_Scheduledjson?this.User_Scheduledjson.map(user => user.stringval):[];
@@ -770,7 +771,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.ModifiedJson=this.EventScheduledjson[0].ModifiedJson
 
       this.portfolio_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Portfolio_Name);
-
+      this.DMS_Details = JSON.parse(this.EventScheduledjson[0].DMS_Details);
      
 
       this.totalportfolios = this.portfolio_Scheduledjson.length;
@@ -867,7 +868,6 @@ export class MeetingDetailsComponent implements OnInit {
       this.deletedMeeting = false;
     }
        }); 
-   
   }
 
 
@@ -1373,18 +1373,15 @@ export class MeetingDetailsComponent implements OnInit {
 
       this.checkeddms = this.checkeddms.map((num) => num.toString());
       this.dmscount = this.checkeddms.length;
+
+           
+      this._MemosSubjectList = this._MemosSubjectList.map(memo => ({
+        ...memo,
+        ...this.DMS_Details.find(dms => dms.numberval === memo.MailId)
+      }));
+
+      console.log( this._MemosSubjectList,' this._MemosSubjectList',this.DMS_Details );
      
- 
-      // if(this._MemosSubjectList[0].Subject!=undefined &&  this.ModifiedJson){
-      //   this._MemosSubjectList = this.mergeObjects(
-      //     this._MemosSubjectList || [], 
-      //     this.ModifiedJson || [], 
-      //     'MailId'
-      //   );
-      // }
-      
-      console.log( this._MemosSubjectList,' this._MemosSubjectList ');
-      //  console.log( this._MemosSubjectList, this.ModifiedJson ,' this._MemosSubjectList ');
      });
 
       
@@ -2178,7 +2175,7 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-  Addproject_meetingreport() {
+  Addproject_meetingreport() { 
 
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
@@ -8964,24 +8961,37 @@ toggleView() {
 
 allActivityList:any=[];
 meetingStartedTime:any;
+isFiltered:any=false;
+listActivityMemos:any;
+
+
+
+ GetMemosActivity() {
+    this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
+      subscribe((data) => {
+        this.listActivityMemos = JSON.parse(data['JsonData']);
+      });
+  }
+
+
 
 GetMeetingActivity(){
   this.approvalObj.Schedule_Id=this.Scheduleid;
 
   this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
   this.allActivityList=JSON.parse(data[0].ActivityList);
-  console.log(this.allActivityList,'allActivityList4452');
+
+  console.log(this.allActivityList,'allActivityList2373');
  
-  const memoMap = new Map(this.Memos_List.map(m => [m.MailId.toString(), { id: m.MailId, name: m.Subject }]));
-    this.allActivityList.forEach(item => {
-      if (item.Value.trim() === 'S-Mail link(s) added' || item.Value.trim() === 'S-Mail link(s) deleted') {
+  const memoMap = new Map(this.listActivityMemos.map(m => [m.MailId.toString(), { id: m.MailId, name: m.Subject }]));
+
+  this.allActivityList.forEach(item => {
+      if (item.Value.trim() === 'S Mail link(s) added' || item.Value.trim() === 'S Mail link(s) deleted' || item.Value.trim() === 'SM link(s) changed' || item.Value.trim() === 'SM link(s) added') {
         item.New_Value = JSON.stringify(
           item.New_Value.split(',').map(id => memoMap.get(id.trim())).filter(Boolean)
         );
       }
     });
-
-
 
     this.allActivityList = this.allActivityList.map(item => ({
       ...item,
@@ -9012,15 +9022,12 @@ GetMeetingActivity(){
 
 
 
-
-
 this.allActivityList.forEach(item => {
   if (Array.isArray(item.New_Value) && Array.isArray(item.New_Value[0])) {
     item.New_Value = item.New_Value[0];
   }
 });
 
-  
 
 
 // Link details undefined subjects start
@@ -9053,8 +9060,12 @@ this.allActivityList.forEach(activity => {
 
 
     this.meetingStartedTime = this.allActivityList.find(x => x.Value === 'Meeting Started')?.New_Value[0]?.name;
-
-  console.log(this.allActivityList,'allActivityList');
+  
+    if(this.isFiltered ==false){
+    this.filteredActivityList = this.allActivityList
+    console.log(this.allActivityList,'allActivityList');
+    }
+   
 
   })
 }
@@ -9247,9 +9258,15 @@ newDetails(ProjectCode) {
   myWindow.focus();
 }
 
-hasValidOldValue(item: any): boolean {
-  return item?.Old_Value?.some((data: any) => data.name && data.name.trim() !== '') ?? false;
+// hasValidOldValue(item: any): boolean {
+//   return item?.Old_Value?.some((data: any) => data.name && data.name.trim() !== '') ?? false;
+// }
+
+hasValidOldValue(item: any): boolean {  
+  return Array.isArray(item?.Old_Value) &&
+    item.Old_Value.some((data: any) => data?.name?.trim() !== '');
 }
+
 
 
 
@@ -9384,6 +9401,8 @@ isHierarchy:boolean = false;
 
 
 unassign_edit1(id, task, date, option){  
+
+  this.task_id=id;
 
 this.copyofItem.push({
   Task_Name: task,
@@ -9890,14 +9909,14 @@ assignTasksub1(){
       console.log(data,'atattachmeatattachmeatattachmeatattachme')
         let message: string = data['message'];
         this.notifyService.showSuccess("Task sent to assign projects.", message);
-      
+        this.GetAssigned_SubtaskProjects();
         //69 this.refetchPageContent();  // rebind
 
       });
        this.checkedTaskNames = []
       this.resetAssign()
       this.unassign_closeInfo();
-      this.meeting_details();
+     
 
 }
 
@@ -10065,7 +10084,8 @@ completionattachment:boolean=true;
       this.Sub_ProjectCode = data['SubTask_ProjectCode'];
       this.EmpNo_Autho = data['Team_Autho'];
       this.ProjectBlock = data['ProjectBlock'];
-
+     
+      console.log( this.task_id,'task_id')
       if (this.task_id != null) {
         this.ObjSubTaskDTO.AssignId = this.task_id;
       }
@@ -10086,9 +10106,9 @@ completionattachment:boolean=true;
       this.ObjSubTaskDTO.Remarks = this._remarks;
       this.ObjSubTaskDTO.Duration = this._allocated;
       // this.ObjSubTaskDTO.Attachments = this._inputAttachments;
-      console.log( this.fileAttachment)
+     
   
-
+      console.log( this.ObjSubTaskDTO,'ObjSubTaskDTO')
       var datestrStart = moment(this._StartDate).format("MM/DD/YYYY");
       var datestrEnd = moment(this._EndDate).format("MM/DD/YYYY");
       // alert(datestrStart)
@@ -10117,11 +10137,12 @@ completionattachment:boolean=true;
       fd.append("AssignTo", this.selectedEmpNo);
       fd.append("Remarks", this._remarks);
       fd.append("EmployeeName", localStorage.getItem('UserfullName'));
-      fd.append("AssignIds", this.selected_taskId.toString());     
+      // fd.append("AssignIds", this.selected_taskId.toString());     
       fd.append("Owner", this.owner);
       fd.append("proState",this.completionattachment.toString());
       fd.append("actionCost",this.actionCost);
       fd.append("contentType",this.contentType);
+      fd.append("AssignId", this.task_id.toString());
 
       if (this.ObjSubTaskDTO.Duration != null) {
         fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
@@ -10133,6 +10154,22 @@ completionattachment:boolean=true;
       for (let [key, value] of fd.entries()) {
         console.log(`${key}: ${value}`);
       }
+
+
+
+    console.log("append", this.Sub_ProjectCode,this.EmpNo_Autho,this.ObjSubTaskDTO.MasterCode, this.selected_taskName
+    , this.ProjectBlock,datestrStart,datestrEnd, this.Current_user_ID,this.selectedEmpNo, this._remarks
+    ,localStorage.getItem('UserfullName'),this.task_id.toString(),this.owner,this.completionattachment,this.actionCost,this.contentType
+   );
+
+
+    console.log('new action to proj');
+      fd.forEach((value, key) => {
+        console.log(`${key}:`, value);
+      });
+    console.log('new action to proj');
+
+
          
         this.service._InsertNewSubtaskcore(fd).subscribe((event: HttpEvent<any>) => { 
         if (event.type === HttpEventType.Response){
@@ -10180,7 +10217,7 @@ completionattachment:boolean=true;
 
     this.resetActionvalue()
     this.unassign_closeInfo();
-    this.meeting_details();
+   
       });
   }
 
@@ -10204,20 +10241,72 @@ startdatechecker(){
   this._EndDate=null;
 }
 
+updatedActivityUsers:any;
+Activity_List:any; 
+
+mergeActivityData(){
+const filteredActivityList =[{type_Name:"Agendas"},{type_Name:"S Mail"},{type_Name:"Portfolio(s)"},{type_Name:"Project(s)"},{type_Name:"Attachment(s)"},
+  {type_Name:"Notes"},{type_Name:"Task assigned"},{type_Name:"Action assigned"}
+]
+
+
+
+this.Activity_List = filteredActivityList.filter(activity =>
+  this.allActivityList.some(item => 
+    item.Value.toLowerCase().includes(
+      activity.type_Name.replace(/\(s\)/gi, '').trim().toLowerCase()
+    )
+  )
+);
+
+
+  console.log(this.allActivityList,'activityType',this.Activity_List)
+
+var ActivityUsers = [this.Organizer[0], ...this.User_Scheduledjson];
+this.updatedActivityUsers = ActivityUsers.filter(user => 
+  this.allActivityList.some(activity => activity.Modified_by == user.stringval)
+);
+
+
+}
 
 
 actvsFltrBy:{ activityType:string, empType:string }={ activityType:'all',empType:'all' };
 FilteredPrjActivities:any=[];
+filteredActivityList:any;
 
 
-arrangeActivitiesBy(acttype:string,emptype:string){
+arrangeActivitiesBy(acttype:string,emptype:string){ 
   this.actvsFltrBy.activityType=acttype;
   this.actvsFltrBy.empType=emptype;
-  // this.FilteredPrjActivities=this.Activity_List.filter((actv)=>{
-  //   const x=(this.actvsFltrBy.empType=='all'||actv.Modifiedby==this.actvsFltrBy.empType);
-  //   const y=(this.actvsFltrBy.activityType=='all'||(actv._type==this.actvsFltrBy.activityType));
-  //   return x&&y;
-  // });
+  this.actvsFltrBy.activityType = this.actvsFltrBy.activityType.replace(/\(s\)/g, '')
+  const { empType, activityType } = this.actvsFltrBy;
+  this.isFiltered = !(empType === 'all' && activityType === 'all'); // 👈 placed here
+
+this.filteredActivityList = (empType === 'all' && activityType === 'all') 
+  ? this.allActivityList 
+  : this.allActivityList.filter(item =>
+      (empType === 'all' || item.Modified_by == empType) &&
+      (activityType === 'all' ||  item.Value.toLowerCase().includes(activityType.toLowerCase()))
+    );
 }
+
+sanitize(text: string): string {
+  return text?.replace(/\(s\)/g, '') || '';
+}
+
+
+
+formatDuration(dateStr: string) {
+  const d1 = new Date(dateStr), d2 = new Date();
+  if (d1.toDateString() === d2.toDateString()) return 'Today';
+  let y = d2.getFullYear() - d1.getFullYear(), m = d2.getMonth() - d1.getMonth(), d = d2.getDate() - d1.getDate();
+  if (d < 0) { m--; d += new Date(d2.getFullYear(), d2.getMonth(), 0).getDate(); }
+  if (m < 0) { y--; m += 12; }
+  return `${y ? y + ' years ' : ''}${m ? m + ' months ' : ''}${d} days`.trim();
+}
+
+
+
 
 }
