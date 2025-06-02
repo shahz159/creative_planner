@@ -10022,3 +10022,43 @@ div#unassign-editsidebar.kt-action-panel--on {
   text-wrap-mode: nowrap;
   display: inline-block;
 }
+
+
+
+.date-change-icon .date-change-icon-previous,
+.date-change-icon .date-change-icon-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #5f6368;
+    transition: all 0.15s ease-in-out;
+}
+
+.date-change-icon .date-change-icon-previous:hover,
+.date-change-icon .date-change-icon-next:hover {
+    background-color: #f4f4f4;
+}
+
+span.date-change-icon-previous svg,
+span.date-change-icon-next svg {
+    width: 24px;
+    height: 24px;
+}
+
+.date-change-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity_Found {
+    margin-left: 11em;
+}
+
+.act-img {
+    margin-left: 6em;
+}
