@@ -81,4 +81,16 @@ export class ApprovalDTO {
     ExitentryCompany:any;
 // specially in leave email generation context
 
+
+// Timeline DAR approval approve/reject
+    emp_rep_no:string;
+    submittedby:string;
+    submittedto:string;
+    submitdate:string;
+    ReportDate:string;
+    DARStatus:string;
+    status:string;
+    percentage:number;
+//
+
 }

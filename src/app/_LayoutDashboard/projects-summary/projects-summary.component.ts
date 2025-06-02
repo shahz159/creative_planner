@@ -493,7 +493,8 @@ Dateselectionrange: string = 'Date selection range';
          data.forEach((ob)=>{
           ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
           ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
-         });
+          ob.projectMembers=this.getProjectMembersProperty(ob);   // create new property "projectMembers" for displaying RACIS column .
+        });
       }
 
       this._ProjectDataList = data;
@@ -540,11 +541,14 @@ Dateselectionrange: string = 'Date selection range';
       }
 
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe((data:any) => {
+
         if(data){
           data.forEach((ob)=>{
             ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
             ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
-           });
+            ob.projectMembers=this.getProjectMembersProperty(ob);   // create new property "projectMembers" for displaying RACIS column .
+           
+          });
         }
 
         this._ProjectDataList = data;
@@ -593,6 +597,37 @@ Dateselectionrange: string = 'Date selection range';
 
 
   }
+
+
+  // it is just used to add new property "projectMembers" on the project currently showing on the page.
+  getProjectMembersProperty(ob){
+        const imgorigin='https://yrglobaldocuments.blob.core.windows.net/userprofileimages/';
+        const allmembers=[
+                { role:'Owner', name:ob.Project_Owner, imageSrc:ob.owner_pic?(encodeURI(imgorigin+ob.owner_pic)):null },
+                { role:'Responsible', name:ob.Team_Res, imageSrc:ob.resp_pic?(encodeURI(imgorigin+ob.resp_pic)):null },
+                { role:'Authority', name:ob.Authority, imageSrc:ob.autho_pic?(encodeURI(imgorigin+ob.autho_pic)):null },
+                { role:'Coordinator', name:ob.Team_Coor, imageSrc:ob.Coord_pic?(encodeURI(imgorigin+ob.Coord_pic)):null },
+                { role:'Informer', name:ob.Team_Informer, imageSrc:ob.infor_pic?(encodeURI(imgorigin+ob.infor_pic)):null },
+              
+                ...JSON.parse(ob.Team_Support).map(sm=>{
+                     return {role:'Support', name:sm.DisplayName, imageSrc:sm.UserInboxThumbnail?(encodeURI(imgorigin+sm.UserInboxThumbnail)):null }
+                 }) 
+        ];
+
+      const ALLmembers:any=[];  
+      Array.from(new Set(allmembers.map((m)=>m.name))).forEach((ename)=>{
+                  if(ename){
+                    const result=allmembers.filter((ob)=>ob.name==ename);
+                    const pmember:any={ Emp_Name:result[0].name, Role:result.map(r=>r.role).join(', '), Emp_Image:result[0].imageSrc };
+                    ALLmembers.push(pmember);
+                  }
+      });
+
+      return ALLmembers;
+  }
+  //
+
+
 
 
   // getFormattedDelay(delayDays: any): string {
@@ -1211,7 +1246,8 @@ debugger
           data.forEach((ob)=>{
             ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
             ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
-           });
+            ob.projectMembers=this.getProjectMembersProperty(ob);   // create new property "projectMembers" for displaying RACIS column .
+          });
        }
         //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
         this._ProjectDataList = data;
@@ -1270,7 +1306,8 @@ debugger
             data.forEach((ob)=>{
               ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
               ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
-             });
+              ob.projectMembers=this.getProjectMembersProperty(ob);   // create new property "projectMembers" for displaying RACIS column .
+            });
            }
           //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
           this._ProjectDataList = data;
@@ -2829,7 +2866,7 @@ this.closeAutocompleteDrpDwn('proDDwn')
  }
 
  isaction = false;
- isracis = false;
+ isracis = true;
  isstatus = true;
  islastupdate = true;
  isdeadline = true;
@@ -3914,7 +3951,7 @@ getNotificationsofprojects(){
     // else if((p.Emp_No==empno || p.Owner == empno)  && (p.Status==='Delay')) {
    //   this.mydelayProjects.push(p);
   // }
-    console.log(this.completionUA,'comple', this.forwardUA,'forward', this.newUA,'newapp',this.cancellationUA ,'cancellationUA')
+    // console.log(this.completionUA,'comple', this.forwardUA,'forward', this.newUA,'newapp',this.cancellationUA ,'cancellationUA')
   });
 }
 

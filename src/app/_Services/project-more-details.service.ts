@@ -17,7 +17,7 @@ export class ProjectMoreDetailsService {
 
   getProjectMoreDetails(projectcode:string){
     this.ObjSubTaskDTO.Project_Code=projectcode;
-      return this.http.post(this.rootUrl+'TestAPI/NewGetMoreProjectDetails',this.ObjSubTaskDTO);
+    return this.http.post(this.rootUrl+'TestAPI/NewGetMoreProjectDetails',this.ObjSubTaskDTO);
   }
 
 
@@ -120,6 +120,17 @@ NewUpdateTransferProjectComplete(project_code:string,empno:string,remarks:string
   return this.http.post(this.rootUrl+'ApprovalAPI/NewUpdateTransferProjectComplete',this.ObjSubTaskDTO);
 }
 
+
+
+NewUpdateProjectReopen(project_code:string,empno:string,type:string,remarks:string,project_deadline:string|null){  
+  this.ObjSubTaskDTO.Project_Code=project_code;
+  this.ObjSubTaskDTO.Emp_No=empno;
+  this.ObjSubTaskDTO.type=type;
+  this.ObjSubTaskDTO.Remarks=remarks;
+  this.ObjSubTaskDTO.deadline=project_deadline;
+
+  return this.http.post(this.rootUrl+'TestAPI/NewUpdateProjectReopen',this.ObjSubTaskDTO);
+}
 
 
 }

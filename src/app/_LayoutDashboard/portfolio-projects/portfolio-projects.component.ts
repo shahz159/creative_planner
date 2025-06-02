@@ -468,7 +468,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
         item.newrejectJson=item.newrejectJson?JSON.parse(item.newrejectJson):null;  // parses newrejectJson str into object.
         item.hoursInDecimal=(item.Project_Block=='003'||item.Project_Block=='008')?this.convertToDecimalHours(item.StandardDuration):item.AllocatedHours; // create new property : 'hoursInDecimal'  
-
+        item.projectMembers=this.getProjectMembersProperty(item);   // create new property "projectMembers" for displaying RACIS column .
       });
         console.log(this.filteredEmployees,"this.filteredEmployeesthis.filteredEmployees")
 
@@ -1288,6 +1288,7 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
               this._ProjectsListBy_Pid.forEach(ob=>{
                 ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
                 ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
+                ob.projectMembers=this.getProjectMembersProperty(ob);   // create new property "projectMembers" for displaying RACIS column .
               });
               this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
               this.TotalProjects = this._ProjectsListBy_Pid.length;
@@ -6650,7 +6651,7 @@ notShow(){
 
 
 isaction = false;
-isracis = false;
+isracis = true;
 isstatus = true;
 islastupdate = true;
 isdeadline = true;
@@ -7923,5 +7924,45 @@ GetProjectAndsubtashDrpforCalender2() {
 }
 // popup selection modal2 for dms and portfolio sidebar   end
 
+
+
+// racis column new modification : showing user with their profile image.     start
+
+
+  // it is just used to add new property "projectMembers" on the project currently showing on the page.
+
+
+  getProjectMembersProperty(ob){
+        const imgorigin='https://yrglobaldocuments.blob.core.windows.net/userprofileimages/';
+        const allmembers=[
+                { role:'Owner', name:ob.Project_Owner, imageSrc:ob.owner_pic?(encodeURI(imgorigin+ob.owner_pic)):null },
+                { role:'Responsible', name:ob.Team_Res, imageSrc:ob.resp_pic?(encodeURI(imgorigin+ob.resp_pic)):null },
+                { role:'Authority', name:ob.Team_Autho, imageSrc:ob.autho_pic?(encodeURI(imgorigin+ob.autho_pic)):null },
+                { role:'Coordinator', name:ob.Team_Coor, imageSrc:ob.Coord_pic?(encodeURI(imgorigin+ob.Coord_pic)):null },
+                { role:'Informer', name:ob.Team_Informer, imageSrc:ob.infor_pic?(encodeURI(imgorigin+ob.infor_pic)):null },
+                ...ob.Support_pic.map(sm=>{
+                     return {role:'Support', name:sm.DisplayName, imageSrc:sm.UserInboxThumbnail?(encodeURI(imgorigin+sm.UserInboxThumbnail)):null }
+                }) 
+        ];
+
+      const ALLmembers:any=[];  
+      Array.from(new Set(allmembers.map((m)=>m.name))).forEach((ename)=>{
+                  if(ename){
+                    const result=allmembers.filter((ob)=>ob.name==ename);
+                    const pmember:any={ Emp_Name:result[0].name, Role:result.map(r=>r.role).join(', '), Emp_Image:result[0].imageSrc };
+                    ALLmembers.push(pmember);
+                  }
+      });
+
+      return ALLmembers;
+  }
+  //
+
+
+
+
+
+
+// racis column new modification : showing user with their profile image.     end
 
 }
