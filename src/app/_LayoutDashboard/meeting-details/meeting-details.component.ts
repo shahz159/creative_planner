@@ -8735,7 +8735,7 @@ totalupcomingmeetings:any;
 totalpreviousmeetings:any;
 
 
-NewGetRecurrenceMeetings(meetings_HTR){
+NewGetRecurrenceMeetings(meetings_HTR,MeetingValue){
 
   this.previousWithUpcoming_loader=true;
   this.previousmeetings=null;
@@ -8768,7 +8768,7 @@ NewGetRecurrenceMeetings(meetings_HTR){
       });
 
       this.totalpreviousmeetings=this.previousmeetings.length;
-      console.log(this.previousmeetings,'previousmeetings2');
+     
      }else if(data['upcomingmeetings']){
 
       this.upcomingmeetings = JSON.parse(data['upcomingmeetings']);
@@ -8789,9 +8789,20 @@ NewGetRecurrenceMeetings(meetings_HTR){
       });
       this.upcomingmeetings.reverse()
       this.totalupcomingmeetings=this.upcomingmeetings.length;
-      console.log(this.upcomingmeetings,'upcomingmeetings2');
-
      }
+
+      if( MeetingValue == 'Next'){
+       
+        const i = this.upcomingmeetings.findIndex(m => m.Schedule_date === this._StartDate);
+        const matchedNextScheduleId = this.upcomingmeetings[i + 1]?.Schedule_ID || this.upcomingmeetings[0]?.Schedule_ID;
+        this.OnCardClickUpcoming(matchedNextScheduleId);
+            
+      }else if(MeetingValue == 'Prev'){
+
+         const i = this.previousmeetings.findIndex(m => m.Schedule_date === this._StartDate);
+         const matchedPrevScheduleId = this.previousmeetings[i + 1]?.Schedule_ID || this.previousmeetings[0]?.Schedule_ID;
+         this.OnCardClickUpcoming(matchedPrevScheduleId);
+      }
   })
 }
 
@@ -8990,7 +9001,7 @@ GetMeetingActivity(){
   this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
   this.allActivityList=JSON.parse(data[0].ActivityList);
 
-  console.log(this.allActivityList,'allActivityList');
+  // console.log(this.allActivityList,'allActivityList');
  
   // const memoMap = new Map(this.listActivityMemos.map(m => [m.MailId.toString(), { id: m.MailId, name: m.Subject }]));
 

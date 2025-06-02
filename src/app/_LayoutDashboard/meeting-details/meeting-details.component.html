@@ -36,7 +36,36 @@
                                                         <span class="lbl-hdn ">Edit</span>
                                                     </div>
                                                 </div>
-                                                <div class="options monthly">{{item.Recurrence}}</div>
+
+
+
+
+
+                                           <div class="date-change-icon" *ngIf="item.Recurrence != 'Do not repeat'">
+                                                <span class="date-change-icon-previous" matTooltip="Previous meeting" (click)="NewGetRecurrenceMeetings(0,'Prev')">
+                                                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M15.2071 6.29289C15.5976 6.68342 15.5976 7.31658 15.2071 7.70711L10.9142 12L15.2071 16.2929C15.5976 16.6834 15.5976 17.3166 15.2071 17.7071C14.8166 18.0976 14.1834 18.0976 13.7929 17.7071L8.79289 12.7071C8.40237 12.3166 8.40237 11.6834 8.79289 11.2929L13.7929 6.29289C14.1834 5.90237 14.8166 5.90237 15.2071 6.29289Z" fill="currentColor"></path> </g></svg>
+                                                </span>
+
+                                                <span class="date-change-icon-next" matTooltip="Next meeting" (click)="NewGetRecurrenceMeetings(1,'Next')">
+                                                    <svg  width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.79289 6.29289C9.18342 5.90237 9.81658 5.90237 10.2071 6.29289L15.2071 11.2929C15.5976 11.6834 15.5976 12.3166 15.2071 12.7071L10.2071 17.7071C9.81658 18.0976 9.18342 18.0976 8.79289 17.7071C8.40237 17.3166 8.40237 16.6834 8.79289 16.2929L13.0858 12L8.79289 7.70711C8.40237 7.31658 8.40237 6.68342 8.79289 6.29289Z" fill="currentColor"></path></g></svg>
+                                                </span>
+                                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                               
                                             
                                                 <div class="kt-meeting-status hold d-none mt-0 mb-2">
                                                     <span class="kt-meeting-status-icon">
@@ -93,6 +122,7 @@
                                                         <span class="kt-meeting-title-name">Meeting metrics </span>
                                                         <!-- | <span *ngIf="item.Schedule_Type"> {{item.Schedule_Type}}</span> | <span *ngIf="item.Recurrence=='Monthly'">{{item.Recurrence}}</span> -->
                                                     </div>
+                                                     <div class="options monthly">{{item.Recurrence}}</div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-lg-9 pr-1">
@@ -1607,7 +1637,7 @@
                                             </a>
 
 
-                                            <a  *ngIf="meetings_Recurrence!='Do not repeat'"  matTooltip="Meetings" class="kt-inbox__icon active" (click)="History_meeting();NewGetRecurrenceMeetings(0)" >
+                                            <a  *ngIf="meetings_Recurrence!='Do not repeat'"  matTooltip="Meetings" class="kt-inbox__icon active" (click)="History_meeting();NewGetRecurrenceMeetings(0,'undefined')" >
                                                 <span  class="blink"></span><svg _ngcontent-gam-c397="" xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 1024 1024" version="1.1" fill="currentColor" class="iconify iconify--mdi"><path _ngcontent-gam-c397="" d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z"></path>
                                                 </svg>
                                             </a>
@@ -3193,6 +3223,15 @@
                                                         </div>
                                                     </div> --> 
                                                 </div>
+                                              <div class="d-flex-center mt-5" *ngIf="filteredActivityList == 0">
+                                                <div>
+                                                    <img src="../../../assets/images/No_Actions.png" width="268" height="256" class="activity_Found" />
+                                                    <div class="bnk-txt">
+                                                        <h2 class="blank-txt text-center act-img">No activity found</h2>
+                                                    </div>
+                                                  </div>
+                                              </div> 
+
                                             </div>
                                             <ng-template #AgendaList>
                                                 <div class="kt-meeting-agenda-con">
@@ -6922,11 +6961,11 @@
                     <ul class="nav nav-tabs" id="myMeeting" role="tablist">
                         <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="previousmeeting-tab" data-toggle="tab" data-target="#previousmeeting" type="button" role="tab" 
-                        aria-controls="previousmeeting" aria-selected="true" (click)="NewGetRecurrenceMeetings(0)" ><span class="lbl-hdn">Previous </span></button>
+                        aria-controls="previousmeeting" aria-selected="true" (click)="NewGetRecurrenceMeetings(0,'undefined')" ><span class="lbl-hdn">Previous </span></button>
                         </li>
                         <li class="nav-item" role="presentation">
                         <button class="nav-link" id="upcomingmeeting-tab" data-toggle="tab" data-target="#upcomingmeeting" type="button" role="tab" 
-                        aria-controls="upcomingmeeting" aria-selected="false" (click)="NewGetRecurrenceMeetings(1)" ><span class="lbl-hdn">upcoming </span></button>
+                        aria-controls="upcomingmeeting" aria-selected="false" (click)="NewGetRecurrenceMeetings(1,'undefined')" ><span class="lbl-hdn">upcoming </span></button>
                         </li>
                     </ul>
                     <div class="tab-content sidehf_scroll  scroll-y" id="myMeetingContent">
