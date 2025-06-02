@@ -11183,7 +11183,7 @@
                                                         class="ng-star-inserted"> -->
                                                         <div data-toggle="tooltip" data-placement="top" matTooltip=""
                                                             class="user-icon-round" style="width: 25px; height: 25px;">
-                                                            <span class="user-Ltr bg-primary text-inverse-warning fw-bold" style="font-size: 15px;">{{item.TM_DisplayName[0]}}</span>
+                                                            <span *ngIf="item.TM_DisplayName" class="user-Ltr bg-primary text-inverse-warning fw-bold" style="font-size: 15px;">{{item.TM_DisplayName[0]}}</span>
                                                         </div>
                                                 </div>
                                                 <div class="text-muted ml-2 fs-7">{{item.TM_DisplayName}}</div>
@@ -11198,7 +11198,7 @@
                                                         </path>
                                                     </svg>
                                                 </span>
-                                                <span>{{item.Modified_date | date : 'dd-MM-yyyy'}} </span>
+                                                <span>{{item.Modified_date | date : 'dd-MM-yyyy'}}</span>
                                                 <span class="svg-icns time-icn">
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18"
                                                         height="18">

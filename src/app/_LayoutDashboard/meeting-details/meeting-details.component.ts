@@ -1033,16 +1033,18 @@ export class MeetingDetailsComponent implements OnInit {
 
 
 
-  startTimes: any
+  startTimes: any;
   endTime: Date;
+ 
 
   resumeMeeting() {
-
+   
     this.play = true;
     this.pause = false;
     //69 this.startTimes
     this.status_Type = 'Resume'
     this.InsertAttendeeMeetingTime();
+   
     this.startTimes = new Date(new Date().getTime() - this.elapsedTime);
     this.meetingPaused = false;
     this.timer = setInterval(() => {
@@ -1118,9 +1120,17 @@ export class MeetingDetailsComponent implements OnInit {
   actualDuration: any;
   AverageDuration: any;
   AttendeeCount: any;
+  isInserted : boolean = false;
 
 
   InsertAttendeeMeetingTime() {
+
+    if (this.isInserted) return;  
+      this.isInserted = true;
+      setTimeout(() => {
+        this.isInserted = false;
+      }, 2000);
+ 
 
     const formatTime = time => time ? new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase() : null;
 
@@ -1133,8 +1143,7 @@ export class MeetingDetailsComponent implements OnInit {
     // console.log(this._calenderDto,'time of meeting');
     this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe
       ((data) => {
-
-
+ 
       }
       )
   }
@@ -8981,9 +8990,15 @@ GetMeetingActivity(){
   this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
   this.allActivityList=JSON.parse(data[0].ActivityList);
 
-  console.log(this.allActivityList,'allActivityList2373');
+  console.log(this.allActivityList,'allActivityList');
  
-  const memoMap = new Map(this.listActivityMemos.map(m => [m.MailId.toString(), { id: m.MailId, name: m.Subject }]));
+  // const memoMap = new Map(this.listActivityMemos.map(m => [m.MailId.toString(), { id: m.MailId, name: m.Subject }]));
+
+  const memoMap = new Map(
+  (this.listActivityMemos ?? []).map(m => [m.MailId.toString(), { id: m.MailId, name: m.Subject }])
+  );
+
+
 
   this.allActivityList.forEach(item => {
       if (item.Value.trim() === 'S Mail link(s) added' || item.Value.trim() === 'S Mail link(s) deleted' || item.Value.trim() === 'SM link(s) changed' || item.Value.trim() === 'SM link(s) added') {
@@ -9063,7 +9078,7 @@ this.allActivityList.forEach(activity => {
   
     if(this.isFiltered ==false){
     this.filteredActivityList = this.allActivityList
-    console.log(this.allActivityList,'allActivityList');
+    // console.log(this.allActivityList,'allActivityList');
     }
    
 
