@@ -2175,12 +2175,17 @@ getDarRequestsList(){
   this.objStatusDto.enddate='';
  
    this.darRequestsLoading=true;
-   this.service.NewGetTimelineInbox(this.objStatusDto).subscribe((res)=>{  
+   this.service.NewGetTimelineInbox(this.objStatusDto).subscribe((res:any)=>{  
     console.log('pageno:',this.current_pageno,'dar requests list:',res);
+    console.log('darreqjson:');
     this.darRequestsLoading=false;  
          if(res&&res[0]){   
              this.darRequestsList=JSON.parse(res[0]['DarRequests']);
              this.totalDarRequests=res[0]['TotalRequests'];
+
+             // check all page items are already selected or not.
+             this.isPgAllDarsSelected=this.checkPgAllDarsSelected();
+             //
          }   
    });
 }
@@ -2412,19 +2417,15 @@ isPgAllDarsSelected:boolean=false;   // true when all dars of the current page i
 
 selectDarRequest(isSelected:boolean,dreq:any){   // whenever DAR requests is selected or unselected.
   if(isSelected){
-      this.darRequestsSelected.push(dreq);
-
-       const isAllSelected=this.darRequestsList.map((dreq)=>dreq.Emp_Rep_No).every((emprep)=>{
-            return this.darRequestsSelected.findIndex(drsel=>drsel.Emp_Rep_No==emprep)>-1; 
-       });
-       this.isPgAllDarsSelected=isAllSelected;
+      this.darRequestsSelected.push(dreq);    // add new item
+      this.isPgAllDarsSelected=this.checkPgAllDarsSelected();   // after adding new item check whether all dar items present on the page selected. 
   }
   else{
      const index=this.darRequestsSelected.findIndex(ob=>ob.Emp_Rep_No==dreq.Emp_Rep_No);
      if(index>-1){
         this.darRequestsSelected.splice(index,1);
+        this.isPgAllDarsSelected=false;
      }
-     this.isPgAllDarsSelected=false;
   }
 }
 
@@ -2432,6 +2433,14 @@ isDarRequestSelected(empRepno:string):boolean{
     const isSelected=this.darRequestsSelected.find(req=>req.Emp_Rep_No==empRepno);
     return isSelected;
 }
+
+checkPgAllDarsSelected():boolean{
+     const isAllSelected=this.darRequestsList.map((dreq)=>dreq.Emp_Rep_No).every((emprep)=>{
+            return this.darRequestsSelected.findIndex(drsel=>drsel.Emp_Rep_No==emprep)>-1; 
+     });
+     return isAllSelected;
+}
+
 
 
 openMultiDarAcceptRejectSidebar(decision:'ACCEPT'|'ACCEPT_WITH_BONUS'|'REJECT'){
@@ -2450,7 +2459,6 @@ closeMultiDarAcceptRejectSidebar(){
 }
 
 darReqsSelectAllBtnClicked(isChecked:boolean){
-    
    const selecteddar_reps=this.darRequestsSelected.map(dr=>dr.Emp_Rep_No);
 
     if(isChecked){  
@@ -2479,10 +2487,6 @@ onSubmitDarRequestsResult(){   debugger
       { // when mandatory fields are provided.
          this.drFormFieldRequired2=false;
 
-
-         // service
-
-
     const darReqsResult=new ApprovalDTO();
     darReqsResult.emp_rep_no=this.darRequestsSelected.map(ob=>ob.Emp_Rep_No).join(',');
     darReqsResult.status='Submitted';
@@ -2499,24 +2503,13 @@ onSubmitDarRequestsResult(){   debugger
           this.getDarRequestsList();   // rebind the dar requests list 
           this.closeMultiDarAcceptRejectSidebar();
           this.darRequestsSelected=[];
+          this.isPgAllDarsSelected=false;
         }
         else{
           this.notifyService.showError("Something went wrong!","Failed");
         }
 
      });
-
-
-
-
-
-
-
-
-
-
-
-
 
       }
       else

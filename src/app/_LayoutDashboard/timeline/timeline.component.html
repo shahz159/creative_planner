@@ -2509,20 +2509,20 @@
          <div *ngIf="selectedDarDecision=='ACCEPT_WITH_BONUS'" class="mb-3">
             <label>Select Bonus Type<span style="color:red">*</span></label>
             <ng-select name="multidarReqBonusType" placeholder="Select Bonus Type" id="multidarReqBonusType" [(ngModel)]="darReqbonusPercentage"  
-                   [ngClass]="{'error-border':(darReqbonusPercentage&&drFormFieldRequired2)}">
+                   [ngClass]="{'error-border':(!darReqbonusPercentage&&drFormFieldRequired2)}">
                 <ng-option [value]="10">10%</ng-option>
                 <ng-option [value]="25">25%</ng-option>
                 <ng-option [value]="50">50%</ng-option>
                 <ng-option [value]="75">75%</ng-option>
                 <ng-option [value]="100">100%</ng-option> 
             </ng-select>
-            <span *ngIf="(darReqbonusPercentage&&drFormFieldRequired2)" style="color:red">please select bonus type.</span> 
+            <span *ngIf="(!darReqbonusPercentage&&drFormFieldRequired2)" style="color:red">please select bonus type.</span> 
          </div>
 
          <div *ngIf="selectedDarDecision=='REJECT'" class="mb-3">
             <label>Select Reject Type<span style="color:red">*</span></label>
             <ng-select name="multidarReqRejectType" placeholder="Select Reject Type" id="multidarReqRejectType" [(ngModel)]="darReqRejectPercentage"  
-                   [ngClass]="{'error-border':(darReqbonusPercentage==null||darReqbonusPercentage==undefined)&&drFormFieldRequired2}">
+                   [ngClass]="{'error-border':(darReqRejectPercentage==null||darReqRejectPercentage==undefined)&&drFormFieldRequired2}">
                 <ng-option [value]="0">Performance Category</ng-option>  
                 <ng-option [value]="10">10%</ng-option>
                 <ng-option [value]="25">25%</ng-option>
@@ -2530,14 +2530,14 @@
                 <ng-option [value]="75">75%</ng-option>
                 <ng-option [value]="100">100%</ng-option> 
             </ng-select>
-            <span *ngIf="(darReqbonusPercentage==null||darReqbonusPercentage==undefined)&&drFormFieldRequired2"  style="color:red">please select reject type.</span> 
+            <span *ngIf="(darReqRejectPercentage==null||darReqRejectPercentage==undefined)&&drFormFieldRequired2"  style="color:red">please select reject type.</span> 
          </div>
 
 
          <div class="mb-3">
             <label>Enter Comments<span style="color: red;">*</span></label>
-            <textarea [(ngModel)]="multi_aprvcmts" placeholder="Enter comments here." rows="3" [ngClass]="{'error-border':!multi_aprvcmts&&drFormFieldRequired2}" class="form-control kt-approval-msg  ng-valid" style="height: 127px;"></textarea>
-            <span *ngIf="!multi_aprvcmts&&drFormFieldRequired2"  style="color:red">please enter your comments</span> 
+            <textarea [(ngModel)]="multi_aprvcmts" placeholder="Enter comments here." rows="3" [ngClass]="{'error-border':!(multi_aprvcmts&&multi_aprvcmts.trim())&&drFormFieldRequired2}" class="form-control kt-approval-msg  ng-valid" style="height: 127px;"></textarea>
+            <span *ngIf="!(multi_aprvcmts&&multi_aprvcmts.trim())&&drFormFieldRequired2"  style="color:red">please enter your comments</span> 
          </div>
      </div>
     </div>
