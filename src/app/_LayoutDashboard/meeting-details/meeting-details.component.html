@@ -38,9 +38,6 @@
                                                 </div>
 
 
-
-
-
                                            <div class="date-change-icon" *ngIf="item.Recurrence != 'Do not repeat'">
                                                 <span class="date-change-icon-previous" matTooltip="Previous meeting" (click)="NewGetRecurrenceMeetings(0,'Prev')">
                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M15.2071 6.29289C15.5976 6.68342 15.5976 7.31658 15.2071 7.70711L10.9142 12L15.2071 16.2929C15.5976 16.6834 15.5976 17.3166 15.2071 17.7071C14.8166 18.0976 14.1834 18.0976 13.7929 17.7071L8.79289 12.7071C8.40237 12.3166 8.40237 11.6834 8.79289 11.2929L13.7929 6.29289C14.1834 5.90237 14.8166 5.90237 15.2071 6.29289Z" fill="currentColor"></path> </g></svg>
@@ -53,20 +50,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-                                               
-                                            
                                                 <div class="kt-meeting-status hold d-none mt-0 mb-2">
                                                     <span class="kt-meeting-status-icon">
                                                         <svg enable-background="new 0 0 32 32" height="14px" id="Layer_1"
@@ -1775,7 +1758,7 @@
                         
 
 
-                        <div class="kt-Note-msg mt-3 d-flex" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress && showAttendeeNotify!='3' && showAttendeeNotify!='2') && (upcomingMeeting == true || delayMeeting == true || delayMeeting == false)">
+                        <div class="kt-Note-msg mt-3 d-flex" *ngIf="(Meetingstatuscom!='Completed'&& !meetingInProgress && showAttendeeNotify!='3' && showAttendeeNotify!='2') && (upcomingMeeting == true || delayMeeting == true || delayMeeting == false) || meetingStartedTime && (delayschedule_date | date:'yyyy-MM-dd') !== (meetingStartedTime | date:'yyyy-MM-dd')">
                                 <div class="kt-note-icon" style="align-self:flex-start">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25"
@@ -1814,25 +1797,6 @@
                                 </div>
                             </ng-container>
 
-
-
-
-
-                            <!-- <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true && showAttendeeNotify=='2'" >
-                                <div class="notification pause-notification mydelay-action-notf" *ngIf="Isadmin==true">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#FFC01E"
-                                    height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
-                                        <path d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z">
-                                        </path>
-                                    </svg>
-                               
-                                <span class="notif-msg" style=" color: #FFC01E;" >
-                                    The meeting is currently paused. Please resume the meeting to continue.</span>
-                                </div>
-                            </ng-container> -->
-
-
-
                                 <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true">
                                 <div class="notification delay-notification mydelay-action-notf" *ngIf="Isadmin==false && meetingStarted==false"    >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
@@ -1845,27 +1809,7 @@
                                     The meeting has not started yet. Please wait for the admin - "{{AdminName}}" to start the meeting.</span>
                                 </div>
                                 </ng-container>
-                        
-
-
-                                <!-- <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true">
-                                    <div class="notification pause-notification mydelay-action-notf" *ngIf="Isadmin==false && showAttendeeNotify=='2'">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#FFC01E"
-                                        height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
-                                            <path d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z">
-                                            </path>
-                                        </svg>
-                                   
-                                    <span class="notif-msg" style=" color: #FFC01E;" >
-                                        The meeting is currently paused. Please wait for the admin, {{AdminName}}, to resume it.</span>
-                                    </div>
-                                    </ng-container> -->
-
-
-
-
-
-
+                
                                 <ng-container  *ngIf="delayMeeting == false && AutoComplete != true">
                                     <div class="notification delay-Start mydelay-action-notf">
                                         <svg  viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727" class="notif-img"><g _ngcontent-nuu-c397="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-nuu-c397="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-nuu-c397="" id="SVGRepo_iconCarrier"><g _ngcontent-nuu-c397=""><path _ngcontent-nuu-c397="" d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path><path _ngcontent-nuu-c397="" d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path></g></g></svg>
@@ -1886,14 +1830,17 @@
                                     </div>
                                     </ng-container>
 
-                                <!-- <container  *ngIf="AutoComplete == true">
-                                    <div class="notification notif-AutoComplete mydelay-action-notf">
-                                        <svg  width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><title >warning</title><g  id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g  id="add" transform="translate(32.000000, 42.666667)"><path  d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
-                                    <span class="notif-msg" style=" color: #c57a05;" >
-                                        This meeting was not manually ended by the admin and hence was automatically completed by the <b>Stream planner</b>, resulting in varying durations.</span>
-                                    </div>
-                                    </container> -->
-            
+                                <div class="notification delay-notification mydelay-action-notf" *ngIf="meetingStartedTime && (delayschedule_date | date:'yyyy-MM-dd') !== (meetingStartedTime | date:'yyyy-MM-dd')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
+                                    height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
+                                    <path _ngcontent-pef-c397=""
+                                    d="M810.666667 277.333333h-128v-42.666666a128 128 0 0 0-128-128h-85.333334a128 128 0 0 0-128 128v42.666666H213.333333a128 128 0 0 0-128 128v384a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128v-384a128 128 0 0 0-128-128z m-384-42.666666a42.666667 42.666667 0 0 1 42.666666-42.666667h85.333334a42.666667 42.666667 0 0 1 42.666666 42.666667v42.666666h-170.666666z m426.666666 554.666666a42.666667 42.666667 0 0 1-42.666666 42.666667H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666667v-215.466666h128v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h256v44.8a42.666667 42.666667 0 0 0 85.333333 0v-44.8h128z m0-298.666666H170.666667v-85.333334a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z">
+                                    </path>
+                                </svg>
+                                <span class="notif-msg" style=" color: #00a2eb;" >
+                                   This meeting was scheduled on {{delayschedule_date |date:'dd-MM-yyyy'}} but actually started on {{meetingStartedTime |date:'dd-MM-yyyy'}}.</span>
+                                </div>
+                           
                             </div>
                         </div>
                         
@@ -1953,9 +1900,8 @@
                                 <div class="meeting-attendance-heading">Meeting Summary</div>
                                 <div class="meeting-icon-content">
                                     <div>
-                                        <span><span class="s-dot"></span><span *ngIf="showAttendeeNotify != '2'"> Meeting has been started at 
-                                            <!-- {{ (meetingStartedTime || '').replace('at: ', '') }} -->
-                                              {{ meetingStartedTime.replace('at: ', '') }}
+                                        <span><span class="s-dot"     [ngClass]="{ 'blink': showAttendeeNotify !== '2' }"     ></span><span *ngIf="showAttendeeNotify != '2'"> Meeting has been started at                                      
+                                              {{ meetingStartedTime | date: 'hh:mm a' }}     
                                         </span>  <span *ngIf="showAttendeeNotify == '2'"> Meeting has been paused</span> </span>
                                         <div class="meeting-attendance-count meeting-attendance-timer">
                                             {{formatTime(elapsedTime)}}
@@ -3225,7 +3171,7 @@
                                                 </div>
                                               <div class="d-flex-center mt-5" *ngIf="filteredActivityList == 0">
                                                 <div>
-                                                    <img src="../../../assets/images/No_Actions.png" width="268" height="256" class="activity_Found" />
+                                                    <img src="./assets/images/No_Actions.png" width="268" height="256" class="activity_Found" />
                                                     <div class="bnk-txt">
                                                         <h2 class="blank-txt text-center act-img">No activity found</h2>
                                                     </div>
@@ -3516,7 +3462,7 @@
                     
                             <!--    View All Team members notes Start   -->
                     
-                            <div *ngIf="(currentAgendaView+1>0 && AllAttendees_notes.length>0)" class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
+                            <div *ngIf="(currentAgendaView+1>0 && AllAttendees_notes.length>0);else NotesNotFound" class="accordion accordion-attendes-notes" id="accordion_attendes_notes">
                                 <div class="accordion-item" >
                                     <h2 class="accordion-header" id="headingOne">
                                         <a class="accordion-button" type="button" data-toggle="collapse"
@@ -3550,11 +3496,25 @@
                                         <ul class="attendees-note-userlist">
                                             <li class="attendees-note-user" *ngFor="let data of AllAttendees_notes">
                                                 <!-- <ng-container *ngIf="data.Meeting_notes !== ''"> -->
-                                                <div class="user-info" >
-                                                    <div class="user-icon" >{{data.Initials}}</div>
+                                                 <div class="user-info" >
+                                                    <div *ngIf="!data.UserProfile" class="user-icon" >{{data.Initials}}</div>
+
+                                                    <span *ngIf="data.UserProfile">
+                                                        <img src="{{ 'https://yrglobaldocuments.blob.core.windows.net/userprofileimages/' + data.UserProfile }}" width="35" height="35" style="border-radius: 50%; object-fit: cover;"/>
+                                                   </span> 
                                                     <span>
                                                         <div class="user-name">{{data.Emp_Name}}
-                    
+                                                            <span class="user-time"> {{
+                                                              getDayDiff(data.Created_date) === 0 ? (data.Created_date | date:'hh:mm a') :
+                                                              getDayDiff(data.Created_date) === 1 ? 'Yesterday' :
+                                                              getDayDiff(data.Created_date) === 2 ? '2 days ago' :
+                                                              getDayDiff(data.Created_date) === 3 ? '3 days ago' :
+                                                              (data.Created_date | date:'dd-MM-yyyy')
+                                                            }}</span>
+                                                            </div>
+                                                            <div>
+                                                                <span class="user-role">{{data.DesignationName}}</span> <span
+                                                                    class="user-company">{{data.CompanyName}}</span>
                                                             </div>
                                                         </span>
                                                 </div>
@@ -3579,12 +3539,27 @@
                                             <ul class="attendees-note-userlist" >
                                                 <li class="attendees-note-user" *ngFor="let data of AllAttendees_notes">
                                                     <!-- <ng-container *ngIf="data.Meeting_notes !== ''"> -->
-                                                    <div class="user-info">
-                                                        <div class="user-icon" >{{data.Initials}}</div>
-                                                        <span>
-                                                            <div class="user-name">{{data.Emp_Name}}</div>
+                                                     <div class="user-info" >
+                                                    <div *ngIf="!data.UserProfile" class="user-icon" >{{data.Initials}}</div>
+                                                      <span *ngIf="data.UserProfile">
+                                                        <img src="{{ 'https://yrglobaldocuments.blob.core.windows.net/userprofileimages/' + data.UserProfile }}" width="35" height="35" style="border-radius: 50%; object-fit: cover;"/>
+                                                   </span> 
+                                                    <span>
+                                                        <div class="user-name">{{data.Emp_Name}}
+                                                            <span class="user-time"> {{
+                                                              getDayDiff(data.Created_date) === 0 ? (data.Created_date | date:'hh:mm a') :
+                                                              getDayDiff(data.Created_date) === 1 ? 'Yesterday' :
+                                                              getDayDiff(data.Created_date) === 2 ? '2 days ago' :
+                                                              getDayDiff(data.Created_date) === 3 ? '3 days ago' :
+                                                              (data.Created_date | date:'dd-MM-yyyy')
+                                                            }}</span>
+                                                            </div>
+                                                            <div>
+                                                                <span class="user-role">{{data.DesignationName}}</span> <span
+                                                                    class="user-company">{{data.CompanyName}}</span>
+                                                            </div>
                                                         </span>
-                                                    </div>
+                                                </div>
                                                     <div class="user-notes">
                                                         <p [innerHTML]="data.Meeting_notes"></p>
                                                     </div>
@@ -3612,6 +3587,16 @@
                     
                                 </div>
                             </div>
+                            <ng-template #NotesNotFound>
+                                      <div *ngIf="Meetingstatuscom==Completed" class="d-flex-center mt-5" >
+                                        <div>
+                                            <img src="./assets/images/Document Type.png" width="268" height="256" class="Notes_Found" />
+                                            <div class="bnk-txt">
+                                                <h2 class="blank-txt text-center nts-img">No notes found</h2>
+                                            </div>
+                                        </div>
+                                    </div>  
+                            </ng-template>
                     
                             <!--   View All Team members notes End  -->
                     
@@ -4655,75 +4640,6 @@
                 </ng-container>
                     <li class="kt-nav__item px-4">
                       
-                      
-
-                   <div class="ov-card-ul-smail" *ngIf="_MemosSubjectList&&_MemosSubjectList[0].MailId!=0 ; else DMsNotFound">
-                    <div class="ov-card-li" *ngFor="let memo of _MemosSubjectList; let i=index">
-                        <div class="ov-card-group"  (click)="openUrl(memo.Url)">
-                            <div class="ov-card-control">
-                                <!-- <div class="ov-card-type">Seconary task</div> -->
-                                <div class="ov-card-title"> {{memo.Subject}}</div>
-                                <div class="ov-card-details">
-                                    <span> {{memo.DisplayName}}</span>
-                                </div>
-                            </div>
-                            <div class="ov-card-status"> 
-                                 <div class="ov-card-time">
-                                     <svg fill="currentColor" width="14px" height="14px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M6,22H18a3,3,0,0,0,3-3V7a2,2,0,0,0-2-2H17V3a1,1,0,0,0-2,0V5H9V3A1,1,0,0,0,7,3V5H5A2,2,0,0,0,3,7V19A3,3,0,0,0,6,22ZM5,12.5a.5.5,0,0,1,.5-.5h13a.5.5,0,0,1,.5.5V19a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1Z"></path></g></svg>
-                                    {{memo.AddedDate |date:'MMM d, y'}}</div>
-                                  <div class="ov-card-type-status">By:  {{memo.AddedBy}}</div>
-                                <!-- <div class="ov-card-exp">
-                                    <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 1124.14 1256.39">
-                                        <path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path>
-                                        <path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path>
-                                    </svg>
-                                    <span>75.00</span>
-                                </div> -->
-                            </div>
-                        </div>
-                        <div class="ov-card-delete">
-                                  <ng-container *ngIf="(Status1=='Owner' || Isadmin==true || memo.Modified_by == Current_user_ID ) && Meetingstatuscom!='Completed'" >                                          
-                                     <ng-container *ngFor="let item of EventScheduledjson">
-                                         <ng-container *ngIf="item.Recurrence==='Do not repeat'">
-                                                            <i class="fas fa-edit invisible"></i>
-                                                        <a  (click)="deleteMemos(memo.MailId)">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </a>
-                                                    </ng-container>
-                                                    <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
-                                                    <i class="fas fa-edit invisible"></i>
-                                                    <a (click)="DmsDeleteEvent(memo.MailId)" data-target="#confirmpopup" data-toggle="modal">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                    </a>     
-                                    </ng-container>
-                                 </ng-container>                                        
-                             </ng-container>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                      
-                      
-                      
-                      
                       <!-- <div class="kt-inbox mt-0 scrollbar1" *ngIf="_MemosSubjectList&&_MemosSubjectList[0].MailId!=0 ; else DMsNotFound">
                             <div class="kt-inbox__list kt-inbox__list--shown ml-0 p-3">
                                 <div class="kt-inbox__items flex-grow-1" data-type="inbox">
@@ -4818,6 +4734,54 @@
                     </li>
                     <li class="kt-nav__foot"></li>
                 </ul>
+                <div class="kt-inbox mt-0 scrollbar1">
+                        
+
+                   <div class="ov-card-ul" *ngIf="_MemosSubjectList&&_MemosSubjectList[0].MailId!=0 ; else DMsNotFound">
+                    <div class="ov-card-li" *ngFor="let memo of _MemosSubjectList; let i=index">
+                        <div class="ov-card-group"  (click)="openUrl(memo.Url)">
+                            <div class="ov-card-control">
+                                <!-- <div class="ov-card-type">Seconary task</div> -->
+                                <div class="ov-card-title"> {{memo.Subject}}</div>
+                                <div class="ov-card-details">
+                                    <span> {{memo.DisplayName}}</span>
+                                </div>
+                            </div>
+                            <div class="ov-card-status"> 
+                                 <div class="ov-card-time">
+                                     <svg fill="currentColor" width="14px" height="14px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M6,22H18a3,3,0,0,0,3-3V7a2,2,0,0,0-2-2H17V3a1,1,0,0,0-2,0V5H9V3A1,1,0,0,0,7,3V5H5A2,2,0,0,0,3,7V19A3,3,0,0,0,6,22ZM5,12.5a.5.5,0,0,1,.5-.5h13a.5.5,0,0,1,.5.5V19a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1Z"></path></g></svg>
+                                    {{memo.AddedDate |date:'MMM d, y'}}</div>
+                                  <div class="ov-card-type-status">By:  {{memo.AddedBy}}</div>
+                                <!-- <div class="ov-card-exp">
+                                    <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 1124.14 1256.39">
+                                        <path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path>
+                                        <path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path>
+                                    </svg>
+                                    <span>75.00</span>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="ov-card-delete"  *ngIf="(Status1=='Owner' || Isadmin==true || memo.Modified_by == Current_user_ID ) && Meetingstatuscom!='Completed'" >
+                                                                           
+                                     <ng-container *ngFor="let item of EventScheduledjson">
+                                         <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                                            <i class="fas fa-edit invisible"></i>
+                                            <a  (click)="deleteMemos(memo.MailId)">
+                                            <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                         </ng-container>
+                                         <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
+                                            <i class="fas fa-edit invisible"></i>
+                                            <a (click)="DmsDeleteEvent(memo.MailId)" data-target="#confirmpopup" data-toggle="modal">
+                                            <i class="fas fa-trash-alt"></i>
+                                            </a>     
+                                    </ng-container>
+                                 </ng-container>                                        
+                           
+                        </div>
+                    </div>
+                </div>
+                </div>
             </div>
         </div>
 
@@ -4944,9 +4908,9 @@
                     </li>
                 </ng-container>
                 </ul>
-                
-                 <div class="ov-card-ul" *ngFor="let data of portfolio_Scheduledjson; let i=index">
-                    <div class="ov-card-li" >
+                <div class="kt-inbox mt-0 scrollbar1">
+                 <div class="ov-card-ul">
+                    <div class="ov-card-li"  *ngFor="let data of portfolio_Scheduledjson; let i=index">
                         <div class="ov-card-group"  (click)="OnCardClick(data.numberval)">
                             <div class="ov-card-control">
                                 <!-- <div class="ov-card-type">Seconary task</div> -->
@@ -4971,28 +4935,28 @@
                                 </div> -->
                             </div>
                         </div>
-                        <div class="ov-card-delete">
-                                  <ng-container *ngIf="(Status1=='Owner' || Isadmin==true || data.Modified_by == Current_user_ID ) && Meetingstatuscom!='Completed'">                                            
-                                            <ng-container *ngFor="let item of EventScheduledjson">
-                                                <ng-container *ngIf="item.Recurrence==='Do not repeat'">
-                                                    <i class="fas fa-edit invisible"></i>
-                                                <a (click)="DeletePortfolios(data.numberval)">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </a>
-                                            </ng-container>
-                                            <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
-                                                    <i class="fas fa-edit invisible"></i>
-                                                 <a (click)="portFolioDeletedEvent(data.numberval)" data-target="#confirmpopup" data-toggle="modal">
-                                                   <i class="fas fa-trash-alt"></i>
-                                                 </a>
+                        <div class="ov-card-delete" *ngIf="(Status1=='Owner' || Isadmin==true || data.Modified_by == Current_user_ID ) && Meetingstatuscom!='Completed'">
+                                                                          
+                                    <ng-container *ngFor="let item of EventScheduledjson">
+                                        <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                                            <i class="fas fa-edit invisible"></i>
+                                            <a (click)="DeletePortfolios(data.numberval)">
+                                            <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </ng-container>
+                                        <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
+                                            <i class="fas fa-edit invisible"></i>
+                                            <a (click)="portFolioDeletedEvent(data.numberval)" data-target="#confirmpopup" data-toggle="modal">
+                                            <i class="fas fa-trash-alt"></i>
+                                            </a>
                                        </ng-container>
                                   </ng-container>                                           
-                              </ng-container>
+                            
                         </div>
                     </div>
                 </div>
 
-
+</div>
 
 
 
@@ -5350,11 +5314,11 @@
                                                     <span *ngIf="!item.UserProfile">{{getInitials(item.TM_DisplayName)}}</span>
                                                      <span *ngIf="item.UserProfile">
                                                     <img src="{{ 'https://yrglobaldocuments.blob.core.windows.net/userprofileimages/' + item.UserProfile }}" width="36" height="35" style="border-radius: 50%;"/>
-                                                       </span> 
+                                                    </span> 
 
 
 
-                                                        <span class="statusicn" aria-hidden="true">
+                                                        <span class="statusicn"  aria-hidden="true">
                                                             <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
                                                                 <!-- *ngIf="item.Status=='Accepted' ||item.onlineStatus=='Start' || item.onlineDuration"> -->
                                                                 <path fill="#CEEAD6"
@@ -5536,7 +5500,14 @@
                                                 </div>
                                             </ng-container>
                                         </ng-container>
-                                            </div>
+                                             <div class="ov-card-status">
+                                                <div class="ov-card-time">
+                                                      <svg fill="currentColor" width="14px" height="14px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M6,22H18a3,3,0,0,0,3-3V7a2,2,0,0,0-2-2H17V3a1,1,0,0,0-2,0V5H9V3A1,1,0,0,0,7,3V5H5A2,2,0,0,0,3,7V19A3,3,0,0,0,6,22ZM5,12.5a.5.5,0,0,1,.5-.5h13a.5.5,0,0,1,.5.5V19a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1Z"></path></g></svg>
+                                   
+                                                    {{Created_date |date:'MMM d, YYYY'}}</div>
+                                                <div class="ov-card-time">{{formatDuration(Created_date)}}</div>
+                                               </div>
+                                            </div>                                            
                                         </li>
                                         <!-- organiser end -->
                                         
@@ -5548,12 +5519,6 @@
                                                    <span *ngIf="item.UserProfile">
                                                     <img src="{{ 'https://yrglobaldocuments.blob.core.windows.net/userprofileimages/' + item.UserProfile }}" width="36" height="35" style="border-radius: 50%;"/>
                                                        </span> 
-
-
-
-
-
-
                                                         <span class="statusicn" aria-hidden="true">
                                                             <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
                                                                 *ngIf="item.Status=='Accepted'">
@@ -5585,9 +5550,7 @@
                                                                     d="M5 5c0-1.1.9-2 2-2s2 .9 2 2-1 1.5-1.5 2S7 8 7 9M7 10v1.5">
                                                                 </path>
                                                             </svg>
-                                                        </span>
-                                                  
-                                                    
+                                                        </span>                                                                          
                                                 </div>
                                                 <span>
                                                     <div class="user-name">
@@ -5756,9 +5719,8 @@
                                                     </span>
                                                 </div>
                                             </ng-container>
-                                        </ng-container>
-                                                                            
-                                             <div class="ov-card-status">
+                                        </ng-container>                                                                         
+                                            <div class="ov-card-status">
                                                 <div class="ov-card-time">
                                                       <svg fill="currentColor" width="14px" height="14px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M6,22H18a3,3,0,0,0,3-3V7a2,2,0,0,0-2-2H17V3a1,1,0,0,0-2,0V5H9V3A1,1,0,0,0,7,3V5H5A2,2,0,0,0,3,7V19A3,3,0,0,0,6,22ZM5,12.5a.5.5,0,0,1,.5-.5h13a.5.5,0,0,1,.5.5V19a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1Z"></path></g></svg>
                                    
@@ -6056,9 +6018,9 @@
                 </ul>
 
 
-
-                <div class="ov-card-ul" *ngFor="let item of Project_code; let i=index">
-                    <div class="ov-card-li">
+            <div class="kt-inbox mt-0 scrollbar1">
+                <div class="ov-card-ul">
+                    <div class="ov-card-li" *ngFor="let item of Project_code; let i=index">
                         <div class="ov-card-group"  (click)="moreDetails(item.stringval)">
                             <div class="ov-card-control">
                                 <div class="ov-card-type">{{item.projectType}}</div>
@@ -6126,32 +6088,28 @@
                                 </div> -->
                             </div>
                         </div>
-                        <div class="ov-card-delete">            
-                             <ng-container *ngIf="(Status1=='Owner' || Isadmin==true || item.Modified_by == Current_user_ID ) && Meetingstatuscom!='Completed'">                                          
-                                            <ng-container *ngFor="let data of EventScheduledjson">
-                                                <ng-container *ngIf="data.Recurrence==='Do not repeat'">
-
-                                                <i class="fas fa-edit invisible"></i>
-                                                <a (click)="DeleteProject(item.stringval)">
-                                                <i class="fas fa-trash-alt"></i>
-                                                </a>
-
-                                            </ng-container>
-                                            <ng-container *ngIf="data.Recurrence!=='Do not repeat'">
-
-                                            <i class="fas fa-edit invisible"></i>
-                                            <a (click)="ProjectsDeletedEvent(item.stringval)"  data-target="#confirmpopup" data-toggle="modal">
-                                            <i class="fas fa-trash-alt"></i>
-                                            </a>
-                                    </ng-container>
-                                       
+                        <div class="ov-card-delete" *ngIf="(Status1=='Owner' || Isadmin==true || item.Modified_by == Current_user_ID ) && Meetingstatuscom!='Completed'">            
+                           
+                                    <ng-container *ngFor="let data of EventScheduledjson">
+                                    <ng-container *ngIf="data.Recurrence==='Do not repeat'">
+                                        <i class="fas fa-edit invisible"></i>
+                                        <a (click)="DeleteProject(item.stringval)">
+                                        <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                   </ng-container>
+                                     <ng-container *ngIf="data.Recurrence!=='Do not repeat'">
+                                        <i class="fas fa-edit invisible"></i>
+                                        <a (click)="ProjectsDeletedEvent(item.stringval)"  data-target="#confirmpopup" data-toggle="modal">
+                                        <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </ng-container>                                     
                                  </ng-container>
-                             </ng-container>
+                            
                         </div>
                     </div>
                 </div>
 
-
+</div>
 
 
 
@@ -7054,7 +7012,10 @@
                                                     <div class="pn-details">
                                                         <div class="pn-label">Organizer</div>
                                                         <div class="pn-org-name">
-                                                            <div class="pn-user-initial">{{item.twoletowner}}</div>
+                                                            <div *ngIf="!item.UserProfile" class="pn-user-initial">{{item.twoletowner}}</div>
+                                                             <span *ngIf="item.UserProfile">
+                                                                    <img src="{{ 'https://yrglobaldocuments.blob.core.windows.net/userprofileimages/' + item.UserProfile }}" width="35" height="35" style="border-radius: 50%; object-fit: cover;"/>
+                                                                </span> 
                                                             <div>
                                                                 <p class="pn-user-name">{{item.Owner}}</p>
                                                                 <p class="pn-user-email">{{item.email}}</p>
@@ -7065,7 +7026,10 @@
                                                         <div class="pn-label">Attendees</div>
                                                         <div class="pn-part">
                                                             <div class="pn-part-group"  *ngFor="let prt of item.Addguest;let i = index">
-                                                                <span class="pn-part-item" matTooltip="{{prt.TM_DisplayName}}">{{prt.twolet}}</span>
+                                                                <span *ngIf="!prt.UserProfile" class="pn-part-item" matTooltip="{{prt.TM_DisplayName}}">{{prt.twolet}}</span>
+                                                                 <span *ngIf="prt.UserProfile">
+                                                                    <img src="{{ 'https://yrglobaldocuments.blob.core.windows.net/userprofileimages/' + prt.UserProfile }}" width="35" height="35" style="border-radius: 50%; object-fit: cover;"/>
+                                                                </span> 
                                                             </div>
                                                             <!-- <div class="pn-part-group" matTooltip="Md Waseem Akram">
                                                                 <span class="pn-part-item">A</span>
@@ -7623,7 +7587,10 @@
                                                     <div class="pn-details">
                                                         <div class="pn-label">Organizer</div>
                                                         <div class="pn-org-name">
-                                                            <div class="pn-user-initial">{{data.twoletowner}}</div>
+                                                            <div *ngIf="!data.UserProfile" class="pn-user-initial">{{data.twoletowner}}</div>
+                                                             <span *ngIf="data.UserProfile">
+                                                                    <img src="{{ 'https://yrglobaldocuments.blob.core.windows.net/userprofileimages/' + data.UserProfile }}" width="35" height="35" style="border-radius: 50%; object-fit: cover;"/>
+                                                                </span> 
                                                             <div>
                                                                 <p class="pn-user-name">{{data.Owner}}</p>
                                                                 <p class="pn-user-email">{{data.email}}</p>
@@ -7651,7 +7618,10 @@
                                                         <div class="pn-label">Attendees</div>
                                                         <div class="pn-part" >
                                                             <div class="pn-part-group" *ngFor="let upcom of data.Addguest">
-                                                                <span class="pn-part-item" matTooltip="{{upcom.TM_DisplayName}}">{{upcom.twolet}}</span>
+                                                                <span *ngIf="!upcom.UserProfile" class="pn-part-item" matTooltip="{{upcom.TM_DisplayName}}">{{upcom.twolet}}</span>
+                                                                 <span *ngIf="upcom.UserProfile">
+                                                                    <img src="{{ 'https://yrglobaldocuments.blob.core.windows.net/userprofileimages/' + upcom.UserProfile }}" width="35" height="35" style="border-radius: 50%; object-fit: cover;"/>
+                                                                </span> 
                                                             </div>
                                                             <!-- <div class="pn-part-group" matTooltip="Md Waseem Akram">
                                                                 <span class="pn-part-item">A</span>
