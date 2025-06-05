@@ -311,6 +311,7 @@ input.ng-invalid.ng-touched {
 {
     max-width: 148px;
     min-width: 148px;
+    object-fit: cover;
 }
 
 

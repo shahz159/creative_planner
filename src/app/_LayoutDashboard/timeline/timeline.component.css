@@ -2934,3 +2934,20 @@ a.info-btn svg {
 
 
 /*DAR request sidebar css part*/
+
+
+/*multiple DAR request sidebar accept or reject sidebar css start*/
+
+@media screen and (min-width: 1025px) {
+    #multi-dar-acceptreject.kt-quick-panel--on{
+        width: 65% !important;
+    }
+}
+
+#multi-dar-acceptreject .time-table td {
+    padding: 15px;
+}
+
+
+
+/*multiple DAR request sidebar accept or reject sidebar css end*/
