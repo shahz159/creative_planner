@@ -4126,19 +4126,13 @@
                                 </div>   -->
                                 <div class="participants-item" *ngFor="let _user of User_Scheduledjson">
                                     <div class="px-2 position-relative">
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" enable-background="new 0 0 192 192" style="width: 20px;" width="24px" height="24px">
-                                                <path fill="#E0E0E0"
-                                                    d="M96,0C43.01,0,0,43.01,0,96s43.01,96,96,96s96-43.01,96-96S148.99,0,96,0z">
-                                                </path>
-                                                <path fill="#BDBDBD"
-                                                    d="M96,85.09c13.28,0,24-10.72,24-24c0-13.28-10.72-24-24-24s-24,10.72-24,24C72,74.37,82.72,85.09,96,85.09z">
-                                                </path>
-                                                <path fill="#BDBDBD"
-                                                    d="M96,99.27c-29.33,0-52.36,14.18-52.36,27.27c11.09,17.06,30.51,28.36,52.36,28.36s41.27-11.3,52.36-28.36C148.36,113.45,125.33,99.27,96,99.27z">
-                                                </path>
-                                                <rect fill="none" width="192" height="192"></rect>
-                                            </svg>
+                                        <span class="kt-user-2lt kt-clr-1">
+                                             <span *ngIf="!_user.UserProfile">{{getInitials(_user.TM_DisplayName)}}</span>
+                                         <span *ngIf="_user.UserProfile">
+                                            <img src="{{ 'https://yrglobaldocuments.blob.core.windows.net/userprofileimages/' + _user.UserProfile }}" width="35" height="35" style="border-radius: 50%; object-fit: cover;"/>
+                                        </span> 
+
+                                            
                                         </span>
                                         <span class="participants-status" aria-hidden="true">
                                             <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14"
@@ -4163,7 +4157,7 @@
                                                 d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z"></path>
                                             <path fill="none" stroke="#3C4043" stroke-width="1.5"
                                                 d="M5 5c0-1.1.9-2 2-2s2 .9 2 2-1 1.5-1.5 2S7 8 7 9M7 10v1.5"></path>
-                                        </svg>
+                                          </svg>
                                         </span>
                                     </div>
                                     <div class="participants-details">
@@ -4174,7 +4168,7 @@
                                               <i class="material-icons fs-7 mr-1" aria-hidden="true">schedule</i>
                                                Proposal: {{_user.Purposedate}}, {{_user.StPurposeStarttime}} –
                                                {{_user.StPurposeEndtime}}
-                                    </div>
+                                          </div>
                                         </div>
                                     </div>
                                 </div>   

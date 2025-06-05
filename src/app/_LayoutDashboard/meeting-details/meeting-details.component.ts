@@ -233,7 +233,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.fetchPortfolios();
     this.GetProjectsByUserName();
     this.GetMemosActivity();
-
+    this.GetMeetingActivity();
 
 
     setTimeout(() => {
@@ -270,7 +270,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.AllDatesSDandED.push(jsonData);
     this._SEndDate = moment().format("YYYY-MM-DD").toString();
     this.GetMeetingnotes_data();
-    this.GetMeetingActivity();
+   
   }
 
   getDetailsScheduleId() {
@@ -604,6 +604,15 @@ export class MeetingDetailsComponent implements OnInit {
   Meeing_Name:any;
   Organizer:any;
   DMS_Details:any;
+  Created_date:any;
+ delayschedule_date:any;
+ UserProfile:any;
+
+
+
+
+
+
   
   live_activ = [
     { actvName: 'New agenda added by Aquib Shahbaz', time: '5 sec ago' },
@@ -618,6 +627,8 @@ export class MeetingDetailsComponent implements OnInit {
     { actvName: 'Task completed by Ayesha Khan', time: '35 mins ago' }
   ];
   
+
+
   meeting_details() {
 
     this._calenderDto.Schedule_ID = this.Schedule_ID;
@@ -636,8 +647,7 @@ export class MeetingDetailsComponent implements OnInit {
       this.Startts = (this.EventScheduledjson[0]['St_Time']);
       this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
       this.statusOneCount = this.Agendas_List.filter(values=>values.Status === "1").length;
-
-    
+      this.delayschedule_date = Schedule_date;
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
 
        console.log('EventScheduledjson',this.EventScheduledjson);
@@ -725,8 +735,12 @@ export class MeetingDetailsComponent implements OnInit {
       
       this.Createdby = this.EventScheduledjson[0].Created_by;
       this.Organizer = this.EventScheduledjson[0].Organizer;
+      this.Created_date = this.EventScheduledjson[0].Created_date;
 
-      console.log(this.Organizer,'Organizer')
+
+      
+
+      console.log(this.EventScheduledjson,'EventScheduledjson');
       this.main_actualDuration = this.EventScheduledjson[0].actual_duration;
 
 
@@ -1130,20 +1144,19 @@ export class MeetingDetailsComponent implements OnInit {
       setTimeout(() => {
         this.isInserted = false;
       }, 2000);
- 
 
     const formatTime = time => time ? new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase() : null;
 
-    this._calenderDto.Emp_No = this.Current_user_ID;
-    this._calenderDto.Schedule_ID = this.Scheduleid;
+    this._calenderDto.Emp_No = this.Current_user_ID;  debugger
+    this._calenderDto.Schedule_ID = this.Scheduleid; 
     this._calenderDto.Status = this.status_Type;
     this._calenderDto.StartTime = this.startTime == undefined ? null : formatTime(this.startTime);
     this._calenderDto.Start_time = this.currentTime; 
-    this._calenderDto.EndTime = this.endTime == undefined ? null : formatTime(this.endTime);
-    // console.log(this._calenderDto,'time of meeting');
+    this._calenderDto.EndTime = this.endTime == undefined ? null : formatTime(this.endTime); 
+    // console.log(this._calenderDto,'time of meeting');  
     this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe
       ((data) => {
- 
+
       }
       )
   }
@@ -1326,7 +1339,7 @@ export class MeetingDetailsComponent implements OnInit {
   
     this.meetingOfAttendees = true;
 
-    if (this.meetingOfAttendees == true) {
+    if (this.meetingOfAttendees == true) { 
       this.stopMeetingAttendees();
       this.InsertAttendeeMeetingTime();
     }
@@ -4493,14 +4506,14 @@ onFileChange(event) {
         this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
         this.showAttendeeNotify = data.AdminMeeting_Status;
 
-    
+      //  console.log(this.showAttendeeNotify,'showAttendeeNotify')
 
         if (this.meetingStarted || this.meetingStarted != true) {
       
           if (data['Checkdatetimejson'] != '') {
            
             this.AllAttendees_notes = JSON.parse(data['Checkdatetimejson']);
-        
+          console.log(this.AllAttendees_notes,'AllAttendees_notes')
           } else if (data['Checkdatetimejson'] == '') {
             this.AllAttendees_notes = [];
           }
@@ -4525,6 +4538,8 @@ onFileChange(event) {
             })
              this.alertShown = true;
           }}
+
+       
 
           if (this.showAttendeeNotify=='1' && !this.hasMeetingStarted && this.showAttendeeNotify!='2' && this.showAttendeeNotify!='3') {
          
@@ -4555,13 +4570,12 @@ onFileChange(event) {
               this.hasMeetingStarted = false;
               this.hasMeetingEnd = false; 
           
-          
-          
+                
           }
           else if (this.meetingStarted != true && !this.hasMeetingEnd && this.meetingOfAttendees == false) {
            
             this.stopMeetingAttendees();
-            this.InsertAttendeeMeetingTime();
+            // this.InsertAttendeeMeetingTime();
             this.hasMeetingEnd = true;
           }
         }
@@ -8792,6 +8806,7 @@ NewGetRecurrenceMeetings(meetings_HTR,MeetingValue){
         const i = this.upcomingmeetings.findIndex(m => m.Schedule_date === this._StartDate);
         const matchedNextScheduleId = this.upcomingmeetings[i + 1]?.Schedule_ID || this.upcomingmeetings[0]?.Schedule_ID;
         this.OnCardClickUpcoming(matchedNextScheduleId);
+        console.log(this.upcomingmeetings)
             
       }else if(MeetingValue == 'Prev'){
 
@@ -8997,15 +9012,11 @@ GetMeetingActivity(){
   this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
   this.allActivityList=JSON.parse(data[0].ActivityList);
 
-  // console.log(this.allActivityList,'allActivityList');
- 
-  // const memoMap = new Map(this.listActivityMemos.map(m => [m.MailId.toString(), { id: m.MailId, name: m.Subject }]));
+  // console.log(this.allActivityList,'allActivityList725727275');
 
   const memoMap = new Map(
   (this.listActivityMemos ?? []).map(m => [m.MailId.toString(), { id: m.MailId, name: m.Subject }])
   );
-
-
 
   this.allActivityList.forEach(item => {
       if (item.Value.trim() === 'S Mail link(s) added' || item.Value.trim() === 'S Mail link(s) deleted' || item.Value.trim() === 'SM link(s) changed' || item.Value.trim() === 'SM link(s) added') {
@@ -9080,12 +9091,23 @@ this.allActivityList.forEach(activity => {
       }
     });
 
-
-    this.meetingStartedTime = this.allActivityList.find(x => x.Value === 'Meeting Started')?.New_Value[0]?.name;
+ 
+    this.meetingStartedTime = this.allActivityList.find(y=>y.Value === 'Meeting Started')?.Modified_date;
   
+      // console.log(this.allActivityList,'allActivityList');
+
+  //  this.allActivityList.forEach(activity => {
+  //     if (activity.Value === "Joined meeting" || activity.Value === "Meeting Started" || activity.Value === "Meeting Created" || activity.Value === "Meeting left") {
+  //       const profile = this.UserProfile?.find(user => user.stringval == activity.Modified_by);
+  //       if (profile) activity.UserProfile = profile.UserProfile;
+  //     }
+  //   });
+
+
+
+
     if(this.isFiltered ==false){
     this.filteredActivityList = this.allActivityList
-    // console.log(this.allActivityList,'allActivityList');
     }
    
 
@@ -9280,14 +9302,14 @@ newDetails(ProjectCode) {
   myWindow.focus();
 }
 
-// hasValidOldValue(item: any): boolean {
-//   return item?.Old_Value?.some((data: any) => data.name && data.name.trim() !== '') ?? false;
-// }
-
-hasValidOldValue(item: any): boolean {  
-  return Array.isArray(item?.Old_Value) &&
-    item.Old_Value.some((data: any) => data?.name?.trim() !== '');
+hasValidOldValue(item: any): boolean {
+  return item?.Old_Value?.some((data: any) => data.name && data.name.trim() !== '') ?? false;
 }
+
+// hasValidOldValue(item: any): boolean {  
+//   return Array.isArray(item?.Old_Value) &&
+//     item.Old_Value.some((data: any) => data?.name?.trim() !== '');
+// }
 
 
 
@@ -10282,7 +10304,7 @@ this.Activity_List = filteredActivityList.filter(activity =>
 );
 
 
-  console.log(this.allActivityList,'activityType',this.Activity_List)
+  // console.log(this.allActivityList,'activityType',this.Activity_List)
 
 var ActivityUsers = [this.Organizer[0], ...this.User_Scheduledjson];
 this.updatedActivityUsers = ActivityUsers.filter(user => 
