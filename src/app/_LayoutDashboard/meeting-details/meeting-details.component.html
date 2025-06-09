@@ -111,7 +111,7 @@
                                                     <div class="col-lg-9 pr-1">
                                                         <div class="kt-metric-info">
                                                             <div class="kt-metric-sub-info">
-                                                                <div class="kt-sub-label">{{item.Created_by}}</div>
+                                                                <div class="kt-sub-label" matTooltip="{{item.Created_by}}">{{item.Created_by}}</div>
                                                                 <div class="kt-sub-name">Organizer</div>
                                                             </div>
                                                             <div class="kt-metric-sub-info">
@@ -4340,7 +4340,8 @@
                                                 </div>
                                                 <div class="kt-meeting-left-li-group">
                                                     <div class="kt-meeting-left-li-control" *ngFor="let item of Project_code; let i=index"  >
-                                                        <div class="kt-meeting-left-li-control-item" matTooltip="{{item.Project_Name}} - {{item.TM_DisplayName}} (Status: {{item.Status}}) (Delaydays: {{item.Delaydays}})">
+                                                        <div class="kt-meeting-left-li-control-item"  matTooltip="{{item.Project_Name}} - {{item.TM_DisplayName}} (Status: {{item.Status}}){{item.Delaydays > 0 ? ' (Delaydays: ' + item.Delaydays + ')' : ''}}"
+>
                                                             <a href="javascript:void(0)" (click)="moreDetails(item.stringval)">{{item.Project_Name}}</a>
                                                         </div>                              
                                                     </div>
@@ -4918,7 +4919,7 @@
                                 <div class="ov-card-details">
                                     <span> {{data.Portfolio_owner}}</span>
                                     <span>|</span>
-                                    <span>{{data.count}} Count</span>
+                                    <span>{{data.count}} Project(s)</span>
                                 </div>
                             </div>
                             <div class="ov-card-status"> 
@@ -11382,8 +11383,8 @@
                         </div>
                         <div class="rgt-des">
                             <div>
-                                <div class="main-s"> <span class="kt-dt-cnt-view">
-                                    {{totalguest}}
+                                <div class="main-s"> <span class="kt-dt-cnt-view">                  
+                                    {{completionReports}}/{{totalguest+1}}
                                 </span>
                                 Attendees</div>
                             </div>
