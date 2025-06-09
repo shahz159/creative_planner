@@ -1221,11 +1221,6 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
 
-
- 
-  
-  
-
   pauseTimer(LastPauseTime?, exact_start?, pausetime?) {
     clearInterval(this.timerAttendees);
   
@@ -1341,6 +1336,7 @@ export class MeetingDetailsComponent implements OnInit {
   meetingOfAttendees: boolean = false;
 
   controlAttendees() {
+  
     this.meetingOfAttendees = true;
 
     if (this.meetingOfAttendees == true) { 
