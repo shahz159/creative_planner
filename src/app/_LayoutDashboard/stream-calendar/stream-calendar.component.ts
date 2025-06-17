@@ -3424,7 +3424,7 @@ const startDate = formattedDate || today;
 
   this.firstDate.setDate(this.firstDate.getDate() - 1); 
 
-  if(this.Searchingfunc==false){
+  if(this.Searchingfunc==false){ 
     this.Calendarjson = this.Searchingjson;
   }else{
     this.Calendarjson = this.Scheduledjson.filter(e => { 
@@ -3444,8 +3444,6 @@ const startDate = formattedDate || today;
       return acc;
   }, {})).map(([date, events]) => ({ date, events }));
 
- console.log(this.groupedMeetingsArray, 'groupedMeetingsArray');
-      
 
       this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({ 
         ...day,
@@ -3499,13 +3497,13 @@ const startDate = formattedDate || today;
       ), {})
     );
    
-    if(this.filteredMeetingsArray.some(data => new Date(data.date) < new Date(this.firstDate))){
+    if(this.filteredMeetingsArray.some(data => new Date(data.date) < new Date(this.firstDate)) && this.Searchingfunc==true){
       this.filteredMeetingsArray.shift(); 
     }
      
-     
+  
 
-    if (this.filteredMeetingsArray.length > 0) {  
+    if (this.filteredMeetingsArray.length > 0 && this.Searchingfunc==true) {  
       const lastMeetingDate = new Date(this.filteredMeetingsArray[this.filteredMeetingsArray.length - 1].date);
       this.lastDates.setHours(0, 0, 0, 0);
       lastMeetingDate.setHours(0, 0, 0, 0);
@@ -3513,10 +3511,19 @@ const startDate = formattedDate || today;
         this.filteredMeetingsArray.pop();
       }
     }
-  
 
      
- 
+
+   if(this.Searchingfunc == false){ 
+    const todayFormatted = new Date().toISOString().split('T')[0];
+    const upcoming = this.filteredMeetingsArray.filter(meeting => meeting.date >= todayFormatted);
+    const past = this.filteredMeetingsArray.filter(meeting=> meeting.date < todayFormatted);
+          past.sort((a, b)=>b.date.localeCompare(a.date))
+    this.filteredMeetingsArray= [...upcoming,...past];
+   }
+   
+
+  
    console.log(this.filteredMeetingsArray, 'filteredMeetingsArrays');
        
 }
@@ -3535,13 +3542,12 @@ filterMeetings(event: KeyboardEvent) {
   const searchLower = this.searchMeetings?.toLowerCase().trim() || '';
 
   // Filter on "Enter" key or when input changes
-  if ((event as KeyboardEvent).key === 'Enter' || !searchLower) {
+  if ((event as KeyboardEvent).key === 'Enter' || !searchLower) {  
     this.Searchingjson = searchLower 
       ? this.Scheduledjson.filter(meeting => 
           meeting.title?.toLowerCase().includes(searchLower)
         ) 
       : [];
-    
     this.Searchingfunc = !searchLower;
     this.getEventsForWeeks(0);
   }
@@ -3964,7 +3970,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
   this._calenderDto.Schedule_ID = arg;
   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
     ((data) => {
-       
+      console.log(data, "EventScheduledjson"); 
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       this.loading = false;
       var Schedule_date =this.EventScheduledjson[0].Schedule_date
@@ -3973,7 +3979,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       this.Isadmin = this.EventScheduledjson[0]['IsAdmin'];
       this.propose_date=Schedule_date;
       console.log(this.EventScheduledjson, "Testing12");
-      console.log(this.AdminMeeting_Status, "AdminMeeting_Status");
+   
       this.Meeing_Name = (this.EventScheduledjson[0]['Task_Name']);
       this.Created_by = this.EventScheduledjson[0].Created_by
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
@@ -4646,7 +4652,7 @@ ReshudingTaskandEvent() {
 
   this.Schedule_ID = this._calenderDto.Schedule_ID;
   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-    ((data) => {
+    ((data) => { debugger
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       console.log(this.EventScheduledjson, "test11111")
       this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
@@ -4908,7 +4914,7 @@ ReshudingTaskandEvent() {
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
         this._meetingroom = this.Location_Type?true:false;
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
-         document.getElementById("subtaskid").style.display = "none";
+        //  document.getElementById("subtaskid").style.display = "none";
        
       }
       this.updateCharacterCount();
@@ -7263,6 +7269,10 @@ getLastEventWithValidEnd(events: any[], duration: string): any {
     initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
     return initials;
   }
+
+
+  isExpanded: boolean = false;
+
 
 
 }

@@ -3905,7 +3905,24 @@
                         <div class="custom-evt-tsk-item-control line-clamp">
                             <span class="custom-evt-tsk-item-title">{{item.Task_Name}}</span>
                         </div>
-                    </div>
+                      </div>
+
+                        <div class="custom-evt-tsk-item"  *ngIf="item.Description">
+                            <div class="custom-evt-tsk-item-icon">
+                                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M4 12H20M4 8H20M4 16H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+                            </div>
+                            <div class="custom-evt-tsk-item-control">
+                                <!-- <span class="custom-evt-tsk-item-description"  [innerHTML]="item.Description"></span> -->
+                                <span class="custom-evt-tsk-item-description"
+                                    [innerHTML]="isExpanded ? item.Description : (item.Description | slice:0:150) + (item.Description.length > 150 ? '...' : '')"
+                                    (click)="isExpanded = !isExpanded"  style="cursor: pointer;">
+                                 </span>
+                            </div>
+                        </div>
+
+
+
+                   
                     <div class="custom-evt-tsk-item">
                         <div class="custom-evt-tsk-item-icon">
                             <!-- <svg width="64px" height="64px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g id="Free-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><g transform="translate(-303.000000, -748.000000)" id="Group" stroke="currentColor" stroke-width="1.7"><g transform="translate(301.000000, 746.000000)" id="Shape"><circle cx="15.5" cy="15.5" r="5.5"></circle><polyline points="15.5 13.3440934 15.5 15.5 17 17"></polyline><line x1="17" y1="3" x2="17" y2="5"></line><line x1="7" y1="3" x2="7" y2="5"></line><path d="M8.03064542,21 C7.42550126,21 6.51778501,21 5.30749668,21 C4.50512981,21 4.2141722,20.9218311 3.92083887,20.7750461 C3.62750553,20.6282612 3.39729582,20.4128603 3.24041943,20.1383964 C3.08354305,19.8639324 3,19.5916914 3,18.8409388 L3,7.15906122 C3,6.4083086 3.08354305,6.13606756 3.24041943,5.86160362 C3.39729582,5.58713968 3.62750553,5.37173878 3.92083887,5.22495386 C4.2141722,5.07816894 4.50512981,5 5.30749668,5 L18.6925033,5 C19.4948702,5 19.7858278,5.07816894 20.0791611,5.22495386 C20.3724945,5.37173878 20.6027042,5.58713968 20.7595806,5.86160362 C20.9164569,6.13606756 21,7.24671889 21,7.99747152"></path></g></g></g></g></svg> -->
@@ -3963,14 +3980,7 @@
                             </ol>
                         </div>
                     </div>
-                    <div class="custom-evt-tsk-item"  *ngIf="item.Description">
-                        <div class="custom-evt-tsk-item-icon">
-                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M4 12H20M4 8H20M4 16H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
-                        </div>
-                        <div class="custom-evt-tsk-item-control">
-                            <span class="custom-evt-tsk-item-description"  [innerHTML]="item.Description"></span>
-                        </div>
-                    </div>
+                 
                     <div class="custom-evt-tsk-item" *ngIf="item.Location!=''">
                         <div class="custom-evt-tsk-item-icon">
                             <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>

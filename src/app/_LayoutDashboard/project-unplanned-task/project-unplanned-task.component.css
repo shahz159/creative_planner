@@ -4079,11 +4079,11 @@ div#openactionassign.kt-action-panel--on {
 .task-name {
   margin-right: auto;
   flex: 1;
-  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
   margin-bottom: 0;
-  line-height: 26px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .task-item.is-completed>.task-name {

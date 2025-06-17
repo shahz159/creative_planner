@@ -197,12 +197,29 @@
     gap: 4px;
 }
 
+.timeline-up-time {
+    color: #5E5E5E;
+    font-size: 12px;
+}
+
 .timeline-up {
     color: #5E5E5E;
     font-size: 10px;
 }
 
-.timeline-down {
+.meeting-com {
+    margin-bottom: 1em;
+}
+
+
+.timeline-down-time {
+    color: #9B9B9B;
+    font-size: 11px;
+    line-height: 16px;
+}
+
+
+.timeline-down{
     color: #9B9B9B;
     font-size: 8px;
     line-height: 14px;
@@ -2340,11 +2357,7 @@ div#DemoList-table div.demo i {
 .task-name {
     margin-right: auto;
     flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     margin-bottom: 0;
-    line-height: 26px;
     width: 90%;
     font-size: 14px;
     font-weight: 500;
@@ -2471,11 +2484,11 @@ div#DemoList-table div.demo i {
 .task-name {
     margin-right: auto;
     flex: 1;
-    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
     margin-bottom: 0;
-    line-height: 26px;
+        display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }
 
 .task-item.is-completed>.task-name {
@@ -9031,7 +9044,7 @@ a.info-btn.info-btn-disable:hover {
 }
 
 .meeting-icon-content {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     color: #000;
     margin-top: 10px;
@@ -9718,10 +9731,13 @@ div#unassign-editsidebar.kt-action-panel--on {
     border-color: #5867dd;
 }
 
-
+.agenda-item .agenda-ctrl-btns .edit-agendaname-btn,
+.agenda-item .agenda-ctrl-btns .remove-agenda-btn {
+    display: none;
+}
 .agenda-item:hover .agenda-ctrl-btns .edit-agendaname-btn,
 .agenda-item:hover .agenda-ctrl-btns .remove-agenda-btn {
-    display: inline;
+    display: flex;
 }
 
 .input-group {
@@ -10135,6 +10151,7 @@ span.date-change-icon-next svg {
 .racis-user-circle .racis-user-drpdwn {
     width:130px;
     padding: 10px;
+    transform: translate3d(-155px, -14px, 10px);
 }
 
 .racis-user-circle .racis-user-drpdwn .usr-profile-pc{
@@ -10179,3 +10196,58 @@ span.date-change-icon-next svg {
     margin-bottom: 14px;
     border-bottom: 1px solid #ccc;
 }
+
+
+/* .more-racis-btn:hover>.dropdown-menu{
+   display: block;
+} */
+
+/* .more-racis-btn.dropdown-menu:hover{
+   display: block;
+} */
+
+
+
+
+.meet-time-line {
+    z-index: 1;
+    top: 50%;
+    display: block;
+    position: absolute;
+    height: 2px;
+    background-color: #8897ec;
+    overflow: hidden;
+}
+
+.meet-time-line::after {
+    display: block;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: translateX(-100%);
+    background: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(rgba(255, 255, 255, 0.2)), to(transparent));
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    animation: meet-time-line 1.2s infinite;
+    top: 0;
+}
+
+@keyframes meet-time-line {
+    100% {
+        transform: translateX(100%);
+    }
+}
+.meet-time-line.no-animate::after{
+    animation: none;
+}
+
+
+.agenda-actv-val-sec:hover{
+  text-decoration: underline;
+}
+
+/*-------- metting active word brack for all inside tags css ----------*/
+.kt-meeting-activity-li-user-info * {
+    word-break: break-all;
+}
+/*------------------- end----------------------------------------------*/

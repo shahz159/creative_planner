@@ -881,7 +881,7 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewInsertOnlyTask", this._ObjAssigntaskDTO);
   }
 
-  _NewInsertOnlyTaskServie(_ObjAssigntaskDTO) {
+  _NewInsertOnlyTaskServie(_ObjAssigntaskDTO) {    
 
     this._ObjAssigntaskDTO.TypeOfTask = _ObjAssigntaskDTO.TypeOfTask;
     this._ObjAssigntaskDTO.CreatedBy = localStorage.getItem('EmpNo');
@@ -900,7 +900,7 @@ export class ProjectTypeService {
     this._ObjAssigntaskDTO.Reference = _ObjAssigntaskDTO.Reference;
     this._ObjAssigntaskDTO.Schedule_ID = _ObjAssigntaskDTO.Schedule_ID;
     this._ObjAssigntaskDTO.Agenda_Id = _ObjAssigntaskDTO.Agenda_Id;
-
+debugger
     return this.http.post(this.rootUrl + "Notification/NewInsertOnlyTaskwithAgenda", this._ObjAssigntaskDTO);
   }
 
