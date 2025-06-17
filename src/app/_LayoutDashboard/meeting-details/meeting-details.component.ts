@@ -9974,7 +9974,8 @@ assignTasksub1(){
     }
 
   const fd = new FormData();   
-  fd.append("TaskName", this.selected_taskName.trim());
+  const selectedTask_names=this.selectedtaskNames.map((_taskobj)=>`"${_taskobj.Task_Name}"`).join(',');
+  fd.append("TaskName", selectedTask_names);
   fd.append("Desc", '');
   fd.append("ProjectType", this.selectedProjecttype);
   fd.append("AssignTo", this.employeSelect);
