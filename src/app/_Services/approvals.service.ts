@@ -364,6 +364,19 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
 
 
 
+ NewUpdatePinDetails(pinDetails:ApprovalDTO){  debugger
+
+    this.obj_approvalDTO.Emp_No=pinDetails.Emp_No;
+    this.obj_approvalDTO.PortfolioId=pinDetails.PortfolioId;
+    this.obj_approvalDTO.Project_Code=pinDetails.Project_Code;
+    this.obj_approvalDTO.d_Portid=pinDetails.d_Portid;
+    this.obj_approvalDTO.isPin=pinDetails.isPin;
+
+    return this.http.post(this.rootUrl+'Projects/NewUpdatePinDetails',this.obj_approvalDTO);
+ }
+
+
+
 
 
 

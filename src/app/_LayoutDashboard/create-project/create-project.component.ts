@@ -581,6 +581,7 @@ export class CreateProjectComponent implements OnInit {
 
   setMaxPrjEndDate(){
     if(this.Prjstartdate&&this.Prjtype){
+      
       if(this.Prjtype=='011'){
         const d=new Date(this.Prjstartdate);
         d.setDate(d.getDate()+2);
@@ -588,8 +589,16 @@ export class CreateProjectComponent implements OnInit {
         if(this.Prjenddate>this.maxPrjEndDate)
         this.Prjenddate=null;     
       }
+      else if(this.Prjtype=='003'||this.Prjtype=='008'){
+           const d=new Date(this.Prjstartdate);    
+           d.setFullYear(d.getFullYear()+1);   
+           this.maxPrjEndDate=d;
+           if(this.Prjenddate>this.maxPrjEndDate)    
+           this.Prjenddate=null;   
+      }
       else 
       this.maxPrjEndDate=null;
+
     }
     else {
       this.maxPrjEndDate=null;
@@ -705,11 +714,13 @@ if(nameVres&&nameVres.message==1){
       this.PrjClient=element.ClientId;
     }
   });
+
   if(this.PrjOwner&&this.PrjResp&&this.PrjAuth&&this.PrjCrdtr&&this.PrjInformer&&this.PrjSupport.length>0){
      // when all mandatory fields of step2 provided.
-      const d=new Date();
-      d.setFullYear(d.getFullYear()+2);
-      const enddateofRS=d;
+
+      // const d=new Date();
+      // d.setFullYear(d.getFullYear()+2);
+      // const enddateofRS=d;
 
      const projectInfo={
            ProjectType:this.Prjtype,
@@ -718,7 +729,8 @@ if(nameVres&&nameVres.message==1){
            Description:this.PrjDes,
            Category:this.PrjCategory,
            StartDate:['003','008'].includes(this.Prjtype)?this.datepipe.transform(new Date(),'dd-MM-yyyy'):this.datepipe.transform(this.Prjstartdate,'dd-MM-yyyy'),
-           EndDate:['003','008'].includes(this.Prjtype)?this.datepipe.transform(enddateofRS,'dd-MM-yyyy'):this.datepipe.transform(this.Prjenddate,'dd-MM-yyyy'),
+          //  EndDate:['003','008'].includes(this.Prjtype)?this.datepipe.transform(enddateofRS,'dd-MM-yyyy'):this.datepipe.transform(this.Prjenddate,'dd-MM-yyyy'),
+           EndDate:this.datepipe.transform(this.Prjenddate,'dd-MM-yyyy'),
            Owner:this.PrjOwner,
            Responsible:this.PrjResp,
            Authority:this.PrjAuth,
@@ -821,7 +833,7 @@ if(nameVres&&nameVres.message==1){
  }
 
 
- uploadFileAttachment(){   debugger
+ uploadFileAttachment(){   
            const fd=new FormData();
            fd.append('Project_Code',this.PrjCode);
            fd.append('Project_Name',this.PrjName);
@@ -1128,8 +1140,8 @@ contentType:any="";
         (
           (['001','002'].includes(this.Prjtype)&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours?this.Allocated_Hours<=this.maxAllocation:true))||
           (this.Prjtype=='011'&&this.Prjstartdate&&this.Prjenddate&&(this.Allocated_Hours&&this.Allocated_Hours<=this.maxAllocation)) ||
-          (this.Prjtype=='003'&&this.prjsubmission&&this.Allocated_Hours&&(this.prjsubmission==6?this.Annual_date:true))||
-          (this.Prjtype=='008'&&this.prjsubmission&&(this.Allocated_Hours&&(this.isAllocHrsOverflow==false))&&(this.prjsubmission==6?this.Annual_date:true))
+          (this.Prjtype=='003'&&this.prjsubmission&&this.Allocated_Hours&&(this.prjsubmission==6?this.Annual_date:true)&&(this.Prjenddate))||
+          (this.Prjtype=='008'&&this.prjsubmission&&(this.Allocated_Hours&&(this.isAllocHrsOverflow==false))&&(this.prjsubmission==6?this.Annual_date:true)&&(this.Prjenddate))
         ) 
      ){
           // when all mandatory fields of step1 are provided.
@@ -1140,8 +1152,10 @@ contentType:any="";
           $('.sbs--basic li').removeClass('active');
           $('.sbs--basic li:nth-child(2)').addClass('active');
           this.findProjectType();
+
           if(['003','008'].includes(this.Prjtype))
           this.Prjstartdate=new Date();
+
           this.notificationMsg=['001','002'].includes(this.Prjtype)?2:4;
           this.notProvided=false;
     }
@@ -2960,12 +2974,16 @@ newProject_Type:any
 prevPrjType:string|undefined;
 changeprojecttype(){
 
+  // Clear Input Fields value based on project type selected.   
   if(!(['001','002','011'].includes(this.prevPrjType)&&['001','002','011'].includes(this.Prjtype))){
 
     //when moving from core or secondary or todo  ---> standard or routine. 
     if(['001','002','011'].includes(this.prevPrjType)&&['003','008'].includes(this.Prjtype)){
           this.prjsubmission=null;
           this.Allocated_Hours=null;
+          this.Annual_date=null;
+          this.Prjstartdate=null;
+          this.Prjenddate=null;
     }
 
 
@@ -2977,18 +2995,51 @@ changeprojecttype(){
     }
 
   }
+  // 
 
-  const datediff=Math.abs(moment(this.Prjstartdate).diff(moment(this.Prjenddate),'days'));
-  if(this.Prjtype==='011'&&datediff>3){
-       this.Prjenddate=null;
+
+  if(this.Prjtype=='003'||this.Prjtype=='008'){
+    const cur_date=new Date();
+    cur_date.setHours(0,0,0,0);
+    this.Prjstartdate=cur_date;
   }
 
+
+  // if(this.Prjstartdate&&this.Prjenddate){
+  //       const datediff=Math.abs(moment(this.Prjstartdate).diff(moment(this.Prjenddate),'days'));
+  //       if((this.Prjtype==='011'&&datediff>3)){
+  //         this.Prjenddate=null;
+  //       }
+  // }
+
+
+
+
+      //  const d=new Date(this.Prjstartdate);    
+      //      d.setFullYear(d.getFullYear()+1);   
+      //      this.maxPrjEndDate=d;
+      //      if(this.Prjenddate>this.maxPrjEndDate)    
+      //      this.Prjenddate=null;  
+
+
   this.prevPrjType=this.Prjtype;
-
-
-
   console.log("racis:",this.RACIS);
 }
+
+/**
+  * The Main Purpose of changeprojecttype() method is to clear values from startdate, enddate, allocatedhrs, submissiontype input fields
+    to prevent bugs.
+  * no change on startdate, enddate, allocatedhrs inputfields values when change btw core, secondary and todo.
+  * no change on submissiontype, allocatedhrs, enddate inputfields values when change btw standard and routine.
+  * clear values of startdate, enddate, allocatedhrs inputfields when changing from standard/routine to core/secondary/todo.
+  * clear values of submissiontype, allocatedhrs, enddate when changing from core/secondary/todo to standard/routine.  
+ */
+
+
+
+
+
+
 
 
 // switch (this.Prjtype) {

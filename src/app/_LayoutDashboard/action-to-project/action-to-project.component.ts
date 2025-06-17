@@ -1116,7 +1116,7 @@ startActionCreation=async()=>{
 
    // console.log(this.owner,"selected owner")
 
-   this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {
+   this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {   
 
      this.Sub_ProjectCode = data['SubTask_ProjectCode'];
      this.EmpNo_Autho = data['Team_Autho'];
@@ -1148,7 +1148,8 @@ startActionCreation=async()=>{
      console.log( this.fileAttachment)
     // if (this.fileAttachment&& this.fileAttachment.length > 0) {
     //    this.ObjSubTaskDTO.Attachments =  this.fileAttachment;
-    //  }
+    //  }   
+    
 
      var datestrStart = moment(this._StartDate).format("MM/DD/YYYY");
      var datestrEnd = moment(this._EndDate).format("MM/DD/YYYY");

@@ -1361,21 +1361,51 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
+getRelativeDateString(date: Date): string {
+  let dstr = '';
+  const daysDiff = moment(new Date()).diff(date, 'days');
+
+  if (daysDiff < 0) return 'In the future';
+
+  if (daysDiff === 0) {
+    dstr = 'Today';
+  } else if (daysDiff === 1) {
+    dstr = 'Yesterday';
+  } else if (daysDiff < 7) {
+    dstr = `${daysDiff} days ago`;
+  } else {
+    const units = [
+      { type: 'year', value: 365 },
+      { type: 'month', value: 30 },
+      { type: 'week', value: 7 },
+    ];
+
+    for (let unit of units) {
+      const quotient = Math.floor(daysDiff / unit.value);
+      if (quotient === 1) {
+        dstr = `1 ${unit.type} ago`;
+        break;
+      } else if (quotient > 1) {
+        dstr = `${quotient} ${unit.type}s ago`;
+        break;
+      }
+    }
+  }
+
+  return dstr;
+}
+
+
+
+
+
   prjRunFor:number=0;
-  uniqueName:any
-  uniqueNamesArray:any
-  firstthreeRecords:any
-  firstRecords:any
-  secondRecords:any
-  thirdRecords:any
-  newArray:any
   uniqueSet :any
   uniqueOwner:any
   uniqueNamesArray1:any
   PeopleOnProject:any;
-
   nonRacisList:any=[];
-
+  projectMembers:any=[];
 
   GetPeopleDatils(){
 
@@ -1386,27 +1416,25 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.Project_List = JSON.parse(data[0]['RacisList']);
           console.log(this.Project_List,"dddddd")
 
-          this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
-          const uniqueNamesArray = [...this.uniqueName];
-
-          this.newArray = uniqueNamesArray.slice(3);
-          this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
-
-            this.firstRecords=this.firstthreeRecords[0]?this.firstthreeRecords[0][0].split(' ')[0]:'';
-            this.secondRecords=this.firstthreeRecords[1]?this.firstthreeRecords[1][0].split(' ')[0]:'';
-            this.thirdRecords=this.firstthreeRecords[2]?this.firstthreeRecords[2][0].split(' ')[0]:'';
-
 // If project has project auditor
           const prj_auditor=this.Project_List.find((item)=>item.Role==='Auditor');
           if(prj_auditor){
             this.projectAuditor={empName:prj_auditor.RACIS, empNo:prj_auditor.Emp_No};
           }
 // If project has project auditor
-debugger
+
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{
 
+            // Math.abs(moment(new Date(result[0].AddedDate)).diff(new Date(),'days'))
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
-            const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', '), isActive:result[0].isActive, UserProfile:result[0].UserProfile};
+            const obj:any={ Emp_Name:result[0].RACIS, 
+                            Emp_No:result[0].Emp_No, 
+                            Role:result.map(item=>item.Role).join(', '), 
+                            isActive:result[0].isActive, 
+                            UserProfile:result[0].UserProfile, 
+                            AddedDate:result[0].AddedDate,  
+                            relativeDate:moment(new Date()).diff(new Date(result[0].AddedDate),'days')
+                          };
             if(this.Subtask_Res_List){
               const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
               if(p){
@@ -1429,6 +1457,9 @@ debugger
 
             return obj;
           });
+
+
+
 
 // sorting people based on active or inactive
           const active_emp=this.PeopleOnProject.filter(item=>item.isActive);
@@ -1539,6 +1570,7 @@ debugger
    this.arrangeActivitiesBy(filterConfig.activityType,filterConfig.byEmp);
    else
    this.arrangeActivitiesBy('all','all');
+
    this.emps_of_actvs=Array.from(new Set(this.Activity_List.map(_actv=>_actv.Modifiedby)));
    this.actvs_types=Array.from(new Set(this.Activity_List.map(_actv=>_actv._type)));
 
@@ -1562,7 +1594,33 @@ debugger
         }
         this.activitiesLoading=false;  // end the loading.
       });
+
   }
+
+
+ tryGettingUserImageByName(userName:string):string|null{
+    let imageUrl:string|null=null;
+    if(this.PeopleOnProject&&userName){
+   
+    const userObj=this.PeopleOnProject.find((userobj)=>{
+       if(userobj){
+         const username=userobj.Emp_Name.slice(0,userobj.Emp_Name.indexOf('(')).trim();
+         return username.toLowerCase()==userName.trim().toLocaleLowerCase();
+       }
+       else 
+       return false;
+     });
+
+     if(userObj&&userObj.UserProfile)
+     imageUrl=this.imagesOrigin+userObj.UserProfile;
+     else 
+     imageUrl=null;
+
+    }
+    
+    return imageUrl;
+ }
+
 
 
   ActionActivity_List:any=[];
@@ -3935,8 +3993,10 @@ actionCompleted(){
 
 // for given new project start date, are there any actions starting earlier to such date?
 const inputPrjStartdate=new Date(this.Start_Date);
+inputPrjStartdate.setHours(0,0,0,0);
 const actnsBeforePrjStart=(this.projectActionInfo && this.projectActionInfo.length>0)?this.projectActionInfo.filter((actn:any)=>{
-   const actnStartdate=new Date(actn.StartDate);  
+   const actnStartdate=new Date(actn.StartDate); 
+    actnStartdate.setHours(0,0,0,0);
    return inputPrjStartdate>actnStartdate;
 }):[];
 const invaildPrjStartdate=actnsBeforePrjStart.length>0;
@@ -3944,8 +4004,10 @@ const invaildPrjStartdate=actnsBeforePrjStart.length>0;
 
 // for given new project deadline date, are there any actions starting beyond such date?
 const inputPrjEnddate=new Date(this.End_Date);
+inputPrjEnddate.setHours(0,0,0,0);
 const actnsAfterPrjdeadline=(this.projectActionInfo && this.projectActionInfo.length>0)?this.projectActionInfo.filter((actn:any)=>{
     const actnStartdate=new Date(actn.StartDate);  
+    actnStartdate.setHours(0,0,0,0);
     return actnStartdate>inputPrjEnddate;
 }):[];
 const invaildPrjEnddate=actnsAfterPrjdeadline.length>0;
@@ -4962,8 +5024,9 @@ check_allocation() {
 
 
  submitDar(){
-
+  debugger
    const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
+   const isPrjStdRoutineDaily=(['003','008'].includes(this.projectInfo.Project_Block)&&this.projectInfo.SubmissionId==1);
 
    if(
    ((isPrjCoreSecondary&&this.showaction)?this.actionCode:true)&&
@@ -4971,7 +5034,8 @@ check_allocation() {
    this.starttime&&
    this.endtime&&
    this.dateF&&
-   (this.starttime.value<this.endtime.value)
+   (this.starttime.value<this.endtime.value)&&
+   (isPrjStdRoutineDaily?(((this.endtime.value-this.starttime.value)/(1000*60))<=this.remainingSRTime):true)
   // &&((isPrjCoreSecondary&&this.actionCode&&this.bothActTlSubm)?(this._remarks&&(this.proState?this.selectedFile:true)):true)
    ){
     // if all mandatory fields are provided.
@@ -8814,8 +8878,8 @@ holdcontinue(Pcode:any){
 
       } else if (response.dismiss === Swal.DismissReason.cancel) {
         Swal.fire(
-          'Cancelled',
-          'Project not cancelled',
+          'No Changes Made',
+          'Project is not cancelled',
           'error'
         )
         this.closePrjCancelSb();
@@ -12967,13 +13031,13 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
     this.ObjSubTaskDTO.sort = 'custom';
     this.tmReportLoading=true;
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-      (data => {
+      (data => {   debugger
         this.tmReportLoading=false;
         console.log(data);
         if(data&&data[0].DAR_Details_Json){
              const dar_json=JSON.parse(data[0].DAR_Details_Json);
-             if(dar_json&&dar_json[0]){
-debugger
+             if(dar_json&&dar_json[0]){ 
+
               // all timelines submitted on selected date.
               this.tmReportArr=dar_json[0].Dardata;
               this.submittedTimelines=this.tmReportArr.map((obj)=>({ starttime:obj.starttime, endtime:obj.endtime }));
@@ -13003,8 +13067,6 @@ debugger
               const [hrs,mins]=dar_json[0].TotalDuration.split(':');
               this.tmReportTotalDuration={hours:hrs,minutes:mins};
 
-
-
             // adding 'duration' property to show timing in more easy way on the view.
               this.tmReportArr.forEach(ob=>{
                 const k=/00:\d\d/.test(ob.Duration);
@@ -13014,7 +13076,33 @@ debugger
               });
 
             }
+
         }
+
+
+
+          // calculation of 'remainingSRTime' for Standard / Routine task (Daily) projects.
+              if((this.projectInfo.Project_Block=='003'||this.projectInfo.Project_Block=='008')&&this.projectInfo.SubmissionId==1){
+                const h=Number.parseInt(this.projectInfo.StandardAllocatedHours.split(':')[0]);
+                const m=Number.parseInt(this.projectInfo.StandardAllocatedHours.split(':')[1]);
+                const pmax_alhr=h+(m/60);   // standard/routine project's planned allocated hrs value.  (daily max hrs)
+               
+                const hrSpendOnPrj=this.tmReportArr.reduce((sum,item)=>{    
+                    if(item.project_code==this.projectInfo.Project_Code){
+                      const h=Number.parseInt(item.Duration.split(':')[0]);
+                      const m=Number.parseInt(item.Duration.split(':')[1]);
+                      const ralhr=h+(m/60);
+                      return sum+ralhr;
+                    }
+                    else 
+                      return sum;
+                 },0);
+
+                this.remainingSRTime=(pmax_alhr-hrSpendOnPrj)*60;   console.log('SRTime:',this.remainingSRTime);
+              }
+              else{  this.remainingSRTime=0;   }
+           //
+
       });
   }
 }
@@ -13515,6 +13603,7 @@ rp_processing:boolean=false;
 rp_formFieldsRequired:boolean=false;
 
 onPrjReopenBtnClicked(){
+    
 
     Swal.fire({
       title:'Reopen Project',
@@ -13543,7 +13632,8 @@ onPrjReopenBtnClicked(){
               showCancelButton:true,
               showConfirmButton:true,
               confirmButtonText:'Add Action & Reopen',
-              cancelButtonText:'Just Reopen'
+              cancelButtonText:'Just Reopen',
+              cancelButtonColor:'#3085d6'
              }).then((choice2)=>{
                  if(choice2.isConfirmed){
                   this.showSideBar();     // reopening project by creating a new action inside it.
@@ -13754,6 +13844,36 @@ onActionReopenSubmit(){
 }
 
 // action reopen functionality end.
+
+
+// Standard/Routine (Daily submission) allocated hrs timeline validation.   start
+remainingSRTime:number=0;   // "remainingSRTime" plays important role in standard/routine( daily type) projects timing submission.
+
+
+
+
+
+// Standard/Routine (Daily submission) allocated hrs timeline validation.   end
+
+
+// project group
+
+onNewGroupBtnClicked(){
+    document.getElementById('create-new-group-dv').classList.remove('d-none');
+    document.getElementById('create-new-group-btn').classList.add('d-none');
+}
+
+closeCreateNewGroup(){
+    document.getElementById('create-new-group-dv').classList.add('d-none');
+    document.getElementById('create-new-group-btn').classList.remove('d-none');
+}
+
+createNewGroup(){
+   
+}
+
+//
+
 
 }
 

@@ -1762,9 +1762,22 @@
     padding: 10px;
   }
 
-  .btn.btn-more svg {
+  .btn.btn-more svg, span.p-b-more-item-icon svg {
     width: 20px;
     height: 20px;
+    color: gray;
+  }
+
+  .btn.btn-more:hover svg, span.p-b-more-item-icon:hover svg  {
+    color: black;
+    transform: scale(1.08);
+    transition-duration: 0.25s;
+  }
+
+  .btn.btn-more.pin-btn:hover svg,.pin-btn:hover svg {
+    stroke: black;
+    transform: scale(1.08);
+    transition-duration: 0.25s;
   }
 
   .btn.btn-more {
@@ -2625,3 +2638,28 @@
     height: calc(100vh - 250px);
 }
 
+
+
+/*pin functionality css  start*/
+
+
+.prj-pin-svg
+{
+  stroke: #8c8c8f;
+  fill: transparent;
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.prj-pin-svg.active{
+  stroke: #5688fb;
+  fill: #5688fb;
+  stroke-width: 0.6px;
+}
+
+
+
+
+
+
+/*pin functionality css end*/
