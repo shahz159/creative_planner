@@ -163,7 +163,7 @@ export class CalenderService {
   }
 
 
-  InsertAgendameeting_notes(obj:CalenderDTO){
+  InsertAgendameeting_notes(obj:CalenderDTO){ debugger
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     this.obj_CalenderDTO.Meeting_notes = obj.Meeting_notes;
@@ -385,12 +385,12 @@ NewGetMeetingdata_notes(obj: CalenderDTO){
 }
 
 
-  GetAgendaMeetingnotes_data(obj: CalenderDTO){
+  GetAgendaMeetingnotes_data(obj: CalenderDTO){   
 
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
   this.obj_CalenderDTO.AgendaId=obj.AgendaId;
-
+  console.log(this.rootUrl + "CalenderAPI/NewGetAgendaMeetingnotes_data", this.obj_CalenderDTO);
   return this.http.post(this.rootUrl + "CalenderAPI/NewGetAgendaMeetingnotes_data", this.obj_CalenderDTO);
 }
 
