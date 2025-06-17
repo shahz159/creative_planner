@@ -3994,6 +3994,76 @@ resetScrollPosition(elementId:string){
 
 
 
+// Pin projects    start.
+pinnedProjects:any=[];
+pinnedProjectsCodes:any=[];
+maxPinLimit:number=3;
+
+addProjectToPinnedList(project:any){
+    if(this.pinnedProjects.length<this.maxPinLimit){ 
+
+      const pinDetailsobj=new ApprovalDTO();
+      pinDetailsobj.Emp_No=this.Current_user_ID;
+      pinDetailsobj.Project_Code=project.Project_Code;
+      pinDetailsobj.isPin=true;
+      pinDetailsobj.PortfolioId=null;
+      pinDetailsobj.d_Portid=null;
+      
+      this.approvalservice.NewUpdatePinDetails(pinDetailsobj).subscribe((res:any)=>{
+          if(res&&res.message == 1){  // successfully pinned.   
+              // manually push the selected project into the pinned projects list rather than refetching entire page.  
+            this.pinnedProjects.push(project);
+            this.pinnedProjectsCodes.push(project.Project_Code);
+            this.notifyService.showSuccess('Added in your pinned list.','Pin Successful'); 
+          }
+          else{ // failure
+            this.notifyService.showError('Unable to pin the project','Failed');  
+          }
+      });
+
+    }
+    else{
+       this.notifyService.showError(`You can only pin up to ${this.maxPinLimit} projects`,'Cannot Pin Project');
+    }
+    
+}
+
+removeProjectFromPinnedList(project:any){
+
+      const pinDetailsobj=new ApprovalDTO();
+      pinDetailsobj.Emp_No=this.Current_user_ID;
+      pinDetailsobj.Project_Code=project.Project_Code;
+      pinDetailsobj.isPin=false;
+      pinDetailsobj.PortfolioId=null;
+      pinDetailsobj.d_Portid=null;
+
+      this.approvalservice.NewUpdatePinDetails(pinDetailsobj).subscribe((res:any)=>{    console.log('res after unpin:',res);
+            if(res&&res.message==1){
+              // manually from the project from the pinned projects list rather than refetching entire page.
+              const rIndex=this.pinnedProjects.findIndex(pn=>pn.Project_Code==project.Project_Code);
+              this.pinnedProjects.splice(rIndex,1);
+              this.pinnedProjectsCodes.splice(rIndex,1);
+              this.notifyService.showSuccess('','Project Unpinned'); 
+            }else{
+                this.notifyService.showError('Unable to unpin the project','Failed');
+            }
+      });
+
+}
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+// Pin projects   end.
 
 
 }

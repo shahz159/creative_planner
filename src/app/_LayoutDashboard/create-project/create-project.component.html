@@ -1576,12 +1576,14 @@
                                     <ng-option *ngFor="let item of ProjectType_json" [value]="item.Typeid"> 
                                       <span>{{item.ProjectType}}</span>
 
-                                      <div *ngIf="item.Typeid=='003'&&Current_user_Info.Standard_Total_Hours>0" class="tmdiff-chip">
+                                     
+                                      <div *ngIf="item.Typeid=='003'&&Current_user_Info&&Current_user_Info.Standard_Total_Hours>0" class="tmdiff-chip">
                                           {{Current_user_Info.Standard_Total_Hours}} / {{maxAllocHrsByRole}} hrs used ({{Current_user_Info.Standard_Total_Hours>=maxAllocHrsByRole?0:maxAllocHrsByRole-Current_user_Info.Standard_Total_Hours}} hrs left)
                                       </div>
-                                      <div *ngIf="item.Typeid=='008'&&Current_user_Info.Routine_Total_Hours>0" class="tmdiff-chip">
+                                      <div *ngIf="item.Typeid=='008'&&Current_user_Info&&Current_user_Info.Routine_Total_Hours>0" class="tmdiff-chip">
                                         {{Current_user_Info.Routine_Total_Hours}} / {{maxAllocHrsByRole}} hrs used ({{Current_user_Info.Routine_Total_Hours>=maxAllocHrsByRole?0:maxAllocHrsByRole-Current_user_Info.Routine_Total_Hours}} hrs left)
                                       </div>
+                                      
                       
                                     </ng-option>
                                   </ng-select>
@@ -1645,42 +1647,6 @@
                                     <span *ngIf="!Prjenddate&&notProvided" style="color:rgb(217,48,37)">Please select project end date.</span>
                                   </div>
                                 </div>
-                                <!-- <div class="col-lg-4 mb-3 d-none">
-                                    <label>Allocated hours<span class="text-danger" *ngIf="Prjtype=='011'">*</span></label>
-                                    <input #allocated="ngModel" id="hour-input" class="form-control" placeholder="Enter allocated hours"  pattern="[0-9]*" min="0" oninput="validity.valid||(value='');"   
-                                     [(ngModel)]="Allocated_Hours"  
-                                     [ngClass]="{
-                                       'error-border':(Prjstartdate&&Prjenddate&&Allocated_Hours > maxAllocation)||
-                                                      (Prjtype=='011'&&!Allocated_Hours&&notProvided)||
-                                                      (allocated.touched && allocated.invalid && Allocated_Hours==0)
-                                      }"/>
-                                     <span *ngIf=" Prjtype=='011'&&!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing</span>
-                                     <span *ngIf="Allocated_Hours > maxAllocation" style="color:rgb(217,48,37)">Maximum <b>{{maxAllocation}}</b> hours allowed for given duration. (<b>48</b> hours/week limit).</span>
-                                     <span *ngIf="allocated.touched && allocated.invalid && (Allocated_Hours==0)" style="color:rgb(217,48,37)">Allocated hours cannot be 0 and decimal, please enter a value. </span> -->
-
-                                      <!-- <input id="hour-input" #allocated="ngModel"  required class="form-control" placeholder="Enter allocated hours"
-                                    [ngClass]="{
-                                      'error-border': Prjtype == '011' && (
-                                          (!Allocated_Hours && notProvided) ||
-                                          (allocated.touched && allocated.invalid && Allocated_Hours == 0) ||
-                                          !Prjstartdate ||
-                                          !Prjenddate ||
-                                          this.Prjstartdate == null ||
-                                          this.Prjenddate == null
-                                      )
-                                  }" [(ngModel)]="Allocated_Hours" pattern="[0-9]*" min="0" oninput="validity.valid||(value='');" (click)="setMaxAllocation()" /> -->
-                                    <!-- <span *ngIf=" Prjtype=='011'&&!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing</span> -->
-                                    <!-- <span *ngIf="Allocated_Hours > maxAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 10
-                                      hours. Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span> -->
-                                    
-                                    <!-- <span *ngIf="this.Prjstartdate == null || this.Prjenddate == null" style="color:rgb(217, 48, 37)">{{_message}}</span>  -->
-
-                                    <!-- <span *ngIf="allocated.value && !isNumeric(allocated.value)">Alphabet will not accept
-                                      {{maxAllocation}}
-                                    </span> -->
-                                <!-- </div> -->
-
-
                                 <div class="col-lg-4 mb-3">
                                   <label>Allocated hours<span class="text-danger" *ngIf="Prjtype=='011'">*</span></label>
                                   <input id="hour-input" class="form-control" placeholder="Enter allocated hours"  pattern="[0-9]*" min="0" oninput="validity.valid||(value='');" [(ngModel)]="Allocated_Hours" 
@@ -1692,10 +1658,11 @@
                                   <span *ngIf="(Prjtype=='011'&&!Allocated_Hours&&notProvided)||(Prjtype=='011'&&Allocated_Hours==0)" style="color:rgb(217,48,37)">allocated hours required</span>
                                   <span *ngIf="maxAllocation&&Allocated_Hours>maxAllocation" style="color:rgb(217,48,37)">Maximum <b>{{maxAllocation}}</b> hours allowed for given duration. (<b>48</b> hours/week limit).</span>
                                 </div>  
-
                               </ng-container>
 
-                              <div [ngClass]="{'col-lg-6 mb-3': prjsubmission!='6','col-lg-4 mb-3':  prjsubmission=='6'}"  *ngIf="Prjtype == '003'||Prjtype=='008'">
+                              <ng-container *ngIf="Prjtype == '003'||Prjtype=='008'">
+                               <!-- [ngClass]="{'col-lg-6 mb-3': prjsubmission!='6','col-lg-4 mb-3':  prjsubmission=='6'}" -->
+                              <div class="col-lg-4 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label class="input-icon Sub_In_ed">Submission type<span class="text-danger">*</span></label>
                                   <div class="">
@@ -1710,10 +1677,11 @@
                                   </div>
                                 </div>
                               </div>
-                              <div [ngClass]="{'col-lg-6 mb-3': prjsubmission!='6','col-lg-4 mb-3':  prjsubmission=='6'}" class=""  *ngIf="Prjtype == '003'||Prjtype=='008'">
+                              <!-- [ngClass]="{'col-lg-6 mb-3': prjsubmission!='6','col-lg-4 mb-3':  prjsubmission=='6'}" -->
+                              <div class="col-lg-4 mb-3">
                                       <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0" [ngSwitch]="prjsubmission">
                                     
-                                    <div class="input-icon Sub_In_ed" *ngSwitchDefault>
+                                     <div class="input-icon Sub_In_ed" *ngSwitchDefault>
                                       <label>Allocated hours<span
                                         class="text-danger">*</span></label>
                                       <div class="">
@@ -1721,18 +1689,18 @@
                                         </ng-select>
                                         <span *ngIf="!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)">Please select allocated hour.</span>
                                       </div>
-                                    </div>
-                                    <div class="input-icon Sub_In_ed"  *ngSwitchCase="1">
+                                     </div>
+                                     <div class="input-icon Sub_In_ed"  *ngSwitchCase="1">
                                       <label>Allocated hours<span
                                         class="text-danger">*</span></label>
-                                      <div class="">
+                                       <div class="">
                                         <ng-select [ngClass]="{'error-border':Prjtype=='008'&&isAllocHrsOverflow}" (change)="onAllocInputHrsChanged()"  placeholder="select allocated hours" class="kt-form-vd curser-pointer" [(ngModel)]="Allocated_Hours"   [ngClass]="{'error-vd': !Allocated_Hours && notProvided}" >
                                           <ng-option *ngFor="let item of Daily_array"
                                             [value]="item">{{item}}</ng-option>
                                         </ng-select>
                                         <span *ngIf="!Allocated_Hours&&notProvided" style="color:rgb(217,48,37)" >Please select allocated hour.</span>
                                         <div style="color:#646c9a"> Max duration limit is 60 Minutes only.</div>
-                                      </div>
+                                       </div>
                                     </div>
                                     <div class="input-icon Sub_In_ed" *ngSwitchCase="2">
                                       <label> Allocated hours<span
@@ -1792,15 +1760,14 @@
                                         <span style="color:#646c9a"> Max duration limit is 16 hours only.</span>
                                       </div>
                                     </div>
-                                    
                                     <ng-container *ngIf="Prjtype=='008'">
                                     <div *ngIf="isAllocHrsOverflow&&maxAllocHrsToProject>0" style="color:red">You cannot allocate more than {{formatHrsToHHMM(maxAllocHrsToProject)}}.</div>
                                     <div *ngIf="isAllocHrsOverflow&&maxAllocHrsToProject<=0" style="color:red">You’ve used your full allocation.</div>
                                    </ng-container>
-
                                   </div>
-                              </div>
-                              <div class="col-lg-4 mb-3"  *ngIf="(Prjtype=='003' || Prjtype=='008') && prjsubmission=='6'">
+                             </div>
+
+                              <div class="col-lg-4 mb-3"  *ngIf="prjsubmission=='6'">
                                   <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                     <div class="" >
                                       <label>Recurrence<span class="text-danger">*</span></label>
@@ -1822,6 +1789,25 @@
                                     </div>
                                   </div>
                               </div>
+
+                              <div class="col-lg-4 mb-3">
+                                  <div class="form-group text-dark-50 w-50px flex-grow-1 brdng-0 mb-0">
+                                    <label>End date<span class="text-danger">*</span></label>
+                                    <div class="d-flex date-border" [ngClass]="{'error-date': !Prjenddate && notProvided}">
+                                      <input class="form-control ng-pristine curser-pointer" [(ngModel)]="Prjenddate"  id="srend-date"
+                                        [min]="Prjstartdate"  [max]="maxPrjEndDate"
+                                        placeholder="Select end date" [matDatepicker]="SRenddatepicker" (click)="SRenddatepicker.open();"
+                                        (dateChange)="Prjenddate=Prjstartdate<=Prjenddate?(Prjenddate<=maxPrjEndDate?Prjenddate:null):null;"/>
+                                      <div class="input-group-text p-0">
+                                        <mat-datepicker-toggle matSuffix [for]="SRenddatepicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #SRenddatepicker></mat-datepicker>
+                                      </div>
+                                    </div>
+                                    <span *ngIf="!Prjenddate&&notProvided" style="color:rgb(217,48,37)">Please select project end date.</span>
+                                  </div>
+                              </div>
+
+                             </ng-container>
 
                                 <div class="col-lg-12 mb-3">
                                   <div class="d-flex align-items-end" style="column-gap:10px">
@@ -1864,7 +1850,7 @@
                                     </p>
                                   </ng-container>
                                 </div>
-                              <div class="col-lg-12 mb-3">
+                               <div class="col-lg-12 mb-3">
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0 mb-0">
                                   <label>Reference attachment</label>
                                   <div class="formbold-mb-5 formbold-file-input">
@@ -1920,7 +1906,7 @@
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                               </div>
                             </div>
                           </div>
                           <div class="tb-ftv mt-1 d-flex align-items-center justify-content-between" style="flex-direction: row-reverse;">
@@ -1962,7 +1948,7 @@
                                     [(ngModel)]="PrjResp" (change)="onResponsibleChanged(); PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo))?PrjInformer:Responsible_json[0].OwnerEmpNo; setRACIS();">
                                     <ng-option
                                       [value]="Responsible_json[0].ResponsibleNo">{{Responsible_json[0].ResponsibleName}}</ng-option>
-                                    <ng-option *ngIf="heirarchical_owner.length>1"
+                                    <ng-option *ngIf="heirarchical_owner?.length>1"
                                       [value]="Responsible_json[0].OwnerEmpNo">{{Responsible_json[0].OwnerName}}</ng-option>
                                   </ng-select>
                                   <span style="color:rgb(217,48,37)" *ngIf="!PrjResp">Please select responsible.</span>

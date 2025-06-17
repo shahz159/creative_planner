@@ -1562,8 +1562,35 @@
                                             </thead>
                                             <tbody>
                                                 <!-- filter:Emp_value|filter:ProjectTyp_value|filter:Status_value  | grdFilterPipe: {Project_Name: searchText}-->
-                                                <tr role="row" class="odd project-list_AC"
-                                                    *ngFor="let item of _ProjectDataList;let i=index;" [class.active]="item.isActive">
+
+                                <!--new structure-->
+
+                                        <ng-container *ngIf="(pinnedProjects&&pinnedProjects.length>0)&&CurrentPageNo==1">
+                                                <tr>
+                                                <td colspan="10" style="z-index:6">
+                                                    <div class="pin-projects-notf">
+                                                        <div class="pin-msg-btn-icon">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                                <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"></path>
+                                                            </svg>
+                                                        </div> 
+                                                       You have total {{pinnedProjects.length}} pinned projects.
+                                                    </div>
+                                                 </td>
+                                                </tr>
+                                                <ng-container *ngFor="let item of pinnedProjects;let i=index">
+                                                    <ng-container [ngTemplateOutlet]="pTableRow" [ngTemplateOutletContext]="{Item:item,Index:i,isPin:true}"></ng-container>
+                                                </ng-container>
+                                        </ng-container>
+
+                                         <ng-container *ngFor="let item of _ProjectDataList;let i=index">
+                                             <ng-container *ngIf="pinnedProjectsCodes.includes(item.Project_Code)==false">
+                                                <ng-container [ngTemplateOutlet]="pTableRow" [ngTemplateOutletContext]="{ Item:item,Index:i,isPin:false}"></ng-container>
+                                             </ng-container>
+                                        </ng-container>
+
+                                        <ng-template #pTableRow  let-item="Item" let-i="Index" let-isPinned="isPin">
+                                                 <tr role="row" class="odd project-list_AC" [class.active]="item.isActive">
                                                     <!-- Information Icon -->
 
                                                     <!--ctrl btn start-->
@@ -1571,13 +1598,11 @@
                                                         <div class="d-flex align-items-center ">
 
                                                           <mat-list-item class="mr-2">
-
                                                             <mat-checkbox color="primary"   [checked]="isProjectSelected(item.Project_Code)"
                                                             (change)="selectUnSelectProject($event,item)"></mat-checkbox>
-
                                                           </mat-list-item>
 
-                                                            <a tabindex="0" class="btn px-0 mr-2 mb-0 ml-2 info-btn curser-pointer" role="button" placement="right"
+                                                            <a tabindex="0" class="btn px-0 mr-1 mb-0 ml-2 info-btn curser-pointer" role="button" placement="right"
                                                             data-trigger="focus" data-toggle="tooltip" title="Click to view the project info" (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
@@ -1599,13 +1624,13 @@
                                                                     C5.851,8.973,6.34,9.48,6.326,10.056C6.312,10.657,5.838,11.117,5.236,11.112z"/>
                                                             </g>
                                                             </svg>
-                                                        </a>
+                                                           </a>
 
                                                         <!-- <a tabindex="0" class="btn px-0 mr-2 curser-pointer"  role="button" placement="right"
                                                             data-trigger="focus"  data-toggle="tooltip" title="More Info!">
                                                             <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
                                                         </a> -->
-                                                        <a tabindex="0" class="btn px-0 mr-2 info-btn curser-pointer"  role="button" placement="right"
+                                                        <a tabindex="0" class="btn px-0 mr-1 ml-1 info-btn curser-pointer"  role="button" placement="right"
                                                             data-trigger="focus"  data-toggle="tooltip" title="Click to view the project dashboard" (click)="newDetails(item.Project_Code)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                             viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
@@ -1628,6 +1653,13 @@
                                                          </g>
 
                                                          </svg>
+                                                        </a>
+
+                                                        <a tabindex="0" class="btn px-0 mr-2 mb-0 ml-1 info-btn curser-pointer" role="button" placement="right" data-trigger="focus" data-toggle="tooltip"   [title]="isPinned?'click to unpin this project':'click to pin this project'"
+                                                            (click)="isPinned?removeProjectFromPinnedList(item):addProjectToPinnedList(item)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="bi bi-pin-angle-fill prj-pin-svg" [ngClass]="{'active':isPinned}">
+                                                                <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"></path>
+                                                            </svg>
                                                         </a>
 
                                                         <ng-containeer *ngIf="item.availableports!=null && item.availableports!=undefined; else prtfolio">
@@ -1672,6 +1704,8 @@
                                                                     src="./assets/images/Image (4).jfif"
                                                                     [title]="IsTotalMemosListLoading?'loading...':'Not Linked'"></a>
                                                         </ng-template>
+     
+                                                           
                                                         </div>
                                                     </td>
                                                     <!--ctrl btn start-->
@@ -1714,7 +1748,7 @@
 
                                                     <!--responsible start-->
                                                     <td  [ngClass]="{'d-none':!isrespon}"  class="responclass">
-                                                      <div class="kt-widget__other"   title="{{item.Emp_First_Name}}">
+                                                      <div class="kt-widget__other" title="{{item.Emp_First_Name}}">
                                                       {{ item.Team_Res }}
                                                       </div>
 
@@ -2150,13 +2184,15 @@
                                                               </span>
                                                           </div>
                                                           <div *ngIf="item.Status=='Completed'" class="attach-tippy-div">
-                                                              <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">Completed</span>
-                                                              <span class="attach-tippy">
+                                                             <div class="d-flex">
+                                                               <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">Completed</span>
+                                                               <span class="attach-tippy">
                                                                   <b *ngIf="item.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
                                                               <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
                                                                  <div style="width: max-content;">Approved by: <h6>{{item.Approvedby}} </h6></div>
                                                                   <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
-                                                              </span>
+                                                               </span>
+                                                              </div>
 
                                                               <span class="New_Approval_Project font-weight-400">
                                                                   {{item.Approvedby}}
@@ -2339,6 +2375,11 @@
                                                         </div>
                                                     </td> -->
                                                 </tr>
+                                        </ng-template>
+                                                  
+
+                                  <!--new structure-->          
+
                                             </tbody>
                                         </table>
                                         </div>

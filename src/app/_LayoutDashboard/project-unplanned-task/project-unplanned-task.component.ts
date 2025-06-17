@@ -2900,7 +2900,7 @@ setMaxDate(dateField){
 
 
 
-assignTasksub1(){    debugger
+assignTasksub1(){    
     this.selected_taskName = this.selectedtaskNames.map(task=>task.Task_Name).join(', ');
     this.selected_taskId =  this.selectedtaskNames.map(task=>task.Assign_Id).join(', ');
     console.log( this.selected_taskName,"pending")
@@ -2945,21 +2945,18 @@ assignTasksub1(){    debugger
     }
 
 
-
-
+  const selectedTask_names=this.selectedtaskNames.map((_taskobj)=>`"${_taskobj.Task_Name}"`).join(',');
 
   const fd = new FormData();
-  fd.append("TaskName", this.selected_taskName.trim());
+  fd.append("TaskName", selectedTask_names.trim());
   fd.append("Desc", '');
   fd.append("ProjectType", this.selectedProjecttype);
   fd.append("AssignTo", this.employeSelect);
   fd.append("Portfolio_Id", this.port_id);
   fd.append("StartDate", datestrStart);
   fd.append("EndDate", datestrEnd);
-
   fd.append("ProjectDays", ProjectDays.toString());
   fd.append("Remarks", this._remarks);
-  // fd.append("attachment",this.fileAttachment);
   fd.append("AssignedBy", this.CurrentUser_ID);
   fd.append("AssignIds", this.selected_taskId.toString());
   fd.append("TypeofTask", this.typeoftask);
