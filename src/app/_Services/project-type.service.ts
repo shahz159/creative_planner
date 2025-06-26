@@ -860,8 +860,8 @@ export class ProjectTypeService {
     );
   }
 
-  _InsertOnlyTaskServie(_ObjAssigntaskDTO) {
-
+  _InsertOnlyTaskServie(_ObjAssigntaskDTO) { 
+ 
     this._ObjAssigntaskDTO.TypeOfTask = _ObjAssigntaskDTO.TypeOfTask;
     this._ObjAssigntaskDTO.CreatedBy = localStorage.getItem('EmpNo');
     this._ObjAssigntaskDTO.ProjectType = _ObjAssigntaskDTO.ProjectType;
@@ -872,12 +872,13 @@ export class ProjectTypeService {
     this._ObjAssigntaskDTO.EndDate = _ObjAssigntaskDTO.EndDate;
     this._ObjAssigntaskDTO.ProjectDays = _ObjAssigntaskDTO.ProjectDays;
     this._ObjAssigntaskDTO.SubmissionType = _ObjAssigntaskDTO.SubmissionType;
-    this._ObjAssigntaskDTO.AssignId = _ObjAssigntaskDTO.AssignId;
+    this._ObjAssigntaskDTO.AssignId = _ObjAssigntaskDTO.AssignId;  
     this._ObjAssigntaskDTO.CategoryName = _ObjAssigntaskDTO.CategoryName;
     this._ObjAssigntaskDTO.CategoryId = _ObjAssigntaskDTO.CategoryId;
     this._ObjAssigntaskDTO.Remarks = _ObjAssigntaskDTO.Remarks;
     this._ObjAssigntaskDTO.Reference = _ObjAssigntaskDTO.Reference;
     this._ObjAssigntaskDTO.Schedule_ID = _ObjAssigntaskDTO.Schedule_ID;
+    console.log(this._ObjAssigntaskDTO,'this._ObjAssigntaskDTO55285')
     return this.http.post(this.rootUrl + "Notification/NewInsertOnlyTask", this._ObjAssigntaskDTO);
   }
 
@@ -909,7 +910,7 @@ debugger
     return this.http.post(this.rootUrl + "Notification/NewInsertAssignTask", fd);
   }
 
-  _InsertAssignTaskServieCore(fd) {
+  _InsertAssignTaskServieCore(fd) { 
     return this.http.post(this.rootUrlcore + "Notification/NewInsertAssignTaskCore", fd);
   }
 

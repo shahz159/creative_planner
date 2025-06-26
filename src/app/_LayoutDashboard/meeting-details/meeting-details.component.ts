@@ -5284,7 +5284,7 @@ onFileChange(event) {
 
           this.SelectDms = [];
           this.SelectDms1 = [];
-         this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => { debugger
+           this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
             this.Memos_List = JSON.parse(data['JsonData']);
             let arr3 = [];
             var str = (this.EventScheduledjson[0]['DMS_Name']);

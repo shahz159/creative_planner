@@ -43,12 +43,17 @@ export class CalenderService {
   }
 
 
+   GetUserTeam(obj:CalenderDTO){
+    this.obj_CalenderDTO.EmpNo = obj.EmpNo;
+    return this.http.post(this.rootUrl + "CalenderAPI/NewGetUserTeam", this.obj_CalenderDTO);
+   }
+
+
+
   NewGetPending_request(obj:CalenderDTO){
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetPending_requests1", this.obj_CalenderDTO);
   }
-
-
 
 
 
