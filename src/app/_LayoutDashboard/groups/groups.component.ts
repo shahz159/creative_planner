@@ -179,6 +179,8 @@ export class GroupsComponent implements OnInit {
               this.notifyService.showSuccess(`Group '${groupName}' deleted successfully. `, 'Success');
               this.getUser_StreamGroups();  // rebind groups 
               
+
+              
             }
             else {
               this.notifyService.showError('Unable to delete the group.', 'Failed');
@@ -209,17 +211,6 @@ export class GroupsComponent implements OnInit {
       }
      });
   }
-
-
-//  moreDetails(pcode) {
-//     let name: string = 'Details';
-//     var url = document.baseURI + name;
-//     var myurl = `${url}/${pcode}`;
-//     var myWindow = window.open(myurl,pcode);
-//     myWindow?.focus();
-//   }
-
-
   
  
   openProject(projectCode:string){
@@ -227,7 +218,7 @@ export class GroupsComponent implements OnInit {
     let name: string = 'Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${projectCode}`;
-    var myWindow = window.open(myurl,'_blank');
+    var myWindow = window.open(myurl,projectCode);
     myWindow?.focus();
   }
 
@@ -236,7 +227,7 @@ export class GroupsComponent implements OnInit {
     let name: string = 'portfolioprojects';
     var url = document.baseURI + name;
     var myurl = `${url}/${portfolioId}`;
-    var myWindow = window.open(myurl,'_blank');
+    var myWindow = window.open(myurl,portfolioId);
     myWindow?.focus();
   }
 
@@ -246,7 +237,7 @@ export class GroupsComponent implements OnInit {
     let name: string = 'Meeting-Details';
     var url = document.baseURI + name;
     var myurl = `${url}/${scheduleId}`;
-    var myWindow = window.open(myurl,'_blank');
+    var myWindow = window.open(myurl,scheduleId);
     myWindow?.focus();
   }
 
