@@ -4837,7 +4837,7 @@ p.kt-dt-l {
   text-decoration: none;
   min-width: 0px;
   text-align: left;
-  padding: 8px 16px;
+  padding: 8px 10px;
 }
 
 .project-users .user-list:first-child {
@@ -4923,6 +4923,32 @@ p.kt-dt-l {
   background: rgb(0, 123, 255);
   background: linear-gradient(56deg, #007bff 15%, #00d4ff 100%);
 }
+
+
+.project-users .user-list .user-info .control-btns{
+    position: absolute;
+    right: 20px;
+    visibility: hidden;
+}
+
+.project-users.control-btn-available:hover .user-list .user-info .ov-card-status{
+    visibility: hidden;
+} 
+
+.project-users.control-btn-available:hover .user-list .user-info .control-btns{
+    visibility: visible;
+} 
+
+
+
+
+
+
+
+
+
+
+
 
 .kt-inbox__icon {
   margin-left: 0.5rem;
@@ -8195,7 +8221,13 @@ input.search-input {
 
 /*prj auditor css start*/
 .Auditor-edit-btn {
-  padding: 5px;
+    padding: 5px;
+    border: 1px solid #9ea6ba;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 16px;
+    min-width: 33px;
+    height: 33px;
 }
 
 .Auditor-edit-btn .auditor-btn-text {
@@ -10680,3 +10712,143 @@ span.time-value {
 /* #prj-reopen-sidebar.sideInfobar .kt-portlet__head{
   background-color: #fff;
 } */
+
+
+.emp-circle
+{
+    width: 25px !important;
+    height: 25px !important;
+    transition-duration: 0.2s;
+}
+.emp-circle-img{
+object-fit: cover;
+}
+
+.emp-actv-option:hover .emp-circle{
+    width: 30px !important;
+    height: 30px !important;
+    transition-duration: 0.2s;
+}
+
+
+.ov-card-status {
+    text-align: right;
+    color: #595d6e;
+    font-size: 12px;
+}
+.ov-card-time {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 4px;
+    font-weight: 600;
+}
+
+.ov-card-time:hover .relative-date{
+   display: none;
+}
+
+.ov-card-time:hover .direct-days{
+   display: inline;
+}
+
+.ov-card-time .direct-days{
+   display: none;
+}
+
+
+
+
+
+
+
+
+
+/*stream group dropdown start*/
+.group-prj-btn svg
+{
+   stroke: #8b8b8b;
+   stroke-width: 1.58px;
+   width:20px !important;
+   height:21px !important;
+}
+.group-prj-btn:hover svg,.group-prj-btn:hover svg path{
+   stroke: #8b8b8b !important;
+}
+
+.group-prj-btn.filled svg,.group-prj-btn.filled svg path{
+   stroke: #6388e3 !important;
+}
+
+.addtogroup-popup{
+    position: absolute;
+    right: 5px;
+}
+
+.addtogroup-dropdown {
+  width: 250px;
+  min-width: 250px;
+  padding: 10px 9px;
+  /* position: absolute;
+  transform: translate3d(-140px, 35px, 0px);
+  top: 0px;
+  left: 0px;
+  will-change: transform;  */
+  
+}
+
+.addtogroup-dropdown .btn-groups{
+    height: 30px;
+    border: 1px solid #dadce0;
+    width: 100%;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 13px;
+    color: #3c4043;
+}
+
+.groups-list{
+    max-height: 230px;
+    overflow-y:auto;
+    scrollbar-width: thin;
+}
+
+
+
+
+
+
+
+.addtogroup-dropdown .kt-group-item-list{
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 0.7rem 0.4rem;
+    font-size: 12px;
+    color: #575757;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.15s ease-in-out;
+}
+
+
+.addtogroup-dropdown .kt-group-item-list:hover {
+    background-color: #f3f3f3;
+}
+
+.addtogroup-dropdown .kt-group-item-list.active {
+    background-color: #58a2dd33;
+    color: #2786fb;
+}
+
+.addtogroup-dropdown .new-group-btn:hover{
+   background-color :#dddddd7d;
+}
+
+
+/*stream group dropdown end*/

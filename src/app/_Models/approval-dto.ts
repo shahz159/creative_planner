@@ -93,4 +93,12 @@ export class ApprovalDTO {
     percentage:number;
 //
 
+
+//specially used in Pin functionality
+  Emp_No:string;
+  PortfolioId:number;
+  d_Portid:string;
+  isPin:boolean;
+//
+
 }

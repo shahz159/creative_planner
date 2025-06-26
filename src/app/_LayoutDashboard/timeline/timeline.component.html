@@ -753,7 +753,7 @@
                             aria-sort="ascending" aria-label=": activate to sort column descending">
                             <span style="position:relative; left:-15%; ">Select all</span>
                           </th>
-                          <th rowspan="1" colspan="1" style="width:0px;"> Dar Report </th>
+                          <!-- <th rowspan="1" colspan="1" style="width:0px;"> Dar Report </th> -->
                           <th rowspan="1" colspan="1">Employee Name </th>
                           <th rowspan="1" colspan="1">Company </th>
                           <th rowspan="1" colspan="1">Submitted On</th>
@@ -795,9 +795,9 @@
                               </a>
                             </div>
                           </td>
-                          <td>
+                          <!-- <td>
                             <p class="kt-widget__title1 mb-0 text-nowrap ">DARReport-{{dreq.Emp_Rep_No}}</p>
-                          </td>
+                          </td> -->
                           <td>
                             <span class="kt-widget__other text-nowrap ">{{dreq.Emp_Name}}</span>
                           </td>
@@ -835,7 +835,7 @@
                         <thead>
                           <tr role="row">
                             <th style="width: 100px;"rowspan="1" colspan="1"></th>
-                            <th rowspan="1" colspan="1">Dar Report</th>
+                            <!-- <th rowspan="1" colspan="1">Dar Report</th> -->
                             <th rowspan="1" colspan="1">Company</th>
                             <th rowspan="1" colspan="1">Name</th>
                             <th rowspan="1" colspan="1">Status</th>
@@ -877,9 +877,9 @@
                                 </a>
                               </div>
                             </td>
-                            <td>
+                            <!-- <td>
                               <p class="kt-widget__title1 mb-0">DARReport-{{dres.Emp_Rep_No}}</p>
-                            </td>
+                            </td> -->
                             <td>
                               <span class="kt-widget__other text-nowrap ">{{dres.Com_Name}}</span>
                             </td>
@@ -887,8 +887,8 @@
                               <span class="kt-widget__other text-nowrap ">{{dres.Emp_Name}}</span>
                             </td>
                             <td>
-                                <span class="kt-widget__other"  [ngClass]="{'Done':dres.DARStatus=='Accepted'||dres.DARStatus=='Bonus Accepted','cancellation':dres.DARStatus=='Rejected'}">
-                                  {{dres.DARStatus}}
+                                <span class="kt-widget__other"  [ngClass]="{'Done':dres.SubmissionType=='Accepted'||dres.SubmissionType=='Bonus Accepted','cancellation':dres.SubmissionType=='Rejected'}">
+                                  {{dres.SubmissionType}}
                                 </span>
                             </td>
                             <td>

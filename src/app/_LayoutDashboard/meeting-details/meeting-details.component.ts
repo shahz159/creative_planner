@@ -5284,9 +5284,8 @@ onFileChange(event) {
 
           this.SelectDms = [];
           this.SelectDms1 = [];
-          this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => { debugger
-            this.Memos_List = JSON.parse(data['JsonData']); 
-            console.log( this.Memos_List,' this.Memos_List') 
+           this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
+            this.Memos_List = JSON.parse(data['JsonData']);
             let arr3 = [];
             var str = (this.EventScheduledjson[0]['DMS_Name']);
             arr3 = str.split(",");
@@ -9962,7 +9961,8 @@ assignTasksub1(){
     }
 
   const fd = new FormData();   
-  fd.append("TaskName", this.selected_taskName.trim());
+  const selectedTask_names=this.selectedtaskNames.map((_taskobj)=>`"${_taskobj.Task_Name}"`).join(',');
+  fd.append("TaskName", selectedTask_names);
   fd.append("Desc", '');
   fd.append("ProjectType", this.selectedProjecttype);
   fd.append("AssignTo", this.employeSelect);

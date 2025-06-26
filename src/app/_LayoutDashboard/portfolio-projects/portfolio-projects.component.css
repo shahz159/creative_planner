@@ -6959,3 +6959,60 @@ style="fill: transparent;stroke-width: 44px; stroke: #5867dd;" */
 
 
 /* racis circles new end*/
+
+
+
+/* pin projects css start*/
+
+
+
+.prj-pin-svg
+{
+  stroke: #8c8c8f;
+  fill: transparent;
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.prj-pin-svg.active{
+  stroke: #5688fb;
+  fill: #5688fb;
+  stroke-width: 0.6px;
+}
+
+a.info-btn:hover .prj-pin-svg:not(.active)
+{
+  stroke: #7d7ebb;
+}
+
+
+
+.pin-msg-btn-icon {
+  align-self: flex-start;
+  width: 26px;
+  height: 26px;
+  background: linear-gradient(6deg, #6388e3 0%, #6388e3 0%, #6388e3 69%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+}
+
+.pin-msg-btn-icon svg {
+  fill: #fff;
+  width: 14px;
+  height: 14px;
+}
+
+.pin-projects-notf {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  padding: 8px 8px 8px 8px;
+  background-color: #edf3ff;
+  border-radius: 7px;
+  font-weight: 500;
+  width: 88vw;
+}
+
+/* pin projects css end*/
