@@ -83,6 +83,7 @@ export class MeetingDetailsComponent implements OnInit {
   loadingDMS: boolean= false;
   deletedMeeting:boolean = true;
   subtask_loading:boolean=false;
+  meetingStopped: boolean = false;
   loading: boolean = false;
   Current_user_ID: string;
   @ViewChild(MatCalendar) calendar: MatCalendar<Date>;
@@ -197,7 +198,7 @@ export class MeetingDetailsComponent implements OnInit {
 
   ngOnInit(): void {
   
-    this.loadingDMS = false;
+  
     this.MinLastNameLength = true;
 
     this.route.paramMap.subscribe(params => {
@@ -220,15 +221,13 @@ export class MeetingDetailsComponent implements OnInit {
     // this.getAttendeeTime();
    
     this.meeting_details();
-
+   this.GetcompletedMeeting_data();
     this.addAgenda();
     // this.GetMeetingnotes_data();
     this.getDetailsScheduleId()
-
     this.GetMemosByEmployeeId_new();
     this.GetProjectAndsubtashDrpforCalender();
     this.GetTimeslabfordate();
-    this.GetcompletedMeeting_data();
     this.agendaside(0);
     this.getMeetingApprovals();
     this.fetchPortfolios();
@@ -237,9 +236,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.GetMeetingActivity();
 
 
-    setTimeout(() => {
-      this.loadingDMS = true;
-      }, 4000); 
+ 
 
     this.GetPreviousdate_meetingdata();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
@@ -535,7 +532,6 @@ export class MeetingDetailsComponent implements OnInit {
   meetingPaused: boolean = false;
   play: boolean = false;
   pause: boolean = false;
-  meetingStopped: boolean = false;
   elapsedTime: number = 0;
   timer: any;
   duration: number = 60 * 60 * 1000; // 60 minutes * 60 seconds * 1000 milliseconds
@@ -826,7 +822,7 @@ totalonlineUser:any;
         this.checkedproject.push(element.stringval);
       });
 
-     console.log(this.portfolio_Scheduledjson,'portfolio_Scheduledjson',this.Project_code)
+     console.log(this.DMS_Scheduledjson,'DMS_Scheduledjson')
       // this.Project_code = this.mergeObjects(
       //   this.Project_code || [], 
       //   this.ModifiedJson || [], 
@@ -1383,9 +1379,9 @@ totalonlineUser:any;
   GetDMSList() {
     // this.loadingDMS = false;
     this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
-      if (data) {
+      if (data) { 
         this._MemosSubjectList = JSON.parse(data['JsonData']);
-       
+        
       }
       this.checkeddms=[];
 
@@ -1403,12 +1399,14 @@ totalonlineUser:any;
         ...this.DMS_Details.find(dms => dms.numberval === memo.MailId)
       }));
 
-      console.log( this._MemosSubjectList,' this._MemosSubjectList',this.DMS_Details );
+      console.log( this._MemosSubjectList,' this._MemosSubjectList' );
      
      });
 
       
-    // this.loadingDMS = true;
+      setTimeout(() => {
+      this.loadingDMS = true;
+      }, 2000); 
   }
 
 
@@ -3956,7 +3954,7 @@ onFileChange(event) {
     this._calenderDto.Emp_No = this.Current_user_ID;
     this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
       (data => {
-debugger
+
         this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
         console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
         this.meeting_details();
@@ -3985,15 +3983,7 @@ debugger
           const hours = Math.floor(durationInMinutes / 60);
           const minutes = durationInMinutes % 60;
           this.actualDuration = moment({ hour: hours, minute: minutes }).format('HH:mm');
-          // console.log(duration.asMinutes(), 'duration in minutes');
-
-
-
-          // if (this.Meetingstatuscom == undefined || this.Meetingstatuscom != "Completed" || this.Meetingstatuscom == null) {
-          //     this.interval = setInterval(() => {
-          //       this.GetAttendeesnotes();
-          //     }, 3000);
-          //   }
+        
           if (this.Meetingstatuscom == "Completed") {
             this.isCheckboxDisabled = true;
           }
@@ -4308,7 +4298,7 @@ debugger
 
                 this.assigncount = this.ActionedAssigned_Josn.length;
                 this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
-                console.log(this.ActionedAssigned_Josn,'this.ActionedAssigned_Josn')
+                console.log(this._CompletedList,'this._CompletedList')
 
                 this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
                 this.FiterEmployee = this.EmployeeList;
@@ -4468,7 +4458,7 @@ debugger
 
 
      
-        // console.log(this.LastPauseTime,'LastPauseTime')
+        // console.log(this.smailcount,'smailcount')
         // console.log(this.exact_start,'exact_start');
         // console.log(this.pausetime,'pausetime');
 
@@ -4540,7 +4530,7 @@ debugger
         this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
         this.showAttendeeNotify = data.AdminMeeting_Status;
 
-       console.log(this.showAttendeeNotify,'showAttendeeNotify')
+      //  console.log(this.showAttendeeNotify,'showAttendeeNotify')
 
         if (this.meetingStarted || this.meetingStarted != true) {
       
@@ -4552,9 +4542,7 @@ debugger
             this.AllAttendees_notes = [];
           }
 
-          //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
-          // console.log(this.showAttendeeNotify,'showAttendeeNotify')
-          // console.log(this.showAttendeeNotify,'showAttendeeNotify')
+
           if (this.Endtms) {
             let t = new Date("2000-01-01 " + this.Endtms);
             t.setMinutes(t.getMinutes() - 10);
@@ -5022,7 +5010,6 @@ debugger
         console.log(this.EventScheduledjson, "test11111")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
-        console.log(this.ScheduleType,'sdcsdcsd')
         this.Startts = (this.EventScheduledjson[0]['St_Time']);
         this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
@@ -5235,10 +5222,10 @@ debugger
            // New code Monthly End 
 
           this.MonthArr.forEach((item:any)=>{
-            if(item.checked){
+            if(item.checked){ 
                const d_no=Number.parseInt(item.value);
                this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
-            }
+              }
           });
 
         }
@@ -5297,8 +5284,9 @@ debugger
 
           this.SelectDms = [];
           this.SelectDms1 = [];
-          this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
-            this.Memos_List = JSON.parse(data['JsonData']);
+          this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => { debugger
+            this.Memos_List = JSON.parse(data['JsonData']); 
+            console.log( this.Memos_List,' this.Memos_List') 
             let arr3 = [];
             var str = (this.EventScheduledjson[0]['DMS_Name']);
             arr3 = str.split(",");
@@ -6829,7 +6817,7 @@ addstarttime(){
     this.rapeatLink_Details=true;
     this.maxDate = null;
     this.isValidURL=true;
-    this.mtgOnDays = null;
+    this.mtgOnDays = [];
     this.RecurrValue= false;
     this.switChRecurrenceValue=false;
     this.RecurrValueMonthly=false;
@@ -9637,7 +9625,7 @@ updateTask(index: number) {
     }
     else if(this.multiselect_dialog=='PORTFOLIOS')
     {
-       keyname='Portfolio_Name';  debugger
+       keyname='Portfolio_Name'; 
        arrtype=this.PortfolioList;
        selectedinto='port_id';
        property_name='Portfolio_ID';
@@ -9997,7 +9985,7 @@ assignTasksub1(){
     fd.append('file', "");
   }
 
-
+ console.log( this.selected_taskName,"pending")
  // this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
   this.ProjectTypeService._InsertAssignTaskServieCore(fd).subscribe(
     (data) => {
