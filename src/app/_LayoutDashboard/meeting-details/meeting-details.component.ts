@@ -10549,10 +10549,10 @@ createNewGroup(){
      })
   }
 // project group (stream groups)   end.
-projectConnectedToGroup:number[]=[];
+meetingConnectedToGroup:number[]=[];
 
 getGroupListByPid(){
-    this.projectConnectedToGroup=[];   // erase prev data if present.
+    this.meetingConnectedToGroup=[];   // erase prev data if present.
      const groupDto = new ApprovalDTO();
      groupDto.Emp_No = this.Current_user_ID;
      groupDto.Project_Code = null;
@@ -10561,7 +10561,7 @@ getGroupListByPid(){
       this.service.NewValidateGroupDetails(groupDto).subscribe((res:any)=>{  console.log('group list:',res);
         if(res&&res.groupList){
              const linkedGroups=JSON.parse(res.groupList);
-             this.projectConnectedToGroup=linkedGroups.map(ob=>ob.gid);
+             this.meetingConnectedToGroup=linkedGroups.map(ob=>ob.gid);
         }
       });
   }
