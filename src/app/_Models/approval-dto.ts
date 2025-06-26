@@ -103,7 +103,7 @@ export class ApprovalDTO {
   portid:number|null;
 //
 
-// specially used in stream groups
+  // specially used in stream groups
     groupName:string;
     gid:number;
     Schedule_id:number;

@@ -364,7 +364,7 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
 
 
 
- NewUpdatePinDetails(pinDetails:ApprovalDTO){  debugger
+ NewUpdatePinDetails(pinDetails:ApprovalDTO){    debugger
 
     this.obj_approvalDTO.Emp_No=pinDetails.Emp_No;
     this.obj_approvalDTO.PortfolioId=pinDetails.PortfolioId;

@@ -337,3 +337,131 @@
     background-color: #fdfdfd;
     transform: scale(0.96);
 }
+
+
+.error-border,
+.error-date .input-group-text,
+.error-date .form-control,
+::ng-deep .error-vd .ng-select-container {
+  border: 1px solid #F44336 !important;
+}
+
+.error-date .custom-file-label {
+  border: 1px solid #F44336 !important;
+}
+
+
+
+.kt-cat-action {
+  background-color: #ede9e9;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 0px 2px 2px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: -5px 0px 3px #e1e1e1;
+  width: 0;
+  transition: all 0.15s ease-in-out;
+  overflow: hidden;
+}
+
+.stream-group-item:hover .kt-cat-action {
+  width: 100px;
+}
+
+
+.btn.btn-cat-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 30px;
+  height: 30px;
+  padding: 2px 8px;
+}
+
+.btn.btn-cat-action svg {
+  display: flex;
+}
+
+.btn.btn-cat-action.edit {
+  border: 1px solid #0272d0;
+  color: #0272d0;
+}
+
+.btn.btn-cat-action.edit:hover {
+  background-color: #0272d0;
+  color: #fff;
+}
+
+.btn.btn-cat-action.delete {
+  border: 1px solid #fc0202;
+  color: #fc0202;
+}
+
+.btn.btn-cat-action.delete:hover {
+  background-color: #fc0202;
+  color: #fff;
+}
+
+.btn.btn-input-cat-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 30px;
+  height: 30px;
+  padding: 2px 8px;
+}
+
+.btn.btn-input-cat-action.edit {
+  border: 1px solid #0272d0;
+  color: #0272d0;
+}
+
+.btn.btn-input-cat-action.edit:hover {
+  background-color: #0272d0;
+  color: #fff;
+}
+
+.btn.btn-input-cat-action.delete {
+  border: 1px solid #fc0202;
+  color: #fc0202;
+}
+
+.btn.btn-input-cat-action.delete:hover {
+  background-color: #fc0202;
+  color: #fff;
+}
+
+
+.group-name-label{
+     max-width: 160px;
+}
+
+.compl-remarks-span {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  max-height: 3em;
+  line-height: 1.5em;
+  cursor: default;
+}
+
+
+.nogroupitems-present{
+    padding-top: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nogroupitems-present .noitem-present-img{
+   width:20%;
+}

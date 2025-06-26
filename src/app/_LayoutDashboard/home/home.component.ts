@@ -2355,61 +2355,61 @@ resetScrollPosition(elementId:string){
 
 // Pin portfolios functionality start.
 
-pinnedPortfolios:any=[];       // list of all portfolios which are pinned. (array of objects)
-pinnedPortfoliosIds:any=[];  // list of all portfolios which are pinned. (array of project codes)
-maxPinLimit:number=3;      // maximum portfolios which can be pinned at a time. 
+// pinnedPortfolios:any=[];       // list of all portfolios which are pinned. (array of objects)
+// pinnedPortfoliosIds:any=[];  // list of all portfolios which are pinned. (array of project codes)
+// maxPinLimit:number=3;      // maximum portfolios which can be pinned at a time. 
 
-addPortfolioToPinnedList(portfolio:any){
-    if(this.pinnedPortfolios.length<this.maxPinLimit){
+// addPortfolioToPinnedList(portfolio:any){
+//     if(this.pinnedPortfolios.length<this.maxPinLimit){
 
-       const pinDetailsobj=new ApprovalDTO();
-       pinDetailsobj.Emp_No=this.Current_user_ID;
-       pinDetailsobj.d_Portid=portfolio.Portfolio_ID.toString();
-       pinDetailsobj.isPin=true;
-       pinDetailsobj.Project_Code=null;
-       pinDetailsobj.PortfolioId=null;
+//        const pinDetailsobj=new ApprovalDTO();
+//        pinDetailsobj.Emp_No=this.Current_user_ID;
+//        pinDetailsobj.d_Portid=portfolio.Portfolio_ID.toString();
+//        pinDetailsobj.isPin=true;
+//        pinDetailsobj.Project_Code=null;
+//        pinDetailsobj.PortfolioId=null;
       
-       this.approvalservice.NewUpdatePinDetails(pinDetailsobj).subscribe((res:any)=>{
-                if(res&&res.message == 1){  // successfully pinned.    
-                  this.pinnedPortfolios.push(portfolio);
-                  this.pinnedPortfoliosIds.push(portfolio.Portfolio_ID);
-                  this.notifyService.showSuccess('Added in your pinned list.','Pin Successful'); 
-                }
-                else{ // failure
-                  this.notifyService.showError('Unable to pin the project','Failed');  
-                }
-       });
+//        this.approvalservice.NewUpdatePinDetails(pinDetailsobj).subscribe((res:any)=>{
+//                 if(res&&res.message == 1){  // successfully pinned.    
+//                   this.pinnedPortfolios.push(portfolio);
+//                   this.pinnedPortfoliosIds.push(portfolio.Portfolio_ID);
+//                   this.notifyService.showSuccess('Added in your pinned list.','Pin Successful'); 
+//                 }
+//                 else{ // failure
+//                   this.notifyService.showError('Unable to pin the project','Failed');  
+//                 }
+//        });
 
-    }
-    else{
-       this.notifyService.showError(`You can only pin up to ${this.maxPinLimit} portfolios`,'Cannot Pin Portfolio');
-    }
+//     }
+//     else{
+//        this.notifyService.showError(`You can only pin up to ${this.maxPinLimit} portfolios`,'Cannot Pin Portfolio');
+//     }
     
-}
+// }
 
-removePortfolioFromPinnedList(portfolio:any){
-    // invoke a service and pass project code, service will remove the project from pin list.
+// removePortfolioFromPinnedList(portfolio:any){
+//     // invoke a service and pass project code, service will remove the project from pin list.
    
-       const pinDetailsobj=new ApprovalDTO();
-       pinDetailsobj.Emp_No=this.Current_user_ID;
-       pinDetailsobj.d_Portid=portfolio.Portfolio_ID.toString();
-       pinDetailsobj.isPin=false;
-       pinDetailsobj.Project_Code=null;
-       pinDetailsobj.PortfolioId=null;
+//        const pinDetailsobj=new ApprovalDTO();
+//        pinDetailsobj.Emp_No=this.Current_user_ID;
+//        pinDetailsobj.d_Portid=portfolio.Portfolio_ID.toString();
+//        pinDetailsobj.isPin=false;
+//        pinDetailsobj.Project_Code=null;
+//        pinDetailsobj.PortfolioId=null;
 
-     this.approvalservice.NewUpdatePinDetails(pinDetailsobj).subscribe((res:any)=>{    console.log('res after unpin:',res);
-            if(res&&res.message==1){
-              // manually from the project from the pinned projects list rather than refetching entire page.
-                 const rIndex=this.pinnedPortfolios.findIndex(pn=>pn.Portfolio_ID==portfolio.Portfolio_ID);
-                 this.pinnedPortfolios.splice(rIndex,1);
-                 this.pinnedPortfoliosIds.splice(rIndex,1);
-                 this.notifyService.showSuccess('','Portfolio Unpinned');
-            }else{
-                this.notifyService.showError('Unable to unpin this portfolio','Failed');
-            }
-      });
+//      this.approvalservice.NewUpdatePinDetails(pinDetailsobj).subscribe((res:any)=>{    console.log('res after unpin:',res);
+//             if(res&&res.message==1){
+//               // manually from the project from the pinned projects list rather than refetching entire page.
+//                  const rIndex=this.pinnedPortfolios.findIndex(pn=>pn.Portfolio_ID==portfolio.Portfolio_ID);
+//                  this.pinnedPortfolios.splice(rIndex,1);
+//                  this.pinnedPortfoliosIds.splice(rIndex,1);
+//                  this.notifyService.showSuccess('','Portfolio Unpinned');
+//             }else{
+//                 this.notifyService.showError('Unable to unpin this portfolio','Failed');
+//             }
+//       });
  
-}
+// }
 
 
 

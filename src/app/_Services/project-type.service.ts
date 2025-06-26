@@ -1205,7 +1205,7 @@ debugger
 
 
 
-  NewGetUserTimeline(darSno:number,Empno:string,darReportDate:string){  debugger
+  NewGetUserTimeline(darSno:number,Empno:string,darReportDate:string){  
      this.ObjStatusDTO.Sno=darSno;
      this.ObjStatusDTO.Emp_No=Empno;
      this.ObjStatusDTO.rep_date=darReportDate;
@@ -1261,4 +1261,23 @@ debugger
     return this.http.post(this.rootUrl+'Projects/NewValidateGroupDetails',this.aprvDtoObj);
   }
 
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+ 
+
+
+ 
 }

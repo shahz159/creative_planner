@@ -1087,10 +1087,11 @@
 .modal-body.min-scroll {
   height: auto;
   max-height: 300px;
-  overflow-y: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
 }
 
-.modal-body.min-scroll:hover {
+/* .modal-body.min-scroll:hover {
   overflow-y: scroll;
 }
 
@@ -1109,7 +1110,7 @@
 
 .modal-body.min-scroll::-webkit-scrollbar-thumb:hover {
   background: #b3bcff;
-}
+} */
 
 .kt-inbox__details {
   margin-top: 0px !important;
@@ -6069,7 +6070,7 @@ a.btn-v-icons {
 .share-option-user-img img {
   height: 84px;
   width: 84px;
-  border-radius: 10px;
+  border-radius: 50%;
 }
 
 .share-option-user-name {
@@ -6966,6 +6967,21 @@ style="fill: transparent;stroke-width: 44px; stroke: #5867dd;" */
 
 
 
+button.info-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease-in;
+  color: #8c8c8c;
+}
+
+button.info-btn svg {
+  width: 26px;
+  height: 26px;
+}
+
 .prj-pin-svg
 {
   stroke: #8c8c8f;
@@ -6980,12 +6996,17 @@ style="fill: transparent;stroke-width: 44px; stroke: #5867dd;" */
   stroke-width: 0.6px;
 }
 
-a.info-btn:hover .prj-pin-svg:not(.active)
-{
-  stroke: #7d7ebb;
+
+button.info-btn:enabled:hover {
+  background: #e6e6ff;
+  color: #7D7EBB;
 }
 
 
+button.info-btn:hover .prj-pin-svg:not(.active)
+{
+  stroke: #7d7ebb;
+}
 
 .pin-msg-btn-icon {
   align-self: flex-start;
@@ -7016,3 +7037,289 @@ a.info-btn:hover .prj-pin-svg:not(.active)
 }
 
 /* pin projects css end*/
+
+
+
+/* request access start*/
+
+
+.kt-card-cmt {
+  width: 100%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 3px 10px 25px #c2c2c2ba;
+  margin-bottom: -20rem;
+  margin-top: 0;
+}
+
+.text-end {
+  text-align: end;
+}
+
+.error-msg-str
+{
+    color: red;
+    font-weight: 500;
+    font-size: 13px;
+    text-align: start;
+}
+
+/* request access end*/
+
+/*portfolio request access sidebar new css start*/
+
+.plps-tabs .nav-item .nav-link {
+  padding-left: 10px;
+  padding-right: 10px;
+  border-bottom-width: 3px;
+  cursor: pointer;
+}
+
+.plps-tabs .nav-item .nav-link.active {
+  border-bottom: 3px solid #5867dd;
+  transition-duration: 0.2s !important;
+  transition-timing-function: ease-out;
+}
+
+.plps-tabs .nav-item .nav-link.active:hover {
+  border-bottom: 3px solid #5867dd !important;
+}
+
+.plps-tabs .nav-item .nav-link:hover {
+  border-bottom: 3px solid #bec1da4a !important;
+}
+
+.plps-tabs .nav-item .nav-link svg
+{
+  color: #626676;
+  width:20px;
+  height:20px;
+}
+
+.plps-tabs .nav-item .nav-link.active svg
+{
+  color: #5867dd;
+}
+
+
+button.Kt-Approval-btns {
+  width: 100%;
+  padding: 3px 5px;
+  border-radius: 50px;
+  background-color: #fff;
+  color: #4f4f4f;
+  border: 1px solid #fff;
+  min-width: 110px;
+  margin: 0px 0px;
+  font-size: 13px;
+  letter-spacing: 0;
+  font-weight: 500;
+  border-radius: 3px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.Btn_Accpet {
+  border-color: #8ab991 !important;
+}
+
+.Btn_Accpet.active {
+  background-color: #8ab991 !important;
+  color: #fff;
+}
+
+.Btn_Accpet:hover {
+  background-color: #8ab991 !important;
+  color: #fff !important;
+}
+
+
+.Btn_Reject {
+  border-color: #cf8e66 !important;
+}
+
+.Btn_Reject.active {
+  background-color: #cf8e66 !important;
+  color: #fff;
+}
+
+.Btn_Reject:hover {
+  background-color: #cf8e66 !important;
+  color: #fff !important;
+}
+
+
+.count-box
+{
+    display: inline-block;
+    padding: 1px 4px 1px 4px;
+    background-color: #e9e9eb;
+    color: #6a6a6c;
+    border-radius: 3px;
+    margin-left: 5px;
+    font-weight: 500;
+}
+
+
+/*portfolio request access sidebar new css end*/
+
+
+.notification-list-column
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 7px;
+}
+
+.notification-list-column .notification{
+   width: fit-content;
+}
+
+
+.delay-notif {
+  background-color: #fd7e7a38;
+  color: red;
+}
+
+.prjhold-notf {
+  background-color: #e2d9bc78 !important;
+}
+
+.prjhold-notf svg {
+  fill: #9d9d9d !important;
+}
+
+
+
+
+
+
+/*stream group dropdown start*/
+.group-prj-btn svg
+{
+   stroke: #8b8b8b;
+   stroke-width: 1.58px;
+   width:18.5px !important;
+   height:19px !important;
+}
+.group-prj-btn:hover svg,.group-prj-btn:hover svg path{
+   stroke: #8b8b8b !important;
+}
+
+.group-prj-btn.filled svg,.group-prj-btn.filled svg path{
+   stroke: #6388e3 !important;
+}
+
+.addtogroup-popup{
+    /* position: absolute;
+    right: 5px; */
+}
+
+.addtogroup-dropdown {
+  width: 250px;
+  min-width: 250px;
+  padding: 10px 9px;
+  /* position: absolute;
+  transform: translate3d(-140px, 35px, 0px);
+  top: 0px;
+  left: 0px;
+  will-change: transform;  */
+  
+}
+
+.addtogroup-dropdown .btn-groups{
+    height: 30px;
+    border: 1px solid #dadce0;
+    width: 100%;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 13px;
+    color: #3c4043;
+}
+
+.groups-list{
+    max-height: 230px;
+    overflow-y:auto;
+    scrollbar-width: thin;
+}
+
+
+
+
+
+
+
+.addtogroup-dropdown .kt-group-item-list{
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 0.7rem 0.4rem;
+    font-size: 12px;
+    color: #575757;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.15s ease-in-out;
+}
+
+
+.addtogroup-dropdown .kt-group-item-list:hover {
+    background-color: #f3f3f3;
+}
+
+.addtogroup-dropdown .kt-group-item-list.active {
+    background-color: #58a2dd33;
+    color: #2786fb;
+}
+
+.addtogroup-dropdown .new-group-btn:hover{
+   background-color :#dddddd7d;
+}
+
+.kt-group-item-list-label.max-width{
+   max-width: 90%;
+}
+
+
+.stream-groups-loading
+{
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    align-items: center;
+}
+
+.stream-groups-loading .spinner-circle
+{
+  font-size: 1px;
+  width: 15px;
+  height: 15px;
+}
+
+
+.grp-rm-btn{
+    position: absolute;
+    right: 3px;
+    border: 0;
+    background-color: transparent;
+}
+
+
+.grp-rm-btn svg{
+    width:20px;
+    height:20px;
+    color:#ff7a7a;
+}
+
+
+.grp-rm-btn:hover svg{
+   color:#dd5b5b;
+}
+
+
+/*stream group dropdown end*/
