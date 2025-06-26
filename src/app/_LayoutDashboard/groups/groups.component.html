@@ -53,8 +53,17 @@
                             </div>
                         </div>
                     </div>
+
+                    <div *ngIf="noGroupsAvailable;else groupslistAvailable" class="no-groups-leftsec h-100">
+                        <div class="d-flex flex-column align-items-center">
+                            <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: #ccc;">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20 6L3 6" stroke="currentColor" stroke-width="1.704" stroke-linecap="round"></path> <path d="M11 16L3 16" stroke="currentColor" stroke-width="1.704" stroke-linecap="round"></path> <path d="M12 11L3 11" stroke="currentColor" stroke-width="1.704" stroke-linecap="round"></path> <path d="M15 14.5L17.5 17M17.5 17L20 14.5M17.5 17V9" stroke="currentColor" stroke-width="1.704" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                           <span  class="text-msg">Your groups will appear here.</span>
+                       </div>
+                    </div>
+
+                  <ng-template #groupslistAvailable>
                     <div class="kt-group-item-ul">
-                         <!-- active -->
                         <div *ngFor="let group of Current_user_Groups" class="kt-group-item-list stream-group-item" (click)="onGroupClicked(group.gid)" [ngClass]="{'active':selectedGroupId==group.gid}">
                             <div class="kt-group-item-list-icon">
                                 <svg fill="currentColor" height="64px" width="64px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 460.893 460.893" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <g> <path d="M420.84,0H160.051c-18.121,0-32.864,14.743-32.864,32.865v76.136c9.398,0,296.519-0.163,296.519-0.163v184.815 c0,1.58-1.285,2.865-2.865,2.865h-57.135v30h57.135c18.122,0,32.865-14.743,32.865-32.865V32.865 C453.705,14.743,438.962,0,420.84,0z M157.186,78.838V32.865c0-1.58,1.285-2.865,2.864-2.865h260.789 c1.58,0,2.865,1.285,2.865,2.865v45.973H157.186z"></path> <circle cx="183.835" cy="56.556" r="18.1"></circle> <path d="M300.84,134.375c-8.756,0-252.622,0-260.789,0c-18.109,0-32.864,14.717-32.864,32.864v260.789 c0,18.12,14.742,32.865,32.864,32.865H300.84c18.118,0,32.865-14.739,32.865-32.865V167.239 C333.705,149.098,318.952,134.375,300.84,134.375z M37.186,167.239c0-1.579,1.285-2.864,2.864-2.864h260.789 c1.58,0,2.865,1.285,2.865,2.864v45.974H37.186V167.239z M303.706,428.028h-0.001c0,1.58-1.285,2.865-2.865,2.865H40.051 c-1.579,0-2.864-1.285-2.864-2.865V243.213h266.519V428.028z"></path> <circle cx="64.835" cy="188.931" r="18.1"></circle> </g> </g> </g> </g></svg>
@@ -97,12 +106,14 @@
 
                             </div>
                         </div>
-
                     </div>
+                  </ng-template>
+                     
                 </div>
                 <div class="kt-group-right">
                     <div class="kt-groups-ul accordion">
                          
+                   <ng-container *ngIf="noGroupsAvailable==false&&selectedGroupId!=undefined&&selectedGroupId!=null">   
                         <div *ngIf="selectedGroupDetails?.Projects" id="project-accordion" class="kt-groups-li">
                             <div class="kt-groups-li-head" type="button" data-toggle="collapse" data-target="#collapseGroup1" aria-expanded="true" aria-controls="collapseGroup1">
                                 <div class="kt-groups-li-head-title">
@@ -324,13 +335,29 @@
                             </div>
                         </div>
 
-
-                        <div *ngIf="!(selectedGroupDetails?.Projects||selectedGroupDetails?.Portfolios||selectedGroupDetails?.SMail||selectedGroupDetails?.Schedules||selectedGroupDetails?.Attachments)" class="nogroupitems-present w-100">
+ 
+                        <div *ngIf="(!(selectedGroupDetails?.Projects||selectedGroupDetails?.Portfolios||selectedGroupDetails?.SMail||selectedGroupDetails?.Schedules||selectedGroupDetails?.Attachments))" class="nogroupitems-present w-100">
                             <img src="./assets/images/Document Type.png" class="noitem-present-img">  
                                 <div class="bnk-txt mt-3 d-flex justify-content-center">
                                      <h3 class="blank-txt fs-5 notimeline-present-label">No items found in this group.</h3>
                                </div>
                         </div>
+                 </ng-container>
+                
+                 <ng-container *ngIf="noGroupsAvailable">
+                          <div class="nogroupitems-present w-100">
+                            <img src="./assets/images/Document Type.png" class="noitem-present-img">  
+                               <div class="bnk-txt mt-3 d-flex flex-column justify-content-center text-center">
+                                <h3 class="blank-txt fs-5 notimeline-present-label mb-0">No Groups Available</h3>
+                                <span class="blank-txt notimeline-present-label">Click 'Add Groups' to create your first group.</span>
+                              </div>
+                          </div>
+                 </ng-container>
+                 
+                       
+
+
+
 
                     </div>
 

@@ -465,3 +465,15 @@
 .nogroupitems-present .noitem-present-img{
    width:20%;
 }
+
+
+.no-groups-leftsec{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.no-groups-leftsec .text-msg{
+ width: 75%;
+ text-align: center;
+}

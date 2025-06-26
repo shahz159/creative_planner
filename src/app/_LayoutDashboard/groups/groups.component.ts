@@ -23,6 +23,7 @@ export class GroupsComponent implements OnInit {
   selectedGroupId:number;
   selectedGroupDetails:any;
   autoOpenFirstGroup:EventEmitter<boolean>;
+  noGroupsAvailable:boolean=false;
 
   
   constructor(
@@ -58,8 +59,9 @@ export class GroupsComponent implements OnInit {
      this.service.NewGetGroups(empNo).subscribe((res:any)=>{   console.log('Current_user_Groups res:',res);   
       if(res&&res.groupList){
         this.Current_user_Groups=JSON.parse(res.groupList);
+        this.noGroupsAvailable=!(this.Current_user_Groups&&this.Current_user_Groups.length>0);
       }
-
+       
       if(this.autoOpenFirstGroup){  
          this.autoOpenFirstGroup.emit(res&&res.groupList); 
       }
