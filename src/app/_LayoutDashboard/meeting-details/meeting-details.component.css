@@ -10251,3 +10251,126 @@ span.date-change-icon-next svg {
     word-break: break-all;
 }
 /*------------------- end----------------------------------------------*/
+
+
+
+
+
+.group-prj-btn svg
+{
+   stroke: #8b8b8b;
+   stroke-width: 1.58px;
+   width:18.5px !important;
+   height:19px !important;
+}
+.group-prj-btn:hover svg,.group-prj-btn:hover svg path{
+   stroke: #8b8b8b !important;
+}
+.group-prj-btn.filled svg,.group-prj-btn.filled svg path{
+   stroke: #6388e3 !important;
+}
+.addtogroup-popup{
+    /* position: absolute;
+    right: 5px; */
+}
+.addtogroup-dropdown {
+  width: 250px;
+  min-width: 250px;
+  padding: 10px 9px;
+  /* position: absolute;
+  transform: translate3d(-140px, 35px, 0px);
+  top: 0px;
+  left: 0px;
+  will-change: transform;  */
+  
+}
+.addtogroup-dropdown .btn-groups{
+    height: 30px;
+    border: 1px solid #dadce0;
+    width: 100%;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 13px;
+    color: #3c4043;
+}
+.groups-list{
+    max-height: 230px;
+    overflow-y:auto;
+    scrollbar-width: thin;
+}
+.addtogroup-dropdown .kt-group-item-list{
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 0.7rem 0.4rem;
+    font-size: 12px;
+    color: #575757;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.15s ease-in-out;
+}
+.addtogroup-dropdown .kt-group-item-list:hover {
+    background-color: #f3f3f3;
+}
+.addtogroup-dropdown .kt-group-item-list.active {
+    background-color: #58a2dd33;
+    color: #2786fb;
+}
+.addtogroup-dropdown .new-group-btn:hover{
+   background-color :#dddddd7d;
+}
+.kt-group-item-list-label.max-width{
+   max-width: 90%;
+}
+.stream-groups-loading
+{
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    align-items: center;
+}
+.stream-groups-loading .spinner-circle
+{
+  font-size: 1px;
+  width: 15px;
+  height: 15px;
+}
+
+
+.compl-remarks-span {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  max-height: 3em;
+  line-height: 1.5em;
+  cursor: default;
+}
+
+
+.grp-rm-btn{
+    position: absolute;
+    right: 3px;
+    border: 0;
+    background-color: transparent;
+}
+.grp-rm-btn svg{
+    width:20px;
+    height:20px;
+    color:#ff7a7a;
+}
+.grp-rm-btn:hover svg{
+   color:#dd5b5b;
+}
+
+
+
+
+
+

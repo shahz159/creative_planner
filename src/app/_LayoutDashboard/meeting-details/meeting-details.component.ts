@@ -83,6 +83,7 @@ export class MeetingDetailsComponent implements OnInit {
   loadingDMS: boolean= false;
   deletedMeeting:boolean = true;
   subtask_loading:boolean=false;
+  meetingStopped: boolean = false;
   loading: boolean = false;
   Current_user_ID: string;
   @ViewChild(MatCalendar) calendar: MatCalendar<Date>;
@@ -197,7 +198,7 @@ export class MeetingDetailsComponent implements OnInit {
 
   ngOnInit(): void {
   
-    this.loadingDMS = false;
+  
     this.MinLastNameLength = true;
 
     this.route.paramMap.subscribe(params => {
@@ -220,26 +221,22 @@ export class MeetingDetailsComponent implements OnInit {
     // this.getAttendeeTime();
    
     this.meeting_details();
-
+   this.GetcompletedMeeting_data();
     this.addAgenda();
     // this.GetMeetingnotes_data();
     this.getDetailsScheduleId()
-
     this.GetMemosByEmployeeId_new();
     this.GetProjectAndsubtashDrpforCalender();
     this.GetTimeslabfordate();
-    this.GetcompletedMeeting_data();
     this.agendaside(0);
     this.getMeetingApprovals();
     this.fetchPortfolios();
     this.GetProjectsByUserName();
     this.GetMemosActivity();
     this.GetMeetingActivity();
+    this.getGroupListByPid();
 
-
-    setTimeout(() => {
-      this.loadingDMS = true;
-      }, 4000); 
+ 
 
     this.GetPreviousdate_meetingdata();
     this._StartDate = moment().format("YYYY-MM-DD").toString();
@@ -535,7 +532,6 @@ export class MeetingDetailsComponent implements OnInit {
   meetingPaused: boolean = false;
   play: boolean = false;
   pause: boolean = false;
-  meetingStopped: boolean = false;
   elapsedTime: number = 0;
   timer: any;
   duration: number = 60 * 60 * 1000; // 60 minutes * 60 seconds * 1000 milliseconds
@@ -826,7 +822,7 @@ totalonlineUser:any;
         this.checkedproject.push(element.stringval);
       });
 
-     console.log(this.portfolio_Scheduledjson,'portfolio_Scheduledjson',this.Project_code)
+     console.log(this.DMS_Scheduledjson,'DMS_Scheduledjson')
       // this.Project_code = this.mergeObjects(
       //   this.Project_code || [], 
       //   this.ModifiedJson || [], 
@@ -1383,9 +1379,9 @@ totalonlineUser:any;
   GetDMSList() {
     // this.loadingDMS = false;
     this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => {
-      if (data) {
+      if (data) { 
         this._MemosSubjectList = JSON.parse(data['JsonData']);
-       
+        
       }
       this.checkeddms=[];
 
@@ -1403,12 +1399,14 @@ totalonlineUser:any;
         ...this.DMS_Details.find(dms => dms.numberval === memo.MailId)
       }));
 
-      console.log( this._MemosSubjectList,' this._MemosSubjectList',this.DMS_Details );
+      console.log( this._MemosSubjectList,' this._MemosSubjectList' );
      
      });
 
       
-    // this.loadingDMS = true;
+      setTimeout(() => {
+      this.loadingDMS = true;
+      }, 2000); 
   }
 
 
@@ -3956,7 +3954,7 @@ onFileChange(event) {
     this._calenderDto.Emp_No = this.Current_user_ID;
     this.CalenderService.NewGetcompleted_meeting(this._calenderDto).subscribe
       (data => {
-debugger
+
         this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
         console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
         this.meeting_details();
@@ -3985,15 +3983,7 @@ debugger
           const hours = Math.floor(durationInMinutes / 60);
           const minutes = durationInMinutes % 60;
           this.actualDuration = moment({ hour: hours, minute: minutes }).format('HH:mm');
-          // console.log(duration.asMinutes(), 'duration in minutes');
-
-
-
-          // if (this.Meetingstatuscom == undefined || this.Meetingstatuscom != "Completed" || this.Meetingstatuscom == null) {
-          //     this.interval = setInterval(() => {
-          //       this.GetAttendeesnotes();
-          //     }, 3000);
-          //   }
+        
           if (this.Meetingstatuscom == "Completed") {
             this.isCheckboxDisabled = true;
           }
@@ -4308,7 +4298,7 @@ debugger
 
                 this.assigncount = this.ActionedAssigned_Josn.length;
                 this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
-                console.log(this.ActionedAssigned_Josn,'this.ActionedAssigned_Josn')
+                console.log(this._CompletedList,'this._CompletedList')
 
                 this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
                 this.FiterEmployee = this.EmployeeList;
@@ -4468,7 +4458,7 @@ debugger
 
 
      
-        // console.log(this.LastPauseTime,'LastPauseTime')
+        // console.log(this.smailcount,'smailcount')
         // console.log(this.exact_start,'exact_start');
         // console.log(this.pausetime,'pausetime');
 
@@ -4540,7 +4530,7 @@ debugger
         this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
         this.showAttendeeNotify = data.AdminMeeting_Status;
 
-       console.log(this.showAttendeeNotify,'showAttendeeNotify')
+      //  console.log(this.showAttendeeNotify,'showAttendeeNotify')
 
         if (this.meetingStarted || this.meetingStarted != true) {
       
@@ -4552,9 +4542,7 @@ debugger
             this.AllAttendees_notes = [];
           }
 
-          //console.log(this.meetingStarted, this.hasMeetingStarted, this.hasMeetingEnd, this.meetingOfAttendees, "meet")
-          // console.log(this.showAttendeeNotify,'showAttendeeNotify')
-          // console.log(this.showAttendeeNotify,'showAttendeeNotify')
+
           if (this.Endtms) {
             let t = new Date("2000-01-01 " + this.Endtms);
             t.setMinutes(t.getMinutes() - 10);
@@ -5022,7 +5010,6 @@ debugger
         console.log(this.EventScheduledjson, "test11111")
         this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
         this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
-        console.log(this.ScheduleType,'sdcsdcsd')
         this.Startts = (this.EventScheduledjson[0]['St_Time']);
         this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
         this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
@@ -5235,10 +5222,10 @@ debugger
            // New code Monthly End 
 
           this.MonthArr.forEach((item:any)=>{
-            if(item.checked){
+            if(item.checked){ 
                const d_no=Number.parseInt(item.value);
                this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
-            }
+              }
           });
 
         }
@@ -5297,7 +5284,7 @@ debugger
 
           this.SelectDms = [];
           this.SelectDms1 = [];
-          this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
+           this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
             this.Memos_List = JSON.parse(data['JsonData']);
             let arr3 = [];
             var str = (this.EventScheduledjson[0]['DMS_Name']);
@@ -6829,7 +6816,7 @@ addstarttime(){
     this.rapeatLink_Details=true;
     this.maxDate = null;
     this.isValidURL=true;
-    this.mtgOnDays = null;
+    this.mtgOnDays = [];
     this.RecurrValue= false;
     this.switChRecurrenceValue=false;
     this.RecurrValueMonthly=false;
@@ -9637,7 +9624,7 @@ updateTask(index: number) {
     }
     else if(this.multiselect_dialog=='PORTFOLIOS')
     {
-       keyname='Portfolio_Name';  debugger
+       keyname='Portfolio_Name'; 
        arrtype=this.PortfolioList;
        selectedinto='port_id';
        property_name='Portfolio_ID';
@@ -9974,7 +9961,8 @@ assignTasksub1(){
     }
 
   const fd = new FormData();   
-  fd.append("TaskName", this.selected_taskName.trim());
+  const selectedTask_names=this.selectedtaskNames.map((_taskobj)=>`"${_taskobj.Task_Name}"`).join(',');
+  fd.append("TaskName", selectedTask_names);
   fd.append("Desc", '');
   fd.append("ProjectType", this.selectedProjecttype);
   fd.append("AssignTo", this.employeSelect);
@@ -9997,7 +9985,7 @@ assignTasksub1(){
     fd.append('file', "");
   }
 
-
+ console.log( this.selected_taskName,"pending")
  // this.ProjectTypeService._InsertAssignTaskServie(fd).subscribe(
   this.ProjectTypeService._InsertAssignTaskServieCore(fd).subscribe(
     (data) => {
@@ -10444,9 +10432,139 @@ getMinutesLeft(item: any) {
  
 
 
+// project group (stream groups)   start.
+userStreamGroups:any=[];
+loadingUserStreamGroups:boolean=false;
+newGroupName:string;
+groupNameAlreadyExists:boolean=false;
+groupNameInvalid:boolean=false;
+
+onStreamGroupBtnClicked(){
+  this.getUserStreamGroups();  // Fetch all stream groups of the current user.
+}
+
+getUserStreamGroups(config:{showLoader:boolean}={showLoader:true}){
+    const empNo=this.Current_user_ID;
+    if(config.showLoader){
+       this.loadingUserStreamGroups=true;  // process started
+    }
+    this.service.NewGetGroups(empNo).subscribe((res:any)=>{
+     this.loadingUserStreamGroups=false;  // process ended
+     if(res&&res.groupList){ debugger
+        this.userStreamGroups=JSON.parse(res.groupList);
+     }
+   });
+}
+
+onNewGroupBtnClicked(){
+    document.getElementById('create-new-group-dv').classList.remove('d-none');
+    document.getElementById('create-new-group-btn').classList.add('d-none');
+}
 
 
+closeCreateNewGroup(){
+    document.getElementById('create-new-group-dv').classList.add('d-none');
+    document.getElementById('create-new-group-btn').classList.remove('d-none');
+    this.groupNameAlreadyExists=false;
+    this.groupNameInvalid=false;
+    this.newGroupName='';
+}
 
+onAddNewGroupBtnClicked(){
+      this.groupNameAlreadyExists=this.isGroupNameTaken(this.newGroupName);
+      if(this.newGroupName&&this.newGroupName.trim()&&this.groupNameAlreadyExists==false){
+         this.groupNameInvalid=false;
+         this.createNewGroup();
+      }
+      else{
+         this.groupNameInvalid=true;
+      }
+  }
+
+isGroupNameTaken(groupName:string):boolean{
+    let isNameTaken=false;
+     if(groupName&&groupName.trim()){
+       isNameTaken=this.userStreamGroups.some((_group)=>{
+             return _group.groupname?(_group.groupname.trim().toLowerCase()==groupName.trim().toLocaleLowerCase()):false;
+        });
+     }
+     return isNameTaken;
+}
+
+createNewGroup(){
+      const groupName=this.newGroupName;
+      this.approvalObj.Emp_No=this.Current_user_ID;
+      this.approvalObj.groupName=groupName;
+      this.approvalObj.type='1';
+      this.approvalObj.gid=null;
+      this.service.NewCreateEditGroup(this.approvalObj).subscribe((res:any)=>{  console.log('create new group res:',res);
+       if(res&&res.message == 1){
+          this.notifyService.showSuccess(`Group '${groupName}' created successfully.`,'Success');
+          this.getUserStreamGroups({showLoader:false});  // rebind groups without loading spinner.
+          this.closeCreateNewGroup();  // to close dropdown and clear input data.
+       }
+       else{
+          this.notifyService.showError('Unable to create group.','Failed');
+       }
+      });
+  }
+  addMeetingToGroup(groupId:number,groupName:string){   
+    const sgroup_name=groupName;
+    const grpDto=new ApprovalDTO();
+    grpDto.Emp_No = this.Current_user_ID;
+    grpDto.gid = groupId;
+    grpDto.type = '1';
+    grpDto.Project_Code = null;
+    grpDto.PortfolioId = null;
+    grpDto.Schedule_id = this.Schedule_ID;
+     this.service.NewUpdateGroup(grpDto).subscribe((res:any)=>{ console.log('add Meeting to group res:',res);
+          if(res&&res.message==1){
+            this.notifyService.showSuccess(`Meeting added to the group '${sgroup_name}' successfully.`,'Success');
+            this.getUserStreamGroups({showLoader:false});  //rebind.
+            this.getGroupListByPid();
+          }
+          else{
+             this.notifyService.showError(`Unable to add Meeting to '${sgroup_name}'. `,'Failed');
+          }
+     })
+  }
+  removeMeetingFromGroup(groupId:number,groupName:string){
+    const sgroup_name=groupName;
+    const grpDto=new ApprovalDTO();
+    grpDto.Emp_No = this.Current_user_ID;
+    grpDto.gid = groupId;
+    grpDto.type = '2';
+    grpDto.Project_Code = null;
+    grpDto.PortfolioId = null;
+    grpDto.Schedule_id = this.Schedule_ID;;
+     this.service.NewUpdateGroup(grpDto).subscribe((res:any)=>{
+          if(res&&res.message==1){
+            this.notifyService.showSuccess(`Meeting removed from the group '${sgroup_name}' successfully.`,'Success');
+            this.getUserStreamGroups({showLoader:false});  //rebind.
+             this.getGroupListByPid();
+          }
+          else{
+             this.notifyService.showError(`Unable to remove Meeting from the group '${sgroup_name}'.`,'Failed');
+          }
+     })
+  }
+// project group (stream groups)   end.
+projectConnectedToGroup:number[]=[];
+
+getGroupListByPid(){
+    this.projectConnectedToGroup=[];   // erase prev data if present.
+     const groupDto = new ApprovalDTO();
+     groupDto.Emp_No = this.Current_user_ID;
+     groupDto.Project_Code = null;
+     groupDto.PortfolioId = null;
+     groupDto.Schedule_id = this.Schedule_ID;
+      this.service.NewValidateGroupDetails(groupDto).subscribe((res:any)=>{  console.log('group list:',res);
+        if(res&&res.groupList){
+             const linkedGroups=JSON.parse(res.groupList);
+             this.projectConnectedToGroup=linkedGroups.map(ob=>ob.gid);
+        }
+      });
+  }
 
 
 }
