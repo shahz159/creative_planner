@@ -277,7 +277,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.timearrays();
     this.getRejectType();
     this.getusermeetings();
-    this.GetProjectAndsubtashDrpforCalender();   
+    this.GetProjectAndsubtashDrpforCalender();  
+    this.getGroupListByPid();   // fetches group list where this project is linked.
+     
 
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     this.disablePreviousDate.setHours(0,0,0,0);
@@ -13631,10 +13633,14 @@ onPrjReopenBtnClicked(){
                    </div>`,
               showCancelButton:true,
               showConfirmButton:true,
+              showCloseButton:true,
+              customClass:{
+                closeButton:'swal-close-btn'
+              },
               confirmButtonText:'Add Action & Reopen',
               cancelButtonText:'Just Reopen',
               cancelButtonColor:'#3085d6'
-             }).then((choice2)=>{
+             }).then((choice2)=>{  
                  if(choice2.isConfirmed){
                   this.showSideBar();     // reopening project by creating a new action inside it.
                  }
@@ -13856,7 +13862,32 @@ remainingSRTime:number=0;   // "remainingSRTime" plays important role in standar
 // Standard/Routine (Daily submission) allocated hrs timeline validation.   end
 
 
-// project group
+// project group (stream groups)   start.
+
+userStreamGroups:any=[];
+loadingUserStreamGroups:boolean=false;
+newGroupName:string;
+groupNameAlreadyExists:boolean=false;
+groupNameInvalid:boolean=false;
+projectConnectedToGroup:number[]=[]; // group ids. groups to which the project is connected/linked.
+
+onStreamGroupBtnClicked(){
+  this.getUserStreamGroups();  // Fetch all stream groups of the current user.
+}
+
+getUserStreamGroups(config:{showLoader:boolean}={showLoader:true}){
+    const empNo=this.Current_user_ID;
+    if(config.showLoader){
+       this.loadingUserStreamGroups=true;  // process started
+    }
+    this.service.NewGetGroups(empNo).subscribe((res:any)=>{
+     this.loadingUserStreamGroups=false;  // process ended   
+     if(res&&res.groupList){
+        this.userStreamGroups=JSON.parse(res.groupList);
+     }
+   });
+}
+
 
 onNewGroupBtnClicked(){
     document.getElementById('create-new-group-dv').classList.remove('d-none');
@@ -13866,13 +13897,131 @@ onNewGroupBtnClicked(){
 closeCreateNewGroup(){
     document.getElementById('create-new-group-dv').classList.add('d-none');
     document.getElementById('create-new-group-btn').classList.remove('d-none');
+    this.groupNameAlreadyExists=false;
+    this.groupNameInvalid=false;
+    this.newGroupName='';
 }
 
-createNewGroup(){
-   
+
+onAddNewGroupBtnClicked(){  
+      this.groupNameAlreadyExists=this.isGroupNameTaken(this.newGroupName);
+
+      if(this.newGroupName&&this.newGroupName.trim()&&this.groupNameAlreadyExists==false){
+         this.groupNameInvalid=false;
+         this.createNewGroup();
+      }
+      else{
+         this.groupNameInvalid=true;
+      }
+  }
+
+isGroupNameTaken(groupName:string):boolean{
+    let isNameTaken=false;
+     if(groupName&&groupName.trim()){
+       isNameTaken=this.userStreamGroups.some((_group)=>{  
+             return _group.groupname?(_group.groupname.trim().toLowerCase()==groupName.trim().toLocaleLowerCase()):false;
+        });  
+     } 
+     return isNameTaken;
 }
 
-//
+
+
+createNewGroup(){   
+
+      const groupName=this.newGroupName;
+
+      this.approvalObj.Emp_No=this.Current_user_ID;
+      this.approvalObj.groupName=groupName;
+      this.approvalObj.type='1';
+      this.approvalObj.gid=null;
+
+      this.service.NewCreateEditGroup(this.approvalObj).subscribe((res:any)=>{  console.log('create new group res:',res);
+       if(res&&res.message == 1){
+          this.notifyService.showSuccess(`Group '${groupName}' created successfully.`,'Success');
+          this.getUserStreamGroups({showLoader:false});  // rebind groups without loading spinner.
+          this.closeCreateNewGroup();  // to close dropdown and clear input data.
+       }
+       else{
+          this.notifyService.showError('Unable to create group.','Failed');
+       }
+      });
+  }
+
+
+  addProjectToGroup(groupId:number,groupName:string){    debugger
+    
+    const sgroup_name=groupName;
+
+    const grpDto=new ApprovalDTO();
+    grpDto.Emp_No = this.Current_user_ID;
+    grpDto.gid = groupId;
+    grpDto.type = '1';
+    grpDto.Project_Code = this.projectInfo.Project_Code;
+    grpDto.PortfolioId = null;
+    grpDto.Schedule_id = null;
+
+     this.service.NewUpdateGroup(grpDto).subscribe((res:any)=>{ console.log('add project to group res:',res);
+          if(res&&res.message==1){
+            this.notifyService.showSuccess(`Project added to the group '${sgroup_name}' successfully.`,'Success');
+            this.getUserStreamGroups({showLoader:false});  ////rebind stream groups of the user. 
+            this.getGroupListByPid();  // rebind.  ( to which groups this project now after removal is linked)
+          }
+          else{
+             this.notifyService.showError(`Unable to add project to '${sgroup_name}'. `,'Failed');
+          }
+     })
+  }
+
+  removeProjectFromGroup(groupId:number,groupName:string){   debugger
+    const sgroup_name=groupName;
+
+    const grpDto=new ApprovalDTO();
+    grpDto.Emp_No = this.Current_user_ID;
+    grpDto.gid = groupId;
+    grpDto.type = '2';
+    grpDto.Project_Code = this.projectInfo.Project_Code;
+    grpDto.PortfolioId = null;
+    grpDto.Schedule_id = null;
+
+     this.service.NewUpdateGroup(grpDto).subscribe((res:any)=>{
+          if(res&&res.message==1){
+            this.notifyService.showSuccess(`Project removed from the group '${sgroup_name}' successfully.`,'Success');
+            this.getUserStreamGroups({showLoader:false});  //rebind stream groups of the user. 
+            this.getGroupListByPid();  // rebind.  ( to which groups this project now after removal is linked)
+          }
+          else{
+             this.notifyService.showError(`Unable to remove project from the group '${sgroup_name}'.`,'Failed');
+          }
+     })
+
+
+  }
+
+
+
+  getGroupListByPid(){
+
+    this.projectConnectedToGroup=[];   // erase prev data if present.
+
+     const groupDto = new ApprovalDTO();
+     groupDto.Emp_No = this.Current_user_ID;
+     groupDto.Project_Code = this.URL_ProjectCode;
+     groupDto.PortfolioId = null;
+     groupDto.Schedule_id = null;
+      this.service.NewValidateGroupDetails(groupDto).subscribe((res:any)=>{  console.log('group list:',res);
+        if(res&&res.groupList){
+             const linkedGroups=JSON.parse(res.groupList);
+             this.projectConnectedToGroup=linkedGroups.map(ob=>ob.gid);
+        }
+      });
+  }
+
+
+
+
+
+// project group (stream groups)   end.
 
 
 }

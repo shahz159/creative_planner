@@ -100,14 +100,15 @@
                             Page <span class="badge badge-pill badge-primary">
                                 {{CurrentPageNo}}</span>
                         </div> -->
-
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo - 1; applyFilters();this.edited=false; this.currentUA=null;  clearAllCheckboxes();  " [disabled]="CurrentPageNo==1">
+<!-- clearAllCheckboxes(); -->
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"     
+                            (click)="CurrentPageNo = CurrentPageNo - 1; applyFilters();this.edited=false; this.currentUA=null;        " [disabled]="CurrentPageNo==1">
                             <i class="fas fa-angle-left mr-0"></i>
                         </button>
                         <!-- [ngClass]="_CurrentpageRecords<30 ? 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1 not-allowed' : 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1'" -->
+<!-- clearAllCheckboxes(); -->
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters();this.edited=false; this.currentUA=null; clearAllCheckboxes();"
+                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters();this.edited=false; this.currentUA=null;        "
                             [disabled]="_CurrentpageRecords<30||(_CurrentpageRecords*CurrentPageNo)>_totalProjectsCount">
                             <i class="fas fa-angle-right mr-0"></i></button>
                         <div class="mr-1">
@@ -225,7 +226,7 @@
 
 
                                             <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
-                                        </div>
+                                              </div>
 
 
                                               <!-- <div class="col-md-3 bd-right">
@@ -440,7 +441,7 @@
 
 
                                             <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
-                                        </div>
+                                              </div>
 
 
 
@@ -450,7 +451,7 @@
 
 
 
-                                                <div class="col-md-3 bd-right d-none">
+                                                <!-- <div class="col-md-3 bd-right d-none">
                                                   <p><strong>Status</strong></p>
                                                     <div class="count-height">
 
@@ -475,27 +476,9 @@
                                                         </div>
                                                     </ng-container>
 
-                                                        <!-- <div>
-                                                            <input type="checkbox" id="cancelcheck" class="form-check-input ps-1 btn" [(ngModel)]="isChecked" (click)="onCheckboxClick(Type)">
-                                                            <label *ngIf="Type==type1 && isChecked==false" class="text-dark-50"> check to view RACIS cancelled projects</label>
-                                                            <label *ngIf="Type==type2  && isChecked==false" class="text-dark-50"> check to view All cancelled projects</label>
-                                                            <label *ngIf="Type==type1  && isChecked==true" class="text-danger"> uncheck to view RACIS projects</label>
-                                                            <label *ngIf="Type==type2  && isChecked==true" class="text-danger"> uncheck to view All projects</label>
-                                                        </div> -->
                                                     </div>
-                                                    <!-- <div    class="selected-options">
-                                                      <ng-container *ngFor="let item of StatusCountFilter">
-                                                      <div  class="selected-options-item" *ngIf="selectedStatus.includes(item.Name)" >
-                                                        {{item.Name}}
-                                                          <span class="selected-options-item-remove" (click)="onStatusSelected(false,item.Name)">
-                                                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
-                                                                  <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
-                                                              </svg>
-                                                          </span>
-                                                      </div>
-                                                    </ng-container>
-                                                    </div> -->
-                                                </div>
+                                                   
+                                                </div> -->
 
 
 
@@ -543,7 +526,7 @@
                                                           </span><span style="margin-left: auto;">{{emp.Count}}</span></div>
                                                       </mat-option>
 
-                                                 </mat-autocomplete>
+                                                   </mat-autocomplete>
                                                 </mat-form-field>
 
 
@@ -551,19 +534,8 @@
 
 
 
-
-
-
                                               <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
-                                          </div>
-
-
-
-
-
-
-
-
+                                               </div>
 
 
                                             </div>
@@ -1565,8 +1537,8 @@
 
                                 <!--new structure-->
 
-                                        <ng-container *ngIf="(pinnedProjects&&pinnedProjects.length>0)&&CurrentPageNo==1">
-                                                <tr>
+                                        <ng-container *ngIf="(pinnedProjects&&pinnedProjects.length>0)">
+                                                <!-- <tr>
                                                 <td colspan="10" style="z-index:6">
                                                     <div class="pin-projects-notf">
                                                         <div class="pin-msg-btn-icon">
@@ -1577,9 +1549,21 @@
                                                        You have total {{pinnedProjects.length}} pinned projects.
                                                     </div>
                                                  </td>
-                                                </tr>
+                                                </tr> -->
                                                 <ng-container *ngFor="let item of pinnedProjects;let i=index">
-                                                    <ng-container [ngTemplateOutlet]="pTableRow" [ngTemplateOutletContext]="{Item:item,Index:i,isPin:true}"></ng-container>
+                                                    <ng-container *ngIf="searchResult?(item.Project_Name.toLowerCase().trim().includes(searchText.toLowerCase().trim()) ):true">
+                                                    <ng-container
+                                                    *ngIf="edited?(
+
+                                                    (comToselect.length>0?( comToselect.includes(item.Emp_Comp_No) ):true)&&
+                                                    (emplyToselect.length>0?( emplyToselect.includes(item.Emp_No)  ):true)&&
+                                                    (projtypeToselect.length>0?( projtypeToselect.includes(item.Project_Block)  ):true)&&
+                                                    (enterStatus.length>0?( enterStatus.includes(item.Status)  ):true)
+                                                    
+                                                    ):true">
+                                                         <ng-container [ngTemplateOutlet]="pTableRow" [ngTemplateOutletContext]="{Item:item,Index:i,isPin:true}"></ng-container>
+                                                    </ng-container>
+                                                   </ng-container>
                                                 </ng-container>
                                         </ng-container>
 
@@ -1655,12 +1639,12 @@
                                                          </svg>
                                                         </a>
 
-                                                        <a tabindex="0" class="btn px-0 mr-2 mb-0 ml-1 info-btn curser-pointer" role="button" placement="right" data-trigger="focus" data-toggle="tooltip"   [title]="isPinned?'click to unpin this project':'click to pin this project'"
-                                                            (click)="isPinned?removeProjectFromPinnedList(item):addProjectToPinnedList(item)">
+                                                        <button [disabled]="(pinPrjsLoading||isPrjPinning||isPrjUnpinning)" tabindex="0" class="btn px-0 mr-2 mb-0 ml-1 info-btn" role="button" placement="right" data-trigger="focus" data-toggle="tooltip"   [title]="(pinPrjsLoading==false&&isPrjPinning==false&&isPrjUnpinning==false)?(isPinned?'click to unpin this project':'click to pin this project'):''"
+                                                            (click)="isPinned?removeProjectFromPinnedList(item.Project_Code):addProjectToPinnedList(item.Project_Code)">
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="bi bi-pin-angle-fill prj-pin-svg" [ngClass]="{'active':isPinned}">
                                                                 <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"></path>
                                                             </svg>
-                                                        </a>
+                                                        </button>
 
                                                         <ng-containeer *ngIf="item.availableports!=null && item.availableports!=undefined; else prtfolio">
                                                             <div class="port-info-btn ml-2"  [title]="subtashDrpLoading?'loading...':'Click to view the linked portfolio'" (click)="subtashDrpLoading==false?_OpenfortfolioInfo1(item.Project_Code,item.Project_Name,item.id):0"  [ngStyle]="{'cursor':subtashDrpLoading?'wait':'pointer'}"   >

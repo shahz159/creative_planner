@@ -4740,6 +4740,20 @@ input.search-input {
 /* pin projects css start*/
 
 
+button.info-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease-in;
+  color: #8c8c8c;
+}
+
+button.info-btn svg {
+  width: 26px;
+  height: 26px;
+}
 
 .prj-pin-svg
 {
@@ -4755,11 +4769,19 @@ input.search-input {
   stroke-width: 0.6px;
 }
 
-a.info-btn:hover .prj-pin-svg:not(.active)
+
+button.info-btn:enabled:hover {
+  background: #e6e6ff;
+  color: #7D7EBB;
+}
+
+
+
+
+button.info-btn:hover .prj-pin-svg:not(.active)
 {
   stroke: #7d7ebb;
 }
-
 
 
 .pin-msg-btn-icon {

@@ -54407,3 +54407,19 @@ font-size: 18px;
   transition: 0.5s;
   box-shadow: 0 0.1rem 1rem 0.25rem rgb(0 0 0/5%) !important;
 }
+
+
+
+.swal-close-btn
+{
+    font-weight: 600;
+    color: #919191b0;
+    border-radius: 4px;
+    margin:5px;
+}
+
+.swal-close-btn:hover
+{
+ background-color: #9191ad17;
+ color: #919191;
+}

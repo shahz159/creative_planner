@@ -99,6 +99,14 @@ export class ApprovalDTO {
   PortfolioId:number;
   d_Portid:string;
   isPin:boolean;
+  type:string;
+  portid:number|null;
 //
+
+  // specially used in stream groups
+    groupName:string;
+    gid:number;
+    Schedule_id:number;
+  //
 
 }

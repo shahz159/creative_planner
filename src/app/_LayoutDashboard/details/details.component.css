@@ -6115,7 +6115,8 @@ svg>g[class^="raphael-group-fjUjWDEW"]>text {
 .myactions-underaprv-notif,
 .reqaccess-approval-notification,
 .stdtask-underapproval-notification {
-  padding: 7px 0px 7px 15px;
+  /* padding: 7px 0px 7px 15px; */
+  padding: 10px 0px 10px 15px;
 }
 
 .mydelay-action-notf .mydelayactns-open-btn:hover svg {
@@ -10744,7 +10745,7 @@ object-fit: cover;
     font-weight: 600;
 }
 
-.ov-card-time:hover .relative-date{
+/* .ov-card-time:hover .relative-date{
    display: none;
 }
 
@@ -10754,10 +10755,7 @@ object-fit: cover;
 
 .ov-card-time .direct-days{
    display: none;
-}
-
-
-
+} */
 
 
 
@@ -10769,8 +10767,8 @@ object-fit: cover;
 {
    stroke: #8b8b8b;
    stroke-width: 1.58px;
-   width:20px !important;
-   height:21px !important;
+   width:18.5px !important;
+   height:19px !important;
 }
 .group-prj-btn:hover svg,.group-prj-btn:hover svg path{
    stroke: #8b8b8b !important;
@@ -10781,8 +10779,8 @@ object-fit: cover;
 }
 
 .addtogroup-popup{
-    position: absolute;
-    right: 5px;
+    /* position: absolute;
+    right: 5px; */
 }
 
 .addtogroup-dropdown {
@@ -10848,6 +10846,46 @@ object-fit: cover;
 
 .addtogroup-dropdown .new-group-btn:hover{
    background-color :#dddddd7d;
+}
+
+.kt-group-item-list-label.max-width{
+   max-width: 90%;
+}
+
+
+.stream-groups-loading
+{
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    align-items: center;
+}
+
+.stream-groups-loading .spinner-circle
+{
+  font-size: 1px;
+  width: 15px;
+  height: 15px;
+}
+
+
+.grp-rm-btn{
+    position: absolute;
+    right: 3px;
+    border: 0;
+    background-color: transparent;
+}
+
+
+.grp-rm-btn svg{
+    width:20px;
+    height:20px;
+    color:#ff7a7a;
+}
+
+
+.grp-rm-btn:hover svg{
+   color:#dd5b5b;
 }
 
 
