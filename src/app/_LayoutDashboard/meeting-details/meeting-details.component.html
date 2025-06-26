@@ -965,14 +965,23 @@
                                                                             <div class="timeline-down">Average attendance time
                                                                             </div>
                                                                         </div>
-                                                                        <!-- <div class="text-center">
-                                                                            <div class="timeline-up-time" *ngIf="showAttendeeNotify == '1' || showAttendeeNotify == '2' || showAttendeeNotify == '3'" [ngClass]="{ 'meeting-com': getProgress(item) === '100%' }" >{{getProgress(item)}}</div>
-                                                                            <div class="timeline-down-time" *ngIf="(showAttendeeNotify == '1' || showAttendeeNotify == '2' || showAttendeeNotify == '3') && getProgress(item) !== '100%'">{{getMinutesLeft(item)}} min left</div>
+
+
+                                                                    
+                                                                             <!-- <div class="timeline-up-time" *ngIf="showAttendeeNotify == '1' || showAttendeeNotify == '2' || showAttendeeNotify == '3'" [ngClass]="{ 'meeting-com': getProgress(item) === '100%' }" >{{getProgress(item)}}</div>
+                                                                            <div class="timeline-down-time" *ngIf="(showAttendeeNotify == '1' || showAttendeeNotify == '2' || showAttendeeNotify == '3') && getProgress(item) !== '100%'">{{getMinutesLeft(item)}} min left</div> -->
+                                                                         <!-- <div class="text-center">
+                                                                            <div class="timeline-up-time" *ngIf="showAttendeeNotify == '1' || showAttendeeNotify == '2' || showAttendeeNotify == '3'" >{{getProgress(item)}}</div>
+                                                                            <div class="timeline-down-time" *ngIf="(showAttendeeNotify == '1' || showAttendeeNotify == '2' || showAttendeeNotify == '3')">{{getMinutesLeft(item)}} min left</div>
 
                                                                             <div class="timeline-up" *ngIf="showAttendeeNotify == '0' || Meetingstatuscom!=Completed">{{getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time)}} </div>
                                                                             <div class="timeline-down" *ngIf="showAttendeeNotify == '0' || Meetingstatuscom!=Completed">Average attendance time
                                                                             </div>
                                                                         </div> -->
+
+
+
+
                                                                         <div class="z-index-1 d-flex">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" width="18"
                                                                                 height="18" viewBox="0 0 18 18" fill="none">
@@ -1651,17 +1660,17 @@
                                                       <a class="kt-inbox__icon group-prj-btn" title="add to group" data-toggle="dropdown" (click)="onStreamGroupBtnClicked()">
                                                          <svg fill="currentColor" height="64px" width="64px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 460.893 460.893" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g><g><g><path d="M420.84,0H160.051c-18.121,0-32.864,14.743-32.864,32.865v76.136c9.398,0,296.519-0.163,296.519-0.163v184.815 c0,1.58-1.285,2.865-2.865,2.865h-57.135v30h57.135c18.122,0,32.865-14.743,32.865-32.865V32.865 C453.705,14.743,438.962,0,420.84,0z M157.186,78.838V32.865c0-1.58,1.285-2.865,2.864-2.865h260.789 c1.58,0,2.865,1.285,2.865,2.865v45.973H157.186z"></path><circle cx="183.835" cy="56.556" r="18.1"></circle><path d="M300.84,134.375c-8.756,0-252.622,0-260.789,0c-18.109,0-32.864,14.717-32.864,32.864v260.789 c0,18.12,14.742,32.865,32.864,32.865H300.84c18.118,0,32.865-14.739,32.865-32.865V167.239 C333.705,149.098,318.952,134.375,300.84,134.375z M37.186,167.239c0-1.579,1.285-2.864,2.864-2.864h260.789 c1.58,0,2.865,1.285,2.865,2.864v45.974H37.186V167.239z M303.706,428.028h-0.001c0,1.58-1.285,2.865-2.865,2.865H40.051 c-1.579,0-2.864-1.285-2.864-2.865V243.213h266.519V428.028z"></path><circle cx="64.835" cy="188.931" r="18.1"></circle></g></g></g></g></svg>
                                                       </a>
-                                                      <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim addtogroup-dropdown">
+                                                      <div class="dropdown-menu dropdown-menu-fit dropdown-menu-anim addtogroup-dropdown">
                                                         <strong class="px-3" style="font-weight: 500;">Add to group</strong>
                                                         <div class="groups-list mt-1">
                                                     <ng-container *ngIf="!loadingUserStreamGroups; else grps_loading">
-                                                         <div *ngFor="let group of userStreamGroups" class="kt-group-item-ul mt-2 mb-1 curser-pointer" [title]="(!projectConnectedToGroup?.includes(group.gid))?'Add project to this group':''" (click)="addMeetingToGroup(group.gid,group.groupname)">
-                                                               <div class="kt-group-item-list" [ngClass]="{'active': projectConnectedToGroup?.includes(group.gid)}">
+                                                         <div *ngFor="let group of userStreamGroups" class="kt-group-item-ul mt-2 mb-1 curser-pointer" [title]="(!meetingConnectedToGroup?.includes(group.gid))?'Add project to this group':''" (click)="addMeetingToGroup(group.gid,group.groupname)">
+                                                               <div class="kt-group-item-list" [ngClass]="{'active': meetingConnectedToGroup?.includes(group.gid)}">
                                                                 <div class="kt-group-item-list-icon">
                                                                    <svg width="9px" height="9px" viewBox="-0.48 -0.48 16.96 16.96" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-width="0.00016" style="color: #527CE2;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="8" cy="8" r="8" fill="currentColor"></circle> </g></svg>
                                                                 </div>
                                                                     <div class="kt-group-item-list-label max-width compl-remarks-span">{{group.groupname}}</div>
-                                                                    <button *ngIf="projectConnectedToGroup?.includes(group.gid)" (click)=" $event.stopPropagation();  removeMeetingFromGroup(group.gid,group.groupname)" [title]="'remove project from this group'"    class="grp-rm-btn">
+                                                                    <button *ngIf="meetingConnectedToGroup?.includes(group.gid)" (click)=" $event.stopPropagation();  removeMeetingFromGroup(group.gid,group.groupname)" [title]="'remove project from this group'"    class="grp-rm-btn">
                                                                             <svg  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                                                                 <g id="SVGRepo_iconCarrier"> <path d="M16 12H8M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
