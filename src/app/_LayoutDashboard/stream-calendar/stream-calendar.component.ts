@@ -3296,7 +3296,7 @@ selectAction:any;
     this.fetchDataStartTime = performance.now();
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
-       
+          console.log(data,'data')
         this.fetchDataEndTime = performance.now();
         this.fetchDataTime = this.fetchDataEndTime - this.fetchDataStartTime;
 
@@ -3447,7 +3447,7 @@ const startDate = formattedDate || today;
 
       this.groupedMeetingsArray = this.groupedMeetingsArray.map(day => ({ 
         ...day,
-        events: day.events.map(event => {  
+        events: day.events.map(event => {  debugger
             const parts = event.title.replace('📝', '').split('|').map(s => s.trim());
             const title = parts[0]; 
             

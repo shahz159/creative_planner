@@ -5284,13 +5284,13 @@ onFileChange(event) {
 
           this.SelectDms = [];
           this.SelectDms1 = [];
-          this._LinkService._GetMemosSubject(this.dmsIdjson).subscribe((data) => { debugger
-            this._MemosSubjectList = JSON.parse(data['JsonData']);
+         this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => { debugger
+            this.Memos_List = JSON.parse(data['JsonData']);
             let arr3 = [];
             var str = (this.EventScheduledjson[0]['DMS_Name']);
             arr3 = str.split(",");
             for (var i = 0; i < arr3.length; i++) {
-              this._MemosSubjectList.forEach(element => {
+              this.Memos_List.forEach(element => {
                 if (element.MailId == arr3[i]) {
                   this.SelectDms.push(element.MailId);
                 }
@@ -5302,7 +5302,7 @@ onFileChange(event) {
           this.Location_Type = (this.EventScheduledjson[0]['Location']);
           this._meetingroom = this.Location_Type?true:false;
           this.Description_Type = (this.EventScheduledjson[0]['Description']);
-          // document.getElementById("subtaskid").style.display = "none";
+          document.getElementById("subtaskid").style.display = "none";
           document.getElementById("Guest_Name").style.display = "flex";
           document.getElementById("meeting-online-add").style.display = "flex";
           document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
