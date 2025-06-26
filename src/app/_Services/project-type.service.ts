@@ -1212,5 +1212,53 @@ debugger
      return this.http.post(this.rootUrl+'TestAPI/NewGetUserTimeline',this.ObjStatusDTO);
   }
 
+  NewGetPinDetails(empNo:string,type:string,portid:number|null){
+     this.aprvDtoObj.Emp_No=empNo;
+     this.aprvDtoObj.type=type;
+     this.aprvDtoObj.portid=portid;
+     return this.http.post(this.rootUrl+'Projects/NewGetPinDetails',this.aprvDtoObj);
+  }
+  NewGetGroups(empNo:string){
+    this.aprvDtoObj.Emp_No=empNo;
+    return this.http.post(this.rootUrl+'Projects/NewGetGroups',this.aprvDtoObj);
+  }
+  NewCreateEditGroup(obj:ApprovalDTO){
+    this.aprvDtoObj.Emp_No=obj.Emp_No;
+    this.aprvDtoObj.groupName=obj.groupName;
+    this.aprvDtoObj.type=obj.type;
+    this.aprvDtoObj.gid=obj.gid;
+    return this.http.post(this.rootUrl+'Projects/NewCreateEditGroup',this.aprvDtoObj);
+  }
+  NewDeleteGroup(obj:ApprovalDTO){
+    this.aprvDtoObj.Emp_No=obj.Emp_No;
+    this.aprvDtoObj.gid=obj.gid;
+    return this.http.post(this.rootUrl+'Projects/NewDeleteGroup',this.aprvDtoObj);
+  }
+  NewGetGroupDetails(empNo:string,groupId:number){
+    this.aprvDtoObj.Emp_No=empNo;
+    this.aprvDtoObj.gid=groupId;
+    console.log("asdf",this.rootUrl+'Projects/NewGetGroupDetails');
+    console.log("body",this.aprvDtoObj);
+    return this.http.post(this.rootUrl+'Projects/NewGetGroupDetails',this.aprvDtoObj);
+  }
+  NewUpdateGroup(obj:ApprovalDTO){   debugger
+    const grpDTOobj=new ApprovalDTO();
+    grpDTOobj.Emp_No = obj.Emp_No;
+    grpDTOobj.gid = obj.gid;
+    grpDTOobj.type = obj.type;
+    grpDTOobj.Project_Code = obj.Project_Code;
+    grpDTOobj.PortfolioId = obj.PortfolioId;
+    grpDTOobj.Schedule_id = obj.Schedule_id;
+    return this.http.post(this.rootUrl+'Projects/NewUpdateGroup',grpDTOobj);
+  }
+
+
+  NewValidateGroupDetails(obj:ApprovalDTO){
+    this.aprvDtoObj.Emp_No=obj.Emp_No;
+    this.aprvDtoObj.Project_Code=obj.Project_Code;
+    this.aprvDtoObj.PortfolioId=obj.PortfolioId;
+    this.aprvDtoObj.Schedule_id =obj.Schedule_id;
+    return this.http.post(this.rootUrl+'Projects/NewValidateGroupDetails',this.aprvDtoObj);
+  }
 
 }
