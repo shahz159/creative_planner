@@ -465,3 +465,20 @@
 .nogroupitems-present .noitem-present-img{
    width:20%;
 }
+
+
+.no-groups-leftsec{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.no-groups-leftsec .text-msg{
+ width: 75%;
+ text-align: center;
+}
+
+.sgroup-item .kt-groups-li-head[aria-expanded='false'] .kt-groups-li-head-title .title-c{
+    transform: rotate(-90deg);
+    margin-top: 5px;
+}

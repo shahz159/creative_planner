@@ -524,7 +524,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
   this.newapprovalPrjport = []
   this._ProjectsListBy_Pid.forEach((item)=>{
-
+    debugger
     if (item.Status === "Under Approval"  &&item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
       const obj = {
         prjname : item.Project_Name,
