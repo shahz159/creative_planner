@@ -477,3 +477,8 @@
  width: 75%;
  text-align: center;
 }
+
+.sgroup-item .kt-groups-li-head[aria-expanded='false'] .kt-groups-li-head-title .title-c{
+    transform: rotate(-90deg);
+    margin-top: 5px;
+}

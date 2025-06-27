@@ -28,7 +28,7 @@
             <div class="kt-groups-main">
                 <div class="kt-group-left">
                     <div>
-                        <button class="btn btn-groups" data-toggle="dropdown" id="test1" title="Click to create new portfolio" >
+                        <button class="btn btn-groups btn-secondary" data-toggle="dropdown" id="test1" title="Click to create new portfolio" >
                             <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12H18M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                             <span>Add Groups</span>
                         </button>
@@ -113,8 +113,18 @@
                 <div class="kt-group-right">
                     <div class="kt-groups-ul accordion">
                          
-                   <ng-container *ngIf="noGroupsAvailable==false&&selectedGroupId!=undefined&&selectedGroupId!=null">   
-                        <div *ngIf="selectedGroupDetails?.Projects" id="project-accordion" class="kt-groups-li">
+                   <ng-container *ngIf="noGroupsAvailable==false&&selectedGroupId!=undefined&&selectedGroupId!=null"> 
+                       
+
+                    <ng-container *ngIf="fetchingGroupMoreDetails;else onGroupDetailsFetched">
+                      <div class="w-100 d-flex align-items-center justify-content-center">
+                        <div class="spinner-border text-primary" role="status" style=" font-size: 7px; color: #ccc !important;">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                     </div>
+                    </ng-container>
+                    <ng-template #onGroupDetailsFetched>
+                        <div *ngIf="selectedGroupDetails?.Projects" id="project-accordion" class="kt-groups-li sgroup-item">
                             <div class="kt-groups-li-head" type="button" data-toggle="collapse" data-target="#collapseGroup1" aria-expanded="true" aria-controls="collapseGroup1">
                                 <div class="kt-groups-li-head-title">
                                     <span class="title-n">Projects</span>
@@ -144,7 +154,7 @@
                             </div>
                         </div>
 
-                        <div *ngIf="selectedGroupDetails?.Portfolios" id="portfolio-accordion" class="kt-groups-li">
+                        <div *ngIf="selectedGroupDetails?.Portfolios" id="portfolio-accordion" class="kt-groups-li sgroup-item">
                             <div class="kt-groups-li-head" type="button" data-toggle="collapse" data-target="#collapseGroup2" aria-expanded="true" aria-controls="collapseGroup2">
                                 <div class="kt-groups-li-head-title">
                                     <span class="title-n">Portfolios</span>
@@ -175,7 +185,7 @@
                             </div>
                         </div>
 
-                        <div *ngIf="selectedGroupDetails?.SMail" class="kt-groups-li" id="smail-accordion">
+                        <div *ngIf="selectedGroupDetails?.SMail" class="kt-groups-li" id="smail-accordion sgroup-item">
                             <div class="kt-groups-li-head" type="button" data-toggle="collapse" data-target="#collapseGroup3" aria-expanded="true" aria-controls="collapseGroup3">
                                 <div class="kt-groups-li-head-title">
                                     <span class="title-n">S Mail</span>
@@ -227,7 +237,7 @@
                             </div>
                         </div>
 
-                        <div *ngIf="selectedGroupDetails?.Schedules"  id="meetings-accordion" class="kt-groups-li">
+                        <div *ngIf="selectedGroupDetails?.Schedules"  id="meetings-accordion" class="kt-groups-li sgroup-item">
                             <div class="kt-groups-li-head" type="button" data-toggle="collapse" data-target="#collapseGroup4" aria-expanded="true" aria-controls="collapseGroup4">
                                 <div class="kt-groups-li-head-title">
                                     <span class="title-n">Meetings</span>
@@ -255,7 +265,7 @@
                             </div>
                         </div>
 
-                        <div *ngIf="selectedGroupDetails?.Attachments" id="attachments-accordion" class="kt-groups-li">
+                        <div *ngIf="selectedGroupDetails?.Attachments" id="attachments-accordion" class="kt-groups-li sgroup-item">
                             <div class="kt-groups-li-head" type="button" data-toggle="collapse" data-target="#collapseGroup5" aria-expanded="true" aria-controls="collapseGroup5">
                                 <div class="kt-groups-li-head-title">
                                     <span class="title-n">Attachments</span>
@@ -342,6 +352,8 @@
                                      <h3 class="blank-txt fs-5 notimeline-present-label">No items found in this group.</h3>
                                </div>
                         </div>
+                     </ng-template> 
+
                  </ng-container>
                 
                  <ng-container *ngIf="noGroupsAvailable">
