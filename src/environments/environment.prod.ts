@@ -3,12 +3,12 @@ export const environment = {
 
 // ----------------Live Stream Planner-------------------------------
 
-Language_file_url:'https://cswebapps.com/creativeplanner/assets/i18n/'
-,assetsurl:'/creativeplanner/'
-,ImageUrl:'/creativeplanner/assets/'
-,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/',
- baseUrl:'https://cswebapps.com/PortfolioAPI/api/',
- baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/'
+// Language_file_url:'https://cswebapps.com/creativeplanner/assets/i18n/'
+// ,assetsurl:'/creativeplanner/'
+// ,ImageUrl:'/creativeplanner/assets/'
+// ,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/',
+//  baseUrl:'https://cswebapps.com/PortfolioAPI/api/',
+//  baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/'
 
 
 //---------------Live azure Stream Planner-----------------------------
@@ -23,12 +23,12 @@ Language_file_url:'https://cswebapps.com/creativeplanner/assets/i18n/'
 
 //----------------Test Stream planner--------------------------------
 
-// Language_file_url:'https://cswebapps.com/testcreativeplanner/assets/i18n/'
-// ,assetsurl:'/testcreativeplanner/'
-// ,ImageUrl:'/testcreativeplanner/assets/'
-// ,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/',
-//  baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
-//  baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
+Language_file_url:'https://cswebapps.com/testcreativeplanner/assets/i18n/'
+,assetsurl:'/testcreativeplanner/'
+,ImageUrl:'/testcreativeplanner/assets/'
+,NewbaseUrl:'https://cswebapps.com/dmscoretestapi/api/',
+ baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
+ baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
 
 
 //------------------Stream planner-Test demo--------------------------

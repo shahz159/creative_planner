@@ -3340,6 +3340,10 @@ selectEmployee:any;
           this.monthlyScheduleJson(0);
         }
 
+        // setInterval(() => {
+        //   this. GetScheduledJson()
+        // }, 60000);
+
         this.dataBindEndTime = performance.now();
         this.dataBindTime = this.dataBindEndTime - this.dataBindStartTime;
         this.userFound = true
@@ -3500,7 +3504,9 @@ getEventsForWeeks(weeksFromToday: number) {
     const upcoming = this.filteredMeetingsArray.filter(meeting => meeting.date >= todayFormatted);
     const past = this.filteredMeetingsArray.filter(meeting=> meeting.date < todayFormatted);
           past.sort((a, b)=>b.date.localeCompare(a.date))
-    this.filteredMeetingsArray= [...upcoming,...past];
+    // this.filteredMeetingsArray = [...(upcoming.length ? [{ text: 'UPCOMING' }, ...upcoming] : []),
+    //                               ...(past.length ? [{ text: 'PREVIOUS' }, ...past] : [])];
+     this.filteredMeetingsArray = [...upcoming,...past];
    }
    
    console.log(this.filteredMeetingsArray, 'filteredMeetingsArray');
@@ -6774,14 +6780,12 @@ getDayReportSummary(){
       this.reportCount = ["NewProjectRejected", "AssignedTasksDue", "ActionsDelayed", "ProjectsDelayed", "StandardDelayed"]
       .filter(key => this.daySummaryReport[key] > 0).length;
 
-
-      this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
+debugger
+      if(this.daySummaryReport['PendingTasks']){
+       this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
       console.log("daySummaryReport:",this.PendingTasks);
-
-
-
-
-      
+      }
+     
 
       if(this.reportCount){
         this.showLoader=true;
@@ -6866,7 +6870,7 @@ timeLineInterval:any;
 openBoxSelectedDate:any;
 
 dayScheduleJson(dayFromToday: number){
-      
+      debugger
         this.selectDay = dayFromToday === 3 ? moment() : moment(this.selectDay).add(dayFromToday, 'days');
         const selectedDate = moment(this.selectDay).format('YYYY-MM-DD');
         this.openBoxSelectedDate = selectedDate;

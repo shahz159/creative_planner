@@ -947,7 +947,7 @@
                                                                         <div class="muted-title">Start time</div>
                                                                     </div>
                                                                     <div class="kt-metric-timeline">
-                                                                     <div class="meet-time-line"*ngIf="showAttendeeNotify == '1' || showAttendeeNotify == '2' || showAttendeeNotify == '3' || Meetingstatuscom!=Completed"  [ngClass]="{ 'no-animate': getProgress(item) === '100%' }" [style.width]="getProgress(item)"></div>   
+                                                                     <!-- <div class="meet-time-line"*ngIf="showAttendeeNotify == '1' || showAttendeeNotify == '2' || showAttendeeNotify == '3' || Meetingstatuscom!=Completed"  [ngClass]="{ 'no-animate': getProgress(item) === '100%' }" [style.width]="getProgress(item)"></div>    -->
                                                                         <div class="z-index-1 d-flex">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" width="17"
                                                                                 height="18" viewBox="0 0 17 18" fill="none">
@@ -960,24 +960,24 @@
                                                                                 </g>
                                                                             </svg>
                                                                         </div>
-                                                                         <!-- <div class="text-center">
+                                                                         <div class="text-center">
                                                                             <div class="timeline-up">{{getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time)}} </div>
                                                                             <div class="timeline-down">Average attendance time
                                                                             </div>
-                                                                        </div> -->
+                                                                        </div>
 
 
                                                                     
                                                                              <!-- <div class="timeline-up-time" *ngIf="showAttendeeNotify == '1' || showAttendeeNotify == '2' || showAttendeeNotify == '3'" [ngClass]="{ 'meeting-com': getProgress(item) === '100%' }" >{{getProgress(item)}}</div>
                                                                             <div class="timeline-down-time" *ngIf="(showAttendeeNotify == '1' || showAttendeeNotify == '2' || showAttendeeNotify == '3') && getProgress(item) !== '100%'">{{getMinutesLeft(item)}} min left</div> -->
-                                                                         <div class="text-center">
+                                                                         <!-- <div class="text-center">  
                                                                             <div class="timeline-up-time" *ngIf="showAttendeeNotify == '1' || showAttendeeNotify == '2' || showAttendeeNotify == '3'" >{{getProgress(item)}}</div>
                                                                             <div class="timeline-down-time" *ngIf="(showAttendeeNotify == '1' || showAttendeeNotify == '2' || showAttendeeNotify == '3')">{{getMinutesLeft(item)}} min left</div>
 
                                                                             <div class="timeline-up" *ngIf="showAttendeeNotify == '0' || Meetingstatuscom!=Completed">{{getDurationInHoursMinutes(item.NewSt_Time, item.NewEd_Time)}} </div>
                                                                             <div class="timeline-down" *ngIf="showAttendeeNotify == '0' || Meetingstatuscom!=Completed">Average attendance time
                                                                             </div>
-                                                                        </div>
+                                                                        </div> -->
 
 
 
@@ -1474,15 +1474,15 @@
                                         <div class="d-flex flex-grow-1 align-items-center gap_ic">
 
                                             <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()">
-                                                <ng-container *ngIf="smailcount>0">
+                                                <ng-container *ngIf="SM_count>0">
                                                 <img src="./assets/images/Image (4).jfif" height="23" width="21px"  matTooltip="View or link S Mail">
 
                                                 </ng-container >
-                                                <ng-container *ngIf="smailcount==0">
+                                                <ng-container *ngIf="SM_count==0">
                                                 <img  src="./assets/images/Image (4).jfif" height="23" width="21px" matTooltip="Not linked" class="black-white ng-star-inserted">
                                             </ng-container>
 
-                                            <span *ngIf="smailcount" class="noti" >{{smailcount}}</span>
+                                            <span *ngIf="SM_count" class="noti" >{{SM_count}}</span>
                                             </a>
 
 
@@ -3059,18 +3059,6 @@
                                                 </div> 
                                             </div>
                                        </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

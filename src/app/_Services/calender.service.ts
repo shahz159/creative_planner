@@ -431,7 +431,7 @@ NewInsertInsertSmartMeetingType(obj: CalenderDTO){
 
 
 
-GetInsertAttendeeMeetingTime(obj:CalenderDTO){ 
+GetInsertAttendeeMeetingTime(obj:CalenderDTO){  
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Status=obj.Status;
@@ -444,7 +444,7 @@ GetInsertAttendeeMeetingTime(obj:CalenderDTO){
 }
 
 
-NewinsertDMS_meetingreport(obj: CalenderDTO){ debugger
+NewinsertDMS_meetingreport(obj: CalenderDTO){ 
   this.obj_CalenderDTO.Schedule_ID=obj.Schedule_ID;
   this.obj_CalenderDTO.Emp_No=obj.Emp_No;
   this.obj_CalenderDTO.Dms=obj.Dms;
