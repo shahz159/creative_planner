@@ -482,3 +482,32 @@
     transform: rotate(-90deg);
     margin-top: 5px;
 }
+
+
+
+.grp-rm-btn{
+    /* position: absolute;
+    right: 3px; */
+    border: 0;
+    background-color: transparent;
+}
+
+
+.grp-rm-btn svg{
+    width:20px;
+    height:20px;
+    color:#ff7a7a;
+}
+
+
+.grp-rm-btn:hover svg{
+   color:#dd5b5b;
+}
+
+.kt-groups-tabs-li .grp-rm-btn{
+    display:none;
+}
+
+.kt-groups-tabs-li:hover .grp-rm-btn{
+    display:block;
+}

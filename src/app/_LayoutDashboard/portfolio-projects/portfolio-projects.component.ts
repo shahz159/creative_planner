@@ -366,6 +366,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
     this.GetMemosByEmployeeId1();   // fetch all memos of the current user.
     this.GetProjectAndsubtashDrpforCalender2();  // fetch all emp list, companies list and portfolios list . (used in dms link and portfolio link sidebar)
+    this.getGroupListByPid();   // get all groups to which this portfolio is connected with.
   }
 
   updateListbyDetailsPage(){

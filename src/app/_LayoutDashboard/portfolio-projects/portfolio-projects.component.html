@@ -72,7 +72,7 @@
                                                         <div class="groups-list mt-1">
 
                                                         <ng-container *ngIf="!loadingUserStreamGroups; else grps_loading">
-                                                         <div *ngFor="let group of userStreamGroups" class="kt-group-item-ul mt-2 mb-1 curser-pointer" [title]="(!portfolioConnectedToGroup?.includes(group.gid))?'Add portfolio to this group':''" (click)="addPortfolioToGroup(group.gid,group.groupname)">
+                                                         <div *ngFor="let group of userStreamGroups" class="kt-group-item-ul mt-2 mb-1 curser-pointer" [title]="(!portfolioConnectedToGroup?.includes(group.gid))?'Add portfolio to this group':''" (click)="(!portfolioConnectedToGroup?.includes(group.gid))?addPortfolioToGroup(group.gid,group.groupname):0">
                                                             
                                                                <div class="kt-group-item-list" [ngClass]="{'active': portfolioConnectedToGroup?.includes(group.gid)}">
                                                                 <div class="kt-group-item-list-icon">
