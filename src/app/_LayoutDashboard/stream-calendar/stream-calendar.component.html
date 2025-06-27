@@ -654,12 +654,14 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="sch-evt-heading sch-evt-p sch-evt-border-bottom" style="border-top: 1px solid #dadce0; background-color: #f9f9f9;">
+                   <ng-container *ngFor="let group of filteredMeetingsArray">
+                     <div *ngIf="group.text == 'UPCOMING'" class="sch-evt-heading sch-evt-p sch-evt-border-bottom" style="border-top: 1px solid #dadce0; background-color: #f9f9f9;">
                         <div style="font-weight: 500;">Upcoming</div>
-                    </div> -->
-                    <div class="sch-evt-ul sch-evt-meet-task sch-evt-border" *ngFor="let group of filteredMeetingsArray" >
-                        
-                       
+                     </div>
+                     <div *ngIf="group.text == 'PREVIOUS'" class="sch-evt-heading sch-evt-p sch-evt-border-bottom" style="border-top: 1px solid #dadce0; background-color: #f9f9f9;">
+                        <div style="font-weight: 500;">PREVIOUS</div>
+                     </div>
+                    <div *ngIf="!group.text" class="sch-evt-ul sch-evt-meet-task sch-evt-border">      
                         <div class="sch-evt-heading sch-evt-p sch-evt-border-bottom" >
                             <div>
                                 <span class="sch-evt-date curser-pointer" (click)="weekToDay(group.date)" [ngClass]="{'active':group.date==today}"> {{group.date| date: 'd'}}</span>
@@ -932,6 +934,7 @@
                         </div> -->
                     
                     </div>
+                    </ng-container>
                     <div class="d-flex align-items-center"style="height: 90%; flex-direction: column;" *ngIf="filteredMeetingsArray.length == 0">
                         <img src="./assets/images/waste.png" alt="" style="width: 35%; opacity: 0.6;">
                         <p style=" font-size: 18px; font-weight: 500; color: #a7a7a7;">No events/tasks are created or scheduled</p>
@@ -3009,9 +3012,6 @@
 
                           <!-- 66666666 -->
 
-
-
-
                            <!-- <div class="create-event-item ">
                                 <div class="create-event-item-icon">   
                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 12L11 14L15 9.99999M20 12C20 16.4611 14.54 19.6937 12.6414 20.683C12.4361 20.79 12.3334 20.8435 12.191 20.8712C12.08 20.8928 11.92 20.8928 11.809 20.8712C11.6666 20.8435 11.5639 20.79 11.3586 20.683C9.45996 19.6937 4 16.4611 4 12V8.21759C4 7.41808 4 7.01833 4.13076 6.6747C4.24627 6.37113 4.43398 6.10027 4.67766 5.88552C4.9535 5.64243 5.3278 5.50207 6.0764 5.22134L11.4382 3.21067C11.6461 3.13271 11.75 3.09373 11.857 3.07827C11.9518 3.06457 12.0482 3.06457 12.143 3.07827C12.25 3.09373 12.3539 3.13271 12.5618 3.21067L17.9236 5.22134C18.6722 5.50207 19.0465 5.64243 19.3223 5.88552C19.566 6.10027 19.7537 6.37113 19.8692 6.6747C20 7.01833 20 7.41808 20 8.21759V12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                  
@@ -3026,19 +3026,6 @@
                                     </div>
                                 </div>
                             </div> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                             <div class="create-event-item">
                                 <div class="create-event-item-icon">                     
@@ -5541,7 +5528,7 @@
                   <div class="share-option-main">
                       <div class="share-option-main-inner">
                           <div class="share-option-user-img">
-                              <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/blank-profile-picture.png" alt="img">
+                              <!-- <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/blank-profile-picture.png" alt="img"> -->
                           </div>
                           <div class="share-option-user-details">
                               <h5 class="share-option-user-name">{{Created_by}}</h5>

@@ -605,7 +605,7 @@ export class MeetingDetailsComponent implements OnInit {
  delayschedule_date:any;
  UserProfile:any;
 totalonlineUser:any;
-
+SM_count:any;
 
 
 
@@ -631,12 +631,13 @@ totalonlineUser:any;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
 
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
-      console.log('EventScheduledjson',data);
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+      console.log(this.EventScheduledjson,'EventScheduledjson');
+      
       if(this.EventScheduledjson != undefined && this.EventScheduledjson != null && this.EventScheduledjson != ''){
       this.deletedMeeting = true;
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
-      var Schedule_date = this.EventScheduledjson[0].Schedule_date
+      var Schedule_date = this.EventScheduledjson[0].Schedule_date;
       this.meetingRestriction(Schedule_date);
       this.Agendas_List = this.EventScheduledjson[0].Agendas;
       this.Meeing_Name = (this.EventScheduledjson[0]['Task_Name']);
@@ -646,8 +647,9 @@ totalonlineUser:any;
       this.statusOneCount = this.Agendas_List.filter(values=>values.Status === "1").length;
       this.delayschedule_date = Schedule_date;
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
-
+      this.SM_count = (this.EventScheduledjson[0]['smailcount']);
      
+      console.log(this.SM_count,'SM_count');
 
       this.totalUser_Scheduledjson=this.User_Scheduledjson.length;
       this.user_linkedOnMtg=this.User_Scheduledjson?this.User_Scheduledjson.map(user => user.stringval):[];
@@ -738,10 +740,8 @@ totalonlineUser:any;
       this.totalonlineUser = count.filter(u => u.onlineStatus === "Start").length;
 
 
-      console.log(this.totalonlineUser,'onlineUser');
+      // console.log(this.totalonlineUser,'onlineUser');
       
-
-      console.log(this.EventScheduledjson,'EventScheduledjson');
       this.main_actualDuration = this.EventScheduledjson[0].actual_duration;
 
 
@@ -2858,7 +2858,7 @@ totalonlineUser:any;
   private_User:any
   privateNotes:any;
 
-  GetMeetingnotes_data() {
+  GetMeetingnotes_data() { debugger
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
@@ -4448,7 +4448,7 @@ onFileChange(event) {
         this.agendasList = JSON.parse(data['Agendas']);
 
         this.TaskList = JSON.parse(this.agendasList[0].TaskList) 
-        
+       
         this.LastPauseTime = this.agendasList[0].LastPauseTime
         this.pausetime = this.agendasList[0].pausetime
         this.smailcount = this.agendasList[0]?.smailcount;
@@ -4530,14 +4530,14 @@ onFileChange(event) {
         this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
         this.showAttendeeNotify = data.AdminMeeting_Status;
 
-      //  console.log(this.showAttendeeNotify,'showAttendeeNotify')
+       console.log(this.showAttendeeNotify,'showAttendeeNotify')
 
         if (this.meetingStarted || this.meetingStarted != true) {
       
           if (data['Checkdatetimejson'] != '') {
            
             this.AllAttendees_notes = JSON.parse(data['Checkdatetimejson']);
-          console.log(this.AllAttendees_notes,'AllAttendees_notes')
+          console.log(this.AllAttendees_notes,'AllAttendees_notes1')
           } else if (data['Checkdatetimejson'] == '') {
             this.AllAttendees_notes = [];
           }
@@ -9136,6 +9136,8 @@ this.allActivityList.forEach(activity => {
    
 
   })
+
+  // console.log(this.filteredActivityList,'filteredActivityList');
 }
 
 
@@ -10450,7 +10452,7 @@ getUserStreamGroups(config:{showLoader:boolean}={showLoader:true}){
     }
     this.service.NewGetGroups(empNo).subscribe((res:any)=>{
      this.loadingUserStreamGroups=false;  // process ended
-     if(res&&res.groupList){ debugger
+     if(res&&res.groupList){
         this.userStreamGroups=JSON.parse(res.groupList);
      }
    });
