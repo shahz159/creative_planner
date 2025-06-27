@@ -2626,7 +2626,7 @@ multipleback(){
           this.newResponsible = (this.revert_json[0]['newResp']);
           this.forwardto = (this.revert_json[0]['Forwardedto']);
           this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
-        }
+        }  
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved'||this.requestType == 'Project Audit') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {

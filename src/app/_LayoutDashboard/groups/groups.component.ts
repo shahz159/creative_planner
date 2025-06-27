@@ -24,6 +24,7 @@ export class GroupsComponent implements OnInit {
   selectedGroupDetails:any;
   autoOpenFirstGroup:EventEmitter<boolean>;
   noGroupsAvailable:boolean=false;
+  fetchingGroupMoreDetails:boolean=false;
 
   
   constructor(
@@ -206,7 +207,9 @@ export class GroupsComponent implements OnInit {
   getGroupDetailsById(groupId:number){
      const empNo=this.Current_user_ID;
      const gid=groupId;
+       this.fetchingGroupMoreDetails=true; // process started.
      this.service.NewGetGroupDetails(empNo,gid).subscribe((res:any)=>{     console.log('group details by gid :',res);
+       this.fetchingGroupMoreDetails=false; // process ended.
       if(res){
          const resarr=JSON.parse(res.groupdetails);
          this.selectedGroupDetails=resarr[0];  console.log('selectedgroupdetails:',this.selectedGroupDetails);
