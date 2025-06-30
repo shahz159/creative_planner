@@ -1729,7 +1729,7 @@
                                                         <div class="groups-list mt-1">
 
                                                         <ng-container *ngIf="!loadingUserStreamGroups; else grps_loading">
-                                                         <div *ngFor="let group of userStreamGroups" class="kt-group-item-ul mt-2 mb-1 curser-pointer" [title]="(!projectConnectedToGroup?.includes(group.gid))?'Add project to this group':''" (click)="addProjectToGroup(group.gid,group.groupname)">
+                                                         <div *ngFor="let group of userStreamGroups" class="kt-group-item-ul mt-2 mb-1 curser-pointer" [title]="(!projectConnectedToGroup?.includes(group.gid))?'Add project to this group':''" (click)="(!projectConnectedToGroup?.includes(group.gid))?addProjectToGroup(group.gid,group.groupname):0">
                                                             
                                                                <div class="kt-group-item-list" [ngClass]="{'active': projectConnectedToGroup?.includes(group.gid)}">
                                                                 <div class="kt-group-item-list-icon">

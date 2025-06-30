@@ -246,7 +246,85 @@ export class GroupsComponent implements OnInit {
     myWindow?.focus();
   }
 
+   
 
+    removeProjectFromGroup(groupId:number,projectCode:string){
+
+      const sgroup_name=this.Current_user_Groups.find((grp)=>{
+           return grp.gid==groupId;
+      });
+
+      const grpDto=new ApprovalDTO();
+      grpDto.Emp_No = this.Current_user_ID;
+      grpDto.gid = groupId;
+      grpDto.type = '2';
+      grpDto.Project_Code = projectCode;
+      grpDto.PortfolioId = null;
+      grpDto.Schedule_id = null;
+
+        this.service.NewUpdateGroup(grpDto).subscribe((res:any)=>{
+            if(res&&res.message==1){
+              this.notifyService.showSuccess(`Project removed from the group '${sgroup_name}' successfully.`,'Success');
+              this.getGroupDetailsById(this.selectedGroupId);  // rebind group details.
+            }
+            else{
+               this.notifyService.showError(`Unable to remove project from the group '${sgroup_name}'.`,'Failed');
+            }
+       })
+
+    }
+
+    removePortfolioFromGroup(groupId:number,portfolioId:number){
+
+      const sgroup_name=this.Current_user_Groups.find((grp)=>{
+           return grp.gid==groupId;
+      });
+
+      const grpDto=new ApprovalDTO();
+      grpDto.Emp_No = this.Current_user_ID;
+      grpDto.gid = groupId;
+      grpDto.type = '2';
+      grpDto.Project_Code = null;
+      grpDto.PortfolioId = portfolioId;
+      grpDto.Schedule_id = null;
+
+        this.service.NewUpdateGroup(grpDto).subscribe((res:any)=>{
+            if(res&&res.message==1){
+              this.notifyService.showSuccess(`Portfolio removed from the group '${sgroup_name}' successfully.`,'Success');
+               this.getGroupDetailsById(this.selectedGroupId);  // rebind group details.
+            }
+            else{
+               this.notifyService.showError(`Unable to remove portfolio from the group '${sgroup_name}'.`,'Failed');
+            }
+       })
+
+    }
+
+    removeMeetingFromGroup(groupId:number,scheduleId:number){
+
+      const sgroup_name=this.Current_user_Groups.find((grp)=>{
+           return grp.gid==groupId;
+      });
+
+      const grpDto=new ApprovalDTO();
+      grpDto.Emp_No = this.Current_user_ID;
+      grpDto.gid = groupId;
+      grpDto.type = '2';
+      grpDto.Project_Code = null;
+      grpDto.PortfolioId = null;
+      grpDto.Schedule_id = scheduleId;
+
+        this.service.NewUpdateGroup(grpDto).subscribe((res:any)=>{
+            if(res&&res.message==1){
+              this.notifyService.showSuccess(`Meeting removed from the group '${sgroup_name}' successfully.`,'Success');
+               this.getGroupDetailsById(this.selectedGroupId);  // rebind group details.
+            }
+            else{
+               this.notifyService.showError(`Unable to remove meeting from the group '${sgroup_name}'.`,'Failed');
+            }
+       })
+
+    }
 
 
 
