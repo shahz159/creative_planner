@@ -430,10 +430,11 @@ export class MeetingDetailsComponent implements OnInit {
     this.GetMeetingnotes_data();
   }
   Repeat_Meeting() {
-    
+    debugger
     document.getElementById("repeatModal").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
+
     this._StartDate = this.disablePreviousTodayDate;
     this._SEndDate = this.disablePreviousTodayDate;
     this.disablePreviousDate = this.disablePreviousTodayDate;
@@ -4530,7 +4531,7 @@ onFileChange(event) {
         this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
         this.showAttendeeNotify = data.AdminMeeting_Status;
 
-       console.log(this.showAttendeeNotify,'showAttendeeNotify')
+      //  console.log(this.showAttendeeNotify,'showAttendeeNotify')
 
         if (this.meetingStarted || this.meetingStarted != true) {
       
@@ -9034,9 +9035,10 @@ GetMeetingActivity(){
   this.approvalObj.Schedule_Id=this.Scheduleid;
 
   this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
+    //  console.log(data,'allActivityList725727275');
   this.allActivityList=JSON.parse(data[0].ActivityList);
 
-  // console.log(this.allActivityList,'allActivityList725727275');
+ 
 
   const memoMap = new Map(
   (this.listActivityMemos ?? []).map(m => [m.MailId.toString(), { id: m.MailId, name: m.Subject }])

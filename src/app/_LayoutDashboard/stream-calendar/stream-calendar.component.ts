@@ -342,7 +342,7 @@ export class StreamCalendarComponent implements OnInit {
  
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
    
-    this.disablePreviousTodayDate.setDate(this.disablePreviousTodayDate.getDate() + 1);
+    // this.disablePreviousTodayDate.setDate(this.disablePreviousTodayDate.getDate() + 1);
      //start
      this.maxDate = moment().format("YYYY-MM-DD").toString();
      this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
@@ -4741,7 +4741,7 @@ ReshudingTaskandEvent() {
       this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
 
 
-
+debugger
         // this code for chnage detection start
         this.disablePreviousDate = null;
         setTimeout(()=>{
@@ -5852,7 +5852,7 @@ repeatEvent() {
           }
          }
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
-        document.getElementById("subtaskid").style.display = "none";
+        // document.getElementById("subtaskid").style.display = "none";
         // document.getElementById("Guest_Name").style.display = "flex";
         //69 document.getElementById("Location_Name").style.display = "flex";
         // document.getElementById("Descrip_Name").style.display = "flex";
@@ -5868,7 +5868,7 @@ repeatEvent() {
         //       ac.updatePosition();
         //   });
         // })
-
+debugger
         this._StartDate=null;
         this.disablePreviousDate = null;
         setTimeout(()=>{
@@ -6652,14 +6652,31 @@ filterDraft(type : 'date'|'meeting'):void{
   }
 
 
+prevUpcomToday = new Date();
+
+
   disableRepeatMeetingDate(){
-   
-    this._StartDate=null;
-    this.repeatStartDate =null;
-    this._StartDate=this.disablePreviousTodayDate;
-    this.repeatStartDate = this.disablePreviousTodayDate; 
-    this._SEndDate = this.disablePreviousTodayDate;
-   
+
+  if (new Date(this.prevUpcomToday).toDateString() === new Date(this._StartDate).toDateString()) {
+  const nextDay = new Date();
+  nextDay.setDate(nextDay.getDate() + 1);
+  this._StartDate = null;
+  this.repeatStartDate = null;
+  this.disablePreviousTodayDate=null;
+  this.disablePreviousTodayDate = nextDay; // ✅ new reference triggers calendar update
+  this._StartDate = nextDay;
+  this.repeatStartDate = nextDay;
+  this._SEndDate = nextDay;
+  }else{ 
+      this._StartDate = null;
+      this.repeatStartDate = null;
+      this.disablePreviousTodayDate=null;
+      this.disablePreviousTodayDate = this.prevUpcomToday; // ✅ new reference triggers calendar update
+      this._StartDate = this.prevUpcomToday;
+      this.repeatStartDate = this.prevUpcomToday;
+      this._SEndDate = this.prevUpcomToday;
+  }
+
   }
 
   noSelectedDate : boolean = false;
