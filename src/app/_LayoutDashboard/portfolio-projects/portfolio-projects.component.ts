@@ -218,7 +218,7 @@ export class PortfolioProjectsComponent implements OnInit {
   CountDeleted:any
   showDeletedPrjOnly:boolean=false;
   //_snackBar: any;
-  dropdownSettings_Status: { singleSelection: boolean; idField: string; textField: string; selectAllText: string; unSelectAllText: string; itemsShowLimit: number; allowSearchFilter: boolean; };
+  // dropdownSettings_Status: { singleSelection: boolean; idField: string; textField: string; selectAllText: string; unSelectAllText: string; itemsShowLimit: number; allowSearchFilter: boolean; };
   EmpDropdwn: unknown[];
   dropdownSettings_forEmpChart:
     {
@@ -243,6 +243,7 @@ export class PortfolioProjectsComponent implements OnInit {
   _SearchProjects: string;
   PortfolioCreated_UserName: string;
   _PortfolioOwner: string;
+  _PortfolioOwnerImage:string;
   viewpreference:any;
 
   Submission: any;
@@ -270,7 +271,7 @@ export class PortfolioProjectsComponent implements OnInit {
   portfolioid: any;
   fruitInput: any;
   disablePreviousDate = new Date();
-
+  imagesOrigin:string='https://yrglobaldocuments.blob.core.windows.net/userprofileimages/';
 
 
 
@@ -343,7 +344,8 @@ export class PortfolioProjectsComponent implements OnInit {
       this.Url_portfolioId = parseInt(id);
       this.BsService.setSelectedPortId(this.Url_portfolioId);
     });
-    this.GetPortfolioProjectsByPid();
+    this.GetPortfolioProjectsByPid();  // all projects in the portfolio.
+    this.getPinnedProjects(); // all pinned projects.
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
     this.labelAll();
     // this.togglevisibilityforClass('classCost', 'iscost')
@@ -364,6 +366,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
     this.GetMemosByEmployeeId1();   // fetch all memos of the current user.
     this.GetProjectAndsubtashDrpforCalender2();  // fetch all emp list, companies list and portfolios list . (used in dms link and portfolio link sidebar)
+    this.getGroupListByPid();   // get all groups to which this portfolio is connected with.
   }
 
   updateListbyDetailsPage(){
@@ -402,7 +405,7 @@ export class PortfolioProjectsComponent implements OnInit {
   newapprovalPrjport : any=[]
   cancellationPort:any=[]
   checking: boolean = false;
-  isPendingChecked : boolean = false
+  // isPendingChecked : boolean = false
   isPortfolioFavourite:boolean=false;  
 
   GetPortfolioProjectsByPid() {
@@ -432,6 +435,7 @@ export class PortfolioProjectsComponent implements OnInit {
         this.Rename_PortfolioName = this._PortFolio_Namecardheader;
         this._PortfolioOwner = this._PortfolioDetailsById[0]['Portfolio_Owner'];
         this.createdBy = this._PortfolioDetailsById[0]['Created_By'];
+        this._PortfolioOwnerImage=this._PortfolioDetailsById[0]['UserProfile'];
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
         const _isFav=this._PortfolioDetailsById[0][this.Current_user_ID==this.createdBy?'IsFavourite':'IsFavourite1'];
         this.isPortfolioFavourite=_isFav!=undefined?_isFav:false;
@@ -468,7 +472,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
         item.newrejectJson=item.newrejectJson?JSON.parse(item.newrejectJson):null;  // parses newrejectJson str into object.
         item.hoursInDecimal=(item.Project_Block=='003'||item.Project_Block=='008')?this.convertToDecimalHours(item.StandardDuration):item.AllocatedHours; // create new property : 'hoursInDecimal'  
-
+        item.projectMembers=this.getProjectMembersProperty(item);   // create new property "projectMembers" for displaying RACIS column .
       });
         console.log(this.filteredEmployees,"this.filteredEmployeesthis.filteredEmployees")
 
@@ -521,7 +525,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
   this.newapprovalPrjport = []
   this._ProjectsListBy_Pid.forEach((item)=>{
-
+    debugger
     if (item.Status === "Under Approval"  &&item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
       const obj = {
         prjname : item.Project_Name,
@@ -553,9 +557,9 @@ export class PortfolioProjectsComponent implements OnInit {
   console.log(this.cancellationPort,"this.cancellationPort.cancellationPort")
 
 
-  this.isPendingChecked = this._ProjectsListBy_Pid.some((emp)=>{
-      return emp.PendingapproverEmpNo&&emp.PendingapproverEmpNo == this.Current_user_ID
-  })
+  // this.isPendingChecked = this._ProjectsListBy_Pid.some((emp)=>{
+  //     return emp.PendingapproverEmpNo&&emp.PendingapproverEmpNo == this.Current_user_ID
+  // })
 
 
 
@@ -675,15 +679,15 @@ export class PortfolioProjectsComponent implements OnInit {
           // this.snackBarRef._open();
           // this._snackBar.open("Maximum Days Delay",this.MaxDelays);
         // }
-        this.dropdownSettings_Status = {
-          singleSelection: true,
-          idField: 'StatusCountDB',
-          textField: 'StatusCountDB',
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 1,
-          allowSearchFilter: true
-        };
+        // this.dropdownSettings_Status = {
+        //   singleSelection: true,
+        //   idField: 'StatusCountDB',
+        //   textField: 'StatusCountDB',
+        //   selectAllText: 'Select All',
+        //   unSelectAllText: 'UnSelect All',
+        //   itemsShowLimit: 1,
+        //   allowSearchFilter: true
+        // };
         this.EmpDropdwn = Array.from(this._ProjectsListBy_Pid.reduce((m, t) => m.set(t.TM_DisplayName, t), new Map()).values());
         // this.EmpDropdwn = this.EmpDropdwn.sort((a, b) => (a.TM_DisplayName > b.TM_DisplayName) ? 1 : -1);
         this.dropdownSettings_forEmpChart = {
@@ -1288,6 +1292,7 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
               this._ProjectsListBy_Pid.forEach(ob=>{
                 ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
                 ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
+                ob.projectMembers=this.getProjectMembersProperty(ob);   // create new property "projectMembers" for displaying RACIS column .
               });
               this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
               this.TotalProjects = this._ProjectsListBy_Pid.length;
@@ -6579,30 +6584,30 @@ bindCustomRecurrenceValues(){
   }
 
 
-  getFilterLabel() {
-    if (this._PortProjStatus === '') {
-      return this.showDeletedPrjOnly ? 'Filter by:   Deleted projects' : 'Filter by:   Total projects';
-    } else {
-      switch (this._PortProjStatus) {
-        case 'Forward Under Approval':
-          return 'Filter by:   Forward approval';
-        case 'Completion Under Approval':
-          return 'Filter by:   Completion approval';
-        case 'Under Approval':
-          return 'Filter by:   New approval';
-        case 'InProcess':
-          return 'Filter by:   In-Process';
-        case 'Cancellation Under Approval':
-          return 'Filter by:   Cancellation approval';
-        case 'Deadline Extended Under Approval':
-          return 'Filter by:   Deadline extend approval';
-        case 'Enactive Under Approval':
-          return 'Filter by:   Enactive approval'
-        default:
-          return `Filter by :   ${this._PortProjStatus}`;
-      }
-    }
-  }
+  // getFilterLabel() {
+  //   if (this._PortProjStatus === '') {
+  //     return this.showDeletedPrjOnly ? 'Filter by:   Deleted projects' : 'Filter by:   Total projects';
+  //   } else {
+  //     switch (this._PortProjStatus) {
+  //       case 'Forward Under Approval':
+  //         return 'Filter by:   Forward approval';
+  //       case 'Completion Under Approval':
+  //         return 'Filter by:   Completion approval';
+  //       case 'Under Approval':
+  //         return 'Filter by:   New approval';
+  //       case 'InProcess':
+  //         return 'Filter by:   In-Process';
+  //       case 'Cancellation Under Approval':
+  //         return 'Filter by:   Cancellation approval';
+  //       case 'Deadline Extended Under Approval':
+  //         return 'Filter by:   Deadline extend approval';
+  //       case 'Enactive Under Approval':
+  //         return 'Filter by:   Enactive approval'
+  //       default:
+  //         return `Filter by :   ${this._PortProjStatus}`;
+  //     }
+  //   }
+  // }
 
 
   formatStatus(status: string): string {
@@ -6650,7 +6655,7 @@ notShow(){
 
 
 isaction = false;
-isracis = false;
+isracis = true;
 isstatus = true;
 islastupdate = true;
 isdeadline = true;
@@ -6774,10 +6779,11 @@ iscompletiondate=false;
 
     this.isAllPrjSelected = evt.checked;
     if (this.isAllPrjSelected) {
-      const selprjs = this.allSelectedProjects.map(x => x.Project_Code)
+      const selprjs = this.allSelectedProjects.map(x => x.Project_Code);
       const PageunselPrjs = this._ProjectsListBy_Pid.filter(item => {
         return !selprjs.includes(item.Project_Code);
       })
+      //note : _ProjectsListBy_Pid includes both pinned and unpinned projects.
       this.allSelectedProjects = [...PageunselPrjs, ...this.allSelectedProjects];
       this.value()
     }
@@ -6849,14 +6855,14 @@ isapprovlFound:boolean = false
 found : boolean= false;
 allSelectedProjects = [];
 selectUnSelectProject(e, item) {
-
+   // _ProjectsListBy_Pid holds both pinned and unpinned projects list. hence no need to include pinnedProjects list.
     if (e.checked) {
-      this.allSelectedProjects.push(item)
+      this.allSelectedProjects.push(item);
       const allselec = this._ProjectsListBy_Pid.every(item => {
         return this.allSelectedProjects.map(p => p.Project_Code).includes(item.Project_Code)
-      })
-      this.isAllPrjSelected = allselec
-      this.value()
+      });
+      this.isAllPrjSelected = allselec;
+      this.value();
 
     }
     else {   // when unchecked
@@ -6864,7 +6870,7 @@ selectUnSelectProject(e, item) {
       if (index != -1)
         this.allSelectedProjects.splice(index, 1);
       this.isAllPrjSelected = false;
-      this.value()
+      this.value();
     }
 
     // if selected project aprvl can be approvable by user.
@@ -6959,8 +6965,8 @@ acceptfunction(){
       console.log(this.approvingRequest,'this.approvingRequestthis.approvingRequest')
     }
 
-  })
-  this.acceptSelectedValues()
+  });
+  this.acceptSelectedValues();
 }
 
 
@@ -7010,6 +7016,7 @@ if( this.approvingRequest.length > 0 ){
       this.allSelectedProjects=[];
 
       this.GetPortfolioProjectsByPid();
+      this.getPinnedProjects();
       this.isapprovlFound = false
     if(withCmts){     // close the accept with comments sidebar if approving with comments is on.
         this.closeInfo();
@@ -7169,7 +7176,8 @@ submitReject(){
 
       this.allSelectedProjects=[];
       this.approvingRequest = []
-      this.GetPortfolioProjectsByPid()
+      this.GetPortfolioProjectsByPid();
+      this.getPinnedProjects();
       this.isapprovlFound = false
     });
     const checkbox = document.getElementById('snocheck') as HTMLInputElement;
@@ -7922,6 +7930,404 @@ GetProjectAndsubtashDrpforCalender2() {
       });
 }
 // popup selection modal2 for dms and portfolio sidebar   end
+
+
+
+// racis column new modification : showing user with their profile image.     start
+
+
+  // it is just used to add new property "projectMembers" on the project currently showing on the page.
+
+
+  getProjectMembersProperty(ob){   
+        const allmembers=[
+                { role:'Owner', name:ob.Project_Owner, imageSrc:ob.owner_pic?(encodeURI(this.imagesOrigin+ob.owner_pic)):null },
+                { role:'Responsible', name:ob.Team_Res, imageSrc:ob.resp_pic?(encodeURI(this.imagesOrigin+ob.resp_pic)):null },
+                { role:'Authority', name:ob.Team_Autho, imageSrc:ob.autho_pic?(encodeURI(this.imagesOrigin+ob.autho_pic)):null },
+                { role:'Coordinator', name:ob.Team_Coor, imageSrc:ob.Coord_pic?(encodeURI(this.imagesOrigin+ob.Coord_pic)):null },
+                { role:'Informer', name:ob.Team_Informer, imageSrc:ob.infor_pic?(encodeURI(this.imagesOrigin+ob.infor_pic)):null },
+                ...ob.Support_pic.map(sm=>{
+                     return {role:'Support', name:sm.DisplayName, imageSrc:sm.UserInboxThumbnail?(encodeURI(this.imagesOrigin+sm.UserInboxThumbnail)):null }
+                }) 
+        ];
+
+      const ALLmembers:any=[];  
+      Array.from(new Set(allmembers.map((m)=>m.name))).forEach((ename)=>{
+                  if(ename){
+                    const result=allmembers.filter((ob)=>ob.name==ename);
+                    const pmember:any={ Emp_Name:result[0].name, Role:result.map(r=>r.role).join(', '), Emp_Image:result[0].imageSrc };
+                    ALLmembers.push(pmember);
+                  }
+      });
+
+      return ALLmembers;
+  }
+  //
+
+
+// racis column new modification : showing user with their profile image.     end
+
+// portfolio request access start
+
+portfolio_accessCmts:string='';
+processingAccessSubmit:boolean=false;
+portfolioAccessRequested:boolean=false;  // true: user has requested or already requested.
+
+openRequestDialog() {
+    document.getElementById('Portfolio-access-req-dialog').classList.remove('d-none');
+    document.getElementById('portfaccess-button').classList.add('d-none');
+}
+
+closeRequestDialog() {
+    document.getElementById('Portfolio-access-req-dialog').classList.add('d-none');
+    document.getElementById('portfaccess-button').classList.remove('d-none');
+    this.portfolio_accessCmts = ''; 
+    this.formFieldsRequired=false;
+}
+
+sendPortfolioAccessRequest()
+{
+   if(this.portfolio_accessCmts&&this.portfolio_accessCmts.trim())
+   {
+     this.formFieldsRequired=false;
+     this.processingAccessSubmit=true;
+     setTimeout(()=>{
+          Swal.fire('Request Sent Successfully');
+          this.closeRequestDialog();
+          this.processingAccessSubmit=false;
+          this.portfolioAccessRequested=true;
+          
+
+     },5000);
+    //  this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID, Scheduleid).subscribe(res => {
+    //     console.log(res,'openRequestDialog')
+    //     this.closeRequestDialog();
+    //     Swal.fire('Request Sent Successfully');
+    //     this.isRequestSent = true;
+    //     this.ishide=false
+    //     $('.hide-content').addClass('d-none');
+
+    //      });
+
+    //  }
+
+
+   }
+   else
+   { 
+      this.formFieldsRequired=true;
+   }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    // if (!this.Usercomment){
+    //   this.formFieldsRequired=true;
+    //   return
+    // }
+    // else{
+    //   this.formFieldsRequired=false;
+    //   var Scheduleid = '0'
+    //   this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID, Scheduleid).subscribe(res => {
+    //     console.log(res,'openRequestDialog')
+    //     this.closeRequestDialog();
+    //     Swal.fire('Request Sent Successfully');
+    //     this.isRequestSent = true;
+    //     this.ishide=false
+    //     $('.hide-content').addClass('d-none');
+
+    //      });
+
+    // }
+  }
+
+
+
+
+
+
+// portfolio request access end
+
+
+// Pin portfolio projects.    start
+
+pinnedProjects:any=[];       // list of all projects which are pinned. (array of objects)
+pinnedProjectsCodes:any=[];  // list of all projects which are pinned. (array of project codes)
+maxPinLimit:number=3;      // maximum projects which can be pinned at a time. 
+pinPrjsLoading:boolean=false;
+isPrjPinning:boolean=false;
+isPrjUnpinning:boolean=false;
+
+getPinnedProjects(){
+    const empno=this.Current_user_ID;
+    const type='2';
+    const portfolioId=+this.Url_portfolioId;
+    this.pinPrjsLoading=true;
+    this.service.NewGetPinDetails(empno,type,portfolioId).subscribe((res:any)=>{   console.log('getPinnedProjects:',res);
+      this.pinPrjsLoading=false;
+       if(res)
+       {  
+           this.pinnedProjects=JSON.parse(res.Pinlist);
+           this.pinnedProjectsCodes=this.pinnedProjects.map((ob)=>ob.Project_Code);
+           // important for databinding.
+            this.pinnedProjects.forEach((item)=>{
+              item.newrejectJson = item.newrejectJson ? JSON.parse(item.newrejectJson) : null;  // parses newrejectJson str into object.
+              item.hoursInDecimal = (item.Project_Block == '003' || item.Project_Block == '008') ? this.convertToDecimalHours(item.StandardDuration) : item.AllocatedHours; // create new property : 'hoursInDecimal'  
+              item.projectMembers = this.getProjectMembersProperty(item);   // create new property "projectMembers" for displaying RACIS column .
+            });
+           //
+       }
+    });
+}
+
+
+addProjectToPinnedList(prjCode:any){
+    if(this.pinnedProjects.length<this.maxPinLimit){
+
+       const pinDetailsobj=new ApprovalDTO();
+       pinDetailsobj.Emp_No=this.Current_user_ID;
+       pinDetailsobj.Project_Code=prjCode;
+       pinDetailsobj.isPin=true;
+       pinDetailsobj.PortfolioId=+this.Url_portfolioId;
+       pinDetailsobj.d_Portid=null;
+        this.isPrjPinning=true;
+       this.approvalservice.NewUpdatePinDetails(pinDetailsobj).subscribe((res:any)=>{
+        this.isPrjPinning=false;
+                if(res&&res.message == 1){  // successfully pinned.   
+                  this.getPinnedProjects();  // rebind pinned projects list.
+                  this.notifyService.showSuccess('Added in your pinned list.','Pin Successful'); 
+                }
+                else{ // failure
+                  this.notifyService.showError('Unable to pin the project','Failed');  
+                }
+       });
+
+    }
+    else{
+
+         Swal.fire({
+                title:'Cannot Pin Project',
+                text:`You can only pin up to ${this.maxPinLimit} projects.`,
+                showConfirmButton:true,
+                confirmButtonText:'Ok'
+          });
+      //  this.notifyService.showError(`You can only pin up to ${this.maxPinLimit} projects`,'Cannot Pin Project');
+    }
+    
+}
+
+removeProjectFromPinnedList(prjCode:any){
+    // invoke a service and pass project code, service will remove the project from pin list.
+   
+      const pinDetailsobj=new ApprovalDTO();
+      pinDetailsobj.Emp_No=this.Current_user_ID;
+      pinDetailsobj.Project_Code=prjCode;
+      pinDetailsobj.isPin=false;
+      pinDetailsobj.PortfolioId=+this.Url_portfolioId;
+      pinDetailsobj.d_Portid=null;
+       this.isPrjUnpinning=true;
+     this.approvalservice.NewUpdatePinDetails(pinDetailsobj).subscribe((res:any)=>{    console.log('res after unpin:',res);
+       this.isPrjUnpinning=false;
+            if(res&&res.message==1){
+                 this.getPinnedProjects();   //rebind pinned projects list.
+                 this.notifyService.showSuccess('','Project Unpinned');
+            }else{
+                this.notifyService.showError('Unable to unpin the project','Failed');
+            }
+      });
+ 
+}
+
+
+
+// Pin portfolio projects.    end
+
+
+
+// project group (stream groups)   start.
+
+userStreamGroups:any=[];
+loadingUserStreamGroups:boolean=false;
+newGroupName:string;
+groupNameAlreadyExists:boolean=false;
+groupNameInvalid:boolean=false;
+portfolioConnectedToGroup:number[]=[]; // group ids. groups to which the project is connected/linked.
+
+onStreamGroupBtnClicked(){
+  this.getUserStreamGroups();  // Fetch all stream groups of the current user.
+}
+
+getUserStreamGroups(config:{showLoader:boolean}={showLoader:true}){
+    const empNo=this.Current_user_ID;
+    if(config.showLoader){
+       this.loadingUserStreamGroups=true;  // process started
+    }
+    this.service.NewGetGroups(empNo).subscribe((res:any)=>{
+     this.loadingUserStreamGroups=false;  // process ended   
+     if(res&&res.groupList){
+        this.userStreamGroups=JSON.parse(res.groupList);
+     }
+   });
+}
+
+
+onNewGroupBtnClicked(){
+    document.getElementById('create-new-group-dv').classList.remove('d-none');
+    document.getElementById('create-new-group-btn').classList.add('d-none');
+}
+
+closeCreateNewGroup(){
+    document.getElementById('create-new-group-dv').classList.add('d-none');
+    document.getElementById('create-new-group-btn').classList.remove('d-none');
+    this.groupNameAlreadyExists=false;
+    this.groupNameInvalid=false;
+    this.newGroupName='';
+}
+
+
+onAddNewGroupBtnClicked(){  
+      this.groupNameAlreadyExists=this.isGroupNameTaken(this.newGroupName);
+
+      if(this.newGroupName&&this.newGroupName.trim()&&this.groupNameAlreadyExists==false){
+         this.groupNameInvalid=false;
+         this.createNewGroup();
+      }
+      else{
+         this.groupNameInvalid=true;
+      }
+}
+
+isGroupNameTaken(groupName:string):boolean{
+    let isNameTaken=false;
+     if(groupName&&groupName.trim()){
+       isNameTaken=this.userStreamGroups.some((_group)=>{  
+             return _group.groupname?(_group.groupname.trim().toLowerCase()==groupName.trim().toLocaleLowerCase()):false;
+        });  
+     } 
+     return isNameTaken;
+}
+
+
+
+createNewGroup(){   
+
+      const groupName=this.newGroupName;
+
+      this.approvalObj.Emp_No=this.Current_user_ID;
+      this.approvalObj.groupName=groupName;
+      this.approvalObj.type='1';
+      this.approvalObj.gid=null;
+
+      this.service.NewCreateEditGroup(this.approvalObj).subscribe((res:any)=>{  console.log('create new group res:',res);
+       if(res&&res.message == 1){
+          this.notifyService.showSuccess(`Group '${groupName}' created successfully.`,'Success');
+          this.getUserStreamGroups({showLoader:false});  // rebind groups without loading spinner.
+          this.closeCreateNewGroup();  // to close dropdown and clear input data.
+       }
+       else{
+          this.notifyService.showError('Unable to create group.','Failed');
+       }
+      });
+  }
+
+
+  addPortfolioToGroup(groupId:number,groupName:string){    debugger
+    
+    const sgroup_name=groupName;
+
+    const grpDto=new ApprovalDTO();
+    grpDto.Emp_No = this.Current_user_ID;
+    grpDto.gid = groupId;
+    grpDto.type = '1';
+    grpDto.Project_Code = null;
+    grpDto.PortfolioId = this.Url_portfolioId;
+    grpDto.Schedule_id = null;
+
+     this.service.NewUpdateGroup(grpDto).subscribe((res:any)=>{ console.log('add portfolio to group res:',res);
+          if(res&&res.message==1){
+            this.notifyService.showSuccess(`Portfolio added to the group '${sgroup_name}' successfully.`,'Success');
+            this.getUserStreamGroups({showLoader:false});  ////rebind stream groups of the user. 
+            this.getGroupListByPid();  // rebind.  ( to which groups this project now after removal is linked)
+          }
+          else{
+             this.notifyService.showError(`Unable to add portfolio to '${sgroup_name}'. `,'Failed');
+          }
+     })
+  }
+
+  removePortfolioFromGroup(groupId:number,groupName:string){   debugger
+    const sgroup_name=groupName;
+
+    const grpDto=new ApprovalDTO();
+    grpDto.Emp_No = this.Current_user_ID;
+    grpDto.gid = groupId;
+    grpDto.type = '2';
+    grpDto.Project_Code = null;
+    grpDto.PortfolioId = this.Url_portfolioId;
+    grpDto.Schedule_id = null;
+
+     this.service.NewUpdateGroup(grpDto).subscribe((res:any)=>{
+          if(res&&res.message==1){
+            this.notifyService.showSuccess(`Portfolio removed from the group '${sgroup_name}' successfully.`,'Success');
+            this.getUserStreamGroups({showLoader:false});  //rebind stream groups of the user. 
+            this.getGroupListByPid();  // rebind.  ( to which groups this project now after removal is linked)
+          }
+          else{
+             this.notifyService.showError(`Unable to remove portfolio from the group '${sgroup_name}'.`,'Failed');
+          }
+     })
+
+
+  }
+
+
+
+  getGroupListByPid(){
+
+    this.portfolioConnectedToGroup=[];   // erase prev data if present.
+
+     const groupDto = new ApprovalDTO();
+     groupDto.Emp_No = this.Current_user_ID;
+     groupDto.Project_Code = null;
+     groupDto.PortfolioId = this.Url_portfolioId;
+     groupDto.Schedule_id = null;
+      this.service.NewValidateGroupDetails(groupDto).subscribe((res:any)=>{  console.log('group list:',res);
+        if(res&&res.groupList){
+             const linkedGroups=JSON.parse(res.groupList);
+             this.portfolioConnectedToGroup=linkedGroups.map(ob=>ob.gid);
+        }
+      });
+  }
+
+
+
+
+
+// portfolio group (stream groups)   end.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

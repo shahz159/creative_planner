@@ -21,6 +21,8 @@ import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-detail
 import { ActivatedRoute } from '@angular/router';
 import { debug } from 'console';
 import { sort } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
+import { ApprovalsService } from '../../_Services/approvals.service';
+import { ApprovalDTO } from '../../_Models/approval-dto';
 declare var $: any;
 export const MY_DATE_FORMATS = {
   parse: {
@@ -58,6 +60,7 @@ export class TimelineComponent implements OnInit {
   constructor(public service: ProjectTypeService,
     private projectMoreDetailsService: ProjectMoreDetailsService,
     private notifyService: NotificationService,
+    private approvalService:ApprovalsService,
     public datepipe: DatePipe,
     private route : ActivatedRoute,
     private _adapter: DateAdapter<any>,
@@ -2062,7 +2065,6 @@ darRequestsLoading:boolean=false;
 darResponsesLoading:boolean=false;
 companiesList:any[]=[];
 employeesList:any[]=[];
-darRequestsSelected:any[]=[];
 total_records:number=0;  // Total overall records in DB. 
 page_size:number=30;    // Total records can be on each page limit. 
 current_pageno:number=1;   // current page number.   
@@ -2134,7 +2136,7 @@ applyFilterOnDarSection(){
     this.objStatusDto.startdate='';
     this.objStatusDto.enddate='';
     this.service.NewGetTimelinedropdown(this.objStatusDto).subscribe((res)=>{  
-        if(res&&res[0]){   
+        if(res&&res[0]){    
           const totalprjJsonstr=JSON.parse(res[0]['TotalProjectsCount_Json']);
           this.total_records=totalprjJsonstr[0]['TotalProjects'];
           this.lastPageNo=Math.ceil(this.total_records/this.page_size);
@@ -2173,12 +2175,17 @@ getDarRequestsList(){
   this.objStatusDto.enddate='';
  
    this.darRequestsLoading=true;
-   this.service.NewGetTimelineInbox(this.objStatusDto).subscribe((res)=>{  
+   this.service.NewGetTimelineInbox(this.objStatusDto).subscribe((res:any)=>{  
     console.log('pageno:',this.current_pageno,'dar requests list:',res);
+    console.log('darreqjson:');
     this.darRequestsLoading=false;  
-         if(res&&res[0]){
+         if(res&&res[0]){   
              this.darRequestsList=JSON.parse(res[0]['DarRequests']);
              this.totalDarRequests=res[0]['TotalRequests'];
+
+             // check all page items are already selected or not.
+             this.isPgAllDarsSelected=this.checkPgAllDarsSelected();
+             //
          }   
    });
 }
@@ -2230,9 +2237,9 @@ getDefaultFilterDropdownData(){
   this.objStatusDto.SelectedEmp_No='';
   this.objStatusDto.startdate='';
   this.objStatusDto.enddate='';
-  this.service.NewGetTimelinedropdown(this.objStatusDto).subscribe((res)=>{  
+  this.service.NewGetTimelinedropdown(this.objStatusDto).subscribe((res)=>{     debugger
       console.log('timeline dropdown:',res);
-      if(res&&res[0]){   
+      if(res&&res[0]){     
         this.companiesList=JSON.parse(res[0]['CompanyType_Json']);
         this.employeesList=JSON.parse(res[0]['Emp_Json']);
         const totalprjJsonstr=JSON.parse(res[0]['TotalProjectsCount_Json']);
@@ -2251,17 +2258,7 @@ isEmployeeChecked(empId:any){
 }
 
 
-selectDarRequest(isSelected:boolean,dreq:any){
-  if(isSelected){
-      this.darRequestsSelected.push(dreq);
-  }
-  else{
-     const index=this.darRequestsSelected.findIndex(ob=>ob.Emp_Rep_No==dreq.Emp_Rep_No);
-     if(index>-1){
-        this.darRequestsSelected.splice(index,1);
-     }
-  }
-}
+
 
 
 configureCompanyFilter(include:boolean,companyObj:any){
@@ -2307,7 +2304,9 @@ configureEmployeeFilter(include:boolean,empObj:any){
 DARrequestInfo:any;  // it contain selected DAR request more details in it.
 darDecision:"ACCEPT"|"ACCEPT_WITH_BONUS"|"REJECT"|undefined=undefined;
 aprv_cmts:string|undefined;
+drpercentage:number;
 previousCmts:any=[];
+drFormFieldRequired:boolean=false;
 
 onDarReqDecisionChanged(decision:"ACCEPT"|"ACCEPT_WITH_BONUS"|"REJECT"){
   this.darDecision=decision;
@@ -2317,6 +2316,8 @@ onDarReqDecisionChanged(decision:"ACCEPT"|"ACCEPT_WITH_BONUS"|"REJECT"){
 closeDarReqAprvlSec(){
   this.darDecision=undefined;
   this.aprv_cmts=undefined;
+  this.drpercentage=0;
+  this.drFormFieldRequired=false;
   // this.previousCmts=[];
   // this.cmts_Loading=false;
 }
@@ -2337,7 +2338,51 @@ drprev_comments()
 }
 
 submitDARReq_Response(){
-   
+  debugger
+  if(
+    (this.aprv_cmts&&this.aprv_cmts.trim())&&
+    (this.darDecision=='ACCEPT_WITH_BONUS'?this.drpercentage:true)&&
+    (this.darDecision=='REJECT'?(this.drpercentage!=null&&this.drpercentage!=undefined):true)
+  ){
+    // when mandatory fields are provided.
+    this.drFormFieldRequired=false;
+
+    const darReqResult=new ApprovalDTO();
+    darReqResult.emp_rep_no=this.darRequestsList[this.selectedDarReqIndex].Emp_Rep_No;
+    darReqResult.submittedby=this.Current_user_ID;
+    darReqResult.submittedto=this.darRequestsList[this.selectedDarReqIndex].submittedby;
+    darReqResult.submitdate=this.DARrequestInfo.SubmissionDate;
+    darReqResult.ReportDate=this.darRequestsList[this.selectedDarReqIndex].Reportdate;
+    darReqResult.status='Submitted';
+    darReqResult.Remarks=this.aprv_cmts;
+    darReqResult.DARStatus=this.darDecision=='ACCEPT'?'Accepted':this.darDecision=='REJECT'?'Rejected':this.darDecision=='ACCEPT_WITH_BONUS'?'Bonus Accepted':'';
+    darReqResult.percentage=this.darDecision=='ACCEPT'?0:this.drpercentage;
+
+    this.approvalService.NewUpdateTimelineReport(darReqResult).subscribe((res:any)=>{    debugger
+        if(res){
+           console.log('after the Dar req\'s response submitted',res);
+        }
+
+        if(res&&res.message==1){
+          const smessage=this.darDecision=='ACCEPT'?'DAR request successfully accepted.':this.darDecision=='REJECT'?'DAR request successfully rejected.':this.darDecision=='ACCEPT_WITH_BONUS'?'Bonus Accepted':'';
+          this.notifyService.showSuccess(smessage,"Success");
+          this.getDarRequestsList();   // rebind the dar requests list 
+          this.closeDarReqAprvlSec();   // close the approval section.
+          this.closeDarReqSidebar();    // close the sidebar.
+        }
+        else{
+          this.notifyService.showError("Something went wrong!","Failed");
+        }
+
+     });
+
+  }
+  else{
+      // when mandatory fields are not provided.
+     this.drFormFieldRequired=true;
+  }
+
+
 }
 
 
@@ -2358,12 +2403,196 @@ getDarRequestDetails(DarSno:number,Empno:string,DarReportDate:string){
     })
 }
 
+// DAR Request sidebar context code end
+
+// accept/reject multiple DAR requests.    start
+
+darRequestsSelected:any[]=[];    // all DAR requests selected.
+selectedDarDecision:'ACCEPT'|'ACCEPT_WITH_BONUS'|'REJECT';   // decision type
+darReqbonusPercentage:number|null;   // input bonus
+darReqRejectPercentage:number|null;   // input reject
+drFormFieldRequired2:boolean=false;  // whether  all mandatory fields are provided or not.
+multi_aprvcmts:string='';      // input approver cmts.
+isPgAllDarsSelected:boolean=false;   // true when all dars of the current page is selected.
+
+selectDarRequest(isSelected:boolean,dreq:any){   // whenever DAR requests is selected or unselected.
+  if(isSelected){
+      this.darRequestsSelected.push(dreq);    // add new item
+      this.isPgAllDarsSelected=this.checkPgAllDarsSelected();   // after adding new item check whether all dar items present on the page selected. 
+  }
+  else{
+     const index=this.darRequestsSelected.findIndex(ob=>ob.Emp_Rep_No==dreq.Emp_Rep_No);
+     if(index>-1){
+        this.darRequestsSelected.splice(index,1);
+        this.isPgAllDarsSelected=false;
+     }
+  }
+}
+
+isDarRequestSelected(empRepno:string):boolean{
+    const isSelected=this.darRequestsSelected.find(req=>req.Emp_Rep_No==empRepno);
+    return isSelected;
+}
+
+checkPgAllDarsSelected():boolean{
+     const isAllSelected=this.darRequestsList.map((dreq)=>dreq.Emp_Rep_No).every((emprep)=>{
+            return this.darRequestsSelected.findIndex(drsel=>drsel.Emp_Rep_No==emprep)>-1; 
+     });
+     return isAllSelected;
+}
+
+
+
+openMultiDarAcceptRejectSidebar(decision:'ACCEPT'|'ACCEPT_WITH_BONUS'|'REJECT'){
+    this.selectedDarDecision=decision;
+    document.getElementById('multi-dar-acceptreject')?.classList.add('kt-quick-panel--on');
+    document.getElementById("rightbar-overlay").style.display = "block";
+}
+
+closeMultiDarAcceptRejectSidebar(){
+    document.getElementById('multi-dar-acceptreject')?.classList.remove('kt-quick-panel--on');
+    document.getElementById("rightbar-overlay").style.display = "none";
+    this.multi_aprvcmts='';
+    this.darReqbonusPercentage=null;
+    this.darReqRejectPercentage=null;
+    this.drFormFieldRequired2=false;
+}
+
+darReqsSelectAllBtnClicked(isChecked:boolean){
+   const selecteddar_reps=this.darRequestsSelected.map(dr=>dr.Emp_Rep_No);
+
+    if(isChecked){  
+        const unselectedDarReqs=this.darRequestsList.filter((dreq)=>{
+                return !selecteddar_reps.includes(dreq.Emp_Rep_No);
+        });
+        this.darRequestsSelected=[...this.darRequestsSelected,...unselectedDarReqs]; 
+        this.isPgAllDarsSelected=true;
+    }
+    else{    
+        const currentpgDar_reps=this.darRequestsList.map(dr=>dr.Emp_Rep_No);
+        this.darRequestsSelected=this.darRequestsSelected.filter((dreq)=>{
+                return !currentpgDar_reps.includes(dreq.Emp_Rep_No);
+        });
+        this.isPgAllDarsSelected=false;
+    }
+}
+
+
+onSubmitDarRequestsResult(){   debugger
+      if(
+           (this.multi_aprvcmts&&this.multi_aprvcmts.trim())&&
+           (this.selectedDarDecision=='ACCEPT_WITH_BONUS'?this.darReqbonusPercentage:true)&&
+           (this.selectedDarDecision=='REJECT'?(this.darReqRejectPercentage!=null&&this.darReqRejectPercentage!=undefined):true)
+      )
+      { // when mandatory fields are provided.
+         this.drFormFieldRequired2=false;
+
+    const darReqsResult=new ApprovalDTO();
+    darReqsResult.emp_rep_no=this.darRequestsSelected.map(ob=>ob.Emp_Rep_No).join(',');
+    darReqsResult.status='Submitted';
+    darReqsResult.Remarks=this.multi_aprvcmts;
+    darReqsResult.percentage=this.selectedDarDecision=='ACCEPT'?0:this.selectedDarDecision=='REJECT'?this.darReqRejectPercentage:this.selectedDarDecision=='ACCEPT_WITH_BONUS'?this.darReqbonusPercentage:0;
+    darReqsResult.DARStatus=this.selectedDarDecision=='ACCEPT'?'Accepted':this.selectedDarDecision=='REJECT'?'Rejected':this.selectedDarDecision=='ACCEPT_WITH_BONUS'?'Bonus Accepted':'';
+
+
+    this.approvalService.NewUpdateTimelineReport(darReqsResult).subscribe((res:any)=>{    debugger
+       
+        if(res&&res.message==1){
+          const smessage=this.selectedDarDecision=='ACCEPT'?'DAR requests successfully accepted.':this.selectedDarDecision=='REJECT'?'DAR requests successfully rejected.':this.selectedDarDecision=='ACCEPT_WITH_BONUS'?'Bonus Accepted':'';
+          this.notifyService.showSuccess(smessage,"Success");
+          this.getDarRequestsList();   // rebind the dar requests list 
+          this.closeMultiDarAcceptRejectSidebar();
+          this.darRequestsSelected=[];
+          this.isPgAllDarsSelected=false;
+        }
+        else{
+          this.notifyService.showError("Something went wrong!","Failed");
+        }
+
+     });
+
+      }
+      else
+      {  // when mandatory fields are not provided.
+          this.drFormFieldRequired2=true;
+      }
+}
+
+
+
+// acceptMultiDARrequests(){
+
+//   if(this.darRequestsSelected&&this.darRequestsSelected.length>0){
+
+//      // const darReqResult=new ApprovalDTO();
+//     // darReqResult.emp_rep_no=this.darRequestsList[this.selectedDarReqIndex].Emp_Rep_No;
+//     // darReqResult.submittedby=this.Current_user_ID;
+//     // darReqResult.submittedto=this.darRequestsList[this.selectedDarReqIndex].submittedby;
+//     // darReqResult.submitdate=this.DARrequestInfo.SubmissionDate;
+//     // darReqResult.ReportDate=this.darRequestsList[this.selectedDarReqIndex].Reportdate;
+//     // darReqResult.status=this.darRequestsList[this.selectedDarReqIndex].SubmissionType;
+//     // darReqResult.Remarks=this.aprv_cmts;
+//     // darReqResult.DARStatus=this.darDecision=='ACCEPT'?'Accepted':this.darDecision=='REJECT'?'Rejected':this.darDecision=='ACCEPT_WITH_BONUS'?'Bonus Accepted':'';
+//     // darReqResult.percentage=this.darDecision=='ACCEPT'?0:this.drpercentage;
+
+//     // this.approvalService.NewUpdateTimelineReport(darReqResult).subscribe((res:any)=>{
+
+
+//     // }); 
+
+//   }
+//   else{
+//      this.notifyService.showError("No Dar request selected","");
+//   }
+
+// }
+
+// acceptMultiDARrequestsWithBonus(){
+//   if(
+//     (this.multi_aprvcmts&&this.multi_aprvcmts.trim())&&
+//     (this.darReqbonusPercentage)
+//   ){
+//     this.drFormFieldRequired2=false;
+     
+
+//     // const darReqResult=new ApprovalDTO();
+//     // darReqResult.emp_rep_no=this.darRequestsList[this.selectedDarReqIndex].Emp_Rep_No;
+//     // darReqResult.submittedby=this.Current_user_ID;
+//     // darReqResult.submittedto=this.darRequestsList[this.selectedDarReqIndex].submittedby;
+//     // darReqResult.submitdate=this.DARrequestInfo.SubmissionDate;
+//     // darReqResult.ReportDate=this.darRequestsList[this.selectedDarReqIndex].Reportdate;
+//     // darReqResult.status=this.darRequestsList[this.selectedDarReqIndex].SubmissionType;
+//     // darReqResult.Remarks=this.aprv_cmts;
+//     // darReqResult.DARStatus=this.darDecision=='ACCEPT'?'Accepted':this.darDecision=='REJECT'?'Rejected':this.darDecision=='ACCEPT_WITH_BONUS'?'Bonus Accepted':'';
+//     // darReqResult.percentage=this.darDecision=='ACCEPT'?0:this.drpercentage;
+
+//     // this.approvalService.NewUpdateTimelineReport(darReqResult).subscribe((res:any)=>{
+
+
+//     // });
 
 
 
 
 
-// DAR Request sidebar context code start
+
+
+
+
+
+
+
+//   }
+//   else{
+//     this.drFormFieldRequired2=true;
+//   }
+// }
+
+// accept/reject multiple DAR requests.    end
+
+
+
+
 
 // dar inbox end.
 

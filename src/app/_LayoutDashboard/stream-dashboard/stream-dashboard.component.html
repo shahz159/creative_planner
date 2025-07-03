@@ -125,7 +125,7 @@
                                            
                                                 <div class="upcoming-event-v2-heading v2-p v2-border-bottom">
                                                     <div>
-                                                        <span  [ngClass]="{'date-badge': true, 'active': item.Schedule_date === today}">{{item.Schedule_date | date : 'dd'}}</span>
+                                                        <span  [ngClass]="{'date-badge': true, 'active': (item.Schedule_date | date: 'yyyy-MM-dd') === today}">{{item.Schedule_date | date : 'dd'}}</span>
                                                         {{item.Schedule_date | date : 'EEE, MMM, yyyy'}}
                                                     </div>
                                                 </div>
@@ -197,9 +197,10 @@
                                                        </div>
 
                                                         </div>
-                                                        <div class="upcoming-event-v2-time v2-p  v2-pr-0"  *ngIf="item1.className=='fc-red'"><s>{{formatTimes(item1.startTime)}} - {{formatTimes(item1.endTime)}}</s></div>
-                                                        <div class="upcoming-event-v2-time v2-p  v2-pr-0"  *ngIf="item1.className=='fc-green'"><s>{{formatTimes(item1.startTime)}} - {{formatTimes(item1.endTime)}}</s> </div>
-                                                        <div class="upcoming-event-v2-time v2-p  v2-pr-0"  *ngIf="item1.className!='fc-green' && item1.className!='fc-red'">{{formatTimes(item1.startTime)}} - {{formatTimes(item1.endTime)}}</div>                                                    
+                                                        <!-- {{formatTimes(item1.endTime)}} -->
+                                                        <div class="upcoming-event-v2-time v2-p  v2-pr-0"  *ngIf="item1.className=='fc-red'"><s>{{item1.startTime| date: 'h:mm a'}} - {{item1.endTime| date: 'h:mm a'}}</s></div>
+                                                        <div class="upcoming-event-v2-time v2-p  v2-pr-0"  *ngIf="item1.className=='fc-green'"><s>{{item1.startTime| date: 'h:mm a'}} - {{item1.endTime | date: 'h:mm a'}}</s> </div>
+                                                        <div class="upcoming-event-v2-time v2-p  v2-pr-0"  *ngIf="item1.className!='fc-green' && item1.className!='fc-red'">{{item1.startTime| date: 'h:mm a'}} - {{item1.endTime | date: 'h:mm a'}}</div>                                                    
                                                         <div class="upcoming-event-v2-info">
                                                             <span class="v2-p v2-pl-0 sch-evt-line-clamp" *ngIf="item1.className=='fc-green'"><s>{{item1.Task_Name}}</s></span>
                                                             <span class="v2-p v2-pl-0 sch-evt-line-clamp" *ngIf="item1.className=='fc-red'"><s>{{item1.Task_Name}}</s></span>

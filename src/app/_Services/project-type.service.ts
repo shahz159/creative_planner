@@ -860,8 +860,8 @@ export class ProjectTypeService {
     );
   }
 
-  _InsertOnlyTaskServie(_ObjAssigntaskDTO) {
-
+  _InsertOnlyTaskServie(_ObjAssigntaskDTO) { 
+ 
     this._ObjAssigntaskDTO.TypeOfTask = _ObjAssigntaskDTO.TypeOfTask;
     this._ObjAssigntaskDTO.CreatedBy = localStorage.getItem('EmpNo');
     this._ObjAssigntaskDTO.ProjectType = _ObjAssigntaskDTO.ProjectType;
@@ -872,16 +872,17 @@ export class ProjectTypeService {
     this._ObjAssigntaskDTO.EndDate = _ObjAssigntaskDTO.EndDate;
     this._ObjAssigntaskDTO.ProjectDays = _ObjAssigntaskDTO.ProjectDays;
     this._ObjAssigntaskDTO.SubmissionType = _ObjAssigntaskDTO.SubmissionType;
-    this._ObjAssigntaskDTO.AssignId = _ObjAssigntaskDTO.AssignId;
+    this._ObjAssigntaskDTO.AssignId = _ObjAssigntaskDTO.AssignId;  
     this._ObjAssigntaskDTO.CategoryName = _ObjAssigntaskDTO.CategoryName;
     this._ObjAssigntaskDTO.CategoryId = _ObjAssigntaskDTO.CategoryId;
     this._ObjAssigntaskDTO.Remarks = _ObjAssigntaskDTO.Remarks;
     this._ObjAssigntaskDTO.Reference = _ObjAssigntaskDTO.Reference;
     this._ObjAssigntaskDTO.Schedule_ID = _ObjAssigntaskDTO.Schedule_ID;
+    console.log(this._ObjAssigntaskDTO,'this._ObjAssigntaskDTO55285')
     return this.http.post(this.rootUrl + "Notification/NewInsertOnlyTask", this._ObjAssigntaskDTO);
   }
 
-  _NewInsertOnlyTaskServie(_ObjAssigntaskDTO) {
+  _NewInsertOnlyTaskServie(_ObjAssigntaskDTO) {    
 
     this._ObjAssigntaskDTO.TypeOfTask = _ObjAssigntaskDTO.TypeOfTask;
     this._ObjAssigntaskDTO.CreatedBy = localStorage.getItem('EmpNo');
@@ -900,7 +901,7 @@ export class ProjectTypeService {
     this._ObjAssigntaskDTO.Reference = _ObjAssigntaskDTO.Reference;
     this._ObjAssigntaskDTO.Schedule_ID = _ObjAssigntaskDTO.Schedule_ID;
     this._ObjAssigntaskDTO.Agenda_Id = _ObjAssigntaskDTO.Agenda_Id;
-
+debugger
     return this.http.post(this.rootUrl + "Notification/NewInsertOnlyTaskwithAgenda", this._ObjAssigntaskDTO);
   }
 
@@ -909,7 +910,7 @@ export class ProjectTypeService {
     return this.http.post(this.rootUrl + "Notification/NewInsertAssignTask", fd);
   }
 
-  _InsertAssignTaskServieCore(fd) {
+  _InsertAssignTaskServieCore(fd) { 
     return this.http.post(this.rootUrlcore + "Notification/NewInsertAssignTaskCore", fd);
   }
 
@@ -1204,12 +1205,79 @@ export class ProjectTypeService {
 
 
 
-  NewGetUserTimeline(darSno:number,Empno:string,darReportDate:string){  debugger
+  NewGetUserTimeline(darSno:number,Empno:string,darReportDate:string){  
      this.ObjStatusDTO.Sno=darSno;
      this.ObjStatusDTO.Emp_No=Empno;
      this.ObjStatusDTO.rep_date=darReportDate;
      return this.http.post(this.rootUrl+'TestAPI/NewGetUserTimeline',this.ObjStatusDTO);
   }
 
+  NewGetPinDetails(empNo:string,type:string,portid:number|null){
+     this.aprvDtoObj.Emp_No=empNo;
+     this.aprvDtoObj.type=type;
+     this.aprvDtoObj.portid=portid;
+     return this.http.post(this.rootUrl+'Projects/NewGetPinDetails',this.aprvDtoObj);
+  }
+  NewGetGroups(empNo:string){
+    this.aprvDtoObj.Emp_No=empNo;
+    return this.http.post(this.rootUrl+'Projects/NewGetGroups',this.aprvDtoObj);
+  }
+  NewCreateEditGroup(obj:ApprovalDTO){
+    this.aprvDtoObj.Emp_No=obj.Emp_No;
+    this.aprvDtoObj.groupName=obj.groupName;
+    this.aprvDtoObj.type=obj.type;
+    this.aprvDtoObj.gid=obj.gid;
+    return this.http.post(this.rootUrl+'Projects/NewCreateEditGroup',this.aprvDtoObj);
+  }
+  NewDeleteGroup(obj:ApprovalDTO){
+    this.aprvDtoObj.Emp_No=obj.Emp_No;
+    this.aprvDtoObj.gid=obj.gid;
+    return this.http.post(this.rootUrl+'Projects/NewDeleteGroup',this.aprvDtoObj);
+  }
+  NewGetGroupDetails(empNo:string,groupId:number){
+    this.aprvDtoObj.Emp_No=empNo;
+    this.aprvDtoObj.gid=groupId;
+    console.log("asdf",this.rootUrl+'Projects/NewGetGroupDetails');
+    console.log("body",this.aprvDtoObj);
+    return this.http.post(this.rootUrl+'Projects/NewGetGroupDetails',this.aprvDtoObj);
+  }
+  NewUpdateGroup(obj:ApprovalDTO){   debugger
+    const grpDTOobj=new ApprovalDTO();
+    grpDTOobj.Emp_No = obj.Emp_No;
+    grpDTOobj.gid = obj.gid;
+    grpDTOobj.type = obj.type;
+    grpDTOobj.Project_Code = obj.Project_Code;
+    grpDTOobj.PortfolioId = obj.PortfolioId;
+    grpDTOobj.Schedule_id = obj.Schedule_id;
+    return this.http.post(this.rootUrl+'Projects/NewUpdateGroup',grpDTOobj);
+  }
 
+
+  NewValidateGroupDetails(obj:ApprovalDTO){
+    this.aprvDtoObj.Emp_No=obj.Emp_No;
+    this.aprvDtoObj.Project_Code=obj.Project_Code;
+    this.aprvDtoObj.PortfolioId=obj.PortfolioId;
+    this.aprvDtoObj.Schedule_id =obj.Schedule_id;
+    return this.http.post(this.rootUrl+'Projects/NewValidateGroupDetails',this.aprvDtoObj);
+  }
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+ 
+
+
+ 
 }

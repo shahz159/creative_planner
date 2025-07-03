@@ -28,6 +28,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/Shared/components/confirm-dialog/confirm-dialog.component';
 import { CalenderService } from 'src/app/_Services/calender.service';
 import { CalenderDTO } from '../../_Models/calender-dto';
+import Swal from 'sweetalert2';
 
 //import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 // import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
@@ -166,6 +167,7 @@ Dateselectionrange: string = 'Date selection range';
 
     });
 
+    this.getPinnedProjects();   // pinned projects list.
     this.GetMemosByEmployeeId();    // fetch all memos of current user.
     this.GetProjectAndsubtashDrpforCalender();  // fetch all emp list, companies list and portfolios list . (used in dms link and portfolio link sidebar)
   //  alert(123)
@@ -474,7 +476,7 @@ Dateselectionrange: string = 'Date selection range';
   
 
 
-    GetProjectsByUserName(type) {
+  GetProjectsByUserName(type) {
     this.Type=type;
     this.BsService.setProjectSummaryType(type);
 
@@ -493,7 +495,8 @@ Dateselectionrange: string = 'Date selection range';
          data.forEach((ob)=>{
           ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
           ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
-         });
+          ob.projectMembers=this.getProjectMembersProperty(ob);   // create new property "projectMembers" for displaying RACIS column .
+        });
       }
 
       this._ProjectDataList = data;
@@ -540,11 +543,14 @@ Dateselectionrange: string = 'Date selection range';
       }
 
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe((data:any) => {
+
         if(data){
           data.forEach((ob)=>{
             ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
             ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
-           });
+            ob.projectMembers=this.getProjectMembersProperty(ob);   // create new property "projectMembers" for displaying RACIS column .
+           
+          });
         }
 
         this._ProjectDataList = data;
@@ -593,6 +599,38 @@ Dateselectionrange: string = 'Date selection range';
 
 
   }
+
+
+  // it is just used to add new property "projectMembers" on the project currently showing on the page.
+  getProjectMembersProperty(ob){  
+        const imgorigin='https://yrglobaldocuments.blob.core.windows.net/userprofileimages/';
+        const allmembers=[
+                { role:'Owner', name:ob.Project_Owner, imageSrc:ob.owner_pic?(encodeURI(imgorigin+ob.owner_pic)):null },
+                { role:'Responsible', name:ob.Team_Res, imageSrc:ob.resp_pic?(encodeURI(imgorigin+ob.resp_pic)):null },
+                { role:'Authority', name:ob.Authority, imageSrc:ob.autho_pic?(encodeURI(imgorigin+ob.autho_pic)):null },
+                { role:'Coordinator', name:ob.Team_Coor, imageSrc:ob.Coord_pic?(encodeURI(imgorigin+ob.Coord_pic)):null },
+                { role:'Informer', name:ob.Team_Informer, imageSrc:ob.infor_pic?(encodeURI(imgorigin+ob.infor_pic)):null },
+                ...(Array.isArray(ob.Team_Support)?ob.Team_Support:JSON.parse(ob.Team_Support)).map(sm=>{ 
+                     return {role:'Support', name:sm.DisplayName, imageSrc:sm.UserInboxThumbnail?(encodeURI(imgorigin+sm.UserInboxThumbnail)):null }
+                 }) 
+             
+        ];
+
+         
+      const ALLmembers:any=[];  
+      Array.from(new Set(allmembers.map((m)=>m.name))).forEach((ename)=>{
+                  if(ename){
+                    const result=allmembers.filter((ob)=>ob.name==ename);
+                    const pmember:any={ Emp_Name:result[0].name, Role:result.map(r=>r.role).join(', '), Emp_Image:result[0].imageSrc };
+                    ALLmembers.push(pmember);
+                  }
+      });
+
+      return ALLmembers;
+  }
+  //
+
+
 
 
   // getFormattedDelay(delayDays: any): string {
@@ -1109,13 +1147,13 @@ dates:any
       this.searchResult = false;
       this.CurrentPageNo = 1;
       this.applyFilters();
-      this.edited = false
+      this.edited = false;
     }
     else{
       this.searchResult = true;
       this.CurrentPageNo = 1;
       this.applyFilters();
-      this.edited = false
+      this.edited = false;
     }
   }
 
@@ -1211,7 +1249,8 @@ debugger
           data.forEach((ob)=>{
             ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
             ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
-           });
+            ob.projectMembers=this.getProjectMembersProperty(ob);   // create new property "projectMembers" for displaying RACIS column .
+          });
        }
         //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
         this._ProjectDataList = data;
@@ -1233,6 +1272,17 @@ debugger
 
         // reset scroll position of the table
         this.resetScrollPosition('#projects-list-table');
+
+
+        // this code decides whether select all checkbox should be checked or unchecked
+          const allRselected:boolean=[...this.pinnedProjects,...this._ProjectDataList].map(p=>p.Project_Code).every((prC:any)=>{
+                    return this.allSelectedProjects.map(sp=>sp.Project_Code).includes(prC);
+          })
+          this.isAllPrjSelected=allRselected;
+          this.value();
+          // this code decides whether select all checkbox should be checked or unchecked
+
+
 
       });
 
@@ -1270,7 +1320,8 @@ debugger
             data.forEach((ob)=>{
               ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
               ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
-             });
+              ob.projectMembers=this.getProjectMembersProperty(ob);   // create new property "projectMembers" for displaying RACIS column .
+            });
            }
           //this._ProjectDataList = JSON.parse(data[0]['Projects_Json']);
           this._ProjectDataList = data;
@@ -1296,6 +1347,15 @@ debugger
 
           // reset scroll position of the table
           this.resetScrollPosition('#projects-list-table');
+
+
+          // this code decides whether select all checkbox should be checked or unchecked
+          const allRselected:boolean=[...this.pinnedProjects,...this._ProjectDataList].map(p=>p.Project_Code).every((prC:any)=>{
+                    return this.allSelectedProjects.map(sp=>sp.Project_Code).includes(prC);
+          })
+          this.isAllPrjSelected=allRselected;
+          this.value();
+          // this code decides whether select all checkbox should be checked or unchecked
 
         });
 
@@ -1795,7 +1855,7 @@ OnCardClick(P_id: any) {
 
 
 
-addProjectToPortfolio() {  
+addProjectToPortfolio() {    
   if(this.Portfolio==' '||this.Portfolio==null){
     this.notifyService.showInfo("Please select porfolio(s) to link",'Request cancelled');
     return;
@@ -1811,7 +1871,7 @@ addProjectToPortfolio() {
     objPortfolioDto.Project_Code = this._projCode;
     objPortfolioDto.Emp_No = this.Current_user_ID;
     this.service.InsertPortfolioIdsByProjectCode(objPortfolioDto).
-      subscribe((data) => {  
+      subscribe((data) => {    
 
         this._Message = (data['message']);
 
@@ -2829,7 +2889,7 @@ this.closeAutocompleteDrpDwn('proDDwn')
  }
 
  isaction = false;
- isracis = false;
+ isracis = true;
  isstatus = true;
  islastupdate = true;
  isdeadline = true;
@@ -2983,39 +3043,43 @@ this.closeAutocompleteDrpDwn('proDDwn')
 
   isAllPrjSelected: boolean = false
 
-  selectUnselectPagePrjs(evt) {
+selectUnselectPagePrjs(evt) {
 
-
-    this.isAllPrjSelected = evt.checked
+    this.isAllPrjSelected = evt.checked;
     if (this.isAllPrjSelected) {
-      const selprjs = this.allSelectedProjects.map(x => x.Project_Code)
-      const PageunselPrjs = this._ProjectDataList.filter(item => {
-        return !selprjs.includes(item.Project_Code);
-      })
-      this.allSelectedProjects = [...PageunselPrjs, ...this.allSelectedProjects];
-      this.value()
+     const allSelectedProjectsCode=this.allSelectedProjects.map((ob)=>ob.Project_Code);
+     [...this.pinnedProjects,...this._ProjectDataList].forEach((_prj)=>{
+        if(allSelectedProjectsCode.includes(_prj.Project_Code)==false){
+            this.allSelectedProjects.push(_prj);
+        }
+     });
+
+     this.value();
+     console.log('allSelectedProjects:',this.allSelectedProjects);
     }
     else {
       // unchecked
-      const curPagePrjs = this._ProjectDataList.map(x => x.Project_Code);
+      const curPagePrjs = [...this.pinnedProjects,...this._ProjectDataList].map(x => x.Project_Code);
       this.allSelectedProjects = this.allSelectedProjects.filter(item => {
-        return !curPagePrjs.includes(item.Project_Code)
+        return !curPagePrjs.includes(item.Project_Code);
       });
-     this.value()
+     this.value();
     }
-    this.isapprovlFound = this.allSelectedProjects.some((ob) => ob.PendingapproverEmpNo && ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
-  }
+
+    this.isapprovlFound = this.allSelectedProjects.some((ob) => ob.PendingapproverEmpNo && ob.PendingapproverEmpNo.trim() == this.Current_user_ID);
+}
 
 
-  selectUnSelectProject(e, item) {
+selectUnSelectProject(e, item) {
 
     if (e.checked) {
-      this.allSelectedProjects.push(item)
-      const allselec = this._ProjectDataList.every(item => {
-        return this.allSelectedProjects.map(p => p.Project_Code).includes(item.Project_Code)
-      })
-      this.isAllPrjSelected = allselec
-      this.value()
+      this.allSelectedProjects.push(item);
+      const allSelectedProjectsCodes=this.allSelectedProjects.map(p => p.Project_Code);
+      const allselec = [...this.pinnedProjects,...this._ProjectDataList].every(item => {
+        return allSelectedProjectsCodes.includes(item.Project_Code);
+      });
+      this.isAllPrjSelected = allselec;
+      this.value();
 console.log(this.allSelectedProjects,"this.allSelectedProjectsthis.allSelectedProjects")
     }
     else {   // when unchecked
@@ -3023,18 +3087,17 @@ console.log(this.allSelectedProjects,"this.allSelectedProjectsthis.allSelectedPr
       if (index != -1)
         this.allSelectedProjects.splice(index, 1);
       this.isAllPrjSelected = false;
-      this.value()
+      this.value();
 
     }
 
-    this.isapprovlFound=this.allSelectedProjects.some((ob)=>ob.PendingapproverEmpNo&&ob.PendingapproverEmpNo.trim() == this.Current_user_ID)
+    this.isapprovlFound=this.allSelectedProjects.some((ob)=>ob.PendingapproverEmpNo&&ob.PendingapproverEmpNo.trim() == this.Current_user_ID);
 
 }
 
 
 isProjectSelected(prjcode: any): boolean {
-  return   this.allSelectedProjects.map(x => x.Project_Code).includes(prjcode);
-
+  return this.allSelectedProjects.map(x => x.Project_Code).includes(prjcode);
 }
 
 
@@ -3055,12 +3118,12 @@ isProjectSelected(prjcode: any): boolean {
     this.approvingRequest =[]
     this.allSelectedProjects.forEach((item)=>{
       if( item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
-        this.approvingRequest.push(item)
+        this.approvingRequest.push(item);
         console.log(this.approvingRequest,'this.approvingRequestthis.approvingRequest')
       }
 
-    })
-    this.acceptSelectedValues()
+    });
+    this.acceptSelectedValues();
   }
 
 
@@ -3081,8 +3144,7 @@ isProjectSelected(prjcode: any): boolean {
   }
 
   // approvingRequest = []
-acceptSelectedValues(_comments?:string) {
-
+acceptSelectedValues(_comments?:string) {   debugger
 
 if( this.approvingRequest.length > 0 ){
 
@@ -3097,7 +3159,7 @@ if( this.approvingRequest.length > 0 ){
     // ob.Duration = 0;
   });
 
-  this.approvalservice.NewUpdateAcceptApprovalsService(this.approvingRequest).subscribe(data =>{
+  this.approvalservice.NewUpdateAcceptApprovalsService(this.approvingRequest).subscribe(data =>{  
     console.log(data,"accept-data");
       this.isAllPrjSelected=false;  this.value();
       this.notifyService.showSuccess("Project(s) approved successfully.",'Success');
@@ -3106,7 +3168,8 @@ if( this.approvingRequest.length > 0 ){
       this.allSelectedProjects=[];
 
       this.GetProjectsByUserName(this.type1);
-      this.isapprovlFound = false
+      this.getPinnedProjects();
+      this.isapprovlFound = false;
     if(withCmts){     // close the accept with comments sidebar if approving with comments is on.
         this.closeInfo();
     }
@@ -3132,9 +3195,7 @@ else{
         this.approvingRequest.push(item)
         console.log(this.approvingRequest,'this.approvingRequestthis.approvingRequest')
       }
-
-    })
-
+    });
   }
 
   rejectType: any;
@@ -3228,6 +3289,7 @@ else{
         this.allSelectedProjects=[];
         this.approvingRequest = [];
         this.GetProjectsByUserName(this.type1);
+        this.getPinnedProjects();
         this.isapprovlFound = false;
       });
       // const checkbox = document.getElementById('snocheck') as HTMLInputElement;
@@ -3264,7 +3326,7 @@ else{
 
   const curPagePrjs = this._ProjectDataList.map(x => x.Project_Code);
   this.allSelectedProjects = this.allSelectedProjects.filter(item => {
-    return !curPagePrjs.includes(item.Project_Code)
+    return !curPagePrjs.includes(item.Project_Code);
   });
   // const curPagePrjs = this._ProjectDataList.map(x => x.Project_Code);
   this.allSelectedProjects = this.allSelectedProjects.filter(item => {
@@ -3276,6 +3338,11 @@ else{
   this.isapprovlFound = false
   this.value()
 }
+
+
+
+
+
 
 // Creating portfolio code start
 hideDropdown: boolean;
@@ -3321,7 +3388,7 @@ createNewPortfolio(){
 
 
 
-addPrjsToPortflio() {
+addPrjsToPortflio() {   debugger
 
   if(this.allSelectedProjects.length>0){
 
@@ -3331,11 +3398,11 @@ addPrjsToPortflio() {
     this.Obj_Portfolio_DTO.Modified_By = this.Current_user_ID;
     this.Obj_Portfolio_DTO.Portfolio_ID = 0;
     this.Obj_Portfolio_DTO.Portfolio_Name = this._portfolioName;
-    this.Obj_Portfolio_DTO.SelectedProjects = this.allSelectedProjects
+    this.Obj_Portfolio_DTO.SelectedProjects = this.allSelectedProjects;
     // .map((item)=>({id:item.Project_ID}));
 
     this.service.createPortfolioOfProjects(this.Obj_Portfolio_DTO)
-      .subscribe(data => {
+      .subscribe(data => {   debugger
 
         const _prtfId = data['Portfolio_ID'];
         if(_prtfId !==''){
@@ -3348,7 +3415,7 @@ addPrjsToPortflio() {
           myWindow.focus();
           this.allSelectedProjects=[];
           this.isAllPrjSelected = false
-          this.value()
+          this.value();
         }
     });
 
@@ -3914,7 +3981,7 @@ getNotificationsofprojects(){
     // else if((p.Emp_No==empno || p.Owner == empno)  && (p.Status==='Delay')) {
    //   this.mydelayProjects.push(p);
   // }
-    console.log(this.completionUA,'comple', this.forwardUA,'forward', this.newUA,'newapp',this.cancellationUA ,'cancellationUA')
+    // console.log(this.completionUA,'comple', this.forwardUA,'forward', this.newUA,'newapp',this.cancellationUA ,'cancellationUA')
   });
 }
 
@@ -3957,6 +4024,107 @@ resetScrollPosition(elementId:string){
 
 
 
+// Pin projects    start.
+pinnedProjects:any=[];
+pinnedProjectsCodes:any=[];
+maxPinLimit:number=3;
+pinPrjsLoading:boolean=false;
+isPrjPinning:boolean=false;
+isPrjUnpinning:boolean=false;
+
+
+
+getPinnedProjects(){
+    
+    const empno=this.Current_user_ID;
+    const type='1';
+    const portfolioId=null;
+    this.pinPrjsLoading=true;  // process started.
+    this.service.NewGetPinDetails(empno,type,portfolioId).subscribe((res:any)=>{   console.log('getPinnedProjects:',res);
+       this.pinPrjsLoading=false;  // process ended.
+       if(res)
+       {    
+           this.pinnedProjects=JSON.parse(res.Pinlist);
+           this.pinnedProjectsCodes=this.pinnedProjects.map((ob)=>ob.Project_Code);
+
+            // important for databinding.
+            this.pinnedProjects.forEach((ob)=>{ 
+              ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
+              ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
+              ob.projectMembers=this.getProjectMembersProperty(ob);   // create new property "projectMembers" for displaying RACIS column .
+            });
+            //
+            console.log('pinned projects list:',this.pinnedProjects);
+       }
+    });
+}
+
+addProjectToPinnedList(prjCode:any){
+    if(this.pinnedProjects.length<this.maxPinLimit){ 
+
+      const pinDetailsobj=new ApprovalDTO();
+      pinDetailsobj.Emp_No=this.Current_user_ID;
+      pinDetailsobj.Project_Code=prjCode;
+      pinDetailsobj.isPin=true;
+      pinDetailsobj.PortfolioId=null;
+      pinDetailsobj.d_Portid=null;
+       this.isPrjPinning=true;  // process started.
+      this.approvalservice.NewUpdatePinDetails(pinDetailsobj).subscribe((res:any)=>{   console.log('response after pin:',res);
+       this.isPrjPinning=false;  // process started.
+          if(res&&res.message == 1){  // successfully pinned.   
+            this.getPinnedProjects();  // rebind new pinned projects list.
+            this.notifyService.showSuccess('Added in your pinned list.','Pin Successful'); 
+          }
+          else{ // failure
+            this.notifyService.showError('Unable to pin the project','Failed');  
+          }
+      });
+
+    }
+    else{
+
+      Swal.fire({
+            title:'Cannot Pin Project',
+            text:`You can only pin up to ${this.maxPinLimit} projects.`,
+            showConfirmButton:true,
+            confirmButtonText:'Ok'
+      });
+
+      //  this.notifyService.showError(`You can only pin up to ${this.maxPinLimit} projects`,'Cannot Pin Project');
+    }
+    
+}
+
+removeProjectFromPinnedList(prjCode:any){
+
+      const pinDetailsobj=new ApprovalDTO();
+      pinDetailsobj.Emp_No=this.Current_user_ID;
+      pinDetailsobj.Project_Code=prjCode;
+      pinDetailsobj.isPin=false;
+      pinDetailsobj.PortfolioId=null;
+      pinDetailsobj.d_Portid=null;
+       this.isPrjUnpinning=true; // process started.
+      this.approvalservice.NewUpdatePinDetails(pinDetailsobj).subscribe((res:any)=>{    console.log('res after unpin:',res);
+       this.isPrjUnpinning=false; // process ended.
+            if(res&&res.message==1){
+              // manually from the project from the pinned projects list rather than refetching entire page.
+              this.getPinnedProjects();  // rebind pinned projects list.
+              this.notifyService.showSuccess('','Project Unpinned'); 
+            }else{
+                this.notifyService.showError('Unable to unpin the project','Failed');
+            }
+      });
+
+}
+
+
+
+ 
+
+
+
+
+// Pin projects   end.
 
 
 }

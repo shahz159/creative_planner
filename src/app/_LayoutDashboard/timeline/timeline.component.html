@@ -719,23 +719,22 @@
                                 <span class="fs-8" style="font-weight:500">Accept</span>
                               </button>
                               <div class="dropdown-menu drop-cus" style="margin-top:4px !important; border: 2px solid rgb(30, 197, 180) !important;" >
-                                  <a class="dropdown-item gap-2 align-items-center"  (click)="0">
+                                  <a class="dropdown-item gap-2 align-items-center"  (click)="openMultiDarAcceptRejectSidebar('ACCEPT')">
                                     Accept
                                     <!-- <svg width="15px" height="15px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" style="stroke:  rgb(63 67 70); stroke-width: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <title></title> <g id="checkmark"> <line class="cls-1" x1="3" x2="12" y1="16" y2="25"></line> <line class="cls-1" x1="12" x2="29" y1="25" y2="7"></line> </g> </g></svg> -->
                                   </a>
-                                  <a class="dropdown-item gap-2 align-items-center" (click)="0">
+                                  <a class="dropdown-item gap-2 align-items-center" (click)="openMultiDarAcceptRejectSidebar('ACCEPT_WITH_BONUS')">
                                     Accept with bonus
                                     <!-- <svg style="fill:rgb(63 67 70);" width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M17.093,1.293l-11.2,11.2a.99.99,0,0,0-.242.391l-1.6,4.8A1,1,0,0,0,5,19a1.014,1.014,0,0,0,.316-.051l4.8-1.6a1.006,1.006,0,0,0,.391-.242l11.2-11.2a1,1,0,0,0,0-1.414l-3.2-3.2A1,1,0,0,0,17.093,1.293ZM9.26,15.526l-2.679.893.893-2.679L17.8,3.414,19.586,5.2ZM3,21H20a1,1,0,0,1,0,2H3a1,1,0,0,1,0-2Z"></path></g></svg> -->
                                   </a>
                               </div>
                             </div>
         
-                            <button (click)="0" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
+                            <button (click)="openMultiDarAcceptRejectSidebar('REJECT')" class="btn btn-outline-danger btn-sm fs-7 d-inline-flex gap-1">
                               <span class="fs-8" style="font-weight:500">Reject</span>
                             </button>
                         </div>
                             <span>{{darRequestsSelected&&darRequestsSelected.length}} items selected</span>
-              
                         </div>
 
                         <div class="timeline-scroll px-1 mx-4">
@@ -748,13 +747,13 @@
                       <thead>
                         <tr role="row">
                           <th style="width: 50px; height:30px;" class="text-center" rowspan="1" colspan="1">
-                            <input type="checkbox" class="form-check-input ps-1 btn px-0">
+                            <input [checked]="isPgAllDarsSelected" type="checkbox" class="form-check-input ps-1 btn px-0"  (change)="darReqsSelectAllBtnClicked($event.target.checked)">
                           </th>
                           <th style="width: 100px;" aria-controls="project-4" rowspan="1" colspan="1"
                             aria-sort="ascending" aria-label=": activate to sort column descending">
                             <span style="position:relative; left:-15%; ">Select all</span>
                           </th>
-                          <th rowspan="1" colspan="1" style="width:0px;"> Dar Report </th>
+                          <!-- <th rowspan="1" colspan="1" style="width:0px;"> Dar Report </th> -->
                           <th rowspan="1" colspan="1">Employee Name </th>
                           <th rowspan="1" colspan="1">Company </th>
                           <th rowspan="1" colspan="1">Submitted On</th>
@@ -767,7 +766,7 @@
                         <tr *ngFor="let dreq of darRequestsList; let i=index"  [ngClass]="{'selected':currentDarSection=='DAR_REQUESTS'&&i==selectedDarReqIndex}"  role="row" class="odd project-list_AC">
                        
                           <td align="center">
-                            <input [checked]="darRequestsSelected.includes(dreq.Emp_Rep_No)" type="checkbox" class="form-check-input ps-1 btn px-0 mr-2" (change)="selectDarRequest($event.target.checked,dreq)" />
+                            <input [checked]="isDarRequestSelected(dreq.Emp_Rep_No)" type="checkbox" class="form-check-input ps-1 btn px-0 mr-2" (change)="selectDarRequest($event.target.checked,dreq)" />
                           </td>
                           <td align="center">
                             <div class="d-flex align-items-center">
@@ -796,9 +795,9 @@
                               </a>
                             </div>
                           </td>
-                          <td>
+                          <!-- <td>
                             <p class="kt-widget__title1 mb-0 text-nowrap ">DARReport-{{dreq.Emp_Rep_No}}</p>
-                          </td>
+                          </td> -->
                           <td>
                             <span class="kt-widget__other text-nowrap ">{{dreq.Emp_Name}}</span>
                           </td>
@@ -836,7 +835,7 @@
                         <thead>
                           <tr role="row">
                             <th style="width: 100px;"rowspan="1" colspan="1"></th>
-                            <th rowspan="1" colspan="1">Dar Report</th>
+                            <!-- <th rowspan="1" colspan="1">Dar Report</th> -->
                             <th rowspan="1" colspan="1">Company</th>
                             <th rowspan="1" colspan="1">Name</th>
                             <th rowspan="1" colspan="1">Status</th>
@@ -878,9 +877,9 @@
                                 </a>
                               </div>
                             </td>
-                            <td>
+                            <!-- <td>
                               <p class="kt-widget__title1 mb-0">DARReport-{{dres.Emp_Rep_No}}</p>
-                            </td>
+                            </td> -->
                             <td>
                               <span class="kt-widget__other text-nowrap ">{{dres.Com_Name}}</span>
                             </td>
@@ -888,8 +887,8 @@
                               <span class="kt-widget__other text-nowrap ">{{dres.Emp_Name}}</span>
                             </td>
                             <td>
-                                <span class="kt-widget__other"  [ngClass]="{'Done':dres.DARStatus=='Accepted'||dres.DARStatus=='Bonus Accepted','cancellation':dres.DARStatus=='Rejected'}">
-                                  {{dres.DARStatus}}
+                                <span class="kt-widget__other"  [ngClass]="{'Done':dres.SubmissionType=='Accepted'||dres.SubmissionType=='Bonus Accepted','cancellation':dres.SubmissionType=='Rejected'}">
+                                  {{dres.SubmissionType}}
                                 </span>
                             </td>
                             <td>
@@ -2142,7 +2141,6 @@
         </a>
       </div>
        <div class="container req-form">
-  
         <div class="d-flex gap-1 mb-3 mt-2 px-3">
           <div class="kt-project-info-body w-100">
          
@@ -2210,8 +2208,7 @@
               </div>
             </div>
         </div>
-     </div>
-    
+       </div>
       </div> 
   
       <div class="container req-form dar-achievement-sec">
@@ -2243,7 +2240,7 @@
                  <span class="kt-detail-iconname">Reject</span>
                </div>
        
-                <div class="kt-detail-link" [ngClass]="{'active':darDecision=='ACCEPT_WITH_BONUS'}" (click)="onDarReqDecisionChanged('ACCEPT_WITH_BONUS')">
+                <div class="kt-detail-link d-none" [ngClass]="{'active':darDecision=='ACCEPT_WITH_BONUS'}" (click)="onDarReqDecisionChanged('ACCEPT_WITH_BONUS')">
                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1" class="svg-icon" style="width: 1.2em; height: 1.2em; vertical-align: middle; fill: #007c05; ;overflow: hidden;">
                    <path d="M458.24 376.32 138.24 376.32c-15.36 0-25.6 10.24-25.6 25.6 0 15.36 10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6C483.84 389.12 471.04 376.32 458.24 376.32z"></path>
                    <path d="M458.24 642.56 138.24 642.56c-15.36 0-25.6 10.24-25.6 25.6s10.24 25.6 25.6 25.6l320 0c15.36 0 25.6-10.24 25.6-25.6S471.04 642.56 458.24 642.56z"></path>
@@ -2261,7 +2258,7 @@
             <div class="mb-2">
     
             <div *ngIf="darDecision=='ACCEPT'" class="px-3 text-info mb-2 d-flex flex-column">
-              <span class="text-info fw-medium">* Approve it, to appreciate project team for great work.</span>
+              <span class="text-info fw-medium">* Approve it, to appreciate the project member for great work.</span>
             </div>
     
             <div *ngIf="darDecision=='ACCEPT_WITH_BONUS'" class="px-3 text-info mb-2 d-flex flex-column">
@@ -2276,12 +2273,38 @@
             <div class="kt-pdv">
               <div class="mt-2 px-3">
     
-    
+                <div class="mb-3" *ngIf="darDecision=='REJECT'">
+                  <label>Select Reject Type<span style="color:red">*</span></label>
+                  <ng-select name="darReqRejectType" placeholder="Select Reject Type" id="darReqRejectType" [(ngModel)]="drpercentage"  
+                   [ngClass]="{'error-border':(drpercentage==null||drpercentage==undefined)&&drFormFieldRequired}">
+                        <ng-option [value]="0">Performance Category</ng-option>
+                        <ng-option [value]="10">10%</ng-option>
+                        <ng-option [value]="25">25%</ng-option>
+                        <ng-option [value]="50">50%</ng-option>
+                        <ng-option [value]="75">75%</ng-option>
+                        <ng-option [value]="100">100%</ng-option> 
+                  </ng-select>
+                  <span *ngIf="(drpercentage==null||drpercentage==undefined)&&drFormFieldRequired"  style="color:red">please select reject type.</span> 
+                </div>
+
+                <div class="mb-3" *ngIf="darDecision=='ACCEPT_WITH_BONUS'">
+                  <label>Select Bonus<span style="color:red">*</span></label>
+                  <ng-select name="darReqBonusType" placeholder="Select Bonus" id="darReqBonusType" [(ngModel)]="drpercentage"
+                  [ngClass]="{'error-border':!drpercentage&&drFormFieldRequired}">
+                        <ng-option [value]="10">10%</ng-option>
+                        <ng-option [value]="25">25%</ng-option>
+                        <ng-option [value]="50">50%</ng-option>
+                        <ng-option [value]="75">75%</ng-option>
+                        <ng-option [value]="100">100%</ng-option> 
+                  </ng-select>
+                  <span *ngIf="!drpercentage&&drFormFieldRequired"  style="color:red">please provide bonus.</span> 
+                </div>
+
+              
                 <div class="mb-3">
                   <label>Enter Comments<span style="color:red">*</span></label>
-                  <!-- [ngClass]="{'error-border':!aprv_cmts&&notProvided}"   -->
-                  <textarea placeholder="Enter comments here." [(ngModel)]="aprv_cmts"  id="darReqTextarea" rows="3" class="form-control kt-approval-msg"></textarea>
-                  <!-- <span *ngIf="!aprv_cmts&&notProvided"  style="color:red">please enter your comments</span> -->
+                  <textarea placeholder="Enter comments here." [(ngModel)]="aprv_cmts" [ngClass]="{'error-border':!aprv_cmts&&drFormFieldRequired}" id="darReqTextarea" rows="3" class="form-control kt-approval-msg"></textarea>
+                   <span *ngIf="!aprv_cmts&&drFormFieldRequired"  style="color:red">please enter your comments</span> 
                   <!-- <div *ngIf="cmts_Loading;else prvCmtsLoaded" class="spinner-border spinner-border-sm mt-3 ml-2 d-block" role="status">
                     <span class="sr-only">Loading...</span>
                   </div> -->
@@ -2312,7 +2335,6 @@
               </div>
             </div>
         </div>
-
 
         <div class="mt-3 mx-3">
             <table class="time-table mb-1 border work-archv-report">
@@ -2364,7 +2386,7 @@
     </div>
   </div>
   
-  <!--dar request details view sidebar start-->
+  <!--dar request details view sidebar end-->
 
 
 
@@ -2422,3 +2444,110 @@
   
   
   </ng-template>
+
+
+
+<!--accept multiple DAR request sidebar -->  
+
+
+<div id="multi-dar-acceptreject" class="sideInfobar animate-right">
+  <div class="kt-portlet mb-0">
+    <div class="offcanvas-header d-flex align-items-center justify-content-between kt-portlet__head">
+      <h4 class="m-0">
+          <ng-container *ngIf="selectedDarDecision=='ACCEPT'||selectedDarDecision=='ACCEPT_WITH_BONUS'">Accept DAR Requests</ng-container>
+          <ng-container *ngIf="selectedDarDecision=='REJECT'">Reject DAR Requests</ng-container>
+      </h4>
+      <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info" (click)="closeMultiDarAcceptRejectSidebar()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+          <path fill="none" d="M0 0h24v24H0z"></path>
+          <path
+            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z">
+          </path>
+        </svg>
+      </a>
+    </div>
+    <div class="kt-portlet__body sidehf_scroll scroll-y mb-0">
+      <div class="pb-1">
+        <div class="card-body card-car px-1 pt-1">
+
+          <div class="card card-mid flex-1" style="border:0">
+            <div class="card-header" style="background-color:transparent">
+              <h5 clas="card-title" style="text-align:right;">Selected : {{darRequestsSelected.length}}</h5>
+            </div>
+            <div class="card-body p-0">
+              <div class=" cus-scroll scroll-y">
+                         <table class="time-table collapseTimeline-table  mb-1 border">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%; font-size: 12px;">DAR Report No.</th>
+                                    <th style="width: 30%; font-size: 12px;">Employee Name</th>
+                                    <th style="width: 15%; font-size: 12px;">Submission Date</th>
+                                    <th style="width: 10%; font-size: 12px;">Total Hours Worked</th>
+                                    <th style="width: 10%; font-size: 12px;">Total Hours Allotted</th>
+                                    <th style="width: 30%; font-size: 12px;">Company</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of darRequestsSelected; let i=index;"  class="dar-record-item">
+                                    <td>{{i+1}}</td>
+                                    <td>{{item.Emp_Name}}</td>
+                                    <td>{{item.SubmissionDate}}</td>
+                                    <td>{{item.TotalHoursWorked}}</td>
+                                    <td>{{item.TotalNoOfWorkingHours}}</td>
+                                    <td>{{item.Com_Name}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pl-2 pt-3">
+
+
+         <div *ngIf="selectedDarDecision=='ACCEPT_WITH_BONUS'" class="mb-3">
+            <label>Select Bonus Type<span style="color:red">*</span></label>
+            <ng-select name="multidarReqBonusType" placeholder="Select Bonus Type" id="multidarReqBonusType" [(ngModel)]="darReqbonusPercentage"  
+                   [ngClass]="{'error-border':(!darReqbonusPercentage&&drFormFieldRequired2)}">
+                <ng-option [value]="10">10%</ng-option>
+                <ng-option [value]="25">25%</ng-option>
+                <ng-option [value]="50">50%</ng-option>
+                <ng-option [value]="75">75%</ng-option>
+                <ng-option [value]="100">100%</ng-option> 
+            </ng-select>
+            <span *ngIf="(!darReqbonusPercentage&&drFormFieldRequired2)" style="color:red">please select bonus type.</span> 
+         </div>
+
+         <div *ngIf="selectedDarDecision=='REJECT'" class="mb-3">
+            <label>Select Reject Type<span style="color:red">*</span></label>
+            <ng-select name="multidarReqRejectType" placeholder="Select Reject Type" id="multidarReqRejectType" [(ngModel)]="darReqRejectPercentage"  
+                   [ngClass]="{'error-border':(darReqRejectPercentage==null||darReqRejectPercentage==undefined)&&drFormFieldRequired2}">
+                <ng-option [value]="0">Performance Category</ng-option>  
+                <ng-option [value]="10">10%</ng-option>
+                <ng-option [value]="25">25%</ng-option>
+                <ng-option [value]="50">50%</ng-option>
+                <ng-option [value]="75">75%</ng-option>
+                <ng-option [value]="100">100%</ng-option> 
+            </ng-select>
+            <span *ngIf="(darReqRejectPercentage==null||darReqRejectPercentage==undefined)&&drFormFieldRequired2"  style="color:red">please select reject type.</span> 
+         </div>
+
+
+         <div class="mb-3">
+            <label>Enter Comments<span style="color: red;">*</span></label>
+            <textarea [(ngModel)]="multi_aprvcmts" placeholder="Enter comments here." rows="3" [ngClass]="{'error-border':!(multi_aprvcmts&&multi_aprvcmts.trim())&&drFormFieldRequired2}" class="form-control kt-approval-msg  ng-valid" style="height: 127px;"></textarea>
+            <span *ngIf="!(multi_aprvcmts&&multi_aprvcmts.trim())&&drFormFieldRequired2"  style="color:red">please enter your comments</span> 
+         </div>
+     </div>
+    </div>
+    <div class="kt-portlet__foot py-3 d-flex justify-content-end gap-1">
+      <button class="btn btn-secondary mr-2" (click)="closeMultiDarAcceptRejectSidebar()">Close</button>
+      <button type="submit" class="btn btn-info" (click)="onSubmitDarRequestsResult()">Submit</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!--accept multiple DAR request sidebar-->

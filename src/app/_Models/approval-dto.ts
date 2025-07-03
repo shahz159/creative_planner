@@ -81,4 +81,32 @@ export class ApprovalDTO {
     ExitentryCompany:any;
 // specially in leave email generation context
 
+
+// Timeline DAR approval approve/reject
+    emp_rep_no:string;
+    submittedby:string;
+    submittedto:string;
+    submitdate:string;
+    ReportDate:string;
+    DARStatus:string;
+    status:string;
+    percentage:number;
+//
+
+
+//specially used in Pin functionality
+  Emp_No:string;
+  PortfolioId:number;
+  d_Portid:string;
+  isPin:boolean;
+  type:string;
+  portid:number|null;
+//
+
+  // specially used in stream groups
+    groupName:string;
+    gid:number;
+    Schedule_id:number;
+  //
+
 }

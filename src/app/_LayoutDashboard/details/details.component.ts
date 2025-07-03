@@ -193,7 +193,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   noActvy4NDays:number=-1;
   prjResHasActions:boolean=false;   // project responsible has actions or not.
   actnsWithoutProgress:any[]=[];   // actions with no progress since their start date in the project.
-
+  imagesOrigin:string='https://yrglobaldocuments.blob.core.windows.net/userprofileimages/';
+   
 
 
 
@@ -276,7 +277,9 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     this.timearrays();
     this.getRejectType();
     this.getusermeetings();
-    this.GetProjectAndsubtashDrpforCalender();   
+    this.GetProjectAndsubtashDrpforCalender();  
+    this.getGroupListByPid();   // fetches group list where this project is linked.
+     
 
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate() - 1);
     this.disablePreviousDate.setHours(0,0,0,0);
@@ -1360,21 +1363,51 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 
+getRelativeDateString(date: Date): string {
+  let dstr = '';
+  const daysDiff = moment(new Date()).diff(date, 'days');
+
+  if (daysDiff < 0) return 'In the future';
+
+  if (daysDiff === 0) {
+    dstr = 'Today';
+  } else if (daysDiff === 1) {
+    dstr = 'Yesterday';
+  } else if (daysDiff < 7) {
+    dstr = `${daysDiff} days ago`;
+  } else {
+    const units = [
+      { type: 'year', value: 365 },
+      { type: 'month', value: 30 },
+      { type: 'week', value: 7 },
+    ];
+
+    for (let unit of units) {
+      const quotient = Math.floor(daysDiff / unit.value);
+      if (quotient === 1) {
+        dstr = `1 ${unit.type} ago`;
+        break;
+      } else if (quotient > 1) {
+        dstr = `${quotient} ${unit.type}s ago`;
+        break;
+      }
+    }
+  }
+
+  return dstr;
+}
+
+
+
+
+
   prjRunFor:number=0;
-  uniqueName:any
-  uniqueNamesArray:any
-  firstthreeRecords:any
-  firstRecords:any
-  secondRecords:any
-  thirdRecords:any
-  newArray:any
   uniqueSet :any
   uniqueOwner:any
   uniqueNamesArray1:any
   PeopleOnProject:any;
-
   nonRacisList:any=[];
-
+  projectMembers:any=[];
 
   GetPeopleDatils(){
 
@@ -1385,27 +1418,25 @@ export class DetailsComponent implements OnInit, AfterViewInit {
           this.Project_List = JSON.parse(data[0]['RacisList']);
           console.log(this.Project_List,"dddddd")
 
-          this.uniqueName = new Set(this.Project_List.map(record => record.RACIS));
-          const uniqueNamesArray = [...this.uniqueName];
-
-          this.newArray = uniqueNamesArray.slice(3);
-          this.firstthreeRecords = uniqueNamesArray.slice(0, 3);
-
-            this.firstRecords=this.firstthreeRecords[0]?this.firstthreeRecords[0][0].split(' ')[0]:'';
-            this.secondRecords=this.firstthreeRecords[1]?this.firstthreeRecords[1][0].split(' ')[0]:'';
-            this.thirdRecords=this.firstthreeRecords[2]?this.firstthreeRecords[2][0].split(' ')[0]:'';
-
 // If project has project auditor
           const prj_auditor=this.Project_List.find((item)=>item.Role==='Auditor');
           if(prj_auditor){
             this.projectAuditor={empName:prj_auditor.RACIS, empNo:prj_auditor.Emp_No};
           }
 // If project has project auditor
-debugger
+
           this.PeopleOnProject=Array.from(new Set(this.Project_List.map(item=>item.Emp_No))).map((emp:any)=>{
 
+            // Math.abs(moment(new Date(result[0].AddedDate)).diff(new Date(),'days'))
             const result=this.Project_List.filter(item=>item.Emp_No===emp);
-            const obj:any={Emp_Name:result[0].RACIS, Emp_No:result[0].Emp_No, Role:result.map(item=>item.Role).join(', '), isActive:result[0].isActive};
+            const obj:any={ Emp_Name:result[0].RACIS, 
+                            Emp_No:result[0].Emp_No, 
+                            Role:result.map(item=>item.Role).join(', '), 
+                            isActive:result[0].isActive, 
+                            UserProfile:result[0].UserProfile, 
+                            AddedDate:result[0].AddedDate,  
+                            relativeDate:moment(new Date()).diff(new Date(result[0].AddedDate),'days')
+                          };
             if(this.Subtask_Res_List){
               const p=this.Subtask_Res_List.find(item=>item.Team_Res==result[0].Emp_No);
               if(p){
@@ -1428,6 +1459,9 @@ debugger
 
             return obj;
           });
+
+
+
 
 // sorting people based on active or inactive
           const active_emp=this.PeopleOnProject.filter(item=>item.isActive);
@@ -1538,6 +1572,7 @@ debugger
    this.arrangeActivitiesBy(filterConfig.activityType,filterConfig.byEmp);
    else
    this.arrangeActivitiesBy('all','all');
+
    this.emps_of_actvs=Array.from(new Set(this.Activity_List.map(_actv=>_actv.Modifiedby)));
    this.actvs_types=Array.from(new Set(this.Activity_List.map(_actv=>_actv._type)));
 
@@ -1561,7 +1596,33 @@ debugger
         }
         this.activitiesLoading=false;  // end the loading.
       });
+
   }
+
+
+ tryGettingUserImageByName(userName:string):string|null{
+    let imageUrl:string|null=null;
+    if(this.PeopleOnProject&&userName){
+   
+    const userObj=this.PeopleOnProject.find((userobj)=>{
+       if(userobj){
+         const username=userobj.Emp_Name.slice(0,userobj.Emp_Name.indexOf('(')).trim();
+         return username.toLowerCase()==userName.trim().toLocaleLowerCase();
+       }
+       else 
+       return false;
+     });
+
+     if(userObj&&userObj.UserProfile)
+     imageUrl=this.imagesOrigin+userObj.UserProfile;
+     else 
+     imageUrl=null;
+
+    }
+    
+    return imageUrl;
+ }
+
 
 
   ActionActivity_List:any=[];
@@ -2565,7 +2626,7 @@ multipleback(){
           this.newResponsible = (this.revert_json[0]['newResp']);
           this.forwardto = (this.revert_json[0]['Forwardedto']);
           this.forwardfrom = (this.revert_json[0]['Forwardedfrom']);
-        }
+        }  
         if (this.requestType == 'Project Complete' || this.requestType == 'ToDo Achieved'||this.requestType == 'Project Audit') {
           this.complete_List = JSON.parse(this.requestDetails[0]['completeDoc']);
           if (this.complete_List != "" && this.complete_List != undefined && this.complete_List != null) {
@@ -3934,8 +3995,10 @@ actionCompleted(){
 
 // for given new project start date, are there any actions starting earlier to such date?
 const inputPrjStartdate=new Date(this.Start_Date);
+inputPrjStartdate.setHours(0,0,0,0);
 const actnsBeforePrjStart=(this.projectActionInfo && this.projectActionInfo.length>0)?this.projectActionInfo.filter((actn:any)=>{
-   const actnStartdate=new Date(actn.StartDate);  
+   const actnStartdate=new Date(actn.StartDate); 
+    actnStartdate.setHours(0,0,0,0);
    return inputPrjStartdate>actnStartdate;
 }):[];
 const invaildPrjStartdate=actnsBeforePrjStart.length>0;
@@ -3943,8 +4006,10 @@ const invaildPrjStartdate=actnsBeforePrjStart.length>0;
 
 // for given new project deadline date, are there any actions starting beyond such date?
 const inputPrjEnddate=new Date(this.End_Date);
+inputPrjEnddate.setHours(0,0,0,0);
 const actnsAfterPrjdeadline=(this.projectActionInfo && this.projectActionInfo.length>0)?this.projectActionInfo.filter((actn:any)=>{
     const actnStartdate=new Date(actn.StartDate);  
+    actnStartdate.setHours(0,0,0,0);
     return actnStartdate>inputPrjEnddate;
 }):[];
 const invaildPrjEnddate=actnsAfterPrjdeadline.length>0;
@@ -4961,8 +5026,9 @@ check_allocation() {
 
 
  submitDar(){
-
+  debugger
    const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
+   const isPrjStdRoutineDaily=(['003','008'].includes(this.projectInfo.Project_Block)&&this.projectInfo.SubmissionId==1);
 
    if(
    ((isPrjCoreSecondary&&this.showaction)?this.actionCode:true)&&
@@ -4970,7 +5036,8 @@ check_allocation() {
    this.starttime&&
    this.endtime&&
    this.dateF&&
-   (this.starttime.value<this.endtime.value)
+   (this.starttime.value<this.endtime.value)&&
+   (isPrjStdRoutineDaily?(((this.endtime.value-this.starttime.value)/(1000*60))<=this.remainingSRTime):true)
   // &&((isPrjCoreSecondary&&this.actionCode&&this.bothActTlSubm)?(this._remarks&&(this.proState?this.selectedFile:true)):true)
    ){
     // if all mandatory fields are provided.
@@ -8813,8 +8880,8 @@ holdcontinue(Pcode:any){
 
       } else if (response.dismiss === Swal.DismissReason.cancel) {
         Swal.fire(
-          'Cancelled',
-          'Project not cancelled',
+          'No Changes Made',
+          'Project is not cancelled',
           'error'
         )
         this.closePrjCancelSb();
@@ -12966,13 +13033,13 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
     this.ObjSubTaskDTO.sort = 'custom';
     this.tmReportLoading=true;
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-      (data => {
+      (data => {   debugger
         this.tmReportLoading=false;
         console.log(data);
         if(data&&data[0].DAR_Details_Json){
              const dar_json=JSON.parse(data[0].DAR_Details_Json);
-             if(dar_json&&dar_json[0]){
-debugger
+             if(dar_json&&dar_json[0]){ 
+
               // all timelines submitted on selected date.
               this.tmReportArr=dar_json[0].Dardata;
               this.submittedTimelines=this.tmReportArr.map((obj)=>({ starttime:obj.starttime, endtime:obj.endtime }));
@@ -13002,8 +13069,6 @@ debugger
               const [hrs,mins]=dar_json[0].TotalDuration.split(':');
               this.tmReportTotalDuration={hours:hrs,minutes:mins};
 
-
-
             // adding 'duration' property to show timing in more easy way on the view.
               this.tmReportArr.forEach(ob=>{
                 const k=/00:\d\d/.test(ob.Duration);
@@ -13013,7 +13078,33 @@ debugger
               });
 
             }
+
         }
+
+
+
+          // calculation of 'remainingSRTime' for Standard / Routine task (Daily) projects.
+              if((this.projectInfo.Project_Block=='003'||this.projectInfo.Project_Block=='008')&&this.projectInfo.SubmissionId==1){
+                const h=Number.parseInt(this.projectInfo.StandardAllocatedHours.split(':')[0]);
+                const m=Number.parseInt(this.projectInfo.StandardAllocatedHours.split(':')[1]);
+                const pmax_alhr=h+(m/60);   // standard/routine project's planned allocated hrs value.  (daily max hrs)
+               
+                const hrSpendOnPrj=this.tmReportArr.reduce((sum,item)=>{    
+                    if(item.project_code==this.projectInfo.Project_Code){
+                      const h=Number.parseInt(item.Duration.split(':')[0]);
+                      const m=Number.parseInt(item.Duration.split(':')[1]);
+                      const ralhr=h+(m/60);
+                      return sum+ralhr;
+                    }
+                    else 
+                      return sum;
+                 },0);
+
+                this.remainingSRTime=(pmax_alhr-hrSpendOnPrj)*60;   console.log('SRTime:',this.remainingSRTime);
+              }
+              else{  this.remainingSRTime=0;   }
+           //
+
       });
   }
 }
@@ -13514,6 +13605,7 @@ rp_processing:boolean=false;
 rp_formFieldsRequired:boolean=false;
 
 onPrjReopenBtnClicked(){
+    
 
     Swal.fire({
       title:'Reopen Project',
@@ -13525,10 +13617,12 @@ onPrjReopenBtnClicked(){
     }).then((choice)=>{
 
        if(choice.isConfirmed){
-           
-          if(this.projectInfo.Status=='Completed'){
-           
-            Swal.fire({
+            
+         if(['001','002'].includes(this.projectInfo.Project_Block)&&this.projectInfo.Status=='Completed')
+         {    //  if project type is core, secondary with status completed. 
+          // (options dialog)
+
+             Swal.fire({
               title:'Choose an Option',
               html:`<div style="text-align: justify;">
                      <div style="font-weight: 500;">How would you like to reopen the project?</div>
@@ -13539,9 +13633,14 @@ onPrjReopenBtnClicked(){
                    </div>`,
               showCancelButton:true,
               showConfirmButton:true,
+              showCloseButton:true,
+              customClass:{
+                closeButton:'swal-close-btn'
+              },
               confirmButtonText:'Add Action & Reopen',
-              cancelButtonText:'Just Reopen'
-             }).then((choice2)=>{
+              cancelButtonText:'Just Reopen',
+              cancelButtonColor:'#3085d6'
+             }).then((choice2)=>{  
                  if(choice2.isConfirmed){
                   this.showSideBar();     // reopening project by creating a new action inside it.
                  }
@@ -13551,16 +13650,23 @@ onPrjReopenBtnClicked(){
                    
              });
 
-          }
-          else if(this.projectInfo.Status=='Cancelled'){
-             this.openPrjReopenSideBar();    // reopen project directly
-          }
-
+         }
+         else if(
+                 (['001','002'].includes(this.projectInfo.Project_Block)&&this.projectInfo.Status=='Cancelled')||
+                 (['003','008','011'].includes(this.projectInfo.Project_Block)&&['Completed','Cancelled'].includes(this.projectInfo.Status))         
+              ){ 
+           /**  
+            *  if project type is core, secondary but with status cancelled.
+            *  if project type is std, routine, todo with status either completed or cancelled.
+            */
+          // (reopen project directly)
+          this.openPrjReopenSideBar();      
+         }
+         
        }
 
     });
 }
-
 
 openPrjReopenSideBar() {
   document.getElementById("prj-reopen-sidebar").classList.add("kt-quick-active--on");
@@ -13572,6 +13678,7 @@ openPrjReopenSideBar() {
   const cdate=new Date();  cdate.setHours(0,0,0,0);
   this.prjReopenDeadlineRequired=pdeadline<cdate;
 }
+
 closePrjReopenSideBar() {
 
   this.rp_remarks='';
@@ -13581,12 +13688,12 @@ closePrjReopenSideBar() {
   this.rp_processing=false;
   this.rp_sfile=null;
   this.rp_sfilename='';
+  this.prjReopenDeadlineRequired=false;
   
   document.getElementById("prj-reopen-sidebar").classList.remove("kt-quick-active--on");
   document.getElementById("newdetails").classList.remove("position-fixed");
   document.getElementById("rightbar-overlay").style.display = "none";
 }
-
 
 
 onRPFileChange(e){
@@ -13612,18 +13719,36 @@ onRPFileChange(e){
 e.target.value = '';
 }
 
-
-onProjectReopenSubmit(){
+onProjectReopenSubmit(){  debugger
   if((this.rp_remarks&&this.rp_remarks.trim())&&(this.prjReopenDeadlineRequired?this.rp_newDeadline:true)){
 
-    // service call here
+      const _project_Code=this.projectInfo.Project_Code;
+      const _empNo=this.Current_user_ID;
+      const _type=this.projectInfo.Status=='Completed'?'1':this.projectInfo.Status=='Cancelled'?'2':'';
+      const _deadline=this.prjReopenDeadlineRequired?(this.datepipe.transform(this.rp_newDeadline.toDate(),'dd-MM-yyyy')):null;
+      const _remarks=this.rp_remarks;
+ 
+     this.rp_processing=true;  // process started.
+     this.projectMoreDetailsService.NewUpdateProjectReopen(_project_Code,_empNo,_type,_remarks,_deadline).subscribe((res:any)=>{
+          console.log("after preopen:",res);
+          if(res&&res.message==1){
+              this.notifyService.showSuccess("Project Reopen successfully.","Success");
+              this.getProjectDetails(this.URL_ProjectCode);  // rebind project data on page.
+              this.getapprovalStats();   // rebind approval data also.  
+              // this.getstandardapprovalStats();   
+              this.closePrjReopenSideBar();  // close the sidebar.
+          }
+          else{
+              this.notifyService.showError("Something went wrong!","Failed");
+          }
+      this.rp_processing=false; // process ended.    
+     });
       
   }
   else{
     this.rp_formFieldsRequired=true; 
   }
 }
-
 
 
 // project reopen functionality  end.
@@ -13725,6 +13850,179 @@ onActionReopenSubmit(){
 }
 
 // action reopen functionality end.
+
+
+// Standard/Routine (Daily submission) allocated hrs timeline validation.   start
+remainingSRTime:number=0;   // "remainingSRTime" plays important role in standard/routine( daily type) projects timing submission.
+
+
+
+
+
+// Standard/Routine (Daily submission) allocated hrs timeline validation.   end
+
+
+// project group (stream groups)   start.
+
+userStreamGroups:any=[];
+loadingUserStreamGroups:boolean=false;
+newGroupName:string;
+groupNameAlreadyExists:boolean=false;
+groupNameInvalid:boolean=false;
+projectConnectedToGroup:number[]=[]; // group ids. groups to which the project is connected/linked.
+
+onStreamGroupBtnClicked(){
+  this.getUserStreamGroups();  // Fetch all stream groups of the current user.
+}
+
+getUserStreamGroups(config:{showLoader:boolean}={showLoader:true}){
+    const empNo=this.Current_user_ID;
+    if(config.showLoader){
+       this.loadingUserStreamGroups=true;  // process started
+    }
+    this.service.NewGetGroups(empNo).subscribe((res:any)=>{
+     this.loadingUserStreamGroups=false;  // process ended   
+     if(res&&res.groupList){
+        this.userStreamGroups=JSON.parse(res.groupList);
+     }
+   });
+}
+
+
+onNewGroupBtnClicked(){
+    document.getElementById('create-new-group-dv').classList.remove('d-none');
+    document.getElementById('create-new-group-btn').classList.add('d-none');
+}
+
+closeCreateNewGroup(){
+    document.getElementById('create-new-group-dv').classList.add('d-none');
+    document.getElementById('create-new-group-btn').classList.remove('d-none');
+    this.groupNameAlreadyExists=false;
+    this.groupNameInvalid=false;
+    this.newGroupName='';
+}
+
+
+onAddNewGroupBtnClicked(){  
+      this.groupNameAlreadyExists=this.isGroupNameTaken(this.newGroupName);
+
+      if(this.newGroupName&&this.newGroupName.trim()&&this.groupNameAlreadyExists==false){
+         this.groupNameInvalid=false;
+         this.createNewGroup();
+      }
+      else{
+         this.groupNameInvalid=true;
+      }
+  }
+
+isGroupNameTaken(groupName:string):boolean{
+    let isNameTaken=false;
+     if(groupName&&groupName.trim()){
+       isNameTaken=this.userStreamGroups.some((_group)=>{  
+             return _group.groupname?(_group.groupname.trim().toLowerCase()==groupName.trim().toLocaleLowerCase()):false;
+        });  
+     } 
+     return isNameTaken;
+}
+
+
+
+createNewGroup(){   
+
+      const groupName=this.newGroupName;
+
+      this.approvalObj.Emp_No=this.Current_user_ID;
+      this.approvalObj.groupName=groupName;
+      this.approvalObj.type='1';
+      this.approvalObj.gid=null;
+
+      this.service.NewCreateEditGroup(this.approvalObj).subscribe((res:any)=>{  console.log('create new group res:',res);
+       if(res&&res.message == 1){
+          this.notifyService.showSuccess(`Group '${groupName}' created successfully.`,'Success');
+          this.getUserStreamGroups({showLoader:false});  // rebind groups without loading spinner.
+          this.closeCreateNewGroup();  // to close dropdown and clear input data.
+       }
+       else{
+          this.notifyService.showError('Unable to create group.','Failed');
+       }
+      });
+  }
+
+
+  addProjectToGroup(groupId:number,groupName:string){    debugger
+    
+    const sgroup_name=groupName;
+
+    const grpDto=new ApprovalDTO();
+    grpDto.Emp_No = this.Current_user_ID;
+    grpDto.gid = groupId;
+    grpDto.type = '1';
+    grpDto.Project_Code = this.projectInfo.Project_Code;
+    grpDto.PortfolioId = null;
+    grpDto.Schedule_id = null;
+
+     this.service.NewUpdateGroup(grpDto).subscribe((res:any)=>{ console.log('add project to group res:',res);
+          if(res&&res.message==1){
+            this.notifyService.showSuccess(`Project added to the group '${sgroup_name}' successfully.`,'Success');
+            this.getUserStreamGroups({showLoader:false});  ////rebind stream groups of the user. 
+            this.getGroupListByPid();  // rebind.  ( to which groups this project now after removal is linked)
+          }
+          else{
+             this.notifyService.showError(`Unable to add project to '${sgroup_name}'. `,'Failed');
+          }
+     })
+  }
+
+  removeProjectFromGroup(groupId:number,groupName:string){   debugger
+    const sgroup_name=groupName;
+
+    const grpDto=new ApprovalDTO();
+    grpDto.Emp_No = this.Current_user_ID;
+    grpDto.gid = groupId;
+    grpDto.type = '2';
+    grpDto.Project_Code = this.projectInfo.Project_Code;
+    grpDto.PortfolioId = null;
+    grpDto.Schedule_id = null;
+
+     this.service.NewUpdateGroup(grpDto).subscribe((res:any)=>{
+          if(res&&res.message==1){
+            this.notifyService.showSuccess(`Project removed from the group '${sgroup_name}' successfully.`,'Success');
+            this.getUserStreamGroups({showLoader:false});  //rebind stream groups of the user. 
+            this.getGroupListByPid();  // rebind.  ( to which groups this project now after removal is linked)
+          }
+          else{
+             this.notifyService.showError(`Unable to remove project from the group '${sgroup_name}'.`,'Failed');
+          }
+     })
+
+
+  }
+
+
+
+  getGroupListByPid(){
+
+    this.projectConnectedToGroup=[];   // erase prev data if present.
+
+     const groupDto = new ApprovalDTO();
+     groupDto.Emp_No = this.Current_user_ID;
+     groupDto.Project_Code = this.URL_ProjectCode;
+     groupDto.PortfolioId = null;
+     groupDto.Schedule_id = null;
+      this.service.NewValidateGroupDetails(groupDto).subscribe((res:any)=>{  console.log('group list:',res);
+        if(res&&res.groupList){
+             const linkedGroups=JSON.parse(res.groupList);
+             this.projectConnectedToGroup=linkedGroups.map(ob=>ob.gid);
+        }
+      });
+  }
+
+
+
+
+
+// project group (stream groups)   end.
+
 
 }
 

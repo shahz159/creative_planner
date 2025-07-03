@@ -295,7 +295,7 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
 
 
   Email_GenerateAs(emailOf:'NEW_LEAVE'|'MANAGER_APPROVE'|'MANAGER_REJECT'|'HR_APPROVE_CASUAL'|'HR_APPROVE_LOCAL'|'HR_APPROVE_INTERNATIONAL'|'HR_REJECT', leaveEmailInfo:ApprovalDTO){
-debugger
+
       // SAME INPUTS props to all
     this.obj_approvalDTO.leaveid=leaveEmailInfo.leaveid;
     this.obj_approvalDTO.leavename=leaveEmailInfo.leavename;
@@ -344,6 +344,42 @@ debugger
 
     return this.http.post(this.rootUrl+controllerPath,this.obj_approvalDTO);
   }
+
+
+
+
+  NewUpdateTimelineReport(darReqResult:ApprovalDTO){
+    this.obj_approvalDTO.emp_rep_no=darReqResult.emp_rep_no;
+    this.obj_approvalDTO.submittedby=darReqResult.submittedby;
+    this.obj_approvalDTO.submittedto=darReqResult.submittedto;
+    this.obj_approvalDTO.submitdate=darReqResult.submitdate;
+    this.obj_approvalDTO.Remarks=darReqResult.Remarks;
+    this.obj_approvalDTO.ReportDate=darReqResult.ReportDate;
+    this.obj_approvalDTO.DARStatus=darReqResult.DARStatus;
+    this.obj_approvalDTO.status=darReqResult.status;
+    this.obj_approvalDTO.percentage=darReqResult.percentage;
+
+    return this.http.post(this.rootUrl+'ApprovalAPI/NewUpdateTimelineReport',this.obj_approvalDTO);
+  }
+
+
+
+ NewUpdatePinDetails(pinDetails:ApprovalDTO){    debugger
+
+    this.obj_approvalDTO.Emp_No=pinDetails.Emp_No;
+    this.obj_approvalDTO.PortfolioId=pinDetails.PortfolioId;
+    this.obj_approvalDTO.Project_Code=pinDetails.Project_Code;
+    this.obj_approvalDTO.d_Portid=pinDetails.d_Portid;
+    this.obj_approvalDTO.isPin=pinDetails.isPin;
+
+    return this.http.post(this.rootUrl+'Projects/NewUpdatePinDetails',this.obj_approvalDTO);
+ }
+
+
+
+
+
+
 
 
 }

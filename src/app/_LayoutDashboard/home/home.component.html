@@ -875,7 +875,24 @@
                         
                             <div class="n-portfolio-container" id="grid-view-div">
                                 <div id="portfolios-grid-view" class="n-portfolio-ul" >
-                                    <div class="n-portfolio-li" *ngFor="let item of _ListProjStat ;let i=index">
+
+                                     <!-- <ng-container *ngFor="let pinnedPortfolio of pinnedPortfolios ;let i=index">
+                                          <ng-container [ngTemplateOutlet]="portfolioGridItem" [ngTemplateOutletContext]="{ Item:pinnedPortfolio, Index:i, isPin:true }"></ng-container>
+                                     </ng-container>
+                                     <ng-container *ngFor="let portfolio of _ListProjStat;let i=index">
+                                       <ng-container *ngIf="pinnedPortfoliosIds.includes(portfolio.Portfolio_ID)==false">
+                                          <ng-container [ngTemplateOutlet]="portfolioGridItem" [ngTemplateOutletContext]="{ Item:portfolio, Index:i, isPin:false }"></ng-container>
+                                       </ng-container>
+                                    </ng-container> -->
+
+
+
+                                     <ng-container *ngFor="let portfolio of _ListProjStat;let i=index">
+                                        <ng-container [ngTemplateOutlet]="portfolioGridItem" [ngTemplateOutletContext]="{ Item:portfolio, Index:i, isPin:false }"></ng-container>
+                                     </ng-container>
+                                     <ng-template #portfolioGridItem  let-item="Item"  let-i="Index" let-isPinned="isPin">
+                                      
+                                      <div class="n-portfolio-li">
                                         <div class="n-portfolio-head"  [ngClass]="getStatusClass(item.Status)">
                                             <div class="n-portfolio-title"   (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
                                                 {{item.Portfolio_Name}}
@@ -1052,11 +1069,16 @@
                                             </div>
                                             <div class="n-portfolio-action">
                                                 <div class="p-g-more btn-group">
-                                                    <div data-toggle="dropdown" title="Click to delete the portfolio" class="btn btn-more" aria-haspopup="true" aria-expanded="false" (click)="_deletePortfolio(item.Portfolio_ID,item.Portfolio_Name,item.Created_By,item.Created_DT,item.ProjectsCount,item.Status)">
+                                                    <!-- <div class="btn btn-more pin-btn" [title]="isPinned?'Click to unpin this portfolio':'Click to pin this portfolio'" (click)="isPinned?removePortfolioFromPinnedList(item):addPortfolioToPinnedList(item)">
+                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="bi bi-pin-angle-fill prj-pin-svg" [ngClass]="{'active':isPinned}">
+                                                                <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"></path>
+                                                            </svg>
+                                                    </div> -->
+                                                    <div data-toggle="dropdown" title="Click to delete this portfolio" class="btn btn-more" aria-haspopup="true" aria-expanded="false" (click)="_deletePortfolio(item.Portfolio_ID,item.Portfolio_Name,item.Created_By,item.Created_DT,item.ProjectsCount,item.Status)">
                                                         <!-- <svg fill="currentColor" height="64px" width="64px" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path class="cls-1" d="M8,6.5A1.5,1.5,0,1,1,6.5,8,1.5,1.5,0,0,1,8,6.5ZM.5,8A1.5,1.5,0,1,0,2,6.5,1.5,1.5,0,0,0,.5,8Zm12,0A1.5,1.5,0,1,0,14,6.5,1.5,1.5,0,0,0,12.5,8Z"></path> </g></svg> -->
                                                         <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M18.8332 8.5L18.3732 15.3991C18.1962 18.054 18.1077 19.3815 17.2427 20.1907C16.3777 21 15.0473 21 12.3865 21H11.6132C8.95235 21 7.62195 21 6.75694 20.1907C5.89194 19.3815 5.80344 18.054 5.62644 15.3991L5.1665 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M9.5 11L10 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M14.5 11L14 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <path d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6" stroke="currentColor" stroke-width="1.5"></path> </g></svg>
 
-                                                      </div>
+                                                    </div>
                                                     <!-- <div class="dropdown-menu dropdown-menu-right">
                                                         <div class="dropdown-item" type="button"   (click)="_deletePortfolio(item.Portfolio_ID,item.Portfolio_Name,item.Created_By,item.Created_DT,item.ProjectsCount,item.Status)">
                                                             <span class="p-g-more-item-icon">
@@ -1069,7 +1091,10 @@
 
                                             </div>
                                         </div>
-                                    </div>
+                                      </div>
+
+                                     </ng-template>
+
                                 </div>
                                 <div  class="" *ngIf="this._ListProjStat == null&&(showing !== true)">
                                   <div class="no-c">
@@ -1090,7 +1115,7 @@
                                 <div class="kt-portlet mb-0"  *ngIf="_ListProjStat&&_ListProjStat.length > 0">
                                     <div class="kt-portlet-header">
                                         <div class="p-h-icon">
-                                          Favorite  <!-- <svg xmlns="http://www.w3.org/2000/svg" id="Portfolio" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" ><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path><path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor"></path></g></svg> -->
+                                            <!-- <svg xmlns="http://www.w3.org/2000/svg" id="Portfolio" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" ><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path><path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor"></path></g></svg> -->
                                         </div>
                                         <div class="p-h-name">Name</div>
                                         <div class="p-h-datetime">Date & Time</div>
@@ -1101,10 +1126,38 @@
                                     </div>
                                     <div class="kt-portlet-body">
                                         <div id="portfolios-list-view" class="folder-item-scroll">
-                                            <div class="folder-item" *ngFor="let item of _ListProjStat ;let i=index">
+
+<!-- 
+                                            <ng-container *ngFor="let pinnedPortfolio of pinnedPortfolios ;let i=index">
+                                                <ng-container [ngTemplateOutlet]="portfolioListItem"
+                                                    [ngTemplateOutletContext]="{ Item:pinnedPortfolio, Index:i, isPin:true }"></ng-container>
+                                            </ng-container>
+                                            <ng-container *ngFor="let portfolio of _ListProjStat ;let i=index">
+                                                <ng-container *ngIf="pinnedPortfoliosIds.includes(portfolio.Portfolio_ID)==false">
+                                                    <ng-container [ngTemplateOutlet]="portfolioListItem"
+                                                        [ngTemplateOutletContext]="{ Item:portfolio, Index:i, isPin:false }"></ng-container>
+                                                </ng-container>
+                                            </ng-container> -->
+
+
+
+                                           <ng-container *ngFor="let portfolio of _ListProjStat;let i=index">
+                                              <ng-container [ngTemplateOutlet]="portfolioListItem" [ngTemplateOutletContext]="{ Item:portfolio, Index:i, isPin:false }"></ng-container>
+                                           </ng-container>
+
+                                           <ng-template #portfolioListItem  let-item="Item"  let-i="Index" let-isPinned="isPin">
+                                            <div class="folder-item" >
                                                 <div class="p-b-icon"  >
                                                     <!-- <svg xmlns="http://www.w3.org/2000/svg" id="Portfolio" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" ><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="currentColor"></path><path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="currentColor"></path></g></svg> -->
                                                     <!-- <svg fill="currentColor" width="16px" height="16px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">  <path class="clr-i-solid clr-i-solid-path-1" d="M34,16.78a2.22,2.22,0,0,0-1.29-4l-9-.34a.23.23,0,0,1-.2-.15L20.4,3.89a2.22,2.22,0,0,0-4.17,0l-3.1,8.43a.23.23,0,0,1-.2.15l-9,.34a2.22,2.22,0,0,0-1.29,4l7.06,5.55a.23.23,0,0,1,.08.24L7.35,31.21a2.22,2.22,0,0,0,3.38,2.45l7.46-5a.22.22,0,0,1,.25,0l7.46,5a2.2,2.2,0,0,0,2.55,0,2.2,2.2,0,0,0,.83-2.4l-2.45-8.64a.22.22,0,0,1,.08-.24Z"></path> <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect> </g></svg> -->
+
+
+                                                    <!-- <a tabindex="0" class="btn px-0 mr-2 mb-0 ml-1 info-btn curser-pointer pin-btn" role="button" placement="right" data-trigger="focus" data-toggle="tooltip"   [title]="'click to pin this project'"
+                                                            (click)="isPinned?removePortfolioFromPinnedList(item):addPortfolioToPinnedList(item)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="bi bi-pin-angle-fill prj-pin-svg" [ngClass]="{'active':isPinned}">
+                                                                <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"></path>
+                                                            </svg>
+                                                    </a> -->
 
 
 
@@ -1112,12 +1165,12 @@
                                                     (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite)">
                                                     <i   class="flaticon-star " *ngIf="item.Created_By == Current_user_ID"
                                                         [ngStyle]="{'color':item.IsFavourite=== true ? '#ffc30f' : 'ccc'}"></i>
-                                                </a>
-                                                <a  class="pointer" *ngIf="item.Created_By != Current_user_ID"
-                                                (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
-                                                <i  class="flaticon-star " *ngIf="item.Created_By != Current_user_ID"
-                                                    [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
-                                                </a>
+                                                    </a>
+                                                   <a  class="pointer" *ngIf="item.Created_By != Current_user_ID"
+                                                    (click)="AddFavourites(item.Portfolio_ID,item.IsFavourite1)">
+                                                    <i  class="flaticon-star " *ngIf="item.Created_By != Current_user_ID"
+                                                       [ngStyle]="{'color':item.IsFavourite1=== true ? '#ffc30f' : 'ccc'}"></i>
+                                                    </a>
 
                                                   </div>
                                                 <div class="p-b-name pointer" (click)="OnCardClick(item.Portfolio_ID,item.Portfolio_Name,item.CreatedName)">
@@ -1279,6 +1332,8 @@
                                                       </div> -->
                                                 </div>
                                             </div>
+                                           </ng-template>
+
                                         </div>
 
                                     </div>

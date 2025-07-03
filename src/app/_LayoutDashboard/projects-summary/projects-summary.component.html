@@ -100,14 +100,15 @@
                             Page <span class="badge badge-pill badge-primary">
                                 {{CurrentPageNo}}</span>
                         </div> -->
-
-                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo - 1; applyFilters();this.edited=false; this.currentUA=null;  clearAllCheckboxes();  " [disabled]="CurrentPageNo==1">
+<!-- clearAllCheckboxes(); -->
+                        <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"     
+                            (click)="CurrentPageNo = CurrentPageNo - 1; applyFilters();this.edited=false; this.currentUA=null;        " [disabled]="CurrentPageNo==1">
                             <i class="fas fa-angle-left mr-0"></i>
                         </button>
                         <!-- [ngClass]="_CurrentpageRecords<30 ? 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1 not-allowed' : 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1'" -->
+<!-- clearAllCheckboxes(); -->
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters();this.edited=false; this.currentUA=null; clearAllCheckboxes();"
+                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters();this.edited=false; this.currentUA=null;        "
                             [disabled]="_CurrentpageRecords<30||(_CurrentpageRecords*CurrentPageNo)>_totalProjectsCount">
                             <i class="fas fa-angle-right mr-0"></i></button>
                         <div class="mr-1">
@@ -225,7 +226,7 @@
 
 
                                             <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
-                                        </div>
+                                              </div>
 
 
                                               <!-- <div class="col-md-3 bd-right">
@@ -440,7 +441,7 @@
 
 
                                             <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
-                                        </div>
+                                              </div>
 
 
 
@@ -450,7 +451,7 @@
 
 
 
-                                                <div class="col-md-3 bd-right d-none">
+                                                <!-- <div class="col-md-3 bd-right d-none">
                                                   <p><strong>Status</strong></p>
                                                     <div class="count-height">
 
@@ -475,27 +476,9 @@
                                                         </div>
                                                     </ng-container>
 
-                                                        <!-- <div>
-                                                            <input type="checkbox" id="cancelcheck" class="form-check-input ps-1 btn" [(ngModel)]="isChecked" (click)="onCheckboxClick(Type)">
-                                                            <label *ngIf="Type==type1 && isChecked==false" class="text-dark-50"> check to view RACIS cancelled projects</label>
-                                                            <label *ngIf="Type==type2  && isChecked==false" class="text-dark-50"> check to view All cancelled projects</label>
-                                                            <label *ngIf="Type==type1  && isChecked==true" class="text-danger"> uncheck to view RACIS projects</label>
-                                                            <label *ngIf="Type==type2  && isChecked==true" class="text-danger"> uncheck to view All projects</label>
-                                                        </div> -->
                                                     </div>
-                                                    <!-- <div    class="selected-options">
-                                                      <ng-container *ngFor="let item of StatusCountFilter">
-                                                      <div  class="selected-options-item" *ngIf="selectedStatus.includes(item.Name)" >
-                                                        {{item.Name}}
-                                                          <span class="selected-options-item-remove" (click)="onStatusSelected(false,item.Name)">
-                                                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 1em; height: 1em;vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">
-                                                                  <path d="M960 154.24L869.76 64 512 421.76 154.24 64 64 154.24 421.76 512 64 869.76 154.24 960 512 602.24 869.76 960 960 869.76 602.24 512z" fill="currentColor"/>
-                                                              </svg>
-                                                          </span>
-                                                      </div>
-                                                    </ng-container>
-                                                    </div> -->
-                                                </div>
+                                                   
+                                                </div> -->
 
 
 
@@ -543,7 +526,7 @@
                                                           </span><span style="margin-left: auto;">{{emp.Count}}</span></div>
                                                       </mat-option>
 
-                                                 </mat-autocomplete>
+                                                   </mat-autocomplete>
                                                 </mat-form-field>
 
 
@@ -551,19 +534,8 @@
 
 
 
-
-
-
                                               <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
-                                          </div>
-
-
-
-
-
-
-
-
+                                               </div>
 
 
                                             </div>
@@ -1163,10 +1135,6 @@
                           </div>
                              </div>
 
-
-
-
-
                                 <div class="row mt-2">
                                     <div class="col-sm-12">
 
@@ -1566,8 +1534,47 @@
                                             </thead>
                                             <tbody>
                                                 <!-- filter:Emp_value|filter:ProjectTyp_value|filter:Status_value  | grdFilterPipe: {Project_Name: searchText}-->
-                                                <tr role="row" class="odd project-list_AC"
-                                                    *ngFor="let item of _ProjectDataList;let i=index;" [class.active]="item.isActive">
+
+                                <!--new structure-->
+
+                                        <ng-container *ngIf="(pinnedProjects&&pinnedProjects.length>0)">
+                                                <!-- <tr>
+                                                <td colspan="10" style="z-index:6">
+                                                    <div class="pin-projects-notf">
+                                                        <div class="pin-msg-btn-icon">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                                <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"></path>
+                                                            </svg>
+                                                        </div> 
+                                                       You have total {{pinnedProjects.length}} pinned projects.
+                                                    </div>
+                                                 </td>
+                                                </tr> -->
+                                                <ng-container *ngFor="let item of pinnedProjects;let i=index">
+                                                    <ng-container *ngIf="searchResult?(item.Project_Name.toLowerCase().trim().includes(searchText.toLowerCase().trim()) ):true">
+                                                    <ng-container
+                                                    *ngIf="edited?(
+
+                                                    (comToselect.length>0?( comToselect.includes(item.Emp_Comp_No) ):true)&&
+                                                    (emplyToselect.length>0?( emplyToselect.includes(item.Emp_No)  ):true)&&
+                                                    (projtypeToselect.length>0?( projtypeToselect.includes(item.Project_Block)  ):true)&&
+                                                    (enterStatus.length>0?( enterStatus.includes(item.Status)  ):true)
+                                                    
+                                                    ):true">
+                                                         <ng-container [ngTemplateOutlet]="pTableRow" [ngTemplateOutletContext]="{Item:item,Index:i,isPin:true}"></ng-container>
+                                                    </ng-container>
+                                                   </ng-container>
+                                                </ng-container>
+                                        </ng-container>
+
+                                         <ng-container *ngFor="let item of _ProjectDataList;let i=index">
+                                             <ng-container *ngIf="pinnedProjectsCodes.includes(item.Project_Code)==false">
+                                                <ng-container [ngTemplateOutlet]="pTableRow" [ngTemplateOutletContext]="{ Item:item,Index:i,isPin:false}"></ng-container>
+                                             </ng-container>
+                                        </ng-container>
+
+                                        <ng-template #pTableRow  let-item="Item" let-i="Index" let-isPinned="isPin">
+                                                 <tr role="row" class="odd project-list_AC" [class.active]="item.isActive">
                                                     <!-- Information Icon -->
 
                                                     <!--ctrl btn start-->
@@ -1575,13 +1582,11 @@
                                                         <div class="d-flex align-items-center ">
 
                                                           <mat-list-item class="mr-2">
-
                                                             <mat-checkbox color="primary"   [checked]="isProjectSelected(item.Project_Code)"
                                                             (change)="selectUnSelectProject($event,item)"></mat-checkbox>
-
                                                           </mat-list-item>
 
-                                                            <a tabindex="0" class="btn px-0 mr-2 mb-0 ml-2 info-btn curser-pointer" role="button" placement="right"
+                                                            <a tabindex="0" class="btn px-0 mr-1 mb-0 ml-2 info-btn curser-pointer" role="button" placement="right"
                                                             data-trigger="focus" data-toggle="tooltip" title="Click to view the project info" (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
@@ -1603,13 +1608,13 @@
                                                                     C5.851,8.973,6.34,9.48,6.326,10.056C6.312,10.657,5.838,11.117,5.236,11.112z"/>
                                                             </g>
                                                             </svg>
-                                                        </a>
+                                                           </a>
 
                                                         <!-- <a tabindex="0" class="btn px-0 mr-2 curser-pointer"  role="button" placement="right"
                                                             data-trigger="focus"  data-toggle="tooltip" title="More Info!">
                                                             <i class="fa fa-chart-bar info-icon-cir" (click)="moreDetails(item.Project_Code)"></i>
                                                         </a> -->
-                                                        <a tabindex="0" class="btn px-0 mr-2 info-btn curser-pointer"  role="button" placement="right"
+                                                        <a tabindex="0" class="btn px-0 mr-1 ml-1 info-btn curser-pointer"  role="button" placement="right"
                                                             data-trigger="focus"  data-toggle="tooltip" title="Click to view the project dashboard" (click)="newDetails(item.Project_Code)">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                             viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
@@ -1633,6 +1638,13 @@
 
                                                          </svg>
                                                         </a>
+
+                                                        <button [disabled]="(pinPrjsLoading||isPrjPinning||isPrjUnpinning)" tabindex="0" class="btn px-0 mr-2 mb-0 ml-1 info-btn" role="button" placement="right" data-trigger="focus" data-toggle="tooltip"   [title]="(pinPrjsLoading==false&&isPrjPinning==false&&isPrjUnpinning==false)?(isPinned?'click to unpin this project':'click to pin this project'):''"
+                                                            (click)="isPinned?removeProjectFromPinnedList(item.Project_Code):addProjectToPinnedList(item.Project_Code)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="bi bi-pin-angle-fill prj-pin-svg" [ngClass]="{'active':isPinned}">
+                                                                <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"></path>
+                                                            </svg>
+                                                        </button>
 
                                                         <ng-containeer *ngIf="item.availableports!=null && item.availableports!=undefined; else prtfolio">
                                                             <div class="port-info-btn ml-2"  [title]="subtashDrpLoading?'loading...':'Click to view the linked portfolio'" (click)="subtashDrpLoading==false?_OpenfortfolioInfo1(item.Project_Code,item.Project_Name,item.id):0"  [ngStyle]="{'cursor':subtashDrpLoading?'wait':'pointer'}"   >
@@ -1676,6 +1688,8 @@
                                                                     src="./assets/images/Image (4).jfif"
                                                                     [title]="IsTotalMemosListLoading?'loading...':'Not Linked'"></a>
                                                         </ng-template>
+     
+                                                           
                                                         </div>
                                                     </td>
                                                     <!--ctrl btn start-->
@@ -1718,7 +1732,7 @@
 
                                                     <!--responsible start-->
                                                     <td  [ngClass]="{'d-none':!isrespon}"  class="responclass">
-                                                      <div class="kt-widget__other"   title="{{item.Emp_First_Name}}">
+                                                      <div class="kt-widget__other" title="{{item.Emp_First_Name}}">
                                                       {{ item.Team_Res }}
                                                       </div>
 
@@ -2154,13 +2168,15 @@
                                                               </span>
                                                           </div>
                                                           <div *ngIf="item.Status=='Completed'" class="attach-tippy-div">
-                                                              <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">Completed</span>
-                                                              <span class="attach-tippy">
+                                                             <div class="d-flex">
+                                                               <span class="Completed_color font-weight-400  curser-pointer " (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">Completed</span>
+                                                               <span class="attach-tippy">
                                                                   <b *ngIf="item.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)"></b>
                                                               <span class="st-line curser-pointer" (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
                                                                  <div style="width: max-content;">Approved by: <h6>{{item.Approvedby}} </h6></div>
                                                                   <div>on: {{item.completedate | date: 'dd-MM-yyyy'}}</div></span>
-                                                              </span>
+                                                               </span>
+                                                              </div>
 
                                                               <span class="New_Approval_Project font-weight-400">
                                                                   {{item.Approvedby}}
@@ -2250,60 +2266,54 @@
                                                   <!--last update end-->  
 
                                                   <!--racis start-->
-                                                    <td  [ngClass]="{'d-none':!isracis}" class="racisClass"  data-toggle="tooltip" data-placement="top"
-                                                        title="RACIS">
+                                                    <td  [ngClass]="{'d-none':!isracis}" class="racisClass"  data-toggle="tooltip" data-placement="top">
                                                         <div class="kt-widget__details">
                                                             <div class="kt-section__content kt-section__content--solid">
                                                               <div class="kt-media-group">
-                                                                <!-- href="javascript:void(0)"
 
-                                                            (click)="OpenDARinfo(item.Project_Code)"
-                                                                      <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                                  <img alt="image" src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/31/thumbs/298200_Thumbnail.jpeg">
-                                                                </a> -->
-                                                                  <!-- <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/user2.png" alt="image"> -->
+                                                          
 
-                                                                <a *ngIf="item.Owner!=item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner:{{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                                  <span>{{item.Owner}}</span>
-                                                                </a>
-                                                                <a *ngIf="item.Owner==item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Support: {{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                                    <span>{{item.Owner}}</span>
-                                                                </a>
-                                                                <!-- <a *ngIf="item.Owner==item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Informer: {{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                                    <span>{{item.Owner}}</span>
-                                                                </a>  && item.Owner!=item.Informer && item.Owner!=item.Informer
-                                                                <a *ngIf="item.Owner==item.Coord" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Owner & Coordinator: {{item.Project_Owner}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                                    <span>{{item.Owner}}</span>
-                                                                </a> -->
-                                                                <!-- <a *ngIf="item.Resp!=item.Autho && item.Resp==item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Informer: {{item.Team_Res}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                                  <span>{{item.Resp}}</span>  && item.Resp!=item.Informer
-                                                                </a> -->
-                                                                <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible: {{item.Team_Res}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                                    <span>{{item.Resp}}</span>
-                                                                  </a>
-                                                                <a *ngIf="item.Resp!=item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Authority: {{item.Authority}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                                  <span>{{item.Autho}}</span>
-                                                                </a>
-                                                                <a *ngIf="item.Resp==item.Autho" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Responsible & Authority: {{item.Authority}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                                    <span>{{item.Autho}}</span>
-                                                                  </a>
-                                                                <!-- <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator:{{item.Team_Coor}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                                    <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/user2.png" alt="image">
-                                                                    <span>{{item.Coord}}</span>
-                                                                  </a>
-                                                                <a data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Informer:{{item.Team_Informer}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                                    <img src="https://yrglobaldocuments.blob.core.windows.net/documents/Users/user2.png" alt="image">
-                                                                    <span>{{item.Informer}}</span>
-                                                                  </a> -->
-                                                                  <a *ngIf="item.Owner!=item.Support" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Support: {{item.Team_Support}}" data-original-title="John Myer" class="kt-media kt-media--sm kt-media--circle">
-                                                                    <span>{{item.Support}}</span>
-                                                                  </a>
-                                                                <a *ngIf="item.Coord==item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator & Informer: {{item.Team_Coor}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
-                                                                  <span>1+</span>
-                                                                </a>
-                                                                <a *ngIf="item.Coord!=item.Informer" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="Coordinator: {{item.Team_Coor}} & Informer: {{item.Team_Informer}} " data-original-title="Micheal York" class="kt-media kt-media--sm kt-media--circle">
-                                                                    <span>1+</span>
-                                                                  </a>
+                                                              <ng-container *ngFor="let pmember of item.projectMembers.slice(0,3)">
+                                                                <div class="dropdown racis-user-circle">
+                                                                    <a data-toggle="dropdown" class="kt-media kt-media--sm kt-media--circle user-circle-btn"  [matTooltip]="pmember.Emp_Name+' ('+pmember.Role+')'">
+                                                                        <img *ngIf="pmember.Emp_Image" class="user-circle-img" [src]="pmember.Emp_Image"/>
+                                                                        <span *ngIf="!pmember.Emp_Image">{{pmember.Emp_Name[0]}}</span>
+                                                                    </a>
+                                                                    <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl px-3 racis-user-drpdwn">
+                                                                            <div class="d-flex justify-content-center mb-2">
+                                                                                <img *ngIf="pmember.Emp_Image" class="usr-profile-pc" [src]="pmember.Emp_Image">
+                                                                                <img *ngIf="!pmember.Emp_Image" class="usr-profile-pc" src="assets/images/user-icon.png"/>
+                                                                            </div>
+                                                                            <div class="d-flex flex-column">
+                                                                                <label class="fs-8 mb-0 usr-n">{{pmember.Emp_Name}}</label>
+                                                                                <small class="fs-9 usr-role">{{pmember.Role}}</small>
+                                                                            </div>
+                                                                    </div>
+                                                                </div>
+                                                            </ng-container>
+                                                             
+                                                            <div *ngIf="item.projectMembers.length>3"  class="dropdown racis-user-circle">
+                                                                    <a data-toggle="dropdown" class="kt-media kt-media--sm kt-media--circle user-circle-btn" [matTooltip]="(item.projectMembers.length-3)+' more members'">
+                                                                        <span>{{item.projectMembers.length-3}}+</span>
+                                                                    </a>
+                                                                    <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl px-0 py-0 racis-user-drpdwn">
+                                                                         <div class="all-usrs-sec">
+                                                                            <div class="usr-dv" *ngFor="let opmember of item.projectMembers.slice(3)">
+                                                                                <div class="d-flex justify-content-center mb-2">
+                                                                                 <img *ngIf="opmember.Emp_Image" class="usr-profile-pc" [src]="opmember.Emp_Image">
+                                                                                 <img *ngIf="!opmember.Emp_Image" class="usr-profile-pc" src="assets/images/user-icon.png"/>
+                                                                                </div>
+                                                                                <div class="d-flex flex-column align-items-start">
+                                                                                    <label class="fs-8 mb-0 usr-n">{{opmember.Emp_Name}}</label>
+                                                                                    <small class="fs-9 usr-role">{{opmember.Role}}</small>
+                                                                                </div> 
+                                                                            </div>
+                                                                         </div>
+                                                                    </div>
+                                                            </div>
+                   
+
+                                                                
                                                               </div>
                                                             </div>
                                                             <span class="pin-icn d-none">
@@ -2349,6 +2359,11 @@
                                                         </div>
                                                     </td> -->
                                                 </tr>
+                                        </ng-template>
+                                                  
+
+                                  <!--new structure-->          
+
                                             </tbody>
                                         </table>
                                         </div>

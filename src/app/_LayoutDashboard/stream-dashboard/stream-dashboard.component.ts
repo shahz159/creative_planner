@@ -328,6 +328,8 @@ export class StreamDashboardComponent implements OnInit {
    
       this.scheduleItems = JSON.parse(data['Scheduledtime']);
       console.log(this.scheduleItems, "Calendar Data 1");
+
+
       this.scheduleItems.forEach((day, index, arr) => {
         day.Events.forEach(event => {
           if (new Date(event.endTime).getDate() !== new Date(event.startTime).getDate()) {
@@ -364,7 +366,7 @@ export class StreamDashboardComponent implements OnInit {
       };
   });
   
-debugger
+
   if (this.scheduleItems.length == 10) {
     this.scheduleItems.pop();
   } 
@@ -376,10 +378,13 @@ debugger
 
    if( this.scheduleItems.some(data => data.Schedule_date <  this.today)){
         this.scheduleItems.shift(); 
-    }
+      }
+
+
+    
+    console.log(this.scheduleItems, "Calendar Data 2",this.today);
   });
 
-    console.log(this.scheduleItems, "Calendar Data 2");
   }
 
 
