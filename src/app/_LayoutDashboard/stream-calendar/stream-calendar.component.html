@@ -148,7 +148,7 @@
                     </mat-card>
                 </div>
                 <hr class="kt-calendar-hr">
-                <div class="kt-list-nav">
+                <div class="kt-list-nav d-none">
                     <div class="kt-list-label">My Calender</div>
                     <div class="kt-list-nav-main-cal-scroll">
                         <div class="kt-list-nav-item" (click)="sortMeetingCalender(0)" for="checkallmeetings">
@@ -217,6 +217,69 @@
                             </span>
                             <label class="kt-list-nav-item-label" for="checkrejectedmeetings">Rejected meetings</label>
                         </div> -->
+                    </div>
+                </div>
+                <div class="kt-list-nav">
+                    <div class="kt-calendar-search w-100 mb-2">
+                        <div class="calendar-search-field">    
+                            <svg (click)="filterMeetingsOnIconClick()" width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11ZM11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C13.125 20 15.078 19.2635 16.6177 18.0319L20.2929 21.7071C20.6834 22.0976 21.3166 22.0976 21.7071 21.7071C22.0976 21.3166 22.0976 20.6834 21.7071 20.2929L18.0319 16.6177C19.2635 15.078 20 13.125 20 11C20 6.02944 15.9706 2 11 2Z"
+                                        fill="#000000"></path>
+                                </g>
+                            </svg>
+                            <input type="search" autocomplete="off" name="search dew"   placeholder="Search"
+                                class="form-control right-flter-bd  border-0    " />
+                        </div>
+                    </div> 
+                    <div class="kt-list-nav-user">
+                        <div class="kt-list-nav-user-item">
+                            <div class="user-info active">
+                                <div class="user-icon">
+                                    <img src="https://yrglobaldocuments.blob.core.windows.net/userprofileimages/Users/1780/thumbs/289676_was.jpg">
+                                </div>
+                                <div class="user-group">
+                                    <div class="user-name">Waseem  Akram </div>
+                                    <div class="user-role">Jr. Dot Net Developer</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kt-list-nav-user-item">
+                            <div class="user-info">
+                                <div class="user-icon">
+                                    <img src="https://cswebapps.com/creativeplanner/assets/images/user-icon.png">
+                                </div>
+                                <div class="user-group">
+                                    <div class="user-name">Md Sahil </div>
+                                    <div class="user-role">Jr. Dot Net Developer</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kt-list-nav-user-item">
+                            <div class="user-info">
+                                <div class="user-icon">
+                                    <img src="https://yrglobaldocuments.blob.core.windows.net/userprofileimages/Users/1564/thumbs/511346_53a1309baf214900531ec85f10cabf64.jpg">
+                                </div>
+                                <div class="user-group">
+                                    <div class="user-name">Siva Nanendla</div>
+                                    <div class="user-role">UI/UX Designer</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kt-list-nav-user-item">
+                            <div class="user-info">
+                                <div class="user-icon">
+                                    <img src="https://yrglobaldocuments.blob.core.windows.net/userprofileimages/Users/2195/thumbs/697107_T7G4D4ZV0-U0685P6KMFC-5c1af4bf028a-512.jpg">
+                                </div>
+                                <div class="user-group">
+                                    <div class="user-name">Srujan Annam</div>
+                                    <div class="user-role">Frontend Developer</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

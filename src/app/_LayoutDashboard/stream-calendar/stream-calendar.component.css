@@ -5958,6 +5958,59 @@ button.btn.btn-viewall {
     padding: 0px;
     margin-right: 2rem;
 }
+
 button.btn.btn-viewall:hover {
     text-decoration: underline;
+}
+
+.kt-calendar-left {
+    max-width: 246px;
+}
+.kt-list-nav-user-item {
+    margin-bottom: 2px;
+}
+
+.kt-list-nav-user-item .user-info {
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.kt-list-nav-user-item .user-info.active{
+    background-color: #e2eaff;
+}
+
+.kt-list-nav-user-item .user-info:hover:not(.active)  {
+    background-color: #ededed;
+}
+.kt-list-nav-user-item .user-group{
+    line-height: 1.2;
+}
+.kt-list-nav-user-item .user-icon img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.kt-list-nav-user-item .user-name {
+    color: #494949;
+    font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.kt-list-nav-user-item .user-role {
+    font-size: 11px;
+    color: #717171;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }

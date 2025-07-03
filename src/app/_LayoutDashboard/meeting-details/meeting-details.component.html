@@ -934,6 +934,7 @@
                                                                         <div class="muted-title">Start time</div>
                                                                     </div>
                                                                     <div class="kt-metric-timeline">
+                                                                        <div class="meet-time-line" style=" width: 60%;"></div>
                                                                         <div class="z-index-1 d-flex">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" width="17"
                                                                                 height="18" viewBox="0 0 17 18" fill="none">
@@ -3345,7 +3346,11 @@
                                                     <div class="user-icon" >{{data.Initials}}</div>
                                                     <span>
                                                         <div class="user-name">{{data.Emp_Name}}
-                    
+                                                            <span class="user-time">2 mins</span>
+                                                            </div>
+                                                            <div>
+                                                                <span class="user-role">Team Leader</span> <span
+                                                                    class="user-company">Devbox Software Pvt.ltd.</span>
                                                             </div>
                                                         </span>
                                                 </div>
@@ -3370,12 +3375,19 @@
                                             <ul class="attendees-note-userlist" >
                                                 <li class="attendees-note-user" *ngFor="let data of AllAttendees_notes">
                                                     <!-- <ng-container *ngIf="data.Meeting_notes !== ''"> -->
-                                                    <div class="user-info">
-                                                        <div class="user-icon" >{{data.Initials}}</div>
-                                                        <span>
-                                                            <div class="user-name">{{data.Emp_Name}}</div>
+                                                 
+                                                    <div class="user-info" >
+                                                    <div class="user-icon" >{{data.Initials}}</div>
+                                                    <span>
+                                                        <div class="user-name">{{data.Emp_Name}}
+                                                            <span class="user-time">2 mins</span>
+                                                            </div>
+                                                            <div>
+                                                                <span class="user-role">Team Leader</span> <span
+                                                                    class="user-company">Devbox Software Pvt.ltd.</span>
+                                                            </div>
                                                         </span>
-                                                    </div>
+                                                </div>
                                                     <div class="user-notes">
                                                         <p [innerHTML]="data.Meeting_notes"></p>
                                                     </div>
@@ -4445,8 +4457,80 @@
                         </div>
                     </li>
                 </ng-container>
+                <div class="ov-card-ul">
+                    <div class="ov-card-li">
+                        <div class="ov-card-group">
+                            <div class="ov-card-control">
+                                <div class="ov-card-type">Seconary task</div>
+                                <div class="ov-card-title">Project approval action approval test</div>
+                                <div class="ov-card-details">
+                                    <span>Waseem Akram</span>
+                                    <span>|</span>
+                                    <span>12 Actions</span>
+                                </div>
+                            </div>
+                            <div class="ov-card-status">
+                                <div class="ov-card-type-status">completed</div>
+                                <div class="ov-card-time">23-05-2025</div>
+                                <div class="ov-card-exp">
+                                    <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 1124.14 1256.39">
+                                        <path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path>
+                                        <path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path>
+                                    </svg>
+                                    <span>75.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ov-card-delete">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                    </div>
+                </div>
                     <li class="kt-nav__item px-4">
-                        <div class="kt-inbox mt-0 scrollbar1" *ngIf="_MemosSubjectList&&_MemosSubjectList[0].MailId!=0 ; else DMsNotFound">
+                       
+
+
+
+
+                        <!-- <div id="DemoList-table">
+                            <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].MailId!=0 ; else DMsNotFound" >
+                            <div class="demo" *ngFor="let memo of _MemosSubjectList">
+
+                                <div>
+                                    <div>
+                                        <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
+                                    </div>
+                                   
+                                </div>
+                                <69!-- <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i> --69>
+                                <ng-container *ngIf="Meetingstatuscom==Completed">
+                                <ng-container *ngIf="Isadmin==true">
+                                <ng-container *ngFor="let item of EventScheduledjson">
+                                    <ng-container *ngIf="item.Recurrence==='Do not repeat'">
+                                        <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i>
+                                    </ng-container>
+                                <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
+                                <i class="fas fa-trash-alt p-2" (click)="DmsDeleteEvent(memo.MailId)"   data-target="#confirmpopup" data-toggle="modal" ></i>
+                                </ng-container>
+                                </ng-container>
+                                </ng-container>
+                            </ng-container>
+                            </div>
+                        </ng-container>
+                        </div> -->
+
+                        <ng-template #DMsNotFound >
+                            <div class="no-DMS-found">
+                                <img src="./assets/images/noDMSFound.png" class="no-DMS-found-image" />
+                                <div class="bnk-txt mt-2 d-flex justify-content-center">
+                                    <h3 class="blank-txt no-DMS-found-label fs-3">Memo not found.</h3>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </li>
+                    <li class="kt-nav__foot"></li>
+                </ul>
+                 <div class="kt-inbox mt-0 scrollbar1" *ngIf="_MemosSubjectList&&_MemosSubjectList[0].MailId!=0 ; else DMsNotFound">
                             <div class="kt-inbox__list kt-inbox__list--shown ml-0 p-3">
                                 <div class="kt-inbox__items flex-grow-1" data-type="inbox">
                                     <div class="card brdr-5 shadow-sm" *ngFor="let memo of _MemosSubjectList; let i=index">
@@ -4502,48 +4586,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
-                        <!-- <div id="DemoList-table">
-                            <ng-container *ngIf="_MemosSubjectList&&_MemosSubjectList[0].MailId!=0 ; else DMsNotFound" >
-                            <div class="demo" *ngFor="let memo of _MemosSubjectList">
-
-                                <div>
-                                    <div>
-                                        <a href="javascript:void(0)" (click)="openUrl(memo.Url)">{{memo.Subject}}</a>
-                                    </div>
-                                   
-                                </div>
-                                <69!-- <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i> --69>
-                                <ng-container *ngIf="Meetingstatuscom==Completed">
-                                <ng-container *ngIf="Isadmin==true">
-                                <ng-container *ngFor="let item of EventScheduledjson">
-                                    <ng-container *ngIf="item.Recurrence==='Do not repeat'">
-                                        <i class="fas fa-trash-alt p-2" (click)="deleteMemos(memo.MailId)"></i>
-                                    </ng-container>
-                                <ng-container *ngIf="item.Recurrence!=='Do not repeat'">
-                                <i class="fas fa-trash-alt p-2" (click)="DmsDeleteEvent(memo.MailId)"   data-target="#confirmpopup" data-toggle="modal" ></i>
-                                </ng-container>
-                                </ng-container>
-                                </ng-container>
-                            </ng-container>
-                            </div>
-                        </ng-container>
-                        </div> -->
-
-                        <ng-template #DMsNotFound >
-                            <div class="no-DMS-found">
-                                <img src="./assets/images/noDMSFound.png" class="no-DMS-found-image" />
-                                <div class="bnk-txt mt-2 d-flex justify-content-center">
-                                    <h3 class="blank-txt no-DMS-found-label fs-3">Memo not found.</h3>
-                                </div>
-                            </div>
-                        </ng-template>
-                    </li>
-                    <li class="kt-nav__foot"></li>
-                </ul>
             </div>
         </div>
 
@@ -10668,7 +10710,7 @@
                 </div>
 
                 <div class="Activity_Log_vh kt-portlet__body kt-portlet__body_scroll">
-                    <div class="kt-chat__messages" *ngFor="let item of allActivityList">
+                    <div class="kt-chat__messages">
                     <!-- <ng-container *ngIf="activitiesLoading;else GotActivitiesResult">
                         <div class="sidebar-content-loading">
                             <div class="spinner-border text-secondary" style="width:40px; height:40px;" role="status">
@@ -10678,7 +10720,7 @@
                     </ng-container> -->
                 
                         <div class="timeline">
-                            <div class="timeline-item">
+                            <div class="timeline-item" *ngFor="let item of allActivityList">
                                 <div class="timeline-line w-40px">
                                 </div>
                                 <div class="timeline-icon symbol symbol-circle symbol-40px ng-star-inserted">
