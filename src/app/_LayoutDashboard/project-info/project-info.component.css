@@ -2192,3 +2192,45 @@ input.search-input {
 
 
 /* project modal dialog box end*/
+
+
+.PA-details-sec
+{
+    max-height: calc(100vh - 200px);
+    height: auto;
+    overflow-y: auto;
+    /* scrollbar-width: thin; */
+}
+
+
+.PA-details-sec::-webkit-scrollbar{
+  width:5px;
+}
+
+.PA-details-sec::-webkit-scrollbar-thumb{
+    background-color: #cecece;
+    border-radius: 15px;
+}
+
+.PA-details-sec::-webkit-scrollbar-thumb:hover{
+   background-color: #b8b8b8;
+}
+
+.PA-details-sec::-webkit-scrollbar-track{
+   background-color: transparent;
+}
+
+
+.gray-cus
+{
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    color: #656267 !important;
+}
+
+
+.st-line.audit-pending-sincetooltip
+{
+  min-width:15.5rem !important;
+  transform: translate3d(-30px, 28px, 0px) !important;
+}

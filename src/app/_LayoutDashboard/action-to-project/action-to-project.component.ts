@@ -1167,7 +1167,7 @@ startActionCreation=async()=>{
      else {
        fd.append("Attachment", "false");
        fd.append('file', "");
-     }
+     }   
      fd.append("_MasterCode", this.ObjSubTaskDTO.MasterCode);
      fd.append("SubtaskName", this.Sub_ProjectName.trim());
      fd.append("Desc", this._Description);
@@ -1184,6 +1184,7 @@ startActionCreation=async()=>{
      fd.append("proState",this.completionattachment.toString());
      fd.append("actionCost",this.actionCost);
      fd.append("contentType",this.contentType);
+
 
      if (this.ObjSubTaskDTO.Duration != null) {
        fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());

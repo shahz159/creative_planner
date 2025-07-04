@@ -953,6 +953,57 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
                     //
 
 
+
+
+                    // show popup warning if selected core/secondary/todo project is already over used.
+                    
+                    if(['Core Tasks','Secondary Tasks','To do List'].includes(this.p_details.project_type)&&this.p_details.extraHours>0){
+                       
+                      const pobj=this.projectList.find(p=>p.Project_Code==this.master_code);
+                      const project_name=pobj.Project_Name;
+                      
+                      
+                      Swal.fire({
+                            title:'Project Overutilization Warning',
+                            html:`<div>
+
+                            <h6 style="text-align: justify;text-wrap-mode: nowrap;overflow-x: hidden; text-overflow: ellipsis; margin-bottom: 5px;">${project_name}</h6>
+                                    <div class="d-flex gap-1 flex-grow-1 flex-wrap">
+                                          <div style="border: 1px solid #e1e1e1;border-radius: 4px;padding: 0.1rem 0.5rem;-webkit-user-select: none;user-select: none;display: flex; column-gap: 10px;">
+                                          <div class="text-nowrap" style="line-height: 2;font-weight: 500;font-size: 11px;color: #8c8888;">Achieved hours :</div><div class="info-chip-value" style="line-height: 1.8;color: #242424;font-size: 11px; font-weight: 600;display: flex; align-items: center;gap: 6px; text-transform: lowercase;">
+                                          <span title="used hours" class="text-nowrap">${this.p_details.usedHours} hrs</span><span class="hrs-by">/</span><span title="allocated hours" class="text-nowrap">${this.p_details.AllocatedHours} hrs</span></div></div>
+                                          <div  style="border: 1px solid #e1e1e1; border-radius: 4px;padding: 0.1rem 0.5rem;-webkit-user-select: none; user-select: none; display: flex; column-gap: 10px; align-items: center;">
+                                          <div class="text-nowrap" style="line-height: 2;font-weight: 500;font-size: 10px; color: #8c8888;">Overutilized by :</div><div class="info-chip-value text-nowrap text-red" style="line-height: 2;color: red;font-size: 11px;font-weight: 600;display: flex; align-items: center;gap: 6px;text-transform: lowercase;"> ${this.p_details.extraHours} hrs </div>
+                                          </div>
+                                    </div>
+
+                                      <div style="font-size: 12px;color: #c57a05;border: 1px solid #c57a053b;font-weight: 500;margin-top: 15px;background-color: #fdbc4a38;padding: 5px;border-radius: 4px;display: flex;align-items: center;column-gap: 7px;">
+                                            <svg  width="45px" height="30px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path _ngcontent-rvu-c346="" d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g>
+                                            </svg>
+                                          <span style="text-align: justify;">
+                                           Project is already overutilized. Adding more hours may hold you accountable for the overutilization.
+                                          </span>
+                                      </div>
+                                </div>
+                                 `,
+                            showConfirmButton:true,
+                            confirmButtonText:'Proceed Anyway',
+                            showCancelButton:true,
+                            cancelButtonText:'Cancel',
+                            
+                        }).then((choice)=>{
+                            if(choice.dismiss === Swal.DismissReason.cancel){
+                                 this.master_code=null;  // clear selected project code
+                                 this.p_details=null;    // clear selected project details
+                                 this.showAction=false;   // clear action dropdown section view to default
+                                 this.project_code=null;  // clear action code to default
+                                 this.noact_msg=false;    // clear message view 
+                                 this.actionList=null;    // clear actions list if present
+                            }
+                        });   
+                    }
+                    //
+
                   });
 
                  }
@@ -969,13 +1020,62 @@ getPADetails(prjcode,of:'PROJECT'|'ACTION'){
                         extraHours:remainingHrs<0?(Math.abs(remainingHrs)):0
                     }
                     this.a_loading=false;
-                              console.log('a_loading:',this.a_details);
+                    console.log('a_loading:',this.a_details);
+
+
+
+                    // show popup warning if selected  action is already over used.
+                    if(this.a_details.extraHours>0){
+                       
+                      const aobj=this.actionList.find(p=>p.Project_Code==this.project_code);
+                      const action_name=aobj.Project_Name;
+                      
+                      
+                      Swal.fire({
+                            title:'Action Overutilization Warning',
+                            html:`<div>
+
+                            <h6 style="text-align: justify;text-wrap-mode: nowrap;overflow-x: hidden; text-overflow: ellipsis; margin-bottom: 5px;">${action_name}</h6>
+                                    <div class="d-flex gap-1 flex-grow-1 flex-wrap">
+                                          <div style="border: 1px solid #e1e1e1;border-radius: 4px;padding: 0.1rem 0.5rem;-webkit-user-select: none;user-select: none;display: flex; column-gap: 10px;">
+                                          <div class="text-nowrap" style="line-height: 2;font-weight: 500;font-size: 11px;color: #8c8888;">Achieved hours :</div><div class="info-chip-value" style="line-height: 1.8;color: #242424;font-size: 11px; font-weight: 600;display: flex; align-items: center;gap: 6px; text-transform: lowercase;">
+                                          <span title="used hours" class="text-nowrap">${this.a_details.usedHours} hrs</span><span class="hrs-by">/</span><span title="allocated hours" class="text-nowrap">${this.a_details.AllocatedHours} hrs</span></div></div>
+                                          <div  style="border: 1px solid #e1e1e1; border-radius: 4px;padding: 0.1rem 0.5rem;-webkit-user-select: none; user-select: none; display: flex; column-gap: 10px; align-items: center;">
+                                          <div class="text-nowrap" style="line-height: 2;font-weight: 500;font-size: 10px; color: #8c8888;">Overutilized by :</div><div class="info-chip-value text-nowrap text-red" style="line-height: 2;color: red;font-size: 11px;font-weight: 600;display: flex; align-items: center;gap: 6px;text-transform: lowercase;"> ${this.a_details.extraHours} hrs </div>
+                                          </div>
+                                    </div>
+
+                                      <div style="font-size: 12px;color: #c57a05;border: 1px solid #c57a053b;font-weight: 500;margin-top: 15px;background-color: #fdbc4a38;padding: 5px;border-radius: 4px;display: flex;align-items: center;column-gap: 7px;">
+                                            <svg  width="45px" height="30px" viewBox="0 0 512 512" fill="#c57a05" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path _ngcontent-rvu-c346="" d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g>
+                                            </svg>
+                                          <span style="text-align: justify;">
+                                             This Action is already overutilized. Adding more hours may hold you accountable for the overutilization.
+                                          </span>
+                                      </div>
+                                </div>
+                                 `,
+                            showConfirmButton:true,
+                            confirmButtonText:'Proceed Anyway',
+                            showCancelButton:true,
+                            cancelButtonText:'Cancel',
+                            
+                        }).then((choice)=>{
+                            if(choice.dismiss === Swal.DismissReason.cancel){
+                                 this.project_code=null;  // clear action code to default
+                            }
+                        });   
+                    }
+                    //
+
+
+
                    });
                  }
       });
 
     }
 }
+
 
 
 

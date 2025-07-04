@@ -182,6 +182,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   isLoadingData:boolean|undefined;
   taskDelayedby:number|undefined;
   projectAuditor:any;
+  auditPendingSince:number; // number of days the audit is pending since.
   loading: boolean = false;
   actionowner_dropdown:any;
   actionresponsible_dropdown:any;
@@ -194,7 +195,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   prjResHasActions:boolean=false;   // project responsible has actions or not.
   actnsWithoutProgress:any[]=[];   // actions with no progress since their start date in the project.
   imagesOrigin:string='https://yrglobaldocuments.blob.core.windows.net/userprofileimages/';
-   
+  projectOverutilizedByEmp:any[]=[];   // list of people on project who causing overutilization.
+  
 
 
 
@@ -353,191 +355,15 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   prjBARCHART:any;
   prjPIECHART:any;
 
-//   drawStatistics() {
-// //standard graph cal start
-// let x=0;
-// let AL=0;
-// if(['003','008'].includes(this.projectInfo.Project_Block)){
 
-//   let d1=new Date(this.projectInfo.StartDate);  // PROJECT STARTDATE.
-//   let d2=new Date();                           // TODAY DATE.
-//   x=0;
-//   switch(this.projectInfo.SubmissionId){
-//         case 1:{ x=moment(d1).diff(d2,'days');    };break;
-//         case 2:{ x=moment(d1).diff(d2,'weeks');    };break;
-//         case 3:{ x=moment(d1).diff(d2,'months');    };break;
-//         case 4:{ x=moment(d1).diff(d2,'quarters');   };break;
-//         case 5:{      };break;
-//         case 6:{ x=moment(d1).diff(d2,'years');     };break;
-//   }
-
-
-//   let timestr=this.projectInfo.StandardAllocatedHours;
-//   let t=timestr.split(':');
-//   let prjAlHrs=+(Number.parseInt(t[0].trim())+'.'+Number.parseInt(t[1].trim()));
-//   AL=+(prjAlHrs*Math.abs(x)).toFixed(2);
-
-// }
-// //standard graph cal end
-
-// if(this.tlTotalHours){
-
-// // 1. bar chart.
-// var options = {
-//   series: [{
-//     data: ['001', '002','011'].includes(this.projectInfo.Project_Block) ? [+this.projectInfo.AllocatedHours, this.tlTotalHours, ((+this.projectInfo.AllocatedHours) - this.tlTotalHours).toFixed(2)]
-//       : [AL, this.tlTotalHours, (AL - this.tlTotalHours).toFixed(2)]
-//   }],
-//   chart: {
-//     type: 'bar',
-//     height: 350
-//   },
-//   plotOptions: {
-//     bar: {
-//       distributed: true,
-//       horizontal: false,
-//       columnWidth: '62%',
-//     }
-//   },
-//   dataLabels: {
-//     enabled: true,
-//     style:{
-//        colors:['#3a81c9','#3e6be0','#303031'],
-//        fontFamily:'Lucida Sans Unicode'
-//     },
-//     formatter: function (v) {
-//       return v + ' hrs';
-//     }
-//   },
-//   yaxis: {
-//     title: {
-//       text: ''
-//     },
-//     labels: {}
-//   },
-//   xaxis: {
-//     categories: ['Allocated', 'Used', 'Remaining'],
-//     labels: {
-//       rotate: -90
-//     }
-//   },
-//   colors:['003', '008'].includes(this.projectInfo.Project_Block)?
-//          ['#7dbeff', '#7da1ff',(AL-this.tlTotalHours)<0?'#757575':'#dbe1e4']:
-//          ['#7dbeff', '#7da1ff',((+this.projectInfo.AllocatedHours) - this.tlTotalHours)<0?'#757575':'#dbe1e4']
-
-// };
-
-// if (this.prjBARCHART)
-//   this.prjBARCHART.destroy();
-
-// this.prjBARCHART = new ApexCharts(document.querySelector("#Bar-chart"), options);
-// this.prjBARCHART.render();
-
-// // 2. pie chart.
-// let usedhr=this.tlTotalHours;
-// let remaininghr=['003','008'].includes(this.projectInfo.Project_Block)?(AL-this.tlTotalHours):(Number.parseFloat(this.projectInfo.AllocatedHours)-this.tlTotalHours);
-
-// if(remaininghr<0){
-//   remaininghr=0;
-//   usedhr=this.projectInfo.AllocatedHours;
-// }
-
-// var options1 = {
-//   series: [usedhr,remaininghr],
-//   chart: {
-//     width: 480,
-//     type: 'donut',
-//     dropShadow: {
-//       enabled: true,
-//       color: '#b1b1b1',
-//       top: 0,
-//       left: 0,
-//       blur: 1,
-//       opacity: 0.5
-//     }
-//   },
-//   stroke: {
-//     width: 0,
-//   },
-//   plotOptions: {
-//     pie: {
-//       donut: {
-//         labels: {
-//           show: true,
-//           total: {
-//             showAlways: true,
-//             show: true
-//           }
-//         }
-//       }
-//     }
-//   },
-//   labels: ["Used Hours", "Remaining Hours"],
-//   dataLabels: {
-//    style:{
-//      colors:['#2b4790','#616262'],
-//      fontWeight:'normal',
-//    },
-
-//   },
-//   states: {
-//     hover: {
-//       filter: 'none'
-//     }
-//   },
-//   theme: {
-//     palette: 'palette2'
-//   },
-//   colors: ['#8faeff', '#dbe1e4'],
-//   title: {
-//     text: "Hours used",
-//     style: {
-//       fontSize: '10px',
-//       color: '#6b6b6b',
-//       fontFamily: 'Lucida Sans Unicode',
-//       fontWeight: 'bold'
-
-//     }
-//   },
-//   responsive: [{
-//     breakpoint: 480,
-//     options: {
-//       chart: {
-//         width: 200
-//       },
-//       legend: {
-//         position: 'bottom'
-//       }
-//     }
-//   }]
-// };
-// if(this.prjPIECHART)
-// this.prjPIECHART.destroy();
-// this.prjPIECHART = new ApexCharts(document.querySelector("#Pie-chart"), options1);
-// this.prjPIECHART.render();
-
-
-// }else{
-//     setTimeout(()=>this.drawStatistics(),2000);   // if tlTotalHours is undefined then run drawStatistics when tlTotalHours is defined.
-// }
-
-//   }
 
   darOfEmpl=[];
 
   drawStatisticsNew(){
+
     if(this.currentActionView===undefined){
 
          // 1. bar chart start.
-
-            this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, "3", this.Current_user_ID).subscribe((res: any) => {
-              const tml = JSON.parse(res[0].Timeline_List);
-              console.log("timeline data here11111:", tml);
-              this.darOfEmpl=tml.map((ob)=>{
-                  return { member:ob.Value, totalTimeline:(+ob.TotalDuration).toFixed(2)}
-              });
-              this.darOfEmpl.sort((a,b)=>b.totalTimeline-a.totalTimeline);
-            });
 
             let tlTotalHrs:number = this.projectInfo.TotalHours;
 
@@ -980,6 +806,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   projecttypes : any
   task_assign_json:any;
 
+
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) { 
     this.errorFetchingProjectInfo=false;
     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  debugger
@@ -1141,7 +968,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
      }
 
       console.log("delay-", this.delayActionsOfEmps)
-      this.route.queryParamMap.subscribe((qparams)=>{
+    this.route.queryParamMap.subscribe((qparams)=>{
         const actionCode=qparams.get('actionCode');
         if(actionCode)
         {   // if action Code is additional along with the project code then redirect to that action.
@@ -1175,6 +1002,14 @@ export class DetailsComponent implements OnInit, AfterViewInit {
          this.completionOffset=moment(this.projectInfo.CD).diff(moment(this.projectInfo.EndDate),'days');
          console.log('completionOffset value:',this.completionOffset);
     }
+
+    
+    
+    if(this.projectInfo&&this.projectInfo.Status=='Completion Under Approval'&&this.projectInfo.AuditStatus=='Audit Pending'){
+      this.auditPendingSince=this.calculateDateDiff(this.todayDate,this.projectInfo.approvalfromdate); // number of days since when project is pending at auditor.
+    }
+
+
 
     if(this.allUsers1){
       this.allUsers2=this.allUsers1.filter((usr:any)=>(![this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo].includes(usr.Emp_No)));
@@ -1211,10 +1046,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
 // determine whether current user can create standard task / routine task type projects or not.
-
       this.Responsible_user_Info=JSON.parse(this.projectInfo.tasks_json)[0];
-      // this.Responsible_user_Info.Routine_Total_Hours=18;
-    
+      // this.Responsible_user_Info.Routine_Total_Hours=18;    
       if(['003','008'].includes(this.projectInfo.Project_Block)){
 
         if(this.Responsible_user_Info.Position=='Team Member'){
@@ -1254,8 +1087,96 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       // }
 
       }
+//
 
-// 
+
+   // Whenever we fetch project details we will also fetch people who added timeline on this project and how much.
+     this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, "3", this.Current_user_ID).subscribe((res: any) => {
+              const tml = JSON.parse(res[0].Timeline_List);
+              console.log("timeline data here11111:", tml);
+              this.darOfEmpl=tml.map((ob)=>{
+                  return { member:ob.Value, totalTimeline:(+ob.TotalDuration).toFixed(2)}
+              });
+              this.darOfEmpl.sort((a,b)=>b.totalTimeline-a.totalTimeline);
+      
+      // If project is overutilized. now figuring out who are the people who worked more than their max allocation in this project.
+      if(['001','002','011'].includes(this.projectInfo.Project_Block)&&(this.projectInfo.TotalHours>this.projectInfo.AllocatedHours))
+      {   
+        const Emp_tmlist = JSON.parse(res[0].Timeline_List);   // list of people who worked on the project. or added timeline.
+        const Emp_Overused:any=[];   // list of people who worked more than their max allocated hrs value.
+        const tmByOtherEmp:any=[];   // list of other people who worked on this project. having no actions but added timeline.
+
+        let Emp_hrsAlloc:any=[];  // list of planned allocated hrs set to each member.
+       
+        if(this.projectActionInfo&&this.projectActionInfo.length>0){  
+          Emp_hrsAlloc=this.filteremployee.map((Emp)=>{    
+                const EmpActns=this.getFilteredPrjActions(['All'],[Emp.Team_Res]);
+                const EmpAlhrs=EmpActns.reduce((sum,actnob)=>{ return sum+(+actnob.AllocatedHours);  },0);
+                return { empName:Emp.Responsible, empNo:Emp.Team_Res, maxAllocHrs:EmpAlhrs  };
+          });
+        }
+
+        Emp_tmlist.forEach((empobj)=>{
+        const e_wrked=(+empobj.TotalDuration);   
+        const jsondata=JSON.parse(empobj.JsonData);
+        const _emp=Emp_hrsAlloc.find((ob)=>ob.empNo==jsondata[0].Emp_No);
+       
+
+           if(_emp){
+            // emp who has action and added timeline on it.
+
+            const overutilizationActns=this.projectActionInfo.filter((actionobj)=>{ 
+                  return actionobj.Team_Res==jsondata[0].Emp_No&&(actionobj.TotalHours>+actionobj.AllocatedHours);
+            });
+
+             if (e_wrked > _emp.maxAllocHrs) {
+               
+               const empObj = {
+                 empName: empobj.Value,
+                 empNo: jsondata[0].Emp_No,
+                 maxAllocHrs: _emp.maxAllocHrs,
+                 usedAllocHrs: e_wrked,
+                 actions:overutilizationActns.map(p=>p.Project_Code)
+               };
+
+               Emp_Overused.push(empObj);
+             }
+           }
+           else{
+              // emp who added timeline on project.   eg: resp, owner.  
+             const empObj = {
+               empName: empobj.Value,
+               empNo:jsondata[0].Emp_No,
+               maxAllocHrs: null,
+               usedAllocHrs: e_wrked,
+               actions:null
+             };
+
+             tmByOtherEmp.push(empObj); 
+           }
+          
+        });
+
+      console.log('Emp_Overused',Emp_Overused);
+      console.log('tmByOtherEmp',tmByOtherEmp);
+      this.projectOverutilizedByEmp=[...Emp_Overused,...tmByOtherEmp];
+      this.projectOverutilizedByEmp.sort((a,b)=>b.usedAllocHrs-a.usedAllocHrs);
+
+      }
+
+     });
+
+    /**  Useful notes : Project overutilization
+     *  if project has actions then PrjAlhr=sum of all actions alloc hrs.
+     *  if project has actions then it means PrjAlhr is distributed on peoples. 
+     */
+   //
+
+    
+
+    
+    
+
 
 
     });
@@ -1397,6 +1318,49 @@ getRelativeDateString(date: Date): string {
   return dstr;
 }
 
+
+ formatDurationFromDays(daysCount:number):string|null{
+    if(isNaN(daysCount)){ return null;  }
+ 
+    let dstr = '';
+    
+    if(daysCount<7){
+       dstr=`${daysCount} ${daysCount==1?'day':'days'}`;
+    }
+    else{
+        const units = [
+          { type: 'year', value: 365 },
+          { type: 'month', value: 30 },
+          { type: 'week', value: 7 },
+        ];
+
+      for (let unit of units) {
+        const quotient = Math.floor(daysCount / unit.value);
+        if (quotient === 1) {
+          dstr = `1 ${unit.type}`;
+          break;
+        } else if (quotient > 1) {
+          dstr = `${quotient} ${unit.type}s`;
+          break;
+        }
+      }
+    }
+
+    return dstr;
+ }
+
+
+ calculateDateDiff(date1:string|Date,date2:string|Date):number{  
+    const d1=new Date(date1); d1.setHours(0,0,0,0);
+    const d2=new Date(date2); d2.setHours(0,0,0,0);
+    const daysDiff = moment(d1).diff(moment(d2),'days');
+    return daysDiff;
+ }
+
+
+
+
+ 
 
 
 
@@ -1576,6 +1540,8 @@ getRelativeDateString(date: Date): string {
    this.emps_of_actvs=Array.from(new Set(this.Activity_List.map(_actv=>_actv.Modifiedby)));
    this.actvs_types=Array.from(new Set(this.Activity_List.map(_actv=>_actv._type)));
 
+   console.log('emps_of_actvs:',this.emps_of_actvs);
+
 
    console.log('actvs_types:',this.actvs_types);
 
@@ -1600,9 +1566,9 @@ getRelativeDateString(date: Date): string {
   }
 
 
- tryGettingUserImageByName(userName:string):string|null{
+ tryGettingUserImageByName(userName:string):string|null{  
     let imageUrl:string|null=null;
-    if(this.PeopleOnProject&&userName){
+    if(this.PeopleOnProject&&userName){  
    
     const userObj=this.PeopleOnProject.find((userobj)=>{
        if(userobj){
@@ -10114,6 +10080,13 @@ showActionsWithNoProgress(){
 }
 
 
+showActionByActionCode(actionCode:string[]){
+  this.filteredPrjAction=this.projectActionInfo.filter((actionobj)=>{
+     return actionCode.includes(actionobj.Project_Code);
+  });
+}
+
+
 // start meeting feature start
 
 meetingReport(mtgScheduleId:any) {
@@ -14016,9 +13989,6 @@ createNewGroup(){
         }
       });
   }
-
-
-
 
 
 // project group (stream groups)   end.
