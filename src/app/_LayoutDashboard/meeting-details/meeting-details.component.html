@@ -1972,7 +1972,7 @@
                         <div class="meeting-attendance-main" *ngIf="meetingInProgress || showAttendeeNotify == '2' || showAttendeeNotify == '3'">
                             <div class="legend-border">
                                 <div class="meeting-attendance-heading">Meeting Summary</div>
-                                <div class="meeting-icon-content">
+                                <div class="meeting-icon-content mt-0">
                                     <div>
                                         <span><span class="s-dot"     [ngClass]="{ 'blink': showAttendeeNotify !== '2' }"     ></span><span *ngIf="showAttendeeNotify != '2'"> Meeting has been started at                                      
                                               {{ meetingStartedTime | date: 'hh:mm a' }}     
@@ -1983,6 +1983,9 @@
                                     </div>
                                     <div class="accordion">
                                         <div id="meeting-attendance-accordion-collapse" class="collapse show">
+                                             <div class="dark-title" style="text-align: end;">
+                                                <span>{{_StartDate | date:'EEEE, MMMM d, yyyy'}}</span>
+                                            </div>
                                             <div class="meeting-attendance meeting-attendance-accordion-div">
                                                 <div class="meeting-attendance-item cursor-pointer" (click)="View_Meeting_Attendees()" >
                                                     <div class="meeting-attendance-count">{{completionReports}}/{{totalUser_Scheduledjson+1}}</div>
@@ -1993,7 +1996,7 @@
                                                     <div class="meeting-attendance-title">Joined</div>
                                                 </div>
                                                 <div class="meeting-attendance-item" >
-                                                    <div class="meeting-attendance-count">{{totalAgendaList}}</div>
+                                                    <div class="meeting-attendance-count"> {{statusOneCount}}/{{totalAgendaList}}</div>
                                                     <div class="meeting-attendance-title">Agenda</div>
                                                 </div>
                                                 <div class="meeting-attendance-item cursor-pointer" (click)="Slide_meeting()" >
@@ -2092,7 +2095,7 @@
                                 <div id="meeting-attendance-accordion-collapse" class="collapse show" aria-labelledby="headingOne" data-parent="#meeting-attendance-accordion">
                                     <div class="meeting-attendance meeting-attendance-accordion-div">
                                         <div class="meeting-attendance-item" >
-                                            <div class="meeting-attendance-count">{{data.AgendaCount}}</div>
+                                            <div class="meeting-attendance-count">{{statusOneCount}}/{{data.AgendaCount}}</div>
                                             <div class="meeting-attendance-title">Agenda</div>
                                         </div>
                                         <div class="meeting-attendance-item cursor-pointer" (click)="Slide_meeting()" >
@@ -4491,22 +4494,138 @@
                         </a>
                     </div>
                 </div>
-                <div  *ngIf="Meetingstatuscom!='Completed'" class="private_notes_vh kt-portlet__body kt-portlet__body_scroll">
-                    <div class="kt-chat__messages">   
+                <div class="private_notes_vh kt-portlet__body kt-portlet__body_scroll" style="overflow: auto;">
+                    <div *ngIf="Meetingstatuscom!='Completed'" class="kt-chat__messages" style="overflow: hidden;">   
                         <angular-editor [config]="config" [(ngModel)]="Notes_Type" (keyup)="addBulletPointsOnEnter($event)" (paste)="addBulletPointsOnEnter($event)"></angular-editor>
                     </div>
+                    <div *ngIf="Meetingstatuscom=='Completed' && Notes_Type"  class="allAttendees-user adminNotes-Completed"  >
+                        <div class="head-content d-flex align-items-center">
+                            <div class="user-icon mr-2" >{{getShorterName(CurrentUser_fullname)}}</div>
+                            <span class="accordion-heading">{{CurrentUser_fullname}}</span>
+                        </div>
+                        <div class="user-notes" >
+                            <p [innerHtml]="Notes_Type"></p>
+                        </div>
+                    </div>
+
+
+                    <!-- <div *ngIf="AllAttendees_notes.length>0;else NotesNotFound" class="accordion accordion-attendes-notes" id="accordion_private_notes">
+                          <div class="accordion-item" >
+                          <h2 class="accordion-header" id="headingOne">
+                                        <a class="accordion-button" type="button" data-toggle="collapse"
+                                            data-target="#private_notes" aria-expanded="false"
+                                            aria-controls="private_notes">
+                                            <div class="head-content">
+                                                <span class="accordion-heading">View previous private notes</span>
+                                            </div>
+                                            <div>
+                                                <span class="accordion-icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="9"
+                                                        viewBox="0 0 15 9" fill="none">
+                                                        <path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473"
+                                                            stroke="#6F6F6F" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </h2>        
+                                    <ng-container *ngIf="Agendas_List[currentAgendaView].Status==1">
+                                    <div id="private_notes" class="accordion-collapse collapse show"
+                                    aria-labelledby="headingOne" data-parent="#accordion_private_notes">
+                                    <div class="accordion-body">
+                                        <div *ngIf="currentAgendaView+1">
+                                            <h5>Meeting :- {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
+                                        </h5>
+                                        </div>
+                                        <ul class="attendees-note-userlist">
+                                            <li [id]="'note-user-'+data.Emp_no" class="attendees-note-user" *ngFor="let data of AllAttendees_notes">
+                                               <div class="user-info" >
+                                                    <div *ngIf="!data.UserProfile" class="user-icon" >{{data.Initials}}</div>
+
+                                                    <span *ngIf="data.UserProfile">
+                                                        <img src="{{ 'https://yrglobaldocuments.blob.core.windows.net/userprofileimages/' + data.UserProfile }}" width="35" height="35" style="border-radius: 50%; object-fit: cover;"/>
+                                                   </span> 
+                                                    <span>
+                                                        <div class="user-name">{{data.Emp_Name}}
+                                                            <span class="user-time"> {{
+                                                              getDayDiff(data.Created_date) === 0 ? (data.Created_date | date:'hh:mm a') :
+                                                              getDayDiff(data.Created_date) === 1 ? 'Yesterday' :
+                                                              getDayDiff(data.Created_date) === 2 ? '2 days ago' :
+                                                              getDayDiff(data.Created_date) === 3 ? '3 days ago' :
+                                                              (data.Created_date | date:'dd-MM-yyyy')
+                                                            }}</span>
+                                                            </div>
+                                                            <div>
+                                                                <span class="user-role">{{data.DesignationName}}</span> <span
+                                                                    class="user-company">{{data.CompanyName}}</span>
+                                                            </div>
+                                                        </span>
+                                                </div>
+                                                <div  class="user-notes" >
+                                                    <p [innerHTML]="data.Meeting_notes"></p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    </div>
+                                </ng-container>       
+                                <ng-container *ngIf="Agendas_List[currentAgendaView].Status!=1">
+                                    <div id="private_notes" class="accordion-collapse collapse show"
+                                        aria-labelledby="headingOne" data-parent="#accordion_private_notes">
+                                        <div class="accordion-body">
+                                            <div *ngIf="currentAgendaView+1">
+                                                <h5>Meeting :- {{Agendas_List[currentAgendaView]&&Agendas_List[currentAgendaView].Agenda_Name}}
+                                            </h5>
+                                            </div>
+                                            <ul class="attendees-note-userlist" >
+                                                <li [id]="'note-user-'+data.Emp_no"  class="attendees-note-user" *ngFor="let data of AllAttendees_notes">
+                                                   <div class="user-info" >
+                                                    <div *ngIf="!data.UserProfile" class="user-icon" >{{data.Initials}}</div>
+                                                      <span *ngIf="data.UserProfile">
+                                                        <img src="{{ 'https://yrglobaldocuments.blob.core.windows.net/userprofileimages/' + data.UserProfile }}" width="35" height="35" style="border-radius: 50%; object-fit: cover;"/>
+                                                   </span> 
+                                                    <span>
+                                                        <div class="user-name">{{data.Emp_Name}}
+                                                            <span class="user-time"> {{
+                                                              getDayDiff(data.Created_date) === 0 ? (data.Created_date | date:'hh:mm a') :
+                                                              getDayDiff(data.Created_date) === 1 ? 'Yesterday' :
+                                                              getDayDiff(data.Created_date) === 2 ? '2 days ago' :
+                                                              getDayDiff(data.Created_date) === 3 ? '3 days ago' :
+                                                              (data.Created_date | date:'dd-MM-yyyy')
+                                                            }}</span>
+                                                            </div>
+                                                            <div>
+                                                                <span class="user-role">{{data.DesignationName}}</span> <span
+                                                                    class="user-company">{{data.CompanyName}}</span>
+                                                            </div>
+                                                        </span>
+                                                   </div>
+                                                    <div class="user-notes">
+                                                        <p [innerHTML]="data.Meeting_notes"></p>
+                                                    </div>
+                                                </li>                    
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </ng-container>                  
+                                </div>
+                    </div> -->
                 </div>
-                <div *ngIf="Meetingstatuscom=='Completed' && Notes_Type"  class="allAttendees-user adminNotes-Completed"  >
-                    <div class="head-content d-flex align-items-center">
-                        <div class="user-icon mr-2" >{{getShorterName(CurrentUser_fullname)}}</div>
-                    <span class="accordion-heading">{{CurrentUser_fullname}}</span>
+                
+                  
+                   <!-- <ng-template #NotesNotFound>
+                     <div *ngIf="Meetingstatuscom==Completed" class="d-flex-center mt-5" >
+                       <div>
+                         <img src="./assets/images/Document Type.png" width="268" height="256" class="Notes_Found" />
+                         <div class="bnk-txt">
+                           <h2 class="blank-txt text-center nts-img">No notes found</h2>
+                         </div>
+                       </div>
+                     </div>  
+                        </ng-template> -->
+                    </div>
                 </div>
-                <div class="user-notes" >
-                    <p [innerHtml]="Notes_Type"></p>
-                </div>
-                </div>
-            </div>
-        </div>
         <!-- Private Note End-->
 
         <!--Attendees Notes Start-->
@@ -4705,35 +4824,6 @@
                         </div>
                     </li>
                 </ng-container>
-                <div class="ov-card-ul">
-                    <div class="ov-card-li">
-                        <div class="ov-card-group">
-                            <div class="ov-card-control">
-                                <div class="ov-card-type">Seconary task</div>
-                                <div class="ov-card-title">Project approval action approval test</div>
-                                <div class="ov-card-details">
-                                    <span>Waseem Akram</span>
-                                    <span>|</span>
-                                    <span>12 Actions</span>
-                                </div>
-                            </div>
-                            <div class="ov-card-status">
-                                <div class="ov-card-type-status">completed</div>
-                                <div class="ov-card-time">23-05-2025</div>
-                                <div class="ov-card-exp">
-                                    <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 1124.14 1256.39">
-                                        <path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path>
-                                        <path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path>
-                                    </svg>
-                                    <span>75.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ov-card-delete">
-                            <i class="fas fa-trash-alt"></i>
-                        </div>
-                    </div>
-                </div>
                     <li class="kt-nav__item px-4">
                       
                       <!-- <div class="kt-inbox mt-0 scrollbar1" *ngIf="_MemosSubjectList&&_MemosSubjectList[0].MailId!=0 ; else DMsNotFound">
@@ -7727,7 +7817,7 @@
                                                             <div class="pn-part-group" *ngFor="let upcom of data.Addguest">
                                                                 <span *ngIf="!upcom.UserProfile" class="pn-part-item" matTooltip="{{upcom.TM_DisplayName}}">{{upcom.twolet}}</span>
                                                                  <span *ngIf="upcom.UserProfile">
-                                                                    <img src="{{ 'https://yrglobaldocuments.blob.core.windows.net/userprofileimages/' + upcom.UserProfile }}" width="35" height="35" style="border-radius: 50%; object-fit: cover;"/>
+                                                                    <img src="{{ 'https://yrglobaldocuments.blob.core.windows.net/userprofileimages/' + upcom.UserProfile }}" />
                                                                 </span> 
                                                             </div>
                                                             <!-- <div class="pn-part-group" matTooltip="Md Waseem Akram">
@@ -8441,14 +8531,14 @@
                                                 <div class="text-muted ml-2 fs-7">{{item.Created_by}}</div>
                                             </div>
                                             <div class="text-muted ml-1 fs-7 text-right">{{item.Created_date| date : 'dd-MM-yyyy'}}</div>
-                                            <div  *ngIf="(Status1=='Owner' || Isadmin==true || item.emp_no == Current_user_ID) && Meetingstatuscom!='Completed'  && _AllEventAttachment == 1 && _FutureEventAttachment == 0" class="delte-attach" (click)="DeleteAttachment(item.file_id)">
+                                            <div  *ngIf="(Status1=='Owner' || Isadmin==true || item.emp_no == Current_user_ID) && _AllEventAttachment == 1 && _FutureEventAttachment == 0" class="delte-attach" (click)="DeleteAttachment(item.file_id)">
                                                 <div class="icn">
                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                 </div>
                                             </div>
 
 
-                                            <div  *ngIf="(Status1=='Owner' || Isadmin==true || item.emp_no == Current_user_ID) && Meetingstatuscom!='Completed' && _AllEventAttachment > 1"  class="delte-attach" data-toggle="modal" data-target="#confirmspopupAttachment" (click)="RemoveExistingAttachment(item.file_id)" >
+                                            <div  *ngIf="(Status1=='Owner' || Isadmin==true || item.emp_no == Current_user_ID) && _AllEventAttachment > 1"  class="delte-attach" data-toggle="modal" data-target="#confirmspopupAttachment" (click)="RemoveExistingAttachment(item.file_id)" >
                                                 <div class="icn">
                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 12V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                                 </div>
@@ -11277,7 +11367,7 @@
                     </ng-container> -->
                 
                         <div class="timeline">
-                            <div class="timeline-item" *ngFor="let item of allActivityList">
+                            <div class="timeline-item">
                                 <div class="timeline-line w-40px">
                                 </div>
                                 <div class="timeline-icon symbol symbol-circle symbol-40px ng-star-inserted">

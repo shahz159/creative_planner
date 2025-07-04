@@ -6076,3 +6076,54 @@ button.btn.btn-viewall:hover {
     line-height: 15px;
     text-transform: uppercase;
 }
+
+
+
+
+
+
+.round-checkbox {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+}
+
+.round-checkbox input {
+  display: none; /* hide native checkbox */
+}
+
+.custom-circle {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #007bff;
+  border-radius: 50%;
+  position: relative;
+  margin-right: 0px;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+
+.round-checkbox input:checked + .custom-circle {
+  background-color: #007bff;
+}
+
+.round-checkbox input:checked + .custom-circle::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  width: 4px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+
+/* .round-checkbox .head-muted {
+    font-size: 13px;
+    margin-left: 2px;
+} */
+
