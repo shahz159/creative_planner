@@ -755,6 +755,7 @@ export class StreamCalendarComponent implements OnInit {
     
     this.selectAction=false;
     this.mtgOnDays=[];
+    this.privateMeeting = false;
     this.formattedDayTime = null;
     this.monthDateBinde = null;
     this.Link_Details = null;
@@ -2923,6 +2924,9 @@ selectAction:any;
          this.Description_Type = this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, ' ').trim();
        }
        
+      //  var vPrivate_Meeting = "Private_Meeting";
+      //  element[vPrivate_Meeting] =  this.privateMeeting;
+
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined || this.Description_Type == '<font face="Arial"> </font>' ? "" : this.Description_Type;
       
@@ -3504,9 +3508,9 @@ getEventsForWeeks(weeksFromToday: number) {
     const upcoming = this.filteredMeetingsArray.filter(meeting => meeting.date >= todayFormatted);
     const past = this.filteredMeetingsArray.filter(meeting=> meeting.date < todayFormatted);
           past.sort((a, b)=>b.date.localeCompare(a.date))
-    // this.filteredMeetingsArray = [...(upcoming.length ? [{ text: 'UPCOMING' }, ...upcoming] : []),
-    //                               ...(past.length ? [{ text: 'PREVIOUS' }, ...past] : [])];
-     this.filteredMeetingsArray = [...upcoming,...past];
+    this.filteredMeetingsArray = [...(upcoming.length ? [{ text: 'UPCOMING' }, ...upcoming] : []),
+                                  ...(past.length ? [{ text: 'PREVIOUS' }, ...past] : [])];
+    //  this.filteredMeetingsArray = [...upcoming,...past];
    }
    
    console.log(this.filteredMeetingsArray, 'filteredMeetingsArray');
@@ -6134,8 +6138,13 @@ repeatEventTime(){
   }
 
 
+selectedPrivate:any;
+privateMeeting:any;
 
 
+togglePrivateMeeting() { debugger
+  this.privateMeeting = !this.privateMeeting;
+}
 
   togglemeetingtypeOption(option: string) {
     this.selectedOption = option;
@@ -6150,33 +6159,6 @@ repeatEventTime(){
   
   }
 
-  // Online_method(event) {
-
-  //   if (event.target.checked) {
-  //     document.getElementById("Descrip_Name12").style.display = "flex";
-  //     this._onlinelink = event.target.checked;
-  //     // alert(this._onlinelink)
-  //   }
-  //   else {
-  //     document.getElementById("Descrip_Name12").style.display = "none";
-  //     this._onlinelink = false;
-  //     // alert(this._onlinelink)
-  //   }
-
-  // }
-
-
-
-  // Meeting_method(event){
-  //   if (event.target.checked) {
-  //     document.getElementById("Location_Name").style.display = "flex";
-  //     this._meetingroom = event.target.checked;
-  //   }
-  //   else {
-  //     document.getElementById("Location_Name").style.display = "none";
-  //     this._meetingroom = false;
-  //   }
-  //  }
 /////////////////////////////////////////// Created On (Schedule event popup box) End /////////////////////////////////////////////////////////
 
 
@@ -6657,27 +6639,43 @@ prevUpcomToday = new Date();
 
   disableRepeatMeetingDate(){
 
-  if (new Date(this.prevUpcomToday).toDateString() === new Date(this._StartDate).toDateString()) {
-  const nextDay = new Date();
-  nextDay.setDate(nextDay.getDate() + 1);
-  this._StartDate = null;
-  this.repeatStartDate = null;
-  this.disablePreviousTodayDate=null;
-  this.disablePreviousTodayDate = nextDay; // ✅ new reference triggers calendar update
-  this._StartDate = nextDay;
-  this.repeatStartDate = nextDay;
-  this._SEndDate = nextDay;
-  }else{ 
+    if (new Date(this.prevUpcomToday).toDateString() === new Date(this._StartDate).toDateString()) {
+      const nextDay = new Date();
+      nextDay.setDate(nextDay.getDate() + 1);
+
       this._StartDate = null;
       this.repeatStartDate = null;
-      this.disablePreviousTodayDate=null;
-      this.disablePreviousTodayDate = this.prevUpcomToday; // ✅ new reference triggers calendar update
-      this._StartDate = this.prevUpcomToday;
-      this.repeatStartDate = this.prevUpcomToday;
-      this._SEndDate = this.prevUpcomToday;
-  }
+      this._SEndDate = null;
+
+      this.disablePreviousTodayDate = null;
+      
+      // Let Angular update bindings first
+      setTimeout(() => {
+        this.disablePreviousTodayDate = nextDay;
+        this._StartDate = nextDay;
+        this.repeatStartDate = nextDay;
+        this._SEndDate = nextDay;
+      });
+      
+    } else {
+      this._StartDate = null;
+      this.repeatStartDate = null;
+      this._SEndDate = null;
+      this.disablePreviousTodayDate = null;
+
+      setTimeout(() => {
+        const newDate = new Date(this.prevUpcomToday);
+        this.disablePreviousTodayDate = newDate;
+        this._StartDate = newDate;
+        this.repeatStartDate = newDate;
+        this._SEndDate = newDate;
+      });
+    }
 
   }
+
+
+
 
   noSelectedDate : boolean = false;
   newSelectedDate(){ 

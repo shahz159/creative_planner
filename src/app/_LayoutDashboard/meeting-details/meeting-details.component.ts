@@ -242,7 +242,7 @@ export class MeetingDetailsComponent implements OnInit {
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
 
-    this.disablePreviousTodayDate.setDate(this.disablePreviousTodayDate.getDate() + 1);
+    // this.disablePreviousTodayDate.setDate(this.disablePreviousTodayDate.getDate() + 1);
     //   this.signalRService.startConnection();
     //   this.signalRService.addBroadcastMessageListener((name, message) => {
     //   console.log(`Received: ${name}: ${message}`);
@@ -429,15 +429,47 @@ export class MeetingDetailsComponent implements OnInit {
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
     this.GetMeetingnotes_data();
   }
+
+  prevUpcomToday = new Date();
+
+
   Repeat_Meeting() {
-    debugger
+   
     document.getElementById("repeatModal").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     document.getElementById("kt-bodyc").classList.add("overflow-hidden");
 
-    this._StartDate = this.disablePreviousTodayDate;
-    this._SEndDate = this.disablePreviousTodayDate;
-    this.disablePreviousDate = this.disablePreviousTodayDate;
+     if (new Date(this.prevUpcomToday).toDateString() === new Date(this._StartDate).toDateString()) {
+      const nextDay = new Date();
+      nextDay.setDate(nextDay.getDate() + 1);
+
+      this._StartDate = null;
+      this._SEndDate = null;
+      this.disablePreviousTodayDate = null;
+      
+      // Let Angular update bindings first
+      setTimeout(() => {
+        this.disablePreviousTodayDate = nextDay;
+        this._StartDate = nextDay;
+        this._SEndDate = nextDay;
+      });
+      
+    } else {
+      this._StartDate = null;
+      this._SEndDate = null;
+      this.disablePreviousTodayDate = null;
+
+      setTimeout(() => {
+        const newDate = new Date(this.prevUpcomToday);
+        this.disablePreviousTodayDate = newDate;
+        this._StartDate = newDate;
+        this._SEndDate = newDate;
+      });
+    }
+
+    // this._StartDate = this.disablePreviousTodayDate;
+    // this._SEndDate = this.disablePreviousTodayDate;
+    // this.disablePreviousDate = this.disablePreviousTodayDate;
     //  this.meeting_details();
   }
   Close_Repeat_Meeting() {
@@ -650,7 +682,7 @@ SM_count:any;
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
       this.SM_count = (this.EventScheduledjson[0]['smailcount']);
      
-      console.log(this.SM_count,'SM_count');
+      console.log(this.Agendas_List,'Agendas_List');
 
       this.totalUser_Scheduledjson=this.User_Scheduledjson.length;
       this.user_linkedOnMtg=this.User_Scheduledjson?this.User_Scheduledjson.map(user => user.stringval):[];
@@ -745,17 +777,12 @@ SM_count:any;
       
       this.main_actualDuration = this.EventScheduledjson[0].actual_duration;
 
-
       this.status = this.EventScheduledjson[0].Status;
       this.sched_admin = this.EventScheduledjson.Owner_isadmin;
       this.Link_Detail = this.EventScheduledjson[0].Link_Details;
 
-
       let startIndex = this.Link_Detail.indexOf('</a>');
       let anchorText = this.Link_Detail.substring(startIndex + 4);
-
-
- 
 
       var UserID_Password = anchorText.replace(/<[^>]*>/g, ' ');
       if (UserID_Password != '') {
@@ -796,13 +823,6 @@ SM_count:any;
         element.isChecked = true;
       });
 
-      //  this.portfolio_Scheduledjson = this.mergeObjects(
-      //  this.portfolio_Scheduledjson || [], 
-      //  this.ModifiedJson || [], 
-      // 'numberval'
-      //  );
-    
-
       this.portfoliocount = this.checkedportfolio.length;
       this.Attachments_ary = this.EventScheduledjson[0].Attachmentsjson;
 
@@ -824,11 +844,7 @@ SM_count:any;
       });
 
      console.log(this.DMS_Scheduledjson,'DMS_Scheduledjson')
-      // this.Project_code = this.mergeObjects(
-      //   this.Project_code || [], 
-      //   this.ModifiedJson || [], 
-      //   'stringval'
-      // );
+
 
       this.projectcount = this.checkedproject.length;
 
@@ -859,27 +875,8 @@ SM_count:any;
         this.dmsIdjson = JSON.stringify(this.dmsIdjson);
         this.GetDMSList();
       }
-
-      // var St_Time = this.EventScheduledjson[0].St_Time;
-      // var End_date = this.EventScheduledjson[0].Ed_Time; 
-      // var StartDate = this.EventScheduledjson[0].StartDate;
       this.oneByTwoEndDate = this.EventScheduledjson[0].SEndDate;
-
-      // var startTime = moment(St_Time, "hh:mm A");
-      // var endTime = moment(End_date, "hh:mm A");
-
-      // var startTime = moment(`${StartDate} ${St_Time}`, "YYYY-MM-DD hh:mm A");
-      // var endTime = moment(`${this.oneByTwoEndDate} ${End_date}`, "YYYY-MM-DD hh:mm A")
-
-
-      // Calculate the duration between the start time and end time
-      // var duration = moment.duration(endTime.diff(startTime)); 
-     
-      // Format the duration as hours:minutes
-      // this.hours = Math.floor(duration.asHours());
-      // this.minutes = duration.minutes();
-      // this.formattedDuration = this.hours + ":" + this.minutes.toString().padStart(2, '0');
-    
+  
     } else {
       this.deletedMeeting = false;
     }
@@ -2066,6 +2063,10 @@ SM_count:any;
 
 
   Adduser_meetingreport() {
+
+     if (this.isSubmitting) return;
+     this.isSubmitting = true;
+
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
@@ -2080,6 +2081,7 @@ SM_count:any;
           this.GetProjectAndsubtashDrpforCalender()
           this.meeting_details()
           this.selectedEmployees = [];
+          this.isSubmitting = false;
         });
     } else {
       this.notifyService.showInfo("Request Cancelled", "Please select Meeting Attendees to link");
@@ -2859,7 +2861,7 @@ SM_count:any;
   private_User:any
   privateNotes:any;
 
-  GetMeetingnotes_data() { debugger
+  GetMeetingnotes_data() { 
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
@@ -4538,7 +4540,7 @@ onFileChange(event) {
           if (data['Checkdatetimejson'] != '') {
            
             this.AllAttendees_notes = JSON.parse(data['Checkdatetimejson']);
-          console.log(this.AllAttendees_notes,'AllAttendees_notes1')
+          // console.log(this.AllAttendees_notes,'AllAttendees_notes1')
           } else if (data['Checkdatetimejson'] == '') {
             this.AllAttendees_notes = [];
           }
@@ -9130,8 +9132,6 @@ this.allActivityList.forEach(activity => {
   //   });
 
 
-
-
     if(this.isFiltered ==false){
     this.filteredActivityList = this.allActivityList
     }
@@ -9139,16 +9139,18 @@ this.allActivityList.forEach(activity => {
 
   })
 
-  // console.log(this.filteredActivityList,'filteredActivityList');
+  console.log(this.filteredActivityList,'filteredActivityList');
 }
 
 
 
 todayActivity = new Date();
 
-getDayDiff(date: string) {
-  const oneDay = 86400000;
-  return Math.floor((this.todayActivity.getTime() - new Date(date).getTime()) / oneDay);
+getDayDiff(date: string): number {
+  const today = new Date(this.todayActivity.setHours(0, 0, 0, 0)).getTime();
+  const input = new Date(date);
+  const inputMidnight = new Date(input.setHours(0, 0, 0, 0)).getTime();
+  return Math.floor((today - inputMidnight) / 86400000); // 86400000 = 1 day in ms
 }
 
 

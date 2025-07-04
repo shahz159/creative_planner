@@ -465,20 +465,21 @@ tr.action-row:hover {
     padding: 10px 0px;
 }
 
-.picsum-img-wrapper img {
-    height: 210px;
+.picsum-img-wrapper .activity-report-content img{
+    /* height: 210px; */
     /* max-height: 200px; */
+    object-fit: contain;
     border-radius: 0.5rem 0.5rem;
 }
 
 @media screen and (min-width : 1500px) {
-    .picsum-img-wrapper, .picsum-img-wrapper img {
+    .picsum-img-wrapper, .picsum-img-wrapper .activity-report-content {
         height: 230px;
     }
 }
 
 @media screen and (min-width : 1600px) {
-    .picsum-img-wrapper, .picsum-img-wrapper img {
+    .picsum-img-wrapper, .picsum-img-wrapper .activity-report-content {
         height: 280px;
     }
 
@@ -488,7 +489,7 @@ tr.action-row:hover {
 }
 
 @media screen and (min-width : 1700px) {
-    .picsum-img-wrapper, .picsum-img-wrapper img {
+    .picsum-img-wrapper, .picsum-img-wrapper .activity-report-content {
         height: 300px;
     }
 
@@ -2161,7 +2162,7 @@ span.head-title-count {
 
 /* tab responsive start */
 @media only screen and (min-width: 481px) and (max-width: 1024px) {
-    .picsum-img-wrapper img {
+    .picsum-img-wrapper .activity-report-content {
         min-height: 100%;
         border-radius: 0.5rem 0.5rem 0 0;
     }
@@ -2536,7 +2537,7 @@ span.p-b-percent-count {
         width: 70px;
     }
 
-    .picsum-img-wrapper img {
+    .picsum-img-wrapper .activity-report-content {
         height: 190px;
     }
 }
