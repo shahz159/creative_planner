@@ -459,7 +459,7 @@
                                             <div></div>
                                             <ul class="drop-ul">
                                               <li class="dropdown-header">Sort by</li>
-                                              <button id="tot" class="btn btn-filtr" [ngClass]="{'active':_FilterByEmp===All}" (click)="labelAll();filterProjectsOfEmp();" >
+                                              <button id="tot" class="btn btn-filtr" [ngClass]="{'active':(!_FilterByEmp)}" (click)="labelAll();filterProjectsOfEmp();" >
                                                 <div class="d-flex align-items-center">
                                                     <span class="count tot">{{_ProjectsListBy_Pid.length}} </span>
                                                     <div  class="fil-lbl" >All</div>
@@ -501,7 +501,7 @@
 
                                     </div>
                                     <ng-container *ngIf="_MessageIfNotOwner == ''">
-                                        <a (click)="labelAll();filterProjectsOfEmp();notShow()" class="kt-todo__icon"  data-toggle="dropdown"   title="Click to reset the filter" aria-haspopup="true" aria-expanded="false" >
+                                        <a (click)="labelAll();filterProjectsOfEmp();notShow();  clearAppliedFilterApplied();" class="kt-todo__icon"  data-toggle="dropdown"   title="Click to reset the filter" aria-haspopup="true" aria-expanded="false" >
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" font-size="1.5rem" width="20px" height="20px" viewBox="0 0 24 24" class="iconify iconify--mdi"><path   d="M2 12a9 9 0 0 0 9 9c2.39 0 4.68-.94 6.4-2.6l-1.5-1.5A6.706 6.706 0 0 1 11 19c-6.24 0-9.36-7.54-4.95-11.95C10.46 2.64 18 5.77 18 12h-3l4 4h.1l3.9-4h-3a9 9 0 0 0-18 0Z"></path>
                                             </svg>
                                         </a>
@@ -515,7 +515,7 @@
 
 
          <!--notification start-->
-         <div class="kt-Note-msg d-flex" *ngIf="(this.delayPrjsofPort&&this.delayPrjsofPort.length > 0) || (this.forwardPrjPort&&this.forwardPrjPort.length > 0) ||(this.completionPrjPort&&this.completionPrjPort.length > 0) || (this.newapprovalPrjport&&this.newapprovalPrjport.length > 0)||(this.cancellationPort&&this.cancellationPort.length>0)" >
+         <div class="kt-Note-msg d-flex" *ngIf="(this.forwardPrjPort&&this.forwardPrjPort.length > 0) ||(this.completionPrjPort&&this.completionPrjPort.length > 0) || (this.newapprovalPrjport&&this.newapprovalPrjport.length > 0)||(this.cancellationPort&&this.cancellationPort.length>0)||(this.newPrjRejectsPort&&newPrjRejectsPort.length>0)" >
             <div class="kt-note-icon" style="align-self: flex-start;">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px"viewBox="0 0 66 65" xml:space="preserve">
                         <path d="M21.56,44.04l-8.62-14.94l-6.62,3.82c-4.13,2.38-5.54,7.66-3.16,11.78l0,0c2.38,4.13,7.66,5.54,11.78,3.16L21.56,44.04z"></path>
@@ -530,38 +530,53 @@
             </div>
 
             <div class="notification delay-notification">
+                <!-- labelForward();filterProjectsOfEmp(Current_user_ID) -->
             <span class="notif-msg">Need your action on
                 <span *ngIf="this.forwardPrjPort && this.forwardPrjPort.length > 0" class="delayaction-of-emp"
-                    (click)="labelForward();filterProjectsOfEmp(Current_user_ID)" style="color:#9C27B0">
+                    (click)="applyFilterCriteria('FORWARD_APPROVALS_PENDING')" style="color:#9C27B0">
                 {{this.forwardPrjPort.length}} Forward approval(s)
                 </span>
 
-                <b *ngIf="this.forwardPrjPort.length > 0 && (this.completionPrjPort.length > 0 || this.cancellationPort.length > 0 || this.newapprovalPrjport.length > 0)">
+                <b *ngIf="this.forwardPrjPort.length > 0 && (this.completionPrjPort.length > 0 || this.cancellationPort.length > 0 || this.newapprovalPrjport.length > 0|| newPrjRejectsPort.length>0)">
                 ,&nbsp;
                 </b>
 
+                <!-- labelCompletionapproval();filterProjectsOfEmp(Current_user_ID) -->
                 <span *ngIf="this.completionPrjPort && this.completionPrjPort.length > 0" style="color:#81C784"
-                    class="delayaction-of-emp" (click)="labelCompletionapproval();filterProjectsOfEmp(Current_user_ID)">
+                    class="delayaction-of-emp" (click)="applyFilterCriteria('COMPLETION_APPROVALS_PENDING')">
                 {{this.completionPrjPort.length}} Completion approval(s)
                 </span>
 
-                <b *ngIf="this.completionPrjPort.length > 0 && (this.cancellationPort.length > 0 || this.newapprovalPrjport.length > 0)">
+                <b *ngIf="this.completionPrjPort.length > 0 && (this.cancellationPort.length > 0 || this.newapprovalPrjport.length > 0|| newPrjRejectsPort.length>0)">
                 ,&nbsp;
                 </b>
 
+                <!-- labelCancellationapproval();filterProjectsOfEmp(Current_user_ID) -->
                 <span *ngIf="this.cancellationPort && this.cancellationPort.length > 0" style="color:#EE4137"
-                    class="delayaction-of-emp" (click)="labelCancellationapproval();filterProjectsOfEmp(Current_user_ID)">
+                    class="delayaction-of-emp" (click)="applyFilterCriteria('CANCELLATION_APPROVALS_PENDING')">
                 {{this.cancellationPort.length}} Cancellation approval(s)
                 </span>
 
-                <b *ngIf="this.cancellationPort.length > 0 && this.newapprovalPrjport.length > 0">
+                <b *ngIf="this.cancellationPort.length > 0 && (this.newapprovalPrjport.length > 0|| newPrjRejectsPort.length>0)">
                 ,&nbsp;
                 </b>
 
+                <!-- labelUA();filterProjectsOfEmp(Current_user_ID) -->
                 <span *ngIf="this.newapprovalPrjport && this.newapprovalPrjport.length > 0" style="color:#9C27B0"
-                    class="delayaction-of-emp" (click)="labelUA();filterProjectsOfEmp(Current_user_ID)">
+                    class="delayaction-of-emp" (click)="applyFilterCriteria('NEW_APPROVALS_PENDING')">
                 {{this.newapprovalPrjport.length}} New approval(s)
                 </span>
+
+                 <b *ngIf="this.newapprovalPrjport.length > 0 && (newPrjRejectsPort.length>0)">
+                ,&nbsp;
+                </b>
+
+                <span *ngIf="this.newPrjRejectsPort && this.newPrjRejectsPort.length > 0" style="color:#9C27B0"
+                    class="delayaction-of-emp" (click)="applyFilterCriteria('NEW_PROJECTS_GOT_REJECTED')">
+                {{this.newPrjRejectsPort.length}} New Project(s) Rejected.
+                </span>
+
+                
             </span>
             </div>
 
@@ -1215,8 +1230,7 @@
 
                                             <ng-template #pTableRow let-item1="Item" let-i="Index" let-isPinned="isPin">
                                             
-                                            <tr *ngIf=" ((item1.Status.trim()==_PortProjStatus?.trim())||(item1.Status.includes('Delay')&&_PortProjStatus=='Delay')||_PortProjStatus=='')&&
-                                                                                                    ((!_FilterByEmp) || item1.Emp_No?.trim()==_FilterByEmp||item1.PendingapproverEmpNo?.trim() == this._FilterByEmp||item1.OwnerEmpNo?.trim()==_FilterByEmp) "
+                                            <tr *ngIf="(((item1.Status.trim()==_PortProjStatus?.trim())||(item1.Status.includes('Delay')&&_PortProjStatus=='Delay')||_PortProjStatus=='')&&((!_FilterByEmp) || item1.Emp_No?.trim()==_FilterByEmp||item1.PendingapproverEmpNo?.trim() == this._FilterByEmp||item1.OwnerEmpNo?.trim()==_FilterByEmp))&&(isAdvancedFilterApplied?( isProjectMatchesFilterCriteria(item1) ):true)"
                                                     class="odd project-list_AC" [class.active]="item1.active">
 
 
@@ -1580,7 +1594,7 @@
                                                                         <span class="New_Approval_Project font-weight-400">
                                                                             {{item1.Approvedby}}
                                                                         </span>
-                                                                </div>
+                                                                   </div>
                                                                     <div *ngIf="item1.Status=='InProcess'">
                                                                         <span
                                                                             class="in-process font-weight-400">{{item1.Status=='InProcess'?'In-process':item1.status}}</span>
@@ -1683,15 +1697,20 @@
                                                                     </div>
                                                                     <div *ngIf="item1.Status=='Completion Under Approval'">
                                                                     <div class="d-flex">
-                                                                    <span class="font-weight-400 completion-under-approval">
-                                                                        {{(item1.AuditStatus=='Audit Pending')?"Audit Approval":"Completion approval"}}
-                                                                        </span>
+                                                                        <div class="attach-tippy">
+                                                                            <span class="font-weight-400 completion-under-approval">
+                                                                            {{(item1.AuditStatus=='Audit Pending')?"Audit Approval":"Completion approval"}}
+                                                                            </span>
+                                                                            <span *ngIf="item1.AuditStatus=='Audit Pending'&&item1.Created_DT"  class="st-line" style="min-width:15.5rem">Pending approval since: <span style="display:block; font-weight:500">{{item1.Created_DT | date:'dd-MM-yyyy'}} - ( {{formatDurationFromDays(calculateDateDiff(todayDate,item1.Created_DT))}})</span>
+                                                                            </span>
+                                                                       </div>
+
                                                                         <span class="attach-tippy">
                                                                         <b *ngIf="item1.FileUrl" class="fa fa-paperclip text-info attachment" (click)="LoadDocument(item1.Project_Code,item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Submitby)"></b>
-                                                                    <span class="st-line curser-pointer" (click)="LoadDocument(item1.Project_Code,item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Submitby)">
+                                                                        <span class="st-line curser-pointer" (click)="LoadDocument(item1.Project_Code,item1.iscloud,item1.Filename,item1.FileUrl,item1.contentType,item1.Submitby)">
                                                                         <div style="width: max-content;">Submit by: <h6>{{item1.Submitby}} </h6></div>
                                                                         <div>on: {{item1.completedate | date: 'dd-MM-yyyy'}}</div></span>
-                                                                    </span>
+                                                                       </span>
                                                                     </div>
 
                                                                     <div class="pulsing-div">
@@ -2714,7 +2733,7 @@
                                   </a>
                               </li> 
 
-                             <li class="nav-item">
+                             <!-- <li class="nav-item">
                                   <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
                                       <span class="svg-icv-hd">
                                          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 18L19 21M19 21L22 18M19 21V15M15.5 3.29076C16.9659 3.88415 18 5.32131 18 7C18 8.67869 16.9659 10.1159 15.5 10.7092M12 15H8C6.13623 15 5.20435 15 4.46927 15.3045C3.48915 15.7105 2.71046 16.4892 2.30448 17.4693C2 18.2044 2 19.1362 2 21M13.5 7C13.5 9.20914 11.7091 11 9.5 11C7.29086 11 5.5 9.20914 5.5 7C5.5 4.79086 7.29086 3 9.5 3C11.7091 3 13.5 4.79086 13.5 7Z" stroke="currentColor" stroke-width="1.536" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -2722,7 +2741,7 @@
                                       <span class="nav-text">Access Requests</span>
                                       <div class="count-box">27</div>
                                   </a>
-                              </li> 
+                              </li>  -->
 
                           </ul>
                       </div>

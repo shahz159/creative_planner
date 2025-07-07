@@ -308,6 +308,8 @@ Prj_Code:any;
   actionList:any
   projectActionInfo:any;
   completionOffset:number=0;
+  auditPendingSince:number;
+
   LoadProjectDetails() {
     this.service.NewSubTaskDetailsService(this.projectCode).subscribe(
       (data) => {
@@ -429,6 +431,12 @@ Prj_Code:any;
             this.get_Dropdowns_data();
             this.GetProjectAndsubtashDrpforCalender();  // fetch all emp list, companies list and portfolios list . (used in dms link and portfolio link sidebar)
 
+          }
+
+
+// this.ProjectStatesJson[0].approvalfromdate='2024-02-12';
+          if(this.ProjectStatesJson[0].Status=='Completion Under Approval'&&this.ProjectStatesJson[0].AuditStatus=='Audit Pending'){
+             this.auditPendingSince=this.calculateDateDiff(this.todayDate,this.ProjectStatesJson[0].approvalfromdate); // number of days since when project is pending at auditor.
           }
 
 
@@ -2681,9 +2689,44 @@ onAprvl_PortfolioFilter(){
 
 
 
+ formatDurationFromDays(daysCount:number):string|null{
+    if(isNaN(daysCount)){ return null;  }
+ 
+    let dstr = '';
+
+    if(daysCount<7){
+       dstr=`${daysCount} ${daysCount==1?'day':'days'}`;
+    }
+    else{
+        const units = [
+          { type: 'year', value: 365 },
+          { type: 'month', value: 30 },
+          { type: 'week', value: 7 },
+        ];
+
+      for (let unit of units) {
+        const quotient = Math.floor(daysCount / unit.value);
+        if (quotient === 1) {
+          dstr = `1 ${unit.type}`;
+          break;
+        } else if (quotient > 1) {
+          dstr = `${quotient} ${unit.type}s`;
+          break;
+        }
+      }
+    }
+
+    return dstr;
+ }
 
 
 
+ calculateDateDiff(date1:string|Date,date2:string|Date):number{  
+    const d1=new Date(date1);
+    const d2=new Date(date2);
+    const daysDiff = moment(d1).diff(moment(d2),'days');
+    return daysDiff;
+ }
 
 
 

@@ -16,7 +16,7 @@ export const environment = {
   //  baseUrlCore:'https://cswebapps.com/StreamCoreAPI/api/',
 
 
-  // -----------Test server----------------
+  // // -----------Test server----------------
   baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
   baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/', 
    

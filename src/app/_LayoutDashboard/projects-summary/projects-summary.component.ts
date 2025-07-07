@@ -2971,7 +2971,7 @@ this.closeAutocompleteDrpDwn('proDDwn')
 
 
 
-  calculateDateDifference(date1: string, date2: string): number {
+  calculateDateDifference(date1: string, date2: string): number { 
     // Parse the dates from strings into Date objects
     const date1Obj = new Date(date1.split('-').reverse().join('-'));
     const date2Obj = new Date(date2.split('-').reverse().join('-'));

@@ -748,11 +748,17 @@
                                                                             'Delay':(projectInfo.Project_Block=='003'&&projectInfo.Status&&projectInfo.Status.includes('Delay')),
                                                                             'AuditUnderApproval':(projectInfo.Status==='Completion Under Approval'&&projectInfo.AuditStatus=='Audit Pending')
                                                                             }">
-                                                                            <span class="vi font-weight-400 st-line"
+                                                                            <span class="vi font-weight-400 st-line" style="transform:translate3d(-80px, 30px, 0px)!important;"
                                                                                *ngIf="projectInfo?.Status === 'Delay' || projectInfo?.Status?.includes('Days')">
                                                                                {{
                                                                                   (projectInfo.Status === 'Delay' ? projectInfo.Delaydays + ' days' + ' delay ': '') ||
                                                                                  (projectInfo.Project_Block=='003' ?  projectInfo.Status+' delay' : '')}}
+                                                                            </span>
+
+
+                                                                            <span class="font-weight-400 st-line aprv-pending-tooltip"
+                                                                               *ngIf="projectInfo?.Status === 'Completion Under Approval'&&projectInfo.AuditStatus=='Audit Pending' ">
+                                                                                Pending approval since: <span style="font-weight:500">{{projectInfo.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{auditPendingSince==0?'today':formatDurationFromDays(auditPendingSince)}} )</span>
                                                                             </span>
 
                                                                          {{
@@ -772,7 +778,7 @@
 
                                                                 <ng-container *ngIf="projectInfo.Status==='Completed'">
                                                                     <div *ngIf="completionOffset>0" class="extra-at-status" style="border-color: #388e3c; color: #d32f2f;">
-                                                                          <span *ngIf="completionOffset>0">{{completionOffset}} days delayed</span>
+                                                                          <span *ngIf="completionOffset>0" [matTooltip]="completionOffset+(completionOffset>1?' days':' day')">{{formatDurationFromDays(completionOffset)}} delayed</span>
                                                                     </div>
                                                                </ng-container>
 
@@ -2245,6 +2251,7 @@
                         </svg>
                         <span *ngIf="projectAuditor" class="notif-msg">
                         <span>Project audit pending with {{projectAuditor.empName}}, assigned by {{AuditRequestBY}}.</span>
+                        <span class="sm-text">Pending approval since : <span style="font-weight: 500;"> {{projectInfo.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{auditPendingSince==0?'today':formatDurationFromDays(auditPendingSince)}} )</span></span>                                                        
                         </span>
                     </div>
 
@@ -2414,7 +2421,7 @@
 
               </div>
 
-              <div *ngIf="+ProjectPercentage>100" class="notification overutilization-notification">
+              <div *ngIf="+ProjectPercentage>100&&projectInfo" class="notification overutilization-notification">
                   <svg width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1"
                       xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -2430,10 +2437,52 @@
                           </g>
                       </g>
                   </svg>
+                  <div class="d-flex flex-column">
                   <span class="notif-msg" style="color:#c57a05">
-                      Project exceeds planned capacity with total utilization of {{ProjectPercentage}}%, an increase of {{(+ProjectPercentage-100)}}%.
+                      Project exceeds planned capacity with total utilization of <span [matTooltip]="'total '+projectInfo.TotalHours+' hours'">{{ProjectPercentage}}% ({{projectInfo.TotalHours+' hrs'}})</span>, an increase of <span [matTooltip]="('+'+(projectInfo.TotalHours-projectInfo.AllocatedHours)+' hours extra')">{{(+ProjectPercentage-100)}}% ({{'+'+(projectInfo.TotalHours-projectInfo.AllocatedHours)+' hrs'}})</span>.
                   </span>
+
+                  <span *ngIf="projectOverutilizedByEmp?.length>0" class="notif-msg" style="color: #c57a05;font-size: 12px;font-weight: 400;">
+                    Notable overutilization by 
+                    
+                    <ng-container *ngFor="let emp of projectOverutilizedByEmp; let i=index;">
+                      <b class="delayaction-of-emp"  [matTooltip]="emp.actions?emp.actions.length+' actions':'no actions'"  (click)="emp.actions?showActionByActionCode(emp.actions):0">{{emp.empName}}({{emp.usedAllocHrs}} hrs)</b>{{i+1===projectOverutilizedByEmp.length-1?' and':(i+1===projectOverutilizedByEmp.length)?'':', '}}
+                    </ng-container><b>.</b>
+                    
+                 
+                  </span>
+                  </div>
+
               </div>
+
+             <div *ngIf="noActvySinceCreation&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false" class="notification  delay-notification">
+                <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#ff2727" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
+                <span class="notif-msg" style="color: #ff2727;">
+                    No progress for {{noActvy4NDays}} {{noActvy4NDays>1?'days':'day'}} since start date of this project, Start recording activities to make this project back in progress.
+                </span>
+             </div>
+
+             <div *ngIf="actnsWithoutProgress&&actnsWithoutProgress.length>0&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false" class="notification delay-notification  mydelay-action-notf  curser-pointer"  (click)="showActionsWithNoProgress()">
+                <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#ff2727" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g>
+                </svg>
+                <span class="notif-msg mr-2" style="color: #ff2727;">
+                    {{actnsWithoutProgress.length}} {{actnsWithoutProgress.length>1?'Actions':'Action'}} found with no progress since their start date in the project.
+                </span>
+
+                <!-- <button (click)="showActionsWithNoProgress()" title="show actions" class="mydelayactns-open-btn  curser-pointer " >
+                    <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M12 22.4199C17.5228 22.4199 22 17.9428 22 12.4199C22 6.89707 17.5228 2.41992 12 2.41992C6.47715 2.41992 2 6.89707 2 12.4199C2 17.9428 6.47715 22.4199 12 22.4199Z"
+                                stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path class="arrow" d="M8 13.8599L10.87 10.8C11.0125 10.6416 11.1868 10.5149 11.3815 10.4282C11.5761 10.3415 11.7869 10.2966 12 10.2966C12.2131 10.2966 12.4239 10.3415 12.6185 10.4282C12.8132 10.5149 12.9875 10.6416 13.13 10.8L16 13.8599"
+                                stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </svg>
+                </button> -->
+            </div>
+
 
               <div *ngIf="([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo,projectInfo.AuthorityEmpNo].includes(Current_user_ID)||isHierarchy==true)&&delayActionsOfEmps.length>0"  class="notifications-list">
                   <div class="notification delay-notification" *ngIf="TOTAL_ACTIONS_IN_DELAY>0">
@@ -2821,34 +2870,7 @@
                 </span>
              </div>
 
-             <div *ngIf="noActvySinceCreation&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false" class="notification  delay-notification">
-                <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#ff2727" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
-                <span class="notif-msg" style="color: #ff2727;">
-                    No progress for {{noActvy4NDays}} {{noActvy4NDays>1?'days':'day'}} since start date of this project, Start recording activities to make this project back in progress.
-                </span>
-             </div>
-
-             <div *ngIf="actnsWithoutProgress&&actnsWithoutProgress.length>0&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false" class="notification delay-notification  mydelay-action-notf  curser-pointer"  (click)="showActionsWithNoProgress()">
-                <svg class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#ff2727" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g>
-                </svg>
-                <span class="notif-msg mr-2" style="color: #ff2727;">
-                    {{actnsWithoutProgress.length}} {{actnsWithoutProgress.length>1?'Actions':'Action'}} found with no progress since their start date in the project.
-                </span>
-
-                <!-- <button (click)="showActionsWithNoProgress()" title="show actions" class="mydelayactns-open-btn  curser-pointer " >
-                    <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <path d="M12 22.4199C17.5228 22.4199 22 17.9428 22 12.4199C22 6.89707 17.5228 2.41992 12 2.41992C6.47715 2.41992 2 6.89707 2 12.4199C2 17.9428 6.47715 22.4199 12 22.4199Z"
-                                stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path class="arrow" d="M8 13.8599L10.87 10.8C11.0125 10.6416 11.1868 10.5149 11.3815 10.4282C11.5761 10.3415 11.7869 10.2966 12 10.2966C12.2131 10.2966 12.4239 10.3415 12.6185 10.4282C12.8132 10.5149 12.9875 10.6416 13.13 10.8L16 13.8599"
-                                stroke-linecap="round" stroke-linejoin="round"></path>
-                        </g>
-                    </svg>
-                </button> -->
-            </div>
-
+          
               </ng-template>
 
                  </div>
@@ -3112,7 +3134,7 @@
                                                              Completed
                                                             </div>
                                                             <div *ngIf="completionOffset>0" class="extra-at-status" style="color:#d32f35; border-color: #388e3c; ">
-                                                                <span *ngIf="completionOffset>0">{{completionOffset}} {{completionOffset>1?'days':'day'}} delayed</span>
+                                                                <span *ngIf="completionOffset>0" [matTooltip]="completionOffset+(completionOffset>1?' days':' day')">{{formatDurationFromDays(completionOffset)}} delayed</span>
                                                             </div>
                                                             <button (click)="onPrjReopenBtnClicked()" *ngIf="(Current_user_ID==projectInfo.OwnerEmpNo||isHierarchy==true)" class="ml-1 btn px-2 pt-1 pb-1 btn-outline-info d-flex " title="reopen project">
                                                               <svg width="17px" height="17px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M18.364 8.05026L17.6569 7.34315C14.5327 4.21896 9.46734 4.21896 6.34315 7.34315C3.21895 10.4673 3.21895 15.5327 6.34315 18.6569C9.46734 21.7811 14.5327 21.7811 17.6569 18.6569C19.4737 16.84 20.234 14.3668 19.9377 12.0005M18.364 8.05026H14.1213M18.364 8.05026V3.80762" stroke="currentColor" stroke-width="1.95" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
@@ -3181,13 +3203,21 @@
                                                             <div class="Kt-Pd-Status new-project-under"> New approval </div>
                                                       </div>
 
-                                                      <div class="kt-project-type " *ngSwitchCase="'Completion Under Approval'">
-                                                        <div *ngIf="projectInfo.AuditStatus=='Audit Pending'" class="Kt-Pd-Status AuditUnderApproval d-flex align-items-center">
-                                                            Audit Approval
-                                                        </div>
+                                                      <div class="kt-project-type attach-tippy" *ngSwitchCase="'Completion Under Approval'">
+                                                       
+                                                        <ng-container *ngIf="projectInfo.AuditStatus=='Audit Pending'">
+                                                          <div class="Kt-Pd-Status AuditUnderApproval d-flex align-items-center">
+                                                              Audit Approval
+                                                          </div>
+                                                          <span class="font-weight-400 st-line aprv-pending-tooltip" style="transform: translate3d(-110px, 29px, 0px) !important;">
+                                                                Pending approval since: <span style="font-weight:500">{{projectInfo.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{auditPendingSince==0?'today':formatDurationFromDays(auditPendingSince)}} )</span>
+                                                          </span>
+                                                        </ng-container>
+
                                                         <div *ngIf="projectInfo.AuditStatus!='Audit Pending'" class="Kt-Pd-Status CompletionUnderApproval d-flex align-items-center">
                                                             Completion approval
                                                         </div>
+                                                         
                                                       </div>
 
                                                       <div class="kt-project-type d-flex" *ngSwitchCase="'Forward Under Approval'">
@@ -3466,7 +3496,7 @@
                                                           </div>
                                                       </div>
                                                       <div *ngIf="completionOffset>0"class="completion-ending-statement">
-                                                         Project is completed after a delay of <b>{{completionOffset}}</b> {{completionOffset>1?' days':' day'}}.
+                                                         Project is completed after a delay of <b [matTooltip]="completionOffset+(completionOffset>1?' days':' day')">{{formatDurationFromDays(completionOffset)}}</b>.
                                                       </div>
 
                                                   </div>
@@ -5316,7 +5346,7 @@
                                                                 <div class="Kt-Pd-Status Done text-nowrap "> Completed </div>
                                                                 <ng-container *ngIf="projectActionInfo[currentActionView].Status==='Completed'">
                                                                     <div *ngIf="action_completionOffset>0" class="extra-at-status" style="border-color: #388e3c; color: #d32f2f;">
-                                                                          <span>{{action_completionOffset}} days delayed</span>
+                                                                          <span [matTooltip]="action_completionOffset+(action_completionOffset>1?' days':' day')">{{formatDurationFromDays(action_completionOffset)}} delayed</span>
                                                                     </div>
                                                                </ng-container>
                                                             </div>
@@ -8155,7 +8185,7 @@
                                                             'P_Not-Started':i%10==9
                                                             }"
                                                           >
-                                                        {{emp[0]}}
+                                                        {{emp?.[0]}}
                                                         </span>
                                                     </div>
                                                     <div class="fil-lbl">{{emp}}</div>

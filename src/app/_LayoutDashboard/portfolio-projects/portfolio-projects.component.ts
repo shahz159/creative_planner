@@ -399,11 +399,12 @@ export class PortfolioProjectsComponent implements OnInit {
   UserAccessType : 'Full Access' | 'View Only'
   uniqueid:any
   counting:number=0
-  delayPrjsofPort :any=[]
-  forwardPrjPort:any=[]
-  completionPrjPort:any=[]
-  newapprovalPrjport : any=[]
-  cancellationPort:any=[]
+  delayPrjsofPort :any=[];
+  forwardPrjPort:any=[];
+  completionPrjPort:any=[];
+  newapprovalPrjport : any=[];
+  cancellationPort:any=[];
+  newPrjRejectsPort:any=[];
   checking: boolean = false;
   // isPendingChecked : boolean = false
   isPortfolioFavourite:boolean=false;  
@@ -476,85 +477,77 @@ export class PortfolioProjectsComponent implements OnInit {
       });
         console.log(this.filteredEmployees,"this.filteredEmployeesthis.filteredEmployees")
 
-        // this.delayPrjsofPort = []
-        // this._ProjectsListBy_Pid.forEach(item => {
-        //   if (item.Status === 'Delay' && (item.Emp_No == this.Current_user_ID || item.OwnerEmpNo == this.Current_user_ID ))  {
-        //      const obj = {
-        //       prjname : item.Project_Name,
-        //       prjcode : item.Project_Code,
-        //       status : item.Status,
-        //       emp_No : item.Emp_No,
-        //       owner : item.OwnerEmpNo
-        //       };
-        //       this.delayPrjsofPort.push(obj)
-        //   }
-        // });
-        // console.log(this.delayPrjsofPort, 'storingDelaycount');
+   
+
+    this.forwardPrjPort = [];
+    this.completionPrjPort = [];
+    this.newapprovalPrjport=[];
+    this.cancellationPort = [];
+    this.newPrjRejectsPort=[];
+
+    this._ProjectsListBy_Pid.forEach((item)=>{
+
+            if(item.Status =='Forward Under Approval' &&   item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+                const obj = {
+                  prjname : item.Project_Name,
+                  prjcode : item.Project_Code,
+                  status: item.Status,
+                  empNo : item.Emp_No
+                };
+                this.forwardPrjPort.push(obj);
+            }
+            
+            if (item.Status === 'Completion Under Approval'   && item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+                const obj = {
+                  prjname : item.Project_Name,
+                  prjcode : item.Project_Code,
+                  status: item.Status,
+                  empNo : item.Emp_No
+                }
+              this.completionPrjPort.push(obj);
+            }
+
+            if (item.Status === "Under Approval"  &&item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+                const obj = {
+                  prjname : item.Project_Name,
+                  prjcode : item.Project_Code,
+                  status: item.Status,
+                  owner : item.PendingapproverEmpNo,
+                  empNo : item.Emp_No
+                }
+              this.newapprovalPrjport.push(obj);
+            }
+
+            if (item.Status === "Cancellation Under Approval"  && item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+              const obj = {
+                prjname : item.Project_Name,
+                prjcode : item.Project_Code,
+                status: item.Status,
+                owner : item.PendingapproverEmpNo,
+                empNo : item.Emp_No
+              }
+              this.cancellationPort.push(obj);
+            }
+
+            if(item.Status === "New Project Rejected"&&item.Emp_No==this.Current_user_ID){
+                const obj = {
+                  prjname : item.Project_Name,
+                  prjcode : item.Project_Code,
+                  status: item.Status,
+                  empNo : item.Emp_No
+                };
+                this.newPrjRejectsPort.push(obj);
+            }
 
 
+    });
 
-  this.forwardPrjPort = []
-  this._ProjectsListBy_Pid.forEach((item=>{
-          if(item.Status =='Forward Under Approval' &&   item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
-            const obj = {
-              prjname : item.Project_Name,
-              prjcode : item.Project_Code,
-              status: item.Status,
-              empNo : item.Emp_No
-              };
-              this.forwardPrjPort.push(obj)
-          }
-  }))
-  console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
+    console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
+    console.log(this.completionPrjPort,"this.completionPrjPort.completionPrjPort")
+    console.log(this.newapprovalPrjport,"this.newapprovalPrjport.newapprovalPrjport")
+    console.log(this.cancellationPort,"this.cancellationPort.cancellationPort")
+    console.log(this.newPrjRejectsPort,'this.newPrjRejectsPort');
 
-
-  this.completionPrjPort = []
-  this._ProjectsListBy_Pid.forEach((item)=>{
-    if (item.Status === 'Completion Under Approval'   && item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
-      const obj = {
-        prjname : item.Project_Name,
-        prjcode : item.Project_Code,
-        status: item.Status,
-        empNo : item.Emp_No
-      }
-      this.completionPrjPort.push(obj)
-    }
-  });
-  console.log(this.completionPrjPort,"this.completionPrjPort.completionPrjPort")
-
-
-  this.newapprovalPrjport = []
-  this._ProjectsListBy_Pid.forEach((item)=>{
-    debugger
-    if (item.Status === "Under Approval"  &&item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
-      const obj = {
-        prjname : item.Project_Name,
-        prjcode : item.Project_Code,
-        status: item.Status,
-        owner : item.PendingapproverEmpNo,
-        empNo : item.Emp_No
-      }
-      this.newapprovalPrjport.push(obj)
-    }
-  });
-  console.log(this.newapprovalPrjport,"this.newapprovalPrjport.newapprovalPrjport")
-
-
-  this.cancellationPort = []
-  this._ProjectsListBy_Pid.forEach((item)=>{
-
-    if (item.Status === "Cancellation Under Approval"  && item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
-      const obj = {
-        prjname : item.Project_Name,
-        prjcode : item.Project_Code,
-        status: item.Status,
-        owner : item.PendingapproverEmpNo,
-        empNo : item.Emp_No
-      }
-      this.cancellationPort.push(obj)
-    }
-  });
-  console.log(this.cancellationPort,"this.cancellationPort.cancellationPort")
 
 
   // this.isPendingChecked = this._ProjectsListBy_Pid.some((emp)=>{
@@ -1528,9 +1521,6 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
   }
 
 
-
-
-
   labelToDoAchieved() {
     this._PortProjStatus = "ToDo Achieved";
     this.showDeletedPrjOnly=false;
@@ -1553,6 +1543,71 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
     this._PortProjStatus.includes('Project Hold');
     this.showDeletedPrjOnly=false;
   }
+
+
+// advance filter notif   start.
+
+
+isAdvancedFilterApplied:boolean=false;
+filterProjectsByCriteria:string;
+
+isProjectMatchesFilterCriteria(project:any):boolean{
+let projectMatched:boolean=false;
+
+  if(this.filterProjectsByCriteria=='FORWARD_APPROVALS_PENDING')
+  { 
+     projectMatched=(project.Status.trim()=='Forward Under Approval'&&project.PendingapproverEmpNo?.trim()==this.Current_user_ID);
+  }
+  else if(this.filterProjectsByCriteria=='COMPLETION_APPROVALS_PENDING')
+  {
+     projectMatched=(project.Status.trim()=='Completion Under Approval'&&project.PendingapproverEmpNo?.trim()==this.Current_user_ID);
+  }
+  else if(this.filterProjectsByCriteria=='CANCELLATION_APPROVALS_PENDING')
+  {
+    projectMatched=(project.Status.trim()=='Cancellation Under Approval'&&project.PendingapproverEmpNo?.trim()==this.Current_user_ID);
+  }
+  else if(this.filterProjectsByCriteria=='NEW_APPROVALS_PENDING')
+  {
+    projectMatched=(project.Status.trim()=='Under Approval'&&project.PendingapproverEmpNo?.trim()==this.Current_user_ID);
+  }
+  else if(this.filterProjectsByCriteria='NEW_PROJECTS_GOT_REJECTED')
+  {
+    projectMatched=(project.Status.trim()=='New Project Rejected'&&project.Emp_No?.trim()==this.Current_user_ID);
+  }
+   
+   return projectMatched;
+}
+
+
+applyFilterCriteria(criteria:string){
+
+   // clear normal filter if present
+   this._PortProjStatus = "";
+   this._FilterByEmp='';
+   this.showDot = false;
+   this.showDeletedPrjOnly=false;
+   this.resultCount = 0;
+   this.nofilterResult=false;
+
+   // set advance filter on
+   this.isAdvancedFilterApplied=true;
+   
+   // store filter criteria
+   this.filterProjectsByCriteria=criteria;
+}
+
+clearAppliedFilterApplied(){
+   this.isAdvancedFilterApplied=false;
+   this.filterProjectsByCriteria='';
+}
+
+
+
+
+
+// advance filter notif   end.
+
+
 
   //Sorting.....
   clicks: number = 0;
@@ -6741,6 +6796,53 @@ iscompletiondate=false;
     return diffDays;
   }
 
+
+
+   calculateDateDiff(date1:string|Date,date2:string|Date):number{    debugger
+      const d1=new Date(date1); d1.setHours(0,0,0,0);
+      const d2=new Date(date2);  d2.setHours(0,0,0,0);
+      const daysDiff = moment(d1).diff(moment(d2),'days');
+      return daysDiff;
+   }
+
+
+
+
+
+ formatDurationFromDays(daysCount:number):string|null{
+    if(isNaN(daysCount)){ return null;  }
+ 
+    let dstr = '';
+    
+    if(daysCount<7){
+       dstr=`${daysCount} ${daysCount==1?'day':'days'}`;
+    }
+    else{
+        const units = [
+          { type: 'year', value: 365 },
+          { type: 'month', value: 30 },
+          { type: 'week', value: 7 },
+        ];
+
+      for (let unit of units) {
+        const quotient = Math.floor(daysCount / unit.value);
+        if (quotient === 1) {
+          dstr = `1 ${unit.type}`;
+          break;
+        } else if (quotient > 1) {
+          dstr = `${quotient} ${unit.type}s`;
+          break;
+        }
+      }
+    }
+
+    return dstr;
+ }
+
+
+
+
+
   getFormattedforRejected(delayDays: any): string {
     let delayText = '';
 
@@ -6761,6 +6863,7 @@ iscompletiondate=false;
   }
 
   Dateoftoday:any
+  todayDate:Date=new Date();
   getCurrentDate()  {
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
