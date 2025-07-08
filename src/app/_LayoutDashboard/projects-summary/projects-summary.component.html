@@ -344,9 +344,6 @@
 
 
 
-
-
-
                                             <p class="text-danger"><b> {{this._ErrorMessage_User}}</b></p>
                                         </div>
 
@@ -832,7 +829,7 @@
                         </button>
 
                     </div>
-                </div>
+                </div>     
             </div>
 
             <div class="ticks-grad mb-3 mt-3 d-none">
@@ -930,7 +927,7 @@
 
 
             <!-- this.mydelayProjects&&this.mydelayProjects.length > 0 || -->
-            <div class="kt-Note-msg d-flex" *ngIf=" this.forwardUA&&this.forwardUA.length > 0 ||this.completionUA&&this.completionUA.length > 0 || this.newUA&&this.newUA.length > 0 || this.cancellationUA&&this.cancellationUA.length > 0" >
+            <div class="kt-Note-msg d-flex" *ngIf=" this.forwardUA&&this.forwardUA.length > 0 ||this.completionUA&&this.completionUA.length > 0 || this.newUA&&this.newUA.length > 0 || this.cancellationUA&&this.cancellationUA.length > 0|| newPrjRejectedCount&&newPrjRejectedCount>0" >
             
             <div class="kt-note-icon" style="align-self: flex-start;"><svg xmlns="http://www.w3.org/2000/svg"
                xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px"
@@ -976,7 +973,7 @@
                 {{this.forwardUA.length}} Forward approval(s)
               </span>
 
-              <ng-container *ngIf="this.forwardUA.length > 0 && (this.completionUA.length > 0 || this.cancellationUA.length > 0 || this.newUA.length > 0)">
+              <ng-container *ngIf="this.forwardUA.length > 0 && (this.completionUA.length > 0 || this.cancellationUA.length > 0 || this.newUA.length > 0 || newPrjRejectedCount>0)">
                 <b>,&nbsp;</b>
               </ng-container>
 
@@ -984,7 +981,7 @@
                 {{this.completionUA.length}} Completion approval(s)
               </span>
 
-              <ng-container *ngIf="this.completionUA.length > 0 && (this.cancellationUA.length > 0 || this.newUA.length > 0)">
+              <ng-container *ngIf="this.completionUA.length > 0 && (this.cancellationUA.length > 0 || this.newUA.length > 0||newPrjRejectedCount>0)">
                 <b>,&nbsp;</b>
               </ng-container>
 
@@ -992,13 +989,21 @@
                 {{this.cancellationUA.length}} Cancellation approval(s)
               </span>
 
-              <ng-container *ngIf="this.cancellationUA.length > 0 && this.newUA.length > 0">
+              <ng-container *ngIf="this.cancellationUA.length > 0 && (this.newUA.length > 0 || newPrjRejectedCount>0)">
                 <b>,&nbsp;</b>
               </ng-container>
 
               <span *ngIf="this.newUA && this.newUA.length > 0" style="color:#9c27b0" [ngClass]="{'currentUA-in-view':currentUA=='Under Approval'}"  class="delayaction-of-emp" (click)="filterPrjs(Current_user_ID, 'Under Approval')">
                 {{this.newUA.length}} New approval(s)
               </span>
+
+               <ng-container *ngIf="this.newUA.length > 0 && (newPrjRejectedCount>0)">
+                <b>,&nbsp;</b>
+              </ng-container>
+
+                <span *ngIf="newPrjRejectedCount&&newPrjRejectedCount>0" style="color:#9c27b0" class="delayaction-of-emp" (click)="onNewPrjRejectedNotifClicked()">
+                 {{newPrjRejectedCount}} New Project(s) Rejected.
+               </span>
 
 
             </span>
@@ -1576,7 +1581,7 @@
                                         </ng-container>
 
                                         <ng-template #pTableRow  let-item="Item" let-i="Index" let-isPinned="isPin">
-                                                 <tr role="row" class="odd project-list_AC" [class.active]="item.isActive">
+                                                 <tr role="row" class="odd project-list_AC" [class.active]="item.Project_Code==this.activeProjectInSidebar">
                                                     <!-- Information Icon -->
 
                                                     <!--ctrl btn start-->
@@ -1589,7 +1594,7 @@
                                                           </mat-list-item>
 
                                                             <a tabindex="0" class="btn px-0 mr-1 mb-0 ml-2 info-btn curser-pointer" role="button" placement="right"
-                                                            data-trigger="focus" data-toggle="tooltip" title="Click to view the project info" (click)="openInfo(item.Project_Code,item.Project_Name);info_active_btn(item)">
+                                                            data-trigger="focus" data-toggle="tooltip" title="Click to view the project info" (click)="openInfo(item.Project_Code,item.Project_Name);">
                                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                                                 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
                                                             <g>
@@ -2133,7 +2138,9 @@
                                                                   <span class="AuditUnderApproval font-weight-400 cursor-pointer"  (click)="LoadDocument(item.Iscloud,item.FileName,item.FileUrl,item.contentType,item.TM_DisplayName,item.Project_Code,item.Team_Autho,item.Emp_No)">
                                                                          Audit Approval
                                                                   </span>
-                                                                  <span *ngIf="item.approvalfromdate"  class="st-line" style="min-width:15.5rem">Pending approval since: <span style="display:block; font-weight:500">{{item.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{ getFormattedforRejected( calculateDateDifference(this.Dateoftoday, item.approvalfromdate))}})</span>
+                                                                  <span *ngIf="item.approvalfromdate"  class="st-line" style="min-width:15.5rem">
+                                                                    Pending approval since: <span style="display:block; font-weight:500">{{item.approvalfromdate | date:'dd-MM-yyyy'}} - (
+                                                                        <ng-container *ngIf="(calculateDateDiff(this.Dateoftoday, item.approvalfromdate)+'') as datediff">{{datediff=='0'?'today':formatDurationFromDays(datediff)}}  </ng-container> )</span>
                                                                   </span>
                                                                 </div>
                                                                 <ng-template #compl_aprvl_status>

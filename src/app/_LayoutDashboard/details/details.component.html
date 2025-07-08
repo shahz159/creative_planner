@@ -758,7 +758,7 @@
 
                                                                             <span class="font-weight-400 st-line aprv-pending-tooltip"
                                                                                *ngIf="projectInfo?.Status === 'Completion Under Approval'&&projectInfo.AuditStatus=='Audit Pending' ">
-                                                                                Pending approval since: <span style="font-weight:500">{{projectInfo.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{auditPendingSince==0?'today':formatDurationFromDays(auditPendingSince)}} )</span>
+                                                                                Pending approval since: <span style="font-weight:500">{{projectInfo.requestDate | date:'dd-MM-yyyy'}} - ( {{auditPendingSince==0?'today':formatDurationFromDays(auditPendingSince)}} )</span>
                                                                             </span>
 
                                                                          {{
@@ -2194,7 +2194,7 @@
                         </g>
                         </svg>
                         <span class="notif-msg">
-                        <span>Project has been assigned to you for auditing by {{AuditRequestBY}}.</span>
+                        <span>Project has been assigned to you for auditing by {{AuditRequestBY}} on {{requestDate|date:'MMMM d, y'}} ({{auditPendingSince==0?'today':formatDurationFromDays(auditPendingSince)+' ago'}}).</span>
                         <!-- <span class="fs-7" *ngIf="projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{projectInfo.Owner_remarks}}</span>
                         <span class="fs-7" *ngIf="!projectInfo.Owner_remarks">{{AuditRequestBY}} says: {{requestComments}}</span>
                         <span class="fs-7" style="text-decoration: underline">Next steps: </span> -->
@@ -2239,7 +2239,7 @@
                     </div>
 
                     <div class="notification audit-pending-notf" *ngIf="projectInfo.AuditStatus=='Audit Pending'&&Current_user_ID!=approvalEmpId">
-                        <svg width="17px" height="17px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #204d22;stroke: #204d22;">
+                        <svg width="18px" height="18px" viewBox="0 0 412.879 412.879" xmlns="http://www.w3.org/2000/svg" style="fill: #204d22;stroke: #204d22; min-width:18px; min-height:18px;">
                         <g><g>
                             <path d="M199.982,176.808c-2.065-4.935-7.03-8.097-11.772-10.043l-32.049-14.755l-15.397-12.985l-24.678,24.546l10.333,69.083 c0.037,0.24-0.024,0.486-0.167,0.682l-10.92,14.943c-0.174,0.238-0.451,0.381-0.746,0.381s-0.572-0.143-0.746-0.381 l-10.919-14.943c-0.144-0.195-0.203-0.441-0.168-0.682l10.333-69.083l-24.677-24.547L73.012,152.01l-32.048,14.755 c-4.743,1.946-10.426,6.39-11.773,10.043c0,0-34.834,82.937-15.94,82.937h202.673C234.816,259.745,199.982,176.808,199.982,176.808z"></path>
                             <path d="M114.585,138.558c32.776,0,57.236-30.539,57.794-81.752C172.734,21.268,155.809,0,114.585,0 C73.359,0,56.431,21.268,56.793,56.806C57.348,108.019,81.807,138.558,114.585,138.558z"></path>
@@ -2250,8 +2250,7 @@
                         </g>
                         </svg>
                         <span *ngIf="projectAuditor" class="notif-msg">
-                        <span>Project audit pending with {{projectAuditor.empName}}, assigned by {{AuditRequestBY}}.</span>
-                        <span class="sm-text">Pending approval since : <span style="font-weight: 500;"> {{projectInfo.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{auditPendingSince==0?'today':formatDurationFromDays(auditPendingSince)}} )</span></span>                                                        
+                        <span>Project audit pending with {{projectAuditor.empName}} since <span style="font-weight: 700;"> {{projectInfo.requestDate | date:'dd-MM-yyyy'}} - ( {{auditPendingSince==0?'today':formatDurationFromDays(auditPendingSince)}} )</span>, assigned by {{AuditRequestBY}}.</span>                                               
                         </span>
                     </div>
 
@@ -2572,7 +2571,50 @@
                 </div>
 
 
-                <div *ngIf="activity!='New Project Rejected'" class="notification new-prjrejected-notf" style="cursor:pointer;">
+               <div *ngIf="activity=='Project Complete Rejected'" class="notification new-prjrejected-notf" style="cursor:pointer;">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.576 31.576" width="30px" height="30px" style="min-width:22px; min-height:23px;" >
+                      <g id="SVGRepo_iconCarrier">
+                          <path d="M16.779,23.888H6.215c-1.079,0-1.968-0.844-1.968-1.923V4.446c0-1.079,0.889-1.928,1.968-1.928h13.677 c1.08,0,1.984,0.849,1.984,1.928v11.917l1.231,1.383l1.257-1.407c0.016-0.017,0.03-0.031,0.03-0.048V2.57 c0-1.419-1.14-2.57-2.56-2.57H4.169C2.807,0,1.73,1.104,1.73,2.466v21.44c0,1.42,1.123,2.574,2.543,2.574H15.22 c0.018,0,0.036-0.054,0.055-0.074l1.879-2.092L16.779,23.888z"></path>
+                          <path d="M18.838,5.8H7.498c-0.697,0-1.26,0.563-1.26,1.26c0,0.696,0.563,1.258,1.26,1.258h11.34c0.699,0,1.264-0.563,1.264-1.258 C20.102,6.362,19.537,5.8,18.838,5.8z"></path>
+                          <path d="M18.838,9.997H7.498c-0.697,0-1.26,0.524-1.26,1.221c0,0.693,0.563,1.221,1.26,1.221h11.34 c0.699,0,1.264-0.528,1.264-1.221C20.102,10.522,19.537,9.997,18.838,9.997z"></path>
+                          <path d="M15.594,16.017c1.259-1.137,2.992-1.426,4.482-0.878c-0.113-0.578-0.623-1.02-1.238-1.02H7.498 c-0.697,0-1.26,0.564-1.26,1.259c0,0.694,0.563,1.259,1.26,1.259h7.527C15.191,16.406,15.381,16.209,15.594,16.017z"></path>
+                          <path d="M7.498,18.164c-0.697,0-1.26,0.562-1.26,1.259s0.563,1.259,1.26,1.259h6.864c-0.268-0.84-0.294-1.679-0.083-2.519 L7.498,18.164L7.498,18.164z"></path>
+                          <path d="M26.065,24.332l1.483-1.646l1.728-1.914c0.813-0.904,0.744-2.301-0.161-3.115c-0.908-0.816-2.3-0.743-3.117,0.16 l-1.42,1.576l-1.484,1.646l-2.906-3.223c-0.814-0.902-2.209-0.978-3.117-0.16c-0.905,0.815-0.976,2.211-0.16,3.115l3.211,3.561 l-1.482,1.646l-1.729,1.912c-0.815,0.905-0.744,2.301,0.161,3.116c0.423,0.381,0.95,0.567,1.476,0.567 c0.604,0,1.203-0.245,1.641-0.729l1.42-1.572l1.484-1.646l2.906,3.221c0.438,0.482,1.037,0.729,1.641,0.729 c0.525,0,1.055-0.188,1.479-0.566c0.904-0.814,0.977-2.211,0.16-3.115L26.065,24.332z" fill="#797979"></path>
+                      </g>
+                  </svg>
+                  <span class="notif-msg">
+                       <div>
+                        {{activity}} for
+                          "{{lastactivity[0].rejectType}}"
+                          by
+                          {{lastactivity[0].Empname}}
+                          on <b>{{lastactivity[0].Rec_date|date:'dd-MM-yyyy'}}</b>. <br/>
+                          Remark: "{{lastactivity[0].Req_Coments}}"
+                      </div>
+                       <div *ngIf="Current_user_ID==projectInfo.ResponsibleEmpNo">
+                            <span class="fs-7" style="text-decoration: underline">Next steps: </span><br/>
+                            <span class="fs-7">
+                                1.Make necessary adjustments to the project based on the rejection reasons and provided feedback.<br/>
+                                2.Submit the revised project for re-evaluation and approval.<br/>   
+                            </span>
+                        </div>
+
+                  </span>
+                  <button class="rj-btn" (click)="View_Activity('PROJECT-ACTIVITIES',{activityType:'Project Complete',byEmp:'all'});">
+                    <svg stroke="#838383" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M12 22.4199C17.5228 22.4199 22 17.9428 22 12.4199C22 6.89707 17.5228 2.41992 12 2.41992C6.47715 2.41992 2 6.89707 2 12.4199C2 17.9428 6.47715 22.4199 12 22.4199Z" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path class="arrow"  d="M8 13.8599L10.87 10.8C11.0125 10.6416 11.1868 10.5149 11.3815 10.4282C11.5761 10.3415 11.7869 10.2966 12 10.2966C12.2131 10.2966 12.4239 10.3415 12.6185 10.4282C12.8132 10.5149 12.9875 10.6416 13.13 10.8L16 13.8599"  stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </svg>
+                </button>
+               </div>
+
+
+
+                <div *ngIf="activity=='New Action Rejected'||activity=='Rejected'" class="notification new-prjrejected-notf" style="cursor:pointer;">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.576 31.576" width="30px" height="30px" >
                       <g id="SVGRepo_iconCarrier">
                           <path d="M16.779,23.888H6.215c-1.079,0-1.968-0.844-1.968-1.923V4.446c0-1.079,0.889-1.928,1.968-1.928h13.677 c1.08,0,1.984,0.849,1.984,1.928v11.917l1.231,1.383l1.257-1.407c0.016-0.017,0.03-0.031,0.03-0.048V2.57 c0-1.419-1.14-2.57-2.56-2.57H4.169C2.807,0,1.73,1.104,1.73,2.466v21.44c0,1.42,1.123,2.574,2.543,2.574H15.22 c0.018,0,0.036-0.054,0.055-0.074l1.879-2.092L16.779,23.888z"></path>
@@ -2602,17 +2644,7 @@
                           Remark: "{{lastactivity[0].Req_Coments}}"
                     </ng-template>
                   </span>
-                  <button *ngIf="activity=='Project Complete Rejected'" class="rj-btn" (click)="View_Activity('PROJECT-ACTIVITIES',{activityType:'Project Complete',byEmp:'all'});">
-                    <svg stroke="#838383" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <path d="M12 22.4199C17.5228 22.4199 22 17.9428 22 12.4199C22 6.89707 17.5228 2.41992 12 2.41992C6.47715 2.41992 2 6.89707 2 12.4199C2 17.9428 6.47715 22.4199 12 22.4199Z" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path class="arrow"  d="M8 13.8599L10.87 10.8C11.0125 10.6416 11.1868 10.5149 11.3815 10.4282C11.5761 10.3415 11.7869 10.2966 12 10.2966C12.2131 10.2966 12.4239 10.3415 12.6185 10.4282C12.8132 10.5149 12.9875 10.6416 13.13 10.8L16 13.8599"  stroke-linecap="round" stroke-linejoin="round"></path>
-                        </g>
-                    </svg>
-                </button>
-              </div>
+               </div>
 
 
 
@@ -3210,7 +3242,7 @@
                                                               Audit Approval
                                                           </div>
                                                           <span class="font-weight-400 st-line aprv-pending-tooltip" style="transform: translate3d(-110px, 29px, 0px) !important;">
-                                                                Pending approval since: <span style="font-weight:500">{{projectInfo.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{auditPendingSince==0?'today':formatDurationFromDays(auditPendingSince)}} )</span>
+                                                                Pending approval since: <span style="font-weight:500">{{projectInfo.requestDate | date:'dd-MM-yyyy'}} - ( {{auditPendingSince==0?'today':formatDurationFromDays(auditPendingSince)}} )</span>
                                                           </span>
                                                         </ng-container>
 

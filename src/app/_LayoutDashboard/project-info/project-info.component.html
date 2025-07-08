@@ -291,7 +291,6 @@
                         <div class="Paf_info">
                             <label>Pending approval</label>
                             <p><span class="Dote_red"></span> {{Approver_Name}}</p>
-                            <p *ngIf="item.Status=='Completion Under Approval'&&item.AuditStatus=='Audit Pending'" class="gray-cus mt-1"> Since : {{item.approvalfromdate|date:'dd-MM-yyyy'}} - ({{auditPendingSince==0?'today':formatDurationFromDays(auditPendingSince)}})</p>
                         </div>
                     </div>
 
@@ -376,10 +375,6 @@
                                <span class="fs-8">{{ProjectStatesJson[0].Delaydays}} {{ProjectStatesJson[0].Delaydays>1?'days':'day'}} delayed</span>
                             </div>
                         </ng-container>
-
-                           <span *ngIf="ProjectStatesJson[0].Status=='Completion Under Approval'&&ProjectStatesJson[0].AuditStatus=='Audit Pending'&&ProjectStatesJson[0].approvalfromdate"  class="st-line audit-pending-sincetooltip">
-                            Pending approval since: <span style="display:block; font-weight:500">{{ProjectStatesJson[0].approvalfromdate| date:'dd-MM-yyyy'}} - ( {{auditPendingSince==0?'today':formatDurationFromDays(auditPendingSince)}})</span>
-                          </span>
 
                      </div>
 
