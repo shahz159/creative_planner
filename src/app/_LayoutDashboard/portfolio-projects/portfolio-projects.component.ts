@@ -1054,16 +1054,17 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
   shararrayseprate:any
   isElementPresent:any
   valid : boolean = false
+
   share() {
     // if (this.CompanyDropdown == undefined) {
     //   return this._ErrorMessage_comp = "* Please Select Company";
     // }
 
-    if (this.shareToEmplys == undefined ||  this.shareToEmplys === null || this.shareToEmplys&&this.shareToEmplys.length ===0) {
-      return   this.valid = true
-    }else{
-  this.valid = false
-}
+    if (this.shareToEmplys == undefined || this.shareToEmplys === null || this.shareToEmplys && this.shareToEmplys.length === 0) {
+      return this.valid = true
+    } else {
+      this.valid = false
+    }
 
     if (this.preferences == null) {
       return this.valid = true
@@ -6798,7 +6799,7 @@ iscompletiondate=false;
 
 
 
-   calculateDateDiff(date1:string|Date,date2:string|Date):number{    debugger
+   calculateDateDiff(date1:string|Date,date2:string|Date):number{   
       const d1=new Date(date1); d1.setHours(0,0,0,0);
       const d2=new Date(date2);  d2.setHours(0,0,0,0);
       const daysDiff = moment(d1).diff(moment(d2),'days');
@@ -7218,7 +7219,7 @@ sortRejectCmtsBy(sortby:'Most Used'|'Newest'){
 
 
 rejectApproval() {
-  this.rejectCmts_SortOrder='Most Used';    debugger
+  this.rejectCmts_SortOrder='Most Used';   
   this.rCmts_searchtxt='';
   this.noRejectType = false;
   this.reject_list.forEach(element => {
@@ -7608,7 +7609,7 @@ addDMSToTheProject() {
       let dmsMemo = JSON.stringify(totalmemos); //[{MailId:123,Subject:'abc'}]->[{MailId:123}]->'[{MailId:123}]'
       let userid: number = +this.Current_user_ID;
 
-      this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => {  debugger
+      this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => { 
         console.log("Response=>", res);
         if (res.Message === "Updated Successfully"||res.Message==="Linked Successfully") {
           this.notifyService.showSuccess("", "SMail successfully added.");
@@ -7721,7 +7722,7 @@ closeLinkSideBar1() {
 
 getPortfoliosLinkedToProject(){
   this.service.getPortfolios(this._projCode).subscribe((res) => {   
-    if (res != null && res != undefined) {  debugger
+    if (res != null && res != undefined) {  
       this.projectLinkedPortfolios = JSON.parse(res[0].Portfolio_json);   // linked portfolios on the project.
       console.log('projectLinkedPortfolios:',this.projectLinkedPortfolios);
 
@@ -7792,7 +7793,7 @@ addProjectToPortfolio() {
 }
 
 
-unlinkPortfolioFromProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {  debugger
+unlinkPortfolioFromProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {  
     const deletedBy = this.Current_user_ID;
     let portfolioName;
     this.projectLinkedPortfolios.forEach(element => {
@@ -8343,7 +8344,7 @@ createNewGroup(){
   }
 
 
-  addPortfolioToGroup(groupId:number,groupName:string){    debugger
+  addPortfolioToGroup(groupId:number,groupName:string){    
     
     const sgroup_name=groupName;
 
@@ -8367,7 +8368,7 @@ createNewGroup(){
      })
   }
 
-  removePortfolioFromGroup(groupId:number,groupName:string){   debugger
+  removePortfolioFromGroup(groupId:number,groupName:string){   
     const sgroup_name=groupName;
 
     const grpDto=new ApprovalDTO();

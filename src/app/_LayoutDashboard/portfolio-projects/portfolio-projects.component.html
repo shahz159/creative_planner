@@ -1701,7 +1701,7 @@
                                                                             <span class="font-weight-400 completion-under-approval">
                                                                             {{(item1.AuditStatus=='Audit Pending')?"Audit Approval":"Completion approval"}}
                                                                             </span>
-                                                                            <span *ngIf="item1.AuditStatus=='Audit Pending'&&item1.Created_DT"  class="st-line" style="min-width:15.5rem">Pending approval since: <span style="display:block; font-weight:500">{{item1.Created_DT | date:'dd-MM-yyyy'}} - ( {{formatDurationFromDays(calculateDateDiff(todayDate,item1.Created_DT))}})</span>
+                                                                            <span *ngIf="item1.AuditStatus=='Audit Pending'&&item1.approvalfromdate"  class="st-line" style="min-width:15.5rem">Pending approval since: <span style="display:block; font-weight:500">{{item1.approvalfromdate | date:'dd-MM-yyyy'}} - ( {{formatDurationFromDays(calculateDateDiff(todayDate,item1.approvalfromdate))}})</span>
                                                                             </span>
                                                                        </div>
 

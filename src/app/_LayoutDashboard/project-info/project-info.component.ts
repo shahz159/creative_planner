@@ -308,7 +308,7 @@ Prj_Code:any;
   actionList:any
   projectActionInfo:any;
   completionOffset:number=0;
-  auditPendingSince:number;
+ 
 
   LoadProjectDetails() {
     this.service.NewSubTaskDetailsService(this.projectCode).subscribe(
@@ -433,11 +433,6 @@ Prj_Code:any;
 
           }
 
-
-// this.ProjectStatesJson[0].approvalfromdate='2024-02-12';
-          if(this.ProjectStatesJson[0].Status=='Completion Under Approval'&&this.ProjectStatesJson[0].AuditStatus=='Audit Pending'){
-             this.auditPendingSince=this.calculateDateDiff(this.todayDate,this.ProjectStatesJson[0].approvalfromdate); // number of days since when project is pending at auditor.
-          }
 
 
         }

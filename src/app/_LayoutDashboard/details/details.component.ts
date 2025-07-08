@@ -805,6 +805,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   errorFetchingProjectInfo:boolean=false;
   projecttypes : any
   task_assign_json:any;
+  AuditPendingSince
 
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) { 
@@ -1006,7 +1007,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
     
     
     if(this.projectInfo&&this.projectInfo.Status=='Completion Under Approval'&&this.projectInfo.AuditStatus=='Audit Pending'){
-      this.auditPendingSince=this.calculateDateDiff(this.todayDate,this.projectInfo.approvalfromdate); // number of days since when project is pending at auditor.
+
+      this.auditPendingSince=this.calculateDateDiff(this.todayDate,this.projectInfo.requestDate); // number of days since when project is pending at auditor.
     }
 
 
@@ -1350,7 +1352,7 @@ getRelativeDateString(date: Date): string {
  }
 
 
- calculateDateDiff(date1:string|Date,date2:string|Date):number{  
+ calculateDateDiff(date1:string|Date,date2:string|Date):number{     
     const d1=new Date(date1); d1.setHours(0,0,0,0);
     const d2=new Date(date2); d2.setHours(0,0,0,0);
     const daysDiff = moment(d1).diff(moment(d2),'days');
