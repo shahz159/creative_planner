@@ -378,7 +378,22 @@ return this.http.post(this.rootUrl + "ApprovalAPI/NewInsertAcceptApprovalService
 
 
 
+  NewGetPortfolioRequests(portfolioInfo:ApprovalDTO){
+    this.obj_approvalDTO.Portfolio_Id=portfolioInfo.Portfolio_Id;
+    this.obj_approvalDTO.Emp_no=portfolioInfo.Emp_no;
+    return this.http.post(this.rootUrl+'ApprovalAPI/NewGetPortfolioRequests',this.obj_approvalDTO);
+  }
 
+
+
+NewUpdatePortfolioRequestAccess(portfolioInfo:ApprovalDTO){
+  this.obj_approvalDTO.SNo = portfolioInfo.SNo;
+  this.obj_approvalDTO.Portfolio_Id = portfolioInfo.Portfolio_Id;
+  this.obj_approvalDTO.Type = portfolioInfo.Type;
+  this.obj_approvalDTO.Preference  = portfolioInfo.Preference;
+
+ return this.http.post(this.rootUrl+'ApprovalAPI/NewUpdatePortfolioRequestAccess',this.obj_approvalDTO);
+}
 
 
 

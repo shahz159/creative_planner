@@ -138,12 +138,16 @@
                     -->
                     </div>
                 </div>
-                <pdf-viewer style="width:100%;height:calc(100vh - 90px);" [src]="src" [(page)]="page"
+                 <pdf-viewer style="width:100%;height:calc(100vh - 90px);" 
+                    [src]="isFileRequiredPassword?({url:src, password:filePassword}):src" 
+                    [(page)]="page"
                     [rotation]="rotation" [original-size]="originalSize" [show-all]="showAll" [fit-to-page]="fitToPage"
                     (after-load-complete)="afterLoadComplete($event)" [zoom]="zoom" [zoom-scale]="zoomScale"
                     [stick-to-page]="stickToPage" [render-text]="renderText" [external-link-target]="'blank'"
                     [autoresize]="autoresize" (on-progress)="onProgress($event)" (page-rendered)="pageRendered($event)"
-                    (pages-initialized)="pageInitialized($event)" [show-borders]="false"></pdf-viewer>
+                    (pages-initialized)="pageInitialized($event)" [show-borders]="false"
+                    (error)="onPDFError($event)"
+                    ></pdf-viewer> 
             </div>
         </div>
 
@@ -337,3 +341,30 @@
         </div>
     </div>
 </div>
+
+
+<!--password required prompt dialog start-->
+<div id="password-req-prompt" class="pdf-password-dialog d-none">
+        <div class="pdf-password-dialog-backdrop"></div>
+            <div class="pdf-password-dialog-div">
+                    <div class="pdf-password-dialog-control">
+                                <div class="pdf-password-dialog-content">
+                                    <h3>Password required</h3>
+                                    <p>This document is password protected. Please enter a password.</p>
+                                    <div appearance="fill" class="password-field position-relative">
+                                        <input class="form-control" [type]="showPasswordText ? 'text' : 'password'" [(ngModel)]="filePasswordInput"  (keyup.enter)="onFilePasswordSubmit()"
+                                          [ngClass]="{'error-border':(passwordNotProvided||incorrectPassword)}"
+                                        />
+                                        <i alt="show"  *ngIf="!showPasswordText"  (click)="togglePasswordVisibility()" class="far fa-eye eye-show custom-icon"></i>
+                                        <i alt="hide"  *ngIf="showPasswordText" (click)="togglePasswordVisibility()" class="far fa-eye-slash eye-hide custom-icon"></i> 
+                                    </div>
+                                     <span *ngIf="passwordNotProvided"  style="color: red; font-weight:500;">Password is required</span>
+                                     <span *ngIf="passwordNotProvided==false&&incorrectPassword"  style="color: red; font-weight:500;">Incorrect password</span>
+                                    <div class="pdf-password-dialog-footer">
+                                        <button  class="btn btn-info btn-sm" style="font-weight:500" (click)="onFilePasswordSubmit()">Submit</button>
+                                    </div>
+                                </div>
+                    </div>
+            </div>
+</div>
+<!--password required prompt dialog end-->

@@ -109,4 +109,8 @@ export class ApprovalDTO {
     Schedule_id:number;
   //
 
+ Portfolio_Id:number;
+ Preference:string;
+
+
 }

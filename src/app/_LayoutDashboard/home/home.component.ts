@@ -1005,8 +1005,10 @@ export class HomeComponent implements OnInit {
       this._objStatusDTO.Portfolio_ID = this._Pid;
       let _Pname = this._objStatusDTO.Portfolio_Name;
       let _Pid = this._objStatusDTO.Portfolio_ID;
+      let renamedby=this.Current_user_ID;
       this._objStatusDTO.Emp_No = this.Current_user_ID
-      this.service.Portfolio_Rename(_Pname, _Pid).subscribe(data => {
+
+      this.service.Portfolio_Rename(_Pname, _Pid,renamedby).subscribe(data => {
         this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
           (data) => {
             // this.LoadingBar_state.start();

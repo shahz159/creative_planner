@@ -157,6 +157,7 @@ export class UserlistComponent implements OnInit {
 
   ngOnInit(): void { 
  const lang:any = localStorage.getItem('language');
+ console.log('lang value is:',lang);
     this.translate.use(lang)
     this.currentLang = lang ? lang : 'en';
     this.document.dir = this.currentLang === 'ar' ? 'rtl' : 'ltr';

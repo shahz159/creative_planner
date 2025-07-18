@@ -316,9 +316,13 @@
                   <span id="en-lan" *ngIf="currentLang==='en'">English</span>
                   <span id="ar-lan" *ngIf="currentLang==='ar'">Arabic</span>
                 </button>
-                <div class="dropdown-menu">
-                    <button class="dropdown-item" *ngIf="currentLang==='ar'" (click)="ChangelangTo('en')">English</button>
-                    <button class="dropdown-item" *ngIf="currentLang==='en'" (click)="ChangelangTo('ar')">Arabic</button>
+                <div class="dropdown-menu px-1">
+                    <button class="dropdown-item d-flex justify-content-between  " [ngClass]="{'selected-option':currentLang==='en'}" (click)="ChangelangTo('en')">
+                        English    
+                   </button>
+                    <button class="dropdown-item d-flex justify-content-between " [ngClass]="{'selected-option':currentLang==='ar'}" (click)="ChangelangTo('ar')">
+                        Arabic
+                    </button>
                 </div>
             </div>
         </div>
@@ -989,7 +993,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="leavetype">Select country</label>
-                        <ng-select [ngClass]="{'error-vd':(!selectedCountry&&notProvided)}" placeholder="Select country" class="selectpicker form-control" title="Select leave type" [(ngModel)]="selectedCountry">
+                        <ng-select [ngClass]="{'error-vd':(!selectedCountry&&notProvided)}" placeholder="Select country" class="selectpicker" title="Select leave type" [(ngModel)]="selectedCountry">
                             <ng-option *ngFor="let item of allCountriesList" [value]="item.Initials">{{item.CountryName}}</ng-option>
                         </ng-select>
                         <span *ngIf="!selectedCountry&&notProvided" style="color:red">please provide country name.</span>

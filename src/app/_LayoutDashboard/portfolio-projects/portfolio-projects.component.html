@@ -1230,7 +1230,7 @@
 
                                             <ng-template #pTableRow let-item1="Item" let-i="Index" let-isPinned="isPin">
                                             
-                                            <tr *ngIf="(((item1.Status.trim()==_PortProjStatus?.trim())||(item1.Status.includes('Delay')&&_PortProjStatus=='Delay')||_PortProjStatus=='')&&((!_FilterByEmp) || item1.Emp_No?.trim()==_FilterByEmp||item1.PendingapproverEmpNo?.trim() == this._FilterByEmp||item1.OwnerEmpNo?.trim()==_FilterByEmp))&&(isAdvancedFilterApplied?( isProjectMatchesFilterCriteria(item1) ):true)"
+                                            <tr *ngIf="(((item1.Status.trim()==_PortProjStatus?.trim())||( _PortProjStatus=='Delay'&&(item1.Status.includes('Delay')||(item1.SubmissionType && item1.Status.includes('Days'))) )||_PortProjStatus=='')&&((!_FilterByEmp) || item1.Emp_No?.trim()==_FilterByEmp||item1.PendingapproverEmpNo?.trim() == this._FilterByEmp||item1.OwnerEmpNo?.trim()==_FilterByEmp))&&(isAdvancedFilterApplied?( isProjectMatchesFilterCriteria(item1) ):true)"
                                                     class="odd project-list_AC" [class.active]="item1.active">
 
 
@@ -2320,11 +2320,11 @@
                                            <!-- <h1 *ngIf="nofilterResult">no filter result found.</h1> -->
 
                                            <ng-container *ngIf="nofilterResult">
-                                            <div class="no-prjact-found  ">
+                                            <div class="no-prjact-found mt-5 ">
                                                 <div
                                                     style="  display:flex; flex-direction:column;    align-items: center;  justify-content:center;      ">
                                                     <svg xmlns:svg="http://www.w3.org/2000/svg" stroke="#dfdfdf"
-                                                        fill="#dfdfdf" width="25%" height="25%" version="1.1"
+                                                        fill="#dfdfdf" width="10%" height="15%" version="1.1"
                                                         x="0px" y="0px" viewBox="0 0 100 125">
                                                         <g xmlns="http://www.w3.org/2000/svg"
                                                             transform="translate(0,-952.36218)">
@@ -2733,15 +2733,15 @@
                                   </a>
                               </li> 
 
-                             <!-- <li class="nav-item">
+                              <li *ngIf="Current_user_ID==createdBy"  class="nav-item">
                                   <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_4">
                                       <span class="svg-icv-hd">
                                          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16 18L19 21M19 21L22 18M19 21V15M15.5 3.29076C16.9659 3.88415 18 5.32131 18 7C18 8.67869 16.9659 10.1159 15.5 10.7092M12 15H8C6.13623 15 5.20435 15 4.46927 15.3045C3.48915 15.7105 2.71046 16.4892 2.30448 17.4693C2 18.2044 2 19.1362 2 21M13.5 7C13.5 9.20914 11.7091 11 9.5 11C7.29086 11 5.5 9.20914 5.5 7C5.5 4.79086 7.29086 3 9.5 3C11.7091 3 13.5 4.79086 13.5 7Z" stroke="currentColor" stroke-width="1.536" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                                       </span>
                                       <span class="nav-text">Access Requests</span>
-                                      <div class="count-box">27</div>
+                                      <div *ngIf="portfolioAccessReqCount>0" class="count-box">{{portfolioAccessReqCount}}</div>
                                   </a>
-                              </li>  -->
+                              </li>  
 
                           </ul>
                       </div>
@@ -2902,130 +2902,73 @@
           <div class="tab-pane fade" id="kt_tab_pane_2_4" role="tabpanel" aria-labelledby="kt_tab_pane_2_4">
               <div class="kt-portlet__body pb-0 pt-5 sidehf_scroll scroll-y">
 
-                         <div class=" user-request-box border-0 py-3 px-3 rounded-lg shadow-sm mb-3">
-                                <div class="mb-2">
-                                    <span class="text-dark fs-6 test1">Ramesh Nelapala</span>
-                                    <span class="kt-badge kt-badge--unified-dark kt-badge--bold kt-badge--inline ml-2 fs-7">Angular developer</span>
-                                </div>
-                                <div  class="d-flex justify-content-between align-items-start">
-                                       <div>
-                                        <div class="text-muted fs-6 mb-1 svg-spn">
-                                            <span>
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                                                 <path  d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z"> </path>
-                                                </svg>
-                                            </span>
-                                            Devbox software
-                                        </div>
-                                        <div class="text-muted fs-6 svg-spn">
-                                            <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                                              <path  d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 11H4V19H20V11ZM8 13V15H6V13H8ZM13 13V15H11V13H13ZM18 13V15H16V13H18ZM7 5H4V9H20V5H17V7H15V5H9V7H7V5Z"></path>
-                                            </svg>
-                                           </span>
-                                           20-02-2024
-                                        </div>
-                                      </div>
-                                       <div class="d-flex gap-1">
-                                      <button class="btn btn-sm btn-success" (click)="0">Accept</button>
-                                      <button class="btn btn-sm btn-danger" (click)="0">Reject</button>
-                                      </div>
-                                  </div>
-                         </div>
+                <ng-container *ngIf="portfolioAccessReqCount>0; else no_access_req_found">
+                <div *ngFor="let request of portfolioAccessRequestsList"  class=" user-request-box border-0 py-3 px-3 rounded-lg shadow-sm mb-3">
+                                <div class=" d-flex justify-content-between">
+                                    <div>
+                                    <span class="text-dark fs-6 test1 fw-bold">{{request.DisplayName}}</span>
+                                    <span class="kt-badge kt-badge--unified-dark kt-badge--bold kt-badge--inline ml-2 fs-7">{{request.DesignationName}}</span>
+                                   </div>
 
-                         <div class=" user-request-box border-0 py-3 px-3 rounded-lg shadow-sm mb-3">
-                                <div class="mb-2">
-                                    <span class="text-dark fs-6 test1">Ramesh Nelapala</span>
-                                    <span class="kt-badge kt-badge--unified-dark kt-badge--bold kt-badge--inline ml-2 fs-7">Angular developer</span>
-                                </div>
-                                <div  class="d-flex justify-content-between align-items-start">
-                                       <div>
-                                        <div class="text-muted fs-6 mb-1 svg-spn">
-                                            <span>
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                                                 <path  d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z"> </path>
-                                                </svg>
-                                            </span>
-                                            Devbox software
-                                        </div>
-                                        <div class="text-muted fs-6 svg-spn">
-                                            <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                                              <path  d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 11H4V19H20V11ZM8 13V15H6V13H8ZM13 13V15H11V13H13ZM18 13V15H16V13H18ZM7 5H4V9H20V5H17V7H15V5H9V7H7V5Z"></path>
-                                            </svg>
-                                           </span>
-                                           20-02-2024
-                                        </div>
+                                    <div class="d-flex gap-1">
+                                         <div class="dropdown">
+                                            <button class="kt-portlet__head-title cursor-pointer dropdown-toggle select-box header-tab-btn btn btn-sm btn-outline-success fw-bold"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Accept
+                                            </button>
+                                            <div class="dropdown-menu left-show pt-2 px-1" aria-labelledby="dropdownMenuButton"  style=" margin-top:5px;  border: 2px solid rgb(30, 197, 180) !important; ">
+                                                <div class="pl-3 fs-8 " style="color: #828699; font-weight: 500;">Select Preferences</div>
+                                                <hr class="mb-2 mt-1" style="background-color: #ffffff;" />
+                                                <button [disabled]="(approveProcessing||rejectProcessing)" class="dropdown-item curser-pointer" (click)="approvePortfolioAccess(request.Sno,'View Only')">View only</button>
+                                                <button [disabled]="(approveProcessing||rejectProcessing)"  class="dropdown-item curser-pointer" (click)="approvePortfolioAccess(request.Sno,'Full Access')">Full access</button>
+                                            </div>
+                                         </div>
+                                         <button [disabled]="(approveProcessing||rejectProcessing)" class="btn btn-sm btn-outline-danger fw-bold" (click)="rejectPortfolioAccess(request.Sno)">Reject</button>
                                       </div>
-                                       <div class="d-flex gap-1">
-                                      <button class="btn btn-sm btn-success" (click)="0">Accept</button>
-                                      <button class="btn btn-sm btn-danger" (click)="0">Reject</button>
-                                      </div>
-                                  </div>
-                         </div>
 
-                         <div class=" user-request-box border-0 py-3 px-3 rounded-lg shadow-sm mb-3">
-                                <div class="mb-2">
-                                    <span class="text-dark fs-6 test1">Md Waseem akram</span>
-                                    <span class="kt-badge kt-badge--unified-dark kt-badge--bold kt-badge--inline ml-2 fs-7">Dot net developer</span>
                                 </div>
                                 <div  class="d-flex justify-content-between align-items-start">
-                                       <div>
-                                        <div class="text-muted fs-6 mb-1 svg-spn">
+                                       <div class="d-flex gap-2">
+                                        <div class="text-muted fs-7 mb-1 svg-spn">
                                             <span>
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                                                  <path  d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z"> </path>
                                                 </svg>
                                             </span>
-                                            Devbox software
+                                            {{request.CompanyName}}
                                         </div>
-                                        <div class="text-muted fs-6 svg-spn">
+                                        <div class="text-muted fs-7 svg-spn">
                                             <span>
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                                               <path  d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 11H4V19H20V11ZM8 13V15H6V13H8ZM13 13V15H11V13H13ZM18 13V15H16V13H18ZM7 5H4V9H20V5H17V7H15V5H9V7H7V5Z"></path>
                                             </svg>
                                            </span>
-                                           05-01-2024
+                                           
+                                            {{request.Req_DL|date:'dd-MM-yyyy'}} - 
+                                            <ng-container *ngIf="(calculateDateDiff(todayDate,request.Req_DL)+'') as datediff">
+                                               <span class="fs-7" style="color: #b8b8be;">({{ datediff=='0'?'today':formatDurationFromDays(datediff)+' ago' }})</span>
+                                            </ng-container>
+                                           
                                         </div>
-                                      </div>
-                                       <div class="d-flex gap-1">
-                                      <button class="btn btn-sm btn-success" (click)="0">Accept</button>
-                                      <button class="btn btn-sm btn-danger" (click)="0">Reject</button>
                                       </div>
                                   </div>
-                         </div>
-
-                         <div class=" user-request-box border-0 py-3 px-3 rounded-lg shadow-sm mb-3">
-                                <div class="mb-2">
-                                    <span class="text-dark fs-6 test1">Mohammed Raohan</span>
-                                    <span class="kt-badge kt-badge--unified-dark kt-badge--bold kt-badge--inline ml-2 fs-7">Jr Dotnet developer</span>
-                                </div>
-                                <div  class="d-flex justify-content-between align-items-start">
-                                       <div>
-                                        <div class="text-muted fs-6 mb-1 svg-spn">
-                                            <span>
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                                                 <path  d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z"> </path>
-                                                </svg>
-                                            </span>
-                                            Devbox software
-                                        </div>
-                                        <div class="text-muted fs-6 svg-spn">
-                                            <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                                              <path  d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 11H4V19H20V11ZM8 13V15H6V13H8ZM13 13V15H11V13H13ZM18 13V15H16V13H18ZM7 5H4V9H20V5H17V7H15V5H9V7H7V5Z"></path>
-                                            </svg>
-                                           </span>
-                                           25-06-2025
-                                        </div>
-                                      </div>
-                                       <div class="d-flex gap-1">
-                                      <button class="btn btn-sm btn-success" (click)="0">Accept</button>
-                                      <button class="btn btn-sm btn-danger" (click)="0">Reject</button>
-                                      </div>
-                                  </div>
-                         </div>
-                         
+                                     <div class="d-flex justify-content-between align-items-start">
+                                            <div class="d-flex gap-2">
+                                                <div class="mt-2">
+                                                   <div #accessCmtbx class="compl-remarks-span upto-1"  style="color: #9e9fa7;" (click)="$event.stopPropagation(); accessCmtbx.classList.contains('compl-remarks-span')?accessCmtbx.classList.remove('compl-remarks-span'):accessCmtbx.classList.add('compl-remarks-span')">
+                                                       {{request.Req_Coments}}
+                                                   </div> 
+                                                </div>
+                                            </div>
+                                    </div>
+                  </div>
+                </ng-container>
+                <ng-template #no_access_req_found>
+                <div class="d-flex flex-column align-items-center justify-content-center h-100">
+                   <img width="40%" src="https://cswebapps.com/creativeplanner/assets/images/no-image.png"/>
+                   <h5 class="text-muted">No requests found.</h5>
+                </div>
+                </ng-template>
+                      
               </div>
           </div>
         <!--portfolio access requests approvals   end-->

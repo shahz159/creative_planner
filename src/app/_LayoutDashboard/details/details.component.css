@@ -8220,6 +8220,23 @@ input.search-input {
   border-bottom: 3px solid #5867dd !important;
 }
 
+
+.plps-tabs .nav-item .nav-link svg
+{
+  color: #626676;
+  width:18.5px;
+  height:18.6px;
+}
+
+.plps-tabs .nav-item .nav-link.active svg
+{
+  color: #5867dd;
+}
+
+
+
+
+
 /*prj auditor css start*/
 .Auditor-edit-btn {
     padding: 5px;
@@ -8715,6 +8732,12 @@ span.time-value {
   cursor: default;
 
 }
+
+.compl-remarks-span.upto-1{
+    -webkit-line-clamp: 1;
+}
+
+
 
 
 .meeting-attendance-item-hover:hover {

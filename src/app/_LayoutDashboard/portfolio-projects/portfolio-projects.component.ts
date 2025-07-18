@@ -430,7 +430,7 @@ export class PortfolioProjectsComponent implements OnInit {
     this.service.GetProjectsBy_portfolioId(this._Pid)
       .subscribe((data) => { debugger
         this._MessageIfNotOwner = data[0]['message'];
-        console.log(this._MessageIfNotOwner,'this._MessageIfNotOwner')
+        console.log(this._MessageIfNotOwner,'this._MessageIfNotOwner');
         this._PortfolioDetailsById = JSON.parse(data[0]['PortfolioDetailsJson']);
         this._PortFolio_Namecardheader = this._PortfolioDetailsById[0]['Portfolio_Name'];
         this.Rename_PortfolioName = this._PortFolio_Namecardheader;
@@ -440,6 +440,16 @@ export class PortfolioProjectsComponent implements OnInit {
         this._ProjectsListBy_Pid = JSON.parse(data[0]['JosnProjectsByPid']);
         const _isFav=this._PortfolioDetailsById[0][this.Current_user_ID==this.createdBy?'IsFavourite':'IsFavourite1'];
         this.isPortfolioFavourite=_isFav!=undefined?_isFav:false;
+
+        if(this._MessageIfNotOwner!=''){
+          const requestaccessList=this._PortfolioDetailsById[0]['requestaccessList'];
+          if(requestaccessList){
+              const arr=JSON.parse(requestaccessList);
+              const reqsubmittedAlready=arr.find(ob=>ob.Submitted_By_EmpNo==this.Current_user_ID);
+              this.portfolioAccessRequested=reqsubmittedAlready;
+          }
+        }
+    
 
         console.log('PORTFOLIO DETAILS:',this._PortfolioDetailsById);
         console.log('PORTFOLIO PROJECT BY PID:',this._ProjectsListBy_Pid);
@@ -458,7 +468,7 @@ export class PortfolioProjectsComponent implements OnInit {
       this.filteredEmployees = [];
       this._ProjectsListBy_Pid.forEach(item=>{
 
-        const x=this.filteredEmployees.find(emp=>item.Emp_No === emp.Emp_No)
+        const x=this.filteredEmployees.find(emp=>item.Emp_No == emp.Emp_No);
         if(x){
             x.totalProjects+=1;
         }
@@ -468,7 +478,7 @@ export class PortfolioProjectsComponent implements OnInit {
             Team_Res:item.Team_Res,
             totalProjects:1
            };
-          this.filteredEmployees.push(obj)
+          this.filteredEmployees.push(obj);
         }
 
         item.newrejectJson=item.newrejectJson?JSON.parse(item.newrejectJson):null;  // parses newrejectJson str into object.
@@ -571,8 +581,9 @@ export class PortfolioProjectsComponent implements OnInit {
         // this.LoadingBar_state.stop();
         this.TotalProjects = this._ProjectsListBy_Pid.length;
         var rez = {};
-        this._ProjectsListBy_Pid.forEach(function (item) {
-          rez[item.Status] ? rez[item.Status]++ : rez[item.Status] = 1;
+        this._ProjectsListBy_Pid.forEach(function (item) {           
+          const property=(item.SubmissionType && item.Status.includes('Days'))?'Delay':item.Status;
+          rez[property] ? rez[property]++ : rez[property]=1;
         });
         // Countsall
         this.CountInprocess = rez['InProcess'];
@@ -654,6 +665,8 @@ export class PortfolioProjectsComponent implements OnInit {
         if (!EnactiveUA) {
           EnactiveUA = 0;
         }
+
+
         this.CountAll_UA =    this.CountUnderApproval + this.CountProjectHoldUA + EnactiveUA;
         this.CountNewProject = this.CountNewProject;
         this.CountRejecteds = this.countprojectCompletelyRejected + this.countnewprojecRejected;
@@ -819,7 +832,8 @@ convertToDecimalHours(hm:string){
       this._objStatusDTO.Portfolio_ID = this._Pid;
       let _Pname = this._objStatusDTO.Portfolio_Name;
       let _Pid = this._objStatusDTO.Portfolio_ID;
-      this.service.Portfolio_Rename(_Pname, _Pid).subscribe(data => {
+      let _reNamedBy=this.Current_user_ID;
+      this.service.Portfolio_Rename(_Pname, _Pid,_reNamedBy).subscribe(data => {
         this._objStatusDTO.Emp_No = this.Current_user_ID;
         this.service.GetPortfolioStatus(this._objStatusDTO).subscribe(
           (data) => {
@@ -967,11 +981,13 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
   ngCompanyDropdown: any;
 
   share_Users() {
+
     document.getElementById("shareBar").classList.add("kt-action-panel--on");
     document.getElementById("rightbar-overlay").style.display = "block";
     this.GetCompanies();
-    this.valid = false
+    this.valid = false;
     //SnackBar Dismiss
+    this.getPortfolioAccessRequestsList();  // Fetch all portfolio access requests list.
   }
   OnCompanySelect(CompNo: string) {
     this.ngEmployeeDropdown = null;
@@ -1127,7 +1143,7 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
   //   this.PortfolioList = false;
   //   this._PortfolioListTable = true;
   //   this.Project_Graph = "Graphs";
-  //   this.ProjectsClick();
+  //   this.ProjectsClick();createdBy
   //   // if (this._snackBar.open) {
   //   //   this.snackBarRef.dismiss();
   //   // }
@@ -1424,7 +1440,7 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
               else {
                 this._btnShareDetails = false;
               }
-            })
+            });
         })
       this.notifyService.showSuccess("Removed successfully.", '')
       // this.GetPortfolioProjectsByPid();
@@ -2213,7 +2229,7 @@ if(this.showDeletedPrjOnly){
   list=[...this._ProjectsListBy_Pid];
   result=list.filter((p)=>{
 
-    return (((p.Status==this._PortProjStatus)||(p.Status.includes('Delay')&&this._PortProjStatus=='Delay')||this._PortProjStatus=='')&& ((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp ||  p.PendingapproverEmpNo?.trim() == this._FilterByEmp || p.OwnerEmpNo==this._FilterByEmp  ||this._FilterByEmp=="All"));
+    return (((p.Status==this._PortProjStatus)|| ( this._PortProjStatus=='Delay'&&(p.Status.includes('Delay')||(p.SubmissionType && p.Status.includes('Days'))) )||this._PortProjStatus=='')&& ((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp ||  p.PendingapproverEmpNo?.trim() == this._FilterByEmp || p.OwnerEmpNo==this._FilterByEmp  ||this._FilterByEmp=="All"));
   });
 
   console.log(result);
@@ -6799,7 +6815,7 @@ iscompletiondate=false;
 
 
 
-   calculateDateDiff(date1:string|Date,date2:string|Date):number{   
+   calculateDateDiff(date1:string|Date,date2:string|Date):number{    
       const d1=new Date(date1); d1.setHours(0,0,0,0);
       const d2=new Date(date2);  d2.setHours(0,0,0,0);
       const daysDiff = moment(d1).diff(moment(d2),'days');
@@ -8076,6 +8092,10 @@ GetProjectAndsubtashDrpforCalender2() {
 portfolio_accessCmts:string='';
 processingAccessSubmit:boolean=false;
 portfolioAccessRequested:boolean=false;  // true: user has requested or already requested.
+portfolioAccessRequestsList:any[]=[];  // list of all portfolio access requests submitted to the portfolio owner.
+portfolioAccessReqCount:number=0;  // total portfolio access requests count.
+approveProcessing:boolean=false;  // true when portfolio request access approving.
+rejectProcessing:boolean=false;  // true when portfolio request access rejecting.
 
 openRequestDialog() {
     document.getElementById('Portfolio-access-req-dialog').classList.remove('d-none');
@@ -8093,28 +8113,28 @@ sendPortfolioAccessRequest()
 {
    if(this.portfolio_accessCmts&&this.portfolio_accessCmts.trim())
    {
-     this.formFieldsRequired=false;
-     this.processingAccessSubmit=true;
-     setTimeout(()=>{
-          Swal.fire('Request Sent Successfully');
-          this.closeRequestDialog();
-          this.processingAccessSubmit=false;
-          this.portfolioAccessRequested=true;
-          
-
-     },5000);
-    //  this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID, Scheduleid).subscribe(res => {
-    //     console.log(res,'openRequestDialog')
-    //     this.closeRequestDialog();
-    //     Swal.fire('Request Sent Successfully');
-    //     this.isRequestSent = true;
-    //     this.ishide=false
-    //     $('.hide-content').addClass('d-none');
-
-    //      });
-
-    //  }
-
+      this.formFieldsRequired=false;
+     
+      const portfolio_id=this.Url_portfolioId;
+      const empno=this.Current_user_ID;
+      const comments=this.portfolio_accessCmts;
+      this.processingAccessSubmit=true;
+      this.projectMoreDetailsService.NewInsertPortfolioRequestAccesss(portfolio_id,empno,comments).subscribe((res:any)=>{
+         console.log(res,'after portfolio access request submit');
+        if(res&&res.message=='Success'){
+         Swal.fire('Request Sent Successfully');
+         this.closeRequestDialog();
+         this.processingAccessSubmit=false;
+         this.portfolioAccessRequested=true;
+        }
+        else{
+          Swal.fire({
+              icon: 'error',
+              title: 'Something went wrong!',
+              text: 'An issue occurred while processing your request.',
+            });
+        }
+      });
 
    }
    else
@@ -8122,39 +8142,92 @@ sendPortfolioAccessRequest()
       this.formFieldsRequired=true;
    }
   
+}
+
+
+getPortfolioAccessRequestsList(){
+    const portfolioinfo=new ApprovalDTO();
+    portfolioinfo.Portfolio_Id=this.Url_portfolioId;
+    portfolioinfo.Emp_no=this.createdBy;
+
+    this.portfolioAccessRequestsList=[];
+    this.approvalservice.NewGetPortfolioRequests(portfolioinfo).subscribe((res)=>{
+        console.log("portfolio access requests list:",res);
+         if(res?.[0]?.multiapproval_json)
+         {
+           this.portfolioAccessRequestsList=JSON.parse(res[0].multiapproval_json);
+           this.portfolioAccessReqCount=this.portfolioAccessRequestsList.length;  
+         }
+    });
+}
 
 
 
+approvePortfolioAccess(sno:number,preference:'View Only'|'Full Access'){
 
+    const reqObj=this.portfolioAccessRequestsList.find(ob=>ob.Sno==sno);
+    const reqUserName=reqObj?reqObj.DisplayName:'';
+    const access_message=preference=='View Only'?'view only access':'full access';
 
+    const obj=new ApprovalDTO();
+    obj.SNo = sno;
+    obj.Portfolio_Id = this.Url_portfolioId;
+    obj.Type = 'Accept';
+    obj.Preference  = preference;   
+    this.approveProcessing=true;  // processing start.
+    this.approvalservice.NewUpdatePortfolioRequestAccess(obj).subscribe((res:any)=>{
+        this.approveProcessing=false;  // processing end.
+        console.log('apprve res:',res);
+        if(res?.message&&res.message==1){
+           this.notifyService.showSuccess(`Portfolio ${access_message} approved for ${reqUserName}.`,'Success');
+           this.getPortfolioAccessRequestsList();  // rebind portfolio requests access list.
+           this.service.GetProjectsBy_portfolioId(this.Url_portfolioId).subscribe((data) => {
+              this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']);
+              if(this._ShareDetailsList){
+                this._SharedToEmps=this._ShareDetailsList.map(item=>item.EmployeeId);
+                }
+              console.log(this._ShareDetailsList)
+              if (this._ShareDetailsList == 0) {
+                this._btnShareDetails = true;
+              }
+              else {
+                this._btnShareDetails = false;
+              }
+           });    // rebind portfolio access share list. and dropdown update .
+        }
+        else{
+           this.notifyService.showError('Unable to approve the request.','Failed');
+        }
 
+    });
 
+}
 
+rejectPortfolioAccess(sno:number){
 
+    const reqObj=this.portfolioAccessRequestsList.find(ob=>ob.Sno==sno);
+    const reqUserName=reqObj?reqObj.DisplayName:'';
 
+    const obj=new ApprovalDTO();
+    obj.SNo = sno;
+    obj.Portfolio_Id = this.Url_portfolioId;
+    obj.Type = 'Reject';
+    obj.Preference  = null; 
+     this.rejectProcessing=true;  // processing start.
+    this.approvalservice.NewUpdatePortfolioRequestAccess(obj).subscribe((res:any)=>{
+     this.rejectProcessing=false;  // processing end.
+       console.log('reject resp:',res);
+       if(res?.message&&res.message==1){
+           this.notifyService.showSuccess(`Portfolio access request from ${reqUserName} has been rejected.`,'Success');
+           this.getPortfolioAccessRequestsList();  // rebind 
+       }
+       else{
+          this.notifyService.showError('Unable to reject the request','Failed');
+       }
 
+    });
 
-    // if (!this.Usercomment){
-    //   this.formFieldsRequired=true;
-    //   return
-    // }
-    // else{
-    //   this.formFieldsRequired=false;
-    //   var Scheduleid = '0'
-    //   this.projectMoreDetailsService.NewInsertProjectRequestAccesss(this.projectInfo.Project_Code,this.Usercomment,this.Current_user_ID, Scheduleid).subscribe(res => {
-    //     console.log(res,'openRequestDialog')
-    //     this.closeRequestDialog();
-    //     Swal.fire('Request Sent Successfully');
-    //     this.isRequestSent = true;
-    //     this.ishide=false
-    //     $('.hide-content').addClass('d-none');
-
-    //      });
-
-    // }
-  }
-
-
+}
 
 
 

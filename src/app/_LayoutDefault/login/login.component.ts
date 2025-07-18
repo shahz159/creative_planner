@@ -12,6 +12,8 @@ import { AuthenticationService } from 'src/app/_Services/authentication.service'
 import { ChangeDetectorRef } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { BsServiceService } from 'src/app/_Services/bs-service.service';
+import { HeaderComponent } from '../../_LayoutDashboard/header/header.component';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -40,7 +42,8 @@ export class LoginComponent implements OnInit {
     private service: ProjectTypeService,
     private authenticationService: AuthenticationService,
     private loadingBar: LoadingBarService,
-    private bsService: BsServiceService
+    private bsService: BsServiceService,
+    private translate : TranslateService
     ) {
 
     this.Obj_ILoginDTO = new LoginDTO;
@@ -144,7 +147,11 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('OrganizationId', this.OrganizationId);
               localStorage.setItem('EmpNo', this.EmpNo);
               localStorage.setItem('isLoggedIn', "true");
-                
+
+              // by default application starts in english language
+              localStorage.setItem('language', 'en');
+              this.translate.use('en');    
+              //
   
               if (this.IsPolicynew == true) {
                 this.router.navigate([this.dashboardUrl]);
@@ -162,6 +169,8 @@ export class LoginComponent implements OnInit {
               this.InValidPassword=false;
               this.message='';
               this.bsService.UserLoggedIn.emit();  // user has logged in && user info fetched. 
+
+              
 
             }else{
 

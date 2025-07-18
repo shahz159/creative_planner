@@ -420,10 +420,11 @@ export class ProjectTypeService {
     this.ObjStatusDTO.Emp_No = empId;
     return this.http.post(this.rootUrl + "TestAPI/NewPortfolioIsFavourite", this.ObjStatusDTO)
   }
-  Portfolio_Rename(PortName, portfolioId) {
+  Portfolio_Rename(PortName, portfolioId,renamedBy) {
 
     this.ObjStatusDTO.Portfolio_ID = portfolioId;
     this.ObjStatusDTO.Portfolio_Name = PortName;
+    this.ObjStatusDTO.Emp_No = renamedBy;
     return this.http.post(this.rootUrl + "TestAPI/NewPortfolioRenamed", this.ObjStatusDTO)
   }
   Portfolio_ShareUsersDelete(pid, empId, shareby) {

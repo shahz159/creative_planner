@@ -748,11 +748,21 @@
                                                                             'Delay':(projectInfo.Project_Block=='003'&&projectInfo.Status&&projectInfo.Status.includes('Delay')),
                                                                             'AuditUnderApproval':(projectInfo.Status==='Completion Under Approval'&&projectInfo.AuditStatus=='Audit Pending')
                                                                             }">
-                                                                            <span class="vi font-weight-400 st-line" style="transform:translate3d(-80px, 30px, 0px)!important;"
+                                                                            <!-- <span class="vi font-weight-400 st-line" style="transform:translate3d(-80px, 30px, 0px)!important;"
                                                                                *ngIf="projectInfo?.Status === 'Delay' || projectInfo?.Status?.includes('Days')">
                                                                                {{
                                                                                   (projectInfo.Status === 'Delay' ? projectInfo.Delaydays + ' days' + ' delay ': '') ||
                                                                                  (projectInfo.Project_Block=='003' ?  projectInfo.Status+' delay' : '')}}
+                                                                            </span> -->
+
+
+
+                                                                            <span *ngIf="(projectInfo.Status=='Delay'&&projectInfo.Delaydays>0)||(projectInfo.Project_Block=='003'&&projectInfo.Status.includes('Days'))" class="vi font-weight-400 st-line" style="transform:translate3d(-80px, 30px, 0px)!important;" >
+                                                                              {{
+                                                                                  projectInfo.Project_Block=='003'?
+                                                                                  (projectInfo.Status+' delay'):
+                                                                                  (projectInfo.Delaydays + ' days delay ')
+                                                                              }}
                                                                             </span>
 
 
@@ -3105,7 +3115,7 @@
                                                     <div *ngIf="projectInfo" [ngSwitch]="projectInfo.Status">
 
                                                       <div class="kt-project-type attach-tippy" *ngSwitchCase="'Delay'">
-                                                           <span class="vi font-weight-400 st-line"> {{projectInfo.Delaydays? projectInfo.Delaydays + ' days' + ' delay ': '' }}</span>
+                                                           <span *ngIf="projectInfo.Delaydays" class="vi font-weight-400 st-line"> {{projectInfo.Delaydays + ' days' + ' delay '}}</span>
                                                           <div class="d-flex">
                                                            <div class="Kt-Pd-Status Delay text-nowrap">
                                                               {{getDelayText(projectInfo&&projectInfo)}}
@@ -8997,23 +9007,23 @@
                                 <li class="nav-item">
                                     <a class="nav-link active " data-toggle="tab" href="#kt_tab_pane_1_4">
                                         <span class="svg-icv-hd">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14"
+                                            <svg xmlns="http://www.w3.org/2000/svg" 
                                                 viewBox="0 0 15 14" fill="none">
                                                 <path
                                                     d="M5.73242 5.25464C6.97506 5.25464 7.98242 4.24728 7.98242 3.00464C7.98242 1.762 6.97506 0.754639 5.73242 0.754639C4.48978 0.754639 3.48242 1.762 3.48242 3.00464C3.48242 4.24728 4.48978 5.25464 5.73242 5.25464Z"
-                                                    stroke="#A3A3A3" stroke-linecap="round" stroke-linejoin="round">
+                                                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                                 </path>
                                                 <path
                                                     d="M10.2324 12.7546H1.23242V11.7546C1.23242 10.5612 1.70653 9.41657 2.55044 8.57266C3.39436 7.72874 4.53895 7.25464 5.73242 7.25464C6.9259 7.25464 8.07049 7.72874 8.9144 8.57266C9.75832 9.41657 10.2324 10.5612 10.2324 11.7546V12.7546Z"
-                                                    stroke="#A3A3A3" stroke-linecap="round" stroke-linejoin="round">
+                                                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                                 </path>
                                                 <path
                                                     d="M9.73242 0.754639C10.3292 0.754639 10.9015 0.991692 11.3234 1.41365C11.7454 1.83561 11.9824 2.4079 11.9824 3.00464C11.9824 3.60138 11.7454 4.17367 11.3234 4.59563C10.9015 5.01759 10.3292 5.25464 9.73242 5.25464"
-                                                    stroke="#A3A3A3" stroke-linecap="round" stroke-linejoin="round">
+                                                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                                 </path>
                                                 <path
                                                     d="M11.3323 7.44458C12.1841 7.76863 12.9175 8.34369 13.4353 9.09367C13.9532 9.84365 14.2311 10.7332 14.2323 11.6446V12.7546H12.7323"
-                                                    stroke="#A3A3A3" stroke-linecap="round" stroke-linejoin="round">
+                                                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                                 </path>
                                             </svg>
                                         </span>
@@ -9024,22 +9034,22 @@
                               <li class="nav-item" *ngIf="(projectInfo && (Current_user_ID == projectInfo.OwnerEmpNo || Current_user_ID == projectInfo.ResponsibleEmpNo || isHierarchy == true))">
                                     <a class="nav-link"  data-toggle="tab" href="#kt_tab_pane_2_4">
                                         <span class="svg-icv-hd">
-                                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg" stroke="#A3A3A3">
+                                            <svg viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
                                                     stroke-linejoin="round"></g>
                                                 <g id="SVGRepo_iconCarrier">
-                                                    <path d="M17 10H20M23 10H20M20 10V7M20 10V13" stroke="#A3A3A3"
+                                                    <path d="M17 10H20M23 10H20M20 10V7M20 10V13" stroke="currentColor"
                                                         stroke-width="1.5" stroke-linecap="round"
                                                         stroke-linejoin="round"></path>
                                                     <path
                                                         d="M1 20V19C1 15.134 4.13401 12 8 12V12C11.866 12 15 15.134 15 19V20"
-                                                        stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                                         stroke-linejoin="round"></path>
                                                     <path
                                                         d="M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z"
-                                                        stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                                         stroke-linejoin="round"></path>
                                                 </g>
                                             </svg> </span>
@@ -9121,31 +9131,17 @@
 
 
 
-                               <!-- <li class="nav-item">
+                                <li class="nav-item d-none">
                                   <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_user-request_approver">
-                                      <span class="svg-icv-hd">
-                                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
-                                              xmlns="http://www.w3.org/2000/svg" stroke="#A3A3A3">
-                                              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                              <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                  stroke-linejoin="round"></g>
-                                              <g id="SVGRepo_iconCarrier">
-                                                  <path d="M17 10H20M23 10H20M20 10V7M20 10V13" stroke="#A3A3A3"
-                                                      stroke-width="1.5" stroke-linecap="round"
-                                                      stroke-linejoin="round"></path>
-                                                  <path
-                                                      d="M1 20V19C1 15.134 4.13401 12 8 12V12C11.866 12 15 15.134 15 19V20"
-                                                      stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"
-                                                      stroke-linejoin="round"></path>
-                                                  <path
-                                                      d="M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z"
-                                                      stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"
-                                                      stroke-linejoin="round"></path>
-                                              </g>
-                                          </svg> </span>
+                                       <span class="svg-icv-hd">
+                                          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M16 18L19 21M19 21L22 18M19 21V15M15.5 3.29076C16.9659 3.88415 18 5.32131 18 7C18 8.67869 16.9659 10.1159 15.5 10.7092M12 15H8C6.13623 15 5.20435 15 4.46927 15.3045C3.48915 15.7105 2.71046 16.4892 2.30448 17.4693C2 18.2044 2 19.1362 2 21M13.5 7C13.5 9.20914 11.7091 11 9.5 11C7.29086 11 5.5 9.20914 5.5 7C5.5 4.79086 7.29086 3 9.5 3C11.7091 3 13.5 4.79086 13.5 7Z" stroke="currentColor" stroke-width="1.536" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </g>
+                                         </svg>
+                                        </span>
                                       <span class="nav-text">User Requests</span>
                                   </a>
-                                </li>  -->
+                                </li>  
 
                                 <!-- <li class="nav-item"  *ngIf="approvalEmpId!=Current_user_ID">
                                   <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_user-request_notapprover">
@@ -9714,60 +9710,69 @@
                                   </div> -->
                           </div>
 
+                           <div class="tab-pane fade" id="kt_tab_pane_user-request_approver" role="tabpanel" 
+                           aria-labelledby="kt_tab_pane_user-request_approver">
 
+                              <div class="mx-3 user-request-box border-0 py-3 px-3 rounded-lg shadow-sm mb-3 "  *ngFor="let item of approverequestlist">
 
+                                <div class="d-flex justify-content-between">
 
-                            <div class="tab-pane fade" id="kt_tab_pane_user-request_approver" role="tabpanel" aria-labelledby="kt_tab_pane_user-request_approver">
-                              <div class="mx-3  user-request-box  "  *ngFor="let item of approverequestlist">
-                                <div  class="mb-2"><span
-                                    class="text-dark fs-6 test1">{{item.Submitted_By}}</span><span
-                                    class="kt-badge kt-badge--unified-dark kt-badge--bold kt-badge--inline ml-2 fs-7">{{item.Designation_Name}}</span></div>
-                                    <div  class="d-flex-center">
-                                      <div >
-                                        <div  class="text-muted fs-6 mb-1 svg-spn"><span ><svg
-                                               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16"
-                                              height="16" fill="currentColor">
-                                              <path _ngcontent-alp-c172=""
-                                                d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z">
-                                              </path>
-                                            </svg></span>{{item.Company_name}}</div>
-                                        <div  class="text-muted fs-6 svg-spn"><span ><svg
-                                               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16"
-                                              height="16" fill="currentColor">
-                                              <path
-                                                d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 11H4V19H20V11ZM8 13V15H6V13H8ZM13 13V15H11V13H13ZM18 13V15H16V13H18ZM7 5H4V9H20V5H17V7H15V5H9V7H7V5Z">
-                                              </path>
-                                            </svg></span>{{item.Request_date}}</div>
-                                      </div>
-                                      <!-- <div  class="mb-2"><span
-                                        class="kt-badge  kt-badge--bold kt-badge--inline ml-2 fs-4"><button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text drp-dwn-submitbtn">Approve</button></span><span
-                                        class="kt-badge kt-badge--bold kt-badge--inline ml-2 fs-4"><button class="btn btn-label-primary btn-upper btn-sm btn-bold input-group-text drp-dwn-submitbtn">Reject</button>
-                                        </span></div>
-                                    </div> -->
-                                    <div>
-                                      <button
-                                          [ngClass]="Accept_active ==true ? 'Kt-Approval-btns Btn_Accpet active':'Kt-Approval-btns Btn_Accpet'"
-                                          (click)="approvalClick('ACCEPT')">Accept</button>
-                                  </div>
-                                  <!-- <div class="col" id="editaccept">
-                              <button [ngClass]="Edit_active ==true ? 'Kt-Approval-btns Btn_Edit_Accept active': 'Kt-Approval-btns Btn_Edit_Accept'"
-                                  (click)="approvalClick('EDIT')">Edit & Accept</button>
-                          </div> -->
-                                  <div *ngIf="requestType=='Project Complete'">
-                                      <button
-                                          [ngClass]=" Conditional_Active ==true ? 'Kt-Approval-btns Btn_Conditional_Accept active' : 'Kt-Approval-btns Btn_Conditional_Accept'"
-                                          (click)="approvalClick('CONDITIONAL')">Conditional
-                                          accept</button>
-                                  </div>
                                   <div>
-                                      <button
-                                          [ngClass]="Reject_active ==true ? 'Kt-Approval-btns Btn_Reject active' : 'Kt-Approval-btns Btn_Reject'"
-                                          (click)="approvalClick('REJECT')">Reject</button>
+                                    <span class="text-dark fs-6 test1 fw-bold">{{item.Submitted_By}}</span>
+                                    <span class="kt-badge kt-badge--unified-dark kt-badge--bold kt-badge--inline ml-2 fs-7">{{item.Designation_Name}}</span>
+                                  </div>
+
+                                  <div class="d-flex gap-1">
+                                      <button class="btn btn-sm btn-outline-success fw-bold" (click)="0">Accept</button>
+                                      <button class="btn btn-sm btn-outline-danger fw-bold"  (click)="0">Reject</button>
+                                  </div>
+
+                                </div>
+                             
+
+                                <div  class="d-flex justify-content-between align-items-start">
+                                      <div class="d-flex gap-2" >
+                                        <div  class="text-muted fs-6 mb-1 svg-spn">
+                                            <span class="mr-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                              <path d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z"> </path>
+                                            </svg>
+                                          </span>{{item.Company_name}}
+                                       </div>
+                                        <div class="text-muted fs-6 svg-spn">
+                                            <span class="mr-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                                  <path  d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 11H4V19H20V11ZM8 13V15H6V13H8ZM13 13V15H11V13H13ZM18 13V15H16V13H18ZM7 5H4V9H20V5H17V7H15V5H9V7H7V5Z">
+                                                  </path>
+                                               </svg>
+                                            </span>
+                                            {{item.Request_date|date:'dd-MM-yyyy'}} - 
+                                            <ng-container *ngIf="(calculateDateDiff(todayDate,item.Request_date)+'') as datediff">
+                                               <span class="fs-7" style="color: #b8b8be;">({{ datediff=='0'?'today':formatDurationFromDays(datediff)+' ago' }})</span>
+                                            </ng-container>
+                                        </div>
+                                      </div>
+                                    
+
+
+
                                   </div>
 
 
-
-                                  </div>
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="d-flex gap-2">
+                                        <div class="mt-2">
+                                            <div #accessCmtbx class="compl-remarks-span upto-1" style="color: #9e9fa7;" (click)="$event.stopPropagation(); accessCmtbx.classList.contains('compl-remarks-span')?accessCmtbx.classList.remove('compl-remarks-span'):accessCmtbx.classList.add('compl-remarks-span')"> 
+                                                The viewer uses an
+                                                iframe or external service (like Google Docs/Office Web) and those do not expose APIs to pass a password
+                                                from your Angular app.The viewer uses an iframe or external service (like Google Docs/Office Web) and
+                                                those do not expose APIs to pass a password from your Angular app.The viewer uses an iframe or external
+                                                service (like Google Docs/Office Web) and those do not expose APIs to pass a password from your Angular
+                                                app.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
 
 

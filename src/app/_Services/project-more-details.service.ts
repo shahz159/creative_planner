@@ -15,7 +15,7 @@ export class ProjectMoreDetailsService {
     this.ObjSubTaskDTO = new SubTaskDTO();
    }
 
-  getProjectMoreDetails(projectcode:string){
+  getProjectMoreDetails(projectcode:string){  console.log(this.rootUrl+'TestAPI/NewGetMoreProjectDetails');
     this.ObjSubTaskDTO.Project_Code=projectcode;
     return this.http.post(this.rootUrl+'TestAPI/NewGetMoreProjectDetails',this.ObjSubTaskDTO);
   }
@@ -54,6 +54,19 @@ export class ProjectMoreDetailsService {
     this.ObjSubTaskDTO.Schedule_id=Scheduleid;
      return this.http.post(this.rootUrl+'Projects/NewInsertProjectRequestAccesss',this.ObjSubTaskDTO)
   }
+
+
+  NewInsertPortfolioRequestAccesss(portfolioId:number,empNo:string,remarks:string){  debugger
+
+    this.ObjSubTaskDTO.PortfolioId = portfolioId;
+    this.ObjSubTaskDTO.Remarks = remarks;
+    this.ObjSubTaskDTO.Emp_No = empNo;
+    this.ObjSubTaskDTO.Project_Code = null;
+    this.ObjSubTaskDTO.Schedule_id = null;
+ 
+    return this.http.post(this.rootUrl+'Projects/NewInsertProjectRequestAccesss',this.ObjSubTaskDTO);
+  }
+
 
 
 
