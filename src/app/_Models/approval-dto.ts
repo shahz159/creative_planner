@@ -99,7 +99,8 @@ export class ApprovalDTO {
   PortfolioId:number;
   d_Portid:string;
   isPin:boolean;
-  type:string;
+  // type:string;
+  Ptype:string;
   portid:number|null;
 //
 

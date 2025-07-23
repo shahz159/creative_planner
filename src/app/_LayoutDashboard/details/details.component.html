@@ -2123,7 +2123,8 @@
                     (pageContentType=='ACTION_DETAILS')||
                     (hasNoActionMembers&&hasNoActionMembers.length>0&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false)||
                     (noActvySinceCreation&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false)||
-                    (actnsWithoutProgress&&actnsWithoutProgress.length>0&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false)
+                    (actnsWithoutProgress&&actnsWithoutProgress.length>0&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(projectInfo.Status.trim())==false)||
+                    (userRequestCount>0&&Current_user_ID==projectInfo.OwnerEmpNo)
                     ">
 
                 <div class="kt-Note-msg  d-flex">
@@ -2911,6 +2912,35 @@
                         It is recommended to assign actions for better workflow.
                 </span>
              </div>
+
+
+             <div *ngIf="userRequestCount>0&&Current_user_ID==projectInfo.OwnerEmpNo" class="notification underapproval-notification  myactions-underaprv-notif curser-pointer" (click)="showUserAccessRequests()">
+                  <svg class="notif-img" fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve" style="fill: #00a2eb;">
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                      <g id="SVGRepo_iconCarrier">
+                          <g>
+                              <path
+                                  d="M53.105,56.684l2.211,4.422c0.586,1.172,1.564,1.844,2.684,1.844s2.098-0.672,2.684-1.844l2.211-4.422 C63.525,55.423,64,53.409,64,52V6c0-2.206-1.794-4-4-4h-4c-2.206,0-4,1.794-4,4h-2c-2.206,0-4,1.794-4,4v8c0,1.104,0.896,2,2,2 s2-0.896,2-2v-8h2v42C52,53.409,52.475,55.423,53.105,56.684z M56,6h4v46c0,0.785-0.332,2.192-0.684,2.895L58,57.527l-1.316-2.633 C56.332,54.192,56,52.785,56,52V6z">
+                              </path>
+                              <path
+                                  d="M4,62h36c2.206,0,4-1.794,4-4V18c0-1.64-0.841-3.67-2-4.828l-9.172-9.173C31.668,2.841,29.638,2,28,2H4 C1.794,2,0,3.794,0,6v52C0,60.206,1.794,62,4,62z M37.171,14H32V8.828L37.171,14z M4,6h24v8c0,2.206,1.794,4,4,4h8v40H4V6z">
+                              </path>
+                              <path d="M10,16h11c1.104,0,2-0.896,2-2s-0.896-2-2-2H10c-1.104,0-2,0.896-2,2S8.896,16,10,16z"></path>
+                              <path d="M34,22H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,22,34,22z"></path>
+                              <path d="M34,30H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,30,34,30z"></path>
+                              <path d="M34,38H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,38,34,38z"></path>
+                              <path d="M34,46H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2S35.104,46,34,46z"></path>
+                          </g>
+                      </g>
+                  </svg>
+                  <span class="notif-msg fs-5 mr-2" style="color:#00a2eb">
+                    You have {{userRequestCount}} project access requests from 
+                    <ng-container *ngFor="let userName of usersRequested; let i=index;">
+                      {{userName}}{{i+1===usersRequested.length-1?' and':(i+1===usersRequested.length)?'':', '}}
+                    </ng-container>.
+                 </span>
+            </div>   
 
           
               </ng-template>
@@ -6725,7 +6755,7 @@
      </ng-template>
 </ng-template>
 
-
+ 
 
 <div id="rightbar-overlay" (click)="closeInfo()"></div>
 <!-- Action-To-Project-New_Subtask -->
@@ -9057,6 +9087,19 @@
                                     </a>
                                 </li>
 
+                                <li *ngIf="Current_user_ID==projectInfo?.OwnerEmpNo" class="nav-item">
+                                  <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_user-request_approver">
+                                       <span class="svg-icv-hd">
+                                          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M16 18L19 21M19 21L22 18M19 21V15M15.5 3.29076C16.9659 3.88415 18 5.32131 18 7C18 8.67869 16.9659 10.1159 15.5 10.7092M12 15H8C6.13623 15 5.20435 15 4.46927 15.3045C3.48915 15.7105 2.71046 16.4892 2.30448 17.4693C2 18.2044 2 19.1362 2 21M13.5 7C13.5 9.20914 11.7091 11 9.5 11C7.29086 11 5.5 9.20914 5.5 7C5.5 4.79086 7.29086 3 9.5 3C11.7091 3 13.5 4.79086 13.5 7Z" stroke="currentColor" stroke-width="1.536" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </g>
+                                         </svg>
+                                        </span>
+                                      <span class="nav-text">User Requests</span>
+                                      <div *ngIf="userRequestCount>0" class="count-box">{{userRequestCount}}</div>
+                                  </a>
+                                </li>  
+
 
 
                                 <!-- <li *ngIf="projectInfo && ((Current_user_ID == projectInfo.OwnerEmpNo ||isHierarchy == true ) ||(Current_user_ID == projectInfo.ResponsibleEmpNo))" class="nav-item ng-star-inserted" style="display: flex;">
@@ -9089,61 +9132,7 @@
                                     </div>
                                 </li> -->
 
-
-
-
-
-
-
-
-
-
-
-                                <!-- <li class="nav-item" [ngClass]="{  'd-none':!(projectInfo &&
-                                    (Current_user_ID == projectInfo.OwnerEmpNo||Current_user_ID == projectInfo.ResponsibleEmpNo||isHierarchy == true)&&
-                                   )
-                                    }">
-                                    <a #auditortabbtn class="nav-link" data-toggle="tab" href="#add_auditor_tab_pane">
-                                        <span class="svg-icv-hd">
-                                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg" stroke="#A3A3A3">
-                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                    stroke-linejoin="round"></g>
-                                                <g id="SVGRepo_iconCarrier">
-                                                    <path d="M17 10H20M23 10H20M20 10V7M20 10V13" stroke="#A3A3A3"
-                                                        stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                    <path
-                                                        d="M1 20V19C1 15.134 4.13401 12 8 12V12C11.866 12 15 15.134 15 19V20"
-                                                        stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                    <path
-                                                        d="M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z"
-                                                        stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                </g>
-                                            </svg>
-                                        </span>
-                                        <span class="nav-text">{{projectAuditor?'Change auditor':'Add auditor'}}</span>
-                                    </a>
-                                </li> -->
-
-
-
-                                <li class="nav-item d-none">
-                                  <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_user-request_approver">
-                                       <span class="svg-icv-hd">
-                                          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M16 18L19 21M19 21L22 18M19 21V15M15.5 3.29076C16.9659 3.88415 18 5.32131 18 7C18 8.67869 16.9659 10.1159 15.5 10.7092M12 15H8C6.13623 15 5.20435 15 4.46927 15.3045C3.48915 15.7105 2.71046 16.4892 2.30448 17.4693C2 18.2044 2 19.1362 2 21M13.5 7C13.5 9.20914 11.7091 11 9.5 11C7.29086 11 5.5 9.20914 5.5 7C5.5 4.79086 7.29086 3 9.5 3C11.7091 3 13.5 4.79086 13.5 7Z" stroke="currentColor" stroke-width="1.536" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            </g>
-                                         </svg>
-                                        </span>
-                                      <span class="nav-text">User Requests</span>
-                                  </a>
-                                </li>  
-
-                                <!-- <li class="nav-item"  *ngIf="approvalEmpId!=Current_user_ID">
+                               <!-- <li class="nav-item"  *ngIf="approvalEmpId!=Current_user_ID">
                                   <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_user-request_notapprover">
                                       <span class="svg-icv-hd">
                                           <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
@@ -9713,7 +9702,7 @@
                            <div class="tab-pane fade" id="kt_tab_pane_user-request_approver" role="tabpanel" 
                            aria-labelledby="kt_tab_pane_user-request_approver">
 
-                              <div class="mx-3 user-request-box border-0 py-3 px-3 rounded-lg shadow-sm mb-3 "  *ngFor="let item of approverequestlist">
+                            <div class="mx-3 user-request-box border-0 py-3 px-3 rounded-lg shadow-sm mb-3 "  *ngFor="let item of approverequestlist">
 
                                 <div class="d-flex justify-content-between">
 
@@ -9723,8 +9712,8 @@
                                   </div>
 
                                   <div class="d-flex gap-1">
-                                      <button class="btn btn-sm btn-outline-success fw-bold" (click)="0">Accept</button>
-                                      <button class="btn btn-sm btn-outline-danger fw-bold"  (click)="0">Reject</button>
+                                      <button [disabled]="(loadingAccessRequests||approvingAccessRequest||rejectingAccessRequest)" class="btn btn-sm btn-outline-success fw-bold" (click)="acceptProjectAccessRequest(item.Sno)">Accept</button>
+                                      <button [disabled]="(loadingAccessRequests||approvingAccessRequest||rejectingAccessRequest)" class="btn btn-sm btn-outline-danger fw-bold"  (click)="rejectProjectAccessRequest(item.Sno)">Reject</button>
                                   </div>
 
                                 </div>
@@ -9732,14 +9721,14 @@
 
                                 <div  class="d-flex justify-content-between align-items-start">
                                       <div class="d-flex gap-2" >
-                                        <div  class="text-muted fs-6 mb-1 svg-spn">
+                                        <div  class="text-muted fs-7 mb-1 svg-spn">
                                             <span class="mr-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                                               <path d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z"> </path>
                                             </svg>
                                           </span>{{item.Company_name}}
                                        </div>
-                                        <div class="text-muted fs-6 svg-spn">
+                                        <div class="text-muted fs-7 svg-spn">
                                             <span class="mr-1">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                                                   <path  d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 11H4V19H20V11ZM8 13V15H6V13H8ZM13 13V15H11V13H13ZM18 13V15H16V13H18ZM7 5H4V9H20V5H17V7H15V5H9V7H7V5Z">
@@ -9763,12 +9752,7 @@
                                     <div class="d-flex gap-2">
                                         <div class="mt-2">
                                             <div #accessCmtbx class="compl-remarks-span upto-1" style="color: #9e9fa7;" (click)="$event.stopPropagation(); accessCmtbx.classList.contains('compl-remarks-span')?accessCmtbx.classList.remove('compl-remarks-span'):accessCmtbx.classList.add('compl-remarks-span')"> 
-                                                The viewer uses an
-                                                iframe or external service (like Google Docs/Office Web) and those do not expose APIs to pass a password
-                                                from your Angular app.The viewer uses an iframe or external service (like Google Docs/Office Web) and
-                                                those do not expose APIs to pass a password from your Angular app.The viewer uses an iframe or external
-                                                service (like Google Docs/Office Web) and those do not expose APIs to pass a password from your Angular
-                                                app.
+                                               {{item.Remarks}}
                                             </div>
                                         </div>
                                     </div>
@@ -9778,9 +9762,7 @@
 
                             </div>
 
-
-
-                            <div class="tab-pane fade" id="kt_tab_pane_user-request_notapprover" role="tabpanel" aria-labelledby="kt_tab_pane_user-request_notapprover">
+                            <!-- <div class="tab-pane fade" id="kt_tab_pane_user-request_notapprover" role="tabpanel" aria-labelledby="kt_tab_pane_user-request_notapprover">
                               <div class="mx-3  user-request-box  "  *ngFor="let item of noapproverequestlist">
                                 <div  class="mb-2"><span
                                     class="text-dark fs-6 test1">{{item.Submitted_By}}</span><span
@@ -9808,20 +9790,7 @@
                                     </div>
 
                                   </div>
-
-
-
-                            </div>
-
-
-
-
-
-
-
-
-
-
+                            </div> -->
 
                            </div>
 

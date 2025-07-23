@@ -745,7 +745,100 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   isrespactive:boolean=true;
   requestlist: any;
   approverequestlist: any=[];
-  noapproverequestlist: any=[];
+  // noapproverequestlist: any=[];
+
+
+userRequestCount: number = 0;
+usersRequested:string[]=[];
+loadingAccessRequests:boolean=false; 
+
+getRequestAcessdetails(){
+  this.loadingAccessRequests=true; // process started.
+  this.projectMoreDetailsService.getRequestAccessDetails(this.URL_ProjectCode).subscribe(res => {
+  this.loadingAccessRequests=false;  // process ended.
+    if(res?.[0]?.['requestlist']){
+     this.requestlist = JSON.parse(res[0]['requestlist']);
+     this.approverequestlist=[...this.requestlist];
+     this.userRequestCount=this.requestlist.length;
+     this.usersRequested=this.requestlist.map(ob=>ob.Submitted_By);
+     console.log('requestlist:',this.requestlist);
+    }
+   });
+}
+
+approvingAccessRequest:boolean=false;
+
+acceptProjectAccessRequest(sno:any){
+
+  const reqObj=this.approverequestlist.find(ob=>ob.Sno==sno);
+  const reqUserName=reqObj?reqObj.Submitted_By:'';
+
+   const result=new ApprovalDTO();
+   result.SNo=sno;
+   result.Project_Code=this.projectInfo.Project_Code;
+   result.Type='Accept';
+   this.approvingAccessRequest=true;  // process started.
+   this.approvalservice.NewUpdateProjectRequestAccess(result).subscribe((res:any)=>{
+   this.approvingAccessRequest=false;  // process end. 
+       console.log('prj apprve res:',res);
+         if(res?.message&&res.message==1){
+            this.notifyService.showSuccess(`Project access request approved for ${reqUserName}.`,'Success');
+            this.getRequestAcessdetails();  //rebind requests list.
+            this.GetPeopleDatils(); // rebind people on projects list.
+         }
+         else{
+           this.notifyService.showError('Unable to approve the request.','Failed');
+         }
+
+   });
+}
+
+rejectingAccessRequest:boolean=false;
+rejectProjectAccessRequest(sno:any){
+
+  const reqObj=this.approverequestlist.find(ob=>ob.Sno==sno);
+  const reqUserName=reqObj?reqObj.Submitted_By:'';
+
+
+   const result=new ApprovalDTO();
+   result.SNo=sno;
+   result.Project_Code=this.projectInfo.Project_Code;
+   result.Type='Reject';
+   this.rejectingAccessRequest=true; // process started.
+   this.approvalservice.NewUpdateProjectRequestAccess(result).subscribe((res:any)=>{
+   this.rejectingAccessRequest=false; // process end. 
+        console.log('prj reject res:',res);
+        if(res?.message&&res.message==1){
+            this.notifyService.showSuccess(`Project access request rejected for ${reqUserName}.`,'Success');
+            this.getRequestAcessdetails();  //rebind requests list.
+         }
+         else{
+           this.notifyService.showError('Unable to reject the request.','Failed');
+         }
+   });
+}
+
+showUserAccessRequests(){
+    document.getElementById("User_list_View").classList.add("kt-quick-active--on");
+    document.getElementById("rightbar-overlay").style.display = "block";
+    document.getElementById("newdetails").classList.add("position-fixed");
+
+    $('#kt_tab_pane_user-request_approver').addClass("show active");
+    $('a[href="#kt_tab_pane_user-request_approver"]').addClass("active");  // move the focus to 3rd TAB
+
+    document.getElementById('kt_tab_pane_1_4').classList.remove("show","active");
+    document.querySelector("a[href='#kt_tab_pane_1_4']").classList.remove("active");    // 1st TAB
+
+    $("#kt_tab_pane_2_4").removeClass("show active");
+    $("a[href='#kt_tab_pane_2_4']").removeClass("active");      // 2nd TAB
+
+    this.currentSidebarOpened="PEOPLES";
+    this.GetPeopleDatils();
+}
+
+
+
+
 
   // getRequestAcessdetails(){
   //   this.projectMoreDetailsService.getRequestAccessDetails(this.URL_ProjectCode).subscribe(res => {
@@ -769,33 +862,38 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
   // }
 
-  userRequestCount: number = 0;
 
 
-  getRequestAcessdetails() {
-    this.projectMoreDetailsService.getRequestAccessDetails(this.URL_ProjectCode).subscribe(res => {
-      this.requestlist = JSON.parse(res[0]['requestlist']);
+  // getRequestAcessdetails() {
+  //   this.projectMoreDetailsService.getRequestAccessDetails(this.URL_ProjectCode).subscribe(res => {
+  //     this.requestlist = JSON.parse(res[0]['requestlist']);
 
-      const uniqueNamesSet = new Set<string>(); // Use a Set to track unique names
+  //     const uniqueNamesSet = new Set<string>(); // Use a Set to track unique names
 
-      this.requestlist.forEach(element => {
-        if (element.Emp_no == this.Current_user_ID) {
-          this.approvalEmpId = this.Current_user_ID;
-          this.approverequestlist.push(element);
-          this.userRequestCount = this.approverequestlist.length;
-        } else {
-          if (uniqueNamesSet.size < 2 && !uniqueNamesSet.has(element.Submitted_By)) {
-            this.noapproverequestlist.push(element);
-            uniqueNamesSet.add(element.Submitted_By);
+  //     this.requestlist.forEach(element => {
+  //       if (element.Emp_no == this.Current_user_ID) {
+  //         this.approvalEmpId = this.Current_user_ID;
+  //         this.approverequestlist.push(element);
+  //         this.userRequestCount = this.approverequestlist.length;
+  //       } else {
+  //         if (uniqueNamesSet.size < 2 && !uniqueNamesSet.has(element.Submitted_By)) {
+  //           this.noapproverequestlist.push(element);
+  //           uniqueNamesSet.add(element.Submitted_By);
 
 
-          }
-        }
-      });
+  //         }
+  //       }
+  //     });
 
-      console.log("requestlist", this.approverequestlist, 'noaprrequest-list',this.noapproverequestlist);
-    });
-  }
+  //     console.log("requestlist", this.approverequestlist, 'noaprrequest-list',this.noapproverequestlist);
+  //   });
+  // }
+
+
+
+
+
+
 
   requestaccessList:any=[];
   deadlineExtendlist:any;
@@ -2068,14 +2166,13 @@ multipleback(){
 
     // if the add support sidebar had opened and close , by default tab1 is on.
     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
-    document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");
-
-    // document.getElementById('kt_tab_pane_2_4').classList.remove("show","active");
-    // document.querySelector("a[href='#kt_tab_pane_2_4']").classList.remove("active");
+    document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");    // 1st TAB
 
     $("#kt_tab_pane_2_4").removeClass("show active");
-    $("a[href='#kt_tab_pane_2_4']").removeClass("active");
+    $("a[href='#kt_tab_pane_2_4']").removeClass("active");      // 2nd TAB
 
+    $('#kt_tab_pane_user-request_approver').removeClass("show active");
+    $('a[href="#kt_tab_pane_user-request_approver"]').removeClass("active");  // 3rd TAB
 
      //  add support close end here.
 
@@ -2184,9 +2281,10 @@ multipleback(){
 
     $('#kt_tab_pane_2_4').removeClass("show active");
     $('a[href="#kt_tab_pane_2_4"]').removeClass("active");   // ADD SUPPORTS TAB.
+    
 
     $('#kt_tab_pane_user-request_approver').removeClass("show active");
-    $('a[href="#kt_tab_pane_user-request_approver"]').removeClass("active");
+    $('a[href="#kt_tab_pane_user-request_approver"]').removeClass("active");  // User requests TAB.
 
     // document.getElementById('kt_tab_pane_user-request_notapprover').classList.remove("show","active");
     // document.querySelector("a[href='#kt_tab_pane_user-request_notapprover']").classList.remove("active");
@@ -12708,6 +12806,8 @@ getNotificationsAnnouncements():string[]{
   allnotif=[...allnotif,'noActvySinceCreation'];
   if(this.actnsWithoutProgress&&this.actnsWithoutProgress.length>0&&['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(this.projectInfo.Status.trim())==false)
   allnotif=[...allnotif,'actnsWithoutProgress'];
+  if(this.userRequestCount>0&&this.Current_user_ID==this.projectInfo.OwnerEmpNo)
+  allnotif=[...allnotif,'userRequestCount'];
 
   return allnotif;
 }
@@ -13909,7 +14009,8 @@ createNewGroup(){
 
       this.approvalObj.Emp_No=this.Current_user_ID;
       this.approvalObj.groupName=groupName;
-      this.approvalObj.type='1';
+      // this.approvalObj.type='1';
+      this.approvalObj.Ptype='1';
       this.approvalObj.gid=null;
 
       this.service.NewCreateEditGroup(this.approvalObj).subscribe((res:any)=>{  console.log('create new group res:',res);
@@ -13932,7 +14033,8 @@ createNewGroup(){
     const grpDto=new ApprovalDTO();
     grpDto.Emp_No = this.Current_user_ID;
     grpDto.gid = groupId;
-    grpDto.type = '1';
+    // grpDto.type = '1';
+    grpDto.Ptype = '1';
     grpDto.Project_Code = this.projectInfo.Project_Code;
     grpDto.PortfolioId = null;
     grpDto.Schedule_id = null;
@@ -13955,7 +14057,8 @@ createNewGroup(){
     const grpDto=new ApprovalDTO();
     grpDto.Emp_No = this.Current_user_ID;
     grpDto.gid = groupId;
-    grpDto.type = '2';
+    // grpDto.type = '2';
+    grpDto.Ptype = '2';
     grpDto.Project_Code = this.projectInfo.Project_Code;
     grpDto.PortfolioId = null;
     grpDto.Schedule_id = null;
