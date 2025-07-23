@@ -326,37 +326,61 @@ export class StreamDashboardComponent implements OnInit {
    
     this.CalenderService.NewDashboardScheduled(this._calenderDto).subscribe((data) => {
    
+      
       this.scheduleItems = JSON.parse(data['Scheduledtime']);
-      console.log(this.scheduleItems, "Calendar Data 1");
-
-
-      this.scheduleItems.forEach((day, index, arr) => {
-        day.Events.forEach(event => {
-          if (new Date(event.endTime).getDate() !== new Date(event.startTime).getDate()) {
-            let nextDay = arr.find(d => d.Schedule_date === event.endTime.split(" ")[0]);
-            
-            if (!nextDay) {
-              nextDay = { Schedule_date: event.endTime.split(" ")[0], Events: [] };
-              arr.push(nextDay);
-            }
-            
-            if (!nextDay.Events.some(e => e.Schedule_ID === event.Schedule_ID)) {
-              nextDay.Events.push({ ...event, Task_Name: `${event.Task_Name} (2/2)` });
-            }
-      
-            event.Task_Name += " (1/2)"; 
-          }
-        });
-      });
+      console.log( this.scheduleItems, "Calendar Data 1");
       
 
-     this.scheduleItems = this.scheduleItems.map(day => {
+      // this.scheduleItems.forEach((day, index, arr) => {
+      //   day.Events.forEach(event => {
+      //     if (new Date(event.endTime).getDate() !== new Date(event.startTime).getDate()) {de
+           
+      //       let nextDay = arr.find(d => d.Schedule_date === event.endTime.split(" ")[0]);
+            
+      //       if (!nextDay) {
+      //         nextDay = { Schedule_date: event.endTime.split(" ")[0], Events: [] };
+      //         arr.push(nextDay);
+      //       }
+            
+      //       if (!nextDay.Events.some(e => e.Schedule_ID === event.Schedule_ID)) {
+      //         nextDay.Events.push({ ...event, Task_Name: `${event.Task_Name} (2/2)` });
+      //       }
+      
+      //       event.Task_Name += " (1/2)"; 
+      //     }
+      //   });
+      // });
+    
+
+ 
+  this.scheduleItems.forEach(day => {
+  day.Events.forEach(event => {
+    const start = new Date(event.startTime);
+    const end = new Date(event.endTime);
+
+    if (start.getDate() !== end.getDate()) {
+      const endDate = end.toISOString().split("T")[0];
+
+      let nextDay = this.scheduleItems.find(d => d.Schedule_date.startsWith(endDate));
+      if (!nextDay) {
+        nextDay = { Schedule_date: endDate + "T00:00:00", Events: [] };
+        this.scheduleItems.push(nextDay);
+      }
+
+      if (!nextDay.Events.some(e => e.Schedule_ID === event.Schedule_ID)) {
+        nextDay.Events.push({ ...event, Task_Name: `${event.Task_Name} (2/2)` });
+      }
+
+      event.Task_Name += " (1/2)";
+    }
+  });
+});
+    this.scheduleItems = this.scheduleItems.map(day => {
       let updatedEvents = day.Events.map(event => ({
           ...event,
           Task_Name: event.Task_Name.replace("(2/2) (1/2)", "(2/2)")
       }));
       
-
       let specialEvents = updatedEvents.filter(event => event.Task_Name.includes("(2/2)"));
       let otherEvents = updatedEvents.filter(event => !event.Task_Name.includes("(2/2)"));
       
@@ -365,7 +389,7 @@ export class StreamDashboardComponent implements OnInit {
           Events: [...specialEvents, ...otherEvents]
       };
   });
-  
+
 
   if (this.scheduleItems.length == 10) {
     this.scheduleItems.pop();
@@ -378,7 +402,7 @@ export class StreamDashboardComponent implements OnInit {
 
    if( this.scheduleItems.some(data => data.Schedule_date <  this.today)){
         this.scheduleItems.shift(); 
-      }
+    }
 
 
     

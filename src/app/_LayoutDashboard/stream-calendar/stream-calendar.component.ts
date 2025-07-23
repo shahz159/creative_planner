@@ -1714,7 +1714,7 @@ clearallfields() {
 
 
 
-TImetable() {
+TImetable() { debugger
   let now = moment(new Date());
   let _shr = now.hour();
   let _s = now.minute();
@@ -1883,7 +1883,7 @@ keepChoosedItems(){
            this.close_projectmodal();
       };break;
 
-     case 'SMail':{
+     case 'SMail':{ debugger
           if(!this.SelectDms)   // if SelectDms is null,undefined,''
             this.SelectDms=[];
 
@@ -2410,55 +2410,54 @@ onRecurrenceTypeChange(val:any){
 
 bindCustomRecurrenceValues(){
 
-  if(this.changeSelectionValue==false){
+   if(this.changeSelectionValue==false){
 
   
-
-if(this.selectedrecuvalue1=='2'&&!this.dayArr1.some((item)=>item.checked)){
-  this.notProvided1='dayarr1';
-  return;
-}
-
-if(this.selectedrecuvalue1=='3'&&!this.MonthArr1.some(item=>item.checked)){
-  this.notProvided1='montharr1';
-  return;
-}
-
-if(['1','2','3'].includes(this.selectedrecuvalue1)&&!this._EndDate1){
-  this.notProvided1='enddate1';
-  return;
-}
-
-this.selectedrecuvalue=this.selectedrecuvalue1;
-this.dayArr=[...this.dayArr1];
-this.MonthArr=[...this.MonthArr1];
-
-
-if(this._EndDate1 == undefined){
-  this.eventtaskitemtimeModal_dismiss();
-}else if(this.selectedrecuvalue != '0'){
- 
-  this._EndDate=this._EndDate1.format("YYYY-MM-DD").toString();
-  this.maxDate = this._EndDate1.format("YYYY-MM-DD").toString();
-  
-  this.mtgOnDays=[];
-  if(this.selectedrecuvalue==='2'){
-    this.dayArr.forEach((item:any)=>{
-      if(item.checked){
-         let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
-         this.mtgOnDays.push(d_name);
-      }
-  });
+  if(this.selectedrecuvalue1=='2'&&!this.dayArr1.some((item)=>item.checked)){
+    this.notProvided1='dayarr1';
+    return;
   }
-  else if(this.selectedrecuvalue==='3'){
-     this.MonthArr.forEach((item:any)=>{
-       if(item.checked){
-          const d_no=Number.parseInt(item.value);
-          this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
-       }
-     });
+
+  if(this.selectedrecuvalue1=='3'&&!this.MonthArr1.some(item=>item.checked)){
+    this.notProvided1='montharr1';
+    return;
   }
+
+  if(['1','2','3'].includes(this.selectedrecuvalue1)&&!this._EndDate1){
+    this.notProvided1='enddate1';
+    return;
+  }
+
+  this.selectedrecuvalue=this.selectedrecuvalue1;
+  this.dayArr=[...this.dayArr1];
+  this.MonthArr=[...this.MonthArr1];
+
+
+  if(this._EndDate1 == undefined){
+    this.eventtaskitemtimeModal_dismiss();
+  }else if(this.selectedrecuvalue != '0'){
   
+    this._EndDate=this._EndDate1.format("YYYY-MM-DD").toString();
+    this.maxDate = this._EndDate1.format("YYYY-MM-DD").toString();
+    
+    this.mtgOnDays=[];
+    if(this.selectedrecuvalue==='2'){
+      this.dayArr.forEach((item:any)=>{
+        if(item.checked){
+          let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
+          this.mtgOnDays.push(d_name);
+        }
+    });
+    }
+    else if(this.selectedrecuvalue==='3'){
+      this.MonthArr.forEach((item:any)=>{
+        if(item.checked){
+            const d_no=Number.parseInt(item.value);
+            this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
+        }
+      });
+    }
+    
   
   this.maxDate = moment(this._EndDate).format("YYYY-MM-DD").toString()
   var start = moment(this.minDate);
@@ -2759,7 +2758,7 @@ selectAction:any;
 
   
        // new code start 69
-       // 
+      debugger
   
        if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate) || this.formattedDayTime){
          let startDate = new Date(this._StartDate);
@@ -2823,11 +2822,14 @@ selectAction:any;
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
-      finalarray.forEach(element => {
+      finalarray.forEach(element => { debugger
        this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this._StartDate);
      
         const date2: Date = new Date(this._SEndDate);
+
+        date1.setHours(0,0,0,0);
+        date2.setHours(0,0,0,0);
 
         const diffInMs: number = date2.getTime() - date1.getTime();
 
@@ -2924,8 +2926,8 @@ selectAction:any;
          this.Description_Type = this.Description_Type.replace(/(&nbsp;|&#160;|\s)+/g, ' ').trim();
        }
        
-      //  var vPrivate_Meeting = "Private_Meeting";
-      //  element[vPrivate_Meeting] =  this.privateMeeting;
+       var vPrivate_Meeting = "Private_Meeting";
+       element[vPrivate_Meeting] =  this.privateMeeting;
 
         var vDescription = "Description";
         element[vDescription] = this.Description_Type == undefined || this.Description_Type == '<font face="Arial"> </font>' ? "" : this.Description_Type;
@@ -3069,7 +3071,6 @@ selectAction:any;
       console.log(this._calenderDto,'Event create json')
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
         (data => {
-
 
           this.Attamentdraftid= data['draftid']
           frmData.append("draftid", this.Attamentdraftid= this.Attamentdraftid?this.Attamentdraftid:0);
@@ -3318,21 +3319,23 @@ selectEmployee:any;
    
     this._calenderDto.EmpNo = this.selectEmployee;
     this._calenderDto.User_Type=this.user_Type;
+     console.log(this._calenderDto,'this.user_Type');
     this.fetchDataStartTime = performance.now();
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe
       ((data) => {
-        console.log(data,'Scheduledjson');
+       
         this.fetchDataEndTime = performance.now();
         this.fetchDataTime = this.fetchDataEndTime - this.fetchDataStartTime;
 
         this.dataBindStartTime = performance.now();
         
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
+        this.Scheduledjson = this.Scheduledjson.sort((a, b) => new Date(a.Schedule_date).getTime() - new Date(b.Schedule_date).getTime());
+ 
+        console.log(this.Scheduledjson,'this.Scheduledjson');
+
         this.loadingDMS = true;
-       
-        //66666666 this.Scheduledjson = this.Scheduledjson.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
-       
-      
+          
 
         if(this.dayMeetingSection == 'Schedule'){
           this.getEventsForWeeks(0);
@@ -3344,18 +3347,10 @@ selectEmployee:any;
           this.monthlyScheduleJson(0);
         }
 
-        // setInterval(() => {
-        //   this. GetScheduledJson()
-        // }, 60000);
 
         this.dataBindEndTime = performance.now();
         this.dataBindTime = this.dataBindEndTime - this.dataBindStartTime;
         this.userFound = true
-
-        // console.log("Fetch Data Time: in milliseconds", this.fetchDataTime);
-        // console.log("Data Bind Time: in milliseconds", this.dataBindTime);
-
-        // var _now = moment().format() + "T" + moment().format("hh:mm:ss");
 
         this.calendarOptions = {
           initialView: 'listWeek',
@@ -3394,7 +3389,13 @@ selectEmployee:any;
 
   }
 
-  isCalendarVisible: boolean = false;
+
+
+isCalendarVisible: boolean = false;
+
+
+
+
 
 getEventsForWeeks(weeksFromToday: number) { 
  
@@ -3419,7 +3420,7 @@ getEventsForWeeks(weeksFromToday: number) {
   }
 
 
-  if(this.noSelectedDate == true && weeksFromToday === 0  && this.selectDay){
+  if(this.noSelectedDate == true && weeksFromToday === 0  && this.selectDay){ debugger
     var formattedDate = this.selectDay.toDate();
     this.currentWeekOffset = 0 ;
   }else{
@@ -3466,8 +3467,8 @@ getEventsForWeeks(weeksFromToday: number) {
             const end = event.endTime.split('T');
             const startDate = start[0];
             const endDate = end[0];
-
-            if (startDate !== endDate) {
+            
+            if (startDate !== endDate) { debugger
               const nextDate = new Date(startDate);
               nextDate.setDate(nextDate.getDate() + 1);
               const correctedEnd = nextDate.toISOString().split('T')[0];
@@ -3484,11 +3485,11 @@ getEventsForWeeks(weeksFromToday: number) {
           return acc;
         }, {})
       );
-
+   console.log(this.filteredMeetingsArray, 'filteredMeetingsArray');
 
     this.filteredMeetingsArray.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-
+ 
     //is require to check it
     if(this.filteredMeetingsArray.some(data => new Date(data.date) < new Date(this.firstDate)) && this.Searchingfunc==true){
       this.filteredMeetingsArray.shift(); 
@@ -3512,8 +3513,14 @@ getEventsForWeeks(weeksFromToday: number) {
                                   ...(past.length ? [{ text: 'PREVIOUS' }, ...past] : [])];
     //  this.filteredMeetingsArray = [...upcoming,...past];
    }
+
+   if (this.teamsCalendar === 2) {
+    this.filteredMeetingsArray.forEach(day =>
+      day.events = day.events.filter(e => !e.IsPrivate)
+    );
+  }
    
-   console.log(this.filteredMeetingsArray, 'filteredMeetingsArray');
+   
        
 }
 
@@ -4076,7 +4083,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       var eventStatus=  this.User_Scheduledjson.filter(e=>e.stringval==this.Current_user_ID);
        this.statusofMeeting =eventStatus.length?eventStatus[0].Status:undefined;
 
-       
+       debugger
       this.dmsIdjson = [];
       if (this.DMS_Scheduledjson.length > 0) {
         this.DMS_Scheduledjson.forEach(element => {
@@ -4086,12 +4093,13 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
           this.dmsIdjson.push(jsonData);
         });
         this.dmsIdjson = JSON.stringify(this.dmsIdjson);
+         console.log(this.dmsIdjson,"this.dmsIdjson");
         this._LinkService._GetMemosSubject(this.dmsIdjson).
           subscribe((data) => {
             this._MemosSubjectList = JSON.parse(data['JsonData']);
           });
       }
-      // console.log(this.dmsIdjson,"ids");
+     
      });
 }
 
@@ -4158,11 +4166,27 @@ OnCardClick(P_id: any) {
 
 
 
-openUrl(memo_Url) {
+openUrl(memo_Url) { 
   const Url = memo_Url;
   window.open(Url);
 }
 
+MemoId:any;
+
+opneSmail(memoid) { 
+ this.MemoId = []; 
+ this.MemoId = [{ MailId: memoid.toString()}]
+
+  this.MemoId = JSON.stringify(this.MemoId);
+  this._LinkService._GetMemosSubject(this.MemoId).subscribe((data) => {
+    if(data['JsonData'] != ''){
+      const JsonsData = JSON.parse(data['JsonData']);            
+      var Url= JsonsData[0].Url;
+      window.open(Url);
+    }
+    
+  });
+}
 
 
 meetingRestriction(actualMeeting){
@@ -4745,7 +4769,7 @@ ReshudingTaskandEvent() {
       this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
 
 
-debugger
+
         // this code for chnage detection start
         this.disablePreviousDate = null;
         setTimeout(()=>{
@@ -5872,7 +5896,7 @@ repeatEvent() {
         //       ac.updatePosition();
         //   });
         // })
-debugger
+
         this._StartDate=null;
         this.disablePreviousDate = null;
         setTimeout(()=>{
@@ -5947,7 +5971,7 @@ repeatEventTime(){
 
 
 
- submitEventToRepeat(){
+ submitEventToRepeat(){  debugger
 
   const input_date=moment(this.repeatStartDate,'YYYY-MM-DD');
   const current_date=moment(moment().format('YYYY-MM-DD'),'YYYY-MM-DD');
@@ -6061,6 +6085,9 @@ repeatEventTime(){
   
         var vLink_Details = "Link_Details";
         element[vLink_Details] = this.EventScheduledjson[0].Link_Details;
+
+         var vPrivate_Meeting = "Private_Meeting";
+         element[vPrivate_Meeting] =  this.privateMeeting;
   
         var vDescription = "Description";
         element[vDescription] = this.EventScheduledjson[0].Description;
@@ -6092,7 +6119,7 @@ repeatEventTime(){
       this._calenderDto.draftid = this.draftid;
       console.log(this._calenderDto)
       this.CalenderService.NewInsertCalender(this._calenderDto).subscribe
-        (data => {
+        (data => { 
           this._Message = data['message'];
           if (this._Message == "Updated Successfully") {
             this.notifyService.showSuccess(this._Message, "Success");
@@ -6139,10 +6166,10 @@ repeatEventTime(){
 
 
 selectedPrivate:any;
-privateMeeting:any;
+privateMeeting:any = false;
 
 
-togglePrivateMeeting() { debugger
+togglePrivateMeeting() { 
   this.privateMeeting = !this.privateMeeting;
 }
 
@@ -6795,7 +6822,7 @@ getDayReportSummary(){
       this.reportCount = ["NewProjectRejected", "AssignedTasksDue", "ActionsDelayed", "ProjectsDelayed", "StandardDelayed"]
       .filter(key => this.daySummaryReport[key] > 0).length;
 
-debugger
+
       if(this.daySummaryReport['PendingTasks']){
        this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
       console.log("daySummaryReport:",this.PendingTasks);
@@ -6885,7 +6912,7 @@ timeLineInterval:any;
 openBoxSelectedDate:any;
 
 dayScheduleJson(dayFromToday: number){
-      debugger
+  
         this.selectDay = dayFromToday === 3 ? moment() : moment(this.selectDay).add(dayFromToday, 'days');
         const selectedDate = moment(this.selectDay).format('YYYY-MM-DD');
         this.openBoxSelectedDate = selectedDate;
@@ -6911,9 +6938,15 @@ dayScheduleJson(dayFromToday: number){
               )
             })); 
 
+           
 
+             if (this.teamsCalendar === 2) {
+                this.dayMappedList.forEach(day =>
+                  day.events = day.events.filter(e => !e.IsPrivate)
+                );
+              }
 
-                // console.log(this.dayMappedList,'dayMappedList');
+            console.log(this.dayMappedList,'dayMappedList');
                 //   var MeetingsArray = [].concat.apply([], this.Scheduledjson.map(event => {
                 //     // Return original event if start or end is missing
                 //     if (!event.start || !event.end) {
@@ -7063,7 +7096,18 @@ weeklyScheduleJson(weekFromToday) {
       }))
     }));
 
+ 
+
   
+     if(this.teamsCalendar == 2 ){
+       this.weekMappedList.forEach(week=>{
+        week.events.forEach(event=>{
+         event.subdate = event.subdate.filter(e=>!e.IsPrivate)
+        }
+        )}
+       )
+     }
+
     console.log(this.weekMappedList,'weekMappedList'); // Filtered events within the week
 }
 
@@ -7135,6 +7179,16 @@ monthlyScheduleJson(monthFromToday) {
       };
     })
   }));
+
+
+   if(this.teamsCalendar == 2 ){
+       this.monthMappedList.forEach(week=>{
+        week.week.forEach(event=>{
+         event.events = event.events.filter(e=>!e.IsPrivate)
+        }
+        )}
+       )
+     }
 
   console.log(this.monthMappedList, 'monthMappedList');
 }
