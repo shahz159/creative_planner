@@ -389,6 +389,84 @@ debugger
    }
 
 
+
+
+   // new
+
+
+
+   testsrc='/assets/action_first_27_03_2025_protected.pdf';
+   testpassword='';
+
+     onError(e){
+        console.log(e);
+        if(e.code==2){
+             //incorrect password provided
+             const inputval=prompt('Enter password');
+             this.testpassword=inputval;
+        }
+     }
+
+   //
+
+
+
+// Password protected file open start
+
+isFileRequiredPassword:boolean=false;  // if opened file required password or not.
+filePassword:string='';
+filePasswordInput:string='';  // password input by the user.
+showPasswordText:boolean=false;  // show or hide password input by the user.
+passwordNotProvided:boolean=false; 
+incorrectPassword:boolean=false; // whether user input incorrect password or not. 
+
+togglePasswordVisibility(){
+  this.showPasswordText=!this.showPasswordText;
+}
+
+onFilePasswordSubmit(){
+     if(!this.filePasswordInput){
+        this.passwordNotProvided=true;
+        return;
+     }
+     else{
+        this.passwordNotProvided=false;
+        this.filePassword=this.filePasswordInput; // provide input as password to pdf-viewer.
+        this.closePasswordRequiredDialog();  // close the prompt.
+     }
+}
+
+
+showPasswordRequiredDialog(){
+   document.getElementById('password-req-prompt')?.classList.remove('d-none');
+}
+
+closePasswordRequiredDialog(){
+   document.getElementById('password-req-prompt')?.classList.add('d-none');
+   this.showPasswordText=false;
+   this.passwordNotProvided=false;
+   this.incorrectPassword=false;
+}
+
+
+
+onPDFError(e:any){
+   console.log(e);
+   if(e.code==1){   // No password given exception.
+       this.isFileRequiredPassword=true;  // this file required password.
+       this.filePasswordInput='';   // clear input if present.
+       this.showPasswordRequiredDialog();  // show prompt.
+   }
+   else if(e.code==2){  // When password input is incorrect.
+       this.isFileRequiredPassword=true;  // this file required password.
+       this.showPasswordRequiredDialog();  // show prompt.
+       this.incorrectPassword=true;   // input password is incorrect.
+   }
+}
+
+//  end.
+
+
 }
 
 

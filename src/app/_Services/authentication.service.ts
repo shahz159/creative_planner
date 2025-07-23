@@ -39,7 +39,7 @@ export class AuthenticationService {
   }
 
   //Login Service
-  login(username: string, password: string) { debugger
+  login(username: string, password: string) {
     this._userobj.userId = username;
     this._userobj.OldPassWord = password;
     //  alert(this._userobj.OldPassWord);
@@ -47,16 +47,16 @@ export class AuthenticationService {
     //  /AuthenticationAPI/NewLoginDetailsJSON   ----- old api
     // Login/DMSLoginAPI ---- dot net core api
     //  return this.http.get<any>(this.rootUrl + '/AuthenticationAPI/GetLoginDetailsJSON?userId=' + username + "&password=" + password, {
-      console.log(this.rootUrl + "Notification/NewLoginDetailsJSON", this._userobj,'login url')
+      // console.log(this.rootUrl + "Notification/NewLoginDetailsJSON", this._userobj,'login url')
     return this.http.post<any>(this.rootUrl + "Notification/NewLoginDetailsJSON", this._userobj, {
     })
-      .pipe(map(user => {    
-         console.log(user,"user dms")
-         console.log(user["Data"]["UserId"],"user dmsdqwe")
-         console.log(JSON.parse(user["Data"]["UserId"]),"user jsonconvert")
+      .pipe(map(user => {  
+        //  console.log(user,"user dms")
+        //  console.log(user["Data"]["UserId"],"user dmsdqwe")
+        //  console.log(JSON.parse(user["Data"]["UserId"]),"user jsonconvert")
         var _json = JSON.parse(user["Data"]["UserId"]);
         let _obj1 = _json;
-        console.log(_obj1, "dmsm das")
+        // console.log(_obj1, "dmsm das")
         if (_obj1.length != 0) {
           users_db.collection('users').add({
             username: _obj1[0].userId,

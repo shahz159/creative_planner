@@ -60,4 +60,6 @@ export class SubTaskDTO {
   submissionDate:string;
   type:string;
   deadline:string;
+
+  PortfolioId:number;
 }

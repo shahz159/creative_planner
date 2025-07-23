@@ -420,10 +420,11 @@ export class ProjectTypeService {
     this.ObjStatusDTO.Emp_No = empId;
     return this.http.post(this.rootUrl + "TestAPI/NewPortfolioIsFavourite", this.ObjStatusDTO)
   }
-  Portfolio_Rename(PortName, portfolioId) {
+  Portfolio_Rename(PortName, portfolioId,renamedBy) {
 
     this.ObjStatusDTO.Portfolio_ID = portfolioId;
     this.ObjStatusDTO.Portfolio_Name = PortName;
+    this.ObjStatusDTO.Emp_No = renamedBy;
     return this.http.post(this.rootUrl + "TestAPI/NewPortfolioRenamed", this.ObjStatusDTO)
   }
   Portfolio_ShareUsersDelete(pid, empId, shareby) {
@@ -1214,7 +1215,7 @@ debugger
 
   NewGetPinDetails(empNo:string,type:string,portid:number|null){
      this.aprvDtoObj.Emp_No=empNo;
-     this.aprvDtoObj.type=type;
+     this.aprvDtoObj.Ptype=type;
      this.aprvDtoObj.portid=portid;
      return this.http.post(this.rootUrl+'Projects/NewGetPinDetails',this.aprvDtoObj);
   }
@@ -1225,7 +1226,8 @@ debugger
   NewCreateEditGroup(obj:ApprovalDTO){
     this.aprvDtoObj.Emp_No=obj.Emp_No;
     this.aprvDtoObj.groupName=obj.groupName;
-    this.aprvDtoObj.type=obj.type;
+    // this.aprvDtoObj.type=obj.type;
+    this.aprvDtoObj.Ptype=obj.Ptype;
     this.aprvDtoObj.gid=obj.gid;
     return this.http.post(this.rootUrl+'Projects/NewCreateEditGroup',this.aprvDtoObj);
   }
@@ -1237,15 +1239,14 @@ debugger
   NewGetGroupDetails(empNo:string,groupId:number){
     this.aprvDtoObj.Emp_No=empNo;
     this.aprvDtoObj.gid=groupId;
-    console.log("asdf",this.rootUrl+'Projects/NewGetGroupDetails');
-    console.log("body",this.aprvDtoObj);
     return this.http.post(this.rootUrl+'Projects/NewGetGroupDetails',this.aprvDtoObj);
   }
   NewUpdateGroup(obj:ApprovalDTO){   debugger
     const grpDTOobj=new ApprovalDTO();
     grpDTOobj.Emp_No = obj.Emp_No;
     grpDTOobj.gid = obj.gid;
-    grpDTOobj.type = obj.type;
+    // grpDTOobj.type = obj.type;
+    grpDTOobj.Ptype = obj.Ptype;
     grpDTOobj.Project_Code = obj.Project_Code;
     grpDTOobj.PortfolioId = obj.PortfolioId;
     grpDTOobj.Schedule_id = obj.Schedule_id;

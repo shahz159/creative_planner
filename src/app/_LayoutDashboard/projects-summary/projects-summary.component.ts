@@ -112,28 +112,18 @@ Dateselectionrange: string = 'Date selection range';
       this.GetProjectsByUserName(this.type1);
     });
 
-   let filterprjsby:any=sessionStorage.getItem('filterprjsby');     debugger
+   let filterprjsby:any=sessionStorage.getItem('filterprjsby');    
    if(filterprjsby){   // show only standard type projects which are in delay.
         filterprjsby=JSON.parse(filterprjsby);
-        this.emplyToselect=filterprjsby.EmpNo?[filterprjsby.EmpNo]:[];
-        this.projtypeToselect=filterprjsby.ProjectType?[filterprjsby.ProjectType]:[];
-        this.enterStatus=filterprjsby.Status?[filterprjsby.Status]:[];
-        this.comToselect=filterprjsby.Company?[filterprjsby.Company]:[];
-
-        this.EmpCountInFilter=filterprjsby.EmpNo?[{ Emp_No: filterprjsby.EmpNo }]:[];
-        this.TypeContInFilter=filterprjsby.ProjectType?[{ Block_No: filterprjsby.ProjectType }]:[];
-        this.StatusCountFilter=filterprjsby.Status?[{ Name: filterprjsby.Status }]:[];
-        this.CompanyCountFilter=filterprjsby.Company?[{Company_No:filterprjsby.Company}]:[];
-                             
         
-        console.log('from timeline filter auto:',this.EmpCountInFilter,this.TypeContInFilter,this.StatusCountFilter,this.CompanyCountFilter);
-
         this.Type=this.type1;
         this.userFound=true;
         sessionStorage.removeItem('filterprjsby');
 
-        this.getNewFilterResult();
-        this.applyFilters();
+        this.applyFiltersBy(filterprjsby.Company,filterprjsby.EmpNo,filterprjsby.ProjectType,filterprjsby.Status);
+
+        console.log('from timeline filter auto:',this.EmpCountInFilter,this.TypeContInFilter,this.StatusCountFilter,this.CompanyCountFilter);
+
    }
    else{  //  show all projects without any filter.
     this.GetProjectsByUserName(this.type1);
@@ -491,7 +481,7 @@ Dateselectionrange: string = 'Date selection range';
     }
 
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe((data:any) => {
-      if(data){
+      if(data){   
          data.forEach((ob)=>{
           ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
           ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
@@ -506,6 +496,9 @@ Dateselectionrange: string = 'Date selection range';
       this.cancelcount=this.ActualDataList[0]['cancelcount'];
       this.un_FilteredProjects = this.ActualDataList;
       this.getNotificationsofprojects();
+
+      this.newPrjRejectedCount=data[0].newrejectedcount;
+
       const aprvlsExist=this[this.currentUA=='Under Approval'?'newUA':this.currentUA=='Forward Under Approval'?'forwardUA':this.currentUA=='Cancellation Under Approval'?'cancellationUA':'completionUA'].length;
       if(this.currentUA&&aprvlsExist>0){
         this.filterPrjs(this.Current_user_ID,this.currentUA);
@@ -543,7 +536,7 @@ Dateselectionrange: string = 'Date selection range';
       }
 
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe((data:any) => {
-
+ debugger
         if(data){
           data.forEach((ob)=>{
             ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
@@ -558,6 +551,8 @@ Dateselectionrange: string = 'Date selection range';
 
          this.un_FilteredProjects = data;
          this.getNotificationsofprojects();
+         this.newPrjRejectedCount=data[0].newrejectedcount;
+
         const aprvlsExist=this[this.currentUA=='Under Approval'?'newUA':this.currentUA=='Forward Under Approval'?'forwardUA':this.currentUA=='Cancellation Under Approval'?'cancellationUA':'completionUA'].length;
         if(this.currentUA&&aprvlsExist>0){
           this.filterPrjs(this.Current_user_ID,this.currentUA);
@@ -1203,6 +1198,8 @@ dates:any
 
 
 
+
+
   applyFilters() {
 debugger
     this.edited = true
@@ -1287,9 +1284,8 @@ debugger
       });
 
     //Filtering Checkbox de
-    this.filterMegadropdownclose()
-    this.getDropdownsDataFromDB();
-    this.filterMegadropdownclose();
+    this.filterMegadropdownclose()   // closes the filter dropdown if open.
+    this.getDropdownsDataFromDB();   // important :  rebind/update the filter dropdown data.
 
     }
     else if(this.Type=='RACIS Projects'){
@@ -1359,8 +1355,8 @@ debugger
 
         });
 
-     this.getDropdownsDataFromDB();
-    this.filterMegadropdownclose();
+     this.getDropdownsDataFromDB();   // important :  rebind/update the filter dropdown data.
+    this.filterMegadropdownclose();   // closes the filter dropdown if open.
     }
 
   }
@@ -1498,11 +1494,12 @@ debugger
   _MainProjectStatus: string;
   showCreateProject: boolean = false;
   showProjectInfo: boolean = false;
+  activeProjectInSidebar:string|null=null;     // which project is opened in project info sidebar. (stores Project_Code)
 
   openInfo(pcode, pName) {
     this.showProjectInfo = true;
-    this.showCreateProject = true;
     this.showCreateProject = false;
+    this.activeProjectInSidebar=pcode; 
     $('#Project_info_slider_bar').addClass('open_sidebar_info');
     this.router.navigate(["../backend/ProjectsSummary/projectinfo", pcode,"1"]);
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -1512,28 +1509,28 @@ debugger
   }
   selectedIndex: number | null = null;
 
-  info_active_btn(item) {
-    item.isActive = !item.isActive;
+  // info_active_btn(item) {
+  //   item.isActive = !item.isActive;
 
-      // If you want to allow only one item to be active at a time, uncomment the following lines:
-    if (item.isActive) {
-      this._ProjectDataList.forEach(otherItem => {
-        if (otherItem !== item) {
-          otherItem.isActive = false;
-        }
-      });
-    }
-  }
+  //     // If you want to allow only one item to be active at a time, uncomment the following lines:
+  //   if (item.isActive) {
+  //     this._ProjectDataList.forEach(otherItem => {
+  //       if (otherItem !== item) {
+  //         otherItem.isActive = false;
+  //       }
+  //     });
+  //   }
+  // }
 
-  OpenProject(){
-    this.showCreateProject = true;
-    this.showProjectInfo = false;
-    this.router.navigate(["../backend/ProjectsSummary/createproject"]);
-    document.getElementById("New_project_Add").classList.add("open_sidebar");
-    document.getElementById("rightbar-overlay").style.display = "block";
-    // document.getElementById("sumdet").classList.add("position-fixed");
-    document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-  }
+  // OpenProject(){
+  //   this.showCreateProject = true;
+  //   this.showProjectInfo = false;
+  //   this.router.navigate(["../backend/ProjectsSummary/createproject"]);
+  //   document.getElementById("New_project_Add").classList.add("open_sidebar");
+  //   document.getElementById("rightbar-overlay").style.display = "block";
+  //   // document.getElementById("sumdet").classList.add("position-fixed");
+  //   document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
+  // }
 
   closeInfo() {
 
@@ -1542,7 +1539,8 @@ debugger
       // Close Project Info Component
       this.showProjectInfo = false;
     // $('.project-list_AC').removeClass('active');
-    this._ProjectDataList.forEach(item => item.isActive = false);
+    // this._ProjectDataList.forEach(item => item.isActive = false);
+    this.activeProjectInSidebar=null;
     this.Clear_Feilds();
     // document.getElementById("Project_info_slider_bar").classList.remove("kt-quick-panel--on");
     document.getElementById("New_project_Add").classList.remove("open_sidebar");
@@ -1647,7 +1645,7 @@ GetMemosByEmployeeId() {
 }
 
 _OpenMemosInfo1(_projectCode, _projectName){
-
+  this.activeProjectInSidebar=_projectCode;  // project currently in selection state.
   this._selectedProjCode=_projectCode;  
   this._displayProjName=_projectName; 
   this.getProjectMemos();
@@ -1666,6 +1664,7 @@ _CloseMemosidebar1(){
   this.IsMemoListLoading=false;
   this.Memos_List=[];
   this._linkedMemos=0;
+  this.activeProjectInSidebar=null;
 }
 
 
@@ -1790,6 +1789,7 @@ _OpenfortfolioInfo1(project_Code,project_Name,project_id){
   this._projName=project_Name;
   this._projCode=project_Code;
   this._projId=project_id;
+  this.activeProjectInSidebar=project_Code;  // project currently in selection state.
   document.getElementById("LinkSideBar1").classList.add("kt-quick-panel--on");
   document.getElementById("rightbar-overlay").style.display = "block";
   this.getPortfoliosLinkedToProject();  // fetches all linked portfolios on the selected project.
@@ -1842,6 +1842,7 @@ closeLinkSideBar1() {
   this.Portfolio=[];
   this.selectedportID=null;
   this._portfolioLength=0;
+  this.activeProjectInSidebar=null;
 }
 
 OnCardClick(P_id: any) {
@@ -2503,10 +2504,6 @@ console.log(this.checkedItems_Emp,'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 }
 
 
-
-
-
-
 // updateSelected(item){
 //   if(item.checked){
 //     this.SelectedItems.push(item)
@@ -2805,10 +2802,10 @@ getObjOfstatus(arr, id, idName) {
 }
 
 filterMegadropdown(){
-  document.getElementById("mega_dropdown_menu").classList.add("drop-active");
+  document.getElementById("mega_dropdown_menu")?.classList.add("drop-active");
 }
 filterMegadropdownclose(){
-  document.getElementById("mega_dropdown_menu").classList.remove("drop-active");
+  document.getElementById("mega_dropdown_menu")?.classList.remove("drop-active");
 }
 
 
@@ -2971,7 +2968,7 @@ this.closeAutocompleteDrpDwn('proDDwn')
 
 
 
-  calculateDateDifference(date1: string, date2: string): number {
+  calculateDateDifference(date1: string, date2: string): number {   
     // Parse the dates from strings into Date objects
     const date1Obj = new Date(date1.split('-').reverse().join('-'));
     const date2Obj = new Date(date2.split('-').reverse().join('-'));
@@ -3114,7 +3111,7 @@ isProjectSelected(prjcode: any): boolean {
   }
 
 
-  acceptfunction(){
+  acceptfunction(){  debugger
     this.approvingRequest =[]
     this.allSelectedProjects.forEach((item)=>{
       if( item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
@@ -3159,6 +3156,7 @@ if( this.approvingRequest.length > 0 ){
     // ob.Duration = 0;
   });
 
+  console.log("NewUpdateAcceptApprovalsService body2 approvingRequest:",this.approvingRequest);
   this.approvalservice.NewUpdateAcceptApprovalsService(this.approvingRequest).subscribe(data =>{  
     console.log(data,"accept-data");
       this.isAllPrjSelected=false;  this.value();
@@ -3957,7 +3955,7 @@ forwardUA:any=[];
 newUA:any=[];
 cancellationUA:any=[];
 // mydelayProjects:any=[];
-
+newPrjRejectedCount:number=0;
 
 
 getNotificationsofprojects(){
@@ -3969,7 +3967,7 @@ getNotificationsofprojects(){
   // this.mydelayProjects = [];
 
   // item.Status === 'Delay' && (item.Emp_No == this.Current_user_ID || item.OwnerEmpNo == this.Current_user_ID
-  this.un_FilteredProjects.forEach((p)=>{
+  this.un_FilteredProjects.forEach((p)=>{    
     if(p.PendingapproverEmpNo==empno&&p.Status==='Completion Under Approval')
       this.completionUA.push(p);
     else if(p.PendingapproverEmpNo==empno&&p.Status==='Forward Under Approval')
@@ -4117,14 +4115,98 @@ removeProjectFromPinnedList(prjCode:any){
 
 }
 
-
-
- 
-
-
-
-
 // Pin projects   end.
+
+
+
+ formatDurationFromDays(daysCount:number):string|null{
+    if(isNaN(daysCount)){ return null;  }
+ 
+    let dstr = '';
+    
+    if(daysCount<7){
+       dstr=`${daysCount} ${daysCount==1?'day':'days'}`;
+    }
+    else{
+        const units = [
+          { type: 'year', value: 365 },
+          { type: 'month', value: 30 },
+          { type: 'week', value: 7 },
+        ];
+
+      for (let unit of units) {
+        const quotient = Math.floor(daysCount / unit.value);
+        if (quotient === 1) {
+          dstr = `1 ${unit.type}`;
+          break;
+        } else if (quotient > 1) {
+          dstr = `${quotient} ${unit.type}s`;
+          break;
+        }
+      }
+    }
+
+    return dstr;
+ }
+
+
+ calculateDateDiff(date1:string|Date,date2:string|Date):number{   
+    const d1=new Date(date1); d1.setHours(0,0,0,0);
+    const d2=new Date(date2); d2.setHours(0,0,0,0);
+    const daysDiff = moment(d1).diff(moment(d2),'days');
+    return daysDiff;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// new projects rejected notif  start.
+
+
+
+onNewPrjRejectedNotifClicked(){
+    this.applyFiltersBy(null,this.Current_user_ID,null,'New Project Rejected');
+}
+
+
+
+applyFiltersBy(company:any,user:any,type:any,status:any){
+    this.comToselect=company?[company]:[];
+    this.emplyToselect=user?[user]:[];  
+    this.projtypeToselect=type?[type]:[];
+    this.enterStatus=status?[status]:[];
+
+    this.CompanyCountFilter=company?[{Company_No:company}]:[];
+    this.EmpCountInFilter=user?[{ Emp_No: user }]:[];
+    this.TypeContInFilter=type?[{ Block_No: type }]:[];
+    this.StatusCountFilter=status?[{ Name: status }]:[];
+    
+   
+    this.CurrentPageNo=1;
+    this.searchText='';
+    this.selected_dates=null;
+
+    this.getNewFilterResult();  // update dropdowns data.
+    this.applyFilters();  // fetches filter projects list
+}
+
+
+
+
+
+
+// new projects rejected notif  end.
 
 
 }

@@ -2727,7 +2727,7 @@ selectAction:any;
 
 
 
-  OnSubmitSchedule() {
+  OnSubmitSchedule() {  debugger
 
     if (this.Title_Name == "" || this.Title_Name == null || this.Title_Name == undefined) {
       this._subname1 = true;
@@ -2818,6 +2818,9 @@ selectAction:any;
       }
     }
    
+    console.log('test your daysSelectedII:',this.daysSelectedII);
+
+
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
@@ -2826,10 +2829,11 @@ selectAction:any;
        this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this._StartDate);
      
-        const date2: Date = new Date(this._SEndDate);
+        const date2: Date = new Date(this._SEndDate); 
 
         date1.setHours(0,0,0,0);
         date2.setHours(0,0,0,0);
+
 
         const diffInMs: number = date2.getTime() - date1.getTime();
 
@@ -6020,6 +6024,9 @@ repeatEventTime(){
         this.repeatStartDate = moment(this.repeatStartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this.repeatStartDate);
         const date2: Date = new Date(this._SEndDate);
+
+        date1.setHours(0,0,0,0);
+        date2.setHours(0,0,0,0);
   
         const diffInMs: number = date2.getTime() - date1.getTime();
   
