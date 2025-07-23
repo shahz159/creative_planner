@@ -3485,6 +3485,9 @@ onFileChange(event) {
         
         const date2: Date = new Date(this._SEndDate);
 
+         date1.setHours(0,0,0,0);
+         date2.setHours(0,0,0,0);
+
         const diffInMs: number = date2.getTime() - date1.getTime();
 
         const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
@@ -3494,6 +3497,7 @@ onFileChange(event) {
         else {
           var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
         }
+
         // var dd = moment(date3).add(diffInDays, 'days')
         // var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
         var dd = moment(date3).add(diffInDays, 'days')
@@ -8398,6 +8402,9 @@ onParticipantFilter(){
         const date1: Date = new Date(this._StartDate);
         const date2: Date = new Date(this._SEndDate);
 
+         date1.setHours(0,0,0,0);
+         date2.setHours(0,0,0,0);
+
         const diffInMs: number = date2.getTime() - date1.getTime();
 
         const diffInDays: number = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
@@ -8406,7 +8413,7 @@ onParticipantFilter(){
         }
         else {
           var date3 = moment(element.Date).format("YYYY-MM-DD").toString();
-        }
+        } 
 
         var dd = moment(date3).add(diffInDays, 'days')
 

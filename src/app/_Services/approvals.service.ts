@@ -86,6 +86,7 @@ export class ApprovalsService {
   }
 
   NewUpdateAcceptApprovalsService(obj) {
+    console.log(obj, "obj in NewUpdateAcceptApprovalsService");
     return this.http.post(this.rootUrl + "ApprovalAPI/UpdateAcceptApprovals",obj);
   }
 

@@ -2828,9 +2828,12 @@ selectAction:any;
     if (finalarray.length > 0) {
       finalarray.forEach(element => {  debugger
        this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
-        const date1: Date = new Date(this._StartDate); date1.setHours(0,0,0,0);
+        const date1: Date = new Date(this._StartDate);
      
-        const date2: Date = new Date(this._SEndDate); date2.setHours(0,0,0,0);
+        const date2: Date = new Date(this._SEndDate); 
+
+        date1.setHours(0,0,0,0);
+        date2.setHours(0,0,0,0);
 
         const diffInMs: number = date2.getTime() - date1.getTime();
 
@@ -5999,6 +6002,9 @@ repeatEventTime(){
         this.repeatStartDate = moment(this.repeatStartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this.repeatStartDate);
         const date2: Date = new Date(this._SEndDate);
+
+        date1.setHours(0,0,0,0);
+        date2.setHours(0,0,0,0);
   
         const diffInMs: number = date2.getTime() - date1.getTime();
   
