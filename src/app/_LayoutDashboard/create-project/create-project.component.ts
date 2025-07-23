@@ -1345,7 +1345,7 @@ onProjectOwnerChanged(){
 
 // responsible field end
 
- getOnwer_Name():string{
+ getOnwer_Name():string{  debugger
   let Owner_Name='';
   try{
   if(this.owner_json){

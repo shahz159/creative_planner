@@ -347,6 +347,7 @@ export class PortfolioProjectsComponent implements OnInit {
     this.GetPortfolioProjectsByPid();  // all projects in the portfolio.
     this.getPinnedProjects(); // all pinned projects.
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
+    this.showDeletedPrjOnly=false; // initially show normal projects.
     this.labelAll();
     // this.togglevisibilityforClass('classCost', 'iscost')
 
@@ -406,7 +407,6 @@ export class PortfolioProjectsComponent implements OnInit {
   cancellationPort:any=[];
   newPrjRejectsPort:any=[];
   checking: boolean = false;
-  // isPendingChecked : boolean = false
   isPortfolioFavourite:boolean=false;  
 
   GetPortfolioProjectsByPid() {
@@ -464,128 +464,199 @@ export class PortfolioProjectsComponent implements OnInit {
         console.log(this.uniqueid,'Team_ResTeam_ResTeam_ResTeam_ResTeam_ResTeam_Res')
 
 
-
-      this.filteredEmployees = [];
-      this._ProjectsListBy_Pid.forEach(item=>{
-
-        const x=this.filteredEmployees.find(emp=>item.Emp_No == emp.Emp_No);
-        if(x){
-            x.totalProjects+=1;
-        }
-        else{
-          const obj={
-            Emp_No:item.Emp_No,
-            Team_Res:item.Team_Res,
-            totalProjects:1
-           };
-          this.filteredEmployees.push(obj);
-        }
-
-        item.newrejectJson=item.newrejectJson?JSON.parse(item.newrejectJson):null;  // parses newrejectJson str into object.
-        item.hoursInDecimal=(item.Project_Block=='003'||item.Project_Block=='008')?this.convertToDecimalHours(item.StandardDuration):item.AllocatedHours; // create new property : 'hoursInDecimal'  
-        item.projectMembers=this.getProjectMembersProperty(item);   // create new property "projectMembers" for displaying RACIS column .
-      });
-        console.log(this.filteredEmployees,"this.filteredEmployeesthis.filteredEmployees")
-
-   
-
-    this.forwardPrjPort = [];
-    this.completionPrjPort = [];
-    this.newapprovalPrjport=[];
-    this.cancellationPort = [];
-    this.newPrjRejectsPort=[];
-
-    this._ProjectsListBy_Pid.forEach((item)=>{
-
-            if(item.Status =='Forward Under Approval' &&   item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
-                const obj = {
-                  prjname : item.Project_Name,
-                  prjcode : item.Project_Code,
-                  status: item.Status,
-                  empNo : item.Emp_No
-                };
-                this.forwardPrjPort.push(obj);
-            }
-            
-            if (item.Status === 'Completion Under Approval'   && item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
-                const obj = {
-                  prjname : item.Project_Name,
-                  prjcode : item.Project_Code,
-                  status: item.Status,
-                  empNo : item.Emp_No
-                }
-              this.completionPrjPort.push(obj);
-            }
-
-            if (item.Status === "Under Approval"  &&item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
-                const obj = {
-                  prjname : item.Project_Name,
-                  prjcode : item.Project_Code,
-                  status: item.Status,
-                  owner : item.PendingapproverEmpNo,
-                  empNo : item.Emp_No
-                }
-              this.newapprovalPrjport.push(obj);
-            }
-
-            if (item.Status === "Cancellation Under Approval"  && item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
-              const obj = {
-                prjname : item.Project_Name,
-                prjcode : item.Project_Code,
-                status: item.Status,
-                owner : item.PendingapproverEmpNo,
-                empNo : item.Emp_No
-              }
-              this.cancellationPort.push(obj);
-            }
-
-            if(item.Status === "New Project Rejected"&&item.Emp_No==this.Current_user_ID){
-                const obj = {
-                  prjname : item.Project_Name,
-                  prjcode : item.Project_Code,
-                  status: item.Status,
-                  empNo : item.Emp_No
-                };
-                this.newPrjRejectsPort.push(obj);
-            }
-
-
-    });
-
-    console.log(this.forwardPrjPort,"this.forwardPrjPort.forwardPrjPort")
-    console.log(this.completionPrjPort,"this.completionPrjPort.completionPrjPort")
-    console.log(this.newapprovalPrjport,"this.newapprovalPrjport.newapprovalPrjport")
-    console.log(this.cancellationPort,"this.cancellationPort.cancellationPort")
-    console.log(this.newPrjRejectsPort,'this.newPrjRejectsPort');
-
-
-
-  // this.isPendingChecked = this._ProjectsListBy_Pid.some((emp)=>{
-  //     return emp.PendingapproverEmpNo&&emp.PendingapproverEmpNo == this.Current_user_ID
-  // })
-
-
-
         // this.filteredPortfolioProjects = this._ProjectsListBy_Pid;
         this._StatusCountDB = JSON.parse(data[0]['JsonStatusCount']);
         this.Deletedproject = JSON.parse(data[0]['PortfolioDeletedProjects']);
         console.log(" this.Deletedproject", this.Deletedproject)
         if (this._ProjectsListBy_Pid[0] && this._ProjectsListBy_Pid[0].availableports) {
           this.Availableport = this._ProjectsListBy_Pid[0].availableports;
-      } else {
+        } else {
           console.warn('availableports is undefined or not available');
-      }
+        }
         console.log(this.Availableport,"availableportsavailableportsavailableports")
+        this.CountDeleted=this.Deletedproject.length;
 
-        this.CountDeleted=this.Deletedproject.length
-        // this.LoadingBar_state.stop();
-        this.TotalProjects = this._ProjectsListBy_Pid.length;
-        var rez = {};
-        this._ProjectsListBy_Pid.forEach(function (item) {           
+
+
+        // notifications preparation by using _ProjectsListBy_Pid
+        this.forwardPrjPort = [];
+        this.completionPrjPort = [];
+        this.newapprovalPrjport=[];
+        this.cancellationPort = [];
+        this.newPrjRejectsPort=[];
+
+        this._ProjectsListBy_Pid.forEach((item)=>{
+
+                if(item.Status =='Forward Under Approval' &&   item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+                    const obj = {
+                      prjname : item.Project_Name,
+                      prjcode : item.Project_Code,
+                      status: item.Status,
+                      empNo : item.Emp_No
+                    };
+                    this.forwardPrjPort.push(obj);
+                }
+                
+                if (item.Status === 'Completion Under Approval'   && item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+                    const obj = {
+                      prjname : item.Project_Name,
+                      prjcode : item.Project_Code,
+                      status: item.Status,
+                      empNo : item.Emp_No
+                    }
+                  this.completionPrjPort.push(obj);
+                }
+
+                if (item.Status === "Under Approval"  &&item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+                    const obj = {
+                      prjname : item.Project_Name,
+                      prjcode : item.Project_Code,
+                      status: item.Status,
+                      owner : item.PendingapproverEmpNo,
+                      empNo : item.Emp_No
+                    }
+                  this.newapprovalPrjport.push(obj);
+                }
+
+                if (item.Status === "Cancellation Under Approval"  && item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
+                  const obj = {
+                    prjname : item.Project_Name,
+                    prjcode : item.Project_Code,
+                    status: item.Status,
+                    owner : item.PendingapproverEmpNo,
+                    empNo : item.Emp_No
+                  }
+                  this.cancellationPort.push(obj);
+                }
+
+                if(item.Status === "New Project Rejected"&&item.Emp_No==this.Current_user_ID){
+                    const obj = {
+                      prjname : item.Project_Name,
+                      prjcode : item.Project_Code,
+                      status: item.Status,
+                      empNo : item.Emp_No
+                    };
+                    this.newPrjRejectsPort.push(obj);
+                }
+
+
+        });
+
+       //
+
+
+       // modifying _ProjectsListBy_Pid array objects
+      this._ProjectsListBy_Pid.forEach(item=>{
+        item.newrejectJson=item.newrejectJson?JSON.parse(item.newrejectJson):null;  // parses newrejectJson str into object.
+        item.hoursInDecimal=(item.Project_Block=='003'||item.Project_Block=='008')?this.convertToDecimalHours(item.StandardDuration):item.AllocatedHours; // create new property : 'hoursInDecimal'  
+        item.projectMembers=this.getProjectMembersProperty(item);   // create new property "projectMembers" for displaying RACIS column .
+      });  
+      //
+      
+
+      // Prepare filter dropdown options using _ProjectsListBy_Pid
+      this.prepareFilterOptions();    // it will prepare filteredEmployees array and TotalProjects, CountInProcess, CountDelay ... etc
+      //
+   
+
+  
+
+
+   
+        this.MaxDelays = Math.max.apply(Math, this._ProjectsListBy_Pid.map(function (o) { return o.Delaydays; }))
+        
+        this.EmpDropdwn = Array.from(this._ProjectsListBy_Pid.reduce((m, t) => m.set(t.TM_DisplayName, t), new Map()).values());
+    
+        this.dropdownSettings_forEmpChart = {
+          singleSelection: true,
+          idField: 'Emp_No',
+          textField: 'TM_DisplayName',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 1,
+          allowSearchFilter: true,
+        };
+        this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']);
+        console.log(this._ShareDetailsList,'_ShareDetailsList_ShareDetailsList')
+        if(this._ShareDetailsList){
+          const _empOb=this._ShareDetailsList.find((ob)=>ob.EmployeeId==this.Current_user_ID);
+          console.log(_empOb,"_empOb_empOb_empOb_empOb_empOb")
+          this.UserAccessType=(this.Current_user_ID==this.createdBy)?'Full Access':_empOb.Preferences;
+          console.log(this.UserAccessType,"this.UserAccessTypethis.UserAccessTypethis.UserAccessType")
+          this._SharedToEmps=this._ShareDetailsList.map(item=>item.EmployeeId);
+          console.log('_ShareDetailsList',this._ShareDetailsList);
+        }
+        if (this._ShareDetailsList == 0) {
+          this._btnShareDetails = true;
+        }
+        else {
+          this._btnShareDetails = false;
+        }
+        console.log(this._SharedToEmps,'this._SharedToEmpsthis._SharedToEmps')
+        this.PreferenceTpye = data[0]["PreferenceType"];
+
+        this.With_Data = JSON.parse(data[0]['EmployeePreferenceJson']);
+
+        this.Share_preferences = false;
+        this.viewpreference=this.With_Data[0]&&this.With_Data.Preferences;
+        if (this.PreferenceTpye == 1) {
+          if (this.With_Data && this.With_Data.length > 0 && this.With_Data[0].Preferences === "View Only") {
+            this.Share_preferences = true;
+        }
+          else if (this.With_Data[0] && this.With_Data[0].Preferences == "Full Access") {
+            this.Share_preferences = false;
+          }
+        }
+        else if (this.PreferenceTpye == 0) {
+          this.Share_preferences = false;
+        }
+
+
+
+        if(
+            (this._PortProjStatus=='Delay' && this.CountDelay==0) ||
+            (this._PortProjStatus=='Project Hold' && this.CountProjectHold==0) ||
+            (this._PortProjStatus=='InProcess' && this.CountInprocess==0) ||
+            (this._PortProjStatus=='Not Started' && this.CountInprocess ==0) ||
+            (this._PortProjStatus=='Completed' && this.CountCompleted == 0) ||
+            (this._PortProjStatus=='New Project Rejected' && this.CountNewProject==0) ||
+            (this._PortProjStatus=='Rejected' && this.CountRejecteds==0) ||
+            (this._PortProjStatus=='ToDo Achieved' && this.Count_ToDoAchieved==0) ||
+            (this._PortProjStatus=='Under Approval' && this.CountAll_UA==0) ||
+            (this._PortProjStatus=='ToDo Completed' && this.Count_ToDoCompleted==0)||
+            (this._PortProjStatus=='Completion Under Approval' && this.CountCompletionUA==0)||
+            (this._PortProjStatus=='Cancellation Under Approval' && this.CountCancellation==0)||
+            (this._PortProjStatus=='Deadline Extend Under Approval' && this.CountDeadLineExtendedUA==0)||
+            (this._PortProjStatus==''&&this.showDeletedPrjOnly==true && this.CountDeleted==0)
+         ){
+            this.labelAll();
+            this.onButtonClick('tot');
+          }
+
+
+          this.hasFilterResult();
+      });
+
+
+  }
+
+
+ // The job of this method is to prepare filter options in the filter box.
+  prepareFilterOptions(){
+
+// 0. based on section currently opened.
+   const projectslist=this.showDeletedPrjOnly?this.Deletedproject:this._ProjectsListBy_Pid;
+
+
+
+  //1. prepare Filter by items
+     this.TotalProjects = projectslist.length;
+     let rez = {};
+     projectslist.forEach(function (item) {           
           const property=(item.SubmissionType && item.Status.includes('Days'))?'Delay':item.Status;
           rez[property] ? rez[property]++ : rez[property]=1;
-        });
-        // Countsall
+     });
+
         this.CountInprocess = rez['InProcess'];
         if (!this.CountInprocess) {
           this.CountInprocess = 0;
@@ -613,7 +684,7 @@ export class PortfolioProjectsComponent implements OnInit {
         if (!this.countnewprojecRejected) {
           this.countnewprojecRejected = 0;
         }
-        //Step One
+     
         this.countprojectCompletelyRejected = rez['Project Complete Rejected'];
         if (!this.countprojectCompletelyRejected) {
           this.countprojectCompletelyRejected = 0;
@@ -667,108 +738,35 @@ export class PortfolioProjectsComponent implements OnInit {
         }
 
 
+        
         this.CountAll_UA =    this.CountUnderApproval + this.CountProjectHoldUA + EnactiveUA;
-        this.CountNewProject = this.CountNewProject;
         this.CountRejecteds = this.countprojectCompletelyRejected + this.countnewprojecRejected;
-        //console.log("rejecteds Projects Count---->",this.CountRejecteds)
         this.CountProjectHold = this.CountProjectHold + ProjectHolded;
-        //Returns Max Value
-        this.MaxDelays = Math.max.apply(Math, this._ProjectsListBy_Pid.map(function (o) { return o.Delaydays; }))
-        //let DelayStat:any = this._ProjectsListBy_Pid.map(function (o) { return o.Status=="Delay"; })
-        // if (this.MaxDelays > 0) {
-          // let action = "Close"
-          // this.snackBarRef = this._snackBar.open('Maximum Delay Days    ' + "  (" + this.MaxDelays + ')', action,
-          //   {
-          //     duration: 2500,
-          //   });
-          //this.notifyService.showError(" Maximum Days Delay",this.MaxDelays);
-          // this.snackBarRef._open();
-          // this._snackBar.open("Maximum Days Delay",this.MaxDelays);
-        // }
-        // this.dropdownSettings_Status = {
-        //   singleSelection: true,
-        //   idField: 'StatusCountDB',
-        //   textField: 'StatusCountDB',
-        //   selectAllText: 'Select All',
-        //   unSelectAllText: 'UnSelect All',
-        //   itemsShowLimit: 1,
-        //   allowSearchFilter: true
-        // };
-        this.EmpDropdwn = Array.from(this._ProjectsListBy_Pid.reduce((m, t) => m.set(t.TM_DisplayName, t), new Map()).values());
-        // this.EmpDropdwn = this.EmpDropdwn.sort((a, b) => (a.TM_DisplayName > b.TM_DisplayName) ? 1 : -1);
-        this.dropdownSettings_forEmpChart = {
-          singleSelection: true,
-          idField: 'Emp_No',
-          textField: 'TM_DisplayName',
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 1,
-          allowSearchFilter: true,
-        };
-        this._ShareDetailsList = JSON.parse(data[0]['SharedDetailsJson']);
-        console.log(this._ShareDetailsList,'_ShareDetailsList_ShareDetailsList')
-        if(this._ShareDetailsList){
-          const _empOb=this._ShareDetailsList.find((ob)=>ob.EmployeeId==this.Current_user_ID);
-          console.log(_empOb,"_empOb_empOb_empOb_empOb_empOb")
-          this.UserAccessType=(this.Current_user_ID==this.createdBy)?'Full Access':_empOb.Preferences;
-          console.log(this.UserAccessType,"this.UserAccessTypethis.UserAccessTypethis.UserAccessType")
-          this._SharedToEmps=this._ShareDetailsList.map(item=>item.EmployeeId);
-          console.log('_ShareDetailsList',this._ShareDetailsList);
+
+//
+
+
+  // 2. prepare Sort by items
+     this.filteredEmployees = [];
+     projectslist.forEach(item=>{
+        const x=this.filteredEmployees.find(emp=>item.Emp_No == emp.Emp_No);
+        if(x){
+            x.totalProjects+=1;
         }
-        if (this._ShareDetailsList == 0) {
-          this._btnShareDetails = true;
+        else{
+          const obj={
+            Emp_No:item.Emp_No,
+            Team_Res:item.Team_Res,
+            totalProjects:1
+           };
+          this.filteredEmployees.push(obj);
         }
-        else {
-          this._btnShareDetails = false;
-        }
-        console.log(this._SharedToEmps,'this._SharedToEmpsthis._SharedToEmps')
-        this.PreferenceTpye = data[0]["PreferenceType"];
-
-        this.With_Data = JSON.parse(data[0]['EmployeePreferenceJson']);
-
-        this.Share_preferences = false;
-        this.viewpreference=this.With_Data[0]&&this.With_Data.Preferences;
-        if (this.PreferenceTpye == 1) {
-          if (this.With_Data && this.With_Data.length > 0 && this.With_Data[0].Preferences === "View Only") {
-            this.Share_preferences = true;
-        }
-          else if (this.With_Data[0] && this.With_Data[0].Preferences == "Full Access") {
-            this.Share_preferences = false;
-          }
-        }
-        else if (this.PreferenceTpye == 0) {
-          this.Share_preferences = false;
-        }
-
-        if(
-            (this._PortProjStatus=='Delay' && this.CountDelay==0) ||
-            (this._PortProjStatus=='Project Hold' && this.CountProjectHold==0) ||
-            (this._PortProjStatus=='InProcess' && this.CountInprocess==0) ||
-            (this._PortProjStatus=='Not Started' && this.CountInprocess ==0) ||
-            (this._PortProjStatus=='Completed' && this.CountCompleted == 0) ||
-            (this._PortProjStatus == 'New Project Rejected' && this.CountNewProject==0) ||
-            (this._PortProjStatus=='Rejected' && this.CountRejecteds==0) ||
-            (this._PortProjStatus=='ToDo Achieved' && this.Count_ToDoAchieved==0) ||
-            (this._PortProjStatus=='Under Approval' && this.CountAll_UA==0) ||
-            (this._PortProjStatus=='ToDo Completed' && this.Count_ToDoCompleted==0)||
-            (this._PortProjStatus=='Completion Under Approval' && this.CountCompletionUA==0)||
-            (this._PortProjStatus=='Cancellation Under Approval' && this.CountCancellation==0)||
-            (this._PortProjStatus=='Deadline Extend Under Approval' && this.CountDeadLineExtendedUA==0)||
-            (this._PortProjStatus==''&&this.showDeletedPrjOnly==true && this.CountDeleted==0)
-
-         ){
-        this.labelAll()
-        this.onButtonClick('tot')
-          }
-
-
-
-
-          this.hasFilterResult();
-      });
-
+     });
+    console.log(this.filteredEmployees,"this.filteredEmployeesthis.filteredEmployees")
+ //
 
   }
+
 
 
   
@@ -1452,69 +1450,66 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
 
   labelAll() {
     this._PortProjStatus = "";
-    this.showDeletedPrjOnly=false;
-
+    // this.showDeletedPrjOnly=false;
   }
 
   labelInprocess() {
     this._PortProjStatus = "InProcess";
-    this.showDeletedPrjOnly=false;
-
+    // this.showDeletedPrjOnly=false;
   }
 
 
   labeldeletedproject(){
+    this.showDot=false; // clear filter applied indicator.
+    this.showDeletedPrjOnly=true;  // show deleted projects only on the page.
+    this._PortProjStatus = "";    // by default All
+    this._FilterByEmp='';  // by default All
+    this.prepareFilterOptions();  // prepare filter dropdown values.
 
-    this.showDeletedPrjOnly=true;
-    this._PortProjStatus = "";
   }
 
   labelCompletionapproval(){
     this._PortProjStatus="Completion Under Approval"
-    this.showDeletedPrjOnly=false;
+    // this.showDeletedPrjOnly=false;
     console.log("Completion approval",this._PortProjStatus)
   }
 
   labelCancellationapproval(){
     this._PortProjStatus='Cancellation Under Approval'
-    this.showDeletedPrjOnly=false
+    // this.showDeletedPrjOnly=false
   }
 
 
   labelForward(){
     this._PortProjStatus="Forward Under Approval"
-    this.showDeletedPrjOnly=false
+    // this.showDeletedPrjOnly=false
   }
 
   labelDeadline(){
     this._PortProjStatus="Deadline Extended Under Approval"
-    this.showDeletedPrjOnly=false
+    // this.showDeletedPrjOnly=false
   }
 
 
   labelDelay() {
     this._PortProjStatus = "Delay";
-    this.showDeletedPrjOnly=false;
+    // this.showDeletedPrjOnly=false;
   }
 
   labelDraft(){
     this._PortProjStatus = "Not Started";
-    this.showDeletedPrjOnly=false;
+    // this.showDeletedPrjOnly=false;
   }
 
 
   labelCompleted() {
     this._PortProjStatus = 'Completed';
-    this.showDeletedPrjOnly=false;
-    var b = this._PortProjStatus.length
-    console.log('_PortProjStatus:bbbbb',b);
-    console.log('_ProjectsListBy_Pid:',this._ProjectsListBy_Pid);
-
+    // this.showDeletedPrjOnly=false;
   }
 
   labelNewProject() {
     this._PortProjStatus = "New Project";
-    this.showDeletedPrjOnly=false;
+    // this.showDeletedPrjOnly=false;
     if (this._PortProjStatus.includes('New Project')) {
       this._PortProjStatus = 'New Project';
     }
@@ -1523,7 +1518,7 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
   labelRejecteds() {
     this._PortProjStatus = "New Project Rejected";
     this._PortProjStatus.includes('Rejected');
-    this.showDeletedPrjOnly=false;
+    // this.showDeletedPrjOnly=false;
     //this._PortProjStatus.includes('New Project Rejected');
   }
 
@@ -1540,25 +1535,25 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
 
   labelToDoAchieved() {
     this._PortProjStatus = "ToDo Achieved";
-    this.showDeletedPrjOnly=false;
+    // this.showDeletedPrjOnly=false;
     // this._PortProjStatus.includes('ToDo Achieved');
   }
   labelToDoCompleted() {
     this._PortProjStatus = "ToDo Completed";
-    this.showDeletedPrjOnly=false;
+    // this.showDeletedPrjOnly=false;
   }
 
   labelUA() {
     this._PortProjStatus = "Under Approval";
     // this._PortProjStatus.includes('Under Approval')
-    this.showDeletedPrjOnly=false;
+    // this.showDeletedPrjOnly=false;
     console.log(this._PortProjStatus,"Under Apprval")
   }
 
   labelProjectHold() {
     this._PortProjStatus = "Project Hold";
     this._PortProjStatus.includes('Project Hold');
-    this.showDeletedPrjOnly=false;
+    // this.showDeletedPrjOnly=false;
   }
 
 
@@ -1619,7 +1614,15 @@ clearAppliedFilterApplied(){
 }
 
 
+onResetBtnClicked(){
 
+  this.labelAll();   
+  this.filterProjectsOfEmp('');
+  this.notShow();  
+  this.clearAppliedFilterApplied();
+  this.showDeletedPrjOnly=false;  //  show only normal projects.
+  this.prepareFilterOptions();  // prepare filter options.
+}
 
 
 // advance filter notif   end.
@@ -2311,8 +2314,8 @@ this.nofilterResult=(result.length==0);
       document.getElementById('todocomp').classList.add('active');
     else if(buttonId=='todoachi')
       document.getElementById('todoachi').classList.add('active');
-    else if(buttonId=='delete')
-      document.getElementById('delete').classList.add('active');
+    // else if(buttonId=='delete')
+    //   document.getElementById('delete').classList.add('active');
 
   }
 
@@ -2330,18 +2333,6 @@ this.nofilterResult=(result.length==0);
     var myWindow = window.open(myurl, P_id);
     myWindow.focus();
   }
-
-
-
-
-triger(){
-  if (this.CountProjectHold == 0){
-    this.onButtonClick('tot');
-  this.labelAll();
-}
-
-}
-
 
 
 
@@ -6143,6 +6134,7 @@ clearAppliedFiltered(){
     this.isFilteredOn=false;
 }
 
+
 onDMSFilter(){
   const _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
    const fresult=this.Memos_List.filter((_memo:any)=>{
@@ -8401,7 +8393,7 @@ createNewGroup(){
 
       this.approvalObj.Emp_No=this.Current_user_ID;
       this.approvalObj.groupName=groupName;
-      this.approvalObj.type='1';
+      this.approvalObj.Ptype='1';
       this.approvalObj.gid=null;
 
       this.service.NewCreateEditGroup(this.approvalObj).subscribe((res:any)=>{  console.log('create new group res:',res);
@@ -8424,7 +8416,7 @@ createNewGroup(){
     const grpDto=new ApprovalDTO();
     grpDto.Emp_No = this.Current_user_ID;
     grpDto.gid = groupId;
-    grpDto.type = '1';
+    grpDto.Ptype = '1';
     grpDto.Project_Code = null;
     grpDto.PortfolioId = this.Url_portfolioId;
     grpDto.Schedule_id = null;
@@ -8447,7 +8439,7 @@ createNewGroup(){
     const grpDto=new ApprovalDTO();
     grpDto.Emp_No = this.Current_user_ID;
     grpDto.gid = groupId;
-    grpDto.type = '2';
+    grpDto.Ptype = '2';
     grpDto.Project_Code = null;
     grpDto.PortfolioId = this.Url_portfolioId;
     grpDto.Schedule_id = null;

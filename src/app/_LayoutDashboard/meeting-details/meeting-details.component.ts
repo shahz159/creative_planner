@@ -10501,7 +10501,7 @@ createNewGroup(){
       const groupName=this.newGroupName;
       this.approvalObj.Emp_No=this.Current_user_ID;
       this.approvalObj.groupName=groupName;
-      this.approvalObj.type='1';
+      this.approvalObj.Ptype='1';
       this.approvalObj.gid=null;
       this.service.NewCreateEditGroup(this.approvalObj).subscribe((res:any)=>{  console.log('create new group res:',res);
        if(res&&res.message == 1){
@@ -10519,7 +10519,7 @@ createNewGroup(){
     const grpDto=new ApprovalDTO();
     grpDto.Emp_No = this.Current_user_ID;
     grpDto.gid = groupId;
-    grpDto.type = '1';
+    grpDto.Ptype = '1';
     grpDto.Project_Code = null;
     grpDto.PortfolioId = null;
     grpDto.Schedule_id = this.Schedule_ID;
@@ -10539,7 +10539,7 @@ createNewGroup(){
     const grpDto=new ApprovalDTO();
     grpDto.Emp_No = this.Current_user_ID;
     grpDto.gid = groupId;
-    grpDto.type = '2';
+    grpDto.Ptype = '2';
     grpDto.Project_Code = null;
     grpDto.PortfolioId = null;
     grpDto.Schedule_id = this.Schedule_ID;;

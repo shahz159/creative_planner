@@ -85,7 +85,9 @@ export class ApprovalsService {
     return this.http.post(this.rootUrl + "ApprovalAPI/NewMultiResponseforApprovals", this.obj_approvalDTO);
   }
 
-  NewUpdateAcceptApprovalsService(obj) {
+  NewUpdateAcceptApprovalsService(obj) {  
+    console.log("NewUpdateAcceptApprovalsService body2:",obj);
+    console.log(this.rootUrl + "ApprovalAPI/UpdateAcceptApprovals");
     return this.http.post(this.rootUrl + "ApprovalAPI/UpdateAcceptApprovals",obj);
   }
 
@@ -395,6 +397,14 @@ NewUpdatePortfolioRequestAccess(portfolioInfo:ApprovalDTO){
  return this.http.post(this.rootUrl+'ApprovalAPI/NewUpdatePortfolioRequestAccess',this.obj_approvalDTO);
 }
 
+
+
+NewUpdateProjectRequestAccess(requestResult:ApprovalDTO){
+   this.obj_approvalDTO.SNo = requestResult.SNo;
+   this.obj_approvalDTO.Project_Code = requestResult.Project_Code;
+   this.obj_approvalDTO.Type = requestResult.Type;
+   return this.http.post(this.rootUrl+'ApprovalAPI/NewUpdateProjectRequestAccess',this.obj_approvalDTO);
+}
 
 
 }

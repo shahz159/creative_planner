@@ -77,7 +77,7 @@ export class GroupsComponent implements OnInit {
 
       this.approvalObj.Emp_No=this.Current_user_ID;
       this.approvalObj.groupName=groupName;
-      this.approvalObj.type='1';
+      this.approvalObj.Ptype='1';
       this.approvalObj.gid=null;
 
       this.service.NewCreateEditGroup(this.approvalObj).subscribe((res:any)=>{  console.log('create new group res:',res);
@@ -146,7 +146,7 @@ export class GroupsComponent implements OnInit {
     
     this.approvalObj.Emp_No=this.Current_user_ID;
     this.approvalObj.groupName=this.newGroupNameTxt;
-    this.approvalObj.type='2';
+    this.approvalObj.Ptype='2';
     this.approvalObj.gid=groupId;
 
      this.service.NewCreateEditGroup(this.approvalObj).subscribe((res:any)=>{
@@ -257,7 +257,7 @@ export class GroupsComponent implements OnInit {
       const grpDto=new ApprovalDTO();
       grpDto.Emp_No = this.Current_user_ID;
       grpDto.gid = groupId;
-      grpDto.type = '2';
+      grpDto.Ptype = '2';
       grpDto.Project_Code = projectCode;
       grpDto.PortfolioId = null;
       grpDto.Schedule_id = null;
@@ -283,7 +283,7 @@ export class GroupsComponent implements OnInit {
       const grpDto=new ApprovalDTO();
       grpDto.Emp_No = this.Current_user_ID;
       grpDto.gid = groupId;
-      grpDto.type = '2';
+      grpDto.Ptype = '2';
       grpDto.Project_Code = null;
       grpDto.PortfolioId = portfolioId;
       grpDto.Schedule_id = null;
@@ -309,7 +309,7 @@ export class GroupsComponent implements OnInit {
       const grpDto=new ApprovalDTO();
       grpDto.Emp_No = this.Current_user_ID;
       grpDto.gid = groupId;
-      grpDto.type = '2';
+      grpDto.Ptype = '2';
       grpDto.Project_Code = null;
       grpDto.PortfolioId = null;
       grpDto.Schedule_id = scheduleId;

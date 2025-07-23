@@ -481,7 +481,7 @@ Dateselectionrange: string = 'Date selection range';
     }
 
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe((data:any) => {
-      if(data){    debugger
+      if(data){   
          data.forEach((ob)=>{
           ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
           ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
@@ -536,7 +536,7 @@ Dateselectionrange: string = 'Date selection range';
       }
 
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails).subscribe((data:any) => {
-
+ debugger
         if(data){
           data.forEach((ob)=>{
             ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
@@ -1645,7 +1645,7 @@ GetMemosByEmployeeId() {
 }
 
 _OpenMemosInfo1(_projectCode, _projectName){
-
+  this.activeProjectInSidebar=_projectCode;  // project currently in selection state.
   this._selectedProjCode=_projectCode;  
   this._displayProjName=_projectName; 
   this.getProjectMemos();
@@ -1664,6 +1664,7 @@ _CloseMemosidebar1(){
   this.IsMemoListLoading=false;
   this.Memos_List=[];
   this._linkedMemos=0;
+  this.activeProjectInSidebar=null;
 }
 
 
@@ -1788,6 +1789,7 @@ _OpenfortfolioInfo1(project_Code,project_Name,project_id){
   this._projName=project_Name;
   this._projCode=project_Code;
   this._projId=project_id;
+  this.activeProjectInSidebar=project_Code;  // project currently in selection state.
   document.getElementById("LinkSideBar1").classList.add("kt-quick-panel--on");
   document.getElementById("rightbar-overlay").style.display = "block";
   this.getPortfoliosLinkedToProject();  // fetches all linked portfolios on the selected project.
@@ -1840,6 +1842,7 @@ closeLinkSideBar1() {
   this.Portfolio=[];
   this.selectedportID=null;
   this._portfolioLength=0;
+  this.activeProjectInSidebar=null;
 }
 
 OnCardClick(P_id: any) {
@@ -3108,7 +3111,7 @@ isProjectSelected(prjcode: any): boolean {
   }
 
 
-  acceptfunction(){
+  acceptfunction(){  debugger
     this.approvingRequest =[]
     this.allSelectedProjects.forEach((item)=>{
       if( item.PendingapproverEmpNo&&item.PendingapproverEmpNo.trim() == this.Current_user_ID){
@@ -3153,6 +3156,7 @@ if( this.approvingRequest.length > 0 ){
     // ob.Duration = 0;
   });
 
+  console.log("NewUpdateAcceptApprovalsService body2 approvingRequest:",this.approvingRequest);
   this.approvalservice.NewUpdateAcceptApprovalsService(this.approvingRequest).subscribe(data =>{  
     console.log(data,"accept-data");
       this.isAllPrjSelected=false;  this.value();
@@ -3963,7 +3967,7 @@ getNotificationsofprojects(){
   // this.mydelayProjects = [];
 
   // item.Status === 'Delay' && (item.Emp_No == this.Current_user_ID || item.OwnerEmpNo == this.Current_user_ID
-  this.un_FilteredProjects.forEach((p)=>{    debugger
+  this.un_FilteredProjects.forEach((p)=>{    
     if(p.PendingapproverEmpNo==empno&&p.Status==='Completion Under Approval')
       this.completionUA.push(p);
     else if(p.PendingapproverEmpNo==empno&&p.Status==='Forward Under Approval')
