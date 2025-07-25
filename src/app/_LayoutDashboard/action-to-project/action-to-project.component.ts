@@ -446,7 +446,7 @@ export class ActionToProjectComponent implements OnInit {
         this._StartDate=null;
         this._EndDate=null; 
      }
-  }
+  } 
 
   EmployeeOnDeselect(obj) {
     this.selectedEmpNo = null;
