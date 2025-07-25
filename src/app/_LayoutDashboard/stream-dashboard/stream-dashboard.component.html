@@ -206,12 +206,12 @@
                                                             <span class="v2-p v2-pl-0 sch-evt-line-clamp" *ngIf="item1.className=='fc-red'"><s>{{item1.Task_Name}}</s></span>
                                                             <span class="v2-p v2-pl-0 sch-evt-line-clamp" *ngIf="item1.className!='fc-green' && item1.className!='fc-red'">
                                                                 {{item1.Task_Name}} 
-                                                                <span *ngIf="item1.Location" matTooltip="Location">| <svg  width="17px" height="17px" viewBox="0 2 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>{{item1.Location}}</span></span>
+                                                                <span *ngIf="item1.Location" title="Location">| <svg  width="17px" height="17px" viewBox="0 2 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g  id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path  d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path  d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>{{item1.Location}}</span></span>
                                                         </div>
                                                     </div>
                                                     <div (click)="newMeetingDetails(item1.Schedule_ID)" style="display: flex;align-items: center; cursor: pointer;">
                                                       
-                                                        <div class="v2-e-c" [ngClass]="{'sch-evt-border-right': item1.Link && item1.AddGuestsCount !=0}" *ngIf="item1.Link!=0" matTooltip="Links">
+                                                        <div class="v2-e-c" [ngClass]="{'sch-evt-border-right': item1.Link && item1.AddGuestsCount !=0}" *ngIf="item1.Link!=0" title="Links">
                                                             <div class="v2-svg-bg">
                                                                 <svg width="64px" height="64px" viewBox="0 0 24 24"
                                                                     fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -247,7 +247,7 @@
                                                            <ng-container *ngIf="item1.AcceptAttendees">{{item1.AcceptAttendees}}</ng-container><ng-container *ngIf="!item1.AcceptAttendees">0</ng-container>/{{item1.AddGuestsCount}}
                                                         </div>
                                                      
-                                                        <!-- <div class="v2-e-c"  matTooltip="Yes">
+                                                        <!-- <div class="v2-e-c"  title="Yes">
                                                             <div class="v2-svg-bg">
                                                                 <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
                                                                     <path fill="#CEEAD6"
@@ -258,7 +258,7 @@
                                                             </div>
                                                             +1
                                                         </div>
-                                                        <div class="v2-e-c"  matTooltip="No">
+                                                        <div class="v2-e-c"  title="No">
                                                             <div class="v2-svg-bg">
                                                                 <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
                                                                     <path fill="#FAD2CF"
@@ -273,14 +273,20 @@
                                                         
                                                     </div>
                                                   
-                                                    <div class="upcoming-event-item-actions-ul" (click)="openCalendar(item1.Schedule_ID,item1.className)">
-                                                        <!-- <div class="upcoming-event-item-actions-li">
+                                                    <div class="upcoming-event-item-actions-ul" [ngClass]="{'active': item1.Schedule_Type == 2 && item1.Status!='Owner'}">
+                                                        <ng-container *ngIf="item1.Schedule_Type == 2 && item1.Status!='Owner'">
+                                                            
+                                                        <div class="upcoming-event-item-actions-li"  [ngClass]="{'yes':item1.Status=='Accepted'}"  (click)="Event_acceptandReject(1,item1.Schedule_ID)">
                                                             Yes
                                                         </div>
-                                                        <div class="upcoming-event-item-actions-li">
+                                                        <div class="upcoming-event-item-actions-li" [ngClass]="{'yes':item1.Status=='Rejected'}" (click)="Event_acceptandReject(3,item1.Schedule_ID)">
                                                             No
-                                                        </div> -->
-                                                        <div  matTooltip="View in calendar"  class="upcoming-event-item-actions-li">
+                                                        </div>
+                                                        <div class="upcoming-event-item-actions-li" [ngClass]="{'yes':item1.Status=='May be'}" (click)="Maybe_event(5,item1.Schedule_ID)">
+                                                            Maybe
+                                                        </div>
+                                                        </ng-container>
+                                                        <div  title="View in calendar" (click)="openCalendar(item1.Schedule_ID,item1.className)"  class="upcoming-event-item-actions-li">
                                                             <svg width="13px" height="13px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="0.00016"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" d="M12.943 3.463A.748.748 0 0012.25 3h-5.5a.75.75 0 000 1.5h3.69l-7.22 7.22a.75.75 0 101.06 1.06l7.22-7.22v3.69a.75.75 0 001.5 0v-5.5a.747.747 0 00-.057-.287z"></path></g></svg>
                                                         </div>
                                                     </div>
@@ -1108,7 +1114,7 @@
                                         </div>
 
                                         <div class="n-portfolio-fav" data-toggle="kt-tooltip" data-skin="dark"
-                                        data-placement="right" matTooltip="Favorite"  *ngIf="item.IsFavourite ===true">
+                                        data-placement="right" title="Favorite"  *ngIf="item.IsFavourite ===true">
                                              <i class="flaticon-star" [ngStyle]="{'color': '#ffc30f' }"></i>
 
                                         </div>

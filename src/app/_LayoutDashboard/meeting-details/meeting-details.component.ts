@@ -85,6 +85,7 @@ export class MeetingDetailsComponent implements OnInit {
   meetingAdmin: boolean | undefined;
   userFound: boolean | undefined;
   loadingDMS: boolean= false;
+  activityLoader:boolean = false;
   deletedMeeting:boolean = true;
   subtask_loading:boolean=false;
   meetingStopped: boolean = false;
@@ -658,7 +659,8 @@ export class MeetingDetailsComponent implements OnInit {
  UserProfile:any;
 totalonlineUser:any;
 SM_count:any;
-
+isRepeat:any;
+PreviousCount:any;
 
 
 
@@ -689,6 +691,7 @@ SM_count:any;
       if(this.EventScheduledjson != undefined && this.EventScheduledjson != null && this.EventScheduledjson != ''){
       this.deletedMeeting = true;
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
+    
       var Schedule_date = this.EventScheduledjson[0].Schedule_date;
       this.meetingRestriction(Schedule_date);
       this.Agendas_List = this.EventScheduledjson[0].Agendas;
@@ -700,8 +703,8 @@ SM_count:any;
       this.delayschedule_date = Schedule_date;
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
       this.SM_count = (this.EventScheduledjson[0]['smailcount']);
-     
-      console.log(this.EventScheduledjson,'EventScheduledjson');
+      this.isRepeat= this.EventScheduledjson[0].isRepeat;
+      console.log(this.isRepeat,'isRepeat');
 
       this.totalUser_Scheduledjson=this.User_Scheduledjson.length;
       this.user_linkedOnMtg=this.User_Scheduledjson?this.User_Scheduledjson.map(user => user.stringval):[];
@@ -738,6 +741,8 @@ SM_count:any;
 
       this._AllEventAttachment = this.EventScheduledjson[0]['AllEventsCount'];
       this._FutureEventAttachment = this.EventScheduledjson[0]['FutureCount'];
+      this.PreviousCount = this.EventScheduledjson[0]['PreviousCount'];
+
       this.AdminName=this.EventScheduledjson[0].AdminName
 
     
@@ -1429,15 +1434,13 @@ debugger
 
 
   GetMemosByEmployeeId() {
-    this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
-      subscribe((data) => {
+    this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
 
         this.Memos_List = JSON.parse(data['JsonData']);
         this._linkedMemos = this.Memos_List.length
 
         if (this._MemosSubjectList) {
           var recordDMS = this._MemosSubjectList.map(item => item.MailId);
-
         }
         this.Memos_List = this.Memos_List.filter(subject => !recordDMS.includes(subject.MailId));
         this.originalDMSList = this.Memos_List;
@@ -1447,8 +1450,7 @@ debugger
   }
 
   GetMemosByEmployeeId_new() {
-    this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).
-      subscribe((data) => {
+    this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
 
         this.Memos_List = JSON.parse(data['JsonData']);
         this._linkedMemos = this.Memos_List.length
@@ -10089,14 +10091,18 @@ listActivityMemos:any;
 
 
 
+
 GetMeetingActivity(){
+
+   
+
   this.approvalObj.Schedule_Id=this.Scheduleid;
 
   this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
   this.allActivityList=JSON.parse(data[0].ActivityList);
     // console.log(this.allActivityList,'allActivityList725727275');
 
- 
+  this.activityLoader=true
 
   const memoMap = new Map(
   (this.listActivityMemos ?? []).map(m => [m.MailId.toString(), { id: m.MailId, name: m.Subject }])
@@ -10194,7 +10200,7 @@ this.allActivityList.forEach(activity => {
    
 
   })
-
+  
   // console.log(this.filteredActivityList,'filteredActivityList');
 }
 
