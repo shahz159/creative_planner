@@ -11799,3 +11799,11 @@ iframe {
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     outline: 0;
 }
+
+.pn-date-year {
+    background-color: #e5f1ff;
+    color: #2786fb;
+}
+.pn-main-date {
+    width: 100px;
+}

@@ -698,7 +698,8 @@
                                 <!-- <div  class="time-line" style="bottom: 0px;"></div> -->
                             </div>
 
-                            <div class="sch-evt-item  sch-evt-border-bottom" *ngFor="let meetingItem of group.events let i = index"  (click)="customEventModal(meetingItem.Schedule_Type);GetClickEventJSON_Calender(meetingItem.Schedule_ID,meetingItem.className)">
+                            <div class="sch-evt-item  sch-evt-border-bottom" [ngClass]="{'sch-evt-item-past': group.date < today ||   (getLastEventWithValidEnd(group.events, durationOfTodayLine) && meetingItem.endTime <= getLastEventWithValidEnd(group.events, durationOfTodayLine).endTime)}"
+                             *ngFor="let meetingItem of group.events let i = index"  (click)="customEventModal(meetingItem.Schedule_Type);GetClickEventJSON_Calender(meetingItem.Schedule_ID,meetingItem.className)">
                           
                                 <!-- <div *ngIf="group.date === today && meetingItem === getLastEventWithValidEnd(group.events, durationOfTodayLine); else topshowline"
                                 class="time-line" style="bottom: 0px;"></div>
@@ -4406,7 +4407,7 @@
                                     data-target="#responsemodal1" [ngClass]="{'yes':statusofMeeting=='Rejected'}" >No</button>
                                 <button class="btn btn-evt-foot" *ngIf="_AllEventTasksCount == 1 && _FutureEventTasksCount == 0" [ngClass]="{'yes':statusofMeeting=='Rejected'}" (click)="Action_event(3);Event_acceptandReject()">No</button>
 
-                                <button class="btn btn-evt-foot" [ngClass]="{'yes':statusofMeeting=='May be'}" (click)=" Maybe_event(5)">Maybe</button>
+                                <button class="btn btn-evt-foot" [ngClass]="{'yes':statusofMeeting=='May be'}" (click)="Maybe_event(5)">Maybe</button>
 
                             </div>
                             <div class="line-m"></div>

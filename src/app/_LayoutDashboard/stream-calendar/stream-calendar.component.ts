@@ -5599,7 +5599,7 @@ Event_acceptandReject() {
     this._calenderDto.Emp_No = this.Current_user_ID;
     this._calenderDto.flagid = this.EventAction_type;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => {
+      ((data) => { debugger
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       });
     this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
@@ -7340,16 +7340,6 @@ getLastEventWithValidEnd(events: any[], duration: string): any {
   return last;
 }
 
-// getLastEventWithValidEnd(events: any[], duration: string): any { 
-//   let last = null;
-//   for (let i = 0; i < events.length; i++) {
-//     if (events[i].endTime < duration) {
-//       if (last && last.endTime === events[i].endTime) continue;
-//       last = events[i];
-//     }
-//   }
-//   return last;
-// }
 
 
   getInitials(name) {

@@ -6136,3 +6136,9 @@ button.btn.btn-viewall:hover {
     gap: 5px;
 }
 
+.sch-evt-item.sch-evt-item-past {
+    color: #c5c5c5;
+}
+.sch-evt-item.sch-evt-item-past .sch-evt-e-c {
+    color: #c5c5c5;
+}

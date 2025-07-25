@@ -2724,3 +2724,16 @@ span.p-b-percent-count {
     max-height: 3em;
     line-height: 1.98em;
 }
+
+
+.upcoming-event-v2-item:hover .upcoming-event-item-actions-ul.active {
+    width: 214px;
+}
+
+
+
+.upcoming-event-v2-item:hover .upcoming-event-item-actions-li.yes {
+    border-color: #e8f0fe;
+    color: #1967d2;
+    background-color: #e8f0fe;
+}

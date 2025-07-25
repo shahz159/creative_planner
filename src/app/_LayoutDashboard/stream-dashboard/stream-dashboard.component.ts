@@ -8,6 +8,7 @@ import { StatusDTO } from 'src/app/_Models/status-dto';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApprovalsService } from 'src/app/_Services/approvals.service';
+import { NotificationService } from 'src/app/_Services/notification.service';
 
 
 
@@ -43,6 +44,7 @@ export class StreamDashboardComponent implements OnInit {
   countFav: any;
 
   constructor(public service: ProjectTypeService,
+    private notifyService: NotificationService,
     private cdr: ChangeDetectorRef, private router: Router,
     private _snackBar: MatSnackBar,
     private CalenderService: CalenderService,
@@ -329,85 +331,61 @@ export class StreamDashboardComponent implements OnInit {
       
       this.scheduleItems = JSON.parse(data['Scheduledtime']);
       console.log( this.scheduleItems, "Calendar Data 1");
-      
+      this.scheduleItems.forEach(day => {
+      day.Events.forEach(event => {
+        const start = new Date(event.startTime);
+        const end = new Date(event.endTime);
 
-      // this.scheduleItems.forEach((day, index, arr) => {
-      //   day.Events.forEach(event => {
-      //     if (new Date(event.endTime).getDate() !== new Date(event.startTime).getDate()) {de
-           
-      //       let nextDay = arr.find(d => d.Schedule_date === event.endTime.split(" ")[0]);
-            
-      //       if (!nextDay) {
-      //         nextDay = { Schedule_date: event.endTime.split(" ")[0], Events: [] };
-      //         arr.push(nextDay);
-      //       }
-            
-      //       if (!nextDay.Events.some(e => e.Schedule_ID === event.Schedule_ID)) {
-      //         nextDay.Events.push({ ...event, Task_Name: `${event.Task_Name} (2/2)` });
-      //       }
-      
-      //       event.Task_Name += " (1/2)"; 
-      //     }
-      //   });
-      // });
-    
+        if (start.getDate() !== end.getDate()) {
+          const endDate = end.toISOString().split("T")[0];
 
- 
-  this.scheduleItems.forEach(day => {
-  day.Events.forEach(event => {
-    const start = new Date(event.startTime);
-    const end = new Date(event.endTime);
+          let nextDay = this.scheduleItems.find(d => d.Schedule_date.startsWith(endDate));
+          if (!nextDay) {
+            nextDay = { Schedule_date: endDate + "T00:00:00", Events: [] };
+            this.scheduleItems.push(nextDay);
+          }
 
-    if (start.getDate() !== end.getDate()) {
-      const endDate = end.toISOString().split("T")[0];
+          if (!nextDay.Events.some(e => e.Schedule_ID === event.Schedule_ID)) {
+            nextDay.Events.push({ ...event, Task_Name: `${event.Task_Name} (2/2)` });
+          }
 
-      let nextDay = this.scheduleItems.find(d => d.Schedule_date.startsWith(endDate));
-      if (!nextDay) {
-        nextDay = { Schedule_date: endDate + "T00:00:00", Events: [] };
-        this.scheduleItems.push(nextDay);
+          event.Task_Name += " (1/2)";
+        }
+      });
+    });
+        this.scheduleItems = this.scheduleItems.map(day => {
+          let updatedEvents = day.Events.map(event => ({
+              ...event,
+              Task_Name: event.Task_Name.replace("(2/2) (1/2)", "(2/2)")
+          }));
+          
+          let specialEvents = updatedEvents.filter(event => event.Task_Name.includes("(2/2)"));
+          let otherEvents = updatedEvents.filter(event => !event.Task_Name.includes("(2/2)"));
+          
+          return {
+              ...day,
+              Events: [...specialEvents, ...otherEvents]
+          };
+      });
+
+
+      if (this.scheduleItems.length == 10) {
+        this.scheduleItems.pop();
+      } 
+      if(this.scheduleItems.length == 9){
+        this.scheduleItems.pop();
       }
 
-      if (!nextDay.Events.some(e => e.Schedule_ID === event.Schedule_ID)) {
-        nextDay.Events.push({ ...event, Task_Name: `${event.Task_Name} (2/2)` });
-      }
+      this.scheduleItems.sort((a, b) => a.Schedule_date.localeCompare(b.Schedule_date));
 
-      event.Task_Name += " (1/2)";
-    }
-  });
-});
-    this.scheduleItems = this.scheduleItems.map(day => {
-      let updatedEvents = day.Events.map(event => ({
-          ...event,
-          Task_Name: event.Task_Name.replace("(2/2) (1/2)", "(2/2)")
-      }));
-      
-      let specialEvents = updatedEvents.filter(event => event.Task_Name.includes("(2/2)"));
-      let otherEvents = updatedEvents.filter(event => !event.Task_Name.includes("(2/2)"));
-      
-      return {
-          ...day,
-          Events: [...specialEvents, ...otherEvents]
-      };
-  });
+      if( this.scheduleItems.some(data => data.Schedule_date <  this.today)){
+            this.scheduleItems.shift(); 
+        }
 
 
-  if (this.scheduleItems.length == 10) {
-    this.scheduleItems.pop();
-  } 
-  if(this.scheduleItems.length == 9){
-    this.scheduleItems.pop();
-  }
-
-  this.scheduleItems.sort((a, b) => a.Schedule_date.localeCompare(b.Schedule_date));
-
-   if( this.scheduleItems.some(data => data.Schedule_date <  this.today)){
-        this.scheduleItems.shift(); 
-    }
-
-
-    
-    console.log(this.scheduleItems, "Calendar Data 2",this.today);
-  });
+        
+        console.log(this.scheduleItems, "Calendar Data 2");
+      });
 
   }
 
@@ -775,7 +753,7 @@ getRecentActivities(){
      this.approvalservice.NewGetUserActivity(empNo).subscribe((res)=>{
             // console.log("getRecentActivities:",res);
             if(res&&res[0]){  
-                  this.recentActivities=JSON.parse(res[0].ActivityList);   console.log("recent actv:",this.recentActivities);
+                  this.recentActivities=JSON.parse(res[0].ActivityList);  
                   this.totalRecentActivities=res[0].ActivityCount;
                 
                 
@@ -865,6 +843,116 @@ openInDetailsPage(pcode,acode:string|undefined) {
 // recent activity section .  end
 
 
+
+
+EventScheduledjson: any[] = [];
+_Message: string;
+
+
+Event_acceptandReject(EventAction_type,Schedule_ID) {debugger
+
+  if (EventAction_type == 1) {
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.flagid = EventAction_type;
+    this._calenderDto.Schedule_ID = Schedule_ID;
+    
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => { debugger
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
+        this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber; 
+        this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
+          ((data) => {
+            this.meetingDetails();
+            // this.Event_requests();
+            this._Message = data['message'];
+            this.notifyService.showSuccess(this._Message, "Success");
+          
+          });
+        });
+   }
+  else if (EventAction_type == 2) {
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.flagid = EventAction_type;
+    this._calenderDto.Schedule_ID = Schedule_ID;
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+
+        this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
+        this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber; 
+        this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
+          ((data) => {
+            this.meetingDetails();
+            // this.Event_requests();
+            this._Message = data['message'];
+            this.notifyService.showSuccess(this._Message, "Success");         
+          
+          });
+      });
+  } else if (EventAction_type == 3) {
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.flagid = EventAction_type;
+    this._calenderDto.Schedule_ID = Schedule_ID;
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+      ((data) => {
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
+        this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
+
+        this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe((data) => {
+            this.meetingDetails();
+            // this.Event_requests();
+            this._Message = data['message'];
+            this.notifyService.showSuccess(this._Message, "Rejected");  
+          });
+      });
+  
+  }else if (EventAction_type == 4) {
+    this._calenderDto.Emp_No = this.Current_user_ID;
+    this._calenderDto.flagid = EventAction_type;
+     this._calenderDto.Schedule_ID = Schedule_ID;
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+      ((data) => {
+        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+        this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
+        this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
+        this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe((data) => {  
+            this.meetingDetails(); 
+            // this.Event_requests();
+            this._Message = data['message'];
+            this.notifyService.showSuccess(this._Message, "Rejected");
+        
+          });
+      });
+  }
+}
+
+
+
+
+
+
+Maybe_event(val,Schedule_ID) {
+
+ 
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  this._calenderDto.flagid = val
+   this._calenderDto.Schedule_ID = Schedule_ID;
+  this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
+    ((data) => {
+      this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
+      this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
+      this._calenderDto.EventNumber = this.EventScheduledjson[0].EventNumber;
+
+      this.CalenderService.NewGetrequeat_Accpect(this._calenderDto).subscribe
+        ((data) => {
+          this.meetingDetails();
+          this._Message = data['message'];
+          this.notifyService.showSuccess(this._Message, "May be");
+            
+        });
+    });
+  
+}
 
 }
 
