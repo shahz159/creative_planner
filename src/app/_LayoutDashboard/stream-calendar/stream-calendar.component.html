@@ -2138,23 +2138,24 @@
                                     </div> -->
                                     <!-- (wheel)="onWheelScroll(monthslotbx,$event)" -->
                                     <div #monthslotbx class="month-slot-body-row" *ngFor="let item of monthMappedList"  >
+                                       
                                         <!-- <div class="month-body-col">
                                             <div class="month-body-col-label">14</div>
                                         </div>
                                         <div class="month-body-col">
                                             <div class="month-body-col-label">15</div>
                                         </div> -->
-                                        <div *ngFor="let week of item.week"  class="month-body-col" [ngClass]="{'month-active': convertToISO(week.date) === today , 'month-muted' : week.date.substring(3, 10) !==  (selectDay | date:'MM-yyyy')}" >
+                                        <div *ngFor="let week of item?item.week:[]"  class="month-body-col" [ngClass]="{'month-active': week?convertToISO(week.date) === today:false , 'month-muted' : week?(week.date.substring(3, 10) !==  (selectDay | date:'MM-yyyy')):false}" >
                                             <div class="month-body-col-label curser-pointer " (click)="weekToDay(week.date.split('-').reverse().join('-'))"> 
 
-                                                <ng-container *ngIf="week.date.startsWith('01-')">
-                                                    {{ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][+week.date.split('-')[1] - 1] }}
+                                                <ng-container *ngIf="week?.date.startsWith('01-')">
+                                                    {{ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][+(week.date?.split('-')?.[1]) - 1] }}
                                                 </ng-container>  
-                                                  {{ +week.date.split('-')[0] }}
+                                                  {{ week?.date.split('-')?.[0] }}
                                                 
                                                 </div>
                                             <div class="month-day-events" >
-                                                <div class="month-day-events-item" *ngFor="let event of week.events | slice:0:2">
+                                                <div class="month-day-events-item" *ngFor="let event of week?(week.events | slice:0:2):[]">
                                                     <div class="events-item-label" (click)="customEventModal(event.Schedule_Type);GetClickEventJSON_Calender(event.Schedule_ID,event.className)">
                                                         <span class="events-icon">
                                                             <svg *ngIf="event.Schedule_Type==1 &&  event.className!='fc-green'" width="18px" height="18px" viewBox="0 0 20 20"
@@ -2213,7 +2214,7 @@
                                                     </div>                                                    
                                                 </div> -->
                                           
-                                                <div class="btn-group" *ngIf="week.events.length > 2">
+                                                <div class="btn-group" *ngIf="week?.events?.length > 2">
                                                 <div class="month-more-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{week.events.length - 2}} more</div>
                                                 <div class="month-day-events-more dropdown-menu dropdown-menu-right" id="month-day-events-more">
                                                     <div class="events-more-heading">
