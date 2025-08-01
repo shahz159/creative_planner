@@ -78,7 +78,7 @@ export class StreamCalendarComponent implements OnInit {
   Selecteddaate: any;
   flagevent: number;
   approvalObj: ApprovalDTO;
-
+  loadingDMS: boolean = false;
 
   config: AngularEditorConfig = {
     editable: true,
@@ -259,11 +259,11 @@ export class StreamCalendarComponent implements OnInit {
   scheduleId_UrlParams:any;
   
   ngOnInit(): void {
-   
+    this.loadingDMS = false;
     this.Current_user_ID = localStorage.getItem('EmpNo');
-     this.loadingDMS = false;
-  
+   
     this.getEventsForWeeks(0);
+    this.getTeam_List(0)
     this.getDayReportSummary();
     this.scheduleId_UrlParams=this.activatedRoute.snapshot.queryParamMap.get('calenderId'); 
 
@@ -287,70 +287,24 @@ export class StreamCalendarComponent implements OnInit {
     }
   
 
-
- 
-  // calender event popup open by qparams
-
-
-
-    this.initAutosize();
-    this.initFirstclass();
+    // this.initAutosize();
+    // this.initFirstclass();
     this.MinLastNameLength = true;
     this._labelName = "Schedule Date";
     this.selectedrecuvalue = "0";
     this._StartDate = moment().format("YYYY-MM-DD").toString();
     this.flagevent = 1;
    
-    tippy('#agenda-info-icon', {
-      content: "Agenda is mandatory for a meeting, Please provide atleast 1.",
-      arrow: true,
-      animation: 'scale-extreme',
-      theme: 'dark',
-      animateFill: true,
-      inertia: true,
-      placement: 'left'
-    });
-   
-   
-
-    this.calendarOptions = {
-      initialView: 'listWeek',
-      firstDay: moment().weekday(),
-      //  timeZone: 'local',
-      //     initialDate:new Date(2023,  ),'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-      },
-      themeSystem: "solar",
-      weekNumbers: true,
-      eventClick: this.handleEventClick.bind(this),
-      events: this.Scheduledjson,
-      dayMaxEvents: 4,
-      eventTimeFormat: {
-        hour: 'numeric',
-        minute: '2-digit',
-        meridiem: 'short',
-        hour12: true
-      },
-      nowIndicator: true,
-      allDaySlot: false
-    };
-
  
     this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
    
-    // this.disablePreviousTodayDate.setDate(this.disablePreviousTodayDate.getDate() + 1);
-     //start
+ 
      this.maxDate = moment().format("YYYY-MM-DD").toString();
      this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
-     //end
+    
  
-     this.GetMemosByEmployeeId();
      this._StartDate = moment().format("YYYY-MM-DD").toString();
-     // this._EndDate = moment().format("YYYY-MM-DD").toString();
- 
+
      this.AllDatesSDandED = [];
      var jsonData = {};
      var columnName = "Date";
@@ -362,18 +316,20 @@ export class StreamCalendarComponent implements OnInit {
      var DayNum1 = "DayNum";
      jsonData[DayNum1] = moment(this._StartDate).format('DD').substring(0, 3);
      this.AllDatesSDandED.push(jsonData);
-     // this.GetProjectAndsubtashDrpforCalender();
-     // this.calendar.updateTodaysDate();
      this._SEndDate = moment().format("YYYY-MM-DD").toString();
-     // this.Event_requests();
-     this.GetTimeslabfordate();
-     this.GetPending_Request();
-     this.Getdraft_datalistmeeting(); 
-     this.getMeetingApprovals();
-     this.BookmarkMeetingsList();
-     this.getTeam_List(0)
 
-  
+     this.GetTimeslabfordate();
+    
+
+    tippy('#agenda-info-icon', {
+      content: "Agenda is mandatory for a meeting, Please provide atleast 1.",
+      arrow: true,
+      animation: 'scale-extreme',
+      theme: 'dark',
+      animateFill: true,
+      inertia: true,
+      placement: 'left'
+    });
   }
 
 
@@ -1030,7 +986,6 @@ _OldEnd_date: string;
 createTaskEvent:boolean=true;
 Searchword: string;
 showsearch: boolean = false;
-loadingDMS: boolean;
 EventAction_type: number;
 Event_requests1: any = [];
 _remarks: string;
@@ -1773,15 +1728,7 @@ GetTimeslabfordate() {
     });
     this.validStartTimearr=this.StartTimearr.slice(index);
 
-    // this.timingarryend = [];
-    // this.Time_End = [];
-    // this.Time_End = this.AllEndtime;
-    // let _index = this.Time_End.indexOf(this.Startts);
-    // if (_index + 1 === this.Time_End.length) {
-    //   _index = -1;
-    // }
-    // this.timingarryend = this.Time_End.splice(_index + 1);
-    // this.EndTimearr = this.timingarryend;
+ 
 
     this.Time_End = [];
     this.Time_End = [...this.AllEndtime,...this.AllEndtime];
@@ -3485,6 +3432,7 @@ getEventsForWeeks(weeksFromToday: number) {
         this.dataBindStartTime = performance.now();
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
         this.Scheduledjson = this.Scheduledjson.sort((a, b) => new Date(a.Schedule_date).getTime() - new Date(b.Schedule_date).getTime());
+      
         this.loadingDMS = true;
   
     if(this.Searchingfunc==false){ 
@@ -3560,12 +3508,18 @@ getEventsForWeeks(weeksFromToday: number) {
           day.events = day.events.filter(e => !e.IsPrivate)
         );
       }
-   
-       
+
+      this.pendingcount =  this.Scheduledjson[0].PendingCount;
+      this.draftcount = this.Scheduledjson[0].DraftCount;
+      this.totalbookmarkslist  = this.Scheduledjson[0].BookmarkCount;
+ 
+      console.log(this.filteredMeetingsArray, 'filteredMeetingsArray'); 
+     
      });    
       this.nextDateSched= new Date(this.firstDate);
       this.nextDateSched.setDate(this.nextDateSched.getDate() + 1);
-     console.log(this.nextDateSched, 'filteredMeetingsArray');
+
+       
 }
 
 
@@ -6422,7 +6376,6 @@ GetPending_Request() {
   this.CalenderService.NewGetPending_request(this._calenderDto).subscribe
     ((data) => { console.log(data,'wefwwefwefwefwe')
       this.Pending_request = data as [];
-      this.pendingcount = this.Pending_request.length;
       this.filterPending('date');
      
     });
@@ -6869,7 +6822,7 @@ BookmarkMeetingsList() {
     ((data) => {
 
           this.meetingbookmarks = JSON.parse(data['meetingbookmarks']);
-          this.totalbookmarkslist =this.meetingbookmarks.length;
+        
          
   })
 }
@@ -7475,14 +7428,16 @@ getLastEventWithValidEnd(events: any[], duration: string): any {
   EmpJson:any;
   searchTeams:any;
 
-getTeam_List(TeamsArg){ 
+getTeam_List(TeamsArg){ debugger
   this.teamsCalendar = TeamsArg;
-    this._calenderDto.EmpNo = this.Current_user_ID;
-    this.CalenderService.GetUserTeam(this._calenderDto).subscribe((data)=>{ 
-      this.EmpJson = JSON.parse(data['EmpJson']);    
-    })
-    if(this.teamsCalendar == 1){
-       this.getEventsForWeeks(0)
+     this._calenderDto.EmpNo = this.Current_user_ID;
+      this.CalenderService.GetUserTeam(this._calenderDto).subscribe((data)=>{ debugger
+      this.EmpJson = JSON.parse(data['EmpJson']);  
+      console.log(this.EmpJson,'this.EmpJson')  
+      })
+       console.log(this.EmpJson,'this.EmpJson')  
+    if(this.teamsCalendar == 1){     
+      this.getEventsForWeeks(0)
     }
       
 

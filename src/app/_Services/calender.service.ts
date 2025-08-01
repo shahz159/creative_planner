@@ -47,7 +47,7 @@ export class CalenderService {
 
 
    GetUserTeam(obj:CalenderDTO){
-    this.obj_CalenderDTO.EmpNo = obj.EmpNo;
+    this.obj_CalenderDTO.Emp_No = obj.EmpNo;
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetUserTeam", this.obj_CalenderDTO);
    }
 
