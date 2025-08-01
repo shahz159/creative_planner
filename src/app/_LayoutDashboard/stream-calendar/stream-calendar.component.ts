@@ -347,7 +347,7 @@ export class StreamCalendarComponent implements OnInit {
      this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
      //end
  
-     this.GetMemosByEmployeeId();
+    //  this.GetMemosByEmployeeId();
      this._StartDate = moment().format("YYYY-MM-DD").toString();
      // this._EndDate = moment().format("YYYY-MM-DD").toString();
  
@@ -369,18 +369,10 @@ export class StreamCalendarComponent implements OnInit {
      this.GetTimeslabfordate();
      this.GetPending_Request();
      this.Getdraft_datalistmeeting(); 
-     this.getMeetingApprovals();
+    //  this.getMeetingApprovals();
      this.BookmarkMeetingsList();
-     this.getTeam_List(0)
-
-  
+     this.getTeam_List(0);
   }
-
-
-
-
-
-
 
 
   
