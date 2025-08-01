@@ -261,8 +261,10 @@ export class StreamCalendarComponent implements OnInit {
   ngOnInit(): void {
    
     this.Current_user_ID = localStorage.getItem('EmpNo');
-    this.GetScheduledJson();
-    // calender event popup open by qparams
+     this.loadingDMS = false;
+  
+    this.getEventsForWeeks(0);
+    this.getDayReportSummary();
     this.scheduleId_UrlParams=this.activatedRoute.snapshot.queryParamMap.get('calenderId'); 
 
     if(this.scheduleId_UrlParams){
@@ -308,10 +310,7 @@ export class StreamCalendarComponent implements OnInit {
       inertia: true,
       placement: 'left'
     });
-    this.loadingDMS = false;
-  
-    this.getEventsForWeeks(0);
-    this.getDayReportSummary();
+   
    
 
     this.calendarOptions = {
