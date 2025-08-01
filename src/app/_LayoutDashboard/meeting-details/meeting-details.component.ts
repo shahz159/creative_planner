@@ -704,7 +704,7 @@ PreviousCount:any;
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
       this.SM_count = (this.EventScheduledjson[0]['smailcount']);
       this.isRepeat= this.EventScheduledjson[0].isRepeat;
-      console.log(this.isRepeat,'isRepeat');
+      // console.log(this.isRepeat,'isRepeat');
 
       this.totalUser_Scheduledjson=this.User_Scheduledjson.length;
       this.user_linkedOnMtg=this.User_Scheduledjson?this.User_Scheduledjson.map(user => user.stringval):[];
@@ -1419,7 +1419,7 @@ debugger
         ...this.DMS_Details.find(dms => dms.numberval === memo.MailId)
       }));
 
-      console.log( this._MemosSubjectList,' this._MemosSubjectList' );
+      // console.log( this._MemosSubjectList,' this._MemosSubjectList' );
      
      });
 
@@ -1553,7 +1553,7 @@ debugger
         ((data: any) => {
 
           if (data.message == '1' || this._calenderDto.flagid == null || this._calenderDto.flagid != null) {
-            this.notifyService.showSuccess("SMail added successfully", "Success");
+            this.notifyService.showSuccess("S Mail added successfully", "Success");
             this.SelectDms = [];
             this.meeting_details();
             this.GetMemosByEmployeeId()
@@ -2399,7 +2399,7 @@ debugger
         if (data['previousmeet_data']) {
           this.Previousdata_meeting = JSON.parse(data['previousmeet_data']);
           this.filterByAgenda = this.Previousdata_meeting[0].Details
-          // console.log(this.Previousdata_meeting,'Previousdata_meeting')
+          console.log(this.Previousdata_meeting,'Previousdata_meeting')
           this.sortbyAgendaList(0, this.filterByAgenda[0]);
           this.sortbyFilterList(0, this.filterByAgenda[0])
            
@@ -4796,223 +4796,7 @@ debugger
 
 
 
-  // ReshudingTaskandEvent() {
-  //   document.getElementById("div_endDate").style.display = "none";
-  //   document.getElementById("Schenddate").style.display = "none";
-  //   document.getElementById("Descrip_Name12").style.display = "none";
-  //   this.editTask = true;
-  //   this.copyTask = false;
-  //   this.create = false;
-
-  //   this.Schedule_ID = this._calenderDto.Schedule_ID;
-  //   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-  //     ((data) => {
-
-  //       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-  //       // console.log(this.EventScheduledjson, "test11111")
-  //       this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
-  //       this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
-  //       this.Startts = (this.EventScheduledjson[0]['St_Time']);
-  //       this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
-  //       this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
-  //       this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
-  //       this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
-  //       this._PopupConfirmedValue = 1;
-  //       this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
-  //       this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
-  //       this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
-  //       this.scstartdate = this._Oldstart_date;
-  //       // alert(this.scstartdate)
-  //       // this.Attachment12_ary=this.EventScheduledjson[0]['Attachmentsjson']
-  //       this.Addressurl = this.EventScheduledjson[0]['Addressurl']
-  //       // alert( this.Addressurl);
-  //       this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
-  //       this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
-  //       this.Link_Details = this.EventScheduledjson[0]['Link_Details']
-  //       this.pending_status = this.EventScheduledjson[0]['Pending_meeting'];
-
-  //       if (this._FutureEventTasksCount > 0) {
-  //         // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
-  //         // radio1.disabled = false;
-  //         // radio1.checked = true;
-
-  //         // var radio2 = document.getElementById('r2') as HTMLInputElement | null;
-  //         // radio2.disabled = false;
-  //         // radio2.checked = false;
-
-  //         // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
-  //         // radio3.disabled = false;
-  //         // radio3.checked = false;
-
-  //         // this._PopupConfirmedValue = 1;
-  //       }
-  //       else if (this._FutureEventTasksCount == 0) {
-  //         // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
-  //         // radio1.disabled = false;
-  //         // radio1.checked = true;
-
-  //         // var radio2 = document.getElementById('r2') as HTMLInputElement | null;
-  //         // radio2.disabled = true;
-  //         // radio2.checked = false;
-
-  //         // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
-  //         // radio3.disabled = true;
-  //         // radio3.checked = false;
-
-  //         // this._PopupConfirmedValue = 1;
-  //       }
-
-  //       document.getElementById("div_recurrence").style.display = "none";
-  //       document.getElementById("Monthly_121").style.display = "none";
-  //       document.getElementById("weekly_121").style.display = "none";
-  //       document.getElementById("mysideInfobar_schd_new").classList.add("open_sidebar");
-  //       document.getElementById("rightbar-overlay").style.display = "block";
-  //       // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-
-  //       this.AllDatesSDandED = [];
-  //       var jsonData = {};
-  //       var columnName = "Date";
-  //       jsonData[columnName] = this.EventScheduledjson[0]['Schedule_date'];
-  //       var IsActive = "IsActive";
-  //       jsonData[IsActive] = 1;
-  //       var Day = "Day";
-  //       jsonData[Day] = "NA";
-  //       var DayNum = "DayNum";
-  //       jsonData[DayNum] = "NA";
-  //       this.AllDatesSDandED.push(jsonData);
-  //       this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
-  //       this.minDate = this.EventScheduledjson[0]['Schedule_date'];
-  //       this._EndDate = this.EventScheduledjson[0]['End_date'];
-  //       this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
-  //       this.maxDate = this.EventScheduledjson[0]['End_date'];
-  //       this.EventNumber = this.EventScheduledjson[0]['EventNumber']
-  //       // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
-  //       if ((this.EventScheduledjson[0]['Onlinelink']) == true) {
-  //         document.getElementById("Descrip_Name12").style.display = "block";
-  //       }
-  //       if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
-  //         this.selectedrecuvalue = '0';
-  //         this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
-  //         this._labelName = "Schedule Date";
-  //         // this.maxDate = this.EventScheduledjson[0]['Schedule_date'];
-  //         // document.getElementById("div_endDate").style.display = "none";
-  //         document.getElementById("Recurrence_hide").style.display = "none";
-  //       }
-  //       else if ((this.EventScheduledjson[0]['Recurrence']) == 'Daily') {
-  //         document.getElementById("div_endDate").style.display = "block";
-  //         this.selectedrecuvalue = '1';
-  //         this._labelName = "Schedule Date";
-  //         // document.getElementById("div_endDate").style.display = "none";
-  //         document.getElementById("Recurrence_hide").style.display = "none";
-  //       }
-  //       else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
-  //         this._labelName = "Schedule Date";
-  //         // document.getElementById("div_endDate").style.display = "none";
-  //         document.getElementById("div_endDate").style.display = "block";
-  //         document.getElementById("Recurrence_hide").style.display = "block";
-  //         document.getElementById("weekly_121").style.display = "block";
-  //         this.selectedrecuvalue = '2';
-  //         let Recc = [];
-  //         var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
-  //         Recc = ret1.split(",");
-
-  //         for (var i = 0; i < Recc.length; i++) {
-  //           this.dayArr.forEach(element => {
-  //             if (element.value == Recc[i]) {
-  //               element.checked = true;
-  //             }
-  //           });
-  //         }
-  //       }
-  //       else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {
-  //         document.getElementById("Recurrence_hide").style.display = "block";
-  //         document.getElementById("div_endDate").style.display = "block";
-  //         // document.getElementById("div_endDate").style.display = "none";
-  //         document.getElementById("Monthly_121").style.display = "block";
-  //         this._labelName = "Schedule Date";
-  //         this.selectedrecuvalue = '3';
-  //         let Recc = [];
-  //         var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
-  //         Recc = ret1.split(",");
-  //         for (var i = 0; i < Recc.length; i++) {
-  //           this.MonthArr.forEach(element => {
-  //             if (element.value == Recc[i]) {
-  //               element.checked = true;
-  //             }
-  //           });
-  //         }
-  //       }
-
-  //       if (this.ScheduleType == 'Task') {
-  //         this.EventScheduledjson[0]['Ed_Time']
-  //         this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
-  //         this.MasterCode = JSON.parse(this.EventScheduledjson[0]['Project_code']);
-  //         this.MasterCode = (this.MasterCode[0].stringval);
-
-  //         document.getElementById("subtaskid").style.display = "block";
-  //         // document.getElementById("Link_Name").style.display = "none";
-  //         document.getElementById("Guest_Name").style.display = "none";
-  //         document.getElementById("Location_Name").style.display = "none";
-  //         document.getElementById("Descrip_Name").style.display = "none";
-  //         document.getElementById("core_viw123").style.display = "block";
-  //         document.getElementById("core_viw121").style.display = "none";
-  //         document.getElementById("core_viw222").style.display = "none";
-  //         document.getElementById("core_Dms").style.display = "none";
-  //         // document.getElementById("Monthly_121").style.display = "none";
-  //         // document.getElementById("weekly_121").style.display = "none";
-
-  //       }
-
-  //       if (this.ScheduleType == 'Event') {
-  //         this.allAgendas = this.EventScheduledjson[0]['Agendas'].map(item => ({ index: item.AgendaId, name: item.Agenda_Name }));
-
-  //         this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
-  //         this.MasterCode = [];
-  //         this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
-  //         this.arr.forEach(element => {
-  //           this.MasterCode.push(element.stringval);
-  //           this.projectsSelected.push({ Project_Code: element.stringval, Project_Name: element.Project_Name, BlockNameProject: element.BlockNameProject });
-  //         });
-  //         this.Portfolio = [];
-  //         this.Portfolio1 = [];
-  //         this.arr1 = JSON.parse(this.EventScheduledjson[0]['Portfolio_Name']);
-  //         this.arr1.forEach(element => {
-  //           this.Portfolio.push(element.numberval);
-  //         });
-
-  //         this.ngEmployeeDropdown = [];
-  //         this.ngEmployeeDropdown1 = [];
-  //         this.arr2 = JSON.parse(this.EventScheduledjson[0]['Add_guests']);
-  //         this.arr2.forEach(element => {
-  //           this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
-  //         });
-  //         this.SelectDms = [];
-  //         this.SelectDms1 = [];
-  //         let arr3 = [];
-  //         var str = (this.EventScheduledjson[0]['DMS_Name']);
-  //         arr3 = str.split(",");
-  //         for (var i = 0; i < arr3.length; i++) {
-  //           this.Memos_List.forEach(element => {
-  //             if (element.MailId == arr3[i]) {
-  //               this.SelectDms.push(element.MailId);
-  //             }
-  //           });
-  //         }
-  //         this.Location_Type = (this.EventScheduledjson[0]['Location']);
-  //         this.Description_Type = (this.EventScheduledjson[0]['Description']);
-  //         document.getElementById("subtaskid").style.display = "none";
-  //         document.getElementById("Guest_Name").style.display = "block";
-  //         document.getElementById("Location_Name").style.display = "block";
-  //         document.getElementById("Descrip_Name").style.display = "block";
-  //         document.getElementById("core_viw121").style.display = "block";
-  //         document.getElementById("core_viw123").style.display = "none";
-  //         document.getElementById("core_viw222").style.display = "block";
-  //         document.getElementById("core_Dms").style.display = "block";
-  //         // console.log(this.MasterCode,'decode')
-  //       }
-  //     });
-  //   // this.closeevearea();
-  // }
+ 
 
   eventRepeat:boolean=false;
   mtgOnDays:any=[];
@@ -5026,6 +4810,7 @@ debugger
 
 
 ReshudingTaskandEvent() {
+  this.Popuploading = true 
   // this.createTaskEvent=false;
   document.getElementById("div_endDate_new").style.display = "none";
 
@@ -5055,7 +4840,7 @@ ReshudingTaskandEvent() {
       this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
       this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
       this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
-
+      this.privateMeeting = this.EventScheduledjson[0]['IsPrivate'];
 
       if(this.Link_Details != ''){
         if(!this.Link_Details.includes('<a href=')){
@@ -5075,7 +4860,7 @@ ReshudingTaskandEvent() {
        }
 
       this.pending_status = this.EventScheduledjson[0]['Pending_meeting'];
-
+       this.Popuploading = false 
       if (this._FutureEventTasksCount > 0) {
       }
       else if (this._FutureEventTasksCount == 0) {
@@ -5320,383 +5105,6 @@ ReshudingTaskandEvent() {
 
 
 
-
-  // ReshudingTaskandEvent() {
-
-  //   document.getElementById("Schenddate").style.display = "none";
-  //   document.getElementById("Descrip_Name12").style.display = "none";
-
-  //   this.editTask = true;
-  //   this.copyTask = false;
-  //   this.create = false;
-  //   this.eventRepeat=false;
-
-
-  //   this.Schedule_ID = this._calenderDto.Schedule_ID;
-  //   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-  //     ((data) => {
-
-  //       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-  //       console.log(this.EventScheduledjson, "test11111")
-  //       this.Schedule_ID = (this.EventScheduledjson[0]['Schedule_ID']);
-  //       this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];
-  //       this.Startts = (this.EventScheduledjson[0]['St_Time']);
-  //       this.Endtms = (this.EventScheduledjson[0]['Ed_Time']);
-  //       this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
-  //       this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
-  //       this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
-  //       // alert(this._OldRecurranceId)
-  //       // if (this._OldRecurranceId == '0') {
-  //       this._PopupConfirmedValue = 1;
-  //       // }
-  //       // else {
-  //       // this._PopupConfirmedValue = 2;
-  //       // }
-  //       this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
-  //       this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
-  //       this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
-  //       this.scstartdate = this._Oldstart_date;
-  //       // alert(this.scstartdate)
-  //       // this.Attachment12_ary=this.EventScheduledjson[0]['Attachmentsjson']
-  //       this.Addressurl = this.EventScheduledjson[0]['Addressurl']
-  //       // alert( this.Addressurl);
-  //       this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];
-  //       this._onlinelink = this.EventScheduledjson[0]['Onlinelink'];
-  //       this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
-
-  //       if(this.Link_Details != ''){
-  //       if(!this.Link_Details.includes('<a href=')){
-  //       var details = this.Link_Details.split(', ')
-  //       this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
-  //       this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
-  //       this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined'  || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
-  //       console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
-  //       }
-  //       else if(this.Link_Details.includes('<a href=')){
-  //         this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
-  //         this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
-  //         this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
-         
-  //         console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details 69');
-  //       }
-  //     }
-
-  //       this.pending_status = this.EventScheduledjson[0]['Pending_meeting'];
-
-  //       if (this._FutureEventTasksCount > 0) {
-  //         // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
-  //         // radio1.disabled = false;
-  //         // radio1.checked = true;
-
-  //         // var radio2 = document.getElementById('r2') as HTMLInputElement | null;
-  //         // radio2.disabled = false;
-  //         // radio2.checked = false;
-
-  //         // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
-  //         // radio3.disabled = false;
-  //         // radio3.checked = false;
-
-  //         // this._PopupConfirmedValue = 1;
-  //       }
-  //       else if (this._FutureEventTasksCount == 0) {
-  //         // var radio1 = document.getElementById('r1') as HTMLInputElement | null;
-  //         // radio1.disabled = false;
-  //         // radio1.checked = true;
-
-  //         // var radio2 = document.getElementById('r2') as HTMLInputElement | null;
-  //         // radio2.disabled = true;
-  //         // radio2.checked = false;
-
-  //         // var radio3 = document.getElementById('r3') as HTMLInputElement | null;
-  //         // radio3.disabled = true;
-  //         // radio3.checked = false;
-
-  //         // this._PopupConfirmedValue = 1;
-  //       }
-  //       document.getElementById("div_recurrence").style.display = "block";
-  //       document.getElementById("Monthly_121_new").style.display = "none";
-  //       document.getElementById("weekly_121_new").style.display = "none";
-  //       document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-  //       // document.getElementById("rightbar-overlay").style.display = "block";
-  //       // document.getElementsByClassName("side_view")[0].classList.add("position-fixed");
-
-  //       this.AllDatesSDandED = [];
-  //       var jsonData = {};
-  //       var columnName = "Date";
-  //       jsonData[columnName] = this.EventScheduledjson[0]['Schedule_date'];
-  //       var IsActive = "IsActive";
-  //       jsonData[IsActive] = 1;
-  //       var Day = "Day";
-  //       jsonData[Day] = "NA";
-  //       var DayNum = "DayNum";
-  //       jsonData[DayNum] = "NA";
-  //       this.AllDatesSDandED.push(jsonData);
-  //       this._StartDate = this.EventScheduledjson[0]['Schedule_date'];
-  //       this.minDate = this.EventScheduledjson[0]['Schedule_date'];
-  //       this._EndDate = this.EventScheduledjson[0]['End_date'];
-  //       this._OldEnd_date = this.EventScheduledjson[0]['End_date'];
-  //       this.maxDate = this.EventScheduledjson[0]['End_date'];
-  //       this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
-   
-        
-  //       // this code for chnage detection start
-  //       this.disablePreviousDate = null;
-  //       setTimeout(()=>{
-  //         this.disablePreviousDate = new Date();
-  //       },0);
-  //      // this code for chnage detection End
-
-
-
-  //       // this._SEndDate = this.EventScheduledjson[0]['SEndDate'];
-  //       if ((this.EventScheduledjson[0]['Onlinelink']) == true) {
-  //         document.getElementById("Descrip_Name12").style.display = "flex";
-  //       }
-  //       if ((this.EventScheduledjson[0]['Recurrence']) == 'Do not repeat') {
-  //         this.selectedrecuvalue = '0';
-  //         this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
-  //         this._labelName = "Schedule Date";
-  //         // this.maxDate = this.EventScheduledjson[0]['Schedule_date'];
-  //         // document.getElementById("div_endDate").style.display = "none";
-  //         document.getElementById("Recurrence_hide").style.display = "none";
-  //       }
-  //       else if ((this.EventScheduledjson[0]['Recurrence']) == 'Daily') {
-  //         document.getElementById("div_endDate_new").style.display = "block";
-  //         this.selectedrecuvalue = '1';
-  //         this._labelName = "Schedule Date";
-  //         // document.getElementById("div_endDate").style.display = "none";
-  //         document.getElementById("Recurrence_hide").style.display = "none";
-  //       }
-  //       else if ((this.EventScheduledjson[0]['Recurrence']) == 'Last day of the month') {
-  //         document.getElementById("div_endDate_new").style.display = "block";
-  //         this.selectedrecuvalue = '5';
-  //         this._labelName = "Schedule Date";
-  //         // document.getElementById("div_endDate").style.display = "none";
-  //         document.getElementById("Recurrence_hide").style.display = "none";
-  //       }
-     
-
-  //       else if ((this.EventScheduledjson[0]['Recurrence']) == 'Weekly') {
-       
-  //         this._labelName = "Schedule Date";
-  //         // document.getElementById("div_endDate").style.display = "none";
-  //         document.getElementById("div_endDate_new").style.display = "block";
-  //         document.getElementById("Recurrence_hide").style.display = "block";
-  //         document.getElementById("weekly_121_new").style.display = "block";
-  //         this.selectedrecuvalue = '2';
-          
-  //         // old code start 69
-  //         let Recc = [];
-  //         var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);   
-  //         Recc = ret1.split(",");
-
-  //         for (var i = 0; i < Recc.length; i++) {
-  //           this.dayArr.forEach(element => {
-  //             if (element.value == Recc[i]) {
-  //               element.checked = true;
-  //             }
-  //           });
-  //         }
-  //         // old code End 69
-
-  //      // New code start 69
-  //      const dayShort = new Date(this._StartDate).toLocaleDateString('en-US', { weekday: 'short' });
-  //      if(ret1 != dayShort){
-  //       this.RecurrValue =true;
-  //      }  
-  //      // New code End 69
-
-  //         this.dayArr.forEach((item:any)=>{
-  //           if(item.checked){
-  //               let d_name=item.value+(['S','M','Fr'].includes(item.Day)?'day':item.Day=='T'?'sday':item.Day==='W'?'nesday':item.Day==='Th'?'rsday':'urday');
-  //              this.mtgOnDays.push(d_name);
-  //           }
-  //        });
-
-
-  //       }
-  //       else if ((this.EventScheduledjson[0]['Recurrence']) == 'Monthly') {    
-  //         document.getElementById("Recurrence_hide").style.display = "block";
-  //         document.getElementById("div_endDate_new").style.display = "block";
-  //         // document.getElementById("div_endDate").style.display = "none";
-  //         document.getElementById("Monthly_121_new").style.display = "block";
-  //         this._labelName = "Schedule Date";
-  //         this.selectedrecuvalue = '3';  
-  //         let Recc = [];
-  //         var ret1 = (this.EventScheduledjson[0]['Recurrence_values']);
-  //         Recc = ret1.split(",");
-  //         for (var i = 0; i < Recc.length; i++) {
-  //           this.MonthArr.forEach(element => {
-  //             if (element.value == Recc[i]) {
-  //               element.checked = true;
-  //             }
-  //           });
-  //         }
-        
-  //          // New code Monthly start 
-  //          const day = new Date(this._StartDate).getDate().toString();  
-  //           if(ret1 != day){
-  //             this.MonthArr.forEach(item => item.checked = false);
-  //             let d2=new Date(this._StartDate);
-  //             const index2=d2.getDate();
-  //             this.MonthArr[index2-1].checked=true;
-  //             this.RecurrValueMonthly =true;
-  //           } else if (ret1 == day){
-  //             this.MonthArr.forEach(item => item.checked = false);
-  //             let d2=new Date(this._StartDate);
-  //             const index2=d2.getDate();
-  //             this.MonthArr[index2-1].checked=true;
-  //             this.RecurrValueMonthly =true;
-
-  //           } 
-  //          // New code Monthly End 
-
-  //         this.MonthArr.forEach((item:any)=>{
-  //           if(item.checked){ 
-  //              const d_no=Number.parseInt(item.value);
-  //              this.mtgOnDays.push(d_no+([1,21,31].includes(d_no)?'st':[2,22].includes(d_no)?'nd':[3,23].includes(d_no)?'rd':'th'));
-  //             }
-  //         });
-
-  //       }
-
-  //       this.previousValue=this.selectedrecuvalue;
-
-  //       if (this.ScheduleType == 'Task') {
-
-  //         this.EventScheduledjson[0]['Ed_Time']
-  //         this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
-  //         this.MasterCode = JSON.parse(this.EventScheduledjson[0]['Project_code']);
-
-  //         this.MasterCode = (this.MasterCode[0].stringval);
-
-  //         document.getElementById("subtaskid").style.display = "flex";
-  //         // document.getElementById("Link_Name").style.display = "none";
-  //         document.getElementById("Guest_Name").style.display = "none";
-  //         document.getElementById("Location_Name").style.display = "none";
-  //         document.getElementById("Descrip_Name").style.display = "none";
-  //         document.getElementById("core_viw123").style.display = "flex";
-  //         document.getElementById("core_viw121").style.display = "none";
-  //         document.getElementById("core_viw222").style.display = "none";
-
-  //         document.getElementById("core_Dms").style.display = "none";
-  //         // document.getElementById("Monthly_121").style.display = "none";
-  //         // document.getElementById("weekly_121").style.display = "none";
-  //         document.getElementById("meeting-online-add").style.display = "none";
-
-  //       }
-  //       else if (this.ScheduleType == 'Event') {
-
-  //         this.GetProjectAndsubtashDrpforCalender();
-  //         // this.GetMemosByEmployeeId();
-  //         this.allAgendas = this.EventScheduledjson[0]['Agendas'].map(item => ({ index: item.AgendaId, name: item.Agenda_Name }));
-  //         this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
-  //         this.MasterCode = [];
-  //         this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
-  //         this.projectsSelected=[];
-  //         this.arr.forEach(element => {
-  //           this.MasterCode.push(element.stringval);
-  //           this.projectsSelected.push({  Project_Code:element.stringval,  Project_Name:element.Project_Name, BlockNameProject:element.BlockNameProject,  TM_DisplayName:element.TM_DisplayName });
-  //         });
-  //         this.Portfolio = [];
-  //         this.Portfolio1 = [];
-  //         this.arr1 = JSON.parse(this.EventScheduledjson[0]['Portfolio_Name']);
-  //         this.arr1.forEach(element => {
-  //           this.Portfolio.push(element.numberval);
-  //         });
-
-  //         this.ngEmployeeDropdown = [];
-  //         this.ngEmployeeDropdown1 = [];
-  //         this.arr2 = JSON.parse(this.EventScheduledjson[0]['Add_guests']);
-  //         this.arr2.forEach(element => {
-  //           this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
-  //         });
-
-  //         this.SelectDms = [];
-  //         this.SelectDms1 = [];
-  //          this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
-  //           this.Memos_List = JSON.parse(data['JsonData']);
-  //           let arr3 = [];
-  //           var str = (this.EventScheduledjson[0]['DMS_Name']);
-  //           arr3 = str.split(",");
-  //           for (var i = 0; i < arr3.length; i++) {
-  //             this.Memos_List.forEach(element => {
-  //               if (element.MailId == arr3[i]) {
-  //                 this.SelectDms.push(element.MailId);
-  //               }
-  //             });
-  //           }
-  //         });
-       
-
-  //         this.Location_Type = (this.EventScheduledjson[0]['Location']);
-  //         this._meetingroom = this.Location_Type?true:false;
-  //         this.Description_Type = (this.EventScheduledjson[0]['Description']);
-  //         document.getElementById("subtaskid").style.display = "none";
-  //         document.getElementById("Guest_Name").style.display = "flex";
-  //         document.getElementById("meeting-online-add").style.display = "flex";
-  //         document.getElementById("Location_Name").style.display =this._meetingroom==true?"flex":'none';
-  //         document.getElementById("Descrip_Name").style.display = "flex";
-  //         document.getElementById("core_viw121").style.display = "flex";
-  //         document.getElementById("core_viw123").style.display = "none";
-  //         document.getElementById("core_viw222").style.display = "flex";
-  //         document.getElementById("core_Dms").style.display = "flex";
-  //         this.updateCharacterCount();
-
-
-
-  //         const TEsb = document.getElementById('TaskEvent-Sidebar')
-  //         TEsb.addEventListener('scroll', () => {
-  //           this.autocompletes.forEach((ac) => {
-  //             if (ac.panelOpen)
-  //               ac.updatePosition();
-  //           });
-  //         })
-
-  //       }
-
-
-
-  //         // valid starttimearr and endtimearr setting start.
-  //         let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
-  //         let _currentdate=moment();
-  //         if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
-  //         {
-  //             const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
-  //             const index:number=this.StartTimearr.findIndex((item:any)=>{
-
-  //                 const t=moment(item,'h:mm A');
-  //                 const result=t>=ct;
-  //                 return result;
-  //             });
-  //             this.validStartTimearr=this.StartTimearr.slice(index);
-  //         }
-  //         else
-  //         this.validStartTimearr=[...this.StartTimearr];
-
-
-
-  //         // this.timingarryend = [];
-  //         // this.Time_End = [];
-  //         // this.Time_End = [...this.StartTimearr];
-  //         // let _index = this.Time_End.indexOf(this.Startts);
-  //         // if (_index + 1 === this.Time_End.length) {
-  //         //   _index = -1;
-  //         // }
-  //         // this.timingarryend = this.Time_End.splice(_index + 1);
-  //         // this.EndTimearr = this.timingarryend;
-  //         // valid starttimearr and endtimearr setting end.
-
-  //         this.Time_End = [];
-  //         this.Time_End = [...this.AllEndtime,...this.AllEndtime];
-  //         let _from = this.Time_End.indexOf(this.Startts);
-  //         const eventmaxDuration=286;
-  //         let _to=_from+eventmaxDuration;
-  //         this.EndTimearr=this.Time_End.slice(_from,_to);
-
-  //     });
-  //   this.closeevearea();
-  // }
 
 
 
@@ -6504,7 +5912,7 @@ sortbyCurrent_Time(){
 
 
   // }
-  selectStartDate(event) {
+  selectStartDate(event) { debugger
 
     this._StartDate = event;
     let sd = event.format("YYYY-MM-DD").toString();
@@ -6512,14 +5920,6 @@ sortbyCurrent_Time(){
     this.minDate = sd;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Scheduled_date = sd;
-    // this.CalenderService.NewGetPendingAvailability(this._calenderDto).subscribe((data)=>{
-    //   if(data['message']=='1'){
-    //     this.pendingavailability==false;
-    //   }
-    //   else{
-    //     this.pendingavailability==true;
-    //   }
-    // });
     var start = moment(this.minDate);
     var end = moment(this.maxDate);
     const format2 = "YYYY-MM-DD";
@@ -6665,6 +6065,18 @@ console.log(this.dayArr,'sdcsadcasdcssad')
 
   ////test end  ///////////////////////////////////////////
 
+
+
+
+
+
+
+
+
+
+
+
+  
 }
 
   onfocus(val) {
@@ -8701,7 +8113,7 @@ _azureMessage:any="";
 selectedItemsTippy:any;
 
 
-projectmodal(modaltype:'project'|'portfolio'|'SMail'|'participant'){
+projectmodal(modaltype:'project'|'portfolio'|'S Mail'|'participant'){
   
   document.getElementById("projectmodal").style.display = "block";
   document.getElementById("projectmodal").classList.add("show");
@@ -8769,9 +8181,9 @@ projectmodal(modaltype:'project'|'portfolio'|'SMail'|'participant'){
   companies_Arr:any;
 
 
-  projectmodaltype:'project'|'portfolio'|'SMail'|'participant'|undefined;
+  projectmodaltype:'project'|'portfolio'|'S Mail'|'participant'|undefined;
 
-  projectmodals(modaltype:'project'|'portfolio'|'SMail'|'participant'){ 
+  projectmodals(modaltype:'project'|'portfolio'|'S Mail'|'participant'){ 
 
     document.getElementById("schedule-event-modal-backdrop").style.display = "block";
     document.getElementById("projectmodal").style.display = "block";
@@ -8829,7 +8241,7 @@ projectmodal(modaltype:'project'|'portfolio'|'SMail'|'participant'){
        selectedinto='Portfolio';
        property_name='portfolio_id';
     }
-    else if(this.projectmodaltype=='SMail')
+    else if(this.projectmodaltype=='S Mail')
     {
       keyname='Subject';
       arrtype=this.Memos_List;
@@ -8852,7 +8264,7 @@ projectmodal(modaltype:'project'|'portfolio'|'SMail'|'participant'){
     if(this.linkSMail==false  && this.linkPortf==false && this.linkProject==false){
       this.FilteredResults=result;
     }
-    else if(this.projectmodaltype=='SMail' && this.linkSMail==true ){
+    else if(this.projectmodaltype=='S Mail' && this.linkSMail==true ){
       this.FilteredResults=result;
       this.FilteredResults=this.FilteredResults.filter((res)=>{
       return !this._MemosSubjectList.some(att => att.MailId === res.MailId);
@@ -8890,7 +8302,7 @@ projectmodal(modaltype:'project'|'portfolio'|'SMail'|'participant'){
              this.close_projectmodal();
         };break;
 
-       case 'SMail':{
+       case 'S Mail':{
             if(!this.SelectDms)   // if SelectDms is null,undefined,''
               this.SelectDms=[];
 
@@ -8994,7 +8406,7 @@ projectmodal(modaltype:'project'|'portfolio'|'SMail'|'participant'){
           case 'portfolio':{
             this.onPortfolioFilter();
           };break;
-          case 'SMail':{
+          case 'S Mail':{
             this.onDMSFilter();
           };break;
           case 'participant':{
@@ -9269,6 +8681,12 @@ onParticipantFilter(){
       return;
     }
 
+    if(this.privateMeeting == true){
+      this.MasterCode = null;
+      this.ngEmployeeDropdown = null;
+      this.Portfolio = null;
+      this.SelectDms = null;
+    } 
 
     let finalarray = [];
     this.daysSelectedII = [];
@@ -9443,223 +8861,16 @@ debugger
   }
 
 
-  onCustomBtnClicked(){
-    this.repeatEvent();
-  }
+  // onCustomBtnClicked(){
+  //   this.repeatEvent();
+  // }
 
-
-
-
-  repeatEventremove69() {
-  
-    document.getElementById("div_endDate_new").style.display = "none";
-    document.getElementById("Schenddate").style.display = "none";
-
-    this.editTask = false;
-    this.copyTask = false;
-    this.create = false;
-    this.eventRepeat=true;
-
-
-    this.Schedule_ID = this._calenderDto.Schedule_ID;
-    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => {
-      
-        this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
-        this.Schedule_ID = 0;   // schedule id.
-        this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];  // event or task
-        this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
-      
-        this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
-        this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
-        this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
-        this._OldRecurranceValues = this.EventScheduledjson[0]['Recurrence_values'];
-        this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
-        this.Addressurl = this.EventScheduledjson[0]['Addressurl'];             // url
-        this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];   // file attachment
-     
-        // if (this._FutureEventTasksCount > 0) {
-
-        // }
-        // else if (this._FutureEventTasksCount == 0) {
-
-        // }
-        this.Close_Repeat_Meeting();
-        document.getElementById("div_recurrence").style.display = "block";
-        document.getElementById("Monthly_121_new").style.display = "none";
-        document.getElementById("weekly_121_new").style.display = "none";
-        document.getElementById("mysideInfobar_schd").classList.add("open_sidebar");
-     
-       
-
-        this.AllDatesSDandED = [];
-        var jsonData = {};
-        var columnName = "Date";
-        jsonData[columnName] = (moment(this.minDate).format("YYYY-MM-DD"));//this.EventScheduledjson[0]['Schedule_date'];
-        var IsActive = "IsActive";
-        jsonData[IsActive] = 1;
-        var Day = "Day";
-        jsonData[Day] = "NA";
-        var DayNum = "DayNum";
-        jsonData[DayNum] = "NA";
-        this.AllDatesSDandED.push(jsonData);
-        this._StartDate = moment().format("YYYY-MM-DD").toString();
-        this.minDate = moment().format("YYYY-MM-DD").toString();
-        if (this.minDate > this._StartDate) {
-          this.minDate = this._StartDate;
-        }
-        this._EndDate = moment().add(3, 'months').format("YYYY-MM-DD").toString();
-
-
-
-     // valid starttimearr and endtimearr setting start.
-          let _inputdate=moment(this._StartDate,'YYYY-MM-DD');
-          let _currentdate=moment();
-          if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
-          {
-              const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
-              const index:number=this.StartTimearr.findIndex((item:any)=>{
-
-                  const t=moment(item,'h:mm A');
-                  const result=t>=ct;
-                  return result;
-              });
-              this.validStartTimearr=this.StartTimearr.slice(index);
-          }
-          else
-          this.validStartTimearr=[...this.StartTimearr];
-
-
-
-          // this.timingarryend = [];
-          // this.Time_End = [];
-          // this.Time_End = [...this.StartTimearr];
-          // let _index = this.Time_End.indexOf(this.Startts);
-          // if (_index + 1 === this.Time_End.length) {
-          //   _index = -1;
-          // }
-          // this.timingarryend = this.Time_End.splice(_index + 1);
-          // this.EndTimearr = this.timingarryend;
-          // valid starttimearr and endtimearr setting end.
-
-
-
-          this.Time_End = [];
-          this.Time_End = [...this.AllEndtime,...this.AllEndtime];
-          let _from = this.Time_End.indexOf(this.Startts);
-          const eventmaxDuration=286;
-          let _to=_from+eventmaxDuration;
-          this.EndTimearr=this.Time_End.slice(_from,_to);
-
-
-
-
-         if (this.ScheduleType == 'Event') {
-          this.allAgendas=this.EventScheduledjson[0]['Agendas'].map(item=>({index:item.AgendaId,name:item.Agenda_Name}));
-          this.GetProjectAndsubtashDrpforCalender();
-          this.Title_Name = (this.EventScheduledjson[0]['Task_Name']);
-          this.MasterCode = [];
-          this.projectsSelected=[];
-          this.arr = JSON.parse(this.EventScheduledjson[0]['Project_code']);
-          this.arr.forEach(element => {
-            this.MasterCode.push(element.stringval);
-            this.projectsSelected.push({  Project_Code:element.stringval,  Project_Name:element.Project_Name, BlockNameProject:element.BlockNameProject, TM_DisplayName:element.TM_DisplayName });
-          });
-          this.Portfolio = [];
-          this.Portfolio1 = [];
-          this.arr1 = JSON.parse(this.EventScheduledjson[0]['Portfolio_Name']);
-          this.arr1.forEach(element => {
-            this.Portfolio.push(element.numberval);
-          });
-
-          this.ngEmployeeDropdown = [];
-          this.ngEmployeeDropdown1 = [];
-          this.arr2 = JSON.parse(this.EventScheduledjson[0]['Add_guests']);
-          this.arr2.forEach(element => {
-            this.ngEmployeeDropdown = [...this.ngEmployeeDropdown, element.stringval];
-          });
-
-
-          this.SelectDms = [];
-          this.SelectDms1 = [];
-
-          this._LinkService.GetMemosByEmployeeCode(this.Current_user_ID).subscribe((data) => {
-                 this.Memos_List = JSON.parse(data['JsonData']);
-                 console.log(this.Memos_List, "test iiii");
-
-                 let arr3 = [];
-                 var str = (this.EventScheduledjson[0]['DMS_Name']);
-                 arr3 = str.split(",");
-                 for (var i = 0; i < arr3.length; i++) {
-                      this.Memos_List.forEach(element => {
-                        if (element.MailId == arr3[i]) {
-                          this.SelectDms.push(element.MailId);
-                        }
-                      });
-                 }
-
-          });
-
-
-          this.Location_Type = (this.EventScheduledjson[0]['Location']);
-
-          this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
-
-          if(this.Link_Details != ''){
-            if(!this.Link_Details.includes('<a href=')){
-              var details = this.Link_Details.split(', ')
-              this.Link_Details= details[0].split('Meeting link:-')[1].trim()=='undefined' || details[0].split('Meeting link:-')[1].trim()== 'null' ? '': details[0].split('Meeting link:-')[1].trim();
-              this.Meeting_Id= details[1].split('Meeting Id:-')[1].trim() == 'undefined' || details[1].split('Meeting Id:-')[1].trim() == 'null' ? '' : details[1].split('Meeting Id:-')[1].trim();
-              this.Meeting_password= details[2].split('Meeting password:-')[1].trim() == 'undefined' || details[2].split('Meeting password:-')[1].trim() == 'null' ? '' : details[2].split('Meeting password:-')[1].trim();
-              console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, "Link_Details11")
-            }
-            else if(this.Link_Details.includes('<a href=')){
-              this.Meeting_Id = this.Link_Details.match(/[\w.-]+@[\w.-]+\.\w+/)?.[0];
-              this.Meeting_password = this.Link_Details.match(/password\s*:\s*(\d+)/)?.[1] || '';
-              this.Link_Details = this.Link_Details.match(/https?:\/\/\S+/)[0].replace(/"$/, '');
-            
-              console.log(this.Link_Details,this.Meeting_Id,this.Meeting_password, 'Link_Details 69');
-            }
-           }
-           
-          this.Description_Type = (this.EventScheduledjson[0]['Description']);
-          document.getElementById("subtaskid").style.display = "none";
-          document.getElementById("Guest_Name").style.display = "flex";
-          document.getElementById("Location_Name").style.display = "none";
-          document.getElementById("Descrip_Name").style.display = "flex";
-          document.getElementById("core_viw121").style.display = "flex";
-          document.getElementById("core_viw123").style.display = "none";
-          document.getElementById("core_viw222").style.display = "flex";
-          document.getElementById("core_Dms").style.display = "flex";
-       
-      
-          this._StartDate=null;
-          this.disablePreviousDate = null;
-          setTimeout(()=>{
-            this._StartDate=this.disablePreviousTodayDate;
-            this.disablePreviousDate = this.disablePreviousTodayDate;
-          },0);
-        
-          // const TEsb = document.getElementById('TaskEvent-Sidebar')
-          // TEsb.addEventListener('scroll', () => {
-          //   this.autocompletes.forEach((ac) => {
-          //     if (ac.panelOpen)
-          //       ac.updatePosition();
-          //   });
-          // })
-
-         }
-
-      });
-
-    this.closeevearea();
-
-  }
-
+Popuploading: boolean = false;
+repeatDate:any;
 
 repeatEvent() {
+  this.Popuploading = true 
   document.getElementById("div_endDate_new").style.display = "none";
-  // this.createTaskEvent=false;
   this.editTask = false;
   this.copyTask = false;
   this.create = false;
@@ -9673,7 +8884,8 @@ repeatEvent() {
       this.Schedule_ID = 0;   // schedule id.
       this.ScheduleType = (this.EventScheduledjson)[0]['Schedule_Type'];  // event or task
       this.EventNumber = this.EventScheduledjson[0]['EventNumber'];
-
+      this.repeatDate = this.EventScheduledjson[0]['Schedule_date'];
+      this.repeatDate = this.repeatDate.split('T')[0];
       this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
       this._AllEventTasksCount = this.EventScheduledjson[0]['AllEventsCount'];
       this._OldRecurranceId = this.EventScheduledjson[0]['RecurrenceId'];
@@ -9681,7 +8893,81 @@ repeatEvent() {
       this._Oldstart_date = this.EventScheduledjson[0]['StartDate'];
       this.Addressurl = this.EventScheduledjson[0]['Addressurl'];             // url
       this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];   // file attachment
+    
+   
+        console.log(this.repeatDate,this.today);
+          if(this.repeatDate != this.today){
+            this._StartDate=null;
+            this.disablePreviousDate = null;
+            
+            setTimeout(()=>{
+              this._StartDate=this.disablePreviousTodayDate;
+              this.disablePreviousDate = this.disablePreviousTodayDate;
 
+           // valid starttimearr and endtimearr setting start.
+            let _inputdate=moment(this._StartDate,'YYYY-MM-DD'); 
+            let _currentdate=moment();
+            if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+            {
+                const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+                const index:number=this.StartTimearr.findIndex((item:any)=>{
+                    const t=moment(item,'h:mm A');
+                    const result=t>=ct;
+                    return result;
+                });
+                this.validStartTimearr=this.StartTimearr.slice(index);
+            } else
+
+            this.validStartTimearr=[...this.StartTimearr];
+            this.Time_End = [];
+            this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+            let _from = this.Time_End.indexOf(this.Startts);
+            const eventmaxDuration=286;
+            let _to=_from+eventmaxDuration;
+            this.EndTimearr=this.Time_End.slice(_from,_to);
+
+
+            },0);
+         }else{
+            const nextDay = new Date();
+            nextDay.setDate(nextDay.getDate() + 1);
+            this._StartDate=null;
+            this.disablePreviousDate = null;
+            this.disablePreviousTodayDate = null;
+
+            setTimeout(()=>{
+              this._StartDate=nextDay;
+              this.disablePreviousDate =nextDay;
+              this.disablePreviousTodayDate = nextDay;
+              // valid starttimearr and endtimearr setting start.
+            let _inputdate=moment(this._StartDate,'YYYY-MM-DD'); 
+            let _currentdate=moment();
+            if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+            {
+                const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+                const index:number=this.StartTimearr.findIndex((item:any)=>{
+                    const t=moment(item,'h:mm A');
+                    const result=t>=ct;
+                    return result;
+                });
+                this.validStartTimearr=this.StartTimearr.slice(index);
+            } else
+
+            this.validStartTimearr=[...this.StartTimearr];
+            this.Time_End = [];
+            this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+            let _from = this.Time_End.indexOf(this.Startts);
+            const eventmaxDuration=286;
+            let _to=_from+eventmaxDuration;
+            this.EndTimearr=this.Time_End.slice(_from,_to);
+
+
+
+            },0);
+         }
+
+
+      this.Popuploading = false 
       document.getElementById("div_recurrence").style.display = "block";
       document.getElementById("Monthly_121_new").style.display = "none";
       document.getElementById("weekly_121_new").style.display = "none";
@@ -9693,7 +8979,7 @@ repeatEvent() {
       document.getElementById("nav-task").style.display = "none";
       document.getElementById("create-event-div").style.display = "block";
       document.getElementById("create-task-div").style.display = "none";
-   
+
 
       this.AllDatesSDandED = [];
       var jsonData = {};
@@ -9775,15 +9061,10 @@ repeatEvent() {
           }
          }
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
-      
-        this._StartDate=null;
-        this.disablePreviousDate = null;
-        setTimeout(()=>{
-          this._StartDate=this.disablePreviousTodayDate;
-          this.disablePreviousDate = this.disablePreviousTodayDate;
-        },0);
-
        }
+
+
+
 
     });
   
