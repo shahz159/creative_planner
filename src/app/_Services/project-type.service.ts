@@ -455,7 +455,6 @@ export class ProjectTypeService {
   GetRACISandNonRACISEmployeesforMoredetails(prjCode,empno) {
     this.ObjSubTaskDTO.Project_Code = prjCode;
     this.ObjSubTaskDTO.Emp_No = empno;
-    console.log("---->",this.rootUrl + "TestAPI/NewGetRACISandNonRACISEmployees");
     return this.http.post(this.rootUrl + "TestAPI/NewGetRACISandNonRACISEmployees", this.ObjSubTaskDTO);
   }
 

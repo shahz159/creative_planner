@@ -251,3 +251,53 @@ input[type=number] {
 }
 
 /*file uploading loader*/
+
+
+
+/*actual working days allocated hours validation css start*/
+.attach-tippy{
+  position: relative;
+}
+.attach-tippy .st-line{
+  min-width: 13rem;
+  padding: 1rem 1rem;
+  position: absolute;
+  will-change: transform;
+  top: 0px;
+  left: 0px;
+  transform: translate3d(-110px, 23px, 0px);
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
+  border-radius: .25rem;
+  transition: all .15s ease-in-out, color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  display: none;
+  z-index: 2;
+}
+.attach-tippy-div:hover .st-line{
+  display: block;
+}
+.attach-tippy:hover .st-line{
+  display: block;
+}
+
+
+.off-days-span
+{
+    transform: translate3d(-160px, 20px, 0px) !important;
+}
+
+.off-days-span .days-list
+{
+    max-height: 130px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-right: 8px;
+}
+
+
+/*actual working days allocated hours validation css end*/

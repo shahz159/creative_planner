@@ -5620,7 +5620,7 @@ check_allocation() {
   processingPrjComplete:boolean=false;
 
 
-  completeProject(){
+  completeProject(){  
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
     fd.append("Team_Autho", this.projectInfo.AuthorityEmpNo);
@@ -5669,7 +5669,7 @@ check_allocation() {
 
   }
 
-  completeProjectWithAttachment(){
+  completeProjectWithAttachment(){   debugger
 
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
@@ -5688,7 +5688,7 @@ check_allocation() {
     this.fileInUpload={filename:this.selectedFile.name, uploaded:0, processingUploadFile:false};   // store file uploading info.
 
     this.service._AzureUploadProjectComplete(fd).subscribe({
-      next:(event1: HttpEvent<any>) => {
+      next:(event1: HttpEvent<any>) => {  debugger
 
         switch (event1.type) {
           case HttpEventType.Sent:
@@ -5715,7 +5715,7 @@ check_allocation() {
               //once file attachment uploaded successfully update project status.
 
               this.service._UpdateProjectCompleteCore(fd).
-              subscribe((event: HttpEvent<any>) => {
+              subscribe((event: HttpEvent<any>) => {   debugger
 
                 switch (event.type) {
                   case HttpEventType.Sent:
