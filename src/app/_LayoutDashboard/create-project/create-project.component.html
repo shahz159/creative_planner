@@ -1672,7 +1672,8 @@
                                   <!-- <span *ngIf="maxAllocation&&Allocated_Hours>maxAllocation" style="color:rgb(217,48,37)">Maximum <b>{{maxAllocation}}</b> hours allowed for given duration.</span> -->
                                   <!-- (<b>48</b> hours/week limit) -->
                                       <div *ngIf="Prjstartdate&&Prjenddate&&maxAllocation" class="mt-1 px-1 d-flex justify-content-between align-items-center">
-                                       <span class="fs-7" style="font-weight: 500;"  [ngClass]="{'text-danger':(maxAllocation&&Allocated_Hours>maxAllocation),'text-dark':!(maxAllocation&&Allocated_Hours>maxAllocation)}">Max hours allowed: {{maxAllocation}} hours</span>
+                                       <span *ngIf="!(maxAllocation&&Allocated_Hours>maxAllocation)" class="fs-7 text-dark" style="font-weight: 500;">Estimated Allocated hours: {{maxAllocation}}</span>
+                                       <span  *ngIf="(maxAllocation&&Allocated_Hours>maxAllocation)" class="fs-7" style="font-weight: 500; color:rgb(217,48,37)">Max allowed: {{maxAllocation}} hours</span>
                                        
                                        <span class="attach-tippy font-weight-400">
                                             <span>
@@ -2901,7 +2902,7 @@
                                     </div>
                                     <div *ngIf="projectInfo">
                                       <ng-container *ngIf="projectInfo.isRespActive=='1'">
-                                            <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!selectedOwnResp&&notProvided}"   [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
+                                            <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!selectedOwnResp&&notProvided}"   [(ngModel)]="selectedOwnResp" (ngModelChange)="onProjectResponsibleChanged()" placeholder="Select new responsible">
                                                 <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"  [disabled]="item.Emp_No==selectedOwner">
                                                     {{item.RACIS}}
                                                 </ng-option>
@@ -2969,7 +2970,7 @@
                             <div class="date-border d-flex" [ngClass]="{'error-date':!Start_Date&&notProvided}">
                                 <input class="form-control curser-pointer" placeholder="Select start date" [matDatepicker]="startEditsPicker" (click)="startEditsPicker.open()" [(ngModel)]="Start_Date" [min]="todayDate"  
                                 (dateChange)="validatePrjStartDate(); computePrjDuration(); setPrjMaxAllocatableHrs();" 
-                                [matDatepickerFilter]="isDateSelectable"
+                                [matDatepickerFilter]="isPrjDateSelectable"
                                 />
                                 <div class="input-group-text p-0">
                                   <mat-datepicker-toggle matSuffix [for]="startEditsPicker"></mat-datepicker-toggle>
@@ -2988,7 +2989,7 @@
                                       (click)="strtEditsPicker.open();"
                                        placeholder="Select end date"
                                       class="form-control" name="date"
-                                      [matDatepickerFilter]="isDateSelectable"
+                                      [matDatepickerFilter]="isPrjDateSelectable"
                                       />
                                   <div class="input-group-text p-0">
                                       <mat-datepicker-toggle matSuffix [for]="strtEditsPicker">
@@ -3023,7 +3024,7 @@
                         <div class="form-group mb-2 Ic_ed">
                             <div class="kt-info-lable-v">Duration</div>
                             <div class="input-icon Sub_In_ed" *ngIf="(projectInfo&&(projectInfo.Project_Type==='Core Tasks'||projectInfo.Project_Type==='Secondary Tasks'||projectInfo.Project_Type==='To do List'))">
-                              <input *ngIf="PrjDuration_!=null&&PrjDuration_!=undefined" type="text" class="form-control text-muted" style="font-weight:500" readonly [value]="PrjDuration_>1?PrjDuration_+' days': PrjDuration_+' day'" />
+                                <input *ngIf="(PrjDuration_!=null&&PrjDuration_!=undefined)" type="text" class="form-control text-muted" style="font-weight:500" readonly [value]="PrjDuration_>1?PrjDuration_+' days': PrjDuration_+' day'" />
                              </div>
                           </div>
                       </div>
@@ -3040,8 +3041,10 @@
                               <!-- <span class="fs-7" *ngIf="p_maxAllocatableHrs&&Allocated > p_maxAllocatableHrs" style="color:rgb(217,48,37)">Maximum <b>{{p_maxAllocatableHrs}}</b> hours allowed for given duration. (<b>48</b> hours/week limit).</span> -->
 
                              <div *ngIf="Start_Date&&End_Date&&p_maxAllocatableHrs" class="mt-1 px-1 d-flex justify-content-between align-items-center">
-                                       <span class="fs-7" style="font-weight: 500;"  [ngClass]="{'text-danger':(p_maxAllocatableHrs&&Allocated>p_maxAllocatableHrs),'text-dark':!(p_maxAllocatableHrs&&Allocated>p_maxAllocatableHrs)}">Max hours allowed: {{p_maxAllocatableHrs}} hours</span>
-                                       
+
+                                       <span *ngIf="!(p_maxAllocatableHrs&&Allocated>p_maxAllocatableHrs)" class="fs-7 text-dark" style="font-weight: 500;">Estimated Allocated hours: {{p_maxAllocatableHrs}}</span>
+                                       <span  *ngIf="(p_maxAllocatableHrs&&Allocated>p_maxAllocatableHrs)" class="fs-7" style="font-weight: 500; color:rgb(217,48,37)">Max allowed: {{p_maxAllocatableHrs}} hours</span>
+                                     
                                        <span class="attach-tippy font-weight-400">
                                             <span>
                                               <svg width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="color: #4377ff;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="info-circle"> <g> <circle cx="12" cy="12" data-name="--Circle" fill="none" id="_--Circle" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7280000000000002"></circle> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" x1="12" x2="12" y1="12" y2="16"></line> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" x1="12" x2="12" y1="8" y2="8"></line> </g> </g> </g> </g>
@@ -3050,7 +3053,7 @@
                                            <div class="st-line off-days-span">
                                             <h6 class="mb-0">{{p_maxAllocatableHrs}} hours</h6>
                                             <div class="days-list">
-                                              <div class="py-1 text-muted text-nowrap">{{perDayAlhr_Limit}} hrs/day × {{total_WorkingDays}} days</div>
+                                              <div class="py-1 text-muted text-nowrap">{{prjResperDayAlhr_Limit}} hrs/day × {{total_WorkingDays}} days</div>
                                             </div>
                                           </div>
                                         </span>
@@ -3233,7 +3236,7 @@
                               Responsible
                           </div>
                           <div *ngIf="PrjActionsInfo">
-                                  <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!selectedOwnResp&&notProvided}" [(ngModel)]="selectedOwnResp" (ngModelChange)="getNewActnCost()" placeholder="Select new responsible" (change)="OGresponsible=selectedOwnResp">
+                                  <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!selectedOwnResp&&notProvided}" [(ngModel)]="selectedOwnResp" (ngModelChange)="onActionResponsibleChanged()" placeholder="Select new responsible" (change)="OGresponsible=selectedOwnResp">
                                         <ng-option [value]="item.Emp_No" *ngFor="let item of actionresponsible_dropdown"
                                                 [disabled]="item.Emp_No==selectedOwner">
                                            {{item.RACIS}}
@@ -3305,7 +3308,9 @@
                           <div class="kt-info-lable-v">Start date</div>
                             <div class="date-border d-flex" [ngClass]="{'error-date':!Start_Date&&notProvided}">
                                 <input type="text" class="form-control cursor-pointer"
-                                [(ngModel)]="Start_Date" placeholder="Select start date" [matDatepicker]="ActionstartDatepicker"  [min]="todayDate" (click)="ActionstartDatepicker.open()"  (dateChange)="validateActnStartDate();  computeActnDuration();  setActnMaxAllocatableHrs();"/>
+                                [(ngModel)]="Start_Date" placeholder="Select start date" [matDatepicker]="ActionstartDatepicker"  [min]="todayDate" (click)="ActionstartDatepicker.open()"  (dateChange)="validateActnStartDate();  computeActnDuration();  setActnMaxAllocatableHrs();"
+                                  [matDatepickerFilter]="isActnDateSelectable"
+                                />
                                 <div class="input-group-text p-0">
                                   <mat-datepicker-toggle matSuffix [for]="ActionstartDatepicker">
                                   </mat-datepicker-toggle>
@@ -3322,7 +3327,9 @@
                               <input class="form-control curser-pointer" [(ngModel)]="End_Date" (dateChange)="validateActnEndDate();  computeActnDuration(); setActnMaxAllocatableHrs();"
                                   [min]="Start_Date" [matDatepicker]="ActionEnd_Datepicker"
                                   (click)="ActionEnd_Datepicker.open();"   placeholder="Select end date"
-                                  class="form-control" name="date" />
+                                  class="form-control" name="date" 
+                                    [matDatepickerFilter]="isActnDateSelectable"
+                                  />
                               <div class="input-group-text p-0">
                                   <mat-datepicker-toggle matSuffix [for]="ActionEnd_Datepicker">
                                   </mat-datepicker-toggle>
@@ -3331,6 +3338,23 @@
       
                           </div>
                           <span style="color:red" *ngIf="!End_Date&&notProvided">Please select end date.</span>
+
+                          <div *ngIf="Start_Date&&End_Date&&total_actnWorkingDays" class="mt-1 px-1 d-flex justify-content-between align-items-center">
+                                <span class="text-dark fs-7" style="font-weight: 500;">Total working days : {{total_actnWorkingDays}}</span>
+                                <span class="attach-tippy font-weight-400">
+                                            <span>
+                                              <svg width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="color: #4377ff;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="info-circle"> <g> <circle cx="12" cy="12" data-name="--Circle" fill="none" id="_--Circle" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7280000000000002"></circle> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" x1="12" x2="12" y1="12" y2="16"></line> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" x1="12" x2="12" y1="8" y2="8"></line> </g> </g> </g> </g>
+                                               </svg>
+                                            </span>
+                                            <div *ngIf="total_actnOffDays" class="st-line off-days-span">
+                                                <h6>Non-working days: {{total_actnOffDays.length}}</h6>
+                                                <div class="days-list">
+                                                <div class="py-1 text-muted text-nowrap" *ngFor="let offdays of total_actnOffDays">{{ offdays.date|date:'dd-MM-yyyy'}} - <span class="text-muted">{{offdays.reason}}</span></div>
+                                               </div>
+                                            </div>
+                                 </span>
+                          </div>
+
                     </div>
                  </div>
               </div>
@@ -3349,13 +3373,37 @@
                         <div class="form-group mb-2 Ic_ed">
                             <div class="kt-info-lable-v"> Allocated hours
                                 <div class="input-icon Sub_In_ed">
-                                  <input class="form-control" placeholder="Enter allocated hour" [(ngModel)]="Allocated" (ngModelChange)="getNewActnCost()" pattern="[0-9]*" (input)="validateInput()" (keypress)="restrictToNumbers($event)"  
+                                  <input class="form-control" placeholder="Enter allocated hour" [(ngModel)]="Allocated" (ngModelChange)="getNewActnCost();" pattern="[0-9]*" (input)="validateInput()" (keypress)="restrictToNumbers($event)"  
                                    [ngClass]="{'error-border':(a_maxAllocatableHrs&&Allocated > a_maxAllocatableHrs)||(!Allocated)||(Allocated==0)}" />
                                    <div class="d-flex flex-column">
-                                    <span *ngIf="a_maxAllocatableHrs&&Allocated > a_maxAllocatableHrs" style="color:red" class="fs-7"> Maximum <b>{{a_maxAllocatableHrs}}</b> hours allowed for given duration. (<b>48</b> hours/week limit).</span> 
+                                    <!-- <span *ngIf="a_maxAllocatableHrs&&Allocated > a_maxAllocatableHrs" style="color:red" class="fs-7"> Maximum <b>{{a_maxAllocatableHrs}}</b> hours allowed for given duration. (<b>48</b> hours/week limit).</span>  -->
                                     <span *ngIf="(!Allocated)" style="color:red" class="fs-7">Allocated hours required. Hours should not be in decimal. </span>
                                     <span *ngIf="(Allocated==0)" style="color:red" class="fs-7">Allocated hours cannot be 0, please enter a value, It accept only numeric and non-negative value. </span>
                                   </div> 
+
+                                   <div *ngIf="Start_Date&&End_Date&&a_maxAllocatableHrs" class="mt-1 px-1 d-flex justify-content-between align-items-center">
+                                       <span *ngIf="!(a_maxAllocatableHrs&&Allocated>a_maxAllocatableHrs)" class="fs-7 text-dark" style="font-weight: 500;">Estimated Allocated hours: {{a_maxAllocatableHrs}}</span>
+                                       <span  *ngIf="(a_maxAllocatableHrs&&Allocated>a_maxAllocatableHrs)" class="fs-7" style="font-weight: 500; color:rgb(217,48,37)">Max allowed: {{a_maxAllocatableHrs}} hours</span>
+                                       
+                                       <span class="attach-tippy font-weight-400">
+                                            <span>
+                                              <svg width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="color: #4377ff;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="info-circle"> <g> <circle cx="12" cy="12" data-name="--Circle" fill="none" id="_--Circle" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7280000000000002"></circle> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" x1="12" x2="12" y1="12" y2="16"></line> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" x1="12" x2="12" y1="8" y2="8"></line> </g> </g> </g> </g>
+                                               </svg>
+                                            </span>
+                                           <div class="st-line off-days-span">
+                                            <h6 class="mb-0">{{a_maxAllocatableHrs}} hours</h6>
+                                            <div class="days-list">
+                                              <div class="py-1 text-muted text-nowrap">{{actnResperDayAlhr_Limit}} hrs/day × {{total_actnWorkingDays}} days</div>
+                                            </div>
+                                          </div>
+
+                                        </span>
+                                    </div>
+
+
+
+
+
                                     <!-- <span *ngIf="Prjtype=='011'&&!Allocated&&notProvided" style="color:rgb(217,48,37)">Allocated hours missing</span> -->
                                     <!-- <span *ngIf="Allocated > maxactAllocation" style="color:rgb(217,48,37)">*Allocation per day limit is 10
                                       hours. Please enter the hours less than or equal to <b>{{maxactAllocation}}</b> hours!</span> -->

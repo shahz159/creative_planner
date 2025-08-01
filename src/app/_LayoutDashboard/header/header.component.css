@@ -1006,3 +1006,13 @@ cursor: pointer;
   color:#518ef6;
 }
 
+
+.no-notif
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 8px;
+    min-height: 175px;
+}

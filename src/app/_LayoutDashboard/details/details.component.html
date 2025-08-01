@@ -179,7 +179,7 @@
 
                                 <li class="nav-item">
                                     <a class="nav-link text-active-primary py-5 me-6 ">
-                                      SMail </a>
+                                      S Mail </a>
                                 </li>
 
                                 <li class="nav-item">
@@ -1600,10 +1600,10 @@
                                             <div *ngIf="pageContentType=='PROJECT_DETAILS'" class="d-flex flex-grow-1 align-items-center gap_ic">
                                                 <a id="dmsasfa" class="kt-inbox__icon curser-pointer" (click)="addNewDMS()"    [ngClass]="{'active':currentSidebarOpened==='LINK_DMS'}"  >
                                                    <ng-container *ngIf="isDMS>0">
-                                                        <img src="./assets/images/Image (4).jfif" height="22" width="20px" title="View or link SMail">
+                                                        <img src="./assets/images/Image (4).jfif" height="22" width="20px" title="View or link S Mail">
                                                       </ng-container>
                                                       <ng-container *ngIf="isDMS==0">
-                                                        <img width="21px" class="black-white" src="./assets/images/Image (4).jfif" height="23" title="View or link SMail">
+                                                        <img width="21px" class="black-white" src="./assets/images/Image (4).jfif" height="23" title="View or link S Mail">
                                                       </ng-container>
                                                     </a>
                                                 <div class="br-line"></div>
@@ -2449,17 +2449,15 @@
                   </svg>
                   <div class="d-flex flex-column">
                   <span class="notif-msg" style="color:#c57a05">
-                      Project exceeds planned capacity with total utilization of <span [matTooltip]="'total '+projectInfo.TotalHours+' hours'">{{ProjectPercentage}}% ({{projectInfo.TotalHours+' hrs'}})</span>, an increase of <span [matTooltip]="('+'+(projectInfo.TotalHours-projectInfo.AllocatedHours)+' hours extra')">{{(+ProjectPercentage-100)}}% ({{'+'+(projectInfo.TotalHours-projectInfo.AllocatedHours)+' hrs'}})</span>.
-                  </span>
+                      <!-- Project exceeds planned capacity with total utilization of <span [matTooltip]="'total '+projectInfo.TotalHours+' hours'">{{ProjectPercentage}}% ({{projectInfo.TotalHours+' hrs'}})</span>, an increase of <span [matTooltip]="('+'+(projectInfo.TotalHours-projectInfo.AllocatedHours)+' hours extra')">{{(+ProjectPercentage-100)}}% ({{'+'+(projectInfo.TotalHours-projectInfo.AllocatedHours)+' hrs'}})</span>. -->
+                      Project exceeds planned capacity with an increase of <span [matTooltip]="('+'+((projectInfo.TotalHours-projectInfo.AllocatedHours).toFixed(2))+' hours extra')">{{(+ProjectPercentage-100)}}% ({{'+'+((projectInfo.TotalHours-projectInfo.AllocatedHours).toFixed(2))+' hrs'}})</span>.
+                    </span>
 
                   <span *ngIf="projectOverutilizedByEmp?.length>0" class="notif-msg" style="color: #c57a05;font-size: 12px;font-weight: 400;">
                     Notable overutilization by 
-                    
                     <ng-container *ngFor="let emp of projectOverutilizedByEmp; let i=index;">
-                      <b class="delayaction-of-emp"  [matTooltip]="emp.actions?emp.actions.length+' actions':'no actions'"  (click)="emp.actions?showActionByActionCode(emp.actions):0">{{emp.empName}}({{emp.usedAllocHrs}} hrs)</b>{{i+1===projectOverutilizedByEmp.length-1?' and':(i+1===projectOverutilizedByEmp.length)?'':', '}}
+                      <b class="delayaction-of-emp"  [matTooltip]="emp.actions?emp.actions.length+' actions':'no actions'"  (click)="emp.actions?showActionByActionCode(emp.actions):0">{{emp.empName}}({{(emp.usedAllocHrs?.toFixed(2))}} hrs)</b>{{i+1===projectOverutilizedByEmp.length-1?' and':(i+1===projectOverutilizedByEmp.length)?'':', '}}
                     </ng-container><b>.</b>
-                    
-                 
                   </span>
                   </div>
 
@@ -2726,8 +2724,8 @@
                       </g>
                   </g>
               </svg>
-              <span class="notif-msg fs-6 mr-2" style="color:#00eba5">You have {{totalStdTskApvs}} tasks complete Approvals.</span>
-
+              <span class="notif-msg fs-6 mr-2" style="color:#00eba5">You have {{totalStdTskApvs}} task(s) pending for Approval.</span>
+              <!-- <span class="notif-msg fs-6 mr-2" style="color:#00eba5">You have {{totalStdTskApvs}} tasks complete Approvals.</span> -->
               <!-- <button title="view all task approvals" class="stdtaskaprv-open-btn  curser-pointer " (click)="ApprovalSideBar()">
                   <svg stroke="#ff00005c" stroke-width="1.7" width="30px" height="30px" viewBox="0 0 25.00 25.00" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -2815,7 +2813,7 @@
                       </svg>
                       <div class="d-flex flex-column">
                           <span class="notif-msg" style="color: #ff2727;">Task submission delayed by {{taskDelayedby}} {{taskDelayedby>1?'days':'day'}}.<span *ngIf="projectInfo.taskSubmit"> Last submitted on {{projectInfo.taskSubmit|date:'fullDate'}}.</span></span>
-                          <span *ngIf="projectInfo" class="notif-msg" style="color: #ff2727;"> Total submissions till date: {{projectInfo.submissioncount}} / {{projectInfo.totaltaskcount}} </span>
+                          <span *ngIf="projectInfo" class="notif-msg" style="color: #ff2727;"> Total submissions till date: {{projectInfo.submissioncount|number}} / {{projectInfo.totaltaskcount|number}} </span>
                       </div>
                   </div>
 
@@ -2854,7 +2852,7 @@
                           <svg *ngIf="projectInfo.submissioncount<projectInfo.totaltaskcount"  class="notif-img" width="24px" height="24px" viewBox="0 0 512 512" fill="#ff2727" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>warning</title><g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd"><g id="add" transform="translate(32.000000, 42.666667)"><path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape"></path></g></g></g></svg>
 
 
-                          <span class="notif-msg" [ngStyle]="{'color':projectInfo.submissioncount==projectInfo.totaltaskcount?'':'#ff2727'}" >Total submissions till date: {{projectInfo.submissioncount}} / {{projectInfo.totaltaskcount}}.</span>
+                          <span class="notif-msg" [ngStyle]="{'color':projectInfo.submissioncount==projectInfo.totaltaskcount?'':'#ff2727'}" >Total submissions till date: {{projectInfo.submissioncount|number}} / {{projectInfo.totaltaskcount|number}}.</span>
                   </div>
               </ng-container>
 
@@ -3535,7 +3533,7 @@
                                                               <div class="meeting-attendance meeting-attendance-accordion-div" *ngIf="projectInfo">
                                                                   <div class="meeting-attendance-item" (click)="addNewDMS()">
                                                                       <div class="meeting-attendance-count">{{projectInfo.isDMS}}</div>
-                                                                      <div class="meeting-attendance-title">SMail</div>
+                                                                      <div class="meeting-attendance-title">S Mail</div>
                                                                   </div>
                                                                   <div class="meeting-attendance-item" (click)="AddPortfolio()">
                                                                       <div class="meeting-attendance-count">{{projectInfo.isPortfolio}}</div>
@@ -6780,7 +6778,7 @@
                <ng-container *ngIf="_linkedMemos==0">
                   <img class="black-white" src="./assets/images/Image (4).jfif" height="25" width="23px" >
                </ng-container>
-              </a> Link SMail
+              </a> Link S Mail
           </h4>
           <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
               (click)="closeLinkSideBar() ">
@@ -6821,7 +6819,7 @@
                 <div class="se-col-11" style="max-width: 100%">
                    <div class="d-flex" >
                     <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodal('SMail');selectToLinkSMail();">
-                        <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more SMail':'Add SMail')}}</div>
+                        <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more S Mail':'Add S Mail')}}</div>
                         <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                             <span class="sr-only">Loading...</span>
                         </div>
@@ -13058,7 +13056,7 @@
                         </div>
                         <div class="se-col-11">
                             <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodal('SMail')">
-                                <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more SMail':'Add SMail')}}</div>
+                                <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more S Mail':'Add S Mail')}}</div>
                                 <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                                     <span class="sr-only">Loading...</span>
                                 </div>
@@ -14159,7 +14157,7 @@
                                               *ngIf="(projectInfo.OwnerEmpNo === Current_user_ID || projectInfo.ResponsibleEmpNo === Current_user_ID || isHierarchy==true ) && (projectInfo.Status !=='Completion Under Approval'
                                               && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval'); else ownEdit">
       
-                                              <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
+                                              <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible"  (ngModelChange)="onProjectResponsibleChanged()" >
                                                   <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
                                                       [disabled]="item.Emp_No==selectedOwner">
                                                       {{item.RACIS}}
@@ -14175,7 +14173,7 @@
       
                                       <ng-container *ngIf="projectInfo.isRespActive=='0' && projectInfo.OwnerEmpNo === Current_user_ID; else respedit">
                                           <ng-container>
-                                              <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible">
+                                              <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible"  (ngModelChange)="onProjectResponsibleChanged()"   >
                                                   <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
                                                       [disabled]="item.Emp_No==selectedOwner">
                                                       {{item.RACIS}}
@@ -14240,7 +14238,10 @@
                               <div class="kt-info-lable-v"> Start date </div>
                               <div class="input-icon  Sub_In_ed  date-border-v d-flex">
                                   <input class="form-control border-0 " [(ngModel)]="Start_Date" [min]="todayDate|date:'YYYY-MM-dd'" matInput [matDatepicker]="pStrtDateInputPicker"
-                                   (click)="pStrtDateInputPicker.open();" placeholder="Select Start Date" name="date"/>
+                                   (click)="pStrtDateInputPicker.open();" placeholder="Select Start Date" name="date"   
+                                   [matDatepickerFilter]="isPrjDateSelectable"
+                                   (ngModelChange)="calculateTotalWorkingDays()"
+                                   />
                                   <div class="input-group-append h-2">
                                       <mat-datepicker-toggle matSuffix [for]="pStrtDateInputPicker"
                                           class="btn-secondary border-0">
@@ -14267,7 +14268,9 @@
                                       <input id="prj-edit-deadline-input" class="form-control curser-pointer" [(ngModel)]="End_Date"
                                           [min]="todayDate|date:'YYYY-MM-dd'" matInput [matDatepicker]="pEndDateInputPicker"
                                           (click)="pEndDateInputPicker.open();" placeholder="Select deadline date"
-                                          class="form-control border-0 " name="date" />
+                                          class="form-control border-0 " name="date" [matDatepickerFilter]="isPrjDateSelectable" 
+                                          (ngModelChange)="calculateTotalWorkingDays()"
+                                          />
                                       <div class="input-group-append h-2">
                                           <mat-datepicker-toggle matSuffix [for]="pEndDateInputPicker"
                                               class="btn-secondary border-0">
@@ -14275,6 +14278,23 @@
                                           <mat-datepicker class="form-group " #pEndDateInputPicker></mat-datepicker>
                                       </div>
                                   </div>
+
+                                  <div *ngIf="Start_Date&&End_Date&&total_WorkingDays" class="mt-1 px-1 d-flex justify-content-between align-items-center">
+                                       <span class="text-dark fs-7" style="font-weight: 500;">Total working days : {{total_WorkingDays}}</span>
+                                       <span class="attach-tippy font-weight-400">
+                                            <span>
+                                              <svg width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="color: #4377ff;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="info-circle"> <g> <circle cx="12" cy="12" data-name="--Circle" fill="none" id="_--Circle" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7280000000000002"></circle> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" x1="12" x2="12" y1="12" y2="16"></line> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" x1="12" x2="12" y1="8" y2="8"></line> </g> </g> </g> </g>
+                                               </svg>
+                                            </span>
+                                            <div class="st-line off-days-span">
+                                                <h6>Non-working days: {{total_OffDays.length}}</h6>
+                                                <div class="days-list">
+                                                <div class="py-1 text-muted text-nowrap" *ngFor="let offdays of total_OffDays">{{ offdays.date|date:'dd-MM-yyyy'}} - <span class="text-muted">{{offdays.reason}}</span></div>
+                                               </div>
+                                            </div>
+                                        </span>
+                                 </div>
+
                             </div>
                           </div>
       
@@ -14679,7 +14699,7 @@
                                 <div class="input-icon Sub_In_ed" *ngIf="currentActionView!= undefined && projectActionInfo[currentActionView]">
                                     <ng-container *ngIf="(projectActionInfo[currentActionView].Status !=='Under Approval' && projectActionInfo[currentActionView].Status !=='Completion Under Approval' && projectActionInfo[currentActionView].Status !=='Forward Under Approval'
                                         && projectActionInfo[currentActionView].Status !== 'Cancellation Under Approval' &&projectActionInfo[currentActionView].Status !== 'Enactive Under Approval'); else ActEdit">
-                                        <ng-select [(ngModel)]="ActionResponsible"  (ngModelChange)="getNewActnCost()" placeholder="Select new responsible"[ngClass]="{'error-vd': !ActionResponsible&&formFieldsRequired}">
+                                        <ng-select [(ngModel)]="ActionResponsible"  (ngModelChange)="onActionResponsibleChanged()" placeholder="Select new responsible"[ngClass]="{'error-vd': !ActionResponsible&&formFieldsRequired}">
                                             <ng-option [value]="item.Emp_No" *ngFor="let item of actionresponsible_dropdown">
                                                 {{item.RACIS}}
                                             </ng-option>
@@ -14749,7 +14769,9 @@
                                <div class="kt-info-lable-v">Start date</div>
                                <div class="input-icon Sub_In_ed rounded-2 date-border-v d-flex">
                                   <input class="form-control" [(ngModel)]="ActionstartDate" [min]="todayDate|date:'YYYY-MM-dd'" matInput [matDatepicker]="aStartDatePicker"
-                                      (click)="aStartDatePicker.open();" placeholder="Select Start Date" class="form-control border-0 " name="date"  />
+                                      (click)="aStartDatePicker.open();" placeholder="Select Start Date" class="form-control border-0 " name="date"  
+                                         [matDatepickerFilter]="isActnDateSelectable"  (ngModelChange)="onActionDateChanged()"
+                                      />
                                   <div class="input-group-append h-2">
                                       <mat-datepicker-toggle matSuffix [for]="aStartDatePicker" class="btn-secondary border-0"></mat-datepicker-toggle>
                                       <mat-datepicker class="form-group " #aStartDatePicker></mat-datepicker>
@@ -14772,13 +14794,32 @@
                               <div class="input-icon Sub_In_ed rounded-2 date-border-v d-flex" [ngClass]="{'error-border': !ActionendDate&&formFieldsRequired}">
                                   <input class="form-control" [(ngModel)]="ActionendDate" [min]="(ActionstartDate > todayDate ? ActionstartDate : todayDate)" matInput
                                       [matDatepicker]="aEndDatePicker" (click)="aEndDatePicker.open();"
-                                      placeholder="Select deadline date" class="form-control border-0 " name="date" (ngModelChange)="onActionDateChanged()"/>
+                                      placeholder="Select deadline date" class="form-control border-0 " name="date" (ngModelChange)="onActionDateChanged()"
+                                        [matDatepickerFilter]="isActnDateSelectable"
+                                      />
                                   <div class="input-group-append h-2">
                                       <mat-datepicker-toggle matSuffix [for]="aEndDatePicker"class="btn-secondary border-0"></mat-datepicker-toggle>
                                       <mat-datepicker class="form-group " #aEndDatePicker></mat-datepicker>
                                   </div>
                               </div>
                               <span style="color:red"   *ngIf="!ActionendDate&&formFieldsRequired">Please select end date.</span>
+                             
+                              <div *ngIf="ActionstartDate&&ActionendDate&&total_actnWorkingDays" class="mt-1 px-1 d-flex justify-content-between align-items-center">
+                                <span class="text-dark fs-7" style="font-weight: 500;">Total working days : {{total_actnWorkingDays}}</span>
+                                <span class="attach-tippy font-weight-400">
+                                            <span>
+                                              <svg width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="color: #4377ff;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="info-circle"> <g> <circle cx="12" cy="12" data-name="--Circle" fill="none" id="_--Circle" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7280000000000002"></circle> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" x1="12" x2="12" y1="12" y2="16"></line> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" x1="12" x2="12" y1="8" y2="8"></line> </g> </g> </g> </g>
+                                               </svg>
+                                            </span>
+                                            <div *ngIf="total_actnOffDays" class="st-line off-days-span">
+                                                <h6>Non-working days: {{total_actnOffDays.length}}</h6>
+                                                <div class="days-list">
+                                                <div class="py-1 text-muted text-nowrap" *ngFor="let offdays of total_actnOffDays">{{ offdays.date|date:'dd-MM-yyyy'}} - <span class="text-muted">{{offdays.reason}}</span></div>
+                                               </div>
+                                            </div>
+                                 </span>
+                          </div>
+
                           </div>
                         </div> 
           
@@ -14788,11 +14829,32 @@
                                           <div class="input-icon Sub_In_ed">
                                               <input type="text" id="myInput" class="form-control"  pattern="[0-9]*" min="0" oninput="validity.valid||(value='');" [(ngModel)]="editAllocatedhours"  (ngModelChange)="getNewActnCost()"   [ngClass]="{'error-border': ((ActionstartDate&&ActionendDate)&&(editAllocatedhours > ActionmaxAllocation))||(editAllocatedhours==0)||!(ActionstartDate&&ActionendDate) }"/>
                                               <span *ngIf="(editAllocatedhours==0)" style="color:red" class="fs-8"  >Allocated hours cannot be 0, please enter a value.</span>
-                                              <span *ngIf=" (ActionstartDate&&ActionendDate)&&(editAllocatedhours > ActionmaxAllocation)" style="color:red" class="fs-8" >
+                                              <!-- <span *ngIf=" (ActionstartDate&&ActionendDate)&&(editAllocatedhours > ActionmaxAllocation)" style="color:red" class="fs-8" >
                                                   Maximum <b>{{ActionmaxAllocation}}</b> hours allowed for given duration. (<b>48</b> hours/week limit).
-                                              </span>
+                                              </span> -->
                                               <span *ngIf="!(ActionstartDate&&ActionendDate)" style="color:red" class="fs-8">please provide both dates.</span>
-                                                 <!-- <input type="text" id="myInput" class="form-control readonly"
+                                                
+                                              
+                                              <div *ngIf="ActionstartDate&&ActionendDate&&ActionmaxAllocation" class="mt-1 px-1 d-flex justify-content-between align-items-center">
+                                                <span *ngIf="!(ActionmaxAllocation&&editAllocatedhours>ActionmaxAllocation)" class="fs-7 text-dark" style="font-weight: 500;">Estimated Allocated hours: {{ActionmaxAllocation}}</span>
+                                                <span  *ngIf="(ActionmaxAllocation&&editAllocatedhours>ActionmaxAllocation)" class="fs-7" style="font-weight: 500; color:rgb(217,48,37)">Max allowed: {{ActionmaxAllocation}} hours</span>
+                                       
+                                                <span class="attach-tippy font-weight-400">
+                                                        <span>
+                                                            <svg width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="color: #4377ff;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="info-circle"> <g> <circle cx="12" cy="12" data-name="--Circle" fill="none" id="_--Circle" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7280000000000002"></circle> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" x1="12" x2="12" y1="12" y2="16"></line> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" x1="12" x2="12" y1="8" y2="8"></line> </g> </g> </g> </g>
+                                                            </svg>
+                                                        </span>
+                                                    <div class="st-line off-days-span">
+                                                        <h6 class="mb-0">{{ActionmaxAllocation}} hours</h6>
+                                                        <div class="days-list">
+                                                        <div class="py-1 text-muted text-nowrap">{{actnResperDayAlhr_Limit}} hrs/day × {{total_actnWorkingDays}} days</div>
+                                                        </div>
+                                                    </div>
+
+                                                </span>
+                                              </div>
+                                            
+                                              <!-- <input type="text" id="myInput" class="form-control readonly"
                                                   *ngIf="ActionAllocatedHours>0" [(ngModel)]="ActionAllocatedHours"
                                                   readonly /> -->
                                                   <!-- <input type="text" id="myInput" class="form-control"

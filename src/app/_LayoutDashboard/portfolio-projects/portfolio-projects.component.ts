@@ -118,8 +118,8 @@ export const MY_DATE_FORMATS = {
 })
 
 export class PortfolioProjectsComponent implements OnInit {
-  _PortProjStatus: string;
-  _FilterByEmp:string;
+  _PortProjStatus: string[]=['All'];
+  _FilterByEmp:string[]=['All'];
   _ShareDetailsList: any;
   _SharedToEmps:any=[];   // array of emp number to whom the portfolio shared.
   //_PortfolioListTable: boolean;
@@ -348,7 +348,7 @@ export class PortfolioProjectsComponent implements OnInit {
     this.getPinnedProjects(); // all pinned projects.
     this.router.navigate(["../portfolioprojects/" + this._Pid+"/"]);
     this.showDeletedPrjOnly=false; // initially show normal projects.
-    this.labelAll();
+    // this.labelAll();
     // this.togglevisibilityforClass('classCost', 'iscost')
 
     // this.onButtonClick('tot');
@@ -613,25 +613,39 @@ export class PortfolioProjectsComponent implements OnInit {
 
 
 
-        if(
-            (this._PortProjStatus=='Delay' && this.CountDelay==0) ||
-            (this._PortProjStatus=='Project Hold' && this.CountProjectHold==0) ||
-            (this._PortProjStatus=='InProcess' && this.CountInprocess==0) ||
-            (this._PortProjStatus=='Not Started' && this.CountInprocess ==0) ||
-            (this._PortProjStatus=='Completed' && this.CountCompleted == 0) ||
-            (this._PortProjStatus=='New Project Rejected' && this.CountNewProject==0) ||
-            (this._PortProjStatus=='Rejected' && this.CountRejecteds==0) ||
-            (this._PortProjStatus=='ToDo Achieved' && this.Count_ToDoAchieved==0) ||
-            (this._PortProjStatus=='Under Approval' && this.CountAll_UA==0) ||
-            (this._PortProjStatus=='ToDo Completed' && this.Count_ToDoCompleted==0)||
-            (this._PortProjStatus=='Completion Under Approval' && this.CountCompletionUA==0)||
-            (this._PortProjStatus=='Cancellation Under Approval' && this.CountCancellation==0)||
-            (this._PortProjStatus=='Deadline Extend Under Approval' && this.CountDeadLineExtendedUA==0)||
-            (this._PortProjStatus==''&&this.showDeletedPrjOnly==true && this.CountDeleted==0)
-         ){
-            this.labelAll();
-            this.onButtonClick('tot');
+        // if(
+        //     (this._PortProjStatus=='Delay' && this.CountDelay==0) ||
+        //     (this._PortProjStatus=='Project Hold' && this.CountProjectHold==0) ||
+        //     (this._PortProjStatus=='InProcess' && this.CountInprocess==0) ||
+        //     (this._PortProjStatus=='Not Started' && this.CountInprocess ==0) ||
+        //     (this._PortProjStatus=='Completed' && this.CountCompleted == 0) ||
+        //     (this._PortProjStatus=='New Project Rejected' && this.CountNewProject==0) ||
+        //     (this._PortProjStatus=='Rejected' && this.CountRejecteds==0) ||
+        //     (this._PortProjStatus=='ToDo Achieved' && this.Count_ToDoAchieved==0) ||
+        //     (this._PortProjStatus=='Under Approval' && this.CountAll_UA==0) ||
+        //     (this._PortProjStatus=='ToDo Completed' && this.Count_ToDoCompleted==0)||
+        //     (this._PortProjStatus=='Completion Under Approval' && this.CountCompletionUA==0)||
+        //     (this._PortProjStatus=='Cancellation Under Approval' && this.CountCancellation==0)||
+        //     (this._PortProjStatus=='Deadline Extend Under Approval' && this.CountDeadLineExtendedUA==0)||
+        //     (this._PortProjStatus==''&&this.showDeletedPrjOnly==true && this.CountDeleted==0)
+        //  ){
+        //     this.labelAll();
+        //     this.onButtonClick('tot');
+        //   }
+
+          this._PortProjStatus=this._PortProjStatus.filter((fstatus)=>{ 
+              const keepFilter=((fstatus=='Delay'&&this.CountDelay>0)||(fstatus=='Project Hold'&&this.CountProjectHold>0)||(fstatus=='InProcess'&&this.CountInprocess>0)||(fstatus=='Not Started'&&this.CountInprocess>0)||
+               (fstatus=='Completed'&&this.CountCompleted>0)||(fstatus=='New Project Rejected'&&this.CountNewProject>0)||(fstatus=='Rejected'&&this.CountRejecteds>0)||(fstatus=='ToDo Achieved'&&this.Count_ToDoAchieved>0)||
+               (fstatus=='Under Approval'&&this.CountAll_UA>0)||(fstatus=='ToDo Completed'&&this.Count_ToDoCompleted>0)||(fstatus=='Completion Under Approval'&&this.CountCompletionUA>0)||(fstatus=='Cancellation Under Approval'&&this.CountCancellation>0)||
+               (fstatus=='Deadline Extend Under Approval'&&this.CountDeadLineExtendedUA>0));
+              return keepFilter;
+          });
+
+          if(this._PortProjStatus.length==0){
+              this._PortProjStatus=['All'];
+              this.showDot=false;
           }
+          
 
 
           this.hasFilterResult();
@@ -1449,112 +1463,177 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
   }
 
   labelAll() {
-    this._PortProjStatus = "";
-    // this.showDeletedPrjOnly=false;
+    // this._PortProjStatus = "";
   }
 
-  labelInprocess() {
-    this._PortProjStatus = "InProcess";
-    // this.showDeletedPrjOnly=false;
-  }
+  // labelInprocess() {
+  //   this._PortProjStatus = "InProcess";
+  // }
 
 
   labeldeletedproject(){
     this.showDot=false; // clear filter applied indicator.
     this.showDeletedPrjOnly=true;  // show deleted projects only on the page.
-    this._PortProjStatus = "";    // by default All
-    this._FilterByEmp='';  // by default All
+    this._PortProjStatus = ['All'];    // by default All
+    this._FilterByEmp=['All'];  // by default All
     this.prepareFilterOptions();  // prepare filter dropdown values.
 
   }
 
-  labelCompletionapproval(){
-    this._PortProjStatus="Completion Under Approval"
-    // this.showDeletedPrjOnly=false;
-    console.log("Completion approval",this._PortProjStatus)
+  // labelCompletionapproval(){
+  //   this._PortProjStatus="Completion Under Approval"
+  //   // this.showDeletedPrjOnly=false;
+  //   console.log("Completion approval",this._PortProjStatus)
+  // }
+
+  // labelCancellationapproval(){
+  //   this._PortProjStatus='Cancellation Under Approval'
+  //   // this.showDeletedPrjOnly=false
+  // }
+
+
+  // labelForward(){
+  //   this._PortProjStatus="Forward Under Approval"
+  //   // this.showDeletedPrjOnly=false
+  // }
+
+  // labelDeadline(){
+  //   this._PortProjStatus="Deadline Extended Under Approval"
+  //   // this.showDeletedPrjOnly=false
+  // }
+
+
+  // labelDelay() {
+  //   this._PortProjStatus = "Delay";
+  //   // this.showDeletedPrjOnly=false;
+  // }
+
+  // labelDraft(){
+  //   this._PortProjStatus = "Not Started";
+  //   // this.showDeletedPrjOnly=false;
+  // }
+
+
+  // labelCompleted() {
+  //   this._PortProjStatus = 'Completed';
+  //   // this.showDeletedPrjOnly=false;
+  // }
+
+  // labelNewProject() {
+  //   this._PortProjStatus = "New Project";
+  //   // this.showDeletedPrjOnly=false;
+  //   if (this._PortProjStatus.includes('New Project')) {
+  //     this._PortProjStatus = 'New Project';
+  //   }
+  // }
+
+  // labelRejecteds() {
+  //   this._PortProjStatus = "New Project Rejected";
+  //   this._PortProjStatus.includes('Rejected');
+  //   // this.showDeletedPrjOnly=false;
+  //   //this._PortProjStatus.includes('New Project Rejected');
+  // }
+
+
+
+
+  // labelToDoAchieved() {
+  //   this._PortProjStatus = "ToDo Achieved";
+  //   // this.showDeletedPrjOnly=false;
+  //   // this._PortProjStatus.includes('ToDo Achieved');
+  // }
+  // labelToDoCompleted() {
+  //   this._PortProjStatus = "ToDo Completed";
+  //   // this.showDeletedPrjOnly=false;
+  // }
+
+  // labelUA() {
+  //   this._PortProjStatus = "Under Approval";
+  //   // this._PortProjStatus.includes('Under Approval')
+  //   // this.showDeletedPrjOnly=false;
+  //   console.log(this._PortProjStatus,"Under Apprval")
+  // }
+
+  // labelProjectHold() {
+  //   this._PortProjStatus = "Project Hold";
+  //   this._PortProjStatus.includes('Project Hold');
+  //   // this.showDeletedPrjOnly=false;
+  // }
+
+// new multi-select filter start.
+
+// _PortProjStatus1:string[]=[];
+
+ filterProjectsByStatus(status:string)
+ {
+   if(status=='All'){
+      this._PortProjStatus=['All'];
+   }
+   else{
+  
+     const index=this._PortProjStatus.indexOf(status);
+     if(index==-1){
+        if(this._PortProjStatus.length==1&&this._PortProjStatus[0]=='All'){ this._PortProjStatus=[status];  }
+        else{
+            this._PortProjStatus.push(status);
+        }  
+     }
+     else{
+        this._PortProjStatus.splice(index,1);
+     }
+    
   }
+   
 
-  labelCancellationapproval(){
-    this._PortProjStatus='Cancellation Under Approval'
-    // this.showDeletedPrjOnly=false
+ }
+
+ filterProjectsByEmp(empno:string){
+   if(empno=='All'){
+      this._FilterByEmp=['All'];
+   }
+   else{
+  
+     const index=this._FilterByEmp.indexOf(empno);
+     if(index==-1){
+        if(this._FilterByEmp.length==1&&this._FilterByEmp[0]=='All'){ this._FilterByEmp=[empno];  }
+        else{
+            this._FilterByEmp.push(empno);
+        }  
+     }
+     else{
+        this._FilterByEmp.splice(index,1);
+     }
+    
   }
+ }
 
 
-  labelForward(){
-    this._PortProjStatus="Forward Under Approval"
-    // this.showDeletedPrjOnly=false
-  }
-
-  labelDeadline(){
-    this._PortProjStatus="Deadline Extended Under Approval"
-    // this.showDeletedPrjOnly=false
-  }
 
 
-  labelDelay() {
-    this._PortProjStatus = "Delay";
-    // this.showDeletedPrjOnly=false;
-  }
 
-  labelDraft(){
-    this._PortProjStatus = "Not Started";
-    // this.showDeletedPrjOnly=false;
-  }
+  showDot : boolean = false;
+  // filterProjectsOfEmp(filterbyEmp:string){
 
+  //   this.showDot = true
+  //   this._FilterByEmp=filterbyEmp;
+  //   this.hasFilterResult();
 
-  labelCompleted() {
-    this._PortProjStatus = 'Completed';
-    // this.showDeletedPrjOnly=false;
-  }
-
-  labelNewProject() {
-    this._PortProjStatus = "New Project";
-    // this.showDeletedPrjOnly=false;
-    if (this._PortProjStatus.includes('New Project')) {
-      this._PortProjStatus = 'New Project';
-    }
-  }
-
-  labelRejecteds() {
-    this._PortProjStatus = "New Project Rejected";
-    this._PortProjStatus.includes('Rejected');
-    // this.showDeletedPrjOnly=false;
-    //this._PortProjStatus.includes('New Project Rejected');
-  }
-
-  showDot : boolean = false
-  filterProjectsOfEmp(filterbyEmp:string){
-
-    this.showDot = true
-    this._FilterByEmp=filterbyEmp;
-    this.hasFilterResult();
-
-    console.log(this._FilterByEmp,"this._FilterByEmpthis._FilterByEmp")
-  }
+  //   console.log(this._FilterByEmp,"this._FilterByEmpthis._FilterByEmp")
+  // }
 
 
-  labelToDoAchieved() {
-    this._PortProjStatus = "ToDo Achieved";
-    // this.showDeletedPrjOnly=false;
-    // this._PortProjStatus.includes('ToDo Achieved');
-  }
-  labelToDoCompleted() {
-    this._PortProjStatus = "ToDo Completed";
-    // this.showDeletedPrjOnly=false;
-  }
 
-  labelUA() {
-    this._PortProjStatus = "Under Approval";
-    // this._PortProjStatus.includes('Under Approval')
-    // this.showDeletedPrjOnly=false;
-    console.log(this._PortProjStatus,"Under Apprval")
-  }
 
-  labelProjectHold() {
-    this._PortProjStatus = "Project Hold";
-    this._PortProjStatus.includes('Project Hold');
-    // this.showDeletedPrjOnly=false;
-  }
+
+
+
+
+
+
+
+
+
+// end
 
 
 // advance filter notif   start.
@@ -1594,8 +1673,8 @@ let projectMatched:boolean=false;
 applyFilterCriteria(criteria:string){
 
    // clear normal filter if present
-   this._PortProjStatus = "";
-   this._FilterByEmp='';
+   this._PortProjStatus = ['All'];
+   this._FilterByEmp=['All'];
    this.showDot = false;
    this.showDeletedPrjOnly=false;
    this.resultCount = 0;
@@ -1616,9 +1695,9 @@ clearAppliedFilterApplied(){
 
 onResetBtnClicked(){
 
-  this.labelAll();   
-  this.filterProjectsOfEmp('');
-  this.notShow();  
+  this.filterProjectsByStatus('All');   // show all statuses
+  this.filterProjectsByEmp('All');    // show all empl  
+  this.showDot=false;  // filter dot invisible.
   this.clearAppliedFilterApplied();
   this.showDeletedPrjOnly=false;  //  show only normal projects.
   this.prepareFilterOptions();  // prepare filter options.
@@ -2225,14 +2304,30 @@ let result=[];
 if(this.showDeletedPrjOnly){
   list=[...this.Deletedproject];
   result=list.filter((p)=>{
-    return (((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp||this._FilterByEmp=="All"));
+    //  return this._FilterByEmp.includes(p.Emp_No)||this._FilterByEmp?.[0]=='All';
+
+     return ((this._PortProjStatus.includes(p.Status))||
+          (this._PortProjStatus.includes('Delay')&&(p.Status.includes('Delay')||(p.SubmissionType && p.Status.includes('Days')) ))||
+          (this._PortProjStatus?.[0]=='All'))
+          &&
+          ( (this._FilterByEmp.includes(p.Emp_No)||this._FilterByEmp.includes(p.PendingapproverEmpNo?.trim())||this._FilterByEmp.includes(p.OwnerEmpNo))||
+            (this._FilterByEmp?.[0]=='All'));
+
   });
 
 }else{
   list=[...this._ProjectsListBy_Pid];
   result=list.filter((p)=>{
 
-    return (((p.Status==this._PortProjStatus)|| ( this._PortProjStatus=='Delay'&&(p.Status.includes('Delay')||(p.SubmissionType && p.Status.includes('Days'))) )||this._PortProjStatus=='')&& ((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp ||  p.PendingapproverEmpNo?.trim() == this._FilterByEmp || p.OwnerEmpNo==this._FilterByEmp  ||this._FilterByEmp=="All"));
+
+   return ((this._PortProjStatus.includes(p.Status))||
+          (this._PortProjStatus.includes('Delay')&&(p.Status.includes('Delay')||(p.SubmissionType && p.Status.includes('Days')) ))||
+          (this._PortProjStatus?.[0]=='All'))
+          &&
+          ( (this._FilterByEmp.includes(p.Emp_No)||this._FilterByEmp.includes(p.PendingapproverEmpNo?.trim())||this._FilterByEmp.includes(p.OwnerEmpNo))||
+            (this._FilterByEmp?.[0]=='All'));
+
+    //  return (((p.Status==this._PortProjStatus)|| ( this._PortProjStatus=='Delay'&&(p.Status.includes('Delay')||(p.SubmissionType && p.Status.includes('Days'))) )||this._PortProjStatus=='')&& ((!this._FilterByEmp) || p.Emp_No==this._FilterByEmp ||  p.PendingapproverEmpNo?.trim() == this._FilterByEmp || p.OwnerEmpNo==this._FilterByEmp  ||this._FilterByEmp=="All"));
   });
 
   console.log(result);
@@ -6679,41 +6774,42 @@ bindCustomRecurrenceValues(){
 }
 
 
-countgetFilter() {
-  const countMap = {
-    'Forward Under Approval': this.CountForward,
-    'Completion Under Approval': this.CountCompletionUA,
-    'Completed': this.CountCompleted,
-    'Delay': this.CountDelay,
-    'Not started': this.CountNotStarted,
-    'Under Approval': this.CountAll_UA,
-    'New project': this.CountNewProject,
-    'Project hold': this.CountProjectHold,
-    'Rejected': this.CountRejecteds,
-    'InProcess': this.CountInprocess,
-    'Cancellation Under Approval': this.CountCancellation,
-    'Deadline Extended Under Approval': this.CountDeadLineExtendedUA,
-    'ToDo completed': this.Count_ToDoCompleted,
-    'ToDo achieved': this.Count_ToDoAchieved,
-    'Project Hold': this.CountProjectHold
-  };
+// countgetFilter() {
+//   const countMap = {
+//     'Forward Under Approval': this.CountForward,
+//     'Completion Under Approval': this.CountCompletionUA,
+//     'Completed': this.CountCompleted,
+//     'Delay': this.CountDelay,
+//     'Not started': this.CountNotStarted,
+//     'Under Approval': this.CountAll_UA,
+//     'New project': this.CountNewProject,
+//     'Project hold': this.CountProjectHold,
+//     'Rejected': this.CountRejecteds,
+//     'InProcess': this.CountInprocess,
+//     'Cancellation Under Approval': this.CountCancellation,
+//     'Deadline Extended Under Approval': this.CountDeadLineExtendedUA,
+//     'ToDo completed': this.Count_ToDoCompleted,
+//     'ToDo achieved': this.Count_ToDoAchieved,
+//     'Project Hold': this.CountProjectHold
+//   };
 
-  // Handle empty status condition
-  if (this._PortProjStatus === '') {
-    return this.showDeletedPrjOnly
-      ? `1 - ${this.CountDeleted} of ${this.CountDeleted}`
-      : `1 - ${this.TotalProjects} of ${this.TotalProjects}`;
-  }
+//   // Handle empty status condition
+//   if (this._PortProjStatus === '') {
+//     return this.showDeletedPrjOnly
+//       ? `1 - ${this.CountDeleted} of ${this.CountDeleted}`
+//       : `1 - ${this.TotalProjects} of ${this.TotalProjects}`;
+//   }
 
-  // Return the formatted count based on the status
-  const count = countMap[this._PortProjStatus];
-  return count !== undefined
-    ? `1 - ${count} of ${count}`
-    : 'Status not found';
-}
-notShow(){
-  this.showDot = false
-}
+//   // Return the formatted count based on the status
+//   const count = countMap[this._PortProjStatus];
+//   return count !== undefined
+//     ? `1 - ${count} of ${count}`
+//     : 'Status not found';
+// }
+
+// notShow(){
+//   this.showDot = false
+// }
 
 
 
@@ -7620,7 +7716,7 @@ addDMSToTheProject() {
       this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => { 
         console.log("Response=>", res);
         if (res.Message === "Updated Successfully"||res.Message==="Linked Successfully") {
-          this.notifyService.showSuccess("", "SMail successfully added.");
+          this.notifyService.showSuccess("", "S Mail successfully added.");
           this.getProjectMemos();  // rebind project memos list and update new linkable memos list.
         }
 

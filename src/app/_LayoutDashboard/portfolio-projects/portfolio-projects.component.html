@@ -178,337 +178,182 @@
                                       </ng-container>
 
                                         <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl dropdown-filter" id="dropd">
-
-                                            <ul  class="drop-ul">
-                                                <li class="dropdown-header">Filter by</li>
-                                                <li *ngIf="TotalProjects>0" (click)="labelAll(); onButtonClick('tot')">
-                                                    <button id="tot" class="btn btn-filtr active" [ngClass]="{'active':_PortProjStatus==''}"  >
+                                            <div class="dropdown-header">Filter by</div>
+                                            <ul  class="drop-ul multi-select-list">
+                                             
+                                                <li *ngIf="TotalProjects>0" (click)="$event.stopPropagation(); filterProjectsByStatus('All');  hasFilterResult(); this.showDot=true;  ">
+                                                    <button id="tot" class="btn btn-filtr active" [ngClass]="{'active':_PortProjStatus?.includes('All')}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count tot">{{TotalProjects}}</span>
                                                             <div  class="fil-lbl">Total projects</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                            <input [checked]="_PortProjStatus?.includes('All')" type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <!-- onButtonClick('inn') -->
-                                                <li *ngIf="CountInprocess>0" (click)="labelInprocess();onButtonClick('inn')">
-                                                    <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='InProcess'}">
+                                                
+                                                <li *ngIf="CountInprocess>0" (click)="$event.stopPropagation(); filterProjectsByStatus('InProcess'); hasFilterResult(); this.showDot=true;    ">
+                                                    <button  id="inn" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus?.includes('InProcess')}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count in-pro"> {{CountInprocess}}</span>
                                                             <div class="fil-lbl">In-Process</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                            <input [checked]="_PortProjStatus?.includes('InProcess')" type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li *ngIf="CountDelay>0" (click)="labelDelay();onButtonClick('del')">
-                                                    <button  id="del" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Delay'}">
+                                            
+                                                <li *ngIf="CountDelay>0" (click)="$event.stopPropagation(); filterProjectsByStatus('Delay'); hasFilterResult(); this.showDot=true;  ">
+                                                    <button  id="del" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus?.includes('Delay')}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count del"> {{CountDelay}} </span>
                                                             <div class="fil-lbl">Delay</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                            <input [checked]="_PortProjStatus?.includes('Delay')" type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li *ngIf="CountNotStarted > 0" (click)="labelDraft();onButtonClick('draft')">
-                                                    <button id="draft" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Not Started'}">
+                                              
+                                                <li *ngIf="CountNotStarted > 0" (click)="$event.stopPropagation(); filterProjectsByStatus('Not Started'); hasFilterResult(); this.showDot=true;   ">
+                                                    <button id="draft" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus?.includes('Not Started')}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count draf">{{CountNotStarted}}</span>
                                                             <div class="fil-lbl">Not started</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                            <input [checked]="_PortProjStatus?.includes('Not Started')" type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li *ngIf="CountCompleted > 0" (click)="labelCompleted();onButtonClick('compl')">
-                                                    <button id="compl" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Completed'}">
+                                            
+                                                <li *ngIf="CountCompleted > 0" (click)="$event.stopPropagation();   filterProjectsByStatus('Completed'); hasFilterResult(); this.showDot=true;    ">
+                                                    <button id="compl" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus?.includes('Completed')}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count com">{{CountCompleted}}</span>
                                                             <div class="fil-lbl">Completed</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                            <input [checked]="_PortProjStatus?.includes('Completed')" type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li *ngIf="CountNewProject > 0" (click)="labelNewProject();onButtonClick('new-pro')">
-                                                    <button  id="new-pro" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='New Project'}">
+                                            
+                                                <li *ngIf="CountNewProject > 0" (click)="$event.stopPropagation();  filterProjectsByStatus('New Project'); hasFilterResult(); this.showDot=true;   ">
+                                                    <button  id="new-pro" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus?.includes('New Project')}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count new-pro">{{CountNewProject}}</span>
                                                             <div class="fil-lbl">New project</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                            <input [checked]="_PortProjStatus?.includes('New Project')" type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li *ngIf="CountCompletionUA>0" (click)="labelCompletionapproval();onButtonClick('Compl-Apprv')">
-                                                    <button id="Compl-Apprv" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Completion Under Approval'}">
+                                               
+                                                <li *ngIf="CountCompletionUA>0" (click)="$event.stopPropagation(); filterProjectsByStatus('Completion Under Approval'); hasFilterResult(); this.showDot=true;    ">
+                                                    <button id="Compl-Apprv" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus?.includes('Completion Under Approval')}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count com-appr">{{CountCompletionUA}}</span>
                                                             <div class="fil-lbl">Completion approval</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                            <input [checked]="_PortProjStatus?.includes('Completion Under Approval')"  type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li *ngIf="CountCancellation>0" (click)="labelCancellationapproval();onButtonClick('Cancel-app')">
-                                                    <button id="Cancel-app"class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Cancellation Under Approval'}">
+                                              
+                                                <li *ngIf="CountCancellation>0" (click)="$event.stopPropagation(); filterProjectsByStatus('Cancellation Under Approval'); hasFilterResult(); this.showDot=true;   ">
+                                                    <button id="Cancel-app"class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus?.includes('Cancellation Under Approval')}">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count can-app">{{CountCancellation}}</span>
-                                                            <div class="fil-lbl">Cancellation approval</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                             <span class="count can-app">{{CountCancellation}}</span>
+                                                             <div class="fil-lbl">Cancellation approval</div>
+                                                             <input [checked]="_PortProjStatus?.includes('Cancellation Under Approval')"  type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li *ngIf="CountForward>0" (click)="labelForward();onButtonClick('Count-forward')">
-                                                    <button id="Count-forward" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Forward Under Approval'}">
+                                                
+                                                <li *ngIf="CountForward>0" (click)="$event.stopPropagation(); filterProjectsByStatus('Forward Under Approval'); hasFilterResult(); this.showDot=true;   ">
+                                                    <button id="Count-forward" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus?.includes('Forward Under Approval')}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count for-app">{{CountForward}}</span>
                                                             <div class="fil-lbl">Forward approval</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                            <input [checked]="_PortProjStatus?.includes('Forward Under Approval')" type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li *ngIf="CountDeadLineExtendedUA>0" (click)="labelDeadline();onButtonClick('Count-deadline')">
-                                                    <button id="Count-deadline" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Deadline Extended Under Approval'}">
+
+                                                <li *ngIf="CountDeadLineExtendedUA>0" (click)="$event.stopPropagation(); filterProjectsByStatus('Deadline Extended Under Approval'); hasFilterResult(); this.showDot=true;    ">
+                                                    <button id="Count-deadline" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus?.includes('Deadline Extended Under Approval')}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count dead-ext">{{CountDeadLineExtendedUA}}</span>
                                                             <div class="fil-lbl">Deadline extended approval</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                            <input [checked]="_PortProjStatus?.includes('Deadline Extended Under Approval')" type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li *ngIf="CountAll_UA > 0" (click)="labelUA();onButtonClick('underappr')">
-                                                    <button id="underappr" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Under Approval'}">
+                                            
+                                                <li *ngIf="CountAll_UA > 0" (click)="$event.stopPropagation();  filterProjectsByStatus('Under Approval'); hasFilterResult(); this.showDot=true;   ">
+                                                    <button id="underappr" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus?.includes('Under Approval')}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count new-pro">{{CountAll_UA}}</span>
                                                             <div class="fil-lbl">New approval</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                            <input  [checked]="_PortProjStatus?.includes('Under Approval')" type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li *ngIf="CountProjectHold > 0"  (click)="labelProjectHold();onButtonClick('pro-hold')">
-                                                    <button id="pro-hold" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='Project Hold'}">
+                                                
+                                                <li *ngIf="CountProjectHold > 0"  (click)="$event.stopPropagation();  filterProjectsByStatus('Project Hold'); hasFilterResult(); this.showDot=true;  ">
+                                                    <button id="pro-hold" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus?.includes('Project Hold')}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count pro-hold">{{CountProjectHold}}</span>
                                                             <div class="fil-lbl">Project hold</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                            <input [checked]="_PortProjStatus?.includes('Project Hold')" type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li *ngIf="CountRejecteds > 0" (click)="labelRejecteds();onButtonClick('reject')">
-                                                    <button id="reject" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='New Project Rejected'}">
+                                             
+                                                <li *ngIf="CountRejecteds > 0" (click)="$event.stopPropagation();  filterProjectsByStatus('New Project Rejected'); hasFilterResult(); this.showDot=true;   ">
+                                                    <button id="reject" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus?.includes('New Project Rejected')}">
                                                         <div class="d-flex align-items-center">
-                                                            <span class="count" style="background-color:#BA68C8"   >{{CountRejecteds}}</span>
+                                                            <span class="count" style="background-color:#BA68C8">{{CountRejecteds}}</span>
                                                             <div class="fil-lbl">New project rejected</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                            <input [checked]="_PortProjStatus?.includes('New Project Rejected')" type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li *ngIf="Count_ToDoCompleted > 0" (click)="labelToDoCompleted();onButtonClick('todocomp')">
-                                                    <button id="todocomp" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='ToDo Completed'}">
+                                                
+                                                <li *ngIf="Count_ToDoCompleted > 0" (click)="$event.stopPropagation();  filterProjectsByStatus('ToDo Completed'); hasFilterResult(); this.showDot=true;   ">
+                                                    <button id="todocomp" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus?.includes('ToDo Completed')}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count todo-com">{{Count_ToDoCompleted}}</span>
                                                             <div class="fil-lbl">ToDo completed</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                            <input [checked]="_PortProjStatus?.includes('ToDo Completed')" type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <li *ngIf="Count_ToDoAchieved > 0" (click)="labelToDoAchieved();onButtonClick('todoachi')">
-                                                    <button id="todoachi" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus=='ToDo Achieved'}">
+                                             
+                                                <li *ngIf="Count_ToDoAchieved > 0" (click)="$event.stopPropagation();  filterProjectsByStatus('ToDo Achieved'); hasFilterResult(); this.showDot=true;    ">
+                                                    <button id="todoachi" class="btn btn-filtr" [ngClass]="{'active':_PortProjStatus?.includes('ToDo Achieved')}">
                                                         <div class="d-flex align-items-center">
                                                             <span class="count todo-ach">{{Count_ToDoAchieved}}</span>
                                                             <div class="fil-lbl">ToDo achived</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
+                                                            <input [checked]="_PortProjStatus?.includes('ToDo Achieved')" type="checkbox" class="multi-select-checkbox"/>
                                                         </div>
                                                     </button>
                                                 </li>
-                                                <!-- <li *ngIf="CountDeleted>0" (click)="labeldeletedproject();onButtonClick('delete')">
-                                                    <button id="delete" class="btn btn-filtr" [ngClass]="{'active':this._PortProjStatus == '' && this.showDeletedPrjOnly==true}" >
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="count del">{{CountDeleted}}</span>
-                                                            <div class="fil-lbl">Deleted projects</div>
-                                                            <span class="chck-icn">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-check2"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                    </path>
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                    </button>
-                                                </li> -->
+                                           
                                             </ul>
                                             <div></div>
-                                            <ul class="drop-ul">
-                                              <li class="dropdown-header">Sort by</li>
-                                              <button id="tot" class="btn btn-filtr" [ngClass]="{'active':(!_FilterByEmp)}" (click)="labelAll();filterProjectsOfEmp();" >
+                                            <div class="dropdown-header">Sort by</div>
+                                            <ul class="drop-ul multi-select-list">
+                                         
+                                              <button class="btn btn-filtr" [ngClass]="{'active':(_FilterByEmp?.[0]=='All')}" (click)=" $event.stopPropagation(); filterProjectsByEmp('All'); hasFilterResult(); this.showDot=true;  ">
                                                 <div class="d-flex align-items-center">
                                                     <span class="count tot">{{ showDeletedPrjOnly?Deletedproject.length:_ProjectsListBy_Pid.length}} </span>
                                                     <div  class="fil-lbl" >All</div>
-                                                    <span  class="chck-icn">
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            width="16" height="16"
-                                                            fill="currentColor" class="bi bi-check2"
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                            </path>
-                                                        </svg>
-                                                    </span>
+                                                    <input [checked]="_FilterByEmp?.includes('All')" type="checkbox" class="multi-select-checkbox"/>
+                                                   
                                                 </div>
-                                            </button>
-                                              <li *ngFor="let item of filteredEmployees" >
+                                             </button>
 
-                                                <button id="tot" class="btn btn-filtr " [ngClass]="{'active':_FilterByEmp==item.Emp_No}" (click)="filterProjectsOfEmp(item.Emp_No);" >
+                                              <li *ngFor="let item of filteredEmployees">
+                                                 <button class="btn btn-filtr" [ngClass]="{'active':_FilterByEmp?.includes(item.Emp_No)}" (click)=" $event.stopPropagation(); filterProjectsByEmp(item.Emp_No);   hasFilterResult(); this.showDot=true;   ">
                                                     <div class="d-flex align-items-center">
                                                         <span class="count tot">{{item.totalProjects}}</span>
                                                         <div  class="fil-lbl">{{item.Team_Res}}</div>
-                                                        <span *ngIf="_FilterByEmp==item.Emp_No" class="chck-icn">
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                width="16" height="16"
-                                                                fill="currentColor" class="bi bi-check2"
-                                                                viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-                                                                </path>
-                                                            </svg>
-                                                        </span>
+                                                        <input [checked]="_FilterByEmp?.includes(item.Emp_No)" type="checkbox" class="multi-select-checkbox"/>
                                                     </div>
-                                                </button>
-                                            </li>
+                                                 </button>
+                                              </li>
 
                                             </ul>
 
@@ -545,7 +390,7 @@
             </div>
 
             <div class="notification delay-notification">
-                <!-- labelForward();filterProjectsOfEmp(Current_user_ID) -->
+                
             <span class="notif-msg">Need your action on
                 <span *ngIf="this.forwardPrjPort && this.forwardPrjPort.length > 0" class="delayaction-of-emp"
                     (click)="applyFilterCriteria('FORWARD_APPROVALS_PENDING')" style="color:#9C27B0">
@@ -556,7 +401,7 @@
                 ,&nbsp;
                 </b>
 
-                <!-- labelCompletionapproval();filterProjectsOfEmp(Current_user_ID) -->
+                
                 <span *ngIf="this.completionPrjPort && this.completionPrjPort.length > 0" style="color:#81C784"
                     class="delayaction-of-emp" (click)="applyFilterCriteria('COMPLETION_APPROVALS_PENDING')">
                 {{this.completionPrjPort.length}} Completion approval(s)
@@ -566,7 +411,7 @@
                 ,&nbsp;
                 </b>
 
-                <!-- labelCancellationapproval();filterProjectsOfEmp(Current_user_ID) -->
+             
                 <span *ngIf="this.cancellationPort && this.cancellationPort.length > 0" style="color:#EE4137"
                     class="delayaction-of-emp" (click)="applyFilterCriteria('CANCELLATION_APPROVALS_PENDING')">
                 {{this.cancellationPort.length}} Cancellation approval(s)
@@ -576,7 +421,7 @@
                 ,&nbsp;
                 </b>
 
-                <!-- labelUA();filterProjectsOfEmp(Current_user_ID) -->
+               
                 <span *ngIf="this.newapprovalPrjport && this.newapprovalPrjport.length > 0" style="color:#9C27B0"
                     class="delayaction-of-emp" (click)="applyFilterCriteria('NEW_APPROVALS_PENDING')">
                 {{this.newapprovalPrjport.length}} New approval(s)
@@ -1230,7 +1075,18 @@
                                                     </td>
                                                 </tr> -->
                                                 <ng-container *ngFor="let pinnedPrj of pinnedProjects|filter:_SearchProjects; let i=index;">
-                                                    <ng-container *ngIf=" ((pinnedPrj.Status.trim()==_PortProjStatus?.trim())||(pinnedPrj.Status.includes('Delay')&&_PortProjStatus=='Delay')||_PortProjStatus=='')&&((!_FilterByEmp) || pinnedPrj.Emp_No?.trim()==_FilterByEmp||pinnedPrj.PendingapproverEmpNo?.trim() == this._FilterByEmp||pinnedPrj.OwnerEmpNo?.trim()==_FilterByEmp) ">
+                                                    <ng-container *ngIf="
+                                                         (  
+                                                          ((_PortProjStatus.includes(pinnedPrj.Status.trim()))||
+                                                          (_PortProjStatus.includes('Delay')&&(pinnedPrj.Status.includes('Delay')||(pinnedPrj.SubmissionType && pinnedPrj.Status.includes('Days'))))||
+                                                          (_PortProjStatus?.[0]=='All')) 
+                                                          &&
+                                                          (_FilterByEmp.includes(pinnedPrj.Emp_No?.trim())||
+                                                           _FilterByEmp.includes(pinnedPrj.PendingapproverEmpNo?.trim())||_FilterByEmp.includes(pinnedPrj.OwnerEmpNo?.trim())||
+                                                           _FilterByEmp?.[0]=='All')
+                                                         )
+                                                         &&(isAdvancedFilterApplied?( isProjectMatchesFilterCriteria(pinnedPrj) ):true)
+                                                       ">
                                                        <ng-container [ngTemplateOutlet]="pTableRow" [ngTemplateOutletContext]="{Item:pinnedPrj, Index:i, isPin:true}"></ng-container>
                                                     </ng-container>
                                                 </ng-container>
@@ -1244,10 +1100,19 @@
                                             </ng-container>
 
                                             <ng-template #pTableRow let-item1="Item" let-i="Index" let-isPinned="isPin">
-                                            
-                                            <tr *ngIf="(((item1.Status.trim()==_PortProjStatus?.trim())||( _PortProjStatus=='Delay'&&(item1.Status.includes('Delay')||(item1.SubmissionType && item1.Status.includes('Days'))) )||_PortProjStatus=='')&&((!_FilterByEmp) || item1.Emp_No?.trim()==_FilterByEmp||item1.PendingapproverEmpNo?.trim() == this._FilterByEmp||item1.OwnerEmpNo?.trim()==_FilterByEmp))&&(isAdvancedFilterApplied?( isProjectMatchesFilterCriteria(item1) ):true)"
-                                                    class="odd project-list_AC" [class.active]="item1.active">
 
+                                            <tr *ngIf=" (  
+                                                          ((_PortProjStatus.includes(item1.Status.trim()))||
+                                                          (_PortProjStatus.includes('Delay')&&(item1.Status.includes('Delay')||(item1.SubmissionType && item1.Status.includes('Days'))))||
+                                                          (_PortProjStatus?.[0]=='All')) 
+                                                          &&
+                                                          (_FilterByEmp.includes(item1.Emp_No?.trim())||
+                                                           _FilterByEmp.includes(item1.PendingapproverEmpNo?.trim())||_FilterByEmp.includes(item1.OwnerEmpNo?.trim())||
+                                                           _FilterByEmp?.[0]=='All')
+                                                         )
+                                                         &&(isAdvancedFilterApplied?( isProjectMatchesFilterCriteria(item1) ):true)
+                                                      "
+                                                      class="odd project-list_AC" [class.active]="item1.active">
 
                                                     <!--ctrl btns start-->      
                                                         <td tabindex="0" class="icond" style="padding-left: 28px;">
@@ -1407,7 +1272,7 @@
                                                                 <!-- _OpenMemosInfo(item1.Project_Code,item1.Project_Name); -->
                                                                 <a class="curser-pointer mr-2 ml-2" [ngStyle]="{cursor:IsTotalMemosListLoading?'wait':'pointer'}" 
                                                                     (click)="IsTotalMemosListLoading==false?_OpenMemosInfo1(item1.Project_Code,item1.Project_Name):0">
-                                                                    <img width="19px" src="./assets/images/Image (4).jfif"  [title]="IsTotalMemosListLoading?'loading...':'Click to view the SMail'"/>
+                                                                    <img width="19px" src="./assets/images/Image (4).jfif"  [title]="IsTotalMemosListLoading?'loading...':'Click to view the S Mail'"/>
                                                                 </a>
                                                             </span>
                                                             <ng-template #not_Linked>
@@ -2352,7 +2217,7 @@
                                                     <div class="bnk-txt"><a
                                                             class="kt-blank-msg  text-gray-400 ">Sorry, that filter
                                                             combination has no results.<br><u
-                                                                (click)="labelAll();filterProjectsOfEmp();notShow(); clearAppliedFilterApplied();"
+                                                                (click)="filterProjectsByStatus('All'); filterProjectsByEmp('All'); hasFilterResult(); this.showDot = false; clearAppliedFilterApplied();"
                                                                 style="cursor:pointer;">Clear filters</u></a></div>
                                                 </div>
                                             </div>
@@ -5758,7 +5623,7 @@
 </div>
 <div class="se-col-11">
   <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodal('SMail')">
-      <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more SMail':'Add SMail')}}</div>
+      <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more S Mail':'Add S Mail')}}</div>
       <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
           <span class="sr-only">Loading...</span>
       </div>
@@ -7787,7 +7652,7 @@
                  </ng-container>
                 </a> 
                 <div>
-                    Link SMail 
+                    Link S Mail 
                     <h6 class="text-muted">{{_displayProjName}}</h6> 
                 </div>
             </h4>
@@ -7809,7 +7674,7 @@
                   <div class="se-col-11" style="max-width: 100%">
                      <div class="d-flex">   
                       <div  class="schedule-select project" type="button" [ngStyle]="{cursor:IsMemoListLoading?'not-allowed':'pointer'}"  (click)="IsMemoListLoading?undefined:projectmodal2('SMail')">
-                          <div class="title">{{IsMemoListLoading?'Loading':(projectLinkedMemos&&projectLinkedMemos.length>0?'Add more SMail':'Add SMail')}}</div>
+                          <div class="title">{{IsMemoListLoading?'Loading':(projectLinkedMemos&&projectLinkedMemos.length>0?'Add more S Mail':'Add S Mail')}}</div>
                           <div *ngIf="IsMemoListLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                               <span class="sr-only">Loading...</span>
                           </div>

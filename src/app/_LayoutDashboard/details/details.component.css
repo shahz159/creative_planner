@@ -10936,3 +10936,18 @@ object-fit: cover;
     margin-left: 5px;
     font-weight: 500;
 }
+
+
+
+.off-days-span
+{
+    transform: translate3d(-160px, 20px, 0px) !important;
+}
+
+.off-days-span .days-list
+{
+    max-height: 130px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-right: 8px;
+}

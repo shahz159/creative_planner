@@ -466,7 +466,7 @@ Dateselectionrange: string = 'Date selection range';
   
 
 
-  GetProjectsByUserName(type) {
+  GetProjectsByUserName(type) {  debugger
     this.Type=type;
     this.BsService.setProjectSummaryType(type);
 
@@ -481,7 +481,7 @@ Dateselectionrange: string = 'Date selection range';
     }
 
     this.service.GetProjectsByUserName_Service_ForSummary(this.ObjUserDetails).subscribe((data:any) => {
-      if(data){   
+      if(data){      debugger
          data.forEach((ob)=>{
           ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
           ob.hoursInDecimal=(ob.Project_Block=='003'||ob.Project_Block=='008')?this.convertToDecimalHours(ob.StandardDuration):ob.AllocatedHours; // create new property : 'hoursInDecimal'  
@@ -497,7 +497,9 @@ Dateselectionrange: string = 'Date selection range';
       this.un_FilteredProjects = this.ActualDataList;
       this.getNotificationsofprojects();
 
-      this.newPrjRejectedCount=data[0].newrejectedcount;
+      // this.mydelayProjectsCount=data[0].DelayCount;
+      // this.newPrjRejectedCount=data[0].newrejectedcount;
+      
 
       const aprvlsExist=this[this.currentUA=='Under Approval'?'newUA':this.currentUA=='Forward Under Approval'?'forwardUA':this.currentUA=='Cancellation Under Approval'?'cancellationUA':'completionUA'].length;
       if(this.currentUA&&aprvlsExist>0){
@@ -551,7 +553,9 @@ Dateselectionrange: string = 'Date selection range';
 
          this.un_FilteredProjects = data;
          this.getNotificationsofprojects();
+         this.mydelayProjectsCount=data[0].DelayCount;
          this.newPrjRejectedCount=data[0].newrejectedcount;
+        
 
         const aprvlsExist=this[this.currentUA=='Under Approval'?'newUA':this.currentUA=='Forward Under Approval'?'forwardUA':this.currentUA=='Cancellation Under Approval'?'cancellationUA':'completionUA'].length;
         if(this.currentUA&&aprvlsExist>0){
@@ -696,7 +700,7 @@ dates:any
 
 
 
-     getDropdownsDataFromDB() {
+     getDropdownsDataFromDB() {     debugger
     if(this.Type=='ALL Projects'){
     this._objDropdownDTO.EmpNo = this.Current_user_ID;
     this._objDropdownDTO.Selected_ProjectType = this.selectedType_String;
@@ -714,7 +718,7 @@ dates:any
     }
     // this._objDropdownDTO.PortfolioId = null;
     this.service.GetDropDownsData_ForSummary(this._objDropdownDTO)
-      .subscribe((data) => {
+      .subscribe((data) => {  debugger
         // console.log("company data",data)
 
         if (this.selectedItem_Emp.length == 0) {
@@ -741,8 +745,8 @@ dates:any
         //Company
 
         if (this.selectedItem_Company.length == 0) {
-
-          this.CompanyCountFilter =  this.CompanyCountFilter.length==0?JSON.parse(data[0]['CompanyType_Json']):this.CompanyCountFilter;
+          this.CompanyCountFilter =  JSON.parse(data[0]['CompanyType_Json']);
+          // this.CompanyCountFilter =  this.CompanyCountFilter.length==0?JSON.parse(data[0]['CompanyType_Json']):this.CompanyCountFilter;
           console.log(this.CompanyCountFilter,'CompanyCountFilterCompanyCountFilterCompanyCountFilter');
         }
         else {
@@ -811,7 +815,8 @@ dates:any
           }
           //Company
           if (this.selectedItem_Company.length == 0) {
-            this.CompanyCountFilter = this.CompanyCountFilter.length===0?JSON.parse(data[0]['CompanyType_Json']):this.CompanyCountFilter;
+            // this.CompanyCountFilter = this.CompanyCountFilter.length===0?JSON.parse(data[0]['CompanyType_Json']):this.CompanyCountFilter;
+             this.CompanyCountFilter=JSON.parse(data[0]['CompanyType_Json']);
           }
           else {
             this.CompanyCountFilter = this.selectedItem_Company[0];
@@ -1200,9 +1205,9 @@ dates:any
 
 
 
-  applyFilters() {
+  applyFilters() {    
 debugger
-    this.edited = true
+    this.edited = true;
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
     }).join(',');
@@ -1311,7 +1316,7 @@ debugger
       console.log("object passing to api:",this.ObjUserDetails);
       //console.log("string------->", this.selectedType_String, this.selectedEmp_String, this.selectedStatus_String);
       this.service.GetProjectsByOwner_Service_ForSummary(this.ObjUserDetails)
-        .subscribe((data:any) => {
+        .subscribe((data:any) => {  
           if(data){
             data.forEach((ob)=>{
               ob.newrejectJson=ob.newrejectJson?JSON.parse(ob.newrejectJson):null;  // parses newrejectJson str into object.
@@ -2158,7 +2163,7 @@ addDMSToTheProject() {
       this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => { 
         console.log("Response=>", res);
         if (res.Message === "Updated Successfully"||res.Message==="Linked Successfully") {
-          this.notifyService.showSuccess("", "SMail successfully added.");
+          this.notifyService.showSuccess("", "S Mail successfully added.");
           this.getProjectMemos();  // rebind project memos list and update new linkable memos list.
         }
 
@@ -3954,8 +3959,10 @@ completionUA:any=[];
 forwardUA:any=[];
 newUA:any=[];
 cancellationUA:any=[];
-// mydelayProjects:any=[];
+
+mydelayProjectsCount:number=0;
 newPrjRejectedCount:number=0;
+
 
 
 getNotificationsofprojects(){
@@ -4177,6 +4184,10 @@ removeProjectFromPinnedList(prjCode:any){
 
 onNewPrjRejectedNotifClicked(){
     this.applyFiltersBy(null,this.Current_user_ID,null,'New Project Rejected');
+}
+
+onMyDelayPrjNotifClicked(){
+    this.applyFiltersBy(null,this.Current_user_ID,null,'Delay');
 }
 
 

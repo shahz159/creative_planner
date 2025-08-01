@@ -101,7 +101,7 @@ export class ActionToProjectComponent implements OnInit {
   ProjectDeadLineDate: Date;
   ProjectStartDate: Date;
   maxAllocation: number;
-  perDayLimit:number;
+  // perDayLimit:number;
   Current_user_ID: string;
   _projcode: boolean;
   _desbool: boolean;
@@ -185,7 +185,7 @@ export class ActionToProjectComponent implements OnInit {
     this.BsService.bs_catName.subscribe(d =>{ this.cat_name = d});
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
-    this.perDayLimit=7; // allocation hr per day limit.
+    // this.perDayLimit=7; // allocation hr per day limit.
     this.GetAllEmployeesForAssignDropdown();
 
     this.gethierarchy();
@@ -206,6 +206,7 @@ export class ActionToProjectComponent implements OnInit {
          if(ta.assignedTo!==''){
               this.selectedEmpNo=ta.assignedTo;
               this.disableAssignedField=true;
+
         }
     });
 
@@ -309,7 +310,13 @@ export class ActionToProjectComponent implements OnInit {
         console.log('this is all users list:',this.allUsers);
         console.log(this.ownerArr,"groupby");
 
-
+        // after getting dropdowns data. if we found auto selection 
+        if(this.selectedEmpNo){
+             const obj=this.allUsers.find(ob=>ob.Emp_No==this.selectedEmpNo);
+             this.weekendPolicy=obj.CompanyId=='400'?{ 6:'full',0:'full' }:{ 5:'full'};
+             this.perDayAlhr_Limit=obj.CompanyId=='400'?8.5:8;
+        }
+        //
 
       });
   }
@@ -436,16 +443,32 @@ export class ActionToProjectComponent implements OnInit {
       this.selectedEmpNo = obj['Emp_No'];
     // }
       
-     //2. update weekendpolicy based on selected emp.
-      this.setWeekendPolicy(obj.CompanyId);
+     //2. update weekendpolicy and Perday limit based on selected emp.
+      this.weekendPolicy=obj.CompanyId=='400'?{ 6:'full',0:'full' }:{ 5:'full'};
+      this.perDayAlhr_Limit=obj.CompanyId=='400'?8.5:8;
 
      //3.validate startdate and enddate.   since dates are connected to weekend policy.
-     const start_dt_=new Date(this._StartDate);
-     const end_dt_=new Date(this._EndDate);
-     if(this.weekendPolicy[start_dt_.getDay()]||this.weekendPolicy[end_dt_.getDay()]){
-        this._StartDate=null;
-        this._EndDate=null; 
+     if(this._StartDate&&this._EndDate){
+       const start_dt_=new Date(this._StartDate);
+       const end_dt_=new Date(this._EndDate);
+       if(this.weekendPolicy[start_dt_.getDay()]||this.weekendPolicy[end_dt_.getDay()]){
+         this._StartDate=null;
+         this._EndDate=null;
+         this._allocated=null; 
+         this.maxAllocation=0;
+         this.totalWorkingDays=0;
+         this.totalOffDays=[];
+
+       }
      }
+     else{ this._StartDate=null; 
+           this._EndDate=null; 
+           this._allocated=null;  
+           this.maxAllocation=0; 
+           this.totalWorkingDays=0; 
+           this.totalOffDays=[];  
+          }
+ 
   } 
 
   EmployeeOnDeselect(obj) {
@@ -1744,9 +1767,6 @@ isDateSelectable=(date:Moment|null):boolean=>{
    }
 } 
 
-setWeekendPolicy(companyId:any){
-   this.weekendPolicy=companyId=='400'?{ 6:'full',0:'full' }:{ 5:'full', 6:'half'};
-}
 
 alertMaxAllocation(){
     if (this._StartDate == null || this._EndDate == null) {

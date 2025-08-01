@@ -43,6 +43,7 @@ import tippy from 'tippy.js';
 import { CreateprojectService } from 'src/app/_Services/createproject.service';
 import * as ApexCharts from 'apexcharts';
 import { EventEmitter } from 'stream';
+import { Moment } from 'moment';
 
 declare var FusionCharts: any;
 
@@ -2494,7 +2495,7 @@ multipleback(){
         this._LinkService.InsertMemosOn_ProjectCode(projectcode, appId, dmsMemo, userid).subscribe((res: any) => {
           console.log("Response=>", res);
           if (res.Message === "Updated Successfully.") {
-            this.notifyService.showSuccess("", "SMail successfully added.");
+            this.notifyService.showSuccess("", "S Mail successfully added.");
             this.GetDMS_Memos();
           }
 
@@ -4041,6 +4042,10 @@ actionCompleted(){
     this.Allocated = this.projectInfo.AllocatedHours;
     this.End_Date = this.projectInfo.EndDate;
     this.newproject_Cost=this.projectInfo.Project_Cost; 
+
+    this.prjResWeekendPolicy=this.projectInfo.RespCompanyId=='400'?{6:'full',0:'full'}:{5:'full'};
+    this.calculateTotalWorkingDays();
+     
   }
 
  isPrjStartDateEditable:boolean=false;
@@ -4726,12 +4731,19 @@ convertToDecimalHours(hm:string){
     this.newaction_Cost=this.projectActionInfo[this.currentActionView].Project_Cost;
 
 
- // is action start date editable or not?
+   // is action start date editable or not?
     const actns_date=new Date(this.ActionstartDate); actns_date.setHours(0,0,0,0);
     const cr_date=new Date(); cr_date.setHours(0,0,0,0);
     this.isActnStartDateEditable=actns_date>=cr_date;
    // is action start date editable or not?
-    this.onActionDateChanged();
+    
+
+    // set weekend policy based on action responsible.
+    this.actnResWeekendPolicy=this.projectActionInfo[this.currentActionView].RespCompanyId=='400'?{6:'full',0:'full'}:{5:'full'};   // 0-sun,1-mon,2-tue,...6-sat
+    this.actnResperDayAlhr_Limit=this.projectActionInfo[this.currentActionView].RespCompanyId=='400'?8.5:8;
+   
+     // calculate 'ActionmaxAllocation' value based on start date and end date of the action.
+    this.onActionDateChanged();  
   }
 
 
@@ -4758,23 +4770,22 @@ convertToDecimalHours(hm:string){
   }
 
 
-  onActionDateChanged(){
-    let start_dt=new Date(this.ActionstartDate);
-    let end_dt=new Date(this.ActionendDate);
-    let Difference_In_Time = start_dt.getTime() - end_dt.getTime();
-    let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+  // onActionDateChanged(){
+  //   let start_dt=new Date(this.ActionstartDate);
+  //   let end_dt=new Date(this.ActionendDate);
+  //   let Difference_In_Time = start_dt.getTime() - end_dt.getTime();
+  //   let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
-    const perDayLimit=7;
+  //   const perDayLimit=7;
 
-    if(Difference_In_Days==0){
-      Difference_In_Days=-1;
-      this.ActionmaxAllocation = (-Difference_In_Days) * perDayLimit / 1;
-    }
-    else{
-      this.ActionmaxAllocation = (-Difference_In_Days) * perDayLimit / 1 +perDayLimit;
-    }
-  }
-
+  //   if(Difference_In_Days==0){
+  //     Difference_In_Days=-1;
+  //     this.ActionmaxAllocation = (-Difference_In_Days) * perDayLimit / 1;
+  //   }
+  //   else{
+  //     this.ActionmaxAllocation = (-Difference_In_Days) * perDayLimit / 1 +perDayLimit;
+  //   }
+  // }
 
   updatingAction: boolean = false;
 
@@ -14100,6 +14111,183 @@ createNewGroup(){
 // project group (stream groups)   end.
 
 
+// Alhrs new validation on project edit start.
+prjResWeekendPolicy:{ [key:number]:'full'|'half'  }={  6:'full', 0:'full'   };  // 0- sunday, 1-monday, 2-tuesday, .... 6-saturday
+total_WorkingDays:number=0; // from start date and end date selected. it gives total working days in that duration.
+total_OffDays:{date:string, reason:string}[]=[]; // total off days in the selected start date and end date duration.
+
+isPrjDateSelectable=(date:Moment |null):boolean=>{  
+   if(!date)
+   { return false; }
+   else{
+    return this.prjResWeekendPolicy?.[date.day()]=='full'?false:true;
+   }
+} 
+
+
+
+calculateTotalWorkingDays(){
+  if(this.Start_Date&&this.End_Date)
+  {
+      const pstart_dt=new Date(this.Start_Date); pstart_dt.setHours(0,0,0,0);
+      const pend_dt=new Date(this.End_Date); pend_dt.setHours(0,0,0,0);
+
+      let total_duration_days=Math.abs(moment(pstart_dt).diff(pend_dt,'days'))+1;
+      let total_off=0;  
+      let total_working_days=0;
+      let total_off_dates:any=[];
+
+      const tempdate=new Date(pstart_dt); tempdate.setHours(0,0,0,0); 
+      while(tempdate<=pend_dt)
+      {
+        const isWeekend=this.prjResWeekendPolicy[tempdate.getDay()]
+        if(isWeekend)
+        {
+           total_off+=(isWeekend=='full'?1:isWeekend=='half'?0.5:0);
+           if(isWeekend=='half'){  total_working_days+=1;   }  // half day is also a working day.
+           if(isWeekend=='full'){  total_off_dates.push({ date:tempdate.toString(), reason:'Weekend'}); }
+        }
+        else{
+           total_working_days+=1;
+        }
+
+         tempdate.setDate(tempdate.getDate()+1);
+      }
+
+       this.total_WorkingDays=total_working_days;
+       this.total_OffDays=[...total_off_dates];
+  }
+  else{
+     this.total_WorkingDays=0;
+     this.total_OffDays=[];
+  }
+}
+
+
+onProjectResponsibleChanged(){
+  // 1. change weekendpolicy and Perday limit based on selected new resp for Project.
+    const obj=this.responsible_dropdown.find(ob=>ob.Emp_No==this.selectedOwnResp);
+    if(obj){
+       this.prjResWeekendPolicy=obj.CompanyId=='400'?{ 6:'full',0:'full' }:{ 5:'full'};   // 0-sun,1-mon,....6-sat
+    }
+    
+  // 2. validate start date and end date of the project.
+    if(this.Start_Date&&this.End_Date)
+    {
+         const start_dt_=new Date(this.Start_Date); start_dt_.setHours(0,0,0,0);
+         const end_dt_=new Date(this.End_Date);  end_dt_.setHours(0,0,0,0);
+         const curr_dt=new Date(); curr_dt.setHours(0,0,0,0);
+         // for the selected project responsible when projects dates are invalid. example project ends on friday which is holiday on selected responsible.
+         if(this.prjResWeekendPolicy[start_dt_.getDay()]&&start_dt_>=curr_dt){
+             this.Start_Date=null;
+         }
+         if(this.prjResWeekendPolicy[end_dt_.getDay()]&&end_dt_>=curr_dt){
+             this.End_Date=null;
+         }
+
+    }
+
+    
+    // 3. recalculate total_WorkingDays, total_OffDays based on Start_Date and End_Date.
+    this.calculateTotalWorkingDays();
+
+}
+
+
+// Alhrs new validation on project edit end.
+
+
+// Alhrs new validation for action edit    start.
+actnResWeekendPolicy:{ [key:number]:'full'|'half'  }={  6:'full', 0:'full'   };  // 0- sunday, 1-monday, 2-tuesday, .... 6-saturday
+actnResperDayAlhr_Limit:number=8.5;  // per day allocatable hrs limit. 
+total_actnWorkingDays:number=0; // from start date and end date selected. it gives total working days in that duration of action.
+total_actnOffDays:{date:string, reason:string}[]=[]; // total off days in the selected start date and end date duration of action.
+
+isActnDateSelectable=(date:Moment |null):boolean=>{  
+   if(!date)
+   { return false; }
+   else{
+    return this.actnResWeekendPolicy?.[date.day()]=='full'?false:true;
+   }
+} 
+
+
+onActionDateChanged(){
+
+  if(this.ActionstartDate&&this.ActionendDate){
+     
+      const astart_dt=new Date(this.ActionstartDate); astart_dt.setHours(0,0,0,0);
+      const aend_dt=new Date(this.ActionendDate); aend_dt.setHours(0,0,0,0);
+
+      let total_duration_days=Math.abs(moment(astart_dt).diff(aend_dt,'days'))+1;
+      let total_off=0;  
+      let total_working_days=0;
+      let total_off_dates:any=[];
+      const tempdate=new Date(astart_dt); tempdate.setHours(0,0,0,0); 
+      while(tempdate<=aend_dt)
+      {
+          const isWeekend=this.actnResWeekendPolicy[tempdate.getDay()];
+          if(isWeekend)
+          {
+            total_off+=(isWeekend=='full'?1:isWeekend=='half'?0.5:0);
+            if(isWeekend=='half'){  total_working_days+=1;   }  // half day is also a working day.
+            if(isWeekend=='full'){  total_off_dates.push({ date:tempdate.toString(), reason:'Weekend'}); }
+          }
+          else{
+            total_working_days+=1;
+          }
+
+         tempdate.setDate(tempdate.getDate()+1);
+      }
+
+       this.ActionmaxAllocation=(total_duration_days-total_off)*this.actnResperDayAlhr_Limit;
+       this.total_actnWorkingDays=total_working_days;
+       this.total_actnOffDays=[...total_off_dates];
+  }
+  else{
+     this.ActionmaxAllocation=null;
+     this.total_actnWorkingDays=0;
+     this.total_actnOffDays=[];
+  }
+
+}
+
+
+
+onActionResponsibleChanged(){
+
+  // 1. get new action cost based on new actn resp.
+  this.getNewActnCost(); 
+
+  // 2. change weekendpolicy and Perday limit based on selected new resp for action.
+    const obj=this.actionresponsible_dropdown.find(ob=>ob.Emp_No==this.ActionResponsible);
+    if(obj){
+       this.actnResWeekendPolicy=obj.CompanyId=='400'?{ 6:'full',0:'full' }:{ 5:'full'};   // 0-sun,1-mon,....6-sat
+       this.actnResperDayAlhr_Limit=obj.CompanyId=='400'?8.5:8;
+    }
+
+  // 3. validate start date and end date of the action.
+    if(this.ActionstartDate&&this.ActionendDate)
+    {
+         const start_dt_=new Date(this.ActionstartDate); start_dt_.setHours(0,0,0,0);
+         const end_dt_=new Date(this.ActionendDate); end_dt_.setHours(0,0,0,0);
+         const crr_dt=new Date();   crr_dt.setHours(0,0,0,0);
+         if(this.actnResWeekendPolicy[start_dt_.getDay()]&&(start_dt_>=crr_dt)){
+           this.ActionstartDate=null;
+         }
+
+         if(this.actnResWeekendPolicy[end_dt_.getDay()]&&(end_dt_>=crr_dt)){
+           this.ActionendDate=null;
+         }         
+    }
+
+    // 4. recalculate ActionmaxAllocation, total_actnWorkingDays, total_actnOffDays based on Start_Date and End_Date.
+      this.onActionDateChanged();
+
+  }
+    
+
+// Alhrs new validation for action edit    end.
 }
 
 

@@ -10,6 +10,8 @@ import { BsServiceService } from 'src/app/_Services/bs-service.service';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter,MAT_MOMENT_DATE_ADAPTER_OPTIONS,} from '@angular/material-moment-adapter';
 import * as moment from 'moment';
+import { of } from 'rxjs';
+import { filter, map,tap } from 'rxjs/operators';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -388,9 +390,32 @@ export class NotificationComponent implements OnInit {
     console.log(this.approvalObj,"response");
     this.approvalservice.NewResponseService(this.approvalObj).subscribe(data =>{
       console.log(data,"response-data");
-      if(data[0]['message']=='1')
-      this.notifyService.showSuccess("Response cleared.",'');
-      this.applyFilters();
+      if(data?.[0]?.['message']=='1')
+      {
+         this.notifyService.showSuccess("Response cleared.",'');
+         this.applyFilters((args:any)=>{
+              // after rebind of the page responses list.
+                const remainingCount=(args[0]['WRcount']);
+                if(remainingCount==0){
+                    this.tabs_Count.informationCount=remainingCount;
+                    this.enableFirstTabSwitch=true;
+                    this.switchToFirstAvailableTab();
+                }
+
+         });
+      }
+      else{
+        this.notifyService.showError('Unable to clear response.','Something went wrong');
+      }
+     
+      // this.applyFilters((arg)=>{  
+      //      const remainingCount=(arg[0]['WRcount']);
+      //      if((!remainingCount)){
+      //         this.tabs_Count.informationCount=remainingCount;
+      //         this.enableFirstTabSwitch=true;
+      //         this.switchToFirstAvailableTab();
+      //      }
+      // });
     });
   }
 
@@ -550,29 +575,62 @@ export class NotificationComponent implements OnInit {
   }
 
   leave_Requests: any = []
-  newNotificationLeaveRequests() {
-    this.notificationsLoading = true;
-    this.service.GetEmployeeLeaveRequests(this.Current_user_ID).subscribe((data) => {
-      console.log("leave data",data);
-      this.leave_Requests = JSON.parse(data[0]['LeaveRequests_json']);
+//   newNotificationLeaveRequests() {
+//     this.notificationsLoading = true;
+//     this.service.GetEmployeeLeaveRequests(this.Current_user_ID).subscribe((data) => {
+//       console.log("leave data",data);
+//       this.leave_Requests = JSON.parse(data[0]['LeaveRequests_json']);
 
-//  automatic switch to very first tab which has content.
+// //  automatic switch to very first tab which has content.
+//       this.tabs_Count.leaveRequestsCount=this.leave_Requests.length;
+//       if(this.enableFirstTabSwitch){ 
+//         this.switchToFirstAvailableTab();
+//       }
+// //      
+
+//       this.notificationsLoading = false;
+//       // manually creating new property 
+//             this.leave_Requests.forEach((lvobj)=>{
+//                     const mobj=moment(lvobj.Req_Date,'M/D/YYYY h:mm:ss a');
+//                     lvobj.ReqDateFormatted=mobj.format('YYYY-MM-DDTHH:mm:ss');  // creating new property.
+//             });
+//       // 
+//       console.log(this.leave_Requests, "_newNotificationLeaveRequest");
+//     });
+
+//   }
+
+
+
+
+newNotificationLeaveRequests(){
+    this.notificationsLoading = true;
+    this.fetchAllLeaveRequests().subscribe((data)=>{
+      this.notificationsLoading = false;
+      //  automatic switch to very first tab which has content.
       this.tabs_Count.leaveRequestsCount=this.leave_Requests.length;
       if(this.enableFirstTabSwitch){ 
         this.switchToFirstAvailableTab();
       }
-//      
+      //      
+    })
+}
 
-      this.notificationsLoading = false;
-      // manually creating new property 
-            this.leave_Requests.forEach((lvobj)=>{
+
+
+  fetchAllLeaveRequests(){  
+      return this.service.GetEmployeeLeaveRequests(this.Current_user_ID).pipe(tap((data:any)=>{  
+             console.log("fetchAllLeaveRequests",data);
+              this.leave_Requests = JSON.parse(data[0]['LeaveRequests_json']);
+               // manually creating new property 
+               this.leave_Requests.forEach((lvobj)=>{
                     const mobj=moment(lvobj.Req_Date,'M/D/YYYY h:mm:ss a');
                     lvobj.ReqDateFormatted=mobj.format('YYYY-MM-DDTHH:mm:ss');  // creating new property.
-            });
-      // 
-      console.log(this.leave_Requests, "_newNotificationLeaveRequest");
-    });
-
+                });
+                //
+               console.log(this.leave_Requests, "all leave_Requests"); 
+              this.notificationsLoading = false; 
+        }));
   }
 
 
@@ -809,7 +867,7 @@ export class NotificationComponent implements OnInit {
   }
 
 
-  applyFilters() {
+  applyFilters(continueWith?:any) {
    debugger
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
@@ -838,11 +896,16 @@ export class NotificationComponent implements OnInit {
     this.notificationDTO.SearchText = this.searchText;
     this.notificationDTO.sendtype = this.sendtype;
 
+
+
+
     this.service.GetViewAllDashboardnotifications(this.notificationDTO)
       .subscribe(data => {   debugger
         this._NotificationActivity = JSON.parse(data[0]['Notification_Json']);
         this.WScount = (data[0]['WScount']);
         this.WRcount = (data[0]['WRcount']);
+        this.tabs_Count.projectApprovalCount=this.WScount;
+        this.tabs_Count.informationCount=this.WRcount;
 
         console.log( this._NotificationActivity," this._NotificationActivity")
         this._NotificationActivity.forEach((ob:any)=>{
@@ -984,7 +1047,15 @@ export class NotificationComponent implements OnInit {
 
         // Reset scroll position to 0.  (after search, filter, pagination, clear )
          this.resetScrollPosition('#all-list-container');
-        //
+        // 
+
+        
+
+        // if user interested to run extra custom logic 
+          continueWith?.(data);
+        // if anybody want to run some extra logic  after this filter execution.
+
+
       });
 
 
@@ -1133,14 +1204,29 @@ acceptSelectedValues(_comments?:string) {
         withCmts=true;
     }
 
+  
+
      this.approvalservice.NewUpdateAcceptApprovalsService(this.selectedItems).subscribe(data =>{
       console.log(data,"accept-data");
         const checkbox = document.getElementById('snocheck') as HTMLInputElement;
         checkbox.checked = false;
         this.notifyService.showSuccess("Project(s) approved successfully",'Success');
 
-        this.applyFilters();
+        this.applyFilters((args:any)=>{
+          // after rebind of the page projects list.
+          const remainingCount=(args[0]['WScount']);
+          // if we found no projects in the list after this approve then we must redirect control to other tabs and prevent blank white issue.
+          if(remainingCount==0){
+              this.tabs_Count.projectApprovalCount=remainingCount;
+              this.enableFirstTabSwitch=true;
+              this.switchToFirstAvailableTab();
+           }
 
+        });
+
+
+        // this.applyFilters();
+       
         this.selectedItems=[];
         this.selectedItem_Emp=[];
         if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
@@ -1150,8 +1236,6 @@ acceptSelectedValues(_comments?:string) {
         else {
           this.edited = true;
         }
-
-
 
       if(withCmts){     // close the accept with comments sidebar if approving with comments is on.
           this.closeInfo();
@@ -1165,7 +1249,7 @@ acceptSelectedValues(_comments?:string) {
     this.notifyService.showInfo("Please select atleast one project to approve",'');
   }
 
-  }
+}
 
   reject_list: any;
   rejectType: any;
@@ -1277,7 +1361,17 @@ acceptSelectedValues(_comments?:string) {
       this.approvalservice.NewUpdateRejectApprovalsService(this.selectedItems).subscribe(data =>{
         console.log(data,"reject-data");
 
-        this.applyFilters();
+        this.applyFilters((args:any)=>{
+           // after rebind of the page projects list. check count and switch if needed.
+          const remainingCount=(args[0]['WScount']);
+          if(remainingCount==0){
+              this.tabs_Count.projectApprovalCount=remainingCount;
+              this.enableFirstTabSwitch=true;
+              this.switchToFirstAvailableTab();
+           }
+        });
+
+        
         this.selectedItems=[];
         this.selectedItem_Emp=[];
         if (this.selectedItem_Type.length == 0 && this.selectedItem_Status.length == 0
@@ -1288,11 +1382,15 @@ acceptSelectedValues(_comments?:string) {
           this.edited = true;
         }
 
-      });
+
+
       const checkbox = document.getElementById('snocheck') as HTMLInputElement;
       checkbox.checked = false;
       this.selectedItems=[];
       this.notifyService.showSuccess("Project(s) rejected successfully",'Success');
+
+      });
+      
     }
     else{
       this.notifyService.showInfo("Please select atleast one project to reject",'');
@@ -1314,10 +1412,37 @@ acceptSelectedValues(_comments?:string) {
 
       this.approvalservice.NewMultiResponseService(this.approvalObj).subscribe(data =>{
         console.log(data,"response-data");
-        if(data['message']=='1')
-        this.notifyService.showSuccess("Response(s) cleared.",'');
-        this.viewAll(this.sendtype);
-        this.responselist=[];
+        if(data?.['message']=='1'){
+            this.notifyService.showSuccess("Response(s) cleared.",'');
+            this.selectedItems=[];
+            const checkbox = document.getElementById('snocheck') as HTMLInputElement;
+            checkbox.checked = false;
+            this.applyFilters((args:any)=>{
+                  // after rebind of the page responses list.
+                const remainingCount=(args[0]['WRcount']);
+                if(remainingCount==0){
+                    this.tabs_Count.informationCount=remainingCount;
+                    this.enableFirstTabSwitch=true;
+                    this.switchToFirstAvailableTab();
+                }
+            });
+            this.responselist=[];
+        }
+        else{
+          this.notifyService.showError("Unable to clear selected responses.",'Something went wrong');
+        }
+   
+      
+        // this.viewAll(this.sendtype);
+      //   this.applyFilters((arg)=>{  debugger
+      //      const remainingCount=(arg[0]['WRcount']);
+      //      if((!remainingCount)){
+      //         this.tabs_Count.informationCount=remainingCount;
+      //         this.enableFirstTabSwitch=true;
+      //         this.switchToFirstAvailableTab();
+      //      }
+      // });
+       
       });
     }
     else{
@@ -1470,7 +1595,16 @@ onSubmitLRbtn(){
                 // EMAIL GENERATION END
                
                 this.close_requisition_Info();
-                this.newNotificationLeaveRequests();
+                    this.notificationsLoading = true;  // fetching new leave requests list start.
+                this.fetchAllLeaveRequests().subscribe((data)=>{ 
+                    this.notificationsLoading=false;  // fetching process ended. 
+                    if(this.leave_Requests.length==0){
+                       this.tabs_Count.leaveRequestsCount=0;
+                       this.enableFirstTabSwitch=true;
+                       this.switchToFirstAvailableTab();
+                    }
+                  
+                });
 
             }
 
@@ -1814,11 +1948,25 @@ switchToFirstAvailableTab(){
       this.setPageContent('LEAVE RESPONSES'); 
 
    }
+   else if(findex==-1){
+      this.setEmptyNotificationUI(true);
+   }
 
   }
 }
 
 
+setEmptyNotificationUI(show:boolean){
+    if(show){
+       document.getElementById('all-notification-dv')?.classList.add('d-none');
+       document.getElementById('no-notification-dv')?.classList.remove('d-none');
+    }
+    else{
+       document.getElementById('all-notification-dv')?.classList.remove('d-none');
+       document.getElementById('no-notification-dv')?.classList.add('d-none');
+    }
+
+}
 
 //  automatic switch to very first tab section which has content.   end.
 

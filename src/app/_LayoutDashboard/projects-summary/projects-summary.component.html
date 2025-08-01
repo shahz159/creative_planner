@@ -101,14 +101,16 @@
                                 {{CurrentPageNo}}</span>
                         </div> -->
 <!-- clearAllCheckboxes(); -->
+                                                                        <!-- this.edited=false; -->
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"     
-                            (click)="CurrentPageNo = CurrentPageNo - 1; applyFilters();this.edited=false; this.currentUA=null;        " [disabled]="CurrentPageNo==1">
+                            (click)="CurrentPageNo = CurrentPageNo - 1; applyFilters();     this.currentUA=null;        " [disabled]="CurrentPageNo==1">
                             <i class="fas fa-angle-left mr-0"></i>
                         </button>
                         <!-- [ngClass]="_CurrentpageRecords<30 ? 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1 not-allowed' : 'btn btn-label-primary btn-upper btn-sm btn-bold mr-1'" -->
 <!-- clearAllCheckboxes(); -->
+                                                                           <!-- this.edited=false;  -->
                         <button class="btn btn-label-primary btn-upper btn-sm btn-bold mr-1"
-                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters();this.edited=false; this.currentUA=null;        "
+                            (click)="CurrentPageNo = CurrentPageNo + 1; applyFilters();   this.currentUA=null;     "
                             [disabled]="_CurrentpageRecords<30||(_CurrentpageRecords*CurrentPageNo)>_totalProjectsCount">
                             <i class="fas fa-angle-right mr-0"></i></button>
                         <div class="mr-1">
@@ -927,7 +929,7 @@
 
 
             <!-- this.mydelayProjects&&this.mydelayProjects.length > 0 || -->
-            <div class="kt-Note-msg d-flex" *ngIf=" this.forwardUA&&this.forwardUA.length > 0 ||this.completionUA&&this.completionUA.length > 0 || this.newUA&&this.newUA.length > 0 || this.cancellationUA&&this.cancellationUA.length > 0|| newPrjRejectedCount&&newPrjRejectedCount>0" >
+            <div class="kt-Note-msg d-flex" *ngIf=" forwardUA&&forwardUA.length > 0 ||completionUA&&completionUA.length > 0 || newUA&&newUA.length > 0 || cancellationUA&&cancellationUA.length > 0|| newPrjRejectedCount&&newPrjRejectedCount>0||mydelayProjectsCount&&mydelayProjectsCount>0" >
             
             <div class="kt-note-icon" style="align-self: flex-start;"><svg xmlns="http://www.w3.org/2000/svg"
                xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" version="1.1" x="0px" y="0px"
@@ -973,7 +975,7 @@
                 {{this.forwardUA.length}} Forward approval(s)
               </span>
 
-              <ng-container *ngIf="this.forwardUA.length > 0 && (this.completionUA.length > 0 || this.cancellationUA.length > 0 || this.newUA.length > 0 || newPrjRejectedCount>0)">
+              <ng-container *ngIf="this.forwardUA.length > 0 && (this.completionUA.length > 0 || this.cancellationUA.length > 0 || this.newUA.length > 0 || newPrjRejectedCount>0 || mydelayProjectsCount>0)">
                 <b>,&nbsp;</b>
               </ng-container>
 
@@ -981,7 +983,7 @@
                 {{this.completionUA.length}} Completion approval(s)
               </span>
 
-              <ng-container *ngIf="this.completionUA.length > 0 && (this.cancellationUA.length > 0 || this.newUA.length > 0||newPrjRejectedCount>0)">
+              <ng-container *ngIf="this.completionUA.length > 0 && (this.cancellationUA.length > 0 || this.newUA.length > 0||newPrjRejectedCount>0 || mydelayProjectsCount>0)">
                 <b>,&nbsp;</b>
               </ng-container>
 
@@ -989,7 +991,7 @@
                 {{this.cancellationUA.length}} Cancellation approval(s)
               </span>
 
-              <ng-container *ngIf="this.cancellationUA.length > 0 && (this.newUA.length > 0 || newPrjRejectedCount>0)">
+              <ng-container *ngIf="this.cancellationUA.length > 0 && (this.newUA.length > 0 || newPrjRejectedCount>0 || mydelayProjectsCount>0)">
                 <b>,&nbsp;</b>
               </ng-container>
 
@@ -997,12 +999,20 @@
                 {{this.newUA.length}} New approval(s)
               </span>
 
-               <ng-container *ngIf="this.newUA.length > 0 && (newPrjRejectedCount>0)">
+               <ng-container *ngIf="this.newUA.length > 0 && (newPrjRejectedCount>0||mydelayProjectsCount>0)">
                 <b>,&nbsp;</b>
               </ng-container>
 
                 <span *ngIf="newPrjRejectedCount&&newPrjRejectedCount>0" style="color:#9c27b0" class="delayaction-of-emp" (click)="onNewPrjRejectedNotifClicked()">
-                 {{newPrjRejectedCount}} New Project(s) Rejected.
+                 {{newPrjRejectedCount|number}} New Project(s) Rejected.
+               </span>
+
+                <ng-container *ngIf="newPrjRejectedCount > 0 && (mydelayProjectsCount>0)">
+                <b>,&nbsp;</b>
+              </ng-container>
+
+               <span *ngIf="mydelayProjectsCount&&mydelayProjectsCount>0" style="color:#d32f2f" class="delayaction-of-emp" (click)="onMyDelayPrjNotifClicked()">
+                 {{mydelayProjectsCount|number}} Project(s) Delay.
                </span>
 
 
@@ -1685,7 +1695,7 @@
                                                                 <img
                                                                     width="19px" height="21px"
                                                                     src="./assets/images/Image (4).jfif"
-                                                                    [title]="IsTotalMemosListLoading?'loading...':'Click to view the SMail'">
+                                                                    [title]="IsTotalMemosListLoading?'loading...':'Click to view the S Mail'">
                                                             </a>
 
                                                         </div>
@@ -2439,7 +2449,7 @@
                  </ng-container>
                 </a> 
                 <div>
-                    Link SMail 
+                    Link S Mail 
                     <h6 class="text-muted">{{_displayProjName}}</h6>
                 </div>
             </h4>
@@ -2462,7 +2472,7 @@
                      <div class="d-flex">
                         <!-- projectmodal('SMail');selectToLinkSMail(); -->
                       <div  class="schedule-select project" type="button" [ngStyle]="{cursor:IsMemoListLoading?'not-allowed':'pointer'}"  (click)="IsMemoListLoading?undefined:projectmodal('SMail')">
-                          <div class="title">{{IsMemoListLoading?'Loading':(_MemosSubjectList&&_MemosSubjectList.length>0?'Add more SMail':'Add SMail')}}</div>
+                          <div class="title">{{IsMemoListLoading?'Loading':(_MemosSubjectList&&_MemosSubjectList.length>0?'Add more S Mail':'Add S Mail')}}</div>
                           <div *ngIf="IsMemoListLoading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                               <span class="sr-only">Loading...</span>
                           </div>
