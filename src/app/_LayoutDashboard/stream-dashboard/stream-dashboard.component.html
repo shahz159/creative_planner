@@ -273,8 +273,8 @@
                                                         
                                                     </div>
                                                   
-                                                    <div class="upcoming-event-item-actions-ul" [ngClass]="{'active': item1.Schedule_Type == 2 && item1.Status!='Owner'}">
-                                                        <ng-container *ngIf="item1.Schedule_Type == 2 && item1.Status!='Owner'">
+                                                    <div class="upcoming-event-item-actions-ul" [ngClass]="{'active': item1.Schedule_Type == 2 && item1.Status!='Owner' && item1.Meeting_status == false}">
+                                                        <ng-container *ngIf="item1.Schedule_Type == 2 && item1.Status!='Owner' && item1.Meeting_status == false">
                                                             
                                                         <div class="upcoming-event-item-actions-li"  [ngClass]="{'yes':item1.Status=='Accepted'}"  (click)="Event_acceptandReject(1,item1.Schedule_ID)">
                                                             Yes

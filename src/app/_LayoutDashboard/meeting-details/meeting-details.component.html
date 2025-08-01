@@ -1767,10 +1767,9 @@
 
                                         </div>                     
                                         <div style="display: flex; align-items: center; gap: 8px;"  *ngIf="Meetingstatuscom!=Completed">
-
-                                            <div  *ngIf="!isLoading && (Status1=='Owner' || Isadmin==true) && item.Recurrence != 'Daily'" title="Repeat"   class="options event" (click)="Repeat_Meeting()">                                         
-                                                <svg width="64px" height="64px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>Repeat-Play</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Repeat-Play"> <rect id="Rectangle" fill-rule="nonzero" x="0" y="0" width="24" height="24"> </rect> <path d="M5,18.0002 L17,18.0002 C18.6569,18.0002 20,16.657 20,15.0002 L20,14" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M16,2 L19.2929,5.29289 C19.6834,5.68342 19.6834,6.31658 19.2929,6.70711 L16,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M8,14 L4.70711,17.2929 C4.31658,17.6834 4.31658,18.3166 4.70711,18.7071 L8,22" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M19,6 L7,6 C5.34315,6 4,7.34315 4,9 L4,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> </g> </g> </g></svg>
-                                            </div>
+                                            <div  *ngIf="!isLoading && (Status1=='Owner' || Isadmin==true) && item.Recurrence != 'Daily'" title="Repeat"   class="options event" (click)="repeatEvent()">                                         
+                                                <svg width="64px" height="64px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Repeat-Play"> <rect id="Rectangle" fill-rule="nonzero" x="0" y="0" width="24" height="24"> </rect> <path d="M5,18.0002 L17,18.0002 C18.6569,18.0002 20,16.657 20,15.0002 L20,14" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M16,2 L19.2929,5.29289 C19.6834,5.68342 19.6834,6.31658 19.2929,6.70711 L16,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M8,14 L4.70711,17.2929 C4.31658,17.6834 4.31658,18.3166 4.70711,18.7071 L8,22" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M19,6 L7,6 C5.34315,6 4,7.34315 4,9 L4,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> </g> </g> </g></svg>
+                                        </div>
 
                                             
                                         <div class="kt-meeting-status completed mt-0"   *ngIf="Meetingstatuscom!=Completed" title="Done" >
@@ -1793,8 +1792,9 @@
                                         <div style="display: flex; align-items: center; gap: 8px;" *ngIf="Meetingstatuscom==Completed">
                                         
 
-                                            <div  *ngIf="!isLoading && (Status1=='Owner' || Isadmin==true ) && item.Recurrence != 'Daily'" title="Repeat"   class="options event" (click)="Repeat_Meeting()">                                         
-                                                <svg width="64px" height="64px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>Repeat-Play</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Repeat-Play"> <rect id="Rectangle" fill-rule="nonzero" x="0" y="0" width="24" height="24"> </rect> <path d="M5,18.0002 L17,18.0002 C18.6569,18.0002 20,16.657 20,15.0002 L20,14" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M16,2 L19.2929,5.29289 C19.6834,5.68342 19.6834,6.31658 19.2929,6.70711 L16,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M8,14 L4.70711,17.2929 C4.31658,17.6834 4.31658,18.3166 4.70711,18.7071 L8,22" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M19,6 L7,6 C5.34315,6 4,7.34315 4,9 L4,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> </g> </g> </g></svg>
+                                            <!-- <div  *ngIf="!isLoading && (Status1=='Owner' || Isadmin==true ) && item.Recurrence != 'Daily'" title="Repeat"   class="options event" (click)="Repeat_Meeting()">                                          -->
+                                            <div  *ngIf="!isLoading && (Status1=='Owner' || Isadmin==true ) && item.Recurrence != 'Daily'" title="Repeat"   class="options event" (click)="repeatEvent()">                                         
+                                                <svg width="64px" height="64px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Repeat-Play"> <rect id="Rectangle" fill-rule="nonzero" x="0" y="0" width="24" height="24"> </rect> <path d="M5,18.0002 L17,18.0002 C18.6569,18.0002 20,16.657 20,15.0002 L20,14" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M16,2 L19.2929,5.29289 C19.6834,5.68342 19.6834,6.31658 19.2929,6.70711 L16,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M8,14 L4.70711,17.2929 C4.31658,17.6834 4.31658,18.3166 4.70711,18.7071 L8,22" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> <path d="M19,6 L7,6 C5.34315,6 4,7.34315 4,9 L4,10" id="Path" stroke="currentColor" stroke-width="2" stroke-linecap="round"> </path> </g> </g> </g></svg>
                                             </div>
 
                                         <ng-container *ngIf="Isadmin==true && (showAttendeeNotify == '1'  || showAttendeeNotify == '2' ||  showAttendeeNotify == '3')">
@@ -4734,7 +4734,7 @@
                               
                                 <div class="se-col-11" style="max-width: 100%">
                                     <div class="d-flex" >
-                                        <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:selectToLinkSMail();projectmodals('SMail');">
+                                        <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:selectToLinkSMail();projectmodals('S Mail');">
                                             <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more S Mail':'Add S Mail')}}</div>
                                             <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                                                 <span class="sr-only">Loading...</span>
@@ -9723,7 +9723,14 @@
             </div> -->
 
 
+
+
+
+
+
+
 <!-- Create Event Task Modal Start -->
+
 <div class="modal-backdrop fade" id="createEventTaskModalBackdrop" style="display: none"></div>
 <div class="modal fade create-event-task-modal" id="createEventTaskModal" data-backdrop="static"  data-keyboard="false"  tabindex="-1" role="dialog" aria-labelledby="createEventTaskModalTitle" aria-modal="true"  style="display: none">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
@@ -10047,7 +10054,7 @@
                                     </div>
                                 </div>
                             </div>   
-                            <div class="create-event-item">
+                            <div *ngIf="this.privateMeeting == false" class="create-event-item">
                                 <div class="create-event-item-icon">                     
                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M22 21V19C22 17.1362 20.7252 15.5701 19 15.126M15.5 3.29076C16.9659 3.88415 18 5.32131 18 7C18 8.67869 16.9659 10.1159 15.5 10.7092M17 21C17 19.1362 17 18.2044 16.6955 17.4693C16.2895 16.4892 15.5108 15.7105 14.5307 15.3045C13.7956 15 12.8638 15 11 15H8C6.13623 15 5.20435 15 4.46927 15.3045C3.48915 15.7105 2.71046 16.4892 2.30448 17.4693C2 18.2044 2 19.1362 2 21M13.5 7C13.5 9.20914 11.7091 11 9.5 11C7.29086 11 5.5 9.20914 5.5 7C5.5 4.79086 7.29086 3 9.5 3C11.7091 3 13.5 4.79086 13.5 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
                                 </div>
@@ -10079,7 +10086,7 @@
                                     </ul>
                                 </div>
                             </div> 
-                            <div class="create-event-item">
+                            <div *ngIf="this.privateMeeting == false" class="create-event-item">
                                 <div class="create-event-item-icon">                     
                                     <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="m 13,2.15688 0,9.68624 C 13,12.49386 12.491071,13 11.842857,13 L 2.1571429,13 C 1.5169643,12.99732 1,12.49922 1,11.84044 L 1,2.15688 C 1,1.51149 1.5035714,1 2.1571429,1 L 11.845536,1 C 12.488393,1 13,1.50346 13,2.15688 Z m -0.999107,9.68356 0,-9.68356 c 0,-0.0803 -0.06964,-0.15532 -0.155357,-0.15532 l -0.249107,0 L 8.6419643,3.99933 7,2.66302 5.3607143,3.99933 2.40625,1.99888 l -0.2491071,0 c -0.085714,0 -0.1553572,0.075 -0.1553572,0.15533 l 0,9.68623 c 0,0.0803 0.069643,0.15532 0.1553572,0.15532 l 9.6883931,0 c 0.08571,0.003 0.155357,-0.0723 0.155357,-0.15532 z m -6.9776787,-6.71636 0,0.99085 -1.96875,0 0,-0.99085 1.96875,0 z m 0,1.99241 0,0.99889 -1.96875,0 0,-0.99889 1.96875,0 z m 0.2973214,-3.94465 1.4464286,-1.17028 -3.1741072,0 1.7276786,1.17028 z m 5.6250003,1.95224 0,0.99085 -5.2500003,0 0,-0.99085 5.2500003,0 z m 0,1.99241 0,0.99889 -5.2500003,0 0,-0.99889 5.2500003,0 z M 8.6794643,3.17184 10.407143,2.00156 l -3.1714287,0 1.44375,1.17028 z m 2.2660717,5.94242 0,0.99888 -2.6625003,0 0,-0.99888 2.6625003,0 z"></path></g></svg>
                                 </div>
@@ -10103,7 +10110,7 @@
                                     </ul>
                                 </div>
                             </div> 
-                            <div class="create-event-item">
+                            <div *ngIf="this.privateMeeting == false" class="create-event-item">
                                 <div class="create-event-item-icon">                     
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M8 6.00067L21 6.00139M8 12.0007L21 12.0015M8 18.0007L21 18.0015M3.5 6H3.51M3.5 12H3.51M3.5 18H3.51M4 6C4 6.27614 3.77614 6.5 3.5 6.5C3.22386 6.5 3 6.27614 3 6C3 5.72386 3.22386 5.5 3.5 5.5C3.77614 5.5 4 5.72386 4 6ZM4 12C4 12.2761 3.77614 12.5 3.5 12.5C3.22386 12.5 3 12.2761 3 12C3 11.7239 3.22386 11.5 3.5 11.5C3.77614 11.5 4 11.7239 4 12ZM4 18C4 18.2761 3.77614 18.5 3.5 18.5C3.22386 18.5 3 18.2761 3 18C3 17.7239 3.22386 17.5 3.5 17.5C3.77614 17.5 4 17.7239 4 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
                                 </div>
@@ -10128,14 +10135,14 @@
                                     </ul>
                                 </div>
                             </div> 
-                            <div class="create-event-item">
+                            <div *ngIf="this.privateMeeting == false" class="create-event-item">
                                 <div class="create-event-item-icon">                     
                                     <img width="19px" src="https://cswebapps.com/dmsweb/assets/media/logos/dms-logo.png" class="black-white">
                                 </div>
                                 <div class="create-event-item-group">
                                     <div class="create-event-item-select">
-                                        <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodal('SMail')">
-                                            <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more SMail':'Add SMail')}}</div>
+                                        <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodal('S Mail')">
+                                            <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more S Mail':'Add S Mail')}}</div>
                                             <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                                                 <span class="sr-only">Loading...</span>
                                             </div>
@@ -10435,6 +10442,11 @@
       </div>
     </div>
 </div>
+
+
+
+
+
 <!-- Create Event Task Modal End -->
 
         <div  id="mysideInfobar_schd" class="sideInfobar animate-right offcanvas">
@@ -10816,11 +10828,6 @@
                                 </div>
                             </div>
 
-
-
-
-
-        
                         <div class="se-row align-items-center " id="meeting-online-add">
                             <div class="se-col-1">
                                 <div class="label-icon pt-1">
@@ -11071,7 +11078,7 @@
                                 </div>
                             </div>
                             <div class="se-col-11">
-                                <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodals('SMail')">
+                                <div [ngStyle]="{cursor:loading?'not-allowed':'pointer'}" class="schedule-select project"   type="button" (click)="loading?undefined:projectmodals('S Mail')">
                                     <div class="title">{{loading?'Loading':(SelectDms&&SelectDms.length>0?'Add more S Mail':'Add S Mail')}}</div>
                                     <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
                                         <span class="sr-only">Loading...</span>
@@ -11527,7 +11534,7 @@
             <div class="modal-content">
                 <div class="modal-header  gap-1">
                 <ng-container *ngIf="projectmodaltype">
-                            <img *ngIf="projectmodaltype==='SMail'" width="21px" class="black-white   mt-1 mb-1" src="./assets/images/Image (4).jfif" height="23"/>
+                            <img *ngIf="projectmodaltype==='S Mail'" width="21px" class="black-white   mt-1 mb-1" src="./assets/images/Image (4).jfif" height="23"/>
                             <svg *ngIf="projectmodaltype==='participant'"   focusable="false" width="20" height="20" viewBox="0 0 24 24" class="svg-icn mt-2 mb-2">
                                 <path
                                     d="M15 8c0-1.42-.5-2.73-1.33-3.76.42-.14.86-.24 1.33-.24 2.21 0 4 1.79 4 4s-1.79 4-4 4c-.43 0-.84-.09-1.23-.21-.03-.01-.06-.02-.1-.03A5.98 5.98 0 0 0 15 8zm1.66 5.13C18.03 14.06 19 15.32 19 17v3h4v-3c0-2.18-3.58-3.47-6.34-3.87zM9 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 9c-2.7 0-5.8 1.29-6 2.01V18h12v-1c-.2-.71-3.3-2-6-2M9 4c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 9c2.67 0 8 1.34 8 4v3H1v-3c0-2.66 5.33-4 8-4z">
@@ -11566,7 +11573,7 @@
                     <div id="project-filter" class="project-filter">
 
 
-                        <div *ngIf="projectmodaltype!=='SMail'" class="project-filter-item">
+                        <div *ngIf="projectmodaltype!=='S Mail'" class="project-filter-item">
                             <div class="item-label">Company</div>
                             <div class="item-select">
                                 <div class="" >
@@ -11608,7 +11615,7 @@
                         <div class="project-filter-footer">
                             <button *ngIf="projectmodaltype==='project'" type="button" class="btn btn-add-primary" (click)="onProjectSearch(PrjInputSearch.value);  close_project_filter(); " >Submit</button>
                             <button *ngIf="projectmodaltype==='portfolio'" type="button" class="btn btn-add-primary" (click)="onPortfolioFilter();  close_project_filter(); ">Submit</button>
-                            <button *ngIf="projectmodaltype==='SMail'" type="button" class="btn btn-add-primary" (click)="onDMSFilter(); close_project_filter();">Submit</button>
+                            <button *ngIf="projectmodaltype==='S Mail'" type="button" class="btn btn-add-primary" (click)="onDMSFilter(); close_project_filter();">Submit</button>
                             <button *ngIf="projectmodaltype==='participant'" type="button" class="btn btn-add-primary" (click)="onParticipantFilter(); close_project_filter();">Submit</button>
                             <button type="button" class="btn btn-close-secondary"  (click)="close_project_filter()">Close</button>
                         </div>
@@ -11673,7 +11680,7 @@
                                 <span style="color:#757575" class="ml-2">No results found.</span>
                             </div>
                     </ul>
-                    <ul class="modal-project-list" id="dms-list" *ngIf="projectmodaltype==='SMail'">
+                    <ul class="modal-project-list" id="dms-list" *ngIf="projectmodaltype==='S Mail'">
 
 
                             <li *ngFor="let memo of FilteredResults.slice(0,1000)"  class="modal-project-list-item">
@@ -13462,7 +13469,13 @@
  <!-- <div *ngIf="loading" class="spinner-border actns-ldr" role="status" style="color:#5d76c3" >
     <span class="sr-only">Loading...</span>
 </div> -->
-
+<div  class="popuploading" *ngIf="Popuploading" >
+      <div class="d-flex align-items-center justify-content-center">
+        <div class="spinner-border  w-100px h-100px" style="color:#6388e3;" role="status">
+        <span class="visually-hidden"></span>
+       </div>
+    </div>
+</div>
 
 
 <div id="rightbar-overlay" (click)="rightbar_overlay()"></div>
