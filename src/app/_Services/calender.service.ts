@@ -36,15 +36,18 @@ export class CalenderService {
     return this.http.post(this.rootUrl + "CalenderAPI/NewGettimeslabs", this.obj_CalenderDTO);
   }
 
-  NewGetScheduledtimejson(obj:CalenderDTO){
+  NewGetScheduledtimejson(obj:CalenderDTO){ 
     this.obj_CalenderDTO.EmpNo = obj.EmpNo;
-    this.obj_CalenderDTO.User_Type=obj.User_Type
+    this.obj_CalenderDTO.User_Type=obj.User_Type;
+    this.obj_CalenderDTO.startdate=obj.startdate;
+    this.obj_CalenderDTO.enddate=obj.enddate;
+    this.obj_CalenderDTO.SearchText=obj.SearchText;
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetScheduledtimejson", this.obj_CalenderDTO);
   }
 
 
    GetUserTeam(obj:CalenderDTO){
-    this.obj_CalenderDTO.EmpNo = obj.EmpNo;
+    this.obj_CalenderDTO.Emp_No = obj.EmpNo;
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetUserTeam", this.obj_CalenderDTO);
    }
 
@@ -119,7 +122,7 @@ export class CalenderService {
 
 
 
-  NewGet_previousMeetingNotes(obj:CalenderDTO){
+  NewGet_previousMeetingNotes(obj:CalenderDTO){ debugger
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     return this.http.post(this.rootUrl + "CalenderAPI/NewGet_previousMeetingNotes", this.obj_CalenderDTO);

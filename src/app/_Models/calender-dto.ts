@@ -1,7 +1,10 @@
 export class CalenderDTO {
     draftid:number;
     User_Type:string;
+    startdate:any;
+    enddate:any;
     location:String;
+    SearchText:any;
     loc_status:Boolean;
     Schedule_type:number;
     Emp_no:number ;
