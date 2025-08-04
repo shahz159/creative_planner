@@ -11,6 +11,11 @@
     src: url('./AvenirNextCyr-Bold.ttf') format('truetype');
 
 }
+@font-face {
+    font-family: 'Schibsted Grotesk';
+    src: url('../fonts/Schibsted_Grotesk/SchibstedGrotesk-VariableFont_wght.ttf') format('truetype');
+
+}
 :root {
     --blue: #007bff;
     --indigo: #6610f2;
@@ -22341,6 +22346,7 @@ body {
     font-family: var(--font-family-sans-serif);
     /* font-family: var(--font-family-sans-serif);
     font-weight: 500; */
+        font-family: "Schibsted Grotesk", serif;
     -ms-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

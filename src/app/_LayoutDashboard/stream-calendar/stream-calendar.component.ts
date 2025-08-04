@@ -546,6 +546,20 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("customPendingTaskModalBackdrop").classList.remove("show"); 
   }
 
+  notificationalertModal() {
+    document.getElementById("notificationalertModal").style.overflow = "auto";
+    // document.getElementById("notificationalertModal").classList.add("show");
+    document.getElementById("notificationalertModalBackdrop").style.display = "block";
+    document.getElementById("notificationalertModalBackdrop").classList.add("show");
+    document.getElementById("notificationalertModal").classList.add("noti-animate-active");
+  }
+  notificationalertModal_dismiss() {
+    document.getElementById("notificationalertModal").style.overflow = "hidden";
+    // document.getElementById("notificationalertModal").classList.remove("show");
+    document.getElementById("notificationalertModalBackdrop").style.display = "none";
+    document.getElementById("notificationalertModalBackdrop").classList.remove("show"); 
+    document.getElementById("notificationalertModal").classList.remove("noti-animate-active");
+  }
 
 
   change_event(){
@@ -701,7 +715,19 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("createEventTaskModal").classList.remove("show");
     document.getElementById("createEventTaskModalBackdrop").style.display = "none";
     document.getElementById("createEventTaskModalBackdrop").classList.remove("show");
-    
+   console.log('<============================>')
+    this._StartDate=null;
+    this.disablePreviousDate = null;
+    this._SEndDate = null;
+    this.minDate = null;
+    this.disablePreviousTodayDate = null; 
+    setTimeout(()=>{ 
+      const TodayDate  = new Date();
+      this._StartDate=TodayDate;
+      this.disablePreviousDate = TodayDate;
+      this._SEndDate = TodayDate;
+      this.disablePreviousTodayDate= TodayDate;
+    },0)      
     this.selectAction=false;
     this.mtgOnDays=[];
     this.privateMeeting = false;
@@ -4564,7 +4590,7 @@ DublicateTaskandEvent() {
         });
 
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
-        this._meetingroom = this.Location_Type?true:false;
+        this._meetingroom = true;
 
         this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
 
@@ -4927,7 +4953,7 @@ ReshudingTaskandEvent() { debugger
         });
 
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
-        this._meetingroom = this.Location_Type?true:false;
+        this._meetingroom = true;
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
         //  document.getElementById("subtaskid").style.display = "none";
        
@@ -5767,10 +5793,13 @@ repeatEvent() {
             this.disablePreviousDate = null;
             this._SEndDate = null;
             this.minDate = null;
-            setTimeout(()=>{
-              this._StartDate=this.disablePreviousTodayDate;
-              this.disablePreviousDate = this.disablePreviousTodayDate;
-              this._SEndDate = this.disablePreviousTodayDate;
+            this.disablePreviousTodayDate = null; 
+            setTimeout(()=>{ 
+              const TodayDate  = new Date();
+              this._StartDate=TodayDate;
+              this.disablePreviousDate = TodayDate;
+              this._SEndDate = TodayDate;
+              this.disablePreviousTodayDate= TodayDate;
               // var repeatDate = this._SEndDate;
               // this.minDate = this.repeatDate.toISOString().split('T')[0];
 
@@ -5798,7 +5827,7 @@ repeatEvent() {
 
 
             },0);
-          }else{
+          }else{ 
             const nextDay = new Date();
             nextDay.setDate(nextDay.getDate() + 1);
             this._StartDate=null;

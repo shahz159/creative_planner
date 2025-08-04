@@ -1393,8 +1393,12 @@ debugger
     this.linkSMail=true;
   }
 
-
-
+  open_float_noti() {
+    document.getElementById("float-noti-card").classList.add("active");
+  }
+  close_float_noti() {
+    document.getElementById("float-noti-card").classList.remove("active");
+  }
  
   GetDMSList() {
     // this.loadingDMS = false;
@@ -5056,7 +5060,7 @@ ReshudingTaskandEvent() {
         });
 
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
-        this._meetingroom = this.Location_Type?true:false;
+        this._meetingroom = true
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
         //  document.getElementById("subtaskid").style.display = "none";
        

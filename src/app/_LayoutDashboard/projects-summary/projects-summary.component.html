@@ -2303,7 +2303,8 @@
                                                                         <span *ngIf="!pmember.Emp_Image">{{pmember.Emp_Name[0]}}</span>
                                                                     </a>
                                                                     <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl px-3 racis-user-drpdwn">
-                                                                            <div class="d-flex justify-content-center mb-2">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <div class="d-flex justify-content-center mr-2">
                                                                                 <img *ngIf="pmember.Emp_Image" class="usr-profile-pc" [src]="pmember.Emp_Image">
                                                                                 <img *ngIf="!pmember.Emp_Image" class="usr-profile-pc" src="assets/images/user-icon.png"/>
                                                                             </div>
@@ -2311,6 +2312,7 @@
                                                                                 <label class="fs-8 mb-0 usr-n">{{pmember.Emp_Name}}</label>
                                                                                 <small class="fs-9 usr-role">{{pmember.Role}}</small>
                                                                             </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </ng-container>
@@ -2322,7 +2324,7 @@
                                                                     <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl px-0 py-0 racis-user-drpdwn">
                                                                          <div class="all-usrs-sec">
                                                                             <div class="usr-dv" *ngFor="let opmember of item.projectMembers.slice(3)">
-                                                                                <div class="d-flex justify-content-center mb-2">
+                                                                                <div class="d-flex justify-content-center">
                                                                                  <img *ngIf="opmember.Emp_Image" class="usr-profile-pc" [src]="opmember.Emp_Image">
                                                                                  <img *ngIf="!opmember.Emp_Image" class="usr-profile-pc" src="assets/images/user-icon.png"/>
                                                                                 </div>

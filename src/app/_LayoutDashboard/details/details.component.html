@@ -1379,7 +1379,7 @@
                                                                                 </span>
                                                                                 <div class="kt-p-action-Status">
 
-                                                                                    <span class="d-flex align-items-center gap-1">
+                                                                                    <span class="d-flex align-items-center justify-content-center gap-1">
                                                                                         <ng-container [ngSwitch]="action.Status">
                                                                                         <span *ngSwitchCase="'Completed'" class="Status-done">Completed</span>
                                                                                         <span *ngSwitchCase="'Delay'" class="Status-Delay">{{getDelayText(action)}}</span>
@@ -8843,7 +8843,7 @@
                               <span class="Kt-replay-count">{{item.JsonData.length}}</span>
                           </div>
 
-                          <div class="kt-widget__items mt-2 mx-0 px-2  collapse show" id="Div_attachments{{i}}">
+                          <div class="kt-widget__items mt-2 mx-0 px-2  py-2 collapse show" id="Div_attachments{{i}}">
                               <div class="kt-notification__item no-after position-relative  curser-pointer"
                                   *ngFor="let file of item.JsonData | filter :filterText;let i=index">
                                   <div data-toggle="modal" class="kt-notification__item-icon"
@@ -8911,7 +8911,7 @@
                                                   <div class="text-muted ml-2 fs-7">{{file.SubmittedBy}}</div>
                                               </div>
                                           </div>
-                                          <div class="d-flex-center mt-1">
+                                          <div class="d-flex-center mt-1" style="gap: 2rem;">
                                               <div class="text-muted fs-7 d-flex" *ngIf="file.Remarks && file.Remarks!='undefined'">
                                                   <span class="mr-1">
                                                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
@@ -8926,7 +8926,7 @@
                                                   </span>
                                                   {{file.Remarks}}
                                               </div>
-                                              <div class="text-muted ml-1 fs-7">{{file.date|date:'dd-MM-yyyy'}}
+                                              <div class="text-muted ml-1 fs-7 attch-date-wrap">{{file.date|date:'dd-MM-yyyy'}}
                                               </div>
                                           </div>
                                       </div>
@@ -8962,7 +8962,7 @@
                                                   <div class="text-muted ml-2 fs-7">{{file.SubmittedBy}}</div>
                                               </div>
                                           </div>
-                                          <div class="d-flex-center mt-1">
+                                          <div class="d-flex-center mt-1" style="gap: 2rem;">
                                               <div class="text-muted fs-7 d-flex" *ngIf="file.Remarks && file.Remarks!='undefined'">
                                                   <span class="mr-1">
                                                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
@@ -8977,7 +8977,7 @@
                                                   </span>
                                                   {{file.Remarks}}
                                               </div>
-                                              <div class="text-muted ml-1 fs-7">{{file.date|date:'dd-MM-yyyy'}}
+                                              <div class="text-muted ml-1 fs-7 attch-date-wrap">{{file.date|date:'dd-MM-yyyy'}}
                                               </div>
                                           </div>
                                       </div>
