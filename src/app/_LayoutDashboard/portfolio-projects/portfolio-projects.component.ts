@@ -1476,8 +1476,9 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
     this.showDeletedPrjOnly=true;  // show deleted projects only on the page.
     this._PortProjStatus = ['All'];    // by default All
     this._FilterByEmp=['All'];  // by default All
+    this.nofilterResult = false; 
     this.prepareFilterOptions();  // prepare filter dropdown values.
-
+    
   }
 
   // labelCompletionapproval(){
