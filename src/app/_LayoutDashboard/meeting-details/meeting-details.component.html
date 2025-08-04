@@ -1859,7 +1859,7 @@
                                 <div class="notifications-list">
                                             
                                 <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true && showAttendeeNotify!='2' && showAttendeeNotify!='3'" >
-                                <div class="notification delay-notification mydelay-action-notf" *ngIf="Isadmin==true && !meetingInProgress">
+                                <div class="notification delay-notification mydelay-action-notf" *ngIf="Isadmin==true && !meetingInProgress" style="background-color: #d8efff;">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
                                     height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
                                     <path _ngcontent-pef-c397=""
@@ -1872,7 +1872,7 @@
                             </ng-container>
 
                                 <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true">
-                                <div class="notification delay-notification mydelay-action-notf" *ngIf="Isadmin==false && meetingStarted==false"    >
+                                <div class="notification delay-notification mydelay-action-notf" *ngIf="Isadmin==false && meetingStarted==false"   style="background-color: #d8efff;"  >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
                                     height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
                                     <path _ngcontent-pef-c397=""
@@ -1885,14 +1885,14 @@
                                 </ng-container>
                 
                                 <ng-container  *ngIf="delayMeeting == false && AutoComplete != true">
-                                    <div class="notification delay-Start mydelay-action-notf">
+                                    <div class="notification delay-Start mydelay-action-notf" style="background-color: #d8efff;">
                                         <svg  viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727" class="notif-img"><g _ngcontent-nuu-c397="" id="SVGRepo_bgCarrier" stroke-width="0"></g><g _ngcontent-nuu-c397="" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-nuu-c397="" id="SVGRepo_iconCarrier"><g _ngcontent-nuu-c397=""><path _ngcontent-nuu-c397="" d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path><path _ngcontent-nuu-c397="" d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path></g></g></svg>
                                     <span class="notif-msg" style="color: #ff2727;">
                                         This meeting expired {{meetingDuration}} days ago and can not be started.</span>
                                     </div>
                                 </ng-container>
                                 <ng-container  *ngIf="upcomingMeeting == true">
-                                    <div class="notification delay-notification mydelay-action-notf">
+                                    <div class="notification delay-notification mydelay-action-notf" style="background-color: #d8efff;">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
                                         height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
                                         <path _ngcontent-pef-c397=""
@@ -1904,7 +1904,7 @@
                                     </div>
                                     </ng-container>
 
-                                <div class="notification delay-notification mydelay-action-notf" *ngIf="meetingStartedTime && (delayschedule_date | date:'yyyy-MM-dd') !== (meetingStartedTime | date:'yyyy-MM-dd')">
+                                <div class="notification delay-notification mydelay-action-notf" *ngIf="meetingStartedTime && (delayschedule_date | date:'yyyy-MM-dd') !== (meetingStartedTime | date:'yyyy-MM-dd')" style="background-color: #d8efff;">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
                                     height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
                                     <path _ngcontent-pef-c397=""
@@ -1972,7 +1972,7 @@
                         <div class="meeting-attendance-main" *ngIf="meetingInProgress || showAttendeeNotify == '2' || showAttendeeNotify == '3'">
                             <div class="legend-border">
                                 <div class="meeting-attendance-heading">Meeting Summary</div>
-                                <div class="meeting-icon-content">
+                                <div class="meeting-icon-content mt-0">
                                     <div>
                                         <span><span class="s-dot"     [ngClass]="{ 'blink': showAttendeeNotify !== '2' }"     ></span><span *ngIf="showAttendeeNotify != '2'"> Meeting has been started at                                      
                                               {{ meetingStartedTime | date: 'hh:mm a' }}     
@@ -1983,6 +1983,9 @@
                                     </div>
                                     <div class="accordion">
                                         <div id="meeting-attendance-accordion-collapse" class="collapse show">
+                                            <div class="dark-title" style="text-align: end;">
+                                                <span>{{item.Schedule_date | date:'EEEE, MMMM d, yyyy'}}</span>
+                                            </div>
                                             <div class="meeting-attendance meeting-attendance-accordion-div">
                                                 <div class="meeting-attendance-item cursor-pointer" (click)="View_Meeting_Attendees()" >
                                                     <div class="meeting-attendance-count">{{completionReports}}/{{totalUser_Scheduledjson+1}}</div>
@@ -12579,4 +12582,192 @@
 <div id="rightbar-overlay" (click)="rightbar_overlay()"></div>
 <div id="mysideInfobar" class="mysideInfobar sideInfobar animate-right">
     <router-outlet></router-outlet>
+</div>
+
+<div class="float-noti">
+    <div class="float-noti-icon" (click)="open_float_noti()">
+    <div class="float-noti-dot"></div>
+<svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_429_11023)"> <path d="M6 19V10C6 6.68629 8.68629 4 12 4V4C15.3137 4 18 6.68629 18 10V19M6 19H18M6 19H4M18 19H20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 22L13 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> <circle cx="12" cy="3" r="1" stroke="currentColor" stroke-width="2.5"></circle> </g> <defs> <clipPath id="clip0_429_11023"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>
+</div>
+    <div class="float-noti-card" id="float-noti-card">
+        <div class="float-noti-card-header">
+            <div class="float-noti-title">Notifications</div>
+            <!-- <div class="float-noti-close" (click)="close_float_noti()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none"><path d="M1.22998 5.40527H14.55" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M10.8838 0.744141L15.5425 5.40283L10.8838 10.0615" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </div> -->
+        </div>
+        <div class="float-noti-card-body">
+  <div class="notification delay-notification mydelay-action-notf curser-pointer">
+  <svg  viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727" class="notif-img">
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+      <g id="SVGRepo_iconCarrier">
+        <g>
+          <path
+            d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z">
+          </path>
+          <path
+            d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z">
+          </path>
+        </g>
+      </g>
+    </svg>
+    <span class="notif-msg mr-2" style="color: #ff2727;"> You have 1 action delay with maximum delay of 69 days</span>
+  </div>
+  
+
+  <div class="notification overutilization-notification">
+  <svg
+      width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1"
+      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="notif-img">
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+      <g id="SVGRepo_iconCarrier">
+        <title>warning</title>
+        <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd">
+          <g id="add" transform="translate(32.000000, 42.666667)">
+            <path
+              d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z"
+              id="Combined-Shape"></path>
+          </g>
+        </g>
+      </g>
+    </svg>
+    <span class="notif-msg" style="color: #c57a05;"> Project exceeds planned capacity with  total utilization of 114%, an increase of 14%. </span>
+  </div>
+  
+
+  <div class="notifications-list">
+    <div class="notification delay-notification">
+    <svg
+        viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#ff2727" class="notif-img">
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g id="SVGRepo_iconCarrier">
+          <g>
+            <path
+              d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z">
+            </path>
+            <path
+              d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z">
+            </path>
+          </g>
+        </g>
+      </svg>
+      <span class="notif-msg" style="color: #ff2727;"> 4 Actions delay, max 208 days.
+        Notable delays by <span class="delayaction-of-emp">Thiyaga Lingam</span>
+        (208 days ~<b >100%</b>) <b >,&nbsp;</b>
+   
+<span class="delayaction-of-emp">Mohammed Raohan</span>
+        (107 days ~<b >51.4%</b>) <b >,&nbsp;</b>
+  
+<span class="delayaction-of-emp">Waseem Akram</span> (69
+        days ~<b >33.2%</b>) 
+  
+<span >&nbsp;and&nbsp;</span>
+  <span class="delayaction-of-emp">MD Sahil</span> (34   days ~<b >16.3%</b>) 
+
+<b>.</b></span></div>
+  </div>
+  
+
+  
+
+  <div class="notification overutilization-notification"
+    style="cursor: pointer;"><svg width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05"
+      version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="notif-img">
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+      <g id="SVGRepo_iconCarrier">
+        <title>warning</title>
+        <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd">
+          <g id="add" transform="translate(32.000000, 42.666667)">
+            <path
+              d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z"
+              id="Combined-Shape"></path>
+          </g>
+        </g>
+      </g>
+    </svg><span class="notif-msg" style="color: #c57a05;"> 10 action(s) with Zero "0" allocated
+      hour, Assigned to Mohammed Mateen(4),  Waseem Akram(5) and  Aquib Shahbaz(1)
+    
+. </span></div>
+  
+
+
+  <div class="notification newversion-notification"><svg
+      width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"
+      stroke-width="0.00024000000000000003" class="notif-img">
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+      <g id="SVGRepo_iconCarrier">
+        <path
+          d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.696-3.534c.63 0 1.332-.288 2.196-1.458l.911-1.22a.334.334 0 0 0-.074-.472.38.38 0 0 0-.505.06l-1.475 1.679a.241.241 0 0 1-.279.061.211.211 0 0 1-.12-.244l1.858-7.446a.499.499 0 0 0-.575-.613l-3.35.613a.35.35 0 0 0-.276.258l-.086.334a.25.25 0 0 0 .243.312h1.73l-1.476 5.922c-.054.234-.144.63-.144.918 0 .666.396 1.296 1.422 1.296zm1.83-10.536c.702 0 1.242-.414 1.386-1.044.036-.144.054-.306.054-.414 0-.504-.396-.972-1.134-.972-.702 0-1.242.414-1.386 1.044a1.868 1.868 0 0 0-.054.414c0 .504.396.972 1.134.972z"
+          fill="#1692df"></path>
+      </g>
+    </svg><span class="notif-msg fs-6" style="color: #00a2eb;"> Project has 3 Actions with the
+      same owner and responsible, managed by <span
+        class="delayaction-of-emp">Waseem Akram(2)</span> and <span
+        class="delayaction-of-emp">Aquib Shahbaz(1)</span> 
+<b>.</b></span></div>
+  
+
+  
+
+  
+
+  
+
+  <div class="notification overutilization-notification"><svg
+      width="24px" height="24px" viewBox="0 0 512 512" fill="#c57a05" version="1.1"
+      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="notif-img">
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+      <g id="SVGRepo_iconCarrier">
+        <title>warning</title>
+        <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd">
+          <g id="add" transform="translate(32.000000, 42.666667)">
+            <path
+              d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z"
+              id="Combined-Shape"></path>
+          </g>
+        </g>
+      </g>
+    </svg><span class="notif-msg" style="color: #c57a05;"> No actions assigned to <span
+        >Hussaini Baig Mirza</span>, <span
+        >Ramesh Neelapala</span>, <span
+        >Shaik Mohammad Rafi</span> and <span
+        >Syed Sayeeduddin Hussain</span> 
+. It is recommended to assign actions for better workflow. </span></div>
+  
+
+  
+
+  <div
+    class="notification delay-notification mydelay-action-notf curser-pointer"><svg
+      width="24px" height="24px" viewBox="0 0 512 512" fill="#ff2727" version="1.1"
+      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="notif-img">
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+      <g id="SVGRepo_iconCarrier">
+        <title>warning</title>
+        <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd">
+          <g id="add" transform="translate(32.000000, 42.666667)">
+            <path
+              d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z"
+              id="Combined-Shape"></path>
+          </g>
+        </g>
+      </g>
+    </svg><span class="notif-msg mr-2" style="color: #ff2727;"> 3 Actions found with no progress
+      since their start date in the project. </span></div>
+
+</div>
+<div class="float-noti-card-footer">
+            <div class="float-noti-title">Total Notifications (13)</div>
+            <div class="float-noti-close" (click)="close_float_noti()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="11" viewBox="0 0 17 11" fill="none"><path d="M1.22998 5.40527H14.55" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M10.8838 0.744141L15.5425 5.40283L10.8838 10.0615" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </div>
+        </div>
+    </div>
 </div>

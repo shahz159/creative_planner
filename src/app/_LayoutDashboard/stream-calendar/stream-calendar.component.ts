@@ -597,6 +597,20 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("customPendingTaskModalBackdrop").classList.remove("show"); 
   }
 
+  notificationalertModal() {
+    document.getElementById("notificationalertModal").style.overflow = "auto";
+    // document.getElementById("notificationalertModal").classList.add("show");
+    document.getElementById("notificationalertModalBackdrop").style.display = "block";
+    document.getElementById("notificationalertModalBackdrop").classList.add("show");
+    document.getElementById("notificationalertModal").classList.add("noti-animate-active");
+  }
+  notificationalertModal_dismiss() {
+    document.getElementById("notificationalertModal").style.overflow = "hidden";
+    // document.getElementById("notificationalertModal").classList.remove("show");
+    document.getElementById("notificationalertModalBackdrop").style.display = "none";
+    document.getElementById("notificationalertModalBackdrop").classList.remove("show"); 
+    document.getElementById("notificationalertModal").classList.remove("noti-animate-active");
+  }
 
 
   change_event(){

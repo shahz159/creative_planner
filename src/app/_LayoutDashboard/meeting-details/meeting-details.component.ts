@@ -1374,8 +1374,12 @@ SM_count:any;
     this.linkSMail=true;
   }
 
-
-
+  open_float_noti() {
+    document.getElementById("float-noti-card").classList.add("active");
+  }
+  close_float_noti() {
+    document.getElementById("float-noti-card").classList.remove("active");
+  }
  
   GetDMSList() {
     // this.loadingDMS = false;
