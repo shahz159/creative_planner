@@ -5056,7 +5056,7 @@ ReshudingTaskandEvent() {
         });
 
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
-        this._meetingroom = this.Location_Type?true:false;
+        this._meetingroom = true
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
         //  document.getElementById("subtaskid").style.display = "none";
        
