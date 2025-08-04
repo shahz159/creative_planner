@@ -241,7 +241,11 @@ export class StreamCalendarComponent implements OnInit {
     this.approvalObj = new ApprovalDTO();
   }
 
-
+onPaste(event: ClipboardEvent): void {
+  setTimeout(() => {
+    this.AgendaCharacterCount();
+  }, 0); // Wait for paste to complete and update model
+}
 
 
   onKeyPress() {
@@ -319,7 +323,7 @@ export class StreamCalendarComponent implements OnInit {
      this._SEndDate = moment().format("YYYY-MM-DD").toString();
 
      this.GetTimeslabfordate();
-    
+   
 
     tippy('#agenda-info-icon', {
       content: "Agenda is mandatory for a meeting, Please provide atleast 1.",
@@ -5800,10 +5804,7 @@ repeatEvent() {
               this.disablePreviousDate = TodayDate;
               this._SEndDate = TodayDate;
               this.disablePreviousTodayDate= TodayDate;
-              // var repeatDate = this._SEndDate;
-              // this.minDate = this.repeatDate.toISOString().split('T')[0];
-
-            // valid starttimearr and endtimearr setting start.
+        
             let _inputdate=moment(this._StartDate,'YYYY-MM-DD'); 
             let _currentdate=moment();
             if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
@@ -5840,8 +5841,7 @@ repeatEvent() {
               this._StartDate=nextDay;
               this.disablePreviousDate =nextDay;
               this._SEndDate = nextDay
-              // var repeatDates = this._SEndDate;
-              // this.minDate = repeatDates.toISOString().split('T')[0];
+            
               this.disablePreviousTodayDate= nextDay
 
               // valid starttimearr and endtimearr setting start.
@@ -6901,14 +6901,16 @@ getDayReportSummary(){
        this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
       console.log("daySummaryReport:",this.PendingTasks);
       }
-     
 
+      // if(this.reportCount){
+      //   this.showLoader=true;
+      //   setTimeout(()=>{ this.showLoader=false; },5000)
+      // }      
       if(this.reportCount){
-        this.showLoader=true;
-        setTimeout(()=>{ this.showLoader=false; },5000)
-      }      
-   
+         this.notificationalertModal() 
+       }     
   })
+    
 }
 
 
