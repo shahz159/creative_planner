@@ -30,6 +30,7 @@ import {
 import {  MAT_DATE_FORMATS,MAT_DATE_LOCALE} from '@angular/material/core';
 import { MeetingDetailsComponent } from '../meeting-details/meeting-details.component';
 import { ProjectMoreDetailsService } from 'src/app/_Services/project-more-details.service';
+import { Moment } from 'moment';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -100,7 +101,7 @@ export class ActionToProjectComponent implements OnInit {
   ProjectDeadLineDate: Date;
   ProjectStartDate: Date;
   maxAllocation: number;
-  perDayLimit:number;
+  // perDayLimit:number;
   Current_user_ID: string;
   _projcode: boolean;
   _desbool: boolean;
@@ -184,7 +185,7 @@ export class ActionToProjectComponent implements OnInit {
     this.BsService.bs_catName.subscribe(d =>{ this.cat_name = d});
 
     this.Current_user_ID = localStorage.getItem('EmpNo');
-    this.perDayLimit=7; // allocation hr per day limit.
+    // this.perDayLimit=7; // allocation hr per day limit.
     this.GetAllEmployeesForAssignDropdown();
 
     this.gethierarchy();
@@ -205,6 +206,7 @@ export class ActionToProjectComponent implements OnInit {
          if(ta.assignedTo!==''){
               this.selectedEmpNo=ta.assignedTo;
               this.disableAssignedField=true;
+
         }
     });
 
@@ -305,9 +307,16 @@ export class ActionToProjectComponent implements OnInit {
         this.ownerArr=(JSON.parse(data[0]['RacisList']));   
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
+        console.log('this is all users list:',this.allUsers);
         console.log(this.ownerArr,"groupby");
 
-
+        // after getting dropdowns data. if we found auto selection 
+        if(this.selectedEmpNo){
+             const obj=this.allUsers.find(ob=>ob.Emp_No==this.selectedEmpNo);
+             this.weekendPolicy=obj.CompanyId=='400'?{ 6:'full',0:'full' }:{ 5:'full'};
+             this.perDayAlhr_Limit=obj.CompanyId=='400'?8.5:8;
+        }
+        //
 
       });
   }
@@ -420,7 +429,8 @@ export class ActionToProjectComponent implements OnInit {
 
   selected_Employee = [];
 
-  EmployeeOnSelect(obj) {
+  EmployeeOnSelect(obj) {   
+    // 1. store selected emp
     // this.selectedEmpNo = obj['Emp_No'];
    
     // if(obj['Emp_No'] == this.Owner_Empno){
@@ -432,7 +442,34 @@ export class ActionToProjectComponent implements OnInit {
       this._selectemp = false;
       this.selectedEmpNo = obj['Emp_No'];
     // }
-  }
+      
+     //2. update weekendpolicy and Perday limit based on selected emp.
+      this.weekendPolicy=obj.CompanyId=='400'?{ 6:'full',0:'full' }:{ 5:'full'};
+      this.perDayAlhr_Limit=obj.CompanyId=='400'?8.5:8;
+
+     //3.validate startdate and enddate.   since dates are connected to weekend policy.
+     if(this._StartDate&&this._EndDate){
+       const start_dt_=new Date(this._StartDate);
+       const end_dt_=new Date(this._EndDate);
+       if(this.weekendPolicy[start_dt_.getDay()]||this.weekendPolicy[end_dt_.getDay()]){
+         this._StartDate=null;
+         this._EndDate=null;
+         this._allocated=null; 
+         this.maxAllocation=0;
+         this.totalWorkingDays=0;
+         this.totalOffDays=[];
+
+       }
+     }
+     else{ this._StartDate=null; 
+           this._EndDate=null; 
+           this._allocated=null;  
+           this.maxAllocation=0; 
+           this.totalWorkingDays=0; 
+           this.totalOffDays=[];  
+          }
+ 
+  } 
 
   EmployeeOnDeselect(obj) {
     this.selectedEmpNo = null;
@@ -448,30 +485,30 @@ export class ActionToProjectComponent implements OnInit {
   end_dt:any =new Date();
 
 
-  alertMaxAllocation() {
-    if (this._StartDate == null || this._EndDate == null) {
-      this._message = "Start Date/End date missing!"
-    }
-    else { 
-      // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
-      // this.end_dt = moment(this._EndDate).format("MM/DD/YYYY");
-      this.start_dt=new Date(this._StartDate);
-      this.end_dt=new Date(this._EndDate);
+  // alertMaxAllocation() {
+  //   if (this._StartDate == null || this._EndDate == null) {
+  //     this._message = "Start Date/End date missing!"
+  //   }
+  //   else { 
+  //     // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
+  //     // this.end_dt = moment(this._EndDate).format("MM/DD/YYYY");
+  //     this.start_dt=new Date(this._StartDate);
+  //     this.end_dt=new Date(this._EndDate);
 
-      console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
+  //     console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
 
-      var Difference_In_Time = this.start_dt.getTime() - this.end_dt.getTime();
-      var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-      if(Difference_In_Days==0){
-        Difference_In_Days=-1;
-        this.maxAllocation = (-Difference_In_Days) * this.perDayLimit / 1;
-      }
-      else{
-        this.maxAllocation = (-Difference_In_Days) * this.perDayLimit / 1 +this.perDayLimit;
-      }
-      console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
-    }
-  }
+  //     var Difference_In_Time = this.start_dt.getTime() - this.end_dt.getTime();
+  //     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+  //     if(Difference_In_Days==0){
+  //       Difference_In_Days=-1;
+  //       this.maxAllocation = (-Difference_In_Days) * this.perDayLimit / 1;
+  //     }
+  //     else{
+  //       this.maxAllocation = (-Difference_In_Days) * this.perDayLimit / 1 +this.perDayLimit;
+  //     }
+  //     console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
+  //   }
+  // }
 
 
   ownerNo:string;
@@ -1167,7 +1204,7 @@ startActionCreation=async()=>{
      else {
        fd.append("Attachment", "false");
        fd.append('file', "");
-     }
+     }   
      fd.append("_MasterCode", this.ObjSubTaskDTO.MasterCode);
      fd.append("SubtaskName", this.Sub_ProjectName.trim());
      fd.append("Desc", this._Description);
@@ -1184,6 +1221,7 @@ startActionCreation=async()=>{
      fd.append("proState",this.completionattachment.toString());
      fd.append("actionCost",this.actionCost);
      fd.append("contentType",this.contentType);
+
 
      if (this.ObjSubTaskDTO.Duration != null) {
        fd.append("Duration", this.ObjSubTaskDTO.Duration.toString());
@@ -1715,7 +1753,67 @@ setFileUploadingBarVisible(_visible:boolean){
 
 
 
+// New allocated hrs validation start.
+weekendPolicy:{ [key:number]:'full'|'half'  }={  6:'full', 0:'full'   };  // 0- sunday, 1-monday, 2-tuesday, .... 6-saturday
+perDayAlhr_Limit:number=8;  // per day allocatable hrs limit. 8 hrs 
+totalWorkingDays:number=0; // from start date and end date selected. it gives total working days in that duration.
+totalOffDays:{date:string, reason:string}[]=[];  // total off days in the selected start date and end date duration.
 
+isDateSelectable=(date:Moment|null):boolean=>{  
+   if(!date)
+   { return false; }
+   else{
+    return this.weekendPolicy?.[date.day()]=='full'?false:true;
+   }
+} 
+
+
+alertMaxAllocation(){
+    if (this._StartDate == null || this._EndDate == null) {
+      this._message = "Start Date/End date missing!"
+      this.maxAllocation=0;
+      this.totalWorkingDays=0;
+      this.totalOffDays=[];
+    }
+    else{
+
+      this.start_dt=new Date(this._StartDate);  this.start_dt.setHours(0,0,0,0);
+      this.end_dt=new Date(this._EndDate);   this.end_dt.setHours(0,0,0,0);
+
+      let total_duration_days=(Math.abs(moment(this.start_dt).diff(this.end_dt,'days'))+1);
+      let total_off=0;  
+      let total_working_days=0;
+      let total_off_dates:any=[];
+
+      const tempdate=new Date(this.start_dt); tempdate.setHours(0,0,0,0); 
+      while(tempdate<=this.end_dt)
+      {
+         const isWeekend=this.weekendPolicy[tempdate.getDay()];
+         if(isWeekend)
+         {
+           total_off+=(isWeekend=='full'?1:isWeekend=='half'?0.5:0);
+           if(isWeekend=='half'){  total_working_days+=1;   }
+           if(isWeekend=='full'){  total_off_dates.push({ date:tempdate.toString(), reason:'Weekend'}); }
+         }
+         else{
+           total_working_days+=1;
+         }
+         tempdate.setDate(tempdate.getDate()+1);
+      }
+
+       this.totalWorkingDays=total_working_days;
+       this.maxAllocation=(total_duration_days-total_off)*this.perDayAlhr_Limit;
+       this.totalOffDays=[...total_off_dates];
+        
+
+    }
+}
+
+
+
+
+
+// New allocated hrs validation end.
 
 
 }

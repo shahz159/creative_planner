@@ -173,6 +173,15 @@ export class HeaderComponent implements OnInit {
           }
      });
 
+     
+     const langVal=localStorage.getItem('language');
+     if(langVal&&(langVal=='ar'||langVal=='en')){
+       this.currentLang=langVal;
+     }
+     else{ this.currentLang='en'; }
+
+
+
   }
 
   getusername(){

@@ -5573,9 +5573,9 @@ span.previous-dots {
     background-color: #1a73e7;
 }
 
-::ng-deep .modal-time-item-control .ng-dropdown-panel .ng-dropdown-panel-items {
+/* ::ng-deep .modal-time-item-control .ng-dropdown-panel .ng-dropdown-panel-items {
     max-height: 90px;
-}
+} */
 
 
 span#schedule-date {
@@ -6318,4 +6318,68 @@ button.btn.btn-viewall:hover {
 .noti-od .noti-alert-icon {
     background-color: #ffeade;
     color: #ff7423;
+}
+
+
+
+
+.round-checkbox {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+}
+
+.round-checkbox input {
+  display: none; /* hide native checkbox */
+}
+
+.custom-circle {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #5f6368;
+  border-radius: 6px;
+  position: relative;
+  margin-right: 0px;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+
+.round-checkbox input:checked + .custom-circle {
+  background-color: #5f6368;
+}
+
+.round-checkbox input:checked + .custom-circle::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  width: 4px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+
+/* .round-checkbox .head-muted {
+    font-size: 13px;
+    margin-left: 2px;
+} */
+
+.admin-hovers {
+    color: #090be8;
+    background: #ededff;
+    display: inline-flex;
+    transition: all .5s;
+    align-items: center;
+    gap: 5px;
+}
+
+.sch-evt-item.sch-evt-item-past {
+    color: #c5c5c5;
+}
+.sch-evt-item.sch-evt-item-past .sch-evt-e-c {
+    color: #c5c5c5;
 }

@@ -19,6 +19,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import { Directive, HostListener } from '@angular/core';
 import { Location } from '@angular/common';
 import { HttpEvent } from '@angular/common/http';
+import { Moment } from 'moment';
 
 
 export const MY_DATE_FORMATS = {
@@ -340,8 +341,17 @@ export class CreateProjectComponent implements OnInit {
      
          this.isStandardTasksLimitExhausted=this.Current_user_Info.Standard_Total_Hours>=this.maxAllocHrsByRole;
          this.isRoutineTasksLimitExhausted=this.Current_user_Info.Routine_Total_Hours>=this.maxAllocHrsByRole;
-
-         // 
+         //
+         
+         
+         // calculate week off policy and per day hrs limit value for current user.
+            const comp_obj=this.Client_json.find(ob=>ob.ClientName?.trim()==this.Current_user_Info.CompanyName.trim());
+            if(comp_obj){
+              // sunday:0, monday:1, .... saturday:6
+              this.weekendPolicy=comp_obj.ClientId=='400'?{ 6:'full',0:'full' }:{ 5:'full'};
+              this.perDayAlhr_Limit=comp_obj.ClientId=='400'?8.5:8;
+            }
+         //
 
       }
       // this.getFindName();
@@ -526,20 +536,92 @@ export class CreateProjectComponent implements OnInit {
 
 
 
-  setMaxAllocation() { 
-    if(this.Prjstartdate&&this.Prjenddate){
-      this.Prjstartdate=new Date(this.Prjstartdate);   this.Prjstartdate.setHours(0,0,0,0);
-      this.Prjenddate=new Date(this.Prjenddate);   this.Prjenddate.setHours(0,0,0,0);
-      const dffinsec=this.Prjstartdate.getTime()-this.Prjenddate.getTime();
-      const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
-      this.maxAllocation=(Difference_In_Days+1)*7;
-    }
-    else{
-       this.maxAllocation=null;
-       this._message = "Start Date/End date missing, It accept only numeric and non-negative value."
-    }
+  // setMaxAllocation() { 
+  //   if(this.Prjstartdate&&this.Prjenddate){
+  //     this.Prjstartdate=new Date(this.Prjstartdate);   this.Prjstartdate.setHours(0,0,0,0);
+  //     this.Prjenddate=new Date(this.Prjenddate);   this.Prjenddate.setHours(0,0,0,0);
+  //     const dffinsec=this.Prjstartdate.getTime()-this.Prjenddate.getTime();
+  //     const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
+  //     this.maxAllocation=(Difference_In_Days+1)*7;
+  //   }
+  //   else{
+  //      this.maxAllocation=null;
+  //      this._message = "Start Date/End date missing, It accept only numeric and non-negative value."
+  //   }
     
-  }
+  // }
+
+
+ //Alhrs start.
+totalWorkingDays:number=0; // from start date and end date selected. it gives total working days in that duration.
+totalOffDays:{date:string, reason:string}[]=[];  // total off days in the selected start date and end date duration.
+perDayAlhr_Limit:number=8;  // per day allocatable hrs limit. 8 hrs 
+weekendPolicy:{ [key:number]:'full'|'half'  }={  6:'full', 0:'full'   };  // 0- sunday, 1-monday, 2-tuesday, .... 6-saturday
+
+
+ setMaxAllocation(){
+     if(this.Prjstartdate&&this.Prjenddate){   
+       this.Prjstartdate=new Date(this.Prjstartdate);   this.Prjstartdate.setHours(0,0,0,0);
+       this.Prjenddate=new Date(this.Prjenddate);   this.Prjenddate.setHours(0,0,0,0);
+
+
+       let total_duration_days=Math.abs(moment(this.Prjstartdate).diff(this.Prjenddate,'days'))+1;
+       let total_off=0;  
+       let total_working_days=0;
+       let total_off_dates=[];
+
+       const tempdate=new Date(this.Prjstartdate); tempdate.setHours(0,0,0,0); 
+       while(tempdate<=this.Prjenddate)
+       {
+        
+        const isWeekend=this.weekendPolicy[tempdate.getDay()]
+        if(isWeekend)
+        {
+           total_off+=(isWeekend=='full'?1:isWeekend=='half'?0.5:0);
+           if(isWeekend=='half'){  total_working_days+=1;   }
+           if(isWeekend=='full'){  total_off_dates.push({ date:tempdate.toString(), reason:'Weekend'}); }
+        }
+        else{
+           total_working_days+=1;
+        }
+       
+         tempdate.setDate(tempdate.getDate()+1);
+       }
+
+       this.totalWorkingDays=total_working_days;
+       this.maxAllocation=(total_duration_days-total_off)*this.perDayAlhr_Limit;
+       this.totalOffDays=[...total_off_dates];
+     }
+     else{
+        this.maxAllocation=0;
+        this.totalWorkingDays=0;
+        this.totalOffDays=[];
+        this._message = "Start Date/End date missing, It accept only numeric and non-negative value.";
+     }
+ }
+
+  
+//  isHoliday(date:Date){
+//    return false;
+//  }
+
+//  isLeaveApplied(date:Date){
+//    return false;
+//  }
+
+// Alhrs end.
+
+ isDateSelectable=(date:Moment |null):boolean=>{  
+   if(!date)
+   { return false; }
+   else{
+    return this.weekendPolicy?.[date.day()]=='full'?false:true;
+   }
+ } 
+
+
+
+
 
   // setprojeditAllocation() {
   //   if(this.Start_Date&&this.End_Date){
@@ -1345,7 +1427,7 @@ onProjectOwnerChanged(){
 
 // responsible field end
 
- getOnwer_Name():string{
+ getOnwer_Name():string{  
   let Owner_Name='';
   try{
   if(this.owner_json){
@@ -1768,8 +1850,11 @@ initializeSelectedValue() {
    
     this._remarks = this.projectInfo.Remarks;
   
+    // set weekend policy based on project responsible.
+    
+    this.prjResWeekendPolicy=this.projectInfo.RespCompanyId=='400'?{6:'full',0:'full'}:{5:'full'};
+    this.prjResperDayAlhr_Limit=this.projectInfo.RespCompanyId=='400'?8.5:8; 
     this.setPrjMaxAllocatableHrs(); // calculate 'p_maxAllocatableHrs' value using startdate and enddate.
-
     this.isPrjNameInUse(this.ProjeditName);   // checks the name binding to project name input is unique or not. 
 }
 
@@ -2862,6 +2947,9 @@ reset(){
   this.fileAttachment=null;
   this.invalidFileSelected=false;
   this.isPrjNameUsed=false;
+  this.totalWorkingDays=0;
+  this.totalOffDays=[];
+  this.maxAllocation=0;
     // step1 form clear.   end
 
     // step2 form clear.   start
@@ -3092,7 +3180,7 @@ hasExceededTotalAllocatedHr(actionAllocHr:any):boolean{
 
       //2. data bind into the sidebar
       this.bindActionDetailsIntoForm();
-      this.updateCharacterCount_Action()
+      this.updateCharacterCount_Action();
     }
 
     closeAction_details_edit(){
@@ -3151,8 +3239,11 @@ this._remarks = this.PrjActionsInfo[this.currentActionView].Remarks;
 
 this.newaction_Cost=this.PrjActionsInfo[this.currentActionView].Project_Cost;   // action cost value.
 
-this.setActnMaxAllocatableHrs();  // calculate 'a_maxAllocatableHrs' value based on start date and end date.
+// set weekend policy based on action responsible.
+this.actnResWeekendPolicy=this.PrjActionsInfo[this.currentActionView].RespCompanyId=='400'?{6:'full',0:'full'}:{5:'full'};
+this.actnResperDayAlhr_Limit=this.PrjActionsInfo[this.currentActionView].RespCompanyId=='400'?8.5:8; 
 
+this.setActnMaxAllocatableHrs();  // calculate 'a_maxAllocatableHrs' value based on start date and end date.
 }
 
 
@@ -3325,7 +3416,9 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
   }
 
 
-  getNewActnCost(){   debugger
+  
+
+getNewActnCost(){   debugger
     let alhrVal:any=this.Allocated;
     if(alhrVal){
       const newAlhr=alhrVal;
@@ -3344,7 +3437,38 @@ if(actn_deadline.getTime()==prj_deadline.getTime()){
         }
       });
     }
+}
+
+
+onActionResponsibleChanged(){
+  // 1. get new action cost based on new actn resp.
+  this.getNewActnCost(); 
+
+  // 2. change weekendpolicy and Perday limit based on selected new resp for action.
+    const obj=this.actionresponsible_dropdown.find(ob=>ob.Emp_No==this.selectedOwnResp);
+    if(obj){
+       this.actnResWeekendPolicy=obj.CompanyId=='400'?{ 6:'full',0:'full' }:{ 5:'full'};   // 0-sun,1-mon,....6-sat
+       this.actnResperDayAlhr_Limit=obj.CompanyId=='400'?8.5:8;
+    }
+
+  // 3. validate start date and end date of the action.
+    if(this.Start_Date&&this.End_Date)
+    {
+         const start_dt_=new Date(this.Start_Date);
+         const end_dt_=new Date(this.End_Date);
+         if(this.actnResWeekendPolicy[start_dt_.getDay()]||this.actnResWeekendPolicy[end_dt_.getDay()]){
+         this.Start_Date=null;
+         this.End_Date=null;
+         this.computeActnDuration();
+         }
+    }else{ this.Start_Date=null; this.End_Date=null; this.computeActnDuration();    }
+
+    // 4. recalculate a_maxAllocatableHrs, total_actnWorkingDays, total_actnOffDays based on Start_Date and End_Date.
+      this.setActnMaxAllocatableHrs();
+
   }
+    
+
 
 
  
@@ -3391,7 +3515,7 @@ LoadDocument1(prj_code:any,iscloud: boolean, filename: string, url1: string, typ
   }
 }
 
-
+ 
 
 
 
@@ -3664,19 +3788,101 @@ computePrjDuration(){
   this.PrjDuration_=0;  
 }
 
+
+// setPrjMaxAllocatableHrs(){  
+//     if(this.Start_Date&&this.End_Date)
+//     {
+//       const pstart_dt=new Date(this.Start_Date);
+//       const pend_dt=new Date(this.End_Date);
+//       const dffinsec=pstart_dt.getTime()-pend_dt.getTime();
+//       const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
+//       this.p_maxAllocatableHrs=(Difference_In_Days+1)*7;
+//     }
+//     else{
+//       this.p_maxAllocatableHrs=null;
+//     }  
+// }
+
+
 p_maxAllocatableHrs:any;
-setPrjMaxAllocatableHrs(){  
+total_WorkingDays:number=0; // from start date and end date selected. it gives total working days in that duration.
+total_OffDays:{date:string, reason:string}[]=[]; // total off days in the selected start date and end date duration.
+prjResWeekendPolicy:{ [key:number]:'full'|'half'  }={  6:'full', 0:'full'   };  // 0- sunday, 1-monday, 2-tuesday, .... 6-saturday
+prjResperDayAlhr_Limit:number=8.5;  // per day allocatable hrs limit. 
+
+
+setPrjMaxAllocatableHrs(){
+  if(this.Start_Date&&this.End_Date)
+  {
+      const pstart_dt=new Date(this.Start_Date); pstart_dt.setHours(0,0,0,0);
+      const pend_dt=new Date(this.End_Date); pend_dt.setHours(0,0,0,0);
+
+      let total_duration_days=Math.abs(moment(pstart_dt).diff(pend_dt,'days'))+1;
+      let total_off=0;  
+      let total_working_days=0;
+      let total_off_dates:any=[];
+
+      const tempdate=new Date(pstart_dt); tempdate.setHours(0,0,0,0); 
+      while(tempdate<=pend_dt)
+      {
+        const isWeekend=this.prjResWeekendPolicy[tempdate.getDay()]
+        if(isWeekend)
+        {
+           total_off+=(isWeekend=='full'?1:isWeekend=='half'?0.5:0);
+           if(isWeekend=='half'){  total_working_days+=1;   }  // half day is also a working day.
+           if(isWeekend=='full'){  total_off_dates.push({ date:tempdate.toString(), reason:'Weekend'}); }
+        }
+        else{
+           total_working_days+=1;
+        }
+
+         tempdate.setDate(tempdate.getDate()+1);
+      }
+
+       this.total_WorkingDays=total_working_days;
+       this.p_maxAllocatableHrs=(total_duration_days-total_off)*this.prjResperDayAlhr_Limit;
+       this.total_OffDays=[...total_off_dates];
+  }
+  else{
+     this.p_maxAllocatableHrs=null;
+     this.total_WorkingDays=0;
+     this.total_OffDays=[];
+  }
+}
+
+isPrjDateSelectable=(date:Moment |null):boolean=>{  
+   if(!date)
+   { return false; }
+   else{
+    return this.prjResWeekendPolicy?.[date.day()]=='full'?false:true;
+   }
+} 
+
+onProjectResponsibleChanged(){
+  // 1. change weekendpolicy and Perday limit based on selected new resp for Project.
+    const obj=this.responsible_dropdown.find(ob=>ob.Emp_No==this.selectedOwnResp);
+    if(obj){
+       this.prjResWeekendPolicy=obj.CompanyId=='400'?{ 6:'full',0:'full' }:{ 5:'full'};   // 0-sun,1-mon,....6-sat
+       this.prjResperDayAlhr_Limit=obj.CompanyId=='400'?8.5:8;
+    }
+    
+  // 2. validate start date and end date of the project.
     if(this.Start_Date&&this.End_Date)
     {
-      const pstart_dt=new Date(this.Start_Date);
-      const pend_dt=new Date(this.End_Date);
-      const dffinsec=pstart_dt.getTime()-pend_dt.getTime();
-      const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
-      this.p_maxAllocatableHrs=(Difference_In_Days+1)*7;
-    }
-    else{
-      this.p_maxAllocatableHrs=null;
-    }  
+         const start_dt_=new Date(this.Start_Date);  start_dt_.setHours(0,0,0,0);
+         const end_dt_=new Date(this.End_Date);  end_dt_.setHours(0,0,0,0);
+         if(this.prjResWeekendPolicy[start_dt_.getDay()]||this.prjResWeekendPolicy[end_dt_.getDay()]){
+          // for the selected project responsible when projects dates are invalid. example project ends on friday which is holiday on selected responsible.
+         this.Start_Date=null;
+         this.End_Date=null;
+         this.computePrjDuration();
+         }
+    }else{ this.Start_Date=null; this.End_Date=null;   this.computePrjDuration();  }  
+
+    
+    // 3. recalculate p_maxAllocatableHrs, total_WorkingDays, total_OffDays based on Start_Date and End_Date.
+    this.setPrjMaxAllocatableHrs();
+
 }
 
 
@@ -3684,19 +3890,77 @@ setPrjMaxAllocatableHrs(){
 //
 
 a_maxAllocatableHrs:any;
-setActnMaxAllocatableHrs(){
+total_actnWorkingDays:number=0; // from start date and end date selected. it gives total working days in that duration of action.
+total_actnOffDays:{date:string, reason:string}[]=[]; // total off days in the selected start date and end date duration of action.
+actnResWeekendPolicy:{ [key:number]:'full'|'half'  }={  6:'full', 0:'full'   };  // 0- sunday, 1-monday, 2-tuesday, .... 6-saturday
+actnResperDayAlhr_Limit:number=8;  // per day allocatable hrs limit. 8 hrs 
+
+
+isActnDateSelectable=(date:Moment |null):boolean=>{  
+   if(!date)
+   { return false; }
+   else{
+    return this.actnResWeekendPolicy?.[date.day()]=='full'?false:true;
+   }
+} 
+
+
+setActnMaxAllocatableHrs()
+{
   if(this.Start_Date&&this.End_Date)
   {
-      const pstart_dt=new Date(this.Start_Date);
-      const pend_dt=new Date(this.End_Date);
-      const dffinsec=pstart_dt.getTime()-pend_dt.getTime();
-      const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
-      this.a_maxAllocatableHrs=(Difference_In_Days+1)*7;
+      const astart_dt=new Date(this.Start_Date); astart_dt.setHours(0,0,0,0);
+      const aend_dt=new Date(this.End_Date); aend_dt.setHours(0,0,0,0);
+
+      let total_duration_days=Math.abs(moment(astart_dt).diff(aend_dt,'days'))+1;
+      let total_off=0;  
+      let total_working_days=0;
+      let total_off_dates:any=[];
+
+      const tempdate=new Date(astart_dt); tempdate.setHours(0,0,0,0); 
+      while(tempdate<=aend_dt)
+      {
+
+        const isWeekend=this.actnResWeekendPolicy[tempdate.getDay()];
+        if(isWeekend)
+        {
+           total_off+=(isWeekend=='full'?1:isWeekend=='half'?0.5:0);
+           if(isWeekend=='half'){  total_working_days+=1;   }  // half day is also a working day.
+           if(isWeekend=='full'){  total_off_dates.push({ date:tempdate.toString(), reason:'Weekend'}); }
+        }
+        else{
+           total_working_days+=1;
+        }
+
+       tempdate.setDate(tempdate.getDate()+1);
+      }
+
+       this.total_actnWorkingDays=total_working_days;
+       this.a_maxAllocatableHrs=(total_duration_days-total_off)*this.actnResperDayAlhr_Limit;
+       this.total_actnOffDays=[...total_off_dates];
   }
-  else{
-      this.a_maxAllocatableHrs=null;
-  } 
+  else
+  {
+     this.a_maxAllocatableHrs=null;
+     this.total_actnWorkingDays=0;
+     this.total_actnOffDays=[];
+  }
+
 }
+
+// setActnMaxAllocatableHrs(){
+//   if(this.Start_Date&&this.End_Date)
+//   {
+//       const pstart_dt=new Date(this.Start_Date);
+//       const pend_dt=new Date(this.End_Date);
+//       const dffinsec=pstart_dt.getTime()-pend_dt.getTime();
+//       const Difference_In_Days=Math.abs(dffinsec)/(1000*3600*24);
+//       this.a_maxAllocatableHrs=(Difference_In_Days+1)*7;
+//   }
+//   else{
+//       this.a_maxAllocatableHrs=null;
+//   } 
+// }
 
 computeActnDuration(){
   if(this.Start_Date&&this.End_Date)
@@ -3744,6 +4008,7 @@ validateActnEndDate(){
     }
   }
 }
+
 
 
 

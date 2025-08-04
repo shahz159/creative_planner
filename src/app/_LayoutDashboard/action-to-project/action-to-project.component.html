@@ -205,7 +205,9 @@
         <label>Start date<span class="text-danger">*</span></label>
         <div class="d-flex date-border" [ngClass]="{'error-date': (_sdate == true&&!_StartDate)||_actbefore}" (click)="startdatechecker()">
             <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()" [min]="todayDate" (dateChange)="(_StartDate=_StartDate<_curtd?null:_StartDate); (_actbefore=isActionStartBeforeProject()); "
-                [(ngModel)]="_StartDate" placeholder="Start date" class="form-control" />
+                [(ngModel)]="_StartDate" placeholder="Start date" class="form-control" 
+                [matDatepickerFilter]="isDateSelectable"
+                />
 
             <div class="input-group-text p-0">
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
@@ -220,7 +222,9 @@
             <label>End date<span class="text-danger">*</span></label>
             <div class="d-flex date-border" [ngClass]="{'error-date': (_edate && !_EndDate)}" >
                 <input matInput [matDatepicker]="picker2" required #Enddate="ngModel" (click)="picker2.open()" [min]="_StartDate"
-                    [(ngModel)]="_EndDate" placeholder="End date" class="form-control"  (dateChange)="(this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null); hasSameDateActions();  alertMaxAllocation();  " (input)="_edate=!_EndDate" />
+                    [(ngModel)]="_EndDate" placeholder="End date" class="form-control"  (dateChange)="(this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null); hasSameDateActions();  alertMaxAllocation();  " (input)="_edate=!_EndDate" 
+                    [matDatepickerFilter]="isDateSelectable"
+                 />
 
              <div class="input-group-text p-0">
                     <mat-datepicker-toggle  matSuffix [for]="picker2"></mat-datepicker-toggle>
@@ -230,6 +234,24 @@
             <span *ngIf="sameDateActions" style="color:orange">more than 3 actions ending on same date.</span>
             <span *ngIf="_edate && !_EndDate" style="color:red">Please select end date.</span>
             <!-- <div *ngIf="_actafter" style="color: red">Action cannot end after the project.</div> -->
+
+             <div *ngIf="_StartDate&&_EndDate&&totalWorkingDays" class="mt-1 px-1 d-flex justify-content-between align-items-center">
+                        <span class="text-dark fs-7" style="font-weight: 500;">Total working days : {{totalWorkingDays}}</span>
+                        <span class="attach-tippy font-weight-400">
+                                <span>
+                                    <svg width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="color: #4377ff;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="info-circle"> <g> <circle cx="12" cy="12" data-name="--Circle" fill="none" id="_--Circle" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7280000000000002"></circle> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" x1="12" x2="12" y1="12" y2="16"></line> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" x1="12" x2="12" y1="8" y2="8"></line> </g> </g> </g> </g>
+                                     </svg>
+                                </span>
+                                <div class="st-line off-days-span">
+                                    <h6>Non-working days: {{totalOffDays.length}}</h6>
+                                      <div class="days-list">
+                                      <div class="py-1 text-muted text-nowrap" *ngFor="let offdays of totalOffDays">{{ offdays.date|date:'dd-MM-yyyy'}} - <span class="text-muted">{{offdays.reason}}</span></div>
+                                      </div>
+                                </div>
+                        </span>
+            </div>
+
+
         </div>
          <!--when start date is provided-->
         <div class="form-group flex-1 details-date" *ngIf="_StartDate==null">
@@ -237,7 +259,9 @@
             <div class="d-flex date-border" [ngClass]="{'error-date': _edate && !_EndDate}"  (click)="enddateChecker()">
                 <input matInput [matDatepicker]="picker2"  [matDatepickerFilter]="myFilter"
                 required #Enddate="ngModel" (click)="picker2.open()"
-                    [(ngModel)]="_EndDate" (dateChange)="(this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null);  alertMaxAllocation();  " placeholder="End Date" class="form-control">
+                [(ngModel)]="_EndDate" (dateChange)="(this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null);  alertMaxAllocation();  " placeholder="End Date" class="form-control"
+                  [matDatepickerFilter]="isDateSelectable"
+                />
                 <div class="input-group-text p-0">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
@@ -258,13 +282,32 @@
                                 (_allocated&&_allocated==0)||
                                 (_allocated&&(_allocated > maxAllocation)) 
                    }" />
+
        <div  class="d-flex flex-column">
         <span *ngIf="this._alchr==true&&!_allocated" style="color:red">Allocated hours required. Hours should not be in decimal. </span>
         <ng-container *ngIf="_allocated">
             <span *ngIf="(this._StartDate == null || this._EndDate == null)" style="color:red">{{_message}}</span>  
-            <span *ngIf="_allocated > maxAllocation" style="color:red">Maximum <b>{{maxAllocation}}</b> hours allowed for given duration. (<b>48</b> hours/week limit).</span>
             <span *ngIf="(_allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value, It accept only numeric and non-negative value. </span>
+            <!-- <span *ngIf="_allocated > maxAllocation" style="color:red">Maximum <b>{{maxAllocation}}</b> hours allowed for given duration. (<b>48</b> hours/week limit).</span> -->
         </ng-container>
+        
+         <div *ngIf="this._StartDate&&this._EndDate&&maxAllocation" class="mt-1 px-1 d-flex justify-content-between align-items-center">
+                          <span *ngIf="!(maxAllocation&&_allocated>maxAllocation)" class="fs-7 text-dark" style="font-weight: 500;">Estimated Allocated hours: {{maxAllocation}}</span>
+                          <span  *ngIf="(maxAllocation&&_allocated>maxAllocation)" class="fs-7" style="font-weight: 500; color:rgb(217,48,37)">Max allowed: {{maxAllocation}} hours</span>
+                                    
+                          <span class="attach-tippy font-weight-400">
+                                <span>
+                                    <svg width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="color: #4377ff;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="info-circle"> <g> <circle cx="12" cy="12" data-name="--Circle" fill="none" id="_--Circle" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7280000000000002"></circle> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" x1="12" x2="12" y1="12" y2="16"></line> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" x1="12" x2="12" y1="8" y2="8"></line> </g> </g> </g> </g>
+                                    </svg>
+                                 </span>
+                                  <div class="st-line off-days-span">
+                                    <h6 class="mb-0">{{maxAllocation}} hours</h6>
+                                    <div class="days-list">
+                                       <div class="py-1 text-muted text-nowrap">{{perDayAlhr_Limit}} hrs/day × {{totalWorkingDays}} days</div>
+                                    </div>
+                                 </div>
+                        </span>
+             </div>
     </div>
      
     </div>

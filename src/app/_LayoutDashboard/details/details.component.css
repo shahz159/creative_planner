@@ -8232,6 +8232,23 @@ input.search-input {
   border-bottom: 3px solid #5867dd !important;
 }
 
+
+.plps-tabs .nav-item .nav-link svg
+{
+  color: #626676;
+  width:18.5px;
+  height:18.6px;
+}
+
+.plps-tabs .nav-item .nav-link.active svg
+{
+  color: #5867dd;
+}
+
+
+
+
+
 /*prj auditor css start*/
 .Auditor-edit-btn {
   padding: 5px;
@@ -8728,6 +8745,12 @@ span.time-value {
 
 }
 
+.compl-remarks-span.upto-1{
+    -webkit-line-clamp: 1;
+}
+
+
+
 
 .meeting-attendance-item-hover:hover {
   background-color: #f4f4f43d;
@@ -8906,6 +8929,11 @@ span.time-value {
   color: #D32F2F !important;
 }
 
+.st-line.aprv-pending-tooltip{
+   transform: translate3d(-78px, 30px, 0px) !important;
+   min-width: 14rem !important;
+}
+
 
 /* @keyframes showanim
 {
@@ -9069,6 +9097,12 @@ span.time-value {
   display: flex;
   flex-direction: column;
 }
+
+.audit-pending-notf .notif-msg .sm-text{
+  font-weight: 400;
+  font-size: 12px;
+}
+
 
 .audit-complete-notf {
   background-color: #9fffa3d1;
@@ -10956,4 +10990,29 @@ span.time-value {
   position: absolute;
   top: 6px;
   right: 6px;
+}
+.count-box
+{
+    display: inline-block;
+    padding: 1px 4px 1px 4px;
+    background-color: #e9e9eb;
+    color: #6a6a6c;
+    border-radius: 3px;
+    margin-left: 5px;
+    font-weight: 500;
+}
+
+
+
+.off-days-span
+{
+    transform: translate3d(-160px, 20px, 0px) !important;
+}
+
+.off-days-span .days-list
+{
+    max-height: 130px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-right: 8px;
 }

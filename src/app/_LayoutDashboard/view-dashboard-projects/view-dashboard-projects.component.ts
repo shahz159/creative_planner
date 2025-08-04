@@ -95,14 +95,13 @@ export class ViewDashboardProjectsComponent implements OnInit {
     this.A2Z = true;
     this.Z2A = false;
     this._subtaskDiv = true;
-    this.activatedRoute.queryParams.subscribe(params => {
-      const section = params['section'];
 
-      // filter if applied
-      const filterbyemp=params['filterbyemp'];
-      const filterbystatus=params['filterbystatus'];
-      const filterbytype=params['filterbytype'];
-      const filterconfig:any={};
+
+   const section=this.activatedRoute.snapshot.queryParamMap.get('section');
+   const filterbyemp=this.activatedRoute.snapshot.queryParamMap.get('filterbyemp');
+   const filterbystatus=this.activatedRoute.snapshot.queryParamMap.get('filterbystatus');
+   const filterbytype=this.activatedRoute.snapshot.queryParamMap.get('filterbytype');
+   const filterconfig:any={};
       if(filterbyemp)
       filterconfig.emp=filterbyemp;
       if(filterbystatus)
@@ -110,10 +109,8 @@ export class ViewDashboardProjectsComponent implements OnInit {
       if(filterbytype)
       filterconfig.type=filterbytype;
 
-      const isFilterapplied=Object.keys(filterconfig).length>0;
-     //
-   debugger
-      if (section) {
+   const isFilterapplied=Object.keys(filterconfig).length>0;
+   if (section) {
         // Handle the case when you are coming from the dashboard
         if (section === 'Projects') {
           this.getDelayProjects(this.delayType1,isFilterapplied?filterconfig:null);
@@ -126,7 +123,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
         }
 
 
-      } else {
+   } else {
         // Handle the case when you are on this page or coming from another page
         this.Mode = this.activatedRoute.snapshot.params['Mode'];
         if (this.Mode === 'DelayProjects') {
@@ -138,10 +135,59 @@ export class ViewDashboardProjectsComponent implements OnInit {
         }
         this.getAssignedProjects(this.type1);
         this.router.navigate(["../ViewProjects/" + this.Mode]);
-      }
-      this.Dateoftoday = this.getCurrentDate();
+  }
+  this.Dateoftoday = this.getCurrentDate();
 
-    });
+
+
+
+  //   this.activatedRoute.queryParams.subscribe(params => {
+  //     const section = params['section'];
+
+  //     // filter if applied
+  //     const filterbyemp=params['filterbyemp'];
+  //     const filterbystatus=params['filterbystatus'];
+  //     const filterbytype=params['filterbytype'];
+  //     const filterconfig:any={};
+  //     if(filterbyemp)
+  //     filterconfig.emp=filterbyemp;
+  //     if(filterbystatus)
+  //     filterconfig.status=filterbystatus;
+  //     if(filterbytype)
+  //     filterconfig.type=filterbytype;
+
+  //     const isFilterapplied=Object.keys(filterconfig).length>0;
+  //    //
+  //  debugger
+  //     if (section) {
+  //       // Handle the case when you are coming from the dashboard
+  //       if (section === 'Projects') {
+  //         this.getDelayProjects(this.delayType1,isFilterapplied?filterconfig:null);
+  //       } else if (section === 'Actions') {
+  //         this.getDelayProjects(this.delayType2,isFilterapplied?filterconfig:null);
+  //       } else if (section === 'Assigned Project') {
+  //         this.Mode = this.activatedRoute.snapshot.params['Mode'];
+  //         this.getAssignedProjects(this.type1);
+  //         this.router.navigate(["../ViewProjects/" + this.Mode]);
+  //       }
+
+
+  //     } else {
+  //       // Handle the case when you are on this page or coming from another page
+  //       this.Mode = this.activatedRoute.snapshot.params['Mode'];
+  //       if (this.Mode === 'DelayProjects') {
+  //         this.getDelayProjects(this.delayType1);
+  //       } else if (this.Mode === 'AssignedActions') {
+  //         this.getAssignedActions('TOME');
+  //       } else {
+  //         this.GetCompletedProjects();
+  //       }
+  //       this.getAssignedProjects(this.type1);
+  //       this.router.navigate(["../ViewProjects/" + this.Mode]);
+  //     }
+  //     this.Dateoftoday = this.getCurrentDate();
+
+  //   });
 
 
     // this.route.queryParams.subscribe(params => {
@@ -186,14 +232,14 @@ export class ViewDashboardProjectsComponent implements OnInit {
   }
 
 
-  openInfo(prjCode:string,actCode:string) {
+  openInfo(prjCode:string,actCode:string) {  debugger
     // document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
 
     $('#Project_info_slider_bar').addClass('open_sidebar_info');
     if(prjCode&&actCode)
-      this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", prjCode,actCode, "3"]);
+      this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", prjCode,actCode, "3"],{ state:{ data:{mode:this.Mode} } });
     else
-    this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", prjCode, "3"]);
+    this.router.navigate(["../ViewProjects/" + this.Mode + "/projectinfo/", prjCode, "3"],{ state:{ data:{mode:this.Mode} } });
 
     //this.router.navigate(["../portfolioprojects/" + this._Pid + "/projectinfo/", pcode]);
     document.getElementById("rightbar-overlay").style.display = "block";

@@ -99,7 +99,8 @@ export class ApprovalDTO {
   PortfolioId:number;
   d_Portid:string;
   isPin:boolean;
-  type:string;
+  // type:string;
+  Ptype:string;
   portid:number|null;
 //
 
@@ -108,5 +109,9 @@ export class ApprovalDTO {
     gid:number;
     Schedule_id:number;
   //
+
+ Portfolio_Id:number;
+ Preference:string;
+
 
 }
