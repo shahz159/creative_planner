@@ -292,7 +292,9 @@
         </ng-container>
         
          <div *ngIf="this._StartDate&&this._EndDate&&maxAllocation" class="mt-1 px-1 d-flex justify-content-between align-items-center">
-                    <span class="fs-7" style="font-weight: 500;"  [ngClass]="{'text-danger':(maxAllocation&&_allocated>maxAllocation),'text-dark':!(maxAllocation&&_allocated>maxAllocation)}">Max hours allowed: {{maxAllocation}} hours</span>              
+                          <span *ngIf="!(maxAllocation&&_allocated>maxAllocation)" class="fs-7 text-dark" style="font-weight: 500;">Estimated Allocated hours: {{maxAllocation}}</span>
+                          <span  *ngIf="(maxAllocation&&_allocated>maxAllocation)" class="fs-7" style="font-weight: 500; color:rgb(217,48,37)">Max allowed: {{maxAllocation}} hours</span>
+                                    
                           <span class="attach-tippy font-weight-400">
                                 <span>
                                     <svg width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="color: #4377ff;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="info-circle"> <g> <circle cx="12" cy="12" data-name="--Circle" fill="none" id="_--Circle" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7280000000000002"></circle> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" x1="12" x2="12" y1="12" y2="16"></line> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" x1="12" x2="12" y1="8" y2="8"></line> </g> </g> </g> </g>

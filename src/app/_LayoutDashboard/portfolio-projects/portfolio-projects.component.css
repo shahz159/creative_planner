@@ -7346,3 +7346,14 @@ button.Kt-Approval-btns {
     color: #848282;
     font-weight: 400;
 } */
+
+
+.multi-select-checkbox {
+  transform: scale(1.2);
+}
+
+.multi-select-list{
+   max-height:200px;
+   overflow-y:auto;
+   scrollbar-width: thin;
+}

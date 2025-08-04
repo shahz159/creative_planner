@@ -68,6 +68,16 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
     this.BsService.bs_standardid.subscribe(t => {
       this.standardid = t;
     });
+
+
+    // if projectinfo sidebar is opened from ViewProjects page. then initialize 'Mode'
+    const extrasobj=this.router.getCurrentNavigation()?.extras;
+    const mode=extrasobj?.state?.data?.mode;
+    if(extrasobj&&mode){
+       this.Mode=mode;
+    } 
+    //
+          
   }
 
   @Input() inputFromParent: string;
@@ -135,7 +145,6 @@ Prj_Code:any;
      else{
       this.projectCode = p_code;
      }
-
 
       this.getusername();
       this.LoadProjectDetails();
@@ -1289,9 +1298,19 @@ GetProjectAndsubtashDrpforCalender() {
             this._toDo.GetProjectsByUserName();
             this._toDo.GetSubtask_Details();
           }
-          else if (this._Urlid == '6') {
+          else if (this._Urlid == '6') {  
             this.router.navigate(["Notifications"]);
-            this._notification.viewAll('Req');
+             this._notification.applyFilters((args:any)=>{  
+              const remainingCount=(args[0]['WScount']);
+              // if we found no projects in the list after this approve then we must redirect control to other tabs and prevent blank white issue.
+              if(remainingCount==0){
+                this._notification.tabs_Count.projectApprovalCount=remainingCount;
+                this._notification.enableFirstTabSwitch=true;
+                this._notification.switchToFirstAvailableTab();
+              }
+            });
+            // this._notification.viewAll('Req');
+           
           }
         });
       console.log(this.singleapporval_json, "accept")
@@ -1350,7 +1369,16 @@ GetProjectAndsubtashDrpforCalender() {
               }
               else if (this._Urlid == '6') {
                 this.router.navigate(["Notifications"]);
-                this._notification.viewAll('Req');
+                this._notification.applyFilters((args:any)=>{   
+                 const remainingCount=(args[0]['WScount']);
+                 // if we found no projects in the list after this approve then we must redirect control to other tabs and prevent blank white issue.
+                 if(remainingCount==0){
+                    this._notification.tabs_Count.projectApprovalCount=remainingCount;
+                    this._notification.enableFirstTabSwitch=true;
+                    this._notification.switchToFirstAvailableTab();
+                 }
+                 });
+                // this._notification.viewAll('Req');
               }
             }
           });
@@ -1397,9 +1425,18 @@ GetProjectAndsubtashDrpforCalender() {
                 this._toDo.GetProjectsByUserName();
                 this._toDo.GetSubtask_Details();
               }
-              else if (this._Urlid == '6') {
+              else if (this._Urlid == '6') {  
                 this.router.navigate(["Notifications"]);
-                this._notification.viewAll('Req');
+                this._notification.applyFilters((args:any)=>{   
+                  const remainingCount=(args[0]['WScount']);
+                  // if we found no projects in the list after this approve then we must redirect control to other tabs and prevent blank white issue.
+                  if(remainingCount==0){
+                    this._notification.tabs_Count.projectApprovalCount=remainingCount;
+                    this._notification.enableFirstTabSwitch=true;
+                    this._notification.switchToFirstAvailableTab();
+                  }
+                });
+                // this._notification.viewAll('Req');
               }
             });     
 

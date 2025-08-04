@@ -323,7 +323,7 @@
             <div  class="kt-calendar-right">
                 <div class="kt-sch-div" id="kt-sch-div">
                     <div *ngIf="reportCount && (teamsCalendar == 1 || teamsCalendar == 0)"  class="accordion" id="accordionPendingtask">
-                        <a class="accordion-pending-task-btn position-relative" type="button" data-toggle="collapse" data-target="#collapseUnassign" aria-expanded="false" aria-controls="collapseUnassign">
+                        <a class="accordion-pending-task-btn position-relative" type="button" data-toggle="collapse"  (click)="notificationalertModal()"  data-target="#collapseUnassign" aria-expanded="false" aria-controls="collapseUnassign">
                          <span><span class="sch-evt-date">{{reportCount}}</span>Overdue actions/tasks</span>
                          <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="none"><path d="M13.823 7.59473L7.823 1.59472L1.82299 7.59473" stroke="#6F6F6F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                          <div *ngIf="showLoader"  class="inf-div" id="hideblinkDiv">
@@ -5686,3 +5686,72 @@
     </div>
 </div>
 <!-- Custom Pending Task Modal End -->
+
+<!-- Notification Alert Modal Start -->
+<div class="modal-backdrop fade" id="notificationalertModalBackdrop" style="display: none"></div>
+<div class="modal fade show" id="notificationalertModal" data-backdrop="static"  data-keyboard="false"  tabindex="-1" role="dialog" aria-labelledby="notificationalertModalTitle" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="notification-alert-head-hero">
+            <div class="notification-alert-close"   (click)="notificationalertModal_dismiss()">
+                <svg fill="currentColor" width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>times</title> <path d="M17.769 16l9.016-9.016c0.226-0.226 0.366-0.539 0.366-0.884 0-0.691-0.56-1.251-1.251-1.251-0.346 0-0.658 0.14-0.885 0.367v0l-9.015 9.015-9.016-9.015c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l9.015 9.016-9.015 9.015c-0.227 0.226-0.367 0.539-0.367 0.885 0 0.691 0.56 1.251 1.251 1.251 0.345 0 0.658-0.14 0.884-0.366v0l9.016-9.016 9.015 9.016c0.227 0.228 0.541 0.369 0.888 0.369 0.691 0 1.251-0.56 1.251-1.251 0-0.347-0.141-0.661-0.369-0.887l-0-0z"></path> </g></svg>
+            </div>
+            <div class="notification-alert-bg-img"></div>
+            <div class="notification-alert-title">
+                <h1>Overdue Actions/Tasks</h1>
+                <p class="mb-0">Prioritize these overdue actions/tasks to stay aligned with deadlines.</p>
+            </div>
+        </div>
+        <div class="modal-body p-0">
+            <div class="noti-alert-ul">
+                <div class="noti-alert-li noti-rp">
+                    <div class="noti-alert-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.576 31.576" fill="currentColor" width="20px" height="20px"><g id="SVGRepo_iconCarrier"><path d="M16.779,23.888H6.215c-1.079,0-1.968-0.844-1.968-1.923V4.446c0-1.079,0.889-1.928,1.968-1.928h13.677 c1.08,0,1.984,0.849,1.984,1.928v11.917l1.231,1.383l1.257-1.407c0.016-0.017,0.03-0.031,0.03-0.048V2.57 c0-1.419-1.14-2.57-2.56-2.57H4.169C2.807,0,1.73,1.104,1.73,2.466v21.44c0,1.42,1.123,2.574,2.543,2.574H15.22 c0.018,0,0.036-0.054,0.055-0.074l1.879-2.092L16.779,23.888z"></path><path d="M18.838,5.8H7.498c-0.697,0-1.26,0.563-1.26,1.26c0,0.696,0.563,1.258,1.26,1.258h11.34c0.699,0,1.264-0.563,1.264-1.258 C20.102,6.362,19.537,5.8,18.838,5.8z"></path><path d="M18.838,9.997H7.498c-0.697,0-1.26,0.524-1.26,1.221c0,0.693,0.563,1.221,1.26,1.221h11.34 c0.699,0,1.264-0.528,1.264-1.221C20.102,10.522,19.537,9.997,18.838,9.997z"></path><path d="M15.594,16.017c1.259-1.137,2.992-1.426,4.482-0.878c-0.113-0.578-0.623-1.02-1.238-1.02H7.498 c-0.697,0-1.26,0.564-1.26,1.259c0,0.694,0.563,1.259,1.26,1.259h7.527C15.191,16.406,15.381,16.209,15.594,16.017z"></path><path d="M7.498,18.164c-0.697,0-1.26,0.562-1.26,1.259s0.563,1.259,1.26,1.259h6.864c-0.268-0.84-0.294-1.679-0.083-2.519 L7.498,18.164L7.498,18.164z"></path><path d="M26.065,24.332l1.483-1.646l1.728-1.914c0.813-0.904,0.744-2.301-0.161-3.115c-0.908-0.816-2.3-0.743-3.117,0.16 l-1.42,1.576l-1.484,1.646l-2.906-3.223c-0.814-0.902-2.209-0.978-3.117-0.16c-0.905,0.815-0.976,2.211-0.16,3.115l3.211,3.561 l-1.482,1.646l-1.729,1.912c-0.815,0.905-0.744,2.301,0.161,3.116c0.423,0.381,0.95,0.567,1.476,0.567 c0.604,0,1.203-0.245,1.641-0.729l1.42-1.572l1.484-1.646l2.906,3.221c0.438,0.482,1.037,0.729,1.641,0.729 c0.525,0,1.055-0.188,1.479-0.566c0.904-0.814,0.977-2.211,0.16-3.115L26.065,24.332z"></path></g></svg>
+                    </div>
+                    <div class="noti-alert-control">
+                        <div class="noti-alert-count">12</div>
+                        <div class="noti-alert-title">Rejected Projects</div>
+                    </div>
+                </div>
+                <div class="noti-alert-li noti-at">
+                    <div class="noti-alert-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 74 75" fill="none"><g clip-path="url(#clip0_237_573)"><path d="M19.0912 63.3546C19.0912 60.5455 16.8442 58.2682 14.0725 58.2682C11.3007 58.2682 9.05371 60.5455 9.05371 63.3546C9.05371 66.1637 11.3007 68.4409 14.0725 68.4409C16.8442 68.4409 19.0912 66.1637 19.0912 63.3546Z" fill="currentColor" class="dtv"></path><path d="M41.8422 63.3546C41.8422 60.5455 39.5952 58.2682 36.8234 58.2682C34.0517 58.2682 31.8047 60.5455 31.8047 63.3546C31.8047 66.1637 34.0517 68.4409 36.8234 68.4409C39.5952 68.4409 41.8422 66.1637 41.8422 63.3546Z" fill="currentColor"></path><path d="M64.5932 63.3546C64.5932 60.5455 62.3462 58.2682 59.5744 58.2682C56.8026 58.2682 54.5557 60.5455 54.5557 63.3546C54.5557 66.1637 56.8026 68.4409 59.5744 68.4409C62.3462 68.4409 64.5932 66.1637 64.5932 63.3546Z" fill="currentColor"></path><path d="M43.0996 13.8838C43.0996 10.3716 40.2909 7.52441 36.8262 7.52441C33.3614 7.52441 30.5527 10.3716 30.5527 13.8838C30.5527 17.396 33.3614 20.2432 36.8262 20.2432C40.2909 20.2432 43.0996 17.396 43.0996 13.8838Z" fill="currentColor" class="dtv"></path><path d="M39.8359 53.3657L39.8359 42.6109C39.1109 42.1871 38.4076 41.7269 37.7288 41.232L36.8126 40.5886C35.8965 41.2627 34.9498 41.9061 33.7588 42.5496L33.7588 53.3657C34.5442 53.1315 35.3535 52.9876 36.1713 52.9368L37.4539 52.9368C38.262 52.985 39.0615 53.129 39.8359 53.3657Z" fill="currentColor"></path><path d="M27.59 33.1735L26.3379 33.8783L24.9331 34.7362L22.2763 36.0844C14.6418 39.9451 11.1299 43.9284 11.1299 51.9563L11.1299 53.3657C12.122 53.0762 13.1505 52.9317 14.1837 52.9368C15.217 52.9309 16.2456 53.0754 17.2375 53.3657L17.2375 51.9563C17.2375 46.9925 18.795 44.817 24.2002 41.8142L25.5134 41.0788L26.9792 40.3435C35.8353 35.9006 39.1945 32.6833 39.9274 25.2376C38.9275 25.4809 37.9024 25.6043 36.8736 25.6053C35.841 25.6019 34.8136 25.4576 33.8197 25.1763L33.8197 24.9925C33.4838 28.6081 31.9264 30.6917 27.59 33.1735Z" fill="currentColor" class="dtv"></path><path d="M43.9897 38.8114L45.3639 39.5468L47.6848 40.7111L49.059 41.4465L50.3111 42.1513C55.2278 44.9702 56.6631 47.1763 56.6631 51.9563L56.6631 53.3657C57.4472 53.1263 58.2572 52.9823 59.0756 52.9368L60.2055 52.9368C61.0236 52.9848 61.8333 53.1288 62.618 53.3657L62.618 51.1596C62.4042 43.7752 58.8618 39.7919 51.5021 35.8393L48.2345 34.1847L47.0435 33.5412L46.0358 32.9897C45.2729 32.5461 44.5385 32.0549 43.837 31.519C43.1285 33.4201 42.0951 35.1828 40.7832 36.7279C41.7941 37.5083 42.8665 38.2051 43.9897 38.8114Z" fill="currentColor"></path></g><defs><clipPath id="clip0_237_573"><rect width="74" height="73" fill="white" transform="translate(0.499023 74.8003) rotate(-90)"></rect></clipPath></defs></svg>
+                    </div>
+                    <div class="noti-alert-control">
+                        <div class="noti-alert-count">72</div>
+                        <div class="noti-alert-title">Assigned Task Awaiting</div>
+                    </div>
+                </div>
+                <div class="noti-alert-li noti-da">
+                    <div class="noti-alert-icon">
+                       <svg width="18px" height="18px" viewBox="0 0 512 512" id="svg2793" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:serif="http://www.serif.com/" xmlns:svg="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor" style="fill-rule: evenodd;clip-rule: evenodd;stroke-linejoin: round;stroke-miterlimit: 2;stroke-width: 3px;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs id="defs2797"></defs><g id="_09-Round-Chart" transform="translate(-3072,-1024)" style="display: inline;"><g id="g2606" transform="translate(3282.77,1327.86)"><path d="M 0,175.522 C -89.87,157.49 -160.117,87.247 -178.15,-2.619 h 91.441 c 6.863,19.997 18.253,38.267 33.348,53.362 C -38.267,65.838 -19.997,77.227 0,84.09 Z M 18.637,58.348 C -20.648,48.532 -51.15,18.03 -60.967,-21.255 c -1.669,-6.678 -7.669,-11.364 -14.553,-11.364 h -120.25 c -4.3,0 -8.394,1.846 -11.242,5.071 -2.847,3.222 -4.174,7.513 -3.643,11.781 7.022,56.445 33.152,109.793 73.578,150.217 40.426,40.426 93.777,66.554 150.225,73.576 0.619,0.078 1.237,0.115 1.853,0.115 3.636,0 7.173,-1.322 9.93,-3.758 C 28.154,201.536 30,197.442 30,193.141 V 72.901 C 30,66.018 25.314,60.018 18.637,58.348" id="path2604" style="fill-rule: nonzero;"></path></g><g id="g2610" transform="translate(3373.23,1327.86)"><path d="M 0,175.522 V 84.088 C 19.996,77.221 38.268,65.83 53.362,50.735 68.456,35.641 79.846,17.374 86.709,-2.619 h 91.44 C 160.109,87.248 89.863,157.49 0,175.522 M 195.771,-32.619 H 75.521 c -6.884,0 -12.883,4.686 -14.553,11.364 C 51.151,18.02 20.647,48.524 -18.64,58.35 -25.316,60.02 -30,66.019 -30,72.901 v 120.24 c 0,4.301 1.846,8.395 5.069,11.242 2.757,2.436 6.294,3.758 9.93,3.758 0.616,0 1.234,-0.038 1.853,-0.115 56.444,-7.022 109.793,-33.15 150.218,-73.576 40.426,-40.424 66.559,-93.772 73.585,-150.215 0.532,-4.269 -0.795,-8.56 -3.642,-11.783 -2.847,-3.225 -6.942,-5.071 -11.242,-5.071" id="path2608" style="fill-rule: nonzero;"></path></g><g id="g2614" transform="translate(3282.77,1140.29)"><path d="m 0,7.771 c -20.002,6.866 -38.273,18.258 -53.369,33.354 -15.094,15.093 -26.482,33.361 -33.341,53.353 h -91.44 C -160.118,4.617 -89.871,-65.629 0,-83.67 Z m 24.93,-120.305 c -3.224,-2.847 -7.508,-4.173 -11.784,-3.642 -56.444,7.026 -109.793,33.159 -150.219,73.584 -40.429,40.427 -66.561,93.775 -73.582,150.218 -0.531,4.269 0.796,8.559 3.643,11.783 2.848,3.223 6.942,5.069 11.242,5.069 h 120.25 c 6.885,0 12.885,-4.686 14.553,-11.365 C -51.159,73.837 -20.656,43.336 18.639,33.51 25.316,31.841 30,25.841 30,18.959 v -120.251 c 0,-4.3 -1.847,-8.395 -5.07,-11.242" id="path2612" style="fill-rule: nonzero;"></path></g><g id="g2618" transform="translate(3373.23,1231.74)"><path d="m 0,-175.115 c 89.872,18.04 160.118,88.285 178.151,178.148 H 86.71 C 79.847,-16.963 68.457,-35.232 53.362,-50.328 38.268,-65.423 19.997,-76.812 0,-83.676 Z m -18.637,117.182 c 39.286,9.816 69.788,40.318 79.605,79.603 1.669,6.678 7.669,11.363 14.553,11.363 h 120.25 c 4.3,0 8.394,-1.845 11.242,-5.069 2.847,-3.224 4.174,-7.514 3.643,-11.782 -7.021,-56.443 -33.152,-109.793 -73.578,-150.219 -40.425,-40.425 -93.776,-66.557 -150.225,-73.584 -4.258,-0.527 -8.559,0.795 -11.783,3.643 -3.223,2.846 -5.07,6.941 -5.07,11.242 v 120.25 c 0,6.884 4.686,12.884 11.363,14.553" id="path2616" style="fill-rule: nonzero;"></path></g></g></g></svg>
+                    </div>
+                    <div class="noti-alert-control">
+                        <div class="noti-alert-count">107</div>
+                        <div class="noti-alert-title">Delay Actions</div>
+                    </div>
+                </div>
+                <div class="noti-alert-li noti-dp">
+                    <div class="noti-alert-icon">
+                      <svg width="21px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: scale(1.1);"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g _ngcontent-ryv-c390="" id="SVGRepo_iconCarrier"><path d="M4 15.8294V15.75V8C4 7.69114 4.16659 7.40629 4.43579 7.25487L4.45131 7.24614L11.6182 3.21475L11.6727 3.18411C11.8759 3.06979 12.1241 3.06979 12.3273 3.18411L19.6105 7.28092C19.8511 7.41625 20 7.67083 20 7.94687V8V15.75V15.8294C20 16.1119 19.8506 16.3733 19.6073 16.5167L12.379 20.7766C12.1451 20.9144 11.8549 20.9144 11.621 20.7766L4.39267 16.5167C4.14935 16.3733 4 16.1119 4 15.8294Z" stroke="currentColor" stroke-width="1.4"></path><path d="M12 21V12" stroke="currentColor" stroke-width="1.4"></path><path d="M12 12L4 7.5" stroke="currentColor" stroke-width="1.4"></path><path d="M20 7.5L12 12" stroke="currentColor" stroke-width="1.4"></path></g></svg>
+                    </div>
+                    <div class="noti-alert-control">
+                        <div class="noti-alert-count">27</div>
+                        <div class="noti-alert-title">Delay Projects</div>
+                    </div>
+                </div>
+                <div class="noti-alert-li noti-od">
+                    <div class="noti-alert-icon">
+                      <svg fill="currentColor" width="21px" height="25px" viewBox="0 0 32 32" id="icon" xmlns="http://www.w3.org/2000/svg" style=""><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:none;}</style></defs><title>task</title><polygon points="14 20.18 10.41 16.59 9 18 14 23 23 14 21.59 12.58 14 20.18"></polygon><path d="M25,5H22V4a2,2,0,0,0-2-2H12a2,2,0,0,0-2,2V5H7A2,2,0,0,0,5,7V28a2,2,0,0,0,2,2H25a2,2,0,0,0,2-2V7A2,2,0,0,0,25,5ZM12,4h8V8H12ZM25,28H7V7h3v3H22V7h3Z" transform="translate(0 0)"></path><rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" width="32" height="32" class="cls-1"></rect></g></svg>
+                    </div>
+                    <div class="noti-alert-control">
+                        <div class="noti-alert-count">5</div>
+                        <div class="noti-alert-title">Over due Standard Tasks</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- Notfication Alert Modal End -->
