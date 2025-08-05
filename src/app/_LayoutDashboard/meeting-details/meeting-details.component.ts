@@ -745,7 +745,8 @@ PreviousCount:any;
 
       this.AdminName=this.EventScheduledjson[0].AdminName
 
-    
+      console.log(this.Todotask,'new tatsk ')
+
       this.totalTodotask = this.Todotask.length;
       this.totalCountAssign = this.totalAssign + this.totalActiontask + this.totalTodotask;
 
@@ -3437,7 +3438,7 @@ onFileChange(event) {
       const d1 = new Date(moment(start).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
-debugger
+
           // new code start 69
     
           if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate)){
@@ -3505,7 +3506,7 @@ debugger
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
-      finalarray.forEach(element => { debugger
+      finalarray.forEach(element => { 
         this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
        
         const date1: Date = new Date(this._StartDate);
@@ -3676,7 +3677,7 @@ debugger
       const frmData = new FormData();
 
 
-
+debugger
    
       if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
         frmData.append("Attachment", "true");
@@ -4360,14 +4361,136 @@ debugger
                     // Return false to remove objects that match your conditions
                     return !(isCreatedBy || isInOrderedEmpNos);
                   });
-
       });
-  
   }
 
 
 
-  _Deletetask(id, name) {
+
+  _Deletetasksidebar(id, name) { 
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        mode: 'Todo_Delete',
+        title1: 'Confirmation ',
+        taskName: name
+        //message1: "proj_Name"
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result === true) { 
+        this._ObjAssigntaskDTO.TypeOfTask = "Delete";
+        this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+        this._ObjAssigntaskDTO.AssignId = id;
+        this._ObjAssigntaskDTO.CategoryId = 2411;
+        this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+          (data) => { debugger
+            // this._TodoList = JSON.parse(data['Jsonmeeting_Json']);
+            // this._CompletedList = JSON.parse(data['CompletedList']);
+
+            let message: string = data['Message'];
+            this._Demotext = "";
+            this.notifyService.showInfo("Successfully", message);
+            this.meeting_details();
+            this.GetAssigned_SubtaskProjects();
+            this.CurrentTaskCount[this.currentAgendaView].TaskCount=0;
+          });
+      }
+      else {
+        //this.notifyService.showInfo("Cancelled", "Delete");
+      }
+    });
+  }
+
+assignOptions:any = false;
+
+  OnEditNameClick(name, id) {
+    this._taskName = name;
+    this._AssignId = id;
+    this.assignOptions=true;
+    (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("spnLabel_" + id)).style.display = "none";
+    // (<HTMLInputElement>document.getElementById("div_" + id)).style.display = "none";
+  }
+
+
+    OnEditUnassignNameClick(name, id) {
+    this._taskName = name;
+    this._AssignId = id;
+    (<HTMLInputElement>document.getElementById("spanTextboxUnassign_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("spnLabelUnassign_" + id)).style.display = "none";
+    // (<HTMLInputElement>document.getElementById("div_" + id)).style.display = "none";
+  }
+
+
+
+
+   OnTask_RenameUnassign() {
+  
+      if (this._taskName != "") {
+        this._ObjAssigntaskDTO.TypeOfTask = "Rename";
+        this._ObjAssigntaskDTO.TaskName = this._taskName;
+        this._ObjAssigntaskDTO.AssignId = this._AssignId;
+        this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+        this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+          (data) => {
+             
+             
+             this.GetAssigned_SubtaskProjects();
+            let message: string = data['Message'];
+            this.notifyService.showInfo("Rename successfully", message);
+            (<HTMLInputElement>document.getElementById("spanTextboxUnassign_" + this._AssignId)).style.display = "none";
+            (<HTMLInputElement>document.getElementById("spnLabelUnassign_" + this._AssignId)).style.display = "block";
+            // (<HTMLInputElement>document.getElementById("div_" + this._AssignId)).style.display = "block";
+  
+          });
+      }
+      else {
+        this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
+      }
+    }
+
+
+
+
+    OnTask_Rename() {
+  
+      if (this._taskName != "") {
+        this._ObjAssigntaskDTO.TypeOfTask = "Rename";
+        this._ObjAssigntaskDTO.TaskName = this._taskName;
+        this._ObjAssigntaskDTO.AssignId = this._AssignId;
+        this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+        this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+          (data) => {
+             this.assignOptions=false;
+            // this.OnCategoryClick(this._Categoryid, this._CategoryName); // rebinding
+             this.meeting_details();
+            let message: string = data['Message'];
+            this.notifyService.showInfo("Rename successfully", message);
+            (<HTMLInputElement>document.getElementById("spanTextbox_" + this._AssignId)).style.display = "none";
+            (<HTMLInputElement>document.getElementById("spnLabel_" + this._AssignId)).style.display = "block";
+            // (<HTMLInputElement>document.getElementById("div_" + this._AssignId)).style.display = "block";
+  
+          });
+      }
+      else {
+        this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
+      }
+    }
+   onCancelUnassign(id) {
+    
+    // (<HTMLInputElement>document.getElementById("div_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("spanTextboxUnassign_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("spnLabelUnassign_" + id)).style.display = "flex";
+  }
+
+  onCancel(id) {
+    this.assignOptions=false;
+    // (<HTMLInputElement>document.getElementById("div_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("spnLabel_" + id)).style.display = "flex";
+  }
+
+  _Deletetask(id, name) { 
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
         mode: 'Todo_Delete',
@@ -8595,19 +8718,40 @@ onParticipantFilter(){
     }
   }
 
-  downloadSelectedFiles() {
-    this.selectedFiles.forEach(file => {
-      this.downloadFile(file.url, file.fileName);
-    });
 
-    this.clearSelectedCheckboxes();
-    this.selectedFiles = [];  // Clear selected files after download
+
+async downloadSelectedFiles() {
+  for (const file of this.selectedFiles) { 
+    const sasUrl = await this.getTemporaryUrl(file.url);
+    this.downloadFile(sasUrl, file.fileName);
   }
 
-  downloadFile(url: string, fileName: string) {
+  this.clearSelectedCheckboxes();
+  this.selectedFiles = [];
+}
+
+
+
+  async getTemporaryUrl(src: string): Promise<string> {
+    const expiryTime = new Date();
+    expiryTime.setMinutes(expiryTime.getMinutes() + 5);
+
+    try {
+      const sasUrl = await this.service.getSasUrl(src, expiryTime);
+      return sasUrl;
+    } catch (error) {
+      console.error(`Error fetching SAS URL for ${src}`, error);
+      return src; // fallback to original if SAS fails
+    }
+  }
+
+
+
+
+  downloadFile(url: string, fileName: string) {  
     fetch(url)
       .then(response => response.blob())
-      .then(blob => {
+      .then(blob => { 
         const fileURL = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = fileURL;
@@ -10387,7 +10531,8 @@ assignTasksub1(){
 
       });
        this.checkedTaskNames = []
-      this.resetAssign()
+      this.resetAssign();
+       this.meeting_details();
       this.unassign_closeInfo();
      
 

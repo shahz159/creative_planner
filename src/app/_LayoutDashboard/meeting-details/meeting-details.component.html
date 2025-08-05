@@ -40,7 +40,7 @@
                                                 </div>
 
 
-                                           <div class="date-change-icon" *ngIf="item.Recurrence != 'Do not repeat'">
+                                           <div class="date-change-icon" *ngIf="item.Recurrence != 'Do not repeat' || isRepeat == true">
                                                 <span class="date-change-icon-previous" title="Previous meeting" (click)="NewGetRecurrenceMeetings(0,'Prev')">
                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M15.2071 6.29289C15.5976 6.68342 15.5976 7.31658 15.2071 7.70711L10.9142 12L15.2071 16.2929C15.5976 16.6834 15.5976 17.3166 15.2071 17.7071C14.8166 18.0976 14.1834 18.0976 13.7929 17.7071L8.79289 12.7071C8.40237 12.3166 8.40237 11.6834 8.79289 11.2929L13.7929 6.29289C14.1834 5.90237 14.8166 5.90237 15.2071 6.29289Z" fill="currentColor"></path> </g></svg>
                                                 </span>
@@ -107,7 +107,7 @@
                                                         <span class="kt-meeting-title-name">Meeting metrics </span>
                                                         <!-- | <span *ngIf="item.Schedule_Type"> {{item.Schedule_Type}}</span> | <span *ngIf="item.Recurrence=='Monthly'">{{item.Recurrence}}</span> -->
                                                     </div>
-                                                     <div class="options monthly">{{item.Recurrence}}</div>
+                                                     <div *ngIf="item.Recurrence=='Monthly' || item.Recurrence=='Weekly' || item.Recurrence=='Daily' || isRepeat == false " class="options monthly">{{item.Recurrence}}</div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-lg-9 pr-1">
@@ -3954,16 +3954,33 @@
                                                 <ng-container>
                                                     <!-- *ngIf="Meetingstatuscom!='Completed'" -->
                                                 <input class="task-status curser-pointer" (click)="OnRadioClick(item.Assign_Id)" type="checkbox">
-                                            </ng-container>
-                                                <label class="task-name">{{item.Task_Name}}</label>
+                                               </ng-container>
+                                                <label id="spnLabelUnassign_{{item.Assign_Id}}"  class="task-name">{{item.Task_Name}}</label>
+                                               <label id="spanTextboxUnassign_{{item.Assign_Id}}"  class="task-name" style="display:none;">                                    
+                                                 <div class="d-flex  mr-2">
+                                                    <input type="text" autofocus 
+                                                        [(ngModel)]="_taskName" class="cust-input"
+                                                        (keydown.enter)="OnTask_RenameUnassign()">
+                                                    <div class="unass-input-action">
+                                                    <div class="unass-input-action-li" title="Save"  (click)="OnTask_RenameUnassign()">
+                                                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Check"> <path id="Vector" d="M6 12L10.2426 16.2426L18.727 7.75732" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                                                    </div>
+                                                    <div class="unass-input-action-li" title="Cancel" (click)="onCancelUnassign(item.Assign_Id)">
+                                                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Menu / Close_MD"> <path id="Vector" d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                               </label>
                                                 <ng-container >
                                                 <div class="task-actions curser-pointer" >
-                                                            <mat-icon title="Assign Project"  class="mr-2" (click)="GetAssigned_SubtaskProjects();unassign_edit1(item.Assign_Id,item.Task_Name,item.Creation_Date,'option1')" color='primary'>group</mat-icon>
-                                                            <mat-icon title="Add action to project"  (click)="GetAssigned_SubtaskProjects();unassign_edit1(item.Assign_Id,item.Task_Name,item.Creation_Date,'option2')" class="mr-2" color='primary'>new_label</mat-icon>
+                                                        <mat-icon title="Click to assign task"  class="mr-2" (click)="GetAssigned_SubtaskProjects();unassign_edit1(item.Assign_Id,item.Task_Name,item.Creation_Date,'option1')" color='primary'>group</mat-icon>                                                          
                                                 </div>
-                                            </ng-container>
+                                              </ng-container>
+                                                <div class="task-actions curser-pointer" title="Click to rename task"     (click)="OnEditUnassignNameClick(item.Task_Name,item.Assign_Id)">                                               
+                                                    <svg width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" fill="#0F0F0F"></path> </g></svg>
+                                                </div>
                                                 <ng-container >
-                                                <button class="task-delete task-btns"
+                                                <button class="task-delete task-btns" title="Click to delete task"
                                                     (click)="_Deletetask(item.Assign_Id,item.Task_Name)">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
@@ -7981,11 +7998,52 @@
                                                         display: flex;
                                                         align-items: center;
                                                         justify-content: space-between;">
+
+
+                                                  
+
+
+                                                        <div  *ngIf="assignOptions==false" class="kt-box-item-action">
+                                                            <div class="kt-box-item-action-ul">
+                                                                  <div class="kt-box-item-action-li" (click)="GetAssigned_SubtaskProjects();unassign_edit1(item.Assign_Id,item.Task_Name,item.Creation_Date,'option1')">
+                                                                      <mat-icon title="Click to assign task" >group</mat-icon>
+                                                                  
+                                                                </div>
+                                                                <div class="kt-box-item-action-li" title="Click to rename task" (click)="OnEditNameClick(item.Task_Name,item.Assign_Id)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                        <path d="M18.41 5.79988L17.2 4.58988C16.42 3.80988 15.15 3.80988 14.37 4.58988L11.69 7.26988L3 15.9599V19.9999H7.04L15.78 11.2599L18.41 8.62988C19.2 7.84988 19.2 6.57988 18.41 5.79988ZM6.21 17.9999H5V16.7899L13.66 8.12988L14.87 9.33988L6.21 17.9999ZM11 19.9999L15 15.9999H21V19.9999H11Z" fill="currentColor"></path>
+                                                                    </svg>
+                                                                </div>
+                                                                <div class="kt-box-item-action-li" title="Click to delete task"  (click)="_Deletetasksidebar(item.Assign_Id,item.Task_Name)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                        <path d="M16 9V19H8V9H16ZM14.5 3H9.5L8.5 4H5V6H19V4H15.5L14.5 3ZM18 7H6V19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7Z" fill="currentColor"></path>
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+
+
                                                             <div class="kt-inbox__details">
                                                                 <div class="kt-inbox__sender" >
-                                                                    <span class="kt-inbox__subject">
+                                                                    <span  id="spnLabel_{{item.Assign_Id}}" class="kt-inbox__subject mb-2">
                                                                         {{item.Task_Name}}
                                                                     </span>
+                                                                   <span  id="spanTextbox_{{item.Assign_Id}}" class="kt-inbox__subject" style="display:none;">
+                                                                       <div class="d-flex mb-2">
+                                                                      <input type="text" autofocus 
+                                                                          [(ngModel)]="_taskName" class="cust-input"
+                                                                          (keydown.enter)="OnTask_Rename()">
+                                                                      <div class="unass-input-action">
+                                                                        <div class="unass-input-action-li" title="Save"  (click)="OnTask_Rename()">
+                                                                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Check"> <path id="Vector" d="M6 12L10.2426 16.2426L18.727 7.75732" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                                                                        </div>
+                                                                        <div class="unass-input-action-li" title="Cancel" (click)="onCancel(item.Assign_Id)">
+                                                                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Menu / Close_MD"> <path id="Vector" d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                                                                        </div>
+                                                                      </div>
+                                                                  </div>
+                                                    
+                                                                </span>
                                                                 </div>
                                                                 <div class="kt-inbox__labels">
                                                                     <span
@@ -8000,7 +8058,7 @@
                                                                     </div>
                                                                     <div> {{ item.Agenda_Name}}</div>
                                                                 </span>
-                                                            </div>                                                    
+                                                            </div>                                                                                            
                                                             </div>
                                                             <div class="kt-inbox__datetimes" style="width: 78px;text-align: right;">
                                                                 <small>

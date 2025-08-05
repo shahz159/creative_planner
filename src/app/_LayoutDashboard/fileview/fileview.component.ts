@@ -202,7 +202,7 @@ debugger
   }
 
 
-  async getTemporaryUrl(src: string) {
+  async getTemporaryUrl(src: string) { debugger
     console.error(`fetching URL for ${src}`,'original URL');
     //  (let image of this.dashboardBannersImages)   
     const expiryTime = new Date();
@@ -327,7 +327,7 @@ debugger
 
   }
 
-  download(url, filename) { 
+  download(url, filename) { debugger
 
     this.objProjectDto.Project_Code=this.url_project_code;
     this.objProjectDto.Emp_No=this.Current_user_ID;
