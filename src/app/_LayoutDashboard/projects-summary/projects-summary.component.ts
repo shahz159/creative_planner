@@ -1207,7 +1207,7 @@ dates:any
 
   applyFilters() {    
 debugger
-    this.edited = true;
+   
     this.selectedEmp_String = this.checkedItems_Emp.map(select => {
       return select.Emp_No;
     }).join(',');
@@ -4207,9 +4207,10 @@ applyFiltersBy(company:any,user:any,type:any,status:any){
     this.CurrentPageNo=1;
     this.searchText='';
     this.selected_dates=null;
-
+   
     this.getNewFilterResult();  // update dropdowns data.
     this.applyFilters();  // fetches filter projects list
+    this.edited=true;  // show filter dot
 }
 
 

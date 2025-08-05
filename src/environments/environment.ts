@@ -7,8 +7,9 @@ export const environment = {
      
   //------------localServer----------------
    
-  // baseUrl:'http://localhost:1221/api/',
-  // baseUrlCore:'http://localhost:5201/api/',
+  baseUrl:'http://localhost:1221/api/',
+  baseUrlCore:'http://localhost:5201/api/',
+  // baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/',
   
   
   // -----------Live server----------------
@@ -17,8 +18,8 @@ export const environment = {
 
 
   // // -----------Test server----------------
-  baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
-  baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/', 
+  // baseUrl:'https://cswebapps.com/TestPortfolioAPI/api/',
+  // baseUrlCore:'https://cswebapps.com/TestCoreStreamAPI/api/', 
    
 
   //------------Common for all----------------

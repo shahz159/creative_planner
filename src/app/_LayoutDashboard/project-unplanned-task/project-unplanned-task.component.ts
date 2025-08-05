@@ -32,7 +32,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import * as _ from 'underscore';
 import {  HttpEvent, HttpEventType } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { string } from '@amcharts/amcharts4/core';
 import { pluginService } from 'chart.js';
 import { add } from '@amcharts/amcharts4/.internal/core/utils/Array';
@@ -481,7 +481,7 @@ dayArr: any = [
   disableAfterStartDate = new Date();
 
   isTodoProjectsLoaded:boolean=false;
-  isDropdownDataLoaded:boolean=false;
+
   isCountsDataLoaded:boolean=false;
 
   public PortfolioList: any;
@@ -539,7 +539,8 @@ dayArr: any = [
     this.disableAfterStartDate.setDate(this.disableAfterStartDate.getDate());
     this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
     this.isTodoProjectsLoaded=false;
-    this.isDropdownDataLoaded=false;
+    this.fetchingEmpDropdownList=false;
+    this.fetchingPortfoliosList=false;
     this.isCountsDataLoaded=false;
     this._FilteredTodoList = this._TodoList,
     this._FilteredCompletedList = this._CompletedList;
@@ -584,8 +585,8 @@ dayArr: any = [
     // this.totalproject()
     this.getProjectTypeList();   // Fetch possible project types array. used in sidebars.
     this.getCatid();         // Fetch the previously opened category ID from the API or use the category ID from query params (if provided) and displays the category.
-    this.GetAssignFormEmployeeDropdownList();  // Fetch employees list. used in sidebars.
     this.getrunwayCount();   // Fetch all categories count values eg: accepted count, pending count, rejected count and others .
+    this.GetAssignFormEmployeeDropdownList();  // Fetch employees list. used in sidebars.
     this.fetchPortfolios();  // Fetch portfolios list. used in sidebars.
     this.setTippys(); // Setting tippys. 
     this.getSidebarDropdownData();  // fetches required dropdowns data required in the sidebar area.
@@ -647,11 +648,15 @@ setTippys(){
 
 }
 
+
+
+fetchingPortfoliosList:boolean=false;
 fetchPortfolios(){
+  this.fetchingPortfoliosList=true;  // process started.
   this.ProjectTypeService.GetPortfoliosForAssignTask().subscribe(
-    (data) => {  console.log("asdf::::::",data)
+    (data) => {   
+      this.fetchingPortfoliosList=false;  // process ended.
       this.PortfolioList = data as PortfolioDTO;
-      console.log(this.PortfolioList,"portfoliosubn;");
     });
 }
 
@@ -682,6 +687,7 @@ fetchPortfolios(){
 
   newCatid:any;
   categoryTasksLoaded:EventEmitter<any>;
+  // The job of this method is to get category id. category id is calculated either from query params or from server(last opened category)
   getCatid(){
 
     let category_Id;
@@ -751,7 +757,7 @@ fetchPortfolios(){
   _TodoList = [];
   _CompletedList = [];
 
-  EnterSubmit(_Demotext) {
+  EnterSubmit(_Demotext) {  debugger
 
     if (_Demotext != "") {
 
@@ -1314,12 +1320,12 @@ date_menuclo(dialogId:string){
   SystemCategory:any[] = []
 
 
-  refetchPageContent(){
+  refetchPageContent(){  debugger
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.CategoryId = this.newCatid;
     this._ObjCompletedProj.Mode = 'Todo';
-    this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe((data) => {
+    this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe((data) => {  debugger
          this.CategoryList = JSON.parse(data[0]['CategoryList']);
 
          // Prepare SystemCategory using CategoryList
@@ -1366,26 +1372,26 @@ date_menuclo(dialogId:string){
           this._ObjCompletedProj.Mode = 'Todo';
           // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
         }
-        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-        let _Accepted =0;
-        let _Pending =0;
-        let _Rejected=0;
-        this.ActionedAssigned_Josn.forEach(element => {
-          if(element.Status=="Accepted"){
-            _Accepted=_Accepted+1;
-          }
-          else if(element.Status == "Pending"){
-            _Pending=_Pending+1;
-          }
-          else if(element.Status == "Rejected"){
-            _Rejected=_Rejected+1;
-          }
-        });
-        this.CountsAccepted= _Accepted;
-        this.CountsPending= _Pending;
-        this.CountsRejected= _Rejected;
+        // this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        // let _Accepted =0;
+        // let _Pending =0;
+        // let _Rejected=0;
+        // this.ActionedAssigned_Josn.forEach(element => {
+        //   if(element.Status=="Accepted"){
+        //     _Accepted=_Accepted+1;
+        //   }
+        //   else if(element.Status == "Pending"){
+        //     _Pending=_Pending+1;
+        //   }
+        //   else if(element.Status == "Rejected"){
+        //     _Rejected=_Rejected+1;
+        //   }
+        // });
+        // this.CountsAccepted= _Accepted;
+        // this.CountsPending= _Pending;
+        // this.CountsRejected= _Rejected;
 
-    })
+    });
   }
 
 
@@ -1410,7 +1416,7 @@ date_menuclo(dialogId:string){
     this._ObjCompletedProj.CategoryId = this.newCatid;
     this._ObjCompletedProj.Mode = 'Todo';
     this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
-      (data) => {     
+      (data) => {     debugger
         this.isTodoProjectsLoaded=true;
         // console.log("Data---->", data);
         this.CategoryList = JSON.parse(data[0]['CategoryList']);   console.log(this.CategoryList,"this.CategoryList");
@@ -1452,10 +1458,10 @@ date_menuclo(dialogId:string){
           // prepare filter box sort by emps dropdown. 
         
         }
-        else if(this._selectedcatid == '-4'){      // UnAssign
+        else if(this.newCatid == '-4'){      // UnAssign
           this._TodoList = JSON.parse(data[0]['ActionedAssigned_Josn']);
         }
-        else if(this._selectedcatid == '-5'){     // Completed
+        else if(this.newCatid == '-5'){     // Completed
           this._CompletedList = JSON.parse(data[0]['ActionedAssigned_Josn']);
         }
         else{    // All, System category, user category
@@ -1482,22 +1488,18 @@ date_menuclo(dialogId:string){
         
         this.openTab();   
 
-        console.log(this._TodoList,"this._TodoList");
-        console.log(this.ActionedAssigned_Josn,"this.ActionedAssigned_Josn");
-        console.log(this._CompletedList,"this._CompletedList");
-        console.log(this.ActionedSubtask_Json,"ActionedSubtask_Json");
+        // console.log(this._TodoList,"this._TodoList");
+        // console.log(this.ActionedAssigned_Josn,"this.ActionedAssigned_Josn");
+        // console.log(this._CompletedList,"this._CompletedList");
+        // console.log(this.ActionedSubtask_Json,"ActionedSubtask_Json");
 
         if(this.ActionedSubtask_Json.length>0 || this.ActionedAssigned_Josn.length>0 || this._TodoList.length>0){
 
-
-          //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
           this._CategoryActive = true;
-
           this.IfNoTaskFound = "";
           this._Categoryid = data[0]["CategoryId"];   
           const category_name=data[0]["CategoryName"];
-          this._CategoryName=category_name?category_name:this._Categoryid=='-1'?'Accepted':this._Categoryid=='-2'?'Pending':this._Categoryid=='-3'?'Rejected':
-          this._Categoryid=='-4'?'Unassign':this._Categoryid=='-5'?'Completed':this._Categoryid=='-6'?'All':'';
+          this._CategoryName=category_name?category_name:this._Categoryid=='-1'?'Accepted':this._Categoryid=='-2'?'Pending':this._Categoryid=='-3'?'Rejected':this._Categoryid=='-4'?'Unassign':this._Categoryid=='-5'?'Completed':this._Categoryid=='-6'?'All':'';
 
           this.ShowTaskList_Div = false;
           this.Label_TaskName = false;
@@ -1511,24 +1513,24 @@ date_menuclo(dialogId:string){
           this._ObjCompletedProj.Mode = 'Todo';
           // document.getElementById("mysideInfobar").classList.remove("kt-quick-panel--on");
         }
-        this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
-        let _Accepted =0;
-        let _Pending =0;
-        let _Rejected=0;
-        this.ActionedAssigned_Josn.forEach(element => {
-          if(element.Status=="Accepted"){
-            _Accepted=_Accepted+1;
-          }
-          else if(element.Status == "Pending"){
-            _Pending=_Pending+1;
-          }
-          else if(element.Status == "Rejected"){
-            _Rejected=_Rejected+1;
-          }
-        });
-        this.CountsAccepted= _Accepted;
-        this.CountsPending= _Pending;
-        this.CountsRejected= _Rejected;
+        // this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
+        // let _Accepted =0;
+        // let _Pending =0;
+        // let _Rejected=0;
+        // this.ActionedAssigned_Josn.forEach(element => {
+        //   if(element.Status=="Accepted"){
+        //     _Accepted=_Accepted+1;
+        //   }
+        //   else if(element.Status == "Pending"){
+        //     _Pending=_Pending+1;
+        //   }
+        //   else if(element.Status == "Rejected"){
+        //     _Rejected=_Rejected+1;
+        //   }
+        // });
+        // this.CountsAccepted= _Accepted;
+        // this.CountsPending= _Pending;
+        // this.CountsRejected= _Rejected;
 
 
         if(this.categoryTasksLoaded){
@@ -1649,21 +1651,32 @@ date_menuclo(dialogId:string){
 
 
 
-
+  fetchingEmpDropdownList:boolean=false;
   //Fetching Employee For Assigning Projects
-  GetAssignFormEmployeeDropdownList() {
-    this.isDropdownDataLoaded=false;
+  GetAssignFormEmployeeDropdownList() {   
+       this.fetchingEmpDropdownList=true;  // process started
+       this.getAllEmployeesList().subscribe((data:any)=>{
+          console.log('emp list:',this.EmployeeList);
+          this.fetchingEmpDropdownList=false; //process ended
+       });
+  }
+
+
+  getAllEmployeesList(){
     this._ObjCompletedProj.PageNumber = 1;
     this._ObjCompletedProj.Emp_No = this.CurrentUser_ID;
     this._ObjCompletedProj.Mode = 'AssignedTask';
-    console.log('Employee List:',this._ObjCompletedProj);
-    this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).subscribe(
-      (data) => {
-        this.isDropdownDataLoaded=true;
-        this.EmployeeList = JSON.parse(data[0]&&data[0]['EmployeeList']);
-        console.log(this.EmployeeList,'this.EmployeeListthis.EmployeeListthis.EmployeeList')
-      });
-  }
+    return this.ProjectTypeService._GetCompletedProjects(this._ObjCompletedProj).pipe(tap((data:any)=>{
+          this.EmployeeList = JSON.parse(data[0]&&data[0]['EmployeeList']);
+    }));
+  } 
+
+
+
+
+
+
+
 
   todayDate: Date = (new Date);
   // _EndDate: Date = null;
@@ -1781,10 +1794,10 @@ date_menuclo(dialogId:string){
   _CategoryName: string;
   ShowTaskList_Div: boolean = true;
   _CategoryActive: boolean;
-  CountsAccepted: any;
-  CountsPending: any;
-  CountsRejected: any;
-  Countunassign:any;
+  // CountsAccepted: any;
+  // CountsPending: any;
+  // CountsRejected: any;
+  // Countunassign:any;
   employeeOptions:{empNo:string, empName:string}[]=[];   // list of all employees info for dropdown used in filter dropdown.
 
 
@@ -1805,6 +1818,7 @@ date_menuclo(dialogId:string){
 
     this._selectedcatname = C_Name;
     this._selectedcatid = C_id;
+    this.newCatid=C_id;
     this.BsService.setNewCategoryID(this._selectedcatid);
     this.BsService.setNewCategoryName(this._selectedcatname);
     //(<HTMLInputElement>document.getElementById("SelectedCat_" + C_id)).style.backgroundColor = "#e1e1ef";
@@ -1872,30 +1886,30 @@ else{    // All, System category, user category
         this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
 }
         this.openTab();   
-        console.log(this.ActionedAssigned_Josn,"accept,pend")
+        // console.log(this.ActionedAssigned_Josn,"accept,pend")
 
-        let _Accepted =0;
-        let _Pending =0;
-        let _Rejected=0;
+        // let _Accepted =0;
+        // let _Pending =0;
+        // let _Rejected=0;
         // let _unassign = 0;
-        this.ActionedAssigned_Josn.forEach(element => {
+        // this.ActionedAssigned_Josn.forEach(element => {
 
-          if(element.Status=="Accepted"){
-            _Accepted=_Accepted+1;
-          }
-          else if(element.Status == "Pending"){
-            _Pending=_Pending+1;
-          }
-          else if(element.Status == "Rejected"){
-            _Rejected=_Rejected+1;
-          }
-          // else if(element.Status == "Unassign"){
-          //   _unassign=_unassign+1;
-          // }
-        });
-        this.CountsAccepted= _Accepted;
-        this.CountsPending= _Pending;
-        this.CountsRejected= _Rejected;
+        //   if(element.Status=="Accepted"){
+        //     _Accepted=_Accepted+1;
+        //   }
+        //   else if(element.Status == "Pending"){
+        //     _Pending=_Pending+1;
+        //   }
+        //   else if(element.Status == "Rejected"){
+        //     _Rejected=_Rejected+1;
+        //   }
+        //   // else if(element.Status == "Unassign"){
+        //   //   _unassign=_unassign+1;
+        //   // }
+        // });
+        // this.CountsAccepted= _Accepted;
+        // this.CountsPending= _Pending;
+        // this.CountsRejected= _Rejected;
         // this.Countunassign = _unassign
         // console.log(this.CountsAccepted);
       });
@@ -3254,26 +3268,29 @@ else{
 
   isemployeeDrpDwnOpen : boolean = false
   employeSelect:any
-  onEmployeeselected(e: any) {
 
-    const employeeChoosed: any = this.EmployeeList.find((p: any) => p.Emp_No === e.option.value);
-    console.log(employeeChoosed);
-    if (employeeChoosed) {
-      if (!this.employeSelect)   // if Portfolio is null,undefined,''
-        this.employeSelect = [];
-      const index = this.employeSelect.indexOf(employeeChoosed.Emp_No);
-      if (index === -1) {
-        // if not present then add it
-         this.employeSelect.push(employeeChoosed.Emp_No);
 
-      }
-      else { //  if item choosed is already selected then remove it.
-        this.employeSelect.splice(index, 1);
-      }
 
-    }
-    this.openAutocompleteDrpDwn('employeeDrpDwn');
-  }
+  // onEmployeeselected(e: any) {
+
+  //   const employeeChoosed: any = this.EmployeeList.find((p: any) => p.Emp_No === e.option.value);
+  //   console.log(employeeChoosed);
+  //   if (employeeChoosed) {
+  //     if (!this.employeSelect)   // if Portfolio is null,undefined,''
+  //       this.employeSelect = [];
+  //     const index = this.employeSelect.indexOf(employeeChoosed.Emp_No);
+  //     if (index === -1) {
+  //       // if not present then add it
+  //        this.employeSelect.push(employeeChoosed.Emp_No);
+
+  //     }
+  //     else { //  if item choosed is already selected then remove it.
+  //       this.employeSelect.splice(index, 1);
+  //     }
+
+  //   }
+  //   this.openAutocompleteDrpDwn('employeeDrpDwn');
+  // }
 
 
   removeSelectedemployee(item) {
@@ -3443,95 +3460,169 @@ this.vart = d
 }
 
 isReadOnly: boolean = true;
-pendingUpdatesection(){
+// pendingUpdatesection(){  debugger
 
-      if(this.employeSelect ===null || this.employeSelect === undefined &&this.task__name==null|| this.task__name == undefined || this.task__name.trim() ==""){
-        this.formFieldsRequired = true
-        return
-      }
-      else{
-      this.formFieldsRequired = false
-      }
+//       if(this.employeSelect ===null || this.employeSelect === undefined &&this.task__name==null|| this.task__name == undefined || this.task__name.trim() ==""){
+//         this.formFieldsRequired = true
+//         return
+//       }
+//       else{
+//       this.formFieldsRequired = false
+//       }
 
-      var datestrStart;
-      var datestrEnd;
-      if (this.Start__Date != null && this.End__Date != null) {
-        datestrStart = moment(this.Start__Date).format();
-        datestrEnd = moment(this.End__Date).format();
-      }
-      else {
-        datestrStart = moment(new Date()).format();
-        datestrEnd = moment(new Date()).format();
-      }
+//       var datestrStart;
+//       var datestrEnd;
+//       if (this.Start__Date != null && this.End__Date != null) {
+//         datestrStart = moment(this.Start__Date).format();
+//         datestrEnd = moment(this.End__Date).format();
+//       }
+//       else {
+//         datestrStart = moment(new Date()).format();
+//         datestrEnd = moment(new Date()).format();
+//       }
 
-      // var datestrStart;
-      // var datestrEnd;
-      // if (this._StartDate != null && this._EndDate != null) {
-      //   datestrStart = moment(this._StartDate).format();
-      //   datestrEnd = moment(this._EndDate).format();
-      // }
-      // else {
-      //   datestrStart = moment(new Date()).format();
-      //   datestrEnd = moment(new Date()).format();
-      // }
+//       // var datestrStart;
+//       // var datestrEnd;
+//       // if (this._StartDate != null && this._EndDate != null) {
+//       //   datestrStart = moment(this._StartDate).format();
+//       //   datestrEnd = moment(this._EndDate).format();
+//       // }
+//       // else {
+//       //   datestrStart = moment(new Date()).format();
+//       //   datestrEnd = moment(new Date()).format();
+//       // }
 
-      var ProjectDays;
-      if (this.Start__Date instanceof Date && this.End__Date instanceof Date) {
-        const differenceInTime = this.End__Date.getTime() - this.Start__Date.getTime();
-        const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-        ProjectDays = differenceInDays;
-      }
-      else {
+//       var ProjectDays;
+//       if (this.Start__Date instanceof Date && this.End__Date instanceof Date) {
+//         const differenceInTime = this.End__Date.getTime() - this.Start__Date.getTime();
+//         const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+//         ProjectDays = differenceInDays;
+//       }
+//       else {
+//         ProjectDays = 0;
+//       }
+
+//       if(this.employeSelect!=null && this.employeSelect!=undefined && this.employeSelect!=''){
+//         this.employeSelect =  this.employeSelect
+//       }
+//       else{
+//         this.employeSelect=0;
+//       }
+
+
+//       // if(this.port_id!=null && this.port_id!=undefined && this.port_id!=''){
+//       //   this.port_id =  this.port_id
+//       // }
+//       // else{
+//       //   this.port_id=0;
+//       // }
+
+// const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
+
+
+//   const fd = new FormData();
+//     fd.append("TaskName", this.task__name.trim());
+//     fd.append("Desc", '');
+//     fd.append("ProjectType", this.Proj_type);
+//     // fd.append("AssignTo", this.assign_to);
+//     fd.append("AssignTo", this.employeSelect);
+//     fd.append("StartDate", datestrStart);
+//     fd.append("EndDate", datestrEnd);
+//     fd.append("AssignIds",this.assign_Id)
+//     fd.append("Portfolio_Id", portfoliosSelected);
+//     fd.append("ProjectDays", ProjectDays.toString());
+//     fd.append("Remarks", this.__remarks);
+//     // fd.append("attachment",this.fileAttachment);
+//     fd.append("AssignedBy", this.CurrentUser_ID);
+//     // fd.append("AssignId", this.selected_taskId.toString());
+//     fd.append("TypeofTask", this.typeoftask);
+//     fd.append("contentType",this.contentType);
+
+//     if ( this.fileAttachment) {
+//       fd.append("Attachment", "true");
+//     }
+//     else {
+//       fd.append("Attachment", "false");
+//       fd.append('file', "");
+//     }
+
+
+   
+
+
+
+
+//     // this.ProjectTypeService.updatePendingtask(fd).subscribe(
+//       this.ProjectTypeService.updatePendingtaskCore(fd).subscribe(
+//       (data) => {
+     
+//         if(data['message']=="Assigned Successfully" && this.fileAttachment){
+//           fd.append('file', this.fileAttachment);
+//           fd.append('TaskName',data['taskName']);
+//           fd.append("contentType",data['contentType']);
+//           this.ProjectTypeService._AzureAssigntaskCore(fd).subscribe((event1: HttpEvent<any>) => {
+//             console.log(event1,"azure data");
+//             var myJSON = JSON.stringify(event1);
+//           });
+//         }
+//           let message: string = data['Message'];
+//           this.notifyService.showSuccess("Task sent to assign projects.",message);
+//           // this.GetTodoProjects();
+//           this.refetchPageContent();  //rebind
+//     });
+
+
+//   }
+
+
+pendingUpdatesection()
+{   
+  if(this.employeSelect&&this.task__name&&this.task__name.trim())
+  {
+     this.formFieldsRequired = false;
+
+     let datestrStart;
+     let datestrEnd;
+     let ProjectDays;
+     if(this.Start__Date&&this.End__Date){
+        datestrStart = moment(this.Start__Date).format('YYYY-MM-DD');
+        datestrEnd = moment(this.End__Date).format('YYYY-MM-DD');
+        ProjectDays=(Math.abs(moment(this.Start__Date).diff(moment(this.End__Date),'days')));
+     }
+     else{
+        datestrStart = moment(new Date()).format('YYYY-MM-DD');
+        datestrEnd = moment(new Date()).format('YYYY-MM-DD');
         ProjectDays = 0;
-      }
+     }
+      
+     const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
 
-      if(this.employeSelect!=null && this.employeSelect!=undefined && this.employeSelect!=''){
-        this.employeSelect =  this.employeSelect
-      }
-      else{
-        this.employeSelect=0;
-      }
-
-
-      // if(this.port_id!=null && this.port_id!=undefined && this.port_id!=''){
-      //   this.port_id =  this.port_id
-      // }
-      // else{
-      //   this.port_id=0;
-      // }
-
-const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
-
-
-  const fd = new FormData();
+    const fd = new FormData();
     fd.append("TaskName", this.task__name.trim());
     fd.append("Desc", '');
     fd.append("ProjectType", this.Proj_type);
-    // fd.append("AssignTo", this.assign_to);
     fd.append("AssignTo", this.employeSelect);
     fd.append("StartDate", datestrStart);
     fd.append("EndDate", datestrEnd);
+    fd.append("ProjectDays", ProjectDays.toString());
     fd.append("AssignIds",this.assign_Id)
     fd.append("Portfolio_Id", portfoliosSelected);
-    fd.append("ProjectDays", ProjectDays.toString());
     fd.append("Remarks", this.__remarks);
-    // fd.append("attachment",this.fileAttachment);
     fd.append("AssignedBy", this.CurrentUser_ID);
-    // fd.append("AssignId", this.selected_taskId.toString());
     fd.append("TypeofTask", this.typeoftask);
     fd.append("contentType",this.contentType);
-
-    if ( this.fileAttachment) {
-      fd.append("Attachment", "true");
+    if (this.fileAttachment) {
+    fd.append("Attachment", "true");
     }
     else {
-      fd.append("Attachment", "false");
-      fd.append('file', "");
+    fd.append("Attachment", "false");
+    fd.append('file', "");
     }
-    // this.ProjectTypeService.updatePendingtask(fd).subscribe(
-      this.ProjectTypeService.updatePendingtaskCore(fd).subscribe(
+
+
+    this.ProjectTypeService.updatePendingtaskCore(fd).subscribe(
       (data) => {
-        console.log(data,'atattachmeatattachmeatattachmeatattachme')
+     
         if(data['message']=="Assigned Successfully" && this.fileAttachment){
           fd.append('file', this.fileAttachment);
           fd.append('TaskName',data['taskName']);
@@ -3547,9 +3638,16 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
           this.refetchPageContent();  //rebind
     });
 
-        this.closeditassignPending()
+    this.closeditassignPending();  // close sidebar.
 
   }
+  else{
+     this.formFieldsRequired = true;
+  }
+
+}
+
+
 
 
 
@@ -3596,19 +3694,19 @@ const portfoliosSelected = this.port_id&&this.port_id.length>0?this.port_id:0;
 
 
   //2. opens accordians which have data in it.  ( opens first accordian )
-    if (this._TodoList.length > 0) {
+    if (this._TodoList?.length > 0) {
       document.getElementById('collapseUnassign').classList.add('show');
       document.getElementById('UnassigntaskBtn').setAttribute('aria-expanded','true');
     } 
-    else if (this.ActionedSubtask_Json.length > 0) {
+    else if (this.ActionedSubtask_Json?.length > 0) {
       document.getElementById('collapseActionproject').classList.add('show');
       document.getElementById('ActiontoprojectsBtn').setAttribute('aria-expanded','true');
     }
-    else if (this.ActionedAssigned_Josn.length > 0){
+    else if (this.ActionedAssigned_Josn?.length > 0){
       document.getElementById('collapseActiontask').classList.add('show');
       document.getElementById('AssignedTaskProjectBtn').setAttribute('aria-expanded','true');
     } 
-    else if (this._CompletedList.length > 0) {
+    else if (this._CompletedList?.length > 0) {
       document.getElementById('collapseCompleted').classList.add('show');
       document.getElementById('CompletedBtn').setAttribute('aria-expanded','true');
 // this.openTab()
@@ -7861,9 +7959,31 @@ filterDraft(type : 'date'|'meeting'):void{
       this.multiselect_dialog=model_type;
       document.getElementById("multiselect-2-modal-backdrop").style.display = "block";
       document.getElementById("multiselect-2-dialog").style.display = "block";
-      this.searchItems('');
+    
       const searchField:any=document.querySelector(`#multiselect-2-dialog input#InputSearch`);
       if(searchField)searchField.focus();
+
+      // rebind latest list
+      if(this.multiselect_dialog=='EMPLOYEES'){
+         this.fetchingEmpDropdownList=true;
+        this.getAllEmployeesList().subscribe(()=>{
+         this.fetchingEmpDropdownList=false;
+         this.searchItems('');       // prepare filtered_list
+        });
+      }
+      else if(this.multiselect_dialog=='PORTFOLIOS'){
+
+        this.fetchingPortfoliosList=true;  
+        this.ProjectTypeService.GetPortfoliosForAssignTask().subscribe(
+        (data) => {   
+        this.fetchingPortfoliosList=false;  
+        this.PortfolioList = data as PortfolioDTO;
+        this.searchItems('');       // prepare filtered_list
+        });
+
+      }
+      //
+
   }
 
 

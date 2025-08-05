@@ -1802,7 +1802,7 @@ alertMaxAllocation(){
       }
 
        this.totalWorkingDays=total_working_days;
-       this.maxAllocation=(total_duration_days-total_off)*this.perDayAlhr_Limit;
+       this.maxAllocation=Math.ceil((total_duration_days-total_off)*this.perDayAlhr_Limit);
        this.totalOffDays=[...total_off_dates];
         
 
