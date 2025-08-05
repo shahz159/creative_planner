@@ -1542,7 +1542,7 @@ getRelativeDateString(date: Date): string {
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode,this.Current_user_ID).subscribe(
 
-      (data) => {
+      (data) => {   debugger
  console.log('GetRACISandNonRACISEmployeesforMoredetails:',data);
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
 
@@ -14240,7 +14240,7 @@ onActionDateChanged(){
          tempdate.setDate(tempdate.getDate()+1);
       }
 
-       this.ActionmaxAllocation=(total_duration_days-total_off)*this.actnResperDayAlhr_Limit;
+       this.ActionmaxAllocation=Math.ceil((total_duration_days-total_off)*this.actnResperDayAlhr_Limit);
        this.total_actnWorkingDays=total_working_days;
        this.total_actnOffDays=[...total_off_dates];
   }

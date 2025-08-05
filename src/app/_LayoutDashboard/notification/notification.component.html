@@ -1476,7 +1476,15 @@
       <div class="row px-3 pt-4 pb-2">
         <div class="col text-center cnt-ovrl1">
           <div class="kt-info-lable-v1 d-flex justify-content-start" style="color: #000000;">Remarks</div>
-          <div class="kt-info-data-v1 bg-light-shade pl-4 d-flex">{{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Req_Comments}}</div>
+          <div #leaveRemarksBx class="kt-info-data-v1 bg-light-shade px-4 d-flex text-wrap text-justify  compl-remarks-span" style="letter-spacing: 0.47px; letter-spacing: 0.47px; ">{{leave_Requests[currentReqIndex]&&leave_Requests[currentReqIndex].Req_Comments}}</div>
+            <div class="d-flex justify-content-end">
+            <button title="show full" class="txt-expnd-btn align-self-end" *ngIf="leaveRemarksBx.scrollHeight>leaveRemarksBx.clientHeight" (click)="$event.stopPropagation(); leaveRemarksBx.classList.remove('compl-remarks-span'); lessbtn.classList.remove('d-none'); ">
+                <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+              </button>
+              <button title="show less" #lessbtn class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); leaveRemarksBx.classList.add('compl-remarks-span'); lessbtn.classList.add('d-none');">
+                  <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+              </button>
+            </div>
         </div>
       </div>
 

@@ -589,7 +589,7 @@ weekendPolicy:{ [key:number]:'full'|'half'  }={  6:'full', 0:'full'   };  // 0- 
        }
 
        this.totalWorkingDays=total_working_days;
-       this.maxAllocation=(total_duration_days-total_off)*this.perDayAlhr_Limit;
+       this.maxAllocation=Math.ceil((total_duration_days-total_off)*this.perDayAlhr_Limit);
        this.totalOffDays=[...total_off_dates];
      }
      else{
@@ -2361,7 +2361,7 @@ if(this.PrjActionsInfo.length>0){
                    You have planned <b>${this.projectInfo.AllocatedHours} hrs</b> for the project. <br/>However, <b>${hrsUnallocated} hrs</b> remain unassigned. Continue or assign remaining hours?
                   ${this.PrjActionsInfo.length>0?`
                     <fieldset style="border: 2px solid #b2b3b4; border-radius: 6px; margin-top:15px; padding: 4px; padding-bottom: 6px; overflow-y: auto; max-height: 126px; scrollbar-width: thin; font-size: 13px;">
-                      <legend style="width: 40px;font-size: 9px;font-weight: 500;color: #ffffff;margin-left: 3px;letter-spacing: 0.45px;border: 1px solid #3085d6;border-radius: 4px;background-color: #3085d6;padding: 2px;text-align: -webkit-center;">Actions</legend>
+                      <legend style="width: 40px;font-size: 9px;font-weight: 500;color: #ffffff;margin-left: 3px;letter-spacing: 0.45px;border: 1px solid #3085d6;border-radius: 4px;background-color: #3085d6;padding: 2px;text-align: -webkit-center;  text-wrap-mode: nowrap; ">Actions</legend>
                       <table width="100%" cellpadding="5px" style="">
                               ${
                                     this.PrjActionsInfo.map((acn,i)=>{
@@ -3840,7 +3840,7 @@ setPrjMaxAllocatableHrs(){
       }
 
        this.total_WorkingDays=total_working_days;
-       this.p_maxAllocatableHrs=(total_duration_days-total_off)*this.prjResperDayAlhr_Limit;
+       this.p_maxAllocatableHrs=Math.ceil((total_duration_days-total_off)*this.prjResperDayAlhr_Limit);
        this.total_OffDays=[...total_off_dates];
   }
   else{
@@ -3936,7 +3936,7 @@ setActnMaxAllocatableHrs()
       }
 
        this.total_actnWorkingDays=total_working_days;
-       this.a_maxAllocatableHrs=(total_duration_days-total_off)*this.actnResperDayAlhr_Limit;
+       this.a_maxAllocatableHrs=Math.ceil((total_duration_days-total_off)*this.actnResperDayAlhr_Limit);
        this.total_actnOffDays=[...total_off_dates];
   }
   else

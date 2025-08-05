@@ -2144,3 +2144,40 @@ display: inline-block; */
 }
 
 /*new nav tabs btn css end*/
+
+
+.compl-remarks-span {
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  max-height: 3.98em;
+  line-height: 1.5em;
+  cursor: default;
+
+}
+
+
+.txt-expnd-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1px;
+  border-radius: 8px;
+  border: 0;
+  background-color: #dde1f8;
+}
+
+.txt-expnd-btn svg {
+  stroke: #898989;
+  stroke-width: 2px;
+}
+
+.txt-expnd-btn:hover {
+  background-color: #eaeaea;
+}
+
+.txt-expnd-btn:hover svg {
+  stroke-width: 2.6px;
+}

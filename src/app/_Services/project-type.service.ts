@@ -925,7 +925,6 @@ debugger
   }
 
   updatePendingtaskCore(fd) {
-
     return this.http.post(this.rootUrlcore + "Notification/NewInsertAssignTaskCore", fd);
   }
 
