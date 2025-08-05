@@ -7821,6 +7821,22 @@ _azureMessage:any="";
 
 
 
+onPaste(event: ClipboardEvent): void { 
+    console.log('Paste triggered');
+  setTimeout(() => {
+    this.AgendaCharacterCount();
+  }, 0); // Wait for paste to complete and update model
+}
+
+
+onMainAgenda(event: ClipboardEvent): void { 
+    console.log('Paste triggered');
+  setTimeout(() => {
+    this.MainAgendaCount();
+  }, 0); // Wait for paste to complete and update model
+}
+
+
 
   agendacharacterCount:any;
 
@@ -8900,75 +8916,85 @@ repeatEvent() {
     
    
         console.log(this.repeatDate,this.today);
-          if(this.repeatDate != this.today){
-            this._StartDate=null;
-            this.disablePreviousDate = null;
-            
-            setTimeout(()=>{
-              this._StartDate=this.disablePreviousTodayDate;
-              this.disablePreviousDate = this.disablePreviousTodayDate;
-
-           // valid starttimearr and endtimearr setting start.
-            let _inputdate=moment(this._StartDate,'YYYY-MM-DD'); 
-            let _currentdate=moment();
-            if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
-            {
-                const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
-                const index:number=this.StartTimearr.findIndex((item:any)=>{
-                    const t=moment(item,'h:mm A');
-                    const result=t>=ct;
-                    return result;
-                });
-                this.validStartTimearr=this.StartTimearr.slice(index);
-            } else
-
-            this.validStartTimearr=[...this.StartTimearr];
-            this.Time_End = [];
-            this.Time_End = [...this.AllEndtime,...this.AllEndtime];
-            let _from = this.Time_End.indexOf(this.Startts);
-            const eventmaxDuration=286;
-            let _to=_from+eventmaxDuration;
-            this.EndTimearr=this.Time_End.slice(_from,_to);
 
 
-            },0);
-         }else{
-            const nextDay = new Date();
-            nextDay.setDate(nextDay.getDate() + 1);
-            this._StartDate=null;
-            this.disablePreviousDate = null;
-            this.disablePreviousTodayDate = null;
-
-            setTimeout(()=>{
-              this._StartDate=nextDay;
-              this.disablePreviousDate =nextDay;
-              this.disablePreviousTodayDate = nextDay;
-              // valid starttimearr and endtimearr setting start.
-            let _inputdate=moment(this._StartDate,'YYYY-MM-DD'); 
-            let _currentdate=moment();
-            if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
-            {
-                const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
-                const index:number=this.StartTimearr.findIndex((item:any)=>{
-                    const t=moment(item,'h:mm A');
-                    const result=t>=ct;
-                    return result;
-                });
-                this.validStartTimearr=this.StartTimearr.slice(index);
-            } else
-
-            this.validStartTimearr=[...this.StartTimearr];
-            this.Time_End = [];
-            this.Time_End = [...this.AllEndtime,...this.AllEndtime];
-            let _from = this.Time_End.indexOf(this.Startts);
-            const eventmaxDuration=286;
-            let _to=_from+eventmaxDuration;
-            this.EndTimearr=this.Time_End.slice(_from,_to);
-
-
-
-            },0);
-         }
+       
+                if(this.repeatDate != this.today){
+                   this._StartDate=null;
+                   this.disablePreviousDate = null;
+                   this._SEndDate = null;
+                   this.minDate = null;
+                   this.disablePreviousTodayDate = null; 
+                   setTimeout(()=>{ 
+                     const TodayDate  = new Date();
+                     this._StartDate=TodayDate;
+                     this.disablePreviousDate = TodayDate;
+                     this._SEndDate = TodayDate;
+                     this.disablePreviousTodayDate= TodayDate;
+               
+                   let _inputdate=moment(this._StartDate,'YYYY-MM-DD'); 
+                   let _currentdate=moment();
+                   if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+                   {
+                       const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+                       const index:number=this.StartTimearr.findIndex((item:any)=>{
+                           const t=moment(item,'h:mm A');
+                           const result=t>=ct;
+                           return result;
+                       });
+                       this.validStartTimearr=this.StartTimearr.slice(index);
+                   } else
+       
+                   this.validStartTimearr=[...this.StartTimearr];
+                   this.Time_End = [];
+                   this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+                   let _from = this.Time_End.indexOf(this.Startts);
+                   const eventmaxDuration=286;
+                   let _to=_from+eventmaxDuration;
+                   this.EndTimearr=this.Time_End.slice(_from,_to);
+       
+       
+                   },0);
+                 }else{ 
+                   const nextDay = new Date();
+                   nextDay.setDate(nextDay.getDate() + 1);
+                   this._StartDate=null;
+                   this.disablePreviousDate = null;
+                   this._SEndDate = null;
+                   this.minDate = null;
+                   this.disablePreviousTodayDate = null; 
+       
+                   setTimeout(()=>{
+                     this._StartDate=nextDay;
+                     this.disablePreviousDate =nextDay;
+                     this._SEndDate = nextDay
+                   
+                     this.disablePreviousTodayDate= nextDay
+       
+                     // valid starttimearr and endtimearr setting start.
+                   let _inputdate=moment(this._StartDate,'YYYY-MM-DD'); 
+                   let _currentdate=moment();
+                   if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+                   {
+                       const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+                       const index:number=this.StartTimearr.findIndex((item:any)=>{
+                           const t=moment(item,'h:mm A');
+                           const result=t>=ct;
+                           return result;
+                       });
+                       this.validStartTimearr=this.StartTimearr.slice(index);
+                   } else
+       
+                   this.validStartTimearr=[...this.StartTimearr];
+                   this.Time_End = [];
+                   this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+                   let _from = this.Time_End.indexOf(this.Startts);
+                   const eventmaxDuration=286;
+                   let _to=_from+eventmaxDuration;
+                   this.EndTimearr=this.Time_End.slice(_from,_to);
+                   },0);
+                 }
+       
 
 
       this.Popuploading = false 
@@ -10998,6 +11024,23 @@ isMini = false;
     this.privateMeeting = false;
     // this.formattedDayTime = null;
     // this.monthDateBinde = null;
+
+ console.log('<============================>')
+    this._StartDate=null;
+    this.disablePreviousDate = null;
+    this._SEndDate = null;
+    this.minDate = null;
+    this.disablePreviousTodayDate = null; 
+    setTimeout(()=>{ 
+      const TodayDate  = new Date();
+      this._StartDate=TodayDate;
+      this.disablePreviousDate = TodayDate;
+      this._SEndDate = TodayDate;
+      this.disablePreviousTodayDate= TodayDate;
+    },0)      
+
+
+    this.agendaInputs=undefined;
     this.Link_Details = null;
     this.Meeting_Id = null;
     this.Meeting_password = null;
