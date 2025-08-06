@@ -6125,6 +6125,10 @@ span.previous-dot.active {
     color: red;
 }
 
+.delay-notification-sidebar {
+    background-color: #d8efff;
+    color: red;
+}
 
 .pause-notification {
     background-color: #FFF6DF;

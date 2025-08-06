@@ -41,12 +41,18 @@
 
 
                                            <div class="date-change-icon" *ngIf="item.Recurrence != 'Do not repeat' || isRepeat == true">
-                                                <span class="date-change-icon-previous" title="Previous meeting" (click)="NewGetRecurrenceMeetings(0,'Prev')">
+                                                <span *ngIf="PreviousCount > 0" class="date-change-icon-previous" title="Previous meeting" (click)="NewGetRecurrenceMeetings(0,'Prev')">
                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M15.2071 6.29289C15.5976 6.68342 15.5976 7.31658 15.2071 7.70711L10.9142 12L15.2071 16.2929C15.5976 16.6834 15.5976 17.3166 15.2071 17.7071C14.8166 18.0976 14.1834 18.0976 13.7929 17.7071L8.79289 12.7071C8.40237 12.3166 8.40237 11.6834 8.79289 11.2929L13.7929 6.29289C14.1834 5.90237 14.8166 5.90237 15.2071 6.29289Z" fill="currentColor"></path> </g></svg>
                                                 </span>
+                                                 <span *ngIf="PreviousCount == 0" class="date-change-icon-previous">
+                                                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M15.2071 6.29289C15.5976 6.68342 15.5976 7.31658 15.2071 7.70711L10.9142 12L15.2071 16.2929C15.5976 16.6834 15.5976 17.3166 15.2071 17.7071C14.8166 18.0976 14.1834 18.0976 13.7929 17.7071L8.79289 12.7071C8.40237 12.3166 8.40237 11.6834 8.79289 11.2929L13.7929 6.29289C14.1834 5.90237 14.8166 5.90237 15.2071 6.29289Z" fill="#5f636838"></path> </g></svg>
+                                                </span>
 
-                                                <span class="date-change-icon-next" title="Next meeting" (click)="NewGetRecurrenceMeetings(1,'Next')">
+                                                <span *ngIf="_FutureEventTasksCount > 0" class="date-change-icon-next" title="Next meeting" (click)="NewGetRecurrenceMeetings(1,'Next')">
                                                     <svg  width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.79289 6.29289C9.18342 5.90237 9.81658 5.90237 10.2071 6.29289L15.2071 11.2929C15.5976 11.6834 15.5976 12.3166 15.2071 12.7071L10.2071 17.7071C9.81658 18.0976 9.18342 18.0976 8.79289 17.7071C8.40237 17.3166 8.40237 16.6834 8.79289 16.2929L13.0858 12L8.79289 7.70711C8.40237 7.31658 8.40237 6.68342 8.79289 6.29289Z" fill="currentColor"></path></g></svg>
+                                                </span>
+                                                 <span *ngIf="_FutureEventTasksCount == 0" class="date-change-icon-next" >
+                                                    <svg  width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.79289 6.29289C9.18342 5.90237 9.81658 5.90237 10.2071 6.29289L15.2071 11.2929C15.5976 11.6834 15.5976 12.3166 15.2071 12.7071L10.2071 17.7071C9.81658 18.0976 9.18342 18.0976 8.79289 17.7071C8.40237 17.3166 8.40237 16.6834 8.79289 16.2929L13.0858 12L8.79289 7.70711C8.40237 7.31658 8.40237 6.68342 8.79289 6.29289Z" fill="#5f636838"></path></g></svg>
                                                 </span>
                                             </div>
 
@@ -5277,7 +5283,7 @@
                                 <div class="notifications-list">
                                             
                                 <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true && showAttendeeNotify!='2' && showAttendeeNotify!='3'" >
-                                <div class="notification delay-notification mydelay-action-notf m-2" *ngIf="Isadmin==true && !meetingInProgress">
+                                <div class="notification delay-notification-sidebar mydelay-action-notf m-2" *ngIf="Isadmin==true && !meetingInProgress">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
                                     height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
                                     <path _ngcontent-pef-c397=""
@@ -5292,7 +5298,7 @@
 
 
                                 <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true">
-                                <div class="notification delay-notification mydelay-action-notf m-2" *ngIf="Isadmin==false && meetingStarted==false"    >
+                                <div class="notification delay-notification-sidebar mydelay-action-notf m-2" *ngIf="Isadmin==false && meetingStarted==false"    >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
                                     height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
                                     <path _ngcontent-pef-c397=""
@@ -5312,7 +5318,7 @@
                                     </div>
                                 </ng-container>
                                 <ng-container  *ngIf="upcomingMeeting == true">
-                                    <div class="notification delay-notification mydelay-action-notf m-2">
+                                    <div class="notification delay-notification-sidebar mydelay-action-notf m-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
                                         height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
                                         <path _ngcontent-pef-c397=""
@@ -7253,7 +7259,7 @@
 
                                                     </div>
                                                     <div class="pn-details mb-0">
-                                                        <div class="pn-label">Meeting Actions</div>
+                                                        <div class="pn-label">Meeting Insights </div>
                                                         <div class="pn-in-label-main">
                                                             <div class="pn-in-label">
                                                                 <div class="pn-time">
@@ -7876,7 +7882,7 @@
 
                                                     </div>
                                                     <div class="pn-details mb-0">
-                                                        <div class="pn-label">Meeting Actions</div>
+                                                        <div class="pn-label">Meeting Insights </div>
                                                         <div class="pn-in-label-main">
                                                             <div class="pn-in-label">
                                                                 <div class="pn-time">
@@ -13213,7 +13219,7 @@
            
             <h1 class="text-primary main_acc">Oops! looks like you’ve landed in the wrong place</h1>
             <h5 class="acc-desc  user-not-found-msg  hide-content">
-                Please request the organizer to give access to this meeting.
+                This meeting does not exist.
             </h5>
         </div>
         <div class="acc-img_sec">
