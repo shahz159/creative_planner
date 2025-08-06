@@ -691,7 +691,8 @@ PreviousCount:any;
       if(this.EventScheduledjson != undefined && this.EventScheduledjson != null && this.EventScheduledjson != ''){
       this.deletedMeeting = true;
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
-    
+      this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
+       console.log(this._FutureEventTasksCount,'this._FutureEventTasksCount');
       var Schedule_date = this.EventScheduledjson[0].Schedule_date;
       this.meetingRestriction(Schedule_date);
       this.Agendas_List = this.EventScheduledjson[0].Agendas;
@@ -3428,6 +3429,14 @@ onFileChange(event) {
         + now.getHours().toString() + now.getMinutes().toString() + now.getSeconds().toString(); // 2011
       this.EventNumber = timestamp;
     }
+
+    if(this.privateMeeting == true){
+      this.MasterCode = null;
+      this.ngEmployeeDropdown = null;
+      this.Portfolio = null;
+      this.SelectDms = null;
+    } 
+   
 
     let finalarray = [];
     this.daysSelectedII = [];
@@ -9292,16 +9301,15 @@ NewGetRecurrenceMeetings(meetings_HTR,MeetingValue){
   this._calenderDto.Status_type=meetings_HTR;
   this.CalenderService.GetRecurrenceMeetingsService(this._calenderDto).subscribe((data)=>{
     this.previousWithUpcoming_loader=false
+     
+     this.previousmeetings = JSON.parse(data['previousmeetings']);
+     this.upcomingmeetings = JSON.parse(data['upcomingmeetings']);
 
-     if(data['previousmeetings']){
-      this.previousmeetings = JSON.parse(data['previousmeetings']);  
+  
       this.previousmeetings.map(meetings => {
          meetings.Addguest=JSON.parse(meetings.Addguest)
       })
-
-
       this.previousmeetings.forEach(meeting => {
-
         if (meeting.Addguest.length > 3) {
           const remainingGuests = meeting.Addguest.slice(3);
           meeting.Addguest = meeting.Addguest.slice(0, 3);
@@ -9312,17 +9320,13 @@ NewGetRecurrenceMeetings(meetings_HTR,MeetingValue){
           meeting['RemainingGuests'] = [];
         }
       });
-
       this.totalpreviousmeetings=this.previousmeetings.length;
      
-     }else if(data['upcomingmeetings']){
-    
-      this.upcomingmeetings = JSON.parse(data['upcomingmeetings']);
+   
+
       this.upcomingmeetings.map(upmeetings=>{
         upmeetings.Addguest=JSON.parse(upmeetings.Addguest)
       })
-
-
       this.upcomingmeetings.forEach(meeting => {
         if (meeting.Addguest.length > 3) {
           const remainingGuests = meeting.Addguest.slice(3);
@@ -9335,24 +9339,36 @@ NewGetRecurrenceMeetings(meetings_HTR,MeetingValue){
       });
       this.upcomingmeetings.reverse()
       this.totalupcomingmeetings=this.upcomingmeetings.length;
-     }
+     
+
+
+
+   console.log(this.previousmeetings,'upcomingmeetings',this.upcomingmeetings)
+
+
+
+
+
+     var mergeAllData= [...this.previousmeetings,...this.upcomingmeetings];
+      mergeAllData = mergeAllData.sort((a, b) => new Date(a.Schedule_date).getTime() - new Date(b.Schedule_date).getTime());
+     const i = mergeAllData.findIndex(m => m.Schedule_date === this._StartDate);
+     
+     console.log(mergeAllData,'mergeAllData')
+    
+
 
       if( MeetingValue == 'Next'){
-       
-        const i = this.upcomingmeetings.findIndex(m => m.Schedule_date === this._StartDate);
-        const matchedNextScheduleId = this.upcomingmeetings[i + 1]?.Schedule_ID || this.upcomingmeetings[0]?.Schedule_ID;
+        const matchedNextScheduleId = mergeAllData[i + 1]?.Schedule_ID || mergeAllData[0]?.Schedule_ID;
         this.OnCardClickUpcoming(matchedNextScheduleId);
      
             
-      }else if(MeetingValue == 'Prev'){
-
-         const i = this.previousmeetings.findIndex(m => m.Schedule_date === this._StartDate);
-         const matchedPrevScheduleId = this.previousmeetings[i + 1]?.Schedule_ID || this.previousmeetings[0]?.Schedule_ID;
-         this.OnCardClickUpcoming(matchedPrevScheduleId);
+      }else if(MeetingValue == 'Prev'){ 
+         const matchedPrevScheduleId = mergeAllData[i - 1]?.Schedule_ID || mergeAllData[0]?.Schedule_ID;
+          this.OnCardClickUpcoming(matchedPrevScheduleId);
       }
 
 
-     console.log(this.previousmeetings,'upcomingmeetings',this.upcomingmeetings)
+    
         
   })
 }

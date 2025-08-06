@@ -3216,7 +3216,7 @@ selectAction:any;
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
           this.draftcount = this.draftdata_meet.length;
           this.filterDraft('date');
-          console.log(data,'draftdata_meet')
+          console.log(this.draftdata_meet,'draftdata_meet')
         }
         else {
           this.draftdata_meet = null;
@@ -6845,7 +6845,7 @@ BookmarkMeetingsList() {
     ((data) => {
 
           this.meetingbookmarks = JSON.parse(data['meetingbookmarks']);
-        
+          console.log(this.meetingbookmarks,'this.meetingbookmarks')
          
   })
 }
@@ -7003,7 +7003,7 @@ dayScheduleJson(dayFromToday: number){
         }
      
 
-    console.log(selectedDate ,'selectedDate ')
+   
    if(this.teamsCalendar == 1 || this.teamsCalendar == 0){
        this.selectEmployee = this.Current_user_ID;
     }
@@ -7013,7 +7013,8 @@ dayScheduleJson(dayFromToday: number){
     this._calenderDto.startdate = selectedDate;
     this._calenderDto.enddate = selectedDate;
     this._calenderDto.SearchText= null
-    this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe((data) => {
+     console.log(this._calenderDto ,'Dayyyyyyy ')
+    this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe((data) => { debugger
        
         this.fetchDataEndTime = performance.now();
         this.fetchDataTime = this.fetchDataEndTime - this.fetchDataStartTime;
