@@ -1422,7 +1422,7 @@ a.dropdown-item {
 
 @media (max-width: 1440px) {
   .kt-widget__title {
-    width: 160px;
+    width: 230px;
     /* white-space: nowrap; */
     overflow: hidden;
     text-overflow: ellipsis;
