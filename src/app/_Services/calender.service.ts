@@ -171,13 +171,13 @@ export class CalenderService {
   }
 
 
-  InsertAgendameeting_notes(obj:CalenderDTO){ debugger
+  InsertAgendameeting_notes(obj:CalenderDTO){ 
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     this.obj_CalenderDTO.Meeting_notes = obj.Meeting_notes;
     this.obj_CalenderDTO.AgendaId=obj.AgendaId
     this.obj_CalenderDTO.Status_type = obj.Status_type;
-
+debugger
     return this.http.post(this.rootUrl + "CalenderAPI/NewInsertAgendameeting_notes", this.obj_CalenderDTO);
   }
 

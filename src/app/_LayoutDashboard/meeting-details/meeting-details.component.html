@@ -40,13 +40,19 @@
                                                 </div>
 
 
-                                           <div class="date-change-icon" *ngIf="item.Recurrence != 'Do not repeat'">
-                                                <span class="date-change-icon-previous" title="Previous meeting" (click)="NewGetRecurrenceMeetings(0,'Prev')">
+                                           <div class="date-change-icon" *ngIf="item.Recurrence != 'Do not repeat' || isRepeat == true">
+                                                <span *ngIf="PreviousCount > 0" class="date-change-icon-previous" title="Previous meeting" (click)="NewGetRecurrenceMeetings(0,'Prev')">
                                                     <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M15.2071 6.29289C15.5976 6.68342 15.5976 7.31658 15.2071 7.70711L10.9142 12L15.2071 16.2929C15.5976 16.6834 15.5976 17.3166 15.2071 17.7071C14.8166 18.0976 14.1834 18.0976 13.7929 17.7071L8.79289 12.7071C8.40237 12.3166 8.40237 11.6834 8.79289 11.2929L13.7929 6.29289C14.1834 5.90237 14.8166 5.90237 15.2071 6.29289Z" fill="currentColor"></path> </g></svg>
                                                 </span>
+                                                 <span *ngIf="PreviousCount == 0" class="date-change-icon-previous">
+                                                    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M15.2071 6.29289C15.5976 6.68342 15.5976 7.31658 15.2071 7.70711L10.9142 12L15.2071 16.2929C15.5976 16.6834 15.5976 17.3166 15.2071 17.7071C14.8166 18.0976 14.1834 18.0976 13.7929 17.7071L8.79289 12.7071C8.40237 12.3166 8.40237 11.6834 8.79289 11.2929L13.7929 6.29289C14.1834 5.90237 14.8166 5.90237 15.2071 6.29289Z" fill="#5f636838"></path> </g></svg>
+                                                </span>
 
-                                                <span class="date-change-icon-next" title="Next meeting" (click)="NewGetRecurrenceMeetings(1,'Next')">
+                                                <span *ngIf="_FutureEventTasksCount > 0" class="date-change-icon-next" title="Next meeting" (click)="NewGetRecurrenceMeetings(1,'Next')">
                                                     <svg  width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.79289 6.29289C9.18342 5.90237 9.81658 5.90237 10.2071 6.29289L15.2071 11.2929C15.5976 11.6834 15.5976 12.3166 15.2071 12.7071L10.2071 17.7071C9.81658 18.0976 9.18342 18.0976 8.79289 17.7071C8.40237 17.3166 8.40237 16.6834 8.79289 16.2929L13.0858 12L8.79289 7.70711C8.40237 7.31658 8.40237 6.68342 8.79289 6.29289Z" fill="currentColor"></path></g></svg>
+                                                </span>
+                                                 <span *ngIf="_FutureEventTasksCount == 0" class="date-change-icon-next" >
+                                                    <svg  width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g  id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g  id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.79289 6.29289C9.18342 5.90237 9.81658 5.90237 10.2071 6.29289L15.2071 11.2929C15.5976 11.6834 15.5976 12.3166 15.2071 12.7071L10.2071 17.7071C9.81658 18.0976 9.18342 18.0976 8.79289 17.7071C8.40237 17.3166 8.40237 16.6834 8.79289 16.2929L13.0858 12L8.79289 7.70711C8.40237 7.31658 8.40237 6.68342 8.79289 6.29289Z" fill="#5f636838"></path></g></svg>
                                                 </span>
                                             </div>
 
@@ -107,7 +113,7 @@
                                                         <span class="kt-meeting-title-name">Meeting metrics </span>
                                                         <!-- | <span *ngIf="item.Schedule_Type"> {{item.Schedule_Type}}</span> | <span *ngIf="item.Recurrence=='Monthly'">{{item.Recurrence}}</span> -->
                                                     </div>
-                                                     <div class="options monthly">{{item.Recurrence}}</div>
+                                                     <div *ngIf="item.Recurrence=='Monthly' || item.Recurrence=='Weekly' || item.Recurrence=='Daily' || isRepeat == false " class="options monthly">{{item.Recurrence}}</div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-lg-9 pr-1">
@@ -3285,10 +3291,10 @@
                                                     </div> --> 
                                                 </div>
                                               <div class="d-flex-center mt-5" *ngIf="filteredActivityList == 0">
-                                                <div>
-                                                    <img src="./assets/images/No_Actions.png" width="268" height="256" class="activity_Found" />
+                                                <div class="activity_Found" >
+                                                    <img src="./assets/images/No_Actions.png" width="268" height="256"/>
                                                     <div class="bnk-txt">
-                                                        <h2 class="blank-txt text-center act-img">No activity found</h2>
+                                                        <h2 class="blank-txt text-center">No activity found</h2>
                                                     </div>
                                                   </div>
                                               </div> 
@@ -3954,16 +3960,33 @@
                                                 <ng-container>
                                                     <!-- *ngIf="Meetingstatuscom!='Completed'" -->
                                                 <input class="task-status curser-pointer" (click)="OnRadioClick(item.Assign_Id)" type="checkbox">
-                                            </ng-container>
-                                                <label class="task-name">{{item.Task_Name}}</label>
+                                               </ng-container>
+                                                <label id="spnLabelUnassign_{{item.Assign_Id}}"  class="task-name">{{item.Task_Name}}</label>
+                                               <label id="spanTextboxUnassign_{{item.Assign_Id}}"  class="task-name" style="display:none;">                                    
+                                                 <div class="d-flex  mr-2">
+                                                    <input type="text" autofocus 
+                                                        [(ngModel)]="_taskName" class="cust-input"
+                                                        (keydown.enter)="OnTask_RenameUnassign()">
+                                                    <div class="unass-input-action">
+                                                    <div class="unass-input-action-li" title="Save"  (click)="OnTask_RenameUnassign()">
+                                                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Check"> <path id="Vector" d="M6 12L10.2426 16.2426L18.727 7.75732" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                                                    </div>
+                                                    <div class="unass-input-action-li" title="Cancel" (click)="onCancelUnassign(item.Assign_Id)">
+                                                        <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Menu / Close_MD"> <path id="Vector" d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                               </label>
                                                 <ng-container >
                                                 <div class="task-actions curser-pointer" >
-                                                            <mat-icon title="Assign Project"  class="mr-2" (click)="GetAssigned_SubtaskProjects();unassign_edit1(item.Assign_Id,item.Task_Name,item.Creation_Date,'option1')" color='primary'>group</mat-icon>
-                                                            <mat-icon title="Add action to project"  (click)="GetAssigned_SubtaskProjects();unassign_edit1(item.Assign_Id,item.Task_Name,item.Creation_Date,'option2')" class="mr-2" color='primary'>new_label</mat-icon>
+                                                        <mat-icon title="Click to assign task"  class="mr-2" (click)="GetAssigned_SubtaskProjects();unassign_edit1(item.Assign_Id,item.Task_Name,item.Creation_Date,'option1')" color='primary'>group</mat-icon>                                                          
                                                 </div>
-                                            </ng-container>
+                                              </ng-container>
+                                                <div class="task-actions curser-pointer" title="Click to rename task"     (click)="OnEditUnassignNameClick(item.Task_Name,item.Assign_Id)">                                               
+                                                    <svg width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" fill="#0F0F0F"></path> </g></svg>
+                                                </div>
                                                 <ng-container >
-                                                <button class="task-delete task-btns"
+                                                <button class="task-delete task-btns" title="Click to delete task"
                                                     (click)="_Deletetask(item.Assign_Id,item.Task_Name)">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
@@ -5260,7 +5283,7 @@
                                 <div class="notifications-list">
                                             
                                 <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true && showAttendeeNotify!='2' && showAttendeeNotify!='3'" >
-                                <div class="notification delay-notification mydelay-action-notf m-2" *ngIf="Isadmin==true && !meetingInProgress">
+                                <div class="notification delay-notification-sidebar mydelay-action-notf m-2" *ngIf="Isadmin==true && !meetingInProgress">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
                                     height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
                                     <path _ngcontent-pef-c397=""
@@ -5275,7 +5298,7 @@
 
 
                                 <ng-container  *ngIf="Meetingstatuscom!='Completed' && delayMeeting == true">
-                                <div class="notification delay-notification mydelay-action-notf m-2" *ngIf="Isadmin==false && meetingStarted==false"    >
+                                <div class="notification delay-notification-sidebar mydelay-action-notf m-2" *ngIf="Isadmin==false && meetingStarted==false"    >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
                                     height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
                                     <path _ngcontent-pef-c397=""
@@ -5295,7 +5318,7 @@
                                     </div>
                                 </ng-container>
                                 <ng-container  *ngIf="upcomingMeeting == true">
-                                    <div class="notification delay-notification mydelay-action-notf m-2">
+                                    <div class="notification delay-notification-sidebar mydelay-action-notf m-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="#00A2EB"
                                         height="24" width="24" viewBox="0 0 1024 1024" version="1.1" class="notif-img">
                                         <path _ngcontent-pef-c397=""
@@ -5609,16 +5632,16 @@
                                                     </span>
                                                 </div>
                                             </ng-container>
-                    
+                                            </ng-container>
                                             <ng-container  *ngIf="item.IsAdmin">
                                                 <div class="user-status-action">
                                                     <span class="admin-hovers" >
                                                         <span aria-hidden="true" class="admin-check-svg ml-2">
                                                             <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
-                                                                <path _ngcontent-hko-c392="" fill="#5867dd"
+                                                                <path  fill="#5867dd"
                                                                     d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
                                                                 </path>
-                                                                <path _ngcontent-hko-c392="" fill="none" stroke="#fff"
+                                                                <path  fill="none" stroke="#fff"
                                                                     stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path>
                                                             </svg>
                                                         </span>
@@ -5630,7 +5653,7 @@
                                                                 d="M315.392 507.904c-81.92-40.96-137.216-122.88-137.216-221.184 0-135.168 110.592-245.76 245.76-245.76s245.76 110.592 245.76 245.76c0 133.12-104.448 241.664-237.568 245.76h-2.048c-202.752 0-368.64 165.888-368.64 368.64 0 12.288-8.192 20.48-20.48 20.48s-20.48-8.192-20.48-20.48c0-186.368 124.928-344.064 294.912-393.216z m108.544-16.384c112.64 0 204.8-92.16 204.8-204.8s-92.16-204.8-204.8-204.8-204.8 92.16-204.8 204.8 92.16 204.8 204.8 204.8z m561.152 135.168l4.096 10.24-49.152 59.392c-8.192 10.24-8.192 26.624 0 36.864l49.152 57.344-4.096 10.24c-10.24 28.672-24.576 57.344-45.056 79.872l-8.192 8.192-75.776-12.288c-12.288-2.048-26.624 6.144-30.72 18.432l-26.624 73.728-10.24 2.048c-38.912 8.192-77.824 8.192-116.736 0l-12.288-2.048-24.576-71.68c-4.096-12.288-18.432-20.48-30.72-18.432l-77.824 12.288-8.192-8.192c-10.24-10.24-18.432-22.528-24.576-34.816-8.192-14.336-16.384-30.72-20.48-47.104l-4.096-10.24 51.2-57.344c8.192-10.24 8.192-26.624 0-34.816l-49.152-59.392 4.096-10.24c10.24-30.72 26.624-57.344 47.104-81.92l8.192-8.192 73.728 12.288c12.288 2.048 26.624-6.144 32.768-18.432l26.624-71.68 10.24-2.048c36.864-8.192 75.776-8.192 114.688 0l12.288 2.048 24.576 69.632c4.096 12.288 18.432 22.528 32.768 20.48l75.776-10.24 8.192 8.192c10.24 12.288 18.432 22.528 24.576 36.864 6.144 10.24 12.288 26.624 18.432 40.96z m-57.344-24.576c-4.096-8.192-8.192-14.336-14.336-22.528l-53.248 6.144c-32.768 4.096-65.536-16.384-75.776-47.104L768 491.52c-24.576-4.096-49.152-4.096-73.728 0l-18.432 49.152c-10.24 30.72-45.056 51.2-77.824 45.056l-51.2-8.192c-12.288 14.336-20.48 32.768-28.672 49.152l34.816 40.96c20.48 24.576 20.48 63.488 0 88.064l-34.816 40.96c4.096 10.24 8.192 18.432 14.336 28.672 4.096 8.192 8.192 14.336 14.336 20.48l55.296-8.192c32.768-4.096 65.536 16.384 75.776 47.104l16.384 49.152c24.576 4.096 51.2 4.096 75.776 0l18.432-51.2c10.24-30.72 45.056-51.2 75.776-45.056l51.2 8.192c10.24-14.336 20.48-30.72 26.624-49.152l-32.768-38.912c-20.48-24.576-22.528-63.488-2.048-88.064l34.816-40.96c-4.096-8.192-8.192-16.384-14.336-26.624z m-196.608 204.8c-51.2 0-92.16-40.96-92.16-92.16s40.96-92.16 92.16-92.16 92.16 40.96 92.16 92.16-43.008 92.16-92.16 92.16z m0-40.96c28.672 0 51.2-22.528 51.2-51.2s-22.528-51.2-51.2-51.2-51.2 22.528-51.2 51.2 22.528 51.2 51.2 51.2z" />
                                                         </svg>
                                                     </span>
-                                                    <span class="d-none">
+                                                    <!-- <span class="d-none">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="10" viewBox="0 0 15 10"
                                                             fill="none">
                                                             <path d="M10.2471 2.9375C11.0698 4.17167 11.0698 5.77941 10.2471 7.01357"
@@ -5664,10 +5687,10 @@
                                                             <path d="M0.820312 1.47363L7.82031 8.47363" stroke="#999999"
                                                                 stroke-linecap="round" stroke-linejoin="round" />
                                                         </svg>
-                                                    </span>
+                                                    </span> -->
                                                 </div>
                                             </ng-container>
-                                        </ng-container>
+                                       
                                              <div class="ov-card-status">
                                                 <div class="ov-card-time">
                                                       <svg fill="currentColor" width="14px" height="14px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M6,22H18a3,3,0,0,0,3-3V7a2,2,0,0,0-2-2H17V3a1,1,0,0,0-2,0V5H9V3A1,1,0,0,0,7,3V5H5A2,2,0,0,0,3,7V19A3,3,0,0,0,6,22ZM5,12.5a.5.5,0,0,1,.5-.5h13a.5.5,0,0,1,.5.5V19a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1Z"></path></g></svg>
@@ -5828,17 +5851,17 @@
                                                         </svg>
                                                     </span>
                                                 </div>
-                                            </ng-container>
-                    
+                                               </ng-container>
+                                             </ng-container> 
                                             <ng-container  *ngIf="item.IsAdmin">
                                                 <div class="user-status-action">
                                                     <span class="admin-hovers" >
                                                         <span aria-hidden="true" class="admin-check-svg ml-2">
                                                             <svg xmlns="https://www.w3.org/2000/svg" width="14" height="14">
-                                                                <path _ngcontent-hko-c392="" fill="#5867dd"
+                                                                <path  fill="#5867dd"
                                                                     d="M7 0c3.87 0 7 3.13 7 7s-3.13 7-7 7-7-3.13-7-7 3.13-7 7-7z">
                                                                 </path>
-                                                                <path _ngcontent-hko-c392="" fill="none" stroke="#fff"
+                                                                <path  fill="none" stroke="#fff"
                                                                     stroke-width="1.5" d="M3.5 6.5L6 9l5-5"></path>
                                                             </svg>
                                                         </span>
@@ -5850,7 +5873,7 @@
                                                                 d="M315.392 507.904c-81.92-40.96-137.216-122.88-137.216-221.184 0-135.168 110.592-245.76 245.76-245.76s245.76 110.592 245.76 245.76c0 133.12-104.448 241.664-237.568 245.76h-2.048c-202.752 0-368.64 165.888-368.64 368.64 0 12.288-8.192 20.48-20.48 20.48s-20.48-8.192-20.48-20.48c0-186.368 124.928-344.064 294.912-393.216z m108.544-16.384c112.64 0 204.8-92.16 204.8-204.8s-92.16-204.8-204.8-204.8-204.8 92.16-204.8 204.8 92.16 204.8 204.8 204.8z m561.152 135.168l4.096 10.24-49.152 59.392c-8.192 10.24-8.192 26.624 0 36.864l49.152 57.344-4.096 10.24c-10.24 28.672-24.576 57.344-45.056 79.872l-8.192 8.192-75.776-12.288c-12.288-2.048-26.624 6.144-30.72 18.432l-26.624 73.728-10.24 2.048c-38.912 8.192-77.824 8.192-116.736 0l-12.288-2.048-24.576-71.68c-4.096-12.288-18.432-20.48-30.72-18.432l-77.824 12.288-8.192-8.192c-10.24-10.24-18.432-22.528-24.576-34.816-8.192-14.336-16.384-30.72-20.48-47.104l-4.096-10.24 51.2-57.344c8.192-10.24 8.192-26.624 0-34.816l-49.152-59.392 4.096-10.24c10.24-30.72 26.624-57.344 47.104-81.92l8.192-8.192 73.728 12.288c12.288 2.048 26.624-6.144 32.768-18.432l26.624-71.68 10.24-2.048c36.864-8.192 75.776-8.192 114.688 0l12.288 2.048 24.576 69.632c4.096 12.288 18.432 22.528 32.768 20.48l75.776-10.24 8.192 8.192c10.24 12.288 18.432 22.528 24.576 36.864 6.144 10.24 12.288 26.624 18.432 40.96z m-57.344-24.576c-4.096-8.192-8.192-14.336-14.336-22.528l-53.248 6.144c-32.768 4.096-65.536-16.384-75.776-47.104L768 491.52c-24.576-4.096-49.152-4.096-73.728 0l-18.432 49.152c-10.24 30.72-45.056 51.2-77.824 45.056l-51.2-8.192c-12.288 14.336-20.48 32.768-28.672 49.152l34.816 40.96c20.48 24.576 20.48 63.488 0 88.064l-34.816 40.96c4.096 10.24 8.192 18.432 14.336 28.672 4.096 8.192 8.192 14.336 14.336 20.48l55.296-8.192c32.768-4.096 65.536 16.384 75.776 47.104l16.384 49.152c24.576 4.096 51.2 4.096 75.776 0l18.432-51.2c10.24-30.72 45.056-51.2 75.776-45.056l51.2 8.192c10.24-14.336 20.48-30.72 26.624-49.152l-32.768-38.912c-20.48-24.576-22.528-63.488-2.048-88.064l34.816-40.96c-4.096-8.192-8.192-16.384-14.336-26.624z m-196.608 204.8c-51.2 0-92.16-40.96-92.16-92.16s40.96-92.16 92.16-92.16 92.16 40.96 92.16 92.16-43.008 92.16-92.16 92.16z m0-40.96c28.672 0 51.2-22.528 51.2-51.2s-22.528-51.2-51.2-51.2-51.2 22.528-51.2 51.2 22.528 51.2 51.2 51.2z" />
                                                         </svg>
                                                     </span>
-                                                    <span class="d-none">
+                                                    <!-- <span class="d-none">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="10" viewBox="0 0 15 10"
                                                             fill="none">
                                                             <path d="M10.2471 2.9375C11.0698 4.17167 11.0698 5.77941 10.2471 7.01357"
@@ -5884,10 +5907,10 @@
                                                             <path d="M0.820312 1.47363L7.82031 8.47363" stroke="#999999"
                                                                 stroke-linecap="round" stroke-linejoin="round" />
                                                         </svg>
-                                                    </span>
+                                                    </span> -->
                                                 </div>
                                             </ng-container>
-                                        </ng-container>                                                                         
+                                                                                                                 
                                             <div class="ov-card-status">
                                                 <div class="ov-card-time">
                                                       <svg fill="currentColor" width="14px" height="14px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M6,22H18a3,3,0,0,0,3-3V7a2,2,0,0,0-2-2H17V3a1,1,0,0,0-2,0V5H9V3A1,1,0,0,0,7,3V5H5A2,2,0,0,0,3,7V19A3,3,0,0,0,6,22ZM5,12.5a.5.5,0,0,1,.5-.5h13a.5.5,0,0,1,.5.5V19a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1Z"></path></g></svg>
@@ -7087,11 +7110,11 @@
                     <ul class="nav nav-tabs" id="myMeeting" role="tablist">
                         <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="previousmeeting-tab" data-toggle="tab" data-target="#previousmeeting" type="button" role="tab" 
-                        aria-controls="previousmeeting" aria-selected="true" (click)="NewGetRecurrenceMeetings(0,'undefined')" ><span class="lbl-hdn">Previous-{{PreviousCount}}</span></button>
+                        aria-controls="previousmeeting" aria-selected="true" (click)="NewGetRecurrenceMeetings(0,'undefined')" ><span class="lbl-hdn">Previous-{{totalpreviousmeetings}}</span></button>
                         </li>
                         <li class="nav-item" role="presentation">
                         <button class="nav-link" id="upcomingmeeting-tab" data-toggle="tab" data-target="#upcomingmeeting" type="button" role="tab" 
-                        aria-controls="upcomingmeeting" aria-selected="false" (click)="NewGetRecurrenceMeetings(1,'undefined')" ><span class="lbl-hdn">upcoming-{{_FutureEventAttachment}}</span></button>
+                        aria-controls="upcomingmeeting" aria-selected="false" (click)="NewGetRecurrenceMeetings(1,'undefined')" ><span class="lbl-hdn">upcoming-{{totalupcomingmeetings}}</span></button>
                         </li>
                     </ul>
                     <div class="tab-content sidehf_scroll  scroll-y" id="myMeetingContent">
@@ -7236,7 +7259,7 @@
 
                                                     </div>
                                                     <div class="pn-details mb-0">
-                                                        <div class="pn-label">Meeting Actions</div>
+                                                        <div class="pn-label">Meeting Insights </div>
                                                         <div class="pn-in-label-main">
                                                             <div class="pn-in-label">
                                                                 <div class="pn-time">
@@ -7846,20 +7869,9 @@
                                                             </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
                                                     </div>
                                                     <div class="pn-details mb-0">
-                                                        <div class="pn-label">Meeting Actions</div>
+                                                        <div class="pn-label">Meeting Insights </div>
                                                         <div class="pn-in-label-main">
                                                             <div class="pn-in-label">
                                                                 <div class="pn-time">
@@ -7981,11 +7993,52 @@
                                                         display: flex;
                                                         align-items: center;
                                                         justify-content: space-between;">
+
+
+                                                  
+
+
+                                                        <div  *ngIf="assignOptions==false" class="kt-box-item-action">
+                                                            <div class="kt-box-item-action-ul">
+                                                                  <div class="kt-box-item-action-li" (click)="GetAssigned_SubtaskProjects();unassign_edit1(item.Assign_Id,item.Task_Name,item.Creation_Date,'option1')">
+                                                                      <mat-icon title="Click to assign task" >group</mat-icon>
+                                                                  
+                                                                </div>
+                                                                <div class="kt-box-item-action-li" title="Click to rename task" (click)="OnEditNameClick(item.Task_Name,item.Assign_Id)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                        <path d="M18.41 5.79988L17.2 4.58988C16.42 3.80988 15.15 3.80988 14.37 4.58988L11.69 7.26988L3 15.9599V19.9999H7.04L15.78 11.2599L18.41 8.62988C19.2 7.84988 19.2 6.57988 18.41 5.79988ZM6.21 17.9999H5V16.7899L13.66 8.12988L14.87 9.33988L6.21 17.9999ZM11 19.9999L15 15.9999H21V19.9999H11Z" fill="currentColor"></path>
+                                                                    </svg>
+                                                                </div>
+                                                                <div class="kt-box-item-action-li" title="Click to delete task"  (click)="_Deletetasksidebar(item.Assign_Id,item.Task_Name)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                        <path d="M16 9V19H8V9H16ZM14.5 3H9.5L8.5 4H5V6H19V4H15.5L14.5 3ZM18 7H6V19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7Z" fill="currentColor"></path>
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+
+
                                                             <div class="kt-inbox__details">
                                                                 <div class="kt-inbox__sender" >
-                                                                    <span class="kt-inbox__subject">
+                                                                    <span  id="spnLabel_{{item.Assign_Id}}" class="kt-inbox__subject mb-2">
                                                                         {{item.Task_Name}}
                                                                     </span>
+                                                                   <span  id="spanTextbox_{{item.Assign_Id}}" class="kt-inbox__subject" style="display:none;">
+                                                                       <div class="d-flex mb-2">
+                                                                      <input type="text" autofocus 
+                                                                          [(ngModel)]="_taskName" class="cust-input"
+                                                                          (keydown.enter)="OnTask_Rename()">
+                                                                      <div class="unass-input-action">
+                                                                        <div class="unass-input-action-li" title="Save"  (click)="OnTask_Rename()">
+                                                                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Check"> <path id="Vector" d="M6 12L10.2426 16.2426L18.727 7.75732" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                                                                        </div>
+                                                                        <div class="unass-input-action-li" title="Cancel" (click)="onCancel(item.Assign_Id)">
+                                                                            <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Menu / Close_MD"> <path id="Vector" d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                                                                        </div>
+                                                                      </div>
+                                                                  </div>
+                                                    
+                                                                </span>
                                                                 </div>
                                                                 <div class="kt-inbox__labels">
                                                                     <span
@@ -8000,7 +8053,7 @@
                                                                     </div>
                                                                     <div> {{ item.Agenda_Name}}</div>
                                                                 </span>
-                                                            </div>                                                    
+                                                            </div>                                                                                            
                                                             </div>
                                                             <div class="kt-inbox__datetimes" style="width: 78px;text-align: right;">
                                                                 <small>
@@ -12963,12 +13016,12 @@
            <span class="btn btn-secondary btn-sm ml-2">Close</span>
         </div>
 
-        <span *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length<=1" >
+        <span *ngIf="this.checkedTaskNames&&this.checkedTaskNames.length<=1">
         <div class="foottext">Created on {{Creation_Date  | date:'dd-MM-yyyy'}}</div>
     </span>
 
         <div class="sub-act">
-            <div class="footicon save" (click)="assignTasksub1()"  >
+            <div class="footicon save" (click)="assignTasksub1()">
                 <span class="btn btn-info btn-sm">Assign</span>
             </div>
         </div>
@@ -12980,7 +13033,7 @@
         </div>
     <div class="foottext">Created on {{Creation_Date  | date:'dd-MM-yyyy'}}</div>
     <div class="sub-act">
-        <div class="footicon save" (click)="sweetAlert()"  >
+        <div class="footicon save" (click)="sweetAlert()">
           <span class="btn btn-info btn-sm">Submit</span>
             </div>
         </div>
@@ -13056,7 +13109,10 @@
   
 
             <ul *ngIf="multiselect_dialog=='EMPLOYEES'" class="modal-project-list" id="employees-list">
+               
                 <li *ngFor="let emp of filtered_list"  class="modal-project-list-item">
+                 <div *ngIf="emp.name"  class="list-sep-name">{{emp.name}}</div>
+                 <ng-container *ngIf="!emp.name">
                     <mat-checkbox [checked]="selectedItem&&selectedItem.includes(emp.Emp_No)" color="primary" (change)="onItemClicked($event.checked,emp.Emp_No)">
                         <span style="display:flex; align-items: center; gap: 5px;">
                             <span class="project-user-image">
@@ -13067,6 +13123,7 @@
                             </span>
                         </span>
                    </mat-checkbox>
+                   </ng-container>
                 </li>
                 <ng-container *ngIf="filtered_list&&filtered_list.length==0">
                     <ng-container *ngTemplateOutlet="nosuchitem_found"></ng-container>
@@ -13155,7 +13212,7 @@
            
             <h1 class="text-primary main_acc">Oops! looks like you’ve landed in the wrong place</h1>
             <h5 class="acc-desc  user-not-found-msg  hide-content">
-                Please request the organizer to give access to this meeting.
+                This meeting does not exist.
             </h5>
         </div>
         <div class="acc-img_sec">
@@ -13312,7 +13369,7 @@
                  </div>
              </div>
 
-             <ul class="modal-project-list" id="participant-list" >
+             <ul class="modal-project-list" id="participant-list">
                 <ng-container *ngIf="filteredEmployees">
                 <div class="list-sep-name" *ngIf="(filteredEmployees | filter : Assigntext).length>0">Meeting Attendees</div>
                  <li class="modal-project-list-item" *ngFor="let data of filteredEmployees | filter : Assigntext;let i =index">

@@ -909,7 +909,7 @@ showUserAccessRequests(){
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) { 
     this.errorFetchingProjectInfo=false;
-    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  debugger
+    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  
       try{
       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
       }catch(er){
@@ -1542,7 +1542,7 @@ getRelativeDateString(date: Date): string {
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.URL_ProjectCode,this.Current_user_ID).subscribe(
 
-      (data) => {   debugger
+      (data) => {   
  console.log('GetRACISandNonRACISEmployeesforMoredetails:',data);
         this.nonRacisList = (JSON.parse(data[0]['OtherList']));
 
@@ -3058,7 +3058,7 @@ fetchingStdTaskAprvls:boolean=false;
 // accept, reject or next version submission done via this same method only.
 approvalSubmitting:boolean=false;
   submitApproval() {
-    debugger
+    
     console.log('passing single approvaljson:',this.singleapporval_json);
     if (this.selectedType == '1') {
       console.log("singleapporval_json:",this.singleapporval_json);
@@ -3234,7 +3234,7 @@ approvalSubmitting:boolean=false;
 
   getPortfoliosDetails() {
     this.isLoadingData=true;
-    this.service.getPortfolios(this.URL_ProjectCode).subscribe((res) => {    debugger
+    this.service.getPortfolios(this.URL_ProjectCode).subscribe((res) => {    
       if (res != null && res != undefined) {
         this._portfoliolist = JSON.parse(res[0].Portfolio_json);
         this.getPortfolios()
@@ -3874,7 +3874,7 @@ actionCompleted(){
   getResponsibleActions() {
 
     this.service.SubTaskDetailsService_ToDo_Page(this.URL_ProjectCode, null, this.Current_user_ID).subscribe(
-      (data) => {  debugger
+      (data) => {  
         this.ProjectPercentage = data[0]['ProjectPercentage'];
         this.ProjectStatus = data[0]['ProjectStatus'];
         this.Client_List = JSON.parse(data[0]['ClientDropdown']);
@@ -4018,7 +4018,7 @@ actionCompleted(){
   OGProjectTypeid: any
   ActionName: any
 
-  initializeSelectedValue() {   debugger
+  initializeSelectedValue() {   
     this.OGownerid = this.projectInfo['OwnerEmpNo'];
     this.OGresponsibleid = this.projectInfo['ResponsibleEmpNo'];
     this.OGselectedcategoryid = this.projectInfo['Reportid'];
@@ -4054,7 +4054,7 @@ actionCompleted(){
 
  isPrjStartDateEditable:boolean=false;
   
-  onAction_updateProject=async(val)=>{     debugger
+  onAction_updateProject=async(val)=>{     
 
   this.isPrjNameValid=this.isValidString(this.ProjectName,3);
   this.isPrjDesValid=this.isValidString(this.ProjectDescription,5);
@@ -4333,7 +4333,7 @@ if(this.End_Date&&invaildPrjEnddate){
 
     var datestrStart = moment(this.Start_Date).format("MM/DD/YYYY");
     var datestrEnd = moment(this.End_Date).format("MM/DD/YYYY");
-debugger
+
     const jsonobj = {
       Project_Type: type,
       Project_Name: this.ProjectName,
@@ -4359,7 +4359,7 @@ debugger
       this.approvalObj.Remarks = this._remarks;
       this.approvalObj.isApproval = val;
 
-      this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {   debugger
+      this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {   
         console.log(data['message'], "edit response");
         if (data['message'] == '1') {
           this.notifyService.showSuccess("Updated successfully.", "Success");
@@ -4387,7 +4387,7 @@ debugger
       this.approvalObj.Remarks = this._remarks;
       this.approvalObj.isApproval = val;
 
-      this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {  debugger
+      this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {  
         console.log(data['message'], "edit response");
         if (data['message'] == '3') {
           this.notifyService.showSuccess("Project updated and Approved successfully.", "Success");
@@ -4662,7 +4662,7 @@ this.isactdesValid=this.isValidString(this.ActionDescription,3);
 
     var datestrStart = moment(this.ActionstartDate).format("MM/DD/YYYY");
     var datestrEnd = moment(this.ActionendDate).format("MM/DD/YYYY");
-debugger
+
     const jsonobj = {
       Project_Type: type,
       Project_Name: this.ActionName,
@@ -4902,7 +4902,7 @@ check_allocation() {
 
 
  submitDar(){
-  debugger
+  
    const isPrjCoreSecondary=['001','002'].includes(this.projectInfo.Project_Block);
    const isPrjStdRoutineDaily=(['003','008'].includes(this.projectInfo.Project_Block)&&this.projectInfo.SubmissionId==1);
 
@@ -5129,11 +5129,11 @@ check_allocation() {
 
 
     this.service.GetTotalPortfoliosBy_Employeeid().subscribe
-      ((data) => {    debugger
+      ((data) => {    
         this.totalPortfolios = (data[0]['TotalPortfolios']);
       });
     this.service.GetPortfoliosBy_ProjectId(this.URL_ProjectCode).subscribe
-      ((data) => {   debugger
+      ((data) => {   
         this._portfoliosList = data as [];
          console.log('porfolios at details:',this._portfoliosList);
         this.originalportfolios=this._portfoliosList
@@ -5279,7 +5279,7 @@ check_allocation() {
   }
 
 
-  DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {  debugger
+  DeleteProject(Proj_id: number, port_id: number, Pcode: string, proj_Name: string, createdBy: string) {  
     this.deletedBy = this.Current_user_ID;
 
     this._portfoliolist.forEach(element => {
@@ -5478,7 +5478,7 @@ check_allocation() {
 
   }
 
-  completeProjectWithAttachment(){   debugger
+  completeProjectWithAttachment(){   
 
     const fd = new FormData();
     fd.append("Project_Code", this._MasterCode);
@@ -5497,7 +5497,7 @@ check_allocation() {
     this.fileInUpload={filename:this.selectedFile.name, uploaded:0, processingUploadFile:false};   // store file uploading info.
 
     this.service._AzureUploadProjectComplete(fd).subscribe({
-      next:(event1: HttpEvent<any>) => {  debugger
+      next:(event1: HttpEvent<any>) => {  
 
         switch (event1.type) {
           case HttpEventType.Sent:
@@ -5524,7 +5524,7 @@ check_allocation() {
               //once file attachment uploaded successfully update project status.
 
               this.service._UpdateProjectCompleteCore(fd).
-              subscribe((event: HttpEvent<any>) => {   debugger
+              subscribe((event: HttpEvent<any>) => {   
 
                 switch (event.type) {
                   case HttpEventType.Sent:
@@ -5879,14 +5879,14 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
   fetchingActionApproval:boolean=false;
-  GetApproval(code) {  debugger
+  GetApproval(code) {  
 
     this.requestDetails=[];  // initalize/ clear prev data.
 
     this.fetchingActionApproval=true;   // getting approval on the action if present start.
     this.approvalObj = new ApprovalDTO();
     this.approvalObj.Project_Code = code;
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {  debugger
+    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {  
       this.fetchingActionApproval=false;   // fetching approval on the action if present end.
       this.requestDetails = data as [];
       console.log(data,'jjj----------->')
@@ -9228,7 +9228,7 @@ GetprojectComments() {
 
 
 LoadDocument1(pcode:string,iscloud: boolean, filename: string, url1: string, type: string, submitby: string) {  
-debugger
+
   let FileUrl: string;
   // FileUrl = "http://217.145.247.42:81/yrgep/Uploads/";
   FileUrl="https://yrglobaldocuments.blob.core.windows.net/documents/EP/";
@@ -12918,7 +12918,7 @@ getTimelineReportByDate(dateVal:'today'|'yesterday') {
     this.ObjSubTaskDTO.sort = 'custom';
     this.tmReportLoading=true;
     this.service._GetTimelineActivity(this.ObjSubTaskDTO).subscribe
-      (data => {   debugger
+      (data => {   
         this.tmReportLoading=false;
         console.log(data);
         if(data&&data[0].DAR_Details_Json){
@@ -13337,7 +13337,7 @@ isAllocHrsOverflow:boolean=false;  // when input allocated hrs is invalid or exc
 
            
 // whenever standard or routine type project's allocated input hrs changed.
-computeMaxAllocHrsToProject(){   debugger
+computeMaxAllocHrsToProject(){   
   
       const h=Number.parseInt(this.projectInfo.StandardAllocatedHours.split(':')[0]);
       const m=Number.parseInt(this.projectInfo.StandardAllocatedHours.split(':')[1]);
@@ -13390,7 +13390,7 @@ computeMaxAllocHrsToProject(){   debugger
 
 
 
-onAllocInputHrsChanged(){   debugger
+onAllocInputHrsChanged(){   
 
     const alhr_str=this.Allocated_Hours["$ngOptionLabel"]?this.Allocated_Hours["$ngOptionLabel"]:this.Allocated_Hours;
     const h=Number.parseInt(alhr_str.split(':')[0]);
@@ -13400,7 +13400,7 @@ onAllocInputHrsChanged(){   debugger
 }
 
 
-showSR_ProjectsStats(ptype:'003'|'008'){  debugger
+showSR_ProjectsStats(ptype:'003'|'008'){  
   
    const totalPrjsExisting=ptype=='003'?this.Responsible_user_Info.Standard_Count:this.Responsible_user_Info.Routine_Count;
    const existingPrjsType=ptype=='003'?'Standard Tasks':'Routine Tasks';
@@ -13604,7 +13604,7 @@ onRPFileChange(e){
 e.target.value = '';
 }
 
-onProjectReopenSubmit(){  debugger
+onProjectReopenSubmit(){  
   if((this.rp_remarks&&this.rp_remarks.trim())&&(this.prjReopenDeadlineRequired?this.rp_newDeadline:true)){
 
       const _project_Code=this.projectInfo.Project_Code;
@@ -13835,7 +13835,7 @@ createNewGroup(){
   }
 
 
-  addProjectToGroup(groupId:number,groupName:string){    debugger
+  addProjectToGroup(groupId:number,groupName:string){    
     
     const sgroup_name=groupName;
 
@@ -13860,7 +13860,7 @@ createNewGroup(){
      })
   }
 
-  removeProjectFromGroup(groupId:number,groupName:string){   debugger
+  removeProjectFromGroup(groupId:number,groupName:string){   
     const sgroup_name=groupName;
 
     const grpDto=new ApprovalDTO();
