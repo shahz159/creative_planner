@@ -8270,8 +8270,8 @@ EmployeeOnSelect(obj){
      this.selectedEmpNo=obj['Emp_No'];
 
     //2. update weekendpolicy and Perday limit based on selected emp.
-      this.weekendPolicy=obj.Emp_Comp_No=='400'?{ 6:'full',0:'full' }:{ 5:'full'};
-      this.perDayAlhr_Limit=obj.Emp_Comp_No=='400'?8.5:8;
+      this.weekendPolicy=obj.Emp_Comp_No==78?{ 6:'full',0:'full' }:{ 5:'full'};
+      this.perDayAlhr_Limit=obj.Emp_Comp_No==78?8.5:8;
 
       //3.validate startdate and enddate if present.   since dates are connected to weekend policy.
      if(this._StartDate&&this._EndDate){
@@ -8294,7 +8294,7 @@ EmployeeOnSelect(obj){
            this.totalWorkingDays=0; 
            this.totalOffDays=[];  
           } 
-}
+} 
 
 
 isDateSelectable=(date:Moment|null):boolean=>{  
