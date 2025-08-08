@@ -861,9 +861,12 @@ openInDetailsPage(pcode,acode:string|undefined) {
 
 EventScheduledjson: any[] = [];
 _Message: string;
+isSubmitting: boolean = false;
 
+Event_acceptandReject(EventAction_type,Schedule_ID) {
 
-Event_acceptandReject(EventAction_type,Schedule_ID) {debugger
+  if (this.isSubmitting) return;
+  this.isSubmitting = true;
 
   if (EventAction_type == 1) {
     this._calenderDto.Emp_No = this.Current_user_ID;
@@ -880,6 +883,7 @@ Event_acceptandReject(EventAction_type,Schedule_ID) {debugger
             // this.Event_requests();
             this._Message = data['message'];
             this.notifyService.showSuccess(this._Message, "Success");
+            this.isSubmitting = false;
           
           });
         });
@@ -898,7 +902,8 @@ Event_acceptandReject(EventAction_type,Schedule_ID) {debugger
             this.meetingDetails();
             // this.Event_requests();
             this._Message = data['message'];
-            this.notifyService.showSuccess(this._Message, "Success");         
+            this.notifyService.showSuccess(this._Message, "Success");    
+            this.isSubmitting = false;     
           
           });
       });
@@ -916,7 +921,8 @@ Event_acceptandReject(EventAction_type,Schedule_ID) {debugger
             this.meetingDetails();
             // this.Event_requests();
             this._Message = data['message'];
-            this.notifyService.showSuccess(this._Message, "Rejected");  
+            this.notifyService.showSuccess(this._Message, "Rejected"); 
+            this.isSubmitting = false; 
           });
       });
   
@@ -934,10 +940,11 @@ Event_acceptandReject(EventAction_type,Schedule_ID) {debugger
             // this.Event_requests();
             this._Message = data['message'];
             this.notifyService.showSuccess(this._Message, "Rejected");
-        
+            this.isSubmitting = false;
           });
       });
   }
+  
 }
 
 
@@ -946,7 +953,8 @@ Event_acceptandReject(EventAction_type,Schedule_ID) {debugger
 
 
 Maybe_event(val,Schedule_ID) {
-
+  if (this.isSubmitting) return;
+  this.isSubmitting = true;
  
   this._calenderDto.Emp_No = this.Current_user_ID;
   this._calenderDto.flagid = val
@@ -962,10 +970,9 @@ Maybe_event(val,Schedule_ID) {
           this.meetingDetails();
           this._Message = data['message'];
           this.notifyService.showSuccess(this._Message, "May be");
-            
+          this.isSubmitting = false;  
         });
     });
-  
 }
 
 }

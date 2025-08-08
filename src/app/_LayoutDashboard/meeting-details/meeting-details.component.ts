@@ -691,7 +691,8 @@ PreviousCount:any;
       if(this.EventScheduledjson != undefined && this.EventScheduledjson != null && this.EventScheduledjson != ''){
       this.deletedMeeting = true;
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
-    
+      this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
+       console.log(this._FutureEventTasksCount,'this._FutureEventTasksCount');
       var Schedule_date = this.EventScheduledjson[0].Schedule_date;
       this.meetingRestriction(Schedule_date);
       this.Agendas_List = this.EventScheduledjson[0].Agendas;
@@ -745,7 +746,8 @@ PreviousCount:any;
 
       this.AdminName=this.EventScheduledjson[0].AdminName
 
-    
+      console.log(this.Todotask,'new tatsk ')
+
       this.totalTodotask = this.Todotask.length;
       this.totalCountAssign = this.totalAssign + this.totalActiontask + this.totalTodotask;
 
@@ -3428,6 +3430,14 @@ onFileChange(event) {
       this.EventNumber = timestamp;
     }
 
+    if(this.privateMeeting == true){
+      this.MasterCode = null;
+      this.ngEmployeeDropdown = null;
+      this.Portfolio = null;
+      this.SelectDms = null;
+    } 
+   
+
     let finalarray = [];
     this.daysSelectedII = [];
     const format2 = "YYYY-MM-DD";
@@ -3437,7 +3447,7 @@ onFileChange(event) {
       const d1 = new Date(moment(start).format(format2));
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
-debugger
+
           // new code start 69
     
           if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate)){
@@ -3505,7 +3515,7 @@ debugger
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
-      finalarray.forEach(element => { debugger
+      finalarray.forEach(element => { 
         this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
        
         const date1: Date = new Date(this._StartDate);
@@ -3676,7 +3686,7 @@ debugger
       const frmData = new FormData();
 
 
-
+debugger
    
       if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
         frmData.append("Attachment", "true");
@@ -4360,14 +4370,136 @@ debugger
                     // Return false to remove objects that match your conditions
                     return !(isCreatedBy || isInOrderedEmpNos);
                   });
-
       });
-  
   }
 
 
 
-  _Deletetask(id, name) {
+
+  _Deletetasksidebar(id, name) { 
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        mode: 'Todo_Delete',
+        title1: 'Confirmation ',
+        taskName: name
+        //message1: "proj_Name"
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result === true) { 
+        this._ObjAssigntaskDTO.TypeOfTask = "Delete";
+        this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+        this._ObjAssigntaskDTO.AssignId = id;
+        this._ObjAssigntaskDTO.CategoryId = 2411;
+        this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+          (data) => { debugger
+            // this._TodoList = JSON.parse(data['Jsonmeeting_Json']);
+            // this._CompletedList = JSON.parse(data['CompletedList']);
+
+            let message: string = data['Message'];
+            this._Demotext = "";
+            this.notifyService.showInfo("Successfully", message);
+            this.meeting_details();
+            this.GetAssigned_SubtaskProjects();
+            this.CurrentTaskCount[this.currentAgendaView].TaskCount=0;
+          });
+      }
+      else {
+        //this.notifyService.showInfo("Cancelled", "Delete");
+      }
+    });
+  }
+
+assignOptions:any = false;
+
+  OnEditNameClick(name, id) {
+    this._taskName = name;
+    this._AssignId = id;
+    this.assignOptions=true;
+    (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("spnLabel_" + id)).style.display = "none";
+    // (<HTMLInputElement>document.getElementById("div_" + id)).style.display = "none";
+  }
+
+
+    OnEditUnassignNameClick(name, id) {
+    this._taskName = name;
+    this._AssignId = id;
+    (<HTMLInputElement>document.getElementById("spanTextboxUnassign_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("spnLabelUnassign_" + id)).style.display = "none";
+    // (<HTMLInputElement>document.getElementById("div_" + id)).style.display = "none";
+  }
+
+
+
+
+   OnTask_RenameUnassign() {
+  
+      if (this._taskName != "") {
+        this._ObjAssigntaskDTO.TypeOfTask = "Rename";
+        this._ObjAssigntaskDTO.TaskName = this._taskName;
+        this._ObjAssigntaskDTO.AssignId = this._AssignId;
+        this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+        this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+          (data) => {
+             
+             
+             this.GetAssigned_SubtaskProjects();
+            let message: string = data['Message'];
+            this.notifyService.showInfo("Rename successfully", message);
+            (<HTMLInputElement>document.getElementById("spanTextboxUnassign_" + this._AssignId)).style.display = "none";
+            (<HTMLInputElement>document.getElementById("spnLabelUnassign_" + this._AssignId)).style.display = "block";
+            // (<HTMLInputElement>document.getElementById("div_" + this._AssignId)).style.display = "block";
+  
+          });
+      }
+      else {
+        this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
+      }
+    }
+
+
+
+
+    OnTask_Rename() {
+  
+      if (this._taskName != "") {
+        this._ObjAssigntaskDTO.TypeOfTask = "Rename";
+        this._ObjAssigntaskDTO.TaskName = this._taskName;
+        this._ObjAssigntaskDTO.AssignId = this._AssignId;
+        this._ObjAssigntaskDTO.CreatedBy = this.Current_user_ID;
+        this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
+          (data) => {
+             this.assignOptions=false;
+            // this.OnCategoryClick(this._Categoryid, this._CategoryName); // rebinding
+             this.meeting_details();
+            let message: string = data['Message'];
+            this.notifyService.showInfo("Rename successfully", message);
+            (<HTMLInputElement>document.getElementById("spanTextbox_" + this._AssignId)).style.display = "none";
+            (<HTMLInputElement>document.getElementById("spnLabel_" + this._AssignId)).style.display = "block";
+            // (<HTMLInputElement>document.getElementById("div_" + this._AssignId)).style.display = "block";
+  
+          });
+      }
+      else {
+        this.notifyService.showInfo("Empty string cannot be save", "Please give some name.");
+      }
+    }
+   onCancelUnassign(id) {
+    
+    // (<HTMLInputElement>document.getElementById("div_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("spanTextboxUnassign_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("spnLabelUnassign_" + id)).style.display = "flex";
+  }
+
+  onCancel(id) {
+    this.assignOptions=false;
+    // (<HTMLInputElement>document.getElementById("div_" + id)).style.display = "block";
+    (<HTMLInputElement>document.getElementById("spanTextbox_" + id)).style.display = "none";
+    (<HTMLInputElement>document.getElementById("spnLabel_" + id)).style.display = "flex";
+  }
+
+  _Deletetask(id, name) { 
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
         mode: 'Todo_Delete',
@@ -5060,7 +5192,7 @@ ReshudingTaskandEvent() {
         });
 
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
-        this._meetingroom = this.Location_Type?true:false;
+        this._meetingroom = true
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
         //  document.getElementById("subtaskid").style.display = "none";
        
@@ -7821,6 +7953,22 @@ _azureMessage:any="";
 
 
 
+onPaste(event: ClipboardEvent): void { 
+    console.log('Paste triggered');
+  setTimeout(() => {
+    this.AgendaCharacterCount();
+  }, 0); // Wait for paste to complete and update model
+}
+
+
+onMainAgenda(event: ClipboardEvent): void { 
+    console.log('Paste triggered');
+  setTimeout(() => {
+    this.MainAgendaCount();
+  }, 0); // Wait for paste to complete and update model
+}
+
+
 
   agendacharacterCount:any;
 
@@ -8579,19 +8727,40 @@ onParticipantFilter(){
     }
   }
 
-  downloadSelectedFiles() {
-    this.selectedFiles.forEach(file => {
-      this.downloadFile(file.url, file.fileName);
-    });
 
-    this.clearSelectedCheckboxes();
-    this.selectedFiles = [];  // Clear selected files after download
+
+async downloadSelectedFiles() {
+  for (const file of this.selectedFiles) { 
+    const sasUrl = await this.getTemporaryUrl(file.url);
+    this.downloadFile(sasUrl, file.fileName);
   }
 
-  downloadFile(url: string, fileName: string) {
+  this.clearSelectedCheckboxes();
+  this.selectedFiles = [];
+}
+
+
+
+  async getTemporaryUrl(src: string): Promise<string> {
+    const expiryTime = new Date();
+    expiryTime.setMinutes(expiryTime.getMinutes() + 5);
+
+    try {
+      const sasUrl = await this.service.getSasUrl(src, expiryTime);
+      return sasUrl;
+    } catch (error) {
+      console.error(`Error fetching SAS URL for ${src}`, error);
+      return src; // fallback to original if SAS fails
+    }
+  }
+
+
+
+
+  downloadFile(url: string, fileName: string) {  
     fetch(url)
       .then(response => response.blob())
-      .then(blob => {
+      .then(blob => { 
         const fileURL = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = fileURL;
@@ -8900,75 +9069,85 @@ repeatEvent() {
     
    
         console.log(this.repeatDate,this.today);
-          if(this.repeatDate != this.today){
-            this._StartDate=null;
-            this.disablePreviousDate = null;
-            
-            setTimeout(()=>{
-              this._StartDate=this.disablePreviousTodayDate;
-              this.disablePreviousDate = this.disablePreviousTodayDate;
-
-           // valid starttimearr and endtimearr setting start.
-            let _inputdate=moment(this._StartDate,'YYYY-MM-DD'); 
-            let _currentdate=moment();
-            if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
-            {
-                const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
-                const index:number=this.StartTimearr.findIndex((item:any)=>{
-                    const t=moment(item,'h:mm A');
-                    const result=t>=ct;
-                    return result;
-                });
-                this.validStartTimearr=this.StartTimearr.slice(index);
-            } else
-
-            this.validStartTimearr=[...this.StartTimearr];
-            this.Time_End = [];
-            this.Time_End = [...this.AllEndtime,...this.AllEndtime];
-            let _from = this.Time_End.indexOf(this.Startts);
-            const eventmaxDuration=286;
-            let _to=_from+eventmaxDuration;
-            this.EndTimearr=this.Time_End.slice(_from,_to);
 
 
-            },0);
-         }else{
-            const nextDay = new Date();
-            nextDay.setDate(nextDay.getDate() + 1);
-            this._StartDate=null;
-            this.disablePreviousDate = null;
-            this.disablePreviousTodayDate = null;
-
-            setTimeout(()=>{
-              this._StartDate=nextDay;
-              this.disablePreviousDate =nextDay;
-              this.disablePreviousTodayDate = nextDay;
-              // valid starttimearr and endtimearr setting start.
-            let _inputdate=moment(this._StartDate,'YYYY-MM-DD'); 
-            let _currentdate=moment();
-            if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
-            {
-                const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
-                const index:number=this.StartTimearr.findIndex((item:any)=>{
-                    const t=moment(item,'h:mm A');
-                    const result=t>=ct;
-                    return result;
-                });
-                this.validStartTimearr=this.StartTimearr.slice(index);
-            } else
-
-            this.validStartTimearr=[...this.StartTimearr];
-            this.Time_End = [];
-            this.Time_End = [...this.AllEndtime,...this.AllEndtime];
-            let _from = this.Time_End.indexOf(this.Startts);
-            const eventmaxDuration=286;
-            let _to=_from+eventmaxDuration;
-            this.EndTimearr=this.Time_End.slice(_from,_to);
-
-
-
-            },0);
-         }
+       
+                if(this.repeatDate != this.today){
+                   this._StartDate=null;
+                   this.disablePreviousDate = null;
+                   this._SEndDate = null;
+                   this.minDate = null;
+                   this.disablePreviousTodayDate = null; 
+                   setTimeout(()=>{ 
+                     const TodayDate  = new Date();
+                     this._StartDate=TodayDate;
+                     this.disablePreviousDate = TodayDate;
+                     this._SEndDate = TodayDate;
+                     this.disablePreviousTodayDate= TodayDate;
+               
+                   let _inputdate=moment(this._StartDate,'YYYY-MM-DD'); 
+                   let _currentdate=moment();
+                   if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+                   {
+                       const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+                       const index:number=this.StartTimearr.findIndex((item:any)=>{
+                           const t=moment(item,'h:mm A');
+                           const result=t>=ct;
+                           return result;
+                       });
+                       this.validStartTimearr=this.StartTimearr.slice(index);
+                   } else
+       
+                   this.validStartTimearr=[...this.StartTimearr];
+                   this.Time_End = [];
+                   this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+                   let _from = this.Time_End.indexOf(this.Startts);
+                   const eventmaxDuration=286;
+                   let _to=_from+eventmaxDuration;
+                   this.EndTimearr=this.Time_End.slice(_from,_to);
+       
+       
+                   },0);
+                 }else{ 
+                   const nextDay = new Date();
+                   nextDay.setDate(nextDay.getDate() + 1);
+                   this._StartDate=null;
+                   this.disablePreviousDate = null;
+                   this._SEndDate = null;
+                   this.minDate = null;
+                   this.disablePreviousTodayDate = null; 
+       
+                   setTimeout(()=>{
+                     this._StartDate=nextDay;
+                     this.disablePreviousDate =nextDay;
+                     this._SEndDate = nextDay
+                   
+                     this.disablePreviousTodayDate= nextDay
+       
+                     // valid starttimearr and endtimearr setting start.
+                   let _inputdate=moment(this._StartDate,'YYYY-MM-DD'); 
+                   let _currentdate=moment();
+                   if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
+                   {
+                       const ct=moment(_currentdate.format('h:mm A'),'h:mm A');
+                       const index:number=this.StartTimearr.findIndex((item:any)=>{
+                           const t=moment(item,'h:mm A');
+                           const result=t>=ct;
+                           return result;
+                       });
+                       this.validStartTimearr=this.StartTimearr.slice(index);
+                   } else
+       
+                   this.validStartTimearr=[...this.StartTimearr];
+                   this.Time_End = [];
+                   this.Time_End = [...this.AllEndtime,...this.AllEndtime];
+                   let _from = this.Time_End.indexOf(this.Startts);
+                   const eventmaxDuration=286;
+                   let _to=_from+eventmaxDuration;
+                   this.EndTimearr=this.Time_End.slice(_from,_to);
+                   },0);
+                 }
+       
 
 
       this.Popuploading = false 
@@ -9122,16 +9301,15 @@ NewGetRecurrenceMeetings(meetings_HTR,MeetingValue){
   this._calenderDto.Status_type=meetings_HTR;
   this.CalenderService.GetRecurrenceMeetingsService(this._calenderDto).subscribe((data)=>{
     this.previousWithUpcoming_loader=false
+     
+     this.previousmeetings = JSON.parse(data['previousmeetings']);
+     this.upcomingmeetings = JSON.parse(data['upcomingmeetings']);
 
-     if(data['previousmeetings']){
-      this.previousmeetings = JSON.parse(data['previousmeetings']);  
+  
       this.previousmeetings.map(meetings => {
          meetings.Addguest=JSON.parse(meetings.Addguest)
       })
-
-
       this.previousmeetings.forEach(meeting => {
-
         if (meeting.Addguest.length > 3) {
           const remainingGuests = meeting.Addguest.slice(3);
           meeting.Addguest = meeting.Addguest.slice(0, 3);
@@ -9142,17 +9320,13 @@ NewGetRecurrenceMeetings(meetings_HTR,MeetingValue){
           meeting['RemainingGuests'] = [];
         }
       });
-
       this.totalpreviousmeetings=this.previousmeetings.length;
      
-     }else if(data['upcomingmeetings']){
-    
-      this.upcomingmeetings = JSON.parse(data['upcomingmeetings']);
+   
+
       this.upcomingmeetings.map(upmeetings=>{
         upmeetings.Addguest=JSON.parse(upmeetings.Addguest)
       })
-
-
       this.upcomingmeetings.forEach(meeting => {
         if (meeting.Addguest.length > 3) {
           const remainingGuests = meeting.Addguest.slice(3);
@@ -9165,24 +9339,36 @@ NewGetRecurrenceMeetings(meetings_HTR,MeetingValue){
       });
       this.upcomingmeetings.reverse()
       this.totalupcomingmeetings=this.upcomingmeetings.length;
-     }
+     
+
+
+
+   console.log(this.previousmeetings,'upcomingmeetings',this.upcomingmeetings)
+
+
+
+
+
+     var mergeAllData= [...this.previousmeetings,...this.upcomingmeetings];
+      mergeAllData = mergeAllData.sort((a, b) => new Date(a.Schedule_date).getTime() - new Date(b.Schedule_date).getTime());
+     const i = mergeAllData.findIndex(m => m.Schedule_date === this._StartDate);
+     
+     console.log(mergeAllData,'mergeAllData')
+    
+
 
       if( MeetingValue == 'Next'){
-       
-        const i = this.upcomingmeetings.findIndex(m => m.Schedule_date === this._StartDate);
-        const matchedNextScheduleId = this.upcomingmeetings[i + 1]?.Schedule_ID || this.upcomingmeetings[0]?.Schedule_ID;
+        const matchedNextScheduleId = mergeAllData[i + 1]?.Schedule_ID || mergeAllData[0]?.Schedule_ID;
         this.OnCardClickUpcoming(matchedNextScheduleId);
      
             
-      }else if(MeetingValue == 'Prev'){
-
-         const i = this.previousmeetings.findIndex(m => m.Schedule_date === this._StartDate);
-         const matchedPrevScheduleId = this.previousmeetings[i + 1]?.Schedule_ID || this.previousmeetings[0]?.Schedule_ID;
-         this.OnCardClickUpcoming(matchedPrevScheduleId);
+      }else if(MeetingValue == 'Prev'){ 
+         const matchedPrevScheduleId = mergeAllData[i - 1]?.Schedule_ID || mergeAllData[0]?.Schedule_ID;
+          this.OnCardClickUpcoming(matchedPrevScheduleId);
       }
 
 
-     console.log(this.previousmeetings,'upcomingmeetings',this.upcomingmeetings)
+    
         
   })
 }
@@ -10361,7 +10547,8 @@ assignTasksub1(){
 
       });
        this.checkedTaskNames = []
-      this.resetAssign()
+      this.resetAssign();
+       this.meeting_details();
       this.unassign_closeInfo();
      
 
@@ -10998,6 +11185,23 @@ isMini = false;
     this.privateMeeting = false;
     // this.formattedDayTime = null;
     // this.monthDateBinde = null;
+
+ console.log('<============================>')
+    this._StartDate=null;
+    this.disablePreviousDate = null;
+    this._SEndDate = null;
+    this.minDate = null;
+    this.disablePreviousTodayDate = null; 
+    setTimeout(()=>{ 
+      const TodayDate  = new Date();
+      this._StartDate=TodayDate;
+      this.disablePreviousDate = TodayDate;
+      this._SEndDate = TodayDate;
+      this.disablePreviousTodayDate= TodayDate;
+    },0)      
+
+
+    this.agendaInputs=undefined;
     this.Link_Details = null;
     this.Meeting_Id = null;
     this.Meeting_password = null;

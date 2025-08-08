@@ -241,7 +241,11 @@ export class StreamCalendarComponent implements OnInit {
     this.approvalObj = new ApprovalDTO();
   }
 
-
+onPaste(event: ClipboardEvent): void {
+  setTimeout(() => {
+    this.AgendaCharacterCount();
+  }, 0); // Wait for paste to complete and update model
+}
 
 
   onKeyPress() {
@@ -319,7 +323,7 @@ export class StreamCalendarComponent implements OnInit {
      this._SEndDate = moment().format("YYYY-MM-DD").toString();
 
      this.GetTimeslabfordate();
-    
+   
 
     tippy('#agenda-info-icon', {
       content: "Agenda is mandatory for a meeting, Please provide atleast 1.",
@@ -715,7 +719,19 @@ export class StreamCalendarComponent implements OnInit {
     document.getElementById("createEventTaskModal").classList.remove("show");
     document.getElementById("createEventTaskModalBackdrop").style.display = "none";
     document.getElementById("createEventTaskModalBackdrop").classList.remove("show");
-    
+   console.log('<============================>')
+    this._StartDate=null;
+    this.disablePreviousDate = null;
+    this._SEndDate = null;
+    this.minDate = null;
+    this.disablePreviousTodayDate = null; 
+    setTimeout(()=>{ 
+      const TodayDate  = new Date();
+      this._StartDate=TodayDate;
+      this.disablePreviousDate = TodayDate;
+      this._SEndDate = TodayDate;
+      this.disablePreviousTodayDate= TodayDate;
+    },0)      
     this.selectAction=false;
     this.mtgOnDays=[];
     this.privateMeeting = false;
@@ -3200,7 +3216,7 @@ selectAction:any;
           this.draftdata_meet = JSON.parse(data['Draft_meetingdata']);
           this.draftcount = this.draftdata_meet.length;
           this.filterDraft('date');
-          console.log(data,'draftdata_meet')
+          console.log(this.draftdata_meet,'draftdata_meet')
         }
         else {
           this.draftdata_meet = null;
@@ -4578,7 +4594,7 @@ DublicateTaskandEvent() {
         });
 
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
-        this._meetingroom = this.Location_Type?true:false;
+        this._meetingroom = true;
 
         this.Link_Details = this.EventScheduledjson[0]['Link_Details'];
 
@@ -4941,7 +4957,7 @@ ReshudingTaskandEvent() { debugger
         });
 
         this.Location_Type = (this.EventScheduledjson[0]['Location']);
-        this._meetingroom = this.Location_Type?true:false;
+        this._meetingroom = true;
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
         //  document.getElementById("subtaskid").style.display = "none";
        
@@ -5781,14 +5797,14 @@ repeatEvent() {
             this.disablePreviousDate = null;
             this._SEndDate = null;
             this.minDate = null;
-            setTimeout(()=>{
-              this._StartDate=this.disablePreviousTodayDate;
-              this.disablePreviousDate = this.disablePreviousTodayDate;
-              this._SEndDate = this.disablePreviousTodayDate;
-              // var repeatDate = this._SEndDate;
-              // this.minDate = this.repeatDate.toISOString().split('T')[0];
-
-            // valid starttimearr and endtimearr setting start.
+            this.disablePreviousTodayDate = null; 
+            setTimeout(()=>{ 
+              const TodayDate  = new Date();
+              this._StartDate=TodayDate;
+              this.disablePreviousDate = TodayDate;
+              this._SEndDate = TodayDate;
+              this.disablePreviousTodayDate= TodayDate;
+        
             let _inputdate=moment(this._StartDate,'YYYY-MM-DD'); 
             let _currentdate=moment();
             if(_inputdate.format('YYYY-MM-DD')==_currentdate.format('YYYY-MM-DD'))
@@ -5812,7 +5828,7 @@ repeatEvent() {
 
 
             },0);
-          }else{
+          }else{ 
             const nextDay = new Date();
             nextDay.setDate(nextDay.getDate() + 1);
             this._StartDate=null;
@@ -5825,8 +5841,7 @@ repeatEvent() {
               this._StartDate=nextDay;
               this.disablePreviousDate =nextDay;
               this._SEndDate = nextDay
-              // var repeatDates = this._SEndDate;
-              // this.minDate = repeatDates.toISOString().split('T')[0];
+            
               this.disablePreviousTodayDate= nextDay
 
               // valid starttimearr and endtimearr setting start.
@@ -6830,7 +6845,7 @@ BookmarkMeetingsList() {
     ((data) => {
 
           this.meetingbookmarks = JSON.parse(data['meetingbookmarks']);
-        
+          console.log(this.meetingbookmarks,'this.meetingbookmarks')
          
   })
 }
@@ -6886,14 +6901,16 @@ getDayReportSummary(){
        this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
       console.log("daySummaryReport:",this.PendingTasks);
       }
-     
 
+      // if(this.reportCount){
+      //   this.showLoader=true;
+      //   setTimeout(()=>{ this.showLoader=false; },5000)
+      // }      
       if(this.reportCount){
-        this.showLoader=true;
-        setTimeout(()=>{ this.showLoader=false; },5000)
-      }      
-   
+         this.notificationalertModal() 
+       }     
   })
+    
 }
 
 
@@ -6986,7 +7003,7 @@ dayScheduleJson(dayFromToday: number){
         }
      
 
-    console.log(selectedDate ,'selectedDate ')
+   
    if(this.teamsCalendar == 1 || this.teamsCalendar == 0){
        this.selectEmployee = this.Current_user_ID;
     }
@@ -6996,7 +7013,8 @@ dayScheduleJson(dayFromToday: number){
     this._calenderDto.startdate = selectedDate;
     this._calenderDto.enddate = selectedDate;
     this._calenderDto.SearchText= null
-    this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe((data) => {
+     console.log(this._calenderDto ,'Dayyyyyyy ')
+    this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe((data) => { debugger
        
         this.fetchDataEndTime = performance.now();
         this.fetchDataTime = this.fetchDataEndTime - this.fetchDataStartTime;
