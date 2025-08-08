@@ -465,7 +465,7 @@ tr.action-row:hover {
     padding: 10px 0px;
 }
 
-.picsum-img-wrapper .activity-report-content img{
+.picsum-img-wrapper .activity-report-content img {
     /* height: 210px; */
     /* max-height: 200px; */
     object-fit: contain;
@@ -473,13 +473,17 @@ tr.action-row:hover {
 }
 
 @media screen and (min-width : 1500px) {
-    .picsum-img-wrapper, .picsum-img-wrapper .activity-report-content {
+
+    .picsum-img-wrapper,
+    .picsum-img-wrapper .activity-report-content {
         height: 230px;
     }
 }
 
 @media screen and (min-width : 1600px) {
-    .picsum-img-wrapper, .picsum-img-wrapper .activity-report-content {
+
+    .picsum-img-wrapper,
+    .picsum-img-wrapper .activity-report-content {
         height: 280px;
     }
 
@@ -489,7 +493,9 @@ tr.action-row:hover {
 }
 
 @media screen and (min-width : 1700px) {
-    .picsum-img-wrapper, .picsum-img-wrapper .activity-report-content {
+
+    .picsum-img-wrapper,
+    .picsum-img-wrapper .activity-report-content {
         height: 300px;
     }
 
@@ -1011,12 +1017,13 @@ tr.action-row:hover {
 }
 
 
-.tm-link-redirect{
-  cursor: pointer;
+.tm-link-redirect {
+    cursor: pointer;
 }
-.tm-link-redirect:hover{
-  color: #1a73e8;
-  /* text-decoration: underline; */
+
+.tm-link-redirect:hover {
+    color: #1a73e8;
+    /* text-decoration: underline; */
 }
 
 .picsum-img-wrapper {
@@ -2657,16 +2664,17 @@ span.p-b-percent-count {
     align-items: center;
     justify-content: center;
     height: 35vh;
-  }
-  
+}
+
 .no-recentactivity-present .nra-image {
     width: 18%;
 }
-  
-.no-recentactivity-present .nra-label{
+
+.no-recentactivity-present .nra-label {
     color: #b2b3b3;
     font-weight: 400;
 }
+
 .upcoming-event-v2-item {
     position: relative;
 }
@@ -2716,6 +2724,7 @@ span.p-b-percent-count {
 .sch-evt-border-right {
     border-right: 1px solid #dadce0;
 }
+
 .sch-evt-line-clamp {
     overflow: hidden;
     display: -webkit-box;
@@ -2784,93 +2793,93 @@ span.p-b-percent-count {
 }
 
 #notificationalertModal {
-    transform: translate(-26%, -16%) scale3d(0, 0, 0);
+    transform: translate(-26%, -14%) scale3d(0, 0, 0);
     transition: transform 1.5s cubic-bezier(0.2, 0.9, 0.2, 1);
     display: block;
 }
 
 @media (min-height: 560px) {
     #notificationalertModal {
-        transform: translate(-26%, -17%) scale3d(0, 0, 0);
+        transform: translate(-26%, -14%) scale3d(0, 0, 0);
     }
 }
 
 @media (min-height: 600px) {
     #notificationalertModal {
-        transform: translate(-26%, -18%) scale3d(0, 0, 0);
+        transform: translate(-26%, -15%) scale3d(0, 0, 0);
     }
 }
 
 @media (min-height: 640px) {
     #notificationalertModal {
-        transform: translate(-26%, -19%) scale3d(0, 0, 0);
+        transform: translate(-26%, -16%) scale3d(0, 0, 0);
     }
 }
 
 @media (min-height: 680px) {
     #notificationalertModal {
-        transform: translate(-26%, -20%) scale3d(0, 0, 0);
+        transform: translate(-26%, -17%) scale3d(0, 0, 0);
     }
 }
 
 @media (min-height: 720px) {
     #notificationalertModal {
-        transform: translate(-26%, -21%) scale3d(0, 0, 0);
+        transform: translate(-26%, -18%) scale3d(0, 0, 0);
     }
 }
 
 @media (min-height: 740px) {
     #notificationalertModal {
-        transform: translate(-26%, -22%) scale3d(0, 0, 0);
+        transform: translate(-26%, -19%) scale3d(0, 0, 0);
     }
 }
 
 @media (min-height: 760px) {
     #notificationalertModal {
-        transform: translate(-26%, -23%) scale3d(0, 0, 0);
+        transform: translate(-26%, -20%) scale3d(0, 0, 0);
     }
 }
 
 @media (min-height: 780px) {
     #notificationalertModal {
-        transform: translate(-26%, -24%) scale3d(0, 0, 0);
+        transform: translate(-26%, -21%) scale3d(0, 0, 0);
     }
 }
 
 @media (min-height: 800px) {
     #notificationalertModal {
-        transform: translate(-26%, -25%) scale3d(0, 0, 0);
+        transform: translate(-26%, -22%) scale3d(0, 0, 0);
     }
 }
 
 @media (min-height: 820px) {
     #notificationalertModal {
-        transform: translate(-29%, -26%) scale3d(0, 0, 0);
+        transform: translate(-26%, -23%) scale3d(0, 0, 0);
     }
 }
 
 @media (min-height: 840px) {
     #notificationalertModal {
-        transform: translate(-29%, -27%) scale3d(0, 0, 0);
+        transform: translate(-26%, -24%) scale3d(0, 0, 0);
     }
 }
 
 @media (min-height: 860px) {
     #notificationalertModal {
-        transform: translate(-29%, -28%) scale3d(0, 0, 0);
+        transform: translate(-26%, -25%) scale3d(0, 0, 0);
     }
 }
 
 @media (min-height: 880px) {
     #notificationalertModal {
-        transform: translate(-30%, -29%) scale3d(0, 0, 0);
+        transform: translate(-26%, -26%) scale3d(0, 0, 0);
     }
 }
 
 
 @media (min-height: 940px) {
     #notificationalertModal {
-        transform: translate(-30%, -32%) scale3d(0, 0, 0);
+        transform: translate(-26%, -27%) scale3d(0, 0, 0);
     }
 }
 
@@ -3006,4 +3015,33 @@ span.p-b-percent-count {
     color: #ad0000;
     padding: 4px 8px;
     border-radius: 4px;
+}
+
+.accordion-pending-task-btn {
+    background-color: #f6f0ff;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    color: #3c4043;
+}
+
+.accordion-pending-task-btn:hover {
+    color: #3c4043;
+    background-color: #8e24aa1c;
+}
+
+.accordion-pending-task-count {
+    background-color: #8e24aa;
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-right: 2px;
 }

@@ -108,9 +108,6 @@
                                                 data-target="#pills-label" type="button" role="tab"
                                                 aria-controls="pills-label" aria-selected="false">Suggested</button>
                                         </li>
-                                         <div (click)="notificationalertModal()">
-                                            <button class="btn btn-port-all mr-2">Overdue</button>
-                                        </div>
                                     </ul>
                                     <ul class="nav nav-pills mb-3 d-flex" id="pills-tab" role="tablist">
                                         <div (click)="gotoCalendar()">
@@ -124,6 +121,15 @@
                                     aria-labelledby="pills-fav-tab">
                                     <!-- <div class="card-title">Upcoming Events</div> -->
                                     <div class="tab-scroll">
+                                        <div class="upcoming-event-v2 v2-border">
+                                            <a type="button" class="accordion-pending-task-btn position-relative" (click)="notificationalertModal()">
+                                            <span>
+                                                <span class="accordion-pending-task-count">5</span>
+                                                Overdue actions/tasks
+                                            </span>
+                                        </a>
+                                        </div>
+                                        
                                         <div class="upcoming-event-v2 v2-border" *ngFor="let item of scheduleItems" >
                                            
                                                 <div class="upcoming-event-v2-heading v2-p v2-border-bottom">
