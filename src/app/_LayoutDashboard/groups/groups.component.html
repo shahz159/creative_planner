@@ -78,7 +78,7 @@
 
                                 <span class="kt-inbox__subject w-100" [id]="'grp-name-editbox-'+group.gid" style="display: none;">
                                       <div class="d-flex align-items-center">
-                                          <textarea [(ngModel)]="newGroupNameTxt" (click)="$event.stopPropagation(); " type="text" class="form-control" (keydown.enter)="submitGroupNewName(group.gid)"></textarea>
+                                          <input [(ngModel)]="newGroupNameTxt" (click)="$event.stopPropagation(); " type="text" class="form-control" (keydown.enter)="submitGroupNewName(group.gid)">
                                           <div class="d-flex ml-3" id="button-addon4">
                                                 <button class=" btn btn-input-cat-action edit btn-sm py-0 px-2 mr-2" (click)="$event.stopPropagation(); submitGroupNewName(group.gid)">
                                                   <i class="fas fa-check mr-0"></i>
