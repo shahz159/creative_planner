@@ -53,6 +53,7 @@ import {
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
+import { Moment } from 'moment';
 
 
 export const MY_FORMATS = {
@@ -529,13 +530,13 @@ dayArr: any = [
       }
 
     });
-
+ debugger
 
     this._ObjCompletedProj = new CompletedProjectsDTO();
     this.ObjUserDetails = new UserDetailsDTO();
     this.ObjSubTaskDTO = new SubTaskDTO();
     this.ObjCategoryDTO = new CategoryDTO();
-    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate());
+    this.disablePreviousDate.setDate(this.disablePreviousDate.getDate()); this.disablePreviousDate.setHours(0,0,0,0);
     this.disableAfterStartDate.setDate(this.disableAfterStartDate.getDate());
     this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
     this.isTodoProjectsLoaded=false;
@@ -1687,15 +1688,21 @@ date_menuclo(dialogId:string){
   SelectedEmplList = [];
   _remarks: string = "";
 
-  EmployeeOnSelect(obj) {
-    this._SelectedEmpNo = obj['Emp_No'];
-    this.selectedEmployee = this._SelectedEmpNo;
-  }
 
-  EmployeeOnDeselect(obj) {
-    this._SelectedEmpNo = "";
-    this.selectedEmployee = this._SelectedEmpNo;
-  }
+  
+
+
+
+
+  // EmployeeOnSelect(obj) {
+  //   this._SelectedEmpNo = obj['Emp_No'];
+  //   this.selectedEmployee = this._SelectedEmpNo;
+  // }
+
+  // EmployeeOnDeselect(obj) {
+  //   this._SelectedEmpNo = "";
+  //   this.selectedEmployee = this._SelectedEmpNo;
+  // }
 
 
 
@@ -2870,26 +2877,41 @@ _alchr:boolean = false
 
 alertMaxAllocation() {
   if (this._StartDate == null || this._EndDate == null) {
-    this._message = "Start Date/End date missing!!"
+    this._message = "Start Date/End date missing!!";
+    this.maxAllocation=0;
+    this.totalWorkingDays=0;
+    this.totalOffDays=[];
   }
   else {
-    // this.start_dt = moment(this._StartDate).format("MM/DD/YYYY");
-    // this.end_dt = moment(this._EndDate).format("MM/DD/YYYY");
-    this.start_dt=new Date(this._StartDate);
-    this.end_dt=new Date(this._EndDate);
+  
+    this.start_dt=new Date(this._StartDate);  this.start_dt.setHours(0,0,0,0);
+    this.end_dt=new Date(this._EndDate);  this.end_dt.setHours(0,0,0,0);
 
-    console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
+      let total_duration_days=(Math.abs(moment(this.start_dt).diff(this.end_dt,'days'))+1);
+      let total_off=0;  
+      let total_working_days=0;
+      let total_off_dates:any=[];
 
-    var Difference_In_Time = this.start_dt.getTime() - this.end_dt.getTime();
-    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-    if(Difference_In_Days==0){
-      Difference_In_Days=-1;
-      this.maxAllocation = (-Difference_In_Days) * 10 / 1;
-    }
-    else{
-      this.maxAllocation = (-Difference_In_Days) * 10 / 1 +10;
-    }
-    console.log(this.start_dt,this.end_dt,this.maxAllocation,"allcoation")
+     const tempdate=new Date(this.start_dt); tempdate.setHours(0,0,0,0); 
+      while(tempdate<=this.end_dt)
+      {
+         const isWeekend=this.weekendPolicy[tempdate.getDay()];
+         if(isWeekend)
+         {
+           total_off+=(isWeekend=='full'?1:isWeekend=='half'?0.5:0);
+           if(isWeekend=='half'){  total_working_days+=1;   }
+           if(isWeekend=='full'){  total_off_dates.push({ date:tempdate.toString(), reason:'Weekend'}); }
+         }
+         else{
+           total_working_days+=1;
+         }
+         tempdate.setDate(tempdate.getDate()+1);
+      }
+
+       this.totalWorkingDays=total_working_days;
+       this.maxAllocation=Math.ceil((total_duration_days-total_off)*this.perDayAlhr_Limit);
+       this.totalOffDays=[...total_off_dates];
+
   }
 }
 
@@ -2906,11 +2928,14 @@ noStartDate : boolean = false
 
 maxDate:any
 setMaxDate(dateField){
+  if(this.selectedProjecttype=='011'){
       const d=new Date(dateField);
        d.setDate(d.getDate()+2);
       this.maxDate=d;
-
-      }
+  }
+  else 
+  this.maxDate=null;   
+}
 
 
 
@@ -3322,11 +3347,11 @@ else{
   // }
 
 
-  EmployeeOnSelecting(obj) {
-    this._SelectedEmpNo = obj;
-    this.selectedEmployee = this._SelectedEmpNo;
+  // EmployeeOnSelecting(obj) {
+  //   this._SelectedEmpNo = obj;
+  //   this.selectedEmployee = this._SelectedEmpNo;
 
-  }
+  // }
 
 
   sweetAlert() {
@@ -8051,6 +8076,7 @@ filterDraft(type : 'date'|'meeting'):void{
        case 'EMPLOYEES':{
         const rmindx=this.employeSelect.findIndex(em=>em==item);
         this.employeSelect.splice(rmindx,1);
+        this.prepareWeekendPolicy2();
        };break;
        case 'PORTFOLIOS':{
         const rmindx=this.port_id.findIndex(ptf=>ptf==item);
@@ -8068,6 +8094,7 @@ filterDraft(type : 'date'|'meeting'):void{
       this.employeSelect = [];
       
       this.employeSelect=[...this.employeSelect,...this.selectedItems];
+      this.prepareWeekendPolicy2();
     }
     else if(this.multiselect_dialog=='PORTFOLIOS'){
       if (!this.port_id)   // if port_id is null,undefined,''
@@ -8131,6 +8158,201 @@ filterDraft(type : 'date'|'meeting'):void{
 // new popup selection dialog end.
 
 
+// project/task date validation.
+weekendPolicy2:{ [key:number]:'full'|'half'  }={  6:'full', 0:'full'   };  // 0- sunday, 1-monday, 2-tuesday, .... 6-saturday
+total_WorkingDays:number=0; // from start date and end date selected. it gives total working days in that duration.
+total_OffDays:{date:string, reason:string}[]=[];  // total off days in the selected start date and end date duration.
+
+prepareWeekendPolicy2(){
+   const selected_emps=this.EmployeeList.filter((ob)=>this.employeSelect.includes(ob.Emp_No));
+   let emps_comp=selected_emps.map(ob=>ob.Emp_Comp_No);
+   emps_comp=Array.from(new Set(emps_comp));
+   if(emps_comp.length==1){
+      this.weekendPolicy2=(emps_comp[0]==78?({  6:'full', 0:'full'   }):({5:'full'}));
+   }else{
+      this.weekendPolicy2={5:'full'};
+   }
+}
+
+
+isDateSelectable2=(date:Moment|null):boolean=>{  
+   if(!date)
+   { return false; }
+   else{
+    return this.weekendPolicy2?.[date.day()]=='full'?false:true;
+   }
+} 
+
+
+onProjectStartDateChanged(){
+ if(this._StartDate){
+  //
+     const sdate=new Date(this._StartDate); sdate.setHours(0,0,0,0);
+     if(this._EndDate){ // if end date also exists.
+            const edate=new Date(this._EndDate); edate.setHours(0,0,0,0);
+            this._EndDate=edate<sdate?null:this._EndDate;
+    }
+    
+    this.setMaxDate(this._StartDate);
+ }
+
+ this.calculateTotalWorkingDays();
+ 
+}
+
+onProjectEndDateChanged(){
+
+   if(this._StartDate&&this._EndDate){
+      const sdate=new Date(this._StartDate); sdate.setHours(0,0,0,0);
+      const edate=new Date(this._EndDate);  edate.setHours(0,0,0,0);
+      const endDateAligned=edate>=sdate;
+      // const isWorkingday=this.weekendPolicy?.[edate.getDay()]=='full'?false:true; // is selected action end date violating weekend policy or not.
+      // &&isWorkingday
+      if(!(endDateAligned)){
+        this._EndDate=null;
+      }
+  }
+
+  this.calculateTotalWorkingDays();
+}
+
+
+calculateTotalWorkingDays(){ 
+  if(this._StartDate&&this._EndDate)
+  {
+      const pstart_dt=new Date(this._StartDate); pstart_dt.setHours(0,0,0,0);
+      const pend_dt=new Date(this._EndDate); pend_dt.setHours(0,0,0,0);
+
+      let total_duration_days=Math.abs(moment(pstart_dt).diff(pend_dt,'days'))+1;
+      let total_off=0;  
+      let total_working_days=0;
+      let total_off_dates:any=[];
+
+      const tempdate=new Date(pstart_dt); tempdate.setHours(0,0,0,0); 
+      while(tempdate<=pend_dt)
+      {
+        const isWeekend=this.weekendPolicy2[tempdate.getDay()]
+        if(isWeekend)
+        {
+           total_off+=(isWeekend=='full'?1:isWeekend=='half'?0.5:0);
+           if(isWeekend=='half'){  total_working_days+=1;   }  // half day is also a working day.
+           if(isWeekend=='full'){  total_off_dates.push({ date:tempdate.toString(), reason:'Weekend'}); }
+        }
+        else{
+           total_working_days+=1;
+        }
+
+         tempdate.setDate(tempdate.getDate()+1);
+      }
+
+       this.total_WorkingDays=total_working_days;
+       this.total_OffDays=[...total_off_dates];
+  }
+  else{
+     this.total_WorkingDays=0;
+     this.total_OffDays=[];
+  }
+}
+
+
+//
+
+
+// action to project date validation
+
+weekendPolicy:{ [key:number]:'full'|'half'  }={  6:'full', 0:'full'   };  // 0- sunday, 1-monday, 2-tuesday, .... 6-saturday
+perDayAlhr_Limit:number=8;  // per day allocatable hrs limit. 8 hrs 
+totalWorkingDays:number=0; // from start date and end date selected. it gives total working days in that duration.
+totalOffDays:{date:string, reason:string}[]=[];  // total off days in the selected start date and end date duration.
+
+EmployeeOnSelect(obj){
+    //1. store selected value. 
+     this.selectedEmpNo=obj['Emp_No'];
+
+    //2. update weekendpolicy and Perday limit based on selected emp.
+      this.weekendPolicy=obj.Emp_Comp_No=='400'?{ 6:'full',0:'full' }:{ 5:'full'};
+      this.perDayAlhr_Limit=obj.Emp_Comp_No=='400'?8.5:8;
+
+      //3.validate startdate and enddate if present.   since dates are connected to weekend policy.
+     if(this._StartDate&&this._EndDate){
+       const start_dt_=new Date(this._StartDate);
+       const end_dt_=new Date(this._EndDate);
+       if(this.weekendPolicy[start_dt_.getDay()]||this.weekendPolicy[end_dt_.getDay()]){
+         this._StartDate=null;
+         this._EndDate=null;
+         this._allocated=null; 
+         this.maxAllocation=0;
+         this.totalWorkingDays=0;
+         this.totalOffDays=[];
+
+       }
+     }
+     else{ this._StartDate=null; 
+           this._EndDate=null; 
+           this._allocated=null;  
+           this.maxAllocation=0; 
+           this.totalWorkingDays=0; 
+           this.totalOffDays=[];  
+          } 
+}
+
+
+isDateSelectable=(date:Moment|null):boolean=>{  
+   if(!date)
+   { return false; }
+   else{
+    return this.weekendPolicy?.[date.day()]=='full'?false:true;
+   }
+} 
+
+
+
+
+
+ onActionStartDateChanged(){
+debugger
+  if(this._StartDate){
+
+      const sdate=new Date(this._StartDate); sdate.setHours(0,0,0,0);
+      const notPastDate=sdate>=this.disablePreviousDate;   // is selected action start date < current date or not.  // disablePreviousDate is current date.
+      const isWorkingday=this.weekendPolicy?.[sdate.getDay()]=='full'?false:true; // is selected action start date violating weekend policy or not.
+    
+      if((notPastDate&&isWorkingday)){  // when start date is valid.
+
+        if(this._EndDate){ // if end date also exists.
+            const edate=new Date(this._EndDate); edate.setHours(0,0,0,0);
+            this._EndDate=edate<sdate?null:this._EndDate;
+        }
+      }
+      else{  // when start date is invalid.
+        this._StartDate=null;  
+      }
+
+  }
+   
+   this.alertMaxAllocation();   
+ }
+
+
+ onActionEndDateChanged(){
+  debugger
+  if(this._StartDate&&this._EndDate){
+      const sdate=new Date(this._StartDate); sdate.setHours(0,0,0,0);
+      const edate=new Date(this._EndDate);  edate.setHours(0,0,0,0);
+      const endDateAligned=edate>=sdate;
+      const isWorkingday=this.weekendPolicy?.[edate.getDay()]=='full'?false:true; // is selected action end date violating weekend policy or not.
+      
+      if(!(endDateAligned&&isWorkingday)){
+        this._EndDate=null;
+      }
+  }
+   
+  //  this.hasSameDateActions();
+   this.alertMaxAllocation(); 
+ } 
+
+
+//
 
 }
 
