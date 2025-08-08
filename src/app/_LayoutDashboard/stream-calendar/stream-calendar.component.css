@@ -6409,3 +6409,45 @@ button.btn.btn-viewall:hover {
 .sch-evt-item.sch-evt-item-past .sch-evt-e-c {
     color: #c5c5c5;
 }
+
+
+.txt-expnd-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  border-radius: 3px;
+  border: 0;
+  background-color: #edededc2;
+}
+
+.txt-expnd-btn svg {
+  stroke: #898989;
+  stroke-width: 2px;
+}
+
+.txt-expnd-btn:hover {
+  background-color: #eaeaea;
+}
+
+.txt-expnd-btn:hover svg {
+  stroke-width: 2.6px;
+}
+
+
+.compl-remarks-span {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  max-height: 3em;
+  line-height: 1.5em;
+  cursor: default;
+
+}
+
+/* .compl-remarks-span.upto-1{
+    -webkit-line-clamp: 1;
+} */
+

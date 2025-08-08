@@ -705,8 +705,8 @@ PreviousCount:any;
       this.User_Scheduledjson = JSON.parse(this.EventScheduledjson[0].Add_guests);
       this.SM_count = (this.EventScheduledjson[0]['smailcount']);
       this.isRepeat= this.EventScheduledjson[0].isRepeat;
-      // console.log(this.isRepeat,'isRepeat');
-
+    
+   
       this.totalUser_Scheduledjson=this.User_Scheduledjson.length;
       this.user_linkedOnMtg=this.User_Scheduledjson?this.User_Scheduledjson.map(user => user.stringval):[];
 
@@ -797,7 +797,7 @@ PreviousCount:any;
       this.totalonlineUser = count.filter(u => u.onlineStatus === "Start").length;
 
 
-      // console.log(this.totalonlineUser,'onlineUser');
+      console.log(this.Organizer,'this.Organizer');
       
       this.main_actualDuration = this.EventScheduledjson[0].actual_duration;
 
@@ -4347,7 +4347,7 @@ debugger
 
                 this.assigncount = this.ActionedAssigned_Josn.length;
                 this.todocount = this._TodoList.length + this.ActionedAssigned_Josn.length;
-                console.log(this._CompletedList,'this._CompletedList')
+              
 
                 this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
                 this.FiterEmployee = this.EmployeeList;
@@ -4361,7 +4361,7 @@ debugger
                     // Return true for objects that match your conditions
                     return isCreatedBy || isInOrderedEmpNos;
                   });
-
+                   console.log(this.filteredEmployees,'this._CompletedList')
                   // Remove the filtered objects from the original array
                   this.FiterEmployee = this.FiterEmployee.filter((employee) => {
                     const isCreatedBy = employee.TM_DisplayName === this.Createdby;
@@ -10154,6 +10154,7 @@ updateTask(index: number) {
     let arrtype;
     let selectedinto;
     let property_name;
+
     if(this.multiselect_dialog=='EMPLOYEES')
     {
        keyname='DisplayName';
@@ -10168,7 +10169,7 @@ updateTask(index: number) {
        selectedinto='port_id';
        property_name='Portfolio_ID';
     }
-
+  
 
     const result=arrtype.filter(item=>{
       const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
@@ -10177,7 +10178,23 @@ updateTask(index: number) {
       nameMatched=item[keyname].toLowerCase().trim().includes(_searchText.toLowerCase().trim())
       return nameMatched;
     });
+    
     this.filtered_list=result;
+     console.log( this.filtered_list,'EmployeeList')
+     if(this.multiselect_dialog=='EMPLOYEES')
+      {
+       const ids=new Set(this.User_Scheduledjson.map(u=>u.stringval))
+      //  this.filtered_list=[{name:"Meeting Attendees"},...this.filtered_list.filter(u=>ids.has(u.Emp_No)),{name:"Other users"},... this.filtered_list.filter(u=>!ids.has(u.Emp_No))];
+       this.filtered_list = [
+          ...(this.filtered_list.filter(u => ids.has(u.Emp_No)).length 
+                ? [{ name: "Meeting Attendees" }, ...this.filtered_list.filter(u => ids.has(u.Emp_No))] 
+                : []),
+          ...(this.filtered_list.filter(u => !ids.has(u.Emp_No)).length 
+                ? [{ name: "Other users" }, ...this.filtered_list.filter(u => !ids.has(u.Emp_No))] 
+                : [])
+        ];
+      }
+    console.log(this.filtered_list,'filtered_list'); 
   }
 
 

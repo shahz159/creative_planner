@@ -4061,13 +4061,23 @@
                             <div class="custom-evt-tsk-item-icon">
                                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M4 12H20M4 8H20M4 16H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
                             </div>
-                            <div class="custom-evt-tsk-item-control">
-                                <!-- <span class="custom-evt-tsk-item-description"  [innerHTML]="item.Description"></span> -->
-                                <span class="custom-evt-tsk-item-description"
+                            <div class="custom-evt-tsk-item-control" #prjDescBx2 class="compl-remarks-span">
+                                <span class="custom-evt-tsk-item-description"  [innerHTML]="item.Description"></span>
+                                <!-- <span class="custom-evt-tsk-item-description"
                                     [innerHTML]="isExpanded ? item.Description : (item.Description | slice:0:150) + (item.Description.length > 150 ? '...' : '')"
                                     (click)="isExpanded = !isExpanded"  style="cursor: pointer;">
-                                 </span>
+                                 </span> -->
                             </div>
+
+                                <button title="show full" *ngIf="prjDescBx2.scrollHeight>prjDescBx2.clientHeight" class="txt-expnd-btn align-self-end" (click)="prjDescBx2.classList.remove('compl-remarks-span'); lessbtn2.classList.remove('d-none');">
+                                    <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                </button>
+                                <button #lessbtn2 title="show less" class="txt-expnd-btn align-self-end d-none" (click)="prjDescBx2.classList.add('compl-remarks-span'); lessbtn2.classList.add('d-none');">
+                                    <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                </button>
+
+
+
                         </div>
 
 

@@ -8599,7 +8599,7 @@ button.btn.btn-secondary.Custom-button {
 
 .list-sep-name {
     color: #0000008a;
-    margin-bottom: 0.5rem;
+    /* margin-bottom: 0.5rem; */
 }
 
 #projectmodals li.modal-project-list-item {
