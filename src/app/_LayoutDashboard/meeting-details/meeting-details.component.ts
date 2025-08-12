@@ -453,7 +453,7 @@ export class MeetingDetailsComponent implements OnInit {
   prevUpcomToday = new Date();
 
 
-  Repeat_Meeting() {  debugger
+  Repeat_Meeting() {  
    
     document.getElementById("repeatModal").classList.add("kt-quick-active--on");
     document.getElementById("rightbar-overlay").style.display = "block";
@@ -661,8 +661,8 @@ totalonlineUser:any;
 SM_count:any;
 isRepeat:any;
 PreviousCount:any;
-
-
+accessDenied:any;
+racisUserIds:any;
 
   
   live_activ = [
@@ -757,11 +757,24 @@ PreviousCount:any;
         this.meetingAdmin = false
       }
 
-     
-      if (this.User_Scheduledjson.length > 0) {
-        const racisUserIds = this.User_Scheduledjson.map((user: any) => user.stringval);
-        this.userFound = racisUserIds.includes(this.Current_user_ID);
-      }
+      this.Organizer = this.EventScheduledjson[0].Organizer;
+      this.Created_date = this.EventScheduledjson[0].Created_date;
+
+      this.accessDenied = [this.Organizer[0], ...this.User_Scheduledjson];
+      this.totalonlineUser = this.accessDenied.filter(u => u.onlineStatus === "Start").length;
+
+      // if (this.accessDenied.length > 0) { 
+      debugger 
+        this.racisUserIds = this.accessDenied.filter((user: any) => user.stringval.toString() == this.Current_user_ID);
+        var userAccessID = this.racisUserIds.filter((data: any) => data.Schedule_Id.toString() == this.Schedule_ID);
+        // var userAccessID= racisUserIds.includes(this.Current_user_ID);
+      
+        if(this.racisUserIds.length>0 && userAccessID.length>0){
+           this.userFound = true
+        }
+      
+      // }
+      console.log(this.userFound,'userFound')
 
      setTimeout(()=>{ 
       this.taskcount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
@@ -790,14 +803,7 @@ PreviousCount:any;
       var x = this.Agendas_List.length;
       
       this.Createdby = this.EventScheduledjson[0].Created_by;
-      this.Organizer = this.EventScheduledjson[0].Organizer;
-      this.Created_date = this.EventScheduledjson[0].Created_date;
-
-      var count = [this.Organizer[0], ...this.User_Scheduledjson];
-      this.totalonlineUser = count.filter(u => u.onlineStatus === "Start").length;
-
-
-      console.log(this.Organizer,'this.Organizer');
+    
       
       this.main_actualDuration = this.EventScheduledjson[0].actual_duration;
 
@@ -909,7 +915,12 @@ PreviousCount:any;
 
 
 
-
+accessDeniedView(){ 
+var racisScheduleIds=  this.racisUserIds[0].Schedule_Id;
+  let name = 'Meeting-Details';
+  let url = `${document.baseURI}${name}/${racisScheduleIds}`;
+  window.location.href = url; // Opens in the current tab
+}
 
 
 
@@ -1169,19 +1180,20 @@ PreviousCount:any;
       }, 2000);
 
     const formatTime = time => time ? new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase() : null;
-debugger
+
     this._calenderDto.Emp_No = this.Current_user_ID;  
     this._calenderDto.Schedule_ID = this.Scheduleid; 
     this._calenderDto.Status = this.status_Type;
     this._calenderDto.StartTime = this.startTime == undefined ? null : formatTime(this.startTime);
     this._calenderDto.Start_time = this.currentTime; 
     this._calenderDto.EndTime = this.endTime == undefined ? null : formatTime(this.endTime); 
-    // console.log(this._calenderDto,'time of meeting');  
-    this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe
-      ((data) => {
-
-      }
-      )
+    // console.log(this._calenderDto,'time of meeting'); 
+    
+    debugger
+    if(this.userFound){
+      this.CalenderService.GetInsertAttendeeMeetingTime(this._calenderDto).subscribe((data) => {
+       
+      }) }
   }
 
 
@@ -1244,7 +1256,7 @@ debugger
   }
 
 
-  pauseTimer(LastPauseTime?, exact_start?, pausetime?) { debugger
+  pauseTimer(LastPauseTime?, exact_start?, pausetime?) { 
     clearInterval(this.timerAttendees);
   
     if (LastPauseTime && exact_start) {
@@ -1278,7 +1290,7 @@ debugger
   
   
 
-  resumeTimer(from?,pauseTimes?) {  debugger
+  resumeTimer(from?,pauseTimes?) {  
     if (from) {
       const now = new Date();
       const [h, m, s] = from.split(':').map(Number);
@@ -1544,7 +1556,7 @@ debugger
   }
 
 
-  AddDMS_meetingreport() { debugger
+  AddDMS_meetingreport() { 
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
@@ -1840,7 +1852,7 @@ debugger
   selectedValue: number;
   currentEventId: any
 
-  getAllEvents() { debugger
+  getAllEvents() { 
 
     this.currentEventId = this.selectedValue;
 
@@ -2224,7 +2236,7 @@ debugger
 
 
 
-  Addproject_meetingreport() {  debugger
+  Addproject_meetingreport() { 
 
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
@@ -2535,6 +2547,7 @@ debugger
     }else{
       this.mainAgendaCount =  null;
     }
+    this.agendasExists = false;
   }
 
   
@@ -2543,12 +2556,17 @@ debugger
   allAgendas: any = [];
   agendasAdded: number = 0;
   status_type: any;
-
+  agendasExists:any;
 
 
   addAgenda() {
 
-    if (this.mainAgendaCount > 0 && this.mainAgendaCount < 101) {
+  this.agendasExists = [...this.Agendas_List].some(item => item.Agenda_Name?.trim() === this.agendaInput.trim());
+
+  console.log(this.agendasExists,'agendasExists')
+
+
+    if (this.mainAgendaCount > 0 && this.mainAgendaCount < 101 && !this.agendasExists) {
       if (this.agendaInput && this.agendaInput.trim().length > 0) {
         this.agendasAdded += 1;
         const agenda = {
@@ -2565,9 +2583,7 @@ debugger
         this._calenderDto.Emp_No = this.Current_user_ID;
 
 
-
-        this.CalenderService.NewAddAgendas(this._calenderDto).subscribe
-          (data => {
+        this.CalenderService.NewAddAgendas(this._calenderDto).subscribe(data => {
             this.meeting_details();
             // this.notifyService.showSuccess("Agenda added successfully ", '');
           })
@@ -3686,7 +3702,7 @@ onFileChange(event) {
       const frmData = new FormData();
 
 
-debugger
+
    
       if (this._lstMultipleFiales.length > 0 || this.RemovedFile_id.length > 0) {
         frmData.append("Attachment", "true");
@@ -4350,6 +4366,7 @@ debugger
               
 
                 this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
+                console.log(this.EmployeeList,'this.EmployeeList')
                 this.FiterEmployee = this.EmployeeList;
      
                  const orderedEmpNos = new Set(this.orderedItems.map(item => item.stringval));
@@ -4361,7 +4378,7 @@ debugger
                     // Return true for objects that match your conditions
                     return isCreatedBy || isInOrderedEmpNos;
                   });
-                   console.log(this.filteredEmployees,'this._CompletedList')
+               
                   // Remove the filtered objects from the original array
                   this.FiterEmployee = this.FiterEmployee.filter((employee) => {
                     const isCreatedBy = employee.TM_DisplayName === this.Createdby;
@@ -4392,7 +4409,7 @@ debugger
         this._ObjAssigntaskDTO.AssignId = id;
         this._ObjAssigntaskDTO.CategoryId = 2411;
         this.ProjectTypeService._InsertOnlyTaskServie(this._ObjAssigntaskDTO).subscribe(
-          (data) => { debugger
+          (data) => {
             // this._TodoList = JSON.parse(data['Jsonmeeting_Json']);
             // this._CompletedList = JSON.parse(data['CompletedList']);
 
@@ -4700,7 +4717,7 @@ assignOptions:any = false;
         this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
         this.showAttendeeNotify = data.AdminMeeting_Status;
 
-      //  console.log(this.showAttendeeNotify,'showAttendeeNotify')
+       console.log(this.showAttendeeNotify,'showAttendeeNotify')
 
         if (this.meetingStarted || this.meetingStarted != true) {
       
@@ -6048,7 +6065,7 @@ sortbyCurrent_Time(){
 
 
   // }
-  selectStartDate(event) { debugger
+  selectStartDate(event) { 
 
     this._StartDate = event;
     let sd = event.format("YYYY-MM-DD").toString();
@@ -7980,15 +7997,20 @@ onMainAgenda(event: ClipboardEvent): void {
     }else{
       this.agendacharacterCount =  null;
     }
+    this.allAgendasExists=false;
   }
 
 
 
   agendaInputs: string | undefined;
+  allAgendasExists:any;
   // allAgendas: any = [];
   // agendasAdded: number = 0;
   addAgendas() {
-    if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101) {
+
+  this.allAgendasExists = [...this.allAgendas].some(item => item.name?.trim() === this.agendaInputs.trim());
+
+    if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101 && !this.allAgendasExists) {
       this.agendasAdded += 1;
       const agenda = {
         index: this.agendasAdded,
@@ -8012,7 +8034,7 @@ onMainAgenda(event: ClipboardEvent): void {
   }
 
 
-  editAgendas(index: number) { debugger
+  editAgendas(index: number) { 
     $(`#agendas-label-${index}`).addClass('d-none');
     $(`#agendas-text-field-${index}`).removeClass('d-none');
     $(`#agendas-text-field-${index}`).focus();
@@ -8434,7 +8456,7 @@ projectmodal(modaltype:'project'|'portfolio'|'S Mail'|'participant'){
 
 
 
-  keepChoosedItems(){  debugger
+  keepChoosedItems(){ 
     switch(this.projectmodaltype)
     {
         case 'project':{
@@ -8871,7 +8893,7 @@ async downloadSelectedFiles() {
       const date = new Date(d1.getTime());
       this.daysSelectedII = this.AllDatesSDandED.filter(x => x.Date == (moment(date).format(format2)));
     }
-debugger
+
    // new code start 69
 
    if(this._StartDate == this.disablePreviousTodayDate){
@@ -8897,7 +8919,7 @@ debugger
 
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
     if (finalarray.length > 0) {
-      finalarray.forEach(element => { debugger
+      finalarray.forEach(element => { 
  
    
 
@@ -9571,7 +9593,11 @@ GetMeetingActivity(){
 
   this.approvalservice.NewGetMeetingActivity(this.approvalObj).subscribe((data)=>{
   this.allActivityList=JSON.parse(data[0].ActivityList);
-    // console.log(this.allActivityList,'allActivityList725727275');
+  // console.log(this.allActivityList,'allActivityList725727275');
+
+  this.allActivityList.forEach(o => {
+    ["Old_Value", "New_Value"].forEach(k => o[k] = o[k]?.replace(/^"\s*|\s*"$/g, ""));
+  });
 
   this.activityLoader=true
 
@@ -9594,8 +9620,6 @@ GetMeetingActivity(){
     }));
 
 
-
-
   this.allActivityList.forEach(activity => {
   ['Old_Value', 'New_Value'].forEach(key => {
     if (typeof activity[key] === 'string') {
@@ -9615,13 +9639,11 @@ GetMeetingActivity(){
 
 
 
-
 this.allActivityList.forEach(item => {
   if (Array.isArray(item.New_Value) && Array.isArray(item.New_Value[0])) {
     item.New_Value = item.New_Value[0];
   }
 });
-
 
 
 // Link details undefined subjects start
@@ -9655,24 +9677,14 @@ this.allActivityList.forEach(activity => {
  
     this.meetingStartedTime = this.allActivityList.find(y=>y.Value === 'Meeting Started')?.Modified_date;
   
-      // console.log(this.meetingStartedTime,'this.meetingStartedTime');
-
-  //  this.allActivityList.forEach(activity => {
-  //     if (activity.Value === "Joined meeting" || activity.Value === "Meeting Started" || activity.Value === "Meeting Created" || activity.Value === "Meeting left") {
-  //       const profile = this.UserProfile?.find(user => user.stringval == activity.Modified_by);
-  //       if (profile) activity.UserProfile = profile.UserProfile;
-  //     }
-  //   });
-
-
     if(this.isFiltered ==false){
     this.filteredActivityList = this.allActivityList
     }
    
-
+    // console.log(this.filteredActivityList,'filteredActivityList');
   })
   
-  // console.log(this.filteredActivityList,'filteredActivityList');
+  
 }
 
 
@@ -10170,7 +10182,7 @@ updateTask(index: number) {
        property_name='Portfolio_ID';
     }
   
-
+   console.log(arrtype,'arrtype')
     const result=arrtype.filter(item=>{
       const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
       let nameMatched:boolean=false;
@@ -10179,13 +10191,14 @@ updateTask(index: number) {
       return nameMatched;
     });
     
+
+ 
     this.filtered_list=result;
-     console.log( this.filtered_list,'EmployeeList')
+   
      if(this.multiselect_dialog=='EMPLOYEES')
       {
        const ids=new Set(this.User_Scheduledjson.map(u=>u.stringval))
-      //  this.filtered_list=[{name:"Meeting Attendees"},...this.filtered_list.filter(u=>ids.has(u.Emp_No)),{name:"Other users"},... this.filtered_list.filter(u=>!ids.has(u.Emp_No))];
-       this.filtered_list = [
+     this.filtered_list = [
           ...(this.filtered_list.filter(u => ids.has(u.Emp_No)).length 
                 ? [{ name: "Meeting Attendees" }, ...this.filtered_list.filter(u => ids.has(u.Emp_No))] 
                 : []),
@@ -11217,7 +11230,7 @@ isMini = false;
       this.disablePreviousTodayDate= TodayDate;
     },0)      
 
-
+    this.allAgendasExists=false;
     this.agendaInputs=undefined;
     this.Link_Details = null;
     this.Meeting_Id = null;
@@ -11256,7 +11269,7 @@ isMini = false;
 
 
 
-   eventtaskitemtimeModal(){ debugger
+   eventtaskitemtimeModal(){
   
       document.getElementById("eventtaskitemtimeModal").style.display = "block";
       document.getElementById("eventtaskitemtimeModal").classList.add("show");

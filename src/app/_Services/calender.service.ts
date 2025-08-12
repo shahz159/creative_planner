@@ -90,14 +90,14 @@ export class CalenderService {
     this.obj_CalenderDTO.Search_text = obj.Search_text;
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetSearchResults", this.obj_CalenderDTO);
   }
-  NewGetcompleted_meeting(obj:CalenderDTO){ debugger
+  NewGetcompleted_meeting(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
 
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetcomplte_meeting", this.obj_CalenderDTO);
   }
 
-  Newinsertuser_meetingreport(obj:CalenderDTO){  debugger
+  Newinsertuser_meetingreport(obj:CalenderDTO){ 
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     this.obj_CalenderDTO.User_list = obj.User_list.toString();
@@ -122,7 +122,7 @@ export class CalenderService {
 
 
 
-  NewGet_previousMeetingNotes(obj:CalenderDTO){ debugger
+  NewGet_previousMeetingNotes(obj:CalenderDTO){ 
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Emp_No = obj.Emp_No;
     return this.http.post(this.rootUrl + "CalenderAPI/NewGet_previousMeetingNotes", this.obj_CalenderDTO);
@@ -135,7 +135,7 @@ export class CalenderService {
     this.obj_CalenderDTO.EndTime = obj.EndTime;
     return this.http.post(this.rootUrl + "CalenderAPI/Newupdatetimeanddate_meetingreportco", this.obj_CalenderDTO);
   }
-  NewGetMeeting_report(obj:CalenderDTO){ debugger
+  NewGetMeeting_report(obj:CalenderDTO){
     this.obj_CalenderDTO.Schedule_ID = obj.Schedule_ID;
     this.obj_CalenderDTO.Note = obj.Note;
     this.obj_CalenderDTO.Action_item = obj.Action_item;

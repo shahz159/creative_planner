@@ -4135,6 +4135,11 @@ span.part-count {
     border-bottom: 2px solid #ff6256 !important;
 }
 
+.error-borderbottom-Agendas {
+    border-bottom: 2px solid #ff6256 !important;
+}
+
+
 .error-border,
 .error-date .input-group-text,
 .error-date .form-control,
@@ -6451,3 +6456,12 @@ button.btn.btn-viewall:hover {
     -webkit-line-clamp: 1;
 } */
 
+.error-container {
+    display: flex;
+    align-items: center;
+    color: #d93025;
+    /* Google-style red color */
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    margin-top: 4px;
+}

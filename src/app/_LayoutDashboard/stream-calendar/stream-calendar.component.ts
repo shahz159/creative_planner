@@ -731,7 +731,8 @@ onPaste(event: ClipboardEvent): void {
       this.disablePreviousDate = TodayDate;
       this._SEndDate = TodayDate;
       this.disablePreviousTodayDate= TodayDate;
-    },0)      
+    },0)   
+    this.allAgendasExists=false;   
     this.selectAction=false;
     this.mtgOnDays=[];
     this.privateMeeting = false;
@@ -1071,12 +1072,19 @@ AgendaCharacterCount(): void {
   }else{
     this.agendacharacterCount =  null;
   }
+  this.allAgendasExists=false; 
   
 }
 
 
+allAgendasExists:any;
+
 addAgenda() {
-  if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101) {
+
+ this.allAgendasExists = [...this.allAgendas].some(item => item.name?.trim() === this.agendaInput.trim());
+
+
+  if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101 && !this.allAgendasExists) {
     this.agendasAdded += 1;
     const agenda = {
       index: this.agendasAdded,
@@ -3429,34 +3437,36 @@ getEventsForWeeks(weeksFromToday: number) {
     if(this.teamsCalendar == 1 || this.teamsCalendar == 0){
        this.selectEmployee = this.Current_user_ID;
     }
-    
+
       this._calenderDto.EmpNo = this.selectEmployee;
       this.fetchDataStartTime = performance.now();
-    if(this.Searchingfunc==true && this.user_Type == 0){
+    if(this.Searchingfunc==true){
       this._calenderDto.User_Type=this.user_Type;
       this._calenderDto.startdate = filterStartDate;
       this._calenderDto.enddate = filterEndDate;
       this._calenderDto.SearchText= null;
-    }else if(this.Searchingfunc==false && this.user_Type == 0){ 
+    }else if(this.Searchingfunc==false){ 
       this._calenderDto.User_Type=this.user_Type;
       this._calenderDto.startdate = null;
       this._calenderDto.enddate = null;
       this._calenderDto.SearchText= this.SearchText;
-    }else if(this.user_Type>0){
-      this._calenderDto.User_Type=this.user_Type;
-      this._calenderDto.startdate = null;
-      this._calenderDto.enddate = null;
-      this._calenderDto.SearchText= null;
     }
+    // else if(this.user_Type>0){
+    //   this._calenderDto.User_Type=this.user_Type;
+    //   this._calenderDto.startdate = null;
+    //   this._calenderDto.enddate = null;
+    //   this._calenderDto.SearchText= null;
+    // }
+ 
 
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe((data) => { 
-       
+      
         this.fetchDataEndTime = performance.now();
         this.fetchDataTime = this.fetchDataEndTime - this.fetchDataStartTime;
         this.dataBindStartTime = performance.now();
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
         this.Scheduledjson = this.Scheduledjson.sort((a, b) => new Date(a.Schedule_date).getTime() - new Date(b.Schedule_date).getTime());
-      
+    
         this.loadingDMS = true;
   
     if(this.Searchingfunc==false){ 
@@ -6899,7 +6909,7 @@ getDayReportSummary(){
 
       if(this.daySummaryReport['PendingTasks']){
        this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
-      console.log("daySummaryReport:",this.PendingTasks);
+      console.log("daySummaryReport:",this.daySummaryReport);
       }
 
       // if(this.reportCount){

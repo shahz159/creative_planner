@@ -2990,13 +2990,17 @@
                                             </span>
                                         </div>
                                         <div class="agenda-input-field">
-                                            <input class="form-control task-input" id="todo-input" name="text" placeholder="Add agenda and press 'Enter'" autofocus="true"
-                                            [(ngModel)]="agendaInput"   [ngClass]="{'error-borderbottom': agendaInput&&(agendaInput.trim().length>100)}" 
+                                            <input class="form-control task-input" id="todo-input" name="text" placeholder="Enter agenda here" autofocus="true"
+                                            [(ngModel)]="agendaInput"   [ngClass]="{'error-borderbottom': agendaInput&&(agendaInput.trim().length>100) || allAgendasExists}" 
                                             (keyup.enter)="addAgenda()" (keyup)="AgendaCharacterCount();onKeyPress()"  (paste)="onPaste($event)" />
                                         <button *ngIf="agendacharacterCount && agendacharacterCount<101" class="btn btn-secondary add-agenda-btn" (click)="addAgenda()">Add</button>
                                         </div>
                                         <span *ngIf="agendacharacterCount > 0" >Max characters {{agendacharacterCount}}/100 </span>
                                         <span style="color:red" *ngIf="agendacharacterCount>=101">Maximum 100 characters are allowed.</span>
+                                        <div *ngIf="allAgendasExists" class="error-container">
+                                            <svg fill="#f21818" width="15px" height="15px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg" id="warning" class="icon glyph" stroke="#f21818" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,16a1,1,0,1,1,1-1A1,1,0,0,1,12,18Zm1-5a1,1,0,0,1-2,0V7a1,1,0,0,1,2,0Z"></path></g></svg>
+                                            <span class="error-text"> Task name already used. Try another.</span>
+                                        </div>
                                     </div>
                                     <div class="agenda-list-main">
                                         <div class="agenda-list-item" *ngFor="let agenda of allAgendas; let i=index" >
@@ -5609,7 +5613,7 @@
 
                 <div class="custom-pending-tsk-head">
                     <div class="custom-pending-tsk-label">
-                      <h4 class="mb-0">Pending Tasks</h4>
+                      <h4 class="mb-0">Pending Tasks </h4>
                       <!-- <div class="pen-tsk-sub">In the past 365 days</div> -->
                     </div>
                     <div class="custom-pending-tsk-action">                 
