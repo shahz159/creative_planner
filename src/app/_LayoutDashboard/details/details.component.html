@@ -9085,7 +9085,7 @@
                                     </a>
                                 </li>
 
-                                <li *ngIf="Current_user_ID==projectInfo?.OwnerEmpNo" class="nav-item">
+                                <li *ngIf="(Current_user_ID==projectInfo?.OwnerEmpNo)&&userRequestCount>0" class="nav-item">
                                   <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_user-request_approver">
                                        <span class="svg-icv-hd">
                                           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -14124,7 +14124,7 @@
                                   </div>
                                 <div class="input-icon Sub_In_ed" *ngIf="projectInfo">
                                     <ng-container *ngIf="(projectInfo.OwnerEmpNo === Current_user_ID || isHierarchy==true ) && (['Completion Under Approval','Forward Under Approval','Cancellation Under Approval','Enactive Under Approval'].includes(projectInfo.Status)==false);else ownwerEdit">
-                                        <ng-select [(ngModel)]="selectedOwner" placeholder="Select new owner">
+                                        <ng-select [(ngModel)]="selectedOwner" placeholder="Select new owner" [ngClass]="{'error-vd':!selectedOwner&&formFieldsRequired}">
                                             <ng-option [value]="item.Emp_No" *ngFor="let item of owner_dropdown"
                                                 [disabled]="item.Emp_No==selectedOwnResp">
                                                 {{item.RACIS}}
@@ -14136,6 +14136,7 @@
                                             [(ngModel)]="selectedOwner" readonly />
                                     </ng-template>
                                 </div>
+                                <span *ngIf="!selectedOwner&&formFieldsRequired" style="color:rgb(217, 48, 37)">please select owner</span>
                             </div>
                          </div>
                        
@@ -14157,7 +14158,7 @@
                                               *ngIf="(projectInfo.OwnerEmpNo === Current_user_ID || projectInfo.ResponsibleEmpNo === Current_user_ID || isHierarchy==true ) && (projectInfo.Status !=='Completion Under Approval'
                                               && projectInfo.Status!=='Forward Under Approval' && projectInfo.Status !== 'Cancellation Under Approval' && projectInfo.Status !== 'Enactive Under Approval'); else ownEdit">
       
-                                              <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible"  (ngModelChange)="onProjectResponsibleChanged()" >
+                                              <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible"  (ngModelChange)="onProjectResponsibleChanged()"  [ngClass]="{'error-vd':!selectedOwnResp&&formFieldsRequired}"  >
                                                   <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
                                                       [disabled]="item.Emp_No==selectedOwner">
                                                       {{item.RACIS}}
@@ -14170,10 +14171,9 @@
                                               </ng-template>
                                       </ng-container>
       
-      
                                       <ng-container *ngIf="projectInfo.isRespActive=='0' && projectInfo.OwnerEmpNo === Current_user_ID; else respedit">
                                           <ng-container>
-                                              <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible"  (ngModelChange)="onProjectResponsibleChanged()"   >
+                                              <ng-select [(ngModel)]="selectedOwnResp" placeholder="Select new responsible"  (ngModelChange)="onProjectResponsibleChanged()"  [ngClass]="{'error-vd':!selectedOwnResp&&formFieldsRequired}">
                                                   <ng-option [value]="item.Emp_No" *ngFor="let item of responsible_dropdown"
                                                       [disabled]="item.Emp_No==selectedOwner">
                                                       {{item.RACIS}}
@@ -14186,8 +14186,8 @@
                                           </ng-container>
                                       </ng-container>
       
-      
                                   </div>
+                                 <span *ngIf="!selectedOwnResp&&formFieldsRequired" style="color:rgb(217, 48, 37)">please select responsible</span>
                               </div>
                           </div>
       
@@ -14200,12 +14200,12 @@
                                       </svg>
                                       </span> Category </div>
                                   <div class="input-icon Sub_In_ed">
-                                      <ng-select class="curser-pointer" [(ngModel)]="selectedcategory"    [ngClass]="{'error-vd': !selectedcategory&&formFieldsRequired}" placeholder="Select category">
+                                      <ng-select class="curser-pointer" [(ngModel)]="selectedcategory" [ngClass]="{'error-vd': !selectedcategory&&formFieldsRequired}" placeholder="Select category">
                                           <ng-option [value]="item.ReportID" *ngFor="let item of Category_List"[disabled]="Category==item.ReportType">
                                               {{item.ReportType}}
                                           </ng-option>
                                       </ng-select>
-                                      <!-- <span  *ngIf="!selectedcategory&&formFieldsRequired"  >Please select category.</span> -->
+                                       <span *ngIf="!selectedcategory&&formFieldsRequired" style="color:rgb(217, 48, 37)" >Please select category.</span> 
                                   </div>
                               </div>
                           </div>
@@ -14223,12 +14223,13 @@
                                       </span> Client 
                                   </div>
                                   <div class="input-icon Sub_In_ed">
-                                      <ng-select class="curser-pointer" [(ngModel)]="selectedclient" placeholder="Select client">
+                                      <ng-select class="curser-pointer" [(ngModel)]="selectedclient" placeholder="Select client" [ngClass]="{'error-vd':!selectedclient&&formFieldsRequired}">
                                           <ng-option [value]="item.CompanyId" *ngFor="let item of Client_List">
                                               <a>{{item.CompanyName}}</a>
                                           </ng-option>
                                       </ng-select>
                                   </div>
+                                  <span *ngIf="!selectedclient&&formFieldsRequired" style="color:rgb(217, 48, 37)">please select client</span>
                               </div>
                           </div>
       
@@ -14236,11 +14237,11 @@
       
                           <div *ngIf="isPrjStartDateEditable" class="form-group">
                               <div class="kt-info-lable-v"> Start date </div>
-                              <div class="input-icon  Sub_In_ed  date-border-v d-flex">
+                              <div class="input-icon  Sub_In_ed  date-border-v d-flex" [ngClass]="{'error-border':(!Start_Date&&formFieldsRequired)||(isProjectDateOrderWrong)}">
                                   <input class="form-control border-0 " [(ngModel)]="Start_Date" [min]="todayDate|date:'YYYY-MM-dd'" matInput [matDatepicker]="pStrtDateInputPicker"
                                    (click)="pStrtDateInputPicker.open();" placeholder="Select Start Date" name="date"   
                                    [matDatepickerFilter]="isPrjDateSelectable"
-                                   (ngModelChange)="calculateTotalWorkingDays()"
+                                   (ngModelChange)="onProjectStartDateChanged()"
                                    />
                                   <div class="input-group-append h-2">
                                       <mat-datepicker-toggle matSuffix [for]="pStrtDateInputPicker"
@@ -14249,6 +14250,8 @@
                                       <mat-datepicker class="form-group " #pStrtDateInputPicker></mat-datepicker>
                                   </div>
                               </div>
+                               <span *ngIf="!Start_Date&&formFieldsRequired" style="color:rgb(217, 48, 37)">please select start date</span>
+                               <span *ngIf="isProjectDateOrderWrong" style="color:rgb(217, 48, 37)">start date cannot be after the deadline.</span>
                           </div>
                           <div *ngIf="!isPrjStartDateEditable" class="form-group mb-2 Ic_ed">
                               <div class="kt-info-lable-v"> Start date</div>
@@ -14264,12 +14267,12 @@
                           <div class="col-lg-4 text-left">
                             <div class="form-group mb-2">
                                   <div class="kt-info-lable-v"> Deadline</div>
-                                  <div class="input-icon Sub_In_ed date-border-v d-flex">
+                                  <div class="input-icon Sub_In_ed date-border-v d-flex" [ngClass]="{'error-border':!End_Date&&formFieldsRequired}">
                                       <input id="prj-edit-deadline-input" class="form-control curser-pointer" [(ngModel)]="End_Date"
                                           [min]="todayDate|date:'YYYY-MM-dd'" matInput [matDatepicker]="pEndDateInputPicker"
                                           (click)="pEndDateInputPicker.open();" placeholder="Select deadline date"
                                           class="form-control border-0 " name="date" [matDatepickerFilter]="isPrjDateSelectable" 
-                                          (ngModelChange)="calculateTotalWorkingDays()"
+                                          (ngModelChange)="onProjectEndDateChanged()"
                                           />
                                       <div class="input-group-append h-2">
                                           <mat-datepicker-toggle matSuffix [for]="pEndDateInputPicker"
@@ -14294,6 +14297,7 @@
                                             </div>
                                         </span>
                                  </div>
+                                 <span *ngIf="!End_Date&&formFieldsRequired" style="color:rgb(217, 48, 37)">please select deadline</span>
 
                             </div>
                           </div>
@@ -14313,13 +14317,14 @@
                           <div class="col-lg-4 text-left">
                               <div class="form-group mb-2 Ic_ed">
                                   <div class="kt-info-lable-v">Project type</div>
-                                  <div class="input-icon Sub_In_ed">
-                                      <ng-select [clearable]="false" class="curser-pointer" [(ngModel)]="ProjectType" placeholder="Enter project type"  (change)="computeMaxAllocHrsToProject(); showSR_ProjectsStats(ProjectType);">
+                                  <div class="input-icon Sub_In_ed" >
+                                      <ng-select [clearable]="false" class="curser-pointer" [(ngModel)]="ProjectType" placeholder="Enter project type"  (change)="computeMaxAllocHrsToProject(); showSR_ProjectsStats(ProjectType);" [ngClass]="{'error-vd':!ProjectType&&formFieldsRequired}">
                                           <ng-option [value]="item.typeid" *ngFor="let item of type_list">
                                           <a>{{item.typename}}</a>
                                           </ng-option>
                                       </ng-select>
                                   </div>
+                                  <span *ngIf="!ProjectType&&formFieldsRequired" style="color:rgb(217, 48, 37)">please select project type</span>
                               </div>
                           </div>
       
@@ -14327,13 +14332,14 @@
                               <div class="form-group mb-2 Ic_ed">
                                   <div class="kt-info-lable-v">Submission</div>
                                   <div class="input-icon Sub_In_ed">
-                                      <ng-select class="curser-pointer" [(ngModel)]="Submission_Name" 
+                                      <ng-select class="curser-pointer" [(ngModel)]="Submission_Name" [ngClass]="{'error-vd':!Submission_Name&&formFieldsRequired}" 
                                           placeholder="Select Submission Type">
                                           <ng-option [value]="item.SubmissionName" *ngFor="let item of Submission">
                                               {{item.SubmissionName}}
                                           </ng-option>
                                       </ng-select>
                                   </div>
+                                  <span *ngIf="!Submission_Name&&formFieldsRequired" style="color:rgb(217, 48, 37)">please select submission type</span>
                               </div>
                           </div>
       
@@ -14341,64 +14347,83 @@
                           *ngIf="projectInfo&&( Current_user_ID==projectInfo.OwnerEmpNo||Current_user_ID==projectInfo.ResponsibleEmpNo|| isHierarchy==true)">
                               <div class="form-group row  Ic_ed" [ngSwitch]="Submission_Name">
                                   <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="'Daily'"> Allocated hours
-                                      <div class="input-icon Sub_In_ed">
-                                          <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost(); onAllocInputHrsChanged();">
+                                     <div class="input-icon Sub_In_ed">
+                                          <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost(); onAllocInputHrsChanged();" [ngClass]="{'error-vd':!Allocated_Hours&&formFieldsRequired}">
                                               <ng-option *ngFor="let item of Daily_array">{{item}}</ng-option>
                                           </ng-select>
-                                          <span class="Wd_text_kt"> Max duration limit is 60 Minutes only.</span>
-                                          <ng-container *ngTemplateOutlet="routineInvalidAlhrMes"></ng-container>
+                                      </div>
+                                      <div class="d-flex flex-column">
+                                           <span class="Wd_text_kt"> Max duration limit is 60 Minutes only.</span>
+                                           <ng-container *ngTemplateOutlet="routineInvalidAlhrMes"></ng-container>
+                                           <span *ngIf="!Allocated_Hours&&formFieldsRequired" style="color:rgb(217, 48, 37)">please select allocated hours</span>
                                       </div>
                                   </div>
                                   <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="'Weekly'"> Allocated hours
                                       <div class="input-icon Sub_In_ed">
-                                          <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost(); onAllocInputHrsChanged();">
+                                          <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost(); onAllocInputHrsChanged();" [ngClass]="{'error-vd':!Allocated_Hours&&formFieldsRequired}"   >
                                               <ng-option *ngFor="let item of Week_array">{{item}}</ng-option>
                                           </ng-select>
-                                          <span class="Wd_text_kt"> Max duration limit is 2 hrs only.</span>
-                                         <ng-container *ngTemplateOutlet="routineInvalidAlhrMes"></ng-container>
                                       </div>
+                                      <div class="d-flex flex-column">
+                                        <span class="Wd_text_kt"> Max duration limit is 2 hrs only.</span>
+                                        <ng-container *ngTemplateOutlet="routineInvalidAlhrMes"></ng-container>
+                                        <span *ngIf="!Allocated_Hours&&formFieldsRequired" style="color:rgb(217, 48, 37)">please select allocated hours</span>
+                                     </div>
                                   </div>
                                   <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="'Monthly'"> Allocated hours
                                       <div class="input-icon Sub_In_ed">
-                                          <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost(); onAllocInputHrsChanged();">
+                                          <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost(); onAllocInputHrsChanged();" [ngClass]="{'error-vd':!Allocated_Hours&&formFieldsRequired}">
                                               <ng-option *ngFor="let item of Month_array">{{item}}</ng-option>
                                           </ng-select>
-                                          <span class="Wd_text_kt">Max duration limit is 4 hrs only.</span>
-                                        <ng-container *ngTemplateOutlet="routineInvalidAlhrMes"></ng-container>
                                       </div>
-                                  </div> 
+                                      <div class="d-flex flex-column">
+                                        <span class="Wd_text_kt">Max duration limit is 4 hrs only.</span>
+                                        <ng-container *ngTemplateOutlet="routineInvalidAlhrMes"></ng-container>
+                                        <span *ngIf="!Allocated_Hours&&formFieldsRequired" style="color:rgb(217, 48, 37)">please select allocated hours</span>
+                                     </div> 
+                                  </div>
                                   <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="'Quarterly'"> Allocated hours
                                       <div class="input-icon Sub_In_ed">
-                                          <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost(); onAllocInputHrsChanged();">
+                                          <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost(); onAllocInputHrsChanged();" [ngClass]="{'error-vd':!Allocated_Hours&&formFieldsRequired}">
                                               <ng-option *ngFor="let item of Quarter_array">{{item}}</ng-option>
                                           </ng-select>
-                                          <span class="Wd_text_kt"> Max duration limit is 8 hrs only.</span>
+                                      </div>
+                                      <div class="d-flex flex-column">
+                                         <span class="Wd_text_kt"> Max duration limit is 8 hrs only.</span>
                                          <ng-container *ngTemplateOutlet="routineInvalidAlhrMes"></ng-container>
+                                         <span *ngIf="!Allocated_Hours&&formFieldsRequired" style="color:rgb(217, 48, 37)">please select allocated hours</span> 
                                       </div>
                                   </div>
                                   <div class="kt-info-lable-v col-lg-6" *ngSwitchCase="'Half Yearly'"> Allocated hours
                                       <div class="input-icon Sub_In_ed">
-                                          <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost(); onAllocInputHrsChanged();">
+                                          <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost(); onAllocInputHrsChanged();" [ngClass]="{'error-vd':!Allocated_Hours&&formFieldsRequired}">
                                               <ng-option *ngFor="let item of Halfyear_array">{{item}}</ng-option>
                                           </ng-select>
+                                      </div>
+                                      <div class="d-flex flex-column">
                                           <span class="Wd_text_kt"> Max duration limit is 10 hrs only.</span>
                                           <ng-container *ngTemplateOutlet="routineInvalidAlhrMes"></ng-container>
+                                         <span *ngIf="!Allocated_Hours&&formFieldsRequired" style="color:rgb(217, 48, 37)">please select allocated hours</span>
                                       </div>
                                   </div>
       
                                <ng-container *ngSwitchCase="'Annually'">
                                   <div class="kt-info-lable-v col-lg-6"> Allocated hours
                                       <div class="input-icon Sub_In_ed">
-                                          <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost(); onAllocInputHrsChanged();">
+                                          <ng-select class="curser-pointer" [(ngModel)]="Allocated_Hours" (ngModelChange)="getNewPrjCost(); onAllocInputHrsChanged();"  [ngClass]="{'error-vd':!Allocated_Hours&&formFieldsRequired}">
                                               <ng-option *ngFor="let item of Annual_array">{{item}}</ng-option>
                                           </ng-select>
+                                      </div>
+                                        <div class="d-flex flex-column">
                                           <span class="Wd_text_kt"> Max duration limit is 16 hrs only.</span>
                                           <ng-container *ngTemplateOutlet="routineInvalidAlhrMes"></ng-container>
-                                      </div>
+                                          <span *ngIf="!Allocated_Hours&&formFieldsRequired" style="color:rgb(217, 48, 37)">please select allocated hours</span>
+                                       </div>
                                   </div>
                                   <div class="kt-info-lable-v col-lg-6">
                                       Recurrence :
-                                      <ng-select class="curser-pointer" [(ngModel)]="Annual_date" placeholder="Select">
+                                      <div class="input-icon Sub_In_ed">
+                                      <ng-select class="curser-pointer" [(ngModel)]="Annual_date" placeholder="Select" [ngClass]="{'error-vd':!Annual_date&&formFieldsRequired}">
                                           <ng-option [value]="1">January</ng-option>
                                           <ng-option [value]="2">February</ng-option>
                                           <ng-option [value]="3">March</ng-option>
@@ -14412,6 +14437,8 @@
                                           <ng-option [value]="11">November</ng-option>
                                           <ng-option [value]="12">December</ng-option>
                                       </ng-select>
+                                      </div>
+                                    <span *ngIf="!Annual_date&&formFieldsRequired" style="color:rgb(217, 48, 37)">please select recurrence</span>
                                   </div>
                               </ng-container>
                                  <ng-template #routineInvalidAlhrMes>
@@ -14767,10 +14794,10 @@
                         <div class="col-lg-4 text-left">
                           <div *ngIf="isActnStartDateEditable" class="form-group Ic_ed">
                                <div class="kt-info-lable-v">Start date</div>
-                               <div class="input-icon Sub_In_ed rounded-2 date-border-v d-flex">
+                               <div class="input-icon Sub_In_ed rounded-2 date-border-v d-flex" [ngClass]="{'error-border': (!ActionstartDate&&formFieldsRequired)||(isActionDateOrderWrong) }" >
                                   <input class="form-control" [(ngModel)]="ActionstartDate" [min]="todayDate|date:'YYYY-MM-dd'" matInput [matDatepicker]="aStartDatePicker"
                                       (click)="aStartDatePicker.open();" placeholder="Select Start Date" class="form-control border-0 " name="date"  
-                                         [matDatepickerFilter]="isActnDateSelectable"  (ngModelChange)="onActionDateChanged()"
+                                         [matDatepickerFilter]="isActnDateSelectable"  (ngModelChange)="onActionStartDateChanged()"
                                       />
                                   <div class="input-group-append h-2">
                                       <mat-datepicker-toggle matSuffix [for]="aStartDatePicker" class="btn-secondary border-0"></mat-datepicker-toggle>
@@ -14778,6 +14805,7 @@
                                   </div>
                               </div>
                               <span style="color:red" *ngIf="!ActionstartDate&&formFieldsRequired">Please select start date.</span>
+                              <span style="color:red" *ngIf="isActionDateOrderWrong">start date cannot be after the deadline.</span>
                           </div>
                           <div *ngIf="!isActnStartDateEditable" class="form-group Ic_ed">
                             <div class="kt-info-lable-v"> Start date</div>
@@ -14791,10 +14819,11 @@
                         <div class="col-lg-4 text-left">
                           <div class="form-group mb-2 Ic_ed">
                               <div class="kt-info-lable-v">Deadline</div>
+                              <!-- (ActionstartDate > todayDate ? ActionstartDate : todayDate) -->
                               <div class="input-icon Sub_In_ed rounded-2 date-border-v d-flex" [ngClass]="{'error-border': !ActionendDate&&formFieldsRequired}">
-                                  <input class="form-control" [(ngModel)]="ActionendDate" [min]="(ActionstartDate > todayDate ? ActionstartDate : todayDate)" matInput
+                                  <input class="form-control" [(ngModel)]="ActionendDate"  [min]="todayDate" matInput
                                       [matDatepicker]="aEndDatePicker" (click)="aEndDatePicker.open();"
-                                      placeholder="Select deadline date" class="form-control border-0 " name="date" (ngModelChange)="onActionDateChanged()"
+                                      placeholder="Select deadline date" class="form-control border-0 " name="date" (ngModelChange)="onActionEndDateChanged()"
                                         [matDatepickerFilter]="isActnDateSelectable"
                                       />
                                   <div class="input-group-append h-2">

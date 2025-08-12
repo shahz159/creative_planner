@@ -469,7 +469,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
                      return `${
                        category=='Used'?`<div style=""><div style="border-radius: 4px;padding: 4px;font-family: monospace;box-shadow: 0px 0px 0px 1px #527ce2;">
-                             <div style="padding: 5px;border-radius: 5px; background-color: #527ce2;color: white;font-size: 11px;">Total used: ${value} hrs</div>
+                             <div style="padding: 5px;border-radius: 5px; background-color: #527ce2;color: white;font-size: 11px;">Total used: ${value.toFixed(2)} hrs</div>
                               <table>
                                 ${ this.darOfEmpl.map((ob)=>{
                                           return `<tr>
@@ -2147,6 +2147,7 @@ multipleback(){
     this.isTaskCompleteSidebarOpen=false;
     this.isPendingApprovalSidebarOpen=false;
     this.isPrjNameUsed=false;  // It is used in project edit sidebar.
+    this.isActionDateOrderWrong=false; // It is used in action edit sidebar.
     document.getElementById("Action_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Project_Details_Edit_form").classList.remove("kt-quick-Project_edit_form--on");
     document.getElementById("Meetings_SideBar").classList.remove("kt-quick-Mettings--on");
@@ -4046,6 +4047,9 @@ actionCompleted(){
     this.newproject_Cost=this.projectInfo.Project_Cost; 
 
     this.prjResWeekendPolicy=this.projectInfo.RespCompanyId=='400'?{6:'full',0:'full'}:{5:'full'};
+    const sdate=new Date(this.Start_Date); sdate.setHours(0,0,0,0);
+    const edate=new Date(this.End_Date); edate.setHours(0,0,0,0);
+    this.isProjectDateOrderWrong=edate<sdate;
     this.calculateTotalWorkingDays();
      
   }
@@ -4107,11 +4111,14 @@ const invaildPrjEnddate=actnsAfterPrjdeadline.length>0;
         // is_normal_rproject= (this.ProjectType==this.projectInfo.Project_Block)?( !(this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole&&this.maxAllocHrsToProject<=0)):true;
  }
 
-// new
+// 1.
 
   if(!(
       (this.ProjectName&&this.ProjectName.trim()!=''&&(this.ProjectName&&this.isPrjNameValid==='VALID'&&this.ProjectName.length <=100)&&(this.isPrjNameUsed==false) )&&
-      (this.ProjectDescription&&this.ProjectDescription.trim()!=''&&this.ProjectDescription?(this.characterCount<=500)&&(this.ProjectDescription&&this.isPrjDesValid==='VALID'&&this.ProjectDescription.length <=500) :false)&&        
+      (this.ProjectDescription&&this.ProjectDescription.trim()!=''&&this.ProjectDescription?(this.characterCount<=500)&&(this.ProjectDescription&&this.isPrjDesValid==='VALID'&&this.ProjectDescription.length <=500) :false)&& 
+      (this.selectedOwner&&this.selectedOwnResp&&this.selectedcategory&&this.selectedclient&&this.Start_Date)&&
+      (['001','002','011'].includes(this.projectInfo.Project_Block)?(this.End_Date&&this.isProjectDateOrderWrong==false):true)&&
+      (['003','008'].includes(this.projectInfo.Project_Block)?(this.ProjectType&&this.Submission_Name&&this.Allocated_Hours&&(this.Submission_Name=='Annually'?this.Annual_date:true)):true)&&
       ((this.ProjectType=='008'||this.ProjectType=="Routine Tasks")?(is_normal_rproject?(this.isAllocHrsOverflow==false):(show_abnormal_rmessage==false)):true)
   )){
      
@@ -4202,221 +4209,6 @@ const invaildPrjEnddate=actnsAfterPrjdeadline.length>0;
 
 
 
-// new
-
-
-
-//validation:1 check all mandatory fields are provided or not
-  //  if(!(
-
-  //       (this.ProjectName&&this.ProjectName.trim()!=''&&(this.ProjectName&&this.isPrjNameValid==='VALID'&&this.ProjectName.length <=100)&&(this.isPrjNameUsed==false) )&&
-  //       (this.ProjectDescription&&this.ProjectDescription.trim()!=''&&this.ProjectDescription?(this.characterCount<=500)&&(this.ProjectDescription&&this.isPrjDesValid==='VALID'&&this.ProjectDescription.length <=500) :false)&&        
-  //       ((this.ProjectType=='008'||this.ProjectType=="Routine Tasks")&&this.Allocated_Hours)?
-  //       ((this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole&&this.maxAllocHrsToProject<=0)?(this.convertToDecimalHours(this.projectInfo.StandardAllocatedHours)==this.convertToDecimalHours(this.Allocated_Hours['$ngOptionLabel']||this.Allocated_Hours)):(this.isAllocHrsOverflow==false)):true
-  //  ))
-  //  {
-      
-    
-    //  if((this.ProjectType=='008'||this.ProjectType=="Routine Tasks")&&this.Allocated_Hours&&this.isAllocHrsOverflow){
-          
-
-    //     const isCreatable=!this.isRoutineTasksLimitExhausted; 
-    //     const totalPrjsExisting=this.Responsible_user_Info.Routine_Count;
-    //     const existingPrjsType='Routine Tasks';
-    //     const _consumedHrs=this.Responsible_user_Info.Routine_Total_Hours; 
-    //     const _allocatablehrs=this.maxAllocHrsToProject;  
-
-    //     if(isCreatable){
-    //         Swal.fire({
-    //             title:'Invalid Allocated Hours provided',
-    //             html:`<div style="text-align: justify;">
-    //                         <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
-    //                         <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs}hrs to this project.</div>
-    //                   </div>`,
-    //             showConfirmButton:true,
-    //             confirmButtonText:'Ok'
-    //         });
-    //     }
-    //     else{
-    //       Swal.fire({
-    //         title:`Cannot Create Routine Task`,
-    //         html:`
-    //               <div style="text-align: justify;">
-    //                   <ul style="padding-left: 18px;">
-    //                       <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
-    //                       <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
-    //                   </ul> 
-    //                   <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for Routine Task projects. Please review your existing ones.</div>
-    //               </div>`,
-    //         showConfirmButton:true,
-    //         confirmButtonText:'Ok'      
-    //     });
-
-    //     }
-    
-
-
-    //  }
-
-   
-    // current test
-        // if((this.ProjectType=='008'||this.ProjectType=="Routine Tasks")&&this.Allocated_Hours){
-        //       if(this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole&&this.maxAllocHrsToProject<=0)
-        //       {  // 
-        //         //v2
-        //           if(this.convertToDecimalHours(this.projectInfo.StandardAllocatedHours)!=this.convertToDecimalHours(this.Allocated_Hours['$ngOptionLabel']||this.Allocated_Hours)){
-        //             Swal.fire({
-        //               title: 'Allocated Hrs is invalid',
-        //               text: 'please contact your reporting manager, to resolve this issue.',
-        //               showConfirmButton: true,
-        //               confirmButtonText: 'Ok'
-        //             });
-
-        //           }
-
-        //       } 
-        //       else if(this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole&&this.maxAllocHrsToProject>0){
-        //               const totalPrjsExisting=this.Responsible_user_Info.Routine_Count;
-        //               const existingPrjsType='Routine Tasks';
-        //               const _consumedHrs=this.Responsible_user_Info.Routine_Total_Hours; 
-        //               const _allocatablehrs=this.maxAllocHrsToProject;
-        //               Swal.fire({
-        //                         title:'Invalid Allocated Hours provided',
-        //                         html:`<div style="text-align: justify;">
-        //                                     <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
-        //                                     <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs}hrs to this project.</div>
-        //                               </div>`,
-        //                         showConfirmButton:true,
-        //                         confirmButtonText:'Ok'
-        //               });
-
-        //       }
-        //       else
-        //       {   //v1
-        //           if(this.isAllocHrsOverflow){
-        //               const isCreatable=!this.isRoutineTasksLimitExhausted; 
-        //               const totalPrjsExisting=this.Responsible_user_Info.Routine_Count;
-        //               const existingPrjsType='Routine Tasks';
-        //               const _consumedHrs=this.Responsible_user_Info.Routine_Total_Hours; 
-        //               const _allocatablehrs=this.maxAllocHrsToProject;  
-        //               if(isCreatable){
-        //                     Swal.fire({
-        //                         title:'Invalid Allocated Hours provided',
-        //                         html:`<div style="text-align: justify;">
-        //                                     <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
-        //                                     <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs}hrs to this project.</div>
-        //                               </div>`,
-        //                         showConfirmButton:true,
-        //                         confirmButtonText:'Ok'
-        //                     });
-        //               }
-        //               else{
-        //                   Swal.fire({
-        //                     title:`Cannot Create Routine Task`,
-        //                     html:`
-        //                           <div style="text-align: justify;">
-        //                               <ul style="padding-left: 18px;">
-        //                                   <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
-        //                                   <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
-        //                               </ul> 
-        //                               <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for Routine Task projects. Please review your existing ones.</div>
-        //                           </div>`,
-        //                     showConfirmButton:true,
-        //                     confirmButtonText:'Ok'      
-        //                 });
-
-        //               }
-
-        //           }
-
-        //       }
-              
-              
-        // }
-    // current test
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      // if((this.ProjectType=='008'||this.ProjectType=="Routine Tasks")&&this.Allocated_Hours){
-
-      //   (this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole&&this.maxAllocHrsToProject<=0)
-
-
-
-
-
-
-      //     const isroutine_exhausted=this.Responsible_user_Info.Routine_Total_Hours>this.maxAllocHrsByRole;
-      //     if(isroutine_exhausted==true&&this.convertToDecimalHours(this.projectInfo.StandardAllocatedHours)!=this.convertToDecimalHours(this.Allocated_Hours['$ngOptionLabel']||this.Allocated_Hours)){
-      //         // when all routine tasks hrs > maxAlloc hrs by role. eg: 14>12, 25>12, 38>12 ....
-      //         Swal.fire({
-      //             title:'Allocated Hrs is invalid',
-      //             text:'please contact your reporting manager, to resolve this issue.',
-      //             showConfirmButton:true,
-      //             confirmButtonText:'Ok'
-      //         });
-      //     }
-      //     else if(isroutine_exhausted==false&&this.isAllocHrsOverflow){
-      //        // when all routine tasks hrs <=maxAlloc hrs by role. eg:  8<=12, 10<=12, 12<=12 ....
-      //       const isCreatable=!this.isRoutineTasksLimitExhausted; 
-      //       const totalPrjsExisting=this.Responsible_user_Info.Routine_Count;
-      //       const existingPrjsType='Routine Tasks';
-      //       const _consumedHrs=this.Responsible_user_Info.Routine_Total_Hours; 
-      //       const _allocatablehrs=this.maxAllocHrsToProject;  
-      //       if(isCreatable){
-      //             Swal.fire({
-      //                 title:'Invalid Allocated Hours provided',
-      //                 html:`<div style="text-align: justify;">
-      //                             <div>Currently, you are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects, with <b>${_consumedHrs} hours</b> already allocated.</div> 
-      //                             <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;"> You cannot allocate more than ${_allocatablehrs}hrs to this project.</div>
-      //                       </div>`,
-      //                 showConfirmButton:true,
-      //                 confirmButtonText:'Ok'
-      //             });
-      //       }
-      //       else{
-      //           Swal.fire({
-      //             title:`Cannot Create Routine Task`,
-      //             html:`
-      //                   <div style="text-align: justify;">
-      //                       <ul style="padding-left: 18px;">
-      //                           <li>You are managing <b>${totalPrjsExisting}</b> ${existingPrjsType} projects</li>
-      //                           <li style="white-space: nowrap;"><b>${_consumedHrs} hours</b> already allocated (limit: <b>${this.maxAllocHrsByRole} hours</b>)</li>
-      //                       </ul> 
-      //                       <div style="font-size: 14px;color: red;font-weight: 500;margin-top: 15px;">You've reached the limit for Routine Task projects. Please review your existing ones.</div>
-      //                   </div>`,
-      //             showConfirmButton:true,
-      //             confirmButtonText:'Ok'      
-      //         });
-
-      //       }
-
-      //     }
-
-      // }
-
-
-  //     this.formFieldsRequired=true;
-  //     return;
-  //  }
-  //  else this.formFieldsRequired=false;  // back to initial value.
-// 
-
-
-
-
-
 //validation:2 when input start date and end date are invalid.
 if(this.Start_Date&&invaildPrjStartdate){
         Swal.fire({
@@ -4478,6 +4270,8 @@ if(this.End_Date&&invaildPrjEnddate){
   return;
 }
 //
+
+
 
 
 // project update process start 
@@ -4745,7 +4539,7 @@ convertToDecimalHours(hm:string){
     this.actnResperDayAlhr_Limit=this.projectActionInfo[this.currentActionView].RespCompanyId=='400'?8.5:8;
    
      // calculate 'ActionmaxAllocation' value based on start date and end date of the action.
-    this.onActionDateChanged();  
+    this.calculateActionMaxAllocation();  
   }
 
 
@@ -4797,11 +4591,15 @@ convertToDecimalHours(hm:string){
 
 
   onAction_update() {
-
+debugger
     this.updatingAction = true;
 // check all mandatory field are provided.
 this.isactionValid=this.isValidString(this.ActionName,2);
 this.isactdesValid=this.isValidString(this.ActionDescription,3);
+
+
+
+
 
     if(!( (this.ActionName.trim() != '' && this.ActionName&&this.ActionName.length<=100&&this.ActionName&&this.isactionValid=='VALID')
 
@@ -4809,7 +4607,7 @@ this.isactdesValid=this.isValidString(this.ActionDescription,3);
 
          this.ActionOwner&&this.ActionResponsible&&
          this.selectedcategory&&this.ActionClient&&
-         this.ActionstartDate&&this.ActionendDate&&
+         this.ActionstartDate&&this.ActionendDate&&(this.isActionDateOrderWrong==false)&&
          this.editAllocatedhours&&(this.editAllocatedhours<=this.ActionmaxAllocation))
        ){
             this.formFieldsRequired=true;
@@ -14117,6 +13915,7 @@ createNewGroup(){
 prjResWeekendPolicy:{ [key:number]:'full'|'half'  }={  6:'full', 0:'full'   };  // 0- sunday, 1-monday, 2-tuesday, .... 6-saturday
 total_WorkingDays:number=0; // from start date and end date selected. it gives total working days in that duration.
 total_OffDays:{date:string, reason:string}[]=[]; // total off days in the selected start date and end date duration.
+isProjectDateOrderWrong:boolean=false; // true: if Dates are not aligned (e.g., end date is before start date)
 
 isPrjDateSelectable=(date:Moment |null):boolean=>{  
    if(!date)
@@ -14128,7 +13927,7 @@ isPrjDateSelectable=(date:Moment |null):boolean=>{
 
 
 
-calculateTotalWorkingDays(){
+calculateTotalWorkingDays(){ debugger
   if(this.Start_Date&&this.End_Date)
   {
       const pstart_dt=new Date(this.Start_Date); pstart_dt.setHours(0,0,0,0);
@@ -14196,6 +13995,53 @@ onProjectResponsibleChanged(){
 }
 
 
+onProjectStartDateChanged(){  debugger
+  if(this.Start_Date){
+
+    const sdate=new Date(this.Start_Date); sdate.setHours(0,0,0,0);
+    const crdate=new Date(); crdate.setHours(0,0,0,0);
+    const notPastDate=sdate>=crdate;   // is selected project start date >= current date or not. is valid or not
+    const isWorkingday=this.prjResWeekendPolicy?.[sdate.getDay()]=='full'?false:true; // is selected project start date violating weekend policy or not.
+    if(!(notPastDate&&isWorkingday)){
+       this.Start_Date=null;
+    }
+
+    if(this.End_Date){
+         const edate=new Date(this.End_Date); edate.setHours(0,0,0,0);
+         this.isProjectDateOrderWrong=edate<sdate;
+    }
+  
+    this.calculateTotalWorkingDays();
+
+  }
+  else{ this.isProjectDateOrderWrong=false;   } 
+    
+}
+
+onProjectEndDateChanged(){ debugger
+  if(this.End_Date){
+        const edate=new Date(this.End_Date); edate.setHours(0,0,0,0);
+        const crdate=new Date(); crdate.setHours(0,0,0,0);
+        const notPastDate=edate>=crdate;   // is selected project end date < current date or not. is it valid or not.
+        const isWorkingday=this.prjResWeekendPolicy?.[edate.getDay()]=='full'?false:true; // is selected project end date violating weekend policy or not.
+        if(!(notPastDate&&isWorkingday)){
+          this.End_Date=null; 
+        }
+
+         if(this.Start_Date){
+         const sdate=new Date(this.Start_Date); sdate.setHours(0,0,0,0);
+         this.isProjectDateOrderWrong=edate<sdate;
+         }
+     
+        this.calculateTotalWorkingDays();
+  }
+  else{ this.isProjectDateOrderWrong=false;  }
+     
+}
+
+
+
+
 // Alhrs new validation on project edit end.
 
 
@@ -14204,6 +14050,7 @@ actnResWeekendPolicy:{ [key:number]:'full'|'half'  }={  6:'full', 0:'full'   }; 
 actnResperDayAlhr_Limit:number=8.5;  // per day allocatable hrs limit. 
 total_actnWorkingDays:number=0; // from start date and end date selected. it gives total working days in that duration of action.
 total_actnOffDays:{date:string, reason:string}[]=[]; // total off days in the selected start date and end date duration of action.
+isActionDateOrderWrong:boolean=false; // true: if Dates are not aligned (e.g., end date is before start date)
 
 isActnDateSelectable=(date:Moment |null):boolean=>{  
    if(!date)
@@ -14214,7 +14061,7 @@ isActnDateSelectable=(date:Moment |null):boolean=>{
 } 
 
 
-onActionDateChanged(){
+calculateActionMaxAllocation(){
 
   if(this.ActionstartDate&&this.ActionendDate){
      
@@ -14284,10 +14131,62 @@ onActionResponsibleChanged(){
     }
 
     // 4. recalculate ActionmaxAllocation, total_actnWorkingDays, total_actnOffDays based on Start_Date and End_Date.
-      this.onActionDateChanged();
+      this.calculateActionMaxAllocation();
 
   }
     
+ onActionStartDateChanged(){
+
+   if(this.ActionstartDate){
+
+     const sdate=new Date(this.ActionstartDate); sdate.setHours(0,0,0,0);
+     const _curtd=new Date(); _curtd.setHours(0,0,0,0);
+     const notPastDate=sdate>=_curtd;   // is selected action start date < current date or not.
+     const isWorkingday=this.actnResWeekendPolicy?.[sdate.getDay()]=='full'?false:true; // is selected action start date violating weekend policy or not.
+     if(!(notPastDate&&isWorkingday)){
+       this.ActionstartDate=null;
+     }
+
+
+     if(this.ActionendDate){
+         const edate=new Date(this.ActionendDate); edate.setHours(0,0,0,0);
+         this.isActionDateOrderWrong=edate<sdate;
+     }
+   }
+   else{
+     this.isActionDateOrderWrong=false;
+   }
+   
+
+   this.calculateActionMaxAllocation();
+ }
+ 
+
+
+ onActionEndDateChanged(){
+
+  if(this.ActionendDate){
+        const edate=new Date(this.ActionendDate); edate.setHours(0,0,0,0);
+        const crdate=new Date(); crdate.setHours(0,0,0,0);
+        const notPastDate=edate>=crdate;   // is selected action end date < current date or not.
+        const isWorkingday=this.actnResWeekendPolicy?.[edate.getDay()]=='full'?false:true; // is selected action end date violating weekend policy or not.
+        if(!(notPastDate&&isWorkingday)){
+          this.ActionendDate=null; 
+        }
+
+      if(this.ActionstartDate){
+        const sdate=new Date(this.ActionstartDate); sdate.setHours(0,0,0,0);
+        this.isActionDateOrderWrong=edate<sdate;
+      }
+
+  }
+  else{
+    this.isActionDateOrderWrong=false;
+  }
+
+   this.calculateActionMaxAllocation();
+   
+ }
 
 // Alhrs new validation for action edit    end.
 }

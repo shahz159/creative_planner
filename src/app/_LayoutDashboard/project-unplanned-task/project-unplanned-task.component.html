@@ -2108,14 +2108,15 @@
 
                 <ng-container *ngIf="selectedProjecttype !=='003' && selectedProjecttype!=='008'" >
                 <div class="d-flex gap-1 ">
+
+
                 <div class="form-group flex-1">
                     <label>Start date : </label>
-                    <!-- <span class="text-danger">*</span> -->
-                    <div class="input-group" (click)="startdatechecker()">
-                        <input matInput [matDatepicker]="picker1" (click)="picker1.open()" [min]="disablePreviousDate" (dateChange)="setMaxDate(_StartDate)" [(ngModel)]="_StartDate"
-                            placeholder="Start date" class="form-control">
+                    <div class="input-group">
+                        <input matInput [matDatepicker]="picker1" (click)="picker1.open()" [min]="disablePreviousDate" (dateChange)="onProjectStartDateChanged()" [(ngModel)]="_StartDate"
+                            placeholder="Start date" class="form-control"   [matDatepickerFilter]="isDateSelectable2"  />
                         <div class="input-group-text p-0">
-                            <mat-datepicker-toggle matSuffix  (click)="startdatechecker()" [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                             <mat-datepicker #picker1></mat-datepicker>
                         </div>
                     </div>
@@ -2123,12 +2124,45 @@
                     <span *ngIf="noStartDate==true" style="color:red">Please select start date.</span>
                 </div>
 
-                <div class="form-group flex-1" *ngIf="_StartDate!=null">
+
+                <div class="form-group flex-1">
                     <label>End date :</label>
-                    <!-- <span class="text-danger">*</span> -->
+                    <div class="input-group">
+                        <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate" [max]="selectedProjecttype==='011'?maxDate:''" [(ngModel)]="_EndDate"
+                            placeholder="End date" class="form-control"  [matDatepickerFilter]="isDateSelectable2"  (dateChange)="onProjectEndDateChanged()" />
+                        <div class="input-group-text p-0">
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                        </div>
+                    </div>
+                    <span *ngIf="noEndDate==true" style="color:red">Please select end date.</span>
+                    <div *ngIf="_StartDate&&_EndDate&&total_WorkingDays" class="mt-1 px-1 d-flex justify-content-between align-items-center">
+                             <span class="text-dark fs-7" style="font-weight: 500;">Total working days : {{total_WorkingDays}}</span>
+                             <span class="attach-tippy font-weight-400">
+                                <span>
+                                    <svg width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="color: #4377ff;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="info-circle"> <g> <circle cx="12" cy="12" data-name="--Circle" fill="none" id="_--Circle" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7280000000000002"></circle> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" x1="12" x2="12" y1="12" y2="16"></line> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" x1="12" x2="12" y1="8" y2="8"></line> </g> </g> </g> </g>
+                                     </svg>
+                                </span>
+                                <div class="st-line off-days-span">
+                                    <h6>Non-working days: {{total_OffDays.length}}</h6>
+                                      <div class="days-list">
+                                      <div class="py-1 text-muted text-nowrap" *ngFor="let offdays of total_OffDays">{{ offdays.date|date:'dd-MM-yyyy'}} - <span class="text-muted">{{offdays.reason}}</span></div>
+                                      </div>
+                                </div>
+                            </span>
+                     </div>
+                </div>
+
+
+
+
+
+                <!-- <div class="form-group flex-1" *ngIf="_StartDate!=null">
+                    <label>End date :</label>
+                   
                     <div class="input-group" (click)="datesCheck()">
                         <input matInput [matDatepicker]="picker2" (click)="picker2.open()" [min]="_StartDate" [max]="selectedProjecttype==='011'?maxDate:''" [(ngModel)]="_EndDate"
-                            placeholder="End date" class="form-control">
+                            placeholder="End date" class="form-control"/>
                         <div class="input-group-text p-0">
                             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                             <mat-datepicker #picker2></mat-datepicker>
@@ -2138,7 +2172,6 @@
                 </div>
                 <div class="form-group flex-1" *ngIf="_StartDate==null">
                     <label>End date :</label>
-                    <!-- <span class="text-danger">*</span> -->
                     <div class="input-group" (click)="enddateChecker()">
                         <input matInput [matDatepicker]="picker2" [matDatepickerFilter]="myFilter"
                             (click)="picker2.open()"
@@ -2148,7 +2181,8 @@
                             <mat-datepicker #picker2></mat-datepicker>
                         </div>
                     </div>
-                </div>
+                </div> -->
+
                 </div>
                 </ng-container>
 
@@ -2177,22 +2211,25 @@
                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0"  id="AssignedToEmp" >
                     <label> Assign to :<span class="text-danger">*</span> </label>
 
-                    <ng-select id='AssignedToEmp'  bindLabel="RACIS"
-                        bindValue="Emp_No" groupBy="usergroup"
+                     <ng-select [items]="EmployeeList"   bindLabel="DisplayName"  bindValue="Emp_No" 
+                       placeholder="Select employee"  groupBy="usergroup"  [searchable]="true" name="RACIS"
+                       [ngClass]="{'error-vd': !selectedEmpNo&&formFieldsRequired}"
+                       [(ngModel)]="selectedEmpNo"  required   #assignedToEmpf="ngModel"
+                       (change)="EmployeeOnSelect($event)"
+                     ></ng-select>
 
-                    placeholder="Select employee"
+                    <!-- <ng-select id='AssignedToEmp'  bindLabel="RACIS"
+                        bindValue="Emp_No" groupBy="usergroup"
+                        placeholder="Select employee"
                         [searchable]="true" name="RACIS" [ngClass]="{'error-vd': !selectedEmpNo&&formFieldsRequired}"
                         [(ngModel)]="selectedEmpNo"
                         required
-
                         #assignedToEmpf="ngModel"
                         >
                         <ng-option [value]="item.Emp_No" *ngFor="let item of EmployeeList">
-                        {{item.DisplayName }}
-                    </ng-option>
-
-
-                    </ng-select>
+                          {{item.DisplayName }}
+                        </ng-option>
+                    </ng-select> -->
                     <span *ngIf ="!selectedEmpNo&&formFieldsRequired" style="color:red">Please select employee to assign.</span>
                 </div>
 
@@ -2221,6 +2258,18 @@
                         </ng-option>
                     </ng-select>
                     <span *ngIf="!selectedProjectCode && formFieldsRequired"  style="color:red" >Please select project.</span>
+                    
+                    <!-- <div _ngcontent-xok-c343="" class="d-flex gap-1 flex-grow-1 flex-wrap mt-2"><div _ngcontent-xok-c343="" class="info-chip"><div _ngcontent-xok-c343="" class="info-chip-label text-nowrap">
+    <svg width="19px" height="20px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#000000" d="M224 160a64 64 0 0 0-64 64v576a64 64 0 0 0 64 64h576a64 64 0 0 0 64-64V224a64 64 0 0 0-64-64H224zm0-64h576a128 128 0 0 1 128 128v576a128 128 0 0 1-128 128H224A128 128 0 0 1 96 800V224A128 128 0 0 1 224 96z"></path><path fill="#000000" d="M384 416a64 64 0 1 0 0-128 64 64 0 0 0 0 128zm0 64a128 128 0 1 1 0-256 128 128 0 0 1 0 256z"></path><path fill="#000000" d="M480 320h256q32 0 32 32t-32 32H480q-32 0-32-32t32-32zm160 416a64 64 0 1 0 0-128 64 64 0 0 0 0 128zm0 64a128 128 0 1 1 0-256 128 128 0 0 1 0 256z"></path><path fill="#000000" d="M288 640h256q32 0 32 32t-32 32H288q-32 0-32-32t32-32z"></path></g></svg>
+</div><div _ngcontent-xok-c343="" class="info-chip-value"><span _ngcontent-xok-c343="" title="used hours" class="text-nowrap">15</span><span _ngcontent-xok-c343="" class="hrs-by">/</span><span _ngcontent-xok-c343="" title="allocated hours" class="text-nowrap">23 hrs</span></div></div><div _ngcontent-xok-c343="" class="info-chip"><div _ngcontent-xok-c343="" class="info-chip-label text-nowrap">
+<svg fill="#000000" width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M20,3a1,1,0,0,0,0-2H4A1,1,0,0,0,4,3H5.049c.146,1.836.743,5.75,3.194,8-2.585,2.511-3.111,7.734-3.216,10H4a1,1,0,0,0,0,2H20a1,1,0,0,0,0-2H18.973c-.105-2.264-.631-7.487-3.216-10,2.451-2.252,3.048-6.166,3.194-8Zm-6.42,7.126a1,1,0,0,0,.035,1.767c2.437,1.228,3.2,6.311,3.355,9.107H7.03c.151-2.8.918-7.879,3.355-9.107a1,1,0,0,0,.035-1.767C7.881,8.717,7.227,4.844,7.058,3h9.884C16.773,4.844,16.119,8.717,13.58,10.126ZM12,13s3,2.4,3,3.6V20H9V16.6C9,15.4,12,13,12,13Z"></path></g></svg>
+    
+</div><div _ngcontent-xok-c343="" class="info-chip-value"><span _ngcontent-xok-c343="" title="used hours" class="text-nowrap">2023-02-12</span></div></div><div _ngcontent-xok-c343="" class="info-chip"><div _ngcontent-xok-c343="" class="info-chip-label text-nowrap">
+<svg width="15px" height="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="#000000"> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
+    
+</div><div _ngcontent-xok-c343="" class="info-chip-value"><span _ngcontent-xok-c343="" title="used hours" class="text-nowrap">2023-02-12</span></div></div></div> -->
+
+
                 </div>
 
 
@@ -2236,16 +2285,15 @@
 
 
                 <div class="d-flex gap-1">
-                <div class="form-group flex-1 details-date">
-                        <label>Start Date :<span class="text-danger">*</span></label>
-                        <div class="d-flex date-border" [ngClass]="{'error-date': formFieldsRequired&&!_StartDate}">
-                            <input matInput [matDatepicker]="picker3" (click)="picker3.open();this._EndDate=null" [ngClass]="{'error-vd':!_StartDate &&formFieldsRequired}"   [min]="disablePreviousDate" [(ngModel)]="_StartDate"
-                                placeholder="Start Date" class="form-control">
+                      <div class="form-group flex-1 details-date">
+                         <label>Start Date :<span class="text-danger">*</span></label>
+                         <div class="d-flex date-border" [ngClass]="{'error-date': formFieldsRequired&&!_StartDate}">
+                            <input matInput [matDatepicker]="picker3" (click)="picker3.open();" [ngClass]="{'error-vd':!_StartDate &&formFieldsRequired}"   [min]="disablePreviousDate" [(ngModel)]="_StartDate"
+                                placeholder="Start Date" class="form-control"  [matDatepickerFilter]="isDateSelectable"  (dateChange)="onActionStartDateChanged()" />
                             <div class="input-group-text p-0">
                                 <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                                 <mat-datepicker #picker3></mat-datepicker>
                             </div>
-
                         </div>
                         <span *ngIf="!_StartDate&&formFieldsRequired" class="text-danger">Please select start date.</span>
                     </div>
@@ -2253,14 +2301,28 @@
                         <label>End Date :<span class="text-danger">*</span></label>
                         <div class="d-flex date-border"  [ngClass]="{'error-date': formFieldsRequired&&!_EndDate}"  >
                             <input matInput [matDatepicker]="picker4"  (click)="picker4.open()" [min]="_StartDate" [(ngModel)]="_EndDate"
-                                placeholder="End Date" class="form-control">
+                                placeholder="End Date" class="form-control"  [matDatepickerFilter]="isDateSelectable" (dateChange)="onActionEndDateChanged()" />
                             <div class="input-group-text p-0">
                                 <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
                                 <mat-datepicker #picker4></mat-datepicker>
                             </div>
-
                         </div>
-                        <span *ngIf="!_EndDate&&formFieldsRequired" class="text-danger">Please select end date.</span>
+                           <span *ngIf="!_EndDate&&formFieldsRequired" class="text-danger">Please select end date.</span>
+                           <div *ngIf="_StartDate&&_EndDate&&totalWorkingDays" class="mt-1 px-1 d-flex justify-content-between align-items-center">
+                             <span class="text-dark fs-7" style="font-weight: 500;">Total working days : {{totalWorkingDays}}</span>
+                             <span class="attach-tippy font-weight-400">
+                                <span>
+                                    <svg width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="color: #4377ff;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="info-circle"> <g> <circle cx="12" cy="12" data-name="--Circle" fill="none" id="_--Circle" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7280000000000002"></circle> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" x1="12" x2="12" y1="12" y2="16"></line> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" x1="12" x2="12" y1="8" y2="8"></line> </g> </g> </g> </g>
+                                     </svg>
+                                </span>
+                                <div class="st-line off-days-span">
+                                    <h6>Non-working days: {{totalOffDays.length}}</h6>
+                                      <div class="days-list">
+                                      <div class="py-1 text-muted text-nowrap" *ngFor="let offdays of totalOffDays">{{ offdays.date|date:'dd-MM-yyyy'}} - <span class="text-muted">{{offdays.reason}}</span></div>
+                                      </div>
+                                </div>
+                            </span>
+                          </div>
                     </div>
                 </div>
 
@@ -2275,14 +2337,32 @@
                     [ngClass]="{'error-border': (_allocated==0)}"
 
                     [ngClass]="{'error-border': this.formFieldsRequired&&!_allocated}"
-                    >
+                    />
                 <!-- <span *ngIf;="allocated.touched&&!_allocated"; style="color:red">Allocated; hours; required!; Enter; non-decimal; value&nbsp;</span> -->
-                <span *ngIf="_allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span>
-                <span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span>
+                <!-- <span *ngIf="_allocated > maxAllocation" style="color:red">Allocation per day limit is 10 hours.</span> -->
+                <!-- <span *ngIf="_allocated > maxAllocation" style="color:red">Please enter the hours less than or equal to <b>{{maxAllocation}}</b> hours!</span> -->
                 <span *ngIf="this.formFieldsRequired&&!_allocated" style="color:red">Allocated hours required. Hours should not be in decimal. </span>
                 <span *ngIf="(_allocated==0)" style="color:red">Allocated hours cannot be 0, please enter a value, It accept only numeric and non-negative value. </span>
                 <span *ngIf="this._StartDate == null || this._EndDate == null" >{{ _message}} </span>
                 <!-- <span *ngIf="formFieldsRequired&&!_allocated" style="color:red"> Please enter allocated hour</span> -->
+
+                <div *ngIf="this._StartDate&&this._EndDate&&maxAllocation" class="mt-1 px-1 d-flex justify-content-between align-items-center">
+                          <span *ngIf="!(maxAllocation&&_allocated>maxAllocation)" class="fs-7 text-dark" style="font-weight: 500;">Estimated Allocated hours: {{maxAllocation}}</span>
+                          <span  *ngIf="(maxAllocation&&_allocated>maxAllocation)" class="fs-7" style="font-weight: 500; color:rgb(217,48,37)">Max allowed: {{maxAllocation}} hours</span>
+                                    
+                          <span class="attach-tippy font-weight-400">
+                                <span>
+                                    <svg width="15px" height="15px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000" style="color: #4377ff;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="info-circle"> <g> <circle cx="12" cy="12" data-name="--Circle" fill="none" id="_--Circle" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7280000000000002"></circle> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" x1="12" x2="12" y1="12" y2="16"></line> <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" x1="12" x2="12" y1="8" y2="8"></line> </g> </g> </g> </g>
+                                    </svg>
+                                 </span>
+                                  <div class="st-line off-days-span">
+                                    <h6 class="mb-0">{{maxAllocation}} hours</h6>
+                                    <div class="days-list">
+                                       <div class="py-1 text-muted text-nowrap">{{perDayAlhr_Limit}} hrs/day × {{totalWorkingDays}} days</div>
+                                    </div>
+                                 </div>
+                        </span>
+                 </div>
 
                 </div>
 
@@ -2560,7 +2640,7 @@ style="height: 111px;"></textarea>
             <div class="schedule-select project"  type="button" (click)="openMultiSelectDialog('EMPLOYEES')">
                 <div class="title">Assign to</div>
             </div>
-            <span *ngIf="!employeSelect&&formFieldsRequired" class="text-danger"  >Please enter assign</span>
+            <span *ngIf="!employeSelect&&formFieldsRequired" class="text-danger">Please enter assign</span>
             <ul class="schedule-select-user-list multi-selected-list">
                 <li *ngFor="let empno of employeSelect">
                 <div class="schedule-select-user-list-item">

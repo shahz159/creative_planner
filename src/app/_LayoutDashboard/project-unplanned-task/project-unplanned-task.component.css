@@ -5889,3 +5889,112 @@ span.run-icon-group-icon svg {
 #multiselect-2-dialog .project-filter .project-filter-item{
    flex-grow:1;
 }
+
+
+
+
+.attach-tippy{
+  position: relative;
+}
+.attach-tippy .st-line{
+  min-width: 13rem;
+  padding: 1rem 1rem;
+  position: absolute;
+  will-change: transform;
+  top: 0px;
+  left: 0px;
+  transform: translate3d(-110px, 23px, 0px);
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
+  border-radius: .25rem;
+  transition: all .15s ease-in-out, color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  display: none;
+  z-index: 2;
+}
+.attach-tippy-div:hover .st-line{
+  display: block;
+}
+.attach-tippy:hover .st-line{
+  display: block;
+}
+
+
+.off-days-span
+{
+    transform: translate3d(-160px, 20px, 0px) !important;
+}
+
+.off-days-span .days-list
+{
+    max-height: 130px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-right: 8px;
+}
+
+
+/* test */
+
+.info-chip{
+  border: 1px solid #e1e1e1; 
+  border-radius: 4px; 
+  padding: 0.1rem 1rem; 
+  user-select: none;  
+  display: flex; 
+  column-gap: 10px;
+}
+
+.info-chip-label{
+  line-height: 2; 
+  font-weight: 500;
+  font-size: 11px;
+}
+
+.info-chip-value{
+  line-height: 1.8;
+  color: #242424;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: lowercase;
+}
+
+.hrs-by{
+    font-size: 12px;
+    font-weight: 700;
+    color: #969696;
+}
+
+.text-red{
+  color:#ff3b3b
+}
+
+.info-chip-redirect-btn{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  background-color: white;
+  border-width: 0;
+  color: #8a8aff;
+  fill: #8a8aff;
+  cursor: pointer;
+  transition-property: background-color;
+  transition-duration: 0.4s;
+}
+
+
+.info-chip-redirect-btn:hover{
+  background-color: #c3c3c321;
+  transition-property: background-color;
+  transition-duration: 0.2s;
+}
+
+
+
+

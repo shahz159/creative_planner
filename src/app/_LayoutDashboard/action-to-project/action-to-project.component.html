@@ -203,8 +203,9 @@
     <div class="d-flex gap-1">
       <div class="form-group flex-1 details-date">
         <label>Start date<span class="text-danger">*</span></label>
-        <div class="d-flex date-border" [ngClass]="{'error-date': (_sdate == true&&!_StartDate)||_actbefore}" (click)="startdatechecker()">
-            <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()" [min]="todayDate" (dateChange)="(_StartDate=_StartDate<_curtd?null:_StartDate); (_actbefore=isActionStartBeforeProject()); "
+        <div class="d-flex date-border" [ngClass]="{'error-date': (_sdate == true&&!_StartDate)||_actbefore}">
+            <!-- (_StartDate=_StartDate<_curtd?null:_StartDate); (_actbefore=isActionStartBeforeProject()); -->
+            <input matInput [matDatepicker]="picker1" required #startdate="ngModel" (click)="picker1.open()" [min]="todayDate" (dateChange)="onActionStartDateChanged()"
                 [(ngModel)]="_StartDate" placeholder="Start date" class="form-control" 
                 [matDatepickerFilter]="isDateSelectable"
                 />
@@ -218,11 +219,12 @@
         <div *ngIf="_actbefore" style="color: red">Action cannot start before the project.</div>
     </div>
 
-        <div class="form-group flex-1 details-date" *ngIf="_StartDate!=null">
+        <div class="form-group flex-1 details-date">
             <label>End date<span class="text-danger">*</span></label>
             <div class="d-flex date-border" [ngClass]="{'error-date': (_edate && !_EndDate)}" >
+                <!-- (this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null); hasSameDateActions();  alertMaxAllocation();  -->
                 <input matInput [matDatepicker]="picker2" required #Enddate="ngModel" (click)="picker2.open()" [min]="_StartDate"
-                    [(ngModel)]="_EndDate" placeholder="End date" class="form-control"  (dateChange)="(this._EndDate=this._StartDate<=this._EndDate?this._EndDate:null); hasSameDateActions();  alertMaxAllocation();  " (input)="_edate=!_EndDate" 
+                    [(ngModel)]="_EndDate" placeholder="End date" class="form-control"  (dateChange)="onActionEndDateChanged()" (input)="_edate=!_EndDate" 
                     [matDatepickerFilter]="isDateSelectable"
                  />
 
@@ -251,10 +253,9 @@
                         </span>
             </div>
 
-
         </div>
          <!--when start date is provided-->
-        <div class="form-group flex-1 details-date" *ngIf="_StartDate==null">
+        <!-- <div class="form-group flex-1 details-date" *ngIf="_StartDate==null">
             <label>End date<span class="text-danger">*</span></label>
             <div class="d-flex date-border" [ngClass]="{'error-date': _edate && !_EndDate}"  (click)="enddateChecker()">
                 <input matInput [matDatepicker]="picker2"  [matDatepickerFilter]="myFilter"
@@ -268,7 +269,8 @@
                 </div>
             </div>
             <span *ngIf="_edate && !_EndDate" style="color:red">Please select end date.</span>
-        </div>  <!--when start date is not provided-->
+        </div>   -->
+        <!-- when start date is not provided -->
     </div>
 
 
