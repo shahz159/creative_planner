@@ -303,7 +303,6 @@ export class ActionToProjectComponent implements OnInit {
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode,this.Current_user_ID).subscribe(
       (data) => {
-
         this.ownerArr=(JSON.parse(data[0]['RacisList']));   
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
@@ -1485,10 +1484,56 @@ getFileExtension(fileName: any): string | null {
 
   }
 
-  startdatechecker(){
-    this._sdate=false;
-    this._EndDate=null;
+  // startdatechecker(){
+  //   this._sdate=false;
+  //   this._EndDate=null;
+  // }
+
+  
+ onActionStartDateChanged(){
+debugger
+  if(this._StartDate){
+
+      const sdate=new Date(this._StartDate); sdate.setHours(0,0,0,0);
+      const notPastDate=sdate>=this._curtd;   // is selected action start date < current date or not.
+      const isWorkingday=this.weekendPolicy?.[sdate.getDay()]=='full'?false:true; // is selected action start date violating weekend policy or not.
+    
+      if((notPastDate&&isWorkingday)){  // when start date is valid.
+
+        if(this._EndDate){ // if end date also exists.
+            const edate=new Date(this._EndDate); edate.setHours(0,0,0,0);
+            this._EndDate=edate<sdate?null:this._EndDate;
+        }
+      }
+      else{  // when start date is invalid.
+        this._StartDate=null;  
+      }
+
   }
+   
+   this.alertMaxAllocation();   
+ }
+
+
+ onActionEndDateChanged(){
+  debugger
+  if(this._StartDate&&this._EndDate){
+      const sdate=new Date(this._StartDate); sdate.setHours(0,0,0,0);
+      const edate=new Date(this._EndDate);  edate.setHours(0,0,0,0);
+      const endDateAligned=edate>=sdate;
+      const isWorkingday=this.weekendPolicy?.[edate.getDay()]=='full'?false:true; // is selected action end date violating weekend policy or not.
+      
+      if(!(endDateAligned&&isWorkingday)){
+        this._EndDate=null;
+      }
+  }
+   
+   this.hasSameDateActions();
+   this.alertMaxAllocation(); 
+ } 
+
+
+
 
   myFilter:any;
 
