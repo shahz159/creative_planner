@@ -771,6 +771,7 @@ onPaste(event: ClipboardEvent): void {
     this.characterCount=null;
     this.agendacharacterCount=null;
     this.switChRecurrenceValue=false;
+    this.selectedrecuvalue = '0'
   }
   // propose_date_time_open() {
   //   document.getElementById("propose-date-time-div").classList.toggle("open");
@@ -3390,6 +3391,8 @@ getEventsForWeeks(weeksFromToday: number) {
 
   this.durationOfTodayLine = new Date().toLocaleString('sv-SE', { hour12: false }).slice(0, 16).replace('T', ' ');
 
+  console.log(this.durationOfTodayLine, 'durationOfTodayLine'); 
+
   if (weeksFromToday === 3) {
    
     this.clickHistory = [];
@@ -5784,7 +5787,7 @@ repeatEvent() {
 
   this.Schedule_ID = this._calenderDto.Schedule_ID;
   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-    ((data) => {
+    ((data) => {   debugger
 
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       this.Schedule_ID = 0;   // schedule id.
@@ -5974,11 +5977,8 @@ repeatEvent() {
           }
          }
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
-      
-
-     
        }
-
+     this.eventtaskitemtimeModal();
     });
     this.customEventModal_dismiss();
 }

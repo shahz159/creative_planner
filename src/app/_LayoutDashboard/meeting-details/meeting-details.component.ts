@@ -9090,10 +9090,6 @@ repeatEvent() {
       this.Attachment12_ary = this.EventScheduledjson[0]['Attachmentsjson'];   // file attachment
     
    
-        console.log(this.repeatDate,this.today);
-
-
-       
                 if(this.repeatDate != this.today){
                    this._StartDate=null;
                    this.disablePreviousDate = null;
@@ -9267,10 +9263,7 @@ repeatEvent() {
          }
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
        }
-
-
-
-
+        this.eventtaskitemtimeModal();
     });
   
   this.closeevearea();  
@@ -11264,6 +11257,7 @@ isMini = false;
     this.characterCount=null;
     this.agendacharacterCount=null;
     this.switChRecurrenceValue=false;
+    this.selectedrecuvalue = '0'
   }
 
 

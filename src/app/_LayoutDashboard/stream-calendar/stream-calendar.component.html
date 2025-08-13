@@ -706,8 +706,8 @@
                                 </div>
                                 <!-- <div  class="time-line" style="bottom: 0px;"></div> -->
                             </div>
-
-                            <div class="sch-evt-item  sch-evt-border-bottom" [ngClass]="{'sch-evt-item-past': group.date < today ||   (getLastEventWithValidEnd(group.events, durationOfTodayLine) && meetingItem.endTime <= getLastEventWithValidEnd(group.events, durationOfTodayLine).endTime)}"
+                            <!-- [ngClass]="{'sch-evt-item-past': group.date < today || (getLastEventWithValidEnd(group.events, durationOfTodayLine) && meetingItem.endTime <= getLastEventWithValidEnd(group.events, durationOfTodayLine).endTime)}" -->
+                            <div class="sch-evt-item  sch-evt-border-bottom"  [ngClass]="{'sch-evt-item-past': group.date < today || meetingItem.endTime.slice(0,16).replace('T',' ') <= durationOfTodayLine}"
                              *ngFor="let meetingItem of group.events let i = index"  (click)="customEventModal(meetingItem.Schedule_Type);GetClickEventJSON_Calender(meetingItem.Schedule_ID,meetingItem.className)">
                           
                                 <!-- <div *ngIf="group.date === today && meetingItem === getLastEventWithValidEnd(group.events, durationOfTodayLine); else topshowline"
