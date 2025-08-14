@@ -663,6 +663,7 @@ isRepeat:any;
 PreviousCount:any;
 accessDenied:any;
 racisUserIds:any;
+totalAcceptedCount:any;
 
   
   live_activ = [
@@ -692,7 +693,7 @@ racisUserIds:any;
       this.deletedMeeting = true;
       this.BookMarks = this.EventScheduledjson[0].IsBookMark;
       this._FutureEventTasksCount = this.EventScheduledjson[0]['FutureCount'];
-       console.log(this._FutureEventTasksCount,'this._FutureEventTasksCount');
+      console.log(this._FutureEventTasksCount,'this._FutureEventTasksCount');
       var Schedule_date = this.EventScheduledjson[0].Schedule_date;
       this.meetingRestriction(Schedule_date);
       this.Agendas_List = this.EventScheduledjson[0].Agendas;
@@ -736,17 +737,17 @@ racisUserIds:any;
       this.EmpNo = JSON.parse(this.EventScheduledjson[0].Emp_No);
       this.Actiontask = this.EventScheduledjson[0].Actiontasks;
       this.AssignedTask = this.EventScheduledjson[0].AssignedTasks;
+    
       this.totalAssign = this.AssignedTask.length;
       this.totalActiontask = this.Actiontask.length;
       this.Todotask = this.EventScheduledjson[0].Todotasks;
-
+    
       this._AllEventAttachment = this.EventScheduledjson[0]['AllEventsCount'];
       this._FutureEventAttachment = this.EventScheduledjson[0]['FutureCount'];
       this.PreviousCount = this.EventScheduledjson[0]['PreviousCount'];
 
       this.AdminName=this.EventScheduledjson[0].AdminName
 
-      console.log(this.Todotask,'new tatsk ')
 
       this.totalTodotask = this.Todotask.length;
       this.totalCountAssign = this.totalAssign + this.totalActiontask + this.totalTodotask;
@@ -783,9 +784,12 @@ racisUserIds:any;
 
       this.CurrentNotesCount = this.Agendas_List.map(item => ({ NotesCount: item.CurrentNotesCount, agendaid: item.AgendaId }));
       this.CurrentTaskCount = this.Agendas_List.map(item => ({ TaskCount: item.CurrentTaskCount, agendaid: item.AgendaId }));
-
+      
      },2000)
- 
+     
+     this.totalAcceptedCount = this.Agendas_List.reduce((sum, item) => sum + item.AssignedCount, 0);
+      console.log(this.totalAcceptedCount,'totalAcceptedCount')
+
 
     
       if (this.Agendas_List.every(obj => obj.Status == 1)) {
@@ -4024,12 +4028,13 @@ onFileChange(event) {
       (data => {
 
         this.CompletedMeeting_notes = JSON.parse(data['meeitng_datajson']);
-        console.log(this.CompletedMeeting_notes, 'CompletedMeeting_notes')
+        
         this.meeting_details();
         if (this.CompletedMeeting_notes != null && this.CompletedMeeting_notes != undefined && this.CompletedMeeting_notes != '') {
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
           this.AutoComplete = this.CompletedMeeting_notes[0].AutoComplete;
-
+          this.totalAcceptedCount = this.CompletedMeeting_notes[0].AssignedCount;
+          console.log( this.totalAcceptedCount, 'CompletedMeeting_notes')
         
 
           this.AttendeeCount = this.CompletedMeeting_notes[0].online_count;
@@ -4358,7 +4363,7 @@ onFileChange(event) {
                 this.ProjectTypelist = JSON.parse(data[0]['ProjectTypeList']);
                 this.ActionedAssigned_Josn = JSON.parse(data[0]['ActionedAssigned_Josn']);
                 this.Clientjson = JSON.parse(data[0]['Client_json'])
-          
+                console.log(this._TodoList,'_TodoList')
                 this.ActionedSubtask_Json = JSON.parse(data[0]['ActionedSubtask_Json']);
 
                 this.assigncount = this.ActionedAssigned_Josn.length;
@@ -4366,7 +4371,7 @@ onFileChange(event) {
               
 
                 this.EmployeeList = JSON.parse(data[0]['EmployeeList']);
-                console.log(this.EmployeeList,'this.EmployeeList')
+                
                 this.FiterEmployee = this.EmployeeList;
      
                  const orderedEmpNos = new Set(this.orderedItems.map(item => item.stringval));
@@ -4634,6 +4639,7 @@ assignOptions:any = false;
         this.exact_start = (data['Start_time']);
         this.agendasList = JSON.parse(data['Agendas']);
 
+      
         this.TaskList = JSON.parse(this.agendasList[0].TaskList) 
        
         this.LastPauseTime = this.agendasList[0].LastPauseTime
@@ -4642,8 +4648,6 @@ assignOptions:any = false;
         this.portFocount = this.agendasList[0]?.portcount;
         this.projecount = this.agendasList[0]?.projectcount;
         this.attachcount = this.agendasList[0]?.attachcount;
-
-
      
         // console.log(this.smailcount,'smailcount')
         // console.log(this.exact_start,'exact_start');
@@ -4687,6 +4691,7 @@ assignOptions:any = false;
 
         this.notescount.forEach(item => item.count = 0);  //1. clear previous notes count data.
         this.taskcount.forEach(item => item.count = 0);   //1. clear previous task count data.
+      
         this.status_type = '';
         this.NotesCount = JSON.parse(data['NotesCount']);
 
@@ -4698,12 +4703,16 @@ assignOptions:any = false;
       
 
         this.TaskCount = JSON.parse(data['TaskCount']);
+        
         this.TaskCount.forEach(item => {
           const i = this.taskcount.findIndex(item1 => item1.agendaid == item.Agenda_Id);
           if (i > -1)
             this.taskcount[i].count += 1;
         });    // 2. update new task count data.
-
+         
+       
+        this.totalAcceptedCount = JSON.parse(data['AssignedCount']);
+        console.log( this.totalAcceptedCount ,' this.totalAcceptedCount ',data)
        
         this.totalNotesCount=this.notescount.reduce((sum,item)=>{
              return sum+item.count;
@@ -4717,7 +4726,7 @@ assignOptions:any = false;
         this.meetingStarted = data.AdminMeeting_Status == '1' || data.AdminMeeting_Status == '2' || data.AdminMeeting_Status == '3'  ? true : false;
         this.showAttendeeNotify = data.AdminMeeting_Status;
 
-       console.log(this.showAttendeeNotify,'showAttendeeNotify')
+      //  console.log(this.showAttendeeNotify,'showAttendeeNotify')
 
         if (this.meetingStarted || this.meetingStarted != true) {
       

@@ -265,10 +265,10 @@ onPaste(event: ClipboardEvent): void {
   ngOnInit(): void {
     this.loadingDMS = false;
     this.Current_user_ID = localStorage.getItem('EmpNo');
-   
+     this.getDayReportSummary();
     this.getEventsForWeeks(0);
     this.getTeam_List(0)
-    this.getDayReportSummary();
+   
     this.scheduleId_UrlParams=this.activatedRoute.snapshot.queryParamMap.get('calenderId'); 
 
     if(this.scheduleId_UrlParams){
@@ -1862,7 +1862,7 @@ keepChoosedItems(){
            this.close_projectmodal();
       };break;
 
-     case 'S Mail':{ debugger
+     case 'S Mail':{ 
           if(!this.SelectDms)   // if SelectDms is null,undefined,''
             this.SelectDms=[];
 
@@ -2716,7 +2716,7 @@ selectAction:any;
       this._subname = true;
       return false;
     }
- debugger
+
     var now = new Date();
     if(this.eventRepeat===false){
       let timestamp = "";
@@ -2743,7 +2743,7 @@ selectAction:any;
 
   
        // new code start 69
-      debugger
+      
   
        if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate) || this.formattedDayTime){
          let startDate = new Date(this._StartDate);
@@ -2810,7 +2810,7 @@ selectAction:any;
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
-      finalarray.forEach(element => { debugger
+      finalarray.forEach(element => { 
        this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this._StartDate);
      
@@ -3385,6 +3385,7 @@ SearchText:any;
 
 
 getEventsForWeeks(weeksFromToday: number) { 
+   
 
   const today = new Date();
   today.setHours(0, 0, 0, 0); 
@@ -3461,7 +3462,7 @@ getEventsForWeeks(weeksFromToday: number) {
     //   this._calenderDto.SearchText= null;
     // }
  
-
+     this.GetHasAcknowledgeService();
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe((data) => { 
       
         this.fetchDataEndTime = performance.now();
@@ -4065,7 +4066,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       if (result && result[0])
         this.Link_Detail = result[0].slice(6, result[0].length - 1);
 
-    debugger
+
       //69 document.getElementById("deleteendit").style.display = "flex";
       if ((this.Schedule_type1 == 'Event' && (this.teamsCalendar == 1 || this.teamsCalendar == 0)) && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
 
@@ -4104,7 +4105,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       var eventStatus=  this.User_Scheduledjson.filter(e=>e.stringval==this.Current_user_ID);
        this.statusofMeeting =eventStatus.length?eventStatus[0].Status:undefined;
 
-       debugger
+      
       this.dmsIdjson = [];
       if (this.DMS_Scheduledjson.length > 0) {
         this.DMS_Scheduledjson.forEach(element => {
@@ -4696,7 +4697,7 @@ DublicateTaskandEvent() {
 
 
 
-ReshudingTaskandEvent() { debugger
+ReshudingTaskandEvent() { 
   this.createTaskEvent=false;
   document.getElementById("div_endDate_new").style.display = "none";
   // 69 document.getElementById("Schenddate").style.display = "none";
@@ -5617,7 +5618,7 @@ Event_acceptandReject() {
     this._calenderDto.Emp_No = this.Current_user_ID;
     this._calenderDto.flagid = this.EventAction_type;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => { debugger
+      ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       });
     this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
@@ -5787,7 +5788,7 @@ repeatEvent() {
 
   this.Schedule_ID = this._calenderDto.Schedule_ID;
   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-    ((data) => {   debugger
+    ((data) => {  
 
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       this.Schedule_ID = 0;   // schedule id.
@@ -6044,7 +6045,7 @@ repeatEventTime(){
 
 
 
- submitEventToRepeat(){  debugger
+ submitEventToRepeat(){ 
 
   const input_date=moment(this.repeatStartDate,'YYYY-MM-DD');
   const current_date=moment(moment().format('YYYY-MM-DD'),'YYYY-MM-DD');
@@ -6848,12 +6849,9 @@ meetingbookmarks:any;
 totalbookmarkslist:any;
 
 BookmarkMeetingsList() {
-
   this._calenderDto.Emp_No = this.Current_user_ID;
-
   this.CalenderService.GetBookmarkMeetingsList(this._calenderDto).subscribe
     ((data) => {
-
           this.meetingbookmarks = JSON.parse(data['meetingbookmarks']);
           console.log(this.meetingbookmarks,'this.meetingbookmarks')
          
@@ -6861,6 +6859,29 @@ BookmarkMeetingsList() {
 }
 
 
+Acknowledgement() {
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  this.CalenderService.NewInsertAcknowledgement(this._calenderDto).subscribe
+    ((data) => {
+          var message = data['message'];
+          console.log(message,'Acknowledgement')
+         
+  })
+}
+
+HasAcknowledged:any;
+
+GetHasAcknowledgeService() {
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  this._calenderDto.AckDate  =  new Date().toISOString().split('T')[0];
+  this.CalenderService.NewGetHasAcknowledgeService(this._calenderDto).subscribe
+    ((data) => {
+          this.HasAcknowledged = data['HasAcknowledged'];
+          if(this.reportCount && this.HasAcknowledged == 0){
+         this.notificationalertModal() 
+       }            
+  })
+}
 
 
 Bookmark_Delete(Scheduleid:any) {
@@ -6906,21 +6927,12 @@ getDayReportSummary(){
       this.reportCount = ["NewProjectRejected", "AssignedTasksDue", "ActionsDelayed", "ProjectsDelayed", "StandardDelayed"]
       .filter(key => this.daySummaryReport[key] > 0).length;
 
-
       if(this.daySummaryReport['PendingTasks']){
        this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
       console.log("daySummaryReport:",this.daySummaryReport);
       }
-
-      // if(this.reportCount){
-      //   this.showLoader=true;
-      //   setTimeout(()=>{ this.showLoader=false; },5000)
-      // }      
-      if(this.reportCount){
-         this.notificationalertModal() 
-       }     
+      this.GetHasAcknowledgeService()        
   })
-    
 }
 
 
@@ -7464,10 +7476,10 @@ getLastEventWithValidEnd(events: any[], duration: string): any {
   EmpJson:any;
   searchTeams:any;
 
-getTeam_List(TeamsArg){ debugger
+getTeam_List(TeamsArg){ 
   this.teamsCalendar = TeamsArg;
      this._calenderDto.EmpNo = this.Current_user_ID;
-      this.CalenderService.GetUserTeam(this._calenderDto).subscribe((data)=>{ debugger
+      this.CalenderService.GetUserTeam(this._calenderDto).subscribe((data)=>{ 
       this.EmpJson = JSON.parse(data['EmpJson']);  
       console.log(this.EmpJson,'this.EmpJson')  
       })

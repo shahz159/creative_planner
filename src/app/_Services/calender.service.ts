@@ -580,12 +580,21 @@ NewUsersDashboard(){
 
 
 
-GetBookmarkMeetingsList(obj:CalenderDTO){
-
-  this.obj_CalenderDTO.Emp_No=obj.Emp_No
- 
-  return this.http.post(this.rootUrl+'CalenderAPI/NewGetBookmarkMeetings',this.obj_CalenderDTO)
+NewInsertAcknowledgement(obj:CalenderDTO){
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No 
+  return this.http.post(this.rootUrl+'CalenderAPI/NewInsertAcknowledgement',this.obj_CalenderDTO)
 }
 
+NewGetHasAcknowledgeService(obj:CalenderDTO){ 
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No
+  this.obj_CalenderDTO.AckDate =obj.AckDate 
+  return this.http.post(this.rootUrl+'CalenderAPI/NewGetHasAcknowledgeService',this.obj_CalenderDTO)
+}
+
+
+GetBookmarkMeetingsList(obj:CalenderDTO){
+  this.obj_CalenderDTO.Emp_No=obj.Emp_No 
+  return this.http.post(this.rootUrl+'CalenderAPI/NewGetBookmarkMeetings',this.obj_CalenderDTO)
+}
 
 }
