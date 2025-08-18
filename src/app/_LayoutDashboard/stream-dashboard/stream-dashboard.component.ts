@@ -1058,10 +1058,10 @@ Acknowledgement() {
   this.CalenderService.NewInsertAcknowledgement(this._calenderDto).subscribe
     ((data) => {
           var message = data['message'];
-          console.log(message,'Acknowledgement')
-         
+          console.log(message,'Acknowledgement')         
   })
 }
+
 
 HasAcknowledged:any;
 
