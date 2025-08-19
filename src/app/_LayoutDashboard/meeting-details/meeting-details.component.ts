@@ -763,7 +763,7 @@ totalAcceptedCount:any;
 
       this.accessDenied = [this.Organizer[0], ...this.User_Scheduledjson];
       this.totalonlineUser = this.accessDenied.filter(u => u.onlineStatus === "Start").length;
-
+     console.log(this.accessDenied,'accessDenied')
       // if (this.accessDenied.length > 0) { 
       debugger 
         this.racisUserIds = this.accessDenied.filter((user: any) => user.stringval.toString() == this.Current_user_ID);
@@ -775,7 +775,7 @@ totalAcceptedCount:any;
         }
       
       // }
-      console.log(this.userFound,'userFound')
+     
 
      setTimeout(()=>{ 
       this.taskcount = this.Agendas_List.map(item => ({ count: 0, agendaid: item.AgendaId }));
