@@ -42,6 +42,7 @@ export class CalenderService {
     this.obj_CalenderDTO.startdate=obj.startdate;
     this.obj_CalenderDTO.enddate=obj.enddate;
     this.obj_CalenderDTO.SearchText=obj.SearchText;
+    debugger
     return this.http.post(this.rootUrl + "CalenderAPI/NewGetScheduledtimejson", this.obj_CalenderDTO);
   }
 
