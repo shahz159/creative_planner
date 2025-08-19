@@ -51,6 +51,7 @@ export class StreamCalendarComponent implements OnInit {
   calendarOptions: CalendarOptions
   selectDay: any;
   Current_user_ID: any;
+  EmployeeName:any;
   _StartDate: any;
   Startts: any;
   validStartTimearr:any=[];
@@ -265,10 +266,11 @@ onPaste(event: ClipboardEvent): void {
   ngOnInit(): void {
     this.loadingDMS = false;
     this.Current_user_ID = localStorage.getItem('EmpNo');
-   
+  
+     this.getDayReportSummary();
     this.getEventsForWeeks(0);
     this.getTeam_List(0)
-    this.getDayReportSummary();
+   
     this.scheduleId_UrlParams=this.activatedRoute.snapshot.queryParamMap.get('calenderId'); 
 
     if(this.scheduleId_UrlParams){
@@ -418,7 +420,7 @@ onPaste(event: ClipboardEvent): void {
     document.getElementById("week-date").style.display = "none";
     document.getElementById("month-date").style.display = "none";
     document.getElementById("schedule-date").style.display = "none";
-    if(this.teamsCalendar == 1 || this.teamsCalendar == 0){
+    if(this.teamsCalendar == 1 || this.teamsCalendar == 0 ){
       document.getElementById("kt-calendar-quickactions").classList.remove("border-0");
     }
    
@@ -731,7 +733,8 @@ onPaste(event: ClipboardEvent): void {
       this.disablePreviousDate = TodayDate;
       this._SEndDate = TodayDate;
       this.disablePreviousTodayDate= TodayDate;
-    },0)      
+    },0)   
+    this.allAgendasExists=false;   
     this.selectAction=false;
     this.mtgOnDays=[];
     this.privateMeeting = false;
@@ -770,6 +773,7 @@ onPaste(event: ClipboardEvent): void {
     this.characterCount=null;
     this.agendacharacterCount=null;
     this.switChRecurrenceValue=false;
+    this.selectedrecuvalue = '0'
   }
   // propose_date_time_open() {
   //   document.getElementById("propose-date-time-div").classList.toggle("open");
@@ -1071,12 +1075,19 @@ AgendaCharacterCount(): void {
   }else{
     this.agendacharacterCount =  null;
   }
+  this.allAgendasExists=false; 
   
 }
 
 
+allAgendasExists:any;
+
 addAgenda() {
-  if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101) {
+
+ this.allAgendasExists = [...this.allAgendas].some(item => item.name?.trim() === this.agendaInput.trim());
+
+
+  if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101 && !this.allAgendasExists) {
     this.agendasAdded += 1;
     const agenda = {
       index: this.agendasAdded,
@@ -1853,7 +1864,7 @@ keepChoosedItems(){
            this.close_projectmodal();
       };break;
 
-     case 'S Mail':{ debugger
+     case 'S Mail':{ 
           if(!this.SelectDms)   // if SelectDms is null,undefined,''
             this.SelectDms=[];
 
@@ -2707,7 +2718,7 @@ selectAction:any;
       this._subname = true;
       return false;
     }
- debugger
+
     var now = new Date();
     if(this.eventRepeat===false){
       let timestamp = "";
@@ -2734,7 +2745,7 @@ selectAction:any;
 
   
        // new code start 69
-      debugger
+      
   
        if(this.eventRepeat==true && (this._StartDate == this.disablePreviousTodayDate) || this.formattedDayTime){
          let startDate = new Date(this._StartDate);
@@ -2801,7 +2812,7 @@ selectAction:any;
     finalarray = this.daysSelectedII.filter(x => x.IsActive == true);
 
     if (finalarray.length > 0) {
-      finalarray.forEach(element => { debugger
+      finalarray.forEach(element => { 
        this._StartDate = moment(this._StartDate).format("YYYY-MM-DD").toString();
         const date1: Date = new Date(this._StartDate);
      
@@ -3376,11 +3387,14 @@ SearchText:any;
 
 
 getEventsForWeeks(weeksFromToday: number) { 
+   
 
   const today = new Date();
   today.setHours(0, 0, 0, 0); 
 
   this.durationOfTodayLine = new Date().toLocaleString('sv-SE', { hour12: false }).slice(0, 16).replace('T', ' ');
+
+  console.log(this.durationOfTodayLine, 'durationOfTodayLine'); 
 
   if (weeksFromToday === 3) {
    
@@ -3429,34 +3443,36 @@ getEventsForWeeks(weeksFromToday: number) {
     if(this.teamsCalendar == 1 || this.teamsCalendar == 0){
        this.selectEmployee = this.Current_user_ID;
     }
-    
+
       this._calenderDto.EmpNo = this.selectEmployee;
       this.fetchDataStartTime = performance.now();
-    if(this.Searchingfunc==true && this.user_Type == 0){
+    if(this.Searchingfunc==true){
       this._calenderDto.User_Type=this.user_Type;
       this._calenderDto.startdate = filterStartDate;
       this._calenderDto.enddate = filterEndDate;
       this._calenderDto.SearchText= null;
-    }else if(this.Searchingfunc==false && this.user_Type == 0){ 
+    }else if(this.Searchingfunc==false){ 
       this._calenderDto.User_Type=this.user_Type;
       this._calenderDto.startdate = null;
       this._calenderDto.enddate = null;
       this._calenderDto.SearchText= this.SearchText;
-    }else if(this.user_Type>0){
-      this._calenderDto.User_Type=this.user_Type;
-      this._calenderDto.startdate = null;
-      this._calenderDto.enddate = null;
-      this._calenderDto.SearchText= null;
     }
-
+    // else if(this.user_Type>0){
+    //   this._calenderDto.User_Type=this.user_Type;
+    //   this._calenderDto.startdate = null;
+    //   this._calenderDto.enddate = null;
+    //   this._calenderDto.SearchText= null;
+    // }
+ 
+     this.GetHasAcknowledgeService();
     this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe((data) => { 
-       
+      
         this.fetchDataEndTime = performance.now();
         this.fetchDataTime = this.fetchDataEndTime - this.fetchDataStartTime;
         this.dataBindStartTime = performance.now();
         this.Scheduledjson = JSON.parse(data['Scheduledtime']);
         this.Scheduledjson = this.Scheduledjson.sort((a, b) => new Date(a.Schedule_date).getTime() - new Date(b.Schedule_date).getTime());
-      
+    
         this.loadingDMS = true;
   
     if(this.Searchingfunc==false){ 
@@ -4052,23 +4068,23 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       if (result && result[0])
         this.Link_Detail = result[0].slice(6, result[0].length - 1);
 
-    debugger
+
       //69 document.getElementById("deleteendit").style.display = "flex";
-      if ((this.Schedule_type1 == 'Event' && (this.teamsCalendar == 1 || this.teamsCalendar == 0)) && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
+      if ((this.Schedule_type1 == 'Event' && (this.teamsCalendar == 1 || this.teamsCalendar == 0 || this.selectEmployee == this.Current_user_ID)) && (this.Status1 != 'Pending' && this.Status1 != 'Accepted' && this.Status1 != 'Rejected' && this.Status1 != 'May be' && this.Status1 != 'Proposed')) {
 
        document.getElementById("hiddenedit").style.display = this.Meeting_status==true?'none':'flex';
        document.getElementById("deleteendit").style.display =this.Meeting_status==true || this.AdminMeeting_Status==1 || this.AdminMeeting_Status==2?'none':'flex';
        document.getElementById("main-foot").style.display = "none";
       
       }
-      else if ((this.Schedule_type1 == 'Event' && (this.teamsCalendar == 1 || this.teamsCalendar == 0)) && (this.Meeting_status==false) && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
+      else if ((this.Schedule_type1 == 'Event' && (this.teamsCalendar == 1 || this.teamsCalendar == 0 || this.selectEmployee == this.Current_user_ID)) && (this.Meeting_status==false) && (this.Status1 == 'Pending' || this.Status1 == 'Accepted' || this.Status1 == 'Rejected' || this.Status1 == 'May be' || this.Status1 == 'Proposed')) {
 
        document.getElementById("hiddenedit").style.display = "none";
        document.getElementById("deleteendit").style.display = "none";
        document.getElementById("main-foot").style.display = "flex";
 
       }
-      else if ((this.Schedule_type1 == 'Task' && (this.teamsCalendar == 1 || this.teamsCalendar == 0)) && (this.Project_dateScheduledjson >= this._StartDate)) {
+      else if ((this.Schedule_type1 == 'Task' && (this.teamsCalendar == 1 || this.teamsCalendar == 0 || this.selectEmployee == this.Current_user_ID)) && (this.Project_dateScheduledjson >= this._StartDate)) {
         document.getElementById("hiddenedit").style.display = "flex";
         document.getElementById("deleteendit").style.display = "flex";
         document.getElementById("main-foot").style.display = "none";
@@ -4091,7 +4107,7 @@ GetClickEventJSON_Calender(arg,meetingClassNeme=undefined) {
       var eventStatus=  this.User_Scheduledjson.filter(e=>e.stringval==this.Current_user_ID);
        this.statusofMeeting =eventStatus.length?eventStatus[0].Status:undefined;
 
-       debugger
+      
       this.dmsIdjson = [];
       if (this.DMS_Scheduledjson.length > 0) {
         this.DMS_Scheduledjson.forEach(element => {
@@ -4683,7 +4699,7 @@ DublicateTaskandEvent() {
 
 
 
-ReshudingTaskandEvent() { debugger
+ReshudingTaskandEvent() { 
   this.createTaskEvent=false;
   document.getElementById("div_endDate_new").style.display = "none";
   // 69 document.getElementById("Schenddate").style.display = "none";
@@ -5604,7 +5620,7 @@ Event_acceptandReject() {
     this._calenderDto.Emp_No = this.Current_user_ID;
     this._calenderDto.flagid = this.EventAction_type;
     this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-      ((data) => { debugger
+      ((data) => {
         this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       });
     this._calenderDto.Schedule_ID = this.EventScheduledjson[0].Schedule_ID;
@@ -5774,7 +5790,7 @@ repeatEvent() {
 
   this.Schedule_ID = this._calenderDto.Schedule_ID;
   this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe
-    ((data) => {
+    ((data) => {  
 
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       this.Schedule_ID = 0;   // schedule id.
@@ -5964,11 +5980,8 @@ repeatEvent() {
           }
          }
         this.Description_Type = (this.EventScheduledjson[0]['Description']);
-      
-
-     
        }
-
+     this.eventtaskitemtimeModal();
     });
     this.customEventModal_dismiss();
 }
@@ -6034,7 +6047,7 @@ repeatEventTime(){
 
 
 
- submitEventToRepeat(){  debugger
+ submitEventToRepeat(){ 
 
   const input_date=moment(this.repeatStartDate,'YYYY-MM-DD');
   const current_date=moment(moment().format('YYYY-MM-DD'),'YYYY-MM-DD');
@@ -6838,12 +6851,9 @@ meetingbookmarks:any;
 totalbookmarkslist:any;
 
 BookmarkMeetingsList() {
-
   this._calenderDto.Emp_No = this.Current_user_ID;
-
   this.CalenderService.GetBookmarkMeetingsList(this._calenderDto).subscribe
     ((data) => {
-
           this.meetingbookmarks = JSON.parse(data['meetingbookmarks']);
           console.log(this.meetingbookmarks,'this.meetingbookmarks')
          
@@ -6851,6 +6861,29 @@ BookmarkMeetingsList() {
 }
 
 
+Acknowledgement() {
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  this.CalenderService.NewInsertAcknowledgement(this._calenderDto).subscribe
+    ((data) => {
+          var message = data['message'];
+          console.log(message,'Acknowledgement');
+         
+  })
+}
+
+HasAcknowledged:any;
+
+GetHasAcknowledgeService() {
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  this._calenderDto.AckDate  =  new Date().toISOString().split('T')[0];
+  this.CalenderService.NewGetHasAcknowledgeService(this._calenderDto).subscribe
+    ((data) => {
+          this.HasAcknowledged = data['HasAcknowledged'];
+          if(this.reportCount && this.HasAcknowledged == 0){
+         this.notificationalertModal() 
+       }            
+  })
+}
 
 
 Bookmark_Delete(Scheduleid:any) {
@@ -6895,22 +6928,13 @@ getDayReportSummary(){
       }
       this.reportCount = ["NewProjectRejected", "AssignedTasksDue", "ActionsDelayed", "ProjectsDelayed", "StandardDelayed"]
       .filter(key => this.daySummaryReport[key] > 0).length;
-
-
+       console.log("daySummaryReport:",this.daySummaryReport);
       if(this.daySummaryReport['PendingTasks']){
        this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
-      console.log("daySummaryReport:",this.PendingTasks);
+      console.log("daySummaryReport:",this.daySummaryReport);
       }
-
-      // if(this.reportCount){
-      //   this.showLoader=true;
-      //   setTimeout(()=>{ this.showLoader=false; },5000)
-      // }      
-      if(this.reportCount){
-         this.notificationalertModal() 
-       }     
+      this.GetHasAcknowledgeService()        
   })
-    
 }
 
 
@@ -7014,7 +7038,7 @@ dayScheduleJson(dayFromToday: number){
     this._calenderDto.enddate = selectedDate;
     this._calenderDto.SearchText= null
      console.log(this._calenderDto ,'Dayyyyyyy ')
-    this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe((data) => { debugger
+    this.CalenderService.NewGetScheduledtimejson(this._calenderDto).subscribe((data) => { 
        
         this.fetchDataEndTime = performance.now();
         this.fetchDataTime = this.fetchDataEndTime - this.fetchDataStartTime;
@@ -7454,25 +7478,31 @@ getLastEventWithValidEnd(events: any[], duration: string): any {
   EmpJson:any;
   searchTeams:any;
 
-getTeam_List(TeamsArg){ debugger
+getTeam_List(TeamsArg){ 
   this.teamsCalendar = TeamsArg;
      this._calenderDto.EmpNo = this.Current_user_ID;
-      this.CalenderService.GetUserTeam(this._calenderDto).subscribe((data)=>{ debugger
-      this.EmpJson = JSON.parse(data['EmpJson']);  
+      this.CalenderService.GetUserTeam(this._calenderDto).subscribe((data)=>{ 
+      this.EmpJson = JSON.parse(data['EmpJson']);        
       console.log(this.EmpJson,'this.EmpJson')  
       })
-       console.log(this.EmpJson,'this.EmpJson')  
+   
     if(this.teamsCalendar == 1){     
       this.getEventsForWeeks(0)
     }
-      
-
+     this.EmployeeName = localStorage.getItem("UserfullName");    
 }
 
-getTeamCalendar(employee){
+
+
+
+getTeamCalendar(employee,employeeName){
      if(this.teamsCalendar == 2){ 
+      
+      this.EmployeeName = employeeName;
       this.selectEmployee = employee.toString();
          this.getEventsForWeeks(0)
      }
+        console.log(this.selectEmployee,this.Current_user_ID,'this.EmpJson2')
 }
+
 }

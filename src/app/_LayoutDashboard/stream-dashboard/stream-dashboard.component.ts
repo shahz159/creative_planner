@@ -62,6 +62,7 @@ export class StreamDashboardComponent implements OnInit {
     this.initializeOwlCarousels2();
     // this.initializeOwlCarousels3();
     this.todayDate = new Date();
+    this.getDayReportSummary();
     this.meetingDetails();
     this.portfolioSerivce();
     this.getTimeLineStatus();
@@ -980,6 +981,107 @@ Maybe_event(val,Schedule_ID) {
           this.isSubmitting = false;  
         });
     });
+}
+
+
+
+daySummaryReport:any;
+dueTodayTasksCount:{taskType:string,count:number}[]=[];
+reportCount:any;
+PendingTasks:any;
+
+
+getDayReportSummary(){
+  this.service.NewGetEmployeePerformance(this.Current_user_ID).subscribe((res:any)=>{
+
+      if(res&&res.EmployeeReport){
+             this.daySummaryReport=JSON.parse(res.EmployeeReport)[0];
+            this.dueTodayTasksCount=[];
+            ['ActionsDueToday','ProjectsDueToday','StandardDueToday'].forEach((dkey)=>{
+              if(this.daySummaryReport[dkey]>0){
+                    const ob={ taskType:dkey, count:this.daySummaryReport[dkey] };
+                    this.dueTodayTasksCount.push(ob);
+              }
+            });
+      }
+      this.reportCount = ["NewProjectRejected", "AssignedTasksDue", "ActionsDelayed", "ProjectsDelayed", "StandardDelayed"]
+      .filter(key => this.daySummaryReport[key] > 0).length;
+
+      if(this.daySummaryReport['PendingTasks']){
+       this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
+      console.log("daySummaryReport:",this.daySummaryReport);
+      }
+      this.GetHasAcknowledgeService()         
+  })
+}
+
+
+
+viewTasks(){
+  let myurl = document.baseURI+'/backend/createproject?AssignedProjectId=none';
+  let myWindow = window.open(myurl,'_blank');
+  myWindow?.focus();
+}
+
+viewProjects(type:'COMPLETED'|'DUE'|'DELAYED'){
+  if(type=='DELAYED')
+  {
+    let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Projects&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
+    let myWindow = window.open(myurl,'_blank');
+    myWindow?.focus();
+  }
+}
+
+
+viewStandardTasks(type:'COMPLETED'|'DELAYED'){
+  if(type=='DELAYED')
+  {
+
+   let myurl = document.baseURI+'/backend/ProjectsSummary';
+   let myWindow = window.open(myurl,'_blank');
+   const obj={
+     EmpNo:this.Current_user_ID,
+     ProjectType:'003',
+     Status:'InProcess',
+   };
+   myWindow?.sessionStorage.setItem('filterprjsby',JSON.stringify(obj));
+   myWindow?.focus();
+
+  }
+}
+
+viewActions(type:'COMPLETED'|'DUE'|'DELAYED'){
+  if(type=='DELAYED')
+  {
+    let myurl = document.baseURI+`/ViewProjects/DelayProjects?section=Actions&filterbyemp=${this.Current_user_ID}&filterbystatus=Delay`;
+    let myWindow = window.open(myurl,'_blank');
+    myWindow?.focus();
+  }
+}
+
+
+Acknowledgement() {
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  this.CalenderService.NewInsertAcknowledgement(this._calenderDto).subscribe
+    ((data) => {
+          var message = data['message'];
+          console.log(message,'Acknowledgement')         
+  })
+}
+
+
+HasAcknowledged:any;
+
+GetHasAcknowledgeService() {
+  this._calenderDto.Emp_No = this.Current_user_ID;
+  this._calenderDto.AckDate  =  new Date().toISOString().split('T')[0];
+  this.CalenderService.NewGetHasAcknowledgeService(this._calenderDto).subscribe
+    ((data) => {
+          this.HasAcknowledged = data['HasAcknowledged'];
+          if(this.reportCount && this.HasAcknowledged == 0){
+         this.notificationalertModal() 
+       }            
+  })
 }
 
 }

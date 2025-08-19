@@ -4135,6 +4135,11 @@ span.part-count {
     border-bottom: 2px solid #ff6256 !important;
 }
 
+.error-borderbottom-Agendas {
+    border-bottom: 2px solid #ff6256 !important;
+}
+
+
 .error-border,
 .error-date .input-group-text,
 .error-date .form-control,
@@ -6081,7 +6086,7 @@ button.btn.btn-viewall:hover {
 
 .notification-alert-head-hero {
     height: 100%;
-    padding: 28px 0;
+    padding: 8px 0;
     position: relative;
     width: 100%;
     z-index: 0;
@@ -6123,7 +6128,7 @@ button.btn.btn-viewall:hover {
 
 #notificationalertModal {
     transform: translate(-22%, -28%) scale3d(0, 0, 0);
-    transition: transform 1.5s cubic-bezier(0.2, 0.9, 0.2, 1);
+    transition: transform 0.75s cubic-bezier(0.2, 0.9, 0.2, 1);
     display: block;
 }
 
@@ -6270,8 +6275,8 @@ button.btn.btn-viewall:hover {
 }
 
 .noti-alert-icon {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -6289,14 +6294,14 @@ button.btn.btn-viewall:hover {
 }
 
 .noti-alert-count {
-    font-size: 24px;
+    font-size: 18px;
     color: #000;
     font-weight: 500;
 }
 
 .noti-alert-title {
     color: #656565;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .noti-rp .noti-alert-icon {
@@ -6451,3 +6456,12 @@ button.btn.btn-viewall:hover {
     -webkit-line-clamp: 1;
 } */
 
+.error-container {
+    display: flex;
+    align-items: center;
+    color: #d93025;
+    /* Google-style red color */
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    margin-top: 4px;
+}

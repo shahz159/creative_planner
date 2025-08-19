@@ -3,10 +3,12 @@ export class CalenderDTO {
     User_Type:string;
     startdate:any;
     enddate:any;
+    AssignedCount:any;
     location:String;
     SearchText:any;
     loc_status:Boolean;
     Schedule_type:number;
+    AckDate:any;
     Emp_no:number ;
     Status_type:string;
     IsAdmin:boolean;

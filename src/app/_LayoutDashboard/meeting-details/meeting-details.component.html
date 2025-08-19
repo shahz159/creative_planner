@@ -1198,10 +1198,10 @@
                                                         </ng-container>
                                                     </div> -->
 
-                                                    <div  [ngClass]="{'error-border': agendaInput?.length>100}" class="agenda-input-field">
-                                                        <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="currentColor"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="currentColor"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="currentColor"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="currentColor"></path></g></svg>
+                                                    <div  [ngClass]="{'error-border': agendaInput?.length>100,'error-border': agendasExists}" class="agenda-input-field">
+                                                        <svg  (click)="agendafield.focus()"  width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="currentColor"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="currentColor"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="currentColor"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="currentColor"></path></g></svg>
 
-                                                        <input class="task-input" id="todo-input" name="text" placeholder="Add agenda and press 'Enter key'" autofocus="true"
+                                                        <input #agendafield class="task-input" id="todo-input" name="text" placeholder="Enter agenda here" autofocus="true"
                                                         [(ngModel)]="agendaInput"   (keyup.enter)="addAgenda()" (keyup)="MainAgendaCount()" (paste)="onMainAgenda($event)"/>
 
                                                         <ng-container >
@@ -1212,6 +1212,10 @@
                                             </div>
                                             <span *ngIf="mainAgendaCount > 0" >Max characters {{mainAgendaCount}}/100 </span>
                                             <span *ngIf="mainAgendaCount>=101" style="color:red">Maximum 100 characters are allowed!</span>
+                                            <div *ngIf="agendasExists" class="error-container">
+                                                <svg fill="#f21818" width="15px" height="15px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg" id="warning" class="icon glyph" stroke="#f21818" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,16a1,1,0,1,1,1-1A1,1,0,0,1,12,18Zm1-5a1,1,0,0,1-2,0V7a1,1,0,0,1,2,0Z"></path></g></svg>
+                                                <span class="error-text"> Agenda name already used. Try another.</span>
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
@@ -1639,7 +1643,7 @@
                                             </a> -->
                                             
                                           
-                                            <a class="kt-inbox__icon " [ngClass]="{'active': totalCountAssign}" title="Assign project" (click)="Slide_AssignTask()">
+                                            <a class="kt-inbox__icon " [ngClass]="{'active': totalCountAssign}" title="Assign project(s)" (click)="Slide_AssignTask()">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 24" fill="currentColor" height="16"
                                                 width="16" class="iconify iconify--mdi" style=" width: 30px; height: 30px;">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19.9994 19.2611H10.9294C10.4794 19.2611 10.1094 18.8911 10.1094 18.4411C10.1094 17.9911 10.4794 17.6211 10.9294 17.6211H19.9994C20.4494 17.6211 20.8194 17.9911 20.8194 18.4411C20.8194 18.9011 20.4494 19.2611 19.9994 19.2611Z"></path><path d="M19.9994 12.9681H10.9294C10.4794 12.9681 10.1094 12.5981 10.1094 12.1481C10.1094 11.6981 10.4794 11.3281 10.9294 11.3281H19.9994C20.4494 11.3281 20.8194 11.6981 20.8194 12.1481C20.8194 12.5981 20.4494 12.9681 19.9994 12.9681Z" ></path><path d="M19.9994 6.67125H10.9294C10.4794 6.67125 10.1094 6.30125 10.1094 5.85125C10.1094 5.40125 10.4794 5.03125 10.9294 5.03125H19.9994C20.4494 5.03125 20.8194 5.40125 20.8194 5.85125C20.8194 6.30125 20.4494 6.67125 19.9994 6.67125Z" ></path><path d="M4.90969 8.03187C4.68969 8.03187 4.47969 7.94187 4.32969 7.79187L3.41969 6.88188C3.09969 6.56188 3.09969 6.04187 3.41969 5.72187C3.73969 5.40187 4.25969 5.40187 4.57969 5.72187L4.90969 6.05188L7.04969 3.91187C7.36969 3.59188 7.88969 3.59188 8.20969 3.91187C8.52969 4.23188 8.52969 4.75188 8.20969 5.07188L5.48969 7.79187C5.32969 7.94187 5.12969 8.03187 4.90969 8.03187Z" ></path><path d="M4.90969 14.3287C4.69969 14.3287 4.48969 14.2487 4.32969 14.0887L3.41969 13.1788C3.09969 12.8588 3.09969 12.3388 3.41969 12.0188C3.73969 11.6988 4.25969 11.6988 4.57969 12.0188L4.90969 12.3488L7.04969 10.2087C7.36969 9.88875 7.88969 9.88875 8.20969 10.2087C8.52969 10.5288 8.52969 11.0487 8.20969 11.3687L5.48969 14.0887C5.32969 14.2487 5.11969 14.3287 4.90969 14.3287Z" ></path><path d="M4.90969 20.3288C4.69969 20.3288 4.48969 20.2488 4.32969 20.0888L3.41969 19.1788C3.09969 18.8588 3.09969 18.3388 3.41969 18.0188C3.73969 17.6988 4.25969 17.6988 4.57969 18.0188L4.90969 18.3488L7.04969 16.2087C7.36969 15.8888 7.88969 15.8888 8.20969 16.2087C8.52969 16.5288 8.52969 17.0488 8.20969 17.3688L5.48969 20.0888C5.32969 20.2488 5.11969 20.3288 4.90969 20.3288Z" ></path></g></svg>
@@ -2053,7 +2057,8 @@
                                                     <div class="meeting-attendance-title">Notes</div>
                                                 </div>
                                                 <div class="meeting-attendance-item cursor-pointer" (click)="Slide_AssignTask()">
-                                                    <div class="meeting-attendance-count">{{totalTasksCount}}</div>
+                                                    <div *ngIf="totalAcceptedCount>0 || totalTasksCount>0" class="meeting-attendance-count">{{totalAcceptedCount}}/{{totalTasksCount}}</div>
+                                                     <div *ngIf="totalAcceptedCount == 0 && totalTasksCount == 0" class="meeting-attendance-count">0</div>
                                                     <div class="meeting-attendance-title">Tasks</div>
                                                 </div>
                                                 <!-- <div class="meeting-attendance-item cursor-pointer" (click)="addNewDMS()">
@@ -2152,7 +2157,8 @@
                                             <div class="meeting-attendance-title">Notes</div>
                                         </div>
                                         <div class="meeting-attendance-item cursor-pointer" (click)="Slide_AssignTask()">
-                                            <div class="meeting-attendance-count">{{data.TaskCount}}</div>
+                                            <div *ngIf="totalAcceptedCount>0 || data.TaskCount>0" class="meeting-attendance-count">{{this.totalAcceptedCount}}/{{data.TaskCount}}</div>
+                                            <div *ngIf="totalAcceptedCount == 0 && data.TaskCount == 0" class="meeting-attendance-count">0</div>
                                             <div class="meeting-attendance-title">Tasks</div>
                                         </div>
                                         <div class="meeting-attendance-item cursor-pointer" (click)="addNewDMS()">
@@ -3470,10 +3476,10 @@
                                                                         </div>
                                                                         
                                                                         <div class="agenda-input-field">
-                                                                            <svg width="20px" height="20px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icon" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="currentColor"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="currentColor"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="currentColor"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="currentColor"></path></g></svg>
-                                                                            <input class="task-input" id="todo-input" name="text"
+                                                                            <svg  (click)="todoInput.focus()"  width="20px" height="20px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icon" style="margin: 0rem 0.25rem;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M714 762.2h-98.2c-16.6 0-30 13.4-30 30s13.4 30 30 30H714c16.6 0 30-13.4 30-30s-13.4-30-30-30zM487.4 762.2H147.1c-16.6 0-30 13.4-30 30s13.4 30 30 30h340.3c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="currentColor"></path><path d="M838.253 130.023l65.548 65.548-57.982 57.983-65.549-65.549z" fill="currentColor"></path><path d="M743.7 955.9H195.8c-53.7 0-97.4-43.7-97.4-97.4V174.8c0-53.7 43.7-97.4 97.4-97.4H615c16.6 0 30 13.4 30 30s-13.4 30-30 30H195.8c-20.6 0-37.4 16.8-37.4 37.4v683.7c0 20.6 16.8 37.4 37.4 37.4h547.9c20.6 0 37.4-16.8 37.4-37.4v-395c0-16.6 13.4-30 30-30s30 13.4 30 30v395.1c0 53.6-43.7 97.3-97.4 97.3z" fill="currentColor"></path><path d="M907.7 122.1l-39.2-39.2c-24-24-65.1-21.9-91.7 4.7L419.5 445 347 643.6l198.6-72.4L903 213.8c12.1-12.1 19.6-27.7 21.1-44 1.8-18.1-4.3-35.5-16.4-47.7zM512.6 519.3L447.5 543l23.7-65.1 264.7-264.7 40.9 41.7-264.2 264.4z m348-347.9l-41.3 41.3-40.9-41.7 40.9-40.9c3.1-3.1 6.2-3.9 7.6-3.9l37.6 37.6c-0.1 1.3-0.9 4.5-3.9 7.6z" fill="currentColor"></path></g></svg>
+                                                                            <input #todoInput class="task-input" id="todo-input" name="text"
                                                                                 [(ngModel)]="_Demotext" (keyup.enter)="EnterSubmit(_Demotext)" 
-                                                                                placeholder="Add a new task..." autofocus="true"
+                                                                                placeholder="Enter a new task..." autofocus="true"
                                                                                 (input)="onInputChange()"
                                                                                 >
                                                                             <!-- <button class="task-button" (click)=" EnterSubmit(_Demotext) "
@@ -7881,7 +7887,7 @@
                                                             {{data.AgendaCount}}
                                                             </div>
                                                             </div>
-                                                            <div class="px-2">|</div>
+                                                            <!-- <div class="px-2">|</div>
                                                             <div class="pn-in-label">
                                                                 <div class="pn-timel">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 105" x="0px" y="0px" fill="#717171" height="16" width="16" ><path d="M59.76,5.85H18.08a14,14,0,0,0-14,14V80.15a14,14,0,0,0,14,14h30.4A4,4,0,0,0,51.31,93L72.59,71.7a4,4,0,0,0,1.17-2.83v-49A14,14,0,0,0,59.76,5.85ZM12.08,80.15V19.85a6,6,0,0,1,6-6H59.76a6,6,0,0,1,6,6v45H52.48a8,8,0,0,0-8,8V86.15H18.08A6,6,0,0,1,12.08,80.15Zm48-7.28-7.62,7.62V72.87Z"></path><rect x="16.37" y="37.13" width="44.1" height="8"></rect><rect x="16.37" y="53.09" width="30.8" height="8"></rect><rect x="16.37" y="22.13" width="44.1" height="8"></rect><path d="M86.8,6.44a9.13,9.13,0,0,0-9.12,9.12V69.44A4,4,0,0,0,78,70.9L83.08,84a4,4,0,0,0,7.45,0L95.64,70.9a4,4,0,0,0,.28-1.46V15.56A9.13,9.13,0,0,0,86.8,6.44Zm0,8a1.12,1.12,0,0,1,1.12,1.12v5.19H85.68V15.56A1.12,1.12,0,0,1,86.8,14.44ZM85.68,65.75v-37h2.24v37Z"></path></svg>
@@ -7898,7 +7904,7 @@
                                                             <div class="pn-ag-count" title="Assign project">
                                                                 {{data.TaskCount}}
                                                             </div>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                     </div>                                   
                                             </div>                             
@@ -7933,7 +7939,7 @@
                         width: 30px;
                         height: 30px;">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19.9994 19.2611H10.9294C10.4794 19.2611 10.1094 18.8911 10.1094 18.4411C10.1094 17.9911 10.4794 17.6211 10.9294 17.6211H19.9994C20.4494 17.6211 20.8194 17.9911 20.8194 18.4411C20.8194 18.9011 20.4494 19.2611 19.9994 19.2611Z"></path><path d="M19.9994 12.9681H10.9294C10.4794 12.9681 10.1094 12.5981 10.1094 12.1481C10.1094 11.6981 10.4794 11.3281 10.9294 11.3281H19.9994C20.4494 11.3281 20.8194 11.6981 20.8194 12.1481C20.8194 12.5981 20.4494 12.9681 19.9994 12.9681Z" ></path><path d="M19.9994 6.67125H10.9294C10.4794 6.67125 10.1094 6.30125 10.1094 5.85125C10.1094 5.40125 10.4794 5.03125 10.9294 5.03125H19.9994C20.4494 5.03125 20.8194 5.40125 20.8194 5.85125C20.8194 6.30125 20.4494 6.67125 19.9994 6.67125Z" ></path><path d="M4.90969 8.03187C4.68969 8.03187 4.47969 7.94187 4.32969 7.79187L3.41969 6.88188C3.09969 6.56188 3.09969 6.04187 3.41969 5.72187C3.73969 5.40187 4.25969 5.40187 4.57969 5.72187L4.90969 6.05188L7.04969 3.91187C7.36969 3.59188 7.88969 3.59188 8.20969 3.91187C8.52969 4.23188 8.52969 4.75188 8.20969 5.07188L5.48969 7.79187C5.32969 7.94187 5.12969 8.03187 4.90969 8.03187Z" ></path><path d="M4.90969 14.3287C4.69969 14.3287 4.48969 14.2487 4.32969 14.0887L3.41969 13.1788C3.09969 12.8588 3.09969 12.3388 3.41969 12.0188C3.73969 11.6988 4.25969 11.6988 4.57969 12.0188L4.90969 12.3488L7.04969 10.2087C7.36969 9.88875 7.88969 9.88875 8.20969 10.2087C8.52969 10.5288 8.52969 11.0487 8.20969 11.3687L5.48969 14.0887C5.32969 14.2487 5.11969 14.3287 4.90969 14.3287Z" ></path><path d="M4.90969 20.3288C4.69969 20.3288 4.48969 20.2488 4.32969 20.0888L3.41969 19.1788C3.09969 18.8588 3.09969 18.3388 3.41969 18.0188C3.73969 17.6988 4.25969 17.6988 4.57969 18.0188L4.90969 18.3488L7.04969 16.2087C7.36969 15.8888 7.88969 15.8888 8.20969 16.2087C8.52969 16.5288 8.52969 17.0488 8.20969 17.3688L5.48969 20.0888C5.32969 20.2488 5.11969 20.3288 4.90969 20.3288Z" ></path></g></svg>
-                        <h4 class="mb-0">Assign project
+                        <h4 class="mb-0">Assign project(s)
                         </h4>
                         <a href="javascript:void(0)" class="closebtn btn btn-xs btn-icon btn-hover-info"
                             (click)="closeAssign()">
@@ -7998,7 +8004,7 @@
                                                   
 
 
-                                                        <div  *ngIf="assignOptions==false" class="kt-box-item-action">
+                                                        <div  *ngIf="assignOptions==false && (item.Created_By == Current_user_ID)" class="kt-box-item-action">
                                                             <div class="kt-box-item-action-ul">
                                                                   <div class="kt-box-item-action-li" (click)="GetAssigned_SubtaskProjects();unassign_edit1(item.Assign_Id,item.Task_Name,item.Creation_Date,'option1')">
                                                                       <mat-icon title="Click to assign task" >group</mat-icon>
@@ -9927,13 +9933,19 @@
                                             </span>
                                         </div>
                                         <div class="agenda-input-field">
-                                            <input class="form-control task-input" id="todo-input" name="text" placeholder="Add agenda and press 'Enter'" autofocus="true"
-                                            [(ngModel)]="agendaInputs"   [ngClass]="{'error-borderbottom': agendaInputs&&(agendaInputs.trim().length>100)}" 
+                                            <input class="form-control task-input" id="todo-input" name="text" placeholder="Enter agenda here" autofocus="true"
+                                            [(ngModel)]="agendaInputs"   [ngClass]="{'error-borderbottom': agendaInputs&&(agendaInputs.trim().length>100) , 'error-borderbottom': allAgendasExists}" 
                                             (keyup.enter)="addAgendas()" (keyup)="AgendaCharacterCount();onKeyPress()"   (paste)="onPaste($event)"/>
                                         <button *ngIf="agendacharacterCount && agendacharacterCount<101" class="btn btn-secondary add-agenda-btn" (click)="addAgendas()">Add</button>
                                         </div>
                                         <span *ngIf="agendacharacterCount > 0" >Max characters {{agendacharacterCount}}/100 </span>
                                         <span style="color:red" *ngIf="agendacharacterCount>=101">Maximum 100 characters are allowed.</span>
+                                        <div *ngIf="allAgendasExists" class="error-container">
+                                            <svg fill="#f21818" width="15px" height="15px" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg" id="warning" class="icon glyph" stroke="#f21818" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,16a1,1,0,1,1,1-1A1,1,0,0,1,12,18Zm1-5a1,1,0,0,1-2,0V7a1,1,0,0,1,2,0Z"></path></g></svg>
+                                            <span class="error-text"> Task name already used. Try another.</span>
+                                        </div>
+
+
                                     </div>
                                     <div class="agenda-list-main">
                                         <div class="agenda-list-item" *ngFor="let agenda of allAgendas; let i=index" >
@@ -10804,7 +10816,7 @@
                                             <div class="task-count"></div>
                                         </div>
                                         <div class="agenda-input-field">
-                                            <input class="form-control task-input" id="todo-input" name="text" placeholder="Add agenda and press 'Enter'" autofocus="true"
+                                            <input class="form-control task-input" id="todo-input" name="text" placeholder="Enter agenda here" autofocus="true"
                                             [ngClass]="{'error-borderbottom': agendaInputs&&(agendaInputs.trim().length>100)}" 
                                             [(ngModel)]="agendaInputs"   (keyup.enter)="addAgendas()" (keyup)="AgendaCharacterCount();onKeyPress()"
                                             />
@@ -13188,7 +13200,7 @@
  <!--  Access denied Start -->
  <ng-template #pleasewait>
   <div *ngIf="deletedMeeting" class="smart-glass">
-    <!-- <div class="smart-glass"> -->
+    <!-- Meeting loader -->
     <h1></h1>
     <div class="logo">
       <div class="circle">
@@ -13262,10 +13274,36 @@
             <div class="container">
                 <div class="d-flex align-items-md-center flex-column">
                     <div class="text-center acc-section">
-                        <h1 class="text-primary main_acc">Access denied 503 !</h1>
-                        <h5 class="acc-desc  user-not-found-msg  hide-content">
+                        <h1 *ngIf="this.racisUserIds.length == 0" class="text-primary main_acc">Access denied 503 !</h1>
+                        <h5 *ngIf="this.racisUserIds.length == 0" class="acc-desc  user-not-found-msg  hide-content">
                             Unfortunately, we did not find you in this meeting. Please contact meeting admin.
                         </h5>
+
+
+                        <h5 *ngIf="(meetingStarted==true && Meetingstatuscom!='Completed') && this.racisUserIds.length>0 " class="acc-desc  user-not-found-msg  hide-content">
+                            Meeting has been started
+                        </h5>
+                        <button *ngIf="(meetingStarted==true && Meetingstatuscom!='Completed') && this.racisUserIds.length>0" class="btn btn-sm btn-info mr-2" (click)="accessDeniedView()">
+                           Join now
+                        </button>
+
+
+                        <h5 *ngIf="(meetingStarted==false && Meetingstatuscom!='Completed') && this.racisUserIds.length>0" class="acc-desc  user-not-found-msg  hide-content">
+                           The meeting has not started yet
+                        </h5>
+                         
+                        <button *ngIf="(meetingStarted==false && Meetingstatuscom!='Completed') && this.racisUserIds.length>0" class="btn btn-sm btn-info mr-2" (click)="accessDeniedView()">
+                          View meeting
+                        </button>
+                         <h5 *ngIf="Meetingstatuscom=='Completed'&& this.racisUserIds.length>0" class="acc-desc  user-not-found-msg  hide-content">
+                           Meeting has completed
+                        </h5>
+                        <button *ngIf="Meetingstatuscom=='Completed'&& this.racisUserIds.length>0" class="btn btn-sm btn-info mr-2" (click)="accessDeniedView()">
+                          View meeting
+                        </button>
+
+
+
                         <div  class="mt-4 d-none" *ngIf="!isRequestSent">
                             <button
                             class="btn btn-info mr-3 ng-star-inserted hide-button" *ngIf="ishide" (click)="openRequestDialog()">Request access
