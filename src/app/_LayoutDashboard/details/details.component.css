@@ -2037,6 +2037,20 @@ a.kt-inbox__icon:hover svg path {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
+.Bt-Submit-primary {
+  /* padding: 4px 1px; */
+  background-color: transparent;
+  color: #2786fb;
+  font-size: 14px;
+  border: 1px solid #2786fb;
+  opacity: 1;
+  font-size: 13px;
+  letter-spacing: 0;
+  font-weight: 500;
+  border-radius: 3px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
 .Bt-Close {
   background-color: transparent !important;
   border: 1px solid #e7e7e7;
@@ -2048,7 +2062,7 @@ a.kt-inbox__icon:hover svg path {
   color: #000;
 }
 
-.Bt-Submit:hover {
+.Bt-Submit:hover,.Bt-Submit-primary:hover {
   background-color: #2786fb;
   color: #fff;
 }
@@ -2919,6 +2933,12 @@ a.nav-link:hover {
   justify-content: center;
   font-size: 19px;
   font-weight: 400;
+}
+
+.white-fnt
+{
+  color: white;
+  font-size: 12px;
 }
 
 button.Ct-btn.head-btn-right {
@@ -11016,3 +11036,50 @@ span.time-value {
     scrollbar-width: thin;
     padding-right: 8px;
 }
+
+
+
+
+/*compl-aprovl actions pending in new action create dialog css    start.*/
+#updateOrRevertDialog 
+{
+  background-color:#00000047;
+}
+#updateOrRevertDialog .mdialog-box{
+   width:500px;
+}
+
+#updateOrRevertDialog .modal-content
+{
+  height:375px;
+}
+
+#updateOrRevertDialog .modal-title{
+   padding-left: 13px;
+}
+
+
+#updateOrRevertDialog .modal-body{
+  display: flex; 
+  flex-direction: column; 
+  padding-left: 30px; 
+  padding-right: 30px;
+}
+
+#updateOrRevertDialog .choose-option-radio{
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+#updateOrRevertDialog .label-op
+{
+  color:#434242
+}
+
+#updateOrRevertDialog .modal-header
+{
+  border-bottom:1px solid #ebedf2;
+}
+
+/*compl-aprovl actions pending in new action create dialog css    end.*/

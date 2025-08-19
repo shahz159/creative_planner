@@ -65,13 +65,14 @@ export class StreamDashboardComponent implements OnInit {
     this.meetingDetails();
     this.portfolioSerivce();
     this.getTimeLineStatus();
-    this.getEmployee()
+    this.getEmployee();
     this._objStatusDTO.Emp_No = this.Current_user_ID;
 
     this.GetDashboardSummary();
     setTimeout(() => {
       this.isLoading = false;
-    }, 3000);
+    }, 1000);
+    
 
     this.getRecentActivities();  // fetch recent activities
   }
@@ -271,6 +272,12 @@ export class StreamDashboardComponent implements OnInit {
       myWindow.focus();
 
     }
+  }
+
+  AssignedProjects_Click(){
+       let myurl = document.baseURI+'/backend/createproject?AssignedProjectId=none';
+       let myWindow = window.open(myurl,'_blank');
+       myWindow?.focus();
   }
 
   AssignedActions_Click() {

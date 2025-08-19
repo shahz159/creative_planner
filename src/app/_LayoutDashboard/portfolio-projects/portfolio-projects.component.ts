@@ -177,6 +177,7 @@ export class PortfolioProjectsComponent implements OnInit {
   Activity_List: any=[];
   Project_List: any;
   filteredEmployees: any = [];
+  filteredEmployeesMap:Map<string,any>;
   Client_List: any;
   selectedclient: string;
   owner_dropdown: any;
@@ -762,6 +763,7 @@ export class PortfolioProjectsComponent implements OnInit {
 
   // 2. prepare Sort by items
      this.filteredEmployees = [];
+     this.filteredEmployeesMap=new Map();
      projectslist.forEach(item=>{
         const x=this.filteredEmployees.find(emp=>item.Emp_No == emp.Emp_No);
         if(x){
@@ -776,10 +778,14 @@ export class PortfolioProjectsComponent implements OnInit {
           this.filteredEmployees.push(obj);
         }
      });
+     this.filteredEmployees.forEach(ob=>this.filteredEmployeesMap.set(ob.Emp_No,ob));
     console.log(this.filteredEmployees,"this.filteredEmployeesthis.filteredEmployees")
  //
 
   }
+
+
+
 
 
 
@@ -1585,7 +1591,6 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
     
   }
    
-
  }
 
  filterProjectsByEmp(empno:string){
@@ -1609,10 +1614,12 @@ LoadDocument(pcode:string, iscloud: boolean, filename: string, url1: string, typ
  }
 
 
+showDot : boolean = false;
 
 
 
-  showDot : boolean = false;
+
+
   // filterProjectsOfEmp(filterbyEmp:string){
 
   //   this.showDot = true

@@ -531,6 +531,11 @@
                             <div  class="st-line">{{item.mainResponsible}}</div>
                            </div>
 
+                             <div class="d-flex align-items-center" *ngIf="(item.Req_Type=='Revert Back')&&item.mainResponsible!=''">
+                            <svg  style=" transform: scaleX(-1) rotate(270deg); margin-top: -4px;" width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Arrow / Arrow_Sub_Down_Right"> <path id="Vector" d="M13 11L18 16M18 16L13 21M18 16H10.1969C9.07899 16 8.5192 16 8.0918 15.7822C7.71547 15.5905 7.40973 15.2839 7.21799 14.9076C7 14.4798 7 13.9201 7 12.8V3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                            <div  class="st-line">{{item.mainResponsible}}</div>
+                           </div>
+
                        </td>
 
                         <td>
@@ -790,10 +795,13 @@
                                 </a>
                                 Request by
                               </th>
-                              <th data-name="Leave_Request_on" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1"[appSort]="leave_Requests" data-order="desc" data-name="ReqDateFormatted">
+
+                              <!-- <th data-name="Leave_Request_on" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1"[appSort]="leave_Requests" data-order="desc" data-name="ReqDateFormatted">
                                 <i class="fas fa-sort"></i>
                                 Request on
-                              </th>
+                              </th> -->
+
+
                               <th data-name="Leave_startdate" tabindex="0" aria-controls="leave-4" rowspan="1" colspan="1" style="width: 0px;" [appSort]="leave_Requests" data-order="desc" data-name="Start_Date">
                                 <i class="fas fa-sort"></i>
                                 Start date
@@ -856,9 +864,9 @@
                               <td>
                                 <p class="kt-widget__title1 mb-0">{{item.Emp_Name}}</p>
                               </td>
-                              <td>
+                              <!-- <td>
                                 <span class="kt-widget__other kt-leave-fixboxes">{{item.Req_Date | date: 'dd-MM-yyyy'}}</span>
-                              </td>
+                              </td> -->
                               <td>
                                 <span class="kt-widget__other text-nowrap kt-leave-fixboxes">{{item.Start_Date | date: 'dd-MM-yyyy'}}</span>
                               </td>
@@ -868,8 +876,9 @@
                               <td>
                                 <span class="kt-widget__other text-nowrap kt-leave-fixboxes">{{item.Days_Count}}</span>
                               </td>
-                              <td class="cmmts text-ellipsis"  title="asdf asdf asdf as df as dfa sdf as df">
-                                {{item.Req_Comments}}
+                              <td class="lv-req-cmts">
+                                 <div #reqcBx class="compl-remarks-span upto-1" (click)="$event.stopPropagation(); reqcBx.classList.contains('compl-remarks-span')?reqcBx.classList.remove('compl-remarks-span'):reqcBx.classList.add('compl-remarks-span')" >{{item.Req_Comments}}</div>
+                                 <div class="text-muted fs-8 mt-2">{{item.Req_Date | date: 'dd-MM-yyyy'}}</div>
                               </td>
 
                             </tr>

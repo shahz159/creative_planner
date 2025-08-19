@@ -111,6 +111,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   approvalObj: ApprovalDTO;
   myUnderApprvActions:any=[];
   myDelayPrjActions:any=[];
+  myDuePrjActions:Map<string,any>;
   delayActionsOfEmps:any=[];
   actionsWith0hrs:any=[];
   selfAssignedActns:any=[];
@@ -359,6 +360,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
 
 
   darOfEmpl=[];
+  darOfEmployees:any;
 
   drawStatisticsNew(){
 
@@ -753,7 +755,7 @@ userRequestCount: number = 0;
 usersRequested:string[]=[];
 loadingAccessRequests:boolean=false; 
 
-getRequestAcessdetails(){
+getRequestAcessdetails(afterFetch?:()=>void){
   this.loadingAccessRequests=true; // process started.
   this.projectMoreDetailsService.getRequestAccessDetails(this.URL_ProjectCode).subscribe(res => {
   this.loadingAccessRequests=false;  // process ended.
@@ -763,6 +765,7 @@ getRequestAcessdetails(){
      this.userRequestCount=this.requestlist.length;
      this.usersRequested=this.requestlist.map(ob=>ob.Submitted_By);
      console.log('requestlist:',this.requestlist);
+     afterFetch?.();
     }
    });
 }
@@ -779,13 +782,23 @@ acceptProjectAccessRequest(sno:any){
    result.Project_Code=this.projectInfo.Project_Code;
    result.Type='Accept';
    this.approvingAccessRequest=true;  // process started.
-   this.approvalservice.NewUpdateProjectRequestAccess(result).subscribe((res:any)=>{
+   this.approvalservice.NewUpdateProjectRequestAccess(result).subscribe((res:any)=>{ 
    this.approvingAccessRequest=false;  // process end. 
        console.log('prj apprve res:',res);
          if(res?.message&&res.message==1){
             this.notifyService.showSuccess(`Project access request approved for ${reqUserName}.`,'Success');
-            this.getRequestAcessdetails();  //rebind requests list.
+            this.getRequestAcessdetails(()=>{
+                  // if there was only one access request approval.
+                   if(this.userRequestCount==0){ 
+                     $('#kt_tab_pane_user-request_approver').removeClass("show active");
+                     $('a[href="#kt_tab_pane_user-request_approver"]').removeClass("active");  // remove the focus to 3rd TAB
+                     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
+                     document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");    // move focus to the 1st TAB
+                  }
+            });   //rebind requests list.
             this.GetPeopleDatils(); // rebind people on projects list.
+
+          
          }
          else{
            this.notifyService.showError('Unable to approve the request.','Failed');
@@ -811,7 +824,16 @@ rejectProjectAccessRequest(sno:any){
         console.log('prj reject res:',res);
         if(res?.message&&res.message==1){
             this.notifyService.showSuccess(`Project access request rejected for ${reqUserName}.`,'Success');
-            this.getRequestAcessdetails();  //rebind requests list.
+              //rebind requests list.
+            this.getRequestAcessdetails(()=>{
+              // if there was only one access request approval.
+                   if(this.userRequestCount==0){ 
+                     $('#kt_tab_pane_user-request_approver').removeClass("show active");
+                     $('a[href="#kt_tab_pane_user-request_approver"]').removeClass("active");  // remove the focus to 3rd TAB
+                     document.getElementById('kt_tab_pane_1_4').classList.add("show","active");
+                     document.querySelector("a[href='#kt_tab_pane_1_4']").classList.add("active");    // move focus to the 1st TAB
+                  }
+            });   //rebind requests list.
          }
          else{
            this.notifyService.showError('Unable to reject the request.','Failed');
@@ -904,7 +926,8 @@ showUserAccessRequests(){
   errorFetchingProjectInfo:boolean=false;
   projecttypes : any
   task_assign_json:any;
-  AuditPendingSince
+  // AuditPendingSince
+  ProjectDueInDays:number;
 
 
  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) { 
@@ -957,6 +980,7 @@ showUserAccessRequests(){
 
       if(['001','002','011'].includes(this.projectInfo.Project_Block)){
 
+        // Prepare deadlineExtendlist:
         const _deadlineextendlist=this.projectInfo['deadlineExtendlist'];
         console.log('from backend deadlineextendlist:',_deadlineextendlist);
         if(_deadlineextendlist){
@@ -976,6 +1000,13 @@ showUserAccessRequests(){
           });
           console.log('this.deadlineExtendlist:',this.deadlineExtendlist);
         }
+
+        //Prepare ProjectDueInDays:
+        const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+        const prj_edate=new Date(this.projectInfo.EndDate);  prj_edate.setHours(0,0,0,0);
+        this.ProjectDueInDays=moment(prj_edate).diff(cr_date,'days');
+        //
+
 
       }
 
@@ -998,6 +1029,7 @@ showUserAccessRequests(){
       this.myDelayPrjActions=this.myDelayPrjActions.sort((a,b)=>{
             return b.Delaydays-a.Delaydays;
       });
+     
 
      if(this.filteremployee)
      {
@@ -1020,6 +1052,9 @@ showUserAccessRequests(){
       this.selfAssignedActns=[];  // must be empty before calculation.
       this.pendingActns4Aprvls=[];   // must be empty before calculation.
       this.actnsWithoutProgress=[];   // must be empty before calculation.
+      this.myDuePrjActions=new Map();  // must be empty before calculation.
+      this.complAprvlsActions=[];  // must be empty before calculation
+      this.complAprvlsActionsCount=0;  // must be empty before calculation
 
      const cr_date=new Date(); cr_date.setHours(0,0,0,0);
 
@@ -1059,12 +1094,33 @@ showUserAccessRequests(){
               this.actionsAssignedByMe+=1;
             }
 
+
+            // user action due 
+            let isDue:boolean=false;
+            let dueIndays:number=0;
+            if(actn.Team_Res==this.Current_user_ID&&(['Delay','InProcess'].includes(actn.Status))){
+              const actnDeadline=new Date(actn.EndDate); actnDeadline.setHours(0,0,0,0);   
+              dueIndays=moment(actnDeadline).diff(cr_date,'days');
+              isDue=(dueIndays==0||dueIndays==1);
+            }
+            if(isDue){
+               this.myDuePrjActions.set(actn.Project_Code,{...actn,dueIndays:dueIndays});
+            }      
+           //
+
+          
+           // completion approvals actions count
+           if(actn.Status=='Completion Under Approval'){
+               this.complAprvlsActions.push({...actn});
+           }
+           //
+
+
      });
      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
      this.totalSelfAssignedActns=this.projectActionInfo.filter(item=>item.Project_Owner==item.Team_Res).length;
      this.totalPActns4Aprvls=this.projectActionInfo.filter(item=>['Under Approval','Forward Under Approval'].includes(item.Status)).length;
-
-
+     this.complAprvlsActionsCount=this.complAprvlsActions.length;
      }
 
       console.log("delay-", this.delayActionsOfEmps)
@@ -1076,6 +1132,7 @@ showUserAccessRequests(){
           if(Action)
              {
                 this.showActionDetails(Action.IndexId-1);
+                this.prostate(Action.proState);
                 setTimeout(()=>{
                   document.getElementById('actionCode:'+this.projectActionInfo[Action.IndexId-1].Project_Code).focus();
                   window.scrollTo(0,0);
@@ -1147,6 +1204,7 @@ showUserAccessRequests(){
 
 
 // determine whether current user can create standard task / routine task type projects or not.
+      if(this.projectInfo.tasks_json){
       this.Responsible_user_Info=JSON.parse(this.projectInfo.tasks_json)[0];
       // this.Responsible_user_Info.Routine_Total_Hours=18;    
       if(['003','008'].includes(this.projectInfo.Project_Block)){
@@ -1188,17 +1246,30 @@ showUserAccessRequests(){
       // }
 
       }
+      }
+  
 //
 
 
    // Whenever we fetch project details we will also fetch people who added timeline on this project and how much.
      this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, "3", this.Current_user_ID).subscribe((res: any) => {
-              const tml = JSON.parse(res[0].Timeline_List);
+              const tml = JSON.parse(res[0].Timeline_List);   
               console.log("timeline data here11111:", tml);
               this.darOfEmpl=tml.map((ob)=>{
-                  return { member:ob.Value, totalTimeline:(+ob.TotalDuration).toFixed(2)}
+                  const empid=ob.JsonData?(JSON.parse(ob.JsonData)?.[0]?.Emp_No):undefined;
+                  return { member:ob.Value, totalTimeline:(+ob.TotalDuration).toFixed(2), emp_no:empid}
               });
-              this.darOfEmpl.sort((a,b)=>b.totalTimeline-a.totalTimeline);
+              this.darOfEmpl.sort((a,b)=>b.totalTimeline-a.totalTimeline);  // darOfEmpl is used in bar chart tooltip.
+
+              const tempobj={};
+              tml.forEach(ob=>{
+                  const empid=ob.JsonData?(JSON.parse(ob.JsonData)?.[0]?.Emp_No):undefined;
+                  if(empid)
+                  tempobj[empid]={ member:ob.Value, totalTimeline:(+ob.TotalDuration).toFixed(2) };
+              });
+              this.darOfEmployees={...tempobj};  // darOfEmployees is used in people of project sidebar.
+
+              
       
       // If project is overutilized. now figuring out who are the people who worked more than their max allocation in this project.
       if(['001','002','011'].includes(this.projectInfo.Project_Block)&&(this.projectInfo.TotalHours>this.projectInfo.AllocatedHours))
@@ -1476,8 +1547,7 @@ getRelativeDateString(date: Date): string {
 
   GetPeopleDatils(){
 
-    this.service.NewProjectService(this.URL_ProjectCode).subscribe(
-      (data) => {
+    this.service.NewProjectService(this.URL_ProjectCode).subscribe((data) => {
 
         if (data != null && data != undefined) {
           this.Project_List = JSON.parse(data[0]['RacisList']);
@@ -1988,6 +2058,7 @@ getRelativeDateString(date: Date): string {
 
   // ADDING NEW ACTIONS
   addNewAction() {
+
     if (this.projectInfo.Status === 'Completed') {
       Swal.fire({
         title: "Wait this project is already completed",
@@ -2011,8 +2082,64 @@ getRelativeDateString(date: Date): string {
         })
         .catch(e => console.log(e));
     }
+    else if(this.projectInfo.Status=='Completion Under Approval'&&this.complAprvlsActionsCount>0){
+      // if project is in CUA state and there some actions in CUA.
+      
+      if(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.isHierarchy==true){
+        // when project owner or anyone in hierarchy is trying to add new action in this completion approval type project.
+           
+        this.chooseUpdateOrRevert()?.then((choice)=>{
+            if(choice=='COMPLETE'||choice=='REVERT'){
+              this.bsService.setCompleteOrRevertChoice(choice);
+              this.showSideBar();
+            }
+        });
+
+      }
+      else if(this.Current_user_ID==this.projectInfo.ResponsibleEmpNo.trim()){
+         // when project responsible trying to add new action in this completion approval type project.
+
+          Swal.fire({
+           title:'Confirm Action Creation',
+           html:`<div class="text-justify d-flex flex-column">
+                 <span class="text-gray">
+                 Project has <b>${this.complAprvlsActionsCount} ${this.complAprvlsActionsCount==1?'action':'actions'}</b> in <span style='color: #81C784; font-weight: 600;'>Completion approval</span>.
+                 Adding a new action will revert ${this.complAprvlsActionsCount==1?'this action back to progress.':'these actions back to progress.'}
+                 </span>
+                <span class="mt-2 text-dark">Do you want to continue?</span>
+              </div> `,
+           confirmButtonText:'Add Action',
+           cancelButtonText:'Cancel', 
+           showCancelButton:true,
+           showConfirmButton:true,
+           }).then((choice)=>{
+              if(choice.isConfirmed){
+                    this.showSideBar();
+              } 
+           });
+
+      }
+      else{
+        // when supoort and other people trying to add new action in this completion approval type project.
+        Swal.fire({
+           title:'Action Creation Blocked',
+           html:`<div class="text-justify d-flex flex-column">
+                 <span class="text-gray">
+                 Project has <b>${this.complAprvlsActionsCount} ${this.complAprvlsActionsCount==1?'action':'actions'}</b> in <span style='color: #81C784; font-weight: 600;'>Completion approval</span>. 
+                 You cannot add new actions in this project.
+                 <div class="mt-2"> Please contact the responsible of this project.</div>
+                 </span> 
+              </div> `,
+           confirmButtonText:'Ok',
+           showConfirmButton:true,
+           });
+    
+      }
+
+
+    }
     else {
-      // if projectStatus is 'Delay' ...
+      // if projectStatus is 'Delay','Under Approval' ...
       this.showSideBar();
     }
 
@@ -3263,6 +3390,7 @@ approvalSubmitting:boolean=false;
 
   gethierarchy() {
     this.service.GetHierarchyofOwnerforMoredetails(this.Current_user_ID, this.URL_ProjectCode).subscribe((data) => {
+      debugger
       if (data['message'] == '1') {
         this.isHierarchy = true;
       }
@@ -4498,7 +4626,7 @@ convertToDecimalHours(hm:string){
   isActnStartDateEditable:boolean=false;
 
   /// Action Edits start   
-  initializeSelectedValues() {
+  initializeSelectedValues() {  debugger
     this.ActionOwnerid = this.projectActionInfo[this.currentActionView].Project_Owner;
     this.ActionResponsibleid = this.projectActionInfo[this.currentActionView].Team_Res;
     this.ActionClientid = this.projectActionInfo[this.currentActionView].ClientNo;
@@ -4581,46 +4709,37 @@ convertToDecimalHours(hm:string){
   //   }
   // }
 
-  updatingAction: boolean = false;
+  // updatingAction: boolean = false;
 
   isactionValid:'TOOSHORT'|'VALID'='VALID';
   isactdesValid:'TOOSHORT'|'VALID'='VALID';
 
-
-
-  onAction_update() {
+  onAction_update(){
 debugger
-    this.updatingAction = true;
-// check all mandatory field are provided.
-this.isactionValid=this.isValidString(this.ActionName,2);
-this.isactdesValid=this.isValidString(this.ActionDescription,3);
+   // 1. check whether all mandatory fields are provided or not. 
+   this.isactionValid=this.isValidString(this.ActionName,2);
+   this.isactdesValid=this.isValidString(this.ActionDescription,3);
+
+   if(  
+        !((this.ActionName&&this.ActionName.trim()!=''&&this.isactionValid=='VALID'&&this.ActionName.length<=100)&&
+          (this.ActionDescription&&this.ActionDescription.trim()!=''&&this.isactdesValid==='VALID'&&this.characterCount_Action<=500)&&
+          this.ActionOwner&&this.ActionResponsible&&this.selectedcategory&&this.ActionClient&&
+          this.ActionstartDate&&this.ActionendDate&&(this.isActionDateOrderWrong==false)&&
+          this.editAllocatedhours&&(this.editAllocatedhours<=this.ActionmaxAllocation))
+   ){
+      // if some mandatory fields values are not provided or missing.
+      this.formFieldsRequired=true;
+      return;
+   }
+   else{
+      // if all mandatory fields values are provided.
+      this.formFieldsRequired=false; 
+   }
+   //
 
 
 
-
-
-    if(!( (this.ActionName.trim() != '' && this.ActionName&&this.ActionName.length<=100&&this.ActionName&&this.isactionValid=='VALID')
-
-      &&(this.ActionDescription?(this.characterCount_Action<=500)&&(this.ActionDescription&&this.isactdesValid==='VALID')&&this.ActionDescription.trim()!='' :false)&&
-
-         this.ActionOwner&&this.ActionResponsible&&
-         this.selectedcategory&&this.ActionClient&&
-         this.ActionstartDate&&this.ActionendDate&&(this.isActionDateOrderWrong==false)&&
-         this.editAllocatedhours&&(this.editAllocatedhours<=this.ActionmaxAllocation))
-       ){
-            this.formFieldsRequired=true;
-            return;
-    }else this.formFieldsRequired=false;   // back to initial value.
-// check all mandatory field are provided.
-
-    this._remarks = '';
-    if (this.OGProjectType != this.ProjectType) {
-      var type = this.ProjectType
-      this.ProjectType = this.ProjectType;
-    }
-    else {
-      var type: string = this.OGProjectTypeid;
-    }
+   // 2. Preparing json object.
 
     if (this.OGActionOwner != this.ActionOwner) {
       var actionowner = this.ActionOwner
@@ -4639,14 +4758,6 @@ this.isactdesValid=this.isValidString(this.ActionDescription,3);
       var actionresp = this.ActionResponsibleid;
     }
 
-    if (this.OGActionClient != this.ActionClient) {
-      var Actionclient = this.ActionClient;
-      this.ActionClient = this.ActionClient;
-    }
-    else {
-      var Actionclient = this.ActionClientid;
-    }
-
 
     if (this.OGcategory != this.selectedcategory) {
       var category = this.selectedcategory;
@@ -4656,12 +4767,32 @@ this.isactdesValid=this.isValidString(this.ActionDescription,3);
       var category = this.OGselectedcategoryid;
     }
 
-    if(this.editAllocatedhours==0){
-      this.editAllocatedhours = this.ActionAllocatedHours;
+
+    if (this.OGActionClient != this.ActionClient) {
+      var Actionclient = this.ActionClient;
+      this.ActionClient = this.ActionClient;
+    }
+    else {
+      var Actionclient = this.ActionClientid;
     }
 
     var datestrStart = moment(this.ActionstartDate).format("MM/DD/YYYY");
     var datestrEnd = moment(this.ActionendDate).format("MM/DD/YYYY");
+
+    if(this.editAllocatedhours==0){  // if alhrs is changed and user is setting it to zero. (setting to zero not allowed) 
+      this.editAllocatedhours = this.ActionAllocatedHours;
+    }
+
+    this._remarks = '';
+
+    if (this.OGProjectType != this.ProjectType) {
+      var type = this.ProjectType
+      this.ProjectType = this.ProjectType;
+    }
+    else {
+      var type: string = this.OGProjectTypeid;
+    }
+
 
     const jsonobj = {
       Project_Type: type,
@@ -4677,94 +4808,292 @@ this.isactdesValid=this.isValidString(this.ActionDescription,3);
       Project_Cost:this.newaction_Cost
     }
 
-
-
     const jsonvalues = JSON.stringify(jsonobj)
     console.log(jsonvalues, 'json');
-
-  const dateOne = moment(this.projectInfo.EndDate).format("YYYY/MM/DD");
-  const dateTwo = moment(this.ActionendDate).format("YYYY/MM/DD");
+    //
 
 
-  this.approvalObj.Emp_no = this.Current_user_ID;
-  this.approvalObj.Project_Code = this.ActionCode;
-  this.approvalObj.json = jsonvalues;
-  this.approvalObj.Remarks = this._remarks;
 
-  if ((dateOne < dateTwo) && (this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID== this.projectInfo.AuthorityEmpNo || this.isHierarchy==true)) {
-    Swal.fire({
-      title: 'Action deadline is greater than main project deadline ?',
-      text: 'Do you want to continue for selection of date after main project deadline!!',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((response: any) => {
-      if (response.value) {
-        this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
-          console.log(data['message'], "edit response");
-          if (data['message'] == '1') {
-            this.notifyService.showSuccess("Updated successfully.", "Success");
+    // 3. submit to api
+    const dateOne = moment(this.projectInfo.EndDate).format("YYYY/MM/DD");
+    const dateTwo = moment(this.ActionendDate).format("YYYY/MM/DD");
+
+    this.approvalObj.Emp_no = this.Current_user_ID;
+    this.approvalObj.Project_Code = this.ActionCode;
+    this.approvalObj.json = jsonvalues;
+    this.approvalObj.Remarks = this._remarks;
+
+    if ((dateOne < dateTwo) && (this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID== this.projectInfo.AuthorityEmpNo || this.isHierarchy==true)) {
+      Swal.fire({
+        title: 'Action deadline is greater than main project deadline ?',
+        text: 'Do you want to continue for selection of date after main project deadline!!',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then((response: any) => {
+        if (response.value) {
+          this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+            console.log(data['message'], "edit response");
+            if (data['message'] == '1') {
+              this.notifyService.showSuccess("Updated successfully.", "Success");
+              this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+            }
+            else if (data['message'] == '2') {
+              this.notifyService.showError("Not updated.", "Failed");
+            }
+            else if (data['message'] == '5') {
+              this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully.");
+            }
+            else if (data['message'] == '6') {
+              this.notifyService.showSuccess("Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
+            }
+            else if (data['message'] == '8') {
+              this.notifyService.showError("Selected action owner cannot be updated.", "Not updated");
+            }
+            this.getProjectDetails(this.URL_ProjectCode);
+            this.closeInfo();
             this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
-          }
-          else if (data['message'] == '2') {
-            this.notifyService.showError("Not updated.", "Failed");
-          }
-          else if (data['message'] == '5') {
-            this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully.");
-          }
-          else if (data['message'] == '6') {
-            this.notifyService.showSuccess("Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
-          }
-          else if (data['message'] == '8') {
-            this.notifyService.showError("Selected action owner cannot be updated.", "Not updated");
-          }
-          this.getProjectDetails(this.URL_ProjectCode);
-          this.closeInfo();
+          });
+        } else if (response.dismiss === Swal.DismissReason.cancel) {
+      //    this.close_space();
+          Swal.fire(
+            'Cancelled',
+            'Action end date not updated',
+            'error'
+          )
+        }
+      });
+    }
+    else if ((dateOne < dateTwo) && (this.Current_user_ID != this.projectInfo.OwnerEmpNo && this.Current_user_ID != this.Responsible_EmpNo && this.Current_user_ID != this.projectInfo.Authority_EmpNo  && this.isHierarchy == false)) {
+      Swal.fire({
+        title: 'Unable to extend end date for this action.',
+        text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
+      });
+    }
+    else {
+      this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+        console.log(data['message'], "edit response");
+        if (data['message'] == '1') {
+          this.notifyService.showSuccess("Updated successfully.", "Success");
           this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
-        });
-      } else if (response.dismiss === Swal.DismissReason.cancel) {
-    //    this.close_space();
-        Swal.fire(
-          'Cancelled',
-          'Action end date not updated',
-          'error'
-        )
-      }
-    });
-  }
-  else if ((dateOne < dateTwo) && (this.Current_user_ID != this.projectInfo.OwnerEmpNo && this.Current_user_ID != this.Responsible_EmpNo && this.Current_user_ID != this.projectInfo.Authority_EmpNo  && this.isHierarchy == false)) {
-    Swal.fire({
-      title: 'Unable to extend end date for this action.',
-      text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
-    });
-  }
-  else {
-    this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
-      console.log(data['message'], "edit response");
-      if (data['message'] == '1') {
-        this.notifyService.showSuccess("Updated successfully.", "Success");
-        this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
-      }
-      else if (data['message'] == '2') {
-        this.notifyService.showError("Not updated", "Failed");
-      }
-      else if (data['message'] == '5') {
-        this.notifyService.showSuccess("Project transfer request sent to the new responsible "+ this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully.");
-      }
-      else if (data['message'] == '6') {
-        this.notifyService.showSuccess("Updated successfully"+"Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
-      }
-      else if (data['message'] == '8') {
-        this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
-      }
+        }
+        else if (data['message'] == '2') {
+          this.notifyService.showError("Not updated", "Failed");
+        }
+        else if (data['message'] == '5') {
+          this.notifyService.showSuccess("Project transfer request sent to the new responsible "+ this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully.");
+        }
+        else if (data['message'] == '6') {
+          this.notifyService.showSuccess("Updated successfully"+"Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
+        }
+        else if (data['message'] == '8') {
+          this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
+        }
 
-      this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
-      this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
-      this.closeInfo();
-    });
+        this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+        this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+        this.closeInfo();
+      });
+    }
+   //
+
   }
-  this.updatingAction = false;
-  }
+
+
+
+
+
+
+//   onAction_update() {
+// debugger
+  
+// // check all mandatory field are provided.
+// this.isactionValid=this.isValidString(this.ActionName,2);
+// this.isactdesValid=this.isValidString(this.ActionDescription,3);
+
+
+
+
+
+//     if(!( (this.ActionName.trim() != '' && this.ActionName&&this.ActionName.length<=100&&this.ActionName&&this.isactionValid=='VALID')
+
+//       &&(this.ActionDescription?(this.characterCount_Action<=500)&&(this.ActionDescription&&this.isactdesValid==='VALID')&&this.ActionDescription.trim()!='' :false)&&
+
+//          this.ActionOwner&&this.ActionResponsible&&
+//          this.selectedcategory&&this.ActionClient&&
+//          this.ActionstartDate&&this.ActionendDate&&(this.isActionDateOrderWrong==false)&&
+//          this.editAllocatedhours&&(this.editAllocatedhours<=this.ActionmaxAllocation))
+//        ){
+//             this.formFieldsRequired=true;
+//             return;
+//     }else this.formFieldsRequired=false;   // back to initial value.
+// // check all mandatory field are provided.
+
+//     this._remarks = '';
+
+//     if (this.OGActionOwner != this.ActionOwner) {
+//       var actionowner = this.ActionOwner
+//       this.ActionOwner = this.ActionOwner;
+//     }
+//     else {
+//       var actionowner = this.ActionOwnerid;
+//     }
+
+
+//     if (this.OGActionResponsible != this.ActionResponsible) {
+//       var actionresp = this.ActionResponsible;
+//       this.ActionResponsible = this.ActionResponsible;
+//     }
+//     else {
+//       var actionresp = this.ActionResponsibleid;
+//     }
+
+ 
+//     if (this.OGcategory != this.selectedcategory) {
+//       var category = this.selectedcategory;
+//       this.selectedcategory = this.selectedcategory;
+//     }
+//     else {
+//       var category = this.OGselectedcategoryid;
+//     }
+
+//     if (this.OGActionClient != this.ActionClient) {
+//       var Actionclient = this.ActionClient;
+//       this.ActionClient = this.ActionClient;
+//     }
+//     else {
+//       var Actionclient = this.ActionClientid;
+//     }
+
+
+//     if (this.OGProjectType != this.ProjectType) {
+//       var type = this.ProjectType
+//       this.ProjectType = this.ProjectType;
+//     }
+//     else {
+//       var type: string = this.OGProjectTypeid;
+//     }
+
+
+
+//     if(this.editAllocatedhours==0){  
+//       this.editAllocatedhours = this.ActionAllocatedHours;
+//     }
+
+//     var datestrStart = moment(this.ActionstartDate).format("MM/DD/YYYY");
+//     var datestrEnd = moment(this.ActionendDate).format("MM/DD/YYYY");
+
+//     const jsonobj = {
+//       Project_Type: type,
+//       Project_Name: this.ActionName,
+//       Project_Description: this.ActionDescription,
+//       Owner: actionowner,
+//       Responsible: actionresp,
+//       Category: category,
+//       Client: Actionclient,
+//       StartDate: datestrStart,
+//       EndDate: datestrEnd,
+//       AllocatedHours: this.editAllocatedhours,
+//       Project_Cost:this.newaction_Cost
+//     }
+
+
+
+//     const jsonvalues = JSON.stringify(jsonobj)
+//     console.log(jsonvalues, 'json');
+
+//   const dateOne = moment(this.projectInfo.EndDate).format("YYYY/MM/DD");
+//   const dateTwo = moment(this.ActionendDate).format("YYYY/MM/DD");
+
+
+//   this.approvalObj.Emp_no = this.Current_user_ID;
+//   this.approvalObj.Project_Code = this.ActionCode;
+//   this.approvalObj.json = jsonvalues;
+//   this.approvalObj.Remarks = this._remarks;
+
+//   if ((dateOne < dateTwo) && (this.Current_user_ID == this.projectInfo.OwnerEmpNo || this.Current_user_ID == this.projectInfo.ResponsibleEmpNo || this.Current_user_ID== this.projectInfo.AuthorityEmpNo || this.isHierarchy==true)) {
+//     Swal.fire({
+//       title: 'Action deadline is greater than main project deadline ?',
+//       text: 'Do you want to continue for selection of date after main project deadline!!',
+//       showCancelButton: true,
+//       confirmButtonText: 'Yes',
+//       cancelButtonText: 'No'
+//     }).then((response: any) => {
+//       if (response.value) {
+//         this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+//           console.log(data['message'], "edit response");
+//           if (data['message'] == '1') {
+//             this.notifyService.showSuccess("Updated successfully.", "Success");
+//             this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+//           }
+//           else if (data['message'] == '2') {
+//             this.notifyService.showError("Not updated.", "Failed");
+//           }
+//           else if (data['message'] == '5') {
+//             this.notifyService.showSuccess("Project transfer request sent to the new responsible " + this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully.");
+//           }
+//           else if (data['message'] == '6') {
+//             this.notifyService.showSuccess("Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
+//           }
+//           else if (data['message'] == '8') {
+//             this.notifyService.showError("Selected action owner cannot be updated.", "Not updated");
+//           }
+//           this.getProjectDetails(this.URL_ProjectCode);
+//           this.closeInfo();
+//           this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+//         });
+//       } else if (response.dismiss === Swal.DismissReason.cancel) {
+//     //    this.close_space();
+//         Swal.fire(
+//           'Cancelled',
+//           'Action end date not updated',
+//           'error'
+//         )
+//       }
+//     });
+//   }
+//   else if ((dateOne < dateTwo) && (this.Current_user_ID != this.projectInfo.OwnerEmpNo && this.Current_user_ID != this.Responsible_EmpNo && this.Current_user_ID != this.projectInfo.Authority_EmpNo  && this.isHierarchy == false)) {
+//     Swal.fire({
+//       title: 'Unable to extend end date for this action.',
+//       text: 'You have selected the action end date greater than project deadline. Please contact the project responsible to extend project end date and try again.',
+//     });
+//   }
+//   else {
+//     this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {
+//       console.log(data['message'], "edit response");
+//       if (data['message'] == '1') {
+//         this.notifyService.showSuccess("Updated successfully.", "Success");
+//         this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+//       }
+//       else if (data['message'] == '2') {
+//         this.notifyService.showError("Not updated", "Failed");
+//       }
+//       else if (data['message'] == '5') {
+//         this.notifyService.showSuccess("Project transfer request sent to the new responsible "+ this.actionresponsible_dropdown.filter((element)=>(element.Emp_No===actionresp))[0]["RACIS"], "Updated successfully.");
+//       }
+//       else if (data['message'] == '6') {
+//         this.notifyService.showSuccess("Updated successfully"+"Project transfer request sent to the owner "+ this.projectInfo.Owner, "Updated successfully.");
+//       }
+//       else if (data['message'] == '8') {
+//         this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
+//       }
+
+//       this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+//       this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+//       this.closeInfo();
+//     });
+//   }
+ 
+//   }
+
+
+
+
+
+
+
+
+
 
 onActnCostInputClicked(){
     this.notifyService.showError("Action cost depends on the number of allocated hours.","Not Editable");
@@ -9997,6 +10326,20 @@ showActionByActionCode(actionCode:string[]){
 }
 
 
+
+showMyDueActions(){
+    this.filteredPrjAction=this.projectActionInfo.filter(item=>this.myDuePrjActions.has(item.Project_Code));   // filter out 
+    const actnObj = Array.from(this.myDuePrjActions.values())?.[0];
+    if(actnObj){
+        this.showActionDetails(actnObj.IndexId-1);     // open very first due action.
+        this.prostate(actnObj.proState);   // set prostate value of that selected action.
+    }
+}
+
+
+
+
+
 // start meeting feature start
 
 meetingReport(mtgScheduleId:any) {
@@ -12617,6 +12960,12 @@ getNotificationsAnnouncements():string[]{
   allnotif=[...allnotif,'actnsWithoutProgress'];
   if(this.userRequestCount>0&&this.Current_user_ID==this.projectInfo.OwnerEmpNo)
   allnotif=[...allnotif,'userRequestCount'];
+  if((['001','002','011'].includes(this.projectInfo.Project_Block)&&(['Completed','Project Hold','Cancelled','New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval','Deadline Extend Under Approval','Not Started'].includes(this.projectInfo.Status.trim())==false)&&
+     ([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo,this.projectInfo.AuthorityEmpNo].includes(this.Current_user_ID)||this.isHierarchy==true)&&(this.ProjectDueInDays==0||this.ProjectDueInDays==1))){
+  allnotif=[...allnotif,'projectDue'];
+  }
+  if(this.myDuePrjActions?.size>0)
+  allnotif=[...allnotif,'myDuePrjActions'];
 
   return allnotif;
 }
@@ -14059,7 +14408,7 @@ isActnDateSelectable=(date:Moment |null):boolean=>{
 } 
 
 
-calculateActionMaxAllocation(){
+calculateActionMaxAllocation(){  debugger
 
   if(this.ActionstartDate&&this.ActionendDate){
      
@@ -14187,6 +14536,261 @@ onActionResponsibleChanged(){
  }
 
 // Alhrs new validation for action edit    end.
+
+// action btns of the project.
+
+isTimelineAllowedOnProject(){
+   return ([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo, this.projectInfo.AuthorityEmpNo].includes(this.Current_user_ID)||this.isHierarchy==true)&&                                                  
+          (['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval','Completion Under Approval'].includes(this.projectInfo.Status.trim())==false);
+}
+
+isStdTaskCompletionAllowed(){
+   return ([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo, this.projectInfo.AuthorityEmpNo].includes(this.Current_user_ID)||this.isHierarchy==true)&&
+          (['Cancelled','Completed'].includes(this.projectInfo.Status.trim())==false)&&
+          (this.projectInfo.Project_Type == 'Standard Tasks');
+}
+
+isProjectCompletionAllowed(){
+  return ([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo, this.projectInfo.AuthorityEmpNo].includes(this.Current_user_ID)||this.isHierarchy==true)&&
+         ['001','002','011'].includes(this.projectInfo.Project_Block)&&
+         (['Project Hold','Cancelled','Completed','New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval','Deadline Extend Under Approval'].includes(this.projectInfo.Status.trim())==false);
+}
+
+isProjectReleaseAllowed(){
+   return ([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo, this.projectInfo.AuthorityEmpNo].includes(this.Current_user_ID)||this.isHierarchy==true)&&
+          ['001','002','011'].includes(this.projectInfo.Project_Block)&&
+          this.projectInfo.Status==='Project Hold';
+}
+
+isProjectHoldAllowed(){
+  return  ([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo, this.projectInfo.AuthorityEmpNo].includes(this.Current_user_ID)||this.isHierarchy==true)&&
+          ['001','002','011'].includes(this.projectInfo.Project_Block)&&
+          (this.projectInfo.Status==='InProcess' || this.projectInfo.Status==='Delay');
+}
+
+isProjectNewReleaseAllowed(){
+ return [this.projectInfo.OwnerEmpNo, this.projectInfo.ResponsibleEmpNo].includes(this.Current_user_ID)&&
+        (this.projectInfo.Status=='New Project Rejected');
+}
+
+isProjectCancellationAllowed(){
+    return ([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo, this.projectInfo.AuthorityEmpNo].includes(this.Current_user_ID)||this.isHierarchy==true)&&
+           (['Completed','Cancellation Under Approval','Cancelled'].includes(this.projectInfo.Status)==false); 
+}
+
+
+
+//
+// action btns of the selected action.
+
+isActionReleaseAllowed(){
+   return [this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo, 
+          this.projectActionInfo[this.currentActionView].Project_Owner, this.projectActionInfo[this.currentActionView].Team_Res
+          ].includes(this.Current_user_ID)&&
+          (this.projectActionInfo[this.currentActionView].Status=='Project Hold'&&this.projectInfo.Status!='Project Hold');
+}
+
+
+isActionHoldAllowed(){
+  return [this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo, 
+          this.projectActionInfo[this.currentActionView].Project_Owner, this.projectActionInfo[this.currentActionView].Team_Res
+         ].includes(this.Current_user_ID)&&
+         (['Delay','InProcess'].includes(this.projectActionInfo[this.currentActionView].Status));
+}
+
+
+isActionCompletionAllowed(){
+ return  ([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo, this.projectActionInfo[this.currentActionView].Project_Owner,
+         this.projectActionInfo[this.currentActionView].Team_Res].includes(this.Current_user_ID))&&
+        (['Completed','Project Hold','Cancelled','New Project Rejected','Under Approval','Completion Under Approval','Forward Under Approval','Cancellation Under Approval','Deadline Extend Under Approval'].includes(this.projectActionInfo[this.currentActionView].Status.trim())==false)                                                       
+}
+
+isTimelineAllowedOnAction(){
+  return ([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo, this.projectActionInfo[this.currentActionView].Project_Owner,
+          this.projectActionInfo[this.currentActionView].Team_Res].includes(this.Current_user_ID))&&
+         (['New Project Rejected','Cancelled','Completed','Project Hold','Cancellation Under Approval'].includes(this.projectActionInfo[this.currentActionView].Status)==false)
+}
+
+
+isActionCancelAllowed(){
+  return  ([this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo, this.projectActionInfo[this.currentActionView].Project_Owner,
+           this.projectActionInfo[this.currentActionView].Team_Res].includes(this.Current_user_ID))&&
+          (['Completed','Cancellation Under Approval'].includes(this.projectActionInfo[this.currentActionView].Status)==false);
+}
+
+isActionNewReleaseAllowed(){
+  return  ([this.projectInfo.OwnerEmpNo, this.projectActionInfo[this.currentActionView].Project_Owner, this.projectActionInfo[this.currentActionView].Team_Res].includes(this.Current_user_ID)|| this.isHierarchy==true)&&
+          (this.projectActionInfo[this.currentActionView].Status=='New Project Rejected'&&this.projectInfo.Status!='New Project Rejected')                                                   
+}
+
+// 
+
+
+
+
+// update or Revert completion approval actions start.
+updateRevertChoice:'COMPLETE'|'REVERT';
+complAprvlsActionsCount:number=0;
+complAprvlsActions:any[]=[];
+async getUpdateOrRevertChoice(){
+
+   const updateRevert_dialog=document.getElementById('updateOrRevertDialog');
+   if(updateRevert_dialog){
+        updateRevert_dialog.classList.add('show');
+        updateRevert_dialog.style.display='block';
+        updateRevert_dialog.setAttribute('aria-modal','true');
+        updateRevert_dialog.removeAttribute('aria-hidden');
+        const submit_btn=updateRevert_dialog?.querySelector('#compl-revert-submit');
+        const cancel_btn=updateRevert_dialog?.querySelector('#compl-revert-cancel');
+
+
+        const result=new Promise<'COMPLETE'|'REVERT'|'cancel'>((resolve,reject)=>{
+
+           const closedialog=()=>{
+            updateRevert_dialog.classList.remove('show');
+            updateRevert_dialog.style.display='none';
+            updateRevert_dialog.setAttribute('aria-hidden','true');
+            updateRevert_dialog.removeAttribute('aria-modal');
+            submit_btn?.removeEventListener('click',submit_click);
+            cancel_btn?.removeEventListener('click',cancel_click);
+            this.updateRevertChoice=null;
+           };
+
+             const submit_click=()=>{ debugger; const choice=this.updateRevertChoice; closedialog();    resolve(choice);    };
+             const cancel_click=()=>{ debugger; closedialog();  resolve('cancel');  };
+
+             submit_btn?.addEventListener('click',submit_click);
+             cancel_btn?.addEventListener('click',cancel_click);
+        });
+        return await result; 
+   }
+ 
+  
+
+}
+
+
+chooseUpdateOrRevert():Promise<string>|undefined{
+    const updateRevert_dialog=document.getElementById('updateOrRevertDialog');
+    if(updateRevert_dialog){
+        
+        updateRevert_dialog.classList.add('show');
+        updateRevert_dialog.style.display='block';
+        updateRevert_dialog.setAttribute('aria-modal','true');
+        updateRevert_dialog.removeAttribute('aria-hidden');
+        const submit_btn=updateRevert_dialog?.querySelector('#compl-revert-submit');
+        const cancel_btn=updateRevert_dialog?.querySelector('#compl-revert-cancel');
+
+        const result=new Promise<'COMPLETE'|'REVERT'|'cancel'>((resolve,reject)=>{
+
+           const closedialog=()=>{
+              updateRevert_dialog.classList.remove('show');
+              updateRevert_dialog.style.display='none';
+              updateRevert_dialog.setAttribute('aria-hidden','true');
+              updateRevert_dialog.removeAttribute('aria-modal');
+              submit_btn?.removeEventListener('click',submit_click);
+              cancel_btn?.removeEventListener('click',cancel_click);
+              this.updateRevertChoice=null;
+           };
+
+
+          const submit_click=()=>{  const choice=this.updateRevertChoice; closedialog();    resolve(choice);    };
+          const cancel_click=()=>{  closedialog();  resolve('cancel');  };
+
+          submit_btn?.addEventListener('click',submit_click);
+          cancel_btn?.addEventListener('click',cancel_click);
+
+        });
+        
+        return result;
+
+    }
+    else 
+    console.log('Failed to open update-revert dialog');
+}
+
+
+
+
+
+
+
+//  update or Revert completion approval actions end.
+
+
+
+
+// 5.Validation : when creating action in completion approval type project where some actions are also in completion approval. what to do with those actions
+// let revertOrComplete:'COMPLETE'|'REVERT';
+// if(this.prj_Status=='Completion Under Approval'&&this.complAprvlsActionsCount>0){
+
+
+//   if(this.CurrentUser_ID==this.Owner_Empno||this.isHierarchy==true){
+//      // if user is as project owner or user is in hierarchy
+//     const choice = await this.getUpdateOrRevertChoice();
+//     if (choice == 'cancel') {
+//       return;
+//     }
+//     else {
+//       revertOrComplete = choice;
+//     }
+//   }
+//   else if(this.Current_user_ID==this.Resp_empno)
+//   {   // if user is as project responsible.
+//         const choice = await Swal.fire({
+//            title:'Confirm Action Creation',
+//            html:`<div class="text-justify d-flex flex-column">
+//                  <span class="text-gray">Project has <b>${this.complAprvlsActionsCount} ${this.complAprvlsActionsCount==1?'action':'actions'}</b> in <span style='color: #81C784; font-weight: 600;'>Completion approval</span>. Adding a new action will revert ${this.complAprvlsActionsCount==1?'this action to its earlier status.':'these actions to their earlier status.'} </span> 
+//                 <span class="mt-2 text-dark">Do you want to continue?</span>
+//               </div> `,
+//            confirmButtonText:'Revert & Create',
+//            cancelButtonText:'Cancel', 
+//            showCancelButton:true,
+//            showConfirmButton:true,
+//            });
+//            if(choice.isConfirmed){
+//                revertOrComplete='REVERT';
+//            }
+//            else {
+//              return;
+//            }
+  
+//   }
+//   else{
+//     // if user is as support in the project
+
+//          Swal.fire({
+//            title:'Action Creation Blocked',
+//            html:`<div class="text-justify d-flex flex-column">
+//                  <span class="text-gray">
+//                  Project has <b>${this.complAprvlsActionsCount} ${this.complAprvlsActionsCount==1?'action':'actions'}</b> in <span style='color: #81C784; font-weight: 600;'>Completion approval</span>. 
+//                  You cannot create new action in this project.
+//                  <div class="mt-2"> Please contact the responsible of the project.</div>
+//                  </span> 
+//               </div> `,
+//            confirmButtonText:'Ok',
+//            showConfirmButton:true,
+//            });
+//        return;
+      
+//   }
+
+
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 

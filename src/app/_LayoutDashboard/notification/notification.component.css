@@ -2158,6 +2158,11 @@ display: inline-block; */
 
 }
 
+.compl-remarks-span.upto-1{
+    -webkit-line-clamp: 1;
+}
+
+
 
 .txt-expnd-btn {
   display: flex;
@@ -2180,4 +2185,9 @@ display: inline-block; */
 
 .txt-expnd-btn:hover svg {
   stroke-width: 2.6px;
+}
+
+.lv-req-cmts
+{
+  max-width: 250px;
 }

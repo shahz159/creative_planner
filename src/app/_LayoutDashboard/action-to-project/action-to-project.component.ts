@@ -129,8 +129,8 @@ export class ActionToProjectComponent implements OnInit {
   ownerArr:any = []
   nonRacis:any = [];
   allUsers:any=[];
-
   actionCost:any;
+  completeOrRevertChoice:boolean=false;
 
   constructor(
     public notifyService: NotificationService,
@@ -171,7 +171,7 @@ export class ActionToProjectComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngOnInit() { debugger
     this._projcode = false;
     this._desbool = false;
     this._subname = false;
@@ -218,6 +218,12 @@ export class ActionToProjectComponent implements OnInit {
       console.log(this.Sub_ProjectName,'======>')
    });
 
+    this.BsService.bs_completeOrRevertChoice.subscribe((choice)=>{  debugger
+      console.log(choice);
+        this.completeOrRevertChoice=(choice=='COMPLETE'?true:false);
+    });
+
+
     tippy('#actattach', {
       content: "If you select this checkbox, you need to attach a file when completing the action.",
       arrow: true,
@@ -250,7 +256,7 @@ export class ActionToProjectComponent implements OnInit {
         this._MasterCode = p;
         this.ProjectsDropdownBoolean = true;
         this.selectedProjectCode = p;
-        this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
+        this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {  
 
           this.ProjectDeadLineDate = data["DeadLine"];
           this.ProjectStartDate = data["StartDate"];
@@ -274,7 +280,7 @@ export class ActionToProjectComponent implements OnInit {
 
 
     this.service._GetCompletedProjects(obj).subscribe(
-      (data) => {
+      (data) => {  
         this._EmployeeListForDropdown = JSON.parse(data[0]['EmployeeList']);
 
 
@@ -302,7 +308,7 @@ export class ActionToProjectComponent implements OnInit {
   getRACISandNonRACIS(){
 
     this.service.GetRACISandNonRACISEmployeesforMoredetails(this.pcode,this.Current_user_ID).subscribe(
-      (data) => {
+      (data) => { 
         this.ownerArr=(JSON.parse(data[0]['RacisList']));   
         this.nonRacis=(JSON.parse(data[0]['OtherList']));
         this.allUsers=(JSON.parse(data[0]['alluserlist']));
@@ -343,7 +349,7 @@ export class ActionToProjectComponent implements OnInit {
     }
     // this.selectedProjectCode = obj['Project_Code'];
     this.selectedProjectCode=this.selectedProjectCodelist;
-    this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {
+    this.service.GetDeadlineByProjectCode(this.selectedProjectCode).subscribe(data => {   
       this.ProjectDeadLineDate = data["DeadLine"];
       this.ProjectStartDate = data["StartDate"];
       this.Owner_Empno = data['Owner_empno'];
@@ -993,9 +999,8 @@ if(this._Urlid==5||this._Urlid==4){
 
 const fieldsRequired:boolean=[(this._Urlid=='2'?this._projcode:false),this._subname,this._desbool,this._selectemp,this._sdate,this._edate,this._actbefore ,this._alchr].some(item=>item);
 if(fieldsRequired)
-return false;        // please provide all mandatory fields value.
+{return false;  }        // please provide all mandatory fields value.
 // 1. Validation : forms fields required check end.
-
 
 
 // 2. Validation : Action owner and responsible are same. start
@@ -1093,6 +1098,7 @@ if(this._Urlid == 5){
 }
 
 
+
 // Action creation here
 this.startActionCreation();
 
@@ -1101,7 +1107,6 @@ this.startActionCreation();
 azuremessage: any;
 IsFile:boolean=false;
 contentType:string="";
-
 
 
 
@@ -1152,7 +1157,7 @@ startActionCreation=async()=>{
 
    // console.log(this.owner,"selected owner")
 
-   this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {   
+   this.service._GetNewProjectCode(this.ObjSubTaskDTO).subscribe(data => {     debugger
 
      this.Sub_ProjectCode = data['SubTask_ProjectCode'];
      this.EmpNo_Autho = data['Team_Autho'];
@@ -1220,6 +1225,7 @@ startActionCreation=async()=>{
      fd.append("proState",this.completionattachment.toString());
      fd.append("actionCost",this.actionCost);
      fd.append("contentType",this.contentType);
+     fd.append("completionType",this.completeOrRevertChoice?'true':'false');
 
 
      if (this.ObjSubTaskDTO.Duration != null) {
@@ -1710,13 +1716,17 @@ isValidString(inputString: string, minWrds: number): 'TOOSHORT'|'VALID'  {
 
 
 
- actionCount:any
+ actionCount:any;
+//  complAprvlsActionsCount:number=0;
+//  prj_Status:string;
+//  revertOrComplete:boolean=false;
  getActionCount(prjcode){
 
-   this.projectMoreDetailsService.GetActionDeadlineList(prjcode).subscribe((res)=>{
+   this.projectMoreDetailsService.GetActionDeadlineList(prjcode).subscribe((res)=>{    
     this.actionCount = JSON.parse(res[0].deadlineList)
+    // this.complAprvlsActionsCount=(this.actionCount?.[0]?.completioncount)??0;
+    // this.prj_Status=this.actionCount?.[0]?.mainStatus;
     console.log(this.actionCount,' this.actionCount this.actionCount this.actionCount')
-
    })
  }
 
@@ -1855,10 +1865,12 @@ alertMaxAllocation(){
 }
 
 
-
-
-
 // New allocated hrs validation end.
+
+
+
+
+
 
 
 }

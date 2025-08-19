@@ -557,6 +557,21 @@
         <!--body start-->
          <div class="kt-portlet mt-3 mb-0">
             <div class="kt-portlet__body pt-3 pb-2">
+
+                <div class="row kt-filterdetails">
+                    <div class="search-filter d-flex gap-2">
+                        <div *ngIf="_PortProjStatus[0]!='All'">
+                            <span class="text-dark" style="font-weight: 600;">Filter by:</span>
+                            <span *ngFor="let status of _PortProjStatus" [ngClass]="{'inprocess-text':status=='InProcess', 'delay-text':status=='Delay', 'completed-text':status=='Completed', 'completion-text':status=='Completion Under Approval', 'forward-text':status=='Forward Under Approval'}" 
+                            class="ml-1">{{(status=='Completion Under Approval'?'Completion Approval':status=='Forward Under Approval'?'Forward Approval':status=='Under Approval'?'New Approval':status=='Cancellation Under Approval'?'Cancellation Approval':status)}}, </span>
+                        </div>
+                        <div *ngIf="_FilterByEmp[0]!='All'">
+                            <span class="text-dark" style="font-weight: 600;">Sort by: </span>
+                            <span *ngFor="let emp of _FilterByEmp" class="ml-1">{{filteredEmployeesMap?.get(emp)?.Team_Res}}, </span> 
+                        </div>
+                    </div>
+                </div>
+
                 <div class="tab-content">
                     <div class="tab-pane active" aria-expanded="true" [hidden]="HideProjects">
                         <div class="card projects-list no-border">

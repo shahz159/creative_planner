@@ -35,6 +35,8 @@ export class BsServiceService {
   private _portId = new BehaviorSubject<any>(null);
   public _templAction = new BehaviorSubject<{name:string,description:string,assignedTo:string}>({name:'',description:'',assignedTo:''});
 
+  public _completeOrRevertChoice=new BehaviorSubject<string>('');
+
 
   ProjectCreatedEvent:EventEmitter<undefined>=new EventEmitter<undefined>();
 
@@ -73,6 +75,8 @@ export class BsServiceService {
   bs_SummaryType = this._SummaryType.asObservable();
   bs_SelectedPortId = this._portId.asObservable();
   bs_templAction = this._templAction.asObservable();
+
+  bs_completeOrRevertChoice=this._completeOrRevertChoice.asObservable();
 
 
 
@@ -126,6 +130,10 @@ export class BsServiceService {
 
   setSelectedTemplAction(tmAction:{name:string,description:string,assignedTo:string}) {
     this._templAction.next(tmAction);
+  }
+
+  setCompleteOrRevertChoice(choice){
+     this._completeOrRevertChoice.next(choice);
   }
 
 

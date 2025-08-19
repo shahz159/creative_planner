@@ -267,7 +267,7 @@
                         <div *ngIf="f.password.errors.required" class="error-text"><span>password is required.</span></div>
                       </div>
                     </div>
-                    <p *ngIf="InValidUserName||InValidPassword" class="error-text"><span>{{message}}</span></p>
+                    <p *ngIf="f?.userid?.value&&f?.password?.value&&(InValidUserName||InValidPassword)" class="error-text"><span>{{message}}</span></p>
                     <!-- <p *ngIf="message" class="text-center error" class="text-danger"><strong>{{message}}</strong></p> -->
                     <!-- <div class="kt-login__extra">
                       <label class="kt-checkbox">
