@@ -1986,7 +1986,7 @@
                     </div>
                 <p class="noti-alert-note">You currently have overdue actions and tasks that need your immediate attention. These items are critical to maintaining project timelines, and further delay could impact overall progress. Please prioritize completing them today to ensure smooth continuity.</p>
                 <div class="noti-alert-foot" *ngIf="HasAcknowledged==0">
-                    <button type="button" class="btn btn-sm btn-noti-understand" (click)="notificationalertModal_dismiss()">I acknowledge</button>
+                    <button type="button" class="btn btn-sm btn-noti-understand" (click)="notificationalertModal_dismiss();Acknowledgement()">I acknowledge</button>
                 </div>
             </div>
         </div>
