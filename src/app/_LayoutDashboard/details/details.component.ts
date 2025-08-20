@@ -2515,9 +2515,7 @@ multipleback(){
     this.isLoadingData=true;
     this._LinkService._GetOnlyMemoIdsByProjectCode(this.URL_ProjectCode).
       subscribe((data: any) => {
-        alert(0)
         this.isLoadingData=false;
-        debugger
         console.log("inside GetDMS_Memos:", data);
         if (data && data.length > 0) { // if data is not [] means there will be atleast one memo present in the project.
            this.isLoadingData=true;
