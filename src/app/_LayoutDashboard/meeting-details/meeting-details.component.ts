@@ -3627,9 +3627,9 @@ onFileChange(event) {
         if(this.Meeting_password!=null){  
           this.Meeting_password = this.Meeting_password.trim() == ''?null:this.Meeting_password;
         }
-        if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
-          this._onlinelink =false
-        }
+        // if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
+        //   this._onlinelink =false
+        // }
 
 
 
@@ -7658,9 +7658,9 @@ addstarttime(){
           if(this.Meeting_password!=null){  
             this.Meeting_password = this.Meeting_password.trim() == ''?null:this.Meeting_password;
           }
-          if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
-            this._onlinelink =false
-          }
+          // if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
+          //   this._onlinelink =false
+          // }
           
           var vOnlinelink = "Onlinelink";
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
@@ -8407,11 +8407,73 @@ projectmodal(modaltype:'project'|'portfolio'|'S Mail'|'participant'){
   }
   FilteredResults:any=[];
 
-  onInputSearch(inputText:any){
+  // onInputSearch(inputText:any){
+  //   let keyname;
+  //   let arrtype;
+  //   let selectedinto;
+  //   let property_name;
+  //   if(this.projectmodaltype=='participant')
+  //    {
+  //      keyname='DisplayName';
+  //      arrtype=this._EmployeeListForDropdown;
+  //      selectedinto='ngEmployeeDropdown';
+  //      property_name='Emp_No';
+  //    }
+  //   else if(this.projectmodaltype=='portfolio')
+  //   {
+  //      keyname='Portfolio_Name';
+  //      arrtype=this.Portfoliolist_1;
+  //      selectedinto='Portfolio';
+  //      property_name='portfolio_id';
+  //   }
+  //   else if(this.projectmodaltype=='S Mail')
+  //   {
+  //     keyname='Subject';
+  //     arrtype=this.Memos_List;
+  //     selectedinto='SelectDms';
+  //     property_name='MailId';
+  //   }
+
+  //   const result=arrtype.filter(item=>{
+     
+  //     const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
+  //     let nameMatched:boolean=false;
+  //     if(unselected)
+  //     nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim())
+
+  //     return nameMatched;
+  //   });
+  //   this.FilteredResults=result;
+
+
+  //   if(this.linkSMail==false  && this.linkPortf==false && this.linkProject==false){
+  //     this.FilteredResults=result;
+  //   }
+  //   else if(this.projectmodaltype=='S Mail' && this.linkSMail==true ){
+  //     this.FilteredResults=result;
+  //     this.FilteredResults=this.FilteredResults.filter((res)=>{
+  //     return !this._MemosSubjectList.some(att => att.MailId === res.MailId);
+  //   });
+  //   }
+  //   else if(this.projectmodaltype=='portfolio' && this.linkPortf==true ){
+  //     this.FilteredResults=result;
+  //     this.FilteredResults=this.FilteredResults.filter((res)=>{
+  //       return !this.portfolio_Scheduledjson.some(att => att.numberval === res.portfolio_id);
+  //     });
+  //   }
+  // }
+
+  
+
+onInputSearch(inputText:any){
     let keyname;
     let arrtype;
     let selectedinto;
     let property_name;
+  let _Emp;
+  if(this.isFilteredOn){
+    _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
+  }
     if(this.projectmodaltype=='participant')
      {
        keyname='DisplayName';
@@ -8433,19 +8495,41 @@ projectmodal(modaltype:'project'|'portfolio'|'S Mail'|'participant'){
       selectedinto='SelectDms';
       property_name='MailId';
     }
-
-    const result=arrtype.filter(item=>{
-     
-      const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
+    const result=arrtype.filter((item)=>{
       let nameMatched:boolean=false;
-      if(unselected)
-      nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim())
-
-      return nameMatched;
+      let filterMatched:boolean=false;
+// by search text
+    const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
+    if(unselected)
+    nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim());
+// by filter
+    if(nameMatched&&this.isFilteredOn){
+      if(this.projectmodaltype=='S Mail'){
+        // 'item' act as a memo object here
+        let hasMemo:boolean=false;
+        hasMemo=(!this.basedOnFilter.byuser)||(item.DisplayName.toLowerCase().trim()===_Emp.TM_DisplayName.toLowerCase().trim());
+        let isSelected:boolean=false;
+        isSelected=this.SelectDms&&this.SelectDms.includes(item.MailId);
+        filterMatched=isSelected?false:hasMemo;
+      }
+      else if(this.projectmodaltype=='portfolio'){
+            // portfolio filter section here
+       // 'item' act as a portfolio object here
+       const x=(item.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
+       const y=(item.Created_By===this.basedOnFilter.byuser||!this.basedOnFilter.byuser);
+       const z=x&&y;
+       const isSelected:boolean=this.Portfolio&&this.Portfolio.includes(item.portfolio_id);
+       filterMatched=isSelected?false:z;
+      }
+      else if(this.projectmodaltype=='participant'){
+           const x=(item.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
+           const isSelected:boolean=this.ngEmployeeDropdown&&this.ngEmployeeDropdown.includes(item.Emp_No);
+           filterMatched=isSelected?false:x;
+      }
+   }
+     return nameMatched&&(this.isFilteredOn?filterMatched:true);
     });
     this.FilteredResults=result;
-
-
     if(this.linkSMail==false  && this.linkPortf==false && this.linkProject==false){
       this.FilteredResults=result;
     }
@@ -8462,8 +8546,6 @@ projectmodal(modaltype:'project'|'portfolio'|'S Mail'|'participant'){
       });
     }
   }
-
-
 
 
 
@@ -8632,8 +8714,8 @@ onDMSFilter(){
       this.isFilteredOn=true;
 }
 
-onParticipantFilter(){
-   const fresult=this._EmployeeListForDropdown.filter((_emp:any)=>{
+onParticipantFilter(){ 
+   const fresult=this._EmployeeListForDropdown.filter((_emp:any)=>{ 
       const isEmpIn:boolean=(!this.basedOnFilter.bycompany)||_emp.Emp_Comp_No.trim()===this.basedOnFilter.bycompany;
       let includeEmp:boolean=false;
       if(isEmpIn)
@@ -11256,10 +11338,6 @@ isMini = false;
     this.MasterCode = null;
     this.projectsSelected = [];
     this.Subtask = null;
-    // this.Startts = null;
-    // this.Endtms = null;
-    // this.SelectStartdate = null;
-    // this.Selectenddate = null;
     this.St_date = "";
     this.Ed_date = null;
     this._subname = false;
@@ -11269,6 +11347,10 @@ isMini = false;
     this.agendacharacterCount=null;
     this.switChRecurrenceValue=false;
     this.selectedrecuvalue = '0'
+    this.selectedOption = 'option1'; 
+    this._onlinelink = false;
+    this._meetingroom=false;
+
   }
 
 
