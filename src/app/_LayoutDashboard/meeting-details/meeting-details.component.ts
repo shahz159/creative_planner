@@ -685,7 +685,7 @@ totalAcceptedCount:any;
 
     this._calenderDto.Schedule_ID = this.Schedule_ID;
 
-    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => { debugger
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       console.log(this.EventScheduledjson,'EventScheduledjson');
       
@@ -788,7 +788,7 @@ totalAcceptedCount:any;
      },2000)
      
      this.totalAcceptedCount = this.Agendas_List.reduce((sum, item) => sum + item.AssignedCount, 0);
-      console.log(this.totalAcceptedCount,'totalAcceptedCount')
+      // console.log(this.totalAcceptedCount,'totalAcceptedCount')
 
 
     
@@ -1560,7 +1560,7 @@ var racisScheduleIds=  this.racisUserIds[0].Schedule_Id;
   }
 
 
-  AddDMS_meetingreport() { 
+  AddDMS_meetingreport() { debugger
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
@@ -1856,22 +1856,22 @@ var racisScheduleIds=  this.racisUserIds[0].Schedule_Id;
   selectedValue: number;
   currentEventId: any
 
-  getAllEvents() { 
+  getAllEvents() {  debugger
 
     this.currentEventId = this.selectedValue;
 
 
-    if (this.agendaInputs != '') {
+    if (this.agendaInputs != '' && this.agendaInputs != undefined && this.agendaInputs != null) {
       this.addAgenda()
     }
   
-    if (this.Portfolio != '' && this.Portfolio != null) {
+    if (this.Portfolio != '' && this.Portfolio != null  && this.Portfolio != undefined) {
       this.Addportfolios_meetingreport()
     }
-    else if (this.SelectDms != undefined && this.SelectDms != '') {
+    else if (this.SelectDms != undefined && this.SelectDms != '' && this.SelectDms != null) {
       this.AddDMS_meetingreport();
     }
-    else if (this.MasterCode != '') {
+    else if (this.MasterCode != '' && this.MasterCode != undefined && this.MasterCode != null) {
       this.Addproject_meetingreport();
     }
     else if (this.GetDMSEventValue != undefined && this.currentEventId != '') {
@@ -2947,12 +2947,12 @@ var racisScheduleIds=  this.racisUserIds[0].Schedule_Id;
     this._calenderDto.Emp_No = this.Current_user_ID;
     this._calenderDto.AgendaId = this.currentAgendaView === undefined ? 0 : this.Agendas_List[this.currentAgendaView].AgendaId;
     this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
-      ((data: any) => {
+      ((data: any) => { debugger
 
          if (data['Checkdatetimejson'] != '') {
-           
+          
             this.AllAttendees_notes = JSON.parse(data['Checkdatetimejson']);
-          // console.log(this.AllAttendees_notes,'AllAttendees_notes')
+          console.log(  this.AllAttendees_notes ,'AllAttendees_notes')
           } else if (data['Checkdatetimejson'] == '') {
             this.AllAttendees_notes = [];
           }
@@ -4034,7 +4034,7 @@ onFileChange(event) {
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
           this.AutoComplete = this.CompletedMeeting_notes[0].AutoComplete;
           this.totalAcceptedCount = this.CompletedMeeting_notes[0].AssignedCount;
-          console.log( this.totalAcceptedCount, 'CompletedMeeting_notes')
+          // console.log( this.totalAcceptedCount, 'CompletedMeeting_notes')
         
 
           this.AttendeeCount = this.CompletedMeeting_notes[0].online_count;
@@ -8016,7 +8016,7 @@ onMainAgenda(event: ClipboardEvent): void {
   // allAgendas: any = [];
   // agendasAdded: number = 0;
   addAgendas() {
-
+  if (this.agendaInputs != '' && this.agendaInputs != undefined) {
   this.allAgendasExists = [...this.allAgendas].some(item => item.name?.trim() === this.agendaInputs.trim());
 
     if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101 && !this.allAgendasExists) {
@@ -8030,6 +8030,8 @@ onMainAgenda(event: ClipboardEvent): void {
     }
     this.agendacharacterCount =  null;
     console.log("allAgendas:", this.allAgendas);
+
+    }
   }
 
   deleteAgendas(index: number) {
