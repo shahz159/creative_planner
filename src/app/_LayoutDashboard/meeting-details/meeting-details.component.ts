@@ -685,7 +685,7 @@ totalAcceptedCount:any;
 
     this._calenderDto.Schedule_ID = this.Schedule_ID;
 
-    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => {
+    this.CalenderService.NewClickEventJSON(this._calenderDto).subscribe((data) => { debugger
       this.EventScheduledjson = JSON.parse(data['ClickEventJSON']);
       console.log(this.EventScheduledjson,'EventScheduledjson');
       
@@ -788,7 +788,7 @@ totalAcceptedCount:any;
      },2000)
      
      this.totalAcceptedCount = this.Agendas_List.reduce((sum, item) => sum + item.AssignedCount, 0);
-      console.log(this.totalAcceptedCount,'totalAcceptedCount')
+      // console.log(this.totalAcceptedCount,'totalAcceptedCount')
 
 
     
@@ -1560,7 +1560,7 @@ var racisScheduleIds=  this.racisUserIds[0].Schedule_Id;
   }
 
 
-  AddDMS_meetingreport() { 
+  AddDMS_meetingreport() { debugger
     this.Schedule_ID = this.Scheduleid;
     this._calenderDto.Schedule_ID = this.Schedule_ID;
     this._calenderDto.Emp_No = this.Current_user_ID;
@@ -1856,22 +1856,22 @@ var racisScheduleIds=  this.racisUserIds[0].Schedule_Id;
   selectedValue: number;
   currentEventId: any
 
-  getAllEvents() { 
+  getAllEvents() {  debugger
 
     this.currentEventId = this.selectedValue;
 
 
-    if (this.agendaInputs != '') {
+    if (this.agendaInputs != '' && this.agendaInputs != undefined && this.agendaInputs != null) {
       this.addAgenda()
     }
   
-    if (this.Portfolio != '' && this.Portfolio != null) {
+    if (this.Portfolio != '' && this.Portfolio != null  && this.Portfolio != undefined) {
       this.Addportfolios_meetingreport()
     }
-    else if (this.SelectDms != undefined && this.SelectDms != '') {
+    else if (this.SelectDms != undefined && this.SelectDms != '' && this.SelectDms != null) {
       this.AddDMS_meetingreport();
     }
-    else if (this.MasterCode != '') {
+    else if (this.MasterCode != '' && this.MasterCode != undefined && this.MasterCode != null) {
       this.Addproject_meetingreport();
     }
     else if (this.GetDMSEventValue != undefined && this.currentEventId != '') {
@@ -2947,12 +2947,12 @@ var racisScheduleIds=  this.racisUserIds[0].Schedule_Id;
     this._calenderDto.Emp_No = this.Current_user_ID;
     this._calenderDto.AgendaId = this.currentAgendaView === undefined ? 0 : this.Agendas_List[this.currentAgendaView].AgendaId;
     this.CalenderService.NewGetAttendeesMeetingnotes(this._calenderDto).subscribe
-      ((data: any) => {
+      ((data: any) => { debugger
 
          if (data['Checkdatetimejson'] != '') {
-           
+          
             this.AllAttendees_notes = JSON.parse(data['Checkdatetimejson']);
-          // console.log(this.AllAttendees_notes,'AllAttendees_notes')
+          console.log(  this.AllAttendees_notes ,'AllAttendees_notes')
           } else if (data['Checkdatetimejson'] == '') {
             this.AllAttendees_notes = [];
           }
@@ -3627,9 +3627,9 @@ onFileChange(event) {
         if(this.Meeting_password!=null){  
           this.Meeting_password = this.Meeting_password.trim() == ''?null:this.Meeting_password;
         }
-        if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
-          this._onlinelink =false
-        }
+        // if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
+        //   this._onlinelink =false
+        // }
 
 
 
@@ -4034,7 +4034,7 @@ onFileChange(event) {
           this.Meetingstatuscom = this.CompletedMeeting_notes[0]['Meeting_status'];
           this.AutoComplete = this.CompletedMeeting_notes[0].AutoComplete;
           this.totalAcceptedCount = this.CompletedMeeting_notes[0].AssignedCount;
-          console.log( this.totalAcceptedCount, 'CompletedMeeting_notes')
+          // console.log( this.totalAcceptedCount, 'CompletedMeeting_notes')
         
 
           this.AttendeeCount = this.CompletedMeeting_notes[0].online_count;
@@ -7658,9 +7658,9 @@ addstarttime(){
           if(this.Meeting_password!=null){  
             this.Meeting_password = this.Meeting_password.trim() == ''?null:this.Meeting_password;
           }
-          if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
-            this._onlinelink =false
-          }
+          // if(this.Link_Details==null && this.Meeting_Id==null && this.Meeting_password==null){
+          //   this._onlinelink =false
+          // }
           
           var vOnlinelink = "Onlinelink";
           element[vOnlinelink] = this._onlinelink == undefined ? false : this._onlinelink;
@@ -8016,7 +8016,7 @@ onMainAgenda(event: ClipboardEvent): void {
   // allAgendas: any = [];
   // agendasAdded: number = 0;
   addAgendas() {
-
+  if (this.agendaInputs != '' && this.agendaInputs != undefined) {
   this.allAgendasExists = [...this.allAgendas].some(item => item.name?.trim() === this.agendaInputs.trim());
 
     if (this.agendacharacterCount > 0 && this.agendacharacterCount < 101 && !this.allAgendasExists) {
@@ -8030,6 +8030,8 @@ onMainAgenda(event: ClipboardEvent): void {
     }
     this.agendacharacterCount =  null;
     console.log("allAgendas:", this.allAgendas);
+
+    }
   }
 
   deleteAgendas(index: number) {
@@ -8405,17 +8407,73 @@ projectmodal(modaltype:'project'|'portfolio'|'S Mail'|'participant'){
   }
   FilteredResults:any=[];
 
-  onInputSearch(inputText:any){  
+  // onInputSearch(inputText:any){
+  //   let keyname;
+  //   let arrtype;
+  //   let selectedinto;
+  //   let property_name;
+  //   if(this.projectmodaltype=='participant')
+  //    {
+  //      keyname='DisplayName';
+  //      arrtype=this._EmployeeListForDropdown;
+  //      selectedinto='ngEmployeeDropdown';
+  //      property_name='Emp_No';
+  //    }
+  //   else if(this.projectmodaltype=='portfolio')
+  //   {
+  //      keyname='Portfolio_Name';
+  //      arrtype=this.Portfoliolist_1;
+  //      selectedinto='Portfolio';
+  //      property_name='portfolio_id';
+  //   }
+  //   else if(this.projectmodaltype=='S Mail')
+  //   {
+  //     keyname='Subject';
+  //     arrtype=this.Memos_List;
+  //     selectedinto='SelectDms';
+  //     property_name='MailId';
+  //   }
+
+  //   const result=arrtype.filter(item=>{
+     
+  //     const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
+  //     let nameMatched:boolean=false;
+  //     if(unselected)
+  //     nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim())
+
+  //     return nameMatched;
+  //   });
+  //   this.FilteredResults=result;
+
+
+  //   if(this.linkSMail==false  && this.linkPortf==false && this.linkProject==false){
+  //     this.FilteredResults=result;
+  //   }
+  //   else if(this.projectmodaltype=='S Mail' && this.linkSMail==true ){
+  //     this.FilteredResults=result;
+  //     this.FilteredResults=this.FilteredResults.filter((res)=>{
+  //     return !this._MemosSubjectList.some(att => att.MailId === res.MailId);
+  //   });
+  //   }
+  //   else if(this.projectmodaltype=='portfolio' && this.linkPortf==true ){
+  //     this.FilteredResults=result;
+  //     this.FilteredResults=this.FilteredResults.filter((res)=>{
+  //       return !this.portfolio_Scheduledjson.some(att => att.numberval === res.portfolio_id);
+  //     });
+  //   }
+  // }
+
+  
+
+onInputSearch(inputText:any){
     let keyname;
     let arrtype;
     let selectedinto;
     let property_name;
-
   let _Emp;
   if(this.isFilteredOn){
     _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
   }
-
     if(this.projectmodaltype=='participant')
      {
        keyname='DisplayName';
@@ -8437,28 +8495,21 @@ projectmodal(modaltype:'project'|'portfolio'|'S Mail'|'participant'){
       selectedinto='SelectDms';
       property_name='MailId';
     }
-
-  
-    const result=arrtype.filter((item)=>{ 
+    const result=arrtype.filter((item)=>{
       let nameMatched:boolean=false;
       let filterMatched:boolean=false;
-
-
 // by search text
     const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
     if(unselected)
     nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim());
-
 // by filter
-    if(nameMatched&&this.isFilteredOn){  
+    if(nameMatched&&this.isFilteredOn){
       if(this.projectmodaltype=='S Mail'){
         // 'item' act as a memo object here
         let hasMemo:boolean=false;
         hasMemo=(!this.basedOnFilter.byuser)||(item.DisplayName.toLowerCase().trim()===_Emp.TM_DisplayName.toLowerCase().trim());
-    
         let isSelected:boolean=false;
         isSelected=this.SelectDms&&this.SelectDms.includes(item.MailId);
-
         filterMatched=isSelected?false:hasMemo;
       }
       else if(this.projectmodaltype=='portfolio'){
@@ -8469,7 +8520,6 @@ projectmodal(modaltype:'project'|'portfolio'|'S Mail'|'participant'){
        const z=x&&y;
        const isSelected:boolean=this.Portfolio&&this.Portfolio.includes(item.portfolio_id);
        filterMatched=isSelected?false:z;
-
       }
       else if(this.projectmodaltype=='participant'){
            const x=(item.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
@@ -8477,17 +8527,9 @@ projectmodal(modaltype:'project'|'portfolio'|'S Mail'|'participant'){
            filterMatched=isSelected?false:x;
       }
    }
-
-
-
-
      return nameMatched&&(this.isFilteredOn?filterMatched:true);
     });
-
-
     this.FilteredResults=result;
-
-
     if(this.linkSMail==false  && this.linkPortf==false && this.linkProject==false){
       this.FilteredResults=result;
     }
@@ -8504,8 +8546,6 @@ projectmodal(modaltype:'project'|'portfolio'|'S Mail'|'participant'){
       });
     }
   }
-
-
 
 
 
@@ -8674,8 +8714,8 @@ onDMSFilter(){
       this.isFilteredOn=true;
 }
 
-onParticipantFilter(){
-   const fresult=this._EmployeeListForDropdown.filter((_emp:any)=>{
+onParticipantFilter(){ 
+   const fresult=this._EmployeeListForDropdown.filter((_emp:any)=>{ 
       const isEmpIn:boolean=(!this.basedOnFilter.bycompany)||_emp.Emp_Comp_No.trim()===this.basedOnFilter.bycompany;
       let includeEmp:boolean=false;
       if(isEmpIn)
@@ -11298,10 +11338,6 @@ isMini = false;
     this.MasterCode = null;
     this.projectsSelected = [];
     this.Subtask = null;
-    // this.Startts = null;
-    // this.Endtms = null;
-    // this.SelectStartdate = null;
-    // this.Selectenddate = null;
     this.St_date = "";
     this.Ed_date = null;
     this._subname = false;
@@ -11311,6 +11347,10 @@ isMini = false;
     this.agendacharacterCount=null;
     this.switChRecurrenceValue=false;
     this.selectedrecuvalue = '0'
+    this.selectedOption = 'option1'; 
+    this._onlinelink = false;
+    this._meetingroom=false;
+
   }
 
 

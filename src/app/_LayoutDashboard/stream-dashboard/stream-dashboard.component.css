@@ -2744,7 +2744,9 @@ span.p-b-percent-count {
     width: 214px;
 }
 
-
+.upcoming-event-v2-item:hover .upcoming-event-item-actions-ul.active-mark {
+    width: 185px;
+}
 
 .upcoming-event-v2-item:hover .upcoming-event-item-actions-li.yes {
     border-color: #e8f0fe;
