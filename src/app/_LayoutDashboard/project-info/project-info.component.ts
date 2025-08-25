@@ -116,7 +116,7 @@ export class ProjectInfoComponent implements OnInit, OnDestroy {
   port_id: any;
   Mode: string = "UnderApproval";
   _fullname: any;
-Prj_Code:any;
+  Actn_Code:any;
 
   /*
     routing Url id's for different components
@@ -139,7 +139,7 @@ Prj_Code:any;
      const p_code=params.get('projectcode');
      const a_code=params.get('actioncode');
      if(p_code&&a_code){
-          this.Prj_Code=p_code;
+          this.Actn_Code=p_code;
           this.projectCode=a_code;
      }
      else{

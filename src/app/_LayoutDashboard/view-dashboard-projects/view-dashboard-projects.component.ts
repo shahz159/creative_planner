@@ -232,7 +232,7 @@ export class ViewDashboardProjectsComponent implements OnInit {
   }
 
 
-  openInfo(prjCode:string,actCode:string) {  debugger
+  openInfo(prjCode:string,actCode:string) { 
     // document.getElementById("mysideInfobar").classList.add("kt-quick-panel--on");
 
     $('#Project_info_slider_bar').addClass('open_sidebar_info');

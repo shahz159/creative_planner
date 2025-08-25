@@ -189,6 +189,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   actionowner_dropdown:any;
   actionresponsible_dropdown:any;
   action_completionOffset:number|undefined;
+  actnRunFor:number=0;
   action_deadlineExtendlist:any=[];
   isNewOwnerOk:boolean=false;
   pageContentType:'PROJECT_DETAILS'|'ACTION_DETAILS'='PROJECT_DETAILS';  // which content the page is display project or action. by default project.
@@ -260,14 +261,12 @@ export class DetailsComponent implements OnInit, AfterViewInit {
       }
     });
 
-    
-
-
+    const actionQueryParam=this.route.snapshot.queryParamMap.get('actionCode');
 
 
     this.Current_user_ID = localStorage.getItem('EmpNo');  // get the EmpNo from the local storage .
     this.activatedRoute.paramMap.subscribe(params => this.URL_ProjectCode = params.get('ProjectCode'));  // GET THE PROJECT CODE AND SET it.
-    this.getProjectDetails(this.URL_ProjectCode);
+    this.getProjectDetails(this.URL_ProjectCode,{notifyOnOwnerChange:true,navigateToActionCode:actionQueryParam??undefined});
 
     // get all project details from the api.
     this.getapprovalStats();
@@ -930,16 +929,455 @@ showUserAccessRequests(){
   ProjectDueInDays:number;
 
 
- getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) { 
-    this.errorFetchingProjectInfo=false;
-    this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res => {  
+//  getProjectDetails(prjCode: string,actionIndex:number|undefined=undefined) {  debugger
+//     this.errorFetchingProjectInfo=false;  
+//     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe((res:any) => {     
+
+    
+
+//       try{
+//       this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
+//       }catch(er){
+//         console.log('project Info fetching failure:',er);
+//         this.errorFetchingProjectInfo=true;
+//       }
+
+
+//      if(this.projectInfo.isProject==false&&this.projectInfo.isTask==true){
+//          this.task_assign_json=JSON.parse(this.projectInfo.assign_json);
+//      }
+
+//       this.pageContentType=this.projectInfo.Master_Code?'ACTION_DETAILS':'PROJECT_DETAILS';
+//       this.Submission = JSON.parse(res[0].submission_json);
+//       if(this.projectInfo['requestaccessList']!=undefined && this.projectInfo['requestaccessList']!=null){
+//         this.requestaccessList = JSON.parse(this.projectInfo['requestaccessList']);
+//         this.requestaccessList.forEach(element => {
+//           if(element.Submitted_By_EmpNo == this.Current_user_ID){
+//             this.isRequestSent = true;
+//             this.ishide=false
+//             $('.hide-content').addClass('d-none')
+//           }
+//         });
+//       }
+//       this.isDMS= this.projectInfo.isDMS;
+//       this.bsService.SetNewPojectCode(this.URL_ProjectCode);
+//       this.bsService.SetNewPojectName(this.projectInfo.Project_Name);
+//       this.type_list = this.projectInfo.typelist;
+//       console.log( this.requestaccessList, "testtsfs")
+//       this.Pid = JSON.parse(res[0].ProjectInfo_Json)[0].id;
+//       this._MasterCode = this.projectInfo.Project_Code;
+//       this.ProjectType = this.projectInfo.Project_Type;
+//       this.projecttypes = this.projectInfo.Project_Type;
+//       this.isrespactive =  this.projectInfo.isRespActive;
+//       this.projectActionInfo = JSON.parse(res[0].Action_Json);
+//       this.type_list = JSON.parse(this.projectInfo['typelist']);
+//       this.Title_Name=this.projectInfo.Project_Name;
+
+//       if(this.projectInfo.Project_Block=='003'&&this.projectInfo.Status.includes('Delay')){
+//           let regex=/[0-9]+/;
+//           const result=regex.exec(this.projectInfo.Status);
+//           if(result)
+//           this.taskDelayedby=+result[0].trim();
+//       }
+
+//       if(['001','002','011'].includes(this.projectInfo.Project_Block)){
+
+//         // Prepare deadlineExtendlist:
+//         const _deadlineextendlist=this.projectInfo['deadlineExtendlist'];
+//         console.log('from backend deadlineextendlist:',_deadlineextendlist);
+//         if(_deadlineextendlist){
+//           var deadlineExtend=JSON.parse(_deadlineextendlist);
+//           this.deadlineExtendlist=Object.values(deadlineExtend);
+//           this.totaldeadlineExtend=this.deadlineExtendlist.length;
+//           let count:number=0;
+//           this.deadlineExtendlist.map((actv:any)=>{
+//             if(actv.count>1&&actv.Value.includes('Deadline changed')&&count+1!=actv.count)
+//                {   // actv.count : 2,3,4....
+//                    let updatecount=(actv.count-count);
+//                    let x=updatecount>3?'th':updatecount==3?'rd':'nd';
+//                    actv.Value=actv.Value.replace('Deadline changed',`Deadline changed ${updatecount+x} Time`);
+//                    count+=1;
+//                }
+//               return actv;
+//           });
+//           console.log('this.deadlineExtendlist:',this.deadlineExtendlist);
+//         }
+
+//         //Prepare ProjectDueInDays:
+//         const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+//         const prj_edate=new Date(this.projectInfo.EndDate);  prj_edate.setHours(0,0,0,0);
+//         this.ProjectDueInDays=moment(prj_edate).diff(cr_date,'days');
+//         //
+
+
+//       }
+
+
+//       console.log("projectInfo:", this.projectInfo, "projectActionInfossssssssssssssss:", this.projectActionInfo)
+//       if(this.projectActionInfo && this.projectActionInfo.length>0){
+//         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
+//         this.onFilterConfigChanged({filterBy:['All'],sortBy:['All']});  // by default show all actions.
+//         this.filterConfigChanged=false;   
+//         this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
+//         this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
+//         console.log('Now After Sorting:',this.filteremployee);
+//         console.log('Action count:',this.filteredPrjAction);
+
+//       }
+//       this.calculateProjectActions();    // calculate project actions details.
+
+//       this.myUnderApprvActions=this.getFilteredPrjActions(['Under Approval'],[this.Current_user_ID]);   // get all my underapproval actions.
+//       this.myDelayPrjActions=this.getFilteredPrjActions(['Delay'],[this.Current_user_ID]);   // get all my delay actions .
+//       this.myDelayPrjActions=this.myDelayPrjActions.sort((a,b)=>{
+//             return b.Delaydays-a.Delaydays;
+//       });
+     
+
+//      if(this.filteremployee)
+//      {
+//        this.delayActionsOfEmps=[];   // must be empty before calculation.
+//           this.filteremployee.forEach((emp)=>{
+//             let delayActionsOfEmp=this.getFilteredPrjActions(['Delay'],[emp.Team_Res]);
+//             if(delayActionsOfEmp.length>0){  
+//               delayActionsOfEmp=delayActionsOfEmp.sort((a,b)=>b.Delaydays-a.Delaydays)
+//               const percentInDelay=((delayActionsOfEmp[0].Delaydays/this.projectInfo.Delaydays)*100).toFixed(1);
+//               this.delayActionsOfEmps.push({ name:emp.Responsible, emp_no:emp.Team_Res, delayActions:delayActionsOfEmp, percentInDelay:(+percentInDelay)})
+//               this.delayActionsOfEmps=this.delayActionsOfEmps.sort((a,b)=>b.delayActions[0].Delaydays-a.delayActions[0].Delaydays);
+//             }
+//           });
+
+//       this.prjResHasActions=this.filteremployee.some((ob)=>ob.Team_Res.trim()==this.projectInfo.ResponsibleEmpNo.trim());  // whether project responsible has actions in the project or not.
+//      }
+
+//      if(this.projectActionInfo){
+//       this.actionsWith0hrs=[];   // must be empty before calculation.
+//       this.selfAssignedActns=[];  // must be empty before calculation.
+//       this.pendingActns4Aprvls=[];   // must be empty before calculation.
+//       this.actnsWithoutProgress=[];   // must be empty before calculation.
+//       this.myDuePrjActions=new Map();  // must be empty before calculation.
+//       this.complAprvlsActions=[];  // must be empty before calculation
+//       this.complAprvlsActionsCount=0;  // must be empty before calculation
+
+//      const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+
+//      this.projectActionInfo.forEach((actn)=>{
+//             if(Number.parseInt(actn.AllocatedHours)===0){
+//               const temp=this.actionsWith0hrs.find(item=>item.name===actn.Responsible);
+//               if(temp)
+//                   temp.holdactions+=1;
+//               else
+//               this.actionsWith0hrs.push({ name:actn.Responsible, holdactions:1 });
+//             }
+
+//             if(actn.Project_Owner==actn.Team_Res){
+//               const temp=this.selfAssignedActns.find(item=>item.name===actn.Responsible);
+//               if(temp)
+//               temp.selfactns+=1;
+//               else
+//               this.selfAssignedActns.push({name:actn.Responsible, selfactns:1,empno:actn.Team_Res});
+//             }
+
+//             if(['Under Approval','Forward Under Approval'].includes(actn.Status)){
+//                   const temp=this.pendingActns4Aprvls.find(item=>item.empno==actn.Team_Res);
+//                   if(temp)
+//                   temp.totalApprovals+=1;
+//                   else
+//                   this.pendingActns4Aprvls.push({ name:actn.Responsible, empno:actn.Team_Res, totalApprovals:1   });
+//             }
+
+
+//             const actn_sdate=new Date(actn.StartDate); actn_sdate.setHours(0,0,0,0);
+//             const no_progessOnActn=(['Completed','Cancelled'].includes(actn.Status)==false&&cr_date>actn_sdate&&actn.TotalHours==0);
+//             if(no_progessOnActn){
+//               this.actnsWithoutProgress.push(actn.Project_Code);
+//             }
+
+//             if((actn.AssignedbyEmpno==this.Current_user_ID)&&(actn.AssignedbyEmpno!=actn.Team_Res)){
+//               this.actionsAssignedByMe+=1;
+//             }
+
+
+//             // user action due 
+//             let isDue:boolean=false;
+//             let dueIndays:number=0;
+//             if(actn.Team_Res==this.Current_user_ID&&(['Delay','InProcess'].includes(actn.Status))){
+//               const actnDeadline=new Date(actn.EndDate); actnDeadline.setHours(0,0,0,0);   
+//               dueIndays=moment(actnDeadline).diff(cr_date,'days');
+//               isDue=(dueIndays==0||dueIndays==1);
+//             }
+//             if(isDue){
+//                this.myDuePrjActions.set(actn.Project_Code,{...actn,dueIndays:dueIndays});
+//             }      
+//            //
+
+          
+//            // completion approvals actions count
+//            if(actn.Status=='Completion Under Approval'){
+//                this.complAprvlsActions.push({...actn});
+//            }
+//            //
+
+
+//      });
+//      this.totalActionsWith0hrs=this.projectActionInfo.filter(item=>Number.parseInt(item.AllocatedHours)===0).length;
+//      this.totalSelfAssignedActns=this.projectActionInfo.filter(item=>item.Project_Owner==item.Team_Res).length;
+//      this.totalPActns4Aprvls=this.projectActionInfo.filter(item=>['Under Approval','Forward Under Approval'].includes(item.Status)).length;
+//      this.complAprvlsActionsCount=this.complAprvlsActions.length;
+//      }
+
+  
+
+//       console.log("delay-", this.delayActionsOfEmps)
+//     this.route.queryParamMap.subscribe((qparams)=>{
+//         const actionCode=qparams.get('actionCode');
+//         if(actionCode)
+//         {   // if action Code is additional along with the project code then redirect to that action.
+//           const Action=this.projectActionInfo.find((action)=>action.Project_Code===actionCode);
+//           if(Action)
+//              {
+//                 this.showActionDetails(Action.IndexId-1);
+//                 this.prostate(Action.proState);
+//                 setTimeout(()=>{
+//                   document.getElementById('actionCode:'+this.projectActionInfo[Action.IndexId-1].Project_Code).focus();
+//                   window.scrollTo(0,0);
+//                 },2000);
+//             }
+//           else
+//            this.showActionDetails(undefined);
+//         }
+//         else
+//           this.showActionDetails(undefined);  // opens the main project.
+//     })
+
+//     if(actionIndex!==undefined){
+//       this.showActionDetails(actionIndex);
+//       this.prostate(this.projectActionInfo[actionIndex].proState);
+//     }
+
+//     setTimeout(()=>{
+//       this.drawStatisticsNew();
+//     },3000)
+
+
+
+//     if(this.projectInfo&&this.projectInfo.Status=='Completed'){
+//          this.prjRunFor=Math.abs(moment(this.projectInfo.StartDate).diff(moment(this.projectInfo.CD),'days'))+1;
+//          this.completionOffset=moment(this.projectInfo.CD).diff(moment(this.projectInfo.EndDate),'days');
+//          console.log('completionOffset value:',this.completionOffset);
+//     }
+
+    
+    
+//     if(this.projectInfo&&this.projectInfo.Status=='Completion Under Approval'&&this.projectInfo.AuditStatus=='Audit Pending'){
+
+//       this.auditPendingSince=this.calculateDateDiff(this.todayDate,this.projectInfo.requestDate); // number of days since when project is pending at auditor.
+//     }
+
+
+
+//     if(this.allUsers1){
+//       this.allUsers2=this.allUsers1.filter((usr:any)=>(![this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo].includes(usr.Emp_No)));
+//     }
+
+
+//     if(this.projectInfo.NewOwner==this.Current_user_ID){
+//        const usr_ak=localStorage.getItem('userAcknowledgements');
+//        if(usr_ak){
+//             const arr=JSON.parse(usr_ak);
+//             const r=arr.find((ob)=>ob['userNewOwner-'+this.projectInfo.Project_Code]==true);
+//             this.isNewOwnerOk=r?false:true;
+//        }
+//        else
+//        this.isNewOwnerOk=true;    // popup visible
+//     }
+
+
+
+//    // when project has no activity done even after start date.   calculation here.
+//     const prjs_date=new Date(this.projectInfo.StartDate); prjs_date.setHours(0,0,0,0);
+//     const cr_date=new Date(); cr_date.setHours(0,0,0,0);
+//     this.noActvySinceCreation=(['Completed','Cancelled'].includes(this.projectInfo.Status)==false&&cr_date>prjs_date&&this.projectInfo.TotalHours==0);
+//     if(this.noActvySinceCreation){
+//       this.noActvy4NDays=moment(cr_date).diff(prjs_date,'days');
+//     }
+//     // when project has no activity done even after start date.
+
+
+//  // is project start date editable or not?
+//    this.isPrjStartDateEditable=prjs_date>=cr_date;
+//  // is project start date editable or not?
+
+
+
+// // determine whether current user can create standard task / routine task type projects or not.
+//       if(this.projectInfo.tasks_json){
+//       this.Responsible_user_Info=JSON.parse(this.projectInfo.tasks_json)[0];
+//       // this.Responsible_user_Info.Routine_Total_Hours=18;    
+//       if(['003','008'].includes(this.projectInfo.Project_Block)){
+
+//         if(this.Responsible_user_Info.Position=='Team Member'){
+//             this.maxAllocHrsByRole=+(this.perWeekAllocHrs*this.TEAM_MEMBER_ALLOC_RATIO).toFixed(2);    //48*0.25=12 hrs maximum user can give to the new project.
+//         }
+//         else if(this.Responsible_user_Info.Position=='Dept. Head'){
+//             this.maxAllocHrsByRole=+(this.perWeekAllocHrs*this.DEPT_HEAD_ALLOC_RATIO).toFixed(2);    //48*0.50=24 hrs maximum user can give to the new project.
+//         }
+//         else if(this.Responsible_user_Info.Position=='Company Head'){
+//             this.maxAllocHrsByRole=+(this.perWeekAllocHrs*this.COMPANY_HEAD_ALLOC_RATIO).toFixed(2);  //48*0.70=33.6 hrs maximum user can give to the new project
+//         }
+
+//         this.isStandardTasksLimitExhausted=this.Responsible_user_Info.Standard_Total_Hours>=this.maxAllocHrsByRole; 
+//         this.isRoutineTasksLimitExhausted=this.Responsible_user_Info.Routine_Total_Hours>=this.maxAllocHrsByRole;
+
+//         // calculate "maxAllocHrsToProject" (how much allocated hrs can be given to this project)
+
+//       const h=Number.parseInt(this.projectInfo.StandardAllocatedHours.split(':')[0]);
+//       const m=Number.parseInt(this.projectInfo.StandardAllocatedHours.split(':')[1]);
+//       const palhrVal=h+(m/60);
+
+//       this.maxAllocHrsToProject=0;  // clear old value if present.
+//       let _remaininghrs=0;
+     
+//       if(this.projectInfo.Project_Block=='003'){
+//           _remaininghrs=this.maxAllocHrsByRole-this.Responsible_user_Info.Standard_Total_Hours;
+//       }else if(this.projectInfo.Project_Block=='008'){
+//           _remaininghrs=this.maxAllocHrsByRole-this.Responsible_user_Info.Routine_Total_Hours;
+//       }
+
+//       this.maxAllocHrsToProject=palhrVal+_remaininghrs;
+      
+    
+
+//       // if(this.maxAllocHrsToProject<0){   // eg: 32/12  or 23/12 or 44/12 .....
+//       //    this.maxAllocHrsToProject=palhrVal;
+//       // }
+
+//       }
+//       }
+  
+// //
+
+
+//    // Whenever we fetch project details we will also fetch people who added timeline on this project and how much.
+//      this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, "3", this.Current_user_ID).subscribe((res: any) => {
+//               const tml = JSON.parse(res[0].Timeline_List);   
+//               console.log("timeline data here11111:", tml);
+//               this.darOfEmpl=tml.map((ob)=>{
+//                   const empid=ob.JsonData?(JSON.parse(ob.JsonData)?.[0]?.Emp_No):undefined;
+//                   return { member:ob.Value, totalTimeline:(+ob.TotalDuration).toFixed(2), emp_no:empid}
+//               });
+//               this.darOfEmpl.sort((a,b)=>b.totalTimeline-a.totalTimeline);  // darOfEmpl is used in bar chart tooltip.
+
+//               const tempobj={};
+//               tml.forEach(ob=>{
+//                   const empid=ob.JsonData?(JSON.parse(ob.JsonData)?.[0]?.Emp_No):undefined;
+//                   if(empid)
+//                   tempobj[empid]={ member:ob.Value, totalTimeline:(+ob.TotalDuration).toFixed(2) };
+//               });
+//               this.darOfEmployees={...tempobj};  // darOfEmployees is used in people of project sidebar.
+
+              
+      
+//       // If project is overutilized. now figuring out who are the people who worked more than their max allocation in this project.
+//       if(['001','002','011'].includes(this.projectInfo.Project_Block)&&(this.projectInfo.TotalHours>this.projectInfo.AllocatedHours))
+//       {   
+//         const Emp_tmlist = JSON.parse(res[0].Timeline_List);   // list of people who worked on the project. or added timeline.
+//         const Emp_Overused:any=[];   // list of people who worked more than their max allocated hrs value.
+//         const tmByOtherEmp:any=[];   // list of other people who worked on this project. having no actions but added timeline.
+
+//         let Emp_hrsAlloc:any=[];  // list of planned allocated hrs set to each member.
+       
+//         if(this.projectActionInfo&&this.projectActionInfo.length>0){  
+//           Emp_hrsAlloc=this.filteremployee.map((Emp)=>{    
+//                 const EmpActns=this.getFilteredPrjActions(['All'],[Emp.Team_Res]);
+//                 const EmpAlhrs=EmpActns.reduce((sum,actnob)=>{ return sum+(+actnob.AllocatedHours);  },0);
+//                 return { empName:Emp.Responsible, empNo:Emp.Team_Res, maxAllocHrs:EmpAlhrs  };
+//           });
+//         }
+
+//         Emp_tmlist.forEach((empobj)=>{
+//         const e_wrked=(+empobj.TotalDuration);   
+//         const jsondata=JSON.parse(empobj.JsonData);
+//         const _emp=Emp_hrsAlloc.find((ob)=>ob.empNo==jsondata[0].Emp_No);
+       
+
+//            if(_emp){
+//             // emp who has action and added timeline on it.
+
+//             const overutilizationActns=this.projectActionInfo.filter((actionobj)=>{ 
+//                   return actionobj.Team_Res==jsondata[0].Emp_No&&(actionobj.TotalHours>+actionobj.AllocatedHours);
+//             });
+
+//              if (e_wrked > _emp.maxAllocHrs) {
+               
+//                const empObj = {
+//                  empName: empobj.Value,
+//                  empNo: jsondata[0].Emp_No,
+//                  maxAllocHrs: _emp.maxAllocHrs,
+//                  usedAllocHrs: e_wrked,
+//                  actions:overutilizationActns.map(p=>p.Project_Code)
+//                };
+
+//                Emp_Overused.push(empObj);
+//              }
+//            }
+//            else{
+//               // emp who added timeline on project.   eg: resp, owner.  
+//              const empObj = {
+//                empName: empobj.Value,
+//                empNo:jsondata[0].Emp_No,
+//                maxAllocHrs: null,
+//                usedAllocHrs: e_wrked,
+//                actions:null
+//              };
+
+//              tmByOtherEmp.push(empObj); 
+//            }
+          
+//         });
+
+//       console.log('Emp_Overused',Emp_Overused);
+//       console.log('tmByOtherEmp',tmByOtherEmp);
+//       this.projectOverutilizedByEmp=[...Emp_Overused,...tmByOtherEmp];
+//       this.projectOverutilizedByEmp.sort((a,b)=>b.usedAllocHrs-a.usedAllocHrs);
+
+//       }
+
+//      });
+
+//     /**  Useful notes : Project overutilization
+//      *  if project has actions then PrjAlhr=sum of all actions alloc hrs.
+//      *  if project has actions then it means PrjAlhr is distributed on peoples. 
+//      */
+//    //
+
+    
+
+    
+    
+
+
+
+//     });  
+//   }
+
+
+
+ getProjectDetails(prjCode: string,options?:{ navigateToActionIndex?:number,  navigateToActionCode?:string,  notifyOnOwnerChange?:boolean   })
+ {   
+     this.errorFetchingProjectInfo=false;  // whether there is any internal server error while fetching project details of the project.
+     this.projectMoreDetailsService.getProjectMoreDetails(prjCode).subscribe(res=>{  debugger
+      
       try{
-      this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];      console.log('projectInfo:',this.projectInfo);
-      }catch(er){
+        this.projectInfo = JSON.parse(res[0].ProjectInfo_Json)[0];   console.log('projectInfo:',this.projectInfo);
+      }
+      catch(er){  
         console.log('project Info fetching failure:',er);
-        this.errorFetchingProjectInfo=true;
+        this.errorFetchingProjectInfo=true; 
       }
 
+  if(this.errorFetchingProjectInfo==false){   // when there is no error while fetching project info.
+
+// all DEPENDENT ON projectInfo  (DATA BINDING)  start
 
      if(this.projectInfo.isProject==false&&this.projectInfo.isTask==true){
          this.task_assign_json=JSON.parse(this.projectInfo.assign_json);
@@ -1014,8 +1452,13 @@ showUserAccessRequests(){
       console.log("projectInfo:", this.projectInfo, "projectActionInfossssssssssssssss:", this.projectActionInfo)
       if(this.projectActionInfo && this.projectActionInfo.length>0){
         this.projectActionInfo.sort((a,b)=>a.IndexId-b.IndexId);  // Sorting Project Actions Info  * important
-        this.onFilterConfigChanged({filterBy:['All'],sortBy:['All']});  // by default show all actions.
-        this.filterConfigChanged=false;   
+        if(this.filterConfigChanged){
+             this.onFilterConfigChanged({filterBy:this.filterConfig.filterby,sortBy:this.filterConfig.sortby});  // by default show all actions.
+        }else{
+              this.onFilterConfigChanged({filterBy:['All'],sortBy:['All']});  // by default show all actions.
+              this.filterConfigChanged=false;
+        }
+        
         this.filterstatus = JSON.parse(this.projectActionInfo[0].filterstatus);
         this.filteremployee = JSON.parse(this.projectActionInfo[0].filteremployee);
         console.log('Now After Sorting:',this.filteremployee);
@@ -1122,70 +1565,23 @@ showUserAccessRequests(){
      this.totalPActns4Aprvls=this.projectActionInfo.filter(item=>['Under Approval','Forward Under Approval'].includes(item.Status)).length;
      this.complAprvlsActionsCount=this.complAprvlsActions.length;
      }
-
-      console.log("delay-", this.delayActionsOfEmps)
-    this.route.queryParamMap.subscribe((qparams)=>{
-        const actionCode=qparams.get('actionCode');
-        if(actionCode)
-        {   // if action Code is additional along with the project code then redirect to that action.
-          const Action=this.projectActionInfo.find((action)=>action.Project_Code===actionCode);
-          if(Action)
-             {
-                this.showActionDetails(Action.IndexId-1);
-                this.prostate(Action.proState);
-                setTimeout(()=>{
-                  document.getElementById('actionCode:'+this.projectActionInfo[Action.IndexId-1].Project_Code).focus();
-                  window.scrollTo(0,0);
-                },2000);
-            }
-          else
-           this.showActionDetails(undefined);
-        }
-        else
-          this.showActionDetails(undefined);  // opens the main project.
-    })
-    if(actionIndex!==undefined){
-      this.showActionDetails(actionIndex);
-    }
-
-    setTimeout(()=>{
-      this.drawStatisticsNew();
-    },3000)
-
-
-
-    if(this.projectInfo&&this.projectInfo.Status=='Completed'){
+  
+     if(this.projectInfo&&this.projectInfo.Status=='Completed'){
          this.prjRunFor=Math.abs(moment(this.projectInfo.StartDate).diff(moment(this.projectInfo.CD),'days'))+1;
          this.completionOffset=moment(this.projectInfo.CD).diff(moment(this.projectInfo.EndDate),'days');
          console.log('completionOffset value:',this.completionOffset);
-    }
+     }
 
-    
-    
-    if(this.projectInfo&&this.projectInfo.Status=='Completion Under Approval'&&this.projectInfo.AuditStatus=='Audit Pending'){
-
+     if(this.projectInfo&&this.projectInfo.Status=='Completion Under Approval'&&this.projectInfo.AuditStatus=='Audit Pending'){
       this.auditPendingSince=this.calculateDateDiff(this.todayDate,this.projectInfo.requestDate); // number of days since when project is pending at auditor.
-    }
+     }
 
-
-
-    if(this.allUsers1){
+     if(this.allUsers1){
       this.allUsers2=this.allUsers1.filter((usr:any)=>(![this.projectInfo.OwnerEmpNo,this.projectInfo.ResponsibleEmpNo].includes(usr.Emp_No)));
-    }
+     }
 
 
-    if(this.projectInfo.NewOwner==this.Current_user_ID){
-       const usr_ak=localStorage.getItem('userAcknowledgements');
-       if(usr_ak){
-            const arr=JSON.parse(usr_ak);
-            const r=arr.find((ob)=>ob['userNewOwner-'+this.projectInfo.Project_Code]==true);
-            this.isNewOwnerOk=r?false:true;
-       }
-       else
-       this.isNewOwnerOk=true;    // popup visible
-    }
-
-
+     
 
    // when project has no activity done even after start date.   calculation here.
     const prjs_date=new Date(this.projectInfo.StartDate); prjs_date.setHours(0,0,0,0);
@@ -1197,13 +1593,13 @@ showUserAccessRequests(){
     // when project has no activity done even after start date.
 
 
- // is project start date editable or not?
-   this.isPrjStartDateEditable=prjs_date>=cr_date;
- // is project start date editable or not?
+   // is project start date editable or not?
+     this.isPrjStartDateEditable=prjs_date>=cr_date;
+   // is project start date editable or not?
 
 
 
-// determine whether current user can create standard task / routine task type projects or not.
+   // determine whether current user can create standard task / routine task type projects or not.
       if(this.projectInfo.tasks_json){
       this.Responsible_user_Info=JSON.parse(this.projectInfo.tasks_json)[0];
       // this.Responsible_user_Info.Routine_Total_Hours=18;    
@@ -1247,10 +1643,9 @@ showUserAccessRequests(){
 
       }
       }
-  
-//
+   //
 
-
+   
    // Whenever we fetch project details we will also fetch people who added timeline on this project and how much.
      this.projectMoreDetailsService.getProjectTimeLine(this.projectInfo.Project_Code, "3", this.Current_user_ID).subscribe((res: any) => {
               const tml = JSON.parse(res[0].Timeline_List);   
@@ -1344,15 +1739,72 @@ showUserAccessRequests(){
      */
    //
 
-    
+   // draw bar charts and pie charts of the project.
+    setTimeout(()=>{
+      this.drawStatisticsNew();
+    },3000)
+  //
 
-    
-    
+
+ // all DEPENDENT ON projectInfo  (DATA BINDING)  end
 
 
+// Dependent on projectinfo but runs conditionally.  start
 
-    });
+   // to notify current user if he is the new owner of the project.  // when project is transfer in completion approval state.
+   if(options?.notifyOnOwnerChange&&this.projectInfo.NewOwner==this.Current_user_ID){
+      const usr_ak=localStorage.getItem('userAcknowledgements');
+       if(usr_ak){
+            const arr=JSON.parse(usr_ak);
+            const r=arr.find((ob)=>ob['userNewOwner-'+this.projectInfo.Project_Code]==true);
+            this.isNewOwnerOk=r?false:true;
+       }
+       else
+       this.isNewOwnerOk=true;    // popup visible
+    }
+   // to notify current user if he is the new owner of the project.  // when project is transfer in completion approval state. 
+       
+    // automatic navigate/open specified action by using Index after fetch.  start
+    if(options?.navigateToActionIndex!=undefined){
+      const action_index=options?.navigateToActionIndex;
+      this.showActionDetails(action_index);
+      this.prostate(this.projectActionInfo[action_index].proState);
+    }  
+    // automatic navigate/open specified action by using Index after fetch.  end
+
+
+   // automatic navigate/open specified action by using action code after fetch.  start
+   if(options?.navigateToActionCode){
+        const actionCode=options.navigateToActionCode;
+        const Action=this.projectActionInfo.find((action)=>action.Project_Code===actionCode);
+        if(Action){
+                
+                setTimeout(()=>{ 
+                  this.showActionDetails(Action.IndexId-1);
+                  this.prostate(Action.proState);
+                  const action_item=document.getElementById('actionCode:'+this.projectActionInfo[Action.IndexId-1].Project_Code);
+                  if(action_item){
+                     action_item?.scrollIntoView();
+                  }
+                  
+                  window.scrollTo(0,0);
+                },2000);
+        }
+   }
+   //  automatic navigate/open specified action by using action code after fetch.  end
+
+
+// Dependent on projectinfo but runs conditionally.  end
   }
+
+     });
+ }
+
+
+
+
+
+
 
 
   onGotItBtnClicked(){
@@ -1764,10 +2216,11 @@ getRelativeDateString(date: Date): string {
 
   ActionActivity_List:any=[];
   ActionfirstFiveRecords: any[] = [];
+  ActionActivitySubscription:any;
   GetActionActivityDetails(code) {
     this.action_deadlineExtendlist=[];  // clear prev data.
     this.activitiesLoading=true; // start the loading.
-    this.service.NewActivityService(code).subscribe(
+    this.ActionActivitySubscription=this.service.NewActivityService(code).subscribe(
       (data) => {
 
         if (data !== null && data !== undefined) {
@@ -1839,8 +2292,9 @@ getRelativeDateString(date: Date): string {
 
 
 
-
+  
   actionCost: any = '';
+  GetRACISNonRACISSubscription:any;
 
   showProjectDetails() {
     $(document).ready(() => this.drawStatisticsNew());
@@ -1848,18 +2302,20 @@ getRelativeDateString(date: Date): string {
     this.getapprovalStats();
     this.clearFilterConfigs();
   }
-
-  showActionDetails(index: number | undefined) {
+  
+  showActionDetails(index: number | undefined) { debugger
     this.currentActionView = index;   // if index is number: an action is selected.  if index is undefined : project view is selected.
     if(index!=undefined){
 
       this.requestType = null;
       this.actionCost = index>-1 && this.projectActionInfo[this.currentActionView].Project_Cost;
+
+      if(this.ActionActivitySubscription){ this.ActionActivitySubscription.unsubscribe();   }
       this.GetActionActivityDetails(this.projectActionInfo[index].Project_Code);
 
+      if(this.GetApprovalSubscription){  this.GetApprovalSubscription.unsubscribe();  }
       if (this.projectActionInfo[index].Status === "Under Approval" ||this.projectActionInfo[index].Status === "Completion Under Approval" || this.projectActionInfo[index].Status === "Forward Under Approval"||this.projectActionInfo[index].Status === "Cancellation Under Approval"){
         this.GetApproval(this.projectActionInfo[index].Project_Code);
-
       }
       else if(this.projectActionInfo[this.currentActionView].Status=='New Project Rejected'){
         this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
@@ -1883,7 +2339,8 @@ getRelativeDateString(date: Date): string {
 
 
       // action owner drpdwn and action resp drpdwn.
-      this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectActionInfo[index].Project_Code,this.Current_user_ID).subscribe(
+      if(this.GetRACISNonRACISSubscription){ this.GetRACISNonRACISSubscription.unsubscribe();   }
+      this.GetRACISNonRACISSubscription=this.service.GetRACISandNonRACISEmployeesforMoredetails(this.projectActionInfo[index].Project_Code,this.Current_user_ID).subscribe(
         (data) => {
           console.log(data, "action racis");
           this.actionowner_dropdown=(JSON.parse(data[0]['owner_dropdown']));
@@ -1893,6 +2350,7 @@ getRelativeDateString(date: Date): string {
 
       //calculate action completion offset value if action is completed.
       if(this.projectActionInfo[index].Status=='Completed'){
+        this.actnRunFor=Math.abs(moment(this.projectActionInfo[index].StartDate).diff(moment(this.projectActionInfo[index].CD),'days'))+1;
         this.action_completionOffset=moment(this.projectActionInfo[index].CD).diff(moment(this.projectActionInfo[index].EndDate),'days');
         console.log('action_completionOffset value:',this.action_completionOffset);
        }
@@ -3294,6 +3752,85 @@ approvalSubmitting:boolean=false;
   }
 
 
+  submitActionApproval(){
+     console.log('passing single approvaljson:',this.singleapporval_json);
+
+
+     if(this.selectedType == '1'){
+        if (this.comments == '' || this.comments == null) {
+          this.singleapporval_json.forEach(element => {
+            element.Remarks = 'Accepted';
+          });
+        }
+        else {
+          this.singleapporval_json.forEach(element => {
+            element.Remarks = this.comments;
+          });
+        }
+        this.approvalSubmitting=true;
+      this.approvalservice.NewUpdateSingleAcceptApprovalsService(this.singleapporval_json).
+        subscribe((data) => {
+          this.Close_Approval();
+          this.removeCommit();
+          this.approvalSubmitting=false;
+          this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Approved successfully by - " + this._fullname, "Success");
+          this.getapprovalStats();
+          this.GetApproval(1);
+          let index=this.currentActionView;   // reopen the action data also.
+          // if user has approve the action cancellation approval then it will be removed from the action list. So we must switch to another action view.  (just for good user experience)
+         
+         if(this.requestType=='Project Cancel'){
+               if(index==this.projectActionInfo.length-1){ 
+                 index-=1; 
+                 if(index==-1)
+                 {
+                    index=undefined; 
+                    this.currentActionView=undefined;
+                 }
+               }
+         }
+         //
+
+          this.getProjectDetails(this.URL_ProjectCode,{navigateToActionIndex:index});
+         
+        });
+     }
+     else if(this.selectedType == '3'){
+         // on reject btn click
+        if(this.rejectType&&(this.comments&&this.comments.trim()!=''))
+        {  // when both reject type and comments are provided.
+          this.singleapporval_json.forEach(element => {
+            element.Remarks = this.comments;
+            element.RejectType = this.rejectType;
+          });
+          this.approvalSubmitting=true;
+          this.approvalservice.NewUpdateSingleRejectApprovalsService(this.singleapporval_json).
+            subscribe((data) => {
+              // if success
+              this.Close_Approval();
+              this.removeCommit();
+              this.approvalSubmitting=false;
+              this.notifyService.showSuccess(this.singleapporval_json[0].Type+" Rejected successfully by - " + this._fullname, "Success");
+              this.getapprovalStats();
+              this.getProjectDetails(this.URL_ProjectCode);
+              this.getRejectType();
+
+          });
+        }
+        else
+        {  // when mandatory field are not provided.
+          this.notProvided=true;
+        }
+        // on reject btn click
+     }
+     else if(this.selectedType == '4'){
+       this.notifyService.showError("Not Approved - Development under maintainance", "Failed");
+     }
+  }
+
+
+
+
   clickonselect(com) {
     if (this.comments == null) {
       this.comments = com;
@@ -3509,8 +4046,8 @@ completeAction(){
 
   this.processingActnComplete=true;   // action completion process started. 
   this.service._UpdateSubtaskByProjectCodeCore(fd)
-    .subscribe((event: HttpEvent<any>) => {
-
+    .subscribe((event: HttpEvent<any>) => {   
+  
           switch (event.type) {
             case HttpEventType.Sent:console.log('Request has been made!');break;
             case HttpEventType.ResponseHeader:console.log('Response header has been received!');break;
@@ -3519,7 +4056,7 @@ completeAction(){
               console.log(actnprogress, "progress");
               if (actnprogress == 100) console.log('progress completed');
               break;
-            case HttpEventType.Response:{
+            case HttpEventType.Response:{     
               var myJSON = JSON.stringify(event);
               this._Message = (JSON.parse(myJSON).body).message;
               if(this._Message==='Success'){
@@ -3530,7 +4067,7 @@ completeAction(){
                   this._inputAttachments = "";
                   this.selectedFile = null;
                   this.invalidFileSelected=false;
-                  this.getProjectDetails(this.URL_ProjectCode);
+                  this.getProjectDetails(this.URL_ProjectCode,{navigateToActionIndex:this.currentActionView}); 
                   this.calculateProjectActions();     // recalculate the project actions.
                   this.closeActCompSideBar();   // close action completion sidebar.
               }
@@ -3610,7 +4147,7 @@ completeActionWithAttachment(){
                       this._inputAttachments = "";
                       this.selectedFile = null;
                       this.invalidFileSelected=false;
-                      this.getProjectDetails(this.URL_ProjectCode);
+                      this.getProjectDetails(this.URL_ProjectCode,{navigateToActionIndex:this.currentActionView});
                       this.calculateProjectActions();     // recalculate the project actions.
                       this.closeActCompSideBar();   // close action completion sidebar.
                   }
@@ -3836,7 +4373,7 @@ completeBothActionAndProject(){
    //4. after project and action completion.
    const afterActionAndProjectCompleted=()=>{
     if(isActionCompleted&&isProjectCompleted)
-    {
+    {   
       this.selectedFile = null;
       this._inputAttachments = '';
       this._remarks = '';
@@ -3850,7 +4387,8 @@ completeBothActionAndProject(){
       this.getProjectDetails(this.URL_ProjectCode);
       this.getAttachments(1);
       this.calculateProjectActions();
-      this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
+      this.currentActionView=undefined;  // redirect focus to main project.
+      // this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
     }
    }
 
@@ -4486,7 +5024,7 @@ if(this.End_Date&&invaildPrjEnddate){
       this.approvalObj.json = jsonvalue;
       this.approvalObj.Remarks = this._remarks;
       this.approvalObj.isApproval = val;
-
+      
       this.approvalservice.NewUpdateNewProjectDetails(this.approvalObj).subscribe((data) => {   
         console.log(data['message'], "edit response");
         if (data['message'] == '1') {
@@ -4890,7 +5428,8 @@ debugger
           this.notifyService.showError("Selected action owner cannot be updated", "Not updated");
         }
 
-        this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+        // this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+        this.getProjectDetails(this.URL_ProjectCode,{navigateToActionIndex:this.currentActionView});
         this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
         this.closeInfo();
       });
@@ -6208,6 +6747,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
 
 
   fetchingActionApproval:boolean=false;
+  GetApprovalSubscription:any;
   GetApproval(code) {  
 
     this.requestDetails=[];  // initalize/ clear prev data.
@@ -6215,7 +6755,7 @@ $('#acts-attachments-tab-btn').removeClass('active');
     this.fetchingActionApproval=true;   // getting approval on the action if present start.
     this.approvalObj = new ApprovalDTO();
     this.approvalObj.Project_Code = code;
-    this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {  
+    this.GetApprovalSubscription=this.approvalservice.GetApprovalStatus(this.approvalObj).subscribe((data) => {   debugger
       this.fetchingActionApproval=false;   // fetching approval on the action if present end.
       this.requestDetails = data as [];
       console.log(data,'jjj----------->')
@@ -8688,7 +9228,8 @@ holdcontinue(Pcode:any){
 
            this.notifyService.showSuccess(this._Message + " by " + this._fullname, "Success");
            this.closePrjHoldSideBar();
-           this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+          //  this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+           this.getProjectDetails(this.URL_ProjectCode,{navigateToActionIndex:this.currentActionView});
            this.getholdate();
            this.getRejectType();
            this.updatePortfolioPage();
@@ -8873,7 +9414,8 @@ holdcontinue(Pcode:any){
           this._Message = (data['message']);
           if (this._Message == '1') {
             this.notifyService.showSuccess("Action released by " + this._fullname, "Success");
-            this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+            // this.getProjectDetails(this.URL_ProjectCode,this.currentActionView);
+            this.getProjectDetails(this.URL_ProjectCode,{navigateToActionIndex:this.currentActionView});
             this.GetActionActivityDetails(this.projectActionInfo[this.currentActionView].Project_Code);
           }
           else if (this._Message == '2' || this._Message == '0') {
@@ -9768,7 +10310,7 @@ getActionRejectType(actioncode:any) {
 
 isReleasingAction:boolean=false;
 newPrjreleasing:boolean=false;
-releasenewProject(){
+releasenewProject(){  debugger
 
 
   this.isReleasingAction=!(this.currentActionView===undefined||this.currentActionView===null);
@@ -9788,9 +10330,9 @@ releasenewProject(){
       this.approvalObj.Emp_no = this.Current_user_ID;
       this.approvalObj.Remarks = this.hold_remarks;
       this.newPrjreleasing=true;
-      this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
+      this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {  debugger
         this.newPrjreleasing=false;
-        this.closeNewPrjReleaseSideBar();
+       
         this._Message = (data['message']);
         if (this._Message == '1') {
           if(this.isReleasingAction)
@@ -9798,7 +10340,7 @@ releasenewProject(){
           else
             this.notifyService.showSuccess("New Project reject release request sent to the project owner.", "Success");
 
-          this.getProjectDetails(this.URL_ProjectCode);
+          this.getProjectDetails(this.URL_ProjectCode,this.isReleasingAction?({ navigateToActionIndex:this.currentActionView}):undefined);
           this.getRejectType();
           if(this.isReleasingAction)this.getActionRejectType(this.projectActionInfo[this.currentActionView].Project_Code);
           this.getapproval_actiondetails();
@@ -9816,6 +10358,7 @@ releasenewProject(){
         else if (this._Message == '2' || this._Message == '0') {
           this.notifyService.showError(`${this.isReleasingAction?'Action':'Project'} release failed`, "Failed");
         }
+        this.closeNewPrjReleaseSideBar();
       });
     // this.Clear_Feilds();
     console.log(this.approvalObj,"cancel")
@@ -10167,15 +10710,33 @@ cancelAction(index) {
         this.approvalObj.Remarks = this.hold_remarks;
 
         this.approvalservice.InsertUpdateProjectCancelReleaseService(this.approvalObj).subscribe((data) => {
-
+    
           this.closePrjCancelSb();
           this._Message = (data['message']);
           if (this._Message == '1') {
             this.notifyService.showSuccess("Action cancelled by " + this._fullname, "Success");
-            this.getProjectDetails(this.URL_ProjectCode);
+
+            // when action is cancelled by the project owner or by the action owner, It will be removed from the actions list. and hence we must switch view to another next action.  (just for good user experience)
+            if(this.Current_user_ID==this.projectInfo.OwnerEmpNo||this.Current_user_ID==this.projectActionInfo[index].Project_Owner)
+            {
+               if(index==this.projectActionInfo.length-1){ 
+                 index-=1; 
+                 if(index==-1)
+                 {
+                    index=undefined; 
+                    this.currentActionView=undefined;
+                 }
+               }
+            }
+            //
+            
+            this.getProjectDetails(this.URL_ProjectCode,{navigateToActionIndex:index});
           }
           else if (this._Message == '2' || this._Message == '0') {
             this.notifyService.showError("Action cancel failed", "Failed");
+          }
+          else if(this._Message=='Not Authorized'){
+             this.notifyService.showError('You are not allowed to cancel this action.', "Failed");
           }
         });
 

@@ -8405,11 +8405,17 @@ projectmodal(modaltype:'project'|'portfolio'|'S Mail'|'participant'){
   }
   FilteredResults:any=[];
 
-  onInputSearch(inputText:any){
+  onInputSearch(inputText:any){  
     let keyname;
     let arrtype;
     let selectedinto;
     let property_name;
+
+  let _Emp;
+  if(this.isFilteredOn){
+    _Emp=this._EmployeeListForDropdown.find(_emp=>_emp.Emp_No===this.basedOnFilter.byuser);
+  }
+
     if(this.projectmodaltype=='participant')
      {
        keyname='DisplayName';
@@ -8432,15 +8438,53 @@ projectmodal(modaltype:'project'|'portfolio'|'S Mail'|'participant'){
       property_name='MailId';
     }
 
-    const result=arrtype.filter(item=>{
-     
-      const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
+  
+    const result=arrtype.filter((item)=>{ 
       let nameMatched:boolean=false;
-      if(unselected)
-      nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim())
+      let filterMatched:boolean=false;
 
-      return nameMatched;
+
+// by search text
+    const unselected:boolean=!(this[selectedinto]&&this[selectedinto].includes(item[property_name]));
+    if(unselected)
+    nameMatched=item[keyname].toLowerCase().trim().includes(inputText.toLowerCase().trim());
+
+// by filter
+    if(nameMatched&&this.isFilteredOn){  
+      if(this.projectmodaltype=='S Mail'){
+        // 'item' act as a memo object here
+        let hasMemo:boolean=false;
+        hasMemo=(!this.basedOnFilter.byuser)||(item.DisplayName.toLowerCase().trim()===_Emp.TM_DisplayName.toLowerCase().trim());
+    
+        let isSelected:boolean=false;
+        isSelected=this.SelectDms&&this.SelectDms.includes(item.MailId);
+
+        filterMatched=isSelected?false:hasMemo;
+      }
+      else if(this.projectmodaltype=='portfolio'){
+            // portfolio filter section here
+       // 'item' act as a portfolio object here
+       const x=(item.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
+       const y=(item.Created_By===this.basedOnFilter.byuser||!this.basedOnFilter.byuser);
+       const z=x&&y;
+       const isSelected:boolean=this.Portfolio&&this.Portfolio.includes(item.portfolio_id);
+       filterMatched=isSelected?false:z;
+
+      }
+      else if(this.projectmodaltype=='participant'){
+           const x=(item.Emp_Comp_No===this.basedOnFilter.bycompany||!this.basedOnFilter.bycompany);
+           const isSelected:boolean=this.ngEmployeeDropdown&&this.ngEmployeeDropdown.includes(item.Emp_No);
+           filterMatched=isSelected?false:x;
+      }
+   }
+
+
+
+
+     return nameMatched&&(this.isFilteredOn?filterMatched:true);
     });
+
+
     this.FilteredResults=result;
 
 

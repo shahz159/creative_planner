@@ -463,8 +463,14 @@ export class ActionToProjectComponent implements OnInit {
          this.maxAllocation=0;
          this.totalWorkingDays=0;
          this.totalOffDays=[];
-
        }
+
+       // if startdate and enddate both are valid.
+       if(this._StartDate&&this._EndDate){
+          this.alertMaxAllocation();  // calculate max allocation value.
+       }
+
+
      }
      else{ this._StartDate=null; 
            this._EndDate=null; 
@@ -1377,7 +1383,8 @@ exitActionToProject(){
     }
     else if(this._Urlid == 4){
 
-      this._details.getProjectDetails(this.selectedProjectCode);
+      this._details.getProjectDetails(this.selectedProjectCode); 
+      this._details.getapprovalStats();  
       this.BsService.setSelectedTemplAction({name:'',description:'',assignedTo:''});  // erase the default selection
       this.closeInfo();
     }
