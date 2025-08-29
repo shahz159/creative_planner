@@ -452,6 +452,8 @@
                             class="tab-pane fade show active">
                             <div class="card-body p-3">
                               <div class="col-lg-12  card-Scroll pt-0" style="scroll-behavior:smooth">
+
+                                <ng-container *ngIf="assigntask_json?.length>0; else noassigned_task">
                                 <div [id]="'assign-task-'+record.Assign_Id" class="kt-action-list" *ngFor="let record of assigntask_json ;let i = index;">
                                   <div class="kt-act-card d-flex align-items-center ">
                                     <div class="kt-act-no">
@@ -563,6 +565,14 @@
                                     </div>
                                   </div>
                                 </div>
+                                </ng-container>
+                                <ng-template #noassigned_task>
+                                    <div class="d-flex flex-column justify-content-center align-items-center">
+                                      <img width="30%" height="100%" src="assets/images/no-image.png">
+                                      <p class="text-muted fs-5">No assigned projects</p>
+                                    </div>
+                                </ng-template>
+                              
                               </div>
                             </div>
 
@@ -1966,7 +1976,7 @@
                                   <label>Owner<span class="text-danger">*</span></label>
 
                                   <ng-select class="kt-form-vd" [ngClass]="{'error-vd':!PrjOwner&&notProvided}"  [items]="owner_json" bindLabel="EmpName" bindValue="EmpNo" groupBy="type"
-                                  (change)="onProjectOwnerChanged();  PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo))?PrjInformer:Responsible_json[0].OwnerEmpNo;  setRACIS(); "
+                                  (change)="onProjectOwnerChanged();  PrjInformer=([PrjOwner?.toString(),PrjResp?.toString()].includes(Responsible_json[0].OwnerEmpNo?.toString()))?PrjInformer:Responsible_json[0].OwnerEmpNo;  setRACIS(); "
                                   placeholder="Select owner" id="owner-drp-dwn" [searchable]="true" name="owner-drp-dwn"
                                   [(ngModel)]="PrjOwner"></ng-select>
                                   <span style="color:rgb(217,48,37)" *ngIf="!PrjOwner">Please select owner.</span>
@@ -1977,7 +1987,7 @@
                                 <div class="form-group text-dark-50 w-75px flex-grow-1 brdng-0 mb-0">
                                   <label>Responsible<span class="text-danger">*</span></label>
                                   <ng-select *ngIf="Responsible_json"  [ngClass]="{'error-vd':!PrjResp&&notProvided}"     class="kt-form-vd" placeholder="Select responsible"
-                                    [(ngModel)]="PrjResp" (change)="onResponsibleChanged(); PrjInformer=([PrjOwner,PrjResp].includes(Responsible_json[0].OwnerEmpNo))?PrjInformer:Responsible_json[0].OwnerEmpNo; setRACIS();">
+                                    [(ngModel)]="PrjResp" (change)="onResponsibleChanged(); PrjInformer=([PrjOwner?.toString(),PrjResp?.toString()].includes(Responsible_json[0].OwnerEmpNo?.toString()))?PrjInformer:Responsible_json[0].OwnerEmpNo; setRACIS();">
                                     <ng-option
                                       [value]="Responsible_json[0].ResponsibleNo">{{Responsible_json[0].ResponsibleName}}</ng-option>
                                     <ng-option *ngIf="heirarchical_owner?.length>1"

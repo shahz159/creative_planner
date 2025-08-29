@@ -273,8 +273,8 @@ export class CreateProjectComponent implements OnInit {
   getProjectCreationDetails(){
     this.createProjectService.NewGetProjectCreationDetails().subscribe((res)=>{
       console.log("NewGetProjectCreationDetails:",res);
-      if(res)
-      {    
+      if(res) 
+      {      debugger
          this.Authority_json=JSON.parse(res[0].Authority_json);
          this.Category_json=JSON.parse(res[0].Category_json);
          this.Client_json=JSON.parse(res[0].Client_json);
@@ -287,8 +287,9 @@ export class CreateProjectComponent implements OnInit {
          this.heirarchical_owner=JSON.parse(res[0].owner_json);
          let owner_values=JSON.parse(res[0].owner_json);
          owner_values=owner_values.map(ob=>({...ob,type:'Hierarchical'}));
-         const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo];
-         let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob.Emp_No));
+         const excludeusrs=[...owner_values.map(ob=>ob.EmpNo),this.Responsible_json[0].ResponsibleNo].map(val=>val.toString());
+         
+         let otherusers=this.allUser_json.filter((ob)=>!excludeusrs.includes(ob?.Emp_No?.toString()));
          otherusers=otherusers.map(ob=>({EmpNo:ob.Emp_No, EmpName:ob.Emp_Name, type:'Others'}));
          this.owner_json=[...owner_values,...otherusers];
 
@@ -1379,9 +1380,9 @@ isPrjSprtDrpDwnOpen:boolean=false;
 // responsible field start
 onResponsibleChanged(){
   if(this.PrjResp){
-    if(this.PrjResp===this.PrjOwner)
+    if(this.PrjResp==this.PrjOwner)
     {
-      const selectedowr=this.owner_json.find((item)=>item.EmpNo===this.PrjOwner);
+      const selectedowr=this.owner_json.find((item)=>item.EmpNo==this.PrjOwner);
       const newowr=this.owner_json[this.owner_json.indexOf(selectedowr)+1];
       this.PrjOwner=newowr.EmpNo;
 
@@ -1408,9 +1409,9 @@ onResponsibleChanged(){
   }
 }
 
-onProjectOwnerChanged(){
+onProjectOwnerChanged(){  
   if(this.PrjOwner){
-      if(this.PrjOwner===this.PrjResp){
+      if(this.PrjOwner==this.PrjResp){
       this.PrjResp=this.Responsible_json[0].ResponsibleNo;
       this.onResponsibleChanged();
       }
@@ -1502,6 +1503,7 @@ onProjectOwnerChanged(){
 
       console.log(this.conditional_List,'--conditional prjs------------->')
       console.log(this.assigntask_json,'--assigntask_json--');
+      
  });
   }
 

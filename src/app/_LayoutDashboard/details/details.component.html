@@ -894,11 +894,11 @@
                                                         Project release
                                                       </button>
 
-                                                    <button  *ngIf="(projectInfo.Status==='New Project Rejected')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"    class="btn-inside-notifi  re-release-prj-shrtcut" (click)="openNewPrjReleaseSideBar()">
+                                                    <button  *ngIf="(projectInfo.Status==='New Project Rejected')&&([projectInfo.OwnerEmpNo,projectInfo.ResponsibleEmpNo].includes(Current_user_ID))"    class="Ct-btn Bt-Submit-primary ml-2 align-self-start px-2" (click)="openNewPrjReleaseSideBar()">
                                                         New project release
                                                      </button>
 
-                                                    <button *ngIf="isProjectCompletionAllowed()&&(ProjectDueInDays==0||ProjectDueInDays==1)" (click)="OnClickCheckboxProjectUpdate()" class="Ct-btn Bt-Submit-primary ml-2">
+                                                    <button *ngIf="isProjectCompletionAllowed()&&(ProjectDueInDays==0||ProjectDueInDays==1||projectInfo.Status=='Delay')" (click)="OnClickCheckboxProjectUpdate()" class="Ct-btn Bt-Submit-primary ml-2 align-self-start">
                                                         Project completion
                                                     </button>
 
@@ -1318,6 +1318,7 @@
                                                                 class="kt-projcect-act-list"
                                                                 (click)="showActionDetails(action.IndexId-1);prostate(action.proState);"
                                                                 [ngClass]="{'Active':currentActionView===action.IndexId-1}"
+                                                                [id]="'actionCode:'+action.Project_Code"
                                                                 >
                                                                 <div class="row curser-pointer">
                                                                     <div class="col-lg-8 pl-0 pr-1">
@@ -1365,7 +1366,7 @@
                                                                                 </div>
 
                                                                             </div>
-                                                                            <input type="text"  [id]="'actionCode:'+action.Project_Code" style="height:0; width:0; border:0; outline:0; background:transparent; "/>
+                                                                            <!-- <input type="text"  [id]="'actionCode:'+action.Project_Code" style="height:0; width:0; border:0; outline:0; background:transparent; "/> -->
                                                                            
                                                                             </div>
                                                                         </div>
@@ -3087,7 +3088,7 @@
                                                                 <button *ngIf="isProjectCompletionAllowed()" (click)="OnClickCheckboxProjectUpdate()" class="Ct-btn Bt-Submit ml-2">Project completion</button>
                                                                 <button *ngIf="isProjectReleaseAllowed()" (click)="openPrjReleaseSideBar()" class="Ct-btn Bt-hold ml-2">Project release</button>
                                                                 <button *ngIf="isProjectHoldAllowed()" (click)="openPrjHoldSideBar()" class="Ct-btn Bt-hold ml-2">Project hold</button>
-                                                                <button *ngIf="isProjectNewReleaseAllowed()" (click)="openNewPrjReleaseSideBar()"  class=" Bt-newprj-release  ml-2" >New project release</button>
+                                                                <button *ngIf="isProjectNewReleaseAllowed()" (click)="openNewPrjReleaseSideBar()"  class=" Ct-btn Bt-Submit ml-2" >New project release</button>
                                                                 <button *ngIf="isProjectCancellationAllowed()" (click)="openPrjCancelSb()" class="Ct-btn Bt-cancel ml-2">Project cancel</button>
                                                         <!--project ctrls btns new-->   
                                                         
@@ -4322,7 +4323,7 @@
                                                                 <div class="kt-info-lable-v">Remarks</div>
                                                                 <div class="kt-info-data-v p-2 " data-toggle="tooltip" style="overflow:unset; text-overflow: unset; white-space: unset;">
                                                                     <div class="d-flex px-2">
-                                                                        <div #aprvlRemarksBx class="compl-remarks-span" title="{{requestComments}}">
+                                                                        <div #aprvlRemarksBx class="compl-remarks-span flex-grow-1" title="{{requestComments}}" style="white-space:break-spaces;">
                                                                             {{requestComments}}
                                                                         </div>
                                                                         <button class="txt-expnd-btn align-self-end bg-transparent" style="border:2px solid #898989" *ngIf="aprvlRemarksBx.scrollHeight>aprvlRemarksBx.clientHeight" (click)="$event.stopPropagation(); aprvlRemarksBx.classList.remove('compl-remarks-span'); aprvRemarkslessbtn.classList.remove('d-none'); ">
@@ -5262,7 +5263,7 @@
                                                        (noActvyOnActnSinceCreation)||
                                                        (myDuePrjActions?.has(projectActionInfo[currentActionView].Project_Code))
                                                      ">
-                                                <div *ngIf="(projectActionInfo[currentActionView].Status==='Delay' && projectActionInfo[currentActionView].Team_Res===Current_user_ID)" class="notification delay-notification">
+                                                <div *ngIf="(projectActionInfo[currentActionView].Status==='Delay' && projectActionInfo[currentActionView].Team_Res===Current_user_ID)&&projectActionInfo[currentActionView].Delaydays>0" class="notification delay-notification">
                                                     <svg class="notif-img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"  fill="#ff0000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M1.5 8a6.5 6.5 0 016.744-6.496.75.75 0 10.055-1.499 8 8 0 107.036 11.193.75.75 0 00-1.375-.6 6.722 6.722 0 01-.22.453A6.5 6.5 0 011.5 8zM10.726 1.238a.75.75 0 011.013-.312c.177.094.35.194.518.3a.75.75 0 01-.799 1.27 6.512 6.512 0 00-.42-.244.75.75 0 01-.312-1.014zM13.74 3.508a.75.75 0 011.034.235c.106.168.206.34.3.518a.75.75 0 11-1.326.702 6.452 6.452 0 00-.243-.421.75.75 0 01.235-1.034zM15.217 6.979a.75.75 0 01.777.722 8.034 8.034 0 01.002.552.75.75 0 01-1.5-.047 6.713 6.713 0 000-.45.75.75 0 01.721-.777z"></path> <path d="M7.75 3a.75.75 0 01.75.75v3.786l2.085 1.043a.75.75 0 11-.67 1.342l-2.5-1.25A.75.75 0 017 8V3.75A.75.75 0 017.75 3z"></path> </g> </g></svg>
                                                     <span class="notif-msg" style="color:red" >
                                                         You are {{projectActionInfo&&projectActionInfo[currentActionView].Delaydays}} days
@@ -5374,7 +5375,7 @@
 
 <!--in above 3rd condition is just to make sure option section should be visible only when there is atleast one option in dropdown-->
 
-                                                   <button *ngIf="isActionCompletionAllowed()&&myDuePrjActions?.has(projectActionInfo[currentActionView].Project_Code)" class="Ct-btn Bt-Submit ml-2" (click)="markCompleted(projectActionInfo[currentActionView])"> Action completion</button>
+                                                   <button *ngIf="isActionCompletionAllowed()&&(myDuePrjActions?.has(projectActionInfo[currentActionView].Project_Code)|| projectActionInfo[currentActionView].Status=='Delay')" class="Ct-btn Bt-Submit ml-2" (click)="markCompleted(projectActionInfo[currentActionView])"> Action completion</button>
 
                                                     <div class="project_more_Action_options" 
                                                       *ngIf="(isActionReleaseAllowed()||isActionHoldAllowed()||isActionCompletionAllowed()||isTimelineAllowedOnAction()||isActionCancelAllowed()||isActionNewReleaseAllowed())">
@@ -5401,7 +5402,7 @@
                                                             <button *ngIf="isActionCompletionAllowed()" class="Ct-btn Bt-Submit ml-2" (click)="markCompleted(projectActionInfo[currentActionView])"> Action completion</button>
                                                             <button *ngIf="isTimelineAllowedOnAction()" class="Ct-btn ml-2" (click)="openDarSideBar()">Add timeline</button>
                                                             <button *ngIf="isActionCancelAllowed()"  class="Ct-btn Bt-cancel ml-2" (click)="cancelAction(currentActionView)">Action cancel</button>
-                                                            <button *ngIf="isActionNewReleaseAllowed()" class=" Bt-newprj-release  ml-2" (click)="openNewPrjReleaseSideBar()">New action release</button>
+                                                            <button *ngIf="isActionNewReleaseAllowed()" class=" Ct-btn Bt-Submit ml-2" (click)="openNewPrjReleaseSideBar()">New action release</button>
                                                       <!--new simplified end-->
 
 
@@ -5959,8 +5960,8 @@
                                                                         <div class="col-lg-12 p-0">
                                                                             <div class="kt-info-pg-btns d-flex justify-content-end ">
                                                                                 <button type="button" (click)="removeCommit();Close_Comments()" class="btn btn-project-stv Bt-close ml-2 mr-3 ">Close</button>
-                                                                                <button *ngIf="Accept_active" (click)="submitApproval();" [disabled]="approvalSubmitting||approvalsFetching" type="button" class="btn btn-project-stv Bt-Submit" primary="true">Submit</button>
-                                                                                <button *ngIf="Reject_active" (click)="submitApproval();" [disabled]="approvalSubmitting||approvalsFetching" type="button" class="btn btn-project-stv Bt-Submit" primary="true">Submit</button>
+                                                                                <button *ngIf="Accept_active" (click)="submitActionApproval();" [disabled]="approvalSubmitting||approvalsFetching" type="button" class="btn btn-project-stv Bt-Submit" primary="true">Submit</button>
+                                                                                <button *ngIf="Reject_active" (click)="submitActionApproval();" [disabled]="approvalSubmitting||approvalsFetching" type="button" class="btn btn-project-stv Bt-Submit" primary="true">Submit</button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -6073,6 +6074,94 @@
                                                     </div>
                                                    </ng-container>
 
+                                       
+                                                       <!--action completion report start-->
+                                            <ng-container *ngIf="projectActionInfo[currentActionView].Status=='Completed'">
+
+                                                  <div class="legend-border mt-4" style=" background-color: white;">
+                                                      <div class="meeting-attendance-heading">Completion Report</div>
+                                                      <div class="d-flex gap-1">
+
+                                                            <fieldset class="meeting-attendance-item mt-2" style=" padding-top: 0;">
+                                                                <legend style=" font-size: 10px;max-width: fit-content; color: #9a9a9a;">Submitted by</legend>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div class="meeting-attendance-count fs-7">{{projectActionInfo[currentActionView].Submittedby}}</div>
+                                                                    <div class="meeting-attendance-count fs-6">{{projectActionInfo[currentActionView].CD|date:'d MMM, yyyy'}}</div>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between gap-2">
+                                                                   
+                                                                    <div *ngIf="projectActionInfo[currentActionView].Remarks" class="d-flex gap-1">
+                                                                      <div #asubmitbyRemarksBx class="compl-remarks-span  flex-grow-1  text-muted fs-7" style="white-space:break-spaces;">
+                                                                        {{projectActionInfo[currentActionView].Remarks}}
+                                                                      </div>
+                                                                      <button class="txt-expnd-btn align-self-end" *ngIf="asubmitbyRemarksBx.scrollHeight>asubmitbyRemarksBx.clientHeight" (click)="$event.stopPropagation(); asubmitbyRemarksBx.classList.remove('compl-remarks-span'); acrlessbtn.classList.remove('d-none'); ">
+                                                                          <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                      </button>
+                                                                      <button #acrlessbtn class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); asubmitbyRemarksBx.classList.add('compl-remarks-span'); acrlessbtn.classList.add('d-none');">
+                                                                          <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                      </button>
+                                                                    </div>
+                                                                
+                                                                    <span *ngIf="projectActionInfo[currentActionView].CompleteProofDoc" [title]="projectActionInfo[currentActionView].Sourcefile" 
+                                                                    (click)="LoadDocument1(projectActionInfo[currentActionView].Project_Code,projectActionInfo[currentActionView].IsCloud,projectActionInfo[currentActionView].Sourcefile,projectActionInfo[currentActionView].CompleteProofDoc,projectActionInfo[currentActionView].contenttype,projectActionInfo[currentActionView].Responsible)" class="text-info fs-8 text-underline curser-pointer flex-shrink-0">
+                                                                        <span class="fs-9 text-info">attachment</span>
+                                                                    </span>
+                                                               </div>
+                                                            </fieldset>
+
+
+                                                      </div>
+                                                      <div class="meeting-attendance">
+
+                                                          <div class="meeting-attendance-item">
+                                                              <div class="meeting-attendance-count" style="text-wrap:nowrap">
+                                                                {{projectActionInfo[currentActionView].TotalHours}} hrs
+                                                                <span class="text-secondary">|</span>
+                                                                {{projectActionInfo[currentActionView].AllocatedHours}} hrs   
+                                                              </div>
+                                                              <div class="meeting-attendance-title">Achieved Hours</div>
+                                                          </div>
+                                                          <div class="meeting-attendance-item">
+                                                              <div class="meeting-attendance-count">
+                                                                 <span>
+                                                                    <span class="strt-d">
+                                                                        {{projectActionInfo[currentActionView].StartDate|date:'dd/MM/yyyy'}}
+                                                                    </span>
+                                                                </span>
+                                                                 <span class="text-secondary">-</span>
+                                                                 <span>
+                                                                    <span class="ed-d">
+                                                                    {{projectActionInfo[currentActionView].CD|date:'dd/MM/yyyy'}}
+                                                                   </span>
+                                                                </span>
+                                                              </div>
+                                                              <div class="meeting-attendance-title">Action Duration</div>
+                                                          </div>
+                                                          <div class="meeting-attendance-item">                                           
+                                                              <div class="meeting-attendance-count">
+                                                                 {{actnRunFor+(actnRunFor>1?' days':' day')}}
+                                                              </div>
+                                                              <div class="meeting-attendance-title">Duration</div>
+                                                          </div>
+
+                                                      </div>
+                                            
+                                                       <div class="d-flex gap-2">
+                                                        <div *ngIf="action_completionOffset>0"class="completion-ending-statement">
+                                                         Action is completed after a delay of <b [matTooltip]="action_completionOffset+(action_completionOffset>1?' days':' day')">{{formatDurationFromDays(action_completionOffset)}}</b>.  
+                                                        </div>
+                                                        <div *ngIf="action_deadlineExtendlist?.length>0" class="completion-ending-statement ng-star-inserted">
+                                                            Action deadline was changed <b>{{action_deadlineExtendlist.length}}</b> {{action_deadlineExtendlist.length==1?'time':'times'}}.  
+                                                        </div>
+                                                      </div>
+
+                                                  </div>
+
+                                              </ng-container>
+                                               <!--action completion report end-->
+
+
+                                        
 
                                                     <div class="row mt-4 px-3">
                                                         <div class="col text-center">
@@ -6386,9 +6475,9 @@
                                                     </div> -->
 
                                                     </div>
-                                                    <div class="row mt-5 px-3"
-                                                        *ngIf="projectActionInfo[currentActionView].Sourcefile || projectActionInfo[currentActionView].Remarks">
-                                                        <div *ngIf="projectActionInfo[currentActionView].Sourcefile"
+                                                    <div class="row mt-5 px-3" *ngIf="projectActionInfo[currentActionView].Remarks">
+                                                       
+                                                        <!-- <div *ngIf="projectActionInfo[currentActionView].Sourcefile"
                                                             class="col-lg-3  text-center"
                                                             title=" {{projectActionInfo[currentActionView].Sourcefile}}">
                                                             <div class="kt-info-lable-v">
@@ -6402,10 +6491,10 @@
                                                                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" height="18px" fill="currentColor" ><path d="M14.8287 7.7574L9.1718 13.4143C8.78127 13.8048 8.78127 14.4379 9.1718 14.8285C9.56232 15.219 10.1955 15.219 10.586 14.8285L16.2429 9.17161C17.4144 8.00004 17.4144 6.10055 16.2429 4.92897C15.0713 3.7574 13.1718 3.7574 12.0002 4.92897L6.34337 10.5858C4.39075 12.5384 4.39075 15.7043 6.34337 17.6569C8.29599 19.6095 11.4618 19.6095 13.4144 17.6569L19.0713 12L20.4855 13.4143L14.8287 19.0711C12.095 21.8048 7.66283 21.8048 4.92916 19.0711C2.19549 16.3374 2.19549 11.9053 4.92916 9.17161L10.586 3.51476C12.5386 1.56214 15.7045 1.56214 17.6571 3.51476C19.6097 5.46738 19.6097 8.63321 17.6571 10.5858L12.0002 16.2427C10.8287 17.4143 8.92916 17.4143 7.75759 16.2427C6.58601 15.0711 6.58601 13.1716 7.75759 12L13.4144 6.34319L14.8287 7.7574Z"></path></svg>
                                                                     {{projectActionInfo[currentActionView].Sourcefile}}</b>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
 
                                                     
-                                                    <div class="col-lg-3  text-center"  *ngIf="projectActionInfo[currentActionView].Status==='Completed'"  >
+                                                    <!-- <div class="col-lg-3  text-center"  *ngIf="projectActionInfo[currentActionView].Status==='Completed'"  >
 
                                                         <div class="kt-info-lable-v">
                                                             Completed date
@@ -6414,17 +6503,23 @@
                                                             {{projectActionInfo[currentActionView].CD| date :'dd-MM-yyyy'}}
                                                         </div>
 
-                                                    </div>
+                                                    </div> -->
 
-                                                      <div class="col text-center"
-                                                            *ngIf="projectActionInfo[currentActionView].Remarks && projectActionInfo[currentActionView].Remarks !='undefined' && projectActionInfo[currentActionView].Remarks !=''">
+                                                      <div class="col text-center" *ngIf="projectActionInfo[currentActionView].Status!='Completed'&&projectActionInfo[currentActionView].Remarks && projectActionInfo[currentActionView].Remarks !='undefined' && projectActionInfo[currentActionView].Remarks !=''">
                                                             <div class="kt-info-lable-v">
                                                                 Remarks
                                                             </div>
-                                                            <div class="kt-info-data-v"
-                                                                title="{{projectActionInfo[currentActionView].Remarks}}">
-
+                                                            
+                                                            <div class="d-flex flex-column">
+                                                            <div #actn_RemarksBx class="kt-info-data-v compl-remarks-span fremarks-wrap " title="{{projectActionInfo[currentActionView].Remarks}}">
                                                                 {{projectActionInfo[currentActionView].Remarks}}
+                                                            </div>
+                                                               <button class="txt-expnd-btn align-self-end" *ngIf="actn_RemarksBx.scrollHeight>actn_RemarksBx.clientHeight" (click)="$event.stopPropagation(); actn_RemarksBx.classList.remove('compl-remarks-span'); acrlessbtn.classList.remove('d-none'); ">
+                                                                  <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                </button>
+                                                                <button #acrlessbtn class="txt-expnd-btn align-self-end d-none" (click)="$event.stopPropagation(); actn_RemarksBx.classList.add('compl-remarks-span'); acrlessbtn.classList.add('d-none');">
+                                                                  <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                </button>
                                                             </div>
                                                         </div>
 
@@ -15387,7 +15482,7 @@
                                                 </div>
                                                 <div class="d-flex flex-column mb-3">
                                                     <span class="text-muted fs-9 fw-bold">Reject comments :</span>
-                                                    <span class="mt-1">{{item.Req_Coments}}</span>
+                                                    <span class="mt-1" style="white-space:break-spaces;">{{item.Req_Coments}}</span>
                                                 </div>
                                             </div>
 

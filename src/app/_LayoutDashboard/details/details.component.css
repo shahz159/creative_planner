@@ -1198,6 +1198,7 @@ span.add-icon {
   overflow-y: auto;
   overflow-x: hidden;
   padding: 10px;
+  scroll-behavior: smooth;
 }
 
 .kt-project-action-list-view::-webkit-scrollbar {
@@ -4990,6 +4991,7 @@ p.kt-dt-l {
   direction: ltr;
   margin-left: 5px;
   margin-right: 5px;
+  scroll-behavior: smooth;
 }
 
 .kt-project-acion-content .action-index-label {
@@ -11083,3 +11085,23 @@ span.time-value {
 }
 
 /*compl-aprovl actions pending in new action create dialog css    end.*/
+
+.remarks-wrap
+{
+    white-space: break-spaces;
+    text-align: justify;
+    padding: 0.3em 0.3em 0.3em 1em;
+    font-size: 13px;
+    line-height: 1.3em;
+}
+
+
+.fremarks-wrap
+{
+    padding-left: 22px;
+    padding-right: 22px;
+    line-height: unset;
+    white-space: break-spaces;
+    text-align: justify;
+    font-size: 13px;
+}
