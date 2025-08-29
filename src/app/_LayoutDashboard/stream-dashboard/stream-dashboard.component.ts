@@ -991,11 +991,36 @@ reportCount:any;
 PendingTasks:any;
 
 
+// getDayReportSummary(){
+//   this.service.NewGetEmployeePerformance(this.Current_user_ID).subscribe((res:any)=>{
+
+//       if(res&&res.EmployeeReport){
+//              this.daySummaryReport=JSON.parse(res.EmployeeReport)[0];
+//              console.log(this.daySummaryReport,"daySummaryReport:");
+//             this.dueTodayTasksCount=[];
+//             ['ActionsDueToday','ProjectsDueToday','StandardDueToday'].forEach((dkey)=>{
+//               if(this.daySummaryReport[dkey]>0){
+//                     const ob={ taskType:dkey, count:this.daySummaryReport[dkey] };
+//                     this.dueTodayTasksCount.push(ob);
+//               }
+//             });
+//       }
+//       this.reportCount = ["NewProjectRejected", "AssignedTasksDue", "ActionsDelayed", "ProjectsDelayed", "StandardDelayed"]
+//       .filter(key => this.daySummaryReport[key] > 0).length;
+
+//       if(this.daySummaryReport['PendingTasks']){
+//        this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
+//         console.log(this.daySummaryReport,"daySummaryReport:");
+//       }
+//       this.GetHasAcknowledgeService()         
+//   })
+// }
 getDayReportSummary(){
   this.service.NewGetEmployeePerformance(this.Current_user_ID).subscribe((res:any)=>{
 
       if(res&&res.EmployeeReport){
              this.daySummaryReport=JSON.parse(res.EmployeeReport)[0];
+          
             this.dueTodayTasksCount=[];
             ['ActionsDueToday','ProjectsDueToday','StandardDueToday'].forEach((dkey)=>{
               if(this.daySummaryReport[dkey]>0){
@@ -1007,14 +1032,42 @@ getDayReportSummary(){
       this.reportCount = ["NewProjectRejected", "AssignedTasksDue", "ActionsDelayed", "ProjectsDelayed", "StandardDelayed"]
       .filter(key => this.daySummaryReport[key] > 0).length;
 
+      // ✅ shortest change: auto-parse only JSON-string properties
+      ["PendingTasks","dueTodayprojects","ActionsDelayed","ProjectsDelayed","AssignedTasksDue","NewProjectRejected"]
+      .forEach(k=>{
+        if(this.daySummaryReport[k] && typeof this.daySummaryReport[k]==="string"){
+          this.daySummaryReport[k] = JSON.parse(this.daySummaryReport[k]);
+        }
+      });
+
       if(this.daySummaryReport['PendingTasks']){
-       this.PendingTasks = JSON.parse(this.daySummaryReport['PendingTasks']);
-      console.log("daySummaryReport:",this.daySummaryReport);
+        this.PendingTasks = this.daySummaryReport['PendingTasks'];
       }
+     console.log(this.daySummaryReport,"daySummaryReport:");
       this.GetHasAcknowledgeService()         
   })
 }
 
+
+
+  getFormattedDelay(delayDays: any): string {
+    let delayText = '';
+
+    if (delayDays >= 365) {
+      const years = Math.floor(delayDays / 365);
+      delayText = years === 1 ? '01 year' : years < 10 ? `0${years} years` : `${years} years`;
+    } else if (delayDays >= 30) {
+      const months = Math.floor(delayDays / 30);
+      delayText = months === 1 ? '01 month' : months < 10 ? `0${months} months` : `${months} months`;
+    } else if (delayDays >= 7) {
+      const weeks = Math.floor(delayDays / 7);
+      delayText = weeks === 1 ? '01 week' : weeks < 10 ? `0${weeks} weeks` : `${weeks} weeks`;
+    } else {
+      delayText = delayDays==0?'0 days':delayDays < 10 ? `0${delayDays} days` : `${delayDays} days`;
+    }
+
+    return `${delayText}`;
+  }
 
 
 viewTasks(){

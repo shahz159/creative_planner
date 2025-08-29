@@ -3052,3 +3052,8 @@ span.p-b-percent-count {
     font-size: 14px;
     margin-right: 2px;
 }
+
+.noti-alert-subdate {
+    font-size: 11px;
+    color: #adadad;
+}
